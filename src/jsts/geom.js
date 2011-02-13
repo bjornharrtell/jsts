@@ -1,0 +1,8 @@
+
+
+/**
+ * geom namespace
+ */
+jsts.geom = {
+
+};

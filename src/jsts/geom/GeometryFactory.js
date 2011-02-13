@@ -1,0 +1,3 @@
+jsts.geom.GeometryFactory = {
+
+};
