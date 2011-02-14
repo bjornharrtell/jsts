@@ -1,7 +1,7 @@
-describe('Envelope', function() {
+describe('jsts.geom.Envelope', function() {
   var e1, e2, e3, e4;
   
-  it('should be constructable', function() {
+  it('can be constructed', function() {
     e1 = new jsts.geom.Envelope(1, 2, 3, 4);
     e2 = new jsts.geom.Envelope(new jsts.geom.Coordinate(1, 3), new jsts.geom.Coordinate(2, 4));
     e3 = new jsts.geom.Envelope(new jsts.geom.Coordinate(1, 2));
