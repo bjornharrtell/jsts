@@ -1,3 +1,9 @@
+/* Copyright (c) 2011 by Björn Harrtell.
+ * Published under the GNU Lesser GPL 2.1 license.
+ * See https://github.com/bjornharrtell/jsts/blob/master/license.txt for the
+ * full text of the license.
+ */
+
 /**
  * Defines a rectangular region of the 2D coordinate plane. It is often used to
  * represent the bounding box of a {@link Geometry}, e.g. the minimum and
