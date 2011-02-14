@@ -1,6 +1,7 @@
 JSTS Topology Suite
+===================
 
-Aims to port JTS Topology Suite to javascript.
+Aims to port [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html) to javascript.
 
 Code is conformant to the [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
