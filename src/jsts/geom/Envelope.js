@@ -57,23 +57,23 @@ jsts.geom.Envelope.prototype.maxy = null,
 
 
 /**
- * Creates an <code>Envelope</code> for a region defined by maximum and
- * minimum values.
- *
- * Will call appropriate init code depending on arguments
- */
+     * Creates an <code>Envelope</code> for a region defined by maximum and
+     * minimum values.
+     *
+     * Will call appropriate init* method depending on arguments.
+     */
 jsts.geom.Envelope.prototype.init = function() {
   if (typeof arguments[0] === 'number' && arguments.length === 4) {
     this.initFromValues(arguments[0], arguments[1], arguments[2],
         arguments[3]);
   } else if (arguments[0] instanceof jsts.geom.Coordinate &&
-      arguments.length === 1) {
+          arguments.length === 1) {
     this.initFromCoordinate(arguments[0]);
   } else if (arguments[0] instanceof jsts.geom.Coordinate &&
-      arguments.length === 2) {
+          arguments.length === 2) {
     this.initFromCoordinates(arguments[0], arguments[1]);
   } else if (arguments[0] instanceof jsts.geom.Envelope &&
-      arguments.length === 1) {
+          arguments.length === 1) {
     this.initFromEnvelope(arguments[0]);
   }
 };
@@ -246,10 +246,12 @@ jsts.geom.Envelope.prototype.getArea = function() {
  * Will call appropriate expandToInclude* depending on arguments.
  */
 jsts.geom.Envelope.prototype.expandToInclude = function() {
-  if (p instanceof jsts.geom.Coordinate) {
-    expandToIncludeCoordinate(arguments[0]);
+  if (arguments[0] instanceof jsts.geom.Coordinate) {
+    this.expandToIncludeCoordinate(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Envelope) {
+    this.expandToIncludeEnvelope(arguments[0]);
   } else {
-    expandToIncludeValues(arguments[0], arguments[1]);
+    this.expandToIncludeValues(arguments[0], arguments[1]);
   }
 };
 
@@ -420,13 +422,13 @@ jsts.geom.Envelope.prototype.centre = function() {
  *
  * @param {Envelope}
  *          env the envelope to intersect with.
- * @return {Envelope} a new Envelope representing the intersection of the
- *         envelopes (this will be the null envelope if either argument is null,
- *         or they do not intersect.
+ * @return {jsts.geom.Envelope} a new Envelope representing the intersection of
+ *         the envelopes (this will be the null envelope if either argument is
+ *         null, or they do not intersect.
  */
 jsts.geom.Envelope.prototype.intersection = function(env) {
   if (this.isNull() || env.isNull() || !this.intersects(env)) {
-    return new Envelope();
+    return new jsts.geom.Envelope();
   }
 
   var intMinX = this.minx > env.minx ? this.minx : env.minx;
@@ -443,15 +445,18 @@ jsts.geom.Envelope.prototype.intersection = function(env) {
  * <code>Envelope</code>.
  *
  * Will call appropriate intersects* depending on arguments.
+ *
+ * @return {boolean} <code>true</code> if an overlap is found.
  */
 jsts.geom.Envelope.prototype.intersects = function() {
-  if (p instanceof jsts.geom.Envelope) {
-    this.intersectsEnvelope(arguments[0]);
-  } else if (p instanceof jsts.geom.Coordinate) {
-    this.intersectsCoordinate(arguments[0]);
+  if (arguments[0] instanceof jsts.geom.Envelope) {
+    return this.intersectsEnvelope(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate) {
+    return this.intersectsCoordinate(arguments[0]);
   } else {
-    this.intersectsValues(arguments[0], arguments[1]);
+    return this.intersectsValues(arguments[0], arguments[1]);
   }
+  throw new SyntaxError('Invalid arguments');
 };
 
 
@@ -500,9 +505,9 @@ jsts.geom.Envelope.prototype.intersectsCoordinate = function(p) {
  *         <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.intersectsValues = function(x, y) {
-  if (isNull())
+  if (this.isNull())
     return false;
-  return !(x > maxx || x < minx || y > maxy || y < miny);
+  return !(x > this.maxx || x < this.minx || y > this.maxy || y < this.miny);
 };
 
 
@@ -513,9 +518,9 @@ jsts.geom.Envelope.prototype.intersectsValues = function(x, y) {
  * Will call appropriate contains* depending on arguments.
  */
 jsts.geom.Envelope.prototype.contains = function() {
-  if (p instanceof jsts.geom.Envelope) {
+  if (arguments[0] instanceof jsts.geom.Envelope) {
     this.containsEnvelope(arguments[0]);
-  } else if (p instanceof jsts.geom.Coordinate) {
+  } else if (arguments[0] instanceof jsts.geom.Coordinate) {
     this.containsCoordinate(arguments[0]);
   } else {
     this.containsValues(arguments[0], arguments[1]);
