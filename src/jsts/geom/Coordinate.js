@@ -1,7 +1,7 @@
 /* Copyright (c) 2011 by Björn Harrtell.
- * Published under the GNU Lesser GPL 2.1 license.
- * See https://github.com/bjornharrtell/jsts/blob/master/license.txt for the
- * full text of the license.
+ * Published under the GNU Lesser GPL 2.1 licence.
+ * See https://github.com/bjornharrtell/jsts/blob/master/licence.txt for the
+ * full text of the licence.
  */
 
 /**
@@ -95,7 +95,8 @@ jsts.geom.Coordinate.prototype.equals2D = function(other) {
  *          other the <code>Coordinate</code> with which this
  *          <code>Coordinate</code> is being compared.
  * @return {boolean} -1, zero, or 1 as this <code>Coordinate</code> is less
- *         than, equal to, or greater than the specified <code>Coordinate</code>.
+ *         than, equal to, or greater than the specified
+ *         <code>Coordinate</code>.
  */
 jsts.geom.Coordinate.prototype.compareTo = function(other) {
   if (this.x < other.x)
