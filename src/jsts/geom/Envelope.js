@@ -1,7 +1,7 @@
 /* Copyright (c) 2011 by Björn Harrtell.
- * Published under the GNU Lesser GPL 2.1 license.
- * See https://github.com/bjornharrtell/jsts/blob/master/license.txt for the
- * full text of the license.
+ * Published under the GNU Lesser GPL 2.1 licence.
+ * See https://github.com/bjornharrtell/jsts/blob/master/licence.txt for the
+ * full text of the licence.
  */
 
 /**
@@ -63,11 +63,11 @@ jsts.geom.Envelope.prototype.maxy = null,
 
 
 /**
-     * Creates an <code>Envelope</code> for a region defined by maximum and
-     * minimum values.
-     *
-     * Will call appropriate init* method depending on arguments.
-     */
+ * Creates an <code>Envelope</code> for a region defined by maximum and
+ * minimum values.
+ *
+ * Will call appropriate init* method depending on arguments.
+ */
 jsts.geom.Envelope.prototype.init = function() {
   if (typeof arguments[0] === 'number' && arguments.length === 4) {
     this.initFromValues(arguments[0], arguments[1], arguments[2],
