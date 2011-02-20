@@ -5,5 +5,16 @@
  */
 
 describe('jsts.geom.GeometryFactory', function() {
- 
+
+  var geometryFactory;
+  
+  it('can be constructed', function() {
+    geometryFactory = new jsts.geom.GeometryFactory();
+  });
+  
+  it('can construct Point instances', function() {
+    var coordinate = new jsts.geom.Coordinate(1,2);
+    var point = geometryFactory.createPoint(coordinate);
+    expect(point).toBeDefined();
+  });
 });
