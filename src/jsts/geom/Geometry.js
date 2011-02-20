@@ -1233,31 +1233,6 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
 
 
 /**
- * Returns true if the two <code>Geometry</code>s are exactly equal. Two
- * Geometries are exactly equal iff:
- * <ul>
- * <li>they have the same class
- * <li>they have the same values of Coordinates in their internal Coordinate
- * lists, in exactly the same order.
- * </ul>
- * If this and the other <code>Geometry</code>s are composites and any
- * children are not <code>Geometry</code>s, returns false.
- * <p>
- * This provides a stricter test of equality than <code>equals</code>.
- *
- * @param {Geometry}
- *          other the <code>Geometry</code> with which to compare this
- *          <code>Geometry.</code>
- * @return {boolean} <code>true</code> if this and the other
- *         <code>Geometry</code> are of the same class and have equal internal
- *         data.
- */
-jsts.geom.Geometry.prototype.equalsExact = function(other) {
-  return this.equalsExact(other, 0);
-};
-
-
-/**
  * Creates and returns a full copy of this {@link Geometry} object (including
  * all coordinates contained by it). Subclasses are responsible for overriding
  * this method and copying their internal data. Overrides should call this
@@ -1266,7 +1241,7 @@ jsts.geom.Geometry.prototype.equalsExact = function(other) {
  * @return {Object} a clone of this instance.
  */
 jsts.geom.Geometry.prototype.clone = function() {
-  var clone = super.clone();
+  var clone = new jsts.geom.Geometry(this.factory);
   if (clone.envelope != null) {
     clone.envelope = new Envelope(clone.envelope);
   }
@@ -1382,26 +1357,6 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
     return 1;
   }
   return this.compareToSameClass(o, comp);
-};
-
-
-/**
- * Returns whether the two <code>Geometry</code>s are equal, from the point
- * of view of the <code>equalsExact</code> method. Called by
- * <code>equalsExact</code> . In general, two <code>Geometry</code> classes
- * are considered to be "equivalent" only if they are the same class. An
- * exception is <code>LineString</code> , which is considered to be equivalent
- * to its subclasses.
- *
- * @param {Geometry}
- *          other the <code>Geometry</code> with which to compare this
- *          <code>Geometry</code> for equality.
- * @return {boolean} <code>true</code> if the classes of the two
- *         <code>Geometry</code> s are considered to be equal by the
- *         <code>equalsExact</code> method.
- */
-jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
-  return this.getClass().getName().equals(other.getClass().getName());
 };
 
 
@@ -1523,4 +1478,15 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
     return -1;
   }
   return 0;
+};
+
+
+/**
+ * @param {jsts.geom.Coordinate} a
+ * @param {jsts.geom.Coordinate} b
+ * @param {double} tolerance
+ */
+jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
+  if (tolerance == 0) { return a.equals(b); }
+  return a.distance(b) <= tolerance;
 };

@@ -23,3 +23,26 @@
 jsts.geom.GeometryFactory = function() {
 
 };
+
+
+/**
+ * The ID of the Spatial Reference System used by this <code>GeometryFactory</code>
+ */
+jsts.geom.GeometryFactory.prototype.SRID = null;
+
+jsts.geom.GeometryFactory.prototype.getSRID = function() {
+  return this.SRID;
+};
+
+
+/**
+ * Creates a Point using the given Coordinate; a null Coordinate will create an
+ * empty Geometry.
+ *
+ * @param {Coordinate}
+ *          coordinate Coordinate to base this Point on.
+ * @return {Point} A new Point.
+ */
+jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
+  return new jsts.geom.Point(coordinate, this);
+};

@@ -10,3 +10,11 @@ Testcases are made using the [Jasmine testing framework](https://github.com/pivo
 A nice future goal would be to also port the [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html).
 
 The work is currently in its very initial stages, but pull requests are of course welcome. :)
+
+Design changes
+--------------
+
+This is WIP but currently these are the potential changes from the original JTS Topology Suite:
+
+* Skip abstracted CoordinateSequence interface/implementation.
+* TODO: Unify Coordinate/Point classes.
