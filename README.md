@@ -30,7 +30,10 @@ Long term goals
 
 * Use tools to show code and test coverage
 * Port needed parts of index.*
-* Port noding.*, operation.* and simplify.*
+* Port operation.*
+* Port noding.*
+* Port simplify.*
+* Port geom.prep.*
 * Implement fixed precision
 * Port validation suite as tests
 * Port validation suite as application
