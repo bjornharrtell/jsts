@@ -14,13 +14,18 @@ This project is currently in its very initial stages, but pull requests are of c
 Development environment
 -----------------------
 
-* Eclipse 3.6 using custom builders to check and enforce the Google JavaScript Style Guide
+* Eclipse 3.6 (Helios) using custom builders to check and enforce the Google JavaScript Style Guide
+* Custom builders requirements:
+ * Installed external tool Closure Linter from http://code.google.com/closure/utilities/ installed
+ * Installed Rhino 
+ * External JavaScript fulljslint.js and json2.js from https://github.com/douglascrockford in project root
+* Assumes OS Ubuntu/Linux
 
 Short term goals
 ----------------
 
 * Get more people involved (perhaps CLA agreements are needed and an explanation of how the copyright will be handled)
-* Also use JSLint for code quality
+* Use JSLint for code quality (done)
 * Port essential parts of geom.*
 * Port io.* (probably using OpenLayers formats)
 * Implement floating precision
