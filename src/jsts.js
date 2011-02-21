@@ -4,6 +4,8 @@
  * full text of the license.
  */
 
+/*jslint forin: true */
+
 
 /**
  * jsts namespace
@@ -26,7 +28,7 @@ jsts.inherit = function(C, P) {
   var F = function() {
   };
   F.prototype = P.prototype;
-  C.prototype = new F;
+  C.prototype = new F();
   var i, l, o;
   for (i = 2, l = arguments.length; i < l; i++) {
     o = arguments[i];

@@ -29,7 +29,7 @@ jsts.inherit(jsts.geom.Point, jsts.geom.Geometry);
 jsts.geom.Point.prototype.coordinate = null;
 
 jsts.geom.Point.prototype.getCoordinates = function() {
-  return this.isEmpty() ? new [] : new [this.coordinate];
+  return this.isEmpty() ? [] : [this.coordinate];
 };
 
 jsts.geom.Point.prototype.getNumPoints = function() {
@@ -55,8 +55,9 @@ jsts.geom.Point.prototype.isSimple = function() {
  * @return {boolean} true iff the Point is valid.
  */
 jsts.geom.Point.prototype.isValid = function() {
-  if (!IsValidOp.isValid(getCoordinate()))
+  if (!IsValidOp.isValid(getCoordinate())) {
     return false;
+  }
   return true;
 };
 
@@ -135,4 +136,3 @@ jsts.geom.Point.prototype.normalize = function() {
 jsts.geom.Point.prototype.compareToSameClass = function(point) {
   return this.coordinate.compareTo(point.getCoordinate());
 };
-
