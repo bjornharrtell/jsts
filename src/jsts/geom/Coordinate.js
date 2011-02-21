@@ -93,11 +93,11 @@ jsts.geom.Coordinate.prototype.distance = function(p) {
  *         the z-coordinates do not have to be equal.
  */
 jsts.geom.Coordinate.prototype.equals2D = function(other) {
-  if (this.x != other.x) {
+  if (this.x !== other.x) {
     return false;
   }
 
-  if (this.y != other.y) {
+  if (this.y !== other.y) {
     return false;
   }
 
@@ -143,13 +143,18 @@ jsts.geom.Coordinate.prototype.equals = function(other) {
  *         than, equal to, or greater than the specified <code>Coordinate</code>.
  */
 jsts.geom.Coordinate.prototype.compareTo = function(other) {
-  if (this.x < other.x)
+  if (this.x < other.x) {
     return -1;
-  if (this.x > other.x)
+  }
+  if (this.x > other.x) {
     return 1;
-  if (this.y < other.y)
+  }
+  if (this.y < other.y) {
     return -1;
-  if (this.y > other.y)
+  }
+  if (this.y > other.y) {
     return 1;
+  }
+
   return 0;
 };
