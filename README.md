@@ -20,6 +20,7 @@ Short term goals
 ----------------
 
 * Get more people involved (perhaps CLA agreements are needed and an explanation of how the copyright will be handled)
+* Also use JSLint for code quality
 * Port essential parts of geom.*
 * Port io.* (probably using OpenLayers formats)
 * Implement floating precision
