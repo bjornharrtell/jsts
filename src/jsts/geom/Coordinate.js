@@ -139,8 +139,7 @@ jsts.geom.Coordinate.prototype.equals = function(other) {
  * @param {Coordinate}
  *          other the <code>Coordinate</code> with which this
  *          <code>Coordinate</code> is being compared.
- * @return {boolean} -1, zero, or 1 as this <code>Coordinate</code> is less
- *         than, equal to, or greater than the specified <code>Coordinate</code>.
+ * @return {Boolean} -1, zero, or 1 as explained above.
  */
 jsts.geom.Coordinate.prototype.compareTo = function(other) {
   if (this.x < other.x) {
