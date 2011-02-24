@@ -348,8 +348,9 @@ jsts.geom.Geometry.prototype.distance = function(g) {
  */
 jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
   var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal());
-  if (envDist > distance)
+  if (envDist > distance) {
     return false;
+  }
   return DistanceOp.isWithinDistance(this, geom, distance);
 };
 
@@ -390,22 +391,23 @@ jsts.geom.Geometry.prototype.getCentroid = function() {
   if (isEmpty()) {
     return null;
   }
+  var cent;
   var centPt = null;
   var dim = this.getDimension();
-  if (dim == 0) {
-    var cent = new CentroidPoint();
+  if (dim === 0) {
+    cent = new CentroidPoint();
     cent.add(this);
     centPt = cent.getCentroid();
-  } else if (dim == 1) {
-    var cent = new CentroidLine();
+  } else if (dim === 1) {
+    cent = new CentroidLine();
     cent.add(this);
     centPt = cent.getCentroid();
   } else {
-    var cent = new CentroidArea();
+    cent = new CentroidArea();
     cent.add(this);
     centPt = cent.getCentroid();
   }
-  return createPointFromInternalCoord(centPt, this);
+  return this.createPointFromInternalCoord(centPt, this);
 
 };
 
@@ -419,19 +421,20 @@ jsts.geom.Geometry.prototype.getCentroid = function() {
  * @return {Point} a {@link Point} which is in the interior of this Geometry.
  */
 jsts.geom.Geometry.prototype.getInteriorPoint = function() {
+  var intPt;
   var interiorPt = null;
   var dim = getDimension();
-  if (dim == 0) {
-    var intPt = new InteriorPointPoint(this);
+  if (dim === 0) {
+    intPt = new InteriorPointPoint(this);
     interiorPt = intPt.getInteriorPoint();
-  } else if (dim == 1) {
-    var intPt = new InteriorPointLine(this);
+  } else if (dim === 1) {
+    intPt = new InteriorPointLine(this);
     interiorPt = intPt.getInteriorPoint();
   } else {
-    var intPt = new InteriorPointArea(this);
+    intPt = new InteriorPointArea(this);
     interiorPt = intPt.getInteriorPoint();
   }
-  return createPointFromInternalCoord(interiorPt, this);
+  return this.createPointFromInternalCoord(interiorPt, this);
 };
 
 
@@ -507,7 +510,7 @@ jsts.geom.Geometry.prototype.getEnvelope = function() {
  *         return <code>true.</code>
  */
 jsts.geom.Geometry.prototype.getEnvelopeInternal = function() {
-  if (this.envelope == null) {
+  if (this.envelope === null) {
     this.envelope = this.computeEnvelopeInternal();
   }
   return envelope;
@@ -564,8 +567,9 @@ jsts.geom.Geometry.prototype.disjoint = function(g) {
  */
 jsts.geom.Geometry.prototype.touches = function(g) {
   // short-circuit test
-  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
     return false;
+  }
   return this.relate(g).isTouches(this.getDimension(), g.getDimension());
 };
 
@@ -595,8 +599,9 @@ jsts.geom.Geometry.prototype.touches = function(g) {
 jsts.geom.Geometry.prototype.intersects = function(g) {
 
   // short-circuit envelope test
-  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
     return false;
+  }
 
   /**
    * TODO: (MD) Add optimizations: - for P-A case: If P is in env(A), test for
@@ -648,8 +653,9 @@ jsts.geom.Geometry.prototype.intersects = function(g) {
  */
 jsts.geom.Geometry.prototype.crosses = function(g) {
   // short-circuit test
-  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
     return false;
+  }
   return this.relate(g).isCrosses(this.getDimension(), g.getDimension());
 };
 
@@ -710,10 +716,11 @@ jsts.geom.Geometry.prototype.within = function(g) {
  */
 jsts.geom.Geometry.prototype.contains = function(g) {
   // short-circuit test
-  if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal())) {
     return false;
+  }
   // optimization for rectangle arguments
-  if (isRectangle()) {
+  if (this.isRectangle()) {
     return RectangleContains.contains(this, g);
   }
   // general case
@@ -746,8 +753,9 @@ jsts.geom.Geometry.prototype.contains = function(g) {
  */
 jsts.geom.Geometry.prototype.overlaps = function(g) {
   // short-circuit test
-  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
     return false;
+  }
   return this.relate(g).isOverlaps(this.getDimension(), g.getDimension());
 };
 
@@ -785,8 +793,9 @@ jsts.geom.Geometry.prototype.overlaps = function(g) {
  */
 jsts.geom.Geometry.prototype.covers = function(g) {
   // short-circuit test
-  if (!this.getEnvelopeInternal().covers(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().covers(g.getEnvelopeInternal())) {
     return false;
+  }
   // optimization for rectangle arguments
   if (this.isRectangle()) {
     // since we have already tested that the test envelope is covered
@@ -898,8 +907,9 @@ jsts.geom.Geometry.prototype.relate = function(g) {
  */
 jsts.geom.Geometry.prototype.equals = function(g) {
   // short-circuit test
-  if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
     return false;
+  }
   return this.relate(g).isEquals(this.getDimension(), g.getDimension());
 };
 
@@ -1072,15 +1082,17 @@ jsts.geom.Geometry.prototype.intersection = function(other) {
    * TODO: MD - add optimization for P-A case using Point-In-Polygon
    */
   // special case: if one input is empty ==> empty
-  if (this.isEmpty())
+  if (this.isEmpty()) {
     return this.getFactory().createGeometryCollection(null);
-  if (other.isEmpty())
+  }
+  if (other.isEmpty()) {
     return this.getFactory().createGeometryCollection(null);
+  }
 
   // compute for GCs
   if (this.isGeometryCollection(this)) {
     var g2 = other;
-    // TODO: probably not straight forward to port...
+    // TODO: probably not straightforward to port...
     /*return GeometryCollectionMapper.map(this,
      *  new GeometryCollectionMapper.MapOp() {
           public Geometry map(Geometry g) {
@@ -1110,10 +1122,12 @@ jsts.geom.Geometry.prototype.intersection = function(other) {
  */
 jsts.geom.Geometry.prototype.union = function(other) {
   // special case: if either input is empty ==> other input
-  if (this.isEmpty())
+  if (this.isEmpty()) {
     return other.clone();
-  if (other.isEmpty())
+  }
+  if (other.isEmpty()) {
     return this.clone();
+  }
 
   // TODO: optimize if envelopes of geometries do not intersect
 
@@ -1143,10 +1157,12 @@ jsts.geom.Geometry.prototype.difference = function(other) {
   // if (this.isEmpty() || other.isEmpty()) return (Geometry) clone();
 
   // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
-  if (this.isEmpty())
+  if (this.isEmpty()) {
     return this.getFactory().createGeometryCollection(null);
-  if (other.isEmpty())
+  }
+  if (other.isEmpty()) {
     return this.clone();
+  }
 
   this.heckNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
@@ -1172,10 +1188,12 @@ jsts.geom.Geometry.prototype.difference = function(other) {
  */
 jsts.geom.Geometry.prototype.symDifference = function(other) {
   // special case: if either input is empty ==> other input
-  if (this.isEmpty())
+  if (this.isEmpty()) {
     return other.clone();
-  if (other.isEmpty())
+  }
+  if (other.isEmpty()) {
     return this.clone();
+  }
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
@@ -1242,7 +1260,7 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
  */
 jsts.geom.Geometry.prototype.clone = function() {
   var clone = new jsts.geom.Geometry(this.factory);
-  if (clone.envelope != null) {
+  if (clone.envelope !== null) {
     clone.envelope = new Envelope(clone.envelope);
   }
   return clone;
@@ -1294,7 +1312,7 @@ jsts.geom.Geometry.prototype.normalize = function() {
  *         JTS Technical Specifications.
  */
 jsts.geom.Geometry.prototype.compareTo = function(other) {
-  if (this.getClassSortIndex() != other.getClassSortIndex()) {
+  if (this.getClassSortIndex() !== other.getClassSortIndex()) {
     return this.getClassSortIndex() - other.getClassSortIndex();
   }
   if (this.isEmpty() && other.isEmpty()) {
@@ -1344,7 +1362,7 @@ jsts.geom.Geometry.prototype.compareTo = function(other) {
  *         JTS Technical Specifications.
  */
 jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
-  if (this.getClassSortIndex() != other.getClassSortIndex()) {
+  if (this.getClassSortIndex() !== other.getClassSortIndex()) {
     return this.getClassSortIndex() - other.getClassSortIndex();
   }
   if (this.isEmpty() && other.isEmpty()) {
@@ -1367,16 +1385,13 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
  *
  * @param {Geometry}
  *          g the <code>Geometry</code> to check.
- * @throws IllegalArgumentException
+ * @throws Error
  *           if <code>g</code> is a <code>GeometryCollection</code> but not
  *           one of its subclasses
  */
 jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
-  // Don't use instanceof because we want to allow subclasses
-  if (g.getClass().getName().equals(
-      'com.vividsolutions.jts.geom.GeometryCollection')) {
-    throw new IllegalArgumentException(
-        'This method does not support GeometryCollection arguments');
+  if (g instanceof jsts.geom.GeometryCollection) {
+    throw new Error('This method does not support GeometryCollection arguments');
   }
 };
 
@@ -1467,7 +1482,7 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
     var aElement = i.next();
     var bElement = j.next();
     var comparison = aElement.compareTo(bElement);
-    if (comparison != 0) {
+    if (comparison !== 0) {
       return comparison;
     }
   }
@@ -1482,11 +1497,17 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
 
 
 /**
- * @param {jsts.geom.Coordinate} a
- * @param {jsts.geom.Coordinate} b
- * @param {double} tolerance
+ * @param {jsts.geom.Coordinate}
+ *          a first Coordinate to compare.
+ * @param {jsts.geom.Coordinate}
+ *          b second Coordinate to compare.
+ * @param {double}
+ *          tolerance tolerance when comparing.
+ * @return {Boolean} true if equal.
  */
 jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
-  if (tolerance == 0) { return a.equals(b); }
+  if (tolerance === 0) {
+    return a.equals(b);
+  }
   return a.distance(b) <= tolerance;
 };

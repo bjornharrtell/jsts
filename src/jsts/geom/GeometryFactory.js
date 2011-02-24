@@ -26,10 +26,16 @@ jsts.geom.GeometryFactory = function() {
 
 
 /**
- * The ID of the Spatial Reference System used by this <code>GeometryFactory</code>
+ * The ID of the Spatial Reference System used by this
+ * <code>GeometryFactory</code>
  */
 jsts.geom.GeometryFactory.prototype.SRID = null;
 
+
+/**
+ * @return {int} The ID of the Spatial Reference System used by this
+ *          <code>GeometryFactory.</code>
+ */
 jsts.geom.GeometryFactory.prototype.getSRID = function() {
   return this.SRID;
 };
