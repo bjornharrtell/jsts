@@ -1391,7 +1391,7 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
  */
 jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
   if (g instanceof jsts.geom.GeometryCollection) {
-    throw new Error('This method does not support GeometryCollection arguments');
+    throw new Error('This method does not support GeometryCollection');
   }
 };
 

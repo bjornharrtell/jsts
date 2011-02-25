@@ -17,4 +17,13 @@ describe('jsts.geom.GeometryFactory', function() {
     var point = geometryFactory.createPoint(coordinate);
     expect(point).toBeDefined();
   });
+  
+  it('can construct LineString instances', function() {
+    var c1 = new jsts.geom.Coordinate(1,2);
+    var c2 = new jsts.geom.Coordinate(3,4);
+    var lineString = geometryFactory.createLineString([c1,c2]);
+    expect(lineString).toBeDefined();
+  });
+  
+  
 });

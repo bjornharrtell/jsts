@@ -3,7 +3,3 @@
  * See https://github.com/bjornharrtell/jsts/blob/master/license.txt for the
  * full text of the license.
  */
-
-describe('jsts.geom.Geometry', function() {
- 
-});
