@@ -16,7 +16,7 @@ Development environment
 
 * Eclipse 3.6 (Helios) using custom builders to check and enforce the Google JavaScript Style Guide
 * Custom builders requirements:
-  * Installed external tool Closure Linter from http://code.google.com/closure/utilities/ installed
+  * Installed Closure Linter from http://code.google.com/closure/utilities
   * Installed Rhino 
   * External JavaScript fulljslint.js and json2.js from https://github.com/douglascrockford in project root
 * Assumes OS Ubuntu/Linux
