@@ -16,8 +16,8 @@
  * @throws IllegalArgumentException
  *           if too few points are provided
  */
-jsts.geom.Geometry.prototype.LineString = function(points, factory) {
-  super(factory);
+jsts.geom.LineString = function(points, factory) {
+  jsts.geom.Geometry.prototype.constructor.call(this, factory);
   this.init(points);
 };
 
@@ -27,13 +27,13 @@ jsts.geom.Geometry.prototype.LineString = function(points, factory) {
  *          points the points of the linestring, or <code>null</code> to
  *          create the empty geometry. Consecutive points may not be equal.
  */
-jsts.geom.Geometry.prototype.init = function(points) {
+jsts.geom.LineString.prototype.init = function(points) {
   if (points === null) {
-    this.points = [];
+    points = [];
   }
   if (points.length === 1) {
     throw new Error('Invalid number of points in LineString (found ' +
-        points.size() + ' - must be 0 or >= 2)');
+        points.length + ' - must be 0 or >= 2)');
   }
   this.points = points;
 };
@@ -42,16 +42,17 @@ jsts.geom.Geometry.prototype.init = function(points) {
 /**
  * @return {jsts.geom.Coordinate[]} this LineString's internal coordinate array.
  */
-jsts.geom.Geometry.prototype.getCoordinates = function() {
+jsts.geom.LineString.prototype.getCoordinates = function() {
   return this.points;
 };
 
 
 /**
  * @return {jsts.geom.Coordinate} The n'th coordinate of this LineString.
- * @param {int} n index.
+ * @param {int}
+ *          n index.
  */
-jsts.geom.Geometry.prototype.getCoordinateN = function(n) {
+jsts.geom.LineString.prototype.getCoordinateN = function(n) {
   return points[n];
 };
 
@@ -60,8 +61,8 @@ jsts.geom.Geometry.prototype.getCoordinateN = function(n) {
  * @return {jsts.geom.Coordinate} The first coordinate of this LineString or
  *         null if empty.
  */
-jsts.geom.Geometry.prototype.getCoordinate = function() {
-  if (isEmpty()) {
+jsts.geom.LineString.prototype.getCoordinate = function() {
+  if (this.isEmpty()) {
     return null;
   }
   return this.getCoordinate(0);
@@ -71,7 +72,7 @@ jsts.geom.Geometry.prototype.getCoordinate = function() {
 /**
  * @return {int} LineStrings are always 1-dimensional.
  */
-jsts.geom.Geometry.prototype.getDimension = function() {
+jsts.geom.LineString.prototype.getDimension = function() {
   return 1;
 };
 
@@ -79,7 +80,7 @@ jsts.geom.Geometry.prototype.getDimension = function() {
 /**
  * @return {int} dimension of the boundary of this LineString.
  */
-jsts.geom.Geometry.prototype.getBoundaryDimension = function() {
+jsts.geom.LineString.prototype.getBoundaryDimension = function() {
   if (this.isClosed()) {
     return Dimension.FALSE;
   }
@@ -90,7 +91,7 @@ jsts.geom.Geometry.prototype.getBoundaryDimension = function() {
 /**
  * @return {Boolean} true if empty.
  */
-jsts.geom.Geometry.prototype.isEmpty = function() {
+jsts.geom.LineString.prototype.isEmpty = function() {
   return this.points.length === 0;
 };
 
@@ -98,7 +99,7 @@ jsts.geom.Geometry.prototype.isEmpty = function() {
 /**
  * @return {int} number of points in this LineString.
  */
-jsts.geom.Geometry.prototype.getNumPoints = function() {
+jsts.geom.LineString.prototype.getNumPoints = function() {
   return this.points.length;
 };
 
@@ -108,7 +109,7 @@ jsts.geom.Geometry.prototype.getNumPoints = function() {
  *          n index of coordinate.
  * @return {Point} new point instance.
  */
-jsts.geom.Geometry.prototype.getPointN = function(n) {
+jsts.geom.LineString.prototype.getPointN = function(n) {
   return this.getFactory().createPoint(points[n]);
 };
 
@@ -116,7 +117,7 @@ jsts.geom.Geometry.prototype.getPointN = function(n) {
 /**
  * @return {Point} new point instance.
  */
-jsts.geom.Geometry.prototype.getStartPoint = function() {
+jsts.geom.LineString.prototype.getStartPoint = function() {
   if (this.isEmpty()) {
     return null;
   }
@@ -127,29 +128,29 @@ jsts.geom.Geometry.prototype.getStartPoint = function() {
 /**
  * @return {Point} new point instance.
  */
-jsts.geom.Geometry.prototype.getEndPoint = function() {
+jsts.geom.LineString.prototype.getEndPoint = function() {
   if (this.isEmpty()) {
     return null;
   }
-  return getPointN(this.getNumPoints() - 1);
+  return this.getPointN(this.getNumPoints() - 1);
 };
 
 
 /**
  * @return {Boolean} true if LineString is Closed.
  */
-jsts.geom.Geometry.prototype.isClosed = function() {
-  if (isEmpty()) {
+jsts.geom.LineString.prototype.isClosed = function() {
+  if (this.isEmpty()) {
     return false;
   }
-  return getCoordinateN(0).equals2D(getCoordinateN(getNumPoints() - 1));
+  return this.getCoordinateN(0).equals2D(getCoordinateN(getNumPoints() - 1));
 };
 
 
 /**
  * @return {Boolean} true if LineString is a Ring.
  */
-jsts.geom.Geometry.prototype.isRing = function() {
+jsts.geom.LineString.prototype.isRing = function() {
   return this.isClosed() && this.isSimple();
 };
 
@@ -157,6 +158,6 @@ jsts.geom.Geometry.prototype.isRing = function() {
 /**
  * @return {String} String representation of LineString type.
  */
-jsts.geom.Geometry.prototype.getGeometryType = function() {
+jsts.geom.LineString.prototype.getGeometryType = function() {
   return 'LineString';
 };

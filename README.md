@@ -31,6 +31,7 @@ Short term goals
 * Implement floating precision
 * Release builder
 * API docs builder
+* Integrate/make geom.* compatible with OpenLayers geometries
 * Support windows development environment
 * Simple example usage
 * Do not change APIs if avoidable

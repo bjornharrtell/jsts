@@ -34,7 +34,7 @@ jsts.geom.GeometryFactory.prototype.SRID = null;
 
 /**
  * @return {int} The ID of the Spatial Reference System used by this
- *          <code>GeometryFactory.</code>
+ *         <code>GeometryFactory.</code>
  */
 jsts.geom.GeometryFactory.prototype.getSRID = function() {
   return this.SRID;
@@ -51,4 +51,18 @@ jsts.geom.GeometryFactory.prototype.getSRID = function() {
  */
 jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
   return new jsts.geom.Point(coordinate, this);
+};
+
+
+/**
+ * Creates a LineString using the given Coordinates; a null or empty array will
+ * create an empty LineString. Consecutive points must not be equal.
+ *
+ * @param {Coordinate[]}
+ *          coordinates an array without null elements, or an empty array, or
+ *          null.
+ * @return {LineString} A new LineString.
+ */
+jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
+  return new jsts.geom.LineString(coordinates, this);
 };
