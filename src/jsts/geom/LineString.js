@@ -5,6 +5,7 @@
  */
 
 
+
 /**
  * Constructs a <code>LineString</code> with the given points.
  *
@@ -13,8 +14,9 @@
  *          create the empty geometry. Consecutive points may not be equal.
  * @param {GeometryFactory}
  *          factory GeometryFactory used to create the geometry.
- * @throws IllegalArgumentException
+ * @throws jsts.IllegalArgumentError
  *           if too few points are provided
+ * @constructor
  */
 jsts.geom.LineString = function(points, factory) {
   jsts.geom.Geometry.prototype.constructor.call(this, factory);
@@ -34,8 +36,9 @@ jsts.geom.LineString.prototype.init = function(points) {
     points = [];
   }
   if (points.length === 1) {
-    throw new Error('Invalid number of points in LineString (found ' +
-        points.length + ' - must be 0 or >= 2)');
+    throw new jsts.IllegalArgumentError(
+        'Invalid number of points in LineString (found ' + points.length +
+            ' - must be 0 or >= 2)');
   }
   this.points = points;
 };

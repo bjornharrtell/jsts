@@ -19,6 +19,7 @@
  */
 
 
+
 /**
  * Constructs a <code>LinearRing</code> with the vertices specifed by the
  * given {@link CoordinateSequence}.
@@ -27,15 +28,63 @@
  *          points a sequence points forming a closed and simple linestring, or
  *          <code>null</code> to create the empty geometry.
  * @param {GeometryFactory}
- *          factory
+ *          factory GeometryFactory used to create this LinearRing.
  *
- * @throws IllegalArgumentException
+ * @throws jsts.IllegalArgumentError
  *           if the ring is not closed, or has too few points
- *
+ * @constructor
  */
-jsts.geom.Geometry.prototype.LinearRing = function(points, factory) {
-  jsts.geom.Geometry.prototype.constructor.call(this, points, factory);
+jsts.geom.LinearRing = function(points, factory) {
+  jsts.geom.LineString.prototype.constructor.call(this, points, factory);
   this.validateConstruction();
 };
 
 jsts.inherit(jsts.geom.LinearRing, jsts.geom.LineString);
+
+
+/**
+ *
+ */
+jsts.geom.LinearRing.prototype.validateConstruction = function() {
+  if (!this.isEmpty() && !jsts.geom.LineString.prototype.isClosed.call(this)) {
+    throw new jsts.IllegalArgumentError(
+        'Points of LinearRing do not form a closed linestring');
+  }
+  if (this.points.length >= 1 && this.points.length <= 3) {
+    throw new jsts.IllegalArgumentError(
+        'Invalid number of points in LinearRing (found ' + this.points.length +
+            ' - must be 0 or >= 4)');
+  }
+};
+
+
+/**
+ * Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
+ * not have a boundary.
+ *
+ * @return {int} Dimension.FALSE.
+ */
+jsts.geom.LinearRing.prototype.getBoundaryDimension = function() {
+  return Dimension.FALSE;
+};
+
+
+/**
+ * Returns <code>true</code>, since by definition LinearRings are always
+ * simple.
+ *
+ * @return {Boolean} <code>true.</code>
+ *
+ * @see Geometry#isSimple
+ */
+jsts.geom.LinearRing.prototype.isSimple = function() {
+  return true;
+};
+
+
+/**
+ * @return {String} String representation of LinearRing type.
+ */
+jsts.geom.LinearRing.prototype.getGeometryType = function() {
+  return 'LinearRing';
+};

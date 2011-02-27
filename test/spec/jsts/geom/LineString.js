@@ -10,10 +10,8 @@ describe('jsts.geom.LineString', function() {
   var c1 = new jsts.geom.Coordinate(1,2);
   var c2 = new jsts.geom.Coordinate(3,4);
 
-
   var lineString = geometryFactory.createLineString([c1,c2]);
 
-  
   it('can be non empty', function() {
 
     var isEmpty = lineString.isEmpty();
