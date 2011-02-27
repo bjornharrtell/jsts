@@ -21,6 +21,8 @@ jsts.geom.LineString = function(points, factory) {
   this.init(points);
 };
 
+jsts.inherit(jsts.geom.LineString, jsts.geom.Geometry);
+
 
 /**
  * @param {jsts.geom.Coordinate[]}

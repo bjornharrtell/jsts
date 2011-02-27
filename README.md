@@ -21,34 +21,6 @@ Development environment
   * External JavaScript fulljslint.js and json2.js from https://github.com/douglascrockford in project root
 * Assumes OS Ubuntu/Linux
 
-Short term goals
-----------------
-
-* Get more people involved (perhaps CLA agreements are needed and an explanation of how the copyright will be handled)
-* Use JSLint for code quality (done)
-* Port essential parts of geom.*
-* Port io.* (probably using OpenLayers formats)
-* Implement floating precision
-* Release builder
-* API docs builder
-* Integrate/make geom.* compatible with OpenLayers geometries
-* Support windows development environment
-* Simple example usage
-* Do not change APIs if avoidable
-
-Long term goals
----------------
-
-* Use tools to show code and test coverage
-* Port needed parts of index.*
-* Port operation.*
-* Port noding.*
-* Port simplify.*
-* Port geom.prep.*
-* Implement fixed precision
-* Port validation suite as tests
-* Port validation suite as application
-
 Design changes
 --------------
 
