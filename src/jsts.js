@@ -15,17 +15,6 @@ jsts = {
 };
 
 
-
-/**
- * @constructor
- */
-jsts.IllegalArgumentError = function() {
-  this.name = 'IllegalArgumentError';
-  this.message = (message || '');
-};
-jsts.inherit(IllegalArgumentException, Error);
-
-
 /**
  * In addition to the mandatory C and P parameters, an arbitrary number of
  * objects can be passed, which will extend C.
@@ -76,3 +65,15 @@ jsts.extend = function(destination, source) {
   }
   return destination;
 };
+
+
+
+/**
+ * @param {String} message User defined error message.
+ * @constructor
+ */
+jsts.IllegalArgumentError = function(message) {
+  this.name = 'IllegalArgumentError';
+  this.message = (message || '');
+};
+jsts.inherit(jsts.IllegalArgumentError, Error);

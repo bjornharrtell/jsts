@@ -58,7 +58,7 @@ jsts.geom.LineString.prototype.getCoordinates = function() {
  *          n index.
  */
 jsts.geom.LineString.prototype.getCoordinateN = function(n) {
-  return points[n];
+  return this.points[n];
 };
 
 
@@ -148,7 +148,8 @@ jsts.geom.LineString.prototype.isClosed = function() {
   if (this.isEmpty()) {
     return false;
   }
-  return this.getCoordinateN(0).equals2D(getCoordinateN(getNumPoints() - 1));
+  return this.getCoordinateN(0).equals2D(
+      this.getCoordinateN(this.getNumPoints() - 1));
 };
 
 
@@ -165,4 +166,26 @@ jsts.geom.LineString.prototype.isRing = function() {
  */
 jsts.geom.LineString.prototype.getGeometryType = function() {
   return 'LineString';
+};
+
+
+/**
+ * Creates and returns a full copy of this {@link LineString} object. (including
+ * all coordinates contained by it).
+ *
+ * @return {jsts.geom.LineString} a clone of this instance.
+ */
+jsts.geom.LineString.prototype.clone = function() {
+  var key, coordinate;
+
+  var clone = jsts.geom.Geometry.prototype.clone.call(this);
+
+  var points = [];
+  for (key in this.points) {
+    coordinate = this.points[key];
+    points.push(coordinate.clone());
+  }
+
+  clone.points = points;
+  return clone;
 };

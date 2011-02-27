@@ -66,3 +66,17 @@ jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
 jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
   return new jsts.geom.LineString(coordinates, this);
 };
+
+
+/**
+ * Creates a LinearRing using the given Coordinates; a null or empty array will
+ * create an empty LinearRing. The points must form a closed and simple
+ * linestring. Consecutive points must not be equal.
+ *
+ * @param {Coordinate[]} coordinates
+ *          an array without null elements, or an empty array, or null.
+ * @return {LinearRing} A new LinearRing.
+ */
+jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
+  return new jsts.geom.LinearRing(coordinates, this);
+};
