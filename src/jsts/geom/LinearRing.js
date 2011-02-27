@@ -35,7 +35,8 @@
  * @constructor
  */
 jsts.geom.LinearRing = function(points, factory) {
-  jsts.geom.LineString.prototype.constructor.call(this, points, factory);
+  jsts.geom.LinearRing.prototype.constructor.call(this, factory);
+  jsts.geom.LineString.prototype.init.call(this, points);
   this.validateConstruction();
 };
 

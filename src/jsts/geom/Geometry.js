@@ -1261,7 +1261,7 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
 jsts.geom.Geometry.prototype.clone = function() {
   var clone = new jsts.geom.Geometry(this.factory);
   if (clone.envelope !== null) {
-    clone.envelope = new Envelope(clone.envelope);
+    clone.envelope = new jsts.geom.Envelope(clone.envelope);
   }
   return clone;
 };
