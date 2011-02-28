@@ -11,7 +11,7 @@ A nice future goal would be to also port the [JTS Validation Suite](http://www.v
 
 This project is currently in its very initial stages, but pull requests are of course welcome. :) 
 
-The code is licensed as JTS Topology Suite using LGPL 2.1. Contribution and copyright agreements will be handled as it becomes relevant (hoping for sooner than later/never).
+The code is licensed using the MIT license to encourage use and easy contribution.
 
 Development environment
 -----------------------
