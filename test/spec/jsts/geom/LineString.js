@@ -1,5 +1,5 @@
 /* Copyright (c) 2011 by Björn Harrtell.
- * Published under the GNU Lesser GPL 2.1 license.
+ * Published under the MIT license.
  * See https://github.com/bjornharrtell/jsts/blob/master/license.txt for the
  * full text of the license.
  */
