@@ -127,6 +127,45 @@ jsts.geom.Geometry.prototype.getGeometryType = function() {
 
 
 /**
+ * Returns true if the array contains any non-empty <code>Geometry</code>s.
+ *
+ * @param {Geometry[]}
+ *          geometries an array of <code>Geometry</code>s; no elements may be
+ *          <code>null.</code>
+ * @return {Boolean} <code>true</code> if any of the <code>Geometry</code>s
+ *         <code>isEmpty</code> methods return <code>false.</code>
+ */
+jsts.geom.Geometry.hasNonEmptyElements = function(geometries) {
+  var i;
+  for (i = 0; i < geometries.length; i++) {
+    if (!geometries[i].isEmpty()) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Returns true if the array contains any <code>null</code> elements.
+ *
+ * @param {Object[]}
+ *          array an array to validate.
+ * @return {Boolean} <code>true</code> if any of <code>array</code>s
+ *         elements are <code>null.</code>
+ */
+jsts.geom.Geometry.hasNullElements = function(array) {
+  var i;
+  for (i = 0; i < array.length; i++) {
+    if (array[i] == null) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
  * Returns the ID of the Spatial Reference System used by the
  * <code>Geometry</code>.
  *
