@@ -182,8 +182,10 @@ jsts.geom.LineString.prototype.clone = function() {
 
   var points = [];
   for (key in this.points) {
-    coordinate = this.points[key];
-    points.push(coordinate.clone());
+    if (this.points.hasOwnProperty(key)) {
+      coordinate = this.points[key];
+      points.push(coordinate.clone());
+    }
   }
 
   clone.points = points;
