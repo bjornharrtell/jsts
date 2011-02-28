@@ -1,0 +1,5 @@
+JSTS contributors:
+
+Björn Harrtell
+
+JSTS uses the MIT license, see license.txt.
