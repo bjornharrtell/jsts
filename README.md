@@ -9,7 +9,9 @@ Testcases are made using the [Jasmine testing framework](https://github.com/pivo
 
 A nice future goal would be to also port the [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html).
 
-This project is currently in its very initial stages, but pull requests are of course welcome. :)
+This project is currently in its very initial stages, but pull requests are of course welcome. :) 
+
+The code is licensed as JTS Topology Suite using LGPL 2.1. Contribution and copyright agreements will be handled as it becomes relevant (hoping for sooner than later/never).
 
 Development environment
 -----------------------
