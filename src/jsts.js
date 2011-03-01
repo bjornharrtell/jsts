@@ -81,7 +81,6 @@ jsts.inherit(jsts.IllegalArgumentError, Error);
 
 
 /**
- * @param {String} message User defined error message.
  * @constructor
  */
 jsts.AbstractMethodInvocationError = function() {

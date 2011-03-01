@@ -157,7 +157,7 @@ jsts.geom.Geometry.hasNonEmptyElements = function(geometries) {
 jsts.geom.Geometry.hasNullElements = function(array) {
   var i;
   for (i = 0; i < array.length; i++) {
-    if (array[i] == null) {
+    if (array[i] === null) {
       return true;
     }
   }
@@ -1280,9 +1280,6 @@ jsts.geom.Geometry.prototype.union = function() {
  * @param {double}
  *          tolerance distance at or below which two <code>Coordinate</code>s
  *          are considered equal.
- * @return {boolean} <code>true</code> if this and the other
- *         <code>Geometry</code> are of the same class and have equal internal
- *         data.
  */
 jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
   throw new jsts.AbstractMethodInvocationError();
@@ -1575,3 +1572,5 @@ jsts.geom.Geometry.equal = function(a, b, tolerance) {
   }
   return a.distance(b) <= tolerance;
 };
+
+
