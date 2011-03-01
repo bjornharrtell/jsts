@@ -792,3 +792,11 @@ jsts.geom.Envelope.intersectsEnvelope = function(p1, p2, q1, q2) {
   }
   return true;
 };
+
+
+/**
+ * @return {jsts.geom.Envelope} A new instance copied from this.
+ */
+jsts.geom.Envelope.prototype.clone = function() {
+  return new jsts.geom.Envelope(this.minx, this.miny, this.maxx, this.maxy);
+};

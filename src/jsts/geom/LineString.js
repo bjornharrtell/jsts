@@ -170,18 +170,22 @@ jsts.geom.LineString.prototype.getGeometryType = function() {
 
 
 /**
- * @param {Geometry} other
- * @param {double} tolerance
- *  @return {Boolean} true if equal.
+ * @param {Geometry}
+ *          other Geometry to compare this LineString to.
+ * @param {double}
+ *          tolerance Tolerance.
+ * @return {Boolean} true if equal.
  */
 jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
+  var i;
+
   if (!this.isEquivalentClass(other)) {
     return false;
   }
-  if (this.points.length != other.points.length) {
+  if (this.points.length !== other.points.length) {
     return false;
   }
-  for (var i = 0; i < this.points.length; i++) {
+  for (i = 0; i < this.points.length; i++) {
     if (!jsts.geom.Geometry.equal(this.points[i], other.points[i], tolerance)) {
       return false;
     }
