@@ -170,6 +170,27 @@ jsts.geom.LineString.prototype.getGeometryType = function() {
 
 
 /**
+ * @param {Geometry} other
+ * @param {double} tolerance
+ *  @return {Boolean} true if equal.
+ */
+jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
+  if (!this.isEquivalentClass(other)) {
+    return false;
+  }
+  if (this.points.length != other.points.length) {
+    return false;
+  }
+  for (var i = 0; i < this.points.length; i++) {
+    if (!jsts.geom.Geometry.equal(this.points[i], other.points[i], tolerance)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+/**
  * Creates and returns a full copy of this {@link LineString} object. (including
  * all coordinates contained by it).
  *
@@ -177,8 +198,6 @@ jsts.geom.LineString.prototype.getGeometryType = function() {
  */
 jsts.geom.LineString.prototype.clone = function() {
   var key, coordinate;
-
-  var clone = jsts.geom.Geometry.prototype.clone.call(this);
 
   var points = [];
   for (key in this.points) {
@@ -188,6 +207,7 @@ jsts.geom.LineString.prototype.clone = function() {
     }
   }
 
-  clone.points = points;
+  var clone = this.factory.createLineString(points);
+
   return clone;
 };

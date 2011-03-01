@@ -1285,7 +1285,7 @@ jsts.geom.Geometry.prototype.union = function() {
  *         data.
  */
 jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
-  return false;
+  throw new jsts.AbstractMethodInvocationError();
 };
 
 
@@ -1294,6 +1294,10 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
  * all coordinates contained by it). Subclasses are responsible for overriding
  * this method and copying their internal data. Overrides should call this
  * method first.
+ *
+ * TODO: I guess the purpose for subclasses is to copy the envelope but won't
+ * work for js since it relies on casting. Have to revisit this code and decide
+ * what to do.
  *
  * @return {Object} a clone of this instance.
  */
@@ -1414,6 +1418,27 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
     return 1;
   }
   return this.compareToSameClass(o, comp);
+};
+
+
+/**
+ * Returns whether the two <code>Geometry</code>s are equal, from the point
+ * of view of the <code>equalsExact</code> method. Called by
+ * <code>equalsExact</code> . In general, two <code>Geometry</code> classes
+ * are considered to be "equivalent" only if they are the same class. An
+ * exception is <code>LineString</code> , which is considered to be equivalent
+ * to its subclasses.
+ *
+ * @param {Geometry}
+ *          other the <code>Geometry</code> with which to compare this
+ *          <code>Geometry</code> for equality.
+ * @return {Boolean} <code>true</code> if the classes of the two
+ *         <code>Geometry</code> s are considered to be equal by the
+ *         <code>equalsExact</code> method.
+ */
+jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
+  // TODO: handle exception for LineString as described above.
+  return other instanceof this.constructor;
 };
 
 
@@ -1544,7 +1569,7 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
  *          tolerance tolerance when comparing.
  * @return {Boolean} true if equal.
  */
-jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
+jsts.geom.Geometry.equal = function(a, b, tolerance) {
   if (tolerance === 0) {
     return a.equals(b);
   }

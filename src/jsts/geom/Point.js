@@ -169,7 +169,7 @@ jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
   if (this.isEmpty() && other.isEmpty()) {
     return true;
   }
-  return this.equal(other.coordinate, this.coordinate, tolerance);
+  return jsts.geom.Geometry.equal(other.coordinate, this.coordinate, tolerance);
 };
 
 
