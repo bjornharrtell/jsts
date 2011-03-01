@@ -80,3 +80,22 @@ jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
 jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
   return new jsts.geom.LinearRing(coordinates, this);
 };
+
+
+/**
+ * Constructs a <code>Polygon</code> with the given exterior boundary and
+ * interior boundaries.
+ *
+ * @param {LinearRing} shell
+ *            the outer boundary of the new <code>Polygon</code>, or
+ *            <code>null</code> or an empty <code>LinearRing</code> if
+ *            the empty geometry is to be created.
+ * @param {LinearRing[]} holes
+ *            the inner boundaries of the new <code>Polygon</code>, or
+ *            <code>null</code> or empty <code>LinearRing</code> s if
+ *            the empty geometry is to be created.
+ *        @return {Polygon} A new Polygon.
+ */
+jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
+  return new jsts.geom.Polygon(shell, holes, this);
+};

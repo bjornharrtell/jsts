@@ -21,6 +21,9 @@ describe('jsts.geom.LinearRing', function() {
 
     linearRing = geometryFactory.createLinearRing([c1,c2,c3,c4]);
     linearRingEmpty = geometryFactory.createLinearRing(null);
+    
+    expect(linearRing).toBeDefined();
+    expect(linearRingEmpty).toBeDefined();
   });
   
   it('can be non empty', function() {
