@@ -19,6 +19,9 @@ describe('jsts.geom.LineString', function() {
     
     lineString = geometryFactory.createLineString([c1,c2]);
     lineStringEmpty = geometryFactory.createLineString(null);
+    
+    expect(lineString).toBeDefined();
+    expect(lineStringEmpty).toBeDefined();
   });
 
   it('can be non empty', function() {

@@ -37,16 +37,16 @@
 jsts.geom.Polygon = function(shell, holes, factory) {
   jsts.geom.Geometry.prototype.constructor.call(this, factory);
 
-  if (this.shell === null) {
-    this.shell = factory.createLinearRing(null);
+  if (shell === null) {
+    shell = factory.createLinearRing(null);
   }
-  if (this.holes === null) {
-    this.holes = [];
+  if (holes === null || holes === undefined) {
+    holes = [];
   }
   if (jsts.geom.Geometry.hasNullElements(holes)) {
     throw new jsts.IllegalArgumentError('holes must not contain null elements');
   }
-  if (this.shell.isEmpty() && jsts.geom.Geometry.hasNonEmptyElements(holes)) {
+  if (shell.isEmpty() && jsts.geom.Geometry.hasNonEmptyElements(holes)) {
     throw new jsts.IllegalArgumentError('shell is empty but holes are not');
   }
   this.shell = shell;
