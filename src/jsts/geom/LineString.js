@@ -18,8 +18,7 @@
  *           if too few points are provided
  * @constructor
  */
-jsts.geom.LineString = function(points, factory) {
-  jsts.geom.Geometry.prototype.constructor.call(this, factory);
+jsts.geom.LineString = function(points) {
   this.init(points);
 };
 
@@ -41,6 +40,8 @@ jsts.geom.LineString.prototype.init = function(points) {
             ' - must be 0 or >= 2)');
   }
   this.points = points;
+  // OL compat
+  this.components = points;
 };
 
 
@@ -102,46 +103,6 @@ jsts.geom.LineString.prototype.isEmpty = function() {
 
 
 /**
- * @return {int} number of points in this LineString.
- */
-jsts.geom.LineString.prototype.getNumPoints = function() {
-  return this.points.length;
-};
-
-
-/**
- * @param {int}
- *          n index of coordinate.
- * @return {Point} new point instance.
- */
-jsts.geom.LineString.prototype.getPointN = function(n) {
-  return this.getFactory().createPoint(points[n]);
-};
-
-
-/**
- * @return {Point} new point instance.
- */
-jsts.geom.LineString.prototype.getStartPoint = function() {
-  if (this.isEmpty()) {
-    return null;
-  }
-  return this.getPointN(0);
-};
-
-
-/**
- * @return {Point} new point instance.
- */
-jsts.geom.LineString.prototype.getEndPoint = function() {
-  if (this.isEmpty()) {
-    return null;
-  }
-  return this.getPointN(this.getNumPoints() - 1);
-};
-
-
-/**
  * @return {Boolean} true if LineString is Closed.
  */
 jsts.geom.LineString.prototype.isClosed = function() {
@@ -149,7 +110,7 @@ jsts.geom.LineString.prototype.isClosed = function() {
     return false;
   }
   return this.getCoordinateN(0).equals2D(
-      this.getCoordinateN(this.getNumPoints() - 1));
+      this.getCoordinateN(this.points.length - 1));
 };
 
 
@@ -211,7 +172,15 @@ jsts.geom.LineString.prototype.clone = function() {
     }
   }
 
-  var clone = this.factory.createLineString(points);
+  var clone = new jsts.geom.LineString(points);
 
   return clone;
 };
+
+//OL compat
+jsts.geom.LineString.prototype.calculateBounds = function() {
+  // TODO: calc real bounds
+  this.bounds = new OpenLayers.Bounds(this.points[0].x, this.points[0].y,
+      this.points[0].x, this.points[0].y);
+};
+jsts.geom.LineString.prototype.CLASS_NAME = 'OpenLayers.Geometry.LineString';

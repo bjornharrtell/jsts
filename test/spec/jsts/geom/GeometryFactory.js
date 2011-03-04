@@ -25,5 +25,4 @@ describe('jsts.geom.GeometryFactory', function() {
     expect(lineString).toBeDefined();
   });
   
-  
 });

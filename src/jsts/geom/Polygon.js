@@ -34,11 +34,9 @@
  *          factory the factory used to create this Polygon.
  * @constructor
  */
-jsts.geom.Polygon = function(shell, holes, factory) {
-  jsts.geom.Geometry.prototype.constructor.call(this, factory);
-
+jsts.geom.Polygon = function(shell, holes) {
   if (shell === null) {
-    shell = factory.createLinearRing(null);
+    shell = new jsts.geom.LinearRing(null);
   }
   if (holes === null || holes === undefined) {
     holes = [];
@@ -73,3 +71,11 @@ jsts.geom.Polygon.prototype.shell = null;
  * @type {LinearRing[]}
  */
 jsts.geom.Polygon.prototype.holes = null;
+
+//OL compat
+jsts.geom.Polygon.prototype.calculateBounds = function() {
+  //TODO: calc real bounds
+  this.bounds = new OpenLayers.Bounds(this.points[0].x, this.points[0].y,
+      this.points[0].x, this.points[0].y);
+};
+jsts.geom.Polygon.prototype.CLASS_NAME = 'OpenLayers.Geometry.Polygon';
