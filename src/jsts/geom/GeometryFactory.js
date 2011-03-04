@@ -26,22 +26,6 @@ jsts.geom.GeometryFactory = function() {
 
 
 /**
- * The ID of the Spatial Reference System used by this
- * <code>GeometryFactory</code>
- */
-jsts.geom.GeometryFactory.prototype.SRID = null;
-
-
-/**
- * @return {int} The ID of the Spatial Reference System used by this
- *         <code>GeometryFactory.</code>
- */
-jsts.geom.GeometryFactory.prototype.getSRID = function() {
-  return this.SRID;
-};
-
-
-/**
  * Creates a Point using the given Coordinate; a null Coordinate will create an
  * empty Geometry.
  *
@@ -50,7 +34,10 @@ jsts.geom.GeometryFactory.prototype.getSRID = function() {
  * @return {Point} A new Point.
  */
 jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
-  return new jsts.geom.Point(coordinate, this);
+  if (coordinate === null) {
+    return new jsts.geom.Point();
+  }
+  return new jsts.geom.Point(coordinate.x, coordinate.y);
 };
 
 
@@ -64,7 +51,7 @@ jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
  * @return {LineString} A new LineString.
  */
 jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
-  return new jsts.geom.LineString(coordinates, this);
+  return new jsts.geom.LineString(coordinates);
 };
 
 
@@ -78,7 +65,7 @@ jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
  * @return {LinearRing} A new LinearRing.
  */
 jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
-  return new jsts.geom.LinearRing(coordinates, this);
+  return new jsts.geom.LinearRing(coordinates);
 };
 
 
@@ -97,5 +84,5 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  *        @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
-  return new jsts.geom.Polygon(shell, holes, this);
+  return new jsts.geom.Polygon(shell, holes);
 };

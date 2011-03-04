@@ -34,8 +34,7 @@
  *           if the ring is not closed, or has too few points
  * @constructor
  */
-jsts.geom.LinearRing = function(points, factory) {
-  jsts.geom.LinearRing.prototype.constructor.call(this, factory);
+jsts.geom.LinearRing = function(points) {
   jsts.geom.LineString.prototype.init.call(this, points);
   this.validateConstruction();
 };
@@ -89,3 +88,11 @@ jsts.geom.LinearRing.prototype.isSimple = function() {
 jsts.geom.LinearRing.prototype.getGeometryType = function() {
   return 'LinearRing';
 };
+
+//OL compat
+jsts.geom.LineString.prototype.calculateBounds = function() {
+  //TODO: calc real bounds
+  this.bounds = new OpenLayers.Bounds(this.points[0].x, this.points[0].y,
+      this.points[0].x, this.points[0].y);
+};
+jsts.geom.LineString.prototype.CLASS_NAME = 'OpenLayers.Geometry.LinearRing';

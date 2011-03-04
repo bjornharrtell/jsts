@@ -6,10 +6,19 @@
 
 describe('jsts.geom.Point', function() {
  
-  var geometryFactory = new jsts.geom.GeometryFactory();
-  var coordinate = new jsts.geom.Coordinate(1,2);
-  var point = geometryFactory.createPoint(coordinate);
-  var pointEmpty = geometryFactory.createPoint(null);
+  var geometryFactory;
+  var coordinate;
+  var point;
+  var pointEmpty;
+  
+  it('can be constructed', function() {
+    geometryFactory = new jsts.geom.GeometryFactory();
+    coordinate = new jsts.geom.Coordinate(1,2);
+    point = geometryFactory.createPoint(coordinate);
+    pointEmpty = geometryFactory.createPoint(null);
+    expect(point).toBeDefined();
+    expect(pointEmpty).toBeDefined();
+  });
   
   it('can be non empty', function() {
     var isEmpty = point.isEmpty();

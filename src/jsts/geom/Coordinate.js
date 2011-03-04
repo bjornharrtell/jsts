@@ -30,6 +30,8 @@ jsts.geom.Coordinate = function(x, y) {
   this.y = y;
 };
 
+jsts.inherit(jsts.geom.Coordinate, jsts.geom.Geometry);
+
 
 /**
  * The x-coordinate.
@@ -157,3 +159,175 @@ jsts.geom.Coordinate.prototype.compareTo = function(other) {
 
   return 0;
 };
+
+
+/**
+ * @return {Coordinate[]} this Point as coordinate array.
+ */
+jsts.geom.Coordinate.prototype.getCoordinates = function() {
+  return this.isEmpty() ? [] : [this.coordinate];
+};
+
+
+/**
+ * @return {int} number of coordinates (0 or 1).
+ */
+jsts.geom.Coordinate.prototype.getNumPoints = function() {
+  return this.isEmpty() ? 0 : 1;
+};
+
+
+/**
+ * @return {Boolean} true ifPoint is empty.
+ */
+jsts.geom.Coordinate.prototype.isEmpty = function() {
+  return this.x === null;
+};
+
+
+/**
+ * @return {Boolean} Point is always simple.
+ */
+jsts.geom.Coordinate.prototype.isSimple = function() {
+  return true;
+};
+
+
+/**
+ * A Point is valid iff:
+ * <ul>
+ * <li>the coordinate which defines it is a valid coordinate (i.e does not have
+ * an NaN X or Y ordinate)
+ * </ul>
+ *
+ * @return {boolean} true iff the Point is valid.
+ */
+jsts.geom.Coordinate.prototype.isValid = function() {
+  if (!IsValidOp.isValid(getCoordinate())) {
+    return false;
+  }
+  return true;
+};
+
+
+/**
+ * @return {int} Always 0.
+ */
+jsts.geom.Coordinate.prototype.getDimension = function() {
+  return 0;
+};
+
+
+/**
+ * @return {int} Always Dimension.FALSE.
+ */
+jsts.geom.Coordinate.prototype.getBoundaryDimension = function() {
+  return Dimension.FALSE;
+};
+
+
+/**
+ * @return {double} x-axis value of this Coordinate.
+ */
+jsts.geom.Coordinate.prototype.getX = function() {
+  return this.x;
+};
+
+
+/**
+ * @return {double} y-axis value of this Coordinate.
+ */
+jsts.geom.Coordinate.prototype.getY = function() {
+  return this.y;
+};
+
+
+/**
+ * @return {Coordinate} this Point coordinate.
+ */
+jsts.geom.Coordinate.prototype.getCoordinate = function() {
+  return this;
+};
+
+
+/**
+ * @return {String} String representation of Point type.
+ */
+jsts.geom.Coordinate.prototype.getGeometryType = function() {
+  return 'Coordinate';
+};
+
+
+/**
+ * Gets the boundary of this geometry. Zero-dimensional geometries have no
+ * boundary by definition, so an empty GeometryCollection is returned.
+ *
+ * @return {GeometryCollection} an empty GeometryCollection.
+ * @see Geometry#getBoundary
+ */
+jsts.geom.Coordinate.prototype.getBoundary = function() {
+  return new jsts.geom.GeometryCollection(null);
+};
+
+
+/**
+ * @return {Envelope} Envelope of this point.
+ */
+jsts.geom.Coordinate.prototype.computeEnvelopeInternal = function() {
+  if (this.isEmpty()) {
+    return new jsts.geom.Envelope();
+  }
+  return new jsts.geom.Envelope(this);
+};
+
+
+/**
+ * @param {Point}
+ *          other point to compare.
+ * @param {double}
+ *          tolerance tolerance used in comparison.
+ * @return {Boolean} true if gemetries match.
+ */
+jsts.geom.Coordinate.prototype.equalsExact = function(other, tolerance) {
+  if (!(this instanceof other.constructor)) {
+    return false;
+  }
+  if (this.isEmpty() && other.isEmpty()) {
+    return true;
+  }
+  return jsts.geom.Geometry.equal(other, this, tolerance);
+};
+
+
+/**
+ * @return {Point} Reversed point is a cloned point.
+ */
+jsts.geom.Coordinate.prototype.reverse = function() {
+  return this.clone();
+};
+
+
+/**
+ *
+ */
+jsts.geom.Coordinate.prototype.normalize = function() {
+  // a Point is always in normalized form
+};
+
+
+/**
+ * @param {Point}
+ *          point to compare.
+ * @return {Boolean} true if gemetries match.
+ */
+jsts.geom.Coordinate.prototype.compareToSameClass = function(point) {
+  return this.compareTo(point);
+};
+
+
+// OL compat
+jsts.geom.Coordinate.prototype.calculateBounds = function() {
+  this.bounds = new OpenLayers.Bounds(this.x, this.y,
+                                      this.x, this.y);
+};
+jsts.geom.Coordinate.prototype.CLASS_NAME = 'OpenLayers.Geometry.Point';

@@ -87,31 +87,16 @@
  * Creates a new <tt>Geometry</tt> via the specified GeometryFactory.
  *
  * @constructor
- * @param {jsts.geom.GeometryFactory}
- *          factory The jsts.geom.GeometryFactory to use to create the Geometry.
  */
-jsts.geom.Geometry = function(factory) {
-  this.factory = factory;
-  this.SRID = factory.getSRID();
+jsts.geom.Geometry = function() {
+  throw new jsts.AbstractMethodInvocationError();
 };
-
-
-/**
- * The {@link GeometryFactory} used to create this Geometry.
- */
-jsts.geom.Geometry.prototype.factory = null;
 
 
 /**
  * The bounding box of this <code>Geometry</code>.
  */
 jsts.geom.Geometry.prototype.envelope = null;
-
-
-/**
- * The ID of the Spatial Reference System used by this <code>Geometry</code>
- */
-jsts.geom.Geometry.prototype.SRID = null;
 
 
 /**
@@ -166,46 +151,6 @@ jsts.geom.Geometry.hasNullElements = function(array) {
 
 
 /**
- * Returns the ID of the Spatial Reference System used by the
- * <code>Geometry</code>.
- *
- * JTS supports Spatial Reference System information in the simple way defined
- * in the SFS. A Spatial Reference System ID (SRID) is present in each
- * <code>Geometry</code> object. <code>Geometry</code> provides basic
- * accessor operations for this field, but no others. The SRID is represented as
- * an integer.
- *
- * @return {int} the ID of the coordinate space in which the
- *         <code>Geometry</code> is defined.
- *
- */
-jsts.geom.Geometry.prototype.getSRID = function() {
-  return this.SRID;
-};
-
-
-/**
- * Gets the factory which contains the context in which this geometry was
- * created.
- *
- * @return {jsts.geom.GeometryFactory} the factory for this geometry.
- */
-jsts.geom.Geometry.prototype.getFactory = function() {
-  return this.factory;
-};
-
-
-/**
- * Gets the user data object for this geometry, if any.
- *
- * @return {Object} the user data object, or <code>null</code> if none set.
- */
-jsts.geom.Geometry.prototype.getUserData = function() {
-  return this.userData;
-};
-
-
-/**
  * Returns the number of {@link Geometry}s in a {@link GeometryCollection} (or
  * 1, if the geometry is not a collection).
  *
@@ -226,23 +171,6 @@ jsts.geom.Geometry.prototype.getNumGeometries = function() {
  */
 jsts.geom.Geometry.prototype.getGeometryN = function(n) {
   return this;
-};
-
-
-/**
- * A simple scheme for applications to add their own custom data to a Geometry.
- * An example use might be to add an object representing a Coordinate Reference
- * System.
- *
- * Note that user data objects are not present in geometries created by
- * construction methods.
- *
- * @param {Object}
- *          userData an object, the semantics for which are defined by the
- *          application using this Geometry.
- */
-jsts.geom.Geometry.prototype.setUserData = function(userData) {
-  this.userData = userData;
 };
 
 
@@ -1574,3 +1502,15 @@ jsts.geom.Geometry.equal = function(a, b, tolerance) {
 };
 
 
+// OL compat
+jsts.geom.Geometry.prototype.bounds = null;
+jsts.geom.Geometry.prototype.getBounds = function() {
+  if (this.bounds == null) {
+    this.calculateBounds();
+  }
+  return this.bounds;
+};
+
+jsts.geom.Geometry.prototype.calculateBounds = function() {
+  throw new jsts.AbstractMethodInvocationError();
+};
