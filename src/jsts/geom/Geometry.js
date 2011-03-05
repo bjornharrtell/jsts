@@ -89,8 +89,8 @@
  * @constructor
  */
 jsts.geom.Geometry = function() {
-  throw new jsts.AbstractMethodInvocationError();
 };
+jsts.geom.Geometry = OpenLayers.Class();
 
 
 /**
@@ -1499,18 +1499,4 @@ jsts.geom.Geometry.equal = function(a, b, tolerance) {
     return a.equals(b);
   }
   return a.distance(b) <= tolerance;
-};
-
-
-// OL compat
-jsts.geom.Geometry.prototype.bounds = null;
-jsts.geom.Geometry.prototype.getBounds = function() {
-  if (this.bounds == null) {
-    this.calculateBounds();
-  }
-  return this.bounds;
-};
-
-jsts.geom.Geometry.prototype.calculateBounds = function() {
-  throw new jsts.AbstractMethodInvocationError();
 };

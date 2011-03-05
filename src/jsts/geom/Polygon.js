@@ -30,52 +30,11 @@
  *          holes the inner boundaries of the new <code>Polygon</code>, or
  *          <code>null</code> or empty <code>LinearRing</code>s if the
  *          empty geometry is to be created.
- * @param {GeometryFactory}
- *          factory the factory used to create this Polygon.
  * @constructor
+ * @extends {OpenLayers.Geometry.Polygon}
+ * @extends {jsts.geom.Geometry}
  */
 jsts.geom.Polygon = function(shell, holes) {
-  if (shell === null) {
-    shell = new jsts.geom.LinearRing(null);
-  }
-  if (holes === null || holes === undefined) {
-    holes = [];
-  }
-  if (jsts.geom.Geometry.hasNullElements(holes)) {
-    throw new jsts.IllegalArgumentError('holes must not contain null elements');
-  }
-  if (shell.isEmpty() && jsts.geom.Geometry.hasNonEmptyElements(holes)) {
-    throw new jsts.IllegalArgumentError('shell is empty but holes are not');
-  }
-  this.shell = shell;
-  this.holes = holes;
 };
-
-
-jsts.inherit(jsts.geom.Polygon, jsts.geom.Geometry);
-
-
-/**
- * The exterior boundary, or <code>null</code> if this <code>Polygon</code>
- * is empty.
- *
- * @type {LinearRing}
- */
-jsts.geom.Polygon.prototype.shell = null;
-
-
-/**
- * The interior boundaries, if any. This instance var is never null. If there
- * are no holes, the array is of zero length.
- *
- * @type {LinearRing[]}
- */
-jsts.geom.Polygon.prototype.holes = null;
-
-//OL compat
-jsts.geom.Polygon.prototype.calculateBounds = function() {
-  //TODO: calc real bounds
-  this.bounds = new OpenLayers.Bounds(this.points[0].x, this.points[0].y,
-      this.points[0].x, this.points[0].y);
-};
-jsts.geom.Polygon.prototype.CLASS_NAME = 'OpenLayers.Geometry.Polygon';
+jsts.geom.Polygon = OpenLayers.Class(OpenLayers.Geometry.Polygon,
+    jsts.geom.Geometry);

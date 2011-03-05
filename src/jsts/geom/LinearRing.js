@@ -27,35 +27,14 @@
  * @param {Coordinate[]}
  *          points a sequence points forming a closed and simple linestring, or
  *          <code>null</code> to create the empty geometry.
- * @param {GeometryFactory}
- *          factory GeometryFactory used to create this LinearRing.
- *
- * @throws jsts.IllegalArgumentError
- *           if the ring is not closed, or has too few points
  * @constructor
+ * @extends {OpenLayers.Geometry.LinearRing}
+ * @extends {jsts.geom.Geometry}
  */
 jsts.geom.LinearRing = function(points) {
-  jsts.geom.LineString.prototype.init.call(this, points);
-  this.validateConstruction();
 };
-
-jsts.inherit(jsts.geom.LinearRing, jsts.geom.LineString);
-
-
-/**
- *
- */
-jsts.geom.LinearRing.prototype.validateConstruction = function() {
-  if (!this.isEmpty() && !jsts.geom.LineString.prototype.isClosed.call(this)) {
-    throw new jsts.IllegalArgumentError(
-        'Points of LinearRing do not form a closed linestring');
-  }
-  if (this.points.length >= 1 && this.points.length <= 3) {
-    throw new jsts.IllegalArgumentError(
-        'Invalid number of points in LinearRing (found ' + this.points.length +
-            ' - must be 0 or >= 4)');
-  }
-};
+jsts.geom.LinearRing = OpenLayers.Class(OpenLayers.Geometry.LinearRing,
+    jsts.geom.LineString);
 
 
 /**
@@ -88,11 +67,3 @@ jsts.geom.LinearRing.prototype.isSimple = function() {
 jsts.geom.LinearRing.prototype.getGeometryType = function() {
   return 'LinearRing';
 };
-
-//OL compat
-jsts.geom.LineString.prototype.calculateBounds = function() {
-  //TODO: calc real bounds
-  this.bounds = new OpenLayers.Bounds(this.points[0].x, this.points[0].y,
-      this.points[0].x, this.points[0].y);
-};
-jsts.geom.LineString.prototype.CLASS_NAME = 'OpenLayers.Geometry.LinearRing';

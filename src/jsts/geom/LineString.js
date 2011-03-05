@@ -12,44 +12,21 @@
  * @param {jsts.geom.Coordinate[]}
  *          points the points of the linestring, or <code>null</code> to
  *          create the empty geometry. Consecutive points may not be equal.
- * @param {GeometryFactory}
- *          factory GeometryFactory used to create the geometry.
- * @throws jsts.IllegalArgumentError
- *           if too few points are provided
  * @constructor
+ * @extends {OpenLayers.Geometry.LineString}
+ * @extends {jsts.geom.Geometry}
  */
 jsts.geom.LineString = function(points) {
-  this.init(points);
 };
-
-jsts.inherit(jsts.geom.LineString, jsts.geom.Geometry);
-
-
-/**
- * @param {jsts.geom.Coordinate[]}
- *          points the points of the linestring, or <code>null</code> to
- *          create the empty geometry. Consecutive points may not be equal.
- */
-jsts.geom.LineString.prototype.init = function(points) {
-  if (points === null) {
-    points = [];
-  }
-  if (points.length === 1) {
-    throw new jsts.IllegalArgumentError(
-        'Invalid number of points in LineString (found ' + points.length +
-            ' - must be 0 or >= 2)');
-  }
-  this.points = points;
-  // OL compat
-  this.components = points;
-};
+jsts.geom.LineString = OpenLayers.Class(OpenLayers.Geometry.LineString,
+    jsts.geom.Geometry);
 
 
 /**
  * @return {jsts.geom.Coordinate[]} this LineString's internal coordinate array.
  */
 jsts.geom.LineString.prototype.getCoordinates = function() {
-  return this.points;
+  return this.components;
 };
 
 
@@ -59,7 +36,7 @@ jsts.geom.LineString.prototype.getCoordinates = function() {
  *          n index.
  */
 jsts.geom.LineString.prototype.getCoordinateN = function(n) {
-  return this.points[n];
+  return this.components[n];
 };
 
 
@@ -98,7 +75,7 @@ jsts.geom.LineString.prototype.getBoundaryDimension = function() {
  * @return {Boolean} true if empty.
  */
 jsts.geom.LineString.prototype.isEmpty = function() {
-  return this.points.length === 0;
+  return this.components.length === 0;
 };
 
 
@@ -110,7 +87,7 @@ jsts.geom.LineString.prototype.isClosed = function() {
     return false;
   }
   return this.getCoordinateN(0).equals2D(
-      this.getCoordinateN(this.points.length - 1));
+      this.getCoordinateN(this.components.length - 1));
 };
 
 
@@ -143,11 +120,12 @@ jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
   if (!this.isEquivalentClass(other)) {
     return false;
   }
-  if (this.points.length !== other.points.length) {
+  if (this.components.length !== other.components.length) {
     return false;
   }
-  for (i = 0; i < this.points.length; i++) {
-    if (!jsts.geom.Geometry.equal(this.points[i], other.points[i], tolerance)) {
+  for (i = 0; i < this.components.length; i++) {
+    if (!jsts.geom.Geometry.equal(this.components[i], other.components[i],
+        tolerance)) {
       return false;
     }
   }
@@ -165,9 +143,9 @@ jsts.geom.LineString.prototype.clone = function() {
   var key, coordinate;
 
   var points = [];
-  for (key in this.points) {
-    if (this.points.hasOwnProperty(key)) {
-      coordinate = this.points[key];
+  for (key in this.components) {
+    if (this.components.hasOwnProperty(key)) {
+      coordinate = this.components[key];
       points.push(coordinate.clone());
     }
   }
@@ -176,11 +154,3 @@ jsts.geom.LineString.prototype.clone = function() {
 
   return clone;
 };
-
-//OL compat
-jsts.geom.LineString.prototype.calculateBounds = function() {
-  // TODO: calc real bounds
-  this.bounds = new OpenLayers.Bounds(this.points[0].x, this.points[0].y,
-      this.points[0].x, this.points[0].y);
-};
-jsts.geom.LineString.prototype.CLASS_NAME = 'OpenLayers.Geometry.LineString';

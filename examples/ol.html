@@ -89,7 +89,6 @@
             var pointFeature3 = new OpenLayers.Feature.Vector(point3,null,style_mark);
  
             
-            
             // create a line feature from a list of points
             var pointList = [];
             var newPoint = point;
@@ -99,8 +98,9 @@
                 pointList.push(newPoint);
             }
             var lineFeature = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.LineString(pointList),null,style_green);
+                new jsts.geom.LineString(pointList),null,style_green);
  
+            
             // create a polygon feature from a linear ring of points
             var pointList = [];
             for(var p=0; p<6; ++p) {
@@ -114,9 +114,8 @@
  
             var linearRing = new jsts.geom.LinearRing(pointList);
             var polygonFeature = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.Polygon([linearRing]));
- 
- 
+                new jsts.geom.Polygon([linearRing]));
+            
             map.addLayer(vectorLayer);
             map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
             vectorLayer.addFeatures([pointFeature, pointFeature3, pointFeature2, lineFeature, polygonFeature]);

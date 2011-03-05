@@ -19,6 +19,8 @@
  * Constructs a <code>Coordinate</code> at (x,y).
  *
  * @constructor
+ * @extends {OpenLayers.Geometry.Point}
+ * @extends {jsts.geom.Geometry}
  *
  * @param {double}
  *          x the x-value.
@@ -26,23 +28,9 @@
  *          y the y-value.
  */
 jsts.geom.Coordinate = function(x, y) {
-  this.x = x;
-  this.y = y;
 };
-
-jsts.inherit(jsts.geom.Coordinate, jsts.geom.Geometry);
-
-
-/**
- * The x-coordinate.
- */
-jsts.geom.Coordinate.prototype.x = null;
-
-
-/**
- * The y-coordinate.
- */
-jsts.geom.Coordinate.prototype.y = null;
+jsts.geom.Coordinate = OpenLayers.Class(OpenLayers.Geometry.Point,
+    jsts.geom.Geometry);
 
 
 /**
@@ -181,7 +169,7 @@ jsts.geom.Coordinate.prototype.getNumPoints = function() {
  * @return {Boolean} true ifPoint is empty.
  */
 jsts.geom.Coordinate.prototype.isEmpty = function() {
-  return this.x === null;
+  return isNaN(this.x);
 };
 
 
@@ -313,21 +301,3 @@ jsts.geom.Coordinate.prototype.reverse = function() {
 jsts.geom.Coordinate.prototype.normalize = function() {
   // a Point is always in normalized form
 };
-
-
-/**
- * @param {Point}
- *          point to compare.
- * @return {Boolean} true if gemetries match.
- */
-jsts.geom.Coordinate.prototype.compareToSameClass = function(point) {
-  return this.compareTo(point);
-};
-
-
-// OL compat
-jsts.geom.Coordinate.prototype.calculateBounds = function() {
-  this.bounds = new OpenLayers.Bounds(this.x, this.y,
-                                      this.x, this.y);
-};
-jsts.geom.Coordinate.prototype.CLASS_NAME = 'OpenLayers.Geometry.Point';

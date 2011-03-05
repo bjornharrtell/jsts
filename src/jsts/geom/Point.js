@@ -9,26 +9,17 @@
 /**
  * Basic implementation of <code>Point</code>.
  *
- * @param {Coordinate}
- *          coordinate contains the single coordinate on which to base this
- *          <code>Point</code> , or <code>null</code> to create the empty
- *          geometry.
- * @param {GeometryFactory}
- *          factory that will create the geometry.
+ * @param {double}
+ *          x the x-value.
+ * @param {double}
+ *          y the y-value.
  *
  * @constructor
- * @extends {jsts.geom.Geometry}
+ * @extends {jsts.geom.Coordinate}
  */
 jsts.geom.Point = function(x, y) {
-  if (x === undefined) {
-    return;
-  }
-
-  this.x = x;
-  this.y = y;
 };
-
-jsts.inherit(jsts.geom.Point, jsts.geom.Coordinate);
+jsts.geom.Point = OpenLayers.Class(jsts.geom.Coordinate);
 
 
 /**
@@ -37,4 +28,3 @@ jsts.inherit(jsts.geom.Point, jsts.geom.Coordinate);
 jsts.geom.Point.prototype.getGeometryType = function() {
   return 'Point';
 };
-
