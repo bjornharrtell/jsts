@@ -3,8 +3,8 @@ JSTS Topology Suite
 
 Aims to port [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html) to
 JavaScript with OpenLayers compatiblity. The core geometry classes are
-inherited from OpenLayers.Geometry and extended with API as close to the
-corresponding JTS Topology Suite geometry classes.
+inherited from OpenLayers.Geometry and extended with API as close as possible
+to the corresponding JTS Topology Suite geometry classes.
 
 Code is conformant to the [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
