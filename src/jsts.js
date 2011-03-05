@@ -14,6 +14,25 @@ jsts = {
   version: '1.11.0'
 };
 
+/*jsts.Class = function() {
+  var len = arguments.length;
+  var P = arguments[0];
+  var F = arguments[len-1];
+
+  var C = typeof F.initialize == "function" ?
+      F.initialize :
+      function(){ P.apply(this, arguments); };
+
+  if (len > 1) {
+      var newArgs = [C, P].concat(
+              Array.prototype.slice.call(arguments).slice(1, len-1), F);
+      OpenLayers.inherit.apply(null, newArgs);
+  } else {
+      C.prototype = F;
+  }
+  return C;
+};*/
+
 
 /**
  * In addition to the mandatory C and P parameters, an arbitrary number of
