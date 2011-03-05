@@ -84,5 +84,11 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  *        @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
-  return new jsts.geom.Polygon(shell, holes);
+  var rings = [shell];
+
+  if (holes !== undefined) {
+    rings = rings.concat(holes);
+  }
+
+  return new jsts.geom.Polygon(rings);
 };
