@@ -113,8 +113,8 @@
             pointList.push(pointList[0]);
  
             var linearRing = new jsts.geom.LinearRing(pointList);
-            var polygonFeature = new OpenLayers.Feature.Vector(
-                new jsts.geom.Polygon([linearRing]));
+            var polygon = new jsts.geom.Polygon([linearRing]);
+            var polygonFeature = new OpenLayers.Feature.Vector(polygon);
             
             map.addLayer(vectorLayer);
             map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);

@@ -33,8 +33,7 @@
  */
 jsts.geom.LinearRing = function(points) {
 };
-jsts.geom.LinearRing = OpenLayers.Class(OpenLayers.Geometry.LinearRing,
-    jsts.geom.LineString);
+jsts.geom.LinearRing = OpenLayers.Class(jsts.geom.LineString, OpenLayers.Geometry.LinearRing);
 
 
 /**
