@@ -21,20 +21,13 @@
 
 
 /**
- * Constructs a <code>LinearRing</code> with the vertices specifed by the
- * given {@link CoordinateSequence}.
- *
- * @param {Coordinate[]}
- *          points a sequence points forming a closed and simple linestring, or
- *          <code>null</code> to create the empty geometry.
  * @constructor
  * @extends {OpenLayers.Geometry.LinearRing}
  * @extends {jsts.geom.Geometry}
  */
-jsts.geom.LinearRing = function(points) {
+jsts.geom.LinearRing = function() {
 };
-jsts.geom.LinearRing = OpenLayers.Class(jsts.geom.LineString,
-    OpenLayers.Geometry.LinearRing);
+jsts.geom.LinearRing = OpenLayers.Class(jsts.geom.LineString);
 
 
 /**

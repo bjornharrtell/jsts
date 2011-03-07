@@ -19,22 +19,8 @@
 
 
 /**
- * Constructs a <code>Polygon</code> with the given exterior boundary and
- * interior boundaries.
- *
- * @param {LinearRing}
- *          shell the outer boundary of the new <code>Polygon</code>, or
- *          <code>null</code> or an empty <code>LinearRing</code> if the
- *          empty geometry is to be created.
- * @param {LinearRing[]}
- *          holes the inner boundaries of the new <code>Polygon</code>, or
- *          <code>null</code> or empty <code>LinearRing</code>s if the
- *          empty geometry is to be created.
  * @constructor
- * @extends {OpenLayers.Geometry.Polygon}
- * @extends {jsts.geom.Geometry}
  */
-jsts.geom.Polygon = function(shell, holes) {
+jsts.geom.Polygon = function() {
+
 };
-jsts.geom.Polygon = OpenLayers.Class(OpenLayers.Geometry.Polygon,
-    jsts.geom.Geometry);

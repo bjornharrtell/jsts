@@ -16,21 +16,13 @@
 
 
 /**
- * Constructs a <code>Coordinate</code> at (x,y).
- *
  * @constructor
  * @extends {OpenLayers.Geometry.Point}
  * @extends {jsts.geom.Geometry}
- *
- * @param {double}
- *          x the x-value.
- * @param {double}
- *          y the y-value.
  */
-jsts.geom.Coordinate = function(x, y) {
+jsts.geom.Coordinate = function() {
 };
-jsts.geom.Coordinate = OpenLayers.Class(OpenLayers.Geometry.Point,
-    jsts.geom.Geometry);
+jsts.geom.Coordinate = OpenLayers.Class(jsts.geom.Geometry);
 
 
 /**
@@ -106,8 +98,8 @@ jsts.geom.Coordinate.prototype.equals2D = function(other) {
  *         <code>Coordinate</code> with the same values for the x and y
  *         ordinates.
  */
-jsts.geom.Coordinate.prototype.equals = function(other) {
-  if (!(other instanceof jsts.geom.Coordinate)) {
+jsts.geom.Coordinate.prototype.jsts_equals = function(other) {
+  if (!(other.CLASS_NAME === this.CLASS_NAME)) {
     return false;
   }
   return this.equals2D(other);
@@ -277,7 +269,7 @@ jsts.geom.Coordinate.prototype.computeEnvelopeInternal = function() {
  * @return {Boolean} true if gemetries match.
  */
 jsts.geom.Coordinate.prototype.equalsExact = function(other, tolerance) {
-  if (!(this instanceof other.constructor)) {
+  if (!(this.CLASS_NAME === other.CLASS_NAME)) {
     return false;
   }
   if (this.isEmpty() && other.isEmpty()) {
@@ -301,3 +293,4 @@ jsts.geom.Coordinate.prototype.reverse = function() {
 jsts.geom.Coordinate.prototype.normalize = function() {
   // a Point is always in normalized form
 };
+
