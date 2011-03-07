@@ -19,6 +19,7 @@
   <script type="text/javascript" src="../src/jsts/geom/LinearRing.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Point.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Polygon.js"></script>
+  <script type="text/javascript" src="../src/jsts/geom/mixin.js"></script>
   
   <script type="text/javascript" src="spec/jsts/geom/Geometry.js"></script>
   <script type="text/javascript" src="spec/jsts/geom/Coordinate.js"></script>
@@ -33,6 +34,16 @@
 <body>
 
 <script type="text/javascript">
+var geometryFactory = new jsts.geom.GeometryFactory();
+ var c1 = new jsts.geom.Coordinate(1,2);
+ var c2 = new jsts.geom.Coordinate(3,4);
+ var c3 = new jsts.geom.Coordinate(5,6);
+ var c4 = new jsts.geom.Coordinate(1,2);
+
+ linearRing = geometryFactory.createLinearRing([c1,c2,c3,c4]);
+ linearRingEmpty = geometryFactory.createLinearRing(null);
+
+
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
   jasmine.getEnv().execute();
 </script>

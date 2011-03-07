@@ -17,14 +17,17 @@ jsts = {
 
 
 /**
- * @param {String} message User defined error message.
+ * @param {String}
+ *          message User defined error message.
  * @constructor
  */
 jsts.IllegalArgumentError = function(message) {
+};
+jsts.IllegalArgumentError = OpenLayers.Class(Error);
+jsts.IllegalArgumentError.initialize = function(message) {
   this.name = 'IllegalArgumentError';
   this.message = (message || '');
 };
-jsts.inherit(jsts.IllegalArgumentError, Error);
 
 
 
@@ -32,7 +35,9 @@ jsts.inherit(jsts.IllegalArgumentError, Error);
  * @constructor
  */
 jsts.AbstractMethodInvocationError = function() {
+};
+jsts.AbstractMethodInvocationError = OpenLayers.Class(Error);
+jsts.AbstractMethodInvocationError.initialize = function() {
   this.name = 'AbstractMethodInvocationError';
   this.message = 'Abstract method called, should be implemented in subclass.';
 };
-jsts.inherit(jsts.AbstractMethodInvocationError, Error);

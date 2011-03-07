@@ -7,19 +7,11 @@
 
 
 /**
- * Basic implementation of <code>Point</code>.
- *
- * @param {double}
- *          x the x-value.
- * @param {double}
- *          y the y-value.
- *
  * @constructor
  * @extends {jsts.geom.Coordinate}
  */
-jsts.geom.Point = function(x, y) {
+jsts.geom.Point = function() {
 };
-jsts.geom.Point = OpenLayers.Class(jsts.geom.Coordinate);
 
 
 /**
@@ -28,3 +20,4 @@ jsts.geom.Point = OpenLayers.Class(jsts.geom.Coordinate);
 jsts.geom.Point.prototype.getGeometryType = function() {
   return 'Point';
 };
+

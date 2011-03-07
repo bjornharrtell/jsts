@@ -872,7 +872,7 @@ jsts.geom.Geometry.prototype.relate = function(g) {
  * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
  *         are equal.
  */
-jsts.geom.Geometry.prototype.equals = function(g) {
+jsts.geom.Geometry.prototype.jsts_equals = function(g) {
   // short-circuit test
   if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
     return false;

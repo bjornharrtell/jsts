@@ -7,19 +7,14 @@
 
 
 /**
- * Constructs a <code>LineString</code> with the given points.
- *
- * @param {jsts.geom.Coordinate[]}
- *          points the points of the linestring, or <code>null</code> to
- *          create the empty geometry. Consecutive points may not be equal.
  * @constructor
  * @extends {OpenLayers.Geometry.LineString}
  * @extends {jsts.geom.Geometry}
  */
-jsts.geom.LineString = function(points) {
+jsts.geom.LineString = function() {
+
 };
-jsts.geom.LineString = OpenLayers.Class(OpenLayers.Geometry.LineString,
-    jsts.geom.Geometry);
+jsts.geom.LineString = OpenLayers.Class(jsts.geom.Geometry);
 
 
 /**
@@ -154,3 +149,4 @@ jsts.geom.LineString.prototype.clone = function() {
 
   return clone;
 };
+
