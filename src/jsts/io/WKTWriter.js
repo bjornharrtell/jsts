@@ -15,10 +15,7 @@
  * ordinates to the required precision will be output.
  * <p>
  * The SFS WKT spec does not define a special tag for {@link LinearRing}s.
- * Under the spec, rings are output as <code>LINESTRING</code>s. In order to
- * allow precisely specifying constructed geometries, JTS supports a
- * non-standard <code>LINEARRING</code> tag which is used to output
- * LinearRings.
+ * Under the spec, rings are output as <code>LINESTRING</code>s.
  *
  * @see WKTReader
  */
@@ -30,10 +27,10 @@ jsts.io.WKTWriter = function() {
 /**
  * Converts a <code>Geometry</code> to its Well-known Text representation.
  *
- * @param geometry
- *          a <code>Geometry</code> to process.
- * @return a <Geometry Tagged Text> string (see the OpenGIS Simple Features
- *         Specification).
+ * @param {jsts.geom.Geometry}
+ *          geometry a <code>Geometry</code> to process.
+ * @return {string} a <Geometry Tagged Text> string (see the OpenGIS Simple
+ *         Features Specification).
  */
 jsts.io.WKTWriter.prototype.write = function(geometry) {
   var format = new OpenLayers.Format.WKT();

@@ -99,7 +99,7 @@ jsts.geom.Coordinate.prototype.equals2D = function(other) {
  *         ordinates.
  */
 jsts.geom.Coordinate.prototype.jsts_equals = function(other) {
-  if (!(other.CLASS_NAME === this.CLASS_NAME)) {
+  if (other.CLASS_NAME !== this.CLASS_NAME) {
     return false;
   }
   return this.equals2D(other);
@@ -269,7 +269,7 @@ jsts.geom.Coordinate.prototype.computeEnvelopeInternal = function() {
  * @return {Boolean} true if gemetries match.
  */
 jsts.geom.Coordinate.prototype.equalsExact = function(other, tolerance) {
-  if (!(this.CLASS_NAME === other.CLASS_NAME)) {
+  if (this.CLASS_NAME !== other.CLASS_NAME) {
     return false;
   }
   if (this.isEmpty() && other.isEmpty()) {
@@ -293,4 +293,3 @@ jsts.geom.Coordinate.prototype.reverse = function() {
 jsts.geom.Coordinate.prototype.normalize = function() {
   // a Point is always in normalized form
 };
-

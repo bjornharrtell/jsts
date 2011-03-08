@@ -24,6 +24,14 @@ jsts = {
 jsts.IllegalArgumentError = function(message) {
 };
 jsts.IllegalArgumentError = OpenLayers.Class(Error);
+
+
+
+/**
+ * Overridden constructor
+ * @param {string} message error message.
+ * @constructor
+ */
 jsts.IllegalArgumentError.initialize = function(message) {
   this.name = 'IllegalArgumentError';
   this.message = (message || '');
@@ -37,6 +45,13 @@ jsts.IllegalArgumentError.initialize = function(message) {
 jsts.AbstractMethodInvocationError = function() {
 };
 jsts.AbstractMethodInvocationError = OpenLayers.Class(Error);
+
+
+
+/**
+ * Overridden constructor
+ * @constructor
+ */
 jsts.AbstractMethodInvocationError.initialize = function() {
   this.name = 'AbstractMethodInvocationError';
   this.message = 'Abstract method called, should be implemented in subclass.';
