@@ -22,17 +22,17 @@ describe('jsts.geom.Point', function() {
   
   it('can be non empty', function() {
     var isEmpty = point.isEmpty();
-    expect(isEmpty).toEqual(false);
+    expect(isEmpty).toBeFalsy();
   });
   
   it('can be empty', function() {
     var isEmpty = pointEmpty.isEmpty();
-    expect(isEmpty).toEqual(true);
+    expect(isEmpty).toBeTruthy();
   });
   
   it('can be cloned', function() {
     var clone = point.clone();
-    expect(clone.equalsExact(point, 0)).toEqual(true);
+    expect(clone.equalsExact(point, 0)).toBeTruthy();
   });
   
 });
