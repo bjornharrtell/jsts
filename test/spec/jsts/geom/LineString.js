@@ -27,17 +27,17 @@ describe('jsts.geom.LineString', function() {
   it('can be non empty', function() {
 
     var isEmpty = lineString.isEmpty();
-    expect(isEmpty).toEqual(false);
+    expect(isEmpty).toBeFalsy();
   });
   
   it('can be empty', function() {
     var isEmpty = lineStringEmpty.isEmpty();
-    expect(isEmpty).toEqual(true);
+    expect(isEmpty).toBeTruthy();
   });
   
   it('can be cloned', function() {
     var clone = lineString.clone();
-    expect(clone.equalsExact(lineString, 0)).toEqual(true);
+    expect(clone.equalsExact(lineString, 0)).toBeTruthy();
   });
   
 });

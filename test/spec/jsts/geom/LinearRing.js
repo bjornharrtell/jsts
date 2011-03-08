@@ -28,17 +28,17 @@ describe('jsts.geom.LinearRing', function() {
   
   it('can be non empty', function() {
     var isEmpty = linearRing.isEmpty();
-    expect(isEmpty).toEqual(false);
+    expect(isEmpty).toBeFalsy();
   });
   
   it('can be empty', function() {
     var isEmpty = linearRingEmpty.isEmpty();
-    expect(isEmpty).toEqual(true);
+    expect(isEmpty).toBeTruthy();
   });
   
   it('can be cloned', function() {
     var clone = linearRing.clone();
-    expect(clone.equalsExact(linearRing, 0)).toEqual(true);
+    expect(clone.equalsExact(linearRing, 0)).toBeTruthy();
   });
   
 });

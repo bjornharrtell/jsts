@@ -81,7 +81,6 @@
  * @constructor
  */
 jsts.io.WKTReader = function() {
-  this.format = new OpenLayers.Format.WKT();
 };
 
 

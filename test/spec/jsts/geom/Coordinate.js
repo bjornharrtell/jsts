@@ -20,7 +20,7 @@ describe('jsts.geom.Coordinate', function() {
   });
 
   it('should not be equal to another coordinate with different position', function() {
-    expect(c1.equals2D(c2)).toEqual(false);
+    expect(c1.equals2D(c2)).toBeFalsy();
   });
 
   it('can be set to a new position from another Coordinate', function() {
@@ -28,6 +28,6 @@ describe('jsts.geom.Coordinate', function() {
   });
 
   it('should be equal to another coordinate with same position', function() {
-    expect(c1.equals2D(c2)).toEqual(true);
+    expect(c1.equals2D(c2)).toBeTruthy();
   });
 });

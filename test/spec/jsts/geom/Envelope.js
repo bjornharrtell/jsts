@@ -26,13 +26,13 @@ describe('jsts.geom.Envelope', function() {
     var clone = new jsts.geom.Envelope(e1);
     clone.expandToInclude(e5);
     var expectedEnvelope = new jsts.geom.Envelope(1, 8, 1, 8);
-    expect(clone.equals(expectedEnvelope)).toEqual(true);
+    expect(clone.equals(expectedEnvelope)).toBeTruthy();
   });
 
   it('can calculate its intersection with another Envelope', function() {
     var intersectingEnvelope = e1.intersection(e5);
     var expectedEnvelope = new jsts.geom.Envelope(2, 4, 2, 4);
-    expect(intersectingEnvelope.equals(expectedEnvelope)).toEqual(true);
+    expect(intersectingEnvelope.equals(expectedEnvelope)).toBeTruthy();
   });
 
 });
