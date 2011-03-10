@@ -1,7 +1,9 @@
-// TODO: use GeoExt, parse test data from testxml
+// TODO: parse test data from testxml
 
 jsts.vs.Application = {
   init: function() {
+    var testCaseDetailsPanel = new jsts.vs.TestCaseDetailsPanel();
+
     new Ext.Viewport({
       layout: 'absolute',
       items: [{
@@ -19,8 +21,9 @@ jsts.vs.Application = {
         y: 130,
         height: 200,
         width: 600,
+        layout: 'fit',
         frame: true,
-        html: 'TODO: Replace with test case details'
+        items: testCaseDetailsPanel
       }, {
         title: 'Test case results',
         x: 20,
@@ -31,6 +34,8 @@ jsts.vs.Application = {
         html: 'TODO: Replace with test case results'
       }]
     });
+
+    testCaseDetailsPanel.showTestCase();
   }
 };
 
