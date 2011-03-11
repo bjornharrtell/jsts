@@ -2,8 +2,11 @@
 
 jsts.vs.Application = {
   init: function() {
-    var testCaseForm = new jsts.vs.TestCaseForm();
+    
     var testCaseDetailsPanel = new jsts.vs.TestCaseDetailsPanel();
+    var testCaseForm = new jsts.vs.TestCaseForm({
+      testCaseDetailsPanel: testCaseDetailsPanel
+    });
 
     new Ext.Viewport({
       layout: 'absolute',
@@ -35,8 +38,6 @@ jsts.vs.Application = {
         html: 'TODO: Replace with test case results'
       }]
     });
-
-    testCaseDetailsPanel.showTestCase();
   }
 };
 
