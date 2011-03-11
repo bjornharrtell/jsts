@@ -2,6 +2,7 @@
 
 jsts.vs.Application = {
   init: function() {
+    var testCaseForm = new jsts.vs.TestCaseForm();
     var testCaseDetailsPanel = new jsts.vs.TestCaseDetailsPanel();
 
     new Ext.Viewport({
@@ -14,7 +15,7 @@ jsts.vs.Application = {
         width: 600,
         xtype: 'form',
         frame: true,
-        html: 'TODO: Replace with form controls to choose test case'
+        items: testCaseForm
       }, {
         title: 'Test case details',
         x: 20,
