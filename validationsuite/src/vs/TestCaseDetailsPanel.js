@@ -9,7 +9,7 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
     this.map = new GeoExt.MapPanel({
       map: {
         controls: [],
-        maxResolution: 100,
+        maxResolution: 1000,
         layers: [this.layer]
       }
     });
@@ -29,8 +29,8 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
         height: 150,
         width: 400,
         layout: 'fit',
-        frame: true,
-        html: 'A: POINT( 10 10 ) <br><br> B: POINT ( 5 12 )'
+        ref: 'geometry',
+        frame: true
       }]
     });
 
@@ -39,20 +39,24 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
   },
   map: null,
   layer: null,
-  showTestCase: function() {
+  showTestCase: function(record) {
 
-    // TODO: use real test case input
+    var reader = new jsts.io.WKTReader();
+    var writer = new jsts.io.WKTWriter();
+    
+    var a = reader.read(record.data.a);
+    var featureA = new OpenLayers.Feature.Vector(a, null, { fillColor: 'red', strokeColor: 'red', graphicName: 'square', pointRadius: 2});
 
-    var geometry = new OpenLayers.Geometry.Point(10, 10);
-    var feature = new OpenLayers.Feature.Vector(geometry, null, { stroke: false, fillColor: 'red', graphicName: 'square', pointRadius: 3});
+    var b = reader.read(record.data.b);
+    var featureB = new OpenLayers.Feature.Vector(b, null, { fillColor: 'blue', strokeColor: 'blue', graphicName: 'square', pointRadius: 2});
 
-    var geometry2 = new OpenLayers.Geometry.Point(5, 12);
-    var feature2 = new OpenLayers.Feature.Vector(geometry2, null, { stroke: false, fillColor: 'blue', graphicName: 'square', pointRadius: 3});
-
-    this.layer.addFeatures([feature, feature2]);
+    this.layer.destroyFeatures();
+    this.layer.addFeatures([featureA, featureB]);
 
     var bounds = this.layer.getDataExtent();
 
     this.map.map.zoomToExtent(bounds);
+    
+    this.geometry.update(writer.write(a) + '<br><br>' + writer.write(b));
   }
 });
