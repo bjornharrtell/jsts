@@ -6,7 +6,9 @@ JavaScript with OpenLayers compatiblity. The core geometry classes are
 inherited from OpenLayers.Geometry and extended with API as close as possible
 to the corresponding JTS Topology Suite geometry classes.
 
-Code is conformant to the [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
+Code is conformant to the
+[Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
+[JSLint](http://www.jslint.com/)
 
 [Unit tests](http://bjornharrtell.github.com/jsts/test/SpecRunner.html) are made
 using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
@@ -24,7 +26,7 @@ The code is licensed using the MIT license to encourage use and easy contributio
 Development environment
 -----------------------
 
-* Eclipse 3.6 (Helios) using custom builders to check and enforce the Google JavaScript Style Guide
+* Eclipse 3.6 (Helios) using custom builders to check and enforce the Google JavaScript Style Guide and JSLint
 * Custom builders requirements:
   * Installed Closure Linter from http://code.google.com/closure/utilities
   * Installed Rhino (http://www.mozilla.org/rhino/)
