@@ -15,6 +15,7 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel,
 
         this.cases = new Ext.data.XmlStore({
           url: 'testxml/validate/TestRelatePP.xml',
+          method: 'GET',
           record: 'case',
           fields: ['desc', 'a', 'b'],
           listeners: {
