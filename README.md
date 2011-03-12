@@ -11,7 +11,7 @@ Code is conformant to the [Google JavaScript Style Guide](http://google-stylegui
 Unit tests are made using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
 
 Porting [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) would provide futher tests. Some progress has
-been made: [JTS Validation Suite](http://bjornharrtell.github.com/jsts/validationsuite/index.html).
+been made and a live version of the current port is available here: [JSTS Validation Suite](http://bjornharrtell.github.com/jsts/validationsuite/index.html).
 
 The code is licensed using the MIT license to encourage use and easy contribution.
 
