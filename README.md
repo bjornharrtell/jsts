@@ -15,6 +15,10 @@ A [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
 [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides
 additional tests.
 
+Currently the port implements APIs for the the core geom.* classes and the validation
+suite is sort of half-way ported. The large work of porting the algorithms of
+JTS Topology Suite has yet to be started.
+
 The code is licensed using the MIT license to encourage use and easy contribution.
 
 Development environment
