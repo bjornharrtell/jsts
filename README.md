@@ -8,10 +8,12 @@ to the corresponding JTS Topology Suite geometry classes.
 
 Code is conformant to the [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
-Unit tests are made using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
+[Unit tests](http://bjornharrtell.github.com/jsts/test/SpecRunner.html) are made
+using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
 
-Porting [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) would provide futher tests. Some progress has
-been made and a live version of the current port is available here: [JSTS Validation Suite](http://bjornharrtell.github.com/jsts/validationsuite/index.html).
+A [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
+[JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides
+additional tests.
 
 The code is licensed using the MIT license to encourage use and easy contribution.
 
