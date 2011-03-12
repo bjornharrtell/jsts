@@ -15,7 +15,6 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel,
 
         this.cases = new Ext.data.XmlStore({
           url: 'testxml/validate/TestRelatePP.xml',
-          method: 'GET',
           record: 'case',
           fields: ['desc', 'a', 'b'],
           listeners: {
@@ -24,6 +23,7 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel,
           },
           autoLoad: true
         });
+        this.cases.proxy.conn.method = 'GET';
 
         Ext.apply(this, {
           layout: 'fit',
