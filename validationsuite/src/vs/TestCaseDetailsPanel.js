@@ -43,12 +43,26 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
 
     var reader = new jsts.io.WKTReader();
     var writer = new jsts.io.WKTWriter();
-    
+
     var a = reader.read(record.data.a);
-    var featureA = new OpenLayers.Feature.Vector(a, null, { fillColor: 'red', strokeColor: 'red', graphicName: 'square', pointRadius: 2});
+    var featureA = new OpenLayers.Feature.Vector(a, null, {
+      fillColor: 'red',
+      fillOpacity: 0.5,
+      strokeColor: 'red',
+      strokeOpacity: 0.5,
+      graphicName: 'square',
+      pointRadius: 2
+    });
 
     var b = reader.read(record.data.b);
-    var featureB = new OpenLayers.Feature.Vector(b, null, { fillColor: 'blue', strokeColor: 'blue', graphicName: 'square', pointRadius: 2});
+    var featureB = new OpenLayers.Feature.Vector(b, null, {
+      fillColor: 'blue',
+      fillOpacity: 0.5,
+      strokeColor: 'blue',
+      strokeOpacity: 0.5,
+      graphicName: 'square',
+      pointRadius: 2
+    });
 
     this.layer.destroyFeatures();
     this.layer.addFeatures([featureA, featureB]);
@@ -56,7 +70,11 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
     var bounds = this.layer.getDataExtent();
 
     this.map.map.zoomToExtent(bounds);
-    
+
     this.geometry.update(writer.write(a) + '<br><br>' + writer.write(b));
+  },
+  reset: function() {
+    this.layer.destroyFeatures();
+    this.geometry.update('');
   }
 });

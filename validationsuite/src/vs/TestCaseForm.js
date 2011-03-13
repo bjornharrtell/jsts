@@ -79,6 +79,7 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel,
       onGroupSelect: function(combo, record, index) {
         this.cases.proxy.conn.url = 'testxml/validate/' + record.data.filename;
         this.cases.reload();
+        this.testCaseDetailsPanel.reset();
       },
       onCaseSelect: function(combo, record, index) {
         this.testCaseDetailsPanel.showTestCase(record);

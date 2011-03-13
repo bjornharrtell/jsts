@@ -33,6 +33,32 @@ jsts.geom.Point = OpenLayers.Class(jsts.geom.Point, jsts.geom.Coordinate);
 
 
 /**
+ * Extend OpenLayers.Geometry.Collection with jsts.geom.GeometryCollection
+ */
+OpenLayers.Geometry.Collection = OpenLayers.Class(OpenLayers.Geometry.Collection,
+    jsts.geom.GeometryCollection);
+
+
+/**
+ * Alias for extended OpenLayers.Geometry.MultiPoint
+ */
+jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
+
+
+/**
+ * Extend OpenLayers.Geometry.Point with jsts.geom.Coordinate
+ */
+OpenLayers.Geometry.MultiPoint = OpenLayers.Class(OpenLayers.Geometry.MultiPoint,
+    jsts.geom.MultiPoint);
+
+
+/**
+ * Alias for extended OpenLayers.Geometry.MultiPoint
+ */
+jsts.geom.MultiPoint = OpenLayers.Geometry.Point;
+
+
+/**
  * Extend OpenLayers.Geometry.LineString with jsts.geom.LineString
  */
 OpenLayers.Geometry.LineString = OpenLayers.Class(
@@ -43,6 +69,19 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(
  * Alias for extended OpenLayers.Geometry.LineString
  */
 jsts.geom.LineString = OpenLayers.Geometry.LineString;
+
+
+/**
+ * Extend OpenLayers.Geometry.MultiLineString with jsts.geom.MultiLineString
+ */
+OpenLayers.Geometry.MultiLineString = OpenLayers.Class(
+    OpenLayers.Geometry.MultiLineString, jsts.geom.MultiLineString);
+
+
+/**
+ * Alias for extended OpenLayers.Geometry.MultiLineString
+ */
+jsts.geom.MultiLineString = OpenLayers.Geometry.MultiLineString;
 
 
 /**
@@ -69,3 +108,16 @@ OpenLayers.Geometry.Polygon = OpenLayers.Class(OpenLayers.Geometry.Polygon,
  * Alias for extended OpenLayers.Geometry.Polygon
  */
 jsts.geom.Polygon = OpenLayers.Geometry.Polygon;
+
+
+/**
+ * Extend OpenLayers.Geometry.Polygon with jsts.geom.Polygon
+ */
+OpenLayers.Geometry.MultiPolygon = OpenLayers.Class(OpenLayers.Geometry.MultiPolygon,
+    jsts.geom.MultiPolygon);
+
+
+/**
+ * Alias for extended OpenLayers.Geometry.MultiPolygon
+ */
+jsts.geom.MultiPolygon = OpenLayers.Geometry.MultiPolygon;
