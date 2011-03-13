@@ -2,7 +2,7 @@
 
 jsts.vs.Application = {
   init: function() {
-    
+
     var testCaseDetailsPanel = new jsts.vs.TestCaseDetailsPanel();
     var testCaseForm = new jsts.vs.TestCaseForm({
       testCaseDetailsPanel: testCaseDetailsPanel
