@@ -539,11 +539,11 @@ jsts.geom.Envelope.prototype.intersectsValues = function(x, y) {
  */
 jsts.geom.Envelope.prototype.contains = function() {
   if (arguments[0] instanceof jsts.geom.Envelope) {
-    this.containsEnvelope(arguments[0]);
+    return this.containsEnvelope(arguments[0]);
   } else if (arguments[0] instanceof jsts.geom.Coordinate) {
-    this.containsCoordinate(arguments[0]);
+    return this.containsCoordinate(arguments[0]);
   } else {
-    this.containsValues(arguments[0], arguments[1]);
+    return this.containsValues(arguments[0], arguments[1]);
   }
 };
 
