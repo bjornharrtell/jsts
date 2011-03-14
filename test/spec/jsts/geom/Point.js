@@ -30,6 +30,11 @@ describe('jsts.geom.Point', function() {
     expect(isEmpty).toBeTruthy();
   });
   
+  it('is simple', function() {
+    var isSimple = pointEmpty.isSimple();
+    expect(isSimple).toBeTruthy();
+  });
+  
   it('can be cloned', function() {
     var clone = point.clone();
     expect(clone.equalsExact(point, 0)).toBeTruthy();
