@@ -9,8 +9,8 @@
  * In general, the SFS specification of simplicity
  * follows the rule:
  * <ul>
- *    <li> A Geometry is simple if and only if the only self-intersections are at
- *    boundary points.
+ *  <li>A Geometry is simple if and only if the only self-intersections are at
+ *  boundary points.</li>
  * </ul>
  * This definition relies on the definition of boundary points.
  * The SFS uses the Mod-2 rule to determine which points are on the boundary of
@@ -86,12 +86,15 @@ jsts.operation.IsSimpleOp.prototype.IsSimpleOp = function(geom) {
  */
 jsts.operation.IsSimpleOp.prototype.isSimple = function() {
   this.nonSimpleLocation = null;
-  if (this.geom instanceof jsts.geom.LineString)
+  if (this.geom instanceof jsts.geom.LineString) {
     return this.isSimpleLinearGeometry(this.geom);
-  if (this.geom instanceof jsts.geom.MultiLineString)
+  }
+  if (this.geom instanceof jsts.geom.MultiLineString) {
     return this.isSimpleLinearGeometry(this.geom);
-  if (this.geom instanceof jsts.geom.MultiPoint)
+  }
+  if (this.geom instanceof jsts.geom.MultiPoint) {
     return this.isSimpleMultiPoint(this.geom);
+  }
   // all other geometry types are simple by definition
   return true;
 };
