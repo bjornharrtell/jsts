@@ -254,7 +254,7 @@ jsts.geom.Geometry.prototype.getNumPoints = function() {
  */
 jsts.geom.Geometry.prototype.isSimple = function() {
   this.checkNotGeometryCollection(this);
-  var op = new IsSimpleOp(this);
+  var op = new jsts.operation.IsSimpleOp(this);
   return op.isSimple();
 };
 
