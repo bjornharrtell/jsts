@@ -1,0 +1,6 @@
+/**
+ * index namespace
+ */
+jsts.index = {
+
+};
