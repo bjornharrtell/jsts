@@ -21,7 +21,7 @@ Currently the port implements APIs for the the core geom.* classes and the valid
 suite is sort of half-way ported. The large work of porting the algorithms of
 JTS Topology Suite has yet to be started.
 
-The code is licensed using the MIT license to encourage use and easy contribution.
+The code is licensed using the LGPL 2.1 license.
 
 Development environment
 -----------------------
