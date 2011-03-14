@@ -190,6 +190,17 @@ jsts.geom.Envelope.prototype.getHeight = function() {
   return this.maxy - this.miny;
 };
 
+/**
+ * Returns the difference between the maximum and minimum x values.
+ *
+ * @return {double} max x - min x, or 0 if this is a null <code>Envelope.</code>
+ */
+jsts.geom.Envelope.prototype.getHeight = function() {
+  if (this.isNull()) {
+    return 0;
+  }
+  return this.maxx - this.minx;
+};
 
 /**
  * Returns the <code>Envelope</code>s minimum x-value. min x > max x
