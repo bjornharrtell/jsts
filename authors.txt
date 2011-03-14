@@ -2,4 +2,4 @@ JSTS contributors:
 
 Björn Harrtell
 
-JSTS uses the MIT license, see license.txt.
+JSTS uses the LGPL 2.1 license, see license.txt.
