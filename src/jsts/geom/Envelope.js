@@ -195,7 +195,7 @@ jsts.geom.Envelope.prototype.getHeight = function() {
  *
  * @return {double} max x - min x, or 0 if this is a null <code>Envelope.</code>
  */
-jsts.geom.Envelope.prototype.getHeight = function() {
+jsts.geom.Envelope.prototype.getWeight = function() {
   if (this.isNull()) {
     return 0;
   }
