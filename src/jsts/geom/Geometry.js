@@ -100,6 +100,12 @@ jsts.geom.Geometry.prototype.envelope = null;
 
 
 /**
+ * The PrecisionModel of this <code>Geometry</code>.
+ */
+jsts.geom.Geometry.prototype.precisionModel = null;
+
+
+/**
  * Returns the name of this object's <code>com.vivid.jts.geom</code>
  * interface.
  *
@@ -181,7 +187,11 @@ jsts.geom.Geometry.prototype.getGeometryN = function(n) {
  *         for this <code>Geometry</code> and all other <code>Geometry</code>s.
  */
 jsts.geom.Geometry.prototype.getPrecisionModel = function() {
-  return this.factory.getPrecisionModel();
+  if (this.precisionModel === null) {
+    this.precisionModel = new jsts.geom.PrecisionModel();
+  }
+
+  return this.precisionModel;
 };
 
 

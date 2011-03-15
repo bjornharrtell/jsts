@@ -1,3 +1,8 @@
+/* Copyright (c) 2011 by Björn Harrtell.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
 /**
@@ -103,15 +108,15 @@ jsts.index.quadtree.Key.prototype.computeKey = function() {
  * Computes the key from specified envlope.
  *
  * @param {jsts.geom.Envelope}
- *          itemEnv the envelope.
+ *          env the envelope.
  */
-jsts.index.quadtree.Key.prototype.computeKeyFromEnvelope = function(itemEnv) {
-  this.level = jsts.index.quadtree.Key.prototype.computeQuadLevel(itemEnv);
+jsts.index.quadtree.Key.prototype.computeKeyFromEnvelope = function(env) {
+  this.level = jsts.index.quadtree.Key.prototype.computeQuadLevel(env);
   this.env = new jsts.geom.Envelope();
-  this.computeKey(this.level, itemEnv);
-  while (!this.env.contains(itemEnv)) {
+  this.computeKey(this.level, env);
+  while (!this.env.contains(env)) {
     this.level += 1;
-    this.computeKey(this.level, itemEnv);
+    this.computeKey(this.level, env);
   }
 };
 
@@ -122,12 +127,12 @@ jsts.index.quadtree.Key.prototype.computeKeyFromEnvelope = function(itemEnv) {
  * @param {Number}
  *          level the level.
  * @param {jsts.geom.Envelope}
- *          itemEnv the envelope.
+ *          env the envelope.
  */
-jsts.index.quadtree.Key.prototype.computeKeyFromLevel = function(level, itemEnv) {
+jsts.index.quadtree.Key.prototype.computeKeyFromLevel = function(level, env) {
   var quadSize = jsts.index.DoubleBits.prototype.powerOf2(level);
-  this.pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
-  this.pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
+  this.pt.x = Math.floor(env.getMinX() / quadSize) * quadSize;
+  this.pt.y = Math.floor(env.getMinY() / quadSize) * quadSize;
   this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y +
       quadSize);
 };

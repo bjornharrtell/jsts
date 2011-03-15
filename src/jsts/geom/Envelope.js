@@ -538,6 +538,8 @@ jsts.geom.Envelope.prototype.intersectsValues = function(x, y) {
  * (inclusive of the boundary).
  *
  * Will call appropriate contains* depending on arguments.
+ * @return {boolean} true if input is contained in this
+ *         <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.contains = function() {
   if (arguments[0] instanceof jsts.geom.Envelope) {
