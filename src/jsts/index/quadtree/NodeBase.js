@@ -8,8 +8,6 @@ jsts.index.quadtree.NodeBase = OpenLayers.Class();
 
 /**
  * Initializes a node via the openlayers inheritance mechanism
- *
- * @return
  */
 jsts.index.quadtree.NodeBase.prototype.initialize = function() {
   /**
@@ -34,6 +32,12 @@ jsts.index.quadtree.NodeBase.prototype.initialize = function() {
 /**
  * Returns the index of the subquad that wholly contains the given envelope. If
  * none does, returns -1.
+ *
+ * @param {jsts.geom.Envelope}
+ *          env The envelope to check.
+ * @param {jsts.geom.Coordinate}
+ *          centre The coordinate.
+ * @return {Number} The sub-index or -1.
  */
 jsts.index.quadtree.NodeBase.prototype.gutSubnodeIndex = function(env, centre) {
   var subnodeIndex = -1;
@@ -60,7 +64,7 @@ jsts.index.quadtree.NodeBase.prototype.gutSubnodeIndex = function(env, centre) {
 /**
  * Returns the nodes items
  *
- * @return
+ * @return {Array} the items-array.
  */
 jsts.index.quadtree.NodeBase.prototype.getItems = function() {
   return this.items;
@@ -70,7 +74,7 @@ jsts.index.quadtree.NodeBase.prototype.getItems = function() {
 /**
  * Checks if the node has any items
  *
- * @return
+ * @return {Boolean} true if the node has any items.
  */
 jsts.index.quadtree.NodeBase.prototype.hasItems = function() {
   return (this.items.length > 0);
@@ -80,8 +84,8 @@ jsts.index.quadtree.NodeBase.prototype.hasItems = function() {
 /**
  * Adds an item to the node
  *
- * @param item
- * @return
+ * @param {Object}
+ *          item the item to add.
  */
 jsts.index.quadtree.NodeBase.prototype.add = function(item) {
   this.items.push(item);
@@ -91,11 +95,11 @@ jsts.index.quadtree.NodeBase.prototype.add = function(item) {
 /**
  * Removes a single item from this subtree.
  *
- * @param searchEnv
- *          the envelope containing the item.
- * @param item
- *          the item to remove.
- * @return <code>true</code> if the item was found and removed.
+ * @param {jsts.geom.Envelope}
+ *          itemEnv the envelope containing the item.
+ * @param {Object}
+ *          item the item to remove.
+ * @return {Boolean} <code>true</code> if the item was found and removed.
  */
 jsts.index.quadtree.NodeBase.prototype.remove = function(itemEnv, item) {
   // use envelope to restrict nodes scanned
@@ -131,7 +135,7 @@ jsts.index.quadtree.NodeBase.prototype.remove = function(itemEnv, item) {
 
 
 /**
- * @return <code>true</code> if the node is prunable.
+ * @return {Boolean} <code>true</code> if the node is prunable.
  */
 jsts.index.quadtree.NodeBase.prototype.isPrunable = function() {
   return !(this.hasChildren() || this.hasItems());
@@ -139,7 +143,7 @@ jsts.index.quadtree.NodeBase.prototype.isPrunable = function() {
 
 
 /**
- * @return <code>true</code> if the node has any children.
+ * @return {Boolean} <code>true</code> if the node has any children.
  */
 jsts.index.quadtree.NodeBase.prototype.hasChildren = function() {
   var i = 0;
@@ -153,8 +157,8 @@ jsts.index.quadtree.NodeBase.prototype.hasChildren = function() {
 
 
 /**
- * @return <code>true</code> if the node or any subnode does not have any
- *         items.
+ * @return {Boolean} <code>true</code> if the node or any subnode does not
+ *         have any items.
  */
 jsts.index.quadtree.NodeBase.prototype.isEmpty = function() {
   var isEmpty = true;
@@ -176,8 +180,9 @@ jsts.index.quadtree.NodeBase.prototype.isEmpty = function() {
 /**
  * Adds all the items of the node and any subnodes
  *
- * @param resultItems
- * @return
+ * @param {Array}
+ *          resultItems the array to add items to.
+ * @return {Array} a new array with original and added items.
  */
 jsts.index.quadtree.NodeBase.prototype.addAllItems = function(resultItems) {
   // this node may have items as well as subnodes (since items may not
@@ -196,9 +201,10 @@ jsts.index.quadtree.NodeBase.prototype.addAllItems = function(resultItems) {
 
 /**
  *
- * @param searchEnv
- * @param resultItems
- * @return
+ * @param {jsts.geom.Envelope}
+ *          searchEnv the search-envelope.
+ * @param {Array}
+ *          resultItems the array containing original and added items.
  */
 jsts.index.quadtree.NodeBase.prototype.addAllItemsFromOverlapping = function(
     searchEnv, resultItems) {
@@ -224,9 +230,10 @@ jsts.index.quadtree.NodeBase.prototype.addAllItemsFromOverlapping = function(
 /**
  * Visits the node
  *
- * @param searchEnv
- * @param visitor
- * @return
+ * @param {jsts.geom.Envelope}
+ *          searchEnv the search-envelope.
+ * @param {Object}
+ *          visitor the visitor.
  */
 jsts.index.quadtree.NodeBase.prototype.visit = function(searchEnv, visitor) {
   if (!this.isSearchMatch(searchEnv)) {
@@ -249,9 +256,10 @@ jsts.index.quadtree.NodeBase.prototype.visit = function(searchEnv, visitor) {
 /**
  * Visits the items
  *
- * @param searchEnv
- * @param visitor
- * @return
+ * @param {jsts.geom.Envelope}
+ *          searchEnv the search envelope.
+ * @param {Object}
+ *          visitor the visitor.
  */
 jsts.index.quadtree.NodeBase.prototype.visitItems = function(searchEnv, visitor) {
   var i = 0, il = this.items.length;
@@ -265,7 +273,7 @@ jsts.index.quadtree.NodeBase.prototype.visitItems = function(searchEnv, visitor)
 /**
  * Calculates the depth
  *
- * @return
+ * @return {Number} the calculated depth.
  */
 jsts.index.quadtree.NodeBase.prototype.depth = function() {
   var maxSubDepth = 0, i = 0, sqd;
@@ -284,7 +292,7 @@ jsts.index.quadtree.NodeBase.prototype.depth = function() {
 /**
  * Calculates the size
  *
- * @return
+ * @return {Number} the calculated size.
  */
 jsts.index.quadtree.NodeBase.prototype.size = function() {
   var subSize = 0, i = 0;
@@ -296,6 +304,12 @@ jsts.index.quadtree.NodeBase.prototype.size = function() {
   return subSize + this.items.length;
 };
 
+
+/**
+ * Counts the nodes
+ *
+ * @return {Number} the size of this node.
+ */
 jsts.index.quadtree.NodeBase.prototype.getNodeCount = function() {
   var subSize = 0, i = 0;
   for (i; i < 4; i++) {

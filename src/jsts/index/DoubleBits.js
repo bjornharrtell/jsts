@@ -20,8 +20,8 @@ jsts.index.DoubleBits = OpenLayers.Class();
 /**
  * Calculates the power of two for a number
  *
- * @param exp
- * @return
+ * @param {Number} exp value to pow.
+ * @return {Number} the pow'ed value.
  */
 jsts.index.DoubleBits.prototype.powerOf2 = function(exp) {
   // TODO: Make sure the accuracy of this is sufficient (why else would JTS have
@@ -32,8 +32,9 @@ jsts.index.DoubleBits.prototype.powerOf2 = function(exp) {
 
 /**
  * Calculates the exponent-part of the bit-pattern for a number
- * @param d
- * @return
+ *
+ * @param {Number} d the IEEE-754-value to calculate the exponent for.
+ * @return {Number} the exponent part of the bit-mask.
  */
 jsts.index.DoubleBits.prototype.exponent = function(d) {
   return jsts.index.DoubleBits.prototype.CVTFWD(64, d);
@@ -43,9 +44,9 @@ jsts.index.DoubleBits.prototype.exponent = function(d) {
 /**
  * Calculates the exponent of the bit-pattern for a number.
  * Uses code from: http://www.merlyn.demon.co.uk/js-exact.htm
- * @param NumW
- * @param Qty
- * @return
+ * @param {Number} NumW 32 or 64 to denote the number of bits.
+ * @param {Number} Qty the number to calculate the bit pattern for.
+ * @return {Number} The integer value of the exponent.
  */
 jsts.index.DoubleBits.prototype.CVTFWD = function(NumW, Qty) {
   var Sign, Expo, Mant, Bin, nb01 = ''; // , OutW = NumW/4
