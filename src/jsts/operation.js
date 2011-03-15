@@ -5,13 +5,7 @@
  */
 
 
-
 /**
- * @constructor
- * @extends {OpenLayers.Geometry.LineString}
- * @extends {jsts.geom.Geometry}
+ * operation namespace
  */
-jsts.geom.MultiPolygon = function() {
-
-};
-jsts.geom.MultiPolygon = OpenLayers.Class(jsts.geom.GeometryCollection);
+jsts.operation = {};
