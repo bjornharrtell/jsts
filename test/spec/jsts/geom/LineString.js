@@ -35,6 +35,11 @@ describe('jsts.geom.LineString', function() {
     expect(isEmpty).toBeTruthy();
   });
   
+  it('can be simple', function() {
+    var isSimple = lineString.isSimple();
+    expect(isSimple).toBeTruthy();
+  });
+  
   it('can be cloned', function() {
     var clone = lineString.clone();
     expect(clone.equalsExact(lineString, 0)).toBeTruthy();

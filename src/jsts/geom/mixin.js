@@ -35,8 +35,8 @@ jsts.geom.Point = OpenLayers.Class(jsts.geom.Point, jsts.geom.Coordinate);
 /**
  * Extend OpenLayers.Geometry.Collection with jsts.geom.GeometryCollection
  */
-OpenLayers.Geometry.Collection = OpenLayers.Class(OpenLayers.Geometry.Collection,
-    jsts.geom.GeometryCollection);
+OpenLayers.Geometry.Collection = OpenLayers.Class(
+    OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection);
 
 
 /**
@@ -48,8 +48,8 @@ jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
 /**
  * Extend OpenLayers.Geometry.Point with jsts.geom.Coordinate
  */
-OpenLayers.Geometry.MultiPoint = OpenLayers.Class(OpenLayers.Geometry.MultiPoint,
-    jsts.geom.MultiPoint);
+OpenLayers.Geometry.MultiPoint = OpenLayers.Class(
+    OpenLayers.Geometry.MultiPoint, jsts.geom.MultiPoint);
 
 
 /**
@@ -113,8 +113,8 @@ jsts.geom.Polygon = OpenLayers.Geometry.Polygon;
 /**
  * Extend OpenLayers.Geometry.Polygon with jsts.geom.Polygon
  */
-OpenLayers.Geometry.MultiPolygon = OpenLayers.Class(OpenLayers.Geometry.MultiPolygon,
-    jsts.geom.MultiPolygon);
+OpenLayers.Geometry.MultiPolygon = OpenLayers.Class(
+    OpenLayers.Geometry.MultiPolygon, jsts.geom.MultiPolygon);
 
 
 /**
