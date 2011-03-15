@@ -1,3 +1,9 @@
+/* Copyright (c) 2011 by Björn Harrtell.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
 /**
  * The base class for nodes in a {@link Quadtree}.
  *
@@ -257,11 +263,11 @@ jsts.index.quadtree.NodeBase.prototype.visit = function(searchEnv, visitor) {
  * Visits the items
  *
  * @param {jsts.geom.Envelope}
- *          searchEnv the search envelope.
+ *          env the search envelope.
  * @param {Object}
  *          visitor the visitor.
  */
-jsts.index.quadtree.NodeBase.prototype.visitItems = function(searchEnv, visitor) {
+jsts.index.quadtree.NodeBase.prototype.visitItems = function(env, visitor) {
   var i = 0, il = this.items.length;
 
   for (i; i < il; i++) {
