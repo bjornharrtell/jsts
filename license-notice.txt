@@ -2,7 +2,7 @@ The JSTS Topology Suite is a collection of JavaScript classes that
 implement the fundamental operations required to validate a given
 geo-spatial data set to a known topological specification.
 
-Copyright (C) 2011 Björn Harrtell
+Copyright (C) 2011 The Authors
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
