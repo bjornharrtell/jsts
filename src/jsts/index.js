@@ -1,7 +1,6 @@
+
+
 /**
  * index namespace
  */
-jsts.index = {
-
-
-};
+jsts.index = {};
