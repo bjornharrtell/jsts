@@ -45,7 +45,7 @@ jsts.index.DoubleBits.prototype.powerOf2 = function(exp) {
  * @return {Number} the exponent part of the bit-mask.
  */
 jsts.index.DoubleBits.prototype.exponent = function(d) {
-  return jsts.index.DoubleBits.prototype.CVTFWD(64, d);
+  return jsts.index.DoubleBits.prototype.CVTFWD(64, d) - 1023;
 };
 
 
