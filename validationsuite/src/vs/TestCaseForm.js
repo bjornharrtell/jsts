@@ -69,7 +69,7 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel,
       files: [[0, 'TestRelatePP.xml'], [1, 'TestRelatePL.xml'],
           [2, 'TestRelatePA.xml'], [3, 'TestRelateLL.xml'],
           [4, 'TestRelateLC.xml'], [5, 'TestRelateLA.xml'],
-          [6, 'TestRelateAC.xml']],
+          [6, 'TestRelateAC.xml'], [7, 'TestRelateAA.xml']],
       groups: null,
       cases: null,
       onCasesLoad: function() {

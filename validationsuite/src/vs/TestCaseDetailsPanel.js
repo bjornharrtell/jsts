@@ -4,12 +4,15 @@
 jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
   initComponent: function() {
 
-    this.layer = new OpenLayers.Layer.Vector();
+    this.layer = new OpenLayers.Layer.Vector('testcase', {
+      isBaseLayer: true
+    });
 
     this.map = new GeoExt.MapPanel({
       map: {
         controls: [],
         maxResolution: 1000,
+        maxExtent: new OpenLayers.Bounds(-1000000, -1000000, 1000000, 1000000),
         layers: [this.layer]
       }
     });
@@ -69,7 +72,7 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
 
     var bounds = this.layer.getDataExtent();
 
-    this.map.map.zoomToExtent(bounds);
+    this.map.map.zoomToExtent(bounds, false);
 
     this.geometry.update(writer.write(a) + '<br><br>' + writer.write(b));
   },
