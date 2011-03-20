@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
 /**
  * Represents the location of a point on a Geometry.
  * Maintains both the actual point location
@@ -29,19 +36,6 @@ jsts.geom.GeometryLocation = function(component, segIndex, pt) {
   this.segIndex = segIndex;
   this.pt = pt;
 };
-
-// TODO: port
-/**
- * Constructs a GeometryLocation specifying a point inside an area geometry.
- *
- * @param {Geometry}
- *          component the component of the geometry containing the point.
- * @param {Coordinate}
- *          pt the coordinate of the location.
- *
- * public GeometryLocation(Geometry component,Coordinate pt) { this(component,
- * INSIDE_AREA, pt); }
- */
 
 
 /**
@@ -77,7 +71,7 @@ jsts.geom.GeometryLocation.prototype.pt = null;
  *         occurs.
  */
 jsts.geom.GeometryLocation.prototype.getGeometryComponent = function() {
-  return component;
+  return this.component;
 };
 
 
@@ -88,7 +82,7 @@ jsts.geom.GeometryLocation.prototype.getGeometryComponent = function() {
  * @return {int} the segment index for the location, or INSIDE_AREA.
  */
 jsts.geom.GeometryLocation.prototype.getSegmentIndex = function() {
-  return segIndex;
+  return this.segIndex;
 };
 
 
@@ -96,7 +90,7 @@ jsts.geom.GeometryLocation.prototype.getSegmentIndex = function() {
  * @return {Coordinate} the {@link Coordinate} of this location.
  */
 jsts.geom.GeometryLocation.prototype.getCoordinate = function() {
-  return pt;
+  return this.pt;
 };
 
 
@@ -105,5 +99,5 @@ jsts.geom.GeometryLocation.prototype.getCoordinate = function() {
  *         geometry.
  */
 jsts.geom.GeometryLocation.prototype.isInsideArea = function() {
-  return segIndex == INSIDE_AREA;
+  return this.segIndex == INSIDE_AREA;
 };
