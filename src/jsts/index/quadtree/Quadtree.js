@@ -1,3 +1,5 @@
+
+
 /**
  * A Quadtree is a spatial index structure for efficient querying of 2D
  * rectangles. If other kinds of spatial objects need to be indexed they can be
@@ -188,8 +190,8 @@ jsts.index.quadtree.Quadtree.prototype.queryByEnvelope = function(searchEnv) {
  *
  * @param {jsts.geom.Envelope}
  *        searchEnv the envelope of the desired query area.
- * @param visitor
- *          a visitor object which is passed the visited items.
+ * @param {jsts.index.Visitor}
+ *        visitor a visitor object which is passed the visited items.
  */
 jsts.index.quadtree.Quadtree.prototype.queryWithVisitor = function(searchEnv,
     visitor) {
@@ -215,7 +217,7 @@ jsts.index.quadtree.Quadtree.prototype.queryAll = function() {
  * minExtent if the widht or height is less than the current min extent
  *
  * @param {jsts.geom.Envelope}
- *        itemEnv
+ *        itemEnv The envelope.
  */
 jsts.index.quadtree.Quadtree.prototype.collectStats = function(itemEnv) {
   var delX = itemEnv.getWidth();
