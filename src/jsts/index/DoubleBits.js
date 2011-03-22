@@ -33,7 +33,7 @@ jsts.index.DoubleBits = OpenLayers.Class();
 jsts.index.DoubleBits.prototype.powerOf2 = function(exp) {
   // TODO: Make sure the accuracy of this is sufficient (why else would JTS have
   // this in DoubleBits?)
-  return Math.pow(exp, 2);
+  return Math.pow(2,exp);
 };
 
 

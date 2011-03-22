@@ -171,7 +171,7 @@ jsts.index.quadtree.Node.prototype.insertNode = function(node) {
  */
 jsts.index.quadtree.Node.prototype.getSubnode = function(index) {
   if (this.subnode[index] === null) {
-    this.subnode[index].createSubnode(index);
+    this.subnode[index] = this.createSubnode(index);
   }
   return this.subnode[index];
 };

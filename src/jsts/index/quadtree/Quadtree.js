@@ -95,7 +95,7 @@ jsts.index.quadtree.Quadtree.prototype.initialize = function() {
  *         the depth.
  */
 jsts.index.quadtree.Quadtree.prototype.depth = function() {
-  return root.depth();
+  return this.root.depth();
 };
 
 
@@ -106,7 +106,7 @@ jsts.index.quadtree.Quadtree.prototype.depth = function() {
  *         the number of items in the tree.
  */
 jsts.index.quadtree.Quadtree.prototype.size = function() {
-  return root.size();
+  return this.root.size();
 };
 
 
@@ -207,7 +207,7 @@ jsts.index.quadtree.Quadtree.prototype.queryWithVisitor = function(searchEnv,
  */
 jsts.index.quadtree.Quadtree.prototype.queryAll = function() {
   var foundItems = [];
-  this.root.addAllItems(foundItems);
+  foundItems = this.root.addAllItems(foundItems);
   return foundItems;
 };
 
@@ -226,7 +226,7 @@ jsts.index.quadtree.Quadtree.prototype.collectStats = function(itemEnv) {
   }
 
   var delY = itemEnv.getHeight();
-  if (delY < minExtent && delY > 0.0) {
+  if (delY < this.minExtent && delY > 0.0) {
     this.minExtent = delY;
   }
 };
