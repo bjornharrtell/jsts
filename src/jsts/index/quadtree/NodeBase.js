@@ -45,7 +45,7 @@ jsts.index.quadtree.NodeBase.prototype.initialize = function() {
  *          centre The coordinate.
  * @return {Number} The sub-index or -1.
  */
-jsts.index.quadtree.NodeBase.prototype.gutSubnodeIndex = function(env, centre) {
+jsts.index.quadtree.NodeBase.prototype.getSubnodeIndex = function(env, centre) {
   var subnodeIndex = -1;
   if (env.getMinX() >= centre.x) {
     if (env.getMinY() >= centre.y) {
@@ -197,7 +197,8 @@ jsts.index.quadtree.NodeBase.prototype.addAllItems = function(resultItems) {
   var i = 0;
   for (i; i < 4; i++) {
     if (this.subnode[i] !== null) {
-      resultItems = resultItems.concat(this.subnode[i]);
+      resultItems = this.subnode[i].addAllItems(resultItems);
+      //resultItems = resultItems.concat(this.subnode[i]);
     }
   }
 
