@@ -6,9 +6,11 @@ JavaScript with OpenLayers compatiblity. The core geometry classes are
 inherited from OpenLayers.Geometry and extended with API as close as possible
 to the corresponding JTS Topology Suite geometry classes.
 
+A [Google group](http://groups.google.com/group/jsts-devs) is available for developer discussions.
+
 Code is conformant to the
 [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
-[JSLint](http://www.jslint.com/)
+[JSLint](http://www.jslint.com/).
 
 [Unit tests](http://bjornharrtell.github.com/jsts/test/SpecRunner.html) are made
 using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
@@ -40,4 +42,3 @@ Design changes
 These are effective/potential changes from the original JTS Topology Suite:
 
 * Skip abstracted CoordinateSequence interface/implementation
-* Unified Coordinate/Point classes
