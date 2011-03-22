@@ -46,8 +46,22 @@ jsts.geom.PrecisionModel.FLOATING = 0;
 
 
 /**
+ * @type {int}
+ */
+jsts.geom.PrecisionModel.FIXED = 1;
+
+
+/**
  * @return {boolean} always true.
  */
 jsts.geom.PrecisionModel.prototype.isFloating = function() {
   return true;
+};
+
+
+/**
+ * @return {int} always jsts.geom.PrecisionModel.FLOATING.
+ */
+jsts.geom.PrecisionModel.prototype.getType = function() {
+  return jsts.geom.PrecisionModel.FLOATING;
 };
