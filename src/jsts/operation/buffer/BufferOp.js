@@ -49,7 +49,7 @@
  */
 jsts.operation.buffer.BufferOp = function(g, bufParams) {
   this.argGeom = g;
-  this.bufParams = bufParams ? bufParams : new BufferParameters();
+  this.bufParams = bufParams ? bufParams : new jsts.operation.buffer.BufferParameters();
 };
 
 
@@ -230,10 +230,12 @@ jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
   }
 
   var argPM = argGeom.getPrecisionModel();
-  if (argPM.getType() === PrecisionModel.FIXED)
-    bufferFixedPrecision(argPM);
-  else
-    bufferReducedPrecision();
+  if (argPM.getType() === PrecisionModel.FIXED) {
+    this.bufferFixedPrecision(argPM);
+  }
+  else {
+    this.bufferReducedPrecision();
+  }
 };
 
 
@@ -252,7 +254,7 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
       // don't propagate the exception - it will be detected by fact that
       // resultGeometry is null
     }
-    if (resultGeometry != null) {
+    if (resultGeometry !== null) {
       return;
     }
   }
