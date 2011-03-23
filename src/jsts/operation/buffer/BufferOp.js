@@ -38,8 +38,8 @@
 
 
 /**
- * Initializes a buffer computation for the given geometry with the given set of
- * parameters.
+ * Initializes a buffer computation for the given geometry with the given set
+ * of parameters.
  *
  * @param {Geometry}
  *          g the geometry to buffer.
@@ -67,17 +67,17 @@ jsts.operation.buffer.BufferOp.MAX_PRECISION_DIGITS = 12;
 
 /**
  * Compute a scale factor to limit the precision of a given combination of
- * Geometry and buffer distance. The scale factor is determined by a combination
- * of the number of digits of precision in the (geometry + buffer distance),
- * limited by the supplied <code>maxPrecisionDigits</code> value.
+ * Geometry and buffer distance. The scale factor is determined by a
+ * combination of the number of digits of precision in the (geometry + buffer
+ * distance), limited by the supplied <code>maxPrecisionDigits</code> value.
  *
  * @param {Geometry}
  *          g the Geometry being buffered.
  * @param {double}
  *          distance the buffer distance.
  * @param {int}
- *          maxPrecisionDigits the max # of digits that should be allowed by the
- *          precision determined by the computed scale factor.
+ *          maxPrecisionDigits the max # of digits that should be allowed by
+ *          the precision determined by the computed scale factor.
  *
  * @return {double} a scale factor for the buffer computation.
  */
@@ -114,8 +114,8 @@ jsts.operation.buffer.BufferOp.bufferOp = function(g, distance) {
 
 
 /**
- * Comutes the buffer for a geometry for a given buffer distance and accuracy of
- * approximation.
+ * Comutes the buffer for a geometry for a given buffer distance and accuracy
+ * of approximation.
  *
  * @param {Geometry}
  *          g the geometry to buffer.
@@ -210,61 +210,91 @@ jsts.operation.buffer.BufferOp.prototype.resultGeometry = null;
  * Returns the buffer computed for a geometry for a given buffer distance.
  *
  * @param {double}
- *          distance the buffer distance.
+ *          dist the buffer distance.
  * @return {Geometry} the buffer of the input geometry.
  */
-jsts.operation.buffer.BufferOp.prototype.getResultGeometry = function(distance) {
-  this.distance = distance;
+jsts.operation.buffer.BufferOp.prototype.getResultGeometry = function(dist) {
+  this.distance = dist;
   this.computeGeometry();
   return resultGeometry;
 };
 
+
+/**
+ * TODO: doc
+ */
 jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
   this.bufferOriginalPrecision();
-  if (resultGeometry != null)
+  if (resultGeometry !== null) {
     return;
+  }
 
   var argPM = argGeom.getPrecisionModel();
-  if (argPM.getType() == PrecisionModel.FIXED)
+  if (argPM.getType() === PrecisionModel.FIXED)
     bufferFixedPrecision(argPM);
   else
     bufferReducedPrecision();
 };
 
+
+/**
+ * TODO: doc
+ */
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
+  var precDigits;
+
   // try and compute with decreasing precision
-  for (var precDigits = MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
+  for (precDigits = MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
     try {
       this.bufferReducedPrecision(precDigits);
-    } catch (/*TopologyException*/ex) {
+    } catch (/* TopologyException */ex) {
       saveException = ex;
       // don't propagate the exception - it will be detected by fact that
       // resultGeometry is null
     }
-    if (resultGeometry != null)
+    if (resultGeometry != null) {
       return;
+    }
   }
 
   // tried everything - have to bail
   throw saveException;
 };
 
+
+/**
+ * TODO: doc
+ */
 jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
   // use fast noding by default
   var bufBuilder = new jsts.operation.buffer.BufferBuilder(bufParams);
   resultGeometry = bufBuilder.buffer(argGeom, distance);
 };
 
+
+/**
+ * TODO: doc
+ *
+ * @param {int}
+ *          precisionDigits TODO: doc.
+ */
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function(
     precisionDigits) {
 
-  var sizeBasedScaleFactor = precisionScaleFactor(argGeom, distance,
+  var sizeBasedScaleFactor = this.precisionScaleFactor(argGeom, distance,
       precisionDigits);
 
   var fixedPM = new jsts.geom.PrecisionModel(sizeBasedScaleFactor);
-  bufferFixedPrecision(fixedPM);
+  this.bufferFixedPrecision(fixedPM);
 };
 
+
+/**
+ * TODO: doc
+ *
+ * @param {PrecisionModel}
+ *          fixedPM TODO: doc.
+ */
 jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision = function(
     fixedPM) {
   var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),

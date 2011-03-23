@@ -99,5 +99,5 @@ jsts.geom.GeometryLocation.prototype.getCoordinate = function() {
  *         geometry.
  */
 jsts.geom.GeometryLocation.prototype.isInsideArea = function() {
-  return this.segIndex == INSIDE_AREA;
+  return this.segIndex === jsts.geom.GeometryLocation.INSIDE_AREA;
 };
