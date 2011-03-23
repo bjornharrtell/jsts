@@ -132,7 +132,7 @@ jsts.index.quadtree.NodeBase.prototype.remove = function(itemEnv, item) {
   }
   // otherwise, try and remove the item from the list of items in this node
 
-  if (OpenLayers.Util.indexOf(item) !== -1) {
+  if (OpenLayers.Util.indexOf(this.items, item) !== -1) {
     OpenLayers.Util.removeItem(this.items, item);
     found = true;
   }

@@ -7,6 +7,7 @@ describe('jsts.index.quadtree.Quadtree', function() {
   var MIN_EXTENT = -1000.0;
   var MAX_EXTENT = 1000.0;
   var inserted = 0;
+  var insertedArray = [];
   
   it('can be created', function() {
     qtree = new jsts.index.quadtree.Quadtree();
@@ -32,10 +33,7 @@ describe('jsts.index.quadtree.Quadtree', function() {
         qtree.insert(env, env);
         inserted++;
         
-        if(qtree.queryAll().length !== inserted){
-          var stop;
-        }
-        
+        insertedArray.push(env);
         //envList.add(env);
       }
     }
@@ -57,4 +55,19 @@ describe('jsts.index.quadtree.Quadtree', function() {
   it('can return all items in the tree',function(){
     expect(qtree.queryAll().length).toBe(121);
   });
+  
+  it('returns all items in the tree when queried with an exctent large enought to contain all inserted envelopes',function(){
+    var searchEnv = new jsts.geom.Envelope(-10000,10000,-10000,10000);
+    var resultArray = qtree.query(searchEnv);
+    expect(resultArray.length).toBe(121);
+  });
+  
+  it('can remove a previous inserted item',function(){
+    var item = insertedArray[0];
+    var removed = qtree.remove(item, item);
+    expect(removed).toBeTruthy();
+    expect(qtree.size()).toBe(120);
+  });
+  
+  
 });

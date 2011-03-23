@@ -129,7 +129,7 @@ jsts.index.quadtree.Quadtree.prototype.insert = function(itemEnv, item) {
  * Removes a single item from the tree
  *
  * @param {jsts.geom.Envelope}
- *        itemEnv the envelope of the item to be rmoved.
+ *        itemEnv the envelope of the item to be removed.
  * @param {Object}
  *        item the item to remove.
  * @return {Boolean}
