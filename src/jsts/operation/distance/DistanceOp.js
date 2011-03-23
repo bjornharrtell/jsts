@@ -22,9 +22,10 @@
  */
 
 
+
 /**
- * Constructs a DistanceOp that computes the distance and nearest points between
- * the two specified geometries.
+ * Constructs a DistanceOp that computes the distance and nearest points
+ * between the two specified geometries.
  *
  * @param {Geometry}
  *          g0 a Geometry.
@@ -32,8 +33,9 @@
  *          g1 a Geometry.
  * @param {double}
  *          terminateDistance the distance on which to terminate the search.
+ * @constructor
  */
-jsts.operation.distance.DistanceOp = function(g0,  g1,  terminateDistance) {
+jsts.operation.distance.DistanceOp = function(g0, g1, terminateDistance) {
   this.ptLocator = new PointLocator();
 
   this.geom = new Geometry[2];
@@ -58,7 +60,7 @@ jsts.operation.distance.DistanceOp.prototype.terminateDistance = 0.0;
 /**
  * @type {PointLocator}
  */
-jsts.operation.distance.DistanceOp.prototype.ptLocator = new PointLocator();
+jsts.operation.distance.DistanceOp.prototype.ptLocator = null;
 
 
 /**
@@ -82,7 +84,7 @@ jsts.operation.distance.DistanceOp.prototype.minDistance = Number.MAX_VALUE;
  *          g1 another {@link Geometry}.
  * @return {double} the distance between the geometries.
  */
-jsts.operation.distance.DistanceOp.distance = function(g0, g1)  {
+jsts.operation.distance.DistanceOp.distance = function(g0, g1) {
   var distOp = new jsts.operation.distance.DistanceOp(g0, g1, 0.0);
   return distOp.distance();
 };
@@ -99,15 +101,16 @@ jsts.operation.distance.DistanceOp.distance = function(g0, g1)  {
  *          distance the distance to test.
  * @return {boolean} true if g0.distance(g1) <= distance.
  */
-jsts.operation.distance.DistanceOp.isWithinDistance = function(g0,  g1,  distance) {
+jsts.operation.distance.DistanceOp.isWithinDistance = function(g0, g1,
+    distance) {
   var distOp = new jsts.operation.distance.DistanceOp(g0, g1, distance);
   return distOp.distance() <= distance;
 };
 
 
 /**
- * Compute the the nearest points of two geometries. The points are presented in
- * the same order as the input Geometries.
+ * Compute the the nearest points of two geometries. The points are presented
+ * in the same order as the input Geometries.
  *
  * @param {Geometry}
  *          g0 a {@link Geometry}.
@@ -115,127 +118,123 @@ jsts.operation.distance.DistanceOp.isWithinDistance = function(g0,  g1,  distanc
  *          g1 another {@link Geometry}.
  * @return {Coordinate[]} the nearest points in the geometries.
  */
-jsts.operation.distance.DistanceOp.nearestPoints = function(g0,  g1) {
+jsts.operation.distance.DistanceOp.nearestPoints = function(g0, g1) {
   var distOp = new jsts.operation.distance.DistanceOp(g0, g1, 0.0);
   return distOp.nearestPoints();
 };
 
 
-// TODO: port member functions below...
-
-
 /**
  * Report the distance between the nearest points on the input geometries.
  *
- * @return the distance between the geometries.
- * @return 0 if either input geometry is empty.
+ * @return {double} the distance between the geometries.
+ * @return {double} 0 if either input geometry is empty.
  * @throws IllegalArgumentException
  *           if either input geometry is null
  */
-public double distance()
-{
+jsts.operation.distance.DistanceOp.prototype.distance = function() {
   if (geom[0] == null || geom[1] == null)
-    throw new IllegalArgumentException('null geometries are not supported');
+    throw new jsts.IllegalArgumentError('null geometries are not supported');
   if (geom[0].isEmpty() || geom[1].isEmpty())
     return 0.0;
 
-  computeMinDistance();
+  this.computeMinDistance();
   return minDistance;
-}
+};
 
 
 /**
  * Report the coordinates of the nearest points in the input geometries. The
  * points are presented in the same order as the input Geometries.
  *
- * @return a pair of {@link Coordinate} s of the nearest points.
+ * @return {Coordinate[] } a pair of {@link Coordinate} s of the nearest
+ *         points.
  */
-public Coordinate[] nearestPoints()
-{
-  computeMinDistance();
-  Coordinate[] nearestPts
-      = new Coordinate[] {
-    minDistanceLocation[0].getCoordinate(),
-    minDistanceLocation[1].getCoordinate() };
+jsts.operation.distance.DistanceOp.prototype.nearestPoints = function() {
+  this.computeMinDistance();
+  var nearestPts = [minDistanceLocation[0].getCoordinate(),
+        minDistanceLocation[1].getCoordinate()];
   return nearestPts;
-}
-
-
-/**
- *
- * @return
- * @deprecated renamed to nearestPoints.
- */
-public Coordinate[] closestPoints()
-{
-  return nearestPoints();
-}
+};
 
 
 /**
  * Report the locations of the nearest points in the input geometries. The
  * locations are presented in the same order as the input Geometries.
  *
- * @return a pair of {@link GeometryLocation} s for the nearest points.
+ * @return {GeometryLocation[] } a pair of {@link GeometryLocation} s for the
+ *         nearest points.
  */
-public GeometryLocation[] nearestLocations()
-{
-  computeMinDistance();
+jsts.operation.distance.DistanceOp.prototype.nearestLocations = function() {
+  this.computeMinDistance();
   return minDistanceLocation;
-}
+};
 
 
 /**
- *
- * @return
- * @deprecated renamed to nearestLocations.
+ * @param {GeometryLocation[]}
+ *          locGeom locations.
+ * @param {boolean}
+ *          flip if locations should be flipped.
  */
-public GeometryLocation[] closestLocations()
-{
-  return nearestLocations();
-}
-
-private void updateMinDistance(GeometryLocation[] locGeom, boolean flip)
-{
+jsts.operation.distance.DistanceOp.prototype.updateMinDistance = function(
+    locGeom, flip) {
   // if not set then don't update
-  if (locGeom[0] == null) return;
+  if (locGeom[0] == null)
+    return;
 
   if (flip) {
     minDistanceLocation[0] = locGeom[1];
     minDistanceLocation[1] = locGeom[0];
-  }
-  else {
+  } else {
     minDistanceLocation[0] = locGeom[0];
     minDistanceLocation[1] = locGeom[1];
   }
-}
+};
 
-private void computeMinDistance()
-{
+
+/**
+ * TODO: doc
+ */
+jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function() {
   // only compute once!
-  if (minDistanceLocation != null) return;
+  if (minDistanceLocation != null)
+    return;
 
   minDistanceLocation = new GeometryLocation[2];
   computeContainmentDistance();
-  if (minDistance <= terminateDistance) return;
+  if (minDistance <= terminateDistance)
+    return;
   computeFacetDistance();
-}
+};
 
-private void computeContainmentDistance()
-{
-  GeometryLocation[] locPtPoly = new GeometryLocation[2];
+
+/**
+ * TODO: doc
+ */
+jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function() {
+  var locPtPoly = [new GeometryLocation, new GeometryLocation];
   // test if either geometry has a vertex inside the other
   computeContainmentDistance(0, locPtPoly);
-  if (minDistance <= terminateDistance) return;
+  if (minDistance <= terminateDistance)
+    return;
   computeContainmentDistance(1, locPtPoly);
-}
+};
 
-private void computeContainmentDistance(int polyGeomIndex, GeometryLocation[] locPtPoly)
-{
-  int locationsIndex = 1 - polyGeomIndex;
-  List polys = PolygonExtracter.getPolygons(geom[polyGeomIndex]);
+
+/**
+ * @param {int}
+ *          polyGeomIndex TODO: doc.
+ * @param {GeometryLocation[]}
+ *          locPtPoly TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function(
+    polyGeomIndex, locPtPoly) {
+  var locationsIndex = 1 - polyGeomIndex;
+  var polys = PolygonExtracter.getPolygons(geom[polyGeomIndex]);
   if (polys.size() > 0) {
-    List insideLocs = ConnectedElementLocationFilter.getLocations(geom[locationsIndex]);
+    var insideLocs = ConnectedElementLocationFilter
+        .getLocations(geom[locationsIndex]);
     computeContainmentDistance(insideLocs, polys, locPtPoly);
     if (minDistance <= terminateDistance) {
       // this assigment is determined by the order of the args in the
@@ -245,24 +244,41 @@ private void computeContainmentDistance(int polyGeomIndex, GeometryLocation[] lo
       return;
     }
   }
-}
+};
 
-private void computeContainmentDistance(List locs, List polys, GeometryLocation[] locPtPoly)
-{
-  for (int i = 0; i < locs.size(); i++) {
-    GeometryLocation loc = (GeometryLocation) locs.get(i);
-    for (int j = 0; j < polys.size(); j++) {
-      computeContainmentDistance(loc, (Polygon) polys.get(j), locPtPoly);
-      if (minDistance <= terminateDistance) return;
+
+/**
+ * @param {List}
+ *          locs TODO: doc.
+ * @param {List}
+ *          polys TODO: doc.
+ * @param {GeometryLocation[] }
+ *          locPtPoly TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function(
+    locs, polys, locPtPoly) {
+  for (var i = 0; i < locs.size(); i++) {
+    var loc = locs.get(i);
+    for (var j = 0; j < polys.size(); j++) {
+      computeContainmentDistance(loc, polys.get(j), locPtPoly);
+      if (minDistance <= terminateDistance)
+        return;
     }
   }
-}
+};
 
-private void computeContainmentDistance(GeometryLocation ptLoc,
-    Polygon poly,
-    GeometryLocation[] locPtPoly)
-{
-  Coordinate pt = ptLoc.getCoordinate();
+
+/**
+ * @param {GeometryLocation}
+ *          ptLoc TODO: doc.
+ * @param {Polygon}
+ *          poly TODO: doc.
+ * @param {
+ *          GeometryLocation[] } locPtPoly TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function(
+    ptLoc, poly, locPtPoly) {
+  var pt = ptLoc.getCoordinate();
   // if pt is not in exterior, distance to geom is 0
   if (Location.EXTERIOR != ptLocator.locate(pt, poly)) {
     minDistance = 0.0;
@@ -270,140 +286,187 @@ private void computeContainmentDistance(GeometryLocation ptLoc,
     locPtPoly[1] = new GeometryLocation(poly, pt);
     return;
   }
-}
+};
 
 
 /**
  * Computes distance between facets (lines and points) of input geometries.
- *
  */
-private void computeFacetDistance()
-{
-  GeometryLocation[] locGeom = new GeometryLocation[2];
+jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
+  var locGeom = new GeometryLocation[2];
 
   /**
    * Geometries are not wholely inside, so compute distance from lines and
    * points of one to lines and points of the other
    */
-  List lines0 = LinearComponentExtracter.getLines(geom[0]);
-  List lines1 = LinearComponentExtracter.getLines(geom[1]);
+  var lines0 = LinearComponentExtracter.getLines(geom[0]);
+  var lines1 = LinearComponentExtracter.getLines(geom[1]);
 
-  List pts0 = PointExtracter.getPoints(geom[0]);
-  List pts1 = PointExtracter.getPoints(geom[1]);
+  var pts0 = PointExtracter.getPoints(geom[0]);
+  var pts1 = PointExtracter.getPoints(geom[1]);
 
   // exit whenever minDistance goes LE than terminateDistance
   computeMinDistanceLines(lines0, lines1, locGeom);
   updateMinDistance(locGeom, false);
-  if (minDistance <= terminateDistance) return;
+  if (minDistance <= terminateDistance)
+    return;
 
   locGeom[0] = null;
   locGeom[1] = null;
   computeMinDistanceLinesPoints(lines0, pts1, locGeom);
   updateMinDistance(locGeom, false);
-  if (minDistance <= terminateDistance) return;
+  if (minDistance <= terminateDistance)
+    return;
 
   locGeom[0] = null;
   locGeom[1] = null;
   computeMinDistanceLinesPoints(lines1, pts0, locGeom);
   updateMinDistance(locGeom, true);
-  if (minDistance <= terminateDistance) return;
+  if (minDistance <= terminateDistance)
+    return;
 
   locGeom[0] = null;
   locGeom[1] = null;
   computeMinDistancePoints(pts0, pts1, locGeom);
   updateMinDistance(locGeom, false);
-}
+};
 
-private void computeMinDistanceLines(List lines0, List lines1, GeometryLocation[] locGeom)
-{
-  for (int i = 0; i < lines0.size(); i++) {
-    LineString line0 = (LineString) lines0.get(i);
-    for (int j = 0; j < lines1.size(); j++) {
-      LineString line1 = (LineString) lines1.get(j);
+
+/**
+ * @param {List}
+ *          lines0 TODO: doc.
+ * @param {List}
+ *          lines1 TODO: doc.
+ * @param {GeometryLocation[]}
+ *          locGeom TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLines = function(
+    lines0, lines1, locGeom) {
+  for (var i = 0; i < lines0.size(); i++) {
+    var line0 = lines0.get(i);
+    for (var j = 0; j < lines1.size(); j++) {
+      var line1 = lines1.get(j);
       computeMinDistance(line0, line1, locGeom);
-      if (minDistance <= terminateDistance) return;
+      if (minDistance <= terminateDistance)
+        return;
     }
   }
-}
+};
 
-private void computeMinDistancePoints(List points0, List points1, GeometryLocation[] locGeom)
-{
-  for (int i = 0; i < points0.size(); i++) {
-    Point pt0 = (Point) points0.get(i);
-    for (int j = 0; j < points1.size(); j++) {
-      Point pt1 = (Point) points1.get(j);
-      double dist = pt0.getCoordinate().distance(pt1.getCoordinate());
+
+/**
+ * @param {List}
+ *          points0 TODO: doc.
+ * @param {List}
+ *          points1 TODO: doc.
+ * @param {GeometryLocation[]}
+ *          locGeom TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function(
+    points0, points1, locGeom) {
+  for (var i = 0; i < points0.size(); i++) {
+    var pt0 = points0.get(i);
+    for (var j = 0; j < points1.size(); j++) {
+      var pt1 = points1.get(j);
+      var dist = pt0.getCoordinate().distance(pt1.getCoordinate());
       if (dist < minDistance) {
         minDistance = dist;
         locGeom[0] = new GeometryLocation(pt0, 0, pt0.getCoordinate());
         locGeom[1] = new GeometryLocation(pt1, 0, pt1.getCoordinate());
       }
-      if (minDistance <= terminateDistance) return;
+      if (minDistance <= terminateDistance)
+        return;
     }
   }
-}
+};
 
-private void computeMinDistanceLinesPoints(List lines, List points,
-    GeometryLocation[] locGeom)
-{
-  for (int i = 0; i < lines.size(); i++) {
-    LineString line = (LineString) lines.get(i);
-    for (int j = 0; j < points.size(); j++) {
-      Point pt = (Point) points.get(j);
+
+/**
+ * @param {List}
+ *          lines TODO: doc.
+ * @param {List}
+ *          points TODO: doc.
+ * @param {GeometryLocation[]}
+ *          locGeom TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLinesPoints = function(
+    lines, points, locGeom) {
+  for (var i = 0; i < lines.size(); i++) {
+    var line = (LineString);
+    lines.get(i);
+    for (var j = 0; j < points.size(); j++) {
+      var pt = points.get(j);
       computeMinDistance(line, pt, locGeom);
-      if (minDistance <= terminateDistance) return;
+      if (minDistance <= terminateDistance)
+        return;
     }
   }
-}
+};
 
-private void computeMinDistance(LineString line0, LineString line1,
-                                GeometryLocation[] locGeom)
-{
-  if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal())
-      > minDistance)
+
+/**
+ * @param {LineString}
+ *          line0 TODO: doc.
+ * @param {Point}
+ *          line1 TODO: doc.
+ * @param {GeometryLocation[]}
+ *          locGeom TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function(
+    line0, line1, locGeom) {
+  if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal()) > minDistance) {
     return;
-  Coordinate[] coord0 = line0.getCoordinates();
-  Coordinate[] coord1 = line1.getCoordinates();
+  }
+  var coord0 = line0.getCoordinates();
+  var coord1 = line1.getCoordinates();
   // brute force approach!
-  for (int i = 0; i < coord0.length - 1; i++) {
-    for (int j = 0; j < coord1.length - 1; j++) {
-      double dist = CGAlgorithms.distanceLineLine(
-          coord0[i], coord0[i + 1],
+  for (var i = 0; i < coord0.length - 1; i++) {
+    for (var j = 0; j < coord1.length - 1; j++) {
+      var dist = CGAlgorithms.distanceLineLine(coord0[i], coord0[i + 1],
           coord1[j], coord1[j + 1]);
       if (dist < minDistance) {
         minDistance = dist;
-        LineSegment seg0 = new LineSegment(coord0[i], coord0[i + 1]);
-        LineSegment seg1 = new LineSegment(coord1[j], coord1[j + 1]);
-        Coordinate[] closestPt = seg0.closestPoints(seg1);
+        var seg0 = new LineSegment(coord0[i], coord0[i + 1]);
+        var seg1 = new LineSegment(coord1[j], coord1[j + 1]);
+        var closestPt = seg0.closestPoints(seg1);
         locGeom[0] = new GeometryLocation(line0, i, closestPt[0]);
         locGeom[1] = new GeometryLocation(line1, j, closestPt[1]);
       }
-      if (minDistance <= terminateDistance) return;
+      if (minDistance <= terminateDistance) {
+        return;
+      }
     }
   }
-}
+};
 
-private void computeMinDistance(LineString line, Point pt,
-                                GeometryLocation[] locGeom)
-{
-  if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal())
-      > minDistance)
+
+/**
+ * @param {LineString}
+ *          line TODO: doc.
+ * @param {Point}
+ *          pt TODO: doc.
+ * @param {GeometryLocation[]}
+ *          locGeom TODO: doc.
+ */
+jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function(
+    line, pt, locGeom) {
+  if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal()) > minDistance) {
     return;
-  Coordinate[] coord0 = line.getCoordinates();
-  Coordinate coord = pt.getCoordinate();
+  }
+  var coord0 = line.getCoordinates();
+  var coord = pt.getCoordinate();
   // brute force approach!
-  for (int i = 0; i < coord0.length - 1; i++) {
-    double dist = CGAlgorithms.distancePointLine(
-        coord, coord0[i], coord0[i + 1]);
+  for (var i = 0; i < coord0.length - 1; i++) {
+    var dist = CGAlgorithms.distancePointLine(coord, coord0[i], coord0[i + 1]);
     if (dist < minDistance) {
       minDistance = dist;
-      LineSegment seg = new LineSegment(coord0[i], coord0[i + 1]);
-      Coordinate segClosestPoint = seg.closestPoint(coord);
+      var seg = new LineSegment(coord0[i], coord0[i + 1]);
+      var segClosestPoint = seg.closestPoint(coord);
       locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
       locGeom[1] = new GeometryLocation(pt, 0, coord);
     }
-    if (minDistance <= terminateDistance) return;
-
+    if (minDistance <= terminateDistance) {
+      return;
+    }
   }
-}
-
+};
