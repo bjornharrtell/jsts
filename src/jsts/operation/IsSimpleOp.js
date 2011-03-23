@@ -98,3 +98,28 @@ jsts.operation.IsSimpleOp.prototype.isSimple = function() {
   // all other geometry types are simple by definition
   return true;
 };
+
+
+/**
+ * @param {Geometry} geom input geometry.
+ * @return {boolean} true if the geometry is simple.
+ */
+jsts.operation.IsSimpleOp.prototype.isSimpleLinearGeometry = function(geom) {
+  if (geom.isEmpty()) return true;
+  var graph = new GeometryGraph(0, geom);
+  var li = new RobustLineIntersector();
+  var si = graph.computeSelfNodes(li, true);
+  // if no self-intersection, must be simple
+  if (! si.hasIntersection()) return true;
+  if (si.hasProperIntersection()) {
+    nonSimpleLocation = si.getProperIntersectionPoint();
+    return false;
+  }
+  if (this.hasNonEndpointIntersection(graph)) return false;
+  if (this.isClosedEndpointsInInterior) {
+    if (this.hasClosedEndpointIntersection(graph)) return false;
+  }
+  return true;
+};
+
+// TODO: port rest of class
