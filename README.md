@@ -2,7 +2,7 @@ JSTS Topology Suite
 ===================
 
 Aims to port [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html) to
-JavaScript with OpenLayers compatiblity. The core geometry classes are
+JavaScript with OpenLayers compatibility. The core geometry classes are
 inherited from OpenLayers.Geometry and extended with API as close as possible
 to the corresponding JTS Topology Suite geometry classes.
 
@@ -20,8 +20,8 @@ A [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
 additional tests.
 
 Currently the port implements APIs for the the core geom.* classes and the validation
-suite is sort of half-way ported. The large work of porting the algorithms of
-JTS Topology Suite has yet to be started.
+suite is sort of half-way ported. QuadTree index have been ported. Initial work on porting
+the first geometry relation/manipulation algorithms has been started but it's a long way to go.
 
 The code is licensed using the LGPL 2.1 license.
 
