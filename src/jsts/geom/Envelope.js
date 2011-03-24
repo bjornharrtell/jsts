@@ -494,9 +494,8 @@ jsts.geom.Envelope.prototype.intersectsEnvelope = function(other) {
   if (this.isNull() || other.isNull()) {
     return false;
   }
-  var result = !(other.minx > this.maxx || other.maxx < this.minx ||
-      other.miny > this.maxy || other.maxy < this.miny); 
-  return result;
+  return !(other.minx > this.maxx || other.maxx < this.minx ||
+      other.miny > this.maxy || other.maxy < this.miny);
 };
 
 
