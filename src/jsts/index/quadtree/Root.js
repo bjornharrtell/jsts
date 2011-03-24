@@ -4,6 +4,7 @@
  * See /license.txt for the full text of the license.
 */
 
+
 /**
  * QuadRoot is the root of a single Quadtree. It is centred at the origin, and
  * does not have a defined extent.

@@ -4,6 +4,7 @@
  * See /license.txt for the full text of the license.
 */
 
+
 /**
  * Provides a test for whether an interval is so small it should be considered
  * as zero for the purposes of inserting it into a binary tree. The reason this

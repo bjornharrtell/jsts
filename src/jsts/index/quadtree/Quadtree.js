@@ -4,6 +4,7 @@
  * See /license.txt for the full text of the license.
 */
 
+
 /**
  * A Quadtree is a spatial index structure for efficient querying of 2D
  * rectangles. If other kinds of spatial objects need to be indexed they can be
