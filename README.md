@@ -15,6 +15,8 @@ Code is conformant to the
 [Unit tests](http://bjornharrtell.github.com/jsts/test/SpecRunner.html) are made
 using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
 
+A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). 
+
 A [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
 [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides
 additional tests.
