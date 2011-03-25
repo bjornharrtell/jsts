@@ -1,0 +1,105 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * Supplies a set of utility methods for building Geometry objects from lists
+<span class='line'>  9</span>  * of Coordinates.
+<span class='line'> 10</span>  *
+<span class='line'> 11</span>  * Note that the factory constructor methods do &lt;b>not&lt;/b> change the input
+<span class='line'> 12</span>  * coordinates in any way.
+<span class='line'> 13</span>  *
+<span class='line'> 14</span>  * In particular, they are not rounded to the supplied &lt;tt>PrecisionModel&lt;/tt>.
+<span class='line'> 15</span>  * It is assumed that input Coordinates meet the given precision.
+<span class='line'> 16</span>  */</span><span class="WHIT">
+<span class='line'> 17</span> 
+<span class='line'> 18</span> 
+<span class='line'> 19</span> 
+<span class='line'> 20</span> </span><span class="COMM">/**
+<span class='line'> 21</span>  * Constructs a GeometryFactory that generates Geometries having a floating
+<span class='line'> 22</span>  * PrecisionModel and a spatial-reference ID of 0.
+<span class='line'> 23</span>  * @constructor
+<span class='line'> 24</span>  */</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="NAME">jsts.geom.GeometryFactory</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> 
+<span class='line'> 27</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> 
+<span class='line'> 29</span> 
+<span class='line'> 30</span> </span><span class="COMM">/**
+<span class='line'> 31</span>  * Creates a Point using the given Coordinate; a null Coordinate will create an
+<span class='line'> 32</span>  * empty Geometry.
+<span class='line'> 33</span>  *
+<span class='line'> 34</span>  * @param {Coordinate}
+<span class='line'> 35</span>  *          coordinate Coordinate to base this Point on.
+<span class='line'> 36</span>  * @return {Point} A new Point.
+<span class='line'> 37</span>  */</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="NAME">jsts.geom.GeometryFactory.prototype.createPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">coordinate</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">coordinate</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Point</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Point</span><span class="PUNC">(</span><span class="NAME">coordinate.x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">coordinate.y</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> 
+<span class='line'> 45</span> 
+<span class='line'> 46</span> </span><span class="COMM">/**
+<span class='line'> 47</span>  * Creates a LineString using the given Coordinates; a null or empty array will
+<span class='line'> 48</span>  * create an empty LineString. Consecutive points must not be equal.
+<span class='line'> 49</span>  *
+<span class='line'> 50</span>  * @param {Coordinate[]}
+<span class='line'> 51</span>  *          coordinates an array without null elements, or an empty array, or
+<span class='line'> 52</span>  *          null.
+<span class='line'> 53</span>  * @return {LineString} A new LineString.
+<span class='line'> 54</span>  */</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="NAME">jsts.geom.GeometryFactory.prototype.createLineString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">coordinates</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineString</span><span class="PUNC">(</span><span class="NAME">coordinates</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> 
+<span class='line'> 59</span> 
+<span class='line'> 60</span> </span><span class="COMM">/**
+<span class='line'> 61</span>  * Creates a LinearRing using the given Coordinates; a null or empty array will
+<span class='line'> 62</span>  * create an empty LinearRing. The points must form a closed and simple
+<span class='line'> 63</span>  * linestring. Consecutive points must not be equal.
+<span class='line'> 64</span>  *
+<span class='line'> 65</span>  * @param {Coordinate[]} coordinates
+<span class='line'> 66</span>  *          an array without null elements, or an empty array, or null.
+<span class='line'> 67</span>  * @return {LinearRing} A new LinearRing.
+<span class='line'> 68</span>  */</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="NAME">jsts.geom.GeometryFactory.prototype.createLinearRing</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">coordinates</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LinearRing</span><span class="PUNC">(</span><span class="NAME">coordinates</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span> 
+<span class='line'> 73</span> 
+<span class='line'> 74</span> </span><span class="COMM">/**
+<span class='line'> 75</span>  * Constructs a &lt;code>Polygon&lt;/code> with the given exterior boundary and
+<span class='line'> 76</span>  * interior boundaries.
+<span class='line'> 77</span>  *
+<span class='line'> 78</span>  * @param {LinearRing} shell
+<span class='line'> 79</span>  *            the outer boundary of the new &lt;code>Polygon&lt;/code>, or
+<span class='line'> 80</span>  *            &lt;code>null&lt;/code> or an empty &lt;code>LinearRing&lt;/code> if
+<span class='line'> 81</span>  *            the empty geometry is to be created.
+<span class='line'> 82</span>  * @param {LinearRing[]} holes
+<span class='line'> 83</span>  *            the inner boundaries of the new &lt;code>Polygon&lt;/code>, or
+<span class='line'> 84</span>  *            &lt;code>null&lt;/code> or empty &lt;code>LinearRing&lt;/code> s if
+<span class='line'> 85</span>  *            the empty geometry is to be created.
+<span class='line'> 86</span>  *        @return {Polygon} A new Polygon.
+<span class='line'> 87</span>  */</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="NAME">jsts.geom.GeometryFactory.prototype.createPolygon</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">shell</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">holes</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">rings</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="NAME">shell</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span> 
+<span class='line'> 91</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">holes</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">    </span><span class="NAME">rings</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">rings.concat</span><span class="PUNC">(</span><span class="NAME">holes</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 94</span> 
+<span class='line'> 95</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Polygon</span><span class="PUNC">(</span><span class="NAME">rings</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 97</span> 
+<span class='line'> 98</span> </span></pre></body></html>

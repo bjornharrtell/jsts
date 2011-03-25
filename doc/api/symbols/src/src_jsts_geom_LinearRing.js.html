@@ -1,0 +1,72 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * Models an OGC SFS &lt;code>LinearRing&lt;/code>.
+<span class='line'>  9</span>  * A LinearRing is a LineString which is both closed and simple.
+<span class='line'> 10</span>  * In other words,
+<span class='line'> 11</span>  * the first and last coordinate in the ring must be equal,
+<span class='line'> 12</span>  * and the interior of the ring must not self-intersect.
+<span class='line'> 13</span>  * Either orientation of the ring is allowed.
+<span class='line'> 14</span>  * &lt;p>
+<span class='line'> 15</span>  * A ring must have either 0 or 4 or more points.
+<span class='line'> 16</span>  * The first and last points must be equal (in 2D).
+<span class='line'> 17</span>  * If these conditions are not met, the constructors throw
+<span class='line'> 18</span>  * an {@link IllegalArgumentException}
+<span class='line'> 19</span>  *
+<span class='line'> 20</span>  * @requires jsts/geom/LineString.js
+<span class='line'> 21</span>  */</span><span class="WHIT">
+<span class='line'> 22</span> 
+<span class='line'> 23</span> 
+<span class='line'> 24</span> 
+<span class='line'> 25</span> </span><span class="COMM">/**
+<span class='line'> 26</span>  * @constructor
+<span class='line'> 27</span>  * @augments OpenLayers.Geometry.LinearRing
+<span class='line'> 28</span>  * @augments jsts.geom.LineString
+<span class='line'> 29</span>  */</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="NAME">jsts.geom.LinearRing</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="NAME">jsts.geom.LinearRing</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="NAME">jsts.geom.LineString</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> 
+<span class='line'> 34</span> 
+<span class='line'> 35</span> </span><span class="COMM">/**
+<span class='line'> 36</span>  * Returns &lt;code>Dimension.FALSE&lt;/code>, since by definition LinearRings do
+<span class='line'> 37</span>  * not have a boundary.
+<span class='line'> 38</span>  *
+<span class='line'> 39</span>  * @return {int} Dimension.FALSE.
+<span class='line'> 40</span>  */</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="NAME">jsts.geom.LinearRing.prototype.getBoundaryDimension</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> 
+<span class='line'> 45</span> 
+<span class='line'> 46</span> </span><span class="COMM">/**
+<span class='line'> 47</span>  * Returns &lt;code>true&lt;/code>, since by definition LinearRings are always
+<span class='line'> 48</span>  * simple.
+<span class='line'> 49</span>  *
+<span class='line'> 50</span>  * @return {Boolean} &lt;code>true.&lt;/code>
+<span class='line'> 51</span>  *
+<span class='line'> 52</span>  * @see Geometry#isSimple
+<span class='line'> 53</span>  */</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="NAME">jsts.geom.LinearRing.prototype.isSimple</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> 
+<span class='line'> 58</span> 
+<span class='line'> 59</span> </span><span class="COMM">/**
+<span class='line'> 60</span>  * @return {String} String representation of LinearRing type.
+<span class='line'> 61</span>  */</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="NAME">jsts.geom.LinearRing.prototype.getGeometryType</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'LinearRing'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span></pre></body></html>

@@ -1,0 +1,110 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="WHIT">
+<span class='line'>  2</span> 
+<span class='line'>  3</span> </span><span class="COMM">/**
+<span class='line'>  4</span>  * QuadRoot is the root of a single Quadtree. It is centred at the origin, and
+<span class='line'>  5</span>  * does not have a defined extent.
+<span class='line'>  6</span>  *
+<span class='line'>  7</span>  */</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="NAME">jsts.index.quadtree.Root</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="NAME">jsts.index.quadtree.NodeBase</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  9</span> 
+<span class='line'> 10</span> 
+<span class='line'> 11</span> </span><span class="COMM">/**
+<span class='line'> 12</span>  * Initilalizes a root using the inheritance mechanism provided by OpenLayers.
+<span class='line'> 13</span>  */</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="NAME">jsts.index.quadtree.Root.prototype.initialize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="NAME">jsts.index.quadtree.NodeBase.prototype.initialize.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> 
+<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="COMM">// the root quad is centred at the origin.</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">  </span><span class="NAME">this.origin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NUMB">0.0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> 
+<span class='line'> 21</span> 
+<span class='line'> 22</span> </span><span class="COMM">/**
+<span class='line'> 23</span>  * Insert an item into the quadtree this is the root of.
+<span class='line'> 24</span>  *
+<span class='line'> 25</span>  * @param {jsts.geom.Envelope}
+<span class='line'> 26</span>  *          itemEnv the item envelope.
+<span class='line'> 27</span>  * @param {Object}
+<span class='line'> 28</span>  *          item the item to insert.
+<span class='line'> 29</span>  */</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="NAME">jsts.index.quadtree.Root.prototype.insert</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">item</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">index</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getSubnodeIndex</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.origin</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> 
+<span class='line'> 33</span> </span><span class="WHIT">  </span><span class="COMM">// if index is -1, itemEnv must cross the X or Y axis.</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">index</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">    </span><span class="NAME">this.add</span><span class="PUNC">(</span><span class="NAME">item</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 39</span>    * the item must be contained in one quadrant, so insert it into the tree for
+<span class='line'> 40</span>    * that quadrant (which may not yet exist)
+<span class='line'> 41</span>    */</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.subnode</span><span class="PUNC">[</span><span class="NAME">index</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 44</span>    * If the subquad doesn't exist or this item is not contained in it, have to
+<span class='line'> 45</span>    * expand the tree upward to contain the item.
+<span class='line'> 46</span>    */</span><span class="WHIT">
+<span class='line'> 47</span> 
+<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node.getEnvelope</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">contains</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">largerNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.createExpanded</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">itemEnv</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">    </span><span class="NAME">this.subnode</span><span class="PUNC">[</span><span class="NAME">index</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">largerNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 53</span>    * At this point we have a subquad which exists and must contain contains the
+<span class='line'> 54</span>    * env for the item. Insert the item into the tree.
+<span class='line'> 55</span>    */</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">  </span><span class="NAME">this.insertContained</span><span class="PUNC">(</span><span class="NAME">this.subnode</span><span class="PUNC">[</span><span class="NAME">index</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">itemEnv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">item</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> 
+<span class='line'> 59</span> 
+<span class='line'> 60</span> </span><span class="COMM">/**
+<span class='line'> 61</span>  * insert an item which is known to be contained in the tree rooted at the given
+<span class='line'> 62</span>  * QuadNode root. Lower levels of the tree will be created if necessary to hold
+<span class='line'> 63</span>  * the item.
+<span class='line'> 64</span>  *
+<span class='line'> 65</span>  * @param {jsts.index.quadtree.Node}
+<span class='line'> 66</span>  *          tree the root-node of the tree.
+<span class='line'> 67</span>  * @param {jsts.geom.Envelope}
+<span class='line'> 68</span>  *          itemEnv the envelope.
+<span class='line'> 69</span>  * @param {Object}
+<span class='line'> 70</span>  *          item the item to insert.
+<span class='line'> 71</span>  */</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="NAME">jsts.index.quadtree.Root.prototype.insertContained</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">tree</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">itemEnv</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">    </span><span class="NAME">item</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 75</span>    * Do NOT create a new quad for zero-area envelopes - this would lead to
+<span class='line'> 76</span>    * infinite recursion. Instead, use a heuristic of simply returning the
+<span class='line'> 77</span>    * smallest existing quad containing the query
+<span class='line'> 78</span>    */</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">isZeroX</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isZeroY</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">  </span><span class="NAME">isZeroX</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.index.IntervalSize.prototype.isZeroWidth</span><span class="PUNC">(</span><span class="NAME">itemEnv.getMinX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">      </span><span class="NAME">itemEnv.getMaxX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">  </span><span class="NAME">isZeroY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.index.IntervalSize.prototype.isZeroWidth</span><span class="PUNC">(</span><span class="NAME">itemEnv.getMinY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">      </span><span class="NAME">itemEnv.getMaxY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> 
+<span class='line'> 85</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isZeroX</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">isZeroY</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">    </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">tree.find</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">    </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">tree.getNode</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">  </span><span class="NAME">node.add</span><span class="PUNC">(</span><span class="NAME">item</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> 
+<span class='line'> 93</span> 
+<span class='line'> 94</span> </span><span class="COMM">/**
+<span class='line'> 95</span>  * Checks if the root is a search match.
+<span class='line'> 96</span>  *
+<span class='line'> 97</span>  * @param {jsts.geom.Envelope} searchEnv the envelope.
+<span class='line'> 98</span>  * @return {Boolean} Always returns true for a root node.
+<span class='line'> 99</span>  */</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="NAME">jsts.index.quadtree.Root.prototype.isSearchMatch</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">searchEnv</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>103</span> </span></pre></body></html>

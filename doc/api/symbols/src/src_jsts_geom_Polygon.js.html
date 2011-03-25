@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * Represents a linear polygon, which may include holes.
+<span class='line'>  9</span>  * The shell and holes of the polygon are represented by {@link LinearRing}s.
+<span class='line'> 10</span>  * In a valid polygon, holes may touch the shell or other holes at a single
+<span class='line'> 11</span>  * point. However, no sequence of touching holes may split the polygon into
+<span class='line'> 12</span>  * two pieces. The orientation of the rings in the polygon does not matter.
+<span class='line'> 13</span>  *
+<span class='line'> 14</span>  * The shell and holes must conform to the assertions specified in the &lt;A
+<span class='line'> 15</span>  * HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+<span class='line'> 16</span>  * Specification for SQL&lt;/A>.
+<span class='line'> 17</span>  */</span><span class="WHIT">
+<span class='line'> 18</span> 
+<span class='line'> 19</span> 
+<span class='line'> 20</span> 
+<span class='line'> 21</span> </span><span class="COMM">/**
+<span class='line'> 22</span>  * @augments OpenLayers.Geometry.MultiPolygon
+<span class='line'> 23</span>  * @augments jsts.geom.Geometry
+<span class='line'> 24</span>  * @constructor
+<span class='line'> 25</span>  */</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="NAME">jsts.geom.Polygon</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> </span><span class="NAME">jsts.geom.Polygon</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Geometry</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 31</span> </span></pre></body></html>
