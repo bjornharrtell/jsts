@@ -4,11 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+
+
 /**
  * The base class for nodes in a {@link Quadtree}.
- *
+ * @constructor
  */
-
 jsts.index.quadtree.NodeBase = OpenLayers.Class();
 
 

@@ -1,5 +1,6 @@
 
 
+
 /**
  * Provides a test for whether an interval is so small it should be considered
  * as zero for the purposes of inserting it into a binary tree. The reason this
@@ -7,6 +8,7 @@
  * subdivide an interval to fail, by computing a midpoint value which does not
  * lie strictly between the endpoints.
  *
+ * @constructor
  */
 jsts.index.IntervalSize = OpenLayers.Class();
 
