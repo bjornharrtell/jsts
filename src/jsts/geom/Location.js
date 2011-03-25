@@ -5,12 +5,13 @@
  */
 
 
+
 /**
  * Constants representing the different topological locations which can occur in
  * a {@link Geometry}. The constants are also used as the row and column
  * indices of DE-9IM {@link IntersectionMatrix}es.
  *
- * @type {int}
+ * @constructor
  */
 jsts.geom.Location = function() {
 };

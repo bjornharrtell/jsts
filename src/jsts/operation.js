@@ -6,6 +6,6 @@
 
 
 /**
- * operation namespace
+ * @namespace
  */
 jsts.operation = {};

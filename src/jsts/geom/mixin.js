@@ -10,6 +10,16 @@
  * jsts.geom.* as an alias.
  *
  * Note that jsts.geom.Point is unified with jsts.geom.Coordinate.
+ *
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geom/MultiPolygon.js
  */
 
 

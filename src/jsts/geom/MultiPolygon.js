@@ -5,11 +5,16 @@
  */
 
 
+/**
+ * @requires jsts/geom/GeometryCollection.js
+ */
+
+
 
 /**
  * @constructor
- * @extends {OpenLayers.Geometry.LineString}
- * @extends {jsts.geom.Geometry}
+ * @augments OpenLayers.Geometry.MultiPolygon
+ * @augments jsts.geom.GeometryCollection
  */
 jsts.geom.MultiPolygon = function() {
 

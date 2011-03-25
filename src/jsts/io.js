@@ -6,6 +6,6 @@
 
 
 /**
- * io namespace
+ * @namespace
  */
 jsts.io = {};
