@@ -70,15 +70,16 @@ jsts.geom.Envelope.prototype.maxy = null;
  */
 jsts.geom.Envelope.prototype.init = function() {
   if (typeof arguments[0] === 'number' && arguments.length === 4) {
-    this.initFromValues(arguments[0], arguments[1], arguments[2], arguments[3]);
-  } else if (arguments[0] instanceof jsts.geom.Coordinate &&
-      arguments.length === 1) {
+    this
+        .initFromValues(arguments[0], arguments[1], arguments[2], arguments[3]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate
+      && arguments.length === 1) {
     this.initFromCoordinate(arguments[0]);
-  } else if (arguments[0] instanceof jsts.geom.Coordinate &&
-      arguments.length === 2) {
+  } else if (arguments[0] instanceof jsts.geom.Coordinate
+      && arguments.length === 2) {
     this.initFromCoordinates(arguments[0], arguments[1]);
-  } else if (arguments[0] instanceof jsts.geom.Envelope &&
-      arguments.length === 1) {
+  } else if (arguments[0] instanceof jsts.geom.Envelope
+      && arguments.length === 1) {
     this.initFromEnvelope(arguments[0]);
   }
 };
@@ -116,7 +117,8 @@ jsts.geom.Envelope.prototype.initFromValues = function(x1, x2, y1, y2) {
 
 
 /**
- * Initialize an <code>Envelope</code> to a region defined by two Coordinates.
+ * Initialize an <code>Envelope</code> to a region defined by two
+ * Coordinates.
  *
  * @param {jsts.geom.Coordinate}
  *          p1 the first Coordinate.
@@ -181,7 +183,8 @@ jsts.geom.Envelope.prototype.isNull = function() {
 /**
  * Returns the difference between the maximum and minimum y values.
  *
- * @return {double} max y - min y, or 0 if this is a null <code>Envelope.</code>
+ * @return {double} max y - min y, or 0 if this is a null
+ *         <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.getHeight = function() {
   if (this.isNull()) {
@@ -194,7 +197,8 @@ jsts.geom.Envelope.prototype.getHeight = function() {
 /**
  * Returns the difference between the maximum and minimum x values.
  *
- * @return {double} max x - min x, or 0 if this is a null <code>Envelope.</code>
+ * @return {double} max x - min x, or 0 if this is a null
+ *         <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.getWidth = function() {
   if (this.isNull()) {
@@ -426,8 +430,8 @@ jsts.geom.Envelope.prototype.translate = function(transX, transY) {
  * Computes the coordinate of the centre of this envelope (as long as it is
  * non-null
  *
- * @return {Coordinate} the centre coordinate of this envelope <code>null</code>
- *         if the envelope is null.
+ * @return {Coordinate} the centre coordinate of this envelope
+ *         <code>null</code> if the envelope is null.
  */
 jsts.geom.Envelope.prototype.centre = function() {
   if (this.isNull()) {
@@ -462,8 +466,8 @@ jsts.geom.Envelope.prototype.intersection = function(env) {
 
 
 /**
- * Check if the region defined by input overlaps (intersects) the region of this
- * <code>Envelope</code>.
+ * Check if the region defined by input overlaps (intersects) the region of
+ * this <code>Envelope</code>.
  *
  * Will call appropriate intersects* depending on arguments.
  *
@@ -481,8 +485,8 @@ jsts.geom.Envelope.prototype.intersects = function() {
 
 
 /**
- * Check if the region defined by <code>other</code> overlaps (intersects) the
- * region of this <code>Envelope</code>.
+ * Check if the region defined by <code>other</code> overlaps (intersects)
+ * the region of this <code>Envelope</code>.
  *
  * @param {Envelope}
  *          other the <code>Envelope</code> which this <code>Envelope</code>
@@ -494,15 +498,15 @@ jsts.geom.Envelope.prototype.intersectsEnvelope = function(other) {
   if (this.isNull() || other.isNull()) {
     return false;
   }
-  var result = !(other.minx > this.maxx || other.maxx < this.minx ||
-      other.miny > this.maxy || other.maxy < this.miny); 
+  var result = !(other.minx > this.maxx || other.maxx < this.minx
+      || other.miny > this.maxy || other.maxy < this.miny);
   return result;
 };
 
 
 /**
- * Check if the point <code>p</code> overlaps (lies inside) the region of this
- * <code>Envelope</code>.
+ * Check if the point <code>p</code> overlaps (lies inside) the region of
+ * this <code>Envelope</code>.
  *
  * @param {Coordinate}
  *          p the <code>Coordinate</code> to be tested.
@@ -515,8 +519,8 @@ jsts.geom.Envelope.prototype.intersectsCoordinate = function(p) {
 
 
 /**
- * Check if the point <code>(x, y)</code> overlaps (lies inside) the region of
- * this <code>Envelope</code>.
+ * Check if the point <code>(x, y)</code> overlaps (lies inside) the region
+ * of this <code>Envelope</code>.
  *
  * @param {double}
  *          x the x-ordinate of the point.
@@ -539,8 +543,8 @@ jsts.geom.Envelope.prototype.intersectsValues = function(x, y) {
  * (inclusive of the boundary).
  *
  * Will call appropriate contains* depending on arguments.
- * @return {boolean} true if input is contained in this
- *         <code>Envelope.</code>
+ *
+ * @return {boolean} true if input is contained in this <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.contains = function() {
   if (arguments[0] instanceof jsts.geom.Envelope) {
@@ -581,8 +585,8 @@ jsts.geom.Envelope.prototype.containsEnvelope = function(other) {
  * @param {Coordinate}
  *          p the point which this <code>Envelope</code> is being checked for
  *          containing.
- * @return {boolean} <code>true</code> if the point lies in the interior or on
- *         the boundary of this <code>Envelope</code>.
+ * @return {boolean} <code>true</code> if the point lies in the interior or
+ *         on the boundary of this <code>Envelope</code>.
  *
  * @see covers(Coordinate)
  */
@@ -655,8 +659,8 @@ jsts.geom.Envelope.prototype.coversValues = function(x, y) {
  * @param {Coordinate}
  *          p the point which this <code>Envelope</code> is being checked for
  *          containing.
- * @return {boolean} <code>true</code> if the point lies in the interior or on
- *         the boundary of this <code>Envelope</code>.
+ * @return {boolean} <code>true</code> if the point lies in the interior or
+ *         on the boundary of this <code>Envelope</code>.
  */
 jsts.geom.Envelope.prototype.coversCoordinate = function(p) {
   return this.coversValues(p.x, p.y);
@@ -676,8 +680,8 @@ jsts.geom.Envelope.prototype.coversEnvelope = function(other) {
   if (this.isNull() || other.isNull()) {
     return false;
   }
-  return other.minx >= this.minx && other.maxx <= this.maxx &&
-      other.miny >= this.miny && other.maxy <= this.maxy;
+  return other.minx >= this.minx && other.maxx <= this.maxx
+      && other.miny >= this.miny && other.maxy <= this.maxy;
 };
 
 
@@ -730,8 +734,8 @@ jsts.geom.Envelope.prototype.equals = function(other) {
   if (this.isNull()) {
     return other.isNull();
   }
-  return this.maxx === other.maxx && this.maxy === other.maxy &&
-      this.minx === other.minx && this.miny === other.miny;
+  return this.maxx === other.maxx && this.maxy === other.maxy
+      && this.minx === other.minx && this.miny === other.miny;
 };
 
 
@@ -739,8 +743,8 @@ jsts.geom.Envelope.prototype.equals = function(other) {
  * @return {String} String representation of this <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.toString = function() {
-  return 'Env[' + this.minx + ' : ' + this.maxx + ', ' + this.miny + ' : ' +
-      this.maxy + ']';
+  return 'Env[' + this.minx + ' : ' + this.maxx + ', ' + this.miny + ' : '
+      + this.maxy + ']';
 };
 
 
@@ -769,8 +773,8 @@ jsts.geom.Envelope.intersectsPoint = function(p1, p2, q) {
 
 
 /**
- * Test the envelope defined by p1-p2 for intersection with the envelope defined
- * by q1-q2
+ * Test the envelope defined by p1-p2 for intersection with the envelope
+ * defined by q1-q2
  *
  * @param {jsts.geom.Coordinate}
  *          p1 one extremal point of the envelope P.
