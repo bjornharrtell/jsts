@@ -19,8 +19,12 @@
 
 
 /**
+ * @augments OpenLayers.Geometry.MultiPolygon
+ * @augments jsts.geom.Geometry
  * @constructor
  */
 jsts.geom.Polygon = function() {
 
 };
+
+jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);

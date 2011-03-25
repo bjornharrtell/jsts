@@ -4,12 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Geometry.js
+ */
+
 
 
 /**
  * @constructor
- * @extends {OpenLayers.Geometry.Collection}
- * @extends {jsts.geom.Geometry}
+ * @augments OpenLayers.Geometry.Collection
+ * @augments jsts.geom.Geometry
  */
 jsts.geom.GeometryCollection = function() {
 };

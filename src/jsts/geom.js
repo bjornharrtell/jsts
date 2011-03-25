@@ -6,7 +6,7 @@
 
 
 /**
- * geom namespace
+ * @namespace
  */
 jsts.geom = {
 

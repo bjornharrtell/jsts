@@ -4,6 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+
+
 /**
  * Writes the Well-Known Text representation of a {@link Geometry}. The
  * Well-Known Text format is defined in the <A
@@ -18,8 +20,8 @@
  * Under the spec, rings are output as <code>LINESTRING</code>s.
  *
  * @see WKTReader
+ * @constructor
  */
-
 jsts.io.WKTWriter = function() {
 };
 

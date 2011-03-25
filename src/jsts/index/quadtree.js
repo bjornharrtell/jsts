@@ -6,7 +6,7 @@
 
 
 /**
- * quadtree namespace
+ * @namespace
  */
 jsts.index.quadtree = {
 

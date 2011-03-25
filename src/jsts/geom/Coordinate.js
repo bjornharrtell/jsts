@@ -11,14 +11,16 @@
  * additional information such as an envelope, a precision model, and spatial
  * reference system information), a <code>Coordinate</code> only contains
  * coordinate values and accessor methods.
+ *
+ * @requires jsts/geom/Geometry.js
  */
 
 
 
 /**
  * @constructor
- * @extends {OpenLayers.Geometry.Point}
- * @extends {jsts.geom.Geometry}
+ * @augments OpenLayers.Geometry.Point
+ * @augments jsts.geom.Geometry
  */
 jsts.geom.Coordinate = function() {
 };
