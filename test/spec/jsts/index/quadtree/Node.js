@@ -9,6 +9,6 @@ describe('jsts.index.quadtree.Node', function() {
   });
   
   it('has a subnodearray of length 4', function() {
-    expect(node.subnode.length === 4);
+    expect(node.subnode.length).toBe(4);
   });
 });

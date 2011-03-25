@@ -45,7 +45,7 @@ jsts.index.quadtree.NodeBase.prototype.initialize = function() {
  *          centre The coordinate.
  * @return {Number} The sub-index or -1.
  */
-jsts.index.quadtree.NodeBase.prototype.gutSubnodeIndex = function(env, centre) {
+jsts.index.quadtree.NodeBase.prototype.getSubnodeIndex = function(env, centre) {
   var subnodeIndex = -1;
   if (env.getMinX() >= centre.x) {
     if (env.getMinY() >= centre.y) {
@@ -132,7 +132,7 @@ jsts.index.quadtree.NodeBase.prototype.remove = function(itemEnv, item) {
   }
   // otherwise, try and remove the item from the list of items in this node
 
-  if (OpenLayers.Util.indexOf(item) !== -1) {
+  if (OpenLayers.Util.indexOf(this.items, item) !== -1) {
     OpenLayers.Util.removeItem(this.items, item);
     found = true;
   }
@@ -197,7 +197,8 @@ jsts.index.quadtree.NodeBase.prototype.addAllItems = function(resultItems) {
   var i = 0;
   for (i; i < 4; i++) {
     if (this.subnode[i] !== null) {
-      resultItems = resultItems.concat(this.subnode[i]);
+      resultItems = this.subnode[i].addAllItems(resultItems);
+      //resultItems = resultItems.concat(this.subnode[i]);
     }
   }
 
