@@ -46,7 +46,7 @@ jsts.index.quadtree.Root.prototype.insert = function(itemEnv, item) {
    */
 
   if (node === null || !node.getEnvelope().contains(itemEnv)) {
-    var largerNode = node.createExpanded(node, itemEnv);
+    var largerNode = jsts.index.quadtree.Node.prototype.createExpanded(node, itemEnv);
     this.subnode[index] = largerNode;
   }
   /**
