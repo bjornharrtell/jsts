@@ -11,125 +11,128 @@
 <span class='line'>  4</span>  * See /license.txt for the full text of the license.
 <span class='line'>  5</span>  */</span><span class="WHIT">
 <span class='line'>  6</span> 
-<span class='line'>  7</span> </span><span class="COMM">/**
-<span class='line'>  8</span>  * DoubleBits manipulates Double numbers by using bit manipulation and bit-field
-<span class='line'>  9</span>  * extraction. For some operations (such as determining the exponent) this is
-<span class='line'> 10</span>  * more accurate than using mathematical operations (which suffer from round-off
-<span class='line'> 11</span>  * error).
-<span class='line'> 12</span>  * &lt;p>
-<span class='line'> 13</span>  * The algorithms and constants in this class apply only to IEEE-754
-<span class='line'> 14</span>  * double-precision floating point format.
-<span class='line'> 15</span>  *
-<span class='line'> 16</span>  * NOTE: Since the only numberformat in JavaScript is IEEE-754 the code in
-<span class='line'> 17</span>  * DoubleBits could not be easily ported.
-<span class='line'> 18</span>  *
-<span class='line'> 19</span>  * Instead, using algorithms found here:
-<span class='line'> 20</span>  * http://www.merlyn.demon.co.uk/js-exact.htm
-<span class='line'> 21</span>  */</span><span class="WHIT">
-<span class='line'> 22</span> 
-<span class='line'> 23</span> </span><span class="NAME">jsts.index.DoubleBits</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 24</span> 
-<span class='line'> 25</span> 
-<span class='line'> 26</span> </span><span class="COMM">/**
-<span class='line'> 27</span>  * Calculates the power of two for a number
-<span class='line'> 28</span>  *
-<span class='line'> 29</span>  * @param {Number}
-<span class='line'> 30</span>  *          exp value to pow.
-<span class='line'> 31</span>  * @return {Number} the pow'ed value.
-<span class='line'> 32</span>  */</span><span class="WHIT">
-<span class='line'> 33</span> </span><span class="NAME">jsts.index.DoubleBits.prototype.powerOf2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">exp</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="WHIT">  </span><span class="COMM">// TODO: Make sure the accuracy of this is sufficient (why else would JTS have</span><span class="WHIT">
-<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="COMM">// this in DoubleBits?)</span><span class="WHIT">
-<span class='line'> 36</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NAME">exp</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 37</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 38</span> 
-<span class='line'> 39</span> 
-<span class='line'> 40</span> </span><span class="COMM">/**
-<span class='line'> 41</span>  * Calculates the exponent-part of the bit-pattern for a number
-<span class='line'> 42</span>  *
-<span class='line'> 43</span>  * @param {Number}
-<span class='line'> 44</span>  *          d the IEEE-754-value to calculate the exponent for.
-<span class='line'> 45</span>  * @return {Number} the exponent part of the bit-mask.
-<span class='line'> 46</span>  */</span><span class="WHIT">
-<span class='line'> 47</span> </span><span class="NAME">jsts.index.DoubleBits.prototype.exponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.index.DoubleBits.prototype.CVTFWD</span><span class="PUNC">(</span><span class="NUMB">64</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1023</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 49</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 50</span> 
-<span class='line'> 51</span> 
-<span class='line'> 52</span> </span><span class="COMM">/**
-<span class='line'> 53</span>  * Calculates the exponent of the bit-pattern for a number. Uses code from:
-<span class='line'> 54</span>  * http://www.merlyn.demon.co.uk/js-exact.htm
-<span class='line'> 55</span>  *
-<span class='line'> 56</span>  * @param {Number}
-<span class='line'> 57</span>  *          NumW 32 or 64 to denote the number of bits.
-<span class='line'> 58</span>  * @param {Number}
-<span class='line'> 59</span>  *          Qty the number to calculate the bit pattern for.
-<span class='line'> 60</span>  * @return {Number} The integer value of the exponent.
-<span class='line'> 61</span>  */</span><span class="WHIT">
-<span class='line'> 62</span> </span><span class="NAME">jsts.index.DoubleBits.prototype.CVTFWD</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">NumW</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Qty</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 63</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Sign</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Mant</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Bin</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">nb01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// , OutW = NumW/4</span><span class="WHIT">
-<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Inf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 65</span> </span><span class="WHIT">    </span><span class="NUMB">32</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 66</span> </span><span class="WHIT">      </span><span class="NAME">d</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x7F</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 67</span> </span><span class="WHIT">      </span><span class="NAME">c</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x80</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 68</span> </span><span class="WHIT">      </span><span class="NAME">b</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 69</span> </span><span class="WHIT">      </span><span class="NAME">a</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT">
-<span class='line'> 70</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 71</span> </span><span class="WHIT">    </span><span class="NUMB">64</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 72</span> </span><span class="WHIT">      </span><span class="NAME">d</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x7FF0</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 73</span> </span><span class="WHIT">      </span><span class="NAME">c</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 74</span> </span><span class="WHIT">      </span><span class="NAME">b</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 75</span> </span><span class="WHIT">      </span><span class="NAME">a</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT">
-<span class='line'> 76</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 77</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 78</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 79</span> </span><span class="WHIT">    </span><span class="NUMB">32</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">8</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 80</span> </span><span class="WHIT">    </span><span class="NUMB">64</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">11</span><span class="WHIT">
-<span class='line'> 81</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">[</span><span class="NAME">NumW</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">MtW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">NumW</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 82</span> 
-<span class='line'> 83</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">Bin</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 84</span> </span><span class="WHIT">    </span><span class="NAME">Sign</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Qty</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">Qty</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// OK for +-0</span><span class="WHIT">
-<span class='line'> 85</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">isFinite</span><span class="PUNC">(</span><span class="NAME">Qty</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 86</span> </span><span class="WHIT">      </span><span class="NAME">Bin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Inf</span><span class="PUNC">[</span><span class="NAME">NumW</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 87</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Sign</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 88</span> </span><span class="WHIT">        </span><span class="NAME">Bin.d</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&lt;&lt;</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NumW</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 89</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 90</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 91</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 92</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 94</span> 
-<span class='line'> 95</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">Bin</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 96</span> </span><span class="WHIT">    </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 97</span> </span><span class="WHIT">      </span><span class="NUMB">32</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">127</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 98</span> </span><span class="WHIT">      </span><span class="NUMB">64</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">1023</span><span class="WHIT">
-<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">[</span><span class="NAME">NumW</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>100</span> </span><span class="WHIT">    </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">Qty</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>101</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>102</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>103</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>104</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>105</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>106</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="PUNC">--</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>107</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>108</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>109</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>110</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>111</span> </span><span class="WHIT">      </span><span class="NAME">nb01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'Zero or Denormal'</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>112</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>113</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NumW</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">32</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">254</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>114</span> </span><span class="WHIT">      </span><span class="NAME">nb01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'Too big for Single'</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>115</span> </span><span class="WHIT">      </span><span class="NAME">Bin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>116</span> </span><span class="WHIT">        </span><span class="NAME">d</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Sign</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NUMB">0xFF</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x7F</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>117</span> </span><span class="WHIT">        </span><span class="NAME">c</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x80</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>118</span> </span><span class="WHIT">        </span><span class="NAME">b</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>119</span> </span><span class="WHIT">        </span><span class="NAME">a</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT">
-<span class='line'>120</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>121</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>122</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>123</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>124</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>125</span> 
-<span class='line'>126</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>127</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>128</span> </span></pre></body></html>
+<span class='line'>  7</span> 
+<span class='line'>  8</span> 
+<span class='line'>  9</span> </span><span class="COMM">/**
+<span class='line'> 10</span>  * DoubleBits manipulates Double numbers by using bit manipulation and bit-field
+<span class='line'> 11</span>  * extraction. For some operations (such as determining the exponent) this is
+<span class='line'> 12</span>  * more accurate than using mathematical operations (which suffer from round-off
+<span class='line'> 13</span>  * error).
+<span class='line'> 14</span>  * &lt;p>
+<span class='line'> 15</span>  * The algorithms and constants in this class apply only to IEEE-754
+<span class='line'> 16</span>  * double-precision floating point format.
+<span class='line'> 17</span>  *
+<span class='line'> 18</span>  * NOTE: Since the only numberformat in JavaScript is IEEE-754 the code in
+<span class='line'> 19</span>  * DoubleBits could not be easily ported.
+<span class='line'> 20</span>  *
+<span class='line'> 21</span>  * Instead, using algorithms found here:
+<span class='line'> 22</span>  * http://www.merlyn.demon.co.uk/js-exact.htm
+<span class='line'> 23</span>  *
+<span class='line'> 24</span>  * @constructor
+<span class='line'> 25</span>  */</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="NAME">jsts.index.DoubleBits</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> 
+<span class='line'> 29</span> </span><span class="COMM">/**
+<span class='line'> 30</span>  * Calculates the power of two for a number
+<span class='line'> 31</span>  *
+<span class='line'> 32</span>  * @param {Number}
+<span class='line'> 33</span>  *          exp value to pow.
+<span class='line'> 34</span>  * @return {Number} the pow'ed value.
+<span class='line'> 35</span>  */</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="NAME">jsts.index.DoubleBits.prototype.powerOf2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">exp</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="COMM">// TODO: Make sure the accuracy of this is sufficient (why else would JTS have</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="COMM">// this in DoubleBits?)</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">exp</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> 
+<span class='line'> 43</span> </span><span class="COMM">/**
+<span class='line'> 44</span>  * Calculates the exponent-part of the bit-pattern for a number
+<span class='line'> 45</span>  *
+<span class='line'> 46</span>  * @param {Number}
+<span class='line'> 47</span>  *          d the IEEE-754-value to calculate the exponent for.
+<span class='line'> 48</span>  * @return {Number} the exponent part of the bit-mask.
+<span class='line'> 49</span>  */</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="NAME">jsts.index.DoubleBits.prototype.exponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.index.DoubleBits.prototype.CVTFWD</span><span class="PUNC">(</span><span class="NUMB">64</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1023</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> 
+<span class='line'> 54</span> 
+<span class='line'> 55</span> </span><span class="COMM">/**
+<span class='line'> 56</span>  * Calculates the exponent of the bit-pattern for a number. Uses code from:
+<span class='line'> 57</span>  * http://www.merlyn.demon.co.uk/js-exact.htm
+<span class='line'> 58</span>  *
+<span class='line'> 59</span>  * @param {Number}
+<span class='line'> 60</span>  *          NumW 32 or 64 to denote the number of bits.
+<span class='line'> 61</span>  * @param {Number}
+<span class='line'> 62</span>  *          Qty the number to calculate the bit pattern for.
+<span class='line'> 63</span>  * @return {Number} The integer value of the exponent.
+<span class='line'> 64</span>  */</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="NAME">jsts.index.DoubleBits.prototype.CVTFWD</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">NumW</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Qty</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Sign</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Mant</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Bin</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">nb01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// , OutW = NumW/4</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Inf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="NUMB">32</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">      </span><span class="NAME">d</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x7F</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">      </span><span class="NAME">c</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x80</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">      </span><span class="NAME">b</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">      </span><span class="NAME">a</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">    </span><span class="NUMB">64</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">      </span><span class="NAME">d</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x7FF0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">      </span><span class="NAME">c</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">      </span><span class="NAME">b</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">      </span><span class="NAME">a</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">    </span><span class="NUMB">32</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">8</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">    </span><span class="NUMB">64</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">11</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">[</span><span class="NAME">NumW</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">MtW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">NumW</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span> 
+<span class='line'> 86</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">Bin</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">    </span><span class="NAME">Sign</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Qty</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">Qty</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// OK for +-0</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">isFinite</span><span class="PUNC">(</span><span class="NAME">Qty</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">      </span><span class="NAME">Bin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Inf</span><span class="PUNC">[</span><span class="NAME">NumW</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Sign</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">        </span><span class="NAME">Bin.d</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&lt;&lt;</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NumW</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 97</span> 
+<span class='line'> 98</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">Bin</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">      </span><span class="NUMB">32</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">127</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">      </span><span class="NUMB">64</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">1023</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">[</span><span class="NAME">NumW</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">    </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">Qty</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="PUNC">--</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">      </span><span class="NAME">nb01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'Zero or Denormal'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NumW</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">32</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">254</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">      </span><span class="NAME">nb01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'Too big for Single'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">      </span><span class="NAME">Bin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">        </span><span class="NAME">d</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Sign</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NUMB">0xFF</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x7F</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">        </span><span class="NAME">c</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0x80</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">        </span><span class="NAME">b</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">        </span><span class="NAME">a</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">      </span><span class="NAME">Expo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ExW</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">      </span><span class="NAME">Mant</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>128</span> 
+<span class='line'>129</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Expo</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span></pre></body></html>

@@ -7,48 +7,50 @@
 	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
 	</style></head><body><pre><span class='line'>  1</span> <span class="WHIT">
 <span class='line'>  2</span> 
-<span class='line'>  3</span> </span><span class="COMM">/**
-<span class='line'>  4</span>  * Provides a test for whether an interval is so small it should be considered
-<span class='line'>  5</span>  * as zero for the purposes of inserting it into a binary tree. The reason this
-<span class='line'>  6</span>  * check is necessary is that round-off error can cause the algorithm used to
-<span class='line'>  7</span>  * subdivide an interval to fail, by computing a midpoint value which does not
-<span class='line'>  8</span>  * lie strictly between the endpoints.
-<span class='line'>  9</span>  *
-<span class='line'> 10</span>  */</span><span class="WHIT">
-<span class='line'> 11</span> </span><span class="NAME">jsts.index.IntervalSize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 12</span> 
-<span class='line'> 13</span> 
-<span class='line'> 14</span> </span><span class="COMM">/**
-<span class='line'> 15</span>  * This value is chosen to be a few powers of 2 less than the number of bits
-<span class='line'> 16</span>  * available in the double representation (i.e. 53). This should allow enough
-<span class='line'> 17</span>  * extra precision for simple computations to be correct, at least for
-<span class='line'> 18</span>  * comparison purposes.
-<span class='line'> 19</span>  */</span><span class="WHIT">
-<span class='line'> 20</span> </span><span class="NAME">jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">50</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 21</span> 
-<span class='line'> 22</span> 
-<span class='line'> 23</span> </span><span class="COMM">/**
-<span class='line'> 24</span>  * Computes whether the interval [min, max] is effectively zero width. I.e. the
-<span class='line'> 25</span>  * width of the interval is so much less than the location of the interval that
-<span class='line'> 26</span>  * the midpoint of the interval cannot be represented precisely.
-<span class='line'> 27</span>  *
-<span class='line'> 28</span>  * @param {Number}
-<span class='line'> 29</span>  *          min the min-value in the interval.
+<span class='line'>  3</span> 
+<span class='line'>  4</span> </span><span class="COMM">/**
+<span class='line'>  5</span>  * Provides a test for whether an interval is so small it should be considered
+<span class='line'>  6</span>  * as zero for the purposes of inserting it into a binary tree. The reason this
+<span class='line'>  7</span>  * check is necessary is that round-off error can cause the algorithm used to
+<span class='line'>  8</span>  * subdivide an interval to fail, by computing a midpoint value which does not
+<span class='line'>  9</span>  * lie strictly between the endpoints.
+<span class='line'> 10</span>  *
+<span class='line'> 11</span>  * @constructor
+<span class='line'> 12</span>  */</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="NAME">jsts.index.IntervalSize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span> 
+<span class='line'> 15</span> 
+<span class='line'> 16</span> </span><span class="COMM">/**
+<span class='line'> 17</span>  * This value is chosen to be a few powers of 2 less than the number of bits
+<span class='line'> 18</span>  * available in the double representation (i.e. 53). This should allow enough
+<span class='line'> 19</span>  * extra precision for simple computations to be correct, at least for
+<span class='line'> 20</span>  * comparison purposes.
+<span class='line'> 21</span>  */</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="NAME">jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">50</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> 
+<span class='line'> 24</span> 
+<span class='line'> 25</span> </span><span class="COMM">/**
+<span class='line'> 26</span>  * Computes whether the interval [min, max] is effectively zero width. I.e. the
+<span class='line'> 27</span>  * width of the interval is so much less than the location of the interval that
+<span class='line'> 28</span>  * the midpoint of the interval cannot be represented precisely.
+<span class='line'> 29</span>  *
 <span class='line'> 30</span>  * @param {Number}
-<span class='line'> 31</span>  *          max the max-value in the interval.
-<span class='line'> 32</span>  * @return {Boolean} true if the interval should be considered zero.
-<span class='line'> 33</span>  */</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="NAME">jsts.index.IntervalSize.prototype.isZeroWidth</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">min</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">max</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">max</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">min</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 36</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 37</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 39</span> 
-<span class='line'> 40</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">maxAbs</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">scaledInterval</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">level</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 41</span> </span><span class="WHIT">  </span><span class="NAME">maxAbs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.max</span><span class="PUNC">(</span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">min</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">max</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="NAME">scaledInterval</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">maxAbs</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 43</span> 
-<span class='line'> 44</span> </span><span class="WHIT">  </span><span class="NAME">level</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.index.DoubleBits.prototype.exponent</span><span class="PUNC">(</span><span class="NAME">scaledInterval</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 45</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">level</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NAME">jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 46</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 47</span> </span></pre></body></html>
+<span class='line'> 31</span>  *          min the min-value in the interval.
+<span class='line'> 32</span>  * @param {Number}
+<span class='line'> 33</span>  *          max the max-value in the interval.
+<span class='line'> 34</span>  * @return {Boolean} true if the interval should be considered zero.
+<span class='line'> 35</span>  */</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="NAME">jsts.index.IntervalSize.prototype.isZeroWidth</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">min</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">max</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">max</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">min</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">maxAbs</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">scaledInterval</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">level</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">  </span><span class="NAME">maxAbs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.max</span><span class="PUNC">(</span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">min</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">max</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">  </span><span class="NAME">scaledInterval</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">maxAbs</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 45</span> 
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="NAME">level</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.index.DoubleBits.prototype.exponent</span><span class="PUNC">(</span><span class="NAME">scaledInterval</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">level</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NAME">jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span> </span></pre></body></html>

@@ -7,36 +7,38 @@
 	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
 	</style></head><body><pre><span class='line'>  1</span> <span class="WHIT">
 <span class='line'>  2</span> 
-<span class='line'>  3</span> </span><span class="COMM">/**
-<span class='line'>  4</span>  * An array-visitor
-<span class='line'>  5</span>  */</span><span class="WHIT">
-<span class='line'>  6</span> </span><span class="NAME">jsts.index.ArrayListVisitor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>  7</span> 
-<span class='line'>  8</span> 
-<span class='line'>  9</span> </span><span class="COMM">/**
-<span class='line'> 10</span>  * Initializes this class with the openlayers inheritance mechanism
-<span class='line'> 11</span>  */</span><span class="WHIT">
-<span class='line'> 12</span> </span><span class="NAME">jsts.index.ArrayListVisitor.prototype.initialize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 13</span> </span><span class="WHIT">  </span><span class="NAME">this.items</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 14</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 15</span> 
-<span class='line'> 16</span> 
-<span class='line'> 17</span> </span><span class="COMM">/**
-<span class='line'> 18</span>  * Visits an item
-<span class='line'> 19</span>  * @param {Object}
-<span class='line'> 20</span>  *        item the item to visit.
-<span class='line'> 21</span>  */</span><span class="WHIT">
-<span class='line'> 22</span> </span><span class="NAME">jsts.index.ArrayListVisitor.prototype.visitItem</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">item</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 23</span> </span><span class="WHIT">  </span><span class="NAME">this.items.push</span><span class="PUNC">(</span><span class="NAME">item</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 24</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 25</span> 
-<span class='line'> 26</span> 
-<span class='line'> 27</span> </span><span class="COMM">/**
-<span class='line'> 28</span>  * Returns all visited items
-<span class='line'> 29</span>  * @return {Array}
-<span class='line'> 30</span>  *         An array with all visited items.
-<span class='line'> 31</span>  */</span><span class="WHIT">
-<span class='line'> 32</span> </span><span class="NAME">jsts.index.ArrayListVisitor.prototype.getItems</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 33</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.items</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 35</span> </span></pre></body></html>
+<span class='line'>  3</span> 
+<span class='line'>  4</span> </span><span class="COMM">/**
+<span class='line'>  5</span>  * An array-visitor
+<span class='line'>  6</span>  * @constructor
+<span class='line'>  7</span>  */</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="NAME">jsts.index.ArrayListVisitor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  9</span> 
+<span class='line'> 10</span> 
+<span class='line'> 11</span> </span><span class="COMM">/**
+<span class='line'> 12</span>  * Initializes this class with the openlayers inheritance mechanism
+<span class='line'> 13</span>  */</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="NAME">jsts.index.ArrayListVisitor.prototype.initialize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="NAME">this.items</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span> 
+<span class='line'> 18</span> 
+<span class='line'> 19</span> </span><span class="COMM">/**
+<span class='line'> 20</span>  * Visits an item
+<span class='line'> 21</span>  * @param {Object}
+<span class='line'> 22</span>  *        item the item to visit.
+<span class='line'> 23</span>  */</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="NAME">jsts.index.ArrayListVisitor.prototype.visitItem</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">item</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="NAME">this.items.push</span><span class="PUNC">(</span><span class="NAME">item</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> 
+<span class='line'> 29</span> </span><span class="COMM">/**
+<span class='line'> 30</span>  * Returns all visited items
+<span class='line'> 31</span>  * @return {Array}
+<span class='line'> 32</span>  *         An array with all visited items.
+<span class='line'> 33</span>  */</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="NAME">jsts.index.ArrayListVisitor.prototype.getItems</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.items</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span></pre></body></html>
