@@ -4,6 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+
+
 /**
  * DoubleBits manipulates Double numbers by using bit manipulation and bit-field
  * extraction. For some operations (such as determining the exponent) this is
@@ -18,8 +20,9 @@
  *
  * Instead, using algorithms found here:
  * http://www.merlyn.demon.co.uk/js-exact.htm
+ *
+ * @constructor
  */
-
 jsts.index.DoubleBits = OpenLayers.Class();
 
 
