@@ -106,7 +106,7 @@ jsts.operation.IsSimpleOp.prototype.isSimple = function() {
  */
 jsts.operation.IsSimpleOp.prototype.isSimpleLinearGeometry = function(geom) {
   if (geom.isEmpty()) return true;
-  var graph = new GeometryGraph(0, geom);
+  var graph = new jsts.geomgraph.GeometryGraph(0, geom);
   var li = new RobustLineIntersector();
   var si = graph.computeSelfNodes(li, true);
   // if no self-intersection, must be simple
