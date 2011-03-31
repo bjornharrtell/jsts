@@ -11,6 +11,7 @@
  */
 jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
   this.lineEdgeMap = {};
+  this.ptLocator = new PointLocator();
 
   this.argIndex = argIndex;
   this.parentGeom = parentGeom;
