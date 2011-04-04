@@ -149,9 +149,9 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSitesFromGeometry =
  */
 jsts.triangulate.DelauneyTriangulationBuilder.prototype
   .setSitesFromCollection = function(coords) {
-    // remove any duplicate points (they will cause the triangulation to fail)
-    this.siteCoords = this.unique(coords);
-};
+      // remove any duplicate points (they will cause the triangulation to fail)
+      this.siteCoords = this.unique(coords);
+    };
 
 
 /**
