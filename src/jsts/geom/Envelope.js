@@ -72,14 +72,14 @@ jsts.geom.Envelope.prototype.init = function() {
   if (typeof arguments[0] === 'number' && arguments.length === 4) {
     this
         .initFromValues(arguments[0], arguments[1], arguments[2], arguments[3]);
-  } else if (arguments[0] instanceof jsts.geom.Coordinate
-      && arguments.length === 1) {
+  } else if (arguments[0] instanceof jsts.geom.Coordinate &&
+      arguments.length === 1) {
     this.initFromCoordinate(arguments[0]);
-  } else if (arguments[0] instanceof jsts.geom.Coordinate
-      && arguments.length === 2) {
+  } else if (arguments[0] instanceof jsts.geom.Coordinate &&
+      arguments.length === 2) {
     this.initFromCoordinates(arguments[0], arguments[1]);
-  } else if (arguments[0] instanceof jsts.geom.Envelope
-      && arguments.length === 1) {
+  } else if (arguments[0] instanceof jsts.geom.Envelope &&
+      arguments.length === 1) {
     this.initFromEnvelope(arguments[0]);
   }
 };
@@ -680,8 +680,8 @@ jsts.geom.Envelope.prototype.coversEnvelope = function(other) {
   if (this.isNull() || other.isNull()) {
     return false;
   }
-  return other.minx >= this.minx && other.maxx <= this.maxx
-      && other.miny >= this.miny && other.maxy <= this.maxy;
+  return other.minx >= this.minx && other.maxx <= this.maxx &&
+      other.miny >= this.miny && other.maxy <= this.maxy;
 };
 
 
@@ -734,8 +734,8 @@ jsts.geom.Envelope.prototype.equals = function(other) {
   if (this.isNull()) {
     return other.isNull();
   }
-  return this.maxx === other.maxx && this.maxy === other.maxy
-      && this.minx === other.minx && this.miny === other.miny;
+  return this.maxx === other.maxx && this.maxy === other.maxy &&
+      this.minx === other.minx && this.miny === other.miny;
 };
 
 
@@ -743,8 +743,8 @@ jsts.geom.Envelope.prototype.equals = function(other) {
  * @return {String} String representation of this <code>Envelope.</code>
  */
 jsts.geom.Envelope.prototype.toString = function() {
-  return 'Env[' + this.minx + ' : ' + this.maxx + ', ' + this.miny + ' : '
-      + this.maxy + ']';
+  return 'Env[' + this.minx + ' : ' + this.maxx + ', ' + this.miny + ' : ' +
+      this.maxy + ']';
 };
 
 

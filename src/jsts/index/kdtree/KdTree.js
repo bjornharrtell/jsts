@@ -1,6 +1,7 @@
 /* Copyright (c) 2011 by The Authors.
  * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
+ * See /license-notice.txt for the full text of
+ * the license notice.
  * See /license.txt for the full text of the license.
  */
 
@@ -9,10 +10,10 @@
  * An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on
  * point data.
  * <p>
- * This implementation supports detecting and snapping points which are closer than a given
- * tolerance value. If the same point (up to tolerance) is inserted more than once a new node is
- * not created but the count of the existing node is incremented.
- *
+ * This implementation supports detecting and snapping points which are closer
+ * than a given tolerance value. If the same point (up to tolerance) is inserted
+ * more than once a new node is not created but the count of the existing node
+ * is incremented.
  */
 jsts.index.kdtree.KdTree = OpenLayers.Class();
 
@@ -23,7 +24,8 @@ jsts.index.kdtree.KdTree = OpenLayers.Class();
  * in the tree will be treated as identical to the existing point.
  *
  * @param {Number}
- *        tolerance (optional) the tolerance distance for considering two points equal.
+ *        tolerance (optional) the tolerance distance for considering two
+ *        points equal.
  */
 jsts.index.kdtree.KdTree.prototype.initialize = function(tolerance) {
   var tol = 0.0;
@@ -86,7 +88,8 @@ jsts.index.kdtree.KdTree.prototype.insertWithData = function(p, data) {
     return this.root;
   }
 
-  var currentNode = this.root, leafNode = this.root, isOddLevel = true, isLessThan = true;
+  var currentNode = this.root, leafNode = this.root, isOddLevel = true,
+      isLessThan = true;
 
   // traverse the tree first cutting the plane left-right the top-bottom
   while (currentNode !== last) {
@@ -104,7 +107,8 @@ jsts.index.kdtree.KdTree.prototype.insertWithData = function(p, data) {
 
     // test if point is already a node
     if (currentNode !== null) {
-      var isInTolerance = p.distance(currentNode.getCoordinate()) <= this.tolerance;
+      var isInTolerance = p.distance(currentNode.getCoordinate()) <=
+          this.tolerance;
 
       // check if point is already in tree (up to tolerance) and if so simply
       // return existing node
@@ -144,7 +148,8 @@ jsts.index.kdtree.KdTree.prototype.insertWithData = function(p, data) {
  * @param {Array}
  *        result the array to fill the result with.
  */
-jsts.index.kdtree.KdTree.prototype.queryNode = function(currentNode, bottomNode, queryEnv, odd, result) {
+jsts.index.kdtree.KdTree.prototype.queryNode = function(currentNode, bottomNode, 
+    queryEnv, odd, result) {
   if (currentNode === bottomNode) {
     return;
   }
@@ -179,6 +184,9 @@ jsts.index.kdtree.KdTree.prototype.queryNode = function(currentNode, bottomNode,
 
 /**
  * Will call the correct *query-function depending on arguments
+ *
+ * @return {Array{jsts.index.KdNode}}
+ *         The found nodes.
  */
 jsts.index.kdtree.KdTree.prototype.query = function() {
   if (arguments.length === 1) {
