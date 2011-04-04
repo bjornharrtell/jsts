@@ -1,6 +1,7 @@
 /* Copyright (c) 2011 by The Authors.
  * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
+ * See /license-notice.txt for the full text of the license
+ * notice.
  * See /license.txt for the full text of the license.
  */
 
@@ -54,7 +55,8 @@ jsts.index.kdtree.KdNode.prototype.initializeFromXY = function(x, y, data) {
  * @param {Object}
  *        data a data objects to associate with this node.
  */
-jsts.index.kdtree.KdNode.prototype.initialize.fromCoordinate = function(p, data) {
+jsts.index.kdtree.KdNode.prototype.initialize.fromCoordinate = function(p, 
+    data) {
   this.p = p;
   this.data = data;
 };
@@ -146,7 +148,8 @@ jsts.index.kdtree.KdNode.prototype.getCount = function() {
 
 
 /**
- * Tests whether more than one point with this value have been inserted (up to the tolerance)
+ * Tests whether more than one point with this value have been inserted
+ * (up to the tolerance)
  *
  * @return {Boolean}
  *         true if more than one point have been inserted with this value.
