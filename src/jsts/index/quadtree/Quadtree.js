@@ -5,6 +5,7 @@
 */
 
 
+
 /**
  * A Quadtree is a spatial index structure for efficient querying of 2D
  * rectangles. If other kinds of spatial objects need to be indexed they can be
@@ -26,6 +27,7 @@
  * This data structure is also known as an <i>MX-CIF quadtree</i> following the
  * usage of Samet and others.
  *
+ * @constructor
  */
 jsts.index.quadtree.Quadtree = OpenLayers.Class();
 

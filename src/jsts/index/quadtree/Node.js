@@ -5,10 +5,12 @@
  */
 
 
+
 /**
  * Represents a node of a {@link Quadtree}. Nodes contain items which have a
  * spatial extent corresponding to the node's position in the quadtree.
  *
+ * @constructor
  */
 jsts.index.quadtree.Node = OpenLayers.Class(jsts.index.quadtree.NodeBase);
 

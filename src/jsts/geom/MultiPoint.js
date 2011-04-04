@@ -4,12 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/GeometryCollection.js
+ */
+
 
 
 /**
  * @constructor
- * @extends {OpenLayers.Geometry.LineString}
- * @extends {jsts.geom.Geometry}
+ * @augments OpenLayers.Geometry.LineString
+ * @augments jsts.geom.Geometry
  */
 jsts.geom.MultiPoint = function() {
 

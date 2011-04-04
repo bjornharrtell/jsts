@@ -8,7 +8,7 @@
 
 /**
  * @constructor
- * @extends {jsts.geom.Coordinate}
+ * @augments jsts.geom.Coordinate
  */
 jsts.geom.Point = function() {
 };

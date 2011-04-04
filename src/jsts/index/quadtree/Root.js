@@ -5,10 +5,12 @@
 */
 
 
+
 /**
  * QuadRoot is the root of a single Quadtree. It is centred at the origin, and
  * does not have a defined extent.
  *
+ * @constructor
  */
 jsts.index.quadtree.Root = OpenLayers.Class(jsts.index.quadtree.NodeBase);
 

@@ -6,6 +6,6 @@
 
 
 /**
- * index namespace
+ * @namespace
  */
 jsts.index = {};

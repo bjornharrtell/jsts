@@ -5,11 +5,13 @@
  */
 
 
+
 /**
  * A Key is a unique identifier for a node in a quadtree. It contains a
  * lower-left point and a level number. The level number is the power of two for
- * the size of the node envelope
+ * the size of the node envelope.
  *
+ * @constructor
  */
 jsts.index.quadtree.Key = OpenLayers.Class();
 
