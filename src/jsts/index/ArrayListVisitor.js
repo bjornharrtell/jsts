@@ -5,8 +5,10 @@
 */
 
 
+
 /**
  * An array-visitor
+ * @constructor
  */
 jsts.index.ArrayListVisitor = OpenLayers.Class();
 

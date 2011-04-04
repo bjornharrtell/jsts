@@ -16,14 +16,16 @@
  * The first and last points must be equal (in 2D).
  * If these conditions are not met, the constructors throw
  * an {@link IllegalArgumentException}
+ *
+ * @requires jsts/geom/LineString.js
  */
 
 
 
 /**
  * @constructor
- * @extends {OpenLayers.Geometry.LinearRing}
- * @extends {jsts.geom.Geometry}
+ * @augments OpenLayers.Geometry.LinearRing
+ * @augments jsts.geom.LineString
  */
 jsts.geom.LinearRing = function() {
 };

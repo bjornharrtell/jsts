@@ -8,6 +8,6 @@
 /**
  * @namespace
  */
-jsts.geom = {
+jsts.geomgraph = {
 
 };

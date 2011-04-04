@@ -16,9 +16,11 @@
  */
 
 
+
 /**
  * Constructs a GeometryFactory that generates Geometries having a floating
  * PrecisionModel and a spatial-reference ID of 0.
+ * @constructor
  */
 jsts.geom.GeometryFactory = function() {
 
