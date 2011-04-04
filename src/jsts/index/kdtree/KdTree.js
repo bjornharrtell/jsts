@@ -81,7 +81,7 @@ jsts.index.kdtree.KdTree.prototype.insertCoordinate = function(p) {
  *         by testing returnedNode.getCount() > 1.
  */
 jsts.index.kdtree.KdTree.prototype.insertWithData = function(p, data) {
-  if (this.root == null) {
+  if (this.root === null) {
     this.root = new jsts.index.kdtree.KdNode(p, data);
     return this.root;
   }
