@@ -1016,7 +1016,7 @@ jsts.geom.Geometry.prototype.buffer = function(distance, quadrantSegments) {
  */
 jsts.geom.Geometry.prototype.buffer = function(distance, quadrantSegments,
     endCapStyle) {
-  return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
+  return jsts.operation.buffer.BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
 };
 
 
