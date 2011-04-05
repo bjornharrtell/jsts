@@ -38,3 +38,14 @@ jsts.error.AbstractMethodInvocationError = function() {
   this.message = 'Abstract method called, should be implemented in subclass.';
 };
 jsts.error.AbstractMethodInvocationError.prototype = new Error();
+
+
+
+/**
+ * @constructor
+ */
+jsts.error.NotImplementedError = function() {
+  this.name = 'NotImplementedError';
+  this.message = 'This method has not yet been implemented.';
+};
+jsts.error.NotImplementedError.prototype = new Error();

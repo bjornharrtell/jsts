@@ -38,8 +38,8 @@
 
 
 /**
- * Initializes a buffer computation for the given geometry with the given set
- * of parameters.
+ * Initializes a buffer computation for the given geometry with the given set of
+ * parameters.
  *
  * @param {Geometry}
  *          g the geometry to buffer.
@@ -49,7 +49,8 @@
  */
 jsts.operation.buffer.BufferOp = function(g, bufParams) {
   this.argGeom = g;
-  this.bufParams = bufParams ? bufParams : new jsts.operation.buffer.BufferParameters();
+  this.bufParams = bufParams ? bufParams
+      : new jsts.operation.buffer.BufferParameters();
 };
 
 
@@ -67,17 +68,17 @@ jsts.operation.buffer.BufferOp.MAX_PRECISION_DIGITS = 12;
 
 /**
  * Compute a scale factor to limit the precision of a given combination of
- * Geometry and buffer distance. The scale factor is determined by a
- * combination of the number of digits of precision in the (geometry + buffer
- * distance), limited by the supplied <code>maxPrecisionDigits</code> value.
+ * Geometry and buffer distance. The scale factor is determined by a combination
+ * of the number of digits of precision in the (geometry + buffer distance),
+ * limited by the supplied <code>maxPrecisionDigits</code> value.
  *
  * @param {Geometry}
  *          g the Geometry being buffered.
  * @param {double}
  *          distance the buffer distance.
  * @param {int}
- *          maxPrecisionDigits the max # of digits that should be allowed by
- *          the precision determined by the computed scale factor.
+ *          maxPrecisionDigits the max # of digits that should be allowed by the
+ *          precision determined by the computed scale factor.
  *
  * @return {double} a scale factor for the buffer computation.
  */
@@ -114,7 +115,7 @@ jsts.operation.buffer.BufferOp.bufferOp = function(g, distance) {
 
 
 /**
- * Comutes the buffer for a geometry for a given buffer distance and accuracy
+ * Computes the buffer for a geometry for a given buffer distance and accuracy
  * of approximation.
  *
  * @param {Geometry}
@@ -174,7 +175,7 @@ jsts.operation.buffer.BufferOp.bufferOp = function(g, distance,
  */
 jsts.operation.buffer.BufferOp.bufferOp = function(g, distance,
     quadrantSegments, endCapStyle) {
-  var bufOp = new BufferOp(g);
+  var bufOp = new jsts.operation.buffer.BufferOp(g);
   bufOp.setQuadrantSegments(quadrantSegments);
   bufOp.setEndCapStyle(endCapStyle);
   var geomBuf = bufOp.getResultGeometry(distance);
@@ -207,6 +208,31 @@ jsts.operation.buffer.BufferOp.prototype.resultGeometry = null;
 
 
 /**
+ * Specifies the end cap style of the generated buffer. The styles supported are
+ * {@link #CAP_ROUND}, {@link #CAP_BUTT}, and {@link #CAP_SQUARE}. The
+ * default is CAP_ROUND.
+ *
+ * @param {int}
+ *          endCapStyle the end cap style to specify.
+ */
+jsts.operation.buffer.BufferOp.prototype.setEndCapStyle = function(endCapStyle) {
+  this.bufParams.setEndCapStyle(endCapStyle);
+};
+
+
+/**
+ * Sets the number of segments used to approximate a angle fillet
+ *
+ * @param {int}
+ *          quadrantSegments the number of segments in a fillet for a quadrant.
+ */
+jsts.operation.buffer.BufferOp.prototype.setQuadrantSegments = function(
+    quadrantSegments) {
+  this.bufParams.setQuadrantSegments(quadrantSegments);
+};
+
+
+/**
  * Returns the buffer computed for a geometry for a given buffer distance.
  *
  * @param {double}
@@ -232,8 +258,7 @@ jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
   var argPM = argGeom.getPrecisionModel();
   if (argPM.getType() === PrecisionModel.FIXED) {
     this.bufferFixedPrecision(argPM);
-  }
-  else {
+  } else {
     this.bufferReducedPrecision();
   }
 };
@@ -269,8 +294,8 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
  */
 jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
   // use fast noding by default
-  var bufBuilder = new jsts.operation.buffer.BufferBuilder(bufParams);
-  resultGeometry = bufBuilder.buffer(argGeom, distance);
+  var bufBuilder = new jsts.operation.buffer.BufferBuilder(this.bufParams);
+  resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
 };
 
 

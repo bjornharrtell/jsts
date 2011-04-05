@@ -76,4 +76,59 @@ jsts.operation.buffer.BufferParameters.DEFAULT_QUADRANT_SEGMENTS = 8;
  */
 jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT = 5.0;
 
+
+/**
+ * @type {int}
+ * @private
+ */
+jsts.operation.buffer.BufferParameters.prototype.quadrantSegments = jsts.operation.buffer.BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
+
+
+/**
+ * @type {int}
+ * @private
+ */
+jsts.operation.buffer.BufferParameters.prototype.endCapStyle = jsts.operation.buffer.BufferParameters.CAP_ROUND;
+
+
+/**
+ * @type {int}
+ * @private
+ */
+jsts.operation.buffer.BufferParameters.prototype.joinStyle = jsts.operation.buffer.BufferParameters.JOIN_ROUND;
+
+
+/**
+ * @type {double}
+ * @private
+ */
+jsts.operation.buffer.BufferParameters.prototype.mitreLimit = jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT;
+
+
+/**
+ * Specifies the end cap style of the generated buffer. The styles supported are
+ * {@link #CAP_ROUND}, {@link #CAP_BUTT}, and {@link #CAP_SQUARE}. The
+ * default is CAP_ROUND.
+ *
+ * @param {int}
+ *          endCapStyle the end cap style to specify.
+ */
+jsts.operation.buffer.BufferParameters.prototype.setEndCapStyle = function(
+    endCapStyle) {
+  this.endCapStyle = endCapStyle;
+};
+
+
+/**
+ * Sets the number of segments used to approximate a angle fillet
+ *
+ * @param {int}
+ *          quadrantSegments the number of segments in a fillet for a quadrant.
+ */
+jsts.operation.buffer.BufferParameters.prototype.setQuadrantSegments = function(
+    quadrantSegments) {
+  this.quadrantSegments = quadrantSegments;
+};
+
+
 // TODO: port rest of class...
