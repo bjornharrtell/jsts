@@ -11,6 +11,7 @@
  */
 jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
   this.lineEdgeMap = {};
+  this.ptLocator = new jsts.algorithm.PointLocator();
 
   this.argIndex = argIndex;
   this.parentGeom = parentGeom;
@@ -116,7 +117,7 @@ jsts.geomgraph.GeometryGraph.prototype.areaPtLocator = null;
  * @type {PointLocator}
  * @private
  */
-jsts.geomgraph.GeometryGraph.prototype.ptLocator = new PointLocator();
+jsts.geomgraph.GeometryGraph.prototype.ptLocator = null;
 
 
 /**
