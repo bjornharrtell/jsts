@@ -149,9 +149,9 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSitesFromGeometry =
  */
 jsts.triangulate.DelauneyTriangulationBuilder.prototype
   .setSitesFromCollection = function(coords) {
-    // remove any duplicate points (they will cause the triangulation to fail)
-    this.siteCoords = this.unique(coords);
-};
+      // remove any duplicate points (they will cause the triangulation to fail)
+      this.siteCoords = this.unique(coords);
+    };
 
 
 /**
@@ -225,8 +225,8 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.
  * @return {jsts.geom.Geometry}
  *         the faces of the triangulation.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.
-    getTriangles = function(geomFact) {
+jsts.triangulate.DelauneyTriangulationBuilder.prototype.getTriangles =
+    function(geomFact) {
   this.create();
   return this.subdiv.getTriangles(geomFact);
 };
