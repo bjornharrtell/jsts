@@ -23,13 +23,13 @@ jsts.index.quadtree.Key = OpenLayers.Class();
  *          env the envelope to calculate level for.
  * @return {Number} The calculated level.
  */
-jsts.index.quadtree.Key.prototype.computeQuadLevel = function(env) {
+jsts.index.quadtree.Key.computeQuadLevel = function(env) {
   var dx, dy, dMax, level;
 
   dx = env.getWidth();
   dy = env.getHeight();
   dMax = dx > dy ? dx : dy;
-  level = jsts.index.DoubleBits.prototype.exponent(dMax) + 1;
+  level = jsts.index.DoubleBits.exponent(dMax) + 1;
   return level;
 };
 
@@ -113,7 +113,7 @@ jsts.index.quadtree.Key.prototype.computeKey = function() {
  *          env the envelope.
  */
 jsts.index.quadtree.Key.prototype.computeKeyFromEnvelope = function(env) {
-  this.level = jsts.index.quadtree.Key.prototype.computeQuadLevel(env);
+  this.level = jsts.index.quadtree.Key.computeQuadLevel(env);
   this.env = new jsts.geom.Envelope();
   this.computeKey(this.level, env);
   while (!this.env.contains(env)) {
@@ -132,7 +132,7 @@ jsts.index.quadtree.Key.prototype.computeKeyFromEnvelope = function(env) {
  *          env the envelope.
  */
 jsts.index.quadtree.Key.prototype.computeKeyFromLevel = function(level, env) {
-  var quadSize = jsts.index.DoubleBits.prototype.powerOf2(level);
+  var quadSize = jsts.index.DoubleBits.powerOf2(level);
   this.pt.x = Math.floor(env.getMinX() / quadSize) * quadSize;
   this.pt.y = Math.floor(env.getMinY() / quadSize) * quadSize;
   this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y +

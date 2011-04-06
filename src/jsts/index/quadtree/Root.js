@@ -53,7 +53,7 @@ jsts.index.quadtree.Root.prototype.insert = function(itemEnv, item) {
    */
 
   if (node === null || !node.getEnvelope().contains(itemEnv)) {
-    var largerNode = jsts.index.quadtree.Node.prototype.createExpanded(node, itemEnv);
+    var largerNode = jsts.index.quadtree.Node.createExpanded(node, itemEnv);
     this.subnode[index] = largerNode;
   }
   /**
@@ -84,9 +84,9 @@ jsts.index.quadtree.Root.prototype.insertContained = function(tree, itemEnv,
    * smallest existing quad containing the query
    */
   var isZeroX, isZeroY, node;
-  isZeroX = jsts.index.IntervalSize.prototype.isZeroWidth(itemEnv.getMinX(),
+  isZeroX = jsts.index.IntervalSize.isZeroWidth(itemEnv.getMinX(),
       itemEnv.getMaxX());
-  isZeroY = jsts.index.IntervalSize.prototype.isZeroWidth(itemEnv.getMinY(),
+  isZeroY = jsts.index.IntervalSize.isZeroWidth(itemEnv.getMinY(),
       itemEnv.getMaxY());
 
   if (isZeroX || isZeroY) {

@@ -24,7 +24,7 @@ jsts.index.quadtree.Node = OpenLayers.Class(jsts.index.quadtree.NodeBase);
  *          env the envelope.
  * @return {jsts.index.quadtree.Node} the created node.
  */
-jsts.index.quadtree.Node.prototype.createNode = function(env) {
+jsts.index.quadtree.Node.createNode = function(env) {
   var key, node;
   key = new jsts.index.quadtree.Key(env);
   node = new jsts.index.quadtree.Node(key.getEnvelope(), key.getLevel());
@@ -42,14 +42,14 @@ jsts.index.quadtree.Node.prototype.createNode = function(env) {
  *          addEnv the envelope.
  * @return {jsts.index.quadtree.Node} the created node.
  */
-jsts.index.quadtree.Node.prototype.createExpanded = function(node, addEnv) {
+jsts.index.quadtree.Node.createExpanded = function(node, addEnv) {
   var expandEnv = new jsts.geom.Envelope(addEnv), largerNode;
 
   if (node !== null) {
     expandEnv.expandToInclude(node.env);
   }
 
-  largerNode = jsts.index.quadtree.Node.prototype.createNode(expandEnv);
+  largerNode = jsts.index.quadtree.Node.createNode(expandEnv);
   if (node !== null) {
     largerNode.insertNode(node);
   }

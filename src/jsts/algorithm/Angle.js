@@ -20,37 +20,37 @@ jsts.algorithm.Angle = OpenLayers.Class();
 /**
  * Pi*2
  */
-jsts.algorithm.Angle.prototype.PI_TIMES_2 = 2.0 * Math.PI;
+jsts.algorithm.Angle.PI_TIMES_2 = 2.0 * Math.PI;
 
 
 /**
  * Pi/2
  */
-jsts.algorithm.Angle.prototype.PI_OVER_2 = Math.PI / 2.0;
+jsts.algorithm.Angle.PI_OVER_2 = Math.PI / 2.0;
 
 
 /**
  * Pi/4
  */
-jsts.algorithm.Angle.prototype.PI_OVER_4 = Math.PI / 4.0;
+jsts.algorithm.Angle.PI_OVER_4 = Math.PI / 4.0;
 
 
 /**
  * Constant representing counterclockwise orientation
  */
-jsts.algorithm.Angle.prototype.COUNTERCLOCKWISE = jsts.algorithm.CGAlgorithms.prototype.COUNTERCLOCKWISE;
+jsts.algorithm.Angle.COUNTERCLOCKWISE = jsts.algorithm.CGAlgorithms.prototype.COUNTERCLOCKWISE;
 
 
 /**
  * Constant representing clockwise orientation
  */
-jsts.algorithm.Angle.prototype.CLOCKWISE = jsts.algorithm.CGAlgorithms.prototype.CLOCKWISE;
+jsts.algorithm.Angle.CLOCKWISE = jsts.algorithm.CGAlgorithms.prototype.CLOCKWISE;
 
 
 /**
  * Constant representing no orientation
  */
-jsts.algorithm.Angle.prototype.NONE = jsts.algorithm.CGAlgorithms.prototype.COLLINEAR;
+jsts.algorithm.Angle.NONE = jsts.algorithm.CGAlgorithms.prototype.COLLINEAR;
 
 
 /**
@@ -61,7 +61,7 @@ jsts.algorithm.Angle.prototype.NONE = jsts.algorithm.CGAlgorithms.prototype.COLL
  * @return {Number}
  *         the angle in degrees.
  */
-jsts.algorithm.Angle.prototype.toDegrees = function(radians) {
+jsts.algorithm.Angle.toDegrees = function(radians) {
   return (radians * 180) / Math.PI;
 };
 
@@ -74,7 +74,7 @@ jsts.algorithm.Angle.prototype.toDegrees = function(radians) {
  * @return {Number}
  *         the angle in radians.
  */
-jsts.algorithm.Angle.prototype.toRadians = function(angleDegrees) {
+jsts.algorithm.Angle.toRadians = function(angleDegrees) {
   return (angleDegrees * Math.PI) / 180.0;
 };
 
@@ -86,11 +86,11 @@ jsts.algorithm.Angle.prototype.toRadians = function(angleDegrees) {
  * @return {Number}
  *          The angle in radians.
  */
-jsts.algorithm.Angle.prototype.angle = function() {
+jsts.algorithm.Angle.angle = function() {
   if (arguments.length === 1) {
-    return jsts.algorithm.Angle.prototype.angleFromOrigo(arguments[0]);
+    return jsts.algorithm.Angle.angleFromOrigo(arguments[0]);
   }else {
-    return jsts.algorithm.Angle.prototype.angleBetweenCoords(arguments[0], arguments[1]);
+    return jsts.algorithm.Angle.angleBetweenCoords(arguments[0], arguments[1]);
   }
 };
 
@@ -108,7 +108,7 @@ jsts.algorithm.Angle.prototype.angle = function() {
  *         the normalized angle (in radians) that p0-p1 makes with the positive
  *         x-axis.
  */
-jsts.algorithm.Angle.prototype.angleBetweenCoords = function(p0, p1) {
+jsts.algorithm.Angle.angleBetweenCoords = function(p0, p1) {
   var dx, dy;
   dx = p1.x - p0.x;
   dy = p1.y - p0.y;
@@ -127,7 +127,7 @@ jsts.algorithm.Angle.prototype.angleBetweenCoords = function(p0, p1) {
  *         the normalized angle (in radians) that p makes with the positive
  *         x-axis.
  */
-jsts.algorithm.Angle.prototype.angleFromOrigo = function(p) {
+jsts.algorithm.Angle.angleFromOrigo = function(p) {
   return Math.atan2(p.y, p.x);
 };
 
@@ -147,7 +147,7 @@ jsts.algorithm.Angle.prototype.angleFromOrigo = function(p) {
  * @return {Boolean}
  *         true if the angle is acute.
  */
-jsts.algorithm.Angle.prototype.isAcute = function(p0, p1, p2) {
+jsts.algorithm.Angle.isAcute = function(p0, p1, p2) {
   var dx0, dy0, dx1, dy1, dotprod;
 
   //relies on fact that A dot B is positive if A ang B is acute
@@ -175,7 +175,7 @@ jsts.algorithm.Angle.prototype.isAcute = function(p0, p1, p2) {
  * @return {Boolean}
  *         true if the angle is obtuse.
  */
-jsts.algorithm.Angle.prototype.isObtuse = function(p0, p1, p2) {
+jsts.algorithm.Angle.isObtuse = function(p0, p1, p2) {
   var dx0, dy0, dx1, dy1, dotprod;
 
   //relies on fact that A dot B is negative iff A ang B is obtuse
@@ -201,12 +201,12 @@ jsts.algorithm.Angle.prototype.isObtuse = function(p0, p1, p2) {
  * @return {Number}
  *         the angle between tail-tip1 and tail-tip2.
  */
-jsts.algorithm.Angle.prototype.angleBetween = function(tip1, tail, tip2) {
+jsts.algorithm.Angle.angleBetween = function(tip1, tail, tip2) {
   var a1, a2;
-  a1 = jsts.algorithm.Angle.prototype.angle(tail, tip1);
-  a2 = jsts.algorithm.Angle.prototype.angle(tail, tip2);
+  a1 = jsts.algorithm.Angle.angle(tail, tip1);
+  a2 = jsts.algorithm.Angle.angle(tail, tip2);
 
-  return jsts.algorithm.Angle.prototype.diff(a1, a2);
+  return jsts.algorithm.Angle.diff(a1, a2);
 };
 
 
@@ -226,19 +226,19 @@ jsts.algorithm.Angle.prototype.angleBetween = function(tip1, tail, tip2) {
  * @return {Number}
  *         the angle between v1 and v2, relative to v1.
  */
-jsts.algorithm.Angle.prototype.angleBetweenOriented = function(tip1, tail, tip2) {
+jsts.algorithm.Angle.angleBetweenOriented = function(tip1, tail, tip2) {
   var a1, a2, angDel;
 
-  a1 = jsts.algorithm.Angle.prototype.angle(tail, tip1);
-  a2 = jsts.algorithm.Angle.prototype.angle(tail, tip2);
+  a1 = jsts.algorithm.Angle.angle(tail, tip1);
+  a2 = jsts.algorithm.Angle.angle(tail, tip2);
   angDel = a2 - a1;
 
   // normalize, maintaining orientation
   if (angDel <= -Math.PI) {
-    return angDel + PI_TIMES_2;
+    return angDel + jsts.algorithm.Angle.PI_TIMES_2;
   }
   if (angDel > Math.PI) {
-    return angDel - PI_TIMES_2;
+    return angDel - jsts.algorithm.Angle.PI_TIMES_2;
   }
   return angDel;
 };
@@ -258,11 +258,11 @@ jsts.algorithm.Angle.prototype.angleBetweenOriented = function(tip1, tail, tip2)
  * @return {Number}
  *         the interior angle based at <code>p1.</code>
  */
-jsts.algorithm.Angle.prototype.interiorAngle = function(p0, p1, p2) {
+jsts.algorithm.Angle.interiorAngle = function(p0, p1, p2) {
   var anglePrev, angleNext;
 
-  anglePrev = jsts.algorithm.Angle.prototype.angle(p1, p0);
-  angleNext = jsts.algorithm.Angle.prototype.angle(p1, p2);
+  anglePrev = jsts.algorithm.Angle.angle(p1, p0);
+  angleNext = jsts.algorithm.Angle.angle(p1, p2);
   return Math.abs(angleNext - anglePrev);
 };
 
@@ -279,16 +279,16 @@ jsts.algorithm.Angle.prototype.interiorAngle = function(p0, p1, p2) {
  *         whether a1 must turn CLOCKWISE, COUNTERCLOCKWISE or NONE to
  *         overlap a2.
  */
-jsts.algorithm.Angle.prototype.getTurn = function(ang1, ang2) {
+jsts.algorithm.Angle.getTurn = function(ang1, ang2) {
   var crossproduct = Math.sin(ang2 - ang1);
 
   if (crossproduct > 0) {
-    return jsts.algorithm.Angle.prototype.COUNTERCLOCKWISE;
+    return jsts.algorithm.Angle.COUNTERCLOCKWISE;
   }
   if (crossproduct < 0) {
-    return jsts.algorithm.Angle.prototype.CLOCKWISE;
+    return jsts.algorithm.Angle.CLOCKWISE;
   }
-  return jsts.algorithm.Angle.prototype.NONE;
+  return jsts.algorithm.Angle.NONE;
 };
 
 
@@ -301,12 +301,12 @@ jsts.algorithm.Angle.prototype.getTurn = function(ang1, ang2) {
  * @return {Number}
  *         an equivalent angle in the range (-Pi, Pi].
  */
-jsts.algorithm.Angle.prototype.normalize = function(angle) {
+jsts.algorithm.Angle.normalize = function(angle) {
   while (angle > Math.PI) {
-    angle -= jsts.algorithm.Angle.prototype.PI_TIMES_2;
+    angle -= jsts.algorithm.Angle.PI_TIMES_2;
   }
   while (angle <= -Math.PI) {
-    angle += jsts.algorithm.Angle.prototype.PI_TIMES_2;
+    angle += jsts.algorithm.Angle.PI_TIMES_2;
   }
   return angle;
 };
@@ -333,19 +333,19 @@ jsts.algorithm.Angle.prototype.normalize = function(angle) {
  * @return {Number}
  *         an equivalent positive angle.
  */
-jsts.algorithm.Angle.prototype.normalizePositive = function(angle) {
+jsts.algorithm.Angle.normalizePositive = function(angle) {
   if (angle < 0.0) {
     while (angle < 0.0) {
-      angle += jsts.algorithm.Angle.prototype.PI_TIMES_2;
+      angle += jsts.algorithm.Angle.PI_TIMES_2;
     }
     // in case round-off error bumps the value over
-    if (angle >= jsts.algorithm.Angle.prototype.PI_TIMES_2) {
+    if (angle >= jsts.algorithm.Angle.PI_TIMES_2) {
       angle = 0.0;
     }
   }
   else {
-    while (angle >= jsts.algorithm.Angle.prototype.PI_TIMES_2) {
-      angle -= jsts.algorithm.Angle.prototype.PI_TIMES_2;
+    while (angle >= jsts.algorithm.Angle.PI_TIMES_2) {
+      angle -= jsts.algorithm.Angle.PI_TIMES_2;
     }
     // in case round-off error bumps the value under
     if (angle < 0.0) {
@@ -368,7 +368,7 @@ jsts.algorithm.Angle.prototype.normalizePositive = function(angle) {
  * @return {Number}
  *         the angle (in radians) between the two vectors (in range [0, Pi] ).
  */
-jsts.algorithm.Angle.prototype.diff = function(ang1, ang2) {
+jsts.algorithm.Angle.diff = function(ang1, ang2) {
   var delAngle;
 
   if (ang1 < ang2) {

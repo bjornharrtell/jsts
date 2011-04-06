@@ -24,7 +24,7 @@ jsts.index.IntervalSize = OpenLayers.Class();
  * extra precision for simple computations to be correct, at least for
  * comparison purposes.
  */
-jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT = -50;
+jsts.index.IntervalSize.MIN_BINARY_EXPONENT = -50;
 
 
 /**
@@ -38,7 +38,7 @@ jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT = -50;
  *          max the max-value in the interval.
  * @return {Boolean} true if the interval should be considered zero.
  */
-jsts.index.IntervalSize.prototype.isZeroWidth = function(min, max) {
+jsts.index.IntervalSize.isZeroWidth = function(min, max) {
   var width = max - min;
   if (width === 0.0) {
     return true;
@@ -48,6 +48,6 @@ jsts.index.IntervalSize.prototype.isZeroWidth = function(min, max) {
   maxAbs = Math.max(Math.abs(min), Math.abs(max));
   scaledInterval = width / maxAbs;
 
-  level = jsts.index.DoubleBits.prototype.exponent(scaledInterval);
-  return level <= jsts.index.IntervalSize.prototype.MIN_BINARY_EXPONENT;
+  level = jsts.index.DoubleBits.exponent(scaledInterval);
+  return level <= jsts.index.IntervalSize.MIN_BINARY_EXPONENT;
 };

@@ -30,14 +30,14 @@ jsts.geom.Triangle = OpenLayers.Class();
  * @return {Boolean}
  *         true if the triangle is acute.
  */
-jsts.geom.Triangle.prototype.isAcute = function(a, b, c) {
-  if (! jsts.algorithm.Angle.prototype.isAcute(a, b, c)) {
+jsts.geom.Triangle.isAcute = function(a, b, c) {
+  if (! jsts.algorithm.Angle.isAcute(a, b, c)) {
     return false;
   }
-  if (! jsts.algorithm.Angle.prototype.isAcute(b, c, a)) {
+  if (! jsts.algorithm.Angle.isAcute(b, c, a)) {
     return false;
   }
-  if (! jsts.algorithm.Angle.prototype.isAcute(c, a, b)) {
+  if (! jsts.algorithm.Angle.isAcute(c, a, b)) {
     return false;
   }
   return true;
@@ -55,7 +55,7 @@ jsts.geom.Triangle.prototype.isAcute = function(a, b, c) {
  * @return {jsts.algorithm.HCoordinate}
  *         the perpendicular bisector, as an HCoordinate.
  */
-jsts.geom.Triangle.prototype.perpendicularBisector = function(a, b) {
+jsts.geom.Triangle.perpendicularBisector = function(a, b) {
   //returns the perpendicular bisector of the line segment ab
   var dx, dy, l1, l2;
 
@@ -94,7 +94,7 @@ jsts.geom.Triangle.prototype.perpendicularBisector = function(a, b) {
  * @return {jsts.geom.Coordinate}
  *         the circumcentre of the triangle.
  */
-jsts.geom.Triangle.prototype.circumcentre = function(a, b, c) {
+jsts.geom.Triangle.circumcentre = function(a, b, c) {
   var cx, cy, ax, ay, bx, by, denom, numx, numy, ccx, ccy;
 
   cx = c.x;
@@ -104,10 +104,10 @@ jsts.geom.Triangle.prototype.circumcentre = function(a, b, c) {
   bx = b.x - cx;
   by = b.y - cy;
 
-  denom = 2 * jsts.geom.Triangle.prototype.det(ax, ay, bx, by);
-  numx = jsts.geom.Triangle.prototype.det(ay, ax * ax + ay * ay, by,
+  denom = 2 * jsts.geom.Triangle.det(ax, ay, bx, by);
+  numx = jsts.geom.Triangle.det(ay, ax * ax + ay * ay, by,
       bx * bx + by * by);
-  numy = jsts.geom.Triangle.prototype.det(ax, ax * ax + ay * ay, bx,
+  numy = jsts.geom.Triangle.det(ax, ax * ax + ay * ay, bx,
       bx * bx + by * by);
 
   ccx = cx - numx / denom;
@@ -133,7 +133,7 @@ jsts.geom.Triangle.prototype.circumcentre = function(a, b, c) {
  * @return {Number}
  *         the determinant.
  */
-jsts.geom.Triangle.prototype.det = function(m00, m01, m10, m11) {
+jsts.geom.Triangle.det = function(m00, m01, m10, m11) {
   return m00 * m11 - m01 * m10;
 };
 
@@ -157,7 +157,7 @@ jsts.geom.Triangle.prototype.det = function(m00, m01, m10, m11) {
  * @return {jsts.geom.Coordinate}
  *         the point which is the incentre of the triangle.
  */
-jsts.geom.Triangle.prototype.inCentre = function(a, b, c) {
+jsts.geom.Triangle.inCentre = function(a, b, c) {
   var len0, len1, len2, circum, inCentreX, inCentreY;
 
   //the lengths of the sides, labelled by their opposite vertex
@@ -191,7 +191,7 @@ jsts.geom.Triangle.prototype.inCentre = function(a, b, c) {
  * @return {jsts.geom.Coordinate}
  *         the centroid of the triangle.
  */
-jsts.geom.Triangle.prototype.centroid = function(a, b, c) {
+jsts.geom.Triangle.centroid = function(a, b, c) {
   var x, y;
 
   x = (a.x + b.x + c.x) / 3;
@@ -213,7 +213,7 @@ jsts.geom.Triangle.prototype.centroid = function(a, b, c) {
  * @return {Number}
  *         the length of the longest side of the triangle.
  */
-jsts.geom.Triangle.prototype.longestSideLength = function(a, b, c) {
+jsts.geom.Triangle.longestSideLength = function(a, b, c) {
   var lenAB, lenBC, lenCA, maxLen;
 
   lenAB = a.distance(b);
@@ -244,7 +244,7 @@ jsts.geom.Triangle.prototype.longestSideLength = function(a, b, c) {
  * @return {jsts.geom.Coordinate}
  *         the angle bisector cut point.
  */
-jsts.geom.Triangle.prototype.angleBisector = function(a, b, c) {
+jsts.geom.Triangle.angleBisector = function(a, b, c) {
   /**
    * Uses the fact that the lengths of the parts of the split segment
    * are proportional to the lengths of the adjacent triangle sides
@@ -275,7 +275,7 @@ jsts.geom.Triangle.prototype.angleBisector = function(a, b, c) {
  * @return {Number}
  *         the area of the triangle.
  */
-jsts.geom.Triangle.prototype.area = function(a, b, c) {
+jsts.geom.Triangle.area = function(a, b, c) {
   return Math.abs(((c.x - a.x) * (b.y - a.y) -
       (b.x - a.x) * (c.y - a.y)) / 2.0);
 };
@@ -302,7 +302,7 @@ jsts.geom.Triangle.prototype.area = function(a, b, c) {
  *         the signed 2D area of the triangle.
  *
  */
-jsts.geom.Triangle.prototype.signedArea = function(a, b, c) {
+jsts.geom.Triangle.signedArea = function(a, b, c) {
   /**
    * Uses the formula 1/2 * | u x v |
    * where
@@ -345,5 +345,5 @@ jsts.geom.Triangle.prototype.initialize = function(p0, p1, p2) {
  *         the point which is the inCentre of the triangle.
  */
 jsts.geom.Triangle.prototype.inCentre = function() {
-  return jsts.geom.Triangle.prototype.inCentre(this.p0, this.p1, this.p2);
+  return jsts.geom.Triangle.inCentre(this.p0, this.p1, this.p2);
 };
