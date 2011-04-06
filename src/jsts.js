@@ -28,8 +28,6 @@ jsts.error.IllegalArgumentError = function(message) {
 };
 jsts.error.IllegalArgumentError.prototype = new Error();
 
-
-
 /**
  * @constructor
  */
@@ -49,3 +47,9 @@ jsts.error.NotImplementedError = function() {
   this.message = 'This method has not yet been implemented.';
 };
 jsts.error.NotImplementedError.prototype = new Error();
+
+jsts.error.NotRepresentableException = function(message){
+  this.name = 'NotRepresentableException';
+  this.message = (message || '');
+};
+jsts.error.NotRepresentableException.prototype = new Error();
