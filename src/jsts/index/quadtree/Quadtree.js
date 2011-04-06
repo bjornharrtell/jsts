@@ -48,7 +48,7 @@ jsts.index.quadtree.Quadtree = OpenLayers.Class();
  * @return {jsts.geom.Envelope}
  *          A valid extent.
  */
-jsts.index.quadtree.Quadtree.prototype.ensureExtent = function(itemEnv,
+jsts.index.quadtree.Quadtree.ensureExtent = function(itemEnv,
     minExtent) {
   var minx, maxx, miny, maxy;
 
@@ -127,7 +127,7 @@ jsts.index.quadtree.Quadtree.prototype.size = function() {
  */
 jsts.index.quadtree.Quadtree.prototype.insert = function(itemEnv, item) {
   this.collectStats(itemEnv);
-  var insertEnv = this.ensureExtent(itemEnv, this.minExtent);
+  var insertEnv = jsts.index.quadtree.Quadtree.ensureExtent(itemEnv, this.minExtent);
   this.root.insert(insertEnv, item);
 };
 
@@ -143,7 +143,7 @@ jsts.index.quadtree.Quadtree.prototype.insert = function(itemEnv, item) {
  *         <code>true</true> if the item was found (and removed).
  */
 jsts.index.quadtree.Quadtree.prototype.remove = function(itemEnv, item) {
-  var posEnv = this.ensureExtent(itemEnv, this.minExtent);
+  var posEnv = jsts.index.quadtree.Quadtree.ensureExtent(itemEnv, this.minExtent);
   return this.root.remove(posEnv, item);
 };
 

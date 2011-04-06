@@ -21,43 +21,43 @@ jsts.triangulate.quadedge.Vertex = OpenLayers.Class();
 /**
  * LEFT The integer representing left
  */
-jsts.triangulate.quadedge.Vertex.prototype.LEFT = 0;
+jsts.triangulate.quadedge.Vertex.LEFT = 0;
 
 
 /**
  * RIGHT The integer representing right
  */
-jsts.triangulate.quadedge.Vertex.prototype.RIGHT = 1;
+jsts.triangulate.quadedge.Vertex.RIGHT = 1;
 
 
 /**
  * BEYOND The integer representing beyond
  */
-jsts.triangulate.quadedge.Vertex.prototype.BEYOND = 2;
+jsts.triangulate.quadedge.Vertex.BEYOND = 2;
 
 
 /**
  * BEHIND The integer representing behind
  */
-jsts.triangulate.quadedge.Vertex.prototype.BEHIND = 3;
+jsts.triangulate.quadedge.Vertex.BEHIND = 3;
 
 
 /**
  * BETWEEN The integer representing between
  */
-jsts.triangulate.quadedge.Vertex.prototype.BETWEEN = 4;
+jsts.triangulate.quadedge.Vertex.BETWEEN = 4;
 
 
 /**
  * ORIGIN The integer representing origin
  */
-jsts.triangulate.quadedge.Vertex.prototype.ORIGIN = 5;
+jsts.triangulate.quadedge.Vertex.ORIGIN = 5;
 
 
 /**
  * DESTINATION The integer representing destination
  */
-jsts.triangulate.quadedge.Vertex.prototype.DESTINATION = 6;
+jsts.triangulate.quadedge.Vertex.DESTINATION = 6;
 
 
 /**
@@ -228,24 +228,24 @@ jsts.triangulate.quadedge.Vertex.prototype.classify = function(p0, p1) {
   sa = a.crossProduct(b);
 
   if (sa > 0.0) {
-    return this.LEFT;
+    return jsts.triangulate.quadedge.Vertex.LEFT;
   }
   if (sa < 0.0) {
-    return this.RIGHT;
+    return jsts.triangulate.quadedge.Vertex.RIGHT;
   }
   if ((a.getX() * b.getX() < 0.0) || (a.getY() * b.getY() < 0.0)) {
-    return this.BEHIND;
+    return jsts.triangulate.quadedge.Vertex.BEHIND;
   }
   if (a.magn() < b.magn()) {
-    return this.BEYOND;
+    return jsts.triangulate.quadedge.Vertex.BEYOND;
   }
   if (p0.equals(p2)) {
-    return this.ORIGIN;
+    return jsts.triangulate.quadedge.Vertex.ORIGIN;
   }
   if (p1.equals(p2)) {
-    return this.DESTINATION;
+    return jsts.triangulate.quadedge.Vertex.DESTINATION;
   }
-  return this.BETWEEN;
+  return jsts.triangulate.quadedge.Vertex.BETWEEN;
 };
 
 

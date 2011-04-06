@@ -33,7 +33,7 @@ jsts.index.DoubleBits = OpenLayers.Class();
  *          exp value to pow.
  * @return {Number} the pow'ed value.
  */
-jsts.index.DoubleBits.prototype.powerOf2 = function(exp) {
+jsts.index.DoubleBits.powerOf2 = function(exp) {
   // TODO: Make sure the accuracy of this is sufficient (why else would JTS have
   // this in DoubleBits?)
   return Math.pow(2, exp);
@@ -47,8 +47,8 @@ jsts.index.DoubleBits.prototype.powerOf2 = function(exp) {
  *          d the IEEE-754-value to calculate the exponent for.
  * @return {Number} the exponent part of the bit-mask.
  */
-jsts.index.DoubleBits.prototype.exponent = function(d) {
-  return jsts.index.DoubleBits.prototype.CVTFWD(64, d) - 1023;
+jsts.index.DoubleBits.exponent = function(d) {
+  return jsts.index.DoubleBits.CVTFWD(64, d) - 1023;
 };
 
 
@@ -62,7 +62,7 @@ jsts.index.DoubleBits.prototype.exponent = function(d) {
  *          Qty the number to calculate the bit pattern for.
  * @return {Number} The integer value of the exponent.
  */
-jsts.index.DoubleBits.prototype.CVTFWD = function(NumW, Qty) {
+jsts.index.DoubleBits.CVTFWD = function(NumW, Qty) {
   var Sign, Expo, Mant, Bin, nb01 = ''; // , OutW = NumW/4
   var Inf = {
     32: {

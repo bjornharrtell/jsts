@@ -19,14 +19,6 @@
  */
 jsts.triangulate.quadedge.TrianglePredicate = OpenLayers.Class();
 
-
-/**
- * Initializes a new object using OpenLayers inheritance mechanism
- */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.initialize = function() {
-};
-
-
 /**
  * Tests if a point is inside the circle defined by the points a, b, c.
  * This test uses simple
@@ -44,14 +36,15 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.initialize = function() {
  *         true if this point is inside the circle defined
  *         by the points a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype
-  .isInCircleNonRobust = function(a, b, c, p) {
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleNonRobust = 
+  function(a, b, c, p) {
       var isInCircle = (a.x * a.x + a.y * a.y) *
-          jsts.triangulate.quadedge.TrianglePredicate.prototype
-            .triArea(b, c, p) -
-          (b.x * b.x + b.y * b.y) * triArea(a, c, p) +
-          (c.x * c.x + c.y * c.y) * triArea(a, b, p) -
-          (p.x * p.x + p.y * p.y) * triArea(a, b, c) > 0;
+          jsts.triangulate.quadedge.TrianglePredicate.triArea(b, c, p) -
+          (b.x * b.x + b.y * b.y) * jsts.triangulate.quadedge.TrianglePredicate
+            .triArea(a, c, p) + (c.x * c.x + c.y * c.y) * 
+            jsts.triangulate.quadedge.TrianglePredicate.triArea(a, b, p) -
+          (p.x * p.x + p.y * p.y) * 
+          jsts.triangulate.quadedge.TrianglePredicate.triArea(a, b, c) > 0;
 
       return isInCircle;
     };
@@ -79,8 +72,8 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleNormalized =
-    function(a, b, c, p) {
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleNormalized = 
+  function(a, b, c, p) {
   var adx, ady, bdx, bdy, cdx, cdy, abdet, bcdet, cadet, alift, blift,
       clift, disc;
 
@@ -116,8 +109,7 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleNormalized =
  * @return {Number}
  *         The calculated area.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.triArea =
-    function(a, b, c) {
+jsts.triangulate.quadedge.TrianglePredicate.triArea = function(a, b, c) {
   return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 };
 
@@ -138,9 +130,9 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.triArea =
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleRobust =
-    function(a, b, c, p) {
-  return jsts.triangulate.quadedge.TrianglePredicate.prototype
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleRobust = 
+  function(a, b, c, p) {
+  return jsts.triangulate.quadedge.TrianglePredicate
       .isInCircleNormalized(a, b, c, p);
 };
 
@@ -161,31 +153,31 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleRobust =
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleDDSlow =
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleDDSlow =
     function(a, b, c, p) {
   var px, py, ax, ay, bx, by, cx, cy, aTerm, bTerm, cTerm, pTerm, sum,
       isInCircle;
 
-  px = jsts.math.DD.prototype.valueOf(p.x);
-  py = jsts.math.DD.prototype.valueOf(p.y);
-  ax = jsts.math.DD.prototype.valueOf(a.x);
-  ay = jsts.math.DD.prototype.valueOf(a.y);
-  bx = jsts.math.DD.prototype.valueOf(b.x);
-  by = jsts.math.DD.prototype.valueOf(b.y);
-  cx = jsts.math.DD.prototype.valueOf(c.x);
-  cy = jsts.math.DD.prototype.valueOf(c.y);
+  px = jsts.math.DD.valueOf(p.x);
+  py = jsts.math.DD.valueOf(p.y);
+  ax = jsts.math.DD.valueOf(a.x);
+  ay = jsts.math.DD.valueOf(a.y);
+  bx = jsts.math.DD.valueOf(b.x);
+  by = jsts.math.DD.valueOf(b.y);
+  cx = jsts.math.DD.valueOf(c.x);
+  cy = jsts.math.DD.valueOf(c.y);
 
   aTerm = (ax.multiply(ax).add(ay.multiply(ay)))
-    .multiply(jsts.triangulate.quadedge.TrianglePredicate.prototype
+    .multiply(jsts.triangulate.quadedge.TrianglePredicate
         .triAreaDDSlow(bx, by, cx, cy, px, py));
   bTerm = (bx.multiply(bx).add(by.multiply(by)))
-    .multiply(jsts.triangulate.quadedge.TrianglePredicate.prototype
+    .multiply(jsts.triangulate.quadedge.TrianglePredicate
         .triAreaDDSlow(ax, ay, cx, cy, px, py));
   cTerm = (cx.multiply(cx).add(cy.multiply(cy)))
-    .multiply(jsts.triangulate.quadedge.TrianglePredicate.prototype
+    .multiply(jsts.triangulate.quadedge.TrianglePredicate
         .triAreaDDSlow(ax, ay, bx, by, px, py));
   pTerm = (px.multiply(px).add(py.multiply(py)))
-    .multiply(jsts.triangulate.quadedge.TrianglePredicate.prototype
+    .multiply(jsts.triangulate.quadedge.TrianglePredicate
         .triAreaDDSlow(ax, ay, bx, by, cx, cy));
 
   sum = aTerm.subtract(bTerm).add(cTerm).subtract(pTerm);
@@ -215,7 +207,7 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleDDSlow =
  * @return {jsts.math.DD}
  *         The calculated area.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.triAreaDDSlow =
+jsts.triangulate.quadedge.TrianglePredicate.triAreaDDSlow =
     function(ax, ay, bx, by, cx, cy) {
   return (bx.subtract(ax).multiply(cy.subtract(ay)).subtract(by.subtract(ay)
       .multiply(cx.subtract(ax))));
@@ -238,22 +230,22 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.triAreaDDSlow =
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleDDFast =
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleDDFast =
     function(a, b, c, p) {
   var aTerm, bTerm, cTerm, pTerm, sum, isInCircle;
 
-  aTerm = (jsts.math.DD.prototype.sqr(a.x).selfAdd(jsts.math.DD.prototype.
-      DD.sqr(a.y))).selfMultiply(jsts.triangulate.quadedge.TrianglePredicate.
-      prototype.triAreaDDFast(b, c, p));
-  bTerm = (jsts.math.DD.prototype.sqr(b.x).selfAdd(jsts.math.DD.prototype.
+  aTerm = (jsts.math.DD.sqr(a.x).selfAdd(jsts.math.DD.
+      sqr(a.y))).selfMultiply(jsts.triangulate.quadedge.TrianglePredicate.
+      triAreaDDFast(b, c, p));
+  bTerm = (jsts.math.DD.sqr(b.x).selfAdd(jsts.math.DD.
       sqr(b.y))).selfMultiply(jsts.triangulate.quadedge.TrianglePredicate.
-      prototype.triAreaDDFast(a, c, p));
-  cTerm = (jsts.math.DD.prototype.sqr(c.x).selfAdd(jsts.math.DD.prototype.
+      triAreaDDFast(a, c, p));
+  cTerm = (jsts.math.DD.sqr(c.x).selfAdd(jsts.math.DD.
       sqr(c.y))).selfMultiply(jsts.triangulate.quadedge.TrianglePredicate.
-      prototype.triAreaDDFast(a, b, p));
-  pTerm = (jsts.math.DD.prototype.sqr(p.x).selfAdd(jsts.math.DD.prototype.
+      triAreaDDFast(a, b, p));
+  pTerm = (jsts.math.DD.sqr(p.x).selfAdd(jsts.math.DD.
       sqr(p.y))).selfMultiply(jsts.triangulate.quadedge.TrianglePredicate.
-      prototype.triAreaDDFast(a, b, c));
+      triAreaDDFast(a, b, c));
 
   sum = aTerm.selfSubtract(bTerm).selfAdd(cTerm).selfSubtract(pTerm);
   isInCircle = sum.doubleValue() > 0;
@@ -276,17 +268,15 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleDDFast =
  * @return {jsts.math.DD}
  *         The calculated area.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.triAreaDDFast =
+jsts.triangulate.quadedge.TrianglePredicate.triAreaDDFast =
     function(a, b, c) {
   var t1, t2;
 
-  t1 = jsts.math.DD.prototype.valueOf(b.x).selfSubtract(a.x)
-      .selfMultiply(
-      jsts.math.DD.prototype.valueOf(c.y).selfSubtract(a.y));
+  t1 = jsts.math.DD.valueOf(b.x).selfSubtract(a.x).selfMultiply(
+      jsts.math.DD.valueOf(c.y).selfSubtract(a.y));
 
-  t2 = jsts.math.DD.prototype.valueOf(b.y).selSubtract(a.y)
-      .selfMultiply(
-      jsts.math.DD.prototype.valueOf(c.x).selfSubtract(a.x));
+  t2 = jsts.math.DD.valueOf(b.y).selSubtract(a.y).selfMultiply(
+      jsts.math.DD.valueOf(c.x).selfSubtract(a.x));
 
   return t1.selfSubtract(t2);
 };
@@ -308,17 +298,17 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.triAreaDDFast =
  *         true if this point is inside the circle defined by the
  *         points a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.
+jsts.triangulate.quadedge.TrianglePredicate.
     isInCircleDDNormalized = function(a, b, c, p) {
   var adx, ady, bdx, bdy, cdx, cdy, abdet,
       bcdet, cadet, alift, blift, clift, sum, isInCircle;
 
-  adx = jsts.math.DD.prototype.valueOf(a.x).selfSubtract(p.x);
-  ady = jsts.math.DD.prototype.valueOf(a.y).selfSubtract(p.y);
-  bdx = jsts.math.DD.prototype.valueOf(b.x).selfSubtract(p.x);
-  bdx = jsts.math.DD.prototype.valueOf(b.y).selfSubtract(p.y);
-  cdx = jsts.math.DD.prototype.valueOf(c.x).selfSubtract(p.x);
-  cdx = jsts.math.DD.prototype.valueOf(c.y).selfSubtract(p.y);
+  adx = jsts.math.DD.valueOf(a.x).selfSubtract(p.x);
+  ady = jsts.math.DD.valueOf(a.y).selfSubtract(p.y);
+  bdx = jsts.math.DD.valueOf(b.x).selfSubtract(p.x);
+  bdx = jsts.math.DD.valueOf(b.y).selfSubtract(p.y);
+  cdx = jsts.math.DD.valueOf(c.x).selfSubtract(p.x);
+  cdx = jsts.math.DD.valueOf(c.y).selfSubtract(p.y);
 
   abdet = adx.multiply(bdy).selfSubtract(bdx.multiply(ady));
   bcdet = bdx.multiply(cdy).selfSubtract(cdx.multiply(bdy));
@@ -363,11 +353,11 @@ jsts.triangulate.quadedge.TrianglePredicate.prototype.
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.prototype.isInCircleCC =
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleCC =
     function(a, b, c, p) {
   var cc, ccRadius, pRadiusDiff;
 
-  cc = jsts.geom.Triangle.prototype.circumcentre(a, b, c);
+  cc = jsts.geom.Triangle.circumcentre(a, b, c);
   ccRadius = a.distance(cc);
   pRadiusDiff = p.distance(cc) - ccRadius;
 
