@@ -19,6 +19,7 @@
  */
 jsts.triangulate.quadedge.TrianglePredicate = OpenLayers.Class();
 
+
 /**
  * Tests if a point is inside the circle defined by the points a, b, c.
  * This test uses simple
@@ -36,18 +37,18 @@ jsts.triangulate.quadedge.TrianglePredicate = OpenLayers.Class();
  *         true if this point is inside the circle defined
  *         by the points a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.isInCircleNonRobust = 
-  function(a, b, c, p) {
-      var isInCircle = (a.x * a.x + a.y * a.y) *
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleNonRobust =
+    function(a, b, c, p) {
+  var isInCircle = (a.x * a.x + a.y * a.y) *
           jsts.triangulate.quadedge.TrianglePredicate.triArea(b, c, p) -
           (b.x * b.x + b.y * b.y) * jsts.triangulate.quadedge.TrianglePredicate
-            .triArea(a, c, p) + (c.x * c.x + c.y * c.y) * 
-            jsts.triangulate.quadedge.TrianglePredicate.triArea(a, b, p) -
-          (p.x * p.x + p.y * p.y) * 
+            .triArea(a, c, p) + (c.x * c.x + c.y * c.y) *
+      jsts.triangulate.quadedge.TrianglePredicate.triArea(a, b, p) -
+          (p.x * p.x + p.y * p.y) *
           jsts.triangulate.quadedge.TrianglePredicate.triArea(a, b, c) > 0;
 
-      return isInCircle;
-    };
+  return isInCircle;
+};
 
 
 /**
@@ -72,8 +73,8 @@ jsts.triangulate.quadedge.TrianglePredicate.isInCircleNonRobust =
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.isInCircleNormalized = 
-  function(a, b, c, p) {
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleNormalized =
+    function(a, b, c, p) {
   var adx, ady, bdx, bdy, cdx, cdy, abdet, bcdet, cadet, alift, blift,
       clift, disc;
 
@@ -130,8 +131,8 @@ jsts.triangulate.quadedge.TrianglePredicate.triArea = function(a, b, c) {
  *         true if this point is inside the circle defined by the points
  *         a, b, c.
  */
-jsts.triangulate.quadedge.TrianglePredicate.isInCircleRobust = 
-  function(a, b, c, p) {
+jsts.triangulate.quadedge.TrianglePredicate.isInCircleRobust =
+    function(a, b, c, p) {
   return jsts.triangulate.quadedge.TrianglePredicate
       .isInCircleNormalized(a, b, c, p);
 };
