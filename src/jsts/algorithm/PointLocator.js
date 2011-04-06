@@ -1,3 +1,11 @@
+/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+
+
 /**
  * Computes the topological ({@link Location}) of a single point to a
  * {@link Geometry}. A {@link BoundaryNodeRule} may be specified to control
@@ -14,10 +22,8 @@
  * @constructor
  */
 jsts.algorithm.PointLocator = function(boundaryRule) {
-  if (boundaryRule == null)
-    throw new jsts.error.IllegalArgumentError('Rule must be non-null');
   this.boundaryRule = boundaryRule ? boundaryRule
-      : BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+      : jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
 };
 
 
