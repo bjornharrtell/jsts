@@ -28,6 +28,8 @@ jsts.error.IllegalArgumentError = function(message) {
 };
 jsts.error.IllegalArgumentError.prototype = new Error();
 
+
+
 /**
  * @constructor
  */
@@ -48,7 +50,7 @@ jsts.error.NotImplementedError = function() {
 };
 jsts.error.NotImplementedError.prototype = new Error();
 
-jsts.error.NotRepresentableException = function(message){
+jsts.error.NotRepresentableException = function(message) {
   this.name = 'NotRepresentableException';
   this.message = (message || '');
 };

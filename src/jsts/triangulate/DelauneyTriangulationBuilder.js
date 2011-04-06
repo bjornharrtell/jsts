@@ -21,15 +21,15 @@ jsts.triangulate.DelauneyTriangulationBuilder = OpenLayers.Class();
  * @return {Array{jsts.geom.Coordinate}}
  *         An array of the unique Coordinates
  */
-jsts.triangulate.DelauneyTriangulationBuilder.extractUniqueCoordinates = 
-  function(geom) {
-      if (geom === undefined || geom === null) {
-        return new jsts.geom.CoordinateList();
-      }
+jsts.triangulate.DelauneyTriangulationBuilder.extractUniqueCoordinates =
+    function(geom) {
+  if (geom === undefined || geom === null) {
+    return new jsts.geom.CoordinateList();
+  }
 
-      var coords = geom.getCoordinates();
-      return jsts.triangulate.DelauneyTriangulationBuilder.unique(coords);
-    };
+  var coords = geom.getCoordinates();
+  return jsts.triangulate.DelauneyTriangulationBuilder.unique(coords);
+};
 
 
 /**
