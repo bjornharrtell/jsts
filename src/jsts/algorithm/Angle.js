@@ -5,7 +5,6 @@
  */
 
 
-
 /**
  * Utility functions for working with angles.
  * Unless otherwise noted, methods in this class express angles in radians.
