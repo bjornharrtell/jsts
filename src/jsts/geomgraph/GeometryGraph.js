@@ -128,4 +128,14 @@ jsts.geomgraph.GeometryGraph.prototype.createEdgeSetIntersector = function() {
   return new SimpleMCSweepLineIntersector();
 };
 
+
+/**
+ * @param {Geometry} g
+ */
+jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
+  if (g.isEmpty()) return;
+
+  // TODO: port rest of method
+};
+
 // TODO: port rest of class
