@@ -4,6 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+
+
 /**
  * Supplies a set of utility methods for building Geometry objects from lists
  * of Coordinates.
@@ -13,13 +15,10 @@
  *
  * In particular, they are not rounded to the supplied <tt>PrecisionModel</tt>.
  * It is assumed that input Coordinates meet the given precision.
- */
-
-
-
-/**
+ *
  * Constructs a GeometryFactory that generates Geometries having a floating
  * PrecisionModel and a spatial-reference ID of 0.
+ *
  * @constructor
  */
 jsts.geom.GeometryFactory = function() {
@@ -62,8 +61,9 @@ jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
  * create an empty LinearRing. The points must form a closed and simple
  * linestring. Consecutive points must not be equal.
  *
- * @param {Coordinate[]} coordinates
- *          an array without null elements, or an empty array, or null.
+ * @param {Coordinate[]}
+ *          coordinates an array without null elements, or an empty array, or
+ *          null.
  * @return {LinearRing} A new LinearRing.
  */
 jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
@@ -75,15 +75,15 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  * Constructs a <code>Polygon</code> with the given exterior boundary and
  * interior boundaries.
  *
- * @param {LinearRing} shell
- *            the outer boundary of the new <code>Polygon</code>, or
- *            <code>null</code> or an empty <code>LinearRing</code> if
- *            the empty geometry is to be created.
- * @param {LinearRing[]} holes
- *            the inner boundaries of the new <code>Polygon</code>, or
- *            <code>null</code> or empty <code>LinearRing</code> s if
- *            the empty geometry is to be created.
- *        @return {Polygon} A new Polygon.
+ * @param {LinearRing}
+ *          shell the outer boundary of the new <code>Polygon</code>, or
+ *          <code>null</code> or an empty <code>LinearRing</code> if the
+ *          empty geometry is to be created.
+ * @param {LinearRing[]}
+ *          holes the inner boundaries of the new <code>Polygon</code>, or
+ *          <code>null</code> or empty <code>LinearRing</code> s if the
+ *          empty geometry is to be created.
+ * @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
   var rings = [shell];
@@ -94,4 +94,3 @@ jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
 
   return new jsts.geom.Polygon(rings);
 };
-

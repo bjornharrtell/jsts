@@ -11,9 +11,14 @@
  * @namespace
  */
 jsts = {
-  version: '1.11-SNAPSHOT',
-  error: {}
+  version: '1.11-SNAPSHOT'
 };
+
+
+/**
+ * @namespace
+ */
+jsts.error = {};
 
 
 
@@ -50,6 +55,11 @@ jsts.error.NotImplementedError = function() {
 };
 jsts.error.NotImplementedError.prototype = new Error();
 
+
+
+/**
+ * @constructor
+ */
 jsts.error.NotRepresentableException = function(message) {
   this.name = 'NotRepresentableException';
   this.message = (message || '');

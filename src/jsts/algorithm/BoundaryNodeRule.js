@@ -4,6 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+
+
 /**
  * An interface for rules which determine whether node points which are in
  * boundaries of {@link Lineal} geometry components are in the boundary of the
@@ -17,8 +19,8 @@
  * @see RelateOp
  * @see IsSimpleOp
  * @see PointLocator
+ * @constructor
  */
-
 jsts.algorithm.BoundaryNodeRule = function() {
 
 };

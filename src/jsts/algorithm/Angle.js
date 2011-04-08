@@ -14,7 +14,9 @@
  *
  * @constructor
  */
-jsts.algorithm.Angle = OpenLayers.Class();
+jsts.algorithm.Angle = function() {
+
+};
 
 
 /**
