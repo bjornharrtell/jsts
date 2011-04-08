@@ -8,6 +8,6 @@
 /**
  * @namespace
  */
-jsts.quadedge = {
+jsts.triangulate.quadedge = {
 
 };
