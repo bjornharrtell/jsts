@@ -10,11 +10,25 @@
  * Represents a node of a {@link Quadtree}. Nodes contain items which have a
  * spatial extent corresponding to the node's position in the quadtree.
  *
- * @requires jsts/index/quadtree/NodeBase.js
+ * @param {jsts.geom.Envelope}
+ *          env Envelope to initialize from.
+ * @param {Number}
+ *          level The level.
  *
  * @constructor
+ * @requires jsts/index/quadtree/NodeBase.js
  */
-jsts.index.quadtree.Node = OpenLayers.Class(jsts.index.quadtree.NodeBase);
+jsts.index.quadtree.Node = function(env, level) {
+  jsts.index.quadtree.NodeBase.prototype.constructor.apply(this, arguments);
+
+  this.env = env;
+  this.level = level;
+  this.centre = new jsts.geom.Coordinate();
+  this.centre.x = (env.getMinX() + env.getMaxX()) / 2;
+  this.centre.y = (env.getMinY() + env.getMaxY()) / 2;
+};
+
+jsts.index.quadtree.Node.prototype = new jsts.index.quadtree.NodeBase();
 
 
 /**
@@ -55,25 +69,6 @@ jsts.index.quadtree.Node.createExpanded = function(node, addEnv) {
   }
 
   return largerNode;
-};
-
-
-/**
- * Initilalizes a node using the inheritance mechanism provided by OpenLayers.
- *
- * @param {jsts.geom.Envelope}
- *          env Envelope to initialize from.
- * @param {Number}
- *          level The level.
- */
-jsts.index.quadtree.Node.prototype.initialize = function(env, level) {
-  jsts.index.quadtree.NodeBase.prototype.initialize.apply(this, arguments);
-
-  this.env = env;
-  this.level = level;
-  this.centre = new jsts.geom.Coordinate();
-  this.centre.x = (env.getMinX() + env.getMaxX()) / 2;
-  this.centre.y = (env.getMinY() + env.getMaxY()) / 2;
 };
 
 

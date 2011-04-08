@@ -12,18 +12,14 @@
  *
  * @constructor
  */
-jsts.index.quadtree.Root = OpenLayers.Class(jsts.index.quadtree.NodeBase);
-
-
-/**
- * Initilalizes a root using the inheritance mechanism provided by OpenLayers.
- */
-jsts.index.quadtree.Root.prototype.initialize = function() {
-  jsts.index.quadtree.NodeBase.prototype.initialize.apply(this, arguments);
+jsts.index.quadtree.Root = function() {
+  jsts.index.quadtree.NodeBase.prototype.constructor.apply(this, arguments);
 
   // the root quad is centred at the origin.
   this.origin = new jsts.geom.Coordinate(0.0, 0.0);
 };
+
+jsts.index.quadtree.Root.prototype = new jsts.index.quadtree.NodeBase();
 
 
 /**

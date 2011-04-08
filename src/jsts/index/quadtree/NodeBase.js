@@ -10,13 +10,7 @@
  * The base class for nodes in a {@link Quadtree}.
  * @constructor
  */
-jsts.index.quadtree.NodeBase = OpenLayers.Class();
-
-
-/**
- * Initializes a node via the openlayers inheritance mechanism
- */
-jsts.index.quadtree.NodeBase.prototype.initialize = function() {
+jsts.index.quadtree.NodeBase = function() {
   /**
    * subquads are numbered as follows:
    *
