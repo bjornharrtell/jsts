@@ -83,5 +83,60 @@
 <span class='line'> 76</span>  */</span><span class="WHIT">
 <span class='line'> 77</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">5.0</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 78</span> 
-<span class='line'> 79</span> </span><span class="COMM">// TODO: port rest of class...</span><span class="WHIT">
-<span class='line'> 80</span> </span></pre></body></html>
+<span class='line'> 79</span> 
+<span class='line'> 80</span> </span><span class="COMM">/**
+<span class='line'> 81</span>  * @type {int}
+<span class='line'> 82</span>  * @private
+<span class='line'> 83</span>  */</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_QUADRANT_SEGMENTS</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span> 
+<span class='line'> 86</span> 
+<span class='line'> 87</span> </span><span class="COMM">/**
+<span class='line'> 88</span>  * @type {int}
+<span class='line'> 89</span>  * @private
+<span class='line'> 90</span>  */</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.endCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_ROUND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> 
+<span class='line'> 93</span> 
+<span class='line'> 94</span> </span><span class="COMM">/**
+<span class='line'> 95</span>  * @type {int}
+<span class='line'> 96</span>  * @private
+<span class='line'> 97</span>  */</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.joinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_ROUND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> 
+<span class='line'>100</span> 
+<span class='line'>101</span> </span><span class="COMM">/**
+<span class='line'>102</span>  * @type {double}
+<span class='line'>103</span>  * @private
+<span class='line'>104</span>  */</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.mitreLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>106</span> 
+<span class='line'>107</span> 
+<span class='line'>108</span> </span><span class="COMM">/**
+<span class='line'>109</span>  * Specifies the end cap style of the generated buffer. The styles supported are
+<span class='line'>110</span>  * {@link #CAP_ROUND}, {@link #CAP_BUTT}, and {@link #CAP_SQUARE}. The
+<span class='line'>111</span>  * default is CAP_ROUND.
+<span class='line'>112</span>  *
+<span class='line'>113</span>  * @param {int}
+<span class='line'>114</span>  *          endCapStyle the end cap style to specify.
+<span class='line'>115</span>  */</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setEndCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">    </span><span class="NAME">endCapStyle</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">  </span><span class="NAME">this.endCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">endCapStyle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> 
+<span class='line'>121</span> 
+<span class='line'>122</span> </span><span class="COMM">/**
+<span class='line'>123</span>  * Sets the number of segments used to approximate a angle fillet
+<span class='line'>124</span>  *
+<span class='line'>125</span>  * @param {int}
+<span class='line'>126</span>  *          quadrantSegments the number of segments in a fillet for a quadrant.
+<span class='line'>127</span>  */</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setQuadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">    </span><span class="NAME">quadrantSegments</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">  </span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">quadrantSegments</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>132</span> 
+<span class='line'>133</span> 
+<span class='line'>134</span> </span><span class="COMM">// TODO: port rest of class...</span><span class="WHIT">
+<span class='line'>135</span> </span></pre></body></html>

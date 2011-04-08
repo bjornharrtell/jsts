@@ -1,0 +1,64 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> 
+<span class='line'>  9</span> </span><span class="COMM">/**
+<span class='line'> 10</span>  * Computes the topological ({@link Location}) of a single point to a
+<span class='line'> 11</span>  * {@link Geometry}. A {@link BoundaryNodeRule} may be specified to control
+<span class='line'> 12</span>  * the evaluation of whether the point lies on the boundary or not The default
+<span class='line'> 13</span>  * rule is to use the the &lt;i>SFS Boundary Determination Rule&lt;/i>
+<span class='line'> 14</span>  * &lt;p>
+<span class='line'> 15</span>  * Notes:
+<span class='line'> 16</span>  * &lt;ul>
+<span class='line'> 17</span>  * &lt;li>{@link LinearRing}s do not enclose any area - points inside the ring
+<span class='line'> 18</span>  * are still in the EXTERIOR of the ring.
+<span class='line'> 19</span>  * &lt;/ul>
+<span class='line'> 20</span>  * Instances of this class are not reentrant.
+<span class='line'> 21</span>  *
+<span class='line'> 22</span>  * @constructor
+<span class='line'> 23</span>  */</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="NAME">jsts.algorithm.PointLocator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">boundaryRule</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="NAME">this.boundaryRule</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">boundaryRule</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">boundaryRule</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">      </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> 
+<span class='line'> 29</span> 
+<span class='line'> 30</span> </span><span class="COMM">/**
+<span class='line'> 31</span>  * default is to use OGC SFS rule
+<span class='line'> 32</span>  *
+<span class='line'> 33</span>  * @type {BoundaryNodeRule}
+<span class='line'> 34</span>  * @private
+<span class='line'> 35</span>  */</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="NAME">jsts.algorithm.PointLocator.prototype.boundaryRule</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> 
+<span class='line'> 38</span> 
+<span class='line'> 39</span> </span><span class="COMM">/**
+<span class='line'> 40</span>  * true if the point lies in or on any Geometry element
+<span class='line'> 41</span>  *
+<span class='line'> 42</span>  * @type {boolean}
+<span class='line'> 43</span>  * @private
+<span class='line'> 44</span>  */</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="NAME">jsts.algorithm.PointLocator.prototype.isIn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> 
+<span class='line'> 47</span> 
+<span class='line'> 48</span> </span><span class="COMM">/**
+<span class='line'> 49</span>  * the number of sub-elements whose boundaries the point lies in
+<span class='line'> 50</span>  *
+<span class='line'> 51</span>  * @type {int}
+<span class='line'> 52</span>  * @private
+<span class='line'> 53</span>  */</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="NAME">jsts.algorithm.PointLocator.prototype.numBoundaries</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> 
+<span class='line'> 56</span> </span><span class="COMM">// TODO: port rest of class</span><span class="WHIT">
+<span class='line'> 57</span> </span></pre></body></html>
