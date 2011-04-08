@@ -29,7 +29,19 @@
  *
  * @constructor
  */
-jsts.index.quadtree.Quadtree = OpenLayers.Class();
+jsts.index.quadtree.Quadtree = function() {
+  this.root = new jsts.index.quadtree.Root();
+
+  /**
+   * minExtent is the minimum envelope extent of all items inserted into the
+   * tree so far. It is used as a heuristic value to construct non-zero
+   * envelopes for features with zero X and/or Y extent. Start with a non-zero
+   * extent, in case the first feature inserted has a zero extent in both
+   * directions. This value may be non-optimal, but only one feature will be
+   * inserted with this value.
+   */
+  this.minExtent = 1.0;
+};
 
 /**
  * Ensure that the envelope for the inserted item has non-zero extents. Use the
@@ -45,11 +57,9 @@ jsts.index.quadtree.Quadtree = OpenLayers.Class();
  * @param {Number}
  *          minExtent the minimum width/height to expand the extent with if it
  *          is zero.
- * @return {jsts.geom.Envelope}
- *          A valid extent.
+ * @return {jsts.geom.Envelope} A valid extent.
  */
-jsts.index.quadtree.Quadtree.ensureExtent = function(itemEnv,
-    minExtent) {
+jsts.index.quadtree.Quadtree.ensureExtent = function(itemEnv, minExtent) {
   var minx, maxx, miny, maxy;
 
   minx = itemEnv.getMinX();
@@ -78,28 +88,9 @@ jsts.index.quadtree.Quadtree.ensureExtent = function(itemEnv,
 
 
 /**
- * Initializes a new quadtree using the OpenLayers inheritance mechanism
- */
-jsts.index.quadtree.Quadtree.prototype.initialize = function() {
-  this.root = new jsts.index.quadtree.Root();
-
-  /**
-   * minExtent is the minimum envelope extent of all items inserted into the
-   * tree so far. It is used as a heuristic value to construct non-zero
-   * envelopes for features with zero X and/or Y extent. Start with a non-zero
-   * extent, in case the first feature inserted has a zero extent in both
-   * directions. This value may be non-optimal, but only one feature will be
-   * inserted with this value.
-   */
-  this.minExtent = 1.0;
-};
-
-
-/**
  * Returns the depth of the tree.
  *
- * @return {Number}
- *         the depth.
+ * @return {Number} the depth.
  */
 jsts.index.quadtree.Quadtree.prototype.depth = function() {
   return this.root.depth();
@@ -109,8 +100,7 @@ jsts.index.quadtree.Quadtree.prototype.depth = function() {
 /**
  * Returns the number of items in the tree.
  *
- * @return {Number}
- *         the number of items in the tree.
+ * @return {Number} the number of items in the tree.
  */
 jsts.index.quadtree.Quadtree.prototype.size = function() {
   return this.root.size();
@@ -121,13 +111,14 @@ jsts.index.quadtree.Quadtree.prototype.size = function() {
  * Inserts an item to the tree
  *
  * @param {jsts.geom.Envelope}
- *        itemEnv The envelope.
+ *          itemEnv The envelope.
  * @param {Object}
- *        item The item.
+ *          item The item.
  */
 jsts.index.quadtree.Quadtree.prototype.insert = function(itemEnv, item) {
   this.collectStats(itemEnv);
-  var insertEnv = jsts.index.quadtree.Quadtree.ensureExtent(itemEnv, this.minExtent);
+  var insertEnv = jsts.index.quadtree.Quadtree.ensureExtent(itemEnv,
+      this.minExtent);
   this.root.insert(insertEnv, item);
 };
 
@@ -136,14 +127,14 @@ jsts.index.quadtree.Quadtree.prototype.insert = function(itemEnv, item) {
  * Removes a single item from the tree
  *
  * @param {jsts.geom.Envelope}
- *        itemEnv the envelope of the item to be removed.
+ *          itemEnv the envelope of the item to be removed.
  * @param {Object}
- *        item the item to remove.
- * @return {Boolean}
- *         <code>true</true> if the item was found (and removed).
+ *          item the item to remove.
+ * @return {Boolean} <code>true</true> if the item was found (and removed).
  */
 jsts.index.quadtree.Quadtree.prototype.remove = function(itemEnv, item) {
-  var posEnv = jsts.index.quadtree.Quadtree.ensureExtent(itemEnv, this.minExtent);
+  var posEnv = jsts.index.quadtree.Quadtree.ensureExtent(itemEnv,
+      this.minExtent);
   return this.root.remove(posEnv, item);
 };
 
@@ -174,9 +165,8 @@ jsts.index.quadtree.Quadtree.prototype.query = function() {
  * not returned - thus providing improved performance over a simple linear scan.
  *
  * @param {jsts.geom.Envelope}
- *        searchEnv the envelope of the desired query area.
- * @return {Array}
- *         an array of items which may intersect the search envelope.
+ *          searchEnv the envelope of the desired query area.
+ * @return {Array} an array of items which may intersect the search envelope.
  */
 jsts.index.quadtree.Quadtree.prototype.queryByEnvelope = function(searchEnv) {
   var visitor = new jsts.index.ArrayListVisitor();
@@ -196,9 +186,9 @@ jsts.index.quadtree.Quadtree.prototype.queryByEnvelope = function(searchEnv) {
  * thus providing improved performance over a simple linear scan.
  *
  * @param {jsts.geom.Envelope}
- *        searchEnv the envelope of the desired query area.
+ *          searchEnv the envelope of the desired query area.
  * @param {jsts.index.Visitor}
- *        visitor a visitor object which is passed the visited items.
+ *          visitor a visitor object which is passed the visited items.
  */
 jsts.index.quadtree.Quadtree.prototype.queryWithVisitor = function(searchEnv,
     visitor) {
@@ -209,8 +199,7 @@ jsts.index.quadtree.Quadtree.prototype.queryWithVisitor = function(searchEnv,
 /**
  * Returns an array of all items in the quadtree.
  *
- * @return {Array}
- *         An array of all items in the quadtree.
+ * @return {Array} An array of all items in the quadtree.
  */
 jsts.index.quadtree.Quadtree.prototype.queryAll = function() {
   var foundItems = [];
@@ -224,7 +213,7 @@ jsts.index.quadtree.Quadtree.prototype.queryAll = function() {
  * minExtent if the widht or height is less than the current min extent
  *
  * @param {jsts.geom.Envelope}
- *        itemEnv The envelope.
+ *          itemEnv The envelope.
  */
 jsts.index.quadtree.Quadtree.prototype.collectStats = function(itemEnv) {
   var delX = itemEnv.getWidth();

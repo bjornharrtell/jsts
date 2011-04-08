@@ -6,6 +6,7 @@
  */
 
 
+
 /**
  * An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on
  * point data.
@@ -14,11 +15,7 @@
  * than a given tolerance value. If the same point (up to tolerance) is inserted
  * more than once a new node is not created but the count of the existing node
  * is incremented.
- */
-jsts.index.kdtree.KdTree = OpenLayers.Class();
-
-
-/**
+ *
  * Creates a new instance of a KdTree, specifying a snapping distance tolerance.
  * Points which lie closer than the tolerance to a point already in the tree
  * will be treated as identical to the existing point.
@@ -26,8 +23,10 @@ jsts.index.kdtree.KdTree = OpenLayers.Class();
  * @param {Number}
  *          tolerance (optional) the tolerance distance for considering two
  *          points equal.
+ *
+ * @constructor
  */
-jsts.index.kdtree.KdTree.prototype.initialize = function(tolerance) {
+jsts.index.kdtree.KdTree = function(tolerance) {
   var tol = 0.0;
   if (tolerance !== undefined) {
     tol = tolerance;

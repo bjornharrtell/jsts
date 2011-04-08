@@ -6,20 +6,17 @@
  */
 
 
+
 /**
  * A node of a {@link KdTree}, which represents one or more points in the same
  * location.
  *
- */
-jsts.index.kdtree.KdNode = OpenLayers.Class();
-
-
-/**
- * Creates a new KdNode.
+ * Creates a new KdNode. Will call appropriate *initialize-function depending on
+ * arguments.
  *
- * Will call appropriate *initialize-function depending on arguments
+ * @constructor
  */
-jsts.index.kdtree.KdNode.prototype.initialize = function() {
+jsts.index.kdtree.KdNode = function() {
   this.left = null;
   this.right = null;
   this.count = 1;
