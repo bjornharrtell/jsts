@@ -12,6 +12,15 @@
   <script type="text/javascript" src="../src/jsts.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm/BoundaryNodeRule.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CentralEndpointIntersector.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CentroidArea.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CentroidArea.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CentroidArea.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CGAlgorithms.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/HCoordinate.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/PointLocator.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/RobustDeteminant.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/RobustLineIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/geom.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Geometry.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Coordinate.js"></script>
@@ -27,6 +36,10 @@
   <script type="text/javascript" src="../src/jsts/geom/mixin.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/GeometryGraph.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/index.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/index/EdgeSetIntersector.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/index/SegmentIntersector.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/index/SimpleMCSweepLineIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/index.js"></script>
   <script type="text/javascript" src="../src/jsts/index/ArrayListVisitor.js"></script>
   <script type="text/javascript" src="../src/jsts/index/DoubleBits.js"></script>
@@ -43,6 +56,7 @@
   <script type="text/javascript" src="../src/jsts/operation.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/IsSimpleOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/buffer/BufferBuilder.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer/BufferOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer/BufferParameters.js"></script>
   
@@ -65,6 +79,14 @@
 <body>
 
 <script type="text/javascript">
+
+var geometryFactory = new jsts.geom.GeometryFactory();
+var c1 = new jsts.geom.Coordinate(1,2);
+var c2 = new jsts.geom.Coordinate(3,4);
+var lineString = geometryFactory.createLineString([c1,c2]);
+
+//lineString.isSimple();
+
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
   jasmine.getEnv().execute();
 </script>

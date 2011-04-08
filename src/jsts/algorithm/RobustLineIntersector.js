@@ -4,4 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+jsts.algorithm.RobustLineIntersector = function() {
+
+};
+
 // TODO: port
