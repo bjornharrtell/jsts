@@ -1,3 +1,10 @@
+/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+
 /**
  * A GeometryGraph is a graph that models a given Geometry
  *
@@ -42,13 +49,13 @@ jsts.geomgraph.GeometryGraph.determineBoundary = function(boundaryNodeRule,
 /**
  * @type {Geometry}
  */
-jsts.geomgraph.GeometryGraph.prototype.parentGeom;
+jsts.geomgraph.GeometryGraph.prototype.parentGeom = null;
 
 
 /**
  * The lineEdgeMap is a map of the linestring components of the parentGeometry
- * to the edges which are derived from them. This is used to efficiently
- * perform findEdge queries
+ * to the edges which are derived from them. This is used to efficiently perform
+ * findEdge queries
  *
  * @type {Map}
  * @private
@@ -63,8 +70,8 @@ jsts.geomgraph.GeometryGraph.prototype.boundaryNodeRule = null;
 
 
 /**
- * If this flag is true, the Boundary Determination Rule will used when
- * deciding whether nodes are in the boundary or not
+ * If this flag is true, the Boundary Determination Rule will used when deciding
+ * whether nodes are in the boundary or not
  */
 /**
  * @type {boolean}
@@ -125,17 +132,48 @@ jsts.geomgraph.GeometryGraph.prototype.ptLocator = null;
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.createEdgeSetIntersector = function() {
-  return new SimpleMCSweepLineIntersector();
+  return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
 };
 
 
 /**
- * @param {Geometry} g
+ * @param {Geometry}
+ *          g
  */
 jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
-  if (g.isEmpty()) return;
+  if (g.isEmpty())
+    return;
 
   // TODO: port rest of method
+};
+
+
+/**
+ * Compute self-nodes, taking advantage of the Geometry type to minimize the
+ * number of intersection tests. (E.g. rings are not tested for
+ * self-intersection, since they are assumed to be valid).
+ *
+ * @param {LineIntersector}
+ *          li the LineIntersector to use.
+ * @param {boolean}
+ *          computeRingSelfNodes if <false>, intersection checks are optimized
+ *          to not test rings for self-intersection.
+ * @return {SegmentIntersector} the SegmentIntersector used, containing
+ *         information about the intersections found.
+ */
+jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
+    computeRingSelfNodes) {
+  var si = new jsts.geomgraph.index.SegmentIntersector(li, true, false);
+  var esi = this.createEdgeSetIntersector();
+  // optimized test for Polygons and Rings
+  if (!computeRingSelfNodes &&
+      (parentGeom instanceof LinearRing || parentGeom instanceof Polygon || parentGeom instanceof MultiPolygon)) {
+    esi.computeIntersections(edges, si, false);
+  } else {
+    esi.computeIntersections(edges, si, true);
+  }
+  this.addSelfIntersectionNodes(argIndex);
+  return si;
 };
 
 // TODO: port rest of class
