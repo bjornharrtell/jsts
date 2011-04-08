@@ -19,4 +19,7 @@ jsts.geomgraph.index.SimpleMCSweepLineIntersector = function() {
 
 };
 
+
+jsts.geomgraph.index.SimpleMCSweepLineIntersector.prototype = new jsts.geomgraph.index.EdgeSetIntersector();
+
 // TODO: port
