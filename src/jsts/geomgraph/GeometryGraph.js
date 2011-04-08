@@ -29,7 +29,7 @@ jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) 
   }
 };
 
-// extends PlanarGraph
+jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
 
 
 /**

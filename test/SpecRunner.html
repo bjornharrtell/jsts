@@ -59,6 +59,8 @@
   <script type="text/javascript" src="../src/jsts/operation/buffer/BufferBuilder.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer/BufferOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer/BufferParameters.js"></script>
+  <script type="text/javascript" src="../src/jsts/planargraph.js"></script>
+  <script type="text/javascript" src="../src/jsts/planargraph/PlanarGraph.js"></script>
   
   <script type="text/javascript" src="spec/jsts/geom/Geometry.js"></script>
   <script type="text/javascript" src="spec/jsts/geom/Coordinate.js"></script>
@@ -73,20 +75,12 @@
   <script type="text/javascript" src="spec/jsts/index/quadtree/Node.js"></script>
   <script type="text/javascript" src="spec/jsts/index/quadtree/Key.js"></script>
   <script type="text/javascript" src="spec/jsts/index/quadtree/Quadtree.js"></script>
-  <script type="text/javascript" src="spec/jsts/io.js"></script>  
   <script type="text/javascript" src="spec/jsts/operation/buffer/BufferOp.js"></script>
+  <script type="text/javascript" src="spec/jsts/io.js"></script>  
 </head>
 <body>
 
 <script type="text/javascript">
-
-var geometryFactory = new jsts.geom.GeometryFactory();
-var c1 = new jsts.geom.Coordinate(1,2);
-var c2 = new jsts.geom.Coordinate(3,4);
-var lineString = geometryFactory.createLineString([c1,c2]);
-
-//lineString.isSimple();
-
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
   jasmine.getEnv().execute();
 </script>
