@@ -5,12 +5,16 @@
  */
 
 
+
 /**
  * Specifies and implements various fundamental Computational
  * Geometric algorithms. The algorithms supplied in this class are robust
  * for double-precision floating point.
+ * @constructor
  */
-jsts.algorithm.CGAlgorithms = OpenLayers.Class();
+jsts.algorithm.CGAlgorithms = function() {
+
+};
 
 
 /**

@@ -4,6 +4,11 @@
  * See /license.txt for the full text of the license.
  */
 
+
+
+/**
+ * @constructor
+ */
 jsts.geomgraph.index.EdgeSetIntersector = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };

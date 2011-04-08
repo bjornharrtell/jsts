@@ -5,6 +5,7 @@
  */
 
 
+
 /**
  * Implements an algorithm to compute the
  * sign of a 2x2 determinant for double precision values robustly.
@@ -25,9 +26,11 @@
  *                           All rights reserved
  **************************************************************************
  * </pre>
- *
+ * @constructor
  */
-jsts.algorithm.RobustDeterminant = OpenLayers.Class();
+jsts.algorithm.RobustDeterminant = function() {
+
+};
 
 
 /**

@@ -5,13 +5,38 @@
  */
 
 
+
 /**
  * Represents a homogeneous coordinate in a 2-D coordinate space. In JTS
  * {@link HCoordinate}s are used as a clean way of computing intersections
  * between line segments.
  *
+ * Initializes a new HCoordinate using the OpenLayers inheritance mechanism.
+ * Will call correct init* function depending on argument.
+ *
+ * @constructor
  */
-jsts.algorithm.HCoordinate = OpenLayers.Class();
+jsts.algorithm.HCoordinate = function() {
+  this.x = 0.0;
+  this.y = 0.0;
+  this.w = 1.0;
+
+  if (arguments.length === 1) {
+    this.initFrom1Coordinate(arguments[0]);
+  } else if (arguments.length === 2 &&
+      arguments[0] instanceof jsts.geom.Coordinate) {
+    this.initFrom2Coordinates(arguments[0], arguments[1]);
+  } else if (arguments.length === 2 &&
+      arguments[0] instanceof jsts.algorithm.HCoordinate) {
+    this.initFrom2HCoordinates(arguments[0], arguments[1]);
+  } else if (arguments.length === 2) {
+    this.initFromXY(arguments[0], arguments[1]);
+  } else if (arguments.length === 3) {
+    this.initFromXYW(arguments[0], arguments[1], arguments[2]);
+  } else if (arguments.length === 4) {
+    this.initFromXYW(arguments[0], arguments[1], arguments[2], arguments[3]);
+  }
+};
 
 
 /**
@@ -57,33 +82,6 @@ jsts.algorithm.HCoordinate.intersection = function(p1, p2, q1, q2) {
   }
 
   return new jsts.geom.Coordinate(xInt, yInt);
-};
-
-
-/**
- * Initializes a new HCoordinate using the OpenLayers inheritance mechanism.
- * Will call correct init* function depending on argument.
- */
-jsts.algorithm.HCoordinate.prototype.initialize = function() {
-  this.x = 0.0;
-  this.y = 0.0;
-  this.w = 1.0;
-
-  if (arguments.length === 1) {
-    this.initFrom1Coordinate(arguments[0]);
-  } else if (arguments.length === 2 &&
-      arguments[0] instanceof jsts.geom.Coordinate) {
-    this.initFrom2Coordinates(arguments[0], arguments[1]);
-  } else if (arguments.length === 2 &&
-      arguments[0] instanceof jsts.algorithm.HCoordinate) {
-    this.initFrom2HCoordinates(arguments[0], arguments[1]);
-  } else if (arguments.length === 2) {
-    this.initFromXY(arguments[0], arguments[1]);
-  } else if (arguments.length === 3) {
-    this.initFromXYW(arguments[0], arguments[1], arguments[2]);
-  } else if (arguments.length === 4) {
-    this.initFromXYW(arguments[0], arguments[1], arguments[2], arguments[3]);
-  }
 };
 
 

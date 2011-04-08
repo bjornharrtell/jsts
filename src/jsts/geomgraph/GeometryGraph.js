@@ -14,7 +14,7 @@
  *          parentGeom
  * @param {BoundaryNodeRule}
  *          boundaryNodeRule
- * @augments {PlanarGraph}
+ * @augments jsts.planargraph.PlanarGraph
  */
 jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
   this.lineEdgeMap = {};
