@@ -15,7 +15,9 @@
  *
  * @constructor
  */
-jsts.index.IntervalSize = OpenLayers.Class();
+jsts.index.IntervalSize = function() {
+
+};
 
 
 /**

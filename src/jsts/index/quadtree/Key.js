@@ -11,9 +11,20 @@
  * lower-left point and a level number. The level number is the power of two for
  * the size of the node envelope.
  *
+ * @param {jsts.geom.Envelope}
+ *          itemEnv the envelope of the key.
+ *
  * @constructor
  */
-jsts.index.quadtree.Key = OpenLayers.Class();
+jsts.index.quadtree.Key = function(itemEnv) {
+  // the fields which make up the key
+  this.pt = new jsts.geom.Coordinate();
+  this.level = 0;
+  // auxiliary data which is derived from the key for use in computation
+  this.env = null;
+
+  this.computeKey(itemEnv);
+};
 
 
 /**
@@ -31,23 +42,6 @@ jsts.index.quadtree.Key.computeQuadLevel = function(env) {
   dMax = dx > dy ? dx : dy;
   level = jsts.index.DoubleBits.exponent(dMax) + 1;
   return level;
-};
-
-
-/**
- * Initializes a new key
- *
- * @param {jsts.geom.Envelope}
- *          itemEnv the envelope of the key.
- */
-jsts.index.quadtree.Key.prototype.initialize = function(itemEnv) {
-  // the fields which make up the key
-  this.pt = new jsts.geom.Coordinate();
-  this.level = 0;
-  // auxiliary data which is derived from the key for use in computation
-  this.env = null;
-
-  this.computeKey(itemEnv);
 };
 
 

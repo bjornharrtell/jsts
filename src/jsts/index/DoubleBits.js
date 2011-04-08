@@ -23,7 +23,9 @@
  *
  * @constructor
  */
-jsts.index.DoubleBits = OpenLayers.Class();
+jsts.index.DoubleBits = function() {
+
+};
 
 
 /**
