@@ -22,10 +22,13 @@
 jsts.planargraph.PlanarGraph = function() {
   // TODO: need to decide on how to handle treemaps
   //nodeMap = new NodeMap();
+
+  this.edges = new jsts.HashSet();
+  this.dirEdges = new jsts.HashSet();
 };
 
-jsts.planargraph.PlanarGraph.prototype.edges = {};
-jsts.planargraph.PlanarGraph.prototype.dirEdges = {};
+jsts.planargraph.PlanarGraph.prototype.edges = null;
+jsts.planargraph.PlanarGraph.prototype.dirEdges = null;
 
 
 /**

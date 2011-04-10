@@ -21,7 +21,9 @@
  * @augments jsts.planargraph.PlanarGraph
  */
 jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
-  this.lineEdgeMap = {};
+  jsts.geomgraph.GeometryGraph.prototype.constructor.call(this);
+
+  this.lineEdgeMap = new jsts.Hashtable();
   this.ptLocator = new jsts.algorithm.PointLocator();
 
   this.argIndex = argIndex;
@@ -172,9 +174,9 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
   // optimized test for Polygons and Rings
   if (!computeRingSelfNodes &&
       (parentGeom instanceof LinearRing || parentGeom instanceof Polygon || parentGeom instanceof MultiPolygon)) {
-    esi.computeIntersections(edges, si, false);
+    esi.computeIntersections(this.edges, si, false);
   } else {
-    esi.computeIntersections(edges, si, true);
+    esi.computeIntersections(this.edges, si, true);
   }
   this.addSelfIntersectionNodes(argIndex);
   return si;
