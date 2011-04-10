@@ -10,7 +10,7 @@
  * @constructor
  */
 jsts.geomgraph.index.EdgeSetIntersector = function() {
-  throw new jsts.error.AbstractMethodInvocationError();
+
 };
 
 

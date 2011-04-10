@@ -4,6 +4,10 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/planargraph/PlanarGraph.js
+ */
+
 
 /**
  * A GeometryGraph is a graph that models a given Geometry
@@ -29,7 +33,7 @@ jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) 
   }
 };
 
-jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
+jsts.geomgraph.GeometryGraph.prototype = new jsts.planargraph.PlanarGraph();
 
 
 /**
