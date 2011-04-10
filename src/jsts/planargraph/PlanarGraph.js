@@ -20,7 +20,8 @@
  * @constructor
  */
 jsts.planargraph.PlanarGraph = function() {
-  nodeMap = new NodeMap();
+  // TODO: need to decide on how to handle treemaps
+  //nodeMap = new NodeMap();
 };
 
 jsts.planargraph.PlanarGraph.prototype.edges = {};
