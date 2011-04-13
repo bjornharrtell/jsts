@@ -138,7 +138,9 @@ jsts.geomgraph.GeometryGraph.prototype.ptLocator = null;
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.createEdgeSetIntersector = function() {
-  return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
+  return new jsts.geomgraph.index.SimpleEdgeSetIntersector();
+  // TODO: use optimized version when ported
+  // return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
 };
 
 
@@ -147,10 +149,61 @@ jsts.geomgraph.GeometryGraph.prototype.createEdgeSetIntersector = function() {
  *          g
  */
 jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
-  if (g.isEmpty())
+  if (g.isEmpty()) {
     return;
+  }
 
-  // TODO: port rest of method
+  // check if this Geometry should obey the Boundary Determination Rule
+  // all collections except MultiPolygons obey the rule
+  if (g instanceof jsts.geom.MultiPolygon)
+    useBoundaryDeterminationRule = false;
+
+  if (g instanceof jsts.geom.Polygon)
+    this.addPolygon(g);
+  // LineString also handles LinearRings
+  else if (g instanceof jsts.geom.LineString)
+    this.addLineString(g);
+  else if (g instanceof jsts.geom.Point)
+    this.addPoint(g);
+  else if (g instanceof jsts.geom.MultiPoint)
+    this.addCollection(g);
+  else if (g instanceof jsts.geom.MultiLineString)
+    this.addCollection(g);
+  else if (g instanceof jsts.geom.MultiPolygon)
+    this.addCollection(g);
+  else if (g instanceof jsts.geom.GeometryCollection)
+    this.addCollection(g);
+  else
+    throw new jsts.error.IllegalArgumentError('Geometry type not supported.');
+};
+
+
+/**
+ * @param {LineString} line
+ * @private
+ */
+jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
+  var coords = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
+
+  if (coords.length < 2) {
+    hasTooFewPoints = true;
+    invalidPoint = coord[0];
+    return;
+  }
+
+  // add the edge for the LineString
+  // line edges do not have locations for their left and right sides
+  var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(argIndex, Location.INTERIOR));
+  this.lineEdgeMap.put(line, e);
+  this.insertEdge(e);
+  /**
+   * Add the boundary points of the LineString, if any.
+   * Even if the LineString is closed, add both points as if they were endpoints.
+   * This allows for the case that the node already exists and is a boundary point.
+   */
+  Assert.isTrue(coords.length >= 2, 'found LineString with single point');
+  this.insertBoundaryPoint(argIndex, coords[0]);
+  this.insertBoundaryPoint(argIndex, coords[coords.length - 1]);
 };
 
 
@@ -178,7 +231,7 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
   } else {
     esi.computeIntersections(this.edges, si, true);
   }
-  this.addSelfIntersectionNodes(argIndex);
+  this.addSelfIntersectionNodes(this.argIndex);
   return si;
 };
 
