@@ -183,7 +183,7 @@ jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
-  var coords = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
+  var coords = jsts.geom.CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
 
   if (coords.length < 2) {
     hasTooFewPoints = true;
@@ -193,7 +193,7 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
 
   // add the edge for the LineString
   // line edges do not have locations for their left and right sides
-  var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(argIndex, Location.INTERIOR));
+  var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(this.argIndex, jsts.geom.Location.INTERIOR));
   this.lineEdgeMap.put(line, e);
   this.insertEdge(e);
   /**
@@ -202,8 +202,8 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
    * This allows for the case that the node already exists and is a boundary point.
    */
   Assert.isTrue(coords.length >= 2, 'found LineString with single point');
-  this.insertBoundaryPoint(argIndex, coords[0]);
-  this.insertBoundaryPoint(argIndex, coords[coords.length - 1]);
+  this.insertBoundaryPoint(this.argIndex, coords[0]);
+  this.insertBoundaryPoint(this.argIndex, coords[coords.length - 1]);
 };
 
 
