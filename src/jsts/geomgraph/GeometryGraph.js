@@ -5,7 +5,7 @@
  */
 
 /**
- * @requires jsts/planargraph/PlanarGraph.js
+ * @requires jsts/geomgraph/PlanarGraph.js
  */
 
 
@@ -35,7 +35,7 @@ jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) 
   }
 };
 
-jsts.geomgraph.GeometryGraph.prototype = new jsts.planargraph.PlanarGraph();
+jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
 
 
 /**
@@ -179,11 +179,13 @@ jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
 
 
 /**
- * @param {LineString} line
+ * @param {LineString}
+ *          line
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
-  var coords = jsts.geom.CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
+  var coords = jsts.geom.CoordinateArrays.removeRepeatedPoints(line
+      .getCoordinates());
 
   if (coords.length < 2) {
     hasTooFewPoints = true;
@@ -193,15 +195,20 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
 
   // add the edge for the LineString
   // line edges do not have locations for their left and right sides
-  var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(this.argIndex, jsts.geom.Location.INTERIOR));
+  var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(
+      this.argIndex, jsts.geom.Location.INTERIOR));
   this.lineEdgeMap.put(line, e);
   this.insertEdge(e);
   /**
-   * Add the boundary points of the LineString, if any.
-   * Even if the LineString is closed, add both points as if they were endpoints.
-   * This allows for the case that the node already exists and is a boundary point.
+   * Add the boundary points of the LineString, if any. Even if the LineString
+   * is closed, add both points as if they were endpoints. This allows for the
+   * case that the node already exists and is a boundary point.
    */
-  Assert.isTrue(coords.length >= 2, 'found LineString with single point');
+  if (coords.length >= 2 === false) {
+    throw new jsts.error.IllegalArgumentError(
+        'found LineString with single point');
+  }
+
   this.insertBoundaryPoint(this.argIndex, coords[0]);
   this.insertBoundaryPoint(this.argIndex, coords[coords.length - 1]);
 };
@@ -233,6 +240,60 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
   }
   this.addSelfIntersectionNodes(this.argIndex);
   return si;
+};
+
+
+/**
+ * Adds candidate boundary points using the current {@link BoundaryNodeRule}.
+ * This is used to add the boundary points of dim-1 geometries
+ * (Curves/MultiCurves).
+ */
+jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex,
+    coord) {
+  // TODO: port
+  /*
+  Node n = nodes.addNode(coord);
+  Label lbl = n.getLabel();
+  // the new point to insert is on a boundary
+  int boundaryCount = 1;
+  // determine the current location for the point (if any)
+  int loc = Location.NONE;
+  if (lbl != null) loc = lbl.getLocation(argIndex, Position.ON);
+  if (loc == Location.BOUNDARY) boundaryCount++;
+
+  // determine the boundary status of the point according to the Boundary Determination Rule
+  int newLoc = determineBoundary(boundaryNodeRule, boundaryCount);
+  lbl.setLocation(argIndex, newLoc);
+  */
+};
+
+jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
+    argIndex) {
+  /*for (var i = 0; i < this.edges.length; i++) {
+    var e = this.edges[i];
+    var eLoc = e.getLabel().getLocation(argIndex);
+    for (var j = 0; j < e.eiList.length; j++) {
+      var ei = e.eiList[j];
+      this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
+    }
+  }*/
+};
+
+
+/**
+ * Add a node for a self-intersection. If the node is a potential boundary node
+ * (e.g. came from an edge which is a boundary) then insert it as a potential
+ * boundary node. Otherwise, just add it as a regular node.
+ */
+jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(
+    argIndex, coord, loc) {
+  // if this node is already a boundary node, don't change it
+  /*if (this.isBoundaryNode(argIndex, coord))
+    return;
+  if (loc == Location.BOUNDARY && this.useBoundaryDeterminationRule)
+    this.insertBoundaryPoint(argIndex, coord);
+  else
+    this.insertPoint(argIndex, coord, loc);*/
 };
 
 // TODO: port rest of class
