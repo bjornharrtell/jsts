@@ -97,7 +97,7 @@
     
     var lineString = new jsts.geom.LineString(pointList);
     
-    lineString.isSimple();
+    var isSimple = lineString.isSimple();
     
     var lineFeature = new OpenLayers.Feature.Vector(lineString);
 
