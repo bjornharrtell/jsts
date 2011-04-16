@@ -13,12 +13,12 @@ jsts.geomgraph.GraphComponent = function() {
  * @type {Label}
  * @protected
  */
-jsts.geomgraph.Edge.prototype.label = null;
+jsts.geomgraph.GraphComponent.prototype.label = null;
 
-jsts.geomgraph.Edge.prototype.getLabel = function() {
+jsts.geomgraph.GraphComponent.prototype.getLabel = function() {
   return this.label;
 };
-jsts.geomgraph.Edge.prototype.setLabel = function(label) {
+jsts.geomgraph.GraphComponent.prototype.setLabel = function(label) {
   this.label = label;
 };
 
