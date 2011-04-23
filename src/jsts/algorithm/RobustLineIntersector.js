@@ -11,7 +11,7 @@
  * @augments jsts.algorithm.LineIntersector
  */
 jsts.algorithm.RobustLineIntersector = function() {
-
+  jsts.geomgraph.RobustLineIntersector.prototype.constructor.call(this);
 };
 
 jsts.algorithm.RobustLineIntersector.prototype = new jsts.algorithm.LineIntersector();
