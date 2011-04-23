@@ -8,12 +8,9 @@
 
 /**
  * @constructor
- * @augments jsts.algorithm.LineIntersector
  */
-jsts.algorithm.RobustLineIntersector = function() {
+jsts.algorithm.LineIntersector = function() {
 
 };
-
-jsts.algorithm.RobustLineIntersector.prototype = new jsts.algorithm.LineIntersector();
 
 // TODO: port
