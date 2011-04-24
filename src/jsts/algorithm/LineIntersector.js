@@ -24,8 +24,8 @@ jsts.algorithm.LineIntersector = function() {
   this.intPt[0] = new jsts.geom.Coordinate();
   this.intPt[1] = new jsts.geom.Coordinate();
   // alias the intersection points for ease of reference
-  this.pa = intPt[0];
-  this.pb = intPt[1];
+  this.pa = this.intPt[0];
+  this.pb = this.intPt[1];
   this.result = 0;
 };
 
@@ -191,7 +191,7 @@ jsts.algorithm.LineIntersector.prototype.pb;
  * @protected
  * @type {PrecisionModel}
  */
-pjsts.algorithm.LineIntersector.prototype.precisionModel = null;
+jsts.algorithm.LineIntersector.prototype.precisionModel = null;
 
 
 /**
