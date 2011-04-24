@@ -4,8 +4,4 @@
  * See /license.txt for the full text of the license.
  */
 
-jsts.geomgraph.Label = function() {
-
-};
-
 // TODO: port

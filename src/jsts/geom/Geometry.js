@@ -1275,6 +1275,7 @@ jsts.geom.Geometry.prototype.clone = function() {
  * this ordering to sequences of coordinates.
  */
 jsts.geom.Geometry.prototype.normalize = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -1435,7 +1436,7 @@ jsts.geom.Geometry.prototype.isGeometryCollection = function() {
  *         will return <code>true.</code>
  */
 jsts.geom.Geometry.prototype.computeEnvelopeInternal = function() {
-  return null;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -1450,11 +1451,9 @@ jsts.geom.Geometry.prototype.computeEnvelopeInternal = function() {
  *         whether this object is greater than, equal to, or less than
  *         <code>o</code>, as defined in "Normal Form For Geometry" in the
  *         JTS Technical Specifications.
- *
- * TODO: decide if this should be ported
  */
 jsts.geom.Geometry.prototype.compareToSameClass = function(o) {
-  return 0;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -1474,7 +1473,7 @@ jsts.geom.Geometry.prototype.compareToSameClass = function(o) {
  *         JTS Technical Specifications.
  */
 jsts.geom.Geometry.prototype.compareToSameClass = function(o, comp) {
-  return 0;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
