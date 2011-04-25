@@ -4,16 +4,4 @@
  * See /license.txt for the full text of the license.
  */
 
-
-
-/**
- * @constructor
- * @augments jsts.geomgraph.GraphComponent
- */
-jsts.geomgraph.Node = function() {
-
-};
-
-jsts.geomgraph.Node.prototype = new jsts.geomgraph.GraphComponent();
-
-// TODO: port rest
+// TODO: port
