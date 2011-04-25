@@ -64,4 +64,4 @@ jsts.algorithm.Mod2BoundaryNodeRule.prototype.isInBoundary = function(
 };
 
 jsts.algorithm.BoundaryNodeRule.MOD2_BOUNDARY_RULE = new jsts.algorithm.Mod2BoundaryNodeRule();
-jsts.algorithm.BoundaryNodeRule.GC_SFS_BOUNDARY_RULE = jsts.algorithm.BoundaryNodeRule.MOD2_BOUNDARY_RULE;
+jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE = jsts.algorithm.BoundaryNodeRule.MOD2_BOUNDARY_RULE;

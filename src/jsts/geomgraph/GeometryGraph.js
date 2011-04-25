@@ -28,8 +28,7 @@ jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) 
 
   this.argIndex = argIndex;
   this.parentGeom = parentGeom;
-  this.boundaryNodeRule = boundaryNodeRule ? boundaryNodeRule
-      : jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+  this.boundaryNodeRule = boundaryNodeRule || jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
   if (parentGeom != null) {
     this.add(parentGeom);
   }
@@ -47,8 +46,8 @@ jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
  */
 jsts.geomgraph.GeometryGraph.determineBoundary = function(boundaryNodeRule,
     boundaryCount) {
-  return boundaryNodeRule.isInBoundary(boundaryCount) ? Location.BOUNDARY
-      : Location.INTERIOR;
+  return boundaryNodeRule.isInBoundary(boundaryCount) ? jsts.geom.Location.BOUNDARY
+      : jsts.geom.Location.INTERIOR;
 };
 
 
@@ -250,33 +249,35 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
  */
 jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex,
     coord) {
-  // TODO: port
-  /*
-  Node n = nodes.addNode(coord);
-  Label lbl = n.getLabel();
-  // the new point to insert is on a boundary
-  int boundaryCount = 1;
-  // determine the current location for the point (if any)
-  int loc = Location.NONE;
-  if (lbl != null) loc = lbl.getLocation(argIndex, Position.ON);
-  if (loc == Location.BOUNDARY) boundaryCount++;
 
-  // determine the boundary status of the point according to the Boundary Determination Rule
-  int newLoc = determineBoundary(boundaryNodeRule, boundaryCount);
+  var n = this.nodes.addNode(coord);
+  var lbl = n.getLabel();
+  // the new point to insert is on a boundary
+  var boundaryCount = 1;
+  // determine the current location for the point (if any)
+  var loc = jsts.geom.Location.NONE;
+  if (lbl !== null)
+    loc = lbl.getLocation(argIndex, jsts.geomgraph.Position.ON);
+  if (loc === jsts.geom.Location.BOUNDARY)
+    boundaryCount++;
+
+  // determine the boundary status of the point according to the Boundary
+  // Determination Rule
+  var newLoc = jsts.geomgraph.GeometryGraph.determineBoundary(
+      this.boundaryNodeRule, boundaryCount);
   lbl.setLocation(argIndex, newLoc);
-  */
 };
 
 jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
     argIndex) {
-  /*for (var i = 0; i < this.edges.length; i++) {
+  for (var i = 0; i < this.edges.length; i++) {
     var e = this.edges[i];
     var eLoc = e.getLabel().getLocation(argIndex);
     for (var j = 0; j < e.eiList.length; j++) {
       var ei = e.eiList[j];
       this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
     }
-  }*/
+  }
 };
 
 
@@ -288,12 +289,12 @@ jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
 jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(
     argIndex, coord, loc) {
   // if this node is already a boundary node, don't change it
-  /*if (this.isBoundaryNode(argIndex, coord))
+  if (this.isBoundaryNode(argIndex, coord))
     return;
-  if (loc == Location.BOUNDARY && this.useBoundaryDeterminationRule)
+  if (loc == jsts.geom.Location.BOUNDARY && this.useBoundaryDeterminationRule)
     this.insertBoundaryPoint(argIndex, coord);
   else
-    this.insertPoint(argIndex, coord, loc);*/
+    this.insertPoint(argIndex, coord, loc);
 };
 
 // TODO: port rest of class

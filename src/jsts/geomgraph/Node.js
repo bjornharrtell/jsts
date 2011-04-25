@@ -16,4 +16,9 @@ jsts.geomgraph.Node = function() {
 
 jsts.geomgraph.Node.prototype = new jsts.geomgraph.GraphComponent();
 
+jsts.geomgraph.Node.prototype.getLabel = function() {
+  // TODO: port
+  return new jsts.geomgraph.Label();
+};
+
 // TODO: port rest
