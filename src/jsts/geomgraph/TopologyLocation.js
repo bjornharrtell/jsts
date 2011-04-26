@@ -33,4 +33,9 @@ jsts.geomgraph.TopologyLocation = function() {
 };
 
 
+/**
+ * @private
+ */
+jsts.geomgraph.TopologyLocation.prototype.location = [];
+
 // TODO: port
