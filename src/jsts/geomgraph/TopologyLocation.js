@@ -29,7 +29,30 @@
  * @constructor
  */
 jsts.geomgraph.TopologyLocation = function() {
-
+  if (arguments.length === 3) {
+    var on = arguments[0];
+    var left = arguments[1];
+    var right = arguments[2];
+    this.init(3);
+    this.location[jsts.geomgraph.Position.ON] = on;
+    this.location[jsts.geomgraph.Position.LEFT] = left;
+    this.location[jsts.geomgraph.Position.RIGHT] = right;
+  } else if (argument[0] instanceof jsts.geomgraph.TopologyLocation) {
+    var gl = argument[0];
+    init(gl.location.length);
+    if (gl != null) {
+      for (var i = 0; i < this.location.length; i++) {
+        this.location[i] = gl.location[i];
+      }
+    }
+  } else if (argument[0] instanceof Number) {
+    var on = argument[0];
+    init(1);
+    this.location[Position.ON] = on;
+  } else if (argument[0] instanceof Array) {
+    var location = argument[0];
+    init(location.length);
+  }
 };
 
 
@@ -38,4 +61,187 @@ jsts.geomgraph.TopologyLocation = function() {
  */
 jsts.geomgraph.TopologyLocation.prototype.location = [];
 
-// TODO: port
+
+/**
+ * @param {int}
+ *          size
+ * @private
+ */
+jsts.geomgraph.TopologyLocation.prototype.init = function(size) {
+  this.location[size] = null;
+  this.setAllLocations(jsts.geom.Location.NONE);
+};
+
+
+/**
+ * @param {int}
+ *          posIndex
+ * @return {int}
+ */
+jsts.geomgraph.TopologyLocation.prototype.get = function(posIndex) {
+  if (posIndex < this.location.length)
+    return this.location[posIndex];
+  return jsts.geom.Location.NONE;
+};
+
+
+/**
+ * @return {boolean} true if all locations are NULL.
+ */
+jsts.geomgraph.TopologyLocation.prototype.isNull = function() {
+  for (var i = 0; i < this.location.length; i++) {
+    if (this.location[i] !== jsts.geom.Location.NONE)
+      return false;
+  }
+  return true;
+};
+
+
+/**
+ * @return {boolean} true if any locations are NULL.
+ */
+jsts.geomgraph.TopologyLocation.prototype.isAnyNull = function() {
+  for (var i = 0; i < this.location.length; i++) {
+    if (this.location[i] === jsts.geom.Location.NONE)
+      return true;
+  }
+  return false;
+};
+
+
+/**
+ * @param {TopologyLocation}
+ *          le
+ * @param {int}
+ *          locIndex
+ * @return {boolean}
+ */
+jsts.geomgraph.TopologyLocation.prototype.isEqualOnSide = function(le, locIndex) {
+  return this.location[locIndex] == le.location[locIndex];
+};
+
+
+/**
+ * @return {boolean}
+ */
+jsts.geomgraph.TopologyLocation.prototype.isArea = function() {
+  return this.location.length > 1;
+};
+
+
+/**
+ * @return {boolean}
+ */
+jsts.geomgraph.TopologyLocation.prototype.isLine = function() {
+  return this.location.length == 1;
+};
+
+jsts.geomgraph.TopologyLocation.prototype.flip = function() {
+  if (this.location.length <= 1)
+    return;
+  var temp = this.location[jsts.geom.Position.LEFT];
+  this.location[jsts.geomgraph.Position.LEFT] = this.location[jsts.geom.Position.RIGHT];
+  this.location[jsts.geomgraph.Position.RIGHT] = temp;
+};
+
+
+/**
+ * @param {int}
+ *          locValue
+ */
+jsts.geomgraph.TopologyLocation.prototype.setAllLocations = function(locValue) {
+  for (var i = 0; i < this.location.length; i++) {
+    this.location[i] = locValue;
+  }
+};
+
+
+/**
+ * @param {int}
+ *          locValue
+ */
+jsts.geomgraph.TopologyLocation.prototype.setAllLocationsIfNull = function(
+    locValue) {
+  for (var i = 0; i < this.location.length; i++) {
+    if (this.location[i] === jsts.geom.Location.NONE)
+      this.location[i] = locValue;
+  }
+};
+
+
+/**
+ * @param {int}
+ *          locIndex
+ * @param {int}
+ *          locValue
+ */
+jsts.geomgraph.TopologyLocation.prototype.setLocation = function(locIndex,
+    locValue) {
+  if (locValue !== undefined) {
+    this.location[locIndex] = locValue;
+  } else {
+    this.setLocation(jsts.geomgraph.Position.ON, locIndex);
+  }
+};
+
+
+/**
+ * @return {int[]}
+ */
+jsts.geomgraph.TopologyLocation.prototype.getLocations = function() {
+  return location;
+};
+
+
+/**
+ * @param {int}
+ *          on
+ * @param {int}
+ *          left
+ * @param {int}
+ *          right
+ */
+jsts.geomgraph.TopologyLocation.prototype.setLocations = function(on, left,
+    right) {
+  this.location[jsts.geomgraph.Position.ON] = on;
+  this.location[jsts.geomgraph.Position.LEFT] = left;
+  this.location[jsts.geomgraph.Position.RIGHT] = right;
+};
+
+
+/**
+ * @param {int}
+ *          loc
+ * @return {boolean}
+ */
+jsts.geomgraph.TopologyLocation.prototype.allPositionsEqual = function(loc) {
+  for (var i = 0; i < this.location.length; i++) {
+    if (this.location[i] !== loc)
+      return false;
+  }
+  return true;
+};
+
+
+/**
+ * merge updates only the NULL attributes of this object with the attributes of
+ * another.
+ *
+ * @param {TopologyLocation}
+ *          gl
+ */
+jsts.geomgraph.TopologyLocation.prototype.merge = function(gl) {
+  // if the src is an Area label & and the dest is not, increase the dest to be
+  // an Area
+  if (gl.location.length > this.location.length) {
+    var newLoc = [];
+    newLoc[jsts.geomgraph.Position.ON] = this.location[jsts.geomgraph.Position.ON];
+    newLoc[jsts.geomgraph.Position.LEFT] = jsts.geom.Location.NONE;
+    newLoc[jsts.geomgraph.Position.RIGHT] = jsts.geom.Location.NONE;
+    this.location = newLoc;
+  }
+  for (var i = 0; i < this.location.length; i++) {
+    if (this.location[i] == jsts.geom.Location.NONE && i < gl.location.length)
+      this.location[i] = gl.location[i];
+  }
+};
