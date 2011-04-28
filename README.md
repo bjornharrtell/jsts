@@ -12,8 +12,8 @@ OpenLayers compatibility. The core geometry classes are inherited from OpenLayer
 and extended with API as close as possible to the corresponding JTS Topology Suite geometry classes.
 
 Currently JSTS Topology Suite implements APIs for the the core geom.* classes and the validation
-suite is sort of half-way ported. QuadTree index have been ported. Initial work on porting
-the first geometry relation/manipulation algorithms has begun and when completed.
+suite is sort of half-way ported. QuadTree index have been ported. A fait bit of ground work has been
+done to port core geometry predicate/functions.
 
 The goal of the project is to provide OpenLayers applications with a complete library for processing
 and analysing simple geometries.
