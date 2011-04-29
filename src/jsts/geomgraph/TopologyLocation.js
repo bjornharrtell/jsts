@@ -37,20 +37,20 @@ jsts.geomgraph.TopologyLocation = function() {
     this.location[jsts.geomgraph.Position.ON] = on;
     this.location[jsts.geomgraph.Position.LEFT] = left;
     this.location[jsts.geomgraph.Position.RIGHT] = right;
-  } else if (argument[0] instanceof jsts.geomgraph.TopologyLocation) {
-    var gl = argument[0];
+  } else if (arguments[0] instanceof jsts.geomgraph.TopologyLocation) {
+    var gl = arguments[0];
     init(gl.location.length);
     if (gl != null) {
       for (var i = 0; i < this.location.length; i++) {
         this.location[i] = gl.location[i];
       }
     }
-  } else if (argument[0] instanceof Number) {
-    var on = argument[0];
+  } else if (arguments[0] instanceof Number) {
+    var on = arguments[0];
     init(1);
     this.location[Position.ON] = on;
-  } else if (argument[0] instanceof Array) {
-    var location = argument[0];
+  } else if (arguments[0] instanceof Array) {
+    var location = arguments[0];
     init(location.length);
   }
 };
