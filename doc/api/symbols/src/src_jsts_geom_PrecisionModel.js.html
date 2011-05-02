@@ -1,0 +1,75 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> 
+<span class='line'>  9</span> </span><span class="COMM">/**
+<span class='line'> 10</span>  * Specifies the precision model of the {@link Coordinate}s in a
+<span class='line'> 11</span>  * {@link Geometry}. In other words, specifies the grid of allowable points for
+<span class='line'> 12</span>  * all &lt;code>Geometry&lt;/code>s.
+<span class='line'> 13</span>  * &lt;p>
+<span class='line'> 14</span>  * The {@link makePrecise} method allows rounding a coordinate to a "precise"
+<span class='line'> 15</span>  * value; that is, one whose precision is known exactly.
+<span class='line'> 16</span>  * &lt;p>
+<span class='line'> 17</span>  * Coordinates are assumed to be precise in geometries. That is, the coordinates
+<span class='line'> 18</span>  * are assumed to be rounded to the precision model given for the geometry. JTS
+<span class='line'> 19</span>  * input routines automatically round coordinates to the precision model before
+<span class='line'> 20</span>  * creating Geometries. All internal operations assume that coordinates are
+<span class='line'> 21</span>  * rounded to the precision model. Constructive methods (such as boolean
+<span class='line'> 22</span>  * operations) always round computed coordinates to the appropriate precision
+<span class='line'> 23</span>  * model.
+<span class='line'> 24</span>  * &lt;p>
+<span class='line'> 25</span>  * Currently one type of precision model are supported:
+<span class='line'> 26</span>  * &lt;ul>
+<span class='line'> 27</span>  * &lt;li>FLOATING - represents full double precision floating point.
+<span class='line'> 28</span>  * &lt;p>
+<span class='line'> 29</span>  * Coordinates are represented internally as Java double-precision values. Since
+<span class='line'> 30</span>  * Java uses the IEEE-754 floating point standard, this provides 53 bits of
+<span class='line'> 31</span>  * precision.
+<span class='line'> 32</span>  * &lt;p>
+<span class='line'> 33</span>  * JSTS methods currently do not handle inputs with different precision models.
+<span class='line'> 34</span>  *
+<span class='line'> 35</span>  * @constructor
+<span class='line'> 36</span>  */</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="NAME">jsts.geom.PrecisionModel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.PrecisionModel.prototype.init.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> 
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="COMM">/**
+<span class='line'> 43</span>  * @type {int}
+<span class='line'> 44</span>  */</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="NAME">jsts.geom.PrecisionModel.FLOATING</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> 
+<span class='line'> 47</span> 
+<span class='line'> 48</span> </span><span class="COMM">/**
+<span class='line'> 49</span>  * @type {int}
+<span class='line'> 50</span>  */</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="NAME">jsts.geom.PrecisionModel.FIXED</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> 
+<span class='line'> 53</span> 
+<span class='line'> 54</span> </span><span class="COMM">/**
+<span class='line'> 55</span>  * @return {boolean} always true.
+<span class='line'> 56</span>  */</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="NAME">jsts.geom.PrecisionModel.prototype.isFloating</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> 
+<span class='line'> 61</span> 
+<span class='line'> 62</span> </span><span class="COMM">/**
+<span class='line'> 63</span>  * @return {int} always jsts.geom.PrecisionModel.FLOATING.
+<span class='line'> 64</span>  */</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="NAME">jsts.geom.PrecisionModel.prototype.getType</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.PrecisionModel.FLOATING</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span></pre></body></html>
