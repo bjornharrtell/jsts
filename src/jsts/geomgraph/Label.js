@@ -32,7 +32,258 @@
  * @constructor
  */
 jsts.geomgraph.Label = function() {
-
+  if (arguments.length === 4) {
+    var geomIndex = arguments[0];
+    var onLoc = arguments[1];
+    var leftLoc = arguments[2];
+    var rightLoc = arguments[3];
+    this.elt[0] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE,
+        jsts.geom.Location.NONE, jsts.geom.Location.NONE);
+    this.elt[1] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE,
+        jsts.geom.Location.NONE, jsts.geom.Location.NONE);
+    this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
+  } else if (arguments.length === 3) {
+    var onLoc = arguments[0];
+    var leftLoc = arguments[1];
+    var rightLoc = arguments[2];
+    this.elt[0] = new jsts.geomgraph.TopologyLocation(onLoc, leftLoc, rightLoc);
+    this.elt[1] = new jsts.geomgraph.TopologyLocation(onLoc, leftLoc, rightLoc);
+  } else if (arguments.length === 2) {
+    var geomIndex = arguments[0];
+    var onLoc = arguments[1];
+    this.elt[0] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE);
+    this.elt[1] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE);
+    this.elt[geomIndex].setLocation(onLoc);
+  } else if (arguments[0] instanceof jsts.geomgraph.Label) {
+    this.elt[0] = new jsts.geomgraph.TopologyLocation(lbl.elt[0]);
+    this.elt[1] = new jsts.geomgraph.TopologyLocation(lbl.elt[1]);
+  } else if (arguments[0] instanceof Number) {
+    var onLoc = arguments[0];
+    this.elt[0] = new jsts.geomgraph.TopologyLocation(onLoc);
+    this.elt[1] = new jsts.geomgraph.TopologyLocation(onLoc);
+  }
 };
 
-// TODO: port
+
+/**
+ * converts a Label to a Line label (that is, one with no side Locations)
+ *
+ * @param {label}
+ *          label
+ * @return {Label}
+ */
+jsts.geomgraph.Label.toLineLabel = function(label) {
+  var lineLabel = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
+  for (var i = 0; i < 2; i++) {
+    lineLabel.setLocation(i, label.getLocation(i));
+  }
+  return lineLabel;
+};
+
+
+/**
+ * @type {TopologyLocation[]}
+ * @private
+ */
+jsts.geomgraph.Label.prototype.elt = [];
+
+jsts.geomgraph.Label.prototype.flip = function() {
+  this.elt[0].flip();
+  this.elt[1].flip();
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @param {int}
+ *          posIndex
+ * @return {int}
+ */
+jsts.geomgraph.Label.prototype.getLocation = function(geomIndex, posIndex) {
+  return this.elt[geomIndex].get(posIndex);
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @return {int}
+ */
+jsts.geomgraph.Label.prototype.getLocation = function(geomIndex) {
+  return this.elt[geomIndex].get(jsts.geomgraph.Position.ON);
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @param {int}
+ *          posIndex
+ * @param {int}
+ *          location
+ */
+jsts.geomgraph.Label.prototype.setLocation = function(geomIndex, posIndex,
+    location) {
+  this.elt[geomIndex].setLocation(posIndex, location);
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @param {int}
+ *          location
+ */
+jsts.geomgraph.Label.prototype.setLocation = function(geomIndex, location) {
+  this.elt[geomIndex].setLocation(jsts.geomgraph.Position.ON, location);
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @param {int}
+ *          location
+ */
+jsts.geomgraph.Label.prototype.setAllLocations = function(geomIndex, location) {
+  this.elt[geomIndex].setAllLocations(location);
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @param {int}
+ *          location
+ */
+jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(geomIndex,
+    location) {
+  this.elt[geomIndex].setAllLocationsIfNull(location);
+};
+
+
+/**
+ * @param {int}
+ *          location
+ */
+jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(location) {
+  this.setAllLocationsIfNull(0, location);
+  this.setAllLocationsIfNull(1, location);
+};
+
+
+/**
+ * Merge this label with another one. Merging updates any null attributes of
+ * this label with the attributes from lbl
+ *
+ * @param {Label}
+ *          lbl
+ */
+jsts.geomgraph.Label.prototype.merge = function(lbl) {
+  for (var i = 0; i < 2; i++) {
+    if (this.elt[i] == null && lbl.elt[i] !== null) {
+      this.elt[i] = new TopologyLocation(lbl.elt[i]);
+    } else {
+      this.elt[i].merge(lbl.elt[i]);
+    }
+  }
+};
+
+
+/**
+ * @return {int}
+ */
+jsts.geomgraph.Label.prototype.getGeometryCount = function() {
+  var count = 0;
+  if (!this.elt[0].isNull())
+    count++;
+  if (!this.elt[1].isNull())
+    count++;
+  return count;
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.isNull = function(geomIndex) {
+  return this.elt[geomIndex].isNull();
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.isAnyNull = function(geomIndex) {
+  return this.elt[geomIndex].isAnyNull();
+};
+
+
+/**
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.isArea = function() {
+  return this.elt[0].isArea() || elt[1].isArea();
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.isArea = function(geomIndex) {
+  return this.elt[geomIndex].isArea();
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.isLine = function(geomIndex) {
+  return this.elt[geomIndex].isLine();
+};
+
+
+/**
+ * @param {Label}
+ *          lbl
+ * @param {int}
+ *          side
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.isEqualOnSide = function(lbl, side) {
+  return this.elt[0].isEqualOnSide(lbl.elt[0], side) &&
+      this.elt[1].isEqualOnSide(lbl.elt[1], side);
+};
+
+
+/**
+ * @param {int}
+ *          geomIndex
+ * @param {int}
+ *          loc
+ * @return {boolean}
+ */
+jsts.geomgraph.Label.prototype.allPositionsEqual = function(geomIndex, loc) {
+  return this.elt[geomIndex].allPositionsEqual(loc);
+};
+
+
+/**
+ * Converts one GeometryLocation to a Line location
+ *
+ * @param {int}
+ *          geomIndex
+ */
+jsts.geomgraph.Label.prototype.toLine = function(geomIndex) {
+  if (this.elt[geomIndex].isArea())
+    this.elt[geomIndex] = new jsts.geomgraph.TopologyLocation(elt[geomIndex].location[0]);
+};
