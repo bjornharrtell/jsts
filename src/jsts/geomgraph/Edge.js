@@ -34,4 +34,9 @@ jsts.geomgraph.Edge.prototype.pts = null;
 jsts.geomgraph.Edge.prototype.eiList = null;
 
 
+/**
+ * @return {Coordinate[] }
+ */
+jsts.geomgraph.Edge.prototype.getCoordinates = function() { return this.pts; };
+
 //TODO: port rest..
