@@ -278,7 +278,7 @@ jsts.algorithm.LineIntersector.prototype.isEndPoint = function() {
  * @return {boolean} true if the input geometries intersect.
  */
 jsts.algorithm.LineIntersector.prototype.hasIntersection = function() {
-  return result != jsts.algorithm.LineIntersector.NO_INTERSECTION;
+  return this.result != jsts.algorithm.LineIntersector.NO_INTERSECTION;
 };
 
 
@@ -289,7 +289,7 @@ jsts.algorithm.LineIntersector.prototype.hasIntersection = function() {
  * @return {int}
  */
 jsts.algorithm.LineIntersector.prototype.getIntersectionNum = function() {
-  return result;
+  return this.result;
 };
 
 
@@ -302,7 +302,7 @@ jsts.algorithm.LineIntersector.prototype.getIntersectionNum = function() {
  * @return {Coordinate} the intIndex'th intersection point.
  */
 jsts.algorithm.LineIntersector.prototype.getIntersection = function(intIndex) {
-  return intPt[intIndex];
+  return this.intPt[intIndex];
 };
 
 

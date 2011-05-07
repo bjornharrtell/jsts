@@ -756,7 +756,11 @@ jsts.geom.Envelope.prototype.toString = function() {
  *          q the point to test for intersection.
  * @return {boolean} <code>true</code> if q intersects the envelope p1-p2.
  */
-jsts.geom.Envelope.intersectsPoint = function(p1, p2, q) {
+jsts.geom.Envelope.intersects = function(p1, p2, q) {
+  if (arguments.length === 4) {
+    return jsts.geom.Envelope.intersectsEnvelope(arguments[0], arguments[1], arguments[2], arguments[3]);
+  }
+
   var xc1 = p1.x < p2.x ? p1.x : p2.x;
   var xc2 = p1.x > p2.x ? p1.x : p2.x;
   var yc1 = p1.y < p2.y ? p1.y : p2.y;
