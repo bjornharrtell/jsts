@@ -16,7 +16,7 @@ describe('jsts.operation.IsSimpleOp', function() {
     
   });
   
-  it('L - simple line test should be true', function() {
+  it('L - non-simple, proper interior intersection should be false', function() {
     var reader = new jsts.io.WKTReader();
     
     var lineString = reader.read('LINESTRING (20 60, 160 60, 80 160, 80 20)');

@@ -15,10 +15,23 @@
 jsts.geomgraph.Edge = function(pts, label) {
   this.pts = pts;
   this.label = label;
+  this.eiList = new jsts.geomgraph.EdgeIntersectionList(this);
 };
 
 jsts.geomgraph.Edge.prototype = new jsts.geomgraph.GraphComponent();
 
+
+/**
+ * @private
+ */
 jsts.geomgraph.Edge.prototype.pts = null;
+
+
+/**
+ * @type {jsts.geomgraph.EdgeIntersectionList}
+ * @private
+ */
+jsts.geomgraph.Edge.prototype.eiList = null;
+
 
 //TODO: port rest..
