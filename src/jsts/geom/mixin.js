@@ -33,7 +33,7 @@ jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
 
 OpenLayers.Geometry.MultiPoint = OpenLayers.Class(
     OpenLayers.Geometry.MultiPoint, jsts.geom.MultiPoint);
-jsts.geom.MultiPoint = OpenLayers.Geometry.Point;
+jsts.geom.MultiPoint = OpenLayers.Geometry.MultiPoint;
 
 OpenLayers.Geometry.LineString = OpenLayers.Class(
     OpenLayers.Geometry.LineString, jsts.geom.LineString);
