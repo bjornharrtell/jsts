@@ -35,6 +35,7 @@ describe('jsts.operation.IsSimpleOp', function() {
         
         var reader = new jsts.io.WKTReader();
         var geometry = reader.read(wkt);
+        if (geometry === undefined) continue;
         var result = geometry.isSimple();
         
         expect(expected).toEqual(result);

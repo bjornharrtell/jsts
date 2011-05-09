@@ -101,23 +101,55 @@ jsts.operation.IsSimpleOp.prototype.isSimple = function() {
 
 
 /**
- * @param {Geometry} geom input geometry.
+ * @param {MultiPoint}
+ *          mp
  * @return {boolean} true if the geometry is simple.
+ * @private
+ */
+jsts.operation.IsSimpleOp.prototype.isSimpleMultiPoint = function(mp) {
+  if (mp.isEmpty())
+    return true;
+  var points = [];
+  for (var i = 0; i < mp.getNumGeometries(); i++) {
+    var pt = mp.getGeometryN(i);
+    var p = pt.getCoordinate();
+    for (var j = 0; j < points.length; j++) {
+      var point = points[j];
+      if (p.equals2D(point)) {
+        this.nonSimpleLocation = p;
+        return false;
+      }
+    }
+    points.push(p);
+  }
+  return true;
+};
+
+
+/**
+ * @param {Geometry}
+ *          geom input geometry.
+ * @return {boolean} true if the geometry is simple.
+ * @private
  */
 jsts.operation.IsSimpleOp.prototype.isSimpleLinearGeometry = function(geom) {
-  if (geom.isEmpty()) return true;
+  if (geom.isEmpty())
+    return true;
   var graph = new jsts.geomgraph.GeometryGraph(0, geom);
   var li = new jsts.algorithm.RobustLineIntersector();
   var si = graph.computeSelfNodes(li, true);
   // if no self-intersection, must be simple
-  if (! si.hasIntersection()) return true;
+  if (!si.hasIntersection())
+    return true;
   if (si.hasProperIntersection()) {
-    nonSimpleLocation = si.getProperIntersectionPoint();
+    this.nonSimpleLocation = si.getProperIntersectionPoint();
     return false;
   }
-  if (this.hasNonEndpointIntersection(graph)) return false;
+  if (this.hasNonEndpointIntersection(graph))
+    return false;
   if (this.isClosedEndpointsInInterior) {
-    if (this.hasClosedEndpointIntersection(graph)) return false;
+    if (this.hasClosedEndpointIntersection(graph))
+      return false;
   }
   return true;
 };
