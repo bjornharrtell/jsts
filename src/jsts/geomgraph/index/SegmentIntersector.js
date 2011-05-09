@@ -72,28 +72,28 @@ jsts.geomgraph.index.SegmentIntersector.prototype.properIntersectionPoint = null
  * @type {LineIntersector}
  * @private
  */
-jsts.geomgraph.index.SegmentIntersector.prototype.li;
+jsts.geomgraph.index.SegmentIntersector.prototype.li = null;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.index.SegmentIntersector.prototype.includeProper;
+jsts.geomgraph.index.SegmentIntersector.prototype.includeProper = null;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.index.SegmentIntersector.prototype.recordIsolated;
+jsts.geomgraph.index.SegmentIntersector.prototype.recordIsolated = null;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.index.SegmentIntersector.prototype.isSelfIntersection;
+jsts.geomgraph.index.SegmentIntersector.prototype.isSelfIntersection = null;
 
 
 /**
@@ -112,10 +112,33 @@ jsts.geomgraph.index.SegmentIntersector.prototype.numTests = 0;
 
 
 /**
- * @type {Collection[]}
+ * @type {[]}
  * @private
  */
-jsts.geomgraph.index.SegmentIntersector.prototype.bdyNodes;
+jsts.geomgraph.index.SegmentIntersector.prototype.bdyNodes = null;
+
+
+/**
+ * @param {[]}
+ *          bdyNodes0
+ * @param {[]}
+ *          bdyNodes1
+ */
+jsts.geomgraph.index.SegmentIntersector.prototype.setBoundaryNodes = function(
+    bdyNodes0, bdyNodes1) {
+  this.bdyNodes = [];
+  this.bdyNodes[0] = bdyNodes0;
+  this.bdyNodes[1] = bdyNodes1;
+};
+
+
+/**
+ * @return {Coordinate} the proper intersection point, or <code>null</code> if
+ *         none was found.
+ */
+jsts.geomgraph.index.SegmentIntersector.prototype.getProperIntersectionPoint = function() {
+  return this.properIntersectionPoint;
+};
 
 
 /**
@@ -171,7 +194,8 @@ jsts.geomgraph.index.SegmentIntersector.prototype.isTrivialIntersection = functi
     e0, segIndex0, e1, segIndex1) {
   if (e0 == e1) {
     if (this.li.getIntersectionNum() == 1) {
-      if (jsts.geomgraph.index.SegmentIntersector.isAdjacentSegments(segIndex0, segIndex1))
+      if (jsts.geomgraph.index.SegmentIntersector.isAdjacentSegments(segIndex0,
+          segIndex1))
         return true;
       if (e0.isClosed()) {
         var maxSegIndex = e0.getNumPoints() - 1;
@@ -231,10 +255,10 @@ jsts.geomgraph.index.SegmentIntersector.prototype.addIntersections = function(
         e0.addIntersections(this.li, segIndex0, 0);
         e1.addIntersections(this.li, segIndex1, 1);
       }
-      if (li.isProper()) {
-        this.properIntersectionPoint = li.getIntersection(0).clone();
+      if (this.li.isProper()) {
+        this.properIntersectionPoint = this.li.getIntersection(0).clone();
         this.hasProper = true;
-        if (!this.isBoundaryPoint(li, bdyNodes))
+        if (!this.isBoundaryPoint(this.li, this.bdyNodes))
           this.hasProperInterior = true;
       }
     }
@@ -252,9 +276,10 @@ jsts.geomgraph.index.SegmentIntersector.prototype.addIntersections = function(
  */
 jsts.geomgraph.index.SegmentIntersector.prototype.isBoundaryPoint = function(
     li, bdyNodes) {
+  if (bdyNodes === null)
+    return false;
+
   if (bdyNodes[0] instanceof Array) {
-    if (bdyNodes == null)
-      return false;
     if (this.isBoundaryPoint(li, bdyNodes[0]))
       return true;
     if (this.isBoundaryPoint(li, bdyNodes[1]))
