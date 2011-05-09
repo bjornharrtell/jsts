@@ -164,7 +164,7 @@ jsts.geomgraph.GraphComponent.prototype.isIsolated = function() {
  */
 jsts.geomgraph.GraphComponent.prototype.updateIM = function(im) {
   if (this.label.getGeometryCount() >= 2) {
-    throw new jsts.error.NotRepresentableException('found partial label');
+    throw new jsts.error.NotRepresentableError('found partial label');
   }
   this.computeIM(im);
 };

@@ -60,8 +60,8 @@ jsts.error.NotImplementedError.prototype = new Error();
 /**
  * @constructor
  */
-jsts.error.NotRepresentableException = function(message) {
-  this.name = 'NotRepresentableException';
+jsts.error.NotRepresentableError = function(message) {
+  this.name = 'NotRepresentableError';
   this.message = (message || '');
 };
-jsts.error.NotRepresentableException.prototype = new Error();
+jsts.error.NotRepresentableError.prototype = new Error();

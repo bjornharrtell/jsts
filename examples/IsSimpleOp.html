@@ -4,7 +4,7 @@
   <title>OpenLayers: Vector Features</title>
   <link rel="stylesheet" href="../OpenLayers-2.10/theme/default/style.css" type="text/css" />
   <link rel="stylesheet" href="style.css" type="text/css" />
-  <script src="../OpenLayers-2.10/lib/OpenLayers.js" type="text/javascript"></script>
+  <script src="../OpenLayers-2.10/OpenLayers.js" type="text/javascript"></script>
 
   <script type="text/javascript" src="../src/jsts.js"></script>
   <script type="text/javascript" src="../src/jsts/Hashtable.js"></script>
@@ -105,13 +105,23 @@
     
     var lineString = new jsts.geom.LineString(pointList);
     
-    var isSimple = lineString.isSimple();
+    //var isSimple = lineString.isSimple();
     
     var lineFeature = new OpenLayers.Feature.Vector(lineString);
 
     map.addLayer(vectorLayer);
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
-    vectorLayer.addFeatures([lineFeature]);
+    
+    var reader = new jsts.io.WKTReader();
+    var lineString2 = reader.read('LINESTRING (20 60, 160 60, 80 160, 80 20)');
+    
+    //vectorLayer.addFeatures([lineFeature]);
+    var lineFeature2 = new OpenLayers.Feature.Vector(lineString2);
+    vectorLayer.addFeatures([lineFeature2]);
+    
+    
+    var isSimpleOp = new jsts.operation.IsSimpleOp(lineString2);
+    console.log(isSimpleOp.isSimple());
   }
 </script>
 </head>

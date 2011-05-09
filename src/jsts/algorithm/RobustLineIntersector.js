@@ -29,11 +29,17 @@ jsts.algorithm.RobustLineIntersector.prototype = new jsts.algorithm.LineIntersec
  */
 jsts.algorithm.RobustLineIntersector.prototype.computeIntersection = function(
     p, p1, p2) {
+
+  if (arguments.length === 4) {
+    jsts.algorithm.LineIntersector.prototype.computeIntersection.apply(this, arguments);
+    return;
+  }
+
   this._isProper = false;
   // do between check first, since it is faster than the orientation test
   if (jsts.geom.Envelope.intersects(p1, p2, p)) {
-    if ((jsts.algorithm.CGAlgorithms.orientationIndex(p1, p2, p) == 0) &&
-        (jsts.algorithm.CGAlgorithms.orientationIndex(p2, p1, p) == 0)) {
+    if ((jsts.algorithm.CGAlgorithms.orientationIndex(p1, p2, p) === 0) &&
+        (jsts.algorithm.CGAlgorithms.orientationIndex(p2, p1, p) === 0)) {
       this._isProper = true;
       if (p.equals(p1) || p.equals(p2)) {
         this._isProper = false;
@@ -243,12 +249,12 @@ jsts.algorithm.RobustLineIntersector.prototype.intersection = function(p1, p2,
     // System.out.println("Intersection outside segment envelopes: " + intPt);
     // System.out.println("Segments: " + this);
     // compute a safer result
-    intPt = CentralEndpointIntersector.getIntersection(p1, p2, q1, q2);
+    intPt = jsts.algorithm.CentralEndpointIntersector.getIntersection(p1, p2, q1, q2);
     // System.out.println("Snapped to " + intPt);
   }
 
-  if (precisionModel != null) {
-    precisionModel.makePrecise(intPt);
+  if (this.precisionModel != null) {
+    this.precisionModel.makePrecise(intPt);
   }
 
   return intPt;

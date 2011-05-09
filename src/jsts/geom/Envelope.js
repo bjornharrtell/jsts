@@ -748,6 +748,8 @@ jsts.geom.Envelope.prototype.toString = function() {
 /**
  * Test the point q to see whether it intersects the Envelope defined by p1-p2
  *
+ * NOTE: calls intersectsEnvelope if four arguments are given to simulate overloaded function
+ *
  * @param {jsts.geom.Coordinate}
  *          p1 one extremal point of the envelope.
  * @param {jsts.geom.Coordinate}

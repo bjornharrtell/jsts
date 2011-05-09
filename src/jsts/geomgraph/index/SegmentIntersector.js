@@ -171,7 +171,7 @@ jsts.geomgraph.index.SegmentIntersector.prototype.isTrivialIntersection = functi
     e0, segIndex0, e1, segIndex1) {
   if (e0 == e1) {
     if (this.li.getIntersectionNum() == 1) {
-      if (this.isAdjacentSegments(segIndex0, segIndex1))
+      if (jsts.geomgraph.index.SegmentIntersector.isAdjacentSegments(segIndex0, segIndex1))
         return true;
       if (e0.isClosed()) {
         var maxSegIndex = e0.getNumPoints() - 1;
@@ -226,7 +226,7 @@ jsts.geomgraph.index.SegmentIntersector.prototype.addIntersections = function(
     // the shared endpoint. Don't bother adding it if it is the
     // only intersection.
     if (!this.isTrivialIntersection(e0, segIndex0, e1, segIndex1)) {
-      this.hasIntersection = true;
+      this._hasIntersection = true;
       if (this.includeProper || !this.li.isProper()) {
         e0.addIntersections(this.li, segIndex0, 0);
         e1.addIntersections(this.li, segIndex1, 1);
