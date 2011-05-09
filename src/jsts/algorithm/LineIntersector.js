@@ -18,7 +18,7 @@
  * @constructor
  */
 jsts.algorithm.LineIntersector = function() {
-  this.inputLines = [];
+  this.inputLines = [[], []];
   this.intPt = [];
 
   this.intPt[0] = new jsts.geom.Coordinate();
@@ -26,7 +26,7 @@ jsts.algorithm.LineIntersector = function() {
   // alias the intersection points for ease of reference
   this.pa = this.intPt[0];
   this.pb = this.intPt[1];
-  this.result = 0;
+  this.result = jsts.algorithm.LineIntersector.NO_INTERSECTION;
 };
 
 
@@ -163,28 +163,28 @@ jsts.algorithm.LineIntersector.prototype.intPt = null;
  * @protected
  * @type {int[][]}
  */
-jsts.algorithm.LineIntersector.prototype.intLineIndex;
+jsts.algorithm.LineIntersector.prototype.intLineIndex = null;
 
 
 /**
  * @protected
  * @type {boolean}
  */
-jsts.algorithm.LineIntersector.prototype._isProper;
+jsts.algorithm.LineIntersector.prototype._isProper = null;
 
 
 /**
  * @protected
  * @type {Coordinate}
  */
-jsts.algorithm.LineIntersector.prototype.pa;
+jsts.algorithm.LineIntersector.prototype.pa = null;
 
 
 /**
  * @protected
  * @type {Coordinate}
  */
-jsts.algorithm.LineIntersector.prototype.pb;
+jsts.algorithm.LineIntersector.prototype.pb = null;
 
 
 /**
@@ -268,7 +268,7 @@ jsts.algorithm.LineIntersector.prototype.computeIntersect = function(p1, p2,
  * @protected
  */
 jsts.algorithm.LineIntersector.prototype.isEndPoint = function() {
-  return this.hasIntersection() && !this.isProper;
+  return this.hasIntersection() && !this._isProper;
 };
 
 
@@ -358,12 +358,14 @@ jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function() {
  * Tests whether either intersection point is an interior point of the specified
  * input segment.
  *
+ * @param {[]} TODO: doc
  * @return {boolean} <code>true</code> if either intersection point is in the
  *         interior of the input segment.
  */
 jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function(
     inputLineIndex) {
-  for (var i = 0; i < result; i++) {
+  var i;
+  for (i = 0; i < this.result; i++) {
     if (!(this.intPt[i].equals2D(this.inputLines[inputLineIndex][0]) || this.intPt[i]
         .equals2D(this.inputLines[inputLineIndex][1]))) {
       return true;

@@ -78,7 +78,7 @@ jsts.algorithm.HCoordinate.intersection = function(p1, p2, q1, q2) {
   yInt = y / w;
 
   if (!isFinite(xInt) || !isFinite(yInt)) {
-    throw new jsts.error.NotRepresentableException();
+    throw new jsts.error.NotRepresentableError();
   }
 
   return new jsts.geom.Coordinate(xInt, yInt);
@@ -201,7 +201,7 @@ jsts.algorithm.HCoordinate.prototype.getX = function() {
   var a = this.x / this.w;
 
   if (!isFinite(a)) {
-    throw new jsts.error.NotRepresentableException();
+    throw new jsts.error.NotRepresentableError();
   }
   return a;
 };
@@ -216,7 +216,7 @@ jsts.algorithm.HCoordinate.prototype.getY = function() {
   var a = this.y / this.w;
 
   if (!isFinite(a)) {
-    throw new jsts.error.NotRepresentableException();
+    throw new jsts.error.NotRepresentableError();
   }
   return a;
 };
