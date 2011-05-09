@@ -13,7 +13,7 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel, {
     });
 
     this.cases = new Ext.data.XmlStore({
-      url: 'testxml/validate/TestRelatePP.xml',
+      url: '../testxml/validate/TestRelatePP.xml',
       record: 'case',
       fields: ['desc', 'a', 'b'],
       listeners: {
@@ -76,7 +76,7 @@ jsts.vs.TestCaseForm = Ext.extend(Ext.Panel, {
     // this['case'].select(0, true);
   },
   onGroupSelect: function(combo, record, index) {
-    this.cases.proxy.conn.url = 'testxml/validate/' + record.data.filename;
+    this.cases.proxy.conn.url = '../testxml/validate/' + record.data.filename;
     this.cases.reload();
     this.testCaseDetailsPanel.reset();
   },
