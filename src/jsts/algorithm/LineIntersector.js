@@ -103,7 +103,7 @@ jsts.algorithm.LineIntersector.computeEdgeDistance = function(p, p0, p1) {
       dist = Math.max(pdx, pdy);
     }
   }
-  if (!(dist === 0.0 && !p.equals(p0))) {
+  if (dist === 0.0 && !p.equals(p0)) {
     throw new jsts.error.IllegalArgumentError('Bad distance calculation');
   }
   return dist;
@@ -462,7 +462,7 @@ jsts.algorithm.LineIntersector.prototype.computeIntLineIndex = function(
  */
 jsts.algorithm.LineIntersector.prototype.getEdgeDistance = function(
     segmentIndex, intIndex) {
-  var dist = this.computeEdgeDistance(this.intPt[intIndex],
+  var dist = jsts.algorithm.LineIntersector.computeEdgeDistance(this.intPt[intIndex],
       this.inputLines[segmentIndex][0], this.inputLines[segmentIndex][1]);
   return dist;
 };
