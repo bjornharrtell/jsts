@@ -38,7 +38,7 @@
 jsts.operation.distance.DistanceOp = function(g0, g1, terminateDistance) {
   this.ptLocator = new PointLocator();
 
-  this.geom = new Geometry[2];
+  this.geom = [];
   geom[0] = g0;
   geom[1] = g1;
   this.terminateDistance = terminateDistance;
@@ -133,13 +133,13 @@ jsts.operation.distance.DistanceOp.nearestPoints = function(g0, g1) {
  *           if either input geometry is null
  */
 jsts.operation.distance.DistanceOp.prototype.distance = function() {
-  if (geom[0] == null || geom[1] == null)
-    throw new jsts.IllegalArgumentError('null geometries are not supported');
-  if (geom[0].isEmpty() || geom[1].isEmpty())
+  if (this.geom[0] == null || this.geom[1] == null)
+    throw new jsts.error.IllegalArgumentError('null geometries are not supported');
+  if (this.geom[0].isEmpty() || this.geom[1].isEmpty())
     return 0.0;
 
   this.computeMinDistance();
-  return minDistance;
+  return this.minDistance;
 };
 
 
@@ -152,8 +152,8 @@ jsts.operation.distance.DistanceOp.prototype.distance = function() {
  */
 jsts.operation.distance.DistanceOp.prototype.nearestPoints = function() {
   this.computeMinDistance();
-  var nearestPts = [minDistanceLocation[0].getCoordinate(),
-        minDistanceLocation[1].getCoordinate()];
+  var nearestPts = [this.minDistanceLocation[0].getCoordinate(),
+                    this.minDistanceLocation[1].getCoordinate()];
   return nearestPts;
 };
 
@@ -167,7 +167,7 @@ jsts.operation.distance.DistanceOp.prototype.nearestPoints = function() {
  */
 jsts.operation.distance.DistanceOp.prototype.nearestLocations = function() {
   this.computeMinDistance();
-  return minDistanceLocation;
+  return this.minDistanceLocation;
 };
 
 
@@ -184,11 +184,11 @@ jsts.operation.distance.DistanceOp.prototype.updateMinDistance = function(
     return;
 
   if (flip) {
-    minDistanceLocation[0] = locGeom[1];
-    minDistanceLocation[1] = locGeom[0];
+    this.minDistanceLocation[0] = locGeom[1];
+    this.minDistanceLocation[1] = locGeom[0];
   } else {
-    minDistanceLocation[0] = locGeom[0];
-    minDistanceLocation[1] = locGeom[1];
+    this.minDistanceLocation[0] = locGeom[0];
+    this.minDistanceLocation[1] = locGeom[1];
   }
 };
 
@@ -198,14 +198,14 @@ jsts.operation.distance.DistanceOp.prototype.updateMinDistance = function(
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function() {
   // only compute once!
-  if (minDistanceLocation != null)
+  if (this.minDistanceLocation != null)
     return;
 
-  minDistanceLocation = new GeometryLocation[2];
-  computeContainmentDistance();
-  if (minDistance <= terminateDistance)
+  this.minDistanceLocation = new jsts.operation.distance.GeometryLocation[2];
+  this.computeContainmentDistance();
+  if (this.minDistance <= this.terminateDistance)
     return;
-  computeFacetDistance();
+  this.computeFacetDistance();
 };
 
 
@@ -213,12 +213,12 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function() {
  * TODO: doc
  */
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function() {
-  var locPtPoly = [new GeometryLocation, new GeometryLocation];
+  var locPtPoly = [new jsts.operation.distance.GeometryLocation, new jsts.operation.distance.GeometryLocation];
   // test if either geometry has a vertex inside the other
-  computeContainmentDistance(0, locPtPoly);
-  if (minDistance <= terminateDistance)
+  this.computeContainmentDistance(0, locPtPoly);
+  if (this.minDistance <= this.terminateDistance)
     return;
-  computeContainmentDistance(1, locPtPoly);
+  this.computeContainmentDistance(1, locPtPoly);
 };
 
 
@@ -231,16 +231,16 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = functi
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function(
     polyGeomIndex, locPtPoly) {
   var locationsIndex = 1 - polyGeomIndex;
-  var polys = PolygonExtracter.getPolygons(geom[polyGeomIndex]);
+  var polys = jsts.geom.util.PolygonExtracter.getPolygons(geom[polyGeomIndex]);
   if (polys.size() > 0) {
     var insideLocs = ConnectedElementLocationFilter
         .getLocations(geom[locationsIndex]);
-    computeContainmentDistance(insideLocs, polys, locPtPoly);
-    if (minDistance <= terminateDistance) {
+    cthis.omputeContainmentDistance(insideLocs, polys, locPtPoly);
+    if (this.minDistance <= this.terminateDistance) {
       // this assigment is determined by the order of the args in the
       // computeInside call above
-      minDistanceLocation[locationsIndex] = locPtPoly[0];
-      minDistanceLocation[polyGeomIndex] = locPtPoly[1];
+      this.minDistanceLocation[locationsIndex] = locPtPoly[0];
+      this.minDistanceLocation[polyGeomIndex] = locPtPoly[1];
       return;
     }
   }
@@ -260,8 +260,8 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = functi
   for (var i = 0; i < locs.size(); i++) {
     var loc = locs.get(i);
     for (var j = 0; j < polys.size(); j++) {
-      computeContainmentDistance(loc, polys.get(j), locPtPoly);
-      if (minDistance <= terminateDistance)
+      this.computeContainmentDistance(loc, polys.get(j), locPtPoly);
+      if (this.minDistance <= this.terminateDistance)
         return;
     }
   }
@@ -280,10 +280,10 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = functi
     ptLoc, poly, locPtPoly) {
   var pt = ptLoc.getCoordinate();
   // if pt is not in exterior, distance to geom is 0
-  if (Location.EXTERIOR != ptLocator.locate(pt, poly)) {
-    minDistance = 0.0;
+  if (jsts.geom.Location.EXTERIOR != ptLocator.locate(pt, poly)) {
+    this.minDistance = 0.0;
     locPtPoly[0] = ptLoc;
-    locPtPoly[1] = new GeometryLocation(poly, pt);
+    locPtPoly[1] = new jsts.operation.distance.GeometryLocation(poly, pt);
     return;
   }
 };
@@ -293,7 +293,7 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = functi
  * Computes distance between facets (lines and points) of input geometries.
  */
 jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
-  var locGeom = new GeometryLocation[2];
+  var locGeom = new jsts.operation.distance.GeometryLocation[2];
 
   /**
    * Geometries are not wholely inside, so compute distance from lines and
@@ -306,29 +306,29 @@ jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
   var pts1 = PointExtracter.getPoints(geom[1]);
 
   // exit whenever minDistance goes LE than terminateDistance
-  computeMinDistanceLines(lines0, lines1, locGeom);
-  updateMinDistance(locGeom, false);
-  if (minDistance <= terminateDistance)
+  this.computeMinDistanceLines(lines0, lines1, locGeom);
+  this.updateMinDistance(locGeom, false);
+  if (this.minDistance <= this.terminateDistance)
     return;
 
   locGeom[0] = null;
   locGeom[1] = null;
-  computeMinDistanceLinesPoints(lines0, pts1, locGeom);
-  updateMinDistance(locGeom, false);
-  if (minDistance <= terminateDistance)
+  this.computeMinDistanceLinesPoints(lines0, pts1, locGeom);
+  this.updateMinDistance(locGeom, false);
+  if (this.minDistance <= terminateDistance)
     return;
 
   locGeom[0] = null;
   locGeom[1] = null;
-  computeMinDistanceLinesPoints(lines1, pts0, locGeom);
-  updateMinDistance(locGeom, true);
-  if (minDistance <= terminateDistance)
+  this.computeMinDistanceLinesPoints(lines1, pts0, locGeom);
+  this.updateMinDistance(locGeom, true);
+  if (this.minDistance <= this.terminateDistance)
     return;
 
   locGeom[0] = null;
   locGeom[1] = null;
-  computeMinDistancePoints(pts0, pts1, locGeom);
-  updateMinDistance(locGeom, false);
+  this.computeMinDistancePoints(pts0, pts1, locGeom);
+  this.updateMinDistance(locGeom, false);
 };
 
 
@@ -346,8 +346,8 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLines = function(
     var line0 = lines0.get(i);
     for (var j = 0; j < lines1.size(); j++) {
       var line1 = lines1.get(j);
-      computeMinDistance(line0, line1, locGeom);
-      if (minDistance <= terminateDistance)
+      this.computeMinDistance(line0, line1, locGeom);
+      if (this.minDistance <= this.terminateDistance)
         return;
     }
   }
@@ -369,12 +369,12 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function
     for (var j = 0; j < points1.size(); j++) {
       var pt1 = points1.get(j);
       var dist = pt0.getCoordinate().distance(pt1.getCoordinate());
-      if (dist < minDistance) {
-        minDistance = dist;
-        locGeom[0] = new GeometryLocation(pt0, 0, pt0.getCoordinate());
-        locGeom[1] = new GeometryLocation(pt1, 0, pt1.getCoordinate());
+      if (dist < this.minDistance) {
+        this.minDistance = dist;
+        locGeom[0] = new jsts.operation.distance.GeometryLocation(pt0, 0, pt0.getCoordinate());
+        locGeom[1] = new jsts.operation.distance.GeometryLocation(pt1, 0, pt1.getCoordinate());
       }
-      if (minDistance <= terminateDistance)
+      if (this.minDistance <= this.terminateDistance)
         return;
     }
   }
@@ -392,12 +392,11 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function
 jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLinesPoints = function(
     lines, points, locGeom) {
   for (var i = 0; i < lines.size(); i++) {
-    var line = (LineString);
-    lines.get(i);
+    var line = lines.get(i);
     for (var j = 0; j < points.size(); j++) {
       var pt = points.get(j);
-      computeMinDistance(line, pt, locGeom);
-      if (minDistance <= terminateDistance)
+      this.computeMinDistance(line, pt, locGeom);
+      if (this.minDistance <= this.terminateDistance)
         return;
     }
   }
@@ -422,17 +421,17 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function(
   // brute force approach!
   for (var i = 0; i < coord0.length - 1; i++) {
     for (var j = 0; j < coord1.length - 1; j++) {
-      var dist = CGAlgorithms.distanceLineLine(coord0[i], coord0[i + 1],
+      var dist = jsts.algorithm.CGAlgorithms.distanceLineLine(coord0[i], coord0[i + 1],
           coord1[j], coord1[j + 1]);
-      if (dist < minDistance) {
-        minDistance = dist;
-        var seg0 = new LineSegment(coord0[i], coord0[i + 1]);
-        var seg1 = new LineSegment(coord1[j], coord1[j + 1]);
+      if (dist < this.minDistance) {
+        this.minDistance = dist;
+        var seg0 = new jsts.geom.LineSegment(coord0[i], coord0[i + 1]);
+        var seg1 = new jsts.geom.LineSegment(coord1[j], coord1[j + 1]);
         var closestPt = seg0.closestPoints(seg1);
-        locGeom[0] = new GeometryLocation(line0, i, closestPt[0]);
-        locGeom[1] = new GeometryLocation(line1, j, closestPt[1]);
+        locGeom[0] = new jsts.operation.distance.GeometryLocation(line0, i, closestPt[0]);
+        locGeom[1] = new jsts.operation.distance.GeometryLocation(line1, j, closestPt[1]);
       }
-      if (minDistance <= terminateDistance) {
+      if (this.minDistance <= this.terminateDistance) {
         return;
       }
     }
@@ -457,15 +456,15 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function(
   var coord = pt.getCoordinate();
   // brute force approach!
   for (var i = 0; i < coord0.length - 1; i++) {
-    var dist = CGAlgorithms.distancePointLine(coord, coord0[i], coord0[i + 1]);
-    if (dist < minDistance) {
-      minDistance = dist;
-      var seg = new LineSegment(coord0[i], coord0[i + 1]);
+    var dist = jsts.algorithm.CGAlgorithms.distancePointLine(coord, coord0[i], coord0[i + 1]);
+    if (dist < this.minDistance) {
+      this.minDistance = dist;
+      var seg = new jsts.geom.LineSegment(coord0[i], coord0[i + 1]);
       var segClosestPoint = seg.closestPoint(coord);
-      locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
-      locGeom[1] = new GeometryLocation(pt, 0, coord);
+      locGeom[0] = new jsts.operation.distance.GeometryLocation(line, i, segClosestPoint);
+      locGeom[1] = new jsts.operation.distance.GeometryLocation(pt, 0, coord);
     }
-    if (minDistance <= terminateDistance) {
+    if (this.minDistance <= this.terminateDistance) {
       return;
     }
   }

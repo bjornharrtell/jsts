@@ -31,7 +31,7 @@
  *          pt the coordinate of the location.
  * @constructor
  */
-jsts.geom.GeometryLocation = function(component, segIndex, pt) {
+jsts.geom.distance.GeometryLocation = function(component, segIndex, pt) {
   this.component = component;
   this.segIndex = segIndex;
   this.pt = pt;
@@ -45,32 +45,32 @@ jsts.geom.GeometryLocation = function(component, segIndex, pt) {
  *
  * @type {int}
  */
-jsts.geom.GeometryLocation.INSIDE_AREA = -1;
+jsts.geom.distance.GeometryLocation.INSIDE_AREA = -1;
 
 
 /**
  * @type {Geometry}
  */
-jsts.geom.GeometryLocation.prototype.component = null;
+jsts.geom.distance.GeometryLocation.prototype.component = null;
 
 
 /**
  * @type {int}
  */
-jsts.geom.GeometryLocation.prototype.segIndex = null;
+jsts.geom.distance.GeometryLocation.prototype.segIndex = null;
 
 
 /**
  * @type {Coordinate}
  */
-jsts.geom.GeometryLocation.prototype.pt = null;
+jsts.geom.distance.GeometryLocation.prototype.pt = null;
 
 
 /**
  * @return {Geometry} the geometry component on (or in) which this location
  *         occurs.
  */
-jsts.geom.GeometryLocation.prototype.getGeometryComponent = function() {
+jsts.geom.distance.GeometryLocation.prototype.getGeometryComponent = function() {
   return this.component;
 };
 
@@ -89,7 +89,7 @@ jsts.geom.GeometryLocation.prototype.getSegmentIndex = function() {
 /**
  * @return {Coordinate} the {@link Coordinate} of this location.
  */
-jsts.geom.GeometryLocation.prototype.getCoordinate = function() {
+jsts.geom.distance.GeometryLocation.prototype.getCoordinate = function() {
   return this.pt;
 };
 
@@ -98,6 +98,6 @@ jsts.geom.GeometryLocation.prototype.getCoordinate = function() {
  * @return {boolean} whether this location represents a point inside an area
  *         geometry.
  */
-jsts.geom.GeometryLocation.prototype.isInsideArea = function() {
+jsts.geom.distance.GeometryLocation.prototype.isInsideArea = function() {
   return this.segIndex === jsts.geom.GeometryLocation.INSIDE_AREA;
 };
