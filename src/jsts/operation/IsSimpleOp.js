@@ -154,4 +154,156 @@ jsts.operation.IsSimpleOp.prototype.isSimpleLinearGeometry = function(geom) {
   return true;
 };
 
+
+/**
+ * For all edges, check if there are any intersections which are NOT at an
+ * endpoint. The Geometry is not simple if there are intersections not at
+ * endpoints.
+ *
+ * @param {GeometryGraph}
+ *          graph
+ * @return {boolean}
+ * @private
+ */
+jsts.operation.IsSimpleOp.prototype.hasNonEndpointIntersection = function(graph) {
+  for (var i = 0; i < graph.edges.length; i++) {
+    var e = graph.edges[i];
+    var maxSegmentIndex = e.getMaximumSegmentIndex();
+    for (var j = 0; j < e.eiList.length; j++) {
+      var ei = e.eiList[j];
+      if (!ei.isEndPoint(maxSegmentIndex)) {
+        this.nonSimpleLocation = ei.getCoordinate();
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Tests that no edge intersection is the endpoint of a closed line. This
+ * ensures that closed lines are not touched at their endpoint, which is an
+ * interior point according to the Mod-2 rule To check this we compute the
+ * degree of each endpoint. The degree of endpoints of closed lines must be
+ * exactly 2.
+ *
+ * @param {GeometryGraph}
+ *          graph
+ * @return {boolean}
+ * @private
+ */
+jsts.operation.IsSimpleOp.prototype.hasClosedEndpointIntersection = function(
+    graph) {
+  // NOTE: TreeMap replaced by array of objects
+  var endPoints = [];
+
+  for (var i = 0; i < graph.edges.length; i++) {
+    var e = graph.edges[i];
+    var maxSegmentIndex = e.getMaximumSegmentIndex();
+    var isClosed = e.isClosed();
+    var p0 = e.getCoordinate(0);
+    this.addEndpoint(endPoints, p0, isClosed);
+    var p1 = e.getCoordinate(e.getNumPoints() - 1);
+    this.addEndpoint(endPoints, p1, isClosed);
+  }
+
+  for (var i = 0; i < endPoints.length; i++) {
+    var eiInfo = endPoints[i].ei;
+    if (eiInfo.isClosed && eiInfo.degree != 2) {
+      this.nonSimpleLocation = eiInfo.getCoordinate();
+      return true;
+    }
+  }
+  return false;
+};
+
+
+
+/**
+ * private
+ *
+ * @constructor
+ */
+jsts.operation.IsSimpleOp.EndpointInfo = function(pt) {
+
+  this.pt = pt;
+  this.isClosed = false;
+  this.degree = 0;
+};
+
+
+/**
+ * @type {Coordinate}
+ * @private
+ */
+jsts.operation.IsSimpleOp.EndpointInfo.prototype.pt = null;
+
+
+/**
+ * @type {boolean}
+ * @private
+ */
+jsts.operation.IsSimpleOp.EndpointInfo.prototype.isClosed = null;
+
+
+/**
+ * @type {int}
+ * @private
+ */
+jsts.operation.IsSimpleOp.EndpointInfo.prototype.degree = null;
+
+
+/**
+ * @return {Coordinate}
+ */
+jsts.operation.IsSimpleOp.EndpointInfo.prototype.getCoordinate = function() {
+  return this.pt;
+};
+
+
+/**
+ * @param {boolean}
+ *          isClosed
+ */
+jsts.operation.IsSimpleOp.EndpointInfo.prototype.addEndpoint = function(
+    isClosed) {
+  this.degree++;
+  this.isClosed |= isClosed;
+};
+
+
+/**
+ * Add an endpoint to the map, creating an entry for it if none exists
+ *
+ * @param {[]}
+ *          endPoints
+ * @param {Coordinate}
+ *          p
+ * @param {boolean}
+ *          isClosed
+ * @private
+ */
+jsts.operation.IsSimpleOp.prototype.addEndpoint = function(endPoints, p,
+    isClosed) {
+  var eiInfo = null;
+
+  for (var i = 0; i < endPoints.length; i++) {
+    endPoint = endPoints[i];
+    if (endPoint.p === p) {
+      eiInfo = endPoint.ei;
+    }
+  }
+
+  if (eiInfo === null) {
+    eiInfo = new jsts.operation.IsSimpleOp.EndpointInfo(p);
+    endPoints.push({
+      p: p,
+      ei: eiInfo
+    });
+  }
+
+  eiInfo.addEndpoint(isClosed);
+};
+
 // TODO: port rest of class
