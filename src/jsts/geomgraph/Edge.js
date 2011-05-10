@@ -37,10 +37,26 @@ jsts.geomgraph.Edge.prototype.eiList = null;
 
 
 /**
- * @return {Coordinate[] }
+ * @return {int}
+ */
+jsts.geomgraph.Edge.prototype.getNumPoints = function() { return this.pts.length; };
+
+
+/**
+ * @return {Coordinate[]}
  */
 jsts.geomgraph.Edge.prototype.getCoordinates = function() {
   return this.pts;
+};
+
+
+/**
+ * @param {int} i
+ * @return {Coordinate}
+ */
+jsts.geomgraph.Edge.prototype.getCoordinate = function(i)
+    {
+  return this.pts[i];
 };
 
 
@@ -106,6 +122,15 @@ jsts.geomgraph.Edge.prototype.addIntersection = function(li, segmentIndex,
    * Add the intersection point to edge intersection list.
    */
   var ei = this.eiList.add(intPt, normalizedSegmentIndex, dist);
+};
+
+
+/**
+ * @return {int}
+ */
+jsts.geomgraph.Edge.prototype.getMaximumSegmentIndex = function()
+    {
+  return this.pts.length - 1;
 };
 
 // TODO: port rest..

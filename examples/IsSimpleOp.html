@@ -12,8 +12,10 @@
   <script type="text/javascript" src="../src/jsts/geom.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/CoordinateArrays.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/CoordinateList.js"></script>
+  <script type="text/javascript" src="../src/jsts/geom/Dimension.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Location.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Geometry.js"></script>
+  <script type="text/javascript" src="../src/jsts/geom/GeometryCollection.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Coordinate.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Envelope.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/GeometryFactory.js"></script>
@@ -113,7 +115,7 @@
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
     var reader = new jsts.io.WKTReader();
-    var lineString2 = reader.read('LINESTRING (20 60, 160 60, 80 160, 80 20)');
+    var lineString2 = reader.read('LINESTRING (20 20, 80 20, 80 80, 20 20)');
     
     //vectorLayer.addFeatures([lineFeature]);
     var lineFeature2 = new OpenLayers.Feature.Vector(lineString2);
