@@ -269,7 +269,7 @@ jsts.operation.IsSimpleOp.EndpointInfo.prototype.getCoordinate = function() {
 jsts.operation.IsSimpleOp.EndpointInfo.prototype.addEndpoint = function(
     isClosed) {
   this.degree++;
-  this.isClosed |= isClosed;
+  this.isClosed = this.isClosed || isClosed;
 };
 
 
@@ -289,8 +289,8 @@ jsts.operation.IsSimpleOp.prototype.addEndpoint = function(endPoints, p,
   var eiInfo = null;
 
   for (var i = 0; i < endPoints.length; i++) {
-    endPoint = endPoints[i];
-    if (endPoint.p === p) {
+    var endPoint = endPoints[i];
+    if (endPoint.p.equals2D(p)) {
       eiInfo = endPoint.ei;
     }
   }
@@ -305,5 +305,3 @@ jsts.operation.IsSimpleOp.prototype.addEndpoint = function(endPoints, p,
 
   eiInfo.addEndpoint(isClosed);
 };
-
-// TODO: port rest of class
