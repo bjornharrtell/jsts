@@ -1,8 +1,7 @@
 load('json2.js');
 load('fulljslint.js');
 
-var path = arguments[0];
-var input=readFile(path);
+var input=read(path);
 
 var result = JSLINT(input);
 
@@ -24,5 +23,3 @@ for (key in JSLINT.errors) {
   d         : The fourth detail*/
   print('Line: ' + error.line + ' Char: ' + error.character + ' Reason: ' + error.reason);
 }
-
-
