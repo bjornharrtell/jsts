@@ -1,8 +1,6 @@
 describe('jsts.operation.IsSimpleOp', function() {
   var isSimpleOp;
 
-  var format = new OpenLayers.Format.XML();
-  
   var doc = null;
   var xmlLoaded = false;
   var isReady = function() {
@@ -29,39 +27,18 @@ describe('jsts.operation.IsSimpleOp', function() {
       
       for (var i = 0; i<cases.length; i++) {
         var testcase = cases[i];
-        var desc = Ext.DomQuery.select("desc", testcase)[0].textContent;
-        var wkt = Ext.DomQuery.select("a", testcase)[0].textContent;
+        var desc = Ext.DomQuery.select("desc", testcase)[0].textContent.trim();
+        var wkt = Ext.DomQuery.select("a", testcase)[0].textContent.trim();
         var expected = Ext.DomQuery.select("op", testcase)[0].textContent.trim() === 'true';
         
         var reader = new jsts.io.WKTReader();
         var geometry = reader.read(wkt);
         if (geometry === undefined) continue;
+        
         var result = geometry.isSimple();
         
-        expect(expected).toEqual(result);
+        expect(result).toEqual(expected);
       }
     });
   });
-  
-  // NOTE: deprecated by TestSimple stuff
-  it('L - simple line test should be true', function() {
-    var reader = new jsts.io.WKTReader();
-
-    var lineString = reader.read('LINESTRING(10 10, 20 20)');
-
-    var isSimpleOp = new jsts.operation.IsSimpleOp(lineString);
-    expect(isSimpleOp.isSimple()).toBeTruthy();
-
-  });
-  
-  //NOTE: deprecated by TestSimple stuff
-  it('L - non-simple, proper interior intersection should be false',
-      function() {
-        var reader = new jsts.io.WKTReader();
-
-        var lineString = reader.read('LINESTRING (20 60, 160 60, 80 160, 80 20)');
-
-        var isSimpleOp = new jsts.operation.IsSimpleOp(lineString);
-        expect(isSimpleOp.isSimple()).toBeFalsy();
-      });
 });

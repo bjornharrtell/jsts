@@ -31,8 +31,8 @@
   <script type="text/javascript" src="../src/jsts/algorithm/BoundaryNodeRule.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm/CentralEndpointIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm/CentroidArea.js"></script>
-  <script type="text/javascript" src="../src/jsts/algorithm/CentroidArea.js"></script>
-  <script type="text/javascript" src="../src/jsts/algorithm/CentroidArea.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CentroidLine.js"></script>
+  <script type="text/javascript" src="../src/jsts/algorithm/CentroidPoint.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm/CGAlgorithms.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm/HCoordinate.js"></script>
   <script type="text/javascript" src="../src/jsts/algorithm/LineIntersector.js"></script>
@@ -118,12 +118,14 @@
     var lineString2 = reader.read('LINESTRING (20 20, 80 20, 80 80, 20 20)');
     
     //vectorLayer.addFeatures([lineFeature]);
-    var lineFeature2 = new OpenLayers.Feature.Vector(lineString2);
-    vectorLayer.addFeatures([lineFeature2]);
+    //var lineFeature2 = new OpenLayers.Feature.Vector(lineString2);
+    //vectorLayer.addFeatures([lineFeature2]);
     
     
-    var isSimpleOp = new jsts.operation.IsSimpleOp(lineString2);
-    console.log(isSimpleOp.isSimple());
+    //var isSimpleOp = new jsts.operation.IsSimpleOp(lineString2);
+    var result = lineString2.isSimple();
+    
+    console.log(result);
   }
 </script>
 </head>
