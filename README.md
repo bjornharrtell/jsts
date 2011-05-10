@@ -41,7 +41,7 @@ Development environment
 * Eclipse 3.6 (Helios) using custom builders to check and enforce the Google JavaScript Style Guide and JSLint
 * Custom builders requirements:
   * Installed Closure Linter from http://code.google.com/closure/utilities
-  * Installed Rhino (http://www.mozilla.org/rhino/)
+  * Compiled 'shell' sample from V8 JavaScript Engine (http://code.google.com/apis/v8) in /tools
   * External JavaScript fulljslint.js and json2.js from https://github.com/douglascrockford in /tools
 * Assumes OpenLayers 2.10 distribution in project root from http://www.openlayers.org/
 * Assumes OS Ubuntu/Linux
