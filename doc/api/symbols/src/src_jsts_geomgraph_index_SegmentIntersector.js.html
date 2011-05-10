@@ -79,28 +79,28 @@
 <span class='line'> 72</span>  * @type {LineIntersector}
 <span class='line'> 73</span>  * @private
 <span class='line'> 74</span>  */</span><span class="WHIT">
-<span class='line'> 75</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.li</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.li</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 76</span> 
 <span class='line'> 77</span> 
 <span class='line'> 78</span> </span><span class="COMM">/**
 <span class='line'> 79</span>  * @type {boolean}
 <span class='line'> 80</span>  * @private
 <span class='line'> 81</span>  */</span><span class="WHIT">
-<span class='line'> 82</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.includeProper</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.includeProper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 83</span> 
 <span class='line'> 84</span> 
 <span class='line'> 85</span> </span><span class="COMM">/**
 <span class='line'> 86</span>  * @type {boolean}
 <span class='line'> 87</span>  * @private
 <span class='line'> 88</span>  */</span><span class="WHIT">
-<span class='line'> 89</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.recordIsolated</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.recordIsolated</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 90</span> 
 <span class='line'> 91</span> 
 <span class='line'> 92</span> </span><span class="COMM">/**
 <span class='line'> 93</span>  * @type {boolean}
 <span class='line'> 94</span>  * @private
 <span class='line'> 95</span>  */</span><span class="WHIT">
-<span class='line'> 96</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.isSelfIntersection</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.isSelfIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 97</span> 
 <span class='line'> 98</span> 
 <span class='line'> 99</span> </span><span class="COMM">/**
@@ -119,18 +119,187 @@
 <span class='line'>112</span> 
 <span class='line'>113</span> 
 <span class='line'>114</span> </span><span class="COMM">/**
-<span class='line'>115</span>  * @type {Collection[]}
+<span class='line'>115</span>  * @type {[]}
 <span class='line'>116</span>  * @private
 <span class='line'>117</span>  */</span><span class="WHIT">
-<span class='line'>118</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.bdyNodes</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.bdyNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>119</span> 
 <span class='line'>120</span> 
 <span class='line'>121</span> </span><span class="COMM">/**
-<span class='line'>122</span>  * @return {boolean}
-<span class='line'>123</span>  */</span><span class="WHIT">
-<span class='line'>124</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.hasIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>125</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this._hasIntersection</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>126</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>127</span> 
-<span class='line'>128</span> </span><span class="COMM">// TODO: port</span><span class="WHIT">
-<span class='line'>129</span> </span></pre></body></html>
+<span class='line'>122</span>  * @param {[]}
+<span class='line'>123</span>  *          bdyNodes0
+<span class='line'>124</span>  * @param {[]}
+<span class='line'>125</span>  *          bdyNodes1
+<span class='line'>126</span>  */</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.setBoundaryNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">    </span><span class="NAME">bdyNodes0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bdyNodes1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">  </span><span class="NAME">this.bdyNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">  </span><span class="NAME">this.bdyNodes</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bdyNodes0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">  </span><span class="NAME">this.bdyNodes</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bdyNodes1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>133</span> 
+<span class='line'>134</span> 
+<span class='line'>135</span> </span><span class="COMM">/**
+<span class='line'>136</span>  * @return {Coordinate} the proper intersection point, or &lt;code>null&lt;/code> if
+<span class='line'>137</span>  *         none was found.
+<span class='line'>138</span>  */</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.getProperIntersectionPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.properIntersectionPoint</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> 
+<span class='line'>143</span> 
+<span class='line'>144</span> </span><span class="COMM">/**
+<span class='line'>145</span>  * @return {boolean}
+<span class='line'>146</span>  */</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.hasIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this._hasIntersection</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> 
+<span class='line'>151</span> 
+<span class='line'>152</span> </span><span class="COMM">/**
+<span class='line'>153</span>  * A proper intersection is an intersection which is interior to at least two
+<span class='line'>154</span>  * line segments. Note that a proper intersection is not necessarily in the
+<span class='line'>155</span>  * interior of the entire Geometry, since another edge may have an endpoint
+<span class='line'>156</span>  * equal to the intersection, which according to SFS semantics can result in the
+<span class='line'>157</span>  * point being on the Boundary of the Geometry.
+<span class='line'>158</span>  *
+<span class='line'>159</span>  * @return {boolean}
+<span class='line'>160</span>  */</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.hasProperIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.hasProper</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> 
+<span class='line'>165</span> 
+<span class='line'>166</span> </span><span class="COMM">/**
+<span class='line'>167</span>  * A proper interior intersection is a proper intersection which is &lt;b>not&lt;/b>
+<span class='line'>168</span>  * contained in the set of boundary nodes set for this SegmentIntersector.
+<span class='line'>169</span>  *
+<span class='line'>170</span>  * @return {boolean}
+<span class='line'>171</span>  */</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.hasProperInteriorIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.hasProperInterior</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>175</span> 
+<span class='line'>176</span> 
+<span class='line'>177</span> </span><span class="COMM">/**
+<span class='line'>178</span>  * A trivial intersection is an apparent self-intersection which in fact is
+<span class='line'>179</span>  * simply the point shared by adjacent line segments. Note that closed edges
+<span class='line'>180</span>  * require a special check for the point shared by the beginning and end
+<span class='line'>181</span>  * segments.
+<span class='line'>182</span>  *
+<span class='line'>183</span>  * @param {Edge}
+<span class='line'>184</span>  *          e0
+<span class='line'>185</span>  * @param {int}
+<span class='line'>186</span>  *          segIndex0
+<span class='line'>187</span>  * @param {Edge}
+<span class='line'>188</span>  *          e1
+<span class='line'>189</span>  * @param {int}
+<span class='line'>190</span>  *          segIndex1
+<span class='line'>191</span>  * @return {boolean}
+<span class='line'>192</span>  */</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.isTrivialIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">    </span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e0</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>196</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.li.getIntersectionNum</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.isAdjacentSegments</span><span class="PUNC">(</span><span class="NAME">segIndex0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="WHIT">          </span><span class="NAME">segIndex1</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e0.isClosed</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">maxSegIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e0.getNumPoints</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">segIndex0</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">segIndex1</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">maxSegIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">            </span><span class="PUNC">(</span><span class="NAME">segIndex1</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">segIndex0</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">maxSegIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">          </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>209</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span> 
+<span class='line'>212</span> 
+<span class='line'>213</span> </span><span class="COMM">/**
+<span class='line'>214</span>  * This method is called by clients of the EdgeIntersector class to test for and
+<span class='line'>215</span>  * add intersections for two segments of the edges being intersected. Note that
+<span class='line'>216</span>  * clients (such as MonotoneChainEdges) may choose not to intersect certain
+<span class='line'>217</span>  * pairs of segments for efficiency reasons.
+<span class='line'>218</span>  *
+<span class='line'>219</span>  * @param {Edge}
+<span class='line'>220</span>  *          e0
+<span class='line'>221</span>  * @param {int}
+<span class='line'>222</span>  *          segIndex0
+<span class='line'>223</span>  * @param {Edge}
+<span class='line'>224</span>  *          e1
+<span class='line'>225</span>  * @param {int}
+<span class='line'>226</span>  *          segIndex1
+<span class='line'>227</span>  */</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.addIntersections</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">    </span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e0</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">segIndex0</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">segIndex1</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">  </span><span class="NAME">this.numTests</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">p00</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e0.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NAME">segIndex0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">p01</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e0.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NAME">segIndex0</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">p10</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e1.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NAME">segIndex1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">p11</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e1.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NAME">segIndex1</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>237</span> 
+<span class='line'>238</span> </span><span class="WHIT">  </span><span class="NAME">this.li.computeIntersection</span><span class="PUNC">(</span><span class="NAME">p00</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p01</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p10</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p11</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>240</span>    * Always record any non-proper intersections. If includeProper is true,
+<span class='line'>241</span>    * record any proper intersections as well.
+<span class='line'>242</span>    */</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.li.hasIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.recordIsolated</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">      </span><span class="NAME">e0.setIsolated</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>246</span> </span><span class="WHIT">      </span><span class="NAME">e1.setIsolated</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">    </span><span class="NAME">this.numIntersections</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">    </span><span class="COMM">// if the segments are adjacent they have at least one trivial intersection,</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">    </span><span class="COMM">// the shared endpoint. Don't bother adding it if it is the</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">    </span><span class="COMM">// only intersection.</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">this.isTrivialIntersection</span><span class="PUNC">(</span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex1</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">      </span><span class="NAME">this._hasIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.includeProper</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">this.li.isProper</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">        </span><span class="NAME">e0.addIntersections</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="WHIT">        </span><span class="NAME">e1.addIntersections</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>258</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.li.isProper</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="WHIT">        </span><span class="NAME">this.properIntersectionPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.li.getIntersection</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">clone</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">        </span><span class="NAME">this.hasProper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">this.isBoundaryPoint</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.bdyNodes</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="WHIT">          </span><span class="NAME">this.hasProperInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>267</span> 
+<span class='line'>268</span> 
+<span class='line'>269</span> </span><span class="COMM">/**
+<span class='line'>270</span>  * @param {LineIntersector}
+<span class='line'>271</span>  *          li
+<span class='line'>272</span>  * @param {[][]}
+<span class='line'>273</span>  *          bdyNodes
+<span class='line'>274</span>  * @return {boolean}
+<span class='line'>275</span>  * @private
+<span class='line'>276</span>  */</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="NAME">jsts.geomgraph.index.SegmentIntersector.prototype.isBoundaryPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">    </span><span class="NAME">li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bdyNodes</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>279</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">bdyNodes</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>280</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>281</span> 
+<span class='line'>282</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">bdyNodes</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Array</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.isBoundaryPoint</span><span class="PUNC">(</span><span class="NAME">li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bdyNodes</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.isBoundaryPoint</span><span class="PUNC">(</span><span class="NAME">li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bdyNodes</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>289</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">bdyNodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bdyNodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">li.isIntersection</span><span class="PUNC">(</span><span class="NAME">pt</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>298</span> </span></pre></body></html>

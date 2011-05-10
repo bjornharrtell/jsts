@@ -66,40 +66,41 @@
 <span class='line'> 59</span>  *          edges1
 <span class='line'> 60</span>  * @param {SegmentIntersector}
 <span class='line'> 61</span>  *          si
-<span class='line'> 62</span>  */</span><span class="WHIT">
-<span class='line'> 63</span> </span><span class="NAME">jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'> 64</span> </span><span class="WHIT">    </span><span class="NAME">edges0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edges1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">si</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 65</span> </span><span class="WHIT">  </span><span class="NAME">this.nOverlaps</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 66</span> 
-<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges0.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edge0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges0</span><span class="PUNC">[</span><span class="NAME">i0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 69</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges1.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 70</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edge1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges1</span><span class="PUNC">[</span><span class="NAME">i0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 71</span> </span><span class="WHIT">      </span><span class="NAME">this.computeIntersects</span><span class="PUNC">(</span><span class="NAME">edge0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edge1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">si</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 72</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 73</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 74</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 75</span> 
+<span class='line'> 62</span>  * TODO: overloaded function, need additional port work.
+<span class='line'> 63</span>  */</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="COMM">/*jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = function(
+<span class='line'> 65</span>     edges0, edges1, si) {
+<span class='line'> 66</span>   this.nOverlaps = 0;
+<span class='line'> 67</span> 
+<span class='line'> 68</span>   for (var i0 = 0; i0 &lt; edges0.length; i0++) {
+<span class='line'> 69</span>     var edge0 = edges0[i0];
+<span class='line'> 70</span>     for (var i1 = 0; i1 &lt; edges1.length; i1++) {
+<span class='line'> 71</span>       var edge1 = edges1[i0];
+<span class='line'> 72</span>       this.computeIntersects(edge0, edge1, si);
+<span class='line'> 73</span>     }
+<span class='line'> 74</span>   }
+<span class='line'> 75</span> };*/</span><span class="WHIT">
 <span class='line'> 76</span> 
-<span class='line'> 77</span> </span><span class="COMM">/**
-<span class='line'> 78</span>  * Performs a brute-force comparison of every segment in each Edge. This has n^2
-<span class='line'> 79</span>  * performance, and is about 100 times slower than using monotone chains.
-<span class='line'> 80</span>  *
-<span class='line'> 81</span>  * @param {Edge}
-<span class='line'> 82</span>  *          e0
-<span class='line'> 83</span>  * @param {Edge}
-<span class='line'> 84</span>  *          e1
-<span class='line'> 85</span>  * @param {SegmentIntersector}
-<span class='line'> 86</span>  *          si
-<span class='line'> 87</span>  */</span><span class="WHIT">
-<span class='line'> 88</span> </span><span class="NAME">jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersects</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'> 89</span> </span><span class="WHIT">    </span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">si</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 90</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pts0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e0.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 91</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pts1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e1.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 92</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">pts0.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 93</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">pts1.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 94</span> </span><span class="WHIT">      </span><span class="NAME">si.addIntersections</span><span class="PUNC">(</span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 95</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 96</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 97</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 98</span> </span></pre></body></html>
+<span class='line'> 77</span> 
+<span class='line'> 78</span> </span><span class="COMM">/**
+<span class='line'> 79</span>  * Performs a brute-force comparison of every segment in each Edge. This has n^2
+<span class='line'> 80</span>  * performance, and is about 100 times slower than using monotone chains.
+<span class='line'> 81</span>  *
+<span class='line'> 82</span>  * @param {Edge}
+<span class='line'> 83</span>  *          e0
+<span class='line'> 84</span>  * @param {Edge}
+<span class='line'> 85</span>  *          e1
+<span class='line'> 86</span>  * @param {SegmentIntersector}
+<span class='line'> 87</span>  *          si
+<span class='line'> 88</span>  */</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="NAME">jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersects</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">    </span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">si</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pts0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e0.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pts1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e1.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">pts0.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">pts1.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">      </span><span class="NAME">si.addIntersections</span><span class="PUNC">(</span><span class="NAME">e0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">i0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">i1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> </span></pre></body></html>

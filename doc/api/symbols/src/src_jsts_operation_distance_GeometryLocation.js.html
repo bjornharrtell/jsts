@@ -38,7 +38,7 @@
 <span class='line'> 31</span>  *          pt the coordinate of the location.
 <span class='line'> 32</span>  * @constructor
 <span class='line'> 33</span>  */</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="NAME">jsts.geom.GeometryLocation</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">component</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pt</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">component</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pt</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 35</span> </span><span class="WHIT">  </span><span class="NAME">this.component</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">component</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 36</span> </span><span class="WHIT">  </span><span class="NAME">this.segIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">segIndex</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 37</span> </span><span class="WHIT">  </span><span class="NAME">this.pt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">pt</span><span class="PUNC">;</span><span class="WHIT">
@@ -52,32 +52,32 @@
 <span class='line'> 45</span>  *
 <span class='line'> 46</span>  * @type {int}
 <span class='line'> 47</span>  */</span><span class="WHIT">
-<span class='line'> 48</span> </span><span class="NAME">jsts.geom.GeometryLocation.INSIDE_AREA</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.INSIDE_AREA</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 49</span> 
 <span class='line'> 50</span> 
 <span class='line'> 51</span> </span><span class="COMM">/**
 <span class='line'> 52</span>  * @type {Geometry}
 <span class='line'> 53</span>  */</span><span class="WHIT">
-<span class='line'> 54</span> </span><span class="NAME">jsts.geom.GeometryLocation.prototype.component</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.prototype.component</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 55</span> 
 <span class='line'> 56</span> 
 <span class='line'> 57</span> </span><span class="COMM">/**
 <span class='line'> 58</span>  * @type {int}
 <span class='line'> 59</span>  */</span><span class="WHIT">
-<span class='line'> 60</span> </span><span class="NAME">jsts.geom.GeometryLocation.prototype.segIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.prototype.segIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 61</span> 
 <span class='line'> 62</span> 
 <span class='line'> 63</span> </span><span class="COMM">/**
 <span class='line'> 64</span>  * @type {Coordinate}
 <span class='line'> 65</span>  */</span><span class="WHIT">
-<span class='line'> 66</span> </span><span class="NAME">jsts.geom.GeometryLocation.prototype.pt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.prototype.pt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 67</span> 
 <span class='line'> 68</span> 
 <span class='line'> 69</span> </span><span class="COMM">/**
 <span class='line'> 70</span>  * @return {Geometry} the geometry component on (or in) which this location
 <span class='line'> 71</span>  *         occurs.
 <span class='line'> 72</span>  */</span><span class="WHIT">
-<span class='line'> 73</span> </span><span class="NAME">jsts.geom.GeometryLocation.prototype.getGeometryComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.prototype.getGeometryComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 74</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.component</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 75</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 76</span> 
@@ -96,7 +96,7 @@
 <span class='line'> 89</span> </span><span class="COMM">/**
 <span class='line'> 90</span>  * @return {Coordinate} the {@link Coordinate} of this location.
 <span class='line'> 91</span>  */</span><span class="WHIT">
-<span class='line'> 92</span> </span><span class="NAME">jsts.geom.GeometryLocation.prototype.getCoordinate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.prototype.getCoordinate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 93</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.pt</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 94</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 95</span> 
@@ -105,7 +105,7 @@
 <span class='line'> 98</span>  * @return {boolean} whether this location represents a point inside an area
 <span class='line'> 99</span>  *         geometry.
 <span class='line'>100</span>  */</span><span class="WHIT">
-<span class='line'>101</span> </span><span class="NAME">jsts.geom.GeometryLocation.prototype.isInsideArea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="NAME">jsts.geom.distance.GeometryLocation.prototype.isInsideArea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'>102</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.segIndex</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryLocation.INSIDE_AREA</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>103</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>104</span> </span></pre></body></html>
