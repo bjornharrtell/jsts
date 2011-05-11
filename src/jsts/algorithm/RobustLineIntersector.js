@@ -137,13 +137,13 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
      * segment.
      */
     else if (Pq1 === 0) {
-      this.intPt[0] = q1.clone();
+      this.intPt[0] = new jsts.geom.Coordinate(q1);
     } else if (Pq2 === 0) {
-      this.intPt[0] = q2.clone();
+      this.intPt[0] = new jsts.geom.Coordinate(q2);
     } else if (Qp1 === 0) {
-      this.intPt[0] = p1.clone();
+      this.intPt[0] = new jsts.geom.Coordinate(p1);
     } else if (Qp2 === 0) {
-      this.intPt[0] = p2.clone();
+      this.intPt[0] = new jsts.geom.Coordinate(p2);
     }
   } else {
     this._isProper = true;
@@ -276,10 +276,10 @@ jsts.algorithm.RobustLineIntersector.prototype.intersection = function(p1, p2,
  */
 jsts.algorithm.RobustLineIntersector.prototype.intersectionWithNormalization = function(
     p1, p2, q1, q2) {
-  var n1 = p1.clone();
-  var n2 = p2.clone();
-  var n3 = q1.clone();
-  var n4 = q2.clone();
+  var n1 = new jsts.geom.Coordinate(p1);
+  var n2 = new jsts.geom.Coordinate(p2);
+  var n3 = new jsts.geom.Coordinate(q1);
+  var n4 = new jsts.geom.Coordinate(q2);
   var normPt = new jsts.geom.Coordinate();
   this.normalizeToEnvCentre(n1, n2, n3, n4, normPt);
 
