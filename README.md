@@ -42,7 +42,7 @@ Development environment
 * Custom builders requirements:
   * Installed Closure Linter from http://code.google.com/closure/utilities
   * Compiled 'shell' sample from V8 JavaScript Engine (http://code.google.com/apis/v8) in /tools
-  * External JavaScript fulljslint.js and json2.js from https://github.com/douglascrockford in /tools
+  * External JavaScript jslint.js and json2.js from https://github.com/douglascrockford in /tools
 * Assumes OpenLayers 2.10 distribution in project root from http://www.openlayers.org/
 * Assumes OS Ubuntu/Linux
 

@@ -184,7 +184,7 @@ jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(location) {
 jsts.geomgraph.Label.prototype.merge = function(lbl) {
   var i;
   for (i = 0; i < 2; i++) {
-    if (this.elt[i] == null && lbl.elt[i] !== null) {
+    if (this.elt[i] === null && lbl.elt[i] !== null) {
       this.elt[i] = new jsts.geomgraph.TopologyLocation(lbl.elt[i]);
     } else {
       this.elt[i].merge(lbl.elt[i]);
@@ -198,10 +198,12 @@ jsts.geomgraph.Label.prototype.merge = function(lbl) {
  */
 jsts.geomgraph.Label.prototype.getGeometryCount = function() {
   var count = 0;
-  if (!this.elt[0].isNull())
+  if (!this.elt[0].isNull()) {
     count++;
-  if (!this.elt[1].isNull())
+  }
+  if (!this.elt[1].isNull()) {
     count++;
+  }
   return count;
 };
 
