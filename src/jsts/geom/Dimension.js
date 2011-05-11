@@ -16,7 +16,6 @@
  * @constructor
  */
 jsts.geom.Dimension = function() {
-  jsts.geom.Dimension.prototype.init.apply(this, arguments);
 };
 
 
@@ -113,7 +112,7 @@ jsts.geom.Dimension.toDimensionSymbol = function(dimensionValue) {
  *         <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.
  */
 jsts.geom.Dimension.toDimensionValue = function(dimensionSymbol) {
-  switch (Character.toUpperCase(dimensionSymbol)) {
+  switch (dimensionSymbol.toUpperCase()) {
     case 'F':
       return jsts.geom.Dimension.FALSE;
     case 'T':
@@ -127,6 +126,6 @@ jsts.geom.Dimension.toDimensionValue = function(dimensionSymbol) {
     case '2':
       return jsts.geom.Dimension.A;
   }
-  throw new jsts.IllegalArgumentError('Unknown dimension symbol: ' +
+  throw new jsts.error.IllegalArgumentError('Unknown dimension symbol: ' +
       dimensionSymbol);
 };
