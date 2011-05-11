@@ -1,6 +1,4 @@
-describe('jsts.operation.IsSimpleOp', function() {
-  var isSimpleOp;
-
+describe('TestCentroid', function() {
   var doc = null;
   var xmlLoaded = false;
   var isReady = function() {
@@ -8,37 +6,47 @@ describe('jsts.operation.IsSimpleOp', function() {
   };
 
   Ext.Ajax.request({
-    url: '../testxml/general/TestSimple.xml',
+    url: '../testxml/general/TestCentroid.xml',
     success: function(response) {
       doc = response.responseXML;
       xmlLoaded = true;
     }
   });
   
-  it('can be constructed', function() {
-    var isSimpleOp = new jsts.operation.IsSimpleOp();
-    expect(isSimpleOp).toBeDefined();
-  });
-  
-  it('can run TestSimple.xml stuff', function() {
+  it('can run TestCentroid.xml stuff', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = Ext.DomQuery.select("case", doc);
+      
+      var count = 0;
+      var passed = 0;
       
       for (var i = 0; i<cases.length; i++) {
         var testcase = cases[i];
         var desc = Ext.DomQuery.select("desc", testcase)[0].textContent.trim();
         var wkt = Ext.DomQuery.select("a", testcase)[0].textContent.trim();
-        var expected = Ext.DomQuery.select("op", testcase)[0].textContent.trim() === 'true';
+        var expected = Ext.DomQuery.select("op", testcase)[0].textContent.trim();
         
         var reader = new jsts.io.WKTReader();
         var geometry = reader.read(wkt);
         if (geometry === undefined) continue;
         
-        var result = geometry.isSimple();
+        var centroid = geometry.getCentroid();
         
-        expect(result).toEqual(expected);
+        var writer = new jsts.io.WKTReader();
+        var result = writer.write(centroid);
+        
+        count++;
+        
+        if (result === expected) {
+          passed++;
+        }
+        else {
+          console.log('Testcase "' + desc + '" failed.');
+        }
       }
+      
+      expect(passed).toEqual(count);
     });
   });
 });
