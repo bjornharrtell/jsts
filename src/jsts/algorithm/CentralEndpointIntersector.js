@@ -80,8 +80,8 @@ jsts.algorithm.CentralEndpointIntersector.prototype.getIntersection = function()
  */
 jsts.algorithm.CentralEndpointIntersector.average = function(pts) {
   var avg = new jsts.geom.Coordinate();
-  var n = pts.length;
-  for (var i = 0; i < n; i++) {
+  var i, n = pts.length;
+  for (i = 0; i < n; i++) {
     avg.x += pts[i].x;
     avg.y += pts[i].y;
   }
@@ -106,9 +106,9 @@ jsts.algorithm.CentralEndpointIntersector.average = function(pts) {
 jsts.algorithm.CentralEndpointIntersector.prototype.findNearestPoint = function(
     p, pts) {
   var minDist = Number.MAX_VALUE;
-  var result = null;
-  for (var i = 0; i < pts.length; i++) {
-    var dist = p.distance(pts[i]);
+  var i, result = null, dist;
+  for (i = 0; i < pts.length; i++) {
+    dist = p.distance(pts[i]);
     if (dist < minDist) {
       minDist = dist;
       result = pts[i];

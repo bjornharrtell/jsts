@@ -60,7 +60,7 @@ jsts.algorithm.Mod2BoundaryNodeRule.prototype = new jsts.algorithm.BoundaryNodeR
 jsts.algorithm.Mod2BoundaryNodeRule.prototype.isInBoundary = function(
     boundaryCount) {
   // the "Mod-2 Rule"
-  return boundaryCount % 2 == 1;
+  return boundaryCount % 2 === 1;
 };
 
 jsts.algorithm.BoundaryNodeRule.MOD2_BOUNDARY_RULE = new jsts.algorithm.Mod2BoundaryNodeRule();

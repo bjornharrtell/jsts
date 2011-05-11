@@ -69,8 +69,9 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
   this._isProper = false;
 
   // first try a fast test to see if the envelopes of the lines intersect
-  if (!jsts.geom.Envelope.intersects(p1, p2, q1, q2))
+  if (!jsts.geom.Envelope.intersects(p1, p2, q1, q2)) {
     return jsts.algorithm.LineIntersector.NO_INTERSECTION;
+  }
 
   // for each endpoint, compute which side of the other segment it lies
   // if both endpoints lie on the same side of the other segment,
@@ -89,7 +90,7 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
     return jsts.algorithm.LineIntersector.NO_INTERSECTION;
   }
 
-  var collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
+  var collinear = Pq1 === 0 && Pq2 === 0 && Qp1 === 0 && Qp2 === 0;
   if (collinear) {
     return this.computeCollinearIntersection(p1, p2, q1, q2);
   }
@@ -106,7 +107,7 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
    * sufficient to simply check for an endpoint which is on the other line,
    * since at this point we know that the inputLines must intersect.
    */
-  if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0) {
+  if (Pq1 === 0 || Pq2 === 0 || Qp1 === 0 || Qp2 === 0) {
     this._isProper = false;
 
     /**
@@ -135,13 +136,13 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
      * Now check to see if any endpoint lies on the interior of the other
      * segment.
      */
-    else if (Pq1 == 0) {
+    else if (Pq1 === 0) {
       this.intPt[0] = q1.clone();
-    } else if (Pq2 == 0) {
+    } else if (Pq2 === 0) {
       this.intPt[0] = q2.clone();
-    } else if (Qp1 == 0) {
+    } else if (Qp1 === 0) {
       this.intPt[0] = p1.clone();
-    } else if (Qp2 == 0) {
+    } else if (Qp2 === 0) {
       this.intPt[0] = p2.clone();
     }
   } else {
@@ -253,7 +254,7 @@ jsts.algorithm.RobustLineIntersector.prototype.intersection = function(p1, p2,
     // System.out.println("Snapped to " + intPt);
   }
 
-  if (this.precisionModel != null) {
+  if (this.precisionModel !== null) {
     this.precisionModel.makePrecise(intPt);
   }
 

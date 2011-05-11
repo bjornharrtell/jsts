@@ -50,9 +50,11 @@ jsts.geomgraph.Position.RIGHT = 2;
  * @return {int}
  */
 jsts.geomgraph.Position.opposite = function(position) {
-  if (position == jsts.geomgraph.Position.LEFT)
+  if (position === jsts.geomgraph.Position.LEFT) {
     return jsts.geomgraph.Position.RIGHT;
-  if (position == jsts.geomgraph.Position.RIGHT)
+  }
+  if (position === jsts.geomgraph.Position.RIGHT) {
     return jsts.geomgraph.Position.LEFT;
+  }
   return position;
 };

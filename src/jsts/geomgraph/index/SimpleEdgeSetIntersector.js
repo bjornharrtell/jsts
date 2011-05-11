@@ -38,13 +38,15 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.nOverlaps = 0;
  */
 jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = function(
     edges, si, testAllSegments) {
+  var i0, i1, edge0, edge1;
+
   this.nOverlaps = 0;
 
-  for (var i0 = 0; i0 < edges.length; i0++) {
-    var edge0 = edges[i0];
-    for (var i1 = 0; i1 < edges.length; i1++) {
-      var edge1 = edges[i1];
-      if (testAllSegments || edge0 != edge1) {
+  for (i0 = 0; i0 < edges.length; i0++) {
+    edge0 = edges[i0];
+    for (i1 = 0; i1 < edges.length; i1++) {
+      edge1 = edges[i1];
+      if (testAllSegments || edge0 !== edge1) {
         this.computeIntersects(edge0, edge1, si);
       }
     }
@@ -90,8 +92,9 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersects = func
     e0, e1, si) {
   var pts0 = e0.getCoordinates();
   var pts1 = e1.getCoordinates();
-  for (var i0 = 0; i0 < pts0.length - 1; i0++) {
-    for (var i1 = 0; i1 < pts1.length - 1; i1++) {
+  var i0, i1;
+  for (i0 = 0; i0 < pts0.length - 1; i0++) {
+    for (i1 = 0; i1 < pts1.length - 1; i1++) {
       si.addIntersections(e0, i0, e1, i1);
     }
   }

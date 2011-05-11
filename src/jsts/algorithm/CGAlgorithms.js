@@ -170,8 +170,7 @@ jsts.algorithm.CGAlgorithms.isOnLine = function(p, pt) {
   var lineIntersector, i, il, p0, p1;
   lineIntersector = new jsts.algorithm.RobustLineIntersector();
 
-  i = 1, il = pt.length;
-  for (i; i < il; i++) {
+  for (i = 1, il = pt.length; i < il; i++) {
     p0 = pt[i - 1];
     p1 = pt[i];
     lineIntersector.computeIntersection(p, p0, p1);
@@ -401,14 +400,12 @@ jsts.algorithm.CGAlgorithms.distancePointLinePerpendicular = function(p, A, B) {
  *         the minimum distance between the point and the line segments.
  */
 jsts.algorithm.CGAlgorithms.distancePointLine = function(p, line) {
-  if (line.length === 0) {
-    throw new jsts.IllegalArgumentError('Line array must contain at least one vertex');
-  }
   var minDistance, i, il, dist;
-  i = 0, il = line.length - 1;
-
+  if (line.length === 0) {
+    throw new jsts.error.IllegalArgumentError('Line array must contain at least one vertex');
+  }
   minDistance = p.distance(line[0]);
-  for (i; i < il; i++) {
+  for (i = 0, il = line.length - 1; i < il; i++) {
     dist = jsts.algorithm.CGAlgorithms.distancePointLine(p, line[i], line[i + 1]);
     if (dist < minDistance) {
       minDistance = dist;
@@ -474,7 +471,7 @@ jsts.algorithm.CGAlgorithms.distanceLineLine = function(A, B, C, D) {
   s_bot = (B.x - A.x) * (D.y - C.y) - (B.y - A.y) * (D.x - C.x);
 
 
-  if ((r_bot == 0) || (s_bot == 0)) {
+  if ((r_bot === 0) || (s_bot === 0)) {
     return Math.min(distancePointLine(A, C, D),
         Math.min(distancePointLine(B, C, D),
             Math.min(distancePointLine(C, A, B),
@@ -485,8 +482,7 @@ jsts.algorithm.CGAlgorithms.distanceLineLine = function(A, B, C, D) {
   r = r_top / r_bot;
   if ((r < 0) || (r > 1) || (s < 0) || (s > 1)) {
     //no intersection
-    return;
-    Math.min(distancePointLine(A, C, D),
+    return Math.min(distancePointLine(A, C, D),
         Math.min(distancePointLine(B, C, D),
         Math.min(distancePointLine(C, A, B),
         distancePointLine(D, A, B))));
@@ -513,9 +509,9 @@ jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
   }
   var sum, i, il, bx, by, cx, cy;
 
-  sum = 0.0, i = 0, il = ring.length - 1;
+  sum = 0.0;
 
-  for (i; i < il; i++) {
+  for (i = 0, il = ring.length - 1; i < il; i++) {
     bx = ring[i].x;
     by = ring[i].y;
     cx = ring[i + 1].x;
@@ -555,8 +551,7 @@ jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
   bx = p.x;
   by = p.y;
 
-  i = 1;
-  for (i; i < n; i++) {
+  for (i = 1; i < n; i++) {
     p = ring[i];
     cx = p.x;
     cy = p.y;
