@@ -36,7 +36,7 @@ jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex
     {
   var eiNew = new jsts.geomgraph.EdgeIntersection(intPt, segmentIndex, dist);
   var ei = this.nodeMap.get(eiNew);
-  if (ei != null) {
+  if (ei !== null) {
     return ei;
   }
   this.nodeMap.put(eiNew, eiNew);

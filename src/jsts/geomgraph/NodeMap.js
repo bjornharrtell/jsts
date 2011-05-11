@@ -4,6 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+// TODO: Below code will rpobably not work right, use of Hashtable needs hash for entities to work correct
+
 
 
 /**
@@ -26,10 +28,10 @@ jsts.geomgraph.NodeMap.prototype.nodeMap = null;
  * @return {Node}
  */
 jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
-  var node;
+  var node, coord;
 
   if (arg instanceof jsts.geom.Coordinate) {
-    var coord = arg;
+    coord = arg;
     node = this.nodeMap.get(coord);
     if (node == null) {
       node = new jsts.geomgraph.Node(coord, null);
@@ -37,7 +39,7 @@ jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
     }
     return node;
   } else if (arg instanceof jsts.geomgraph.Node) {
-    var node = arg;
+    node = arg;
     node = nodeMap.get(n.getCoordinate());
     if (node === null) {
       this.nodeMap.put(n.getCoordinate(), n);
@@ -89,8 +91,8 @@ jsts.geomgraph.NodeMap.prototype.values = function() {
  */
 jsts.geomgraph.NodeMap.prototype.getBoundaryNodes = function(geomIndex) {
   var bdyNodes = [];
-  var values = this.values();
-  for (var i = 0; i < values.length; i++) {
+  var i, values = this.values();
+  for (i = 0; i < values.length; i++) {
     var node = values[i];
     if (node.getLabel().getLocation(geomIndex) === jsts.geom.Location.BOUNDARY)
       bdyNodes.add(node);
