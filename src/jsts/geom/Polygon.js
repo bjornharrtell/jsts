@@ -30,6 +30,38 @@ jsts.geom.Polygon = function() {
 jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
 
 
+/**
+ * @param {Geometry} other
+ * @param {double} tolerance
+ * @return {boolean}
+ */
+jsts.geom.Polygon.prototype.equalsExact = function(other, tolerance) {
+  if (!this.isEquivalentClass(other)) {
+    return false;
+  }
+
+  var holes = this.components.slice(1);
+  var otherPolygon = other;
+  var thisShell = this.components[0];
+  var otherPolygonShell = otherPolygon.components[0];
+  var otherPolygonHoles = otherPolygon.components.slice(1);
+  if (!thisShell.equalsExact(otherPolygonShell, tolerance)) {
+    return false;
+  }
+  if (holes.length !== otherPolygonHoles.length) {
+    return false;
+  }
+  if (holes.length !== otherPolygonHoles.length) {
+    return false;
+  }
+  for (var i = 0; i < holes.length; i++) {
+    if (!(holes[i]).equalsExact(otherPolygonHoles[i], tolerance)) {
+      return false;
+    }
+  }
+  return true;
+};
+
 OpenLayers.Geometry.Polygon = OpenLayers.Class(OpenLayers.Geometry.Polygon,
     jsts.geom.Polygon);
 jsts.geom.Polygon = OpenLayers.Geometry.Polygon;

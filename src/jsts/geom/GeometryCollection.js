@@ -25,9 +25,6 @@ jsts.geom.GeometryCollection = OpenLayers.Class(jsts.geom.Geometry);
  * @return {boolean}
  */
 jsts.geom.GeometryCollection.prototype.isEmpty = function() {
-  // TODO: fix this by overriding constructor
-  this.geometries = this.components;
-
   for (var i = 0; i < this.geometries.length; i++) {
     if (!this.geometries[i].isEmpty()) {
       return false;
@@ -41,9 +38,6 @@ jsts.geom.GeometryCollection.prototype.isEmpty = function() {
  * @return {int}
  */
 jsts.geom.GeometryCollection.prototype.getNumGeometries = function() {
-  //TODO: fix this by overriding constructor
-  this.geometries = this.components;
-
   return this.geometries.length;
 };
 
@@ -53,14 +47,41 @@ jsts.geom.GeometryCollection.prototype.getNumGeometries = function() {
  * @return {Geometry}
  */
 jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
-  //TODO: fix this by overriding constructor
-  this.geometries = this.components;
-
   return this.geometries[n];
 };
 
+
+/**
+ * @param {Geometry} other
+ * @param {double} tolerance
+ * @return {boolean}
+ */
+jsts.geom.GeometryCollection.prototype.equalsExact = function(other,  tolerance) {
+  if (!this.isEquivalentClass(other)) {
+    return false;
+  }
+  if (this.geometries.length !== other.geometries.length) {
+    return false;
+  }
+  for (var i = 0; i < this.geometries.length; i++) {
+    if (!(this.geometries[i]).equalsExact(other.geometries[i], tolerance)) {
+      return false;
+    }
+  }
+  return true;
+};
+
 OpenLayers.Geometry.Collection = OpenLayers.Class(
-    OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection);
+    OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection, {
+      initialize: function(components) {
+        OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
+        this.components = [];
+        if (components != null) {
+          this.addComponents(components);
+        }
+        this.geometries = components;
+      }
+    });
 jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
 
 // TODO: port rest
