@@ -28,3 +28,8 @@ jsts.geom.Polygon = function() {
 };
 
 jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
+
+
+OpenLayers.Geometry.Polygon = OpenLayers.Class(OpenLayers.Geometry.Polygon,
+    jsts.geom.Polygon);
+jsts.geom.Polygon = OpenLayers.Geometry.Polygon;

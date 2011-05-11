@@ -20,3 +20,7 @@ jsts.geom.MultiPolygon = function() {
 
 };
 jsts.geom.MultiPolygon = OpenLayers.Class(jsts.geom.GeometryCollection);
+
+OpenLayers.Geometry.MultiPolygon = OpenLayers.Class(
+    OpenLayers.Geometry.MultiPolygon, jsts.geom.MultiPolygon);
+jsts.geom.MultiPolygon = OpenLayers.Geometry.MultiPolygon;

@@ -5,6 +5,11 @@
  */
 
 
+/**
+ * @requires jsts/geom/Coordinate.js
+ */
+
+
 
 /**
  * @constructor
@@ -21,3 +26,4 @@ jsts.geom.Point.prototype.getGeometryType = function() {
   return 'Point';
 };
 
+jsts.geom.Point = OpenLayers.Class(jsts.geom.Point, jsts.geom.Coordinate);

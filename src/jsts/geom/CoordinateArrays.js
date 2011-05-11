@@ -22,9 +22,11 @@ jsts.geom.CoordinateArrays = function() {
  * @see #hasRepeatedPoints(Coordinate[])
  */
 jsts.geom.CoordinateArrays.removeRepeatedPoints = function(coord) {
-  if (!this.hasRepeatedPoints(coord))
+  var coordList;
+  if (!this.hasRepeatedPoints(coord)) {
     return coord;
-  var coordList = new jsts.geom.CoordinateList(coord, false);
+  }
+  coordList = new jsts.geom.CoordinateList(coord, false);
   return coordList;
 };
 
@@ -38,7 +40,8 @@ jsts.geom.CoordinateArrays.removeRepeatedPoints = function(coord) {
  * @return {boolean}
  */
 jsts.geom.CoordinateArrays.hasRepeatedPoints = function(coord) {
-  for (var i = 1; i < coord.length; i++) {
+  var i;
+  for (i = 1; i < coord.length; i++) {
     if (coord[i - 1].equals(coord[i])) {
       return true;
     }
