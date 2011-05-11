@@ -19,3 +19,7 @@ jsts.geom.MultiPoint = function() {
 
 };
 jsts.geom.MultiPoint = OpenLayers.Class(jsts.geom.GeometryCollection);
+
+OpenLayers.Geometry.MultiPoint = OpenLayers.Class(
+    OpenLayers.Geometry.MultiPoint, jsts.geom.MultiPoint);
+jsts.geom.MultiPoint = OpenLayers.Geometry.MultiPoint;

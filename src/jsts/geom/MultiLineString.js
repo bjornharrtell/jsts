@@ -19,3 +19,7 @@ jsts.geom.MultiLineString = function() {
 
 };
 jsts.geom.MultiLineString = OpenLayers.Class(jsts.geom.GeometryCollection);
+
+OpenLayers.Geometry.MultiLineString = OpenLayers.Class(
+    OpenLayers.Geometry.MultiLineString, jsts.geom.MultiLineString);
+jsts.geom.MultiLineString = OpenLayers.Geometry.MultiLineString;

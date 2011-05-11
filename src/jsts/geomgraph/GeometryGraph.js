@@ -187,8 +187,8 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
       .getCoordinates());
 
   if (coords.length < 2) {
-    hasTooFewPoints = true;
-    invalidPoint = coord[0];
+    this.hasTooFewPoints = true;
+    this.invalidPoint = coords[0];
     return;
   }
 

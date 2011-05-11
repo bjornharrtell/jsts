@@ -59,4 +59,8 @@ jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
   return this.geometries[n];
 };
 
+OpenLayers.Geometry.Collection = OpenLayers.Class(
+    OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection);
+jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
+
 // TODO: port rest

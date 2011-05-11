@@ -62,3 +62,8 @@ jsts.geom.LinearRing.prototype.isSimple = function() {
 jsts.geom.LinearRing.prototype.getGeometryType = function() {
   return 'LinearRing';
 };
+
+
+OpenLayers.Geometry.LinearRing = OpenLayers.Class(
+    OpenLayers.Geometry.LinearRing, jsts.geom.LinearRing);
+jsts.geom.LinearRing = OpenLayers.Geometry.LinearRing;

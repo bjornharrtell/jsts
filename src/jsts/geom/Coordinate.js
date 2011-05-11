@@ -163,7 +163,7 @@ jsts.geom.Coordinate.prototype.getNumPoints = function() {
  * @return {Boolean} true ifPoint is empty.
  */
 jsts.geom.Coordinate.prototype.isEmpty = function() {
-  return isNaN(this.x);
+  return this.x === null;
 };
 
 
@@ -295,3 +295,23 @@ jsts.geom.Coordinate.prototype.reverse = function() {
 jsts.geom.Coordinate.prototype.normalize = function() {
   // a Point is always in normalized form
 };
+
+
+OpenLayers.Geometry.Point = OpenLayers.Class(OpenLayers.Geometry.Point,
+    jsts.geom.Coordinate, {
+      // replace constructor with one that also accepts JTS arguments
+      initialize: function(x, y) {
+        OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
+        if (x === undefined || x === null) {
+        } else if (typeof x === 'number' || typeof x === 'string') {
+          this.x = parseFloat(x);
+          this.y = parseFloat(y);
+        } else if (x instanceof jsts.geom.Coordinate) {
+          y = x.y;
+          x = x.x;
+          this.x = parseFloat(x);
+          this.y = parseFloat(y);
+        }
+      }
+    });
+jsts.geom.Coordinate = OpenLayers.Geometry.Point;
