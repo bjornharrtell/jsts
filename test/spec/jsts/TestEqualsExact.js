@@ -26,11 +26,12 @@ describe('TestEqualsExact', function() {
         var desc = Ext.DomQuery.select("desc", testcase)[0].textContent.trim();
         var a = Ext.DomQuery.select("a", testcase)[0].textContent.trim();
         var b = Ext.DomQuery.select("b", testcase)[0].textContent.trim();
-        var expected = Ext.DomQuery.select("op", testcase)[0].textContent.trim();
+        var expected = Ext.DomQuery.select("op", testcase)[0].textContent.trim() === 'true';
         
         var reader = new jsts.io.WKTReader();
         var ag = reader.read(a);
         var bg = reader.read(b);
+        if (ag === undefined) continue;
         
         result = ag.equalsExact(bg);
         

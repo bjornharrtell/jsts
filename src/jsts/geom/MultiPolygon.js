@@ -21,6 +21,19 @@ jsts.geom.MultiPolygon = function() {
 };
 jsts.geom.MultiPolygon = OpenLayers.Class(jsts.geom.GeometryCollection);
 
+
+/**
+ * @param {Geometry} other
+ * @param {double} tolerance
+ * @return {boolean}
+ */
+jsts.geom.MultiPolygon.prototype.equalsExact = function(other, tolerance) {
+  if (!this.isEquivalentClass(other)) {
+    return false;
+  }
+  return jsts.geom.GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
+};
+
 OpenLayers.Geometry.MultiPolygon = OpenLayers.Class(
     OpenLayers.Geometry.MultiPolygon, jsts.geom.MultiPolygon);
 jsts.geom.MultiPolygon = OpenLayers.Geometry.MultiPolygon;

@@ -1238,7 +1238,7 @@ jsts.geom.Geometry.prototype.union = function() {
  *          are considered equal.
  */
 jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
-  throw new jsts.AbstractMethodInvocationError();
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -1523,7 +1523,7 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
  * @return {Boolean} true if equal.
  */
 jsts.geom.Geometry.equal = function(a, b, tolerance) {
-  if (tolerance === 0) {
+  if (tolerance === undefined || tolerance === null || tolerance === 0) {
     return a.equals(b);
   }
   return a.distance(b) <= tolerance;
