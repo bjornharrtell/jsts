@@ -86,20 +86,24 @@ jsts.algorithm.LineIntersector.computeEdgeDistance = function(p, p0, p1) {
   if (p.equals(p0)) {
     dist = 0.0;
   } else if (p.equals(p1)) {
-    if (dx > dy)
+    if (dx > dy) {
       dist = dx;
-    else
+    }
+    else {
       dist = dy;
+    }
   } else {
     var pdx = Math.abs(p.x - p0.x);
     var pdy = Math.abs(p.y - p0.y);
-    if (dx > dy)
+    if (dx > dy) {
       dist = pdx;
-    else
+    }
+    else {
       dist = pdy;
+    }
     // <FIX>
     // hack to ensure that non-endpoints always have a non-zero distance
-    if (dist == 0.0 && !p.equals(p0)) {
+    if (dist === 0.0 && !p.equals(p0)) {
       dist = Math.max(pdx, pdy);
     }
   }
@@ -278,7 +282,7 @@ jsts.algorithm.LineIntersector.prototype.isEndPoint = function() {
  * @return {boolean} true if the input geometries intersect.
  */
 jsts.algorithm.LineIntersector.prototype.hasIntersection = function() {
-  return this.result != jsts.algorithm.LineIntersector.NO_INTERSECTION;
+  return this.result !== jsts.algorithm.LineIntersector.NO_INTERSECTION;
 };
 
 
@@ -310,7 +314,7 @@ jsts.algorithm.LineIntersector.prototype.getIntersection = function(intIndex) {
  * @protected
  */
 jsts.algorithm.LineIntersector.prototype.computeIntLineIndex = function() {
-  if (this.intLineIndex == null) {
+  if (this.intLineIndex === null) {
     this.intLineIndex = [[], []];
     this.computeIntLineIndex(0);
     this.computeIntLineIndex(1);
@@ -329,7 +333,8 @@ jsts.algorithm.LineIntersector.prototype.computeIntLineIndex = function() {
  * @return {boolean} true if the input point is one of the intersection points.
  */
 jsts.algorithm.LineIntersector.prototype.isIntersection = function(pt) {
-  for (var i = 0; i < this.result; i++) {
+  var i;
+  for (i = 0; i < this.result; i++) {
     if (this.intPt[i].equals2D(pt)) {
       return true;
     }
@@ -346,10 +351,12 @@ jsts.algorithm.LineIntersector.prototype.isIntersection = function(pt) {
  *         interior of one of the input segments.
  */
 jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function() {
-  if (this.isInteriorIntersection(0))
+  if (this.isInteriorIntersection(0)) {
     return true;
-  if (this.isInteriorIntersection(1))
+  }
+  if (this.isInteriorIntersection(1)) {
     return true;
+  }
   return false;
 };
 

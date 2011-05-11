@@ -32,25 +32,26 @@
  * @constructor
  */
 jsts.geomgraph.Label = function() {
+  var geomIndex, onLoc, leftLoc, rightLoc;
   if (arguments.length === 4) {
-    var geomIndex = arguments[0];
-    var onLoc = arguments[1];
-    var leftLoc = arguments[2];
-    var rightLoc = arguments[3];
+    geomIndex = arguments[0];
+    onLoc = arguments[1];
+    leftLoc = arguments[2];
+    rightLoc = arguments[3];
     this.elt[0] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE,
         jsts.geom.Location.NONE, jsts.geom.Location.NONE);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE,
         jsts.geom.Location.NONE, jsts.geom.Location.NONE);
     this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
   } else if (arguments.length === 3) {
-    var onLoc = arguments[0];
-    var leftLoc = arguments[1];
-    var rightLoc = arguments[2];
+    onLoc = arguments[0];
+    leftLoc = arguments[1];
+    rightLoc = arguments[2];
     this.elt[0] = new jsts.geomgraph.TopologyLocation(onLoc, leftLoc, rightLoc);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(onLoc, leftLoc, rightLoc);
   } else if (arguments.length === 2) {
-    var geomIndex = arguments[0];
-    var onLoc = arguments[1];
+    geomIndex = arguments[0];
+    onLoc = arguments[1];
     this.elt[0] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE);
     this.elt[geomIndex].setLocation(onLoc);
@@ -58,7 +59,7 @@ jsts.geomgraph.Label = function() {
     this.elt[0] = new jsts.geomgraph.TopologyLocation(lbl.elt[0]);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(lbl.elt[1]);
   } else if (arguments[0] instanceof Number) {
-    var onLoc = arguments[0];
+    onLoc = arguments[0];
     this.elt[0] = new jsts.geomgraph.TopologyLocation(onLoc);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(onLoc);
   }
@@ -73,8 +74,8 @@ jsts.geomgraph.Label = function() {
  * @return {Label}
  */
 jsts.geomgraph.Label.toLineLabel = function(label) {
-  var lineLabel = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
-  for (var i = 0; i < 2; i++) {
+  var i, lineLabel = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
+  for (i = 0; i < 2; i++) {
     lineLabel.setLocation(i, label.getLocation(i));
   }
   return lineLabel;
@@ -181,9 +182,10 @@ jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(location) {
  *          lbl
  */
 jsts.geomgraph.Label.prototype.merge = function(lbl) {
-  for (var i = 0; i < 2; i++) {
+  var i;
+  for (i = 0; i < 2; i++) {
     if (this.elt[i] == null && lbl.elt[i] !== null) {
-      this.elt[i] = new TopologyLocation(lbl.elt[i]);
+      this.elt[i] = new jsts.geomgraph.TopologyLocation(lbl.elt[i]);
     } else {
       this.elt[i].merge(lbl.elt[i]);
     }
@@ -284,6 +286,7 @@ jsts.geomgraph.Label.prototype.allPositionsEqual = function(geomIndex, loc) {
  *          geomIndex
  */
 jsts.geomgraph.Label.prototype.toLine = function(geomIndex) {
-  if (this.elt[geomIndex].isArea())
-    this.elt[geomIndex] = new jsts.geomgraph.TopologyLocation(elt[geomIndex].location[0]);
+  if (this.elt[geomIndex].isArea()) {
+    this.elt[geomIndex] = new jsts.geomgraph.TopologyLocation(this.elt[geomIndex].location[0]);
+  }
 };

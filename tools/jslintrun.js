@@ -1,5 +1,5 @@
 load('json2.js');
-load('fulljslint.js');
+load('jslint.js');
 
 var input=read(path);
 
@@ -12,7 +12,9 @@ for (key in JSLINT.errors) {
   if (!JSLINT.errors.hasOwnProperty(key)) continue;
   var error = JSLINT.errors[key];
   if (error === null) continue;
-  /*line      : The line (relative to 0) at which the lint was found
+  if (error.reason === 'Use a named parameter.') continue;
+  /*
+  line      : The line (relative to 0) at which the lint was found
   character : The character (relative to 0) at which the lint was found
   reason    : The problem
   evidence  : The text line in which the problem occurred
@@ -20,6 +22,7 @@ for (key in JSLINT.errors) {
   a         : The first detail
   b         : The second detail
   c         : The third detail
-  d         : The fourth detail*/
+  d         : The fourth detail
+  */
   print('Line: ' + error.line + ' Char: ' + error.character + ' Reason: ' + error.reason);
 }
