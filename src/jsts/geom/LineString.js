@@ -155,6 +155,3 @@ jsts.geom.LineString.prototype.clone = function() {
 };
 
 
-OpenLayers.Geometry.LineString = OpenLayers.Class(
-    OpenLayers.Geometry.LineString, jsts.geom.LineString);
-jsts.geom.LineString = OpenLayers.Geometry.LineString;

@@ -29,6 +29,7 @@
  */
 jsts.geom.LinearRing = function() {
 };
+//jsts.geom.LinearRing.prototype = new jsts.geom.LineString();
 jsts.geom.LinearRing = OpenLayers.Class(jsts.geom.LineString);
 
 
@@ -39,7 +40,7 @@ jsts.geom.LinearRing = OpenLayers.Class(jsts.geom.LineString);
  * @return {int} Dimension.FALSE.
  */
 jsts.geom.LinearRing.prototype.getBoundaryDimension = function() {
-  return Dimension.FALSE;
+  return jsts.geom.Dimension.FALSE;
 };
 
 
@@ -67,3 +68,13 @@ jsts.geom.LinearRing.prototype.getGeometryType = function() {
 OpenLayers.Geometry.LinearRing = OpenLayers.Class(
     OpenLayers.Geometry.LinearRing, jsts.geom.LinearRing);
 jsts.geom.LinearRing = OpenLayers.Geometry.LinearRing;
+
+OpenLayers.Geometry.LineString = OpenLayers.Class(
+    OpenLayers.Geometry.LineString, jsts.geom.LineString, {
+      initialize: function(points) {
+        OpenLayers.Geometry.Curve.prototype.initialize.apply(this, arguments);
+
+        this.geometries = this.components;
+      }
+    });
+jsts.geom.LineString = OpenLayers.Geometry.LineString;
