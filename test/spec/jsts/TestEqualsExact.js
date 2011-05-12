@@ -13,7 +13,7 @@ describe('TestEqualsExact', function() {
     }
   });
   
-  it('can run TestEqualsExact.xml stuff', function() {
+  it('passes all tests in TestEqualsExact.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = Ext.DomQuery.select("case", doc);

@@ -13,7 +13,7 @@ describe('TestDistance', function() {
     }
   });
   
-  it('can run TestDistance.xml stuff', function() {
+  it('passes all tests in TestDistance.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = Ext.DomQuery.select("case", doc);
