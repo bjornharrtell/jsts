@@ -305,7 +305,7 @@ jsts.geom.Geometry.prototype.isValid = function() {
  *         the empty geometry.
  */
 jsts.geom.Geometry.prototype.isEmpty = function() {
-  return true;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 

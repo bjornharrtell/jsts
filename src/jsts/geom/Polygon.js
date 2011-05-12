@@ -31,6 +31,19 @@ jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
 
 
 /**
+ * @return {boolean}
+ */
+jsts.geom.Polygon.prototype.isEmpty = function() {
+  for (var i = 0; i < this.geometries.length; i++) {
+    if (!this.geometries[i].isEmpty()) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+/**
  * @param {Geometry} other
  * @param {double} tolerance
  * @return {boolean}
