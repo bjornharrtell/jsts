@@ -39,5 +39,30 @@ jsts.io.WKTReader = function() {
 jsts.io.WKTReader.prototype.read = function(wkt) {
   var geometry = OpenLayers.Geometry.fromWKT(wkt);
 
+  if (geometry === undefined) {
+    var type = wkt.split(' ')[0].toLowerCase();
+    switch (type) {
+      case 'point':
+        geometry = new OpenLayers.Geometry.Point();
+        break;
+      case 'multipoint':
+        geometry = new OpenLayers.Geometry.MultiPoint();
+        break;
+      case 'linestring':
+        geometry = new OpenLayers.Geometry.LineString();
+        break;
+      case 'multilinestring':
+        geometry = new OpenLayers.Geometry.MultiLineString();
+        break;
+      case 'polygon':
+        geometry = new OpenLayers.Geometry.Polygon();
+        break;
+      case 'multipolygon':
+        geometry = new OpenLayers.Geometry.MultiPolygon();
+        break;
+    }
+
+  }
+
   return geometry;
 };

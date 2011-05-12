@@ -79,7 +79,7 @@ OpenLayers.Geometry.Collection = OpenLayers.Class(
         if (components != null) {
           this.addComponents(components);
         }
-        this.geometries = components;
+        this.geometries = this.components;
       }
     });
 jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;

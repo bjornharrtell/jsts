@@ -27,7 +27,7 @@ jsts.geom.Polygon = function() {
 
 };
 
-jsts.geom.Polygon = OpenLayers.Class(jsts.geom.GeometryCollection);
+jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
 
 
 /**
@@ -38,6 +38,9 @@ jsts.geom.Polygon = OpenLayers.Class(jsts.geom.GeometryCollection);
 jsts.geom.Polygon.prototype.equalsExact = function(other, tolerance) {
   if (!this.isEquivalentClass(other)) {
     return false;
+  }
+  if (this.isEmpty() && other.isEmpty()) {
+    return true;
   }
 
   var holes = this.components.slice(1);

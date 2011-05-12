@@ -28,7 +28,8 @@ jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) 
 
   this.argIndex = argIndex;
   this.parentGeom = parentGeom;
-  this.boundaryNodeRule = boundaryNodeRule || jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+  this.boundaryNodeRule = boundaryNodeRule ||
+      jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
   if (parentGeom != null) {
     this.add(parentGeom);
   }
@@ -86,20 +87,20 @@ jsts.geomgraph.GeometryGraph.prototype.useBoundaryDeterminationRule = true;
 
 
 /**
+ * the index of this geometry as an argument to a spatial function (used for
+ * labelling)
+ *
  * @type {int}
  * @private
  */
-jsts.geomgraph.GeometryGraph.prototype.argIndex; // the index of this geometry
-// as an argument to a
-// spatial function (used for
-// labelling)
+jsts.geomgraph.GeometryGraph.prototype.argIndex = null; //
 
 
 /**
  * @type {Collection}
  * @private
  */
-jsts.geomgraph.GeometryGraph.prototype.boundaryNodes;
+jsts.geomgraph.GeometryGraph.prototype.boundaryNodes = [];
 
 
 /**
@@ -124,7 +125,7 @@ jsts.geomgraph.GeometryGraph.prototype.areaPtLocator = null;
 
 
 /**
- * // for use if geometry is not Polygonal
+ * for use if geometry is not Polygonal
  *
  * @type {PointLocator}
  * @private
@@ -155,7 +156,7 @@ jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
   // check if this Geometry should obey the Boundary Determination Rule
   // all collections except MultiPolygons obey the rule
   if (g instanceof jsts.geom.MultiPolygon)
-    useBoundaryDeterminationRule = false;
+    this.useBoundaryDeterminationRule = false;
 
   if (g instanceof jsts.geom.Polygon)
     this.addPolygon(g);
@@ -232,7 +233,8 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
   var esi = this.createEdgeSetIntersector();
   // optimized test for Polygons and Rings
   if (!computeRingSelfNodes &&
-      (parentGeom instanceof LinearRing || parentGeom instanceof Polygon || parentGeom instanceof MultiPolygon)) {
+      (parentGeom instanceof jsts.geom.LinearRing ||
+          parentGeom instanceof jsts.geom.Polygon || parentGeom instanceof jsts.geom.MultiPolygon)) {
     esi.computeIntersections(this.edges, si, false);
   } else {
     esi.computeIntersections(this.edges, si, true);
@@ -270,11 +272,12 @@ jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex,
 
 jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
     argIndex) {
-  for (var i = 0; i < this.edges.length; i++) {
-    var e = this.edges[i];
-    var eLoc = e.getLabel().getLocation(argIndex);
-    for (var j = 0; j < e.eiList.length; j++) {
-      var ei = e.eiList[j];
+  var i, e, eLoc, j, ei;
+  for (i = 0; i < this.edges.length; i++) {
+    e = this.edges[i];
+    eLoc = e.getLabel().getLocation(argIndex);
+    for (j = 0; j < e.eiList.length; j++) {
+      ei = e.eiList[j];
       this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
     }
   }
@@ -291,7 +294,7 @@ jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(
   // if this node is already a boundary node, don't change it
   if (this.isBoundaryNode(argIndex, coord))
     return;
-  if (loc == jsts.geom.Location.BOUNDARY && this.useBoundaryDeterminationRule)
+  if (loc === jsts.geom.Location.BOUNDARY && this.useBoundaryDeterminationRule)
     this.insertBoundaryPoint(argIndex, coord);
   else
     this.insertPoint(argIndex, coord, loc);
