@@ -13,7 +13,7 @@ describe('TestCentroid', function() {
     }
   });
   
-  it('can run TestCentroid.xml stuff', function() {
+  it('passes all tests in TestCentroid.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = Ext.DomQuery.select("case", doc);

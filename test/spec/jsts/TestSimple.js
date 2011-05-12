@@ -15,7 +15,7 @@ describe('TestSimple', function() {
     }
   });
   
-  it('can run TestSimple.xml stuff', function() {
+  it('passes all tests in TestSimple.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = Ext.DomQuery.select("case", doc);

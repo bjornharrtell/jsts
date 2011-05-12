@@ -114,15 +114,10 @@
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
     var reader = new jsts.io.WKTReader();
-    var lineString2 = reader.read('LINESTRING (20 20, 80 20, 80 80, 20 20)');
+    var a = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60))');
+    //var b = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60))');
     
-    //vectorLayer.addFeatures([lineFeature]);
-    //var lineFeature2 = new OpenLayers.Feature.Vector(lineString2);
-    //vectorLayer.addFeatures([lineFeature2]);
-    
-    
-    //var isSimpleOp = new jsts.operation.IsSimpleOp(lineString2);
-    var result = lineString2.isSimple();
+    //var result = a.equalsExact(b);
     
     console.log(result);
   }

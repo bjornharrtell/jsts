@@ -27,7 +27,7 @@ jsts.geom.Polygon = function() {
 
 };
 
-jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
+jsts.geom.Polygon = OpenLayers.Class(jsts.geom.GeometryCollection);
 
 
 /**

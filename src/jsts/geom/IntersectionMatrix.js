@@ -41,7 +41,7 @@ jsts.geom.IntersectionMatrix = function(elements) {
     this.matrix = [[], [], []];
     this.setAll(jsts.geom.Dimension.FALSE);
   } else if (typeof elements === 'string') {
-    set(elements);
+    this.set(elements);
   } else if (other instanceof jsts.geom.IntersectionMatrix) {
 
     this.matrix[jsts.geom.Location.INTERIOR][jsts.geom.Location.INTERIOR] = other.matrix[jsts.geom.Location.INTERIOR][jsts.geom.Location.INTERIOR];
@@ -152,7 +152,7 @@ jsts.geom.IntersectionMatrix.matches2 = function(actualDimensionSymbols, require
  */
 jsts.geom.IntersectionMatrix.prototype.set = function(row, column, dimensionValue) {
   if (typeof row === 'string') {
-    this.set2.call(row);
+    this.set2(row);
     return;
   }
 
@@ -225,7 +225,8 @@ jsts.geom.IntersectionMatrix.prototype.setAtLeastIfValid = function(row,  column
  *      .
  */
 jsts.geom.IntersectionMatrix.prototype.setAtLeast = function(minimumDimensionSymbols) {
-  for (var i = 0; i < minimumDimensionSymbols.length(); i++) {
+  var i;
+  for (i = 0; i < minimumDimensionSymbols.length(); i++) {
     var row = i / 3;
     var col = i % 3;
     this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
@@ -242,8 +243,9 @@ jsts.geom.IntersectionMatrix.prototype.setAtLeast = function(minimumDimensionSym
  *      .
  */
 jsts.geom.IntersectionMatrix.prototype.setAll = function(dimensionValue) {
-  for (var ai = 0; ai < 3; ai++) {
-    for (var bi = 0; bi < 3; bi++) {
+  var ai, bi;
+  for (ai = 0; ai < 3; ai++) {
+    for (bi = 0; bi < 3; bi++) {
       this.matrix[ai][bi] = dimensionValue;
     }
   }
@@ -277,8 +279,7 @@ jsts.geom.IntersectionMatrix.prototype.get = function(row, column) {
  *      this <code>IntersectionMatrix</code> are disjoint
  */
 jsts.geom.IntersectionMatrix.prototype.isDisjoint = function() {
-  return;
-  this.matrix[jsts.geom.Location.INTERIOR][jsts.geom.Location.INTERIOR] === jsts.geom.Dimension.FALSE &&
+  return this.matrix[jsts.geom.Location.INTERIOR][jsts.geom.Location.INTERIOR] === jsts.geom.Dimension.FALSE &&
       this.matrix[jsts.geom.Location.INTERIOR][jsts.geom.Location.BOUNDARY] === jsts.geom.Dimension.FALSE &&
       this.matrix[jsts.geom.Location.BOUNDARY][jsts.geom.Location.INTERIOR] === jsts.geom.Dimension.FALSE &&
       this.matrix[jsts.geom.Location.BOUNDARY][jsts.geom.Location.BOUNDARY] === jsts.geom.Dimension.FALSE;
@@ -551,9 +552,9 @@ jsts.geom.IntersectionMatrix.prototype.transpose = function() {
  *      in row-major order.
  */
 jsts.geom.IntersectionMatrix.prototype.toString = function() {
-  var buf = '123456789';
-  for (var ai = 0; ai < 3; ai++) {
-    for (var bi = 0; bi < 3; bi++) {
+  var ai, bi, buf = '123456789';
+  for (ai = 0; ai < 3; ai++) {
+    for (bi = 0; bi < 3; bi++) {
       buf.setCharAt(3 * ai + bi, jsts.geom.Dimension.toDimensionSymbol(matrix[ai][bi]));
     }
   }
