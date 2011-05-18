@@ -114,10 +114,10 @@
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
     var reader = new jsts.io.WKTReader();
-    var a = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60))');
+    var a = reader.read('LINESTRING (20 20, 80 20, 80 80, 20 20)');
     //var b = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60))');
     
-    //var result = a.equalsExact(b);
+    var result = a.isSimple();
     
     console.log(result);
   }
