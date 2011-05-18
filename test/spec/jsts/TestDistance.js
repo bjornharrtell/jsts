@@ -34,7 +34,7 @@ describe('TestDistance', function() {
         var bg = reader.read(b);
         if (ag === undefined) continue;
         
-        result = ag.distance(bg);
+        var result = ag.distance(bg);
         
         count++;
         
