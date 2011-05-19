@@ -41,7 +41,7 @@ describe('TestSimple', function() {
           passed++;
         }
         else {
-          console.log('Testcase "' + desc + '" failed.');
+          console.log('Testcase "' + desc + '" failed. (Result: ' + result + ' / Expected: ' + expected + ')');
         }
       }
       
