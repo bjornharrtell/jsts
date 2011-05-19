@@ -43,6 +43,11 @@ jsts.geom.Polygon.prototype.isEmpty = function() {
 };
 
 
+jsts.geom.Polygon.prototype.getExteriorRing = function() {
+  return this.components[0];
+};
+
+
 /**
  * @param {Geometry} other
  * @param {double} tolerance
