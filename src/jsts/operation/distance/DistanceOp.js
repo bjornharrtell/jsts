@@ -250,8 +250,8 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance2 = funct
   }
 
   var locationsIndex = 1 - polyGeomIndex;
-  var polys = jsts.geom.util.PolygonExtracter.getPolygons(geom[polyGeomIndex]);
-  if (polys.size() > 0) {
+  var polys = jsts.geom.util.PolygonExtracter.getPolygons(this.geom[polyGeomIndex]);
+  if (polys.length > 0) {
     var insideLocs = ConnectedElementLocationFilter
         .getLocations(geom[locationsIndex]);
     this.computeContainmentDistance(insideLocs, polys, locPtPoly);
@@ -307,7 +307,7 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance4 = funct
     ptLoc, poly, locPtPoly) {
   var pt = ptLoc.getCoordinate();
   // if pt is not in exterior, distance to geom is 0
-  if (jsts.geom.Location.EXTERIOR != ptLocator.locate(pt, poly)) {
+  if (jsts.geom.Location.EXTERIOR !== ptLocator.locate(pt, poly)) {
     this.minDistance = 0.0;
     locPtPoly[0] = ptLoc;
     locPtPoly[1] = new jsts.operation.distance.GeometryLocation(poly, pt);
@@ -321,17 +321,17 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance4 = funct
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
-  var locGeom = new jsts.operation.distance.GeometryLocation[2];
+  var locGeom = [new jsts.operation.distance.GeometryLocation(), new jsts.operation.distance.GeometryLocation()];
 
   /**
    * Geometries are not wholely inside, so compute distance from lines and
    * points of one to lines and points of the other
    */
-  var lines0 = LinearComponentExtracter.getLines(geom[0]);
-  var lines1 = LinearComponentExtracter.getLines(geom[1]);
+  var lines0 = jsts.geom.util.LinearComponentExtracter.getLines(this.geom[0]);
+  var lines1 = jsts.geom.util.LinearComponentExtracter.getLines(this.geom[1]);
 
-  var pts0 = PointExtracter.getPoints(geom[0]);
-  var pts1 = PointExtracter.getPoints(geom[1]);
+  var pts0 = jsts.geom.util.PointExtracter.getPoints(this.geom[0]);
+  var pts1 = jsts.geom.util.PointExtracter.getPoints(this.geom[1]);
 
   // exit whenever minDistance goes LE than terminateDistance
   this.computeMinDistanceLines(lines0, lines1, locGeom);
@@ -371,10 +371,10 @@ jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLines = function(
     lines0, lines1, locGeom) {
-  for (var i = 0; i < lines0.size(); i++) {
-    var line0 = lines0.get(i);
-    for (var j = 0; j < lines1.size(); j++) {
-      var line1 = lines1.get(j);
+  for (var i = 0; i < lines0.length; i++) {
+    var line0 = lines0[i];
+    for (var j = 0; j < lines1.length; j++) {
+      var line1 = lines1[j];
       this.computeMinDistance(line0, line1, locGeom);
       if (this.minDistance <= this.terminateDistance)
         return;
@@ -394,10 +394,10 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLines = function(
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function(
     points0, points1, locGeom) {
-  for (var i = 0; i < points0.size(); i++) {
-    var pt0 = points0.get(i);
-    for (var j = 0; j < points1.size(); j++) {
-      var pt1 = points1.get(j);
+  for (var i = 0; i < points0.length; i++) {
+    var pt0 = points0[i];
+    for (var j = 0; j < points1.length; j++) {
+      var pt1 = points1[j];
       var dist = pt0.getCoordinate().distance(pt1.getCoordinate());
       if (dist < this.minDistance) {
         this.minDistance = dist;
@@ -452,7 +452,7 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance2 = function(
     return;
   }
 
-  if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal()) > minDistance) {
+  if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal()) > this.minDistance) {
     return;
   }
   var coord0 = line0.getCoordinates();
@@ -489,7 +489,7 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance2 = function(
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistance3 = function(
     line, pt, locGeom) {
-  if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal()) > minDistance) {
+  if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal()) > this.minDistance) {
     return;
   }
   var coord0 = line.getCoordinates();

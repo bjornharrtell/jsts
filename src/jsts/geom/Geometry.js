@@ -505,7 +505,7 @@ jsts.geom.Geometry.prototype.getEnvelopeInternal = function() {
   if (this.envelope === null) {
     this.envelope = this.computeEnvelopeInternal();
   }
-  return envelope;
+  return this.envelope;
 };
 
 
@@ -1175,6 +1175,21 @@ jsts.geom.Geometry.prototype.union = function() {
  */
 jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
   throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ *  Performs an operation with or on this <code>Geometry</code> and its
+ *  subelement <code>Geometry</code>s (if any).
+ *  Only GeometryCollections and subclasses
+ *  have subelement Geometry's.
+ *
+ *@param  filter  the filter to apply to this <code>Geometry</code> (and
+ *      its children, if it is a <code>GeometryCollection</code>).
+ */
+jsts.geom.Geometry.prototype.apply = function(filter) {
+  filter.filter(this);
+  //throw new jsts.error.AbstractMethodInvocationError();
 };
 
 

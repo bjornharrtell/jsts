@@ -106,6 +106,26 @@ jsts.geom.LineString.prototype.getGeometryType = function() {
 };
 
 
+jsts.geom.LineString.prototype.computeEnvelopeInternal = function() {
+  if (this.isEmpty()) {
+    return new jsts.geom.Envelope();
+  }
+
+  var env = new jsts.geom.Envelope();
+  for (i = 0; i < this.components.length; i++) {
+    var point = this.components[i];
+    env.expandToInclude(point);
+    /*if (!env) {
+      env = new jsts.geom.Envelope(point);
+    } else {
+      env.
+    }*/
+  }
+
+  return env;
+};
+
+
 /**
  * @param {Geometry}
  *          other Geometry to compare this LineString to.

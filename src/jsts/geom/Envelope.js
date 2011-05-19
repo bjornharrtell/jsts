@@ -692,7 +692,7 @@ jsts.geom.Envelope.prototype.coversEnvelope = function(other) {
  *         the distance is the Euclidean distance between the closest points.
  */
 jsts.geom.Envelope.prototype.distance = function(env) {
-  if (intersects(env)) {
+  if (this.intersects(env)) {
     return 0;
   }
   var dx = 0.0;
