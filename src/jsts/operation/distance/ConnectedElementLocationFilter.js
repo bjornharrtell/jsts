@@ -54,5 +54,5 @@ jsts.operation.distance.ConnectedElementLocationFilter.prototype.filter = functi
     geom) {
   if (geom instanceof jsts.geom.Point || geom instanceof jsts.geom.LineString ||
       geom instanceof jsts.geom.Polygon)
-    locations.add(new jsts.operation.distance.GeometryLocation(geom, 0, geom.getCoordinate()));
+    this.locations.push(new jsts.operation.distance.GeometryLocation(geom, 0, geom.getCoordinate()));
 };
