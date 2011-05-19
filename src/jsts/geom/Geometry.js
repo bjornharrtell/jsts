@@ -321,7 +321,7 @@ jsts.geom.Geometry.prototype.isEmpty = function() {
  *           if g is null
  */
 jsts.geom.Geometry.prototype.distance = function(g) {
-  return DistanceOp.distance(this, g);
+  return jsts.operation.distance.DistanceOp.distance(this, g);
 };
 
 
@@ -910,70 +910,6 @@ jsts.geom.Geometry.prototype.jsts_equals = function(g) {
 
 
 /**
- * Computes a buffer area around this geometry having the given width. The
- * buffer of a Geometry is the Minkowski sum or difference of the geometry with
- * a disc of radius <code>abs(distance)</code>.
- * <p>
- * Mathematically-exact buffer area boundaries can contain circular arcs. To
- * represent these arcs using linear geometry they must be approximated with
- * line segments. The buffer geometry is constructed using 8 segments per
- * quadrant to approximate the circular arcs. The end cap style is
- * <tt>CAP_ROUND</tt>.
- * <p>
- * The buffer operation always returns a polygonal result. The negative or
- * zero-distance buffer of lines and points is always an empty {@link Polygon}.
- * This is also the result for the buffers of degenerate (zero-area) polygons.
- *
- * @param {double}
- *          distance the width of the buffer (may be positive, negative or 0).
- * @return {Geometry} a polygonal geometry representing the buffer region
- *         (which may be empty).
- *
- * @throws TopologyException
- *           if a robustness error occurs
- *
- * @see #buffer(double, int)
- * @see #buffer(double, int, int)
- */
-jsts.geom.Geometry.prototype.buffer = function(distance) {
-  return BufferOp.bufferOp(this, distance);
-};
-
-
-/**
- * Computes a buffer area around this geometry having the given width and with
- * a specified accuracy of approximation for circular arcs.
- * <p>
- * Mathematically-exact buffer area boundaries can contain circular arcs. To
- * represent these arcs using linear geometry they must be approximated with
- * line segments. The <code>quadrantSegments</code> argument allows
- * controlling the accuracy of the approximation by specifying the number of
- * line segments used to represent a quadrant of a circle
- * <p>
- * The buffer operation always returns a polygonal result. The negative or
- * zero-distance buffer of lines and points is always an empty {@link Polygon}.
- * This is also the result for the buffers of degenerate (zero-area) polygons.
- *
- * @param {double}
- *          distance the width of the buffer (may be positive, negative or 0).
- * @param {int}
- *          quadrantSegments the number of line segments used to represent a
- *          quadrant of a circle.
- * @return {Geometry} a polygonal geometry representing the buffer region
- *         (which may be empty).
- *
- * @throws TopologyException
- *           if a robustness error occurs
- *
- * @see #buffer(double)
- * @see #buffer(double, int, int)
- */
-jsts.geom.Geometry.prototype.buffer = function(distance, quadrantSegments) {
-  return BufferOp.bufferOp(this, distance, quadrantSegments);
-};
-
-
-/**
  * Computes a buffer area around this geometry having the given width and with
  * a specified accuracy of approximation for circular arcs, and using a
  * specified end cap style.
@@ -1214,7 +1150,7 @@ jsts.geom.Geometry.prototype.symDifference = function(other) {
  * @see UnaryUnionOp
  */
 jsts.geom.Geometry.prototype.union = function() {
-  return UnaryUnionOp.union(this);
+  return jsts.operation.union.UnaryUnionOp.union(this);
 };
 
 
