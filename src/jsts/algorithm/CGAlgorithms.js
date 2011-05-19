@@ -316,6 +316,10 @@ jsts.algorithm.CGAlgorithms.computeOrientation = function(p1, p2, q) {
  *         the distance from p to line segment AB.
  */
 jsts.algorithm.CGAlgorithms.distancePointLine = function(p, A, B) {
+  if (!(A instanceof jsts.geom.Coordinate)) {
+    jsts.algorithm.CGAlgorithms.distancePointLine2.apply(this, arguments);
+  }
+
   //if start = end, then just compute distance to one of the endpoints
   if (A.x === B.x && A.y === B.y) {
     return p.distance(A);
@@ -399,7 +403,7 @@ jsts.algorithm.CGAlgorithms.distancePointLinePerpendicular = function(p, A, B) {
  * @return {Number}
  *         the minimum distance between the point and the line segments.
  */
-jsts.algorithm.CGAlgorithms.distancePointLine = function(p, line) {
+jsts.algorithm.CGAlgorithms.distancePointLine2 = function(p, line) {
   var minDistance, i, il, dist;
   if (line.length === 0) {
     throw new jsts.error.IllegalArgumentError('Line array must contain at least one vertex');
@@ -472,20 +476,20 @@ jsts.algorithm.CGAlgorithms.distanceLineLine = function(A, B, C, D) {
 
 
   if ((r_bot === 0) || (s_bot === 0)) {
-    return Math.min(distancePointLine(A, C, D),
-        Math.min(distancePointLine(B, C, D),
-            Math.min(distancePointLine(C, A, B),
-                distancePointLine(D, A, B))));
+    return Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(A, C, D),
+        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(B, C, D),
+            Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(C, A, B),
+                jsts.algorithm.CGAlgorithms.distancePointLine(D, A, B))));
   }
 
   s = s_top / s_bot;
   r = r_top / r_bot;
   if ((r < 0) || (r > 1) || (s < 0) || (s > 1)) {
     //no intersection
-    return Math.min(distancePointLine(A, C, D),
-        Math.min(distancePointLine(B, C, D),
-        Math.min(distancePointLine(C, A, B),
-        distancePointLine(D, A, B))));
+    return Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(A, C, D),
+        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(B, C, D),
+        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(C, A, B),
+            jsts.algorithm.CGAlgorithms.distancePointLine(D, A, B))));
   }
 
   return 0.0; //intersection exists
