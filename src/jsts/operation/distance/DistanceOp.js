@@ -252,8 +252,8 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance2 = funct
   var locationsIndex = 1 - polyGeomIndex;
   var polys = jsts.geom.util.PolygonExtracter.getPolygons(this.geom[polyGeomIndex]);
   if (polys.length > 0) {
-    var insideLocs = ConnectedElementLocationFilter
-        .getLocations(geom[locationsIndex]);
+    var insideLocs = jsts.operation.distance.ConnectedElementLocationFilter
+        .getLocations(this.geom[locationsIndex]);
     this.computeContainmentDistance(insideLocs, polys, locPtPoly);
     if (this.minDistance <= this.terminateDistance) {
       // this assigment is determined by the order of the args in the
@@ -283,10 +283,10 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance3 = funct
     return;
   }
 
-  for (var i = 0; i < locs.size(); i++) {
-    var loc = locs.get(i);
-    for (var j = 0; j < polys.size(); j++) {
-      this.computeContainmentDistance(loc, polys.get(j), locPtPoly);
+  for (var i = 0; i < locs.length; i++) {
+    var loc = locs[i];
+    for (var j = 0; j < polys.length; j++) {
+      this.computeContainmentDistance(loc, polys[j], locPtPoly);
       if (this.minDistance <= this.terminateDistance)
         return;
     }
@@ -307,7 +307,7 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance4 = funct
     ptLoc, poly, locPtPoly) {
   var pt = ptLoc.getCoordinate();
   // if pt is not in exterior, distance to geom is 0
-  if (jsts.geom.Location.EXTERIOR !== ptLocator.locate(pt, poly)) {
+  if (jsts.geom.Location.EXTERIOR !== this.ptLocator.locate(pt, poly)) {
     this.minDistance = 0.0;
     locPtPoly[0] = ptLoc;
     locPtPoly[1] = new jsts.operation.distance.GeometryLocation(poly, pt);
@@ -343,7 +343,7 @@ jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
   locGeom[1] = null;
   this.computeMinDistanceLinesPoints(lines0, pts1, locGeom);
   this.updateMinDistance(locGeom, false);
-  if (this.minDistance <= terminateDistance)
+  if (this.minDistance <= this.terminateDistance)
     return;
 
   locGeom[0] = null;
@@ -422,10 +422,10 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLinesPoints = function(
     lines, points, locGeom) {
-  for (var i = 0; i < lines.size(); i++) {
-    var line = lines.get(i);
-    for (var j = 0; j < points.size(); j++) {
-      var pt = points.get(j);
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    for (var j = 0; j < points.length; j++) {
+      var pt = points[j];
       this.computeMinDistance(line, pt, locGeom);
       if (this.minDistance <= this.terminateDistance)
         return;
