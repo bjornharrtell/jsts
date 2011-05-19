@@ -5,10 +5,10 @@ describe('TestCentroid', function() {
     return xmlLoaded; 
   };
 
-  Ext.Ajax.request({
+  $.ajax({
     url: '../testxml/general/TestCentroid.xml',
     success: function(response) {
-      doc = response.responseXML;
+      doc = response;
       xmlLoaded = true;
     }
   });
@@ -16,16 +16,16 @@ describe('TestCentroid', function() {
   it('passes all tests in TestCentroid.xml', function() {
     waitsFor(isReady);
     runs(function() {
-      var cases = Ext.DomQuery.select("case", doc);
+      var cases = $('case', doc);
       
       var count = 0;
       var passed = 0;
       
       for (var i = 0; i<cases.length; i++) {
         var testcase = cases[i];
-        var desc = Ext.DomQuery.select("desc", testcase)[0].textContent.trim();
-        var wkt = Ext.DomQuery.select("a", testcase)[0].textContent.trim();
-        var expected = Ext.DomQuery.select("op", testcase)[0].textContent.trim();
+        var desc = $("desc", testcase).text().trim();
+        var wkt = $("a", testcase).text().trim();
+        var expected = $("op", testcase).text().trim();
         
         var reader = new jsts.io.WKTReader();
         var geometry = reader.read(wkt);
