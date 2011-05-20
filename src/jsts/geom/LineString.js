@@ -47,7 +47,7 @@ jsts.geom.LineString.prototype.getCoordinate = function() {
   if (this.isEmpty()) {
     return null;
   }
-  return this.getCoordinate(0);
+  return this.getCoordinateN(0);
 };
 
 

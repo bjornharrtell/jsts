@@ -16,7 +16,6 @@
  */
 jsts.operation.distance.ConnectedElementLocationFilter = function(locations) {
   this.locations = locations;
-
 };
 
 

@@ -5,11 +5,13 @@
  */
 
 
+
 /**
  * Extracts all the 1-dimensional ({@link LineString}) components from a
  * {@link Geometry}.
  *
  * @augments GeometryComponentFilter
+ * @constructor
  */
 jsts.geom.util.LinearComponentExtracter = function(lines, isForcedToLineString) {
   this.lines = lines;

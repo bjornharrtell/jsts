@@ -5,6 +5,7 @@
  */
 
 
+
 /**
  * Represents a line segment defined by two {@link Coordinate}s. Provides
  * methods to compute various geometric properties and relationships of line
@@ -19,6 +20,7 @@
  *          p0
  * @param {Coordinate}
  *          p1
+ * @constructor
  */
 jsts.geom.LineSegment = function(p0, p1) {
   this.p0 = p0;

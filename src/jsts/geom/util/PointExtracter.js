@@ -5,6 +5,7 @@
  */
 
 
+
 /**
  * Extracts all the 0-dimensional ({@link Point}) components from a
  * {@link Geometry}.
@@ -13,6 +14,7 @@
  *
  * @augments GeometryFilter
  * @see GeometryExtracter
+ * @constructor
  */
 jsts.geom.util.PointExtracter = function(pts) {
   this.pts = pts;

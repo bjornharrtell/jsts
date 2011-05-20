@@ -30,6 +30,11 @@ jsts.geom.Polygon = function() {
 jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
 
 
+jsts.geom.Polygon.prototype.getCoordinate = function() {
+  return this.components[0].getCoordinate();
+};
+
+
 /**
  * @return {boolean}
  */
