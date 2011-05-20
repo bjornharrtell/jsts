@@ -90,6 +90,7 @@
  */
 jsts.geom.Geometry = function() {
 };
+
 jsts.geom.Geometry = OpenLayers.Class();
 
 

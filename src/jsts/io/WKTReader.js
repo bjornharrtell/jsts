@@ -39,6 +39,10 @@ jsts.io.WKTReader = function() {
 jsts.io.WKTReader.prototype.read = function(wkt) {
   var geometry = OpenLayers.Geometry.fromWKT(wkt);
 
+  if (geometry instanceof jsts.geom.Coordinate) {
+    geometry = new jsts.geom.Point(geometry);
+  }
+
   if (geometry === undefined) {
     var type = wkt.split(' ')[0].toLowerCase();
     switch (type) {

@@ -38,7 +38,7 @@ jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
   if (coordinate === null) {
     return new jsts.geom.Point();
   }
-  return new jsts.geom.Point(coordinate.x, coordinate.y);
+  return new jsts.geom.Point(coordinate);
 };
 
 
