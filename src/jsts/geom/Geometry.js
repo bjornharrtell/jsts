@@ -215,7 +215,7 @@ jsts.geom.Geometry.prototype.getPrecisionModel = function() {
  *         <code>Geometry</code>. null if this Geometry is empty.
  */
 jsts.geom.Geometry.prototype.getCoordinate = function() {
-  return null;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -236,7 +236,7 @@ jsts.geom.Geometry.prototype.getCoordinate = function() {
  * @see CoordinateSequence#setOrdinate
  */
 jsts.geom.Geometry.prototype.getCoordinates = function() {
-  return null;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -248,7 +248,7 @@ jsts.geom.Geometry.prototype.getCoordinates = function() {
  * @return {int} the number of vertices in this <code>Geometry.</code>
  */
 jsts.geom.Geometry.prototype.getNumPoints = function() {
-  return 0;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -442,7 +442,7 @@ jsts.geom.Geometry.prototype.getInteriorPoint = function() {
  * @return {int} the topological dimension of this geometry.
  */
 jsts.geom.Geometry.prototype.getDimension = function() {
-  return 0;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -458,7 +458,7 @@ jsts.geom.Geometry.prototype.getDimension = function() {
  *         <code>Geometry.</code>
  */
 jsts.geom.Geometry.prototype.getBoundary = function() {
-  return null;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 
@@ -471,7 +471,7 @@ jsts.geom.Geometry.prototype.getBoundary = function() {
  *         geometry.
  */
 jsts.geom.Geometry.prototype.getBoundaryDimension = function() {
-  return 0;
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 

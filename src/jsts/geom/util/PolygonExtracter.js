@@ -5,6 +5,7 @@
  */
 
 
+
 /**
  * Extracts all the {@link Polygon} elements from a {@link Geometry}.
  *
@@ -15,6 +16,7 @@
  *          comps
  * @augments GeometryFilter
  * @see GeometryExtracter
+ * @constructor
  */
 jsts.geom.util.PolygonExtracter = function(comps) {
   this.comps = comps;
