@@ -277,7 +277,7 @@ jsts.geom.Coordinate.prototype.equalsExact = function(other, tolerance) {
   if (this.isEmpty() && other.isEmpty()) {
     return true;
   }
-  return jsts.geom.Geometry.equal(other, this, tolerance);
+  return jsts.geom.Geometry.prototype.equal(other, this, tolerance);
 };
 
 

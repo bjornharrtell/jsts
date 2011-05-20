@@ -143,7 +143,7 @@ jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
     return false;
   }
   for (i = 0; i < this.components.length; i++) {
-    if (!jsts.geom.Geometry.equal(this.components[i], other.components[i],
+    if (!jsts.geom.Geometry.prototype.equal(this.components[i], other.components[i],
         tolerance)) {
       return false;
     }
