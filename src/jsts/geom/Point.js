@@ -18,6 +18,23 @@
 jsts.geom.Point = function() {
 };
 
+jsts.geom.Point = OpenLayers.Class(jsts.geom.Geometry, {
+  initialize: function(coordinate) {
+    this.coordinate = coordinate;
+  }
+});
+
+
+jsts.geom.Point.prototype.coordinate = null;
+
+jsts.geom.Point.prototype.getCoordinate = function() {
+  return this.coordinate;
+};
+
+jsts.geom.Point.prototype.isEmpty = function() {
+  return this.coordinate === null;
+};
+
 
 /**
  * @return {String} String representation of Point type.
@@ -26,4 +43,4 @@ jsts.geom.Point.prototype.getGeometryType = function() {
   return 'Point';
 };
 
-jsts.geom.Point = OpenLayers.Class(jsts.geom.Point, jsts.geom.Coordinate);
+
