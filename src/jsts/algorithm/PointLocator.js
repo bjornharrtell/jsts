@@ -97,7 +97,7 @@ jsts.algorithm.PointLocator.prototype.locate = function(p, geom) {
   this.computeLocation(p, geom);
   if (this.boundaryRule.isInBoundary(this.numBoundaries))
     return jsts.geom.Location.BOUNDARY;
-  if (this.numBoundaries > 0 || isIn)
+  if (this.numBoundaries > 0 || this.isIn)
     return jsts.geom.Location.INTERIOR;
 
   return jsts.geom.Location.EXTERIOR;
@@ -114,20 +114,22 @@ jsts.algorithm.PointLocator.prototype.locate = function(p, geom) {
 jsts.algorithm.PointLocator.prototype.computeLocation = function(p, geom) {
   if (geom instanceof jsts.geom.Point || geom instanceof jsts.geom.LineString ||
       geom instanceof jsts.geom.Polygon) {
-    this.updateLocationInfo(locate(p, geom));
+    this.updateLocationInfo(this.locate(p, geom));
   } else if (geom instanceof jsts.geom.MultiLineString) {
     var ml = geom;
     for (var i = 0; i < ml.getNumGeometries(); i++) {
       var l = ml.getGeometryN(i);
-      this.updateLocationInfo(locate(p, l));
+      this.updateLocationInfo(this.locate(p, l));
     }
   } else if (geom instanceof jsts.geom.MultiPolygon) {
     var mpoly = geom;
     for (var i = 0; i < mpoly.getNumGeometries(); i++) {
       var poly = mpoly.getGeometryN(i);
-      this.updateLocationInfo(locate(p, poly));
+      this.updateLocationInfo(this.locate(p, poly));
     }
   } else if (geom instanceof jsts.geom.GeometryCollection) {
+    // TODO: port
+    throw new jsts.error.NotImplementedError();
     var geomi = new GeometryCollectionIterator(geom);
     while (geomi.hasNext()) {
       var g2 = geomi.next();

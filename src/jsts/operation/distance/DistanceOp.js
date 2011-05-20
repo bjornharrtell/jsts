@@ -46,7 +46,7 @@ jsts.operation.distance.DistanceOp = function(g0, g1, terminateDistance) {
 
 
 /**
- * @type {Geometry[] }
+ * @type {Geometry[]}
  */
 jsts.operation.distance.DistanceOp.prototype.geom = null;
 
@@ -133,7 +133,7 @@ jsts.operation.distance.DistanceOp.nearestPoints = function(g0, g1) {
  *           if either input geometry is null
  */
 jsts.operation.distance.DistanceOp.prototype.distance = function() {
-  if (this.geom[0] == null || this.geom[1] == null)
+  if (this.geom[0] === null || this.geom[1] === null)
     throw new jsts.error.IllegalArgumentError('null geometries are not supported');
   if (this.geom[0].isEmpty() || this.geom[1].isEmpty())
     return 0.0;
@@ -181,7 +181,7 @@ jsts.operation.distance.DistanceOp.prototype.nearestLocations = function() {
 jsts.operation.distance.DistanceOp.prototype.updateMinDistance = function(
     locGeom, flip) {
   // if not set then don't update
-  if (locGeom[0] == null)
+  if (locGeom[0] === null)
     return;
 
   if (flip) {
@@ -195,7 +195,6 @@ jsts.operation.distance.DistanceOp.prototype.updateMinDistance = function(
 
 
 /**
- * TODO: doc
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function() {
@@ -206,10 +205,10 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function() {
   }
 
   // only compute once!
-  if (this.minDistanceLocation != null)
+  if (this.minDistanceLocation !== null)
     return;
 
-  this.minDistanceLocation = [new jsts.operation.distance.GeometryLocation, new jsts.operation.distance.GeometryLocation];
+  this.minDistanceLocation = [];
   this.computeContainmentDistance();
   if (this.minDistance <= this.terminateDistance)
     return;
@@ -221,40 +220,42 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance = function() {
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance = function() {
-  if (arguments.length > 0) {
+  if (arguments.length === 2) {
     this.computeContainmentDistance2.apply(this, arguments);
+    return;
+  } else if (arguments.length === 3 && (!arguments[0] instanceof jsts.operation.distance.GeometryLocation)) {
+    this.computeContainmentDistance3.apply(this, arguments);
+    return;
+  } else if (arguments.length === 3) {
+    this.computeContainmentDistance4.apply(this, arguments);
     return;
   }
 
-  var locPtPoly = [new jsts.operation.distance.GeometryLocation, new jsts.operation.distance.GeometryLocation];
+  var locPtPoly = [];
   // test if either geometry has a vertex inside the other
-  this.computeContainmentDistance(0, locPtPoly);
+  this.computeContainmentDistance2(0, locPtPoly);
   if (this.minDistance <= this.terminateDistance)
     return;
-  this.computeContainmentDistance(1, locPtPoly);
+  this.computeContainmentDistance2(1, locPtPoly);
 };
 
 
 /**
  * @param {int}
- *          polyGeomIndex TODO: doc.
+ *          polyGeomIndex
  * @param {GeometryLocation[]}
- *          locPtPoly TODO: doc.
+ *          locPtPoly
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance2 = function(
     polyGeomIndex, locPtPoly) {
-  if (arguments.length > 2) {
-    this.computeContainmentDistance3.apply(this, arguments);
-    return;
-  }
 
   var locationsIndex = 1 - polyGeomIndex;
   var polys = jsts.geom.util.PolygonExtracter.getPolygons(this.geom[polyGeomIndex]);
   if (polys.length > 0) {
     var insideLocs = jsts.operation.distance.ConnectedElementLocationFilter
         .getLocations(this.geom[locationsIndex]);
-    this.computeContainmentDistance(insideLocs, polys, locPtPoly);
+    this.computeContainmentDistance3(insideLocs, polys, locPtPoly);
     if (this.minDistance <= this.terminateDistance) {
       // this assigment is determined by the order of the args in the
       // computeInside call above
@@ -267,9 +268,9 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance2 = funct
 
 
 /**
- * @param {List}
+ * @param {[]}
  *          locs TODO: doc.
- * @param {List}
+ * @param {[]}
  *          polys TODO: doc.
  * @param {GeometryLocation[] }
  *          locPtPoly TODO: doc.
@@ -278,15 +279,10 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance2 = funct
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance3 = function(
     locs, polys, locPtPoly) {
 
-  if (locs instanceof jsts.operation.distance.GeometryLocation) {
-    this.computeContainmentDistance4.apply(this, arguments);
-    return;
-  }
-
   for (var i = 0; i < locs.length; i++) {
     var loc = locs[i];
     for (var j = 0; j < polys.length; j++) {
-      this.computeContainmentDistance(loc, polys[j], locPtPoly);
+      this.computeContainmentDistance4(loc, polys[j], locPtPoly);
       if (this.minDistance <= this.terminateDistance)
         return;
     }
@@ -299,8 +295,7 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance3 = funct
  *          ptLoc TODO: doc.
  * @param {Polygon}
  *          poly TODO: doc.
- * @param {
- *          GeometryLocation[] } locPtPoly TODO: doc.
+ * @param {GeometryLocation[]} locPtPoly TODO: doc.
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance4 = function(
@@ -321,7 +316,7 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance4 = funct
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
-  var locGeom = [new jsts.operation.distance.GeometryLocation(), new jsts.operation.distance.GeometryLocation()];
+  var locGeom = [];
 
   /**
    * Geometries are not wholely inside, so compute distance from lines and
@@ -436,11 +431,11 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLinesPoints = fun
 
 /**
  * @param {LineString}
- *          line0 TODO: doc.
+ *          line0
  * @param {Point}
- *          line1 TODO: doc.
+ *          line1
  * @param {GeometryLocation[]}
- *          locGeom TODO: doc.
+ *          locGeom
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistance2 = function(
@@ -480,11 +475,11 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistance2 = function(
 
 /**
  * @param {LineString}
- *          line TODO: doc.
+ *          line
  * @param {Point}
- *          pt TODO: doc.
+ *          pt
  * @param {GeometryLocation[]}
- *          locGeom TODO: doc.
+ *          locGeom
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistance3 = function(

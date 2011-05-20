@@ -117,7 +117,7 @@ jsts.algorithm.RayCrossingCounter.prototype.countSegment = function(p1, p2) {
       maxx = p1.x;
     }
     if (this.p.x >= minx && this.p.x <= maxx) {
-      isPointOnSegment = true;
+      this.isPointOnSegment = true;
     }
     return;
   }
@@ -160,7 +160,7 @@ jsts.algorithm.RayCrossingCounter.prototype.countSegment = function(p1, p2) {
     // + " = " + xIntSign);
     // The segment crosses the ray if the sign is strictly positive.
     if (xIntSign > 0.0) {
-      jsts.geom.crossingCount++;
+      this.crossingCount++;
     }
   }
 };

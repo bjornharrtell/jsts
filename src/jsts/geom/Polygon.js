@@ -52,6 +52,10 @@ jsts.geom.Polygon.prototype.getExteriorRing = function() {
   return this.components[0];
 };
 
+jsts.geom.Polygon.prototype.getNumInteriorRing = function() {
+  return this.components.slice(1).length;
+};
+
 
 /**
  * @param {Geometry} other
