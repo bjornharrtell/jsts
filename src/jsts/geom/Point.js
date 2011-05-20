@@ -20,6 +20,9 @@ jsts.geom.Point = function() {
 
 jsts.geom.Point = OpenLayers.Class(jsts.geom.Geometry, {
   initialize: function(coordinate) {
+    if (coordinate === undefined)
+      return;
+
     this.coordinate = coordinate;
   }
 });
@@ -43,6 +46,10 @@ jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
     return true;
   }
   return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance);
+};
+
+jsts.geom.Point.prototype.clone = function() {
+  return new jsts.geom.Point(this.coordinate.clone());
 };
 
 
