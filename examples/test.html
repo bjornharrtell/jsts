@@ -92,7 +92,9 @@
   var map;
 
   function init() {
-    map = new OpenLayers.Map('map');
+    map = new OpenLayers.Map('map', {
+      maxExtent: new OpenLayers.Bounds(-500,-500, 500, 500)
+    });
     var layer = new OpenLayers.Layer.WMS("OpenLayers WMS",
         "http://vmap0.tiles.osgeo.org/wms/vmap0", {
           layers: 'basic'
@@ -126,7 +128,9 @@
     var reader = new jsts.io.WKTReader();
     var a = reader.read('POLYGON ((60 260, 260 180, 100 60, 60 160, 60 260))');
     var b = reader.read('POLYGON ((220 280, 120 160, 300 60, 360 220, 220 280))');
+    var c = new jsts.geom.Coordinate(220, 280); 
     
+    vectorLayer.addFeatures([new OpenLayers.Feature.Vector(a),new OpenLayers.Feature.Vector(b),new OpenLayers.Feature.Vector(c)]);
     
     var result = a.distance(b);
     
