@@ -1474,7 +1474,7 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
  *          tolerance tolerance when comparing.
  * @return {Boolean} true if equal.
  */
-jsts.geom.Geometry.equal = function(a, b, tolerance) {
+jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
   if (tolerance === undefined || tolerance === null || tolerance === 0) {
     return a.equals(b);
   }

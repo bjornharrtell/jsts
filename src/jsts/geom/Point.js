@@ -35,6 +35,16 @@ jsts.geom.Point.prototype.isEmpty = function() {
   return this.coordinate === null;
 };
 
+jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
+  if (!this.isEquivalentClass(other)) {
+    return false;
+  }
+  if (this.isEmpty() && other.isEmpty()) {
+    return true;
+  }
+  return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance);
+};
+
 
 /**
  * @return {String} String representation of Point type.
