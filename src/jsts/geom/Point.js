@@ -48,6 +48,10 @@ jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
   return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance);
 };
 
+jsts.geom.Point.prototype.apply = function(filter) {
+  filter.filter(this);
+};
+
 jsts.geom.Point.prototype.clone = function() {
   return new jsts.geom.Point(this.coordinate.clone());
 };

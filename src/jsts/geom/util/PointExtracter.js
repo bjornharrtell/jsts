@@ -20,6 +20,8 @@ jsts.geom.util.PointExtracter = function(pts) {
   this.pts = pts;
 };
 
+jsts.geom.util.PointExtracter.prototype = new jsts.geom.GeometryFilter();
+
 
 /**
  * @private

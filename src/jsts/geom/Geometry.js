@@ -1189,8 +1189,7 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
  *      its children, if it is a <code>GeometryCollection</code>).
  */
 jsts.geom.Geometry.prototype.apply = function(filter) {
-  filter.filter(this);
-  //throw new jsts.error.AbstractMethodInvocationError();
+  throw new jsts.error.AbstractMethodInvocationError();
 };
 
 

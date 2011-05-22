@@ -174,4 +174,6 @@ jsts.geom.LineString.prototype.clone = function() {
   return clone;
 };
 
-
+jsts.geom.LineString.prototype.apply = function(filter) {
+  filter.filter(this);
+};

@@ -5,6 +5,7 @@
  */
 
 
+
 /**
  * A ConnectedElementPointFilter extracts a single point from each connected
  * element in a Geometry (e.g. a polygon, linestring or point) and returns them
@@ -13,10 +14,14 @@
  *
  * @param {[]}
  *          locations
+ * @augments jsts.geom.GeometryFilter
+ * @constructor
  */
 jsts.operation.distance.ConnectedElementLocationFilter = function(locations) {
   this.locations = locations;
 };
+
+jsts.operation.distance.ConnectedElementLocationFilter.prototype = new jsts.geom.GeometryFilter();
 
 
 /**
@@ -53,5 +58,6 @@ jsts.operation.distance.ConnectedElementLocationFilter.prototype.filter = functi
     geom) {
   if (geom instanceof jsts.geom.Point || geom instanceof jsts.geom.LineString ||
       geom instanceof jsts.geom.Polygon)
-    this.locations.push(new jsts.operation.distance.GeometryLocation(geom, 0, geom.getCoordinate()));
+    this.locations.push(new jsts.operation.distance.GeometryLocation(geom, 0,
+        geom.getCoordinate()));
 };
