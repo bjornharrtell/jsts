@@ -18,6 +18,8 @@ jsts.geom.util.LinearComponentExtracter = function(lines, isForcedToLineString) 
   this.isForcedToLineString = isForcedToLineString;
 };
 
+jsts.geom.util.LinearComponentExtracter.prototype = new jsts.geom.GeometryComponentFilter();
+
 
 /**
  * @private
@@ -193,7 +195,8 @@ jsts.geom.util.LinearComponentExtracter.prototype.filter = function(geom) {
     return;
   }
   // if not being forced, and this is a linear component
-  if (geom instanceof jsts.geom.LineString)
+  // NOTE: inheritance will not show LinearRing to be of LineString heritance...
+  if (geom instanceof jsts.geom.LineString || geom instanceof jsts.geom.LinearRing)
     this.lines.push(geom);
 
   // else this is not a linear component, so skip it

@@ -71,6 +71,13 @@ jsts.geom.GeometryCollection.prototype.equalsExact = function(other,  tolerance)
   return true;
 };
 
+jsts.geom.GeometryCollection.prototype.apply = function(filter) {
+  filter.filter(this);
+  for (var i = 0; i < this.geometries.length; i++) {
+    this.geometries[i].apply(filter);
+  }
+};
+
 OpenLayers.Geometry.Collection = OpenLayers.Class(
     OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection, {
       initialize: function(components) {

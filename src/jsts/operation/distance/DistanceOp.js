@@ -269,11 +269,11 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance2 = funct
 
 /**
  * @param {[]}
- *          locs TODO: doc.
+ *          locs
  * @param {[]}
- *          polys TODO: doc.
+ *          polys
  * @param {GeometryLocation[] }
- *          locPtPoly TODO: doc.
+ *          locPtPoly
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance3 = function(
@@ -292,10 +292,10 @@ jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance3 = funct
 
 /**
  * @param {GeometryLocation}
- *          ptLoc TODO: doc.
+ *          ptLoc
  * @param {Polygon}
- *          poly TODO: doc.
- * @param {GeometryLocation[]} locPtPoly TODO: doc.
+ *          poly
+ * @param {GeometryLocation[]} locPtPoly
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeContainmentDistance4 = function(
@@ -356,12 +356,12 @@ jsts.operation.distance.DistanceOp.prototype.computeFacetDistance = function() {
 
 
 /**
- * @param {List}
- *          lines0 TODO: doc.
- * @param {List}
- *          lines1 TODO: doc.
+ * @param {[]}
+ *          lines0.
+ * @param {[]}
+ *          lines1
  * @param {GeometryLocation[]}
- *          locGeom TODO: doc.
+ *          locGeom
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLines = function(
@@ -379,12 +379,12 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLines = function(
 
 
 /**
- * @param {List}
- *          points0 TODO: doc.
- * @param {List}
- *          points1 TODO: doc.
+ * @param {[]}
+ *          points0
+ * @param {[]}
+ *          points1
  * @param {GeometryLocation[]}
- *          locGeom TODO: doc.
+ *          locGeom
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function(
@@ -407,12 +407,12 @@ jsts.operation.distance.DistanceOp.prototype.computeMinDistancePoints = function
 
 
 /**
- * @param {List}
- *          lines TODO: doc.
- * @param {List}
- *          points TODO: doc.
+ * @param {[]}
+ *          lines
+ * @param {[]}
+ *          points
  * @param {GeometryLocation[]}
- *          locGeom TODO: doc.
+ *          locGeom
  * @private
  */
 jsts.operation.distance.DistanceOp.prototype.computeMinDistanceLinesPoints = function(

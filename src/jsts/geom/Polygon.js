@@ -92,6 +92,18 @@ jsts.geom.Polygon.prototype.equalsExact = function(other, tolerance) {
   return true;
 };
 
+jsts.geom.Polygon.prototype.apply = function(filter) {
+  filter.filter(this);
+  if (filter instanceof jsts.geom.GeometryComponentFilter) {
+    var shell = this.components[0];
+    shell.apply(filter);
+    var holes = this.components.slice(1);
+    for (var i = 0; i < holes.length; i++) {
+      holes[i].apply(filter);
+    }
+  }
+};
+
 OpenLayers.Geometry.Polygon = OpenLayers.Class(OpenLayers.Geometry.Polygon,
     jsts.geom.Polygon);
 jsts.geom.Polygon = OpenLayers.Geometry.Polygon;

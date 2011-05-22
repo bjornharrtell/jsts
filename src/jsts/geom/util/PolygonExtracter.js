@@ -22,6 +22,8 @@ jsts.geom.util.PolygonExtracter = function(comps) {
   this.comps = comps;
 };
 
+jsts.geom.util.PolygonExtracter.prototype = new jsts.geom.GeometryFilter();
+
 
 /**
  * @private
