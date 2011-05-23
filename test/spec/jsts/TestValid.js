@@ -1,4 +1,4 @@
-describe('TestSimple', function() {
+describe('TestValid', function() {
   var doc = null;
   var xmlLoaded = false;
   var isReady = function() {
@@ -6,14 +6,14 @@ describe('TestSimple', function() {
   };
 
   $.ajax({
-    url: '../testxml/general/TestSimple.xml',
+    url: '../testxml/general/TestValid.xml',
     success: function(response) {
       doc = response;
       xmlLoaded = true;
     }
   });
   
-  it('passes all tests in TestSimple.xml', function() {
+  it('passes all tests in TestValid.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = $('case', doc);
@@ -31,7 +31,7 @@ describe('TestSimple', function() {
         var geometry = reader.read(wkt);
         if (geometry === undefined) continue;
         
-        var result = geometry.isSimple();
+        var result = geometry.isValid();
         
         count++;
         
