@@ -48,6 +48,19 @@ jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
   return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance);
 };
 
+
+/**
+ * Gets the boundary of this geometry. Zero-dimensional geometries have no
+ * boundary by definition, so an empty GeometryCollection is returned.
+ *
+ * @return {GeometryCollection} an empty GeometryCollection.
+ * @see Geometry#getBoundary
+ */
+jsts.geom.Point.prototype.getBoundary = function() {
+  return new jsts.geom.GeometryCollection(null);
+};
+
+
 jsts.geom.Point.prototype.apply = function(filter) {
   filter.filter(this);
 };

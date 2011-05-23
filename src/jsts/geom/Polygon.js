@@ -58,6 +58,30 @@ jsts.geom.Polygon.prototype.getNumInteriorRing = function() {
 
 
 /**
+ * Computes the boundary of this geometry
+ *
+ * @return {Geometry} a lineal geometry (which may be empty).
+ * @see Geometry#getBoundary
+ */
+jsts.geom.Polygon.prototype.getBoundary = function() {
+  if (this.isEmpty()) {
+    return this.getFactory().createMultiLineString(null);
+  }
+  var rings = [];
+  var shell = this.components[0];
+  rings[0] = shell;
+  var holes = this.components.slice(1);
+  for (var i = 0; i < holes.length; i++) {
+    rings[i + 1] = holes[i];
+  }
+  // create LineString or MultiLineString as appropriate
+  if (rings.length <= 1)
+    return this.getFactory().createLinearRing(rings[0].getCoordinateSequence());
+  return this.getFactory().createMultiLineString(rings);
+};
+
+
+/**
  * @param {Geometry} other
  * @param {double} tolerance
  * @return {boolean}
