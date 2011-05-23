@@ -22,6 +22,19 @@ jsts.geom.MultiPoint = OpenLayers.Class(jsts.geom.GeometryCollection);
 
 
 /**
+ * Gets the boundary of this geometry.
+ * Zero-dimensional geometries have no boundary by definition,
+ * so an empty GeometryCollection is returned.
+ *
+ * @return {Geometry} an empty GeometryCollection.
+ * @see Geometry#getBoundary
+ */
+jsts.geom.MultiPoint.prototype.getBoundary = function() {
+  return this.getFactory().createGeometryCollection(null);
+};
+
+
+/**
  * @param {Geometry} other
  * @param {double} tolerance
  * @return {boolean}

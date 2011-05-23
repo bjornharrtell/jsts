@@ -94,3 +94,7 @@ jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
 
   return new jsts.geom.Polygon(rings);
 };
+
+jsts.geom.GeometryFactory.prototype.createGeometryCollection = function() {
+  return new jsts.geom.GeometryCollection();
+};

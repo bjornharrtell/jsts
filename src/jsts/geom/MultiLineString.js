@@ -20,6 +20,10 @@ jsts.geom.MultiLineString = function() {
 };
 jsts.geom.MultiLineString = OpenLayers.Class(jsts.geom.GeometryCollection);
 
+jsts.geom.MultiLineString.prototype.getBoundary = function() {
+  return (new jsts.operation.BoundaryOp(this)).getBoundary();
+};
+
 
 /**
  * @param {Geometry} other

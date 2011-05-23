@@ -241,18 +241,6 @@ jsts.geom.Coordinate.prototype.getGeometryType = function() {
 
 
 /**
- * Gets the boundary of this geometry. Zero-dimensional geometries have no
- * boundary by definition, so an empty GeometryCollection is returned.
- *
- * @return {GeometryCollection} an empty GeometryCollection.
- * @see Geometry#getBoundary
- */
-jsts.geom.Coordinate.prototype.getBoundary = function() {
-  return new jsts.geom.GeometryCollection(null);
-};
-
-
-/**
  * @return {Envelope} Envelope of this point.
  */
 jsts.geom.Coordinate.prototype.computeEnvelopeInternal = function() {

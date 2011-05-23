@@ -32,6 +32,8 @@ describe('TestBoundary', function() {
         if (geometry === undefined) continue;
         
         var result = geometry.getBoundary();
+        var writer = new jsts.io.WKTWriter();
+        result = writer.write(result);
         
         count++;
         

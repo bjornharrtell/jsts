@@ -106,20 +106,27 @@ jsts.geom.LineString.prototype.getGeometryType = function() {
 };
 
 
+/**
+ * Gets the boundary of this geometry.
+ * The boundary of a lineal geometry is always a zero-dimensional geometry (which may be empty).
+ *
+ * @return {Geometry} the boundary geometry.
+ * @see Geometry#getBoundary
+ */
+jsts.geom.LineString.prototype.getBoundary = function() {
+  return (new jsts.operation.BoundaryOp(this)).getBoundary();
+};
+
+
 jsts.geom.LineString.prototype.computeEnvelopeInternal = function() {
   if (this.isEmpty()) {
     return new jsts.geom.Envelope();
   }
 
   var env = new jsts.geom.Envelope();
-  for (i = 0; i < this.components.length; i++) {
+  for (var i = 0; i < this.components.length; i++) {
     var point = this.components[i];
     env.expandToInclude(point);
-    /*if (!env) {
-      env = new jsts.geom.Envelope(point);
-    } else {
-      env.
-    }*/
   }
 
   return env;
