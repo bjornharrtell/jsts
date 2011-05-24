@@ -53,7 +53,7 @@ jsts.operation.union.UnaryUnionOp = function(geoms, gemFact) {
 /**
  *
  * @param {Geometry|Geometry[]} geoms a Geometry or Geometry collection.
- * @param {Geometryfactory} gemFact a GeometryFactory.
+ * @param {Geometryfactory} [gemFact] a GeometryFactory.
  * @return {Geometry}
  */
 jsts.operation.union.UnaryUnionOp.union = function(geoms, gemFact) {
@@ -90,7 +90,19 @@ jsts.operation.union.UnaryUnionOp.prototype.geomFact = null;
  * @param {Geometry|Geometry[]} geoms a Geometry or Geometry collection.
  */
 jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
-
+  if (geoms instanceof Array) {
+    for (var i = 0, l = geoms.length; i < l; i++) {
+      this.extract(geoms[i]);
+    }
+  }
+  else {
+    if (this.geomFact === null) {
+      geomFact = geoms.getFactory();
+    }
+    jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.Polygon, this.polygons);
+    jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.LineString, this.lines);
+    jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.Point, this.points);
+  }
 };
 
 
@@ -102,7 +114,56 @@ jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
  * @return {GeomatryCollection} an empty GEOMETRYCOLLECTION if no geometries were provided in the input.
  */
 jsts.operation.union.UnaryUnionOp.prototype.union = function() {
+  if (this.geomFact === null) {
+    return null;
+  }
 
+  /**
+   * For points and lines, only a single union operation is
+   * required, since the OGC model allowings self-intersecting
+   * MultiPoint and MultiLineStrings.
+   * This is not the case for polygons, so Cascaded Union is required.
+   */
+
+  var unionPoints = null;
+  if (this.points.length > 0) {
+    var ptGeom = this.geomFact.buildGeometry(this.points);
+    unionPoints = this.unionNoOpt(ptGeom);
+  }
+
+  var unionLines = null;
+  if (this.lines.length > 0) {
+    var lineGeom = this.geomFact.buildGeometry(this.lines);
+    unionLines = this.unionNoOpt(lineGeom);
+  }
+
+  var unionPolygons = null;
+  if (this.polygons.length > 0) {
+    unionPolygons = jsts.operation.union.CascadedPolygonUnion.union(this.polygons);
+  }
+
+  /**
+   * Performing two unions is somewhat inefficient,
+   * but is mitigated by unioning lines and points first
+   */
+
+  var unionLA = this.unionWithNull(unionLines, unionPolygons);
+  var union = null;
+  if (unionPoints === null) {
+    union = unionLA;
+  }
+  else if (unionLA === null) {
+    union = unionPoints;
+  }
+  else {
+    union = jsts.operation.union.PointGeometryUnion(unionPoints, unionLA);
+  }
+
+  if (union === null) {
+    return this.geomFact.createGeometryCollection(null);
+  }
+
+  return union;
 };
 
 
@@ -117,7 +178,16 @@ jsts.operation.union.UnaryUnionOp.prototype.union = function() {
  * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.unionWithNull = function(g0, g1) {
-
+  if (g0 === null && g1 === null) {
+    return null;
+  }
+  if (g1 == null) {
+    return g0;
+  }
+  if (g0 === null) {
+    return g1;
+  }
+  return g0.union(g1);
 };
 
 
