@@ -241,17 +241,6 @@ jsts.geom.Coordinate.prototype.getGeometryType = function() {
 
 
 /**
- * @return {Envelope} Envelope of this point.
- */
-jsts.geom.Coordinate.prototype.computeEnvelopeInternal = function() {
-  if (this.isEmpty()) {
-    return new jsts.geom.Envelope();
-  }
-  return new jsts.geom.Envelope(this);
-};
-
-
-/**
  * @param {Point}
  *          other point to compare.
  * @param {double}
