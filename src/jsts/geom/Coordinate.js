@@ -193,22 +193,6 @@ jsts.geom.Coordinate.prototype.isValid = function() {
 
 
 /**
- * @return {int} Always 0.
- */
-jsts.geom.Coordinate.prototype.getDimension = function() {
-  return 0;
-};
-
-
-/**
- * @return {int} Always Dimension.FALSE.
- */
-jsts.geom.Coordinate.prototype.getBoundaryDimension = function() {
-  return Dimension.FALSE;
-};
-
-
-/**
  * @return {double} x-axis value of this Coordinate.
  */
 jsts.geom.Coordinate.prototype.getX = function() {

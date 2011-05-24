@@ -137,6 +137,12 @@ jsts.geomgraph.GeometryGraph.prototype.getGeometry = function() {
   return this.parentGeom;
 };
 
+jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodes = function()    {
+  if (this.boundaryNodes == null)
+    this.boundaryNodes = this.nodes.getBoundaryNodes(this.argIndex);
+  return this.boundaryNodes;
+};
+
 
 /**
  * @return {EdgeSetIntersector}
@@ -233,9 +239,8 @@ jsts.geomgraph.GeometryGraph.prototype.computeEdgeIntersections = function(g,
   var si = new jsts.geomgraph.index.SegmentIntersector(li, includeProper, true);
   si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes());
 
-  jsts.geomgraph.index.EdgeSetIntersector;
-  esi = this.createEdgeSetIntersector();
-  esi.computeIntersections(edges, g.edges, si);
+  var esi = this.createEdgeSetIntersector();
+  esi.computeIntersections(this.edges, g.edges, si);
 
   return si;
 };
@@ -279,9 +284,9 @@ jsts.geomgraph.GeometryGraph.prototype.insertPoint = function(argIndex, coord,
   var n = this.nodes.addNode(coord);
   var lbl = n.getLabel();
   if (lbl == null) {
-    n.label = new jsts.geomgraph.Label(this.argIndex, this.onLocation);
+    n.label = new jsts.geomgraph.Label(argIndex, onLocation);
   } else
-    lbl.setLocation(this.argIndex, this.onLocation);
+    lbl.setLocation(argIndex, onLocation);
 };
 
 

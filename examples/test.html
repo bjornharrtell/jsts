@@ -18,6 +18,7 @@
   <script type="text/javascript" src="../src/jsts/geom/GeometryCollection.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/GeometryFilter.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/GeometryComponentFilter.js"></script>
+  <script type="text/javascript" src="../src/jsts/geom/IntersectionMatrix.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Coordinate.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Envelope.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/GeometryFactory.js"></script>
@@ -29,6 +30,7 @@
   <script type="text/javascript" src="../src/jsts/geom/MultiPoint.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/Polygon.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/MultiPolygon.js"></script>
+  <script type="text/javascript" src="../src/jsts/geom/PrecisionModel.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/util.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/util/LinearComponentExtracter.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/util/PointExtracter.js"></script>
@@ -51,8 +53,10 @@
   <script type="text/javascript" src="../src/jsts/geomgraph.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/GraphComponent.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Node.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/NodeFactory.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/NodeMap.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Edge.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/EdgeEnd.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/EdgeEndStar.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/EdgeIntersection.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/EdgeIntersectionList.js"></script>
@@ -60,6 +64,7 @@
   <script type="text/javascript" src="../src/jsts/geomgraph/GeometryGraph.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Label.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Position.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/Quadrant.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/TopologyLocation.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index/EdgeSetIntersector.js"></script>
@@ -80,6 +85,7 @@
   <script type="text/javascript" src="../src/jsts/io/WKTReader.js"></script>
   <script type="text/javascript" src="../src/jsts/io/WKTWriter.js"></script>
   <script type="text/javascript" src="../src/jsts/operation.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/GeometryGraphOperation.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/IsSimpleOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/buffer/BufferBuilder.js"></script>
@@ -89,6 +95,13 @@
   <script type="text/javascript" src="../src/jsts/operation/distance/ConnectedElementLocationFilter.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/distance/DistanceOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/distance/GeometryLocation.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate/RelateComputer.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate/RelateOp.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate/RelateNode.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate/RelateNodeFactory.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate/RelateNodeGraph.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/relate/RelateOp.js"></script>
 
 <script type="text/javascript">
   var map;
@@ -128,13 +141,10 @@
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
     var reader = new jsts.io.WKTReader();
-    var a = reader.read('POLYGON ((60 260, 260 180, 100 60, 60 160, 60 260))');
-    var b = reader.read('POLYGON ((220 280, 120 160, 300 60, 360 220, 220 280))');
-    var c = new jsts.geom.Coordinate(220, 280); 
+    var a = reader.read('POINT(20 20)');
+    var b = reader.read('POINT(20 20)');
     
-    vectorLayer.addFeatures([new OpenLayers.Feature.Vector(a),new OpenLayers.Feature.Vector(b),new OpenLayers.Feature.Vector(c)]);
-    
-    var result = a.distance(b);
+    var result = a.relate(b, '0FFFFFFF2');
     
     console.log(result);
   }

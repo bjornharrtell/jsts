@@ -81,6 +81,22 @@ jsts.geom.Point.prototype.clone = function() {
 
 
 /**
+ * @return {int} Always 0.
+ */
+jsts.geom.Point.prototype.getDimension = function() {
+  return 0;
+};
+
+
+/**
+ * @return {int} Always Dimension.FALSE.
+ */
+jsts.geom.Point.prototype.getBoundaryDimension = function() {
+  return jsts.geom.Dimension.FALSE;
+};
+
+
+/**
  * @return {String} String representation of Point type.
  */
 jsts.geom.Point.prototype.getGeometryType = function() {

@@ -239,7 +239,7 @@ jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM = fun
  */
 jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels = function(
     argIndex) {
-  var edges = arg[argIndex].edges;
+  var edges = this.arg[argIndex].edges;
   for (var i = 0; i < edges.length; i++) {
     var graphNode = edges[i];
     var newNode = this.nodes.addNode(graphNode.getCoordinate());
@@ -259,7 +259,7 @@ jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels = function(
  */
 jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes = function(
     argIndex) {
-  var edges = arg[argIndex].edges;
+  var edges = this.arg[argIndex].edges;
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
     var eLoc = e.getLabel().getLocation(argIndex);
