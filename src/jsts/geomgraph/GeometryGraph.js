@@ -133,6 +133,11 @@ jsts.geomgraph.GeometryGraph.prototype.areaPtLocator = null;
 jsts.geomgraph.GeometryGraph.prototype.ptLocator = null;
 
 
+jsts.geomgraph.GeometryGraph.prototype.getGeometry = function() {
+  return this.parentGeom;
+};
+
+
 /**
  * @return {EdgeSetIntersector}
  * @private
@@ -223,6 +228,19 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
 };
 
 
+jsts.geomgraph.GeometryGraph.prototype.computeEdgeIntersections = function(g,
+    li, includeProper) {
+  var si = new jsts.geomgraph.index.SegmentIntersector(li, includeProper, true);
+  si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes());
+
+  jsts.geomgraph.index.EdgeSetIntersector;
+  esi = this.createEdgeSetIntersector();
+  esi.computeIntersections(edges, g.edges, si);
+
+  return si;
+};
+
+
 /**
  * Compute self-nodes, taking advantage of the Geometry type to minimize the
  * number of intersection tests. (E.g. rings are not tested for
@@ -242,8 +260,8 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
   var esi = this.createEdgeSetIntersector();
   // optimized test for Polygons and Rings
   if (!computeRingSelfNodes &&
-      (parentGeom instanceof jsts.geom.LinearRing ||
-          parentGeom instanceof jsts.geom.Polygon || parentGeom instanceof jsts.geom.MultiPolygon)) {
+      (this.parentGeom instanceof jsts.geom.LinearRing ||
+          this.parentGeom instanceof jsts.geom.Polygon || this.parentGeom instanceof jsts.geom.MultiPolygon)) {
     esi.computeIntersections(this.edges, si, false);
   } else {
     esi.computeIntersections(this.edges, si, true);

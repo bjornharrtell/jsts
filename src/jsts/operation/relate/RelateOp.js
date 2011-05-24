@@ -71,5 +71,5 @@ jsts.operation.relate.RelateOp.prototype._relate = null;
  *         geometries.
  */
 jsts.operation.relate.RelateOp.prototype.getIntersectionMatrix = function() {
-  return _relate.computeIM();
+  return this._relate.computeIM();
 };

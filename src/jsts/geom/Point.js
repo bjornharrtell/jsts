@@ -61,6 +61,16 @@ jsts.geom.Point.prototype.getBoundary = function() {
 };
 
 
+/**
+ * @return {Envelope} Envelope of this point.
+ */
+jsts.geom.Point.prototype.computeEnvelopeInternal = function() {
+  if (this.isEmpty()) {
+    return new jsts.geom.Envelope();
+  }
+  return new jsts.geom.Envelope(this);
+};
+
 jsts.geom.Point.prototype.apply = function(filter) {
   filter.filter(this);
 };

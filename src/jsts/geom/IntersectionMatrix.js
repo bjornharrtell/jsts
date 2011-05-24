@@ -54,7 +54,6 @@ jsts.geom.IntersectionMatrix = function(elements) {
     this.matrix[jsts.geom.Location.EXTERIOR][jsts.geom.Location.BOUNDARY] = other.matrix[jsts.geom.Location.EXTERIOR][jsts.geom.Location.BOUNDARY];
     this.matrix[jsts.geom.Location.EXTERIOR][jsts.geom.Location.EXTERIOR] = other.matrix[jsts.geom.Location.EXTERIOR][jsts.geom.Location.EXTERIOR];
   }
-  throw new jsts.error.IllegalArgumentError();
 };
 
 
