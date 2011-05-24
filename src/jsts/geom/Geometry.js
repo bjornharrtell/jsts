@@ -860,7 +860,11 @@ jsts.geom.Geometry.prototype.coveredBy = function(g) {
  * @see IntersectionMatrix
  */
 jsts.geom.Geometry.prototype.relate = function(g, intersectionPattern) {
-  return this.relate(g).matches(intersectionPattern);
+  if (intersectionPattern === undefined) {
+    this.relate2.call(this, 2);
+  }
+
+  return this.relate2(g).matches(intersectionPattern);
 };
 
 
@@ -875,10 +879,10 @@ jsts.geom.Geometry.prototype.relate = function(g, intersectionPattern) {
  *         intersections of the interiors, boundaries and exteriors of the two
  *         <code>Geometry</code>s.
  */
-jsts.geom.Geometry.prototype.relate = function(g) {
+jsts.geom.Geometry.prototype.relate2 = function(g) {
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(g);
-  return RelateOp.relate(this, g);
+  return jsts.operation.relate.RelateOp.relate(this, g);
 };
 
 

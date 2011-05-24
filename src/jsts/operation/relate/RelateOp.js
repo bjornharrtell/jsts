@@ -29,9 +29,8 @@
  * @constructor
  */
 jsts.operation.relate.RelateOp = function() {
-  jsts.operation.GeometryGraphOperation.prototype.constructor.call(this, g0,
-      g1, boundaryNodeRule);
-  this.relate = new jsts.operation.relate.RelateComputer(this.arg);
+  jsts.operation.GeometryGraphOperation.prototype.constructor.apply(this, arguments);
+  this._relate = new jsts.operation.relate.RelateComputer(this.arg);
 };
 
 jsts.operation.relate.RelateOp.prototype = new jsts.operation.GeometryGraphOperation();
@@ -52,8 +51,7 @@ jsts.operation.relate.RelateOp.prototype = new jsts.operation.GeometryGraphOpera
  */
 jsts.operation.relate.RelateOp.relate = function(a, b, boundaryNodeRule) {
   var relOp = new jsts.operation.relate.RelateOp(a, b, boundaryNodeRule);
-  jsts.geom.IntersectionMatrix;
-  im = relOp.getIntersectionMatrix();
+  var im = relOp.getIntersectionMatrix();
   return im;
 };
 
@@ -62,7 +60,7 @@ jsts.operation.relate.RelateOp.relate = function(a, b, boundaryNodeRule) {
  * @type {RelateComputer}
  * @private
  */
-jsts.operation.relate.RelateOp.prototype.relate = null;
+jsts.operation.relate.RelateOp.prototype._relate = null;
 
 
 /**
@@ -73,5 +71,5 @@ jsts.operation.relate.RelateOp.prototype.relate = null;
  *         geometries.
  */
 jsts.operation.relate.RelateOp.prototype.getIntersectionMatrix = function() {
-  return relate.computeIM();
+  return _relate.computeIM();
 };
