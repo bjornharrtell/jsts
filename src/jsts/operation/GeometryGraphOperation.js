@@ -20,6 +20,10 @@
 jsts.operation.GeometryGraphOperation = function(g0, g1, boundaryNodeRule) {
   this.li = new jsts.algorithm.RobustLineIntersector();
 
+  if (g0 === undefined) {
+    return;
+  }
+
   if (g1 === undefined) {
     this.setComputationPrecision(g0.getPrecisionModel());
 
@@ -79,8 +83,7 @@ jsts.operation.GeometryGraphOperation.prototype.getArgGeometry = function(i) {
  *          pm
  * @protected
  */
-jsts.operation.GeometryGraphOperation.prototype.setComputationPrecision = function(
-    pm) {
+jsts.operation.GeometryGraphOperation.prototype.setComputationPrecision = function(pm) {
   this.resultPrecisionModel = pm;
   this.li.setPrecisionModel(resultPrecisionModel);
 };
