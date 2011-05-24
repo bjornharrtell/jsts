@@ -35,7 +35,7 @@
  * @constructor
  */
 jsts.geom.PrecisionModel = function() {
-  jsts.geom.PrecisionModel.prototype.init.apply(this, arguments);
+
 };
 
 
@@ -64,4 +64,45 @@ jsts.geom.PrecisionModel.prototype.isFloating = function() {
  */
 jsts.geom.PrecisionModel.prototype.getType = function() {
   return jsts.geom.PrecisionModel.FLOATING;
+};
+
+jsts.geom.PrecisionModel.prototype.equals = function(other) {
+  return true;
+
+  //TODO: needs to be ported for fixed precision
+
+  /*if (!(other instanceof PrecisionModel)) {
+    return false;
+  }
+  var otherPrecisionModel = other;
+  return this.modelType == otherPrecisionModel.modelType &&
+      this.scale == otherPrecisionModel.scale;*/
+};
+
+
+/**
+ * Compares this {@link PrecisionModel} object with the specified object for
+ * order. A PrecisionModel is greater than another if it provides greater
+ * precision. The comparison is based on the value returned by the
+ * {@link #getMaximumSignificantDigits} method. This comparison is not strictly
+ * accurate when comparing floating precision models to fixed models; however,
+ * it is correct when both models are either floating or fixed.
+ *
+ * @param o
+ *          the <code>PrecisionModel</code> with which this
+ *          <code>PrecisionModel</code> is being compared.
+ * @return a negative integer, zero, or a positive integer as this
+ *         <code>PrecisionModel</code> is less than, equal to, or greater than
+ *         the specified <code>PrecisionModel.</code>
+ */
+jsts.geom.PrecisionModel.prototype.compareTo = function(o) {
+  var other = o;
+
+  // TODO: needs to be ported for fixed precision
+
+  // var sigDigits = this.getMaximumSignificantDigits();
+  // var otherSigDigits = other.getMaximumSignificantDigits();
+  // return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));
+
+  return 0;
 };

@@ -85,5 +85,5 @@ jsts.operation.GeometryGraphOperation.prototype.getArgGeometry = function(i) {
  */
 jsts.operation.GeometryGraphOperation.prototype.setComputationPrecision = function(pm) {
   this.resultPrecisionModel = pm;
-  this.li.setPrecisionModel(resultPrecisionModel);
+  this.li.setPrecisionModel(this.resultPrecisionModel);
 };

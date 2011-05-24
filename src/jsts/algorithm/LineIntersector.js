@@ -7,13 +7,12 @@
 
 
 /**
- * A LineIntersector is an algorithm that can both test whether
- * two line segments intersect and compute the intersection point
- * if they do.
- * The intersection point may be computed in a precise or non-precise manner.
- * Computing it precisely involves rounding it to an integer.  (This assumes
- * that the input coordinates have been made precise by scaling them to
- * an integer grid.)
+ * A LineIntersector is an algorithm that can both test whether two line
+ * segments intersect and compute the intersection point if they do. The
+ * intersection point may be computed in a precise or non-precise manner.
+ * Computing it precisely involves rounding it to an integer. (This assumes that
+ * the input coordinates have been made precise by scaling them to an integer
+ * grid.)
  *
  * @constructor
  */
@@ -55,6 +54,34 @@ jsts.algorithm.LineIntersector.COLLINEAR_INTERSECTION = 2;
 
 
 /**
+ * Force computed intersection to be rounded to a given precision model. No
+ * getter is provided, because the precision model is not required to be
+ * specified.
+ *
+ * @param precisionModel
+ */
+jsts.algorithm.LineIntersector.prototype.setPrecisionModel = function(
+    precisionModel) {
+  this.precisionModel = precisionModel;
+};
+
+
+/**
+ * Gets an endpoint of an input segment.
+ *
+ * @param segmentIndex
+ *          the index of the input segment (0 or 1).
+ * @param ptIndex
+ *          the index of the endpoint (0 or 1).
+ * @return the specified endpoint.
+ */
+jsts.algorithm.LineIntersector.prototype.getEndpoint = function(segmentIndex,
+    ptIndex) {
+  return this.inputLines[segmentIndex][ptIndex];
+};
+
+
+/**
  * Computes the "edge distance" of an intersection point p along a segment. The
  * edge distance is a metric of the point along the edge. The metric used is a
  * robust and easy to compute metric function. It is <b>not</b> equivalent to
@@ -88,8 +115,7 @@ jsts.algorithm.LineIntersector.computeEdgeDistance = function(p, p0, p1) {
   } else if (p.equals(p1)) {
     if (dx > dy) {
       dist = dx;
-    }
-    else {
+    } else {
       dist = dy;
     }
   } else {
@@ -97,8 +123,7 @@ jsts.algorithm.LineIntersector.computeEdgeDistance = function(p, p0, p1) {
     var pdy = Math.abs(p.y - p0.y);
     if (dx > dy) {
       dist = pdx;
-    }
-    else {
+    } else {
       dist = pdy;
     }
     // <FIX>
@@ -365,7 +390,8 @@ jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function() {
  * Tests whether either intersection point is an interior point of the specified
  * input segment.
  *
- * @param {[]} TODO: doc
+ * @param {[]}
+ *          TODO: doc
  * @return {boolean} <code>true</code> if either intersection point is in the
  *         interior of the input segment.
  */
@@ -469,7 +495,8 @@ jsts.algorithm.LineIntersector.prototype.computeIntLineIndex = function(
  */
 jsts.algorithm.LineIntersector.prototype.getEdgeDistance = function(
     segmentIndex, intIndex) {
-  var dist = jsts.algorithm.LineIntersector.computeEdgeDistance(this.intPt[intIndex],
-      this.inputLines[segmentIndex][0], this.inputLines[segmentIndex][1]);
+  var dist = jsts.algorithm.LineIntersector.computeEdgeDistance(
+      this.intPt[intIndex], this.inputLines[segmentIndex][0],
+      this.inputLines[segmentIndex][1]);
   return dist;
 };
