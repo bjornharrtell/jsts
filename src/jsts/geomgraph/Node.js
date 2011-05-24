@@ -10,15 +10,26 @@
  * @constructor
  * @augments jsts.geomgraph.GraphComponent
  */
-jsts.geomgraph.Node = function() {
-
+jsts.geomgraph.Node = function(coord, edges) {
+  this.coord = coord;
+  this.edges = edges;
+  this.label = new jsts.geomgraph.Label(0, jsts.geom.Location.NONE);
 };
 
 jsts.geomgraph.Node.prototype = new jsts.geomgraph.GraphComponent();
 
-jsts.geomgraph.Node.prototype.getLabel = function() {
-  // TODO: port
-  return new jsts.geomgraph.Label();
+
+/**
+ * only non-null if this node is precise
+ */
+jsts.geomgraph.Node.prototype.coord = null;
+jsts.geomgraph.Node.prototype.edges = null;
+
+jsts.geomgraph.Node.prototype.getCoordinate = function() {
+  return this.coord;
+};
+jsts.geomgraph.Node.prototype.getEdges = function() {
+  return this.edges;
 };
 
 // TODO: port rest
