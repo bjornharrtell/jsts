@@ -179,6 +179,15 @@ jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
 
 
 /**
+ * Add a Point to the graph.
+ */
+jsts.geomgraph.GeometryGraph.prototype.addPoint = function(p) {
+  var coord = p.getCoordinate();
+  this.insertPoint(this.argIndex, coord, jsts.geom.Location.INTERIOR);
+};
+
+
+/**
  * @param {LineString}
  *          line
  * @private
@@ -241,6 +250,20 @@ jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
   }
   this.addSelfIntersectionNodes(this.argIndex);
   return si;
+};
+
+
+/**
+ * @private
+ */
+jsts.geomgraph.GeometryGraph.prototype.insertPoint = function(argIndex, coord,
+    onLocation) {
+  var n = this.nodes.addNode(coord);
+  var lbl = n.getLabel();
+  if (lbl == null) {
+    n.label = new jsts.geomgraph.Label(this.argIndex, this.onLocation);
+  } else
+    lbl.setLocation(this.argIndex, this.onLocation);
 };
 
 
