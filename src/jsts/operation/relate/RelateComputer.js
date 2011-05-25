@@ -131,9 +131,9 @@ jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
 
   // build EdgeEnds for all intersections
   var eeBuilder = new jsts.operation.relate.EdgeEndBuilder();
-  var ee0 = eeBuilder.computeEdgeEnds(this.arg[0].getEdgeIterator());
+  var ee0 = eeBuilder.computeEdgeEnds(this.arg[0].getEdges());
   this.insertEdgeEnds(ee0);
-  var ee1 = eeBuilder.computeEdgeEnds(this.arg[1].getEdgeIterator());
+  var ee1 = eeBuilder.computeEdgeEnds(this.arg[1].getEdges());
   this.insertEdgeEnds(ee1);
 
   // Debug.println("==== NodeList ===");
@@ -156,7 +156,7 @@ jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
   this.labelIsolatedEdges(1, 0);
 
   // update the IM from all components
-  updateIM(im);
+  this.updateIM(im);
   return im;
 };
 
@@ -347,7 +347,6 @@ jsts.operation.relate.RelateComputer.prototype.labelNodeEdges = function() {
  * @private
  */
 jsts.operation.relate.RelateComputer.prototype.updateIM = function(im) {
-  // Debug.println(im);
   for (var ei = 0; ei < this.isolatedEdges.length; ei++) {
     var e = this.isolatedEdges[ei];
     e.updateIM(im);
@@ -371,7 +370,7 @@ jsts.operation.relate.RelateComputer.prototype.updateIM = function(im) {
  */
 jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdges = function(
     thisIndex, targetIndex) {
-  var edges = this.arg[argIndex].edges;
+  var edges = this.arg[thisIndex].edges;
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
     if (e.isIsolated()) {

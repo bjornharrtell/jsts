@@ -38,6 +38,17 @@ jsts.error.IllegalArgumentError.prototype = new Error();
 /**
  * @constructor
  */
+jsts.error.TopologyError = function(message) {
+  this.name = 'TopologyError';
+  this.message = (message || '');
+};
+jsts.error.TopologyError.prototype = new Error();
+
+
+
+/**
+ * @constructor
+ */
 jsts.error.AbstractMethodInvocationError = function() {
   this.name = 'AbstractMethodInvocationError';
   this.message = 'Abstract method called, should be implemented in subclass.';
