@@ -4,7 +4,7 @@
  * See /license.txt for the full text of the license.
  */
 
-// TODO: Below code will rpobably not work right, use of Hashtable needs hash for entities to work correct
+// TODO: Below code will probably not work right, use of Hashtable needs hash for entities to work correct
 
 
 
@@ -13,11 +13,13 @@
  *
  * @constructor
  */
-jsts.geomgraph.NodeMap = function() {
+jsts.geomgraph.NodeMap = function(nodeFactory) {
   this.nodeMap = new jsts.Hashtable();
+  this.nodeFact = nodeFactory;
 };
 
 jsts.geomgraph.NodeMap.prototype.nodeMap = null;
+jsts.geomgraph.NodeMap.prototype.nodeFact = null;
 
 
 /**
@@ -34,7 +36,7 @@ jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
     coord = arg;
     node = this.nodeMap.get(coord);
     if (node == null) {
-      node = new jsts.geomgraph.Node(coord, null);
+      node = this.nodeFact.createNode(coord);
       this.nodeMap.put(coord, node);
     }
     return node;
