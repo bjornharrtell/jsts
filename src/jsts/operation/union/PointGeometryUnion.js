@@ -15,7 +15,7 @@
  * @param {Geometry} otherGeom
  */
 jsts.operation.union.PointGeometryUnion = function(pointGeom, otherGeom) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -25,7 +25,7 @@ jsts.operation.union.PointGeometryUnion = function(pointGeom, otherGeom) {
  * @return {Geometry}
  */
 jsts.operation.union.PointGeometryUnion.union = function(pointGeom, otherGeom) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -55,5 +55,5 @@ jsts.operation.union.PointGeometryUnion.prototype.geomFact;
  * @return {Geometry}
  */
 jsts.operation.union.PointGeometryUnion.prototype.union = function() {
-
+  throw new jsts.error.NotImplementedError();
 };

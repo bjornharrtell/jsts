@@ -18,7 +18,7 @@
  * @param {Geometry} g1
  */
 jsts.operation.union.UnionInteracting = function(g0, g1) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -28,7 +28,7 @@ jsts.operation.union.UnionInteracting = function(g0, g1) {
  * @return {Geometry}
  */
 jsts.operation.union.UnionInteracting.union = function(g0, g1) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -66,7 +66,7 @@ jsts.operation.union.UnionInteracting.prototype.interacts1;
  * @return {Geometry}
  */
 jsts.operation.union.UnionInteracting.prototype.union = function() {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -77,7 +77,7 @@ jsts.operation.union.UnionInteracting.prototype.union = function() {
  * @private
  */
 jsts.operation.union.UnionInteracting.prototype.bufferUnion = function(g0, g1) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -88,7 +88,7 @@ jsts.operation.union.UnionInteracting.prototype.bufferUnion = function(g0, g1) {
  * @private
  */
 jsts.operation.union.UnionInteracting.prototype.computeInteracting = function(elem0) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -100,6 +100,6 @@ jsts.operation.union.UnionInteracting.prototype.computeInteracting = function(el
  * @private
  */
 jsts.operation.union.UnionInteracting.prototype.extractElements = function(geom, interacts, isInteracting) {
-
+  throw new jsts.error.NotImplementedError();
 };
 

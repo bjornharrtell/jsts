@@ -31,7 +31,7 @@
  * @param {Geometry[]} geoms a collection of {@link Polygonal} {@link Geometry}s.
  */
 jsts.operation.union.CascadedPolygonUnion = function(polys) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -43,7 +43,7 @@ jsts.operation.union.CascadedPolygonUnion = function(polys) {
  * @return {Geometry}
  */
 jsts.operation.union.CascadedPolygonUnion.union = function(polys) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -78,7 +78,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.STRTREE_NODE_CAPACITY = 4;
  * @return {null} null if no input geometries were provided.
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.union = function() {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -89,7 +89,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.union = function() {
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTree) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -109,7 +109,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTre
 jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms, start, end) {
   start = start || 0;
   end = end || geoms.length;
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -121,7 +121,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.getGeometry = function(list, index) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -133,7 +133,7 @@ jsts.operation.union.CascadedPolygonUnion.getGeometry = function(list, index) {
  * @return {Geometry[]} a list of Geometrys.
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.reduceToGeometries = function(geomTree) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -148,7 +148,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.reduceToGeometries = functio
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionSafe = function(g0, g1) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -159,7 +159,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionSafe = function(g0, g1)
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized = function(g0, g1) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -179,7 +179,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized = function(g0
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersection = function(g0, g1, common) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -192,7 +192,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersecti
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope = function(env, geom, disjointGeoms) {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
@@ -205,5 +205,5 @@ jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope = function
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionActual = function(g0, g1) {
-
+  throw new jsts.error.NotImplementedError();
 };
