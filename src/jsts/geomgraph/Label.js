@@ -32,7 +32,7 @@
  * @constructor
  */
 jsts.geomgraph.Label = function() {
-  var geomIndex, onLoc, leftLoc, rightLoc;
+  var geomIndex, onLoc, leftLoc, lbl, rightLoc;
   if (arguments.length === 4) {
     geomIndex = arguments[0];
     onLoc = arguments[1];
@@ -56,6 +56,7 @@ jsts.geomgraph.Label = function() {
     this.elt[1] = new jsts.geomgraph.TopologyLocation(jsts.geom.Location.NONE);
     this.elt[geomIndex].setLocation(onLoc);
   } else if (arguments[0] instanceof jsts.geomgraph.Label) {
+    lbl = arguments[0];
     this.elt[0] = new jsts.geomgraph.TopologyLocation(lbl.elt[0]);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(lbl.elt[1]);
   } else if (typeof arguments[0] === 'number') {

@@ -89,7 +89,7 @@ jsts.operation.relate.EdgeEndBuilder.prototype.createEdgeEndForPrev = function(
   label.flip();
   var e = new jsts.geomgraph.EdgeEnd(edge, eiCurr.coord, pPrev, label);
   // e.print(System.out); System.out.println();
-  l.add(e);
+  l.push(e);
 };
 
 
@@ -117,6 +117,5 @@ jsts.operation.relate.EdgeEndBuilder.prototype.createEdgeEndForNext = function(
     pNext = eiNext.coord;
 
   var e = new jsts.geomgraph.EdgeEnd(edge, eiCurr.coord, pNext, new jsts.geomgraph.Label(edge.getLabel()));
-  // Debug.println(e);
-  l.add(e);
+  l.push(e);
 };

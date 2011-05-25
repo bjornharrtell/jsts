@@ -23,6 +23,9 @@
 jsts.geomgraph.EdgeEnd = function(edge,  p0,  p1,  label) {
   this.edge = edge;
   if (p0 !== undefined) {
+    if (p1 === undefined) {
+      throw new jsts.error.IllegalArgumentError('expected two coords');
+    }
     this.init(p0, p1);
     this.label = label;
   }
@@ -87,28 +90,28 @@ jsts.geomgraph.EdgeEnd.prototype.init = function(p0,  p1)  {
   this.p1 = p1;
   this.dx = p1.x - p0.x;
   this.dy = p1.y - p0.y;
-  this.quadrant = jsts.geomgraph.Quadrant.quadrant(dx, dy);
+  this.quadrant = jsts.geomgraph.Quadrant.quadrant(this.dx, this.dy);
   //Assert.isTrue(! (dx == 0 && dy == 0), 'EdgeEnd with identical endpoints found');
 };
 
-jsts.geomgraph.EdgeEnd.prototype.getEdge = function() { return edge; };
+jsts.geomgraph.EdgeEnd.prototype.getEdge = function() { return this.edge; };
 
-jsts.geomgraph.EdgeEnd.prototype.getLabel = function() { return label; };
+jsts.geomgraph.EdgeEnd.prototype.getLabel = function() { return this.label; };
 
-jsts.geomgraph.EdgeEnd.prototype.getCoordinate = function() { return p0; };
+jsts.geomgraph.EdgeEnd.prototype.getCoordinate = function() { return this.p0; };
 
-jsts.geomgraph.EdgeEnd.prototype.getDirectedCoordinate = function() { return p1; };
+jsts.geomgraph.EdgeEnd.prototype.getDirectedCoordinate = function() { return this.p1; };
 
-jsts.geomgraph.EdgeEnd.prototype.getQuadrant = function() { return quadrant; };
+jsts.geomgraph.EdgeEnd.prototype.getQuadrant = function() { return this.quadrant; };
 
-jsts.geomgraph.EdgeEnd.prototype.getDx = function() { return dx; };
+jsts.geomgraph.EdgeEnd.prototype.getDx = function() { return this.dx; };
 
-jsts.geomgraph.EdgeEnd.prototype.getDy = function() { return dy; };
+jsts.geomgraph.EdgeEnd.prototype.getDy = function() { return this.dy; };
 
 
 jsts.geomgraph.EdgeEnd.prototype.setNode = function(node) { this.node = node; };
 
-jsts.geomgraph.EdgeEnd.prototype.getNode = function() { return node; };
+jsts.geomgraph.EdgeEnd.prototype.getNode = function() { return this.node; };
 
 jsts.geomgraph.EdgeEnd.prototype.compareTo = function(e)  {
   return this.compareDirection(e);
@@ -131,14 +134,14 @@ jsts.geomgraph.EdgeEnd.prototype.compareTo = function(e)  {
    * @return {int}
    */
 jsts.geomgraph.EdgeEnd.prototype.compareDirection = function(e)  {
-  if (dx === e.dx && dy === e.dy)
+  if (this.dx === e.dx && thisdy === e.dy)
     return 0;
   // if the rays are in different quadrants, determining the ordering is trivial
   if (this.quadrant > e.quadrant) return 1;
   if (this.quadrant < e.quadrant) return -1;
   // vectors are in the same quadrant - check relative orientation of direction vectors
   // this is > e if it is CCW of e
-  return jsts.algorithm.CGAlgorithms.computeOrientation(e.p0, e.p1, p1);
+  return jsts.algorithm.CGAlgorithms.computeOrientation(e.p0, e.p1, thisp1);
 };
 
 jsts.geomgraph.EdgeEnd.prototype.computeLabel = function(boundaryNodeRule)  {
