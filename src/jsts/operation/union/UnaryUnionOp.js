@@ -203,5 +203,5 @@ jsts.operation.union.UnaryUnionOp.prototype.unionWithNull = function(g0, g1) {
  * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.untionNoOpt = function(g0) {
-
+  throw new jsts.error.NotImplementedError();
 };
