@@ -91,7 +91,7 @@ jsts.geomgraph.EdgeEnd.prototype.init = function(p0,  p1)  {
   this.dx = p1.x - p0.x;
   this.dy = p1.y - p0.y;
   this.quadrant = jsts.geomgraph.Quadrant.quadrant(this.dx, this.dy);
-  //Assert.isTrue(! (dx == 0 && dy == 0), 'EdgeEnd with identical endpoints found');
+  // TODO: Assert.isTrue(! (dx == 0 && dy == 0), 'EdgeEnd with identical endpoints found');
 };
 
 jsts.geomgraph.EdgeEnd.prototype.getEdge = function() { return this.edge; };
@@ -134,14 +134,14 @@ jsts.geomgraph.EdgeEnd.prototype.compareTo = function(e)  {
    * @return {int}
    */
 jsts.geomgraph.EdgeEnd.prototype.compareDirection = function(e)  {
-  if (this.dx === e.dx && thisdy === e.dy)
+  if (this.dx === e.dx && this.dy === e.dy)
     return 0;
   // if the rays are in different quadrants, determining the ordering is trivial
   if (this.quadrant > e.quadrant) return 1;
   if (this.quadrant < e.quadrant) return -1;
   // vectors are in the same quadrant - check relative orientation of direction vectors
   // this is > e if it is CCW of e
-  return jsts.algorithm.CGAlgorithms.computeOrientation(e.p0, e.p1, thisp1);
+  return jsts.algorithm.CGAlgorithms.computeOrientation(e.p0, e.p1, this.p1);
 };
 
 jsts.geomgraph.EdgeEnd.prototype.computeLabel = function(boundaryNodeRule)  {
