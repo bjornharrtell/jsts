@@ -27,8 +27,8 @@
  *
  * @constructor
  */
-jsts.geomgraph.PlanarGraph = function() {
-  this.nodes = new jsts.geomgraph.NodeMap();
+jsts.geomgraph.PlanarGraph = function(nodeFactory) {
+  this.nodes = new jsts.geomgraph.NodeMap(nodeFactory || new jsts.geomgraph.NodeFactory());
 };
 
 

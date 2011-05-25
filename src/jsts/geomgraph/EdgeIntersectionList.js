@@ -45,6 +45,17 @@ jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex
 
 
 /**
+ * Adds entries for the first and last points of the edge to the list
+ */
+jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function()
+    {
+  var maxSegIndex = this.edge.pts.length - 1;
+  this.add(this.edge.pts[0], 0, 0.0);
+  this.add(this.edge.pts[maxSegIndex], maxSegIndex, 0.0);
+};
+
+
+/**
  * NOTE: replaces iterator and treemap in JTS
  */
 jsts.geomgraph.EdgeIntersectionList.prototype.getSortedIntersections = function() {

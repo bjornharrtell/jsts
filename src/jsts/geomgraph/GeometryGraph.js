@@ -21,7 +21,7 @@
  * @augments jsts.planargraph.PlanarGraph
  */
 jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
-  jsts.geomgraph.GeometryGraph.prototype.constructor.call(this);
+  jsts.geomgraph.PlanarGraph.prototype.constructor.call(this);
 
   this.lineEdgeMap = new jsts.Hashtable();
   this.ptLocator = new jsts.algorithm.PointLocator();
@@ -142,6 +142,8 @@ jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodes = function()    {
     this.boundaryNodes = this.nodes.getBoundaryNodes(this.argIndex);
   return this.boundaryNodes;
 };
+
+jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodeRule = function() { return this.boundaryNodeRule; };
 
 
 /**

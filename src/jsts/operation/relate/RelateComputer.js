@@ -352,7 +352,7 @@ jsts.operation.relate.RelateComputer.prototype.updateIM = function(im) {
     e.updateIM(im);
   }
   var nodes = this.nodes.values();
-  for (var ni = 0; ni < nodes.length; ni++) {
+  for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
     node.updateIM(im);
     node.updateIMFromEdges(im);

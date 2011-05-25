@@ -17,7 +17,7 @@
  * @constructor
  */
 jsts.operation.relate.RelateNode = function(coord, edges) {
-  jsts.geomgraph.Node.prototype.constructor.apply(this, arguments);
+  jsts.geomgraph.Node.apply(this, arguments);
 };
 
 jsts.operation.relate.RelateNode.prototype = new jsts.geomgraph.Node();
@@ -30,7 +30,7 @@ jsts.operation.relate.RelateNode.prototype = new jsts.geomgraph.Node();
  * @protected
  */
 jsts.operation.relate.RelateNode.prototype.computeIM = function(im) {
-  im.setAtLeastIfValid(label.getLocation(0), label.getLocation(1), 0);
+  im.setAtLeastIfValid(this.label.getLocation(0), this.label.getLocation(1), 0);
 };
 
 
