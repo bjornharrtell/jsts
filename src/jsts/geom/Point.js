@@ -38,6 +38,15 @@ jsts.geom.Point.prototype.isEmpty = function() {
   return this.coordinate === null;
 };
 
+
+/**
+ * TODO: remove when Geometry equals is implemented
+ * @param p
+ */
+jsts.geom.Point.prototype.equals = function(p) {
+  this.coordinate.equalsExact(p.coordinate);
+};
+
 jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
   if (!this.isEquivalentClass(other)) {
     return false;
@@ -103,4 +112,6 @@ jsts.geom.Point.prototype.getGeometryType = function() {
   return 'Point';
 };
 
-
+jsts.geom.Point.prototype.hashCode = function() {
+  return 'Point_' + this.coordinate.hashCode();
+};

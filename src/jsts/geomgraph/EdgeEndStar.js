@@ -144,7 +144,7 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
     var e = this.edgeList[i];
     var label = e.getLabel();
     for (var geomi = 0; geomi < 2; geomi++) {
-      if (label.isLine(geomi) && label.getLocation(geomi) == Location.BOUNDARY)
+      if (label.isLine(geomi) && label.getLocation(geomi) == jsts.geom.Location.BOUNDARY)
         hasDimensionalCollapseEdge[geomi] = true;
     }
   }
@@ -215,7 +215,7 @@ jsts.geomgraph.EdgeEndStar.prototype.checkAreaLabelsConsistent = function(
   // initialize startLoc to location of last L side (if any)
   var lastEdgeIndex = this.edgeList.edges.length - 1;
   var startLabel = this.edgeList[lastEdgeIndex].getLabel();
-  var startLoc = startLabel.getLocation(geomIndex, jsts.geom.Position.LEFT);
+  var startLoc = startLabel.getLocation(geomIndex, jsts.geomgraph.Position.LEFT);
 
   // TODO: Assert.isTrue(startLoc != Location.NONE, 'Found unlabelled area
   // edge');
@@ -226,8 +226,8 @@ jsts.geomgraph.EdgeEndStar.prototype.checkAreaLabelsConsistent = function(
     var label = e.getLabel();
     // we assume that we are only checking a area
     // TODO: Assert.isTrue(label.isArea(geomIndex), 'Found non-area edge');
-    var leftLoc = label.getLocation(geomIndex, Position.LEFT);
-    var rightLoc = label.getLocation(geomIndex, Position.RIGHT);
+    var leftLoc = label.getLocation(geomIndex, jsts.geomgraph.Position.LEFT);
+    var rightLoc = label.getLocation(geomIndex, jsts.geomgraph.Position.RIGHT);
     // check that edge is really a boundary between inside and outside!
     if (leftLoc === rightLoc) {
       return false;
@@ -260,7 +260,7 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
     var label = e.getLabel();
     if (label.isArea(geomIndex) &&
         label.getLocation(geomIndex, jsts.geomgraph.Position.LEFT) !== jsts.geom.Location.NONE)
-      startLoc = label.getLocation(geomIndex, Position.LEFT);
+      startLoc = label.getLocation(geomIndex, jsts.geomgraph.Position.LEFT);
   }
 
   // no labelled sides found, so no labels to propagate
@@ -282,7 +282,7 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
           .getLocation(geomIndex, jsts.geomgraph.Position.RIGHT);
       // if there is a right location, that is the next location to propagate
       if (rightLoc !== jsts.geom.Location.NONE) {
-        if (rightLoc != currLoc)
+        if (rightLoc !== currLoc)
           throw new jsts.error.TopologyError('side location conflict', e
               .getCoordinate());
         if (leftLoc === jsts.geom.Location.NONE) {

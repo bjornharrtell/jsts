@@ -115,10 +115,7 @@ jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
 
   // complete the labelling for any nodes which only have a label for a single
   // geometry
-  // Debug.addWatch(nodes.find(new Coordinate(110, 200)));
-  // Debug.printWatch();
   this.labelIsolatedNodes();
-  // Debug.printWatch();
 
   // If a proper intersection was found, we can set a lower bound on the IM.
   this.computeProperIntersectionIM(intersector, this.im);
@@ -136,9 +133,6 @@ jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
   var ee1 = eeBuilder.computeEdgeEnds(this.arg[1].getEdges());
   this.insertEdgeEnds(ee1);
 
-  // Debug.println("==== NodeList ===");
-  // Debug.print(nodes);
-
   this.labelNodeEdges();
 
   /**
@@ -150,9 +144,7 @@ jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
    * isolated components will not have been replaced by new components formed by
    * intersections.
    */
-  // debugPrintln("Graph A isolated edges - ");
   this.labelIsolatedEdges(0, 1);
-  // debugPrintln("Graph B isolated edges - ");
   this.labelIsolatedEdges(1, 0);
 
   // update the IM from all components

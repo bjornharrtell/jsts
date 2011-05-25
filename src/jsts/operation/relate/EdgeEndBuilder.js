@@ -25,7 +25,7 @@ jsts.operation.relate.EdgeEndBuilder.prototype.computeEdgeEnds = function(edges)
   var l = [];
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
-    this.computeEdgeEnds(e, l);
+    this.computeEdgeEnds2(e, l);
   }
   return l;
 };
@@ -38,11 +38,13 @@ jsts.operation.relate.EdgeEndBuilder.prototype.computeEdgeEnds = function(edges)
 jsts.operation.relate.EdgeEndBuilder.prototype.computeEdgeEnds2 = function(edge,
     l) {
   var eiList = edge.getEdgeIntersectionList();
-  // Debug.print(eiList);
   // ensure that the list has entries for the first and last point of the edge
   eiList.addEndpoints();
 
   var eis = eiList.getSortedIntersections();
+
+  if (eis.length === 0) return;
+
   var eiPrev = null;
   var eiCurr = null;
   var eiNext = null;
@@ -51,10 +53,8 @@ jsts.operation.relate.EdgeEndBuilder.prototype.computeEdgeEnds2 = function(edge,
     eiCurr = eis[i];
     eiNext = (i < eis.length - 1) ? eis[i + 1] : null;
 
-    if (eiCurr !== null) {
-      this.createEdgeEndForPrev(edge, l, eiCurr, eiPrev);
-      this.createEdgeEndForNext(edge, l, eiCurr, eiNext);
-    }
+    this.createEdgeEndForPrev(edge, l, eiCurr, eiPrev);
+    this.createEdgeEndForNext(edge, l, eiCurr, eiNext);
   }
 
 };
@@ -113,7 +113,7 @@ jsts.operation.relate.EdgeEndBuilder.prototype.createEdgeEndForNext = function(
 
   // if the next intersection is in the same segment as the current, use it as
   // the endpoint
-  if (eiNext != null && eiNext.segmentIndex === eiCurr.segmentIndex)
+  if (eiNext !== null && eiNext.segmentIndex === eiCurr.segmentIndex)
     pNext = eiNext.coord;
 
   var e = new jsts.geomgraph.EdgeEnd(edge, eiCurr.coord, pNext, new jsts.geomgraph.Label(edge.getLabel()));

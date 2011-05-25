@@ -109,9 +109,9 @@ jsts.geomgraph.EdgeIntersection.prototype.compare = function(segmentIndex, dist)
  * @return {boolean}
  */
 jsts.geomgraph.EdgeIntersection.prototype.isEndPoint = function(maxSegmentIndex) {
-  if (segmentIndex == 0 && dist == 0.0)
+  if (segmentIndex === 0 && dist === 0.0)
     return true;
-  if (segmentIndex == maxSegmentIndex)
+  if (segmentIndex === maxSegmentIndex)
     return true;
   return false;
 };

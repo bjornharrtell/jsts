@@ -257,6 +257,10 @@ jsts.geom.Coordinate.prototype.normalize = function() {
   // a Point is always in normalized form
 };
 
+jsts.geom.Coordinate.prototype.hashCode = function() {
+  return '' + this.x + this.y;
+};
+
 
 OpenLayers.Geometry.Point = OpenLayers.Class(OpenLayers.Geometry.Point,
     jsts.geom.Coordinate, {

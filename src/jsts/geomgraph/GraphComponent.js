@@ -98,7 +98,7 @@ jsts.geomgraph.GraphComponent.prototype.setCovered = function(isCovered) {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isCovered = function() {
-  return isCovered;
+  return this.isCovered;
 };
 
 
@@ -106,7 +106,7 @@ jsts.geomgraph.GraphComponent.prototype.isCovered = function() {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isCoveredSet = function() {
-  return isCoveredSet;
+  return this.isCoveredSet;
 };
 
 
@@ -114,7 +114,7 @@ jsts.geomgraph.GraphComponent.prototype.isCoveredSet = function() {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isVisited = function() {
-  return isVisited;
+  return this.isVisited;
 };
 
 
