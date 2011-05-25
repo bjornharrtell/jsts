@@ -58,6 +58,11 @@ jsts.geomgraph.GraphComponent.prototype.getLabel = function() {
   return this.label;
 };
 jsts.geomgraph.GraphComponent.prototype.setLabel = function(label) {
+  if (arguments.length == 2) {
+    this.setLabel2.apply(this, arguments);
+    return;
+  }
+
   this.label = label;
 };
 

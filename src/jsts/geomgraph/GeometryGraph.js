@@ -346,13 +346,4 @@ jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(
     this.insertPoint(argIndex, coord, loc);
 };
 
-
-/**
- * NOTE: JSTS specific function to replace iterator
- * @return {[]}
- */
-jsts.geomgraph.GeometryGraph.prototype.getEdges = function() {
-  return this.lineEdgeMap.values();
-};
-
 // TODO: port rest of class

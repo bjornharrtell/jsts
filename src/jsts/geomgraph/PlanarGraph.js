@@ -47,4 +47,12 @@ jsts.geomgraph.PlanarGraph.prototype.insertEdge = function(e) {
   this.edges.push(e);
 };
 
+jsts.geomgraph.PlanarGraph.prototype.getEdges = function() {
+  return this.edges;
+};
+
+jsts.geomgraph.PlanarGraph.prototype.getNodes = function() {
+  return this.nodes.values();
+};
+
 // TODO: port rest of class
