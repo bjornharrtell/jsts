@@ -39,19 +39,19 @@ jsts.geomgraph.TopologyLocation = function() {
     this.location[jsts.geomgraph.Position.RIGHT] = right;
   } else if (arguments[0] instanceof jsts.geomgraph.TopologyLocation) {
     var gl = arguments[0];
-    init(gl.location.length);
+    this.init(gl.location.length);
     if (gl != null) {
       for (var i = 0; i < this.location.length; i++) {
         this.location[i] = gl.location[i];
       }
     }
-  } else if (arguments[0] instanceof Number) {
+  } else if (typeof arguments[0] === 'number') {
     var on = arguments[0];
-    init(1);
-    this.location[Position.ON] = on;
+    this.init(1);
+    this.location[jsts.geomgraph.Position.ON] = on;
   } else if (arguments[0] instanceof Array) {
     var location = arguments[0];
-    init(location.length);
+    this.init(location.length);
   }
 };
 
@@ -241,7 +241,7 @@ jsts.geomgraph.TopologyLocation.prototype.merge = function(gl) {
     this.location = newLoc;
   }
   for (var i = 0; i < this.location.length; i++) {
-    if (this.location[i] == jsts.geom.Location.NONE && i < gl.location.length)
+    if (this.location[i] === jsts.geom.Location.NONE && i < gl.location.length)
       this.location[i] = gl.location[i];
   }
 };

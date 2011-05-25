@@ -38,6 +38,12 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.nOverlaps = 0;
  */
 jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = function(
     edges, si, testAllSegments) {
+
+  if (si instanceof Array) {
+    this.computeIntersections2.apply(this, arguments);
+    return;
+  }
+
   var i0, i1, edge0, edge1;
 
   this.nOverlaps = 0;
@@ -61,9 +67,8 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = f
  *          edges1
  * @param {SegmentIntersector}
  *          si
- * TODO: overloaded function, need additional port work.
  */
-/*jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = function(
+jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections2 = function(
     edges0, edges1, si) {
   this.nOverlaps = 0;
 
@@ -74,7 +79,7 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = f
       this.computeIntersects(edge0, edge1, si);
     }
   }
-};*/
+};
 
 
 /**
