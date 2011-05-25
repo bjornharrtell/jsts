@@ -239,9 +239,9 @@ jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM = fun
  */
 jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels = function(
     argIndex) {
-  var edges = this.arg[argIndex].edges;
-  for (var i = 0; i < edges.length; i++) {
-    var graphNode = edges[i];
+  var nodes = this.arg[argIndex].getNodes();
+  for (var i = 0; i < nodes.length; i++) {
+    var graphNode = nodes[i];
     var newNode = this.nodes.addNode(graphNode.getCoordinate());
     newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
   }
@@ -259,7 +259,7 @@ jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels = function(
  */
 jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes = function(
     argIndex) {
-  var edges = this.arg[argIndex].edges;
+  var edges = this.arg[argIndex].getEdges();
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
     var eLoc = e.getLabel().getLocation(argIndex);
@@ -287,7 +287,7 @@ jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes = functi
  */
 jsts.operation.relate.RelateComputer.prototype.labelIntersectionNodes = function(
     argIndex) {
-  var edges = this.arg[argIndex].edges;
+  var edges = this.arg[argIndex].getEdges();
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
     var eLoc = e.getLabel().getLocation(argIndex);
@@ -334,9 +334,9 @@ jsts.operation.relate.RelateComputer.prototype.computeDisjointIM = function(im) 
  */
 jsts.operation.relate.RelateComputer.prototype.labelNodeEdges = function() {
   var nodes = this.nodes.values();
-  for (var ni = 0; ni < nodes.length; ni++) {
+  for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
-    node.getEdges().computeLabelling(arg);
+    node.getEdges().computeLabelling(this.arg);
   }
 };
 
@@ -417,7 +417,7 @@ jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdge = function(e,
  */
 jsts.operation.relate.RelateComputer.prototype.labelIsolatedNodes = function() {
   var nodes = this.nodes.values();
-  for (var ni = 0; ni < nodes.length; ni++) {
+  for (var i = 0; i < nodes.length; i++) {
     var n = nodes[i];
     var label = n.getLabel();
     // isolated nodes should always have at least one geometry in their label

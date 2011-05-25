@@ -63,10 +63,10 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabel = function(
       isArea = true;
   }
   if (isArea)
-    this.label = new Label(jsts.geom.Location.NONE, jsts.geom.Location.NONE,
+    this.label = new jsts.geomgraph.Label(jsts.geom.Location.NONE, jsts.geom.Location.NONE,
         jsts.geom.Location.NONE);
   else
-    this.label = new Label(jsts.geom.Location.NONE);
+    this.label = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
 
   // compute the On label, and the side labels if present
   for (var i = 0; i < 2; i++) {

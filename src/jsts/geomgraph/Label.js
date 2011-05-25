@@ -58,7 +58,7 @@ jsts.geomgraph.Label = function() {
   } else if (arguments[0] instanceof jsts.geomgraph.Label) {
     this.elt[0] = new jsts.geomgraph.TopologyLocation(lbl.elt[0]);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(lbl.elt[1]);
-  } else if (arguments[0] instanceof Number) {
+  } else if (typeof arguments[0] === 'number') {
     onLoc = arguments[0];
     this.elt[0] = new jsts.geomgraph.TopologyLocation(onLoc);
     this.elt[1] = new jsts.geomgraph.TopologyLocation(onLoc);

@@ -25,6 +25,18 @@ jsts.geomgraph.Node.prototype = new jsts.geomgraph.GraphComponent();
 jsts.geomgraph.Node.prototype.coord = null;
 jsts.geomgraph.Node.prototype.edges = null;
 
+jsts.geomgraph.Node.prototype.isIsolated = function() {
+  return (this.label.getGeometryCount() == 1);
+};
+
+jsts.geomgraph.Node.prototype.setLabel2 = function(argIndex,  onLocation) {
+  if (this.label === null) {
+    this.label = new jsts.geomgraph.Label(argIndex, onLocation);
+  }
+  else
+    this.label.setLocation(argIndex, onLocation);
+};
+
 jsts.geomgraph.Node.prototype.getCoordinate = function() {
   return this.coord;
 };
