@@ -17,7 +17,7 @@ jsts.operation.relate.EdgeEndBundle = function() {
   var dirCoord = e.getDirectedCoordinate();
   var label = new jsts.geomgraph.Label(e.getLabel());
 
-  jsts.geomgraph.EdgeEnd.prototype.constructor.call(this, edge, coord,
+  jsts.geomgraph.EdgeEnd.call(this, edge, coord,
       dirCoord, label);
 
   this.insert(e);
@@ -34,16 +34,16 @@ jsts.operation.relate.EdgeEndBundle.prototype.edgeEnds = [];
 
 
 jsts.operation.relate.EdgeEndBundle.prototype.getLabel = function() {
-  return label;
+  return this.label;
 };
 jsts.operation.relate.EdgeEndBundle.prototype.getEdgeEnds = function() {
-  return edgeEnds;
+  return this.edgeEnds;
 };
 
 jsts.operation.relate.EdgeEndBundle.prototype.insert = function(e) {
   // Assert: start point is the same
   // Assert: direction is the same
-  edgeEnds.add(e);
+  this.edgeEnds.push(e);
 };
 
 
@@ -119,7 +119,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelOn = function(
     loc = jsts.geomgraph.GeometryGraph.determineBoundary(boundaryNodeRule,
         boundaryCount);
   }
-  label.setLocation(geomIndex, loc);
+  this.label.setLocation(geomIndex, loc);
 
 };
 
@@ -158,10 +158,10 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSide = function(
     if (e.getLabel().isArea()) {
       var loc = e.getLabel().getLocation(geomIndex, side);
       if (loc == jsts.geom.Location.INTERIOR) {
-        label.setLocation(geomIndex, side, jsts.geom.Location.INTERIOR);
+        this.label.setLocation(geomIndex, side, jsts.geom.Location.INTERIOR);
         return;
       } else if (loc == jsts.geom.Location.EXTERIOR)
-        label.setLocation(geomIndex, side, jsts.geom.Location.EXTERIOR);
+        this.label.setLocation(geomIndex, side, jsts.geom.Location.EXTERIOR);
     }
   }
 };
@@ -173,5 +173,5 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSide = function(
  * @private
  */
 jsts.operation.relate.EdgeEndBundle.prototype.updateIM = function(im) {
-  jsts.geomgraph.Edge.updateIM(label, im);
+  jsts.geomgraph.Edge.updateIM(this.label, im);
 };

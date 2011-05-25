@@ -37,6 +37,17 @@ jsts.geomgraph.Node.prototype.setLabel2 = function(argIndex,  onLocation) {
     this.label.setLocation(argIndex, onLocation);
 };
 
+
+/**
+ * Add the edge to the list of edges at this node
+ */
+jsts.geomgraph.Node.prototype.add = function(e)
+    {
+  // Assert: start pt of e is equal to node point
+  this.edges.insert(e);
+  e.setNode(this);
+};
+
 jsts.geomgraph.Node.prototype.getCoordinate = function() {
   return this.coord;
 };

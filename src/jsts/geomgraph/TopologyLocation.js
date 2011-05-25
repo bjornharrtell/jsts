@@ -133,14 +133,14 @@ jsts.geomgraph.TopologyLocation.prototype.isArea = function() {
  * @return {boolean}
  */
 jsts.geomgraph.TopologyLocation.prototype.isLine = function() {
-  return this.location.length == 1;
+  return this.location.length === 1;
 };
 
 jsts.geomgraph.TopologyLocation.prototype.flip = function() {
   if (this.location.length <= 1)
     return;
-  var temp = this.location[jsts.geom.Position.LEFT];
-  this.location[jsts.geomgraph.Position.LEFT] = this.location[jsts.geom.Position.RIGHT];
+  var temp = this.location[jsts.geomgraph.Position.LEFT];
+  this.location[jsts.geomgraph.Position.LEFT] = this.location[jsts.geomgraph.Position.RIGHT];
   this.location[jsts.geomgraph.Position.RIGHT] = temp;
 };
 

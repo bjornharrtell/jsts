@@ -62,7 +62,7 @@ jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
  */
 jsts.geomgraph.NodeMap.prototype.add = function(e) {
   var p = e.getCoordinate();
-  var n = addNode(p);
+  var n = this.addNode(p);
   n.add(e);
 };
 

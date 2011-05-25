@@ -32,8 +32,7 @@ jsts.geomgraph.EdgeIntersectionList.prototype.edge = null;
  * @param {double} dist
  * @return {EdgeIntersection} the EdgeIntersection found or added.
  */
-jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex, dist)
-    {
+jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex, dist)    {
   var eiNew = new jsts.geomgraph.EdgeIntersection(intPt, segmentIndex, dist);
   var ei = this.nodeMap.get(eiNew);
   if (ei !== null) {
@@ -47,8 +46,7 @@ jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex
 /**
  * Adds entries for the first and last points of the edge to the list
  */
-jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function()
-    {
+jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function()    {
   var maxSegIndex = this.edge.pts.length - 1;
   this.add(this.edge.pts[0], 0, 0.0);
   this.add(this.edge.pts[maxSegIndex], maxSegIndex, 0.0);
@@ -59,7 +57,8 @@ jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function()
  * NOTE: replaces iterator and treemap in JTS
  */
 jsts.geomgraph.EdgeIntersectionList.prototype.getSortedIntersections = function() {
-  throw new jsts.error.NotImplementedError();
+  // TODO: sort
+  return this.nodeMap.values();
 };
 
 // TODO: port rest and implement sorted map
