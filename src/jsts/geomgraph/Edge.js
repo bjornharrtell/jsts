@@ -39,7 +39,9 @@ jsts.geomgraph.Edge.prototype.eiList = null;
 /**
  * @return {int}
  */
-jsts.geomgraph.Edge.prototype.getNumPoints = function() { return this.pts.length; };
+jsts.geomgraph.Edge.prototype.getNumPoints = function() {
+  return this.pts.length;
+};
 
 
 /**
@@ -51,11 +53,11 @@ jsts.geomgraph.Edge.prototype.getCoordinates = function() {
 
 
 /**
- * @param {int} i
+ * @param {int}
+ *          i
  * @return {Coordinate}
  */
-jsts.geomgraph.Edge.prototype.getCoordinate = function(i)
-    {
+jsts.geomgraph.Edge.prototype.getCoordinate = function(i) {
   return this.pts[i];
 };
 
@@ -128,9 +130,12 @@ jsts.geomgraph.Edge.prototype.addIntersection = function(li, segmentIndex,
 /**
  * @return {int}
  */
-jsts.geomgraph.Edge.prototype.getMaximumSegmentIndex = function()
-    {
+jsts.geomgraph.Edge.prototype.getMaximumSegmentIndex = function() {
   return this.pts.length - 1;
+};
+
+jsts.geomgraph.Edge.prototype.getEdgeIntersectionList = function() {
+  return this.eiList;
 };
 
 // TODO: port rest..

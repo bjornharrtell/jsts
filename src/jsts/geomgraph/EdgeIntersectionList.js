@@ -43,4 +43,12 @@ jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex
   return eiNew;
 };
 
+
+/**
+ * NOTE: replaces iterator and treemap in JTS
+ */
+jsts.geomgraph.EdgeIntersectionList.prototype.getSortedIntersections = function() {
+  throw new jsts.error.NotImplementedError();
+};
+
 // TODO: port rest and implement sorted map
