@@ -21,9 +21,10 @@
  * @augments jsts.planargraph.PlanarGraph
  */
 jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
-  jsts.geomgraph.PlanarGraph.prototype.constructor.call(this);
+  jsts.geomgraph.PlanarGraph.call(this);
 
-  this.lineEdgeMap = new jsts.Hashtable();
+  this.lineEdgeMap = {};
+
   this.ptLocator = new jsts.algorithm.PointLocator();
 
   this.argIndex = argIndex;
@@ -63,7 +64,9 @@ jsts.geomgraph.GeometryGraph.prototype.parentGeom = null;
  * to the edges which are derived from them. This is used to efficiently perform
  * findEdge queries
  *
- * @type {Map}
+ * NOTE: In JSTS a JS object replaces HashMap.
+ *
+ * @type {Object}
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.lineEdgeMap = null;
@@ -219,7 +222,7 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
   // line edges do not have locations for their left and right sides
   var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(
       this.argIndex, jsts.geom.Location.INTERIOR));
-  this.lineEdgeMap.put(line, e);
+  this.lineEdgeMap[line] = e;
   this.insertEdge(e);
   /**
    * Add the boundary points of the LineString, if any. Even if the LineString

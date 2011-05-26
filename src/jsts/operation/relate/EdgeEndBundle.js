@@ -10,6 +10,8 @@
  * @constructor
  */
 jsts.operation.relate.EdgeEndBundle = function() {
+  this.edgeEnds = [];
+
   var e = arguments[0] instanceof jsts.geomgraph.EdgeEnd ? arguments[0] : arguments[1];
 
   var edge = e.getEdge();
@@ -29,7 +31,7 @@ jsts.operation.relate.EdgeEndBundle.prototype = new jsts.geomgraph.EdgeEnd();
 /**
  * @private
  */
-jsts.operation.relate.EdgeEndBundle.prototype.edgeEnds = [];
+jsts.operation.relate.EdgeEndBundle.prototype.edgeEnds = null;
 
 
 

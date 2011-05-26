@@ -14,12 +14,15 @@
  * @constructor
  */
 jsts.geomgraph.EdgeEndStar = function() {
-  this.edgeMap = new jsts.Hashtable();
+  this.edgeMap = {};
+  this.edgeList = [];
 };
 
 
 /**
  * A map which maintains the edges in sorted order around the node
+ *
+ * NOTE: In In JSTS a JS object replaces TreeMap. Sorting is done when needed.
  *
  * @protected
  */
@@ -58,7 +61,7 @@ jsts.geomgraph.EdgeEndStar.prototype.insert = function(e) {
  * @protected
  */
 jsts.geomgraph.EdgeEndStar.prototype.insertEdgeEnd = function(e, obj) {
-  this.edgeMap.put(e, obj);
+  this.edgeMap[e] = obj;
   this.edgeList = null; // edge list has changed - clear the cache
 };
 
@@ -68,14 +71,14 @@ jsts.geomgraph.EdgeEndStar.prototype.insertEdgeEnd = function(e, obj) {
  */
 jsts.geomgraph.EdgeEndStar.prototype.getCoordinate = function() {
   this.getEdges();
-  var it = iterator();
   if (this.edgeList.length === 0)
     return null;
   var e = this.edgeList[0];
   return e.getCoordinate();
 };
 jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
-  return this.edgeMap.size();
+  this.getEdges();
+  return this.edgeList.length;
 };
 
 
@@ -88,7 +91,17 @@ jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
  */
 jsts.geomgraph.EdgeEndStar.prototype.getEdges = function() {
   if (this.edgeList == null) {
-    this.edgeList = this.edgeMap.values();
+    this.edgeList = [];
+    for (key in this.nodeMap) {
+      if (this.nodeMap.hasOwnProperty(key)) {
+        this.edgeList.push(this.nodeMap[key]);
+      }
+    }
+
+    var compare = function(a,b) {
+      return a.compareTo(b);
+    };
+    this.edgeList.sort(compare);
   }
   return this.edgeList;
 };
@@ -98,8 +111,8 @@ jsts.geomgraph.EdgeEndStar.prototype.getNextCW = function(ee) {
   var i = this.edgeList.indexOf(ee);
   var iNextCW = i - 1;
   if (i === 0)
-    iNextCW = this.edgeList.size() - 1;
-  return this.edgeList.get(iNextCW);
+    iNextCW = this.edgeList.length - 1;
+  return this.edgeList[iNextCW];
 };
 
 jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
@@ -155,10 +168,10 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
       if (label.isAnyNull(geomi)) {
         var loc = Location.NONE;
         if (hasDimensionalCollapseEdge[geomi]) {
-          loc = Location.EXTERIOR;
+          loc = jsts.geom.Location.EXTERIOR;
         } else {
           var p = e.getCoordinate();
-          loc = getLocation(geomi, p, geomGraph);
+          loc = this.getLocation(geomi, p, geomGraph);
         }
         label.setAllLocationsIfNull(geomi, loc);
       }
@@ -186,7 +199,7 @@ jsts.geomgraph.EdgeEndStar.prototype.computeEdgeEndLabels = function(
  */
 jsts.geomgraph.EdgeEndStar.prototype.getLocation = function(geomIndex, p, geom) {
   // compute location only on demand
-  if (this.ptInAreaLocation[geomIndex] == jsts.geom.Location.NONE) {
+  if (this.ptInAreaLocation[geomIndex] === jsts.geom.Location.NONE) {
     this.ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p,
         geom[geomIndex].getGeometry());
   }
