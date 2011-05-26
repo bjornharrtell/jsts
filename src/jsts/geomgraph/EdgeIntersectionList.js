@@ -10,10 +10,14 @@
  * @constructor
  */
 jsts.geomgraph.EdgeIntersectionList = function(edge) {
+  this.nodeMap = {};
   this.edge = edge;
-  this.nodeMap = new jsts.Hashtable();
 };
 
+
+/**
+ * NOTE: In In JSTS a JS object replaces TreeMap. Sorting is done when needed.
+ */
 jsts.geomgraph.EdgeIntersectionList.prototype.nodeMap = null;
 
 
@@ -34,11 +38,11 @@ jsts.geomgraph.EdgeIntersectionList.prototype.edge = null;
  */
 jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex, dist)    {
   var eiNew = new jsts.geomgraph.EdgeIntersection(intPt, segmentIndex, dist);
-  var ei = this.nodeMap.get(eiNew);
+  var ei = this.nodeMap[eiNew];
   if (ei !== null) {
     return ei;
   }
-  this.nodeMap.put(eiNew, eiNew);
+  this.nodeMap[eiNew] = eiNew;
   return eiNew;
 };
 
@@ -54,11 +58,22 @@ jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function()    {
 
 
 /**
- * NOTE: replaces iterator and treemap in JTS
+ * NOTE: replaces iterator in JTS
  */
 jsts.geomgraph.EdgeIntersectionList.prototype.getSortedIntersections = function() {
-  // TODO: sort
-  return this.nodeMap.values();
+  var array = [];
+  for (key in this.nodeMap) {
+    if (this.nodeMap.hasOwnProperty(key)) {
+      array.push(this.nodeMap[key]);
+    }
+  }
+
+  var compare = function(a,b) {
+    return a.compareTo(b);
+  };
+  array.sort(compare);
+
+  return array;
 };
 
-// TODO: port rest and implement sorted map
+// TODO: port rest

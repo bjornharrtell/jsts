@@ -29,6 +29,8 @@
  * @constructor
  */
 jsts.geomgraph.TopologyLocation = function() {
+  this.location = [];
+
   if (arguments.length === 3) {
     var on = arguments[0];
     var left = arguments[1];
@@ -59,7 +61,7 @@ jsts.geomgraph.TopologyLocation = function() {
 /**
  * @private
  */
-jsts.geomgraph.TopologyLocation.prototype.location = [];
+jsts.geomgraph.TopologyLocation.prototype.location = null;
 
 
 /**

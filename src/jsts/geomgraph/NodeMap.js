@@ -4,8 +4,6 @@
  * See /license.txt for the full text of the license.
  */
 
-// TODO: Below code will probably not work right, use of Hashtable needs hash for entities to work correct
-
 
 
 /**
@@ -14,11 +12,16 @@
  * @constructor
  */
 jsts.geomgraph.NodeMap = function(nodeFactory) {
-  this.nodeMap = new jsts.Hashtable();
+  this.nodeMap = {};
   this.nodeFact = nodeFactory;
 };
 
+
+/**
+ * NOTE: In In JSTS a JS object replaces TreeMap. Sorting is done when needed.
+ */
 jsts.geomgraph.NodeMap.prototype.nodeMap = null;
+
 jsts.geomgraph.NodeMap.prototype.nodeFact = null;
 
 
@@ -34,17 +37,17 @@ jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
 
   if (arg instanceof jsts.geom.Coordinate) {
     coord = arg;
-    node = this.nodeMap.get(coord);
-    if (node == null) {
+    node = this.nodeMap[coord];
+    if (node === undefined) {
       node = this.nodeFact.createNode(coord);
-      this.nodeMap.put(coord, node);
+      this.nodeMap[coord] = node;
     }
     return node;
   } else if (arg instanceof jsts.geomgraph.Node) {
-    node = arg;
-    node = nodeMap.get(n.getCoordinate());
-    if (node === null) {
-      this.nodeMap.put(n.getCoordinate(), n);
+    var sn = arg;
+    node = nodeMap[n.getCoordinate()];
+    if (node === undefined) {
+      this.nodeMap[n.getCoordinate()] = n;
       return n;
     }
     node.mergeLabel(n);
@@ -73,7 +76,7 @@ jsts.geomgraph.NodeMap.prototype.add = function(e) {
  * @return {Node} the node if found; null otherwise.
  */
 jsts.geomgraph.NodeMap.prototype.find = function(coord) {
-  return nodeMap.get(coord);
+  return this.nodeMap[coord];
 };
 
 
@@ -81,8 +84,19 @@ jsts.geomgraph.NodeMap.prototype.find = function(coord) {
  * @return {Node[]}
  */
 jsts.geomgraph.NodeMap.prototype.values = function() {
-  // TODO: sort by key?
-  return this.nodeMap.values();
+  var array = [];
+  for (key in this.nodeMap) {
+    if (this.nodeMap.hasOwnProperty(key)) {
+      array.push(this.nodeMap[key]);
+    }
+  }
+
+  var compare = function(a,b) {
+    return a.getCoordinate().compareTo(b.getCoordinate());
+  };
+  array.sort(compare);
+
+  return array;
 };
 
 

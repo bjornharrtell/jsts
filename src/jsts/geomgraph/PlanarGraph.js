@@ -28,6 +28,7 @@
  * @constructor
  */
 jsts.geomgraph.PlanarGraph = function(nodeFactory) {
+  this.edges = [];
   this.nodes = new jsts.geomgraph.NodeMap(nodeFactory || new jsts.geomgraph.NodeFactory());
 };
 
@@ -35,7 +36,7 @@ jsts.geomgraph.PlanarGraph = function(nodeFactory) {
 /**
  * @protected
  */
-jsts.geomgraph.PlanarGraph.prototype.edges = [];
+jsts.geomgraph.PlanarGraph.prototype.edges = null;
 
 
 /**
