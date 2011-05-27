@@ -141,10 +141,17 @@
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
     var reader = new jsts.io.WKTReader();
-    var a = reader.read('MULTIPOINT((60 60), (100 100))');
-    var b = reader.read('LINESTRING(40 40, 60 60, 80 80)');
+    //var a = reader.read('MULTIPOINT((60 60), (100 100))');
+    //var b = reader.read('LINESTRING(40 40, 60 60, 80 80)');
+    //var result = a.relate(b, '0F0FFF102');
+       
+    //var a = reader.read('LINESTRING(20 20, 80 80)');
+    //var b = reader.read('LINESTRING(20 20, 80 80)');
+    //var result = a.relate(b, '1FFF0FFF2');
     
-    var result = a.relate(b, '0F0FFF102');
+    var a = reader.read('LINESTRING(40 40, 160 160, 200 60, 60 140)');
+    var b = reader.read('LINESTRING(40 40, 160 160, 200 60, 60 140)');
+    var result = a.relate(b, '1FFF0FFF2');
     
     console.log(result);
   }

@@ -33,10 +33,10 @@ jsts.geomgraph.Edge.updateIM = function(label, im) {
   im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.ON), label
       .getLocation(1, jsts.geomgraph.Position.ON), 1);
   if (label.isArea()) {
-    im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.LEFT), label
-        .getLocation(1, jsts.geomgraph.Position.LEFT), 2);
-    im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.RIGHT), label
-        .getLocation(1, jsts.geomgraph.Position.RIGHT), 2);
+    im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.LEFT),
+        label.getLocation(1, jsts.geomgraph.Position.LEFT), 2);
+    im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.RIGHT),
+        label.getLocation(1, jsts.geomgraph.Position.RIGHT), 2);
   }
 };
 
@@ -69,7 +69,7 @@ jsts.geomgraph.Edge.prototype.mce = null;
 /**
  * @private
  */
-jsts.geomgraph.Edge.prototype.isIsolated = true;
+jsts.geomgraph.Edge.prototype._isIsolated = true;
 
 
 /**
@@ -114,6 +114,14 @@ jsts.geomgraph.Edge.prototype.getCoordinates = function() {
  * @return {Coordinate}
  */
 jsts.geomgraph.Edge.prototype.getCoordinate = function(i) {
+  if (i === undefined) {
+    if (this.pts.length > 0) {
+      return this.pts[0];
+    } else {
+      return null;
+    }
+  }
+
   return this.pts[i];
 };
 
@@ -127,10 +135,10 @@ jsts.geomgraph.Edge.prototype.isClosed = function() {
 
 
 jsts.geomgraph.Edge.prototype.setIsolated = function(isIsolated) {
-  this.isIsolated = isIsolated;
+  this._isIsolated = isIsolated;
 };
 jsts.geomgraph.Edge.prototype.isIsolated = function() {
-  return this.isIsolated;
+  return this._isIsolated;
 };
 
 

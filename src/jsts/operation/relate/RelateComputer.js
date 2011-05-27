@@ -120,7 +120,7 @@ jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
   this.labelIsolatedNodes();
 
   // If a proper intersection was found, we can set a lower bound on the IM.
-  this.computeProperIntersectionIM(intersector, this.im);
+  this.computeProperIntersectionIM(intersector, im);
 
   /**
    * Now process improper intersections (eg where one or other of the geometries
