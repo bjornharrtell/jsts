@@ -78,6 +78,40 @@ jsts.geom.GeometryCollection.prototype.apply = function(filter) {
   }
 };
 
+
+jsts.geom.GeometryCollection.prototype.getDimension = function() {
+  var dimension = jsts.geom.Dimension.FALSE;
+  for (var i = 0; i < this.geometries.length; i++) {
+    var geometry = this.geometries[i];
+    // NOTE: special handling since in JTS the parts would be Points.
+    if (geometry instanceof jsts.geom.Coordinate) {
+      Math.max(dimension, 0);
+    } else {
+      dimension = Math.max(dimension, geometry.getDimension());
+    }
+
+  }
+  return dimension;
+};
+
+
+/**
+ * @protected
+ */
+jsts.geom.GeometryCollection.prototype.computeEnvelopeInternal = function() {
+  var envelope = new jsts.geom.Envelope();
+  for (var i = 0; i < this.geometries.length; i++) {
+    var geometry = this.geometries[i];
+    // NOTE: special handling since in JTS the parts would be Points.
+    if (geometry instanceof jsts.geom.Coordinate) {
+      envelope.expandToInclude(new jsts.geom.Envelope(geometry));
+    } else {
+      envelope.expandToInclude(geometry.getEnvelopeInternal());
+    }
+  }
+  return envelope;
+};
+
 OpenLayers.Geometry.Collection = OpenLayers.Class(
     OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection, {
       initialize: function(components) {

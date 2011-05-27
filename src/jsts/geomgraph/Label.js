@@ -32,6 +32,8 @@
  * @constructor
  */
 jsts.geomgraph.Label = function() {
+  this.elt = [];
+
   var geomIndex, onLoc, leftLoc, lbl, rightLoc;
   if (arguments.length === 4) {
     geomIndex = arguments[0];
@@ -87,7 +89,7 @@ jsts.geomgraph.Label.toLineLabel = function(label) {
  * @type {TopologyLocation[]}
  * @private
  */
-jsts.geomgraph.Label.prototype.elt = [];
+jsts.geomgraph.Label.prototype.elt = null;
 
 jsts.geomgraph.Label.prototype.flip = function() {
   this.elt[0].flip();

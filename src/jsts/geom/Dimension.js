@@ -81,17 +81,17 @@ jsts.geom.Dimension.DONTCARE = -3;
  */
 jsts.geom.Dimension.toDimensionSymbol = function(dimensionValue) {
   switch (dimensionValue) {
-    case FALSE:
+    case jsts.geom.Dimension.FALSE:
       return 'F';
-    case TRUE:
+    case jsts.geom.Dimension.TRUE:
       return 'T';
-    case DONTCARE:
+    case jsts.geom.Dimension.DONTCARE:
       return '*';
-    case P:
+    case jsts.geom.Dimension.P:
       return '0';
-    case L:
+    case jsts.geom.Dimension.L:
       return '1';
-    case A:
+    case jsts.geom.Dimension.A:
       return '2';
   }
   throw new jsts.IllegalArgumentError('Unknown dimension value: ' +

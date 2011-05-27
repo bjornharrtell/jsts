@@ -86,7 +86,9 @@ jsts.algorithm.PointLocator.prototype.locate = function(p, geom) {
   if (geom.isEmpty())
     return jsts.geom.Location.EXTERIOR;
 
-  if (geom instanceof jsts.geom.LineString) {
+  if (geom instanceof jsts.geom.Point) {
+    return this.locate2(p, geom);
+  } else if (geom instanceof jsts.geom.LineString) {
     return this.locate3(p, geom);
   } else if (geom instanceof jsts.geom.Polygon) {
     return this.locate4(p, geom);
