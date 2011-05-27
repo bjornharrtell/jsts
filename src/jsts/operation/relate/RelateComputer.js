@@ -25,6 +25,8 @@ jsts.operation.relate.RelateComputer = function(arg) {
   this.ptLocator = new jsts.algorithm.PointLocator();
   this.nodes = new jsts.geomgraph.NodeMap(
       new jsts.operation.relate.RelateNodeFactory());
+  this.isolatedEdges = [];
+
 
   this.arg = arg;
 };
@@ -73,7 +75,7 @@ jsts.operation.relate.RelateComputer.prototype.im = null;
  * @type {[]}
  * @private
  */
-jsts.operation.relate.RelateComputer.prototype.isolatedEdges = [];
+jsts.operation.relate.RelateComputer.prototype.isolatedEdges;
 
 
 /**
@@ -367,7 +369,7 @@ jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdges = function(
     var e = edges[i];
     if (e.isIsolated()) {
       this.labelIsolatedEdge(e, targetIndex, this.arg[targetIndex].getGeometry());
-      this.isolatedEdges.add(e);
+      this.isolatedEdges.push(e);
     }
   }
 };
@@ -392,7 +394,7 @@ jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdge = function(e,
     var loc = this.ptLocator.locate(e.getCoordinate(), target);
     e.getLabel().setAllLocations(targetIndex, loc);
   } else {
-    e.getLabel().setAllLocations(targetIndex, Location.EXTERIOR);
+    e.getLabel().setAllLocations(targetIndex, jsts.geom.Location.EXTERIOR);
   }
 };
 

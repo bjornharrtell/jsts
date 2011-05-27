@@ -17,6 +17,8 @@
 jsts.geomgraph.Edge = function(pts, label) {
   this.pts = pts;
   this.label = label;
+  // this.mce = new MonotoneChainEdge();
+  // this.depth = new Depth();
   this.eiList = new jsts.geomgraph.EdgeIntersectionList(this);
 };
 
@@ -24,9 +26,63 @@ jsts.geomgraph.Edge.prototype = new jsts.geomgraph.GraphComponent();
 
 
 /**
+ * Updates an IM from the label for an edge. Handles edges from both L and A
+ * geometries.
+ */
+jsts.geomgraph.Edge.updateIM = function(label, im) {
+  im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.ON), label
+      .getLocation(1, jsts.geomgraph.Position.ON), 1);
+  if (label.isArea()) {
+    im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.LEFT), label
+        .getLocation(1, jsts.geomgraph.Position.LEFT), 2);
+    im.setAtLeastIfValid(label.getLocation(0, jsts.geomgraph.Position.RIGHT), label
+        .getLocation(1, jsts.geomgraph.Position.RIGHT), 2);
+  }
+};
+
+
+/**
  * @private
  */
 jsts.geomgraph.Edge.prototype.pts = null;
+
+
+/**
+ * @private
+ */
+jsts.geomgraph.Edge.prototype.env = null;
+
+
+/**
+ * @private
+ */
+jsts.geomgraph.Edge.prototype.name = null;
+
+
+/**
+ * @type {MonotoneChainEdge}
+ * @private
+ */
+jsts.geomgraph.Edge.prototype.mce = null;
+
+
+/**
+ * @private
+ */
+jsts.geomgraph.Edge.prototype.isIsolated = true;
+
+
+/**
+ * @type {Depth}
+ * @private
+ */
+jsts.geomgraph.Edge.prototype.depth = null;
+
+
+/**
+ * // the change in area depth from the R to L side of this edge
+ */
+jsts.geomgraph.Edge.prototype.depthDelta = 0;
 
 
 /**
@@ -67,6 +123,14 @@ jsts.geomgraph.Edge.prototype.getCoordinate = function(i) {
  */
 jsts.geomgraph.Edge.prototype.isClosed = function() {
   return this.pts[0].equals(this.pts[this.pts.length - 1]);
+};
+
+
+jsts.geomgraph.Edge.prototype.setIsolated = function(isIsolated) {
+  this.isIsolated = isIsolated;
+};
+jsts.geomgraph.Edge.prototype.isIsolated = function() {
+  return this.isIsolated;
 };
 
 
@@ -177,6 +241,15 @@ jsts.geomgraph.Edge.prototype.addIntersection = function(li, segmentIndex,
    * Add the intersection point to edge intersection list.
    */
   var ei = this.eiList.add(intPt, normalizedSegmentIndex, dist);
+};
+
+
+/**
+ * Update the IM with the contribution for this component. A component only
+ * contributes if it has a labelling for both parent geometries
+ */
+jsts.geomgraph.Edge.prototype.computeIM = function(im) {
+  jsts.geomgraph.Edge.updateIM(this.label, im);
 };
 
 // TODO: port rest..

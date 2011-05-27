@@ -235,7 +235,11 @@ jsts.geomgraph.Label.prototype.isAnyNull = function(geomIndex) {
  * @return {boolean}
  */
 jsts.geomgraph.Label.prototype.isArea = function() {
-  return this.elt[0].isArea() || elt[1].isArea();
+  if (arguments.length == 1) {
+    return this.isArea(arguments[0]);
+  }
+
+  return this.elt[0].isArea() || this.elt[1].isArea();
 };
 
 
@@ -244,7 +248,7 @@ jsts.geomgraph.Label.prototype.isArea = function() {
  *          geomIndex
  * @return {boolean}
  */
-jsts.geomgraph.Label.prototype.isArea = function(geomIndex) {
+jsts.geomgraph.Label.prototype.isArea2 = function(geomIndex) {
   return this.elt[geomIndex].isArea();
 };
 
