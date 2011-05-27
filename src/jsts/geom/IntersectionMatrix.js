@@ -100,7 +100,7 @@ jsts.geom.IntersectionMatrix.prototype.add = function(im) {
  */
 jsts.geom.IntersectionMatrix.matches = function(actualDimensionValue,
     requiredDimensionSymbol) {
-  if (typeof actualDimensioValue === 'string') {
+  if (typeof actualDimensionValue === 'string') {
     return jsts.geom.IntersectionMatrix.matches2.call(this, arguments);
   }
 
@@ -215,6 +215,10 @@ jsts.geom.IntersectionMatrix.prototype.set2 = function(dimensionSymbols) {
  */
 jsts.geom.IntersectionMatrix.prototype.setAtLeast = function(row, column,
     minimumDimensionValue) {
+  if (arguments.length === 1) {
+    this.setAtLeast2(arguments[0]);
+  }
+
   if (this.matrix[row][column] < minimumDimensionValue) {
     this.matrix[row][column] = minimumDimensionValue;
   }
@@ -257,7 +261,7 @@ jsts.geom.IntersectionMatrix.prototype.setAtLeastIfValid = function(row,
  *          of dimension values from least to greatest is
  *          <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code> .
  */
-jsts.geom.IntersectionMatrix.prototype.setAtLeast = function(
+jsts.geom.IntersectionMatrix.prototype.setAtLeast2 = function(
     minimumDimensionSymbols) {
   var i;
   for (i = 0; i < minimumDimensionSymbols.length(); i++) {
@@ -666,11 +670,10 @@ jsts.geom.IntersectionMatrix.prototype.transpose = function() {
  *         <code>IntersectionMatrix</code> in row-major order.
  */
 jsts.geom.IntersectionMatrix.prototype.toString = function() {
-  var ai, bi, buf = '123456789';
+  var ai, bi, buf = '';
   for (ai = 0; ai < 3; ai++) {
     for (bi = 0; bi < 3; bi++) {
-      buf.setCharAt(3 * ai + bi, jsts.geom.Dimension
-          .toDimensionSymbol(matrix[ai][bi]));
+      buf += jsts.geom.Dimension.toDimensionSymbol(this.matrix[ai][bi]);
     }
   }
   return buf;

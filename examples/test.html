@@ -141,10 +141,10 @@
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
     var reader = new jsts.io.WKTReader();
-    var a = reader.read('POINT(20 20)');
-    var b = reader.read('POINT(20 30)');
+    var a = reader.read('MULTIPOINT((40 40), (80 60), (40 100))');
+    var b = reader.read('MULTIPOINT((40 40), (80 60), (120 100))');
     
-    var result = a.relate(b, '0FFFFFFF2');
+    var result = a.relate(b, '0F0FFF0F2');
     
     console.log(result);
   }

@@ -70,7 +70,7 @@ jsts.geomgraph.TopologyLocation.prototype.location = null;
  * @private
  */
 jsts.geomgraph.TopologyLocation.prototype.init = function(size) {
-  this.location[size] = null;
+  this.location[size - 1] = null;
   this.setAllLocations(jsts.geom.Location.NONE);
 };
 

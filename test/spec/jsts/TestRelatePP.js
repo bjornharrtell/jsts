@@ -33,7 +33,7 @@ describe('TestRelatePP', function() {
           var test = tests[j];
           
           var matrix = $("op", test).attr('arg3');
-          var expected = $("op", test).text().trim();
+          var expected = $("op", test).text().trim() === 'true';
 
           var reader = new jsts.io.WKTReader();
           var ag = reader.read(a);

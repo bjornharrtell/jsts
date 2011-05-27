@@ -195,6 +195,17 @@ jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
 
 
 /**
+ * @private
+ */
+jsts.geomgraph.GeometryGraph.prototype.addCollection = function(gc) {
+  for (var i = 0; i < gc.getNumGeometries(); i++) {
+    var g = gc.getGeometryN(i);
+    this.add(g);
+  }
+};
+
+
+/**
  * Add a Point to the graph.
  */
 jsts.geomgraph.GeometryGraph.prototype.addPoint = function(p) {

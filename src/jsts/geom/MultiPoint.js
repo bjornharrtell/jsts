@@ -33,6 +33,10 @@ jsts.geom.MultiPoint.prototype.getBoundary = function() {
   return this.getFactory().createGeometryCollection(null);
 };
 
+jsts.geom.MultiPoint.prototype.getGeometryN = function(n) {
+  return new jsts.geom.Point(this.geometries[n]);
+};
+
 
 /**
  * @param {Geometry} other
