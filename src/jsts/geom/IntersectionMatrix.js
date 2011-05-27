@@ -217,6 +217,7 @@ jsts.geom.IntersectionMatrix.prototype.setAtLeast = function(row, column,
     minimumDimensionValue) {
   if (arguments.length === 1) {
     this.setAtLeast2(arguments[0]);
+    return;
   }
 
   if (this.matrix[row][column] < minimumDimensionValue) {
@@ -264,10 +265,10 @@ jsts.geom.IntersectionMatrix.prototype.setAtLeastIfValid = function(row,
 jsts.geom.IntersectionMatrix.prototype.setAtLeast2 = function(
     minimumDimensionSymbols) {
   var i;
-  for (i = 0; i < minimumDimensionSymbols.length(); i++) {
-    var row = i / 3;
-    var col = i % 3;
-    this.setAtLeast(row, col, Dimension
+  for (i = 0; i < minimumDimensionSymbols.length; i++) {
+    var row = parseInt(i / 3);
+    var col = parseInt(i % 3);
+    this.setAtLeast(row, col, jsts.geom.Dimension
         .toDimensionValue(minimumDimensionSymbols.charAt(i)));
   }
 };
