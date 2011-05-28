@@ -75,7 +75,7 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections2 = 
   for (var i0 = 0; i0 < edges0.length; i0++) {
     var edge0 = edges0[i0];
     for (var i1 = 0; i1 < edges1.length; i1++) {
-      var edge1 = edges1[i0];
+      var edge1 = edges1[i1];
       this.computeIntersects(edge0, edge1, si);
     }
   }
