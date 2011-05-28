@@ -52,6 +52,11 @@ jsts.geom.Polygon.prototype.getExteriorRing = function() {
   return this.components[0];
 };
 
+jsts.geom.Polygon.prototype.getInteriorRingN = function(n) {
+  var holes = this.components.slice(1);
+  return holes[n];
+};
+
 jsts.geom.Polygon.prototype.getNumInteriorRing = function() {
   return this.components.slice(1).length;
 };
@@ -78,6 +83,20 @@ jsts.geom.Polygon.prototype.getBoundary = function() {
   if (rings.length <= 1)
     return this.getFactory().createLinearRing(rings[0].getCoordinateSequence());
   return this.getFactory().createMultiLineString(rings);
+};
+
+jsts.geom.Polygon.prototype.computeEnvelopeInternal = function() {
+  var shell = this.components[0];
+
+  return shell.getEnvelopeInternal();
+};
+
+jsts.geom.Polygon.prototype.getDimension = function() {
+  return 2;
+};
+
+jsts.geom.Polygon.prototype.getBoundaryDimension = function() {
+  return 1;
 };
 
 

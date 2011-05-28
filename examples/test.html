@@ -149,9 +149,26 @@
     //var b = reader.read('LINESTRING(20 20, 80 80)');
     //var result = a.relate(b, '1FFF0FFF2');
     
-    var a = reader.read('LINESTRING(40 40, 160 160, 200 60, 60 140)');
-    var b = reader.read('LINESTRING(40 40, 160 160, 200 60, 60 140)');
-    var result = a.relate(b, '1FFF0FFF2');
+    //var a = reader.read('LINESTRING(40 40, 160 160, 200 60, 60 140)');
+    //var b = reader.read('LINESTRING(40 40, 160 160, 200 60, 60 140)');
+    //var result = a.relate(b, '1FFF0FFF2');
+    
+    //var a = reader.read('LINESTRING(0 0, 0 50, 50 50, 50 0, 0 0)');
+    //var b = reader.read('MULTILINESTRING((0 0, 0 50), (0 50, 50 50), (50 50, 50 0), (50 0, 0 0))');
+    //var result = a.relate(b, '1FFFFFFF2');
+    
+    //var a = reader.read('POINT(20 20)');
+    //var b = reader.read('POLYGON((60 120, 60 40, 160 40, 160 120, 60 120))');
+    //var result = a.relate(b, 'FF0FFF212');
+    
+    //var a = reader.read('POLYGON((0 0, 140 0, 140 140, 0 140, 0 0))');
+    //var b = reader.read('POLYGON((140 0, 0 0, 0 140, 140 140, 140 0))');
+    //var result = a.relate(b, '2FFF1FFF2');
+    
+    var a = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))');
+    var b = reader.read('POLYGON((80 100, 360 100, 360 280, 80 280, 80 100))');
+    var result = a.relate(b, '2121F12F2');
+    
     
     console.log(result);
   }

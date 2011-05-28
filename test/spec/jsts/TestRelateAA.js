@@ -1,4 +1,4 @@
-describe('TestRelateLL', function() {
+describe('TestRelateAA', function() {
   var doc = null;
   var xmlLoaded = false;
   var isReady = function() {
@@ -6,14 +6,14 @@ describe('TestRelateLL', function() {
   };
 
   $.ajax({
-    url: '../testxml/general/TestRelateLL.xml',
+    url: '../testxml/general/TestRelateAA.xml',
     success: function(response) {
       doc = response;
       xmlLoaded = true;
     }
   });
   
-  it('passes all tests in TestRelateLL.xml', function() {
+  it('passes all tests in TestRelateAA.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = $('case', doc);
@@ -32,6 +32,7 @@ describe('TestRelateLL', function() {
         for (var j = 0; j<tests.length; j++) {
           var test = tests[j];
           
+          var op = $("op", test).attr('name');
           var matrix = $("op", test).attr('arg3');
           var expected = $("op", test).text().trim() === 'true';
 
@@ -42,7 +43,9 @@ describe('TestRelateLL', function() {
           
           var result;
           
-          result = ag.relate(bg, matrix);
+          if (op !== 'relate') continue;
+          
+          result = ag[op](bg, matrix);
           
           if (result === undefined) continue;
           

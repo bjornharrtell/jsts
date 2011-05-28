@@ -140,13 +140,15 @@ jsts.geomgraph.GeometryGraph.prototype.getGeometry = function() {
   return this.parentGeom;
 };
 
-jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodes = function()    {
+jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodes = function() {
   if (this.boundaryNodes == null)
     this.boundaryNodes = this.nodes.getBoundaryNodes(this.argIndex);
   return this.boundaryNodes;
 };
 
-jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodeRule = function() { return this.boundaryNodeRule; };
+jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodeRule = function() {
+  return this.boundaryNodeRule;
+};
 
 
 /**
@@ -206,6 +208,20 @@ jsts.geomgraph.GeometryGraph.prototype.addCollection = function(gc) {
 
 
 /**
+ * Add an Edge computed externally. The label on the Edge is assumed to be
+ * correct.
+ */
+jsts.geomgraph.GeometryGraph.prototype.addEdge = function(e) {
+  this.insertEdge(e);
+  var coord = e.getCoordinates();
+  // insert the endpoint as a node, to mark that it is on the boundary
+  this.insertPoint(this.argIndex, coord[0], jsts.geom.Location.BOUNDARY);
+  this.insertPoint(this.argIndex, coord[coord.length - 1],
+      jsts.geom.Location.BOUNDARY);
+};
+
+
+/**
  * Add a Point to the graph.
  */
 jsts.geomgraph.GeometryGraph.prototype.addPoint = function(p) {
@@ -247,6 +263,65 @@ jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
 
   this.insertBoundaryPoint(this.argIndex, coords[0]);
   this.insertBoundaryPoint(this.argIndex, coords[coords.length - 1]);
+};
+
+
+/**
+ * Adds a polygon ring to the graph. Empty rings are ignored.
+ *
+ * The left and right topological location arguments assume that the ring is
+ * oriented CW. If the ring is in the opposite orientation, the left and right
+ * locations must be interchanged.
+ *
+ * @private
+ */
+jsts.geomgraph.GeometryGraph.prototype.addPolygonRing = function(lr, cwLeft,
+    cwRight) {
+  // don't bother adding empty holes
+  if (lr.isEmpty())
+    return;
+
+  var coord = jsts.geom.CoordinateArrays.removeRepeatedPoints(lr
+      .getCoordinates());
+
+  if (coord.length < 4) {
+    this.hasTooFewPoints = true;
+    this.invalidPoint = coord[0];
+    return;
+  }
+
+  var left = cwLeft;
+  var right = cwRight;
+  if (jsts.algorithm.CGAlgorithms.isCCW(coord)) {
+    left = cwRight;
+    right = cwLeft;
+  }
+  var e = new jsts.geomgraph.Edge(coord, new jsts.geomgraph.Label(
+      this.argIndex, jsts.geom.Location.BOUNDARY, left, right));
+  this.lineEdgeMap[lr] = e;
+
+  this.insertEdge(e);
+  // insert the endpoint as a node, to mark that it is on the boundary
+  this.insertPoint(this.argIndex, coord[0], jsts.geom.Location.BOUNDARY);
+};
+
+
+/**
+ * @private
+ */
+jsts.geomgraph.GeometryGraph.prototype.addPolygon = function(p) {
+  this.addPolygonRing(p.getExteriorRing(), jsts.geom.Location.EXTERIOR,
+      jsts.geom.Location.INTERIOR);
+
+  for (var i = 0; i < p.getNumInteriorRing(); i++) {
+    var hole = p.getInteriorRingN(i);
+
+    // Holes are topologically labelled opposite to the shell, since
+    // the interior of the polygon lies on their opposite side
+    // (on the left, if the hole is oriented CW)
+    this.addPolygonRing(hole, jsts.geom.Location.INTERIOR,
+        jsts.geom.Location.EXTERIOR);
+  }
 };
 
 

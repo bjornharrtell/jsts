@@ -1,4 +1,4 @@
-describe('TestRelateLL', function() {
+describe('TestRelatePA', function() {
   var doc = null;
   var xmlLoaded = false;
   var isReady = function() {
@@ -6,14 +6,14 @@ describe('TestRelateLL', function() {
   };
 
   $.ajax({
-    url: '../testxml/general/TestRelateLL.xml',
+    url: '../testxml/general/TestRelatePA.xml',
     success: function(response) {
       doc = response;
       xmlLoaded = true;
     }
   });
   
-  it('passes all tests in TestRelateLL.xml', function() {
+  it('passes all tests in TestRelatePA.xml', function() {
     waitsFor(isReady);
     runs(function() {
       var cases = $('case', doc);
