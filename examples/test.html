@@ -140,10 +140,12 @@
     map.addLayer(vectorLayer);
     map.setCenter(new OpenLayers.LonLat(point.x, point.y), 5);
     
+    // NOTE: fails with resulting IM FF0FFF102
+    // The first F instead of 0 in the IM seems to be because this.label.getLocation(1) for RelateNode with coord 60 60 returns 2 but should be 0.
     var reader = new jsts.io.WKTReader();
-    //var a = reader.read('MULTIPOINT((60 60), (100 100))');
-    //var b = reader.read('LINESTRING(40 40, 60 60, 80 80)');
-    //var result = a.relate(b, '0F0FFF102');
+    var a = reader.read('MULTIPOINT((60 60), (100 100))');
+    var b = reader.read('LINESTRING(40 40, 60 60, 80 80)');
+    var result = a.relate(b, '0F0FFF102');
        
     //var a = reader.read('LINESTRING(20 20, 80 80)');
     //var b = reader.read('LINESTRING(20 20, 80 80)');
@@ -165,10 +167,9 @@
     //var b = reader.read('POLYGON((140 0, 0 0, 0 140, 140 140, 140 0))');
     //var result = a.relate(b, '2FFF1FFF2');
     
-    var a = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))');
-    var b = reader.read('POLYGON((80 100, 360 100, 360 280, 80 280, 80 100))');
-    var result = a.relate(b, '2121F12F2');
-    
+    //var a = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))');
+    //var b = reader.read('POLYGON((80 100, 360 100, 360 280, 80 280, 80 100))');
+    //var result = a.relate(b, '2121F12F2');
     
     console.log(result);
   }
