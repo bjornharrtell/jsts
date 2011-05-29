@@ -44,6 +44,14 @@ jsts.geomgraph.PlanarGraph.prototype.edges = null;
  */
 jsts.geomgraph.PlanarGraph.prototype.nodes = null;
 
+jsts.geomgraph.PlanarGraph.prototype.isBoundaryNode = function(geomIndex, coord) {
+  var node = this.nodes.find(coord);
+  if (node == null) return false;
+  var label = node.getLabel();
+  if (label !== null && label.getLocation(geomIndex) === jsts.geom.Location.BOUNDARY) return true;
+  return false;
+};
+
 jsts.geomgraph.PlanarGraph.prototype.insertEdge = function(e) {
   this.edges.push(e);
 };
