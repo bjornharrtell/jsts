@@ -3,7 +3,11 @@
 jsts.vs.Application = {
   init: function() {
 
-    var testCaseDetailsPanel = new jsts.vs.TestCaseDetailsPanel();
+    var testCaseResultsPanel = new jsts.vs.TestCaseResultsPanel();
+    var testCaseDetailsPanel = new jsts.vs.TestCaseDetailsPanel({
+      testCaseResultsPanel: testCaseResultsPanel
+    });
+    
     var testCaseForm = new jsts.vs.TestCaseForm({
       testCaseDetailsPanel: testCaseDetailsPanel
     });
@@ -35,7 +39,8 @@ jsts.vs.Application = {
         height: 200,
         width: 600,
         frame: true,
-        html: 'TODO: Replace with test case results'
+        layout: 'fit',
+        items: testCaseResultsPanel
       }]
     });
   }

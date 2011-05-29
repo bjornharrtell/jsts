@@ -860,8 +860,8 @@ jsts.geom.Geometry.prototype.coveredBy = function(g) {
  * @see IntersectionMatrix
  */
 jsts.geom.Geometry.prototype.relate = function(g, intersectionPattern) {
-  if (intersectionPattern === undefined) {
-    this.relate2.call(this, 2);
+  if (arguments.length === 1) {
+    return this.relate2.apply(this, arguments);
   }
 
   return this.relate2(g).matches(intersectionPattern);
