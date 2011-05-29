@@ -85,7 +85,7 @@ jsts.geomgraph.NodeMap.prototype.find = function(coord) {
  */
 jsts.geomgraph.NodeMap.prototype.values = function() {
   var array = [];
-  for (key in this.nodeMap) {
+  for (var key in this.nodeMap) {
     if (this.nodeMap.hasOwnProperty(key)) {
       array.push(this.nodeMap[key]);
     }
@@ -111,7 +111,7 @@ jsts.geomgraph.NodeMap.prototype.getBoundaryNodes = function(geomIndex) {
   for (i = 0; i < values.length; i++) {
     var node = values[i];
     if (node.getLabel().getLocation(geomIndex) === jsts.geom.Location.BOUNDARY)
-      bdyNodes.add(node);
+      bdyNodes.push(node);
   }
   return bdyNodes;
 };

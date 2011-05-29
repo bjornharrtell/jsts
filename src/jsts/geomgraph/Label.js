@@ -105,6 +105,9 @@ jsts.geomgraph.Label.prototype.flip = function() {
  * @return {int}
  */
 jsts.geomgraph.Label.prototype.getLocation = function(geomIndex, posIndex) {
+  if (arguments.length == 1) {
+    return this.getLocation2.apply(this, arguments);
+  }
   return this.elt[geomIndex].get(posIndex);
 };
 
@@ -114,7 +117,7 @@ jsts.geomgraph.Label.prototype.getLocation = function(geomIndex, posIndex) {
  *          geomIndex
  * @return {int}
  */
-jsts.geomgraph.Label.prototype.getLocation = function(geomIndex) {
+jsts.geomgraph.Label.prototype.getLocation2 = function(geomIndex) {
   return this.elt[geomIndex].get(jsts.geomgraph.Position.ON);
 };
 
@@ -129,6 +132,11 @@ jsts.geomgraph.Label.prototype.getLocation = function(geomIndex) {
  */
 jsts.geomgraph.Label.prototype.setLocation = function(geomIndex, posIndex,
     location) {
+  if (arguments.length == 2) {
+    this.setLocation2.apply(this, arguments);
+    return;
+  }
+
   this.elt[geomIndex].setLocation(posIndex, location);
 };
 
@@ -139,7 +147,7 @@ jsts.geomgraph.Label.prototype.setLocation = function(geomIndex, posIndex,
  * @param {int}
  *          location
  */
-jsts.geomgraph.Label.prototype.setLocation = function(geomIndex, location) {
+jsts.geomgraph.Label.prototype.setLocation2 = function(geomIndex, location) {
   this.elt[geomIndex].setLocation(jsts.geomgraph.Position.ON, location);
 };
 
@@ -163,6 +171,11 @@ jsts.geomgraph.Label.prototype.setAllLocations = function(geomIndex, location) {
  */
 jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(geomIndex,
     location) {
+  if (arguments.length == 1) {
+    this.setAllLocationsIfNull2.apply(this, arguments);
+    return;
+  }
+
   this.elt[geomIndex].setAllLocationsIfNull(location);
 };
 
@@ -171,7 +184,7 @@ jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(geomIndex,
  * @param {int}
  *          location
  */
-jsts.geomgraph.Label.prototype.setAllLocationsIfNull = function(location) {
+jsts.geomgraph.Label.prototype.setAllLocationsIfNull2 = function(location) {
   this.setAllLocationsIfNull(0, location);
   this.setAllLocationsIfNull(1, location);
 };
@@ -236,7 +249,7 @@ jsts.geomgraph.Label.prototype.isAnyNull = function(geomIndex) {
  */
 jsts.geomgraph.Label.prototype.isArea = function() {
   if (arguments.length == 1) {
-    return this.isArea(arguments[0]);
+    return this.isArea2(arguments[0]);
   }
 
   return this.elt[0].isArea() || this.elt[1].isArea();

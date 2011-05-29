@@ -38,5 +38,5 @@ jsts.operation.relate.RelateNode.prototype.computeIM = function(im) {
  * Update the IM with the contribution for the EdgeEnds incident on this node.
  */
 jsts.operation.relate.RelateNode.prototype.updateIMFromEdges = function(im) {
-  this.updateIM(im);
+  this.edges.updateIM(im);
 };

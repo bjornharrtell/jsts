@@ -103,7 +103,7 @@ jsts.geomgraph.GeometryGraph.prototype.argIndex = null; //
  * @type {Collection}
  * @private
  */
-jsts.geomgraph.GeometryGraph.prototype.boundaryNodes = [];
+jsts.geomgraph.GeometryGraph.prototype.boundaryNodes = null;
 
 
 /**

@@ -148,3 +148,7 @@ jsts.geomgraph.EdgeEnd.prototype.computeLabel = function(boundaryNodeRule)  {
   // subclasses should override this if they are using labels
 };
 
+jsts.geomgraph.EdgeEnd.prototype.toString = function() {
+  // TODO: this might not be a proper hashcode for storing as object
+  return '' + this.dx + this.dy + this.quadrant;
+};

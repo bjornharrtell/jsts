@@ -257,8 +257,9 @@ jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes = functi
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
     var eLoc = e.getLabel().getLocation(argIndex);
-    for (var j = 0; j < e.eiList.length; j++) {
-      var ei = e.eiList[j];
+    var eis = e.eiList.getSortedIntersections();
+    for (var j = 0; j < eis.length; j++) {
+      var ei = eis[j];
       var n = this.nodes.addNode(ei.coord);
       if (eLoc === jsts.geom.Location.BOUNDARY)
         n.setLabelBoundary(argIndex);
@@ -285,8 +286,9 @@ jsts.operation.relate.RelateComputer.prototype.labelIntersectionNodes = function
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i];
     var eLoc = e.getLabel().getLocation(argIndex);
-    for (var j = 0; j < e.eiList.length; j++) {
-      var ei = e.eiList[j];
+    var eis = e.eiList.getSortedIntersections();
+    for (var j = 0; j < eis.length; j++) {
+      var ei = eis[j];
       var n = this.nodes.find(ei.coord);
       if (n.getLabel().isNull(argIndex)) {
         if (eLoc === jsts.geom.Location.BOUNDARY)

@@ -59,7 +59,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabel = function(
   // create the label. If any of the edges belong to areas,
   // the label must be an area label
   var isArea = false;
-  for (var i = 0; this.edgeEnds.length; i++) {
+  for (var i = 0; i < this.edgeEnds.length; i++) {
     var e = this.edgeEnds[i];
     if (e.getLabel().isArea())
       isArea = true;
@@ -106,7 +106,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelOn = function(
   var boundaryCount = 0;
   var foundInterior = false;
 
-  for (var i = 0; this.edgeEnds.length; i++) {
+  for (var i = 0; i < this.edgeEnds.length; i++) {
     var e = this.edgeEnds[i];
     var loc = e.getLabel().getLocation(geomIndex);
     if (loc == jsts.geom.Location.BOUNDARY)
@@ -155,14 +155,14 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSides = function(
  */
 jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSide = function(
     geomIndex, side) {
-  for (var i = 0; this.edgeEnds.length; i++) {
+  for (var i = 0; i < this.edgeEnds.length; i++) {
     var e = this.edgeEnds[i];
     if (e.getLabel().isArea()) {
       var loc = e.getLabel().getLocation(geomIndex, side);
-      if (loc == jsts.geom.Location.INTERIOR) {
+      if (loc === jsts.geom.Location.INTERIOR) {
         this.label.setLocation(geomIndex, side, jsts.geom.Location.INTERIOR);
         return;
-      } else if (loc == jsts.geom.Location.EXTERIOR)
+      } else if (loc === jsts.geom.Location.EXTERIOR)
         this.label.setLocation(geomIndex, side, jsts.geom.Location.EXTERIOR);
     }
   }

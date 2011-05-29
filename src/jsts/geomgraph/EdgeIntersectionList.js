@@ -39,7 +39,7 @@ jsts.geomgraph.EdgeIntersectionList.prototype.edge = null;
 jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex, dist)    {
   var eiNew = new jsts.geomgraph.EdgeIntersection(intPt, segmentIndex, dist);
   var ei = this.nodeMap[eiNew];
-  if (ei !== null) {
+  if (ei !== undefined) {
     return ei;
   }
   this.nodeMap[eiNew] = eiNew;
@@ -62,7 +62,7 @@ jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function()    {
  */
 jsts.geomgraph.EdgeIntersectionList.prototype.getSortedIntersections = function() {
   var array = [];
-  for (key in this.nodeMap) {
+  for (var key in this.nodeMap) {
     if (this.nodeMap.hasOwnProperty(key)) {
       array.push(this.nodeMap[key]);
     }
