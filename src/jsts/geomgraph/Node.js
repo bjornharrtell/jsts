@@ -39,6 +39,26 @@ jsts.geomgraph.Node.prototype.setLabel2 = function(argIndex,  onLocation) {
 
 
 /**
+ * Updates the label of a node to BOUNDARY,
+ * obeying the mod-2 boundaryDetermination rule.
+ */
+jsts.geomgraph.Node.prototype.setLabelBoundary = function(argIndex) {
+  // determine the current location for the point (if any)
+  var loc = jsts.geom.Location.NONE;
+  if (this.label !== null)
+    loc = this.label.getLocation(argIndex);
+  // flip the loc
+  var newLoc;
+  switch (loc) {
+    case jsts.geom.Location.BOUNDARY: newLoc = jsts.geom.Location.INTERIOR; break;
+    case jsts.geom.Location.INTERIOR: newLoc = jsts.geom.Location.BOUNDARY; break;
+    default: newLoc = jsts.geom.Location.BOUNDARY; break;
+  }
+  this.label.setLocation(argIndex, newLoc);
+};
+
+
+/**
  * Add the edge to the list of edges at this node
  */
 jsts.geomgraph.Node.prototype.add = function(e)
