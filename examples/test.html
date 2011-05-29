@@ -151,11 +151,12 @@
     var reader = new jsts.io.WKTReader();
     
     // NOTE: resulting matrix is 212101212
-    // 
+    // node at 100 60 seem to be setting the fault 1 above
+    // and it seems to be connected to an EdgeEndBundle with dx 20 and dy 20 from p0 100,60 and p1 120 80 which gets wrong labeling
+    // break condition in JST e.getCoordinate().x == 100 && e.getCoordinate().y == 60 && e.getDirectedCoordinate().x == 120 && e.getDirectedCoordinate().y == 80
     var a = reader.read('POLYGON((100 60, 140 100, 100 140, 60 100, 100 60))');
     var b = reader.read('MULTIPOLYGON(((80 40, 120 40, 120 80, 80 80, 80 40)), ((120 80, 160 80, 160 120, 120 120, 120 80)), ((80 120, 120 120, 120 160, 80 160, 80 120)), ((40 80, 80 80, 80 120, 40 120, 40 80)))');
     var result = a.relate(b, '21210F212');
-    
     
     console.log(result);
   }
