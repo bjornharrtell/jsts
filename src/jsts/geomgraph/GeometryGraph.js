@@ -413,8 +413,9 @@ jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
   for (i = 0; i < this.edges.length; i++) {
     e = this.edges[i];
     eLoc = e.getLabel().getLocation(argIndex);
-    for (j = 0; j < e.eiList.length; j++) {
-      ei = e.eiList[j];
+    var eis = e.eiList.getSortedIntersections();
+    for (j = 0; j < eis.length; j++) {
+      ei = eis[j];
       this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
     }
   }

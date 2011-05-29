@@ -10,8 +10,7 @@
  * @constructor
  */
 jsts.operation.relate.EdgeEndBundleStar = function() {
-  this.edgeMap = {};
-  this.edgeList = [];
+  jsts.geomgraph.EdgeEndStar.apply(this, arguments);
 };
 
 jsts.operation.relate.EdgeEndBundleStar.prototype = new jsts.geomgraph.EdgeEndStar();
