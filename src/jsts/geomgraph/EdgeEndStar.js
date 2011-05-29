@@ -15,7 +15,8 @@
  */
 jsts.geomgraph.EdgeEndStar = function() {
   this.edgeMap = {};
-  this.edgeList = [];
+  this.edgeList = null;
+  this.ptInAreaLocation = [jsts.geom.Location.NONE, jsts.geom.Location.NONE];
 };
 
 
@@ -42,8 +43,7 @@ jsts.geomgraph.EdgeEndStar.prototype.edgeList = null;
  *
  * @private
  */
-jsts.geomgraph.EdgeEndStar.prototype.ptInAreaLocation = [
-  jsts.geom.Location.NONE, jsts.geom.Location.NONE];
+jsts.geomgraph.EdgeEndStar.prototype.ptInAreaLocation = null;
 
 
 /**
@@ -90,19 +90,19 @@ jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
  * NOTE: jsts does not support iterators
  */
 jsts.geomgraph.EdgeEndStar.prototype.getEdges = function() {
-  if (this.edgeList == null) {
-    this.edgeList = [];
-    for (key in this.nodeMap) {
-      if (this.nodeMap.hasOwnProperty(key)) {
-        this.edgeList.push(this.nodeMap[key]);
-      }
+  //if (this.edgeList == null) {
+  this.edgeList = [];
+  for (var key in this.edgeMap) {
+    if (this.edgeMap.hasOwnProperty(key)) {
+      this.edgeList.push(this.edgeMap[key]);
     }
-
-    var compare = function(a,b) {
-      return a.compareTo(b);
-    };
-    this.edgeList.sort(compare);
   }
+
+  var compare = function(a,b) {
+    return a.compareTo(b);
+  };
+  this.edgeList.sort(compare);
+  //}
   return this.edgeList;
 };
 
@@ -157,7 +157,7 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
     var e = this.edgeList[i];
     var label = e.getLabel();
     for (var geomi = 0; geomi < 2; geomi++) {
-      if (label.isLine(geomi) && label.getLocation(geomi) == jsts.geom.Location.BOUNDARY)
+      if (label.isLine(geomi) && label.getLocation(geomi) === jsts.geom.Location.BOUNDARY)
         hasDimensionalCollapseEdge[geomi] = true;
     }
   }
@@ -166,7 +166,7 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
     var label = e.getLabel();
     for (var geomi = 0; geomi < 2; geomi++) {
       if (label.isAnyNull(geomi)) {
-        var loc = Location.NONE;
+        var loc = jsts.geom.Location.NONE;
         if (hasDimensionalCollapseEdge[geomi]) {
           loc = jsts.geom.Location.EXTERIOR;
         } else {
@@ -200,10 +200,10 @@ jsts.geomgraph.EdgeEndStar.prototype.computeEdgeEndLabels = function(
 jsts.geomgraph.EdgeEndStar.prototype.getLocation = function(geomIndex, p, geom) {
   // compute location only on demand
   if (this.ptInAreaLocation[geomIndex] === jsts.geom.Location.NONE) {
-    this.ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p,
+    this.ptInAreaLocation[geomIndex] = jsts.algorithm.locate.SimplePointInAreaLocator.locate(p,
         geom[geomIndex].getGeometry());
   }
-  return ptInAreaLocation[geomIndex];
+  return this.ptInAreaLocation[geomIndex];
 };
 
 jsts.geomgraph.EdgeEndStar.prototype.isAreaLabelsConsistent = function(

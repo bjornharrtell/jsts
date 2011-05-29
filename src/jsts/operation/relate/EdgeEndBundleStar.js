@@ -10,7 +10,8 @@
  * @constructor
  */
 jsts.operation.relate.EdgeEndBundleStar = function() {
-
+  this.edgeMap = {};
+  this.edgeList = [];
 };
 
 jsts.operation.relate.EdgeEndBundleStar.prototype = new jsts.geomgraph.EdgeEndStar();
@@ -22,8 +23,9 @@ jsts.operation.relate.EdgeEndBundleStar.prototype = new jsts.geomgraph.EdgeEndSt
  * EdgeEndBundle is created to contain the EdgeEnd. <br>
  */
 jsts.operation.relate.EdgeEndBundleStar.prototype.insert = function(e) {
-  var eb = this.edgeMap.get(e);
-  if (eb === null) {
+  var eb = this.edgeMap[e];
+
+  if (eb === undefined || !(eb instanceof jsts.operation.relate.EdgeEndBundle)) {
     eb = new jsts.operation.relate.EdgeEndBundle(e);
     this.insertEdgeEnd(e, eb);
   } else {
@@ -36,10 +38,9 @@ jsts.operation.relate.EdgeEndBundleStar.prototype.insert = function(e) {
  * Update the IM with the contribution for the EdgeStubs around the node.
  */
 jsts.operation.relate.EdgeEndBundleStar.prototype.updateIM = function(im) {
-  throw new jsts.error.NotImplementedError();
-  /*
-  for (Iterator it = iterator(); it.hasNext(); ) {
-    EdgeEndBundle esb = (EdgeEndBundle) it.next();
+  var edges = this.getEdges();
+  for (var i = 0; i < edges.length; i++) {
+    var esb = edges[i];
     esb.updateIM(im);
-  }*/
+  }
 };
