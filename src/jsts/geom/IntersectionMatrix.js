@@ -584,8 +584,8 @@ jsts.geom.IntersectionMatrix.prototype.isEquals = function(
  */
 jsts.geom.IntersectionMatrix.prototype.isOverlaps = function(
     dimensionOfGeometryA, dimensionOfGeometryB) {
-  if ((dimensionOfGeometryA == jsts.geom.Dimension.P && dimensionOfGeometryB === Dimension.P) ||
-      (dimensionOfGeometryA == jsts.geom.Dimension.A && dimensionOfGeometryB === Dimension.A)) {
+  if ((dimensionOfGeometryA == jsts.geom.Dimension.P && dimensionOfGeometryB === jsts.geom.Dimension.P) ||
+      (dimensionOfGeometryA == jsts.geom.Dimension.A && dimensionOfGeometryB === jsts.geom.Dimension.A)) {
     return jsts.geom.IntersectionMatrix.matches(
         this.matrix[jsts.geom.Location.INTERIOR][jsts.geom.Location.INTERIOR],
         'T') &&

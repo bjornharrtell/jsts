@@ -3,6 +3,8 @@
  */
 jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
   initComponent: function() {
+    
+    this.testCaseResultsPanel = this.initialConfig.testCaseResultsPanel;
 
     this.layer = new OpenLayers.Layer.Vector('testcase', {
       isBaseLayer: true
@@ -48,6 +50,13 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
     var writer = new jsts.io.WKTWriter();
 
     var a = reader.read(record.data.a);
+    var b = reader.read(record.data.b);
+    
+    this.testCaseResultsPanel.showTestResults(a, b);
+    
+    if (a instanceof jsts.geom.Point) {
+      a = a.coordinate;
+    }
     var featureA = new OpenLayers.Feature.Vector(a, null, {
       fillColor: 'red',
       fillOpacity: 0.5,
@@ -57,7 +66,10 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
       pointRadius: 2
     });
 
-    var b = reader.read(record.data.b);
+    
+    if (b instanceof jsts.geom.Point) {
+      b = b.coordinate;
+    }
     var featureB = new OpenLayers.Feature.Vector(b, null, {
       fillColor: 'blue',
       fillOpacity: 0.5,
