@@ -1,5 +1,9 @@
 /* Copyright (c) 2011 by The Authors.
 
+/**
+ * @requires jsts/geomgraph/EdgeEndStar.js
+ */
+
 
 
 /**
