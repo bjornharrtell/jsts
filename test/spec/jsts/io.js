@@ -38,6 +38,6 @@ describe('jsts.io.*', function() {
     var geometry = reader.read('POLYGON ((20 20, 20 100, 120 100, 140 20, 20 20))');
     var wkt2 = writer.write(geometry);
     var geometry2 = reader.read(wkt2);
-    expect(geometry.equals(geometry)).toBeTruthy();
+    expect(geometry.equals(geometry2)).toBeTruthy();
   });
 });
