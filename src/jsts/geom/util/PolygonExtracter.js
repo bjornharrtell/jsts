@@ -5,7 +5,7 @@
  */
 
 /**
- * @requires jsts/geom/util/GeometryExtractor.js
+ * @requires jsts/geom/GeometryFilter.js
  */
 
 
