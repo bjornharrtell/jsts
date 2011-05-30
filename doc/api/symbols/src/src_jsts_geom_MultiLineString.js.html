@@ -26,4 +26,25 @@
 <span class='line'> 19</span> 
 <span class='line'> 20</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 21</span> </span><span class="NAME">jsts.geom.MultiLineString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="NAME">jsts.geom.GeometryCollection</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 22</span> </span></pre></body></html>
+<span class='line'> 22</span> 
+<span class='line'> 23</span> </span><span class="NAME">jsts.geom.MultiLineString.prototype.getBoundary</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.BoundaryOp</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getBoundary</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 26</span> 
+<span class='line'> 27</span> 
+<span class='line'> 28</span> </span><span class="COMM">/**
+<span class='line'> 29</span>  * @param {Geometry} other
+<span class='line'> 30</span>  * @param {double} tolerance
+<span class='line'> 31</span>  * @return {boolean}
+<span class='line'> 32</span>  */</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="NAME">jsts.geom.MultiLineString.prototype.equalsExact</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tolerance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">this.isEquivalentClass</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryCollection.prototype.equalsExact.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">other</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tolerance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
+<span class='line'> 40</span> </span><span class="NAME">OpenLayers.Geometry.MultiLineString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">    </span><span class="NAME">OpenLayers.Geometry.MultiLineString</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.MultiLineString</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="NAME">jsts.geom.MultiLineString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Geometry.MultiLineString</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span></pre></body></html>

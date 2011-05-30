@@ -42,7 +42,7 @@
 <span class='line'> 35</span>  * @constructor
 <span class='line'> 36</span>  */</span><span class="WHIT">
 <span class='line'> 37</span> </span><span class="NAME">jsts.geom.PrecisionModel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.PrecisionModel.prototype.init.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> 
 <span class='line'> 39</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 40</span> 
 <span class='line'> 41</span> 
@@ -72,4 +72,45 @@
 <span class='line'> 65</span> </span><span class="NAME">jsts.geom.PrecisionModel.prototype.getType</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 66</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.PrecisionModel.FLOATING</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 67</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 68</span> </span></pre></body></html>
+<span class='line'> 68</span> 
+<span class='line'> 69</span> </span><span class="NAME">jsts.geom.PrecisionModel.prototype.equals</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> 
+<span class='line'> 72</span> </span><span class="WHIT">  </span><span class="COMM">//TODO: needs to be ported for fixed precision</span><span class="WHIT">
+<span class='line'> 73</span> 
+<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="COMM">/*if (!(other instanceof PrecisionModel)) {
+<span class='line'> 75</span>     return false;
+<span class='line'> 76</span>   }
+<span class='line'> 77</span>   var otherPrecisionModel = other;
+<span class='line'> 78</span>   return this.modelType == otherPrecisionModel.modelType &&
+<span class='line'> 79</span>       this.scale == otherPrecisionModel.scale;*/</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 81</span> 
+<span class='line'> 82</span> 
+<span class='line'> 83</span> </span><span class="COMM">/**
+<span class='line'> 84</span>  * Compares this {@link PrecisionModel} object with the specified object for
+<span class='line'> 85</span>  * order. A PrecisionModel is greater than another if it provides greater
+<span class='line'> 86</span>  * precision. The comparison is based on the value returned by the
+<span class='line'> 87</span>  * {@link #getMaximumSignificantDigits} method. This comparison is not strictly
+<span class='line'> 88</span>  * accurate when comparing floating precision models to fixed models; however,
+<span class='line'> 89</span>  * it is correct when both models are either floating or fixed.
+<span class='line'> 90</span>  *
+<span class='line'> 91</span>  * @param o
+<span class='line'> 92</span>  *          the &lt;code>PrecisionModel&lt;/code> with which this
+<span class='line'> 93</span>  *          &lt;code>PrecisionModel&lt;/code> is being compared.
+<span class='line'> 94</span>  * @return a negative integer, zero, or a positive integer as this
+<span class='line'> 95</span>  *         &lt;code>PrecisionModel&lt;/code> is less than, equal to, or greater than
+<span class='line'> 96</span>  *         the specified &lt;code>PrecisionModel.&lt;/code>
+<span class='line'> 97</span>  */</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="NAME">jsts.geom.PrecisionModel.prototype.compareTo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">o</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">other</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">o</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>100</span> 
+<span class='line'>101</span> </span><span class="WHIT">  </span><span class="COMM">// TODO: needs to be ported for fixed precision</span><span class="WHIT">
+<span class='line'>102</span> 
+<span class='line'>103</span> </span><span class="WHIT">  </span><span class="COMM">// var sigDigits = this.getMaximumSignificantDigits();</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">  </span><span class="COMM">// var otherSigDigits = other.getMaximumSignificantDigits();</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">  </span><span class="COMM">// return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));</span><span class="WHIT">
+<span class='line'>106</span> 
+<span class='line'>107</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>109</span> </span></pre></body></html>

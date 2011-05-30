@@ -46,7 +46,7 @@
 <span class='line'> 39</span>  * @return {int} Dimension.FALSE.
 <span class='line'> 40</span>  */</span><span class="WHIT">
 <span class='line'> 41</span> </span><span class="NAME">jsts.geom.LinearRing.prototype.getBoundaryDimension</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 43</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 44</span> 
 <span class='line'> 45</span> 
@@ -69,4 +69,19 @@
 <span class='line'> 62</span> </span><span class="NAME">jsts.geom.LinearRing.prototype.getGeometryType</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 63</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'LinearRing'</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 64</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 65</span> </span></pre></body></html>
+<span class='line'> 65</span> 
+<span class='line'> 66</span> 
+<span class='line'> 67</span> </span><span class="NAME">OpenLayers.Geometry.LinearRing</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="NAME">OpenLayers.Geometry.LinearRing</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LinearRing</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="NAME">jsts.geom.LinearRing</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Geometry.LinearRing</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> 
+<span class='line'> 71</span> </span><span class="NAME">OpenLayers.Geometry.LineString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">    </span><span class="NAME">OpenLayers.Geometry.LineString</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineString</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">      </span><span class="NAME">initialize</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">points</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">        </span><span class="NAME">OpenLayers.Geometry.Curve.prototype.initialize.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> 
+<span class='line'> 76</span> </span><span class="WHIT">        </span><span class="NAME">this.geometries</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.components</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="NAME">jsts.geom.LineString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Geometry.LineString</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> </span></pre></body></html>

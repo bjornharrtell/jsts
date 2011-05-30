@@ -17,38 +17,71 @@
 <span class='line'> 10</span>  * @constructor
 <span class='line'> 11</span>  */</span><span class="WHIT">
 <span class='line'> 12</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">edge</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 13</span> </span><span class="WHIT">  </span><span class="NAME">this.edge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edge</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 14</span> </span><span class="WHIT">  </span><span class="NAME">this.nodeMap</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.Hashtable</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">  </span><span class="NAME">this.nodeMap</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">  </span><span class="NAME">this.edge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edge</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 15</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 16</span> 
-<span class='line'> 17</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.nodeMap</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 18</span> 
-<span class='line'> 19</span> 
-<span class='line'> 20</span> </span><span class="COMM">/**
-<span class='line'> 21</span>  * the parent edge
-<span class='line'> 22</span>  * @type {Edge}
-<span class='line'> 23</span>  */</span><span class="WHIT">
-<span class='line'> 24</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.edge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 25</span> 
-<span class='line'> 26</span> 
-<span class='line'> 27</span> </span><span class="COMM">/**
-<span class='line'> 28</span>  * Adds an intersection into the list, if it isn't already there.
-<span class='line'> 29</span>  * The input segmentIndex and dist are expected to be normalized.
-<span class='line'> 30</span>  * @param {Coordinate} intPt
-<span class='line'> 31</span>  * @param {int} segmentIndex
-<span class='line'> 32</span>  * @param {double} dist
-<span class='line'> 33</span>  * @return {EdgeIntersection} the EdgeIntersection found or added.
-<span class='line'> 34</span>  */</span><span class="WHIT">
-<span class='line'> 35</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.add</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">intPt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'> 36</span> </span><span class="WHIT">    </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eiNew</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.EdgeIntersection</span><span class="PUNC">(</span><span class="NAME">intPt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodeMap.get</span><span class="PUNC">(</span><span class="NAME">eiNew</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 40</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 41</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="NAME">this.nodeMap.put</span><span class="PUNC">(</span><span class="NAME">eiNew</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eiNew</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 43</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">eiNew</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 44</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 45</span> 
-<span class='line'> 46</span> </span><span class="COMM">// TODO: port rest and implement sorted map</span><span class="WHIT">
-<span class='line'> 47</span> </span></pre></body></html>
+<span class='line'> 17</span> 
+<span class='line'> 18</span> </span><span class="COMM">/**
+<span class='line'> 19</span>  * NOTE: In In JSTS a JS object replaces TreeMap. Sorting is done when needed.
+<span class='line'> 20</span>  */</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.nodeMap</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 22</span> 
+<span class='line'> 23</span> 
+<span class='line'> 24</span> </span><span class="COMM">/**
+<span class='line'> 25</span>  * the parent edge
+<span class='line'> 26</span>  * @type {Edge}
+<span class='line'> 27</span>  */</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.edge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> 
+<span class='line'> 31</span> </span><span class="COMM">/**
+<span class='line'> 32</span>  * Adds an intersection into the list, if it isn't already there.
+<span class='line'> 33</span>  * The input segmentIndex and dist are expected to be normalized.
+<span class='line'> 34</span>  * @param {Coordinate} intPt
+<span class='line'> 35</span>  * @param {int} segmentIndex
+<span class='line'> 36</span>  * @param {double} dist
+<span class='line'> 37</span>  * @return {EdgeIntersection} the EdgeIntersection found or added.
+<span class='line'> 38</span>  */</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.add</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">intPt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="PUNC">)</span><span class="WHIT">    </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eiNew</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.EdgeIntersection</span><span class="PUNC">(</span><span class="NAME">intPt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodeMap</span><span class="PUNC">[</span><span class="NAME">eiNew</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">  </span><span class="NAME">this.nodeMap</span><span class="PUNC">[</span><span class="NAME">eiNew</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eiNew</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">eiNew</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> 
+<span class='line'> 49</span> 
+<span class='line'> 50</span> </span><span class="COMM">/**
+<span class='line'> 51</span>  * Adds entries for the first and last points of the edge to the list
+<span class='line'> 52</span>  */</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">    </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">maxSegIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edge.pts.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">  </span><span class="NAME">this.add</span><span class="PUNC">(</span><span class="NAME">this.edge.pts</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">  </span><span class="NAME">this.add</span><span class="PUNC">(</span><span class="NAME">this.edge.pts</span><span class="PUNC">[</span><span class="NAME">maxSegIndex</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">maxSegIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> 
+<span class='line'> 59</span> 
+<span class='line'> 60</span> </span><span class="COMM">/**
+<span class='line'> 61</span>  * NOTE: replaces iterator in JTS
+<span class='line'> 62</span>  */</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="NAME">jsts.geomgraph.EdgeIntersectionList.prototype.getSortedIntersections</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">array</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">key</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">this.nodeMap</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.nodeMap.hasOwnProperty</span><span class="PUNC">(</span><span class="NAME">key</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">      </span><span class="NAME">array.push</span><span class="PUNC">(</span><span class="NAME">this.nodeMap</span><span class="PUNC">[</span><span class="NAME">key</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 70</span> 
+<span class='line'> 71</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">compare</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="NAME">b</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">a.compareTo</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="NAME">array.sort</span><span class="PUNC">(</span><span class="NAME">compare</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> 
+<span class='line'> 76</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">array</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 78</span> 
+<span class='line'> 79</span> </span><span class="COMM">// TODO: port rest</span><span class="WHIT">
+<span class='line'> 80</span> </span></pre></body></html>

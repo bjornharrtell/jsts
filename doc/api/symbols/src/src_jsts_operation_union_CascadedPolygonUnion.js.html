@@ -1,0 +1,217 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * Provides an efficient method of unioning a collection of
+<span class='line'>  8</span>  * {@link Polygonal} geometrys.
+<span class='line'>  9</span>  * This algorithm is faster and likely more robust than
+<span class='line'> 10</span>  * the simple iterated approach of
+<span class='line'> 11</span>  * repeatedly unioning each polygon to a result geometry.
+<span class='line'> 12</span>  * &lt;p>
+<span class='line'> 13</span>  * The &lt;tt>buffer(0)&lt;/tt> trick is sometimes faster, but can be less robust and
+<span class='line'> 14</span>  * can sometimes take an exceptionally long time to complete.
+<span class='line'> 15</span>  * This is particularly the case where there is a high degree of overlap
+<span class='line'> 16</span>  * between the polygons.  In this case, &lt;tt>buffer(0)&lt;/tt> is forced to compute
+<span class='line'> 17</span>  * with &lt;i>all&lt;/i> line segments from the outset,
+<span class='line'> 18</span>  * whereas cascading can eliminate many segments
+<span class='line'> 19</span>  * at each stage of processing.
+<span class='line'> 20</span>  * The best case for buffer(0) is the trivial case
+<span class='line'> 21</span>  * where there is &lt;i>no&lt;/i> overlap between the input geometries.
+<span class='line'> 22</span>  * However, this case is likely rare in practice.
+<span class='line'> 23</span>  *
+<span class='line'> 24</span>  */</span><span class="WHIT">
+<span class='line'> 25</span> 
+<span class='line'> 26</span> 
+<span class='line'> 27</span> </span><span class="COMM">/**
+<span class='line'> 28</span>  * Creates a new instance to union
+<span class='line'> 29</span>  * the given collection of {@link Geometry}s.
+<span class='line'> 30</span>  *
+<span class='line'> 31</span>  * @param {Geometry[]} geoms a collection of {@link Polygonal} {@link Geometry}s.
+<span class='line'> 32</span>  */</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">polys</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> 
+<span class='line'> 35</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> 
+<span class='line'> 37</span> 
+<span class='line'> 38</span> </span><span class="COMM">/**
+<span class='line'> 39</span>  * Computes the union of
+<span class='line'> 40</span>  * a collection of {@link Polygonal} {@link Geometry}s.
+<span class='line'> 41</span>  *
+<span class='line'> 42</span>  * @param {Geometry[]} polys a collection of {@link Polygonal} {@link Geometry}s.
+<span class='line'> 43</span>  * @return {Geometry}
+<span class='line'> 44</span>  */</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.union</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">polys</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 46</span> 
+<span class='line'> 47</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> 
+<span class='line'> 49</span> 
+<span class='line'> 50</span> </span><span class="COMM">/**
+<span class='line'> 51</span>  * @type {Geometry[]}
+<span class='line'> 52</span>  */</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.inputPolys</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> 
+<span class='line'> 55</span> 
+<span class='line'> 56</span> </span><span class="COMM">/**
+<span class='line'> 57</span>  * @type {GeometryFactory}
+<span class='line'> 58</span>  */</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.protoype.geomFactory</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> 
+<span class='line'> 61</span> 
+<span class='line'> 62</span> </span><span class="COMM">/**
+<span class='line'> 63</span>  * The effectiveness of the index is somewhat sensitive
+<span class='line'> 64</span>  * to the node capacity.
+<span class='line'> 65</span>  * Testing indicates that a smaller capacity is better.
+<span class='line'> 66</span>  * For an STRtree, 4 is probably a good number (since
+<span class='line'> 67</span>  * this produces 2x2 "squares").
+<span class='line'> 68</span>  *
+<span class='line'> 69</span>  * @type {int}
+<span class='line'> 70</span>  */</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.STRTREE_NODE_CAPACITY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span> 
+<span class='line'> 73</span> 
+<span class='line'> 74</span> </span><span class="COMM">/**
+<span class='line'> 75</span>  * Computes the union of the input geometries.
+<span class='line'> 76</span>  *
+<span class='line'> 77</span>  * @return {Geometry} the union of the input geometries.
+<span class='line'> 78</span>  * @return {null} null if no input geometries were provided.
+<span class='line'> 79</span>  */</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.union</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 81</span> 
+<span class='line'> 82</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span> 
+<span class='line'> 84</span> 
+<span class='line'> 85</span> </span><span class="COMM">/**
+<span class='line'> 86</span>  *
+<span class='line'> 87</span>  * @param {Geometry[]} geomTree
+<span class='line'> 88</span>  * @return {Geometry}
+<span class='line'> 89</span>  * @private
+<span class='line'> 90</span>  */</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.unionTree</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geomTree</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 92</span> 
+<span class='line'> 93</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span> 
+<span class='line'> 95</span> 
+<span class='line'> 96</span> </span><span class="COMM">/**
+<span class='line'> 97</span>  * Unions a list of geometries
+<span class='line'> 98</span>  * by treating the list as a flattened binary tree,
+<span class='line'> 99</span>  * and performing a cascaded union on the tree.
+<span class='line'>100</span>  *
+<span class='line'>101</span>  * Unions a section of a list using a recursive binary union on each half
+<span class='line'>102</span>  * of the section.
+<span class='line'>103</span>  * @param {Geometry[]} geoms
+<span class='line'>104</span>  * @param {int} start
+<span class='line'>105</span>  * @param {int} end
+<span class='line'>106</span>  * @return {Geometry} the union of the list section.
+<span class='line'>107</span> 
+<span class='line'>108</span>  */</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geoms</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">start</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">end</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">  </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">  </span><span class="NAME">end</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">end</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">geoms.length</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>114</span> 
+<span class='line'>115</span> 
+<span class='line'>116</span> </span><span class="COMM">/**
+<span class='line'>117</span>  *
+<span class='line'>118</span>  * @param {Geometry[]} list
+<span class='line'>119</span>  * @param {int} index
+<span class='line'>120</span>  * @return {Geometry}
+<span class='line'>121</span>  * @private
+<span class='line'>122</span>  */</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.getGeometry</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">list</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">index</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>124</span> 
+<span class='line'>125</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>126</span> 
+<span class='line'>127</span> 
+<span class='line'>128</span> </span><span class="COMM">/**
+<span class='line'>129</span>  * Reduces a tree of geometries to a list of geometries
+<span class='line'>130</span>  * by recursively unioning the subtrees in the list.
+<span class='line'>131</span>  *
+<span class='line'>132</span>  * @param {Geometry[]} geomTree a tree-structured list of geometries.
+<span class='line'>133</span>  * @return {Geometry[]} a list of Geometrys.
+<span class='line'>134</span>  */</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.reduceToGeometries</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geomTree</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>136</span> 
+<span class='line'>137</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>138</span> 
+<span class='line'>139</span> 
+<span class='line'>140</span> </span><span class="COMM">/**
+<span class='line'>141</span>  * Computes the union of two geometries,
+<span class='line'>142</span>  * either of both of which may be null.
+<span class='line'>143</span>  *
+<span class='line'>144</span>  * @param {Geometry} g0 a Geometry.
+<span class='line'>145</span>  * @param {Geometry} g1 a Geometry.
+<span class='line'>146</span>  * @return {Geometry} the union of the input(s).
+<span class='line'>147</span>  * @return {null} null if both inputs are null.
+<span class='line'>148</span>  * @private
+<span class='line'>149</span>  */</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.unionSafe</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">g0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">g1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>151</span> 
+<span class='line'>152</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>153</span> 
+<span class='line'>154</span> 
+<span class='line'>155</span> </span><span class="COMM">/**
+<span class='line'>156</span>  * @param {Geometry} g0 a Geometry.
+<span class='line'>157</span>  * @param {Geometry} g1 a Geometry.
+<span class='line'>158</span>  * @return {Geometry} the union of the input(s).
+<span class='line'>159</span>  * @private
+<span class='line'>160</span>  */</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">g0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">g1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span> 
+<span class='line'>163</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> 
+<span class='line'>165</span> 
+<span class='line'>166</span> </span><span class="COMM">/**
+<span class='line'>167</span>  * Unions two polygonal geometries.
+<span class='line'>168</span>  * The case of MultiPolygons is optimized to union only
+<span class='line'>169</span>  * the polygons which lie in the intersection of the two geometry's envelopes.
+<span class='line'>170</span>  * Polygons outside this region can simply be combined with the union result,
+<span class='line'>171</span>  * which is potentially much faster.
+<span class='line'>172</span>  * This case is likely to occur often during cascaded union, and may also
+<span class='line'>173</span>  * occur in real world data (such as unioning data for parcels on different street blocks).
+<span class='line'>174</span>  *
+<span class='line'>175</span>  * @param {Geometry} g0 a polygonal geometry.
+<span class='line'>176</span>  * @param {Geometry} g1 a polygonal geometry.
+<span class='line'>177</span>  * @param {Envelope} common the intersection of the envelopes of the inputs.
+<span class='line'>178</span>  * @return {Geometry} the union of the inputs.
+<span class='line'>179</span>  * @private
+<span class='line'>180</span>  */</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">g0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">g1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">common</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>182</span> 
+<span class='line'>183</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>184</span> 
+<span class='line'>185</span> 
+<span class='line'>186</span> </span><span class="COMM">/**
+<span class='line'>187</span>  *
+<span class='line'>188</span>  * @param {Envelope} env
+<span class='line'>189</span>  * @param {Geometry} geom
+<span class='line'>190</span>  * @param {Geometry[]} disjointGeoms
+<span class='line'>191</span>  * @return {Geometry}
+<span class='line'>192</span>  * @private
+<span class='line'>193</span>  */</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">env</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">geom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">disjointGeoms</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>195</span> 
+<span class='line'>196</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>197</span> 
+<span class='line'>198</span> 
+<span class='line'>199</span> </span><span class="COMM">/**
+<span class='line'>200</span>  * Encapsulates the actual unioning of two polygonal geometries.
+<span class='line'>201</span>  *
+<span class='line'>202</span>  * @param {Geometry} g0
+<span class='line'>203</span>  * @param {Geometry} g1
+<span class='line'>204</span>  * @return {Geometry}
+<span class='line'>205</span>  * @private
+<span class='line'>206</span>  */</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="NAME">jsts.operation.union.CascadedPolygonUnion.prototype.unionActual</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">g0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">g1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>208</span> 
+<span class='line'>209</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>210</span> </span></pre></body></html>
