@@ -28,7 +28,7 @@ jsts.operation.GeometryGraphOperation = function(g0, g1, boundaryNodeRule) {
   if (g1 === undefined) {
     this.setComputationPrecision(g0.getPrecisionModel());
 
-    arg[0] = new jsts.geomgraph.GeometryGraph(0, g0);
+    this.arg[0] = new jsts.geomgraph.GeometryGraph(0, g0);
     return;
   }
 
