@@ -29,7 +29,7 @@
  * @constructor
  */
 jsts.operation.relate.RelateOp = function() {
-  jsts.operation.GeometryGraphOperation.prototype.constructor.apply(this, arguments);
+  jsts.operation.GeometryGraphOperation.apply(this, arguments);
   this._relate = new jsts.operation.relate.RelateComputer(this.arg);
 };
 

@@ -27,7 +27,6 @@ jsts.operation.relate.RelateComputer = function(arg) {
       new jsts.operation.relate.RelateNodeFactory());
   this.isolatedEdges = [];
 
-
   this.arg = arg;
 };
 
@@ -75,7 +74,7 @@ jsts.operation.relate.RelateComputer.prototype.im = null;
  * @type {[]}
  * @private
  */
-jsts.operation.relate.RelateComputer.prototype.isolatedEdges;
+jsts.operation.relate.RelateComputer.prototype.isolatedEdges = null;
 
 
 /**
