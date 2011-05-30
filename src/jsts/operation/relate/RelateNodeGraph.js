@@ -74,8 +74,7 @@ jsts.operation.relate.RelateNodeGraph.prototype.computeIntersectionNodes = funct
     var eLoc = e.getLabel().getLocation(argIndex);
     for (var j = 0; j < e.eiList.length; j++) {
       var ei = e.eiList[j];
-      RelateNode;
-      n = this.nodes.addNode(ei.coord);
+      var n = this.nodes.addNode(ei.coord);
       if (eLoc === Location.BOUNDARY)
         n.setLabelBoundary(argIndex);
       else {
