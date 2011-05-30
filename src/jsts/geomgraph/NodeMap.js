@@ -45,7 +45,7 @@ jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
     return node;
   } else if (arg instanceof jsts.geomgraph.Node) {
     var sn = arg;
-    node = nodeMap[n.getCoordinate()];
+    node = this.nodeMap[n.getCoordinate()];
     if (node === undefined) {
       this.nodeMap[n.getCoordinate()] = n;
       return n;
