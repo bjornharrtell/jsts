@@ -24,7 +24,7 @@
  */
 jsts.geom.Coordinate = function() {
 };
-jsts.geom.Coordinate = OpenLayers.Class(jsts.geom.Geometry);
+jsts.geom.Coordinate = OpenLayers.Class();
 
 
 /**
@@ -100,8 +100,8 @@ jsts.geom.Coordinate.prototype.equals2D = function(other) {
  *         <code>Coordinate</code> with the same values for the x and y
  *         ordinates.
  */
-jsts.geom.Coordinate.prototype.jsts_equals = function(other) {
-  if (other.CLASS_NAME !== this.CLASS_NAME) {
+jsts.geom.Coordinate.prototype.equals = function(other) {
+  if (!other instanceof jsts.geom.Coordinate || other === undefined) {
     return false;
   }
   return this.equals2D(other);

@@ -122,8 +122,8 @@ jsts.geom.Geometry.prototype.getGeometryType = function() {
  * Returns true if the array contains any non-empty <code>Geometry</code>s.
  *
  * @param {Geometry[]}
- *          geometries an array of <code>Geometry</code>s; no elements may
- *          be <code>null.</code>
+ *          geometries an array of <code>Geometry</code>s; no elements may be
+ *          <code>null.</code>
  * @return {Boolean} <code>true</code> if any of the <code>Geometry</code>s
  *         <code>isEmpty</code> methods return <code>false.</code>
  */
@@ -209,8 +209,8 @@ jsts.geom.Geometry.prototype.getPrecisionModel = function() {
 
 /**
  * Returns a vertex of this <code>Geometry</code> (usually, but not
- * necessarily, the first one). The returned coordinate should not be assumed
- * to be an actual Coordinate object used in the internal representation.
+ * necessarily, the first one). The returned coordinate should not be assumed to
+ * be an actual Coordinate object used in the internal representation.
  *
  * @return {Coordinate} a {@link Coordinate} which is a vertex of this
  *         <code>Geometry</code>. null if this Geometry is empty.
@@ -221,16 +221,15 @@ jsts.geom.Geometry.prototype.getCoordinate = function() {
 
 
 /**
- * Returns an array containing the values of all the vertices for this
- * geometry. If the geometry is a composite, the array will contain all the
- * vertices for the components, in the order in which the components occur in
- * the geometry.
+ * Returns an array containing the values of all the vertices for this geometry.
+ * If the geometry is a composite, the array will contain all the vertices for
+ * the components, in the order in which the components occur in the geometry.
  * <p>
- * In general, the array cannot be assumed to be the actual internal storage
- * for the vertices. Thus modifying the array may not modify the geometry
- * itself. Use the {@link CoordinateSequence#setOrdinate} method (possibly on
- * the components) to modify the underlying data. If the coordinates are
- * modified, {@link #geometryChanged} must be called afterwards.
+ * In general, the array cannot be assumed to be the actual internal storage for
+ * the vertices. Thus modifying the array may not modify the geometry itself.
+ * Use the {@link CoordinateSequence#setOrdinate} method (possibly on the
+ * components) to modify the underlying data. If the coordinates are modified,
+ * {@link #geometryChanged} must be called afterwards.
  *
  * @return {Coordinate[]} the vertices of this <code>Geometry.</code>
  * @see geometryChanged
@@ -271,9 +270,8 @@ jsts.geom.Geometry.prototype.getNumPoints = function() {
  * <li>Empty <code>Geometry</code>s are always simple
  * <ul>
  *
- * @return {boolean} <code>true</code> if this <code>Geometry</code> has
- *         any points of self-tangency, self-intersection or other anomalous
- *         points.
+ * @return {boolean} <code>true</code> if this <code>Geometry</code> has any
+ *         points of self-tangency, self-intersection or other anomalous points.
  * @see #isValid
  */
 jsts.geom.Geometry.prototype.isSimple = function() {
@@ -284,8 +282,8 @@ jsts.geom.Geometry.prototype.isSimple = function() {
 
 
 /**
- * Tests the validity of this <code>Geometry</code>. Subclasses provide
- * their own definition of "valid".
+ * Tests the validity of this <code>Geometry</code>. Subclasses provide their
+ * own definition of "valid".
  *
  * @return {boolean} <code>true</code> if this <code>Geometry</code> is
  *         valid.
@@ -338,8 +336,7 @@ jsts.geom.Geometry.prototype.distance = function(g) {
  *         <code>distance</code> apart.
  */
 jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
-  var envDist = this.getEnvelopeInternal()
-      .distance(geom.getEnvelopeInternal());
+  var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal());
   if (envDist > distance) {
     return false;
   }
@@ -349,8 +346,8 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
 
 /**
  * Returns the area of this <code>Geometry</code>. Areal Geometries have a
- * non-zero area. They override this function to compute the area. Others
- * return 0.0
+ * non-zero area. They override this function to compute the area. Others return
+ * 0.0
  *
  * @return {double} the area of the Geometry.
  */
@@ -360,9 +357,9 @@ jsts.geom.Geometry.prototype.getArea = function() {
 
 
 /**
- * Returns the length of this <code>Geometry</code>. Linear geometries
- * return their length. Areal geometries return their perimeter. They override
- * this function to compute the area. Others return 0.0
+ * Returns the length of this <code>Geometry</code>. Linear geometries return
+ * their length. Areal geometries return their perimeter. They override this
+ * function to compute the area. Others return 0.0
  *
  * @return {double} the length of the Geometry.
  */
@@ -372,10 +369,10 @@ jsts.geom.Geometry.prototype.getLength = function() {
 
 
 /**
- * Computes the centroid of this <code>Geometry</code>. The centroid is
- * equal to the centroid of the set of component Geometries of highest
- * dimension (since the lower-dimension geometries contribute zero "weight" to
- * the centroid)
+ * Computes the centroid of this <code>Geometry</code>. The centroid is equal
+ * to the centroid of the set of component Geometries of highest dimension
+ * (since the lower-dimension geometries contribute zero "weight" to the
+ * centroid)
  *
  * @return a {@link Point} which is the centroid of this Geometry.
  */
@@ -406,9 +403,9 @@ jsts.geom.Geometry.prototype.getCentroid = function() {
 
 /**
  * Computes an interior point of this <code>Geometry</code>. An interior
- * point is guaranteed to lie in the interior of the Geometry, if it possible
- * to calculate such a point exactly. Otherwise, the point may lie on the
- * boundary of the geometry.
+ * point is guaranteed to lie in the interior of the Geometry, if it possible to
+ * calculate such a point exactly. Otherwise, the point may lie on the boundary
+ * of the geometry.
  *
  * @return {Point} a {@link Point} which is in the interior of this Geometry.
  */
@@ -431,9 +428,9 @@ jsts.geom.Geometry.prototype.getInteriorPoint = function() {
 
 
 /**
- * Returns the dimension of this geometry. The dimension of a geometry is is
- * the topological dimension of its embedding in the 2-D Euclidean plane. In
- * the JTS spatial model, dimension values are in the set {0,1,2}.
+ * Returns the dimension of this geometry. The dimension of a geometry is is the
+ * topological dimension of its embedding in the 2-D Euclidean plane. In the JTS
+ * spatial model, dimension values are in the set {0,1,2}.
  * <p>
  * Note that this is a different concept to the dimension of the vertex
  * {@link Coordinate}s. The geometry dimension can never be greater than the
@@ -468,8 +465,7 @@ jsts.geom.Geometry.prototype.getBoundary = function() {
  *
  * @return {int} the dimension of the boundary of the class implementing this
  *         interface, whether or not this object is the empty geometry. Returns
- *         <code>Dimension.FALSE</code> if the boundary is the empty
- *         geometry.
+ *         <code>Dimension.FALSE</code> if the boundary is the empty geometry.
  */
 jsts.geom.Geometry.prototype.getBoundaryDimension = function() {
   throw new jsts.error.AbstractMethodInvocationError();
@@ -499,8 +495,8 @@ jsts.geom.Geometry.prototype.getEnvelope = function() {
  * or a null <code>Envelope</code> if this <code>Geometry</code> is empty.
  *
  * @return {Envelope} this <code>Geometry</code>s bounding box; if the
- *         <code>Geometry</code> is empty, <code>Envelope#isNull</code>
- *         will return <code>true.</code>
+ *         <code>Geometry</code> is empty, <code>Envelope#isNull</code> will
+ *         return <code>true.</code>
  */
 jsts.geom.Geometry.prototype.getEnvelopeInternal = function() {
   if (this.envelope === null) {
@@ -542,8 +538,8 @@ jsts.geom.Geometry.prototype.disjoint = function(g) {
  * The <code>touches</code> predicate has the following equivalent
  * definitions:
  * <ul>
- * <li>The geometries have at least one point in common, but their interiors
- * do not intersect.
+ * <li>The geometries have at least one point in common, but their interiors do
+ * not intersect.
  * <li>The DE-9IM Intersection Matrix for the two geometries matches
  * <code>[FT*******]</code> or <code>[F**T*****]</code> or
  * <code>[F***T****]</code>
@@ -599,10 +595,10 @@ jsts.geom.Geometry.prototype.intersects = function(g) {
   /**
    * TODO: (MD) Add optimizations: - for P-A case: If P is in env(A), test for
    * point-in-poly - for A-A case: If env(A1).overlaps(env(A2)) test for
-   * overlaps via point-in-poly first (both ways) Possibly optimize selection
-   * of point to test by finding point of A1 closest to centre of env(A2). (Is
-   * there a test where we shouldn't bother - e.g. if env A is much smaller
-   * than env B, maybe there's no point in testing pt(B) in env(A)?
+   * overlaps via point-in-poly first (both ways) Possibly optimize selection of
+   * point to test by finding point of A1 closest to centre of env(A2). (Is
+   * there a test where we shouldn't bother - e.g. if env A is much smaller than
+   * env B, maybe there's no point in testing pt(B) in env(A)?
    */
 
   // optimization for rectangle arguments
@@ -656,8 +652,7 @@ jsts.geom.Geometry.prototype.crosses = function(g) {
 /**
  * Tests whether this geometry is within the specified geometry.
  * <p>
- * The <code>within</code> predicate has the following equivalent
- * definitions:
+ * The <code>within</code> predicate has the following equivalent definitions:
  * <ul>
  * <li>Every point of this geometry is a point of the other geometry, and the
  * interiors of the two geometries have at least one point in common.
@@ -729,9 +724,9 @@ jsts.geom.Geometry.prototype.contains = function(g) {
  * definitions:
  * <ul>
  * <li>The geometries have at least one point each not shared by the other (or
- * equivalently neither covers the other), they have the same dimension, and
- * the intersection of the interiors of the two geometries has the same
- * dimension as the geometries themselves.
+ * equivalently neither covers the other), they have the same dimension, and the
+ * intersection of the interiors of the two geometries has the same dimension as
+ * the geometries themselves.
  * <li>The DE-9IM Intersection Matrix for the two geometries matches
  * <code>[T*T***T**]</code> (for two points or two surfaces) or
  * <code>[1*T***T**]</code> (for two curves)
@@ -757,15 +752,14 @@ jsts.geom.Geometry.prototype.overlaps = function(g) {
 /**
  * Tests whether this geometry covers the specified geometry.
  * <p>
- * The <code>covers</code> predicate has the following equivalent
- * definitions:
+ * The <code>covers</code> predicate has the following equivalent definitions:
  * <ul>
  * <li>Every point of the other geometry is a point of this geometry.
  * <li>The DE-9IM Intersection Matrix for the two geometries matches
  * <code>[T*****FF*]</code> or <code>[*T****FF*]</code> or
  * <code>[***T**FF*]</code> or <code>[****T*FF*]</code>
- * <li><code>g.coveredBy(this)</code> (<code>covers</code> is the
- * converse of <code>coveredBy</code>)
+ * <li><code>g.coveredBy(this)</code> (<code>covers</code> is the converse
+ * of <code>coveredBy</code>)
  * </ul>
  * If either geometry is empty, the value of this predicate is <tt>false</tt>.
  * <p>
@@ -810,8 +804,8 @@ jsts.geom.Geometry.prototype.covers = function(g) {
  * <li>The DE-9IM Intersection Matrix for the two geometries matches
  * <code>[T*F**F***]</code> or <code>[*TF**F***]</code> or
  * <code>[**FT*F***]</code> or <code>[**F*TF***]</code>
- * <li><code>g.covers(this)</code> (<code>coveredBy</code> is the
- * converse of <code>covers</code>)
+ * <li><code>g.covers(this)</code> (<code>coveredBy</code> is the converse
+ * of <code>covers</code>)
  * </ul>
  * If either geometry is empty, the value of this predicate is <tt>false</tt>.
  * <p>
@@ -890,28 +884,33 @@ jsts.geom.Geometry.prototype.relate2 = function(g) {
  * Tests whether this geometry is topologically equal to the argument geometry
  * as defined by the SFS <tt>equals</tt> predicate.
  * <p>
- * The SFS <code>equals</code> predicate has the following equivalent definitions:
+ * The SFS <code>equals</code> predicate has the following equivalent
+ * definitions:
  * <ul>
- * <li>The two geometries have at least one point in common,
- * and no point of either geometry lies in the exterior of the other geometry.
- * <li>The DE-9IM Intersection Matrix for the two geometries matches
- * the pattern <tt>T*F**FFF*</tt>
+ * <li>The two geometries have at least one point in common, and no point of
+ * either geometry lies in the exterior of the other geometry.
+ * <li>The DE-9IM Intersection Matrix for the two geometries matches the
+ * pattern <tt>T*F**FFF*</tt>
  * <pre>
  * T*F
  * **F
  * FF*
  * </pre>
+ *
  * </ul>
- * <b>Note</b> that this method computes <b>topologically equality</b>.
- * For structural equality, see {@link #equalsExact(Geometry)}.
+ * <b>Note</b> that this method computes <b>topologically equality</b>. For
+ * structural equality, see {@link #equalsExact(Geometry)}.
  *
- *@param {Geometry} g the <code>Geometry</code> with which to compare this <code>Geometry</code>
- *@return {boolean} <code>true</code> if the two <code>Geometry</code>s are topologically equal
+ * @param {Geometry}
+ *          g the <code>Geometry</code> with which to compare this
+ *          <code>Geometry.</code>
+ * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
+ *         are topologically equal.
  *
- *@see #equalsExact(Geometry)
+ * @see #equalsExact(Geometry)
  */
 jsts.geom.Geometry.prototype.equalsTopo = function(g) {
-  //short-circuit test
+  // short-circuit test
   if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
     return false;
   }
@@ -920,27 +919,22 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
 
 
 /**
- * Tests whether this geometry is structurally and numerically equal
- * to a given <tt>Object</tt>.
- * If the argument <tt>Object</tt> is not a <tt>Geometry</tt>,
- * the result is <tt>false</tt>.
- * Otherwise, the result is computed using
- * {@link #equalsExact(Geometry)}.
+ * Tests whether this geometry is structurally and numerically equal to a given
+ * <tt>Object</tt>. If the argument <tt>Object</tt> is not a
+ * <tt>Geometry</tt>, the result is <tt>false</tt>. Otherwise, the result
+ * is computed using {@link #equalsExact(Geometry)}.
  * <p>
- * This method is provided to fulfill the Java contract
- * for value-based object equality.
- * In conjunction with {@link #hashCode()}
- * it provides semantics which are most useful
- * for using
- * <tt>Geometry</tt>s as keys and values in Java collections.
+ * This method is provided to fulfill the Java contract for value-based object
+ * equality. In conjunction with {@link #hashCode()} it provides semantics which
+ * are most useful for using <tt>Geometry</tt>s as keys and values in Java
+ * collections.
  * <p>
- * Note that to produce the expected result the input geometries
- * should be in normal form.  It is the caller's
- * responsibility to perform this where required
- * (using {@link Geometry#norm()
- * or {@link #normalize()} as appropriate).
+ * Note that to produce the expected result the input geometries should be in
+ * normal form. It is the caller's responsibility to perform this where required
+ * (using {@link Geometry#norm() or {@link #normalize()} as appropriate).
  *
- * @param {Object} o the Object to compare.
+ * @param {Object}
+ *          o the Object to compare.
  * @return {boolean} true if this geometry is exactly equal to the argument.
  *
  * @see #equalsExact(Geometry)
@@ -949,8 +943,16 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
  * @see #normalize()
  */
 jsts.geom.Geometry.prototype.equals = function(o) {
-  if (! (o instanceof jsts.geom.Geometry)) return false;
-  return this.equalsExact(o);
+  if (o instanceof jsts.geom.Geometry ||
+      o instanceof jsts.geom.LinearRing ||
+      o instanceof jsts.geom.Polygon ||
+      o instanceof jsts.geom.GeometryCollection ||
+      o instanceof jsts.geom.MultiPoint ||
+      o instanceof jsts.geom.MultiLineString ||
+      o instanceof jsts.geom.MultiPolygon) {
+    return this.equalsExact(o);
+  }
+  return false;
 };
 
 
@@ -958,38 +960,43 @@ jsts.geom.Geometry.prototype.equals = function(o) {
  * Tests whether this geometry is topologically equal to the argument geometry
  * as defined by the SFS <tt>equals</tt> predicate.
  * <p>
- * The SFS <code>equals</code> predicate has the following equivalent definitions:
+ * The SFS <code>equals</code> predicate has the following equivalent
+ * definitions:
  * <ul>
- * <li>The two geometries have at least one point in common,
- * and no point of either geometry lies in the exterior of the other geometry.
- * <li>The DE-9IM Intersection Matrix for the two geometries matches
- * the pattern <tt>T*F**FFF*</tt>
+ * <li>The two geometries have at least one point in common, and no point of
+ * either geometry lies in the exterior of the other geometry.
+ * <li>The DE-9IM Intersection Matrix for the two geometries matches the
+ * pattern <tt>T*F**FFF*</tt>
  * <pre>
  * T*F
  * **F
  * FF*
  * </pre>
+ *
  * </ul>
- * <b>Note</b> that this method computes <b>topologically equality</b>.
- * For structural equality, see {@link #equalsExact(Geometry)}.
+ * <b>Note</b> that this method computes <b>topologically equality</b>. For
+ * structural equality, see {@link #equalsExact(Geometry)}.
  *
- *@param {Geometry} g the <code>Geometry</code> with which to compare this <code>Geometry</code>
- *@return{boolean} <code>true</code> if the two <code>Geometry</code>s are topologically equal
+ * @param {Geometry}
+ *          g the <code>Geometry</code> with which to compare this
+ *          <code>Geometry.</code>
+ * @return {boolean} <code>true</code> if the two <code>Geometry</code>s are
+ *                  topologically equal.
  *
- *@see #equalsExact(Geometry)
+ * @see #equalsExact(Geometry)
  */
 jsts.geom.Geometry.prototype.equalsTopo = function(g) {
   // short-circuit test
-  if (! this.getEnvelopeInternal().equals(g.getEnvelopeInternal()))
+  if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal()))
     return false;
   return this.relate(g).isEquals(getDimension(), g.getDimension());
 };
 
 
 /**
- * Computes a buffer area around this geometry having the given width and with
- * a specified accuracy of approximation for circular arcs, and using a
- * specified end cap style.
+ * Computes a buffer area around this geometry having the given width and with a
+ * specified accuracy of approximation for circular arcs, and using a specified
+ * end cap style.
  * <p>
  * Mathematically-exact buffer area boundaries can contain circular arcs. To
  * represent these arcs using linear geometry they must be approximated with
@@ -1017,8 +1024,8 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
  *          quadrant of a circle.
  * @param {int}
  *          endCapStyle the end cap style to use.
- * @return {Geometry} a polygonal geometry representing the buffer region
- *         (which may be empty).
+ * @return {Geometry} a polygonal geometry representing the buffer region (which
+ *         may be empty).
  *
  * @throws TopologyException
  *           if a robustness error occurs
@@ -1029,7 +1036,8 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
  */
 jsts.geom.Geometry.prototype.buffer = function(distance, quadrantSegments,
     endCapStyle) {
-  return jsts.operation.buffer.BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
+  return jsts.operation.buffer.BufferOp.bufferOp(this, distance,
+      quadrantSegments, endCapStyle);
 };
 
 
@@ -1071,11 +1079,10 @@ jsts.geom.Geometry.prototype.convexHull = function() {
 
 /**
  * Computes a <code>Geometry</code> representing the points shared by this
- * <code>Geometry</code> and <code>other</code>.
- * {@link GeometryCollection}s support intersection with homogeneous
- * collection types, with the semantics that the result is a
- * {@link GeometryCollection} of the intersection of each element of the target
- * with the argument.
+ * <code>Geometry</code> and <code>other</code>. {@link GeometryCollection}s
+ * support intersection with homogeneous collection types, with the semantics
+ * that the result is a {@link GeometryCollection} of the intersection of each
+ * element of the target with the argument.
  *
  * @param {Geometry}
  *          other the <code>Geometry</code> with which to compute the
@@ -1237,8 +1244,8 @@ jsts.geom.Geometry.prototype.union = function() {
  * distance tolerance if and only if:
  * <ul>
  * <li>they have the same class
- * <li>they have the same values for their vertices, within the given
- * tolerance distance, in exactly the same order.
+ * <li>they have the same values for their vertices, within the given tolerance
+ * distance, in exactly the same order.
  * </ul>
  * If this and the other <code>Geometry</code>s are composites and any
  * children are not <code>Geometry</code>s, returns <code>false</code>.
@@ -1256,13 +1263,13 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
 
 
 /**
- *  Performs an operation with or on this <code>Geometry</code> and its
- *  subelement <code>Geometry</code>s (if any).
- *  Only GeometryCollections and subclasses
- *  have subelement Geometry's.
+ * Performs an operation with or on this <code>Geometry</code> and its
+ * subelement <code>Geometry</code>s (if any). Only GeometryCollections and
+ * subclasses have subelement Geometry's.
  *
- *@param  filter  the filter to apply to this <code>Geometry</code> (and
- *      its children, if it is a <code>GeometryCollection</code>).
+ * @param filter
+ *          the filter to apply to this <code>Geometry</code> (and its
+ *          children, if it is a <code>GeometryCollection</code>).
  */
 jsts.geom.Geometry.prototype.apply = function(filter) {
   throw new jsts.error.AbstractMethodInvocationError();
@@ -1407,8 +1414,8 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
  * of view of the <code>equalsExact</code> method. Called by
  * <code>equalsExact</code> . In general, two <code>Geometry</code> classes
  * are considered to be "equivalent" only if they are the same class. An
- * exception is <code>LineString</code> , which is considered to be
- * equivalent to its subclasses.
+ * exception is <code>LineString</code> , which is considered to be equivalent
+ * to its subclasses.
  *
  * @param {Geometry}
  *          other the <code>Geometry</code> with which to compare this
@@ -1459,8 +1466,8 @@ jsts.geom.Geometry.prototype.isGeometryCollection = function() {
  * <code>getEnvelopeInternal</code> caches the result of this method.
  *
  * @return {Envelope} this <code>Geometry</code>s bounding box; if the
- *         <code>Geometry</code> is empty, <code>Envelope#isNull</code>
- *         will return <code>true.</code>
+ *         <code>Geometry</code> is empty, <code>Envelope#isNull</code> will
+ *         return <code>true.</code>
  */
 jsts.geom.Geometry.prototype.computeEnvelopeInternal = function() {
   throw new jsts.error.AbstractMethodInvocationError();
@@ -1506,11 +1513,11 @@ jsts.geom.Geometry.prototype.compareToSameClass = function(o, comp) {
 
 /**
  * Returns the first non-zero result of <code>compareTo</code> encountered as
- * the two <code>Collection</code>s are iterated over. If, by the time one
- * of the iterations is complete, no non-zero result has been encountered,
- * returns 0 if the other iteration is also complete. If <code>b</code>
- * completes before <code>a</code>, a positive number is returned; if a
- * before b, a negative number.
+ * the two <code>Collection</code>s are iterated over. If, by the time one of
+ * the iterations is complete, no non-zero result has been encountered, returns
+ * 0 if the other iteration is also complete. If <code>b</code> completes
+ * before <code>a</code>, a positive number is returned; if a before b, a
+ * negative number.
  *
  * @param {Collection}
  *          a a <code>Collection</code> of <code>Comparable</code>s.
