@@ -19,6 +19,7 @@
  */
 jsts.operation.GeometryGraphOperation = function(g0, g1, boundaryNodeRule) {
   this.li = new jsts.algorithm.RobustLineIntersector();
+  this.arg = [];
 
   if (g0 === undefined) {
     return;
@@ -65,7 +66,7 @@ jsts.operation.GeometryGraphOperation.prototype.resultPrecisionModel = null;
  * @type {GeometryGraph[]}
  * @protected
  */
-jsts.operation.GeometryGraphOperation.prototype.arg = [];
+jsts.operation.GeometryGraphOperation.prototype.arg = null;
 
 
 /**
