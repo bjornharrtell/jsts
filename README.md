@@ -11,12 +11,10 @@ established Java library [JTS Topology Suite](http://tsusiatsoftware.net/jts/mai
 OpenLayers compatibility. The core geometry classes are inherited from OpenLayers.Geometry
 and extended with API as close as possible to the corresponding JTS Topology Suite geometry classes.
 
-Currently JSTS Topology Suite implements APIs for the the core geom.* classes and the validation
-suite is sort of half-way ported. QuadTree index have been ported. A fait bit of ground work has been
-done to port core geometry predicate/functions.
-
 The goal of the project is to provide OpenLayers applications with a complete library for processing
 and analysing simple geometries.
+
+See the FAQ for the current port status.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for developer discussions.
 
