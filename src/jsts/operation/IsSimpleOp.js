@@ -169,8 +169,9 @@ jsts.operation.IsSimpleOp.prototype.hasNonEndpointIntersection = function(graph)
   for (var i = 0; i < graph.edges.length; i++) {
     var e = graph.edges[i];
     var maxSegmentIndex = e.getMaximumSegmentIndex();
-    for (var j = 0; j < e.eiList.length; j++) {
-      var ei = e.eiList[j];
+    var eis = e.eiList.getSortedIntersections();
+    for (j = 0; j < eis.length; j++) {
+      ei = eis[j];
       if (!ei.isEndPoint(maxSegmentIndex)) {
         this.nonSimpleLocation = ei.getCoordinate();
         return true;
