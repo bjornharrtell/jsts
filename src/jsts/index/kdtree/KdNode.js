@@ -53,7 +53,7 @@ jsts.index.kdtree.KdNode.prototype.initializeFromXY = function(x, y, data) {
  * @param {Object}
  *          data a data objects to associate with this node.
  */
-jsts.index.kdtree.KdNode.prototype.initialize.fromCoordinate = function(p, data) {
+jsts.index.kdtree.KdNode.prototype.initializeFromCoordinate = function(p, data) {
   this.p = p;
   this.data = data;
 };

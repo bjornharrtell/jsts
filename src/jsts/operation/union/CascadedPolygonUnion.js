@@ -56,7 +56,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.inputPolys;
 /**
  * @type {GeometryFactory}
  */
-jsts.operation.union.CascadedPolygonUnion.protoype.geomFactory = null;
+jsts.operation.union.CascadedPolygonUnion.prototype.geomFactory = null;
 
 
 /**

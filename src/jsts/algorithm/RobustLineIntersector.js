@@ -5,6 +5,11 @@
  */
 
 
+/**
+ * @requires jsts/algorithm/LineIntersector.js
+ */
+
+
 
 /**
  * A robust version of {@LineIntersector}.
