@@ -35,37 +35,37 @@ jsts.operation.union.UnionInteracting.union = function(g0, g1) {
 /**
  * @type {GeometryFactory}
  */
-jsts.operation.union.UnionInteracting.protoype.geomFactory;
+jsts.operation.union.UnionInteracting.prototype.geomFactory;
 
 
 /**
  * @type {Geometry}
  */
-jsts.operation.union.UnionInteracting.protoype.g0;
+jsts.operation.union.UnionInteracting.prototype.g0;
 
 
 /**
  * @type {Geometry}
  */
-jsts.operation.union.UnionInteracting.protoype.g1;
+jsts.operation.union.UnionInteracting.prototype.g1;
 
 
 /**
  * @type {Boolean[]}
  */
-jsts.operation.union.UnionInteracting.protoype.interacts0;
+jsts.operation.union.UnionInteracting.prototype.interacts0;
 
 
 /**
  * @type {Boolean[]}
  */
-jsts.operation.union.UnionInteracting.protoype.interacts1;
+jsts.operation.union.UnionInteracting.prototype.interacts1;
 
 
 /**
  * @return {Geometry}
  */
-jsts.operation.union.UnionInteracting.protoype.union = function() {
+jsts.operation.union.UnionInteracting.prototype.union = function() {
 
 };
 
@@ -76,7 +76,7 @@ jsts.operation.union.UnionInteracting.protoype.union = function() {
  * @return {Geometry}
  * @private
  */
-jsts.operation.union.UnionInteracting.protoype.bufferUnion = function(g0, g1) {
+jsts.operation.union.UnionInteracting.prototype.bufferUnion = function(g0, g1) {
 
 };
 
@@ -87,7 +87,7 @@ jsts.operation.union.UnionInteracting.protoype.bufferUnion = function(g0, g1) {
  * @return {Boolean}
  * @private
  */
-jsts.operation.union.UnionInteracting.protoype.computeInteracting = function(elem0) {
+jsts.operation.union.UnionInteracting.prototype.computeInteracting = function(elem0) {
 
 };
 
@@ -99,7 +99,7 @@ jsts.operation.union.UnionInteracting.protoype.computeInteracting = function(ele
  * @return {Geometry}
  * @private
  */
-jsts.operation.union.UnionInteracting.protoype.extractElements = function(geom, interacts, isInteracting) {
+jsts.operation.union.UnionInteracting.prototype.extractElements = function(geom, interacts, isInteracting) {
 
 };
 
