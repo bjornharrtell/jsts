@@ -245,10 +245,6 @@ jsts.operation.buffer.BufferOp.prototype.getResultGeometry = function(dist) {
   return resultGeometry;
 };
 
-
-/**
- * TODO: doc
- */
 jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
   this.bufferOriginalPrecision();
   if (resultGeometry !== null) {
@@ -264,9 +260,6 @@ jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
 };
 
 
-/**
- * TODO: doc
- */
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
   var precDigits;
 
@@ -289,9 +282,6 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
 };
 
 
-/**
- * TODO: doc
- */
 jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
   // use fast noding by default
   var bufBuilder = new jsts.operation.buffer.BufferBuilder(this.bufParams);
@@ -300,10 +290,8 @@ jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
 
 
 /**
- * TODO: doc
- *
  * @param {int}
- *          precisionDigits TODO: doc.
+ *          precisionDigits
  */
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function(
     precisionDigits) {
@@ -317,10 +305,8 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function(
 
 
 /**
- * TODO: doc
- *
  * @param {PrecisionModel}
- *          fixedPM TODO: doc.
+ *          fixedPM
  */
 jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision = function(
     fixedPM) {

@@ -491,8 +491,6 @@ jsts.triangulate.quadedge.Vertex.prototype.circleCenter = function(b, c) {
   try {
     cc = new jsts.triangulate.quadedge.Vertex(hcc.getX(), hcc.getY());
   } catch (err) {
-    // TODO: Maybe make something useful out of this.
-    // System.err.println();
   }
 
   return cc;

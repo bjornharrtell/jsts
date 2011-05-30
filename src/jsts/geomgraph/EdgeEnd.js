@@ -149,6 +149,6 @@ jsts.geomgraph.EdgeEnd.prototype.computeLabel = function(boundaryNodeRule)  {
 };
 
 jsts.geomgraph.EdgeEnd.prototype.toString = function() {
-  // TODO: this might not be a proper hashcode for storing as object
+  // TODO: this hashcode might not be equivalent to JTS code, so maps containg edgeends could be a cause of bugs
   return '' + this.dx + this.dy + this.quadrant;
 };

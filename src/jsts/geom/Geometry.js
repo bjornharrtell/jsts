@@ -887,30 +887,102 @@ jsts.geom.Geometry.prototype.relate2 = function(g) {
 
 
 /**
- * Tests whether this geometry is equal to the specified geometry.
+ * Tests whether this geometry is topologically equal to the argument geometry
+ * as defined by the SFS <tt>equals</tt> predicate.
  * <p>
- * The <code>equals</code> predicate has the following equivalent
- * definitions:
+ * The SFS <code>equals</code> predicate has the following equivalent definitions:
  * <ul>
- * <li>The two geometries have at least one point in common, and no point of
- * either geometry lies in the exterior of the other geometry.
- * <li>The DE-9IM Intersection Matrix for the two geometries is T*F**FFF*
+ * <li>The two geometries have at least one point in common,
+ * and no point of either geometry lies in the exterior of the other geometry.
+ * <li>The DE-9IM Intersection Matrix for the two geometries matches
+ * the pattern <tt>T*F**FFF*</tt>
+ * <pre>
+ * T*F
+ * **F
+ * FF*
+ * </pre>
  * </ul>
- * <b>Note</b> that this method computes topologically equality, not
- * structural or vertex-wise equality.
+ * <b>Note</b> that this method computes <b>topologically equality</b>.
+ * For structural equality, see {@link #equalsExact(Geometry)}.
  *
- * @param {Geometry}
- *          g the <code>Geometry</code> with which to compare this
- *          <code>Geometry.</code>
- * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
- *         are equal.
+ *@param {Geometry} g the <code>Geometry</code> with which to compare this <code>Geometry</code>
+ *@return {boolean} <code>true</code> if the two <code>Geometry</code>s are topologically equal
+ *
+ *@see #equalsExact(Geometry)
  */
-jsts.geom.Geometry.prototype.jsts_equals = function(g) {
-  // short-circuit test
+jsts.geom.Geometry.prototype.equalsTopo = function(g) {
+  //short-circuit test
   if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
     return false;
   }
   return this.relate(g).isEquals(this.getDimension(), g.getDimension());
+};
+
+
+/**
+ * Tests whether this geometry is structurally and numerically equal
+ * to a given <tt>Object</tt>.
+ * If the argument <tt>Object</tt> is not a <tt>Geometry</tt>,
+ * the result is <tt>false</tt>.
+ * Otherwise, the result is computed using
+ * {@link #equalsExact(Geometry)}.
+ * <p>
+ * This method is provided to fulfill the Java contract
+ * for value-based object equality.
+ * In conjunction with {@link #hashCode()}
+ * it provides semantics which are most useful
+ * for using
+ * <tt>Geometry</tt>s as keys and values in Java collections.
+ * <p>
+ * Note that to produce the expected result the input geometries
+ * should be in normal form.  It is the caller's
+ * responsibility to perform this where required
+ * (using {@link Geometry#norm()
+ * or {@link #normalize()} as appropriate).
+ *
+ * @param {Object} o the Object to compare.
+ * @return {boolean} true if this geometry is exactly equal to the argument.
+ *
+ * @see #equalsExact(Geometry)
+ * @see #hashCode()
+ * @see #norm()
+ * @see #normalize()
+ */
+jsts.geom.Geometry.prototype.equals = function(o) {
+  if (! (o instanceof jsts.geom.Geometry)) return false;
+  return this.equalsExact(o);
+};
+
+
+/**
+ * Tests whether this geometry is topologically equal to the argument geometry
+ * as defined by the SFS <tt>equals</tt> predicate.
+ * <p>
+ * The SFS <code>equals</code> predicate has the following equivalent definitions:
+ * <ul>
+ * <li>The two geometries have at least one point in common,
+ * and no point of either geometry lies in the exterior of the other geometry.
+ * <li>The DE-9IM Intersection Matrix for the two geometries matches
+ * the pattern <tt>T*F**FFF*</tt>
+ * <pre>
+ * T*F
+ * **F
+ * FF*
+ * </pre>
+ * </ul>
+ * <b>Note</b> that this method computes <b>topologically equality</b>.
+ * For structural equality, see {@link #equalsExact(Geometry)}.
+ *
+ *@param {Geometry} g the <code>Geometry</code> with which to compare this <code>Geometry</code>
+ *@return{boolean} <code>true</code> if the two <code>Geometry</code>s are topologically equal
+ *
+ *@see #equalsExact(Geometry)
+ */
+jsts.geom.Geometry.prototype.equalsTopo = function(g) {
+  // short-circuit test
+  if (! this.getEnvelopeInternal().equals(g.getEnvelopeInternal()))
+    return false;
+  return this.relate(g).isEquals(getDimension(), g.getDimension());
 };
 
 

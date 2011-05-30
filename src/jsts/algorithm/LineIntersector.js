@@ -390,8 +390,7 @@ jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function() {
  * Tests whether either intersection point is an interior point of the specified
  * input segment.
  *
- * @param {[]}
- *          TODO: doc
+ * @param {[]} inputLineIndex
  * @return {boolean} <code>true</code> if either intersection point is in the
  *         interior of the input segment.
  */
