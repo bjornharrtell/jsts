@@ -4,6 +4,10 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geomgraph/index/EdgeSetIntersector.js
+ */
+
 
 
 /**
@@ -16,7 +20,7 @@
  * @constructor
  */
 jsts.geomgraph.index.SimpleMCSweepLineIntersector = function() {
-
+  throw new jsts.error.NotImplementedError();
 };
 
 
