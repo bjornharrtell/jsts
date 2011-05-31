@@ -7,181 +7,185 @@
 	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
 	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
 <span class='line'>  2</span> 
-<span class='line'>  3</span> 
-<span class='line'>  4</span> 
-<span class='line'>  5</span> /**
-<span class='line'>  6</span>  * A collection of {@link EdgeEnd}s which obey the following invariant:
-<span class='line'>  7</span>  * They originate at the same node and have the same direction.
-<span class='line'>  8</span>  *
-<span class='line'>  9</span>  * @augments {jsts.geomgraph.EdgeEnd}
-<span class='line'> 10</span>  * @constructor
-<span class='line'> 11</span>  */</span><span class="WHIT">
-<span class='line'> 12</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 13</span> </span><span class="WHIT">  </span><span class="NAME">this.edgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 14</span> 
-<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.EdgeEnd</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 16</span> 
-<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getEdge</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 18</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">coord</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 19</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dirCoord</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getDirectedCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 20</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Label</span><span class="PUNC">(</span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 21</span> 
-<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geomgraph.EdgeEnd.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edge</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">coord</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 23</span> </span><span class="WHIT">      </span><span class="NAME">dirCoord</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">label</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 24</span> 
-<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="NAME">this.insert</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 26</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 27</span> 
-<span class='line'> 28</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.EdgeEnd</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 29</span> 
-<span class='line'> 30</span> 
-<span class='line'> 31</span> </span><span class="COMM">/**
-<span class='line'> 32</span>  * @private
-<span class='line'> 33</span>  */</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.edgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 35</span> 
-<span class='line'> 36</span> 
-<span class='line'> 37</span> 
-<span class='line'> 38</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.getLabel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.label</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 40</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 41</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.getEdgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 43</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 44</span> 
-<span class='line'> 45</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.insert</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="COMM">// Assert: start point is the same</span><span class="WHIT">
-<span class='line'> 47</span> </span><span class="WHIT">  </span><span class="COMM">// Assert: direction is the same</span><span class="WHIT">
-<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="NAME">this.edgeEnds.push</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 49</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 50</span> 
-<span class='line'> 51</span> 
-<span class='line'> 52</span> </span><span class="COMM">/**
-<span class='line'> 53</span>  * This computes the overall edge label for the set of edges in this
-<span class='line'> 54</span>  * EdgeStubBundle. It essentially merges the ON and side labels for each edge.
-<span class='line'> 55</span>  * These labels must be compatible
-<span class='line'> 56</span>  */</span><span class="WHIT">
-<span class='line'> 57</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'> 58</span> </span><span class="WHIT">    </span><span class="NAME">boundaryNodeRule</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 59</span> </span><span class="WHIT">  </span><span class="COMM">// create the label. If any of the edges belong to areas,</span><span class="WHIT">
-<span class='line'> 60</span> </span><span class="WHIT">  </span><span class="COMM">// the label must be an area label</span><span class="WHIT">
-<span class='line'> 61</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">isArea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 62</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 63</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 64</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isArea</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'> 65</span> </span><span class="WHIT">      </span><span class="NAME">isArea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isArea</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="NAME">this.label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Label</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 69</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 70</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT">
-<span class='line'> 71</span> </span><span class="WHIT">    </span><span class="NAME">this.label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Label</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 72</span> 
-<span class='line'> 73</span> </span><span class="WHIT">  </span><span class="COMM">// compute the On label, and the side labels if present</span><span class="WHIT">
-<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 75</span> </span><span class="WHIT">    </span><span class="NAME">this.computeLabelOn</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">boundaryNodeRule</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 76</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isArea</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'> 77</span> </span><span class="WHIT">      </span><span class="NAME">this.computeLabelSides</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 78</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 79</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 80</span> 
-<span class='line'> 81</span> 
-<span class='line'> 82</span> </span><span class="COMM">/**
-<span class='line'> 83</span>  * Compute the overall ON location for the list of EdgeStubs. (This is
-<span class='line'> 84</span>  * essentially equivalent to computing the self-overlay of a single Geometry)
-<span class='line'> 85</span>  * edgeStubs can be either on the boundary (eg Polygon edge) OR in the interior
-<span class='line'> 86</span>  * (e.g. segment of a LineString) of their parent Geometry. In addition,
-<span class='line'> 87</span>  * GeometryCollections use a {@link BoundaryNodeRule} to determine whether a
-<span class='line'> 88</span>  * segment is on the boundary or not. Finally, in GeometryCollections it can
-<span class='line'> 89</span>  * occur that an edge is both on the boundary and in the interior (e.g. a
-<span class='line'> 90</span>  * LineString segment lying on top of a Polygon edge.) In this case the Boundary
-<span class='line'> 91</span>  * is given precendence. &lt;br>
-<span class='line'> 92</span>  * These observations result in the following rules for computing the ON
-<span class='line'> 93</span>  * location:
-<span class='line'> 94</span>  * &lt;ul>
-<span class='line'> 95</span>  * &lt;li> if there are an odd number of Bdy edges, the attribute is Bdy
-<span class='line'> 96</span>  * &lt;li> if there are an even number >= 2 of Bdy edges, the attribute is Int
-<span class='line'> 97</span>  * &lt;li> if there are any Int edges, the attribute is Int
-<span class='line'> 98</span>  * &lt;li> otherwise, the attribute is NULL.
-<span class='line'> 99</span>  * &lt;/ul>
-<span class='line'>100</span>  *
-<span class='line'>101</span>  * @private
-<span class='line'>102</span>  */</span><span class="WHIT">
-<span class='line'>103</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabelOn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>104</span> </span><span class="WHIT">    </span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">boundaryNodeRule</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>105</span> </span><span class="WHIT">  </span><span class="COMM">// compute the ON location value</span><span class="WHIT">
-<span class='line'>106</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">boundaryCount</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>107</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">foundInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>108</span> 
-<span class='line'>109</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>110</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>111</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>112</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>113</span> </span><span class="WHIT">      </span><span class="NAME">boundaryCount</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>114</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>115</span> </span><span class="WHIT">      </span><span class="NAME">foundInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>116</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>117</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>118</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">foundInterior</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>119</span> </span><span class="WHIT">    </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>120</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">boundaryCount</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>121</span> </span><span class="WHIT">    </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.GeometryGraph.determineBoundary</span><span class="PUNC">(</span><span class="NAME">boundaryNodeRule</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>122</span> </span><span class="WHIT">        </span><span class="NAME">boundaryCount</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>123</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>124</span> </span><span class="WHIT">  </span><span class="NAME">this.label.setLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>125</span> 
-<span class='line'>126</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>127</span> 
-<span class='line'>128</span> 
-<span class='line'>129</span> </span><span class="COMM">/**
-<span class='line'>130</span>  * Compute the labelling for each side
-<span class='line'>131</span>  *
-<span class='line'>132</span>  * @private
-<span class='line'>133</span>  */</span><span class="WHIT">
-<span class='line'>134</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSides</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>135</span> </span><span class="WHIT">    </span><span class="NAME">geomIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>136</span> </span><span class="WHIT">  </span><span class="NAME">this.computeLabelSide</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.LEFT</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>137</span> </span><span class="WHIT">  </span><span class="NAME">this.computeLabelSide</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.RIGHT</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>138</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>139</span> 
-<span class='line'>140</span> 
-<span class='line'>141</span> </span><span class="COMM">/**
-<span class='line'>142</span>  * To compute the summary label for a side, the algorithm is: FOR all edges IF
-<span class='line'>143</span>  * any edge's location is INTERIOR for the side, side location = INTERIOR ELSE
-<span class='line'>144</span>  * IF there is at least one EXTERIOR attribute, side location = EXTERIOR ELSE
-<span class='line'>145</span>  * side location = NULL &lt;br>
-<span class='line'>146</span>  * Note that it is possible for two sides to have apparently contradictory
-<span class='line'>147</span>  * information i.e. one edge side may indicate that it is in the interior of a
-<span class='line'>148</span>  * geometry, while another edge side may indicate the exterior of the same
-<span class='line'>149</span>  * geometry. This is not an incompatibility - GeometryCollections may contain
-<span class='line'>150</span>  * two Polygons that touch along an edge. This is the reason for
-<span class='line'>151</span>  * Interior-primacy rule above - it results in the summary label having the
-<span class='line'>152</span>  * Geometry interior on &lt;b>both&lt;/b> sides.
-<span class='line'>153</span>  *
-<span class='line'>154</span>  * @private
-<span class='line'>155</span>  */</span><span class="WHIT">
-<span class='line'>156</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSide</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>157</span> </span><span class="WHIT">    </span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>158</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>159</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>160</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isArea</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>161</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>162</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>163</span> </span><span class="WHIT">        </span><span class="NAME">this.label.setLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>164</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>165</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>166</span> </span><span class="WHIT">        </span><span class="NAME">this.label.setLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>167</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>168</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>169</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>170</span> 
-<span class='line'>171</span> 
-<span class='line'>172</span> </span><span class="COMM">/**
-<span class='line'>173</span>  * Update the IM with the contribution for the computed label for the EdgeStubs.
-<span class='line'>174</span>  *
-<span class='line'>175</span>  * @private
-<span class='line'>176</span>  */</span><span class="WHIT">
-<span class='line'>177</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.updateIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>178</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geomgraph.Edge.updateIM</span><span class="PUNC">(</span><span class="NAME">this.label</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>179</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>180</span> </span></pre></body></html>
+<span class='line'>  3</span> /**
+<span class='line'>  4</span>  * @requires jsts/geomgraph/EdgeEnd.js
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> 
+<span class='line'>  9</span> </span><span class="COMM">/**
+<span class='line'> 10</span>  * A collection of {@link EdgeEnd}s which obey the following invariant:
+<span class='line'> 11</span>  * They originate at the same node and have the same direction.
+<span class='line'> 12</span>  *
+<span class='line'> 13</span>  * @augments {jsts.geomgraph.EdgeEnd}
+<span class='line'> 14</span>  * @constructor
+<span class='line'> 15</span>  */</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="NAME">this.edgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 18</span> 
+<span class='line'> 19</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.EdgeEnd</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> 
+<span class='line'> 21</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getEdge</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">coord</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dirCoord</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getDirectedCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Label</span><span class="PUNC">(</span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 25</span> 
+<span class='line'> 26</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geomgraph.EdgeEnd.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edge</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">coord</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">      </span><span class="NAME">dirCoord</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">label</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> 
+<span class='line'> 29</span> </span><span class="WHIT">  </span><span class="NAME">this.insert</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 31</span> 
+<span class='line'> 32</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.EdgeEnd</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> 
+<span class='line'> 34</span> 
+<span class='line'> 35</span> </span><span class="COMM">/**
+<span class='line'> 36</span>  * @private
+<span class='line'> 37</span>  */</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.edgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
+<span class='line'> 40</span> 
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.getLabel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.label</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.getEdgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> 
+<span class='line'> 49</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.insert</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">  </span><span class="COMM">// Assert: start point is the same</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="COMM">// Assert: direction is the same</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="NAME">this.edgeEnds.push</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> 
+<span class='line'> 55</span> 
+<span class='line'> 56</span> </span><span class="COMM">/**
+<span class='line'> 57</span>  * This computes the overall edge label for the set of edges in this
+<span class='line'> 58</span>  * EdgeStubBundle. It essentially merges the ON and side labels for each edge.
+<span class='line'> 59</span>  * These labels must be compatible
+<span class='line'> 60</span>  */</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">    </span><span class="NAME">boundaryNodeRule</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">  </span><span class="COMM">// create the label. If any of the edges belong to areas,</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="COMM">// the label must be an area label</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">isArea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isArea</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">      </span><span class="NAME">isArea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isArea</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">    </span><span class="NAME">this.label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Label</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">    </span><span class="NAME">this.label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Label</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> 
+<span class='line'> 77</span> </span><span class="WHIT">  </span><span class="COMM">// compute the On label, and the side labels if present</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">    </span><span class="NAME">this.computeLabelOn</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">boundaryNodeRule</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isArea</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">      </span><span class="NAME">this.computeLabelSides</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> 
+<span class='line'> 85</span> 
+<span class='line'> 86</span> </span><span class="COMM">/**
+<span class='line'> 87</span>  * Compute the overall ON location for the list of EdgeStubs. (This is
+<span class='line'> 88</span>  * essentially equivalent to computing the self-overlay of a single Geometry)
+<span class='line'> 89</span>  * edgeStubs can be either on the boundary (eg Polygon edge) OR in the interior
+<span class='line'> 90</span>  * (e.g. segment of a LineString) of their parent Geometry. In addition,
+<span class='line'> 91</span>  * GeometryCollections use a {@link BoundaryNodeRule} to determine whether a
+<span class='line'> 92</span>  * segment is on the boundary or not. Finally, in GeometryCollections it can
+<span class='line'> 93</span>  * occur that an edge is both on the boundary and in the interior (e.g. a
+<span class='line'> 94</span>  * LineString segment lying on top of a Polygon edge.) In this case the Boundary
+<span class='line'> 95</span>  * is given precendence. &lt;br>
+<span class='line'> 96</span>  * These observations result in the following rules for computing the ON
+<span class='line'> 97</span>  * location:
+<span class='line'> 98</span>  * &lt;ul>
+<span class='line'> 99</span>  * &lt;li> if there are an odd number of Bdy edges, the attribute is Bdy
+<span class='line'>100</span>  * &lt;li> if there are an even number >= 2 of Bdy edges, the attribute is Int
+<span class='line'>101</span>  * &lt;li> if there are any Int edges, the attribute is Int
+<span class='line'>102</span>  * &lt;li> otherwise, the attribute is NULL.
+<span class='line'>103</span>  * &lt;/ul>
+<span class='line'>104</span>  *
+<span class='line'>105</span>  * @private
+<span class='line'>106</span>  */</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabelOn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">    </span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">boundaryNodeRule</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">  </span><span class="COMM">// compute the ON location value</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">boundaryCount</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">foundInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">      </span><span class="NAME">boundaryCount</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">      </span><span class="NAME">foundInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">foundInterior</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">    </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">boundaryCount</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">    </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.GeometryGraph.determineBoundary</span><span class="PUNC">(</span><span class="NAME">boundaryNodeRule</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">        </span><span class="NAME">boundaryCount</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">  </span><span class="NAME">this.label.setLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>129</span> 
+<span class='line'>130</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> 
+<span class='line'>132</span> 
+<span class='line'>133</span> </span><span class="COMM">/**
+<span class='line'>134</span>  * Compute the labelling for each side
+<span class='line'>135</span>  *
+<span class='line'>136</span>  * @private
+<span class='line'>137</span>  */</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSides</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">    </span><span class="NAME">geomIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">  </span><span class="NAME">this.computeLabelSide</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.LEFT</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">  </span><span class="NAME">this.computeLabelSide</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.RIGHT</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>143</span> 
+<span class='line'>144</span> 
+<span class='line'>145</span> </span><span class="COMM">/**
+<span class='line'>146</span>  * To compute the summary label for a side, the algorithm is: FOR all edges IF
+<span class='line'>147</span>  * any edge's location is INTERIOR for the side, side location = INTERIOR ELSE
+<span class='line'>148</span>  * IF there is at least one EXTERIOR attribute, side location = EXTERIOR ELSE
+<span class='line'>149</span>  * side location = NULL &lt;br>
+<span class='line'>150</span>  * Note that it is possible for two sides to have apparently contradictory
+<span class='line'>151</span>  * information i.e. one edge side may indicate that it is in the interior of a
+<span class='line'>152</span>  * geometry, while another edge side may indicate the exterior of the same
+<span class='line'>153</span>  * geometry. This is not an incompatibility - GeometryCollections may contain
+<span class='line'>154</span>  * two Polygons that touch along an edge. This is the reason for
+<span class='line'>155</span>  * Interior-primacy rule above - it results in the summary label having the
+<span class='line'>156</span>  * Geometry interior on &lt;b>both&lt;/b> sides.
+<span class='line'>157</span>  *
+<span class='line'>158</span>  * @private
+<span class='line'>159</span>  */</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSide</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">    </span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.edgeEnds</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isArea</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">        </span><span class="NAME">this.label.setLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">        </span><span class="NAME">this.label.setLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>174</span> 
+<span class='line'>175</span> 
+<span class='line'>176</span> </span><span class="COMM">/**
+<span class='line'>177</span>  * Update the IM with the contribution for the computed label for the EdgeStubs.
+<span class='line'>178</span>  *
+<span class='line'>179</span>  * @private
+<span class='line'>180</span>  */</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="NAME">jsts.operation.relate.EdgeEndBundle.prototype.updateIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geomgraph.Edge.updateIM</span><span class="PUNC">(</span><span class="NAME">this.label</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>184</span> </span></pre></body></html>

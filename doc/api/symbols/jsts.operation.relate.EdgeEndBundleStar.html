@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8"></meta>
 		<meta name="generator" content="JsDoc Toolkit"></meta>
-		<title>jsts.error | JSTS Topology Suite Library</title>
+		<title>jsts.operation.relate.EdgeEndBundleStar | JSTS Topology Suite Library</title>
 
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
 		<meta name="mobileoptimized" content="0"></meta>
@@ -263,7 +263,7 @@
 	<div class="innerContent">
 		<h1 class="classTitle">
 			
-			Namespace <span>jsts.error</span>
+			Class <span>jsts.operation.relate.EdgeEndBundleStar</span>
 		</h1>
 		
 		<div class="intro">
@@ -276,7 +276,7 @@
 					
 					
 					
-						<li>Defined in: <a href="../symbols/src/src_jsts.js.html">jsts.js</a></li>
+						<li>Defined in: <a href="../symbols/src/src_jsts_operation_relate_EdgeEndBundleStar.js.html">EdgeEndBundleStar.js</a></li>
 					
 						
 				</ul>
@@ -285,8 +285,8 @@
 		
 		
 			<div class="props">
-				<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jsts.error.">
-					<caption class="sectionTitle">Namespace Summary</caption>
+				<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jsts.operation.relate.EdgeEndBundleStar.">
+					<caption class="sectionTitle">Class Summary</caption>
 					<thead>
 						<tr>
 							<th scope="col">Constructor Attributes</th>
@@ -298,9 +298,9 @@
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription" >
 								<div class="fixedFont">
-									<b><a href="../symbols/jsts.error.html#constructor">jsts.error</a></b>
+									<b><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html#constructor">jsts.operation.relate.EdgeEndBundleStar</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">An ordered list of EdgeEndBundles around a RelateNode.</div>
 							</td>
 						</tr>
 					</tbody>
@@ -312,6 +312,52 @@
 <!--
 #### METHODS SUMMARY
 -->
+		
+			
+			
+			<div class="props">
+				<h2 class="sectionTitle">Method Summary</h2>
+				
+				
+					<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class jsts.operation.relate.EdgeEndBundleStar.">
+						<thead>
+							<tr>
+								<th scope="col">Method Attributes</th>
+								<th scope="col">Method Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+							
+								<tr
+									 class='item0'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html#insert">insert</a></b>(e)
+										</div>
+										<div class="description">Insert a EdgeEnd in order in the list.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item1'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html#updateIM">updateIM</a></b>(im)
+										</div>
+										<div class="description">Update the IM with the contribution for the EdgeStubs around the node.</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				
+			
+				
+			</div>
 		
 		
 <!--
@@ -325,15 +371,17 @@
 			<div class="details props">
 				<div class="innerProps">
 					<h2 class="sectionTitle" id="constructor">
-						Namespace Detail
+						Class Detail
 					</h2>
 					
 					<div class="fixedFont">
-						<b>jsts.error</b>
+						<b>jsts.operation.relate.EdgeEndBundleStar</b>()
 					</div>
 					
 					<div class="description">
-						
+						An ordered list of EdgeEndBundles around a RelateNode.
+They are maintained in CCW order (starting with the positive x-axis) around the node
+for efficient lookup and topology building.
 						
 					</div>
 					
@@ -352,6 +400,101 @@
 <!--
 #### METHOD DETAILS
 -->		
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Method Detail
+					</h2>
+					
+					<ul class="methodDetail" id="MethodDetail">
+						
+						
+							<li 
+								 class='item0'
+							>
+								<div class="fixedFont heading" id="insert">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>insert</b>(e)
+								</div>
+								
+								<div class="description">
+									Insert a EdgeEnd in order in the list. If there is an existing EdgeStubBundle
+which is parallel, the EdgeEnd is added to the bundle. Otherwise, a new
+EdgeEndBundle is created to contain the EdgeEnd. <br>
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>e</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item1'
+							>
+								<div class="fixedFont heading" id="updateIM">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>updateIM</b>(im)
+								</div>
+								
+								<div class="description">
+									Update the IM with the contribution for the EdgeStubs around the node.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>im</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								
+							</li>
+						
+					</ul>
+				</div>
+			</div>
 		
 		
 <!--

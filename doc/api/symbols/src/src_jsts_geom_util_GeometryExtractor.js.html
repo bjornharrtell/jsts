@@ -11,66 +11,73 @@
 <span class='line'>  4</span>  * See /license.txt for the full text of the license.
 <span class='line'>  5</span>  */</span><span class="WHIT">
 <span class='line'>  6</span> 
-<span class='line'>  7</span> 
-<span class='line'>  8</span> 
-<span class='line'>  9</span> </span><span class="COMM">/**
-<span class='line'> 10</span>  * Constructs a filter with a list in which to store the elements found.
-<span class='line'> 11</span>  *
-<span class='line'> 12</span>  * @param clz the class of the components to extract (null means all types).
-<span class='line'> 13</span>  * @param {[]} comps the list to extract into.
-<span class='line'> 14</span>  * @augments GeometryFilter
-<span class='line'> 15</span>  * @constructor
-<span class='line'> 16</span>  */</span><span class="WHIT">
-<span class='line'> 17</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">clz</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">comps</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 18</span> </span><span class="WHIT">  </span><span class="NAME">this.clz</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">clz</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 19</span> </span><span class="WHIT">  </span><span class="NAME">this.comps</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">comps</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 20</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 21</span> 
-<span class='line'> 22</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 23</span> 
-<span class='line'> 24</span> 
-<span class='line'> 25</span> </span><span class="COMM">/**
-<span class='line'> 26</span>  * @private
-<span class='line'> 27</span>  */</span><span class="WHIT">
-<span class='line'> 28</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype.clz</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 29</span> 
-<span class='line'> 30</span> 
-<span class='line'> 31</span> </span><span class="COMM">/**
-<span class='line'> 32</span>  * @private
-<span class='line'> 33</span>  */</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype.comps</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 35</span> 
-<span class='line'> 36</span> 
-<span class='line'> 37</span> </span><span class="COMM">/**
-<span class='line'> 38</span>  * Extracts the components of type &lt;tt>clz&lt;/tt> from a {@link Geometry}
-<span class='line'> 39</span>  * and adds them to the provided {@link List} if provided.
-<span class='line'> 40</span>  *
-<span class='line'> 41</span>  * @param {Geometry} geom the geometry from which to extract.
-<span class='line'> 42</span>  * @param {Object} clz
-<span class='line'> 43</span>  * @param {[]} [list] the list to add the extracted elements to.
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * @requires jsts/geom/GeometryFilter.js
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span> 
+<span class='line'> 11</span> 
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="COMM">/**
+<span class='line'> 14</span>  * Constructs a filter with a list in which to store the elements found.
+<span class='line'> 15</span>  *
+<span class='line'> 16</span>  * @param clz the class of the components to extract (null means all types).
+<span class='line'> 17</span>  * @param {[]} comps the list to extract into.
+<span class='line'> 18</span>  * @augments GeometryFilter
+<span class='line'> 19</span>  * @constructor
+<span class='line'> 20</span>  */</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">clz</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">comps</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="NAME">this.clz</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">clz</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">  </span><span class="NAME">this.comps</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">comps</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 25</span> 
+<span class='line'> 26</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> 
+<span class='line'> 29</span> </span><span class="COMM">/**
+<span class='line'> 30</span>  * @private
+<span class='line'> 31</span>  */</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype.clz</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> 
+<span class='line'> 34</span> 
+<span class='line'> 35</span> </span><span class="COMM">/**
+<span class='line'> 36</span>  * @private
+<span class='line'> 37</span>  */</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype.comps</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
+<span class='line'> 40</span> 
+<span class='line'> 41</span> </span><span class="COMM">/**
+<span class='line'> 42</span>  * Extracts the components of type &lt;tt>clz&lt;/tt> from a {@link Geometry}
+<span class='line'> 43</span>  * and adds them to the provided {@link List} if provided.
 <span class='line'> 44</span>  *
-<span class='line'> 45</span>  * @return {[]}
-<span class='line'> 46</span>  */</span><span class="WHIT">
-<span class='line'> 47</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.extract</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">clz</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 49</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">clz</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 50</span> </span><span class="WHIT">    </span><span class="NAME">list.add</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryCollection</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 53</span> </span><span class="WHIT">    </span><span class="NAME">geom.apply</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.util.GeometryExtractor</span><span class="PUNC">(</span><span class="NAME">clz</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 54</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 55</span> </span><span class="WHIT">  </span><span class="COMM">//skip non-LineString elemental geometries</span><span class="WHIT">
-<span class='line'> 56</span> 
-<span class='line'> 57</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 58</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 59</span> 
-<span class='line'> 60</span> 
-<span class='line'> 61</span> </span><span class="COMM">/**
-<span class='line'> 62</span>  * @param {Geometry} geom
-<span class='line'> 63</span>  */</span><span class="WHIT">
-<span class='line'> 64</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype.filter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 65</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.clz</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">this.clz</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 66</span> </span><span class="WHIT">    </span><span class="NAME">this.comps.push</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 68</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 69</span> </span></pre></body></html>
+<span class='line'> 45</span>  * @param {Geometry} geom the geometry from which to extract.
+<span class='line'> 46</span>  * @param {Object} clz
+<span class='line'> 47</span>  * @param {[]} [list] the list to add the extracted elements to.
+<span class='line'> 48</span>  *
+<span class='line'> 49</span>  * @return {[]}
+<span class='line'> 50</span>  */</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.extract</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">clz</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">clz</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">    </span><span class="NAME">list.add</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryCollection</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">      </span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.MultiPoint</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">      </span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.MultiLineString</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">      </span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.MultiPolygon</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">    </span><span class="NAME">geom.apply</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.util.GeometryExtractor</span><span class="PUNC">(</span><span class="NAME">clz</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">  </span><span class="COMM">//skip non-LineString elemental geometries</span><span class="WHIT">
+<span class='line'> 63</span> 
+<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span> 
+<span class='line'> 67</span> 
+<span class='line'> 68</span> </span><span class="COMM">/**
+<span class='line'> 69</span>  * @param {Geometry} geom
+<span class='line'> 70</span>  */</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="NAME">jsts.geom.util.GeometryExtractor.prototype.filter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.clz</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">geom</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">this.clz</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">    </span><span class="NAME">this.comps.push</span><span class="PUNC">(</span><span class="NAME">geom</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> </span></pre></body></html>

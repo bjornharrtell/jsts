@@ -52,6 +52,8 @@
 				
 					<li><a href="../symbols/jsts.algorithm.LineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>LineIntersector</a></li>
 				
+					<li><a href="../symbols/jsts.algorithm.locate.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate</a></li>
+				
 					<li><a href="../symbols/jsts.algorithm.locate.SimplePointInAreaLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate<span class='break'> </span>.<span class='break'> </span>SimplePointInAreaLocator</a></li>
 				
 					<li><a href="../symbols/jsts.algorithm.PointLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>PointLocator</a></li>
@@ -214,6 +216,10 @@
 				
 					<li><a href="../symbols/jsts.operation.IsSimpleOp.EndpointInfo.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>IsSimpleOp<span class='break'> </span>.<span class='break'> </span>EndpointInfo</a></li>
 				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundle.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundle</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundleStar</a></li>
+				
 					<li><a href="../symbols/jsts.operation.relate.RelateComputer.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateComputer</a></li>
 				
 					<li><a href="../symbols/jsts.operation.relate.RelateNode.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNode</a></li>
@@ -247,7 +253,7 @@
 		
 		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
-		Generated on: 2011-4-30 8:52
+		Generated on: 2011-4-31 13:19
 	</div>
 </div>
 
@@ -405,7 +411,7 @@ for floating point operations.</div>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferOp.html#bufferFixedPrecision">bufferFixedPrecision</a></b>(fixedPM)
 										</div>
-										<div class="description">TODO: doc</div>
+										<div class="description"></div>
 									</td>
 								</tr>
 							
@@ -427,7 +433,7 @@ for floating point operations.</div>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferOp.html#bufferOriginalPrecision">bufferOriginalPrecision</a></b>()
 										</div>
-										<div class="description">TODO: doc</div>
+										<div class="description"></div>
 									</td>
 								</tr>
 							
@@ -436,9 +442,9 @@ for floating point operations.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferOp.html#bufferReducedPrecision">bufferReducedPrecision</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferOp.html#bufferReducedPrecision">bufferReducedPrecision</a></b>(precisionDigits)
 										</div>
-										<div class="description">TODO: doc</div>
+										<div class="description"></div>
 									</td>
 								</tr>
 							
@@ -449,7 +455,7 @@ for floating point operations.</div>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferOp.html#computeGeometry">computeGeometry</a></b>()
 										</div>
-										<div class="description">TODO: doc</div>
+										<div class="description"></div>
 									</td>
 								</tr>
 							
@@ -710,7 +716,7 @@ values (16).
 								</div>
 								
 								<div class="description">
-									TODO: doc
+									
 									
 									
 									
@@ -727,7 +733,7 @@ values (16).
 												<span class="light fixedFont">{PrecisionModel}</span> <b>fixedPM</b>
 												
 											</dt>
-											<dd>TODO: doc.</dd>
+											<dd></dd>
 										
 									</dl>
 								
@@ -817,7 +823,7 @@ values (16).
 								</div>
 								
 								<div class="description">
-									TODO: doc
+									
 									
 									
 									
@@ -842,11 +848,11 @@ values (16).
 									
 									
 									
-									<b>bufferReducedPrecision</b>()
+									<b>bufferReducedPrecision</b>(precisionDigits)
 								</div>
 								
 								<div class="description">
-									TODO: doc
+									
 									
 									
 									
@@ -855,6 +861,17 @@ values (16).
 								
 								
 								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{int}</span> <b>precisionDigits</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
 								
 								
 								
@@ -875,7 +892,7 @@ values (16).
 								</div>
 								
 								<div class="description">
-									TODO: doc
+									
 									
 									
 									

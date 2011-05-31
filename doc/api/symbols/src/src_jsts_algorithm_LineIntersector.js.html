@@ -397,114 +397,113 @@
 <span class='line'>390</span>  * Tests whether either intersection point is an interior point of the specified
 <span class='line'>391</span>  * input segment.
 <span class='line'>392</span>  *
-<span class='line'>393</span>  * @param {[]}
-<span class='line'>394</span>  *          TODO: doc
-<span class='line'>395</span>  * @return {boolean} &lt;code>true&lt;/code> if either intersection point is in the
-<span class='line'>396</span>  *         interior of the input segment.
-<span class='line'>397</span>  */</span><span class="WHIT">
-<span class='line'>398</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.isInteriorIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>399</span> </span><span class="WHIT">    </span><span class="NAME">inputLineIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>400</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>401</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.result</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>402</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">equals2D</span><span class="PUNC">(</span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">inputLineIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT">
-<span class='line'>403</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">equals2D</span><span class="PUNC">(</span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">inputLineIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>404</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>405</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>406</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>407</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>408</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>393</span>  * @param {[]} inputLineIndex
+<span class='line'>394</span>  * @return {boolean} &lt;code>true&lt;/code> if either intersection point is in the
+<span class='line'>395</span>  *         interior of the input segment.
+<span class='line'>396</span>  */</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.isInteriorIntersection</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">    </span><span class="NAME">inputLineIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.result</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>401</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">equals2D</span><span class="PUNC">(</span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">inputLineIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT">
+<span class='line'>402</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">equals2D</span><span class="PUNC">(</span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">inputLineIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>403</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>404</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>405</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>406</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>407</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>408</span> 
 <span class='line'>409</span> 
-<span class='line'>410</span> 
-<span class='line'>411</span> </span><span class="COMM">/**
-<span class='line'>412</span>  * Tests whether an intersection is proper. &lt;br>
-<span class='line'>413</span>  * The intersection between two line segments is considered proper if they
-<span class='line'>414</span>  * intersect in a single point in the interior of both segments (e.g. the
-<span class='line'>415</span>  * intersection is a single point and is not equal to any of the endpoints).
-<span class='line'>416</span>  * &lt;p>
-<span class='line'>417</span>  * The intersection between a point and a line segment is considered proper if
-<span class='line'>418</span>  * the point lies in the interior of the segment (e.g. is not equal to either of
-<span class='line'>419</span>  * the endpoints).
-<span class='line'>420</span>  *
-<span class='line'>421</span>  * @return {boolean} true if the intersection is proper.
-<span class='line'>422</span>  */</span><span class="WHIT">
-<span class='line'>423</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.isProper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>424</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.hasIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this._isProper</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>425</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>410</span> </span><span class="COMM">/**
+<span class='line'>411</span>  * Tests whether an intersection is proper. &lt;br>
+<span class='line'>412</span>  * The intersection between two line segments is considered proper if they
+<span class='line'>413</span>  * intersect in a single point in the interior of both segments (e.g. the
+<span class='line'>414</span>  * intersection is a single point and is not equal to any of the endpoints).
+<span class='line'>415</span>  * &lt;p>
+<span class='line'>416</span>  * The intersection between a point and a line segment is considered proper if
+<span class='line'>417</span>  * the point lies in the interior of the segment (e.g. is not equal to either of
+<span class='line'>418</span>  * the endpoints).
+<span class='line'>419</span>  *
+<span class='line'>420</span>  * @return {boolean} true if the intersection is proper.
+<span class='line'>421</span>  */</span><span class="WHIT">
+<span class='line'>422</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.isProper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>423</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.hasIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this._isProper</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>424</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>425</span> 
 <span class='line'>426</span> 
-<span class='line'>427</span> 
-<span class='line'>428</span> </span><span class="COMM">/**
-<span class='line'>429</span>  * Computes the intIndex'th intersection point in the direction of a specified
-<span class='line'>430</span>  * input line segment
-<span class='line'>431</span>  *
-<span class='line'>432</span>  * @param {int}
-<span class='line'>433</span>  *          segmentIndex is 0 or 1.
-<span class='line'>434</span>  * @param {int}
-<span class='line'>435</span>  *          intIndex is 0 or 1.
-<span class='line'>436</span>  *
-<span class='line'>437</span>  * @return {Coordinate} the intIndex'th intersection point in the direction of
-<span class='line'>438</span>  *         the specified input line segment.
-<span class='line'>439</span>  */</span><span class="WHIT">
-<span class='line'>440</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.getIntersectionAlongSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>441</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">intIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>442</span> </span><span class="WHIT">  </span><span class="COMM">// lazily compute int line array</span><span class="WHIT">
-<span class='line'>443</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntLineIndex</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>444</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">intIndex</span><span class="PUNC">]</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>445</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>427</span> </span><span class="COMM">/**
+<span class='line'>428</span>  * Computes the intIndex'th intersection point in the direction of a specified
+<span class='line'>429</span>  * input line segment
+<span class='line'>430</span>  *
+<span class='line'>431</span>  * @param {int}
+<span class='line'>432</span>  *          segmentIndex is 0 or 1.
+<span class='line'>433</span>  * @param {int}
+<span class='line'>434</span>  *          intIndex is 0 or 1.
+<span class='line'>435</span>  *
+<span class='line'>436</span>  * @return {Coordinate} the intIndex'th intersection point in the direction of
+<span class='line'>437</span>  *         the specified input line segment.
+<span class='line'>438</span>  */</span><span class="WHIT">
+<span class='line'>439</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.getIntersectionAlongSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>440</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">intIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>441</span> </span><span class="WHIT">  </span><span class="COMM">// lazily compute int line array</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntLineIndex</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>443</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">intIndex</span><span class="PUNC">]</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>445</span> 
 <span class='line'>446</span> 
-<span class='line'>447</span> 
-<span class='line'>448</span> </span><span class="COMM">/**
-<span class='line'>449</span>  * Computes the index of the intIndex'th intersection point in the direction of
-<span class='line'>450</span>  * a specified input line segment
-<span class='line'>451</span>  *
-<span class='line'>452</span>  * @param {int}
-<span class='line'>453</span>  *          segmentIndex is 0 or 1.
-<span class='line'>454</span>  * @param {int}
-<span class='line'>455</span>  *          intIndex is 0 or 1.
-<span class='line'>456</span>  *
-<span class='line'>457</span>  * @return {int} the index of the intersection point along the segment (0 or 1).
-<span class='line'>458</span>  */</span><span class="WHIT">
-<span class='line'>459</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.getIndexAlongSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>460</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">intIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>461</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntLineIndex</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>462</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">intIndex</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>463</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="COMM">/**
+<span class='line'>448</span>  * Computes the index of the intIndex'th intersection point in the direction of
+<span class='line'>449</span>  * a specified input line segment
+<span class='line'>450</span>  *
+<span class='line'>451</span>  * @param {int}
+<span class='line'>452</span>  *          segmentIndex is 0 or 1.
+<span class='line'>453</span>  * @param {int}
+<span class='line'>454</span>  *          intIndex is 0 or 1.
+<span class='line'>455</span>  *
+<span class='line'>456</span>  * @return {int} the index of the intersection point along the segment (0 or 1).
+<span class='line'>457</span>  */</span><span class="WHIT">
+<span class='line'>458</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.getIndexAlongSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>459</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">intIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>460</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntLineIndex</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">intIndex</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>462</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>463</span> 
 <span class='line'>464</span> 
-<span class='line'>465</span> 
-<span class='line'>466</span> </span><span class="COMM">/**
-<span class='line'>467</span>  * @param {int}
-<span class='line'>468</span>  *          segmentIndex
-<span class='line'>469</span>  * @protected
-<span class='line'>470</span>  */</span><span class="WHIT">
-<span class='line'>471</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.computeIntLineIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>472</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>473</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dist0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getEdgeDistance</span><span class="PUNC">(</span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>474</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dist1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getEdgeDistance</span><span class="PUNC">(</span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>475</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dist0</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NAME">dist1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>476</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>477</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>478</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>479</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>480</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>481</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>482</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>465</span> </span><span class="COMM">/**
+<span class='line'>466</span>  * @param {int}
+<span class='line'>467</span>  *          segmentIndex
+<span class='line'>468</span>  * @protected
+<span class='line'>469</span>  */</span><span class="WHIT">
+<span class='line'>470</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.computeIntLineIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>471</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>472</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dist0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getEdgeDistance</span><span class="PUNC">(</span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>473</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dist1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getEdgeDistance</span><span class="PUNC">(</span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>474</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dist0</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NAME">dist1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>475</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>476</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>477</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>478</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>479</span> </span><span class="WHIT">    </span><span class="NAME">this.intLineIndex</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>482</span> 
 <span class='line'>483</span> 
-<span class='line'>484</span> 
-<span class='line'>485</span> </span><span class="COMM">/**
-<span class='line'>486</span>  * Computes the "edge distance" of an intersection point along the specified
-<span class='line'>487</span>  * input line segment.
-<span class='line'>488</span>  *
-<span class='line'>489</span>  * @param {int}
-<span class='line'>490</span>  *          segmentIndex is 0 or 1.
-<span class='line'>491</span>  * @param {int}
-<span class='line'>492</span>  *          intIndex is 0 or 1.
-<span class='line'>493</span>  *
-<span class='line'>494</span>  * @return {double} the edge distance of the intersection point.
-<span class='line'>495</span>  */</span><span class="WHIT">
-<span class='line'>496</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.getEdgeDistance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>497</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">intIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>498</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.LineIntersector.computeEdgeDistance</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>499</span> </span><span class="WHIT">      </span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">intIndex</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>500</span> </span><span class="WHIT">      </span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>501</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>502</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>503</span> </span></pre></body></html>
+<span class='line'>484</span> </span><span class="COMM">/**
+<span class='line'>485</span>  * Computes the "edge distance" of an intersection point along the specified
+<span class='line'>486</span>  * input line segment.
+<span class='line'>487</span>  *
+<span class='line'>488</span>  * @param {int}
+<span class='line'>489</span>  *          segmentIndex is 0 or 1.
+<span class='line'>490</span>  * @param {int}
+<span class='line'>491</span>  *          intIndex is 0 or 1.
+<span class='line'>492</span>  *
+<span class='line'>493</span>  * @return {double} the edge distance of the intersection point.
+<span class='line'>494</span>  */</span><span class="WHIT">
+<span class='line'>495</span> </span><span class="NAME">jsts.algorithm.LineIntersector.prototype.getEdgeDistance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>496</span> </span><span class="WHIT">    </span><span class="NAME">segmentIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">intIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>497</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.LineIntersector.computeEdgeDistance</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>498</span> </span><span class="WHIT">      </span><span class="NAME">this.intPt</span><span class="PUNC">[</span><span class="NAME">intIndex</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>499</span> </span><span class="WHIT">      </span><span class="NAME">this.inputLines</span><span class="PUNC">[</span><span class="NAME">segmentIndex</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>500</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">dist</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>501</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>502</span> </span></pre></body></html>

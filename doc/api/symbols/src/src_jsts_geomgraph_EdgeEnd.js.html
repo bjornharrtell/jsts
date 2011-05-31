@@ -156,7 +156,7 @@
 <span class='line'>149</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>150</span> 
 <span class='line'>151</span> </span><span class="NAME">jsts.geomgraph.EdgeEnd.prototype.toString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>152</span> </span><span class="WHIT">  </span><span class="COMM">// TODO: this might not be a proper hashcode for storing as object</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">  </span><span class="COMM">// TODO: this hashcode might not be equivalent to JTS code, so maps containg edgeends could be a cause of bugs</span><span class="WHIT">
 <span class='line'>153</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.dx</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.dy</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.quadrant</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>154</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>155</span> </span></pre></body></html>

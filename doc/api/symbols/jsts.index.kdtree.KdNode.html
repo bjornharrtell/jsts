@@ -52,6 +52,8 @@
 				
 					<li><a href="../symbols/jsts.algorithm.LineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>LineIntersector</a></li>
 				
+					<li><a href="../symbols/jsts.algorithm.locate.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate</a></li>
+				
 					<li><a href="../symbols/jsts.algorithm.locate.SimplePointInAreaLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate<span class='break'> </span>.<span class='break'> </span>SimplePointInAreaLocator</a></li>
 				
 					<li><a href="../symbols/jsts.algorithm.PointLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>PointLocator</a></li>
@@ -214,6 +216,10 @@
 				
 					<li><a href="../symbols/jsts.operation.IsSimpleOp.EndpointInfo.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>IsSimpleOp<span class='break'> </span>.<span class='break'> </span>EndpointInfo</a></li>
 				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundle.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundle</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundleStar</a></li>
+				
 					<li><a href="../symbols/jsts.operation.relate.RelateComputer.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateComputer</a></li>
 				
 					<li><a href="../symbols/jsts.operation.relate.RelateNode.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNode</a></li>
@@ -247,7 +253,7 @@
 		
 		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
-		Generated on: 2011-4-30 8:52
+		Generated on: 2011-4-31 13:19
 	</div>
 </div>
 
@@ -418,7 +424,7 @@ location.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/jsts.index.kdtree.KdNode.html#initializeFromXY">initializeFromXY</a></b>(x, y, data)
+										<div class="fixedFont"><b><a href="../symbols/jsts.index.kdtree.KdNode.html#initializeFromCoordinate">initializeFromCoordinate</a></b>(p, data)
 										</div>
 										<div class="description">Creates a new KdNode.</div>
 									</td>
@@ -426,6 +432,17 @@ location.</div>
 							
 								<tr
 									 class='item9'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.index.kdtree.KdNode.html#initializeFromXY">initializeFromXY</a></b>(x, y, data)
+										</div>
+										<div class="description">Creates a new KdNode.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item10'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -437,7 +454,7 @@ the tolerance)</div>
 								</tr>
 							
 								<tr
-									 class='item10'
+									 class='item11'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -448,7 +465,7 @@ the tolerance)</div>
 								</tr>
 							
 								<tr
-									 class='item11'
+									 class='item12'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -900,6 +917,52 @@ arguments.
 							<li 
 								 class='item8'
 							>
+								<div class="fixedFont heading" id="initializeFromCoordinate">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>initializeFromCoordinate</b>(p, data)
+								</div>
+								
+								<div class="description">
+									Creates a new KdNode.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span> <b>p</b>
+												
+											</dt>
+											<dd>point location of new node.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>data</b>
+												
+											</dt>
+											<dd>a data objects to associate with this node.</dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item9'
+							>
 								<div class="fixedFont heading" id="initializeFromXY">
 									<span class='lighter'>
 									
@@ -950,7 +1013,7 @@ arguments.
 							</li>
 						
 							<li 
-								 class='item9'
+								 class='item10'
 							>
 								<div class="fixedFont heading" id="isRepeated">
 									<span class='lighter'>
@@ -1002,7 +1065,7 @@ the tolerance)
 							</li>
 						
 							<li 
-								 class='item10'
+								 class='item11'
 							>
 								<div class="fixedFont heading" id="setLeft">
 									<span class='lighter'>
@@ -1042,7 +1105,7 @@ the tolerance)
 							</li>
 						
 							<li 
-								 class='item11'
+								 class='item12'
 							>
 								<div class="fixedFont heading" id="setRight">
 									<span class='lighter'>

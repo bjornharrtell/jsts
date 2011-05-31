@@ -34,415 +34,414 @@
 <span class='line'> 27</span> </span><span class="WHIT">      </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.relate.RelateNodeFactory</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 28</span> </span><span class="WHIT">  </span><span class="NAME">this.isolatedEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 29</span> 
-<span class='line'> 30</span> 
-<span class='line'> 31</span> </span><span class="WHIT">  </span><span class="NAME">this.arg</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arg</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 32</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">  </span><span class="NAME">this.arg</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arg</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> 
 <span class='line'> 33</span> 
-<span class='line'> 34</span> 
-<span class='line'> 35</span> </span><span class="COMM">/**
-<span class='line'> 36</span>  * @type {LineIntersector}
-<span class='line'> 37</span>  * @private
-<span class='line'> 38</span>  */</span><span class="WHIT">
-<span class='line'> 39</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.li</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="COMM">/**
+<span class='line'> 35</span>  * @type {LineIntersector}
+<span class='line'> 36</span>  * @private
+<span class='line'> 37</span>  */</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.li</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
 <span class='line'> 40</span> 
-<span class='line'> 41</span> 
-<span class='line'> 42</span> </span><span class="COMM">/**
-<span class='line'> 43</span>  * @type {PointLocator}
-<span class='line'> 44</span>  * @private
-<span class='line'> 45</span>  */</span><span class="WHIT">
-<span class='line'> 46</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.ptLocator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="COMM">/**
+<span class='line'> 42</span>  * @type {PointLocator}
+<span class='line'> 43</span>  * @private
+<span class='line'> 44</span>  */</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.ptLocator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> 
 <span class='line'> 47</span> 
-<span class='line'> 48</span> 
-<span class='line'> 49</span> </span><span class="COMM">/**
-<span class='line'> 50</span>  * the arg(s) of the operation
-<span class='line'> 51</span>  *
-<span class='line'> 52</span>  * @type {GeometryGraph[]}
-<span class='line'> 53</span>  * @private
-<span class='line'> 54</span>  */</span><span class="WHIT">
-<span class='line'> 55</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.arg</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="COMM">/**
+<span class='line'> 49</span>  * the arg(s) of the operation
+<span class='line'> 50</span>  *
+<span class='line'> 51</span>  * @type {GeometryGraph[]}
+<span class='line'> 52</span>  * @private
+<span class='line'> 53</span>  */</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.arg</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> 
 <span class='line'> 56</span> 
-<span class='line'> 57</span> 
-<span class='line'> 58</span> </span><span class="COMM">/**
-<span class='line'> 59</span>  * @type {NodeMap}
-<span class='line'> 60</span>  * @private
-<span class='line'> 61</span>  */</span><span class="WHIT">
-<span class='line'> 62</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="COMM">/**
+<span class='line'> 58</span>  * @type {NodeMap}
+<span class='line'> 59</span>  * @private
+<span class='line'> 60</span>  */</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 62</span> 
 <span class='line'> 63</span> 
-<span class='line'> 64</span> 
-<span class='line'> 65</span> </span><span class="COMM">/**
-<span class='line'> 66</span>  * this intersection matrix will hold the results compute for the relate
-<span class='line'> 67</span>  *
-<span class='line'> 68</span>  * @type {IntersectionMatrix}
-<span class='line'> 69</span>  * @private
-<span class='line'> 70</span>  */</span><span class="WHIT">
-<span class='line'> 71</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.im</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="COMM">/**
+<span class='line'> 65</span>  * this intersection matrix will hold the results compute for the relate
+<span class='line'> 66</span>  *
+<span class='line'> 67</span>  * @type {IntersectionMatrix}
+<span class='line'> 68</span>  * @private
+<span class='line'> 69</span>  */</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.im</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> 
 <span class='line'> 72</span> 
-<span class='line'> 73</span> 
-<span class='line'> 74</span> </span><span class="COMM">/**
-<span class='line'> 75</span>  * @type {[]}
-<span class='line'> 76</span>  * @private
-<span class='line'> 77</span>  */</span><span class="WHIT">
-<span class='line'> 78</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.isolatedEdges</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="COMM">/**
+<span class='line'> 74</span>  * @type {[]}
+<span class='line'> 75</span>  * @private
+<span class='line'> 76</span>  */</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.isolatedEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 78</span> 
 <span class='line'> 79</span> 
-<span class='line'> 80</span> 
-<span class='line'> 81</span> </span><span class="COMM">/**
-<span class='line'> 82</span>  * the intersection point found (if any)
-<span class='line'> 83</span>  *
-<span class='line'> 84</span>  * @type {Coordinate}
-<span class='line'> 85</span>  * @private
-<span class='line'> 86</span>  */</span><span class="WHIT">
-<span class='line'> 87</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.invalidPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="COMM">/**
+<span class='line'> 81</span>  * the intersection point found (if any)
+<span class='line'> 82</span>  *
+<span class='line'> 83</span>  * @type {Coordinate}
+<span class='line'> 84</span>  * @private
+<span class='line'> 85</span>  */</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.invalidPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> 
 <span class='line'> 88</span> 
-<span class='line'> 89</span> 
-<span class='line'> 90</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 91</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">im</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 92</span> </span><span class="WHIT">  </span><span class="COMM">// since Geometries are finite and embedded in a 2-D space, the EE element</span><span class="WHIT">
-<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="COMM">// must always be 2</span><span class="WHIT">
-<span class='line'> 94</span> </span><span class="WHIT">  </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 95</span> 
-<span class='line'> 96</span> </span><span class="WHIT">  </span><span class="COMM">// if the Geometries don't overlap there is nothing to do</span><span class="WHIT">
-<span class='line'> 97</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getEnvelopeInternal</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">intersects</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'> 98</span> </span><span class="WHIT">      </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getEnvelopeInternal</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="NAME">this.computeDisjointIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>100</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>101</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>102</span> </span><span class="WHIT">  </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">computeSelfNodes</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>103</span> </span><span class="WHIT">  </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">computeSelfNodes</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>104</span> 
-<span class='line'>105</span> </span><span class="WHIT">  </span><span class="COMM">// compute intersections between edges of the two input geometries</span><span class="WHIT">
-<span class='line'>106</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">intersector</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">computeEdgeIntersections</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>107</span> </span><span class="WHIT">  </span><span class="COMM">// System.out.println("computeIM: # segment intersection tests: " +</span><span class="WHIT">
-<span class='line'>108</span> </span><span class="WHIT">  </span><span class="COMM">// intersector.numTests);</span><span class="WHIT">
-<span class='line'>109</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntersectionNodes</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>110</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntersectionNodes</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>111</span> </span><span class="WHIT">  </span><span class="COMM">/**
-<span class='line'>112</span>    * Copy the labelling for the nodes in the parent Geometries. These override
-<span class='line'>113</span>    * any labels determined by intersections between the geometries.
-<span class='line'>114</span>    */</span><span class="WHIT">
-<span class='line'>115</span> </span><span class="WHIT">  </span><span class="NAME">this.copyNodesAndLabels</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>116</span> </span><span class="WHIT">  </span><span class="NAME">this.copyNodesAndLabels</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>117</span> 
-<span class='line'>118</span> </span><span class="WHIT">  </span><span class="COMM">// complete the labelling for any nodes which only have a label for a single</span><span class="WHIT">
-<span class='line'>119</span> </span><span class="WHIT">  </span><span class="COMM">// geometry</span><span class="WHIT">
-<span class='line'>120</span> </span><span class="WHIT">  </span><span class="NAME">this.labelIsolatedNodes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>121</span> 
-<span class='line'>122</span> </span><span class="WHIT">  </span><span class="COMM">// If a proper intersection was found, we can set a lower bound on the IM.</span><span class="WHIT">
-<span class='line'>123</span> </span><span class="WHIT">  </span><span class="NAME">this.computeProperIntersectionIM</span><span class="PUNC">(</span><span class="NAME">intersector</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>124</span> 
-<span class='line'>125</span> </span><span class="WHIT">  </span><span class="COMM">/**
-<span class='line'>126</span>    * Now process improper intersections (eg where one or other of the geometries
-<span class='line'>127</span>    * has a vertex at the intersection point) We need to compute the edge graph
-<span class='line'>128</span>    * at all nodes to determine the IM.
-<span class='line'>129</span>    */</span><span class="WHIT">
-<span class='line'>130</span> 
-<span class='line'>131</span> </span><span class="WHIT">  </span><span class="COMM">// build EdgeEnds for all intersections</span><span class="WHIT">
-<span class='line'>132</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eeBuilder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.relate.EdgeEndBuilder</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>133</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ee0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eeBuilder.computeEdgeEnds</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>134</span> </span><span class="WHIT">  </span><span class="NAME">this.insertEdgeEnds</span><span class="PUNC">(</span><span class="NAME">ee0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>135</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ee1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eeBuilder.computeEdgeEnds</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>136</span> </span><span class="WHIT">  </span><span class="NAME">this.insertEdgeEnds</span><span class="PUNC">(</span><span class="NAME">ee1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>137</span> 
-<span class='line'>138</span> </span><span class="WHIT">  </span><span class="NAME">this.labelNodeEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>139</span> 
-<span class='line'>140</span> </span><span class="WHIT">  </span><span class="COMM">/**
-<span class='line'>141</span>    * Compute the labeling for isolated components &lt;br>
-<span class='line'>142</span>    * Isolated components are components that do not touch any other components
-<span class='line'>143</span>    * in the graph. They can be identified by the fact that they will contain
-<span class='line'>144</span>    * labels containing ONLY a single element, the one for their parent geometry.
-<span class='line'>145</span>    * We only need to check components contained in the input graphs, since
-<span class='line'>146</span>    * isolated components will not have been replaced by new components formed by
-<span class='line'>147</span>    * intersections.
-<span class='line'>148</span>    */</span><span class="WHIT">
-<span class='line'>149</span> </span><span class="WHIT">  </span><span class="NAME">this.labelIsolatedEdges</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>150</span> </span><span class="WHIT">  </span><span class="NAME">this.labelIsolatedEdges</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>151</span> 
-<span class='line'>152</span> </span><span class="WHIT">  </span><span class="COMM">// update the IM from all components</span><span class="WHIT">
-<span class='line'>153</span> </span><span class="WHIT">  </span><span class="NAME">this.updateIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>154</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>155</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">im</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">  </span><span class="COMM">// since Geometries are finite and embedded in a 2-D space, the EE element</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">  </span><span class="COMM">// must always be 2</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span> 
+<span class='line'> 95</span> </span><span class="WHIT">  </span><span class="COMM">// if the Geometries don't overlap there is nothing to do</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getEnvelopeInternal</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">intersects</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">      </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getEnvelopeInternal</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">    </span><span class="NAME">this.computeDisjointIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">  </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">computeSelfNodes</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">  </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">computeSelfNodes</span><span class="PUNC">(</span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>103</span> 
+<span class='line'>104</span> </span><span class="WHIT">  </span><span class="COMM">// compute intersections between edges of the two input geometries</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">intersector</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">computeEdgeIntersections</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.li</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">  </span><span class="COMM">// System.out.println("computeIM: # segment intersection tests: " +</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">  </span><span class="COMM">// intersector.numTests);</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntersectionNodes</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">  </span><span class="NAME">this.computeIntersectionNodes</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>111</span>    * Copy the labelling for the nodes in the parent Geometries. These override
+<span class='line'>112</span>    * any labels determined by intersections between the geometries.
+<span class='line'>113</span>    */</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">  </span><span class="NAME">this.copyNodesAndLabels</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">  </span><span class="NAME">this.copyNodesAndLabels</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> 
+<span class='line'>117</span> </span><span class="WHIT">  </span><span class="COMM">// complete the labelling for any nodes which only have a label for a single</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">  </span><span class="COMM">// geometry</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">  </span><span class="NAME">this.labelIsolatedNodes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> 
+<span class='line'>121</span> </span><span class="WHIT">  </span><span class="COMM">// If a proper intersection was found, we can set a lower bound on the IM.</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">  </span><span class="NAME">this.computeProperIntersectionIM</span><span class="PUNC">(</span><span class="NAME">intersector</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>123</span> 
+<span class='line'>124</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>125</span>    * Now process improper intersections (eg where one or other of the geometries
+<span class='line'>126</span>    * has a vertex at the intersection point) We need to compute the edge graph
+<span class='line'>127</span>    * at all nodes to determine the IM.
+<span class='line'>128</span>    */</span><span class="WHIT">
+<span class='line'>129</span> 
+<span class='line'>130</span> </span><span class="WHIT">  </span><span class="COMM">// build EdgeEnds for all intersections</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eeBuilder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.relate.EdgeEndBuilder</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ee0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eeBuilder.computeEdgeEnds</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">  </span><span class="NAME">this.insertEdgeEnds</span><span class="PUNC">(</span><span class="NAME">ee0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ee1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eeBuilder.computeEdgeEnds</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">  </span><span class="NAME">this.insertEdgeEnds</span><span class="PUNC">(</span><span class="NAME">ee1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>136</span> 
+<span class='line'>137</span> </span><span class="WHIT">  </span><span class="NAME">this.labelNodeEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>138</span> 
+<span class='line'>139</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>140</span>    * Compute the labeling for isolated components &lt;br>
+<span class='line'>141</span>    * Isolated components are components that do not touch any other components
+<span class='line'>142</span>    * in the graph. They can be identified by the fact that they will contain
+<span class='line'>143</span>    * labels containing ONLY a single element, the one for their parent geometry.
+<span class='line'>144</span>    * We only need to check components contained in the input graphs, since
+<span class='line'>145</span>    * isolated components will not have been replaced by new components formed by
+<span class='line'>146</span>    * intersections.
+<span class='line'>147</span>    */</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">  </span><span class="NAME">this.labelIsolatedEdges</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">  </span><span class="NAME">this.labelIsolatedEdges</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> 
+<span class='line'>151</span> </span><span class="WHIT">  </span><span class="COMM">// update the IM from all components</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">  </span><span class="NAME">this.updateIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> 
 <span class='line'>156</span> 
-<span class='line'>157</span> 
-<span class='line'>158</span> </span><span class="COMM">/**
-<span class='line'>159</span>  * @private
-<span class='line'>160</span>  */</span><span class="WHIT">
-<span class='line'>161</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.insertEdgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">ee</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>162</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">ee.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>163</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ee</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>164</span> </span><span class="WHIT">    </span><span class="NAME">this.nodes.add</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>165</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>166</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> </span><span class="COMM">/**
+<span class='line'>158</span>  * @private
+<span class='line'>159</span>  */</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.insertEdgeEnds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">ee</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">ee.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ee</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">    </span><span class="NAME">this.nodes.add</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>166</span> 
 <span class='line'>167</span> 
-<span class='line'>168</span> 
-<span class='line'>169</span> </span><span class="COMM">/**
-<span class='line'>170</span>  * @private
-<span class='line'>171</span>  */</span><span class="WHIT">
-<span class='line'>172</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>173</span> </span><span class="WHIT">    </span><span class="NAME">intersector</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>174</span> </span><span class="WHIT">  </span><span class="COMM">// If a proper intersection is found, we can set a lower bound on the IM.</span><span class="WHIT">
-<span class='line'>175</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>176</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>177</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasProper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">intersector.hasProperIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>178</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasProperInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">intersector.hasProperInteriorIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>179</span> 
-<span class='line'>180</span> </span><span class="WHIT">  </span><span class="COMM">// For Geometry's of dim 0 there can never be proper intersections.</span><span class="WHIT">
-<span class='line'>181</span> 
-<span class='line'>182</span> </span><span class="WHIT">  </span><span class="COMM">/**
-<span class='line'>183</span>    * If edge segments of Areas properly intersect, the areas must properly
-<span class='line'>184</span>    * overlap.
-<span class='line'>185</span>    */</span><span class="WHIT">
-<span class='line'>186</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>187</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProper</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>188</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'212101212'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>189</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>190</span> </span><span class="WHIT">  </span><span class="COMM">/**
-<span class='line'>191</span>    * If an Line segment properly intersects an edge segment of an Area, it
-<span class='line'>192</span>    * follows that the Interior of the Line intersects the Boundary of the Area.
-<span class='line'>193</span>    * If the intersection is a proper &lt;i>interior&lt;/i> intersection, then there
-<span class='line'>194</span>    * is an Interior-Interior intersection too. Note that it does not follow that
-<span class='line'>195</span>    * the Interior of the Line intersects the Exterior of the Area, since there
-<span class='line'>196</span>    * may be another Area component which contains the rest of the Line.
-<span class='line'>197</span>    */</span><span class="WHIT">
-<span class='line'>198</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>199</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProper</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>200</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'FFF0FFFF2'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>201</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProperInterior</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>202</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'1FFFFF1FF'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>203</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>204</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProper</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>205</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'F0FFFFFF2'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>206</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProperInterior</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>207</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'1F1FFFFFF'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>208</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>209</span> </span><span class="WHIT">  </span><span class="COMM">/* If edges of LineStrings properly intersect *in an interior point*, all
-<span class='line'>210</span>           we can deduce is that
-<span class='line'>211</span>           the interiors intersect.  (We can NOT deduce that the exteriors intersect,
-<span class='line'>212</span>           since some other segments in the geometries might cover the points in the
-<span class='line'>213</span>           neighbourhood of the intersection.)
-<span class='line'>214</span>           It is important that the point be known to be an interior point of
-<span class='line'>215</span>           both Geometries, since it is possible in a self-intersecting geometry to
-<span class='line'>216</span>           have a proper intersection on one segment that is also a boundary point of another segment.
-<span class='line'>217</span>       */</span><span class="WHIT">
-<span class='line'>218</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>219</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProperInterior</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>220</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'0FFFFFFFF'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>221</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>222</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="COMM">/**
+<span class='line'>169</span>  * @private
+<span class='line'>170</span>  */</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">    </span><span class="NAME">intersector</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">  </span><span class="COMM">// If a proper intersection is found, we can set a lower bound on the IM.</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasProper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">intersector.hasProperIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasProperInterior</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">intersector.hasProperInteriorIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> 
+<span class='line'>179</span> </span><span class="WHIT">  </span><span class="COMM">// For Geometry's of dim 0 there can never be proper intersections.</span><span class="WHIT">
+<span class='line'>180</span> 
+<span class='line'>181</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>182</span>    * If edge segments of Areas properly intersect, the areas must properly
+<span class='line'>183</span>    * overlap.
+<span class='line'>184</span>    */</span><span class="WHIT">
+<span class='line'>185</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProper</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'212101212'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>190</span>    * If an Line segment properly intersects an edge segment of an Area, it
+<span class='line'>191</span>    * follows that the Interior of the Line intersects the Boundary of the Area.
+<span class='line'>192</span>    * If the intersection is a proper &lt;i>interior&lt;/i> intersection, then there
+<span class='line'>193</span>    * is an Interior-Interior intersection too. Note that it does not follow that
+<span class='line'>194</span>    * the Interior of the Line intersects the Exterior of the Area, since there
+<span class='line'>195</span>    * may be another Area component which contains the rest of the Line.
+<span class='line'>196</span>    */</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProper</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'FFF0FFFF2'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProperInterior</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'1FFFFF1FF'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProper</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'F0FFFFFF2'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProperInterior</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'1F1FFFFFF'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="WHIT">  </span><span class="COMM">/* If edges of LineStrings properly intersect *in an interior point*, all
+<span class='line'>209</span>           we can deduce is that
+<span class='line'>210</span>           the interiors intersect.  (We can NOT deduce that the exteriors intersect,
+<span class='line'>211</span>           since some other segments in the geometries might cover the points in the
+<span class='line'>212</span>           neighbourhood of the intersection.)
+<span class='line'>213</span>           It is important that the point be known to be an interior point of
+<span class='line'>214</span>           both Geometries, since it is possible in a self-intersecting geometry to
+<span class='line'>215</span>           have a proper intersection on one segment that is also a boundary point of another segment.
+<span class='line'>216</span>       */</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="WHIT">  </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">hasProperInterior</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="WHIT">      </span><span class="NAME">im.setAtLeast</span><span class="PUNC">(</span><span class="STRN">'0FFFFFFFF'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>222</span> 
 <span class='line'>223</span> 
-<span class='line'>224</span> 
-<span class='line'>225</span> </span><span class="COMM">/**
-<span class='line'>226</span>  * Copy all nodes from an arg geometry into this graph. The node label in the
-<span class='line'>227</span>  * arg geometry overrides any previously computed label for that argIndex. (E.g.
-<span class='line'>228</span>  * a node may be an intersection node with a computed label of BOUNDARY, but in
-<span class='line'>229</span>  * the original arg Geometry it is actually in the interior due to the Boundary
-<span class='line'>230</span>  * Determination Rule)
-<span class='line'>231</span>  *
-<span class='line'>232</span>  * @private
-<span class='line'>233</span>  */</span><span class="WHIT">
-<span class='line'>234</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>235</span> </span><span class="WHIT">    </span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>236</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">argIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getNodes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>237</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>238</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">graphNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>239</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">newNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.addNode</span><span class="PUNC">(</span><span class="NAME">graphNode.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>240</span> </span><span class="WHIT">    </span><span class="NAME">newNode.setLabel</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">graphNode.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>241</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>242</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="COMM">/**
+<span class='line'>225</span>  * Copy all nodes from an arg geometry into this graph. The node label in the
+<span class='line'>226</span>  * arg geometry overrides any previously computed label for that argIndex. (E.g.
+<span class='line'>227</span>  * a node may be an intersection node with a computed label of BOUNDARY, but in
+<span class='line'>228</span>  * the original arg Geometry it is actually in the interior due to the Boundary
+<span class='line'>229</span>  * Determination Rule)
+<span class='line'>230</span>  *
+<span class='line'>231</span>  * @private
+<span class='line'>232</span>  */</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">    </span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">argIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getNodes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">graphNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">newNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.addNode</span><span class="PUNC">(</span><span class="NAME">graphNode.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">    </span><span class="NAME">newNode.setLabel</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">graphNode.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>242</span> 
 <span class='line'>243</span> 
-<span class='line'>244</span> 
-<span class='line'>245</span> </span><span class="COMM">/**
-<span class='line'>246</span>  * Insert nodes for all intersections on the edges of a Geometry. Label the
-<span class='line'>247</span>  * created nodes the same as the edge label if they do not already have a label.
-<span class='line'>248</span>  * This allows nodes created by either self-intersections or mutual
-<span class='line'>249</span>  * intersections to be labelled. Endpoint nodes will already be labelled from
-<span class='line'>250</span>  * when they were inserted.
-<span class='line'>251</span>  *
-<span class='line'>252</span>  * @private
-<span class='line'>253</span>  */</span><span class="WHIT">
-<span class='line'>254</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>255</span> </span><span class="WHIT">    </span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>256</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">argIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>257</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>258</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>259</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>260</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.eiList.getSortedIntersections</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>261</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">eis.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>262</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>263</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.addNode</span><span class="PUNC">(</span><span class="NAME">ei.coord</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>264</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>265</span> </span><span class="WHIT">        </span><span class="NAME">n.setLabelBoundary</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>266</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>267</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isNull</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>268</span> </span><span class="WHIT">          </span><span class="NAME">n.setLabel</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>269</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>270</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>271</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>272</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="COMM">/**
+<span class='line'>245</span>  * Insert nodes for all intersections on the edges of a Geometry. Label the
+<span class='line'>246</span>  * created nodes the same as the edge label if they do not already have a label.
+<span class='line'>247</span>  * This allows nodes created by either self-intersections or mutual
+<span class='line'>248</span>  * intersections to be labelled. Endpoint nodes will already be labelled from
+<span class='line'>249</span>  * when they were inserted.
+<span class='line'>250</span>  *
+<span class='line'>251</span>  * @private
+<span class='line'>252</span>  */</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">    </span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">argIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>258</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.eiList.getSortedIntersections</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">eis.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.addNode</span><span class="PUNC">(</span><span class="NAME">ei.coord</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">        </span><span class="NAME">n.setLabelBoundary</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isNull</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>267</span> </span><span class="WHIT">          </span><span class="NAME">n.setLabel</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>268</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>269</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>272</span> 
 <span class='line'>273</span> 
-<span class='line'>274</span> 
-<span class='line'>275</span> </span><span class="COMM">/**
-<span class='line'>276</span>  * For all intersections on the edges of a Geometry, label the corresponding
-<span class='line'>277</span>  * node IF it doesn't already have a label. This allows nodes created by either
-<span class='line'>278</span>  * self-intersections or mutual intersections to be labelled. Endpoint nodes
-<span class='line'>279</span>  * will already be labelled from when they were inserted.
-<span class='line'>280</span>  *
-<span class='line'>281</span>  * @private
-<span class='line'>282</span>  */</span><span class="WHIT">
-<span class='line'>283</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIntersectionNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>284</span> </span><span class="WHIT">    </span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>285</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">argIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>286</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>287</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>288</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>289</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.eiList.getSortedIntersections</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>290</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">eis.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>291</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>292</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.find</span><span class="PUNC">(</span><span class="NAME">ei.coord</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>293</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isNull</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>294</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>295</span> </span><span class="WHIT">          </span><span class="NAME">n.setLabelBoundary</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>296</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT">
-<span class='line'>297</span> </span><span class="WHIT">          </span><span class="NAME">n.setLabel</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>298</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>299</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>300</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>301</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="COMM">/**
+<span class='line'>275</span>  * For all intersections on the edges of a Geometry, label the corresponding
+<span class='line'>276</span>  * node IF it doesn't already have a label. This allows nodes created by either
+<span class='line'>277</span>  * self-intersections or mutual intersections to be labelled. Endpoint nodes
+<span class='line'>278</span>  * will already be labelled from when they were inserted.
+<span class='line'>279</span>  *
+<span class='line'>280</span>  * @private
+<span class='line'>281</span>  */</span><span class="WHIT">
+<span class='line'>282</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIntersectionNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">    </span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">argIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLocation</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">e.eiList.getSortedIntersections</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>289</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">eis.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eis</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.find</span><span class="PUNC">(</span><span class="NAME">ei.coord</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">isNull</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eLoc</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">          </span><span class="NAME">n.setLabelBoundary</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">          </span><span class="NAME">n.setLabel</span><span class="PUNC">(</span><span class="NAME">argIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>301</span> 
 <span class='line'>302</span> 
-<span class='line'>303</span> 
-<span class='line'>304</span> </span><span class="COMM">/**
-<span class='line'>305</span>  * If the Geometries are disjoint, we need to enter their dimension and boundary
-<span class='line'>306</span>  * dimension in the Ext rows in the IM
-<span class='line'>307</span>  *
-<span class='line'>308</span>  * @private
-<span class='line'>309</span>  */</span><span class="WHIT">
-<span class='line'>310</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeDisjointIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>311</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ga</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>312</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">ga.isEmpty</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>313</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ga</span><span class="WHIT">
-<span class='line'>314</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>315</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ga</span><span class="WHIT">
-<span class='line'>316</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getBoundaryDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>317</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>318</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">gb</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>319</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">gb.isEmpty</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>320</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">gb</span><span class="WHIT">
-<span class='line'>321</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>322</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">gb</span><span class="WHIT">
-<span class='line'>323</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getBoundaryDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>324</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>325</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="COMM">/**
+<span class='line'>304</span>  * If the Geometries are disjoint, we need to enter their dimension and boundary
+<span class='line'>305</span>  * dimension in the Ext rows in the IM
+<span class='line'>306</span>  *
+<span class='line'>307</span>  * @private
+<span class='line'>308</span>  */</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.computeDisjointIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ga</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>311</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">ga.isEmpty</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>312</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ga</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ga</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getBoundaryDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">gb</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>318</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">gb.isEmpty</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>319</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">gb</span><span class="WHIT">
+<span class='line'>320</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>321</span> </span><span class="WHIT">    </span><span class="NAME">im.set</span><span class="PUNC">(</span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">gb</span><span class="WHIT">
+<span class='line'>322</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getBoundaryDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>323</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>325</span> 
 <span class='line'>326</span> 
-<span class='line'>327</span> 
-<span class='line'>328</span> </span><span class="COMM">/**
-<span class='line'>329</span>  * @private
-<span class='line'>330</span>  */</span><span class="WHIT">
-<span class='line'>331</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelNodeEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>332</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>333</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>334</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>335</span> </span><span class="WHIT">    </span><span class="NAME">node.getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">computeLabelling</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>336</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>337</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="COMM">/**
+<span class='line'>328</span>  * @private
+<span class='line'>329</span>  */</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelNodeEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="WHIT">    </span><span class="NAME">node.getEdges</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">computeLabelling</span><span class="PUNC">(</span><span class="NAME">this.arg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>337</span> 
 <span class='line'>338</span> 
-<span class='line'>339</span> 
-<span class='line'>340</span> </span><span class="COMM">/**
-<span class='line'>341</span>  * update the IM with the sum of the IMs for each component
-<span class='line'>342</span>  *
-<span class='line'>343</span>  * @private
-<span class='line'>344</span>  */</span><span class="WHIT">
-<span class='line'>345</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.updateIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>346</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.isolatedEdges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>347</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.isolatedEdges</span><span class="PUNC">[</span><span class="NAME">ei</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>348</span> </span><span class="WHIT">    </span><span class="NAME">e.updateIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>349</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>350</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>351</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>352</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>353</span> </span><span class="WHIT">    </span><span class="NAME">node.updateIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>354</span> </span><span class="WHIT">    </span><span class="NAME">node.updateIMFromEdges</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>355</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>356</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>339</span> </span><span class="COMM">/**
+<span class='line'>340</span>  * update the IM with the sum of the IMs for each component
+<span class='line'>341</span>  *
+<span class='line'>342</span>  * @private
+<span class='line'>343</span>  */</span><span class="WHIT">
+<span class='line'>344</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.updateIM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>345</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.isolatedEdges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ei</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>346</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.isolatedEdges</span><span class="PUNC">[</span><span class="NAME">ei</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>347</span> </span><span class="WHIT">    </span><span class="NAME">e.updateIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>348</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>349</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="WHIT">    </span><span class="NAME">node.updateIM</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>353</span> </span><span class="WHIT">    </span><span class="NAME">node.updateIMFromEdges</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>354</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>355</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>356</span> 
 <span class='line'>357</span> 
-<span class='line'>358</span> 
-<span class='line'>359</span> </span><span class="COMM">/**
-<span class='line'>360</span>  * Processes isolated edges by computing their labelling and adding them to the
-<span class='line'>361</span>  * isolated edges list. Isolated edges are guaranteed not to touch the boundary
-<span class='line'>362</span>  * of the target (since if they did, they would have caused an intersection to
-<span class='line'>363</span>  * be computed and hence would not be isolated)
-<span class='line'>364</span>  *
-<span class='line'>365</span>  * @private
-<span class='line'>366</span>  */</span><span class="WHIT">
-<span class='line'>367</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>368</span> </span><span class="WHIT">    </span><span class="NAME">thisIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">targetIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>369</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">thisIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">edges</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>370</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>371</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>372</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e.isIsolated</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>373</span> </span><span class="WHIT">      </span><span class="NAME">this.labelIsolatedEdge</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">targetIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>374</span> </span><span class="WHIT">      </span><span class="NAME">this.isolatedEdges.push</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>375</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>376</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>377</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>358</span> </span><span class="COMM">/**
+<span class='line'>359</span>  * Processes isolated edges by computing their labelling and adding them to the
+<span class='line'>360</span>  * isolated edges list. Isolated edges are guaranteed not to touch the boundary
+<span class='line'>361</span>  * of the target (since if they did, they would have caused an intersection to
+<span class='line'>362</span>  * be computed and hence would not be isolated)
+<span class='line'>363</span>  *
+<span class='line'>364</span>  * @private
+<span class='line'>365</span>  */</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="WHIT">    </span><span class="NAME">thisIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">targetIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">thisIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">edges</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edges.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">edges</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e.isIsolated</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="WHIT">      </span><span class="NAME">this.labelIsolatedEdge</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">targetIndex</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">      </span><span class="NAME">this.isolatedEdges.push</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>377</span> 
 <span class='line'>378</span> 
-<span class='line'>379</span> 
-<span class='line'>380</span> </span><span class="COMM">/**
-<span class='line'>381</span>  * Label an isolated edge of a graph with its relationship to the target
-<span class='line'>382</span>  * geometry. If the target has dim 2 or 1, the edge can either be in the
-<span class='line'>383</span>  * interior or the exterior. If the target has dim 0, the edge must be in the
-<span class='line'>384</span>  * exterior
-<span class='line'>385</span>  *
-<span class='line'>386</span>  * @private
-<span class='line'>387</span>  */</span><span class="WHIT">
-<span class='line'>388</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>389</span> </span><span class="WHIT">    </span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>390</span> </span><span class="WHIT">  </span><span class="COMM">// this won't work for GeometryCollections with both dim 2 and 1 geoms</span><span class="WHIT">
-<span class='line'>391</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">target.getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>392</span> </span><span class="WHIT">    </span><span class="COMM">// since edge is not in boundary, may not need the full generality of</span><span class="WHIT">
-<span class='line'>393</span> </span><span class="WHIT">    </span><span class="COMM">// PointLocator?</span><span class="WHIT">
-<span class='line'>394</span> </span><span class="WHIT">    </span><span class="COMM">// Possibly should use ptInArea locator instead? We probably know here</span><span class="WHIT">
-<span class='line'>395</span> </span><span class="WHIT">    </span><span class="COMM">// that the edge does not touch the bdy of the target Geometry</span><span class="WHIT">
-<span class='line'>396</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.ptLocator.locate</span><span class="PUNC">(</span><span class="NAME">e.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>397</span> </span><span class="WHIT">    </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAllLocations</span><span class="PUNC">(</span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>398</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>399</span> </span><span class="WHIT">    </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAllLocations</span><span class="PUNC">(</span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>400</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>401</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>379</span> </span><span class="COMM">/**
+<span class='line'>380</span>  * Label an isolated edge of a graph with its relationship to the target
+<span class='line'>381</span>  * geometry. If the target has dim 2 or 1, the edge can either be in the
+<span class='line'>382</span>  * interior or the exterior. If the target has dim 0, the edge must be in the
+<span class='line'>383</span>  * exterior
+<span class='line'>384</span>  *
+<span class='line'>385</span>  * @private
+<span class='line'>386</span>  */</span><span class="WHIT">
+<span class='line'>387</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>388</span> </span><span class="WHIT">    </span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>389</span> </span><span class="WHIT">  </span><span class="COMM">// this won't work for GeometryCollections with both dim 2 and 1 geoms</span><span class="WHIT">
+<span class='line'>390</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">target.getDimension</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="WHIT">    </span><span class="COMM">// since edge is not in boundary, may not need the full generality of</span><span class="WHIT">
+<span class='line'>392</span> </span><span class="WHIT">    </span><span class="COMM">// PointLocator?</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="WHIT">    </span><span class="COMM">// Possibly should use ptInArea locator instead? We probably know here</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="WHIT">    </span><span class="COMM">// that the edge does not touch the bdy of the target Geometry</span><span class="WHIT">
+<span class='line'>395</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.ptLocator.locate</span><span class="PUNC">(</span><span class="NAME">e.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>396</span> </span><span class="WHIT">    </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAllLocations</span><span class="PUNC">(</span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">    </span><span class="NAME">e.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAllLocations</span><span class="PUNC">(</span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>401</span> 
 <span class='line'>402</span> 
-<span class='line'>403</span> 
-<span class='line'>404</span> </span><span class="COMM">/**
-<span class='line'>405</span>  * Isolated nodes are nodes whose labels are incomplete (e.g. the location for
-<span class='line'>406</span>  * one Geometry is null). This is the case because nodes in one graph which
-<span class='line'>407</span>  * don't intersect nodes in the other are not completely labelled by the initial
-<span class='line'>408</span>  * process of adding nodes to the nodeList. To complete the labelling we need to
-<span class='line'>409</span>  * check for nodes that lie in the interior of edges, and in the interior of
-<span class='line'>410</span>  * areas.
-<span class='line'>411</span>  *
-<span class='line'>412</span>  * @private
-<span class='line'>413</span>  */</span><span class="WHIT">
-<span class='line'>414</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>415</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>416</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>417</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>418</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>419</span> </span><span class="WHIT">    </span><span class="COMM">// isolated nodes should always have at least one geometry in their label</span><span class="WHIT">
-<span class='line'>420</span> </span><span class="WHIT">    </span><span class="COMM">// Assert.isTrue(label.getGeometryCount() > 0, 'node with empty label</span><span class="WHIT">
-<span class='line'>421</span> </span><span class="WHIT">    </span><span class="COMM">// found');</span><span class="WHIT">
-<span class='line'>422</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">n.isIsolated</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>423</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">label.isNull</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>424</span> </span><span class="WHIT">        </span><span class="NAME">this.labelIsolatedNode</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>425</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT">
-<span class='line'>426</span> </span><span class="WHIT">        </span><span class="NAME">this.labelIsolatedNode</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>427</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>428</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>429</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>403</span> </span><span class="COMM">/**
+<span class='line'>404</span>  * Isolated nodes are nodes whose labels are incomplete (e.g. the location for
+<span class='line'>405</span>  * one Geometry is null). This is the case because nodes in one graph which
+<span class='line'>406</span>  * don't intersect nodes in the other are not completely labelled by the initial
+<span class='line'>407</span>  * process of adding nodes to the nodeList. To complete the labelling we need to
+<span class='line'>408</span>  * check for nodes that lie in the interior of edges, and in the interior of
+<span class='line'>409</span>  * areas.
+<span class='line'>410</span>  *
+<span class='line'>411</span>  * @private
+<span class='line'>412</span>  */</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>415</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>416</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>417</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>418</span> </span><span class="WHIT">    </span><span class="COMM">// isolated nodes should always have at least one geometry in their label</span><span class="WHIT">
+<span class='line'>419</span> </span><span class="WHIT">    </span><span class="COMM">// Assert.isTrue(label.getGeometryCount() > 0, 'node with empty label</span><span class="WHIT">
+<span class='line'>420</span> </span><span class="WHIT">    </span><span class="COMM">// found');</span><span class="WHIT">
+<span class='line'>421</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">n.isIsolated</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>422</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">label.isNull</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>423</span> </span><span class="WHIT">        </span><span class="NAME">this.labelIsolatedNode</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>424</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'>425</span> </span><span class="WHIT">        </span><span class="NAME">this.labelIsolatedNode</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>426</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>427</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>428</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>429</span> 
 <span class='line'>430</span> 
-<span class='line'>431</span> 
-<span class='line'>432</span> </span><span class="COMM">/**
-<span class='line'>433</span>  * Label an isolated node with its relationship to the target geometry.
-<span class='line'>434</span>  */</span><span class="WHIT">
-<span class='line'>435</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>436</span> </span><span class="WHIT">    </span><span class="NAME">targetIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>437</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.ptLocator.locate</span><span class="PUNC">(</span><span class="NAME">n.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">targetIndex</span><span class="PUNC">]</span><span class="WHIT">
-<span class='line'>438</span> </span><span class="WHIT">      </span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>439</span> </span><span class="WHIT">  </span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAllLocations</span><span class="PUNC">(</span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>440</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>441</span> </span></pre></body></html>
+<span class='line'>431</span> </span><span class="COMM">/**
+<span class='line'>432</span>  * Label an isolated node with its relationship to the target geometry.
+<span class='line'>433</span>  */</span><span class="WHIT">
+<span class='line'>434</span> </span><span class="NAME">jsts.operation.relate.RelateComputer.prototype.labelIsolatedNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>435</span> </span><span class="WHIT">    </span><span class="NAME">targetIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>436</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.ptLocator.locate</span><span class="PUNC">(</span><span class="NAME">n.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.arg</span><span class="PUNC">[</span><span class="NAME">targetIndex</span><span class="PUNC">]</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">      </span><span class="PUNC">.</span><span class="NAME">getGeometry</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>438</span> </span><span class="WHIT">  </span><span class="NAME">n.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAllLocations</span><span class="PUNC">(</span><span class="NAME">targetIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>439</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>440</span> </span></pre></body></html>

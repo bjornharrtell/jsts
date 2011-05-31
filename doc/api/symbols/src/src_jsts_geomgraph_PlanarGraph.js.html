@@ -11,65 +11,70 @@
 <span class='line'>  4</span>  * See /license.txt for the full text of the license.
 <span class='line'>  5</span>  */</span><span class="WHIT">
 <span class='line'>  6</span> 
-<span class='line'>  7</span> 
-<span class='line'>  8</span> 
-<span class='line'>  9</span> </span><span class="COMM">/**
-<span class='line'> 10</span>  * The computation of the &lt;code>IntersectionMatrix&lt;/code> relies on the use of
-<span class='line'> 11</span>  * a structure called a "topology graph". The topology graph contains nodes and
-<span class='line'> 12</span>  * edges corresponding to the nodes and line segments of a &lt;code>Geometry&lt;/code>.
-<span class='line'> 13</span>  * Each node and edge in the graph is labeled with its topological location
-<span class='line'> 14</span>  * relative to the source geometry.
-<span class='line'> 15</span>  * &lt;P>
-<span class='line'> 16</span>  * Note that there is no requirement that points of self-intersection be a
-<span class='line'> 17</span>  * vertex. Thus to obtain a correct topology graph, &lt;code>Geometry&lt;/code>s
-<span class='line'> 18</span>  * must be self-noded before constructing their graphs.
-<span class='line'> 19</span>  * &lt;P>
-<span class='line'> 20</span>  * Two fundamental operations are supported by topology graphs:
-<span class='line'> 21</span>  * &lt;UL>
-<span class='line'> 22</span>  * &lt;LI>Computing the intersections between all the edges and nodes of a single
-<span class='line'> 23</span>  * graph
-<span class='line'> 24</span>  * &lt;LI>Computing the intersections between the edges and nodes of two different
-<span class='line'> 25</span>  * graphs
-<span class='line'> 26</span>  * &lt;/UL>
-<span class='line'> 27</span>  *
-<span class='line'> 28</span>  * @constructor
-<span class='line'> 29</span>  */</span><span class="WHIT">
-<span class='line'> 30</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">nodeFactory</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 31</span> </span><span class="WHIT">  </span><span class="NAME">this.edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 32</span> </span><span class="WHIT">  </span><span class="NAME">this.nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.NodeMap</span><span class="PUNC">(</span><span class="NAME">nodeFactory</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.NodeFactory</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 33</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 34</span> 
-<span class='line'> 35</span> 
-<span class='line'> 36</span> </span><span class="COMM">/**
-<span class='line'> 37</span>  * @protected
-<span class='line'> 38</span>  */</span><span class="WHIT">
-<span class='line'> 39</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * @requires jsts/geomgraph/NodeMap.js
+<span class='line'>  9</span>  * @requires jsts/geomgraph/NodeFactory.js
+<span class='line'> 10</span>  */</span><span class="WHIT">
+<span class='line'> 11</span> 
+<span class='line'> 12</span> 
+<span class='line'> 13</span> 
+<span class='line'> 14</span> </span><span class="COMM">/**
+<span class='line'> 15</span>  * The computation of the &lt;code>IntersectionMatrix&lt;/code> relies on the use of
+<span class='line'> 16</span>  * a structure called a "topology graph". The topology graph contains nodes and
+<span class='line'> 17</span>  * edges corresponding to the nodes and line segments of a &lt;code>Geometry&lt;/code>.
+<span class='line'> 18</span>  * Each node and edge in the graph is labeled with its topological location
+<span class='line'> 19</span>  * relative to the source geometry.
+<span class='line'> 20</span>  * &lt;P>
+<span class='line'> 21</span>  * Note that there is no requirement that points of self-intersection be a
+<span class='line'> 22</span>  * vertex. Thus to obtain a correct topology graph, &lt;code>Geometry&lt;/code>s
+<span class='line'> 23</span>  * must be self-noded before constructing their graphs.
+<span class='line'> 24</span>  * &lt;P>
+<span class='line'> 25</span>  * Two fundamental operations are supported by topology graphs:
+<span class='line'> 26</span>  * &lt;UL>
+<span class='line'> 27</span>  * &lt;LI>Computing the intersections between all the edges and nodes of a single
+<span class='line'> 28</span>  * graph
+<span class='line'> 29</span>  * &lt;LI>Computing the intersections between the edges and nodes of two different
+<span class='line'> 30</span>  * graphs
+<span class='line'> 31</span>  * &lt;/UL>
+<span class='line'> 32</span>  *
+<span class='line'> 33</span>  * @constructor
+<span class='line'> 34</span>  */</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">nodeFactory</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">  </span><span class="NAME">this.edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="NAME">this.nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.NodeMap</span><span class="PUNC">(</span><span class="NAME">nodeFactory</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.NodeFactory</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
 <span class='line'> 40</span> 
-<span class='line'> 41</span> 
-<span class='line'> 42</span> </span><span class="COMM">/**
-<span class='line'> 43</span>  * @type {jsts.geomgraph.NodeMap}
-<span class='line'> 44</span>  */</span><span class="WHIT">
-<span class='line'> 45</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="COMM">/**
+<span class='line'> 42</span>  * @protected
+<span class='line'> 43</span>  */</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.edges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 45</span> 
 <span class='line'> 46</span> 
-<span class='line'> 47</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.isBoundaryNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">coord</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.find</span><span class="PUNC">(</span><span class="NAME">coord</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 49</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 50</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">label.getLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 53</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 54</span> 
-<span class='line'> 55</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.insertEdge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 56</span> </span><span class="WHIT">  </span><span class="NAME">this.edges.push</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 57</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 58</span> 
-<span class='line'> 59</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.getEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 60</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.edges</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 61</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 62</span> 
-<span class='line'> 63</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.getNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 65</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 66</span> 
-<span class='line'> 67</span> </span><span class="COMM">// TODO: port rest of class</span><span class="WHIT">
-<span class='line'> 68</span> </span></pre></body></html>
+<span class='line'> 47</span> </span><span class="COMM">/**
+<span class='line'> 48</span>  * @type {jsts.geomgraph.NodeMap}
+<span class='line'> 49</span>  */</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> 
+<span class='line'> 52</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.isBoundaryNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">coord</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.nodes.find</span><span class="PUNC">(</span><span class="NAME">coord</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getLabel</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">label.getLocation</span><span class="PUNC">(</span><span class="NAME">geomIndex</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> 
+<span class='line'> 60</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.insertEdge</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">  </span><span class="NAME">this.edges.push</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span> 
+<span class='line'> 64</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.getEdges</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.edges</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> 
+<span class='line'> 68</span> </span><span class="NAME">jsts.geomgraph.PlanarGraph.prototype.getNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.nodes.values</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> 
+<span class='line'> 72</span> </span><span class="COMM">// TODO: port rest of class</span><span class="WHIT">
+<span class='line'> 73</span> </span></pre></body></html>
