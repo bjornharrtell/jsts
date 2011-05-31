@@ -24,7 +24,7 @@ describe('TestCentroid', function() {
       for (var i = 0; i<cases.length; i++) {
         var testcase = cases[i];
         var desc = $("desc", testcase).text().trim();
-        var wkt = $("a", testcase).text().trim();
+        var wkt = $("a", testcase).text().trim().replace(/\n/g,'');
         var expected = $("op", testcase).text().trim();
         
         var reader = new jsts.io.WKTReader();
@@ -33,7 +33,7 @@ describe('TestCentroid', function() {
         
         var centroid = geometry.getCentroid();
         
-        var writer = new jsts.io.WKTReader();
+        var writer = new jsts.io.WKTWriter();
         var result = writer.write(centroid);
         
         count++;

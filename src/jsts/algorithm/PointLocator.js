@@ -129,14 +129,12 @@ jsts.algorithm.PointLocator.prototype.computeLocation = function(p, geom) {
       var poly = mpoly.getGeometryN(i);
       this.updateLocationInfo(this.locate(p, poly));
     }
-  } else if (geom instanceof jsts.geom.GeometryCollection) {
-    // TODO: port
-    throw new jsts.error.NotImplementedError();
-    var geomi = new GeometryCollectionIterator(geom);
-    while (geomi.hasNext()) {
-      var g2 = geomi.next();
-      if (g2 != geom)
-        this.computeLocation(p, g2);
+  } else if (geom instanceof jsts.geom.MultiPoint || geom instanceof jsts.geom.GeometryCollection) {
+    for (var i = 0; i < geom.getNumGeometries(); i++) {
+      var part = geom.getGeometryN(i);
+      if (part !== geom) {
+        this.computeLocation(p, part);
+      }
     }
   }
 };

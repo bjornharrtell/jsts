@@ -85,7 +85,7 @@ jsts.geom.GeometryCollection.prototype.getDimension = function() {
     var geometry = this.geometries[i];
     // NOTE: special handling since in JTS the parts would be Points.
     if (geometry instanceof jsts.geom.Coordinate) {
-      Math.max(dimension, 0);
+      dimension = Math.max(dimension, 0);
     } else {
       dimension = Math.max(dimension, geometry.getDimension());
     }

@@ -377,22 +377,22 @@ jsts.geom.Geometry.prototype.getLength = function() {
  * @return a {@link Point} which is the centroid of this Geometry.
  */
 jsts.geom.Geometry.prototype.getCentroid = function() {
-  if (isEmpty()) {
+  if (this.isEmpty()) {
     return null;
   }
   var cent;
   var centPt = null;
   var dim = this.getDimension();
   if (dim === 0) {
-    cent = new CentroidPoint();
+    cent = new jsts.algorithm.CentroidPoint();
     cent.add(this);
     centPt = cent.getCentroid();
   } else if (dim === 1) {
-    cent = new CentroidLine();
+    cent = new jsts.algorithm.CentroidLine();
     cent.add(this);
     centPt = cent.getCentroid();
   } else {
-    cent = new CentroidArea();
+    cent = new jsts.algorithm.CentroidArea();
     cent.add(this);
     centPt = cent.getCentroid();
   }
@@ -1561,4 +1561,15 @@ jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
     return a.equals(b);
   }
   return a.distance(b) <= tolerance;
+};
+
+
+/**
+ * @return {Point}
+ * @private
+ */
+jsts.geom.Geometry.prototype.createPointFromInternalCoord = function(coord, exemplar) {
+  // TODO: enable when/if fixed precision is ported
+  //exemplar.getPrecisionModel().makePrecise(coord);
+  return exemplar.getFactory().createPoint(coord);
 };
