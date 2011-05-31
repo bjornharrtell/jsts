@@ -53,7 +53,10 @@ jsts.geom.util.GeometryExtractor.extract = function(geom, clz, list) {
   if (geom instanceof clz) {
     list.add(geom);
   }
-  else if (geom instanceof jsts.geom.GeometryCollection) {
+  else if (geom instanceof jsts.geom.GeometryCollection ||
+      geom instanceof jsts.geom.MultiPoint ||
+      geom instanceof jsts.geom.MultiLineString ||
+      geom instanceof jsts.geom.MultiPolygon) {
     geom.apply(new jsts.geom.util.GeometryExtractor(clz, list));
   }
   //skip non-LineString elemental geometries

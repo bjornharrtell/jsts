@@ -50,7 +50,10 @@ jsts.geom.util.PointExtracter.getPoints = function(geom, list) {
 
   if (geom instanceof jsts.geom.Point) {
     list.push(geom);
-  } else if (geom instanceof jsts.geom.GeometryCollection) {
+  } else if (geom instanceof jsts.geom.GeometryCollection ||
+      geom instanceof jsts.geom.MultiPoint ||
+      geom instanceof jsts.geom.MultiLineString ||
+      geom instanceof jsts.geom.MultiPolygon) {
     geom.apply(new jsts.geom.util.PointExtracter(list));
   }
   // skip non-Polygonal elemental geometries

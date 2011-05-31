@@ -43,26 +43,27 @@ jsts.io.WKTReader.prototype.read = function(wkt) {
     geometry = new jsts.geom.Point(geometry);
   }
 
+  // handle WKT empty inputs
   if (geometry === undefined) {
     var type = wkt.split(' ')[0].toLowerCase();
     switch (type) {
       case 'point':
-        geometry = new OpenLayers.Geometry.Point();
+        geometry = new jsts.geom.Point();
         break;
       case 'multipoint':
-        geometry = new OpenLayers.Geometry.MultiPoint();
+        geometry = new jsts.geom.MultiPoint();
         break;
       case 'linestring':
-        geometry = new OpenLayers.Geometry.LineString();
+        geometry = new jsts.geom.LineString();
         break;
       case 'multilinestring':
-        geometry = new OpenLayers.Geometry.MultiLineString();
+        geometry = new jsts.geom.MultiLineString();
         break;
       case 'polygon':
-        geometry = new OpenLayers.Geometry.Polygon();
+        geometry = new jsts.geom.Polygon();
         break;
       case 'multipolygon':
-        geometry = new OpenLayers.Geometry.MultiPolygon();
+        geometry = new jsts.geom.MultiPolygon();
         break;
     }
 
