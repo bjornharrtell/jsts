@@ -47,7 +47,10 @@ jsts.algorithm.CentroidLine.prototype.add = function(geom) {
     for (var i = 0; i < poly.getNumInteriorRing(); i++) {
       this.add(poly.getInteriorRingN(i).getCoordinates());
     }
-  } else if (geom instanceof jsts.geom.GeometryCollection) {
+  } else if (geom instanceof jsts.geom.GeometryCollection ||
+      geom instanceof jsts.geom.MultiPoint ||
+      geom instanceof jsts.geom.MultiLineString ||
+      geom instanceof jsts.geom.MultiPolygon) {
     var gc = geom;
     for (var i = 0; i < gc.getNumGeometries(); i++) {
       this.add(gc.getGeometryN(i));

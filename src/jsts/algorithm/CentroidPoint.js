@@ -41,7 +41,10 @@ jsts.algorithm.CentroidPoint.prototype.centSum = null;
 jsts.algorithm.CentroidPoint.prototype.add = function(geom) {
   if (geom instanceof jsts.geom.Point) {
     this.add2(geom.getCoordinate());
-  } else if (geom instanceof jsts.geom.GeometryCollection) {
+  } else if (geom instanceof jsts.geom.GeometryCollection ||
+      geom instanceof jsts.geom.MultiPoint ||
+      geom instanceof jsts.geom.MultiLineString ||
+      geom instanceof jsts.geom.MultiPolygon) {
     var gc = geom;
     for (var i = 0; i < gc.getNumGeometries(); i++) {
       this.add(gc.getGeometryN(i));

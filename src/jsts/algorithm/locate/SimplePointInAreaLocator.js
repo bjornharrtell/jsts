@@ -46,7 +46,10 @@ jsts.algorithm.locate.SimplePointInAreaLocator.containsPoint = function(p, geom)
   if (geom instanceof jsts.geom.Polygon) {
     return jsts.algorithm.locate.SimplePointInAreaLocator
         .containsPointInPolygon(p, geom);
-  } else if (geom instanceof jsts.geom.GeometryCollection) {
+  } else if (geom instanceof jsts.geom.GeometryCollection ||
+      geom instanceof jsts.geom.MultiPoint ||
+      geom instanceof jsts.geom.MultiLineString ||
+      geom instanceof jsts.geom.MultiPolygon) {
     for (var i = 0; i < geom.geometries.length; i++) {
       var g2 = geom.geometries[i];
       if (g2 !== geom)
