@@ -268,6 +268,8 @@ OpenLayers.Geometry.Point = OpenLayers.Class(OpenLayers.Geometry.Point,
       initialize: function(x, y) {
         OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
         if (x === undefined || x === null) {
+          this.x = 0;
+          this.y = 0;
         } else if (typeof x === 'number' || typeof x === 'string') {
           this.x = parseFloat(x);
           this.y = parseFloat(y);
