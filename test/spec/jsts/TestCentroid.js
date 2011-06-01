@@ -33,6 +33,9 @@ describe('TestCentroid', function() {
         
         if (geometry === undefined) continue;
         
+        // TODO: this should be taken care of more properly
+        geometry.setPrecisionModel(new jsts.geom.PrecisionModel(1));
+        
         var centroid = geometry.getCentroid();
         
         var result = centroid.equals(expectedg);

@@ -34,28 +34,47 @@
  *
  * @constructor
  */
-jsts.geom.PrecisionModel = function() {
+jsts.geom.PrecisionModel = function(modelType) {
+  if (typeof modelType === 'number') {
+    this.modelType = jsts.geom.PrecisionModel.FIXED;
+    this.scale = modelType;
+    return;
+  }
 
+  this.modelType = modelType || this.modelType;
+
+  if (this.modelType === jsts.geom.PrecisionModel.FIXED) {
+    this.scale = 1.0;
+  }
 };
 
 
 /**
  * @type {int}
  */
-jsts.geom.PrecisionModel.FLOATING = 0;
+jsts.geom.PrecisionModel.FLOATING = 'FLOATING';
 
 
 /**
  * @type {int}
  */
-jsts.geom.PrecisionModel.FIXED = 1;
+jsts.geom.PrecisionModel.FIXED = 'FIXED';
+
+
+/**
+ * @type {int}
+ */
+jsts.geom.PrecisionModel.FLOATING_SINLGE = 'FLOATING_SINLGE';
+
+jsts.geom.PrecisionModel.prototype.scale = 1.0;
+jsts.geom.PrecisionModel.prototype.modelType = jsts.geom.PrecisionModel.FLOATING;
 
 
 /**
  * @return {boolean} always true.
  */
 jsts.geom.PrecisionModel.prototype.isFloating = function() {
-  return true;
+  return this.modelType === jsts.geom.PrecisionModel.FLOATING || this.modelType === jsts.geom.PrecisionModel.FLOATING_SINLGE;
 };
 
 
@@ -63,7 +82,7 @@ jsts.geom.PrecisionModel.prototype.isFloating = function() {
  * @return {int} always jsts.geom.PrecisionModel.FLOATING.
  */
 jsts.geom.PrecisionModel.prototype.getType = function() {
-  return jsts.geom.PrecisionModel.FLOATING;
+  return this.modelType;
 };
 
 jsts.geom.PrecisionModel.prototype.equals = function(other) {
@@ -77,6 +96,52 @@ jsts.geom.PrecisionModel.prototype.equals = function(other) {
   var otherPrecisionModel = other;
   return this.modelType == otherPrecisionModel.modelType &&
       this.scale == otherPrecisionModel.scale;*/
+};
+
+
+/**
+ * Rounds a numeric value to the PrecisionModel grid.
+ * Asymmetric Arithmetic Rounding is used, to provide
+ * uniform rounding behaviour no matter where the number is
+ * on the number line.
+ * <p>
+ * This method has no effect on NaN values.
+ * <p>
+ * <b>Note:</b> Java's <code>Math#rint</code> uses the "Banker's Rounding" algorithm,
+ * which is not suitable for precision operations elsewhere in JTS.
+ */
+jsts.geom.PrecisionModel.prototype.makePrecise = function(val) {
+  if (val instanceof jsts.geom.Coordinate) {
+    this.makePrecise2(val);
+    return;
+  }
+
+  // don't change NaN values
+  if (isNaN(val)) return val;
+
+  // TODO: support single precision?
+  /*if (this.modelType == FLOATING_SINGLE) {
+    float floatSingleVal = (float) val;
+    return (double) floatSingleVal;
+  }*/
+  if (this.modelType === jsts.geom.PrecisionModel.FIXED) {
+    return Math.round(val * this.scale) / this.scale;
+  }
+  // modelType == FLOATING - no rounding necessary
+  return val;
+};
+
+
+/**
+ * Rounds a Coordinate to the PrecisionModel grid.
+ */
+jsts.geom.PrecisionModel.prototype.makePrecise2 = function(coord) {
+  // optimization for full precision
+  if (this.modelType === jsts.geom.PrecisionModel.FLOATING) return;
+
+  coord.x = this.makePrecise(coord.x);
+  coord.y = this.makePrecise(coord.y);
+  //MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
 };
 
 

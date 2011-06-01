@@ -21,9 +21,11 @@
  *
  * @constructor
  */
-jsts.geom.GeometryFactory = function() {
-
+jsts.geom.GeometryFactory = function(precisionModel) {
+  this.precisionModel = precisionModel;
 };
+
+jsts.geom.GeometryFactory.precisionModel = null;
 
 
 /**
@@ -35,10 +37,18 @@ jsts.geom.GeometryFactory = function() {
  * @return {Point} A new Point.
  */
 jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
+  var point = null;
+
   if (coordinate === null) {
-    return new jsts.geom.Point();
+    point = new jsts.geom.Point();
+    point.setPrecisionModel(this.precisionModel);
+  } else {
+    point = new jsts.geom.Point(coordinate);
   }
-  return new jsts.geom.Point(coordinate);
+
+  point.setPrecisionModel(this.precisionModel);
+
+  return point;
 };
 
 
@@ -52,7 +62,10 @@ jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
  * @return {LineString} A new LineString.
  */
 jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
-  return new jsts.geom.LineString(coordinates);
+  var lineString = new jsts.geom.LineString(coordinates);
+  lineString.setPrecisionModel(this.precisionModel);
+
+  return lineString;
 };
 
 
@@ -67,7 +80,9 @@ jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
  * @return {LinearRing} A new LinearRing.
  */
 jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
-  return new jsts.geom.LinearRing(coordinates);
+  var linearRing = new jsts.geom.LinearRing(coordinates);
+  linearRing.setPrecisionModel(this.precisionModel);
+  return linearRing;
 };
 
 
@@ -92,7 +107,11 @@ jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
     rings = rings.concat(holes);
   }
 
-  return new jsts.geom.Polygon(rings);
+  var polygon = new jsts.geom.Polygon(rings);
+
+  polygon.setPrecisionModel(this.precisionModel);
+
+  return polygon;
 };
 
 jsts.geom.GeometryFactory.prototype.createGeometryCollection = function() {
