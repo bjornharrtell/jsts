@@ -124,10 +124,9 @@ jsts.geom.LineString.prototype.computeEnvelopeInternal = function() {
   }
 
   var env = new jsts.geom.Envelope();
-  for (var i = 0; i < this.components.length; i++) {
-    var point = this.components[i];
-    env.expandToInclude(point);
-  }
+  this.components.forEach(function(component) {
+    env.expandToInclude(component);
+  });
 
   return env;
 };
@@ -141,21 +140,21 @@ jsts.geom.LineString.prototype.computeEnvelopeInternal = function() {
  * @return {Boolean} true if equal.
  */
 jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
-  var i;
-
   if (!this.isEquivalentClass(other)) {
     return false;
   }
+
   if (this.components.length !== other.components.length) {
     return false;
   }
-  for (i = 0; i < this.components.length; i++) {
-    if (!jsts.geom.Geometry.prototype.equal(this.components[i], other.components[i],
-        tolerance)) {
-      return false;
-    }
+
+  if (this.isEmpty() && other.isEmpty()) {
+    return true;
   }
-  return true;
+
+  return this.components.reduce(function(equal, component, i) {
+    return equal && jsts.geom.Geometry.prototype.equal(component, other.components[i], tolerance);
+  });
 };
 
 
@@ -166,15 +165,9 @@ jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
  * @return {jsts.geom.LineString} a clone of this instance.
  */
 jsts.geom.LineString.prototype.clone = function() {
-  var key, coordinate;
-
-  var points = [];
-  for (key in this.components) {
-    if (this.components.hasOwnProperty(key)) {
-      coordinate = this.components[key];
-      points.push(coordinate.clone());
-    }
-  }
+  var points = this.components.map(function(component) {
+    return component.clone();
+  });
 
   var clone = new jsts.geom.LineString(points);
 

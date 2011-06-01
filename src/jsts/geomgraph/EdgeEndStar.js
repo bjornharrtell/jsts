@@ -94,7 +94,6 @@ jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
  * NOTE: jsts does not support iterators
  */
 jsts.geomgraph.EdgeEndStar.prototype.getEdges = function() {
-  //if (this.edgeList == null) {
   this.edgeList = [];
   for (var key in this.edgeMap) {
     if (this.edgeMap.hasOwnProperty(key)) {
@@ -106,7 +105,7 @@ jsts.geomgraph.EdgeEndStar.prototype.getEdges = function() {
     return a.compareTo(b);
   };
   this.edgeList.sort(compare);
-  //}
+
   return this.edgeList;
 };
 
