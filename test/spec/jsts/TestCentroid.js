@@ -29,20 +29,24 @@ describe('TestCentroid', function() {
         
         var reader = new jsts.io.WKTReader();
         var geometry = reader.read(wkt);
+        var expectedg = reader.read(expected);
+        
         if (geometry === undefined) continue;
         
         var centroid = geometry.getCentroid();
         
-        var writer = new jsts.io.WKTWriter();
-        var result = writer.write(centroid);
+        var result = centroid.equals(expectedg);
+        
+        //var writer = new jsts.io.WKTWriter();
+        //var result = writer.write(centroid);
         
         count++;
         
-        if (result === expected) {
+        if (result === true) {
           passed++;
         }
         else {
-          console.log('Testcase "' + desc + '" failed. (Result: ' + result + ' / Expected: ' + expected + ')');
+          console.log('Testcase "' + desc + '" failed. (Result: ' + centroid + ' / Expected: ' + expectedg + ')');
         }
       }
       
