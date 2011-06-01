@@ -1563,6 +1563,10 @@ jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
   return a.distance(b) <= tolerance;
 };
 
+jsts.geom.Geometry.prototype.toString = function() {
+  return new jsts.io.WKTWriter().write(this);
+};
+
 
 /**
  * @return {Point}
