@@ -96,7 +96,7 @@ jsts.geomgraph.GeometryGraph.prototype.useBoundaryDeterminationRule = true;
  * @type {int}
  * @private
  */
-jsts.geomgraph.GeometryGraph.prototype.argIndex = null; //
+jsts.geomgraph.GeometryGraph.prototype.argIndex = null;
 
 
 /**
@@ -141,7 +141,7 @@ jsts.geomgraph.GeometryGraph.prototype.getGeometry = function() {
 };
 
 jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodes = function() {
-  if (this.boundaryNodes == null)
+  if (this.boundaryNodes === null)
     this.boundaryNodes = this.nodes.getBoundaryNodes(this.argIndex);
   return this.boundaryNodes;
 };
@@ -388,7 +388,6 @@ jsts.geomgraph.GeometryGraph.prototype.insertPoint = function(argIndex, coord,
  */
 jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex,
     coord) {
-
   var n = this.nodes.addNode(coord);
   var lbl = n.getLabel();
   // the new point to insert is on a boundary
@@ -407,18 +406,18 @@ jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex,
   lbl.setLocation(argIndex, newLoc);
 };
 
+
+/**
+ * add edge intersections as self intersections from each edge intersection list
+ * @param argIndex
+ */
 jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
     argIndex) {
-  var i, e, eLoc, j, ei;
-  for (i = 0; i < this.edges.length; i++) {
-    e = this.edges[i];
-    eLoc = e.getLabel().getLocation(argIndex);
-    var eis = e.eiList.getSortedIntersections();
-    for (j = 0; j < eis.length; j++) {
-      ei = eis[j];
-      this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
-    }
-  }
+  this.edges.forEach(function(edge) {
+    edge.eiList.getSortedIntersections().forEach(function(ei) {
+      this.addSelfIntersectionNode(argIndex, ei.coord, edge.getLabel().getLocation(argIndex));
+    }, this);
+  }, this);
 };
 
 
