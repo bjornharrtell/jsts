@@ -206,6 +206,10 @@ jsts.geom.Geometry.prototype.getPrecisionModel = function() {
   return this.precisionModel;
 };
 
+jsts.geom.Geometry.prototype.setPrecisionModel = function(precisionModel) {
+  this.precisionModel = precisionModel;
+};
+
 
 /**
  * Returns a vertex of this <code>Geometry</code> (usually, but not
@@ -1563,13 +1567,16 @@ jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
   return a.distance(b) <= tolerance;
 };
 
+jsts.geom.Geometry.prototype.toString = function() {
+  return new jsts.io.WKTWriter().write(this);
+};
+
 
 /**
  * @return {Point}
  * @private
  */
 jsts.geom.Geometry.prototype.createPointFromInternalCoord = function(coord, exemplar) {
-  // TODO: enable when/if fixed precision is ported
-  //exemplar.getPrecisionModel().makePrecise(coord);
+  exemplar.getPrecisionModel().makePrecise(coord);
   return exemplar.getFactory().createPoint(coord);
 };
