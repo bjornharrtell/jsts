@@ -24,14 +24,16 @@
  */
 
 
+
 /**
  * Creates a new instance to union
  * the given collection of {@link Geometry}s.
  *
- * @param {Geometry[]} geoms a collection of {@link Polygonal} {@link Geometry}s.
+ * @param {Array.<jsts.geom.Geometry>} geoms a collection of {@link Polygonal} {@link Geometry}s.
+ * @constructor
  */
 jsts.operation.union.CascadedPolygonUnion = function(polys) {
-  throw new jsts.error.NotImplementedError();
+  this.inputPolys = polys;
 };
 
 
@@ -39,22 +41,24 @@ jsts.operation.union.CascadedPolygonUnion = function(polys) {
  * Computes the union of
  * a collection of {@link Polygonal} {@link Geometry}s.
  *
- * @param {Geometry[]} polys a collection of {@link Polygonal} {@link Geometry}s.
- * @return {Geometry}
+ * @param {Array.<jsts.geom.Geometry>} polys a collection of {@link Polygonal} {@link Geometry}s.
+ * @return {jsts.geom.Geometry}
+ * @public
  */
 jsts.operation.union.CascadedPolygonUnion.union = function(polys) {
-  throw new jsts.error.NotImplementedError();
+  var op = new jsts.operation.union.CascadedPolygonUnion(polys);
+  return op.union();
 };
 
 
 /**
- * @type {Geometry[]}
+ * @type {Array.<jsts.geom.Geometry>}
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.inputPolys;
 
 
 /**
- * @type {GeometryFactory}
+ * @type {jsts.geom.GeometryFactory}
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.geomFactory = null;
 
@@ -66,7 +70,8 @@ jsts.operation.union.CascadedPolygonUnion.prototype.geomFactory = null;
  * For an STRtree, 4 is probably a good number (since
  * this produces 2x2 "squares").
  *
- * @type {int}
+ * @type {number}
+ * @const
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.STRTREE_NODE_CAPACITY = 4;
 
@@ -74,23 +79,51 @@ jsts.operation.union.CascadedPolygonUnion.prototype.STRTREE_NODE_CAPACITY = 4;
 /**
  * Computes the union of the input geometries.
  *
- * @return {Geometry} the union of the input geometries.
- * @return {null} null if no input geometries were provided.
+ * @return {?jsts.geom.Geometry} the union of the input geometries, null if no input geometries were provided.
+ * @public
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.union = function() {
-  throw new jsts.error.NotImplementedError();
+  if (this.inputPolys.length === 0) {
+    return null;
+  }
+  this.geomFactory = this.inputPolys[0].getFactory();
+
+  /**
+   * A spatial index to organize the collection
+   * into groups of close geometries.
+   * This makes unioning more efficient, since vertices are more likely
+   * to be eliminated on each round.
+   */
+
+  var index = new jsts.index.strtree.STRtree(this.STRTREE_NODE_CAPACITY);
+  for (var i = 0, l = this.inputPolys.length; i < l; i++) {
+    var item = this.inputPolys[i];
+    index.insert(item.getEnvelopeInternal(), item);
+  }
+  var itemTree = index.itemsTree();
+  var untionAll = this.unionTree(itemTree);
+  return unionAll;
 };
 
 
 /**
  *
- * @param {Geometry[]} geomTree
- * @return {Geometry}
+ * @param {Array.<jsts.geom.Geometry>} geomTree
+ * @return {jsts.geom.Geometry}
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTree) {
-  throw new jsts.error.NotImplementedError();
+  /**
+   * Recursively unions all subtrees in the list into single geometries.
+   * The result is a list of Geometrys only
+   */
+  var geoms = this.reduceToGeometries(geomTree);
+  var union = this.bindayUnion(geoms);
+  return union;
 };
+
+
+//TODO: Implement experimental methods?
 
 
 /**
@@ -100,28 +133,46 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTre
  *
  * Unions a section of a list using a recursive binary union on each half
  * of the section.
- * @param {Geometry[]} geoms
- * @param {int} start
- * @param {int} end
- * @return {Geometry} the union of the list section.
-
+ *
+ * @param {Array.<jsts.geom.Geometry>} geoms
+ * @param {number=} [start].
+ * @param {number=} [end].
+ * @return {jsts.geom.Geometry} the union of the list section.
+ * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms, start, end) {
   start = start || 0;
   end = end || geoms.length;
-  throw new jsts.error.NotImplementedError();
+
+  if (end - start <= 1) {
+    var g0 = this.getGeometry(geoms, start);
+    return this.unionSafe(g0, null);
+  }
+  else if (end - start === 2) {
+    return this.unionSafe(this.getGeometry(geoms, start), this.getGeometry(geoms, start + 1));
+  }
+  else {
+    // recurse on both halves of the list
+    var mid = (end + start) / 2;
+    var g0 = this.binaryUnion(geoms, start, mid);
+    var g1 = this.binaryUnion(geoms, mid, end);
+    return this.unionSafe(g0, g1);
+  }
 };
 
 
 /**
  *
- * @param {Geometry[]} list
- * @param {int} index
- * @return {Geometry}
+ * @param {Array.<jsts.geom.Geometry>} list
+ * @param {number} index
+ * @return {jsts.geom.Geometry}
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.getGeometry = function(list, index) {
-  throw new jsts.error.NotImplementedError();
+  if (index >= list.length) {
+    return null;
+  }
+  return list[i];
 };
 
 
@@ -129,11 +180,24 @@ jsts.operation.union.CascadedPolygonUnion.getGeometry = function(list, index) {
  * Reduces a tree of geometries to a list of geometries
  * by recursively unioning the subtrees in the list.
  *
- * @param {Geometry[]} geomTree a tree-structured list of geometries.
- * @return {Geometry[]} a list of Geometrys.
+ * @param {Array} geomTree a tree-structured list of geometries.
+ * @return {Array.<jsts.geom.Geometry>} a list of Geometrys.
+ * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.reduceToGeometries = function(geomTree) {
-  throw new jsts.error.NotImplementedError();
+  var geoms = [];
+  for (var i = 0, l = geomTree.length; i < l; i++) {
+    var o = geomTree[i],
+        geom = null;
+    if (o instanceof Array) {
+      geom = this.unionTree(o);
+    }
+    else if (o instanceof jsts.geom.Geometry) {
+      geom = o;
+    }
+    geoms.push(o);
+  }
+  return geoms;
 };
 
 
@@ -141,25 +205,50 @@ jsts.operation.union.CascadedPolygonUnion.prototype.reduceToGeometries = functio
  * Computes the union of two geometries,
  * either of both of which may be null.
  *
- * @param {Geometry} g0 a Geometry.
- * @param {Geometry} g1 a Geometry.
- * @return {Geometry} the union of the input(s).
- * @return {null} null if both inputs are null.
+ * @param {jsts.geom.Geometry} g0 a Geometry.
+ * @param {jsts.geom.Geometry} g1 a Geometry.
+ * @return {?jsts.geom.Geometry} the union of the input(s),
+ *                               null if both inputs are null.
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionSafe = function(g0, g1) {
-  throw new jsts.error.NotImplementedError();
+  if (g0 === null && g1 === null) {
+    return null;
+  }
+  if (g0 === null) {
+    return g1.clone();
+  }
+  if (g1 === null) {
+    return g0.clone();
+  }
+
+  //what if both are null?  Maybe return empty GC?
+
+  return unionOptimized(g0, g1);
 };
 
 
 /**
- * @param {Geometry} g0 a Geometry.
- * @param {Geometry} g1 a Geometry.
- * @return {Geometry} the union of the input(s).
+ * @param {jsts.geom.Geometry} g0 a Geometry.
+ * @param {jsts.geom.Geometry} g1 a Geometry.
+ * @return {jsts.geom.Geometry} the union of the input(s).
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized = function(g0, g1) {
-  throw new jsts.error.NotImplementedError();
+  var g0Env = g0.getEnvelopeInternal(),
+      g1Env = g1.getEnvelopeInternal();
+
+  if (!g0Env.intersects(g1Env)) {
+    var combo = jsts.geom.util.GeometryCombiner.combine(g0, g1);
+    return combo;
+  }
+
+  if (g0.getNumGeometries <= 1 && g1.getNumGeometries <= 1) {
+    return this.unionActual(g0, g1);
+  }
+
+  var commonEnv = g0Env.intersection(g1Env);
+  return this.unionUsingEnvelopeIntersection(g0, g1, commonEnv);
 };
 
 
@@ -172,38 +261,59 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized = function(g0
  * This case is likely to occur often during cascaded union, and may also
  * occur in real world data (such as unioning data for parcels on different street blocks).
  *
- * @param {Geometry} g0 a polygonal geometry.
- * @param {Geometry} g1 a polygonal geometry.
- * @param {Envelope} common the intersection of the envelopes of the inputs.
- * @return {Geometry} the union of the inputs.
+ * @param {jsts.geom.Geometry} g0 a polygonal geometry.
+ * @param {jsts.geom.Geometry} g1 a polygonal geometry.
+ * @param {jsts.geom.Envelope} common the intersection of the envelopes of the inputs.
+ * @return {jsts.geom.Geometry} the union of the inputs.
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersection = function(g0, g1, common) {
-  throw new jsts.error.NotImplementedError();
+  var disjointPolys = [];
+  var g0Int = this.extractByEnvelope(common, g0, disjointPolys);
+  var g1Int = this.extractByEnvelope(common, g1, disjointPolys);
+
+  var union = this.unionActual(g0Int, g1Int);
+
+  disjointPolys.push(union);
+  var overallUnion = jsts.geom.util.GeometryCombiner.combine(disjointPolys);
+
+  return overallUnion;
 };
 
 
 /**
  *
- * @param {Envelope} env
- * @param {Geometry} geom
- * @param {Geometry[]} disjointGeoms
- * @return {Geometry}
+ * @param {jsts.geom.Envelope} env
+ * @param {jsts.geom.Geometry} geom
+ * @param {Array.<jsts.geom.Geometry>} disjointGeoms
+ * @return {jsts.geom.Geometry}
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope = function(env, geom, disjointGeoms) {
-  throw new jsts.error.NotImplementedError();
+  var intersectingGeoms = [];
+
+  for (var i = 0; i < geom.getNumGeometries(); i++) {
+    var elem = geom.getGeometryN(i);
+    if (elem.getEnvelopeInternal().intersects(env)) {
+      intersectingGeoms.push(elem);
+    }
+    else {
+      disjointGeoms.add(elem);
+    }
+  }
+
+  return this.geomFactory.buildGeometry(intersectingGeoms);
 };
 
 
 /**
  * Encapsulates the actual unioning of two polygonal geometries.
  *
- * @param {Geometry} g0
- * @param {Geometry} g1
- * @return {Geometry}
+ * @param {jsts.geom.Geometry} g0
+ * @param {jsts.geom.Geometry} g1
+ * @return {jsts.geom.Geometry}
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionActual = function(g0, g1) {
-  throw new jsts.error.NotImplementedError();
+  reutrn g0.union(g1);
 };
