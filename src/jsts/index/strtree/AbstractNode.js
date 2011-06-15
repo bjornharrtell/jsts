@@ -1,0 +1,107 @@
+/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+/**
+ * A node of the STR tree. The children of this node are either more nodes
+ * (AbstractNodes) or real data (ItemBoundables). If this node contains real data
+ * (rather than nodes), then we say that this node is a "leaf node".
+ *
+ * @version 1.7
+ */
+
+
+
+/**
+ * Constructs an AbstractNode at the given level in the tree
+ * @param {Integer} level 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
+ * root node will have the highest level.
+ *
+ * @extends {Boundable}
+ * @constructor
+ * @interface
+ */
+jsts.index.strtree.AbstractNode = function(level) {
+  this.level = level;
+};
+
+OpenLayers.inherit(jsts.index.strtree.AbstractNode, jsts.index.strtree.Boundable);
+
+
+/**
+ * @type {Array}
+ * @private
+ */
+jsts.index.strtree.AbstractNode.protoype.childBoundables = [];
+
+
+/**
+ * @type {Object}
+ * @private
+ */
+jsts.index.strtree.AbstractNode.protoype.bounds = null;
+
+
+/**
+ * @type {number}
+ * @private
+ */
+jsts.index.strtree.AbstractNode.protoype.level;
+
+
+/**
+ * Returns either child {@link AbstractNodes}, or if this is a leaf node, real data (wrapped
+ * in {@link ItemBoundables}).
+ *
+ * @return {Array}
+ */
+jsts.index.strtree.AbstractNode.protoype.getChildBoundables = function() {
+  return this.childBoundables;
+};
+
+
+/**
+ * Returns a representation of space that encloses this Boundable,
+ * preferably not much bigger than this Boundable's boundary yet fast to
+ * test for intersection with the bounds of other Boundables. The class of
+ * object returned depends on the subclass of AbstractSTRtree.
+ *
+ * @return an Envelope (for STRtrees), an Interval (for SIRtrees), or other
+ *         object (for other subclasses of AbstractSTRtree).
+ * @see AbstractSTRtree.IntersectsOp
+ */
+jsts.index.strtree.AbstractNode.protoype.computeBounds = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * @return {Object}
+ */
+jsts.index.strtree.AbstractNode.protoype.computeBounds = function() {
+  throw new jsts.error.NotImplementedError();
+};
+
+
+/**
+ * Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
+ * root node will have the highest level
+ *
+ * @return {number}
+ */
+jsts.index.strtree.AbstractNode.protoype.getLevel = function() {
+  throw new jsts.error.NotImplementedError();
+};
+
+
+/**
+ * Adds either an AbstractNode, or if this is a leaf node, a data object
+ * (wrapped in an ItemBoundable)
+ *
+ * @param {jsts.index.strtree.Boundable} childBoundable
+ */
+jsts.index.strtree.AbstractNode.protoype.addChildBoundable = function(childBoundable) {
+  throw new jsts.error.NotImplementedError();
+};
