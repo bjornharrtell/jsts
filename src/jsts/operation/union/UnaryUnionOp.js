@@ -44,7 +44,11 @@
  * @param {GeometryFactory} gemFact a GeometryFactory.
  * @constructor
  */
-jsts.operation.union.UnaryUnionOp = function(geoms, gemFact) {
+jsts.operation.union.UnaryUnionOp = function(geoms, geomFact) {
+  this.polygons = [];
+  this.lines = [];
+  this.points = [];
+
   this.geomFact = geomFact;
   this.extract(geoms);
 };
@@ -56,8 +60,8 @@ jsts.operation.union.UnaryUnionOp = function(geoms, gemFact) {
  * @param {Geometryfactory} [gemFact] a GeometryFactory.
  * @return {Geometry}
  */
-jsts.operation.union.UnaryUnionOp.union = function(geoms, gemFact) {
-  var op = new jsts.operation.union.UnaryUnionOp(geoms, gemFact);
+jsts.operation.union.UnaryUnionOp.union = function(geoms, geomFact) {
+  var op = new jsts.operation.union.UnaryUnionOp(geoms, geomFact);
   return op.union();
 };
 
@@ -65,19 +69,19 @@ jsts.operation.union.UnaryUnionOp.union = function(geoms, gemFact) {
 /**
  * @type {Polygon[]}
  */
-jsts.operation.union.UnaryUnionOp.prototype.polygons = [];
+jsts.operation.union.UnaryUnionOp.prototype.polygons = null;
 
 
 /**
  * @type {Line[]}
  */
-jsts.operation.union.UnaryUnionOp.prototype.lines = [];
+jsts.operation.union.UnaryUnionOp.prototype.lines = null;
 
 
 /**
  * @type {Point[]}
  */
-jsts.operation.union.UnaryUnionOp.prototype.points = [];
+jsts.operation.union.UnaryUnionOp.prototype.points = null;
 
 
 /**
@@ -97,7 +101,7 @@ jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
   }
   else {
     if (this.geomFact === null) {
-      geomFact = geoms.getFactory();
+      this.geomFact = geoms.getFactory();
     }
     jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.Polygon, this.polygons);
     jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.LineString, this.lines);
