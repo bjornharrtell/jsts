@@ -18,7 +18,7 @@
 jsts.geom.GeometryCollection = function() {
 };
 
-jsts.geom.GeometryCollection = OpenLayers.Class(jsts.geom.Geometry);
+jsts.geom.GeometryCollection.prototype = new jsts.geom.Geometry();
 
 
 /**

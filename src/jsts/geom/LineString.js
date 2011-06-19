@@ -18,7 +18,7 @@
 jsts.geom.LineString = function() {
 
 };
-jsts.geom.LineString = OpenLayers.Class(jsts.geom.Geometry);
+jsts.geom.LineString.prototype = new jsts.geom.Geometry();
 
 
 /**

@@ -24,7 +24,6 @@
  */
 jsts.geom.Coordinate = function() {
 };
-jsts.geom.Coordinate = OpenLayers.Class();
 
 
 /**

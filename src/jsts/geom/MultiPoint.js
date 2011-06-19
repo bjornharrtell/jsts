@@ -18,7 +18,7 @@
 jsts.geom.MultiPoint = function() {
 
 };
-jsts.geom.MultiPoint = OpenLayers.Class(jsts.geom.GeometryCollection);
+jsts.geom.MultiPoint.prototype = new jsts.geom.GeometryCollection();
 
 
 /**
