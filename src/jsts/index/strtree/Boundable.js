@@ -32,6 +32,6 @@ jsts.index.strtree.Boundable = function() {
  * @see jsts.index.strtree.AbstractSTRtree.IntersectsOp
  * @public
  */
-jsts.index.strtree.Boundable.protoype.getBounds = function() {
+jsts.index.strtree.Boundable.prototype.getBounds = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };

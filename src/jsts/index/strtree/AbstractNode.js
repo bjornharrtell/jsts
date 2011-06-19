@@ -34,21 +34,21 @@ OpenLayers.inherit(jsts.index.strtree.AbstractNode, jsts.index.strtree.Boundable
  * @type {Array}
  * @private
  */
-jsts.index.strtree.AbstractNode.protoype.childBoundables = [];
+jsts.index.strtree.AbstractNode.prototype.childBoundables = [];
 
 
 /**
  * @type {Object}
  * @private
  */
-jsts.index.strtree.AbstractNode.protoype.bounds = null;
+jsts.index.strtree.AbstractNode.prototype.bounds = null;
 
 
 /**
  * @type {number}
  * @private
  */
-jsts.index.strtree.AbstractNode.protoype.level;
+jsts.index.strtree.AbstractNode.prototype.level;
 
 
 /**
@@ -57,7 +57,7 @@ jsts.index.strtree.AbstractNode.protoype.level;
  *
  * @return {Array}
  */
-jsts.index.strtree.AbstractNode.protoype.getChildBoundables = function() {
+jsts.index.strtree.AbstractNode.prototype.getChildBoundables = function() {
   return this.childBoundables;
 };
 
@@ -72,7 +72,7 @@ jsts.index.strtree.AbstractNode.protoype.getChildBoundables = function() {
  *         object (for other subclasses of AbstractSTRtree).
  * @see AbstractSTRtree.IntersectsOp
  */
-jsts.index.strtree.AbstractNode.protoype.computeBounds = function() {
+jsts.index.strtree.AbstractNode.prototype.computeBounds = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
@@ -80,7 +80,7 @@ jsts.index.strtree.AbstractNode.protoype.computeBounds = function() {
 /**
  * @return {Object}
  */
-jsts.index.strtree.AbstractNode.protoype.computeBounds = function() {
+jsts.index.strtree.AbstractNode.prototype.computeBounds = function() {
   throw new jsts.error.NotImplementedError();
 };
 
@@ -91,7 +91,7 @@ jsts.index.strtree.AbstractNode.protoype.computeBounds = function() {
  *
  * @return {number}
  */
-jsts.index.strtree.AbstractNode.protoype.getLevel = function() {
+jsts.index.strtree.AbstractNode.prototype.getLevel = function() {
   throw new jsts.error.NotImplementedError();
 };
 
@@ -102,6 +102,6 @@ jsts.index.strtree.AbstractNode.protoype.getLevel = function() {
  *
  * @param {jsts.index.strtree.Boundable} childBoundable
  */
-jsts.index.strtree.AbstractNode.protoype.addChildBoundable = function(childBoundable) {
+jsts.index.strtree.AbstractNode.prototype.addChildBoundable = function(childBoundable) {
   throw new jsts.error.NotImplementedError();
 };

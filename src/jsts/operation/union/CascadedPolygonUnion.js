@@ -315,5 +315,5 @@ jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope = function
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionActual = function(g0, g1) {
-  reutrn g0.union(g1);
+  return g0.union(g1);
 };
