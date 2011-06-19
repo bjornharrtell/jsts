@@ -53,7 +53,7 @@ jsts.index.strtree.AbstractSTRtree.IntersectsOp = function() {
  * @param {Object} bBounds the bounds of another spatial object.
  * @return {boolean} whether the two bounds intersect.
  */
-jsts.index.strtree.AbstractSTRtree.IntersectsOp.protoype.intersects = function(aBounds, bBounds) {
+jsts.index.strtree.AbstractSTRtree.IntersectsOp.prototype.intersects = function(aBounds, bBounds) {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
@@ -61,28 +61,28 @@ jsts.index.strtree.AbstractSTRtree.IntersectsOp.protoype.intersects = function(a
 /**
  * @type {jsts.index.strtree.AbstractNode}
  */
-jsts.index.strtree.AbstractSTRtree.protoype.root;
+jsts.index.strtree.AbstractSTRtree.prototype.root = null;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.index.strtree.AbstractSTRtree.protoype.built = false;
+jsts.index.strtree.AbstractSTRtree.prototype.built = false;
 
 
 /**
  * @type {Array}
  * @private
  */
-jsts.index.strtree.AbstractSTRtree.protoype.itemBoundables = [];
+jsts.index.strtree.AbstractSTRtree.prototype.itemBoundables = [];
 
 
 /**
  * @type {number}
  * @private
  */
-jsts.index.strtree.AbstractSTRtree.protoype.nodeCapacity;
+jsts.index.strtree.AbstractSTRtree.prototype.nodeCapacity = null;
 
 
 /**
@@ -91,7 +91,7 @@ jsts.index.strtree.AbstractSTRtree.protoype.nodeCapacity;
  * called once, and thus can be called only after all of the data has been
  * inserted into the tree.
  */
-jsts.index.strtree.AbstractSTRtree.protoype.build = function() {
+jsts.index.strtree.AbstractSTRtree.prototype.build = function() {
   throw new jsts.error.NotImplementedError();
 };
 
@@ -100,7 +100,7 @@ jsts.index.strtree.AbstractSTRtree.protoype.build = function() {
  * @param {number} level
  * @return {jsts.index.strtree.AbstractNode}
  */
-jsts.index.strtree.AbstractSTRtree.protoype.createNode = function(level) {
+jsts.index.strtree.AbstractSTRtree.prototype.createNode = function(level) {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
@@ -109,7 +109,7 @@ jsts.index.strtree.AbstractSTRtree.protoype.createNode = function(level) {
  * Sorts the childBoundables then divides them into groups of size M, where
  * M is the node capacity.
  */
-jsts.index.strtree.AbstractSTRtree.protoype.createParentBoundables = function(childBoundables, newLevel) {
+jsts.index.strtree.AbstractSTRtree.prototype.createParentBoundables = function(childBoundables, newLevel) {
   throw new jsts.error.NotImplementedError();
 };
 
@@ -118,7 +118,7 @@ jsts.index.strtree.AbstractSTRtree.protoype.createParentBoundables = function(ch
  * @param {Array} nodes
  * @return {jsts.index.strtree.AbstractNode}
  */
-jsts.index.strtree.AbstractSTRtree.protoype.lastNode = function(nodes) {
+jsts.index.strtree.AbstractSTRtree.prototype.lastNode = function(nodes) {
   throw new jsts.error.NotImplementedError();
 };
 
@@ -128,7 +128,7 @@ jsts.index.strtree.AbstractSTRtree.protoype.lastNode = function(nodes) {
  * @param {number} b
  * @return {jsts.index.strtree.AbstractNode}
  */
-jsts.index.strtree.AbstractSTRtree.protoype.compareDoubles = function(a, b) {
+jsts.index.strtree.AbstractSTRtree.prototype.compareDoubles = function(a, b) {
   throw new jsts.error.NotImplementedError();
 };
 
