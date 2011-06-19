@@ -18,24 +18,24 @@
  * @augments GeometryFilter
  * @constructor
  */
-jsts.geom.util.GeometryExtractor = function(clz, comps) {
+jsts.geom.util.GeometryExtracter = function(clz, comps) {
   this.clz = clz;
   this.comps = comps;
 };
 
-jsts.geom.util.GeometryExtractor.prototype = new jsts.geom.GeometryFilter();
+jsts.geom.util.GeometryExtracter.prototype = new jsts.geom.GeometryFilter();
 
 
 /**
  * @private
  */
-jsts.geom.util.GeometryExtractor.prototype.clz = null;
+jsts.geom.util.GeometryExtracter.prototype.clz = null;
 
 
 /**
  * @private
  */
-jsts.geom.util.GeometryExtractor.prototype.comps = null;
+jsts.geom.util.GeometryExtracter.prototype.comps = null;
 
 
 /**
@@ -48,16 +48,16 @@ jsts.geom.util.GeometryExtractor.prototype.comps = null;
  *
  * @return {[]}
  */
-jsts.geom.util.GeometryExtractor.extract = function(geom, clz, list) {
+jsts.geom.util.GeometryExtracter.extract = function(geom, clz, list) {
   list = list || [];
   if (geom instanceof clz) {
-    list.add(geom);
+    list.push(geom);
   }
   else if (geom instanceof jsts.geom.GeometryCollection ||
       geom instanceof jsts.geom.MultiPoint ||
       geom instanceof jsts.geom.MultiLineString ||
       geom instanceof jsts.geom.MultiPolygon) {
-    geom.apply(new jsts.geom.util.GeometryExtractor(clz, list));
+    geom.apply(new jsts.geom.util.GeometryExtracter(clz, list));
   }
   //skip non-LineString elemental geometries
 
@@ -68,7 +68,7 @@ jsts.geom.util.GeometryExtractor.extract = function(geom, clz, list) {
 /**
  * @param {Geometry} geom
  */
-jsts.geom.util.GeometryExtractor.prototype.filter = function(geom) {
+jsts.geom.util.GeometryExtracter.prototype.filter = function(geom) {
   if (this.clz === null || geom instanceof this.clz) {
     this.comps.push(geom);
   }

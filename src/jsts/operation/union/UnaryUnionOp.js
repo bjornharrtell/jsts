@@ -49,7 +49,10 @@ jsts.operation.union.UnaryUnionOp = function(geoms, geomFact) {
   this.lines = [];
   this.points = [];
 
-  this.geomFact = geomFact;
+  if (geomFact) {
+    this.geomFact = geomFact;
+  }
+
   this.extract(geoms);
 };
 
@@ -103,9 +106,9 @@ jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
     if (this.geomFact === null) {
       this.geomFact = geoms.getFactory();
     }
-    jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.Polygon, this.polygons);
-    jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.LineString, this.lines);
-    jsts.geom.util.GeometryExtractor.extract(geoms, jsts.geom.Point, this.points);
+    jsts.geom.util.GeometryExtracter.extract(geoms, jsts.geom.Polygon, this.polygons);
+    jsts.geom.util.GeometryExtracter.extract(geoms, jsts.geom.LineString, this.lines);
+    jsts.geom.util.GeometryExtracter.extract(geoms, jsts.geom.Point, this.points);
   }
 };
 
