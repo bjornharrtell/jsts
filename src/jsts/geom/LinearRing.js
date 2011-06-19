@@ -29,7 +29,7 @@
  */
 jsts.geom.LinearRing = function() {
 };
-jsts.geom.LinearRing = OpenLayers.Class(jsts.geom.LineString);
+jsts.geom.LinearRing.prototype = new jsts.geom.LineString();
 
 
 /**

@@ -91,8 +91,6 @@
 jsts.geom.Geometry = function() {
 };
 
-jsts.geom.Geometry = OpenLayers.Class();
-
 
 /**
  * The bounding box of this <code>Geometry</code>.

@@ -19,7 +19,7 @@
 jsts.geom.MultiPolygon = function() {
 
 };
-jsts.geom.MultiPolygon = OpenLayers.Class(jsts.geom.GeometryCollection);
+jsts.geom.MultiPolygon.prototype = new jsts.geom.GeometryCollection();
 
 
 /**

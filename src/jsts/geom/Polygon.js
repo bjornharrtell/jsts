@@ -27,7 +27,7 @@ jsts.geom.Polygon = function() {
 
 };
 
-jsts.geom.Polygon = OpenLayers.Class(jsts.geom.Geometry);
+jsts.geom.Polygon.prototype = new jsts.geom.Geometry();
 
 
 jsts.geom.Polygon.prototype.getCoordinate = function() {
