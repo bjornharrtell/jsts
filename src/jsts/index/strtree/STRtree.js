@@ -18,7 +18,9 @@
  * <i>Spatial Databases With Application To GIS</i>.
  * Morgan Kaufmann, San Francisco, 2002.
  *
- * @version 1.7
+ * @requires jsts/index/SpatialIndex.js
+ * @requires jsts/index/strtree/STRtree.js
+ * @requires jsts/index/strtree/AbstractSTRtree.js
  */
 
 
