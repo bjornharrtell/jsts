@@ -11,6 +11,7 @@
  * Application To GIS. Morgan Kaufmann, San Francisco, 2002.
  * @see STRtree
  *
+ * @requires jsts/index/strtree/AbstractNode.js
  * @requires jsts/index/strtree/AbstractSTRtree.js
  */
 
