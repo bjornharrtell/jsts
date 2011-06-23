@@ -209,6 +209,6 @@ jsts.operation.union.UnaryUnionOp.prototype.unionWithNull = function(g0, g1) {
  * @return the union of the input geometry.
  * @private
  */
-jsts.operation.union.UnaryUnionOp.prototype.untionNoOpt = function(g0) {
+jsts.operation.union.UnaryUnionOp.prototype.unionNoOpt = function(g0) {
   throw new jsts.error.NotImplementedError();
 };
