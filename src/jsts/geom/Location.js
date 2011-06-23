@@ -22,7 +22,8 @@ jsts.geom.Location = function() {
  * the interior of the first geometry and column index of the interior of the
  * second geometry.
  *
- * @type {int}
+ * @const
+ * @type {number}
  */
 jsts.geom.Location.INTERIOR = 0;
 
@@ -32,7 +33,8 @@ jsts.geom.Location.INTERIOR = 0;
  * the boundary of the first geometry and column index of the boundary of the
  * second geometry.
  *
- * @type {int}
+ * @const
+ * @type {number}
  */
 jsts.geom.Location.BOUNDARY = 1;
 
@@ -42,7 +44,8 @@ jsts.geom.Location.BOUNDARY = 1;
  * the exterior of the first geometry and column index of the exterior of the
  * second geometry.
  *
- * @type {int}
+ * @const
+ * @type {number}
  */
 jsts.geom.Location.EXTERIOR = 2;
 
@@ -50,7 +53,8 @@ jsts.geom.Location.EXTERIOR = 2;
 /**
  * Used for uninitialized location values.
  *
- * @type {int}
+ * @const
+ * @type {number}
  */
 jsts.geom.Location.NONE = -1;
 
@@ -59,9 +63,9 @@ jsts.geom.Location.NONE = -1;
  * Converts the location value to a location symbol, for example,
  * <code>EXTERIOR => 'e'</code> .
  *
- * @param {int}
+ * @param {number}
  *          locationValue either EXTERIOR, BOUNDARY, INTERIOR or NONE.
- * @return {String} either 'e', 'b', 'i' or '-'.
+ * @return {string} either 'e', 'b', 'i' or '-'.
  */
 jsts.geom.Location.toLocationSymbol = function(locationValue) {
   switch (locationValue) {
