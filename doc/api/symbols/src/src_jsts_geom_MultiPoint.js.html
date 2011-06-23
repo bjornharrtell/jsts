@@ -25,7 +25,7 @@
 <span class='line'> 18</span> </span><span class="NAME">jsts.geom.MultiPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 19</span> 
 <span class='line'> 20</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 21</span> </span><span class="NAME">jsts.geom.MultiPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">OpenLayers.Class</span><span class="PUNC">(</span><span class="NAME">jsts.geom.GeometryCollection</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="NAME">jsts.geom.MultiPoint.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.GeometryCollection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 22</span> 
 <span class='line'> 23</span> 
 <span class='line'> 24</span> </span><span class="COMM">/**
@@ -41,7 +41,7 @@
 <span class='line'> 34</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 35</span> 
 <span class='line'> 36</span> </span><span class="NAME">jsts.geom.MultiPoint.prototype.getGeometryN</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">n</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Point</span><span class="PUNC">(</span><span class="NAME">this.geometries</span><span class="PUNC">[</span><span class="NAME">n</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.geometries</span><span class="PUNC">[</span><span class="NAME">n</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 38</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'> 39</span> 
 <span class='line'> 40</span> 
