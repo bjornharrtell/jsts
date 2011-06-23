@@ -114,6 +114,85 @@ jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
   return polygon;
 };
 
-jsts.geom.GeometryFactory.prototype.createGeometryCollection = function() {
-  return new jsts.geom.GeometryCollection();
+
+/**
+ *  Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
+ *  <code>GeometryCollection</code> to contain the <code>Geometry</code>s in
+ *  it.
+ * For example:<br>
+ *
+ *  <ul>
+ *    <li> If <code>geomList</code> contains a single <code>Polygon</code>,
+ *    the <code>Polygon</code> is returned.
+ *    <li> If <code>geomList</code> contains several <code>Polygon</code>s, a
+ *    <code>MultiPolygon</code> is returned.
+ *    <li> If <code>geomList</code> contains some <code>Polygon</code>s and
+ *    some <code>LineString</code>s, a <code>GeometryCollection</code> is
+ *    returned.
+ *    <li> If <code>geomList</code> is empty, an empty <code>GeometryCollection</code>
+ *    is returned
+ *  </ul>
+ *
+ * Note that this method does not "flatten" Geometries in the input, and hence if
+ * any MultiGeometries are contained in the input a GeometryCollection containing
+ * them will be returned.
+ *
+ *@param  geomList  the <code>Geometry</code>s to combine
+ *@return {Geometry}          a <code>Geometry</code> of the "smallest", "most
+ *      type-specific" class that can contain the elements of <code>geomList</code>
+ *      .
+ */
+jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
+
+  /**
+   * Determine some facts about the geometries in the list
+   */
+  var geomClass = null;
+  var isHeterogeneous = false;
+  var hasGeometryCollection = false;
+  for (var i = 0; i < geomList.length; i++) {
+    var geom = geomList[i];
+    var partClass = geom.constructor;
+    if (geomClass == null) {
+      geomClass = partClass;
+    }
+    if (partClass != geomClass) {
+      isHeterogeneous = true;
+    }
+    if (geom instanceof jsts.geom.GeometryCollection)
+      hasGeometryCollection = true;
+  }
+
+  /**
+   * Now construct an appropriate geometry to return
+   */
+  // for the empty geometry, return an empty GeometryCollection
+  if (geomClass == null) {
+    return this.createGeometryCollection(null);
+  }
+  if (isHeterogeneous || hasGeometryCollection) {
+    return this.createGeometryCollection(geomList);
+  }
+  // at this point we know the collection is hetereogenous.
+  // Determine the type of the result from the first Geometry in the list
+  // this should always return a geometry, since otherwise an empty collection would have already been returned
+  var geom0 = geomList[0];
+  var isCollection = geomList.length > 1;
+  if (isCollection) {
+    if (geom0 instanceof jsts.geom.Polygon) {
+      return this.createMultiPolygon(geomList);
+    }
+    else if (geom0 instanceof jsts.geom.LineString) {
+      return this.createMultiLineString(geomList);
+    }
+    else if (geom0 instanceof jsts.geom.Point) {
+      return this.createMultiPoint(geomList);
+    }
+    // TODO: Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
+  }
+  return geom0;
+};
+
+jsts.geom.GeometryFactory.prototype.createGeometryCollection = function(geometries) {
+  return new jsts.geom.GeometryCollection(geometries);
 };
