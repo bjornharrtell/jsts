@@ -11,11 +11,11 @@
  * points and extract the resulting triangulation edges or triangles as
  * geometries.
  *
- * Initializes a new DelauneyTriangulationBuilder
+ * Initializes a new DelaunayTriangulationBuilder
  *
  * @constructor
  */
-jsts.triangulate.DelauneyTriangulationBuilder = function() {
+jsts.triangulate.DelaunayTriangulationBuilder = function() {
 
   this.siteCoords = null;
   this.tolerance = 0.0;
@@ -30,14 +30,14 @@ jsts.triangulate.DelauneyTriangulationBuilder = function() {
  *          geom the geometry to extract from.
  * @return {Array{jsts.geom.Coordinate}} An array of the unique Coordinates
  */
-jsts.triangulate.DelauneyTriangulationBuilder.extractUniqueCoordinates = function(
+jsts.triangulate.DelaunayTriangulationBuilder.extractUniqueCoordinates = function(
     geom) {
   if (geom === undefined || geom === null) {
     return new jsts.geom.CoordinateList();
   }
 
   var coords = geom.getCoordinates();
-  return jsts.triangulate.DelauneyTriangulationBuilder.unique(coords);
+  return jsts.triangulate.DelaunayTriangulationBuilder.unique(coords);
 };
 
 
@@ -48,7 +48,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.extractUniqueCoordinates = functio
  *          coords The input coordinates
  * @return {Array{jsts.geom.Coordinate}} An array stripped out of any duplicates
  */
-jsts.triangulate.DelauneyTriangulationBuilder.unique = function(coords) {
+jsts.triangulate.DelaunayTriangulationBuilder.unique = function(coords) {
   // Sort the coordinates by their compareTo-function
   coords.sort(function(a, b) {
     return a.compareTo(b);
@@ -66,7 +66,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.unique = function(coords) {
  *          coords the input coordinates
  * @return {Array{jsts.triangulate.quadedge.Vertex}} The created vertexes
  */
-jsts.triangulate.DelauneyTriangulationBuilder.toVertices = function(coords) {
+jsts.triangulate.DelaunayTriangulationBuilder.toVertices = function(coords) {
   var verts = new Array(coords.length), i = 0, il = coords.length, coord;
 
   for (i; i < il; i++) {
@@ -86,7 +86,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.toVertices = function(coords) {
  * @return {jsts.geom.Envelope} The created envelope.
  *
  */
-jsts.triangulate.DelauneyTriangulationBuilder.envelope = function(coords) {
+jsts.triangulate.DelaunayTriangulationBuilder.envelope = function(coords) {
   var env = new jsts.geom.Envelope(), i = 0, il = coords.length;
 
   for (i; i < il; i++) {
@@ -101,7 +101,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.envelope = function(coords) {
  * Sets the sites which will be triangulated. Calls the correct setSites*
  * function after argument-checking
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSites = function() {
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.setSites = function() {
   var arg = arguments[0];
 
   if (arg instanceof jsts.geom.Geometry ||
@@ -125,10 +125,10 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSites = function() {
  * @param {jsts.geom.Geometry}
  *          geom the geometry from which the sites will be extracted.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSitesFromGeometry = function(
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.setSitesFromGeometry = function(
     geom) {
   // remove any duplicate points (they will cause the triangulation to fail)
-  this.siteCoords = jsts.triangulate.DelauneyTriangulationBuilder
+  this.siteCoords = jsts.triangulate.DelaunayTriangulationBuilder
       .extractUniqueCoordinates(geom);
 };
 
@@ -140,10 +140,10 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSitesFromGeometry = f
  * @param {Array{Coordinates}}
  *          coords a collection of Coordinates.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSitesFromCollection = function(
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.setSitesFromCollection = function(
     coords) {
   // remove any duplicate points (they will cause the triangulation to fail)
-  this.siteCoords = jsts.triangulate.DelauneyTriangulationBuilder.extractUniqueCoordinates
+  this.siteCoords = jsts.triangulate.DelaunayTriangulationBuilder.extractUniqueCoordinates
       .unique(coords);
 };
 
@@ -156,27 +156,27 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.setSitesFromCollection =
  * @param {Number}
  *          tolerance the tolerance distance to use.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.setTolerance = function(
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.setTolerance = function(
     tolerance) {
   this.tolerance = tolerance;
 };
 
 
 /**
- * Creates the delauney-triangulation.
+ * Creates the Delaunay-triangulation.
  *
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.create = function() {
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.create = function() {
   if (this.subdiv === null) {
     var siteEnv, vertices, triangulator;
 
-    siteEnv = jsts.triangulate.DelauneyTriangulationBuilder
+    siteEnv = jsts.triangulate.DelaunayTriangulationBuilder
         .envelope(this.siteCoords);
-    vertices = jsts.triangulate.DelauneyTriangulationBuilder
+    vertices = jsts.triangulate.DelaunayTriangulationBuilder
         .toVertices(this.siteCoords);
     this.subdiv = new jsts.triangulate.quadedge.QuadEdgeSubdivision(siteEnv,
         this.tolerance);
-    triangulator = new jsts.triangulate.IncrementalDelauneyTriangulator(
+    triangulator = new jsts.triangulate.IncrementalDelaunayTriangulator(
         this.subdiv);
     triangulator.insertSites(vertices);
   }
@@ -190,7 +190,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.create = function() {
  * @return {jsts.triangulate.quadedge.QuadEdgeSubdivision} containing the
  *         triangulation.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.getSubdivision = function() {
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.getSubdivision = function() {
   this.create();
   return this.subdiv;
 };
@@ -203,7 +203,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.getSubdivision = functio
  *          geomFact the geometry factory to use to create the output.
  * @return {jsts.geom.Geometry} the edges of the triangulation.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.getEdges = function(
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.getEdges = function(
     geomFact) {
   this.create();
   return this.subdiv.getEdges(geomFact);
@@ -218,7 +218,7 @@ jsts.triangulate.DelauneyTriangulationBuilder.prototype.getEdges = function(
  *          geomFact the geometry factory to use to create the output.
  * @return {jsts.geom.Geometry} the faces of the triangulation.
  */
-jsts.triangulate.DelauneyTriangulationBuilder.prototype.getTriangles = function(
+jsts.triangulate.DelaunayTriangulationBuilder.prototype.getTriangles = function(
     geomFact) {
   this.create();
   return this.subdiv.getTriangles(geomFact);

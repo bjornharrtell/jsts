@@ -29,7 +29,7 @@ jsts.error = {};
  */
 jsts.error.IllegalArgumentError = function(message) {
   this.name = 'IllegalArgumentError';
-  this.message = (message || '');
+  this.message = message || '';
 };
 jsts.error.IllegalArgumentError.prototype = new Error();
 
@@ -40,7 +40,7 @@ jsts.error.IllegalArgumentError.prototype = new Error();
  */
 jsts.error.TopologyError = function(message) {
   this.name = 'TopologyError';
-  this.message = (message || '');
+  this.message = message || '';
 };
 jsts.error.TopologyError.prototype = new Error();
 
@@ -62,7 +62,7 @@ jsts.error.AbstractMethodInvocationError.prototype = new Error();
  */
 jsts.error.NotImplementedError = function() {
   this.name = 'NotImplementedError';
-  this.message = 'This method has not yet been implemented.';
+  this.message = arguments.calle + 'This method has not yet been implemented.';
 };
 jsts.error.NotImplementedError.prototype = new Error();
 
@@ -73,6 +73,6 @@ jsts.error.NotImplementedError.prototype = new Error();
  */
 jsts.error.NotRepresentableError = function(message) {
   this.name = 'NotRepresentableError';
-  this.message = (message || '');
+  this.message = message || '';
 };
 jsts.error.NotRepresentableError.prototype = new Error();
