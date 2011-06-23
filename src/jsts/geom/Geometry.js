@@ -108,7 +108,7 @@ jsts.geom.Geometry.prototype.precisionModel = null;
  * Returns the name of this object's <code>com.vivid.jts.geom</code>
  * interface.
  *
- * @return {String} the name of this <code>Geometry</code>s most specific
+ * @return {string} the name of this <code>Geometry</code>s most specific
  *         <code>jsts.geom</code> interface.
  */
 jsts.geom.Geometry.prototype.getGeometryType = function() {
@@ -122,7 +122,7 @@ jsts.geom.Geometry.prototype.getGeometryType = function() {
  * @param {Geometry[]}
  *          geometries an array of <code>Geometry</code>s; no elements may be
  *          <code>null.</code>
- * @return {Boolean} <code>true</code> if any of the <code>Geometry</code>s
+ * @return {boolean} <code>true</code> if any of the <code>Geometry</code>s
  *         <code>isEmpty</code> methods return <code>false.</code>
  */
 jsts.geom.Geometry.hasNonEmptyElements = function(geometries) {
@@ -141,7 +141,7 @@ jsts.geom.Geometry.hasNonEmptyElements = function(geometries) {
  *
  * @param {Object[]}
  *          array an array to validate.
- * @return {Boolean} <code>true</code> if any of <code>array</code>s
+ * @return {boolean} <code>true</code> if any of <code>array</code>s
  *         elements are <code>null.</code>
  */
 jsts.geom.Geometry.hasNullElements = function(array) {
@@ -170,7 +170,7 @@ jsts.geom.Geometry.prototype.getFactory = function() {
  * Returns the number of {@link Geometry}s in a {@link GeometryCollection} (or
  * 1, if the geometry is not a collection).
  *
- * @return {int} the number of geometries contained in this geometry.
+ * @return {number} the number of geometries contained in this geometry.
  */
 jsts.geom.Geometry.prototype.getNumGeometries = function() {
   return 1;
@@ -181,7 +181,7 @@ jsts.geom.Geometry.prototype.getNumGeometries = function() {
  * Returns an element {@link Geometry} from a {@link GeometryCollection} (or
  * <code>this</code>, if the geometry is not a collection).
  *
- * @param {int}
+ * @param {number}
  *          n the index of the geometry element.
  * @return {Geometry} the n'th geometry contained in this geometry.
  */
@@ -247,7 +247,7 @@ jsts.geom.Geometry.prototype.getCoordinates = function() {
  * <code>Geometry</code> s contained by composite <code>Geometry</code>s
  * must be Geometry's; that is, they must implement <code>getNumPoints</code>
  *
- * @return {int} the number of vertices in this <code>Geometry.</code>
+ * @return {number} the number of vertices in this <code>Geometry.</code>
  */
 jsts.geom.Geometry.prototype.getNumPoints = function() {
   throw new jsts.error.AbstractMethodInvocationError();
@@ -316,7 +316,7 @@ jsts.geom.Geometry.prototype.isEmpty = function() {
  *
  * @param {Geometry}
  *          g the <code>Geometry</code> from which to compute the distance.
- * @return {double} the distance between the geometries. 0 if either input
+ * @return {number} the distance between the geometries. 0 if either input
  *         geometry is empty.
  * @throws IllegalArgumentException
  *           if g is null
@@ -332,7 +332,7 @@ jsts.geom.Geometry.prototype.distance = function(g) {
  *
  * @param {Geometry}
  *          geom the Geometry to check the distance to.
- * @param {double}
+ * @param {number}
  *          distance the distance value to compare.
  * @return {boolean} <code>true</code> if the geometries are less than
  *         <code>distance</code> apart.
@@ -351,7 +351,7 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
  * non-zero area. They override this function to compute the area. Others return
  * 0.0
  *
- * @return {double} the area of the Geometry.
+ * @return {number} the area of the Geometry.
  */
 jsts.geom.Geometry.prototype.getArea = function() {
   return 0.0;
@@ -363,7 +363,7 @@ jsts.geom.Geometry.prototype.getArea = function() {
  * their length. Areal geometries return their perimeter. They override this
  * function to compute the area. Others return 0.0
  *
- * @return {double} the length of the Geometry.
+ * @return {number} the length of the Geometry.
  */
 jsts.geom.Geometry.prototype.getLength = function() {
   return 0.0;
@@ -439,7 +439,7 @@ jsts.geom.Geometry.prototype.getInteriorPoint = function() {
  * coordinate dimension. For example, a 0-dimensional geometry (e.g. a Point)
  * may have a coordinate dimension of 3 (X,Y,Z).
  *
- * @return {int} the topological dimension of this geometry.
+ * @return {number} the topological dimension of this geometry.
  */
 jsts.geom.Geometry.prototype.getDimension = function() {
   throw new jsts.error.AbstractMethodInvocationError();
@@ -465,7 +465,7 @@ jsts.geom.Geometry.prototype.getBoundary = function() {
 /**
  * Returns the dimension of this <code>Geometry</code>s inherent boundary.
  *
- * @return {int} the dimension of the boundary of the class implementing this
+ * @return {number} the dimension of the boundary of the class implementing this
  *         interface, whether or not this object is the empty geometry. Returns
  *         <code>Dimension.FALSE</code> if the boundary is the empty geometry.
  */
@@ -945,8 +945,7 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
  * @see #normalize()
  */
 jsts.geom.Geometry.prototype.equals = function(o) {
-  if (o instanceof jsts.geom.Geometry ||
-      o instanceof jsts.geom.LinearRing ||
+  if (o instanceof jsts.geom.Geometry || o instanceof jsts.geom.LinearRing ||
       o instanceof jsts.geom.Polygon ||
       o instanceof jsts.geom.GeometryCollection ||
       o instanceof jsts.geom.MultiPoint ||
@@ -982,8 +981,8 @@ jsts.geom.Geometry.prototype.equals = function(o) {
  * @param {Geometry}
  *          g the <code>Geometry</code> with which to compare this
  *          <code>Geometry.</code>
- * @return {boolean} <code>true</code> if the two <code>Geometry</code>s are
- *                  topologically equal.
+ * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
+ *         are topologically equal.
  *
  * @see #equalsExact(Geometry)
  */
@@ -1019,12 +1018,12 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
  * zero-distance buffer of lines and points is always an empty {@link Polygon}.
  * This is also the result for the buffers of degenerate (zero-area) polygons.
  *
- * @param {double}
+ * @param {number}
  *          distance the width of the buffer (may be positive, negative or 0).
- * @param {int}
+ * @param {number}
  *          quadrantSegments the number of line segments used to represent a
  *          quadrant of a circle.
- * @param {int}
+ * @param {number}
  *          endCapStyle the end cap style to use.
  * @return {Geometry} a polygonal geometry representing the buffer region (which
  *         may be empty).
@@ -1255,9 +1254,10 @@ jsts.geom.Geometry.prototype.union = function() {
  * @param {Geometry}
  *          other the <code>Geometry</code> with which to compare this
  *          <code>Geometry.</code>
- * @param {double}
+ * @param {number}
  *          tolerance distance at or below which two <code>Coordinate</code>s
  *          are considered equal.
+ * @return {boolean}
  */
 jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
   throw new jsts.error.AbstractMethodInvocationError();
@@ -1339,7 +1339,7 @@ jsts.geom.Geometry.prototype.normalize = function() {
  * @param {Geometry}
  *          other a <code>Geometry</code> with which to compare this
  *          <code>Geometry.</code>
- * @return {int} a positive number, 0, or a negative number, depending on
+ * @return {number} a positive number, 0, or a negative number, depending on
  *         whether this object is greater than, equal to, or less than
  *         <code>o</code>, as defined in "Normal Form For Geometry" in the
  *         JTS Technical Specifications.
@@ -1389,7 +1389,7 @@ jsts.geom.Geometry.prototype.compareTo = function(other) {
  * @param {CoordinateSequenceComparator}
  *          comp a <code>CoordinateSequenceComparator.</code>
  *
- * @return {int} a positive number, 0, or a negative number, depending on
+ * @return {number} a positive number, 0, or a negative number, depending on
  *         whether this object is greater than, equal to, or less than
  *         <code>o</code>, as defined in "Normal Form For Geometry" in the
  *         JTS Technical Specifications.
@@ -1422,7 +1422,7 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
  * @param {Geometry}
  *          other the <code>Geometry</code> with which to compare this
  *          <code>Geometry</code> for equality.
- * @return {Boolean} <code>true</code> if the classes of the two
+ * @return {boolean} <code>true</code> if the classes of the two
  *         <code>Geometry</code> s are considered to be equal by the
  *         <code>equalsExact</code> method.
  */
@@ -1453,7 +1453,7 @@ jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
 
 /**
  *
- * @return {Boolean} true if this is a GeometryCollection.
+ * @return {boolean} true if this is a GeometryCollection.
  */
 jsts.geom.Geometry.prototype.isGeometryCollection = function() {
   return (this instanceof jsts.geom.GeometryCollection);
@@ -1483,7 +1483,7 @@ jsts.geom.Geometry.prototype.computeEnvelopeInternal = function() {
  * @param {Geometry}
  *          o a <code>Geometry</code> having the same class as this
  *          <code>Geometry.</code>
- * @return {int} a positive number, 0, or a negative number, depending on
+ * @return {number} a positive number, 0, or a negative number, depending on
  *         whether this object is greater than, equal to, or less than
  *         <code>o</code>, as defined in "Normal Form For Geometry" in the
  *         JTS Technical Specifications.
@@ -1503,7 +1503,7 @@ jsts.geom.Geometry.prototype.compareToSameClass = function(o) {
  *          <code>Geometry.</code>
  * @param {CoordinateSequenceComparator}
  *          comp a <code>CoordinateSequenceComparator.</code>
- * @return {int} a positive number, 0, or a negative number, depending on
+ * @return {number} a positive number, 0, or a negative number, depending on
  *         whether this object is greater than, equal to, or less than
  *         <code>o</code>, as defined in "Normal Form For Geometry" in the
  *         JTS Technical Specifications.
@@ -1521,11 +1521,11 @@ jsts.geom.Geometry.prototype.compareToSameClass = function(o, comp) {
  * before <code>a</code>, a positive number is returned; if a before b, a
  * negative number.
  *
- * @param {Collection}
+ * @param {Array}
  *          a a <code>Collection</code> of <code>Comparable</code>s.
- * @param {Collection}
+ * @param {Array}
  *          b a <code>Collection</code> of <code>Comparable</code>s.
- * @return {int} the first non-zero <code>compareTo</code> result, if any;
+ * @return {number} the first non-zero <code>compareTo</code> result, if any;
  *         otherwise, zero.
  */
 jsts.geom.Geometry.prototype.compare = function(a, b) {
@@ -1554,9 +1554,9 @@ jsts.geom.Geometry.prototype.compare = function(a, b) {
  *          a first Coordinate to compare.
  * @param {jsts.geom.Coordinate}
  *          b second Coordinate to compare.
- * @param {double}
+ * @param {number}
  *          tolerance tolerance when comparing.
- * @return {Boolean} true if equal.
+ * @return {boolean} true if equal.
  */
 jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
   if (tolerance === undefined || tolerance === null || tolerance === 0) {
@@ -1574,7 +1574,8 @@ jsts.geom.Geometry.prototype.toString = function() {
  * @return {Point}
  * @private
  */
-jsts.geom.Geometry.prototype.createPointFromInternalCoord = function(coord, exemplar) {
+jsts.geom.Geometry.prototype.createPointFromInternalCoord = function(coord,
+    exemplar) {
   exemplar.getPrecisionModel().makePrecise(coord);
   return exemplar.getFactory().createPoint(coord);
 };

@@ -19,8 +19,8 @@
 
 
 /**
- * @augments OpenLayers.Geometry.MultiPolygon
- * @augments jsts.geom.Geometry
+ * @extends {OpenLayers.Geometry.MultiPolygon}
+ * @extends {jsts.geom.Geometry}
  * @constructor
  */
 jsts.geom.Polygon = function() {
@@ -101,8 +101,10 @@ jsts.geom.Polygon.prototype.getBoundaryDimension = function() {
 
 
 /**
- * @param {Geometry} other
- * @param {double} tolerance
+ * @param {Geometry}
+ *          other
+ * @param {number}
+ *          tolerance
  * @return {boolean}
  */
 jsts.geom.Polygon.prototype.equalsExact = function(other, tolerance) {

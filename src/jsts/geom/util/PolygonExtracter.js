@@ -16,9 +16,9 @@
  * Constructs a PolygonExtracterFilter with a list in which to store Polygons
  * found.
  *
- * @param {[]}
+ * @param {Array}
  *          comps
- * @augments GeometryFilter
+ * @extends {jsts.geom.GeometryFilter}
  * @see GeometryExtracter
  * @constructor
  */
@@ -39,11 +39,11 @@ jsts.geom.util.PolygonExtracter.prototype.comps = null;
  * Extracts the {@link Polygon} elements from a single {@link Geometry} and adds
  * them to the provided {@link List}.
  *
- * @param {Geometry}
+ * @param {jsts.geom.Geometry}
  *          geom the geometry from which to extract.
- * @param {[]}
+ * @param {Array}
  *          list the list to add the extracted elements to.
- * @return {[]}
+ * @return {Array}
  */
 jsts.geom.util.PolygonExtracter.getPolygons = function(geom, list) {
   if (list === undefined) {
@@ -62,7 +62,7 @@ jsts.geom.util.PolygonExtracter.getPolygons = function(geom, list) {
 
 
 /**
- * @param {Geometry}
+ * @param {jsts.geom.Geometry}
  *          geom
  */
 jsts.geom.util.PolygonExtracter.prototype.filter = function(geom) {
