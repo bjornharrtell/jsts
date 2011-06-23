@@ -1,8 +1,7 @@
 JSTS Topology Suite
 ===================
 
-DISCLAIMER: The current status of this project is unfinished non-production quality.
-You are hereby invited to help change that. :)
+DISCLAIMER: JSTS Topology Suite now has functional parts (see the [FAQ](https://github.com/bjornharrtell/jsts/wiki/FAQ)) but major parts is yet to be ported. You are hereby invited to help change that. :)
 
 The JSTS Topology Suite is a JavaScript library of spatial predicates and functions 
 for processing geometry conforming to the Simple Features Specification for SQL published by
@@ -13,8 +12,6 @@ and extended with API as close as possible to the corresponding JTS Topology Sui
 
 The goal of the project is to provide OpenLayers applications with a complete library for processing
 and analysing simple geometries.
-
-See the FAQ for the current port status.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for developer discussions.
 
