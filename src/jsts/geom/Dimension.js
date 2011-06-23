@@ -22,6 +22,7 @@ jsts.geom.Dimension = function() {
 /**
  * Dimension value of a point (0).
  *
+ * @const
  * @type {number}
  */
 jsts.geom.Dimension.P = 0;
@@ -30,6 +31,7 @@ jsts.geom.Dimension.P = 0;
 /**
  * Dimension value of a curve (1).
  *
+ * @const
  * @type {number}
  */
 jsts.geom.Dimension.L = 1;
@@ -38,6 +40,7 @@ jsts.geom.Dimension.L = 1;
 /**
  * Dimension value of a surface (2).
  *
+ * @const
  * @type {number}
  */
 jsts.geom.Dimension.A = 2;
@@ -46,6 +49,7 @@ jsts.geom.Dimension.A = 2;
 /**
  * Dimension value of the empty geometry (-1).
  *
+ * @const
  * @type {number}
  */
 jsts.geom.Dimension.FALSE = -1;
@@ -54,6 +58,7 @@ jsts.geom.Dimension.FALSE = -1;
 /**
  * Dimension value of non-empty geometries (= {P, L, A}).
  *
+ * @const
  * @type {number}
  */
 jsts.geom.Dimension.TRUE = -2;
@@ -62,6 +67,7 @@ jsts.geom.Dimension.TRUE = -2;
 /**
  * Dimension value for any dimension (= {FALSE, TRUE}).
  *
+ * @const
  * @type {number}
  */
 jsts.geom.Dimension.DONTCARE = -3;
