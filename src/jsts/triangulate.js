@@ -6,7 +6,7 @@
 
 
 /**
- * triangulate namespace
+ * @namespace
  */
 jsts.triangulate = {
 

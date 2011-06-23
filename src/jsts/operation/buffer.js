@@ -6,6 +6,6 @@
 
 
 /**
- * buffer namespace
+ * @namespace
  */
 jsts.operation.buffer = {};

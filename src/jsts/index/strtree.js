@@ -6,7 +6,7 @@
 
 
 /**
- * strtree namespace
+ * @namespace
  */
 jsts.index.strtree = {
 
