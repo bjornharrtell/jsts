@@ -8,7 +8,7 @@
  * Boundable wrapper for a non-Boundable spatial object. Used internally by
  * AbstractSTRtree.
  *
- * @version 1.7
+ * @requires jsts/index/strtree/Boundable.js
  */
 
 
