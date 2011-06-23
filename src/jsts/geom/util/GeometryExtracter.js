@@ -15,7 +15,7 @@
  *
  * @param clz the class of the components to extract (null means all types).
  * @param {[]} comps the list to extract into.
- * @augments GeometryFilter
+ * @extends {jsts.geom.GeometryFilter}
  * @constructor
  */
 jsts.geom.util.GeometryExtracter = function(clz, comps) {

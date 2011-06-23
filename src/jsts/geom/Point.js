@@ -32,7 +32,7 @@ jsts.geom.Point.prototype.coordinate = null;
 
 
 /**
- * @return {double} x-axis value of this Point.
+ * @return {number} x-axis value of this Point.
  */
 jsts.geom.Point.prototype.getX = function() {
   return this.coordinate.x;
@@ -40,7 +40,7 @@ jsts.geom.Point.prototype.getX = function() {
 
 
 /**
- * @return {double} y-axis value of this Point.
+ * @return {number} y-axis value of this Point.
  */
 jsts.geom.Point.prototype.getY = function() {
   return this.coordinate.y;
@@ -74,7 +74,7 @@ jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
 
 
 /**
- * @return {int} number of coordinates (0 or 1).
+ * @return {number} number of coordinates (0 or 1).
  */
 jsts.geom.Point.prototype.getNumPoints = function() {
   return this.isEmpty() ? 0 : 1;
@@ -82,7 +82,7 @@ jsts.geom.Point.prototype.getNumPoints = function() {
 
 
 /**
- * @return {Boolean} Point is always simple.
+ * @return {boolean} Point is always simple.
  */
 jsts.geom.Point.prototype.isSimple = function() {
   return true;
@@ -121,7 +121,7 @@ jsts.geom.Point.prototype.clone = function() {
 
 
 /**
- * @return {int} Always 0.
+ * @return {number} Always 0.
  */
 jsts.geom.Point.prototype.getDimension = function() {
   return 0;
@@ -129,7 +129,7 @@ jsts.geom.Point.prototype.getDimension = function() {
 
 
 /**
- * @return {int} Always Dimension.FALSE.
+ * @return {number} Always Dimension.FALSE.
  */
 jsts.geom.Point.prototype.getBoundaryDimension = function() {
   return jsts.geom.Dimension.FALSE;
@@ -170,7 +170,7 @@ jsts.geom.Point.prototype.normalize = function() {
 
 
 /**
- * @return {String} String representation of Point type.
+ * @return {string} String representation of Point type.
  */
 jsts.geom.Point.prototype.getGeometryType = function() {
   return 'Point';

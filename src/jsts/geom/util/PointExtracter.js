@@ -16,7 +16,7 @@
  *
  * Constructs a PointExtracterFilter with a list in which to store Points found.
  *
- * @augments GeometryFilter
+ * @extends {jsts.geom.GeometryFilter}
  * @see GeometryExtracter
  * @constructor
  */

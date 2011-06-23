@@ -22,7 +22,7 @@ jsts.geom.Dimension = function() {
 /**
  * Dimension value of a point (0).
  *
- * @type {int}
+ * @type {number}
  */
 jsts.geom.Dimension.P = 0;
 
@@ -30,7 +30,7 @@ jsts.geom.Dimension.P = 0;
 /**
  * Dimension value of a curve (1).
  *
- * @type {int}
+ * @type {number}
  */
 jsts.geom.Dimension.L = 1;
 
@@ -38,7 +38,7 @@ jsts.geom.Dimension.L = 1;
 /**
  * Dimension value of a surface (2).
  *
- * @type {int}
+ * @type {number}
  */
 jsts.geom.Dimension.A = 2;
 
@@ -46,7 +46,7 @@ jsts.geom.Dimension.A = 2;
 /**
  * Dimension value of the empty geometry (-1).
  *
- * @type {int}
+ * @type {number}
  */
 jsts.geom.Dimension.FALSE = -1;
 
@@ -54,7 +54,7 @@ jsts.geom.Dimension.FALSE = -1;
 /**
  * Dimension value of non-empty geometries (= {P, L, A}).
  *
- * @type {int}
+ * @type {number}
  */
 jsts.geom.Dimension.TRUE = -2;
 
@@ -62,7 +62,7 @@ jsts.geom.Dimension.TRUE = -2;
 /**
  * Dimension value for any dimension (= {FALSE, TRUE}).
  *
- * @type {int}
+ * @type {number}
  */
 jsts.geom.Dimension.DONTCARE = -3;
 
@@ -71,7 +71,7 @@ jsts.geom.Dimension.DONTCARE = -3;
  * Converts the dimension value to a dimension symbol, for example,
  * <code>TRUE => 'T'</code> .
  *
- * @param {int}
+ * @param {number}
  *          dimensionValue a number that can be stored in the
  *          <code>IntersectionMatrix</code> . Possible values are
  *          <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.
@@ -107,7 +107,7 @@ jsts.geom.Dimension.toDimensionSymbol = function(dimensionValue) {
  *          dimensionSymbol a character for use in the string representation of
  *          an <code>IntersectionMatrix</code>. Possible values are
  *          <code>{T, F, * , 0, 1, 2}</code> .
- * @return {int} a number that can be stored in the
+ * @return {number} a number that can be stored in the
  *         <code>IntersectionMatrix</code> . Possible values are
  *         <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.
  */

@@ -25,7 +25,7 @@
  * @param boundaryNodeRule
  *          the Boundary Node Rule to use.
  *
- * @augments GeometryGraphOperation
+ * @extends {jsts.operation.GeometryGraphOperation}
  * @constructor
  */
 jsts.operation.relate.RelateOp = function() {

@@ -19,8 +19,7 @@
 
 /**
  * @constructor
- * @augments OpenLayers.Geometry.Point
- * @augments jsts.geom.Geometry
+ * @extends {OpenLayers.Geometry.Point}
  */
 jsts.geom.Coordinate = function() {
 };
@@ -55,7 +54,7 @@ jsts.geom.Coordinate.prototype.clone = function() {
  *
  * @param {Coordinate}
  *          p a point.
- * @return {double} the 2-dimensional Euclidean distance between the locations.
+ * @return {number} the 2-dimensional Euclidean distance between the locations.
  */
 jsts.geom.Coordinate.prototype.distance = function(p) {
   var dx = this.x - p.x;
@@ -122,7 +121,7 @@ jsts.geom.Coordinate.prototype.equals = function(other) {
  * @param {Coordinate}
  *          other the <code>Coordinate</code> with which this
  *          <code>Coordinate</code> is being compared.
- * @return {Boolean} -1, zero, or 1 as explained above.
+ * @return {number} -1, zero, or 1 as explained above.
  */
 jsts.geom.Coordinate.prototype.compareTo = function(other) {
   if (this.x < other.x) {
