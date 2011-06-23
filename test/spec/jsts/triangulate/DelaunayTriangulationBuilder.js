@@ -1,4 +1,5 @@
 describe('jsts.triangulate.DelauneyTriangulationBuilder', function() {
+  var geomFact = new jsts.geom.GeometryFactory();
   var reader = new jsts.io.WKTReader();
   
   var runDelaunay = function(sitesWKT, computeTriangles) {

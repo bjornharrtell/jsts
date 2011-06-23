@@ -20,7 +20,7 @@
  */
 
 jsts.triangulate.quadedge.Vertex = function() {
-  if (args.length === 1) {
+  if (arguments.length === 1) {
     this.initFromCoordinate(arguments[0]);
   } else {
     this.initFromXY(arguments[0], arguments[1]);

@@ -30,8 +30,32 @@ jsts.geom.Point = OpenLayers.Class(jsts.geom.Geometry, {
 
 jsts.geom.Point.prototype.coordinate = null;
 
+
+/**
+ * @return {double} x-axis value of this Point.
+ */
+jsts.geom.Point.prototype.getX = function() {
+  return this.coordinate.x;
+};
+
+
+/**
+ * @return {double} y-axis value of this Point.
+ */
+jsts.geom.Point.prototype.getY = function() {
+  return this.coordinate.y;
+};
+
 jsts.geom.Point.prototype.getCoordinate = function() {
   return this.coordinate;
+};
+
+
+/**
+ * @return {Coordinate[]} this Point as coordinate array.
+ */
+jsts.geom.Point.prototype.getCoordinates = function() {
+  return this.isEmpty() ? [] : [this.coordinate];
 };
 
 jsts.geom.Point.prototype.isEmpty = function() {
@@ -46,6 +70,22 @@ jsts.geom.Point.prototype.equalsExact = function(other, tolerance) {
     return true;
   }
   return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance);
+};
+
+
+/**
+ * @return {int} number of coordinates (0 or 1).
+ */
+jsts.geom.Point.prototype.getNumPoints = function() {
+  return this.isEmpty() ? 0 : 1;
+};
+
+
+/**
+ * @return {Boolean} Point is always simple.
+ */
+jsts.geom.Point.prototype.isSimple = function() {
+  return true;
 };
 
 
@@ -93,6 +133,39 @@ jsts.geom.Point.prototype.getDimension = function() {
  */
 jsts.geom.Point.prototype.getBoundaryDimension = function() {
   return jsts.geom.Dimension.FALSE;
+};
+
+
+/**
+ * @return {Point} Reversed point is a cloned point.
+ */
+jsts.geom.Point.prototype.reverse = function() {
+  return this.clone();
+};
+
+
+/**
+ * A Point is valid iff:
+ * <ul>
+ * <li>the coordinate which defines it is a valid coordinate (i.e does not have
+ * an NaN X or Y ordinate)
+ * </ul>
+ *
+ * @return {boolean} true iff the Point is valid.
+ */
+jsts.geom.Point.prototype.isValid = function() {
+  if (!jsts.operation.valid.IsValidOp.isValid(this.getCoordinate())) {
+    return false;
+  }
+  return true;
+};
+
+
+/**
+ *
+ */
+jsts.geom.Point.prototype.normalize = function() {
+  // a Point is always in normalized form
 };
 
 

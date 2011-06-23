@@ -34,7 +34,7 @@ jsts.geom.MultiPoint.prototype.getBoundary = function() {
 };
 
 jsts.geom.MultiPoint.prototype.getGeometryN = function(n) {
-  return new jsts.geom.Point(this.geometries[n]);
+  return this.geometries[n];
 };
 
 
