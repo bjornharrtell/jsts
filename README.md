@@ -1,7 +1,7 @@
 JSTS Topology Suite
 ===================
 
-DISCLAIMER: JSTS Topology Suite now has functional parts (see the [FAQ](https://github.com/bjornharrtell/jsts/wiki/FAQ)) but major parts is yet to be ported. You are hereby invited to help change that. :)
+DISCLAIMER: JSTS Topology Suite now has functional parts (see the [FAQ](https://github.com/bjornharrtell/jsts/wiki/FAQ)) but major parts are yet to be ported. You are hereby invited to help change that. :)
 
 The JSTS Topology Suite is a JavaScript library of spatial predicates and functions 
 for processing geometry conforming to the Simple Features Specification for SQL published by
