@@ -6,6 +6,6 @@
 
 
 /**
- * relate namespace
+ * @namespace
  */
 jsts.operation.overlay.snap = {};

@@ -6,7 +6,7 @@
 
 
 /**
- * kdtree namespace
+ * @namespace
  */
 jsts.index.kdtree = {
 

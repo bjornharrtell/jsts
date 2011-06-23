@@ -6,6 +6,6 @@
 
 
 /**
- * distance namespace
+ * @namespace
  */
 jsts.operation.distance = {};
