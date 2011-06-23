@@ -62,7 +62,7 @@ jsts.error.AbstractMethodInvocationError.prototype = new Error();
  */
 jsts.error.NotImplementedError = function() {
   this.name = 'NotImplementedError';
-  this.message = arguments.calle + 'This method has not yet been implemented.';
+  this.message = 'This method has not yet been implemented.';
 };
 jsts.error.NotImplementedError.prototype = new Error();
 

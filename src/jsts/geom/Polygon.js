@@ -39,8 +39,8 @@ jsts.geom.Polygon.prototype.getCoordinate = function() {
  * @return {boolean}
  */
 jsts.geom.Polygon.prototype.isEmpty = function() {
-  for (var i = 0; i < this.geometries.length; i++) {
-    if (!this.geometries[i].isEmpty()) {
+  for (var i = 0; i < this.components.length; i++) {
+    if (!this.components[i].isEmpty()) {
       return false;
     }
   }

@@ -26,11 +26,49 @@ jsts.geom.GeometryCollection.prototype = new jsts.geom.Geometry();
  */
 jsts.geom.GeometryCollection.prototype.isEmpty = function() {
   for (var i = 0; i < this.geometries.length; i++) {
-    if (!this.geometries[i].isEmpty()) {
+    var geometry = this.geometries[i];
+
+    if (!geometry.isEmpty()) {
       return false;
     }
   }
   return true;
+};
+
+
+/**
+ * @return {Coordinate}
+ */
+jsts.geom.GeometryCollection.prototype.getCoordinate = function() {
+  if (this.isEmpty())
+    return null;
+
+  return this.geometries[0].getCoordinate();
+};
+
+
+/**
+ * Collects all coordinates of all subgeometries into an Array.
+ *
+ * Note that while changes to the coordinate objects themselves may modify the
+ * Geometries in place, the returned Array as such is only a temporary container
+ * which is not synchronized back.
+ *
+ * @return {Coordinate[]} the collected coordinates.
+ */
+jsts.geom.GeometryCollection.prototype.getCoordinates = function() {
+  var coordinates = [];
+  var k = -1;
+  for (var i = 0; i < this.geometries.length; i++) {
+    var geometry = this.geometries[i];
+
+    var childCoordinates = geometry.getCoordinates();
+    for (var j = 0; j < childCoordinates.length; j++) {
+      k++;
+      coordinates[k] = childCoordinates[j];
+    }
+  }
+  return coordinates;
 };
 
 
@@ -43,7 +81,8 @@ jsts.geom.GeometryCollection.prototype.getNumGeometries = function() {
 
 
 /**
- * @param {int} n
+ * @param {int}
+ *          n
  * @return {Geometry}
  */
 jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
@@ -52,11 +91,13 @@ jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
 
 
 /**
- * @param {Geometry} other
- * @param {double} tolerance
+ * @param {Geometry}
+ *          other
+ * @param {double}
+ *          tolerance
  * @return {boolean}
  */
-jsts.geom.GeometryCollection.prototype.equalsExact = function(other,  tolerance) {
+jsts.geom.GeometryCollection.prototype.equalsExact = function(other, tolerance) {
   if (!this.isEquivalentClass(other)) {
     return false;
   }
@@ -64,7 +105,9 @@ jsts.geom.GeometryCollection.prototype.equalsExact = function(other,  tolerance)
     return false;
   }
   for (var i = 0; i < this.geometries.length; i++) {
-    if (!(this.geometries[i]).equalsExact(other.geometries[i], tolerance)) {
+    var geometry = this.geometries[i];
+
+    if (!geometry.equalsExact(other.geometries[i], tolerance)) {
       return false;
     }
   }
@@ -83,13 +126,7 @@ jsts.geom.GeometryCollection.prototype.getDimension = function() {
   var dimension = jsts.geom.Dimension.FALSE;
   for (var i = 0; i < this.geometries.length; i++) {
     var geometry = this.geometries[i];
-    // NOTE: special handling since in JTS the parts would be Points.
-    if (geometry instanceof jsts.geom.Coordinate) {
-      dimension = Math.max(dimension, 0);
-    } else {
-      dimension = Math.max(dimension, geometry.getDimension());
-    }
-
+    dimension = Math.max(dimension, geometry.getDimension());
   }
   return dimension;
 };
@@ -102,12 +139,7 @@ jsts.geom.GeometryCollection.prototype.computeEnvelopeInternal = function() {
   var envelope = new jsts.geom.Envelope();
   for (var i = 0; i < this.geometries.length; i++) {
     var geometry = this.geometries[i];
-    // NOTE: special handling since in JTS the parts would be Points.
-    if (geometry instanceof jsts.geom.Coordinate) {
-      envelope.expandToInclude(new jsts.geom.Envelope(geometry));
-    } else {
-      envelope.expandToInclude(geometry.getEnvelopeInternal());
-    }
+    envelope.expandToInclude(geometry.getEnvelopeInternal());
   }
   return envelope;
 };
@@ -120,7 +152,19 @@ OpenLayers.Geometry.Collection = OpenLayers.Class(
         if (components != null) {
           this.addComponents(components);
         }
-        this.geometries = this.components;
+        this.geometries = [];
+
+        // this is for multipoint type
+        // TODO: not needed for non multipart collections, should be run conditionally
+        for (var i = 0; i < this.components.length; i++) {
+          var component = this.components[i];
+          // NOTE: special handling since in JTS the parts would be Points.
+          if (component instanceof jsts.geom.Coordinate) {
+            this.geometries.push(new jsts.geom.Point(component));
+          } else {
+            this.geometries.push(component);
+          }
+        }
       }
     });
 jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
