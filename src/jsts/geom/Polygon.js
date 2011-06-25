@@ -81,7 +81,7 @@ jsts.geom.Polygon.prototype.getBoundary = function() {
   }
   // create LineString or MultiLineString as appropriate
   if (rings.length <= 1)
-    return this.getFactory().createLinearRing(rings[0].getCoordinateSequence());
+    return this.getFactory().createLinearRing(rings[0].components);
   return this.getFactory().createMultiLineString(rings);
 };
 

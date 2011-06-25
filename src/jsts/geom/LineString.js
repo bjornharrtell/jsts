@@ -77,6 +77,29 @@ jsts.geom.LineString.prototype.isEmpty = function() {
   return this.components.length === 0;
 };
 
+jsts.geom.LineString.prototype.getNumPoints = function() {
+  return this.components.length;
+};
+
+jsts.geom.LineString.prototype.getPointN = function(n) {
+  return this.getFactory().createPoint(this.components[n]);
+};
+
+
+jsts.geom.LineString.prototype.getStartPoint = function() {
+  if (this.isEmpty()) {
+    return null;
+  }
+  return this.getPointN(0);
+};
+
+jsts.geom.LineString.prototype.getEndPoint = function() {
+  if (this.isEmpty()) {
+    return null;
+  }
+  return this.getPointN(this.getNumPoints() - 1);
+};
+
 
 /**
  * @return {Boolean} true if LineString is Closed.
