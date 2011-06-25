@@ -13,93 +13,144 @@
  */
 
 
+
 /**
- * @param {Geometry} g0
- * @param {Geometry} g1
+ * @param {jsts.geom.Geometry} g0
+ * @param {jsts.geom.Geometry} g1
+ * @constructor
  */
 jsts.operation.union.UnionInteracting = function(g0, g1) {
-  throw new jsts.error.NotImplementedError();
+  this.g0 = g0;
+  this.g1 = g1;
+  this.geomFactory = g0.getFactory();
+  this.interacts0 = [];
+  this.interacts1 = [];
 };
 
 
 /**
- * @param {Geometry} g0
- * @param {Geometry} g1
- * @return {Geometry}
+ * @param {jsts.geom.Geometry} g0
+ * @param {jsts.geom.Geometry} g1
+ * @return {jsts.geom.Geometry}
  */
 jsts.operation.union.UnionInteracting.union = function(g0, g1) {
-  throw new jsts.error.NotImplementedError();
+  var uue = new jsts.operation.union.UnionInteracting(g0, g1);
+  return uue.union();
 };
 
 
 /**
- * @type {GeometryFactory}
+ * @type {jsts.geom.GeometryFactory}
  */
-jsts.operation.union.UnionInteracting.prototype.geomFactory;
+jsts.operation.union.UnionInteracting.prototype.geomFactory = null;
 
 
 /**
- * @type {Geometry}
+ * @type {jsts.geom.Geometry}
  */
-jsts.operation.union.UnionInteracting.prototype.g0;
+jsts.operation.union.UnionInteracting.prototype.g0 = null;
 
 
 /**
- * @type {Geometry}
+ * @type {jsts.geom.Geometry}
  */
-jsts.operation.union.UnionInteracting.prototype.g1;
+jsts.operation.union.UnionInteracting.prototype.g1 = null;
 
 
 /**
- * @type {Boolean[]}
+ * @type {Array.<boolean>}
  */
-jsts.operation.union.UnionInteracting.prototype.interacts0;
+jsts.operation.union.UnionInteracting.prototype.interacts0 = null;
 
 
 /**
- * @type {Boolean[]}
+ * @type {Array.<boolean>}
  */
-jsts.operation.union.UnionInteracting.prototype.interacts1;
+jsts.operation.union.UnionInteracting.prototype.interacts1 = null;
 
 
 /**
- * @return {Geometry}
+ * @return {jsts.geom.Geometry}
  */
 jsts.operation.union.UnionInteracting.prototype.union = function() {
-  throw new jsts.error.NotImplementedError();
+  this.computeInteracting();
+
+  //check for all interacting or none interacting!
+  var int0 = this.extractElements(this.g0, this.interacts0, true);
+  var int1 = this.extractElements(this.g1, this.interacts1, true);
+
+  //TODO: Guess we don't need this here
+  if (int0.isEmpty() || int1.isEmpty()) {
+    // console.log("found empty!");
+  }
+
+  var union = in0.union(int1);
+
+  var disjoint0 = this.extractElements(this.g0, this.interacts0, false);
+  var disjoint1 = this.extractElements(this.g1, this.interacts1, false);
+
+  var overallUnion = jsts.geom.util.GeometryCombiner.combine(union, disjoint0, disjoint1);
+
+  return overallUnion;
 };
 
 
 /**
- * @param {Geometry} g0
- * @param {Geometry} g1
- * @return {Geometry}
+ * @param {jsts.geom.Geometry} g0
+ * @param {jsts.geom.Geometry} g1
+ * @return {jsts.geom.Geometry}
  * @private
  */
 jsts.operation.union.UnionInteracting.prototype.bufferUnion = function(g0, g1) {
-  throw new jsts.error.NotImplementedError();
+  var factory = g0.getFactory();
+  var gColl = factory.createGeometryCollection([g0, g1]);
+  var unionAll = gColl.buffer(0.0);
+  return unionAll;
 };
 
 
 /**
- * @param {Geometry} [elem0].
- * @return {void}
- * @return {Boolean}
+ * @param {jsts.geom.Geometry} [elem0].
+ * @return {?boolean}
  * @private
  */
 jsts.operation.union.UnionInteracting.prototype.computeInteracting = function(elem0) {
-  throw new jsts.error.NotImplementedError();
+  if (!elem0) {
+    for (var i = 0, l = this.g0.getNumGeometries(); i < l; i++) {
+      var elem = this.g0.getGeometryN(i);
+      this.interacts0[i] = this.computeInteracting(elem);
+    }
+  }
+  else {
+    var interactsWithAny = false;
+    for (var i = 0, l = g1.getNumGeometries(); i < l; i++) {
+      var elem1 = this.g1.getGeometryN(i);
+      var interacts = elem1.getEnvelopeInternal().intersects(elem0.getEnvelopeInternal());
+      if (interacts) {
+        this.interacts1[i] = true;
+        interactsWithAny = true;
+      }
+    }
+    return interactsWithAny;
+  }
 };
 
 
 /**
- * @param {Geometry} geom
- * @param {Boolean[]} interacts
- * @param {Boolean} isInteracting
- * @return {Geometry}
+ * @param {jsts.geom.Geometry} geom
+ * @param {Array.<boolean>} interacts
+ * @param {boolean} isInteracting
+ * @return {jsts.geom.Geometry}
  * @private
  */
 jsts.operation.union.UnionInteracting.prototype.extractElements = function(geom, interacts, isInteracting) {
-  throw new jsts.error.NotImplementedError();
+  var extractedGeoms = [];
+  for (var i = 0, l = geom.getNumGeometries(); i < l; i++) {
+    var elem = geom.getGeometryN(i);
+    if (interacts[i] === isInteracting) {
+      extractedGeoms.push(elem);
+    }
+  }
+  return this.geomFactory.buildGeometry(extractedGeoms);
 };
 
