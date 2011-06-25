@@ -101,7 +101,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.union = function() {
     index.insert(item.getEnvelopeInternal(), item);
   }
   var itemTree = index.itemsTree();
-  var untionAll = this.unionTree(itemTree);
+  var unionAll = this.unionTree(itemTree);
   return unionAll;
 };
 
@@ -195,7 +195,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.reduceToGeometries = functio
     else if (o instanceof jsts.geom.Geometry) {
       geom = o;
     }
-    geoms.push(o);
+    geoms.push(geom);
   }
   return geoms;
 };
