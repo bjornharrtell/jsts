@@ -40,8 +40,8 @@
 
 /**
  *
- * @param {Geometry|Geometry[]} geoms  a Geometry or Geometry collection.
- * @param {GeometryFactory} gemFact a GeometryFactory.
+ * @param {jsts.geom.Geometry|Array.<jsts.geom.Geometry>} geoms  a Geometry or Geometry collection.
+ * @param {jsts.geom.GeometryFactory} [geomFact] a GeometryFactory.
  * @constructor
  */
 jsts.operation.union.UnaryUnionOp = function(geoms, geomFact) {
@@ -59,9 +59,9 @@ jsts.operation.union.UnaryUnionOp = function(geoms, geomFact) {
 
 /**
  *
- * @param {Geometry|Geometry[]} geoms a Geometry or Geometry collection.
- * @param {Geometryfactory} [gemFact] a GeometryFactory.
- * @return {Geometry}
+ * @param {jsts.geom.Geometry|Array.<jsts.geom.Geometry>} geoms a Geometry or Geometry collection.
+ * @param {jsts.geom.GeometryFactory} [gemFact] a GeometryFactory.
+ * @return {jsts.geom.Geometry}
  */
 jsts.operation.union.UnaryUnionOp.union = function(geoms, geomFact) {
   var op = new jsts.operation.union.UnaryUnionOp(geoms, geomFact);
@@ -70,31 +70,36 @@ jsts.operation.union.UnaryUnionOp.union = function(geoms, geomFact) {
 
 
 /**
- * @type {Polygon[]}
+ * @type {Array.<jsts.geom.Polygon>}
+ * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.polygons = null;
 
 
 /**
- * @type {Line[]}
+ * @type {Array.<jsts.geom.Line>}
+ * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.lines = null;
 
 
 /**
- * @type {Point[]}
+ * @type {Array.<jsts.geom.Point>}
+ * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.points = null;
 
 
 /**
- * @type {GeometryFactory}
+ * @type {jsts.geom.GeometryFactory}
+ * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.geomFact = null;
 
 
 /**
- * @param {Geometry|Geometry[]} geoms a Geometry or Geometry collection.
+ * @param {jsts.geom.Geometry|Array.<jsts.geom.Geometry>} geoms a Geometry or Geometry collection.
+ * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
   if (geoms instanceof Array) {
@@ -117,8 +122,8 @@ jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
  * Gets the union of the input geometries.
  * If no input geometries were provided, a POINT EMPTY is returned.
  *
- * @return {Geometry} a Geometry containing the union.
- * @return {GeomatryCollection} an empty GEOMETRYCOLLECTION if no geometries were provided in the input.
+ * @return {jsts.geom.Geometry} a Geometry containing the union.
+ * @return {?jsts.geom.GeometryCollection} an empty GEOMETRYCOLLECTION if no geometries were provided in the input.
  */
 jsts.operation.union.UnaryUnionOp.prototype.union = function() {
   if (this.geomFact === null) {
@@ -178,10 +183,10 @@ jsts.operation.union.UnaryUnionOp.prototype.union = function() {
  * Computes the union of two geometries,
  * either of both of which may be null.
  *
- * @param {Geometry} g0 a Geometry.
- * @param {Geometry} g1 a Geometry.
- * @return {Geometry} the union of the input(s).
- * @return {null} null if both inputs are null.
+ * @param {jsts.geom.Geometry} g0 a Geometry.
+ * @param {jsts.geom.Geometry} g1 a Geometry.
+ * @return {?jsts.geom.Geometry} the union of the input(s),
+ *                       returns null if both inputs are null.
  * @private
  */
 jsts.operation.union.UnaryUnionOp.prototype.unionWithNull = function(g0, g1) {
