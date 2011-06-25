@@ -115,6 +115,23 @@ jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
 };
 
 
+jsts.geom.GeometryFactory.prototype.createMultiPoint = function(coordinates) {
+  if (coordinates === undefined || coordinates === null) {
+    return new jsts.geom.MultiPoint();
+  }
+
+  if (coordinates[0] instanceof jsts.geom.Point) {
+    var temp = [];
+    coordinates.forEach(function(point) {
+      temp.push(point.coordinate);
+    });
+    coordinates = temp;
+  }
+
+  return new jsts.geom.MultiPoint(coordinates);
+};
+
+
 /**
  *  Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
  *  <code>GeometryCollection</code> to contain the <code>Geometry</code>s in

@@ -31,17 +31,22 @@ describe('TestBoundary', function() {
         var geometry = reader.read(wkt);
         if (geometry === undefined) continue;
         
-        var result = geometry.getBoundary();
-        var writer = new jsts.io.WKTWriter();
-        result = writer.write(result);
+        var expectedg = reader.read(expected);
+        if (expectedg === undefined) continue;
+        
+        var boundary = geometry.getBoundary();
+        //var writer = new jsts.io.WKTWriter();
+        //result = writer.write(result);
+        
+        var result = boundary.equalsExact(expectedg);
         
         count++;
         
-        if (result === expected) {
+        if (result === true) {
           passed++;
         }
         else {
-          console.log('Testcase "' + desc + '" failed. (Result: ' + result + ' / Expected: ' + expected + ')');
+          console.log('Testcase "' + desc + '" failed. (Result: ' + boundary + ' / Expected: ' + expectedg + ')');
         }
       }
       
