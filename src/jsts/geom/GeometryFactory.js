@@ -131,6 +131,14 @@ jsts.geom.GeometryFactory.prototype.createMultiPoint = function(coordinates) {
   return new jsts.geom.MultiPoint(coordinates);
 };
 
+jsts.geom.GeometryFactory.prototype.createMultiLineString = function(lineStrings) {
+  if (lineStrings === undefined || lineStrings === null) {
+    return new jsts.geom.MultiLineString();
+  }
+
+  return new jsts.geom.MultiLineString(lineStrings);
+};
+
 
 /**
  *  Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or

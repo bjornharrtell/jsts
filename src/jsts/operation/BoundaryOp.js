@@ -81,10 +81,10 @@ jsts.operation.BoundaryOp.prototype.boundaryMultiLineString = function(mLine)  {
 
 
 /**
-   * @type {Object}
+   * @type {Array}
    * @private
    */
-jsts.operation.BoundaryOp.prototype.endpointMap = null;
+jsts.operation.BoundaryOp.prototype.endpoints = null;
 
 
 /**
@@ -93,27 +93,23 @@ jsts.operation.BoundaryOp.prototype.endpointMap = null;
    * @private
    */
 jsts.operation.BoundaryOp.prototype.computeBoundaryCoordinates = function(mLine)  {
-  var bdyPts = [];
+  var i, line, endpoint, bdyPts = [];
 
-  // TODO: find out how to port the treemap stuff...
-
-  /*endpointMap = new TreeMap();
-  for (var i = 0; i < mLine.getNumGeometries(); i++) {
-    var line = mLine.getGeometryN(i);
+  this.endpoints = [];
+  for (i = 0; i < mLine.getNumGeometries(); i++) {
+    line = mLine.getGeometryN(i);
     if (line.getNumPoints() == 0)
       continue;
     this.addEndpoint(line.getCoordinateN(0));
     this.addEndpoint(line.getCoordinateN(line.getNumPoints() - 1));
-  }*/
+  }
 
-  /*for (Iterator it = endpointMap.entrySet().iterator(); it.hasNext(); ) {
-      Map.Entry entry = (Map.Entry) it.next();
-      Counter counter = (Counter) entry.getValue();
-      int valence = counter.count;
-      if (bnRule.isInBoundary(valence)) {
-        bdyPts.push(entry.getKey());
-      }
-    }*/
+  for (i = 0; i < this.endpoints.length; i++) {
+    endpoint = this.endpoints[i];
+    if (this.bnRule.isInBoundary(endpoint.count)) {
+      bdyPts.push(endpoint.coordinate);
+    }
+  }
 
   return bdyPts;
 };
@@ -123,13 +119,23 @@ jsts.operation.BoundaryOp.prototype.computeBoundaryCoordinates = function(mLine)
    * @param {Coordinate} pt
    * @private
    */
-jsts.operation.BoundaryOp.prototype.addEndpoint = function(pt)   {
-  var counter = endpointMap.get(pt);
-  if (counter == null) {
-    counter = new Counter();
-    endpointMap.put(pt, counter);
+jsts.operation.BoundaryOp.prototype.addEndpoint = function(pt) {
+  var i, endpoint, found = false;
+  for (i = 0; i < this.endpoints.length; i++) {
+    endpoint = this.endpoints[i];
+    if (endpoint.coordinate.equals(pt)) {
+      found = true;
+    }
   }
-  counter.count++;
+
+  if (!found) {
+    endpoint = {};
+    endpoint.coordinate = pt;
+    endpoint.count = 0;
+    this.endpoints.push(endpoint);
+  }
+
+  endpoint.count++;
 };
 
 
@@ -157,16 +163,3 @@ jsts.operation.BoundaryOp.prototype.boundaryLineString = function(line)  {
         line.getEndPoint()]
   );
 };
-
-
-/**
- * Stores an integer count, for use as a Map entry.
- *
- * @author Martin Davis
- * @version 1.7
- */
-/*class Counter
-{
-
-int count;
-}*/

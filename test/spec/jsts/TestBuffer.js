@@ -24,7 +24,7 @@ describe('TestBuffer', function() {
       for (var i = 0; i<cases.length; i++) {
         var testcase = cases[i];
         var desc = $('desc', testcase).text();
-        var wkt = $('a', testcase).text().trim();
+        var wkt = $('a', testcase).text().trim().replace(/\n/g,'');
         
         var tests = $("test", testcase);
         
