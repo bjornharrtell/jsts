@@ -16,7 +16,7 @@
  * a TopologyException will be thrown. Retrying the computation in a fixed
  * precision can produce more robust results.
  *
- * @param {jsts.operation.buffer.BufferParameters}
+ * @param {jsts.operation.buffer.BufferBuilder.BufferParameters}
  *          bufParams
  * @constructor
  */
@@ -34,7 +34,7 @@ jsts.operation.buffer.BufferBuilder = function(bufParams) {
  *          label
  * @return {Number}
  */
-jsts.operation.buffer.depthDelta = function(label) {
+jsts.operation.buffer.BufferBuilder.depthDelta = function(label) {
   var lLoc = label.getLocation(0, jsts.geomgraph.Position.LEFT);
   var rLoc = label.getLocation(0, jsts.geomgraph.Position.RIGHT);
   if (lLoc === jsts.geom.Location.INTERIOR &&
@@ -51,42 +51,42 @@ jsts.operation.buffer.depthDelta = function(label) {
  * @type {BufferParameters}
  * @private
  */
-jsts.operation.buffer.prototype.bufParams = null;
+jsts.operation.buffer.BufferBuilder.prototype.bufParams = null;
 
 
 /**
  * @type {PrecisionModel}
  * @private
  */
-jsts.operation.buffer.prototype.workingPrecisionModel = null;
+jsts.operation.buffer.BufferBuilder.prototype.workingPrecisionModel = null;
 
 
 /**
  * @type {Noder}
  * @private
  */
-jsts.operation.buffer.prototype.workingNoder = null;
+jsts.operation.buffer.BufferBuilder.prototype.workingNoder = null;
 
 
 /**
  * @type {GeometryFactory}
  * @private
  */
-jsts.operation.buffer.prototype.geomFact = null;
+jsts.operation.buffer.BufferBuilder.prototype.geomFact = null;
 
 
 /**
  * @type {PlanarGraph}
  * @private
  */
-jsts.operation.buffer.prototype.graph = null;
+jsts.operation.buffer.BufferBuilder.prototype.graph = null;
 
 
 /**
  * @type {EdgeList}
  * @private
  */
-jsts.operation.buffer.prototype.edgeList = null;
+jsts.operation.buffer.BufferBuilder.prototype.edgeList = null;
 
 
 /**
@@ -98,8 +98,8 @@ jsts.operation.buffer.prototype.edgeList = null;
  * @param pm
  *          the precision model to use.
  */
-jsts.operation.buffer.prototype.setWorkingPrecisionModel = function(pm) {
-  workingPrecisionModel = pm;
+jsts.operation.buffer.BufferBuilder.prototype.setWorkingPrecisionModel = function(pm) {
+  this.workingPrecisionModel = pm;
 };
 
 
@@ -110,13 +110,13 @@ jsts.operation.buffer.prototype.setWorkingPrecisionModel = function(pm) {
  * @param noder
  *          the noder to use.
  */
-jsts.operation.buffer.prototype.setNoder = function(noder) {
-  workingNoder = noder;
+jsts.operation.buffer.BufferBuilder.prototype.setNoder = function(noder) {
+  this.workingNoder = noder;
 };
 
-jsts.operation.buffer.prototype.buffer = function(g, distance) {
-  var precisionModel = workingPrecisionModel;
-  if (precisionModel == null)
+jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
+  var precisionModel = this.workingPrecisionModel;
+  if (precisionModel === null)
     precisionModel = g.getPrecisionModel();
 
   // factory must be the same as the one used by the input
@@ -155,7 +155,7 @@ jsts.operation.buffer.prototype.buffer = function(g, distance) {
 /**
  * @private
  */
-jsts.operation.buffer.prototype.getNoder = function(precisionModel) {
+jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel) {
   if (workingNoder !== null)
     return workingNoder;
 
@@ -171,7 +171,7 @@ jsts.operation.buffer.prototype.getNoder = function(precisionModel) {
 /**
  * @private
  */
-jsts.operation.buffer.prototype.computeNodedEdges = function(bufferSegStrList,
+jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(bufferSegStrList,
     precisionModel) {
   var noder = getNoder(precisionModel);
   noder.computeNodes(bufferSegStrList);
@@ -191,7 +191,7 @@ jsts.operation.buffer.prototype.computeNodedEdges = function(bufferSegStrList,
  *
  * @protected
  */
-jsts.operation.buffer.prototype.insertUniqueEdge = function(e) {
+jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
   var existingEdge = edgeList.findEqualEdge(e);
 
   // If an identical edge already exists, simply update its label
@@ -226,7 +226,7 @@ jsts.operation.buffer.prototype.insertUniqueEdge = function(e) {
  *          graph
  * @private
  */
-jsts.operation.buffer.prototype.createSubgraphs = function(graph) {
+jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) {
   var subgraphList = [];
   for (var i = graph.getNodes().iterator(); i.hasNext();) {
     var node = i.next();
@@ -258,7 +258,7 @@ jsts.operation.buffer.prototype.createSubgraphs = function(graph) {
  *          polyBuilder the PolygonBuilder which will build the final polygons.
  * @private
  */
-jsts.operation.buffer.prototype.buildSubgraphs = function(subgraphList,
+jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraphList,
     polyBuilder) {
   var processedGraphs = [];
   for (var i = subgraphList.iterator(); i.hasNext();) {
@@ -279,7 +279,7 @@ jsts.operation.buffer.prototype.buildSubgraphs = function(subgraphList,
  *
  * @private
  */
-jsts.operation.buffer.convertSegStrings = function(it) {
+jsts.operation.buffer.BufferBuilder.convertSegStrings = function(it) {
   var fact = new jsts.geom.GeometryFactory();
   var lines = [];
   while (it.hasNext()) {
@@ -298,7 +298,7 @@ jsts.operation.buffer.convertSegStrings = function(it) {
  * @return the empty result geometry.
  * @private
  */
-jsts.operation.buffer.prototype.createEmptyResultGeometry = function() {
+jsts.operation.buffer.BufferBuilder.prototype.createEmptyResultGeometry = function() {
   var emptyGeom = this.geomFact.createPolygon(null, null);
   return emptyGeom;
 };
