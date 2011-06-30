@@ -122,23 +122,23 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
   // factory must be the same as the one used by the input
   this.geomFact = g.getFactory();
 
-  var curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
+  var curveBuilder = new jsts.operation.buffer.OffsetCurveBuilder(precisionModel, this.bufParams);
 
-  var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+  var curveSetBuilder = new jsts.operation.buffer.OffsetCurveSetBuilder(g, distance, curveBuilder);
 
   var bufferSegStrList = curveSetBuilder.getCurves();
 
   // short-circuit test
-  if (bufferSegStrList.size() <= 0) {
-    return createEmptyResultGeometry();
+  if (bufferSegStrList.length <= 0) {
+    return this.createEmptyResultGeometry();
   }
 
   this.computeNodedEdges(bufferSegStrList, precisionModel);
-  this.graph = new PlanarGraph(new OverlayNodeFactory());
-  this.graph.addEdges(edgeList.getEdges());
+  this.graph = new jsts.planargraph.PlanarGraph(new jsts.operation.overlay.OverlayNodeFactory());
+  this.graph.addEdges(this.edgeList.getEdges());
 
   var subgraphList = this.createSubgraphs(this.graph);
-  var polyBuilder = new PolygonBuilder(this.geomFact);
+  var polyBuilder = new jsts.operation.overlay.PolygonBuilder(this.geomFact);
   this.buildSubgraphs(subgraphList, polyBuilder);
   var resultPolyList = polyBuilder.getPolygons();
 
@@ -160,8 +160,8 @@ jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel
     return workingNoder;
 
   // otherwise use a fast (but non-robust) noder
-  var noder = new MCIndexNoder();
-  var li = new RobustLineIntersector();
+  var noder = new jsts.noding.MCIndexNoder();
+  var li = new jsts.algorithm.RobustLineIntersector();
   li.setPrecisionModel(precisionModel);
   noder.setSegmentIntersector(new IntersectionAdder(li));
   return noder;
@@ -202,13 +202,13 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
     // check if new edge is in reverse direction to existing edge
     // if so, must flip the label before merging it
     if (!existingEdge.isPointwiseEqual(e)) {
-      labelToMerge = new Label(e.getLabel());
+      labelToMerge = new jsts.geomgraph.Label(e.getLabel());
       labelToMerge.flip();
     }
     existingLabel.merge(labelToMerge);
 
     // compute new depth delta of sum of edges
-    var mergeDelta = depthDelta(labelToMerge);
+    var mergeDelta = jsts.operation.buffer.BufferBuilder.depthDelta(labelToMerge);
     var existingDelta = existingEdge.getDepthDelta();
     var newDelta = existingDelta + mergeDelta;
     existingEdge.setDepthDelta(newDelta);
@@ -216,7 +216,7 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
     // add this new edge to the list of edges in this graph
     // e.setName(name + edges.size());
     edgeList.add(e);
-    e.setDepthDelta(depthDelta(e.getLabel()));
+    e.setDepthDelta(jsts.operation.buffer.BufferBuilder.depthDelta(e.getLabel()));
   }
 };
 
@@ -231,7 +231,7 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
   for (var i = graph.getNodes().iterator(); i.hasNext();) {
     var node = i.next();
     if (!node.isVisited()) {
-      var subgraph = new BufferSubgraph();
+      var subgraph = new jsts.operation.buffer.BufferSubgraph();
       subgraph.create(node);
       subgraphList.add(subgraph);
     }
@@ -264,7 +264,7 @@ jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraph
   for (var i = subgraphList.iterator(); i.hasNext();) {
     var subgraph = i.next();
     var p = subgraph.getRightmostCoordinate();
-    var locater = new SubgraphDepthLocater(processedGraphs);
+    var locater = new jsts.operation.buffer.SubgraphDepthLocater(processedGraphs);
     var outsideDepth = locater.getDepth(p);
     subgraph.computeDepth(outsideDepth);
     subgraph.findResultEdges();
