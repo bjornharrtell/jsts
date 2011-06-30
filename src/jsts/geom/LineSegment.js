@@ -23,6 +23,12 @@
  * @constructor
  */
 jsts.geom.LineSegment = function(p0, p1) {
+  if (p0 === undefined) {
+    this.p0 = new jsts.geom.Coordinate();
+    this.p1 = new jsts.geom.Coordinate();
+    return;
+  }
+
   this.p0 = p0;
   this.p1 = p1;
 };
@@ -197,6 +203,22 @@ jsts.geom.LineSegment.prototype.project = function(p) {
   coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
   coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
   return coord;
+};
+
+jsts.geom.LineSegment.prototype.setCoordinates = function(ls) {
+  if (ls instanceof jsts.geom.Coordinate) {
+    this.setCoordinates2.apply(this, arguments);
+    return;
+  }
+
+  this.setCoordinates2(ls.p0, ls.p1);
+};
+
+jsts.geom.LineSegment.prototype.setCoordinates2 = function(p0, p1) {
+  this.p0.x = p0.x;
+  this.p0.y = p0.y;
+  this.p1.x = p1.x;
+  this.p1.y = p1.y;
 };
 
 // TODO: port rest

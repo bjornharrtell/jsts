@@ -81,7 +81,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.getLineCurve = function(
   if (inputPts.length <= 1) {
     this.computePointCurve(inputPts[0], segGen);
   } else {
-    if (bufParams.isSingleSided()) {
+    if (this.bufParams.isSingleSided()) {
       var isRightSide = distance < 0.0;
       this.computeSingleSidedBufferCurve(inputPts, isRightSide, segGen);
     } else
@@ -256,7 +256,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeLineBufferCurve = func
 jsts.operation.buffer.OffsetCurveBuilder.prototype.computeSingleSidedBufferCurve = function(
     inputPts, isRightSide, segGen) {
   var distTol = jsts.operation.buffer.OffsetCurveBuilder
-      .simplifyTolerance(distance);
+      .simplifyTolerance(this.distance);
 
   if (isRightSide) {
     // add original line
@@ -272,7 +272,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeSingleSidedBufferCurve
 
     // since we are traversing line in opposite order, offset position is still
     // LEFT
-    segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT);
+    segGen.initSideSegments(simp2[n2], simp2[n2 - 1], jsts.geomgraph.Position.LEFT);
     segGen.addFirstSegment();
     for (var i = n2 - 2; i >= 0; i--) {
       segGen.addNextSegment(simp2[i], true);
@@ -289,7 +289,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeSingleSidedBufferCurve
     // Coordinate[] simp1 = inputPts;
 
     var n1 = simp1.length - 1;
-    segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT);
+    segGen.initSideSegments(simp1[0], simp1[1], jsts.geomgraph.Position.LEFT);
     segGen.addFirstSegment();
     for (var i = 2; i <= n1; i++) {
       segGen.addNextSegment(simp1[i], true);
@@ -319,7 +319,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeOffsetCurve = function
 
     // since we are traversing line in opposite order, offset position is still
     // LEFT
-    segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT);
+    segGen.initSideSegments(simp2[n2], simp2[n2 - 1], jsts.geomgraph.Position.LEFT);
     segGen.addFirstSegment();
     for (var i = n2 - 2; i >= 0; i--) {
       segGen.addNextSegment(simp2[i], true);
@@ -333,7 +333,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeOffsetCurve = function
     // Coordinate[] simp1 = inputPts;
 
     var n1 = simp1.length - 1;
-    segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT);
+    segGen.initSideSegments(simp1[0], simp1[1], jsts.geomgraph.Position.LEFT);
     segGen.addFirstSegment();
     for (var i = 2; i <= n1; i++) {
       segGen.addNextSegment(simp1[i], true);
