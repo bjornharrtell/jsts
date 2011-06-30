@@ -1,3 +1,8 @@
+/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
 /**
@@ -135,7 +140,7 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addPoint = function(p) {
 jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addLineString = function(
     line) {
   // a zero or negative width buffer of a line/point is empty
-  if (distance <= 0.0 && !curveBuilder.getBufferParameters().isSingleSided())
+  if (this.distance <= 0.0 && !this.curveBuilder.getBufferParameters().isSingleSided())
     return;
   var coord = jsts.geom.CoordinateArrays.removeRepeatedPoints(line
       .getCoordinates());
