@@ -14,6 +14,10 @@ jsts = {
   version: '1.11-SNAPSHOT'
 };
 
+jsts.abstractFunc = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
 
 /**
  * @namespace
