@@ -11,7 +11,7 @@
  * @namespace
  */
 jsts = {
-  version: '1.11-SNAPSHOT'
+  version: '0.1-SNAPSHOT'
 };
 
 jsts.abstractFunc = function() {
