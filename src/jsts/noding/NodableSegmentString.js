@@ -20,7 +20,7 @@ jsts.noding.NodableSegmentString = function() {
 };
 
 
-jsts.noding.NodableSegmentString.prototype = jsts.noding.SegmentString;
+jsts.noding.NodableSegmentString.prototype = new jsts.noding.SegmentString();
 
 
 /**
