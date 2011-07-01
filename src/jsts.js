@@ -4,12 +4,6 @@
  * See /license.txt for the full text of the license.
  */
 
-/*jslint forin: true */
-
-
-/**
- * @namespace
- */
 jsts = {
   version: '0.1-SNAPSHOT'
 };
@@ -22,10 +16,6 @@ jsts.abstractFunc = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
-
-/**
- * @namespace
- */
 jsts.error = {};
 
 
