@@ -156,8 +156,8 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
  * @private
  */
 jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel) {
-  if (workingNoder !== null)
-    return workingNoder;
+  if (this.workingNoder !== null)
+    return this.workingNoder;
 
   // otherwise use a fast (but non-robust) noder
   var noder = new jsts.noding.MCIndexNoder();
@@ -173,7 +173,7 @@ jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel
  */
 jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(bufferSegStrList,
     precisionModel) {
-  var noder = getNoder(precisionModel);
+  var noder = this.getNoder(precisionModel);
   noder.computeNodes(bufferSegStrList);
   var nodedSegStrings = noder.getNodedSubstrings();
   for (var i = nodedSegStrings.iterator(); i.hasNext();) {
