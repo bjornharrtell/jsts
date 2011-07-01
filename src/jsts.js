@@ -14,6 +14,10 @@ jsts = {
   version: '0.1-SNAPSHOT'
 };
 
+
+/**
+ * Global function intended for use as a generic abstract method.
+ */
 jsts.abstractFunc = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
@@ -27,13 +31,11 @@ jsts.error = {};
 
 
 /**
- * @param {String}
- *          message User defined error message.
  * @constructor
  */
 jsts.error.IllegalArgumentError = function(message) {
   this.name = 'IllegalArgumentError';
-  this.message = message || '';
+  this.message = message;
 };
 jsts.error.IllegalArgumentError.prototype = new Error();
 
@@ -44,7 +46,7 @@ jsts.error.IllegalArgumentError.prototype = new Error();
  */
 jsts.error.TopologyError = function(message) {
   this.name = 'TopologyError';
-  this.message = message || '';
+  this.message = message;
 };
 jsts.error.TopologyError.prototype = new Error();
 
@@ -77,6 +79,6 @@ jsts.error.NotImplementedError.prototype = new Error();
  */
 jsts.error.NotRepresentableError = function(message) {
   this.name = 'NotRepresentableError';
-  this.message = message || '';
+  this.message = message;
 };
 jsts.error.NotRepresentableError.prototype = new Error();
