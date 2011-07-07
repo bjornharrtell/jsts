@@ -4,5 +4,6 @@
  * See /license.txt for the full text of the license.
  */
 
+jsts.index.chain = {
 
-jsts.operation.overlay = {};
+};

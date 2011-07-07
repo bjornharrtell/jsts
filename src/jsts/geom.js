@@ -5,9 +5,6 @@
  */
 
 
-/**
- * @namespace
- */
 jsts.geom = {
 
 };

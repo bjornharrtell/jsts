@@ -5,7 +5,4 @@
  */
 
 
-/**
- * @namespace
- */
 jsts.io = {};

@@ -163,7 +163,7 @@ jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel
   var noder = new jsts.noding.MCIndexNoder();
   var li = new jsts.algorithm.RobustLineIntersector();
   li.setPrecisionModel(precisionModel);
-  noder.setSegmentIntersector(new IntersectionAdder(li));
+  noder.setSegmentIntersector(new jsts.noding.IntersectionAdder(li));
   return noder;
 };
 
