@@ -105,7 +105,7 @@ jsts.noding.MCIndexNoder.prototype.add = function(segStr) {
       .getCoordinates(), segStr);
   for (var i = 0; i < segChains.length; i++) {
     var mc = segChains[i];
-    mc.setId(idCounter++);
+    mc.setId(this.idCounter++);
     this.index.insert(mc.getEnvelope(), mc);
     this.monoChains.add(mc);
   }
