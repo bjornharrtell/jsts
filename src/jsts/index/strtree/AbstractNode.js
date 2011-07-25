@@ -25,6 +25,7 @@
  */
 jsts.index.strtree.AbstractNode = function(level) {
   this.level = level;
+  this.childBoundables = [];
 };
 
 OpenLayers.inherit(jsts.index.strtree.AbstractNode, jsts.index.strtree.Boundable);
@@ -34,7 +35,7 @@ OpenLayers.inherit(jsts.index.strtree.AbstractNode, jsts.index.strtree.Boundable
  * @type {Array}
  * @private
  */
-jsts.index.strtree.AbstractNode.prototype.childBoundables = [];
+jsts.index.strtree.AbstractNode.prototype.childBoundables = null;
 
 
 /**
@@ -48,7 +49,7 @@ jsts.index.strtree.AbstractNode.prototype.bounds = null;
  * @type {number}
  * @private
  */
-jsts.index.strtree.AbstractNode.prototype.level;
+jsts.index.strtree.AbstractNode.prototype.level = null;
 
 
 /**
@@ -78,21 +79,13 @@ jsts.index.strtree.AbstractNode.prototype.computeBounds = function() {
 
 
 /**
- * @return {Object}
- */
-jsts.index.strtree.AbstractNode.prototype.computeBounds = function() {
-  throw new jsts.error.NotImplementedError();
-};
-
-
-/**
  * Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
  * root node will have the highest level
  *
  * @return {number}
  */
 jsts.index.strtree.AbstractNode.prototype.getLevel = function() {
-  throw new jsts.error.NotImplementedError();
+  return this.level;
 };
 
 
@@ -103,5 +96,5 @@ jsts.index.strtree.AbstractNode.prototype.getLevel = function() {
  * @param {jsts.index.strtree.Boundable} childBoundable
  */
 jsts.index.strtree.AbstractNode.prototype.addChildBoundable = function(childBoundable) {
-  throw new jsts.error.NotImplementedError();
+  this.childBoundables.push(childBoundable);
 };
