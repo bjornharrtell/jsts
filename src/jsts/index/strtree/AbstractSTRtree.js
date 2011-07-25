@@ -15,9 +15,8 @@
  *
  * @see STRtree
  * @see SIRtree
- *
- * @version 1.7
  */
+
 
 
 /**
@@ -25,9 +24,14 @@
  * nodes that a node may have
  *
  * @param {Integer} nodeCapacity
+ *
+ * @constuctor
  */
 jsts.index.strtree.AbstractSTRtree = function(nodeCapacity) {
+  this.itemBoundables = [];
 
+  // TODO: Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
+  this.nodeCapacity = nodeCapacity;
 };
 
 
@@ -60,6 +64,7 @@ jsts.index.strtree.AbstractSTRtree.IntersectsOp.prototype.intersects = function(
 
 /**
  * @type {jsts.index.strtree.AbstractNode}
+ * @protected
  */
 jsts.index.strtree.AbstractSTRtree.prototype.root = null;
 
@@ -75,7 +80,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.built = false;
  * @type {Array}
  * @private
  */
-jsts.index.strtree.AbstractSTRtree.prototype.itemBoundables = [];
+jsts.index.strtree.AbstractSTRtree.prototype.itemBoundables = null;
 
 
 /**
@@ -92,7 +97,11 @@ jsts.index.strtree.AbstractSTRtree.prototype.nodeCapacity = null;
  * inserted into the tree.
  */
 jsts.index.strtree.AbstractSTRtree.prototype.build = function() {
-  throw new jsts.error.NotImplementedError();
+  // TODO: Assert.isTrue(!built);
+  this.root = this.itemBoundables.length === 0
+         ? this.createNode(0)
+         : this.createHigherLevels(itemBoundables, -1);
+  this.built = true;
 };
 
 
@@ -110,7 +119,22 @@ jsts.index.strtree.AbstractSTRtree.prototype.createNode = function(level) {
  * M is the node capacity.
  */
 jsts.index.strtree.AbstractSTRtree.prototype.createParentBoundables = function(childBoundables, newLevel) {
-  throw new jsts.error.NotImplementedError();
+  // TODO: Assert.isTrue(!childBoundables.isEmpty());
+  var parentBoundables = [];
+  parentBoundables.push(this.createNode(newLevel));
+  var sortedChildBoundables = [];
+  for (var i = 0; i < parentBoundables.length; i++) {
+    sortedChildBoundables.push(parentBoundables[i]);
+  }
+  sortedChildBoundables.sort(this.getComparator);
+  for (var i = 0; i < sortedChildBoundables.length; i++) {
+    var childBoundable = sortedChildBoundables[i];
+    if (this.lastNode(parentBoundables).getChildBoundables().length === this.getNodeCapacity()) {
+      parentBoundables.add(createNode(newLevel));
+    }
+    this.lastNode(parentBoundables).addChildBoundable(childBoundable);
+  }
+  return parentBoundables;
 };
 
 
@@ -119,17 +143,19 @@ jsts.index.strtree.AbstractSTRtree.prototype.createParentBoundables = function(c
  * @return {jsts.index.strtree.AbstractNode}
  */
 jsts.index.strtree.AbstractSTRtree.prototype.lastNode = function(nodes) {
-  throw new jsts.error.NotImplementedError();
+  return this.nodes[this.nodes.length - 1];
 };
 
 
 /**
  * @param {number} a
  * @param {number} b
- * @return {jsts.index.strtree.AbstractNode}
+ * @return {number}
  */
 jsts.index.strtree.AbstractSTRtree.prototype.compareDoubles = function(a, b) {
-  throw new jsts.error.NotImplementedError();
+  return a > b ? 1
+      : a < b ? -1
+      : 0;
 };
 
 
@@ -145,7 +171,12 @@ jsts.index.strtree.AbstractSTRtree.prototype.compareDoubles = function(a, b) {
  * @private
  */
 jsts.index.strtree.AbstractSTRtree.prototype.createHigherLevels = function(boundablesOfALevel, level) {
-  throw new jsts.error.NotImplementedError();
+  // TODO: Assert.isTrue(!boundablesOfALevel.isEmpty());
+  var parentBoundables = this.createParentBoundables(boundablesOfALevel, level + 1);
+  if (parentBoundables.length === 1) {
+    return parentBoundables[0];
+  }
+  return this.createHigherLevels(parentBoundables, level + 1);
 };
 
 
@@ -153,7 +184,8 @@ jsts.index.strtree.AbstractSTRtree.prototype.createHigherLevels = function(bound
  * @return {jsts.index.strtree.AbstractNode}
  */
 jsts.index.strtree.AbstractSTRtree.prototype.getRoot = function() {
-  throw new jsts.error.NotImplementedError();
+  if (! this.built) this.build();
+  return this.root;
 };
 
 
@@ -163,25 +195,76 @@ jsts.index.strtree.AbstractSTRtree.prototype.getRoot = function() {
  * return {number}
  */
 jsts.index.strtree.AbstractSTRtree.prototype.getNodeCompacity = function() {
-  throw new jsts.error.NotImplementedError();
+  return this.nodeCapacity;
 };
 
+
+/**
+ * @return {number}
+ */
+jsts.index.strtree.AbstractSTRtree.prototype.size = function() {
+  if (arguments.length === 1) {
+    return this.size2(arguments[0]);
+  }
+
+  if (!this.built) { this.build(); }
+  if (this.itemBoundables.length === 0) {
+    return 0;
+  }
+  return this.size2(root);
+};
 
 /**
  * @param {jsts.index.strtree.AbstractNode=} [node].
  * @return {number}
  */
-jsts.index.strtree.AbstractSTRtree.prototype.size = function() {
-  throw new jsts.error.NotImplementedError();
+jsts.index.strtree.AbstractSTRtree.prototype.size2 = function(node) {
+  var size = 0;
+  var childBoundables = node.getChildBoundables();
+  for (var i = 0; i < childBoundables.length; i++) {
+    var childBoundable = childBoundables[i];
+    if (childBoundable instanceof jsts.index.strtree.AbstractNode) {
+      size += this.size(childBoundable);
+    }
+    else if (childBoundable instanceof jsts.index.strtree.ItemBoundable) {
+      size += 1;
+    }
+  }
+  return size;
 };
 
+
+/**
+ * @return {number}
+ */
+jsts.index.strtree.AbstractSTRtree.prototype.depth = function() {
+  if (arguments.length === 1) {
+    return this.depth2(arguments[0]);
+  }
+
+  if (!this.built) { this.build(); }
+  if (this.itemBoundables.length === 0) {
+    return 0;
+  }
+  return this.depth2(root);
+};
 
 /**
  * @param {jsts.index.strtree.AbstractNode} [node].
  * @return {number}
  */
-jsts.index.strtree.AbstractSTRtree.prototype.depth = function() {
-  throw new jsts.error.NotImplementedError();
+jsts.index.strtree.AbstractSTRtree.prototype.depth2 = function() {
+  var maxChildDepth = 0;
+  var childBoundables = node.getChildBoundables();
+  for (var i = 0; i < childBoundables.length; i++) {
+    var childBoundable = childBoundables[i];
+    if (childBoundable instanceof jsts.index.strtree.AbstractNode) {
+      var childDepth = this.depth(childBoundable);
+      if (childDepth > maxChildDepth)
+        maxChildDepth = childDepth;
+    }
+  }
+  return maxChildDepth + 1;
 };
 
 
@@ -191,9 +274,11 @@ jsts.index.strtree.AbstractSTRtree.prototype.depth = function() {
  * @param {Object} item
  */
 jsts.index.strtree.AbstractSTRtree.prototype.insert = function(bounds, item) {
-  throw new jsts.error.NotImplementedError();
+  // TODO: Assert.isTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
+  this.itemBoundables.add(new jsts.index.strtree.ItemBoundable(bounds, item));
 };
 
+// TODO: port rest
 
 /**
  * Also buils the tree if necessar.
