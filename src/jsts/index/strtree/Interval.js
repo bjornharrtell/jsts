@@ -6,27 +6,23 @@
 
 /**
  * A contiguous portion of 1D-space. Used internally by SIRtree.
- * @see SIRtree
  *
- * @version 1.7
- */
-
-
-
-/**
- * @param {jsts.index.strtree.Interval} [other].
- * @param {number} [min].
- * @param {number} [max].
+ * @param {jsts.index.strtree.Interval}
+ *          [other].
+ * @param {number}
+ *          [min].
+ * @param {number}
+ *          [max].
+ * @see SIRtree
  * @constructor
  */
 jsts.index.strtree.Interval = function() {
   var other;
-  if (arguments.length == 1) {
+  if (arguments.length === 1) {
     other = arguments[0];
     return jsts.index.strtree.Interval(other.min, other.max);
-  }
-  else if (arguments.length == 1) {
-    //TODO: Implement Assert.isTrue?
+  } else if (arguments.length === 2) {
+    // TODO: Assert.isTrue(min <= max);
     this.min = arguments[0];
     this.max = arguments[1];
   }
@@ -37,14 +33,14 @@ jsts.index.strtree.Interval = function() {
  * @type {number}
  * @private
  */
-jsts.index.strtree.Interval.prototype.min;
+jsts.index.strtree.Interval.prototype.min = null;
 
 
 /**
  * @type {number}
  * @private
  */
-jsts.index.strtree.Interval.prototype.max;
+jsts.index.strtree.Interval.prototype.max = null;
 
 
 /**
@@ -52,38 +48,47 @@ jsts.index.strtree.Interval.prototype.max;
  * @public
  */
 jsts.index.strtree.Interval.prototype.getCentre = function() {
-  throw new jsts.error.NotImplementedError();
+  return (this.min + this.max) / 2;
 };
 
 
 /**
  *
- * @param {jsts.index.strtree.Interval} other
+ * @param {jsts.index.strtree.Interval}
+ *          other
  * @return {jsts.index.strtree.Interval} this.
  * @public
  */
 jsts.index.strtree.Interval.prototype.expandToInclude = function(other) {
-  throw new jsts.error.NotImplementedError();
+  this.max = Math.max(this.max, other.max);
+  this.min = Math.min(this.min, other.min);
+  return this;
 };
 
 
 /**
  *
- * @param {jsts.index.strtree.Interval} other
+ * @param {jsts.index.strtree.Interval}
+ *          other
  * @return {boolean}
  * @public
  */
 jsts.index.strtree.Interval.prototype.intersects = function(other) {
-  throw new jsts.error.NotImplementedError();
+  return !(other.min > this.max || other.max < this.min);
 };
 
 
 /**
  *
- * @param {Object} o
+ * @param {Object}
+ *          o
  * @return {boolean}
  * @public
  */
 jsts.index.strtree.Interval.prototype.equals = function(o) {
-  throw new jsts.error.NotImplementedError();
+  if (!(o instanceof jsts.index.strtree.Interval)) {
+    return false;
+  }
+  other = o;
+  return this.min === other.min && this.max === other.max;
 };
