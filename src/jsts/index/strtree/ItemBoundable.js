@@ -31,14 +31,14 @@ OpenLayers.inherit(jsts.index.strtree.ItemBoundable, jsts.index.strtree.Boundabl
  * @type {Object}
  * @private
  */
-jsts.index.strtree.ItemBoundable.prototype.bounds;
+jsts.index.strtree.ItemBoundable.prototype.bounds = null;
 
 
 /**
  * @type {Object}
  * @private
  */
-jsts.index.strtree.ItemBoundable.prototype.item;
+jsts.index.strtree.ItemBoundable.prototype.item = null;
 
 
 /**
