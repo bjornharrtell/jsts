@@ -81,5 +81,5 @@ jsts.noding.Octant.octant2 = function(p0,  p1)  {
   var dy = p1.y - p0.y;
   if (dx === 0.0 && dy === 0.0)
     throw new jsts.error.IllegalArgumentError('Cannot compute the octant for two identical points ' + p0);
-  return octant(dx, dy);
+  return jsts.noding.Octant.octant(dx, dy);
 };

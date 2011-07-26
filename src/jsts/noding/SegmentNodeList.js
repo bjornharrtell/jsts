@@ -25,6 +25,25 @@ jsts.noding.SegmentNodeList = function(edge) {
  */
 jsts.noding.SegmentNodeList.prototype.nodeMap = null;
 
+/**
+ * @return {Array.<SegmentNode>}
+ */
+jsts.noding.SegmentNodeList.prototype.values = function() {
+  var array = [];
+  for (var key in this.nodeMap) {
+    if (this.nodeMap.hasOwnProperty(key)) {
+      array.push(this.nodeMap[key]);
+    }
+  }
+
+  var compare = function(a,b) {
+    return a.compareTo(b);
+  };
+  array.sort(compare);
+
+  return array;
+};
+
 
 /**
    * the parent edge
@@ -44,9 +63,9 @@ jsts.noding.SegmentNodeList.prototype.getEdge = function() { return this.edge; }
    * @return the SegmentIntersection found or added.
    */
 jsts.noding.SegmentNodeList.prototype.add = function(intPt,  segmentIndex)  {
-  var eiNew = new jsts.noding.SegmentNode(edge, intPt, segmentIndex, edge.getSegmentOctant(segmentIndex));
-  var ei = nodeMap[eiNew];
-  if (ei != null) {
+  var eiNew = new jsts.noding.SegmentNode(this.edge, intPt, segmentIndex, this.edge.getSegmentOctant(segmentIndex));
+  var ei = this.nodeMap[eiNew];
+  if (ei !== null) {
     // TODO: Assert.isTrue(ei.coord.equals2D(intPt), "Found equal nodes with different coordinates");
 
     return ei;
@@ -62,9 +81,9 @@ jsts.noding.SegmentNodeList.prototype.add = function(intPt,  segmentIndex)  {
    * @private
    */
 jsts.noding.SegmentNodeList.prototype.addEndpoints = function()  {
-  var maxSegIndex = edge.size() - 1;
-  this.add(edge.getCoordinate(0), 0);
-  this.add(edge.getCoordinate(maxSegIndex), maxSegIndex);
+  var maxSegIndex = this.edge.size() - 1;
+  this.add(this.edge.getCoordinate(0), 0);
+  this.add(this.edge.getCoordinate(maxSegIndex), maxSegIndex);
 };
 
 
@@ -83,9 +102,9 @@ jsts.noding.SegmentNodeList.prototype.addCollapsedNodes = function()  {
   this.findCollapsesFromExistingVertices(collapsedVertexIndexes);
 
   // node the collapses
-  for (var it = collapsedVertexIndexes.iterator(); it.hasNext(); ) {
-    var vertexIndex = it.next();
-    this.add(edge.getCoordinate(vertexIndex), vertexIndex);
+  for (var i = 0; i < collapsedVertexIndexes.length; i++) {
+    var vertexIndex = collapsedVertexIndexes[i];
+    this.add(this.edge.getCoordinate(vertexIndex), vertexIndex);
   }
 };
 
@@ -96,10 +115,10 @@ jsts.noding.SegmentNodeList.prototype.addCollapsedNodes = function()  {
    * @private
    */
 jsts.noding.SegmentNodeList.prototype.findCollapsesFromExistingVertices = function(collapsedVertexIndexes)  {
-  for (var i = 0; i < edge.size() - 2; i++) {
-    var p0 = edge.getCoordinate(i);
-    var p1 = edge.getCoordinate(i + 1);
-    var p2 = edge.getCoordinate(i + 2);
+  for (var i = 0; i < this.edge.size() - 2; i++) {
+    var p0 = this.edge.getCoordinate(i);
+    var p1 = this.edge.getCoordinate(i + 1);
+    var p2 = this.edge.getCoordinate(i + 2);
     if (p0.equals2D(p2)) {
       // add base of collapse as node
       collapsedVertexIndexes.push(i + 1);
@@ -118,15 +137,15 @@ jsts.noding.SegmentNodeList.prototype.findCollapsesFromExistingVertices = functi
    */
 jsts.noding.SegmentNodeList.prototype.findCollapsesFromInsertedNodes = function(collapsedVertexIndexes)  {
   var collapsedVertexIndex = [null];
-  var it = iterator();
+  var nodes = this.values();
   // there should always be at least two entries in the list, since the endpoints are nodes
-  var eiPrev = it.next();
-  while (it.hasNext()) {
-    var ei = it.next();
+  for (var i = 0; i < nodes.length; i++) {
+    if (i === 0) continue;
+    var eiPrev = nodes[i - 1];
+    var ei = nodes[i];
     var isCollapsed = this.findCollapseIndex(eiPrev, ei, collapsedVertexIndex);
     if (isCollapsed)
       collapsedVertexIndexes.push(collapsedVertexIndex[0]);
-
     eiPrev = ei;
   }
 };
@@ -135,8 +154,7 @@ jsts.noding.SegmentNodeList.prototype.findCollapsesFromInsertedNodes = function(
 /**
    * @private
    */
-jsts.noding.SegmentNodeList.prototype.findCollapseIndex = function(ei0,  ei1, collapsedVertexIndex)
-    {
+jsts.noding.SegmentNodeList.prototype.findCollapseIndex = function(ei0,  ei1, collapsedVertexIndex)    {
   // only looking for equal nodes
   if (! ei0.coord.equals2D(ei1.coord)) return false;
 
@@ -146,7 +164,7 @@ jsts.noding.SegmentNodeList.prototype.findCollapseIndex = function(ei0,  ei1, co
   }
 
   // if there is a single vertex between the two equal nodes, this is a collapse
-  if (numVerticesBetween == 1) {
+  if (numVerticesBetween === 1) {
     collapsedVertexIndex[0] = ei0.segmentIndex + 1;
     return true;
   }
@@ -167,10 +185,10 @@ jsts.noding.SegmentNodeList.prototype.addSplitEdges = function(edgeList)  {
   this.addEndpoints();
   this.addCollapsedNodes();
 
-  var it = iterator();
+  var nodes = this.values();
   // there should always be at least two entries in the list, since the endpoints are nodes
-  var eiPrev = it.next();
-  while (it.hasNext()) {
+  for (var i = 0; i < nodes.length; i++) {
+    if (i === 0) continue;
     var ei = it.next();
     var newEdge = this.createSplitEdge(eiPrev, ei);
     edgeList.push(newEdge);

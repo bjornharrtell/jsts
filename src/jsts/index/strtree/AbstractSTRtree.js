@@ -104,7 +104,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.nodeCapacity = null;
 jsts.index.strtree.AbstractSTRtree.prototype.build = function() {
   // TODO: Assert.isTrue(!built);
   this.root = this.itemBoundables.length === 0 ? this.createNode(0) : this
-      .createHigherLevels(itemBoundables, -1);
+      .createHigherLevels(this.itemBoundables, -1);
   this.built = true;
 };
 
@@ -129,15 +129,15 @@ jsts.index.strtree.AbstractSTRtree.prototype.createParentBoundables = function(
   var parentBoundables = [];
   parentBoundables.push(this.createNode(newLevel));
   var sortedChildBoundables = [];
-  for (var i = 0; i < parentBoundables.length; i++) {
-    sortedChildBoundables.push(parentBoundables[i]);
+  for (var i = 0; i < childBoundables.length; i++) {
+    sortedChildBoundables.push(childBoundables[i]);
   }
-  sortedChildBoundables.sort(this.getComparator);
+  sortedChildBoundables.sort(this.getComparator());
   for (var i = 0; i < sortedChildBoundables.length; i++) {
     var childBoundable = sortedChildBoundables[i];
     if (this.lastNode(parentBoundables).getChildBoundables().length === this
         .getNodeCapacity()) {
-      parentBoundables.add(createNode(newLevel));
+      parentBoundables.push(this.createNode(newLevel));
     }
     this.lastNode(parentBoundables).addChildBoundable(childBoundable);
   }
@@ -151,7 +151,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.createParentBoundables = function(
  * @return {jsts.index.strtree.AbstractNode}
  */
 jsts.index.strtree.AbstractSTRtree.prototype.lastNode = function(nodes) {
-  return this.nodes[this.nodes.length - 1];
+  return nodes[nodes.length - 1];
 };
 
 
@@ -206,7 +206,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.getRoot = function() {
  *
  * return {number}
  */
-jsts.index.strtree.AbstractSTRtree.prototype.getNodeCompacity = function() {
+jsts.index.strtree.AbstractSTRtree.prototype.getNodeCapacity = function() {
   return this.nodeCapacity;
 };
 
@@ -295,7 +295,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.depth2 = function() {
 jsts.index.strtree.AbstractSTRtree.prototype.insert = function(bounds, item) {
   // TODO: Assert.isTrue(!built, "Cannot insert items into an STR packed R-tree
   // after it has been built.");
-  this.itemBoundables.add(new jsts.index.strtree.ItemBoundable(bounds, item));
+  this.itemBoundables.push(new jsts.index.strtree.ItemBoundable(bounds, item));
 };
 
 /**
@@ -323,7 +323,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.query = function(searchBounds) {
     return matches;
   }
   if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
-    this.query3(searchBounds, root, matches);
+    this.query3(searchBounds, this.root, matches);
   }
   return matches;
 };
@@ -420,9 +420,9 @@ jsts.index.strtree.AbstractSTRtree.prototype.itemsTree = function() {
       var valuesTreeForChild = this.itemsTree(childBoundable);
       // only add if not null (which indicates an item somewhere in this tree
       if (valuesTreeForChild != null)
-        valuesTreeForNode.add(valuesTreeForChild);
+        valuesTreeForNode.push(valuesTreeForChild);
     } else if (childBoundable instanceof jsts.index.strtree.ItemBoundable) {
-      valuesTreeForNode.add(childBoundable.getItem());
+      valuesTreeForNode.push(childBoundable.getItem());
     } else {
       // TODO: Assert.shouldNeverReachHere();
     }
@@ -454,8 +454,8 @@ jsts.index.strtree.AbstractSTRtree.prototype.remove = function(searchBounds,
   if (this.itemBoundables.length === 0) {
     // TODO: Assert.isTrue(root.getBounds() == null);
   }
-  if (this.getIntersectsOp().intersects(root.getBounds(), searchBounds)) {
-    return this.remove2(searchBounds, root, item);
+  if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
+    return this.remove2(searchBounds, this.root, item);
   }
   return false;
 };
@@ -477,7 +477,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.remove2 = function(searchBounds,
       continue;
     }
     if (childBoundable instanceof jsts.index.strtree.AbstractNode) {
-      found = remove(searchBounds, childBoundable, item);
+      found = this.remove(searchBounds, childBoundable, item);
       // if found, record child for pruning and exit
       if (found) {
         childToPrune = childBoundable;
@@ -526,7 +526,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.boundablesAtLevel = function(level)
   // TODO: argument switch
 
   var boundables = [];
-  this.boundablesAtLevel2(level, root, boundables);
+  this.boundablesAtLevel2(level, this.root, boundables);
   return boundables;
 };
 
@@ -550,11 +550,11 @@ jsts.index.strtree.AbstractSTRtree.prototype.boundablesAtLevel2 = function(
   for (var i = 0; i < childBoundables.length; i++) {
     var boundable = childBoundables[i];
     if (boundable instanceof jsts.index.strtree.AbstractNode) {
-      boundablesAtLevel(level, boundable, boundables);
+      this.boundablesAtLevel(level, boundable, boundables);
     } else {
       // TODO: Assert.isTrue(boundable instanceof
       // jsts.index.strtree.ItemBoundable);
-      if (level == -1) {
+      if (level === -1) {
         boundables.add(boundable);
       }
     }

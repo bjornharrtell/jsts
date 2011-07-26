@@ -22,6 +22,10 @@ jsts.index.chain.MonotoneChainBuilder.toIntArray = function(list) {
 };
 
 jsts.index.chain.MonotoneChainBuilder.getChains = function(pts) {
+  if (arguments.length === 2) {
+    return jsts.index.chain.MonotoneChainBuilder.getChains2.apply(this, arguments);
+  }
+
   return jsts.index.chain.MonotoneChainBuilder.getChains2(pts, null);
 };
 

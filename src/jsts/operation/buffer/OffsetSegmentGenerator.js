@@ -32,8 +32,9 @@ jsts.operation.buffer.OffsetSegmentGenerator = function(precisionModel,
    * small buffer distances.
    */
   if (this.bufParams.getQuadrantSegments() >= 8 &&
-      this.bufParams.getJoinStyle() == jsts.operation.buffer.BufferParameters.JOIN_ROUND)
-    this.closingSegLengthFactor = MAX_CLOSING_SEG_LEN_FACTOR;
+      this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_ROUND) {
+    this.closingSegLengthFactor = jsts.operation.buffer.OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
+  }
   this.init(distance);
 };
 

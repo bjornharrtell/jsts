@@ -34,3 +34,22 @@ jsts.planargraph.PlanarGraph.prototype.dirEdges = null;
  * @type {Object}
  */
 jsts.planargraph.PlanarGraph.prototype.nodeMap = null;
+
+/**
+ * @return {Array.<Node>}
+ */
+jsts.planargraph.PlanarGraph.prototype.getNodes = function() {
+  var array = [];
+  for (var key in this.nodeMap) {
+    if (this.nodeMap.hasOwnProperty(key)) {
+      array.push(this.nodeMap[key]);
+    }
+  }
+
+  var compare = function(a,b) {
+    return a.compareTo(b);
+  };
+  array.sort(compare);
+
+  return array;
+};

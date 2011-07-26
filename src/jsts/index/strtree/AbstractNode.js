@@ -77,6 +77,13 @@ jsts.index.strtree.AbstractNode.prototype.computeBounds = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
+jsts.index.strtree.AbstractNode.prototype.getBounds = function() {
+  if (this.bounds === null) {
+    this.bounds = this.computeBounds();
+  }
+  return this.bounds;
+};
+
 
 /**
  * Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the

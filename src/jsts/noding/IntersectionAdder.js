@@ -157,7 +157,7 @@ jsts.noding.IntersectionAdder.prototype.isTrivialIntersection = function(e0,
  */
 jsts.noding.IntersectionAdder.prototype.processIntersections = function(e0,
     segIndex0, e1, segIndex1) {
-  if (e0 == e1 && segIndex0 == segIndex1)
+  if (e0 === e1 && segIndex0 === segIndex1)
     return;
   this.numTests++;
   var p00 = e0.getCoordinates()[segIndex0];
@@ -177,8 +177,8 @@ jsts.noding.IntersectionAdder.prototype.processIntersections = function(e0,
     // only intersection.
     if (!this.isTrivialIntersection(e0, segIndex0, e1, segIndex1)) {
       this._hasIntersection = true;
-      e0.addIntersections(li, segIndex0, 0);
-      e1.addIntersections(li, segIndex1, 1);
+      e0.addIntersections(this.li, segIndex0, 0);
+      e1.addIntersections(this.li, segIndex1, 1);
       if (this.li.isProper()) {
         this.numProperIntersections++;
         this.hasProper = true;
