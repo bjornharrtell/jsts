@@ -376,6 +376,10 @@ jsts.algorithm.LineIntersector.prototype.isIntersection = function(pt) {
  *         interior of one of the input segments.
  */
 jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function() {
+  if (arguments.length === 1) {
+    return this.isInteriorIntersection2.apply(this, arguments);
+  }
+
   if (this.isInteriorIntersection(0)) {
     return true;
   }
@@ -394,7 +398,7 @@ jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function() {
  * @return {boolean} <code>true</code> if either intersection point is in the
  *         interior of the input segment.
  */
-jsts.algorithm.LineIntersector.prototype.isInteriorIntersection = function(
+jsts.algorithm.LineIntersector.prototype.isInteriorIntersection2 = function(
     inputLineIndex) {
   var i;
   for (i = 0; i < this.result; i++) {

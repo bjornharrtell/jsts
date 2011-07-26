@@ -129,7 +129,7 @@ jsts.noding.NodedSegmentString.prototype.isClosed = function() {
 jsts.noding.NodedSegmentString.prototype.getSegmentOctant = function(index) {
   if (index === this.pts.length - 1)
     return -1;
-  return this.safeOctant(getCoordinate(index), getCoordinate(index + 1));
+  return this.safeOctant(this.getCoordinate(index), this.getCoordinate(index + 1));
 };
 
 
@@ -217,6 +217,6 @@ jsts.noding.NodedSegmentString.prototype.addIntersectionNode = function(intPt,
   /**
    * Add the intersection point to edge intersection list.
    */
-  var ei = this.nodeList.push(intPt, normalizedSegmentIndex);
+  var ei = this.nodeList.add(intPt, normalizedSegmentIndex);
   return ei;
 };

@@ -176,10 +176,10 @@ jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(buffe
   var noder = this.getNoder(precisionModel);
   noder.computeNodes(bufferSegStrList);
   var nodedSegStrings = noder.getNodedSubstrings();
-  for (var i = nodedSegStrings.iterator(); i.hasNext();) {
-    var segStr = i.next();
+  for (var i = 0; i < nodedSegStrings.length; i++) {
+    var segStr = nodedSegStrings[i];
     var oldLabel = segStr.getData();
-    var edge = new Edge(segStr.getCoordinates(), new Label(oldLabel));
+    var edge = new jsts.geomgraph.Edge(segStr.getCoordinates(), new jsts.geomgraph.Label(oldLabel));
     this.insertUniqueEdge(edge);
   }
 };
@@ -228,12 +228,13 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
  */
 jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) {
   var subgraphList = [];
-  for (var i = graph.getNodes().iterator(); i.hasNext();) {
-    var node = i.next();
+  var nodes = graph.getNodes();
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i];
     if (!node.isVisited()) {
       var subgraph = new jsts.operation.buffer.BufferSubgraph();
       subgraph.create(node);
-      subgraphList.add(subgraph);
+      subgraphList.push(subgraph);
     }
   }
   /**
@@ -242,7 +243,9 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
    * shells will have been built before the subgraphs for any holes they
    * contain.
    */
-  Collections.sort(subgraphList, Collections.reverseOrder());
+  // TODO: decide if sorting is required.
+  subgraphList.sort();
+  subgraphList.reverse();
   return subgraphList;
 };
 
@@ -261,8 +264,8 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
 jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraphList,
     polyBuilder) {
   var processedGraphs = [];
-  for (var i = subgraphList.iterator(); i.hasNext();) {
-    var subgraph = i.next();
+  for (var i = 0; i < subgraphList.length; i++) {
+    var subgraph = subgraphList[i];
     var p = subgraph.getRightmostCoordinate();
     var locater = new jsts.operation.buffer.SubgraphDepthLocater(processedGraphs);
     var outsideDepth = locater.getDepth(p);

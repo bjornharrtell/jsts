@@ -196,7 +196,8 @@ jsts.index.chain.MonotoneChain.prototype.computeSelect2 = function(searchEnv,
  *          mco the overlap action to execute on selected segments.
  */
 jsts.index.chain.MonotoneChain.prototype.computeOverlaps = function(mc, mco) {
-  this.computeOverlaps2(start, end, mc, mc.start, mc.end, mco);
+  // TODO: arguments switch
+  this.computeOverlaps2(this.start, this.end, mc, mc.start, mc.end, mco);
 };
 
 /**

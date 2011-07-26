@@ -80,8 +80,8 @@ jsts.noding.MCIndexNoder.prototype.intersectChains = function() {
   for (var i = 0; i < this.monoChains.length; i++) {
     var queryChain = this.monoChains[i];
     var overlapChains = this.index.query(queryChain.getEnvelope());
-    for (var j = 0; j < this.overlapChains.length; j++) {
-      var testChain = this.overlapChains[j];
+    for (var j = 0; j < overlapChains.length; j++) {
+      var testChain = overlapChains[j];
       /**
        * following test makes sure we only compare each pair of chains once and
        * that we don't compare a chain to itself
@@ -107,7 +107,7 @@ jsts.noding.MCIndexNoder.prototype.add = function(segStr) {
     var mc = segChains[i];
     mc.setId(this.idCounter++);
     this.index.insert(mc.getEnvelope(), mc);
-    this.monoChains.add(mc);
+    this.monoChains.push(mc);
   }
 };
 
@@ -136,5 +136,5 @@ jsts.noding.MCIndexNoder.SegmentOverlapAction.prototype.overlap = function(mc1,
     start1, mc2, start2) {
   var ss1 = mc1.getContext();
   var ss2 = mc2.getContext();
-  si.processIntersections(ss1, start1, ss2, start2);
+  this.si.processIntersections(ss1, start1, ss2, start2);
 };
