@@ -114,6 +114,9 @@ jsts.geom.Polygon.prototype.equalsExact = function(other, tolerance) {
   if (this.isEmpty() && other.isEmpty()) {
     return true;
   }
+  if (this.isEmpty() !== other.isEmpty()) {
+    return false;
+  }
 
   var holes = this.components.slice(1);
   var otherPolygon = other;
