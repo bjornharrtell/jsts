@@ -47,3 +47,8 @@ Design changes
 These are effective/potential changes from the original JTS Topology Suite:
 
 * Skip abstracted CoordinateSequence interface/implementation
+
+JSTS in use
+-----------
+
+* [Viper](https://github.com/bjornharrtell/viper) - a game that uses quadtree index and the robust line intersection algorithm.
