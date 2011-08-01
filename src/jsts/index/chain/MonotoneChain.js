@@ -159,7 +159,7 @@ jsts.index.chain.MonotoneChain.prototype.computeSelect2 = function(searchEnv,
   mcs.tempEnv1.init(p0, p1);
 
   // terminating condition for the recursion
-  if (end0 - start0 == 1) {
+  if (end0 - start0 === 1) {
     mcs.select(this, start0);
     return;
   }
@@ -168,7 +168,7 @@ jsts.index.chain.MonotoneChain.prototype.computeSelect2 = function(searchEnv,
     return;
 
   // the chains overlap, so split each in half and iterate (binary search)
-  var mid = (start0 + end0) / 2;
+  var mid = parseInt((start0 + end0) / 2);
 
   // Assert: mid != start or end (since we checked above for end - start <= 1)
   // check terminating conditions before recursing
@@ -196,7 +196,9 @@ jsts.index.chain.MonotoneChain.prototype.computeSelect2 = function(searchEnv,
  *          mco the overlap action to execute on selected segments.
  */
 jsts.index.chain.MonotoneChain.prototype.computeOverlaps = function(mc, mco) {
-  // TODO: arguments switch
+  if (arguments.length === 6) {
+    return this.computeOverlaps2.apply(this, arguments);
+  }
   this.computeOverlaps2(this.start, this.end, mc, mc.start, mc.end, mco);
 };
 
@@ -211,7 +213,7 @@ jsts.index.chain.MonotoneChain.prototype.computeOverlaps2 = function(start0,
   var p11 = mc.pts[end1];
   // Debug.println("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
   // terminating condition for the recursion
-  if (end0 - start0 == 1 && end1 - start1 == 1) {
+  if (end0 - start0 === 1 && end1 - start1 === 1) {
     mco.overlap(this, start0, mc, start1);
     return;
   }
@@ -222,8 +224,8 @@ jsts.index.chain.MonotoneChain.prototype.computeOverlaps2 = function(start0,
     return;
 
   // the chains overlap, so split each in half and iterate (binary search)
-  var mid0 = (start0 + end0) / 2;
-  var mid1 = (start1 + end1) / 2;
+  var mid0 = parseInt((start0 + end0) / 2);
+  var mid1 = parseInt((start1 + end1) / 2);
 
   // Assert: mid != start or end (since we checked above for end - start <= 1)
   // check terminating conditions before recursing

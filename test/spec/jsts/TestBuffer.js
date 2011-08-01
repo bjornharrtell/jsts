@@ -34,15 +34,19 @@ describe('TestBuffer', function() {
           var distance = $("op", test).attr('arg2');
           var expected = $('op', test).text().trim();
           
+          
           var reader = new jsts.io.WKTReader();
+          var expectedg = reader.read(expected);
           var geometry = reader.read(wkt);
           if (geometry === undefined) continue;
           
-          var result = geometry.buffer(distance);
+          var buffer = geometry.buffer(distance);
+          
+          var result = buffer.equalsExact(expectedg);
           
           count++;
           
-          if (result === expected) {
+          if (result === true) {
             passed++;
           }
           else {

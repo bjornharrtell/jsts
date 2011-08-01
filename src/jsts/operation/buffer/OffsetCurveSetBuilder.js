@@ -166,7 +166,7 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addPolygon = function(p) {
       .getCoordinates());
   // optimization - don't bother computing buffer
   // if the polygon would be completely eroded
-  if (this.distance < 0.0 && this.isErodedCompletely(shell, distance))
+  if (this.distance < 0.0 && this.isErodedCompletely(shell, this.distance))
     return;
   // don't attemtp to buffer a polygon with too few distinct vertices
   if (this.distance <= 0.0 && shellCoord.length < 3)
@@ -183,14 +183,14 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addPolygon = function(p) {
 
     // optimization - don't bother computing buffer for this hole
     // if the hole would be completely covered
-    if (this.distance > 0.0 && this.isErodedCompletely(hole, -distance))
+    if (this.distance > 0.0 && this.isErodedCompletely(hole, -this.distance))
       continue;
 
     // Holes are topologically labelled opposite to the shell, since
     // the interior of the polygon lies on their opposite side
     // (on the left, if the hole is oriented CCW)
-    this.addPolygonRing(holeCoord, offsetDistance, Position
-        .opposite(offsetSide), Location.INTERIOR, Location.EXTERIOR);
+    this.addPolygonRing(holeCoord, offsetDistance, jsts.geomgraph.Position
+        .opposite(offsetSide), jsts.geom.Location.INTERIOR, jsts.geom.Location.EXTERIOR);
   }
 };
 

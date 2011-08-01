@@ -288,8 +288,8 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addNextSegment = function
 
   var orientation = jsts.algorithm.CGAlgorithms.computeOrientation(this.s0,
       this.s1, this.s2);
-  var outsideTurn = (orientation === jsts.algorithm.CGAlgorithms.CLOCKWISE && side === jsts.geomgraph.Position.LEFT) ||
-      (orientation === jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE && side === jsts.geomgraph.Position.RIGHT);
+  var outsideTurn = (orientation === jsts.algorithm.CGAlgorithms.CLOCKWISE && this.side === jsts.geomgraph.Position.LEFT) ||
+      (orientation === jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE && this.side === jsts.geomgraph.Position.RIGHT);
 
   if (orientation == 0) { // lines are collinear
     this.addCollinear(addStartPoint);
@@ -310,8 +310,8 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addCollinear = function(
    * This test could probably be done more efficiently, but the situation of
    * exact collinearity should be fairly rare.
    */
-  this.li.computeIntersection(s0, s1, s1, s2);
-  var numInt = li.getIntersectionNum();
+  this.li.computeIntersection(this.s0, this.s1, this.s1, this.s2);
+  var numInt = this.li.getIntersectionNum();
   /**
    * if numInt is < 2, the lines are parallel and in the same direction. In this
    * case the point can be ignored, since the offset lines will also be
@@ -326,8 +326,8 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addCollinear = function(
      * intersection.
      *
      */
-    if (this.bufParams.getJoinStyle() == jsts.operation.buffer.BufferParameters.JOIN_BEVEL ||
-        this.bufParams.getJoinStyle() == jsts.operation.buffer.BufferParameters.JOIN_MITRE) {
+    if (this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_BEVEL ||
+        this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_MITRE) {
       if (addStartPoint)
         this.segList.addPt(this.offset0.p1);
       this.segList.addPt(this.offset1.p0);
@@ -435,7 +435,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addInsideTurn = function(
             this.offset0.p1.y + this.s1.y) /
             (this.closingSegLengthFactor + 1));
         this.segList.addPt(mid0);
-        var mid1 = new jsts.geom.Coordinate((cthis.losingSegLengthFactor *
+        var mid1 = new jsts.geom.Coordinate((this.losingSegLengthFactor *
             this.offset1.p0.x + this.s1.x) /
             (this.closingSegLengthFactor + 1), (this.closingSegLengthFactor *
             this.offset1.p0.y + this.s1.y) /

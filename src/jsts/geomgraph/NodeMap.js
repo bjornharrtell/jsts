@@ -28,9 +28,9 @@ jsts.geomgraph.NodeMap.prototype.nodeFact = null;
 /**
  * This method expects that a node has a coordinate value.
  *
- * @param {Coordinate/Node}
+ * @param {jsts.geom.Coordinate/jsts.geomgraph.Node}
  *          arg
- * @return {Node}
+ * @return {jsts.geomgraph.Node}
  */
 jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
   var node, coord;
@@ -60,7 +60,7 @@ jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
  * Adds a node for the start point of this EdgeEnd (if one does not already
  * exist in this map). Adds the EdgeEnd to the (possibly new) node.
  *
- * @param {EdgeEnd}
+ * @param {jsts.geomgraph.EdgeEnd}
  *          e
  */
 jsts.geomgraph.NodeMap.prototype.add = function(e) {
@@ -71,17 +71,19 @@ jsts.geomgraph.NodeMap.prototype.add = function(e) {
 
 
 /**
- * @param {Coordinate}
+ * @param {jsts.geom.Coordinate}
  *          coord
- * @return {Node} the node if found; null otherwise.
+ * @return {jsts.geomgraph.Node} the node if found; null otherwise.
  */
 jsts.geomgraph.NodeMap.prototype.find = function(coord) {
-  return this.nodeMap[coord];
+  var node = this.nodeMap[coord];
+
+  return node ? node : null;
 };
 
 
 /**
- * @return {Node[]}
+ * @return {Array.<jsts.geomgraph.Node>}
  */
 jsts.geomgraph.NodeMap.prototype.values = function() {
   var array = [];

@@ -144,7 +144,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.getOffsetCurve = function(
  * @private
  */
 jsts.operation.buffer.OffsetCurveBuilder.copyCoordinates = function(pts) {
-  var copy = new jsts.geom.Coordinate[pts.length];
+  var copy = [];
   for (var i = 0; i < copy.length; i++) {
     copy[i] = new jsts.geom.Coordinate(pts[i]);
   }
@@ -350,18 +350,17 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeRingBufferCurve = func
     inputPts, side, segGen) {
   // simplify input line to improve performance
   var distTol = jsts.operation.buffer.OffsetCurveBuilder
-      .simplifyTolerance(distance);
+      .simplifyTolerance(this.distance);
   // ensure that correct side is simplified
-  if (side == jsts.geomgraph.Position.RIGHT)
+  if (side === jsts.geomgraph.Position.RIGHT)
     distTol = -distTol;
   var simp = jsts.operation.buffer.BufferInputLineSimplifier.simplify(inputPts,
       distTol);
-  // Coordinate[] simp = inputPts;
 
   var n = simp.length - 1;
   segGen.initSideSegments(simp[n - 1], simp[0], side);
   for (var i = 1; i <= n; i++) {
-    var addStartPoint = i != 1;
+    var addStartPoint = i !== 1;
     segGen.addNextSegment(simp[i], addStartPoint);
   }
   segGen.closeRing();
