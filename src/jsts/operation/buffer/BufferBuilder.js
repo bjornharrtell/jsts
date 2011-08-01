@@ -134,7 +134,7 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
   }
 
   this.computeNodedEdges(bufferSegStrList, precisionModel);
-  this.graph = new jsts.planargraph.PlanarGraph(new jsts.operation.overlay.OverlayNodeFactory());
+  this.graph = new jsts.geomgraph.PlanarGraph(new jsts.operation.overlay.OverlayNodeFactory());
   this.graph.addEdges(this.edgeList.getEdges());
 
   var subgraphList = this.createSubgraphs(this.graph);
