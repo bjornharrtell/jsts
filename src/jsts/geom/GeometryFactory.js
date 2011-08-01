@@ -101,6 +101,10 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  * @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
+  if (shell === null || shell === undefined) {
+    return new jsts.geom.Polygon();
+  }
+
   var rings = [shell];
 
   if (holes !== undefined) {
