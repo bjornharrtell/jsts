@@ -193,13 +193,13 @@ jsts.operation.buffer.OffsetCurveBuilder.simplifyTolerance = function(
 jsts.operation.buffer.OffsetCurveBuilder.prototype.computePointCurve = function(
     pt, segGen) {
   switch (this.bufParams.getEndCapStyle()) {
-    case jsts.operation.buffer.BufferParameters.CAP_ROUND:
-      segGen.createCircle(pt);
-      break;
-    case jsts.operation.buffer.BufferParameters.CAP_SQUARE:
-      segGen.createSquare(pt);
-      break;
-      // otherwise curve is empty (e.g. for a butt cap);
+  case jsts.operation.buffer.BufferParameters.CAP_ROUND:
+    segGen.createCircle(pt);
+    break;
+  case jsts.operation.buffer.BufferParameters.CAP_SQUARE:
+    segGen.createSquare(pt);
+    break;
+  // otherwise curve is empty (e.g. for a butt cap);
   }
 };
 
@@ -272,7 +272,8 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeSingleSidedBufferCurve
 
     // since we are traversing line in opposite order, offset position is still
     // LEFT
-    segGen.initSideSegments(simp2[n2], simp2[n2 - 1], jsts.geomgraph.Position.LEFT);
+    segGen.initSideSegments(simp2[n2], simp2[n2 - 1],
+        jsts.geomgraph.Position.LEFT);
     segGen.addFirstSegment();
     for (var i = n2 - 2; i >= 0; i--) {
       segGen.addNextSegment(simp2[i], true);
@@ -319,7 +320,8 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeOffsetCurve = function
 
     // since we are traversing line in opposite order, offset position is still
     // LEFT
-    segGen.initSideSegments(simp2[n2], simp2[n2 - 1], jsts.geomgraph.Position.LEFT);
+    segGen.initSideSegments(simp2[n2], simp2[n2 - 1],
+        jsts.geomgraph.Position.LEFT);
     segGen.addFirstSegment();
     for (var i = n2 - 2; i >= 0; i--) {
       segGen.addNextSegment(simp2[i], true);

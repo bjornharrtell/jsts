@@ -46,7 +46,7 @@ jsts.noding.NodedSegmentString.constructor = jsts.noding.NodedSegmentString;
  *         substrings.
  */
 jsts.noding.NodedSegmentString.getNodedSubstrings = function(segStrings) {
-  if (arguments[1] !== undefined) {
+  if (arguments.length === 2) {
     return jsts.noding.NodedSegmentString.getNodedSubstrings2(segStrings, resultEdgelist);
   }
 

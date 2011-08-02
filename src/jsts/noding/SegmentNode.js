@@ -53,7 +53,14 @@ jsts.noding.SegmentNode.prototype.compareTo = function(obj)  {
 
   if (this.coord.equals2D(other.coord)) return 0;
 
-  return jsts.noding.SegmentPointComparator.compare(segmentOctant, coord, other.coord);
+  return jsts.noding.SegmentPointComparator.compare(this.segmentOctant, this.coord, other.coord);
+};
+
+/**
+ * Used as hashcode in JSTS
+ */
+jsts.noding.SegmentNode.prototype.toString = function() {
+  return 'SegmentNode_' + this.coord + '_' + this.segmentIndex;
 };
 
 

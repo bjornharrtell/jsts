@@ -108,6 +108,10 @@ jsts.operation.buffer.BufferOp.precisionScaleFactor = function(g, distance,
  * @return {Geometry} the buffer of the input geometry.
  */
 jsts.operation.buffer.BufferOp.bufferOp = function(g, distance) {
+  if (arguments.length > 2) {
+    return jsts.operation.buffer.BufferOp.bufferOp2.apply(this, arguments);
+  }
+
   var gBuf = new jsts.operation.buffer.BufferOp(g);
   var geomBuf = gBuf.getResultGeometry(distance);
   return geomBuf;
@@ -127,7 +131,11 @@ jsts.operation.buffer.BufferOp.bufferOp = function(g, distance) {
  * @return {Geometry} the buffer of the input geometry.
  *
  */
-jsts.operation.buffer.BufferOp.bufferOp = function(g, distance, params) {
+jsts.operation.buffer.BufferOp.bufferOp2 = function(g, distance, params) {
+  if (arguments.length > 3) {
+    return jsts.operation.buffer.BufferOp.bufferOp3.apply(this, arguments);
+  }
+
   var bufOp = new jsts.operation.buffer.BufferOp(g, params);
   var geomBuf = bufOp.getResultGeometry(distance);
   return geomBuf;
@@ -148,8 +156,12 @@ jsts.operation.buffer.BufferOp.bufferOp = function(g, distance, params) {
  * @return {Geometry} the buffer of the input geometry.
  *
  */
-jsts.operation.buffer.BufferOp.bufferOp = function(g, distance,
+jsts.operation.buffer.BufferOp.bufferOp3 = function(g, distance,
     quadrantSegments) {
+  if (arguments.length > 4) {
+    return jsts.operation.buffer.BufferOp.bufferOp4.apply(this, arguments);
+  }
+
   var bufOp = new jsts.operation.buffer.BufferOp(g);
   bufOp.setQuadrantSegments(quadrantSegments);
   var geomBuf = bufOp.getResultGeometry(distance);
@@ -173,7 +185,7 @@ jsts.operation.buffer.BufferOp.bufferOp = function(g, distance,
  * @return {Geometry} the buffer of the input geometry.
  *
  */
-jsts.operation.buffer.BufferOp.bufferOp = function(g, distance,
+jsts.operation.buffer.BufferOp.bufferOp4 = function(g, distance,
     quadrantSegments, endCapStyle) {
   var bufOp = new jsts.operation.buffer.BufferOp(g);
   bufOp.setQuadrantSegments(quadrantSegments);
@@ -242,17 +254,17 @@ jsts.operation.buffer.BufferOp.prototype.setQuadrantSegments = function(
 jsts.operation.buffer.BufferOp.prototype.getResultGeometry = function(dist) {
   this.distance = dist;
   this.computeGeometry();
-  return resultGeometry;
+  return this.resultGeometry;
 };
 
 jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
   this.bufferOriginalPrecision();
-  if (resultGeometry !== null) {
+  if (this.resultGeometry !== null) {
     return;
   }
 
-  var argPM = argGeom.getPrecisionModel();
-  if (argPM.getType() === PrecisionModel.FIXED) {
+  var argPM = this.argGeom.getPrecisionModel();
+  if (argPM.getType() === jsts.geom.PrecisionModel.FIXED) {
     this.bufferFixedPrecision(argPM);
   } else {
     this.bufferReducedPrecision();
@@ -262,17 +274,18 @@ jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
 
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
   var precDigits;
+  var saveException;
 
   // try and compute with decreasing precision
-  for (precDigits = MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
+  for (precDigits = jsts.operation.buffer.BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
     try {
-      this.bufferReducedPrecision(precDigits);
+      this.bufferReducedPrecision2(precDigits);
     } catch (/* TopologyException */ex) {
       saveException = ex;
       // don't propagate the exception - it will be detected by fact that
       // resultGeometry is null
     }
-    if (resultGeometry !== null) {
+    if (this.resultGeometry !== null) {
       return;
     }
   }
@@ -285,7 +298,7 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
 jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
   // use fast noding by default
   var bufBuilder = new jsts.operation.buffer.BufferBuilder(this.bufParams);
-  resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
+  this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
 };
 
 
@@ -293,10 +306,10 @@ jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
  * @param {int}
  *          precisionDigits
  */
-jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function(
+jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision2 = function(
     precisionDigits) {
 
-  var sizeBasedScaleFactor = this.precisionScaleFactor(argGeom, distance,
+  var sizeBasedScaleFactor = jsts.operation.buffer.BufferOp.precisionScaleFactor(this.argGeom, this.distance,
       precisionDigits);
 
   var fixedPM = new jsts.geom.PrecisionModel(sizeBasedScaleFactor);
@@ -310,12 +323,12 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function(
  */
 jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision = function(
     fixedPM) {
-  var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
+  var noder = new jsts.noding.ScaledNoder(new jsts.noding.snapround.MCIndexSnapRounder(new jsts.geom.PrecisionModel(1.0)),
       fixedPM.getScale());
 
   var bufBuilder = new jsts.operation.buffer.BufferBuilder(bufParams);
   bufBuilder.setWorkingPrecisionModel(fixedPM);
   bufBuilder.setNoder(noder);
   // this may throw an exception, if robustness errors are encountered
-  resultGeometry = bufBuilder.buffer(argGeom, distance);
+  this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
 };

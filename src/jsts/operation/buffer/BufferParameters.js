@@ -10,10 +10,14 @@
  */
 jsts.operation.buffer.BufferParameters = function(quadrantSegments,
     endCapStyle, joinStyle, mitreLimit) {
-  this.setQuadrantSegments(quadrantSegments);
-  this.setEndCapStyle(endCapStyle);
-  this.setJoinStyle(joinStyle);
-  this.setMitreLimit(mitreLimit);
+  if (quadrantSegments)
+    this.setQuadrantSegments(quadrantSegments);
+  if (endCapStyle)
+    this.setEndCapStyle(endCapStyle);
+  if (joinStyle)
+    this.setJoinStyle(joinStyle);
+  if (mitreLimit)
+    this.setMitreLimit(mitreLimit);
 };
 
 
@@ -60,7 +64,7 @@ jsts.operation.buffer.BufferParameters.JOIN_MITRE = 2;
  *
  * @type {int}
  */
-jsts.operation.buffer.BufferParameters.OIN_BEVEL = 3;
+jsts.operation.buffer.BufferParameters.JOIN_BEVEL = 3;
 
 
 /**
@@ -108,6 +112,11 @@ jsts.operation.buffer.BufferParameters.prototype.joinStyle = jsts.operation.buff
  */
 jsts.operation.buffer.BufferParameters.prototype.mitreLimit = jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT;
 
+/**
+ * @type {boolean}
+ * @private
+ */
+jsts.operation.buffer.BufferParameters.prototype.isSingleSided = false;
 
 /**
  * Gets the number of quadrant segments which will be used

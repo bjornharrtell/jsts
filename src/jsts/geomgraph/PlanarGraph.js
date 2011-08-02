@@ -99,10 +99,10 @@ jsts.geomgraph.PlanarGraph.prototype.addNode = function(node) {
     return this.addNode2(node);
   }
 
-  return nodes.addNode(node);
+  return this.nodes.addNode(node);
 };
 jsts.geomgraph.PlanarGraph.prototype.addNode2 = function(coord) {
-  return nodes.addNode(coord);
+  return this.nodes.addNode(coord);
 };
 
 /**
@@ -113,7 +113,7 @@ jsts.geomgraph.PlanarGraph.prototype.addEdges = function(edgesToAdd) {
   // create all the nodes for the edges
   for (var i = 0; i < edgesToAdd.length; i++) {
     var e = edgesToAdd[i];
-    edges.add(e);
+    this.edges.push(e);
 
     var de1 = new jsts.geomgraph.DirectedEdge(e, true);
     var de2 = new jsts.geomgraph.DirectedEdge(e, false);

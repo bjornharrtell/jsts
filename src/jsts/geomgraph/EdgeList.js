@@ -39,9 +39,9 @@ jsts.geomgraph.EdgeList.prototype.ocaMap = null;
  * Insert an edge unless it is already in the list
  */
 jsts.geomgraph.EdgeList.prototype.add = function(e) {
-  this.edges.add(e);
-  var oca = new OrientedCoordinateArray(e.getCoordinates());
-  this.ocaMap.put(oca, e);
+  this.edges.push(e);
+  var oca = new jsts.noding.OrientedCoordinateArray(e.getCoordinates());
+  this.ocaMap[oca] = e;
 };
 
 jsts.geomgraph.EdgeList.prototype.addAll = function(edgeColl) {
@@ -69,9 +69,9 @@ jsts.geomgraph.EdgeList.prototype.getEdges = function() {
  *         otherwise.
  */
 jsts.geomgraph.EdgeList.prototype.findEqualEdge = function(e) {
-  var oca = new OrientedCoordinateArray(e.getCoordinates());
+  var oca = new jsts.noding.OrientedCoordinateArray(e.getCoordinates());
   // will return null if no edge matches
-  var matchEdge = this.ocaMap.get(oca);
+  var matchEdge = this.ocaMap[oca];
   return matchEdge;
 };
 
@@ -80,7 +80,7 @@ jsts.geomgraph.EdgeList.prototype.getEdges = function() {
 };
 
 jsts.geomgraph.EdgeList.prototype.get = function(i) {
-  return this.edges.get(i);
+  return this.edges[i];
 };
 
 
@@ -91,7 +91,7 @@ jsts.geomgraph.EdgeList.prototype.get = function(i) {
  */
 jsts.geomgraph.EdgeList.prototype.findEdgeIndex = function(e) {
   for (var i = 0; i < this.edges.length; i++) {
-    if (this.edges.get(i).equals(e))
+    if (this.edges[i].equals(e))
       return i;
   }
   return -1;
