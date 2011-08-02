@@ -104,6 +104,33 @@ jsts.geomgraph.Edge.prototype.getNumPoints = function() {
 };
 
 
+jsts.geomgraph.Edge.prototype.getEnvelope = function() {
+  // compute envelope lazily
+  if (this.env === null) {
+    this.env = new jsts.geom.Envelope();
+    for (var i = 0; i < this.pts.length; i++) {
+      this.env.expandToInclude(pts[i]);
+    }
+  }
+  return env;
+};
+
+jsts.geomgraph.Edge.prototype.getDepth = function() {
+  return this.depth;
+};
+
+/**
+ * The depthDelta is the change in depth as an edge is crossed from R to L
+ *
+ * @return the change in depth as the edge is crossed from R to L.
+ */
+jsts.geomgraph.Edge.prototype.getDepthDelta = function() {
+  return this.depthDelta;
+};
+jsts.geomgraph.Edge.prototype.setDepthDelta = function(depthDelta) {
+  this.depthDelta = depthDelta;
+};
+
 /**
  * @return {Coordinate[]}
  */
@@ -184,7 +211,7 @@ jsts.geomgraph.Edge.prototype.addIntersection = function(li, segmentIndex,
   var intPt = new jsts.geom.Coordinate(li.getIntersection(intIndex));
   var normalizedSegmentIndex = segmentIndex;
   var dist = li.getEdgeDistance(geomIndex, intIndex);
-  //normalize the intersection point location
+  // normalize the intersection point location
   var nextSegIndex = normalizedSegmentIndex + 1;
   if (nextSegIndex < this.pts.length) {
     var nextPt = this.pts[nextSegIndex];

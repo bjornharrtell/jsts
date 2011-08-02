@@ -508,7 +508,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLineEndCap = function(
   var dy = p1.y - p0.y;
   var angle = Math.atan2(dy, dx);
 
-  switch (bufParams.getEndCapStyle()) {
+  switch (this.bufParams.getEndCapStyle()) {
     case jsts.operation.buffer.BufferParameters.CAP_ROUND:
       // add offset seg points with a fillet between them
       this.segList.addPt(offsetL.p1);
@@ -524,8 +524,8 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLineEndCap = function(
     case jsts.operation.buffer.BufferParameters.CAP_SQUARE:
       // add a square defined by extensions of the offset segment endpoints
       var squareCapSideOffset = new jsts.geom.Coordinate();
-      squareCapSideOffset.x = Math.abs(distance) * Math.cos(angle);
-      squareCapSideOffset.y = Math.abs(distance) * Math.sin(angle);
+      squareCapSideOffset.x = Math.abs(this.distance) * Math.cos(angle);
+      squareCapSideOffset.y = Math.abs(this.distance) * Math.sin(angle);
 
       var squareCapLOffset = new jsts.geom.Coordinate(offsetL.p1.x +
           squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y);
@@ -751,9 +751,9 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet = function(p,
 jsts.operation.buffer.OffsetSegmentGenerator.prototype.createCircle = function(
     p) {
   // add start point
-  var pt = new jsts.geom.Coordinate(p.x + distance, p.y);
+  var pt = new jsts.geom.Coordinate(p.x + this.distance, p.y);
   this.segList.addPt(pt);
-  this.addFillet(p, 0.0, 2.0 * Math.PI, -1, distance);
+  this.addFillet(p, 0.0, 2.0 * Math.PI, -1, this.distance);
   this.segList.closeRing();
 };
 

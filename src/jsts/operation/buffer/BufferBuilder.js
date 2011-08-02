@@ -192,7 +192,7 @@ jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(buffe
  * @protected
  */
 jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
-  var existingEdge = edgeList.findEqualEdge(e);
+  var existingEdge = this.edgeList.findEqualEdge(e);
 
   // If an identical edge already exists, simply update its label
   if (existingEdge != null) {
@@ -215,7 +215,7 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
   } else { // no matching existing edge was found
     // add this new edge to the list of edges in this graph
     // e.setName(name + edges.size());
-    edgeList.add(e);
+    this.edgeList.add(e);
     e.setDepthDelta(jsts.operation.buffer.BufferBuilder.depthDelta(e.getLabel()));
   }
 };

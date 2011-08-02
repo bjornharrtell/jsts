@@ -65,7 +65,7 @@ jsts.noding.SegmentNodeList.prototype.getEdge = function() { return this.edge; }
 jsts.noding.SegmentNodeList.prototype.add = function(intPt,  segmentIndex)  {
   var eiNew = new jsts.noding.SegmentNode(this.edge, intPt, segmentIndex, this.edge.getSegmentOctant(segmentIndex));
   var ei = this.nodeMap[eiNew];
-  if (ei !== null) {
+  if (ei !== undefined) {
     // TODO: Assert.isTrue(ei.coord.equals2D(intPt), "Found equal nodes with different coordinates");
 
     return ei;
@@ -187,9 +187,10 @@ jsts.noding.SegmentNodeList.prototype.addSplitEdges = function(edgeList)  {
 
   var nodes = this.values();
   // there should always be at least two entries in the list, since the endpoints are nodes
+  eiPrev = nodes[0];
   for (var i = 0; i < nodes.length; i++) {
     if (i === 0) continue;
-    var ei = it.next();
+    var ei = nodes[i];
     var newEdge = this.createSplitEdge(eiPrev, ei);
     edgeList.push(newEdge);
     eiPrev = ei;
@@ -229,7 +230,7 @@ jsts.noding.SegmentNodeList.prototype.checkSplitEdgesCorrectness = function(spli
 jsts.noding.SegmentNodeList.prototype.createSplitEdge = function(ei0,  ei1)  {
   var npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 
-  var lastSegStartPt = edge.getCoordinate(ei1.segmentIndex);
+  var lastSegStartPt = this.edge.getCoordinate(ei1.segmentIndex);
   // if the last intersection point is not equal to the its segment start pt,
   // add it to the points list as well.
   // (This check is needed because the distance metric is not totally reliable!)
@@ -242,12 +243,12 @@ jsts.noding.SegmentNodeList.prototype.createSplitEdge = function(ei0,  ei1)  {
   var pts = [];
   //pts.length = npts;
   var ipt = 0;
-  pts[ipt++] = new jts.geom.Coordinate(ei0.coord);
+  pts[ipt++] = new jsts.geom.Coordinate(ei0.coord);
   for (var i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
-    pts[ipt++] = edge.getCoordinate(i);
+    pts[ipt++] = this.edge.getCoordinate(i);
   }
   if (useIntPt1) pts[ipt] = ei1.coord;
 
-  return new jsts.noding.NodedSegmentString(pts, edge.getData());
+  return new jsts.noding.NodedSegmentString(pts, this.edge.getData());
 };
 

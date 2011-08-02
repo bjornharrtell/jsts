@@ -1035,10 +1035,12 @@ jsts.geom.Geometry.prototype.equalsTopo = function(g) {
  * @see #buffer(double, int)
  * @see BufferOp
  */
-jsts.geom.Geometry.prototype.buffer = function(distance, quadrantSegments,
-    endCapStyle) {
-  return jsts.operation.buffer.BufferOp.bufferOp(this, distance,
-      quadrantSegments, endCapStyle);
+jsts.geom.Geometry.prototype.buffer = function() {
+  var args = [this];
+  for (var i = 0; i < arguments.length; i++) {
+    args[i + 1] = arguments[i];
+  }
+  return jsts.operation.buffer.BufferOp.bufferOp.apply(this, args);
 };
 
 
