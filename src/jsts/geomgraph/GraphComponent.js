@@ -31,28 +31,28 @@ jsts.geomgraph.GraphComponent.prototype.label = null;
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.GraphComponent.prototype.isInResult = false;
+jsts.geomgraph.GraphComponent.prototype._isInResult = false;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.GraphComponent.prototype.isCovered = false;
+jsts.geomgraph.GraphComponent.prototype._isCovered = false;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.GraphComponent.prototype.isCoveredSet = false;
+jsts.geomgraph.GraphComponent.prototype._isCoveredSet = false;
 
 
 /**
  * @type {boolean}
  * @private
  */
-jsts.geomgraph.GraphComponent.prototype.isVisited = false;
+jsts.geomgraph.GraphComponent.prototype._isVisited = false;
 
 jsts.geomgraph.GraphComponent.prototype.getLabel = function() {
   return this.label;
@@ -72,7 +72,7 @@ jsts.geomgraph.GraphComponent.prototype.setLabel = function(label) {
  *          isInResult
  */
 jsts.geomgraph.GraphComponent.prototype.setInResult = function(isInResult) {
-  this.isInResult = isInResult;
+  this._isInResult = isInResult;
 };
 
 
@@ -80,7 +80,7 @@ jsts.geomgraph.GraphComponent.prototype.setInResult = function(isInResult) {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isInResult = function() {
-  return this.isInResult;
+  return this._isInResult;
 };
 
 
@@ -89,8 +89,8 @@ jsts.geomgraph.GraphComponent.prototype.isInResult = function() {
  *          isCovered
  */
 jsts.geomgraph.GraphComponent.prototype.setCovered = function(isCovered) {
-  this.isCovered = isCovered;
-  this.isCoveredSet = true;
+  this._isCovered = isCovered;
+  this._isCoveredSet = true;
 };
 
 
@@ -98,7 +98,7 @@ jsts.geomgraph.GraphComponent.prototype.setCovered = function(isCovered) {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isCovered = function() {
-  return this.isCovered;
+  return this._isCovered;
 };
 
 
@@ -114,7 +114,7 @@ jsts.geomgraph.GraphComponent.prototype.isCoveredSet = function() {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isVisited = function() {
-  return this.isVisited;
+  return this._isVisited;
 };
 
 
@@ -123,7 +123,7 @@ jsts.geomgraph.GraphComponent.prototype.isVisited = function() {
  *          isVisited
  */
 jsts.geomgraph.GraphComponent.prototype.setVisited = function(isVisited) {
-  this.isVisited = isVisited;
+  this._isVisited = isVisited;
 };
 
 

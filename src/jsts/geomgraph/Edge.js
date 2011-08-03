@@ -250,4 +250,19 @@ jsts.geomgraph.Edge.prototype.computeIM = function(im) {
   jsts.geomgraph.Edge.updateIM(this.label, im);
 };
 
+/**
+ * @return true if the coordinate sequences of the Edges are identical.
+ */
+jsts.geomgraph.Edge.prototype.isPointwiseEqual = function(e)
+{
+  if (this.pts.length != e.pts.length) return false;
+
+  for (var i = 0; i < this.pts.length; i++) {
+    if (! this.pts[i].equals2D(e.pts[i])) {
+       return false;
+    }
+  }
+  return true;
+};
+
 // TODO: port rest..

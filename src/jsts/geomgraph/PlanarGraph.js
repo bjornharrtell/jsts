@@ -83,7 +83,7 @@ jsts.geomgraph.PlanarGraph.prototype.insertEdge = function(e) {
 
 jsts.geomgraph.PlanarGraph.prototype.add = function(e) {
   this.nodes.add(e);
-  this.edgeEndList.add(e);
+  this.edgeEndList.push(e);
 };
 
 jsts.geomgraph.PlanarGraph.prototype.getNodeIterator = function() {
