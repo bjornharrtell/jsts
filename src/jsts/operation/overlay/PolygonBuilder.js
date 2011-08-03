@@ -44,7 +44,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.add = function(dirEdges, nodes) 
   jsts.geomgraph.PlanarGraph.linkResultDirectedEdges(nodes);
   var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
   var freeHoleList = [];
-  var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, shellList,
+  var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList,
       freeHoleList);
   this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
   this.placeFreeHoles(this.shellList, freeHoleList);
@@ -69,7 +69,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMaximalEdgeRings = function
     if (de.isInResult() && de.getLabel().isArea()) {
       // if this edge has not yet been processed
       if (de.getEdgeRing() == null) {
-        er = new jsts.operation.overlay.MaximalEdgeRing(de, geometryFactory);
+        er = new jsts.operation.overlay.MaximalEdgeRing(de, this.geometryFactory);
         maxEdgeRings.add(er);
         er.setInResult();
         // System.out.println("max node degree = " + er.getMaxDegree());
@@ -92,7 +92,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMinimalEdgeRings = function
       var minEdgeRings = er.buildMinimalRings();
       // at this point we can go ahead and attempt to place holes, if this
       // EdgeRing is a polygon
-      var shell = findShell(minEdgeRings);
+      var shell = this.findShell(minEdgeRings);
       if (shell != null) {
         this.placePolygonHoles(shell, minEdgeRings);
         shellList.add(shell);

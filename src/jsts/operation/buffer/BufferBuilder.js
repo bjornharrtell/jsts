@@ -271,7 +271,7 @@ jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraph
     var outsideDepth = locater.getDepth(p);
     subgraph.computeDepth(outsideDepth);
     subgraph.findResultEdges();
-    processedGraphs.add(subgraph);
+    processedGraphs.push(subgraph);
     polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes());
   }
 };

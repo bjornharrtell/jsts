@@ -150,7 +150,7 @@ jsts.geomgraph.DirectedEdgeStar.prototype.getResultAreaEdges = function() {
   for (var i = 0; i < this.edgeList.length; i++) {
     var de = this.edgeList[i];
     if (de.isInResult() || de.getSym().isInResult())
-      resultAreaEdgeList.add(de);
+      resultAreaEdgeList.push(de);
   }
   return resultAreaEdgeList;
 };
@@ -186,10 +186,10 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkResultDirectedEdges = function() {
   // find first area edge (if any) to start linking at
   var firstOut = null;
   var incoming = null;
-  var state = jsts.geomgraph.DirectedEdgeStar.SCANNING_FOR_INCOMING;
+  var state = this.SCANNING_FOR_INCOMING;
   // link edges in CCW order
-  for (var i = 0; i < resultAreaEdgeList.length; i++) {
-    var nextOut = resultAreaEdgeList[i];
+  for (var i = 0; i < this.resultAreaEdgeList.length; i++) {
+    var nextOut = this.resultAreaEdgeList[i];
     var nextIn = nextOut.getSym();
 
     // skip de's that we're not interested in
@@ -203,26 +203,24 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkResultDirectedEdges = function() {
     // been removed already
 
     switch (state) {
-    case jsts.geomgraph.DirectedEdgeStar.SCANNING_FOR_INCOMING:
+    case this.SCANNING_FOR_INCOMING:
       if (!nextIn.isInResult())
         continue;
       incoming = nextIn;
-      state = jsts.geomgraph.DirectedEdgeStar.LINKING_TO_OUTGOING;
+      state = this.LINKING_TO_OUTGOING;
       break;
-    case jsts.geomgraph.DirectedEdgeStar.LINKING_TO_OUTGOING:
+    case this.LINKING_TO_OUTGOING:
       if (!nextOut.isInResult())
         continue;
       incoming.setNext(nextOut);
-      state = jsts.geomgraph.DirectedEdgeStar.SCANNING_FOR_INCOMING;
+      state = this.SCANNING_FOR_INCOMING;
       break;
     }
   }
-  // Debug.print(this);
-  if (state === jsts.geomgraph.DirectedEdgeStar.LINKING_TO_OUTGOING) {
-    // Debug.print(firstOut == null, this);
+  if (state === this.LINKING_TO_OUTGOING) {
     if (firstOut === null)
       throw new jsts.error.TopologyError('no outgoing dirEdge found',
-          getCoordinate());
+          this.getCoordinate());
     // TODO: Assert.isTrue(firstOut.isInResult(), "unable to link last incoming
     // dirEdge");
     incoming.setNext(firstOut);
@@ -233,10 +231,10 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkMinimalDirectedEdges = function(
   // find first area edge (if any) to start linking at
   var firstOut = null;
   var incoming = null;
-  var state = jsts.geomgraph.DirectedEdgeStar.SCANNING_FOR_INCOMING;
+  var state = this.SCANNING_FOR_INCOMING;
   // link edges in CW order
-  for (var i = resultAreaEdgeList.length - 1; i >= 0; i--) {
-    var nextOut = resultAreaEdgeList[i];
+  for (var i = this.resultAreaEdgeList.length - 1; i >= 0; i--) {
+    var nextOut = this.resultAreaEdgeList[i];
     var nextIn = nextOut.getSym();
 
     // record first outgoing edge, in order to link the last incoming edge
@@ -244,21 +242,21 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkMinimalDirectedEdges = function(
       firstOut = nextOut;
 
     switch (state) {
-    case jsts.geomgraph.DirectedEdgeStar.SCANNING_FOR_INCOMING:
+    case this.SCANNING_FOR_INCOMING:
       if (nextIn.getEdgeRing() != er)
         continue;
       incoming = nextIn;
-      state = jsts.geomgraph.DirectedEdgeStar.LINKING_TO_OUTGOING;
+      state = this.LINKING_TO_OUTGOING;
       break;
-    case jsts.geomgraph.DirectedEdgeStar.LINKING_TO_OUTGOING:
+    case this.LINKING_TO_OUTGOING:
       if (nextOut.getEdgeRing() != er)
         continue;
       incoming.setNextMin(nextOut);
-      state = jsts.geomgraph.DirectedEdgeStar.SCANNING_FOR_INCOMING;
+      state = this.SCANNING_FOR_INCOMING;
       break;
     }
   }
-  if (state === jsts.geomgraph.DirectedEdgeStar.LINKING_TO_OUTGOING) {
+  if (state === thisLINKING_TO_OUTGOING) {
     // TODO: Assert.isTrue(firstOut != null, "found null for first outgoing
     // dirEdge");
     // TODO: Assert.isTrue(firstOut.getEdgeRing() == er, "unable to link last
@@ -272,8 +270,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkAllDirectedEdges = function() {
   var prevOut = null;
   var firstIn = null;
   // link edges in CW order
-  for (var i = edgeList.length - 1; i >= 0; i--) {
-    var nextOut = edgeList[i];
+  for (var i = this.edgeList.length - 1; i >= 0; i--) {
+    var nextOut = this.edgeList[i];
     var nextIn = nextOut.getSym();
     if (firstIn === null)
       firstIn = nextIn;
@@ -341,14 +339,14 @@ jsts.geomgraph.DirectedEdgeStar.prototype.findCoveredLineEdges = function() {
 };
 
 jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths = function(de) {
-  var edgeIndex = findIndex(de);
+  var edgeIndex = this.findIndex(de);
   var label = de.getLabel();
   var startDepth = de.getDepth(jsts.geomgraph.Position.LEFT);
   var targetLastDepth = de.getDepth(jsts.geomgraph.Position.RIGHT);
   // compute the depths from this edge up to the end of the edge array
-  var nextDepth = computeDepths(edgeIndex + 1, edgeList.size(), startDepth);
+  var nextDepth = this.computeDepths2(edgeIndex + 1, this.edgeList.length, startDepth);
   // compute the depths for the initial part of the array
-  var lastDepth = computeDepths(0, edgeIndex, nextDepth);
+  var lastDepth = this.computeDepths2(0, edgeIndex, nextDepth);
   if (lastDepth != targetLastDepth)
     throw new jsts.error.TopologyError('depth mismatch at ' +
         de.getCoordinate());

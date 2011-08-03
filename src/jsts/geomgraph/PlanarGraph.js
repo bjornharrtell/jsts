@@ -54,6 +54,19 @@ jsts.geomgraph.PlanarGraph.prototype.nodes = null;
 jsts.geomgraph.PlanarGraph.prototype.edgeEndList = null;
 
 /**
+ * For nodes in the Collection, link the DirectedEdges at the node that are in the result.
+ * This allows clients to link only a subset of nodes in the graph, for
+ * efficiency (because they know that only a subset is of interest).
+ */
+jsts.geomgraph.PlanarGraph.linkResultDirectedEdges = function(nodes) {
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i];
+    node.getEdges().linkResultDirectedEdges();
+  }
+};
+
+
+/**
  * Replaced with getEdges()
  */
 jsts.geomgraph.PlanarGraph.prototype.getEdgeIterator = function() {
