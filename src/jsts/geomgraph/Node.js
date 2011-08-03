@@ -12,6 +12,8 @@
 
 /**
  * @constructor
+ * @param {jsts.geom.Coordinate} coord
+ * @param {jsts.geom.EdgeEndStar} edges
  * @augments jsts.geomgraph.GraphComponent
  */
 jsts.geomgraph.Node = function(coord, edges) {
@@ -65,9 +67,7 @@ jsts.geomgraph.Node.prototype.setLabelBoundary = function(argIndex) {
 /**
  * Add the edge to the list of edges at this node
  */
-jsts.geomgraph.Node.prototype.add = function(e)
-    {
-  // Assert: start pt of e is equal to node point
+jsts.geomgraph.Node.prototype.add = function(e)    {
   this.edges.insert(e);
   e.setNode(this);
 };
