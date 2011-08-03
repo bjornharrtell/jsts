@@ -58,7 +58,8 @@ jsts.geomgraph.EdgeRing.prototype.isHole = function() {
 jsts.geomgraph.EdgeRing.prototype.getCoordinate = function(i) {
   return this.pts[i];
 };
-jsts.geomgraph.EdgeRing.prototype.etLabel = function() {
+jsts.geomgraph.EdgeRing.prototype.getLinearRing = function() { return this.ring; };
+jsts.geomgraph.EdgeRing.prototype.getLabel = function() {
   return this.label;
 };
 jsts.geomgraph.EdgeRing.prototype.isShell = function() {
@@ -96,7 +97,7 @@ jsts.geomgraph.EdgeRing.prototype.computeRing = function() {
     coord[i] = this.pts[i];
   }
   this.ring = this.geometryFactory.createLinearRing(coord);
-  this._isHole = jsts.algorithm.CGAlgorithms.isCCW(ring.getCoordinates());
+  this._isHole = jsts.algorithm.CGAlgorithms.isCCW(this.ring.getCoordinates());
 };
 jsts.geomgraph.EdgeRing.prototype.getNext = function(de) {
   throw new jsts.error.AbstractInvocationError();

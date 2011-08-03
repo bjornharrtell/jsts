@@ -50,7 +50,7 @@ describe('TestBuffer', function() {
             passed++;
           }
           else {
-            console.log('Testcase "' + desc + '" failed. (Result: ' + result + ' / Expected: ' + expected + ')');
+            console.log('Testcase "' + desc + '" failed. (Result: ' + buffer + ' / Expected: ' + expected + ')');
           }
         }
         

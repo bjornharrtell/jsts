@@ -70,7 +70,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMaximalEdgeRings = function
       // if this edge has not yet been processed
       if (de.getEdgeRing() == null) {
         er = new jsts.operation.overlay.MaximalEdgeRing(de, this.geometryFactory);
-        maxEdgeRings.add(er);
+        maxEdgeRings.push(er);
         er.setInResult();
         // System.out.println("max node degree = " + er.getMaxDegree());
       }
@@ -95,12 +95,12 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMinimalEdgeRings = function
       var shell = this.findShell(minEdgeRings);
       if (shell != null) {
         this.placePolygonHoles(shell, minEdgeRings);
-        shellList.add(shell);
+        shellList.push(shell);
       } else {
         freeHoleList.addAll(minEdgeRings);
       }
     } else {
-      edgeRings.add(er);
+      edgeRings.push(er);
     }
   }
   return edgeRings;
@@ -170,9 +170,9 @@ jsts.operation.overlay.PolygonBuilder.prototype.sortShellsAndHoles = function(
   for (var i = 0; i < edgeRings.length; i++) {
     var er = edgeRings[i];
     if (er.isHole()) {
-      freeHoleList.add(er);
+      freeHoleList.push(er);
     } else {
-      shellList.add(er);
+      shellList.push(er);
     }
   }
 };
@@ -196,7 +196,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.placeFreeHoles = function(
     // only place this hole if it doesn't yet have a shell
     if (hole.getShell() == null) {
       var shell = this.findEdgeRingContaining(hole, shellList);
-      if (shell == null)
+      if (shell === null)
         throw new jsts.error.TopologyError('unable to assign hole to a shell',
             hole.getCoordinate(0));
       // Assert.isTrue(shell != null, "unable to assign hole to a shell");
@@ -257,8 +257,8 @@ jsts.operation.overlay.PolygonBuilder.prototype.computePolygons = function(
   // add Polygons for all shells
   for (var i = 0; i < shellList.length; i++) {
     var er = shellList[i];
-    var poly = er.toPolygon(geometryFactory);
-    resultPolyList.add(poly);
+    var poly = er.toPolygon(this.geometryFactory);
+    resultPolyList.push(poly);
   }
   return resultPolyList;
 };

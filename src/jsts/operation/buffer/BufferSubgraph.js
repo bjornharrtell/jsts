@@ -233,7 +233,7 @@ jsts.operation.buffer.BufferSubgraph.prototype.computeNodeDepth = function(n) {
   n.getEdges().computeDepths(startEdge);
 
   // copy depths to sym edges
-  var edges = n.getEdges();
+  var edges = n.getEdges().getEdges();
   for (var i = 0; i < edges.length; i++) {
     var de = edges[i];
     de.setVisited(true);

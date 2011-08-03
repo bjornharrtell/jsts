@@ -18,7 +18,6 @@
  * @extends jsts.geomgraph.EdgeEnd
  */
 jsts.geomgraph.DirectedEdgeStar = function() {
-  this.resultAreaEdgeList = [];
 };
 jsts.geomgraph.DirectedEdgeStar.prototype = new jsts.geomgraph.EdgeEndStar();
 jsts.geomgraph.DirectedEdgeStar.constructor = jsts.geomgraph.DirectedEdgeStar;
@@ -150,9 +149,9 @@ jsts.geomgraph.DirectedEdgeStar.prototype.getResultAreaEdges = function() {
   for (var i = 0; i < this.edgeList.length; i++) {
     var de = this.edgeList[i];
     if (de.isInResult() || de.getSym().isInResult())
-      resultAreaEdgeList.push(de);
+      this.resultAreaEdgeList.push(de);
   }
-  return resultAreaEdgeList;
+  return this.resultAreaEdgeList;
 };
 
 /**
