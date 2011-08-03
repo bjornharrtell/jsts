@@ -147,7 +147,7 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
     return this.createEmptyResultGeometry();
   }
 
-  var resultGeom = geomFact.buildGeometry(resultPolyList);
+  var resultGeom = this.geomFact.buildGeometry(resultPolyList);
   return resultGeom;
 };
 
