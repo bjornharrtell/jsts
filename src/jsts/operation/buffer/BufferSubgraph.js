@@ -161,7 +161,6 @@ jsts.operation.buffer.BufferSubgraph.prototype.computeDepth = function(
   de.setEdgeDepths(jsts.geomgraph.Position.RIGHT, outsideDepth);
   this.copySymDepths(de);
 
-  // computeNodeDepth(n, de);
   this.computeDepths(de);
 };
 

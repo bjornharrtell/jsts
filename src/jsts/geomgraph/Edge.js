@@ -21,8 +21,6 @@
 jsts.geomgraph.Edge = function(pts, label) {
   this.pts = pts;
   this.label = label;
-  // this.mce = new MonotoneChainEdge();
-  // this.depth = new Depth();
   this.eiList = new jsts.geomgraph.EdgeIntersectionList(this);
 };
 

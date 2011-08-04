@@ -212,9 +212,9 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
     var existingDelta = existingEdge.getDepthDelta();
     var newDelta = existingDelta + mergeDelta;
     existingEdge.setDepthDelta(newDelta);
-  } else { // no matching existing edge was found
+  } else {
+    // no matching existing edge was found
     // add this new edge to the list of edges in this graph
-    // e.setName(name + edges.size());
     this.edgeList.add(e);
     e.setDepthDelta(jsts.operation.buffer.BufferBuilder.depthDelta(e.getLabel()));
   }
@@ -244,7 +244,11 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
    * contain.
    */
   // TODO: decide if sorting is required.
-  subgraphList.sort();
+
+  var compare = function(a,b) {
+    return e.compareTo(b);
+  };
+  subgraphList.sort(compare);
   subgraphList.reverse();
   return subgraphList;
 };
@@ -283,6 +287,8 @@ jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraph
  * @private
  */
 jsts.operation.buffer.BufferBuilder.convertSegStrings = function(it) {
+  throw new jsts.error.NotImplementedError();
+
   var fact = new jsts.geom.GeometryFactory();
   var lines = [];
   while (it.hasNext()) {

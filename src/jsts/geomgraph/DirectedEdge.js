@@ -39,10 +39,11 @@ jsts.geomgraph.DirectedEdge.constructor = jsts.geomgraph.DirectedEdge;
  * decreases, so the factor is -1
  */
 jsts.geomgraph.DirectedEdge.depthFactor = function(currLocation, nextLocation) {
-  if (currLocation == jsts.geom.Location.EXTERIOR && nextLocation == jsts.geom.Location.INTERIOR)
+  if (currLocation === jsts.geom.Location.EXTERIOR &&
+      nextLocation === jsts.geom.Location.INTERIOR)
     return 1;
-  else if (currLocation == jsts.geom.Location.INTERIOR &&
-      nextLocation == jsts.geom.Location.EXTERIOR)
+  else if (currLocation === jsts.geom.Location.INTERIOR &&
+      nextLocation === jsts.geom.Location.EXTERIOR)
     return -1;
   return 0;
 };
@@ -69,7 +70,7 @@ jsts.geomgraph.DirectedEdge.prototype._isVisited = false;
  * @type {DirectedEdge}
  * @private
  */
-jsts.geomgraph.DirectedEdge.prototype.sym; // the symmetric edge
+jsts.geomgraph.DirectedEdge.prototype.sym = null;
 /**
  * the next edge in the edge ring for the polygon containing this edge
  *
@@ -255,4 +256,8 @@ jsts.geomgraph.DirectedEdge.prototype.setEdgeDepths = function(position, depth) 
   var oppositeDepth = depth + delta;
   this.setDepth(position, depth);
   this.setDepth(oppositePos, oppositeDepth);
+};
+
+jsts.geomgraph.DirectedEdge.prototype.toString = function() {
+  return 'DirectedEdge_' + this.dx + '_' + this.dy + '_' + this.quadrant;
 };
