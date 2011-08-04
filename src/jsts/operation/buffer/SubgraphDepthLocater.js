@@ -14,14 +14,12 @@
 jsts.operation.buffer.SubgraphDepthLocater = function(subgraphs) {
   this.subgraphs = [];
   this.seg = jsts.geom.LineSegment();
-  this.cga = jsts.algorithm.CGAlgorithms();
 
   this.subgraphs = subgraphs;
 };
 
 jsts.operation.buffer.SubgraphDepthLocater.prototype.subgraphs = null;
 jsts.operation.buffer.SubgraphDepthLocater.prototype.seg = null;
-jsts.operation.buffer.SubgraphDepthLocater.prototype.cga = null;
 
 
 jsts.operation.buffer.SubgraphDepthLocater.prototype.getDepth = function(p) {
@@ -189,11 +187,11 @@ jsts.operation.buffer.SubgraphDepthLocater.DepthSegment.prototype.compareTo = fu
    * call order. orientationIndex value is 1 if this is left of other, so have
    * to flip sign to get proper comparison value of -1 if this is leftmost
    */
-  if (orientIndex == 0)
+  if (orientIndex === 0)
     orientIndex = -1 * other.upwardSeg.orientationIndex(upwardSeg);
 
   // if orientation is determinate, return it
-  if (orientIndex != 0)
+  if (orientIndex !== 0)
     return orientIndex;
 
   // otherwise, segs must be collinear - sort based on minimum X value
@@ -215,7 +213,7 @@ jsts.operation.buffer.SubgraphDepthLocater.DepthSegment.prototype.compareTo = fu
 jsts.operation.buffer.SubgraphDepthLocater.DepthSegment.prototype.compareX = function(
     seg0, seg1) {
   var compare0 = seg0.p0.compareTo(seg1.p0);
-  if (compare0 != 0)
+  if (compare0 !== 0)
     return compare0;
   return seg0.p1.compareTo(seg1.p1);
 

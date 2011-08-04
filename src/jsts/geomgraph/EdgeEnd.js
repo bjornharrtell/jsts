@@ -131,7 +131,7 @@ jsts.geomgraph.EdgeEnd.prototype.compareTo = function(e)  {
    * - if the vectors lie in the same quadrant, the computeOrientation function
    * can be used to decide the relative orientation of the vectors.
    * @param {EdgeEnd} e
-   * @return {int}
+   * @return {number}
    */
 jsts.geomgraph.EdgeEnd.prototype.compareDirection = function(e)  {
   if (this.dx === e.dx && this.dy === e.dy)
@@ -150,5 +150,5 @@ jsts.geomgraph.EdgeEnd.prototype.computeLabel = function(boundaryNodeRule)  {
 
 jsts.geomgraph.EdgeEnd.prototype.toString = function() {
   // TODO: this hashcode might not be equivalent to JTS code, so maps containg edgeends could be a cause of bugs
-  return '' + this.dx + this.dy + this.quadrant;
+  return 'EdgeEnd_' + this.dx + '_' + this.dy + '_' + this.quadrant;
 };

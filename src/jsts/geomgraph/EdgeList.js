@@ -46,7 +46,7 @@ jsts.geomgraph.EdgeList.prototype.add = function(e) {
 
 jsts.geomgraph.EdgeList.prototype.addAll = function(edgeColl) {
   for (var i = 0; i < edgeColl.length; i++) {
-    this.add(edgeColl[i].next());
+    this.add(edgeColl[i]);
   }
 };
 
@@ -72,6 +72,8 @@ jsts.geomgraph.EdgeList.prototype.findEqualEdge = function(e) {
   var oca = new jsts.noding.OrientedCoordinateArray(e.getCoordinates());
   // will return null if no edge matches
   var matchEdge = this.ocaMap[oca];
+  if (matchEdge === undefined)
+    matchEdge = null;
   return matchEdge;
 };
 

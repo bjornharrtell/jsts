@@ -338,6 +338,11 @@ jsts.geomgraph.DirectedEdgeStar.prototype.findCoveredLineEdges = function() {
 };
 
 jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths = function(de) {
+  if (arguments.length === 2) {
+    this.computeDepths2.apply(this, arguments);
+    return;
+  }
+
   var edgeIndex = this.findIndex(de);
   var label = de.getLabel();
   var startDepth = de.getDepth(jsts.geomgraph.Position.LEFT);

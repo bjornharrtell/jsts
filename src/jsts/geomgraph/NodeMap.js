@@ -103,9 +103,9 @@ jsts.geomgraph.NodeMap.prototype.values = function() {
 
 
 /**
- * @param {int}
+ * @param {number}
  *          geomIndex
- * @return {Node[]}
+ * @return {Array.<Node>}
  */
 jsts.geomgraph.NodeMap.prototype.getBoundaryNodes = function(geomIndex) {
   var bdyNodes = [];
