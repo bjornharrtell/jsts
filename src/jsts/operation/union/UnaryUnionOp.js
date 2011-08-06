@@ -11,7 +11,7 @@
  * @requires jsts/operation/union/CascadedPolygonUnion.js
  * @requires jsts/operation/union/PointGeometryUnion.js
  * @requires jsts/operation/overlay/OverlayOp.js
- * @requires jsts/operation/overlay/SnapIfNeededOverlayOp.js
+ * @requires jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js
  */
 
   var GeometryExtracter = jsts.geom.util.GeometryExtracter;
