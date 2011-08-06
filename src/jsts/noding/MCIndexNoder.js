@@ -10,7 +10,7 @@
    * @requires jsts/noding/SinglePassNoder.js
    * @requires jsts/index/strtree/STRtree.js
    * @requires jsts/noding/NodedSegmentString.js
-   * @requires jsts/index.chain/MonotoneChainBuilder.js
+   * @requires jsts/index/chain/MonotoneChainBuilder.js
    * @requires jsts/index/chain/MonotoneChainOverlapAction.js
    */
 
