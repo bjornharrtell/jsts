@@ -59,8 +59,8 @@ jsts.geomgraph.PlanarGraph.prototype.edgeEndList = null;
  * efficiency (because they know that only a subset is of interest).
  */
 jsts.geomgraph.PlanarGraph.linkResultDirectedEdges = function(nodes) {
-  for (var i = 0; i < nodes.length; i++) {
-    var node = nodes[i];
+  for (var nodeit = this.nodes.iterator(); nodeit.hasNext(); ) {
+    var node = nodeit.next();
     node.getEdges().linkResultDirectedEdges();
   }
 };
@@ -99,10 +99,16 @@ jsts.geomgraph.PlanarGraph.prototype.add = function(e) {
   this.edgeEndList.push(e);
 };
 
+/**
+ * @return {javascript.util.Iterator}
+ */
 jsts.geomgraph.PlanarGraph.prototype.getNodeIterator = function() {
-  throw new jsts.error.NotImplementedError();
+  return this.nodes.values().iterator();
 };
 
+/**
+ * @return {javascript.util.Collection}
+ */
 jsts.geomgraph.PlanarGraph.prototype.getNodes = function() {
   return this.nodes.values();
 };

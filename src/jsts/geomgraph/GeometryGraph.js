@@ -31,7 +31,7 @@ jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) 
   this.parentGeom = parentGeom;
   this.boundaryNodeRule = boundaryNodeRule ||
       jsts.algorithm.BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
-  if (parentGeom != null) {
+  if (parentGeom !== null) {
     this.add(parentGeom);
   }
 };
@@ -93,14 +93,14 @@ jsts.geomgraph.GeometryGraph.prototype.useBoundaryDeterminationRule = true;
  * the index of this geometry as an argument to a spatial function (used for
  * labelling)
  *
- * @type {int}
+ * @type {number}
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.argIndex = null;
 
 
 /**
- * @type {Collection}
+ * @type {javascript.util.Collection}
  * @private
  */
 jsts.geomgraph.GeometryGraph.prototype.boundaryNodes = null;

@@ -4,116 +4,121 @@
  * See /license.txt for the full text of the license.
  */
 
+(function() {
 
+  var ArrayList = javascript.util.ArrayList;
+  var HashMap = javascript.util.HashMap;
+  var Location = jsts.geom.Location;
 
-/**
- * A map of nodes, indexed by the coordinate of the node
- *
- * @constructor
- */
-jsts.geomgraph.NodeMap = function(nodeFactory) {
-  this.nodeMap = {};
-  this.nodeFact = nodeFactory;
-};
-
-
-/**
- * NOTE: In In JSTS a JS object replaces TreeMap. Sorting is done when needed.
- */
-jsts.geomgraph.NodeMap.prototype.nodeMap = null;
-
-jsts.geomgraph.NodeMap.prototype.nodeFact = null;
-
-
-/**
- * This method expects that a node has a coordinate value.
- *
- * @param {jsts.geom.Coordinate/jsts.geomgraph.Node}
- *          arg
- * @return {jsts.geomgraph.Node}
- */
-jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
-  var node, coord;
-
-  if (arg instanceof jsts.geom.Coordinate) {
-    coord = arg;
-    node = this.nodeMap[coord];
-    if (node === undefined) {
-      node = this.nodeFact.createNode(coord);
-      this.nodeMap[coord] = node;
-    }
-    return node;
-  } else if (arg instanceof jsts.geomgraph.Node) {
-    var sn = arg;
-    node = this.nodeMap[n.getCoordinate()];
-    if (node === undefined) {
-      this.nodeMap[n.getCoordinate()] = n;
-      return n;
-    }
-    node.mergeLabel(n);
-    return node;
-  }
-};
-
-
-/**
- * Adds a node for the start point of this EdgeEnd (if one does not already
- * exist in this map). Adds the EdgeEnd to the (possibly new) node.
- *
- * @param {jsts.geomgraph.EdgeEnd}
- *          e
- */
-jsts.geomgraph.NodeMap.prototype.add = function(e) {
-  var p = e.getCoordinate();
-  var n = this.addNode(p);
-  n.add(e);
-};
-
-
-/**
- * @param {jsts.geom.Coordinate}
- *          coord
- * @return {jsts.geomgraph.Node} the node if found; null otherwise.
- */
-jsts.geomgraph.NodeMap.prototype.find = function(coord) {
-  var node = this.nodeMap[coord];
-
-  return node ? node : null;
-};
-
-
-/**
- * @return {Array.<jsts.geomgraph.Node>}
- */
-jsts.geomgraph.NodeMap.prototype.values = function() {
-  var array = [];
-  for (var key in this.nodeMap) {
-    if (this.nodeMap.hasOwnProperty(key)) {
-      array.push(this.nodeMap[key]);
-    }
-  }
-
-  var compare = function(a,b) {
-    return a.getCoordinate().compareTo(b.getCoordinate());
+  /**
+   * A map of nodes, indexed by the coordinate of the node.
+   *
+   * @constructor
+   */
+  jsts.geomgraph.NodeMap = function(nodeFactory) {
+    this.nodeMap = new HashMap();
+    this.nodeFact = nodeFactory;
   };
-  array.sort(compare);
-
-  return array;
-};
 
 
-/**
- * @param {number}
- *          geomIndex
- * @return {Array.<Node>}
- */
-jsts.geomgraph.NodeMap.prototype.getBoundaryNodes = function(geomIndex) {
-  var bdyNodes = [];
-  var i, values = this.values();
-  for (i = 0; i < values.length; i++) {
-    var node = values[i];
-    if (node.getLabel().getLocation(geomIndex) === jsts.geom.Location.BOUNDARY)
-      bdyNodes.push(node);
-  }
-  return bdyNodes;
-};
+  /**
+   * NOTE: Seems like the index isn't functionally important, so in JSTS a JS
+   * object replaces TreeMap. Sorting is done when needed.
+   *
+   * @type {javascript.util.HashMap}
+   */
+  jsts.geomgraph.NodeMap.prototype.nodeMap = null;
+
+  jsts.geomgraph.NodeMap.prototype.nodeFact = null;
+
+
+  /**
+   * This method expects that a node has a coordinate value.
+   *
+   * In JSTS this replaces multiple overloaded methods from JTS.
+   *
+   * @param {jsts.geom.Coordinate/jsts.geomgraph.Node}
+   *          arg
+   * @return {jsts.geomgraph.Node}
+   */
+  jsts.geomgraph.NodeMap.prototype.addNode = function(arg) {
+    var node, coord;
+
+    if (arg instanceof jsts.geom.Coordinate) {
+      coord = arg;
+      node = this.nodeMap.get(coord);
+      if (node === null) {
+        node = this.nodeFact.createNode(coord);
+        this.nodeMap.put(coord, node);
+      }
+      return node;
+    } else if (arg instanceof jsts.geomgraph.Node) {
+      var n = arg;
+      coord = n.getCoordinate();
+      node = this.nodeMap.get(coord);
+      if (node === null) {
+        this.nodeMap.put(coord, n);
+        return n;
+      }
+      node.mergeLabel(n);
+      return node;
+    }
+  };
+
+
+  /**
+   * Adds a node for the start point of this EdgeEnd (if one does not already
+   * exist in this map). Adds the EdgeEnd to the (possibly new) node.
+   *
+   * @param {jsts.geomgraph.EdgeEnd}
+   *          e
+   */
+  jsts.geomgraph.NodeMap.prototype.add = function(e) {
+    var p = e.getCoordinate();
+    var n = this.addNode(p);
+    n.add(e);
+  };
+
+
+  /**
+   * @param {jsts.geom.Coordinate}
+   *          coord
+   * @return {jsts.geomgraph.Node} the node if found; null otherwise.
+   */
+  jsts.geomgraph.NodeMap.prototype.find = function(coord) {
+    return this.nodeMap.get(coord);
+  };
+
+
+  /**
+   * @return {javascript.util.Collection}
+   */
+  jsts.geomgraph.NodeMap.prototype.values = function() {
+    return this.nodeMap.values();
+  };
+
+  /**
+   * @return {javascript.util.Collection}
+   */
+  jsts.geomgraph.NodeMap.prototype.iterator = function() {
+    return this.values().iterator();
+  };
+
+
+  /**
+   * @param {number}
+   *          geomIndex
+   * @return {Array.<Node>}
+   */
+  jsts.geomgraph.NodeMap.prototype.getBoundaryNodes = function(geomIndex) {
+    var bdyNodes = new ArrayList();
+    for (var i = this.iterator(); i.hasNext();) {
+      var node = i.next();
+      if (node.getLabel().getLocation(geomIndex) === Location.BOUNDARY) {
+        bdyNodes.add(node);
+      }
+    }
+    return bdyNodes;
+  };
+
+})();
