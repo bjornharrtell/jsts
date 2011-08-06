@@ -48,6 +48,6 @@
     this.segInt = segInt;
   };
 
-  jsts.noding.SinglePassNoder = jsts.noding.SinglePassNoder;
+  jsts.noding.SinglePassNoder = SinglePassNoder;
 
 })();
