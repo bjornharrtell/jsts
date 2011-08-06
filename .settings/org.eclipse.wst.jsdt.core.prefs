@@ -1,4 +1,4 @@
-#Thu Mar 31 21:26:02 CEST 2011
+#Sat Aug 06 23:05:10 CEST 2011
 eclipse.preferences.version=1
 org.eclipse.wst.jsdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.wst.jsdt.core.formatter.alignment_for_arguments_in_allocation_expression=16
@@ -89,7 +89,7 @@ org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_anonymous_type_decl
 org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_block=insert
 org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_enum_constant=insert
 org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_enum_declaration=insert
-org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_method_body=insert
+org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_method_body=do not insert
 org.eclipse.wst.jsdt.core.formatter.insert_new_line_in_empty_type_declaration=insert
 org.eclipse.wst.jsdt.core.formatter.insert_space_after_and_in_type_parameter=insert
 org.eclipse.wst.jsdt.core.formatter.insert_space_after_assignment_operator=insert

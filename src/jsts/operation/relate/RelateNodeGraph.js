@@ -81,7 +81,6 @@ jsts.operation.relate.RelateNodeGraph.prototype.computeIntersectionNodes = funct
         if (n.getLabel().isNull(argIndex))
           n.setLabel(argIndex, Location.INTERIOR);
       }
-      // Debug.println(n);
     }
   }
 };
@@ -96,12 +95,10 @@ jsts.operation.relate.RelateNodeGraph.prototype.computeIntersectionNodes = funct
  */
 jsts.operation.relate.RelateNodeGraph.prototype.copyNodesAndLabels = function(
     geomGraph, argIndex) {
-  var nodes = geomGraph.nodes;
-  for (var i = 0; i < nodes.length; i++) {
-    var graphNode = nodes[i];
+  for (var nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext(); ) {
+    var graphNode = nodeIt.next();
     var newNode = nodes.addNode(graphNode.getCoordinate());
     newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
-    // node.print(System.out);
   }
 };
 
