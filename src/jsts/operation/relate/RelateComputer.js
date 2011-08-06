@@ -166,6 +166,7 @@ jsts.operation.relate.RelateComputer.prototype.insertEdgeEnds = function(ee) {
 
 
 /**
+ * @param {jsts.geom.IntersectionMatrix} im
  * @private
  */
 jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM = function(
@@ -416,8 +417,6 @@ jsts.operation.relate.RelateComputer.prototype.labelIsolatedNodes = function() {
     var n = nodes[i];
     var label = n.getLabel();
     // isolated nodes should always have at least one geometry in their label
-    // Assert.isTrue(label.getGeometryCount() > 0, 'node with empty label
-    // found');
     if (n.isIsolated()) {
       if (label.isNull(0))
         this.labelIsolatedNode(n, 0);
