@@ -38,4 +38,4 @@
    */
   jsts.noding.Noder.prototype.getNodedSubstrings = jsts.abstractFunc;
 
-}());
+})();

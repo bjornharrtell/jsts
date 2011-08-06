@@ -10,7 +10,10 @@
  * Constructs a new list from an array of Coordinates, allowing caller to
  * specify if repeated points are to be removed.
  *
- * @param {Coordinate[]}
+ * In JSTS CoordinateList do *not* expose an API extended from ArrayList in Java, instead it is based on a simple JavaScript array.
+ * CoordinateList does not seem to be used extensively which would warrant keeping the API.
+ *
+ * @param {Array.<jsts.geom.Coordinate>}
  *          coord the array of coordinates to load into the list.
  * @param {boolean}
  *          allowRepeated if <code>false</code>, repeated points are removed.
@@ -27,7 +30,7 @@ jsts.geom.CoordinateList.prototype = new Array();
 /**
  * Adds an array of coordinates to the list.
  *
- * @param {Coordinate[] }
+ * @param {Array.<jsts.geom.Coordinate>}
  *          coord The coordinates.
  * @param {boolean}
  *          allowRepeated if set to false, repeated coordinates are collapsed.
@@ -72,3 +75,5 @@ jsts.geom.CoordinateList.prototype.addCoordinate = function(coord,
   }
   this.push(coord);
 };
+
+// TODO: port rest?
