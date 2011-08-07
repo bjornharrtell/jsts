@@ -18,6 +18,7 @@
  * @constructor
  */
 jsts.geomgraph.EdgeEndStar = function() {
+  this.keyList = [];
   this.edgeMap = {};
   this.edgeList = null;
   this.ptInAreaLocation = [jsts.geom.Location.NONE, jsts.geom.Location.NONE];
@@ -66,6 +67,7 @@ jsts.geomgraph.EdgeEndStar.prototype.insert = function(e) {
  */
 jsts.geomgraph.EdgeEndStar.prototype.insertEdgeEnd = function(e, obj) {
   this.edgeMap[e] = obj;
+  this.keyList.push(e);
   this.edgeList = null; // edge list has changed - clear the cache
 };
 
@@ -95,16 +97,14 @@ jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
  */
 jsts.geomgraph.EdgeEndStar.prototype.getEdges = function() {
   this.edgeList = [];
-  for (var key in this.edgeMap) {
-    if (this.edgeMap.hasOwnProperty(key)) {
-      this.edgeList.push(this.edgeMap[key]);
-    }
-  }
-
   var compare = function(a,b) {
     return a.compareTo(b);
   };
-  this.edgeList.sort(compare);
+  this.keyList.sort(compare);
+
+  for (var i = 0; i < this.keyList.length; i++) {
+    this.edgeList.push(this.edgeMap[this.keyList[i]]);
+  }
 
   return this.edgeList;
 };
@@ -323,7 +323,7 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
   }
 };
 
-jsts.geomgraph.EdgeEndStar.prototype.findIndex = function(eSearch) {
+/*jsts.geomgraph.EdgeEndStar.prototype.findIndex = function(eSearch) {
   this.getEdges(); // force edgelist to be computed
   for (var i = 0; i < this.edgeList.length; i++) {
     var e = this.edgeList[i];
@@ -331,4 +331,4 @@ jsts.geomgraph.EdgeEndStar.prototype.findIndex = function(eSearch) {
       return i;
   }
   return -1;
-};
+};*/

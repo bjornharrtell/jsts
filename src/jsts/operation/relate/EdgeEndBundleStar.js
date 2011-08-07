@@ -28,7 +28,7 @@ jsts.operation.relate.EdgeEndBundleStar.prototype = new jsts.geomgraph.EdgeEndSt
 jsts.operation.relate.EdgeEndBundleStar.prototype.insert = function(e) {
   var eb = this.edgeMap[e];
 
-  if (eb === undefined || !(eb instanceof jsts.operation.relate.EdgeEndBundle)) {
+  if (eb === undefined) {
     eb = new jsts.operation.relate.EdgeEndBundle(e);
     this.insertEdgeEnd(e, eb);
   } else {
