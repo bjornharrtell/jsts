@@ -57,8 +57,8 @@ jsts.noding.OrientedCoordinateArray.orientation = function(pts) {
 
 jsts.noding.OrientedCoordinateArray.prototype.compareTo = function(o1) {
   var oca = o1;
-  var comp = jsts.noding.OrientedCoordinateArray.compareOriented(pts,
-      orientation, oca.pts, oca.orientation);
+  var comp = jsts.noding.OrientedCoordinateArray.compareOriented(this.pts,
+      this.orientation, oca.pts, oca.orientation);
   return comp;
 };
 

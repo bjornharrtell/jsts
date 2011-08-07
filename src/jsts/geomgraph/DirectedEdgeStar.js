@@ -45,53 +45,45 @@ jsts.geomgraph.DirectedEdgeStar.prototype.getLabel = function() {
 
 jsts.geomgraph.DirectedEdgeStar.prototype.getOutgoingDegree = function() {
   var degree = 0;
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var de = this.edgeList[i];
-    if (de.isInResult())
-      degree++;
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var de = it.next();
+    if (de.isInResult()) degree++;
   }
   return degree;
 };
 jsts.geomgraph.DirectedEdgeStar.prototype.getOutgoingDegree = function(er) {
   var degree = 0;
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var de = this.edgeList[i];
-    if (de.getEdgeRing() === er)
-      degree++;
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var de = it.next();
+    if (de.getEdgeRing() === er) degree++;
   }
   return degree;
 };
 
 jsts.geomgraph.DirectedEdgeStar.prototype.getRightmostEdge = function() {
   var edges = this.getEdges();
-  var size = edges.length;
-  if (size < 1)
-    return null;
-  var de0 = edges[0];
-  if (size === 1)
-    return de0;
-  var deLast = edges[size - 1];
+  var size = edges.size();
+  if (size < 1) return null;
+  var de0 = edges.get(0);
+  if (size == 1) return de0;
+  var deLast = edges.get(size - 1);
 
   var quad0 = de0.getQuadrant();
   var quad1 = deLast.getQuadrant();
-  if (jsts.geomgraph.Quadrant.isNorthern(quad0) && jsts.geomgraph.Quadrant.isNorthern(quad1))
+  if (jsts.geomgraph.Quadrant.isNorthern(quad0) && Quadrant.isNorthern(quad1))
     return de0;
-  else if (!jsts.geomgraph.Quadrant.isNorthern(quad0) && !jsts.geomgraph.Quadrant.isNorthern(quad1))
+  else if (! jsts.geomgraph.Quadrant.isNorthern(quad0) && ! Quadrant.isNorthern(quad1))
     return deLast;
   else {
-    // edges are in different hemispheres - make sure we return one that is
-    // non-horizontal
-    // Assert.isTrue(de0.getDy() != 0, "should never return horizontal edge!");
+    // edges are in different hemispheres - make sure we return one that is non-horizontal
     var nonHorizontalEdge = null;
     if (de0.getDy() != 0)
       return de0;
     else if (deLast.getDy() != 0)
       return deLast;
   }
-  // TODO: Assert.shouldNeverReachHere("found two horizontal edges incident on
-  // node");
+  jsts.util.Assert.shouldNeverReachHere('found two horizontal edges incident on node');
   return null;
-
 };
 /**
  * Compute the labelling for all dirEdges in this star, as well as the overall
@@ -103,14 +95,14 @@ jsts.geomgraph.DirectedEdgeStar.prototype.computeLabelling = function(geom) {
   // determine the overall labelling for this DirectedEdgeStar
   // (i.e. for the node it is based at)
   this.label = new Label(jsts.geom.Location.NONE);
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var ee = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var ee = it.next();
     var e = ee.getEdge();
     var eLabel = e.getLabel();
     for (var i = 0; i < 2; i++) {
       var eLoc = eLabel.getLocation(i);
-      if (eLoc == jsts.geom.Location.INTERIOR || eLoc == jsts.geom.Location.BOUNDARY)
-        label.setLocation(i, jsts.geom.Location.INTERIOR);
+      if (eLoc === jsts.geom.Location.INTERIOR || eLoc === jsts.geom.Location.BOUNDARY)
+        this.label.setLocation(i, jsts.geom.Location.INTERIOR);
     }
   }
 };
@@ -120,8 +112,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.computeLabelling = function(geom) {
  * label
  */
 jsts.geomgraph.DirectedEdgeStar.prototype.mergeSymLabels = function() {
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var de = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var de = it.next();
     var label = de.getLabel();
     label.merge(de.getSym().getLabel());
   }
@@ -131,8 +123,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.mergeSymLabels = function() {
  * Update incomplete dirEdge labels from the labelling for the node
  */
 jsts.geomgraph.DirectedEdgeStar.prototype.updateLabelling = function(nodeLabel) {
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var de = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var de = it.next();
     var label = de.getLabel();
     label.setAllLocationsIfNull(0, nodeLabel.getLocation(0));
     label.setAllLocationsIfNull(1, nodeLabel.getLocation(1));
@@ -143,15 +135,15 @@ jsts.geomgraph.DirectedEdgeStar.prototype.updateLabelling = function(nodeLabel) 
  * @private
  */
 jsts.geomgraph.DirectedEdgeStar.prototype.getResultAreaEdges = function() {
-  if (this.resultAreaEdgeList != null)
-    return this.resultAreaEdgeList;
-  this.resultAreaEdgeList = [];
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var de = this.edgeList[i];
+  if (this.resultAreaEdgeList != null) return resultAreaEdgeList;
+  this.resultAreaEdgeList = new javascript.util.ArrayList();
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var de = it.next();
     if (de.isInResult() || de.getSym().isInResult())
-      this.resultAreaEdgeList.push(de);
+      this.resultAreaEdgeList.add(de);
   }
   return this.resultAreaEdgeList;
+
 };
 
 /**
@@ -187,8 +179,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkResultDirectedEdges = function() {
   var incoming = null;
   var state = this.SCANNING_FOR_INCOMING;
   // link edges in CCW order
-  for (var i = 0; i < this.resultAreaEdgeList.length; i++) {
-    var nextOut = this.resultAreaEdgeList[i];
+  for (var i = 0; i < this.resultAreaEdgeList.size(); i++) {
+    var nextOut = this.resultAreaEdgeList.get(i);
     var nextIn = nextOut.getSym();
 
     // skip de's that we're not interested in
@@ -220,8 +212,7 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkResultDirectedEdges = function() {
     if (firstOut === null)
       throw new jsts.error.TopologyError('no outgoing dirEdge found',
           this.getCoordinate());
-    // TODO: Assert.isTrue(firstOut.isInResult(), "unable to link last incoming
-    // dirEdge");
+    jsts.util.Assert.isTrue(firstOut.isInResult(), 'unable to link last incoming dirEdge');
     incoming.setNext(firstOut);
   }
 };
@@ -232,8 +223,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkMinimalDirectedEdges = function(
   var incoming = null;
   var state = this.SCANNING_FOR_INCOMING;
   // link edges in CW order
-  for (var i = this.resultAreaEdgeList.length - 1; i >= 0; i--) {
-    var nextOut = this.resultAreaEdgeList[i];
+  for (var i = this.resultAreaEdgeList.size() - 1; i >= 0; i--) {
+    var nextOut = this.resultAreaEdgeList.get(i);
     var nextIn = nextOut.getSym();
 
     // record first outgoing edge, in order to link the last incoming edge
@@ -256,10 +247,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkMinimalDirectedEdges = function(
     }
   }
   if (state === thisLINKING_TO_OUTGOING) {
-    // TODO: Assert.isTrue(firstOut != null, "found null for first outgoing
-    // dirEdge");
-    // TODO: Assert.isTrue(firstOut.getEdgeRing() == er, "unable to link last
-    // incoming dirEdge");
+    jsts.util.Assert.isTrue(firstOut != null, 'found null for first outgoing dirEdge');
+    jsts.util.Assert.isTrue(firstOut.getEdgeRing() == er, 'unable to link last incoming dirEdge');
     incoming.setNextMin(firstOut);
   }
 };
@@ -269,8 +258,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.linkAllDirectedEdges = function() {
   var prevOut = null;
   var firstIn = null;
   // link edges in CW order
-  for (var i = this.edgeList.length - 1; i >= 0; i--) {
-    var nextOut = this.edgeList[i];
+  for (var i = this.edgeList.size() - 1; i >= 0; i--) {
+    var nextOut = this.edgeList.get(i);
     var nextIn = nextOut.getSym();
     if (firstIn === null)
       firstIn = nextIn;
@@ -298,8 +287,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.findCoveredLineEdges = function() {
    * edge is outgoing - EXTERIOR if the edge is incoming
    */
   var startLoc = jsts.geom.Location.NONE;
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var nextOut = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var nextOut = it.next();
     var nextIn = nextOut.getSym();
     if (!nextOut.isLineEdge()) {
       if (nextOut.isInResult()) {
@@ -323,8 +312,8 @@ jsts.geomgraph.DirectedEdgeStar.prototype.findCoveredLineEdges = function() {
    */
   var currLoc = startLoc;
 
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var nextOut = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var nextOut = it.next();
     var nextIn = nextOut.getSym();
     if (nextOut.isLineEdge()) {
       nextOut.getEdge().setCovered(currLoc === jsts.geom.Location.INTERIOR);
@@ -366,7 +355,7 @@ jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths2 = function(startIndex,
     endIndex, startDepth) {
   var currDepth = startDepth;
   for (var i = startIndex; i < endIndex; i++) {
-    var nextDe = this.edgeList[i];
+    var nextDe = this.edgeList.get(i);
     var label = nextDe.getLabel();
     nextDe.setEdgeDepths(jsts.geomgraph.Position.RIGHT, currDepth);
     currDepth = nextDe.getDepth(jsts.geomgraph.Position.LEFT);
