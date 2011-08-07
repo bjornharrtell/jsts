@@ -166,13 +166,12 @@ jsts.operation.IsSimpleOp.prototype.isSimpleLinearGeometry = function(geom) {
  * @private
  */
 jsts.operation.IsSimpleOp.prototype.hasNonEndpointIntersection = function(graph) {
-  for (var i = 0; i < graph.edges.length; i++) {
-    var e = graph.edges[i];
+  for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
+    var e = i.next();
     var maxSegmentIndex = e.getMaximumSegmentIndex();
-    var eis = e.eiList.getSortedIntersections();
-    for (var j = 0; j < eis.length; j++) {
-      var ei = eis[j];
-      if (!ei.isEndPoint(maxSegmentIndex)) {
+    for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext(); ) {
+      var ei = eiIt.next();
+      if (! ei.isEndPoint(maxSegmentIndex)) {
         this.nonSimpleLocation = ei.getCoordinate();
         return true;
       }
@@ -196,11 +195,9 @@ jsts.operation.IsSimpleOp.prototype.hasNonEndpointIntersection = function(graph)
  */
 jsts.operation.IsSimpleOp.prototype.hasClosedEndpointIntersection = function(
     graph) {
-  // NOTE: TreeMap replaced by array of objects
-  var endPoints = [];
-
-  for (var i = 0; i < graph.edges.length; i++) {
-    var e = graph.edges[i];
+  var endPoints = new javascript.util.TreeMap();
+  for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
+    var e = i.next();
     var maxSegmentIndex = e.getMaximumSegmentIndex();
     var isClosed = e.isClosed();
     var p0 = e.getCoordinate(0);
@@ -209,8 +206,8 @@ jsts.operation.IsSimpleOp.prototype.hasClosedEndpointIntersection = function(
     this.addEndpoint(endPoints, p1, isClosed);
   }
 
-  for (var i = 0; i < endPoints.length; i++) {
-    var eiInfo = endPoints[i].ei;
+  for (var i = endPoints.values().iterator(); i.hasNext(); ) {
+    var eiInfo = i.next();
     if (eiInfo.isClosed && eiInfo.degree != 2) {
       this.nonSimpleLocation = eiInfo.getCoordinate();
       return true;
@@ -277,9 +274,9 @@ jsts.operation.IsSimpleOp.EndpointInfo.prototype.addEndpoint = function(
 /**
  * Add an endpoint to the map, creating an entry for it if none exists
  *
- * @param {[]}
+ * @param {javascript.util.Map}
  *          endPoints
- * @param {Coordinate}
+ * @param {jsts.geom.Coordinate}
  *          p
  * @param {boolean}
  *          isClosed
@@ -287,22 +284,10 @@ jsts.operation.IsSimpleOp.EndpointInfo.prototype.addEndpoint = function(
  */
 jsts.operation.IsSimpleOp.prototype.addEndpoint = function(endPoints, p,
     isClosed) {
-  var eiInfo = null;
-
-  for (var i = 0; i < endPoints.length; i++) {
-    var endPoint = endPoints[i];
-    if (endPoint.p.equals2D(p)) {
-      eiInfo = endPoint.ei;
-    }
-  }
-
+  var eiInfo = endPoints.get(p);
   if (eiInfo === null) {
     eiInfo = new jsts.operation.IsSimpleOp.EndpointInfo(p);
-    endPoints.push({
-      p: p,
-      ei: eiInfo
-    });
+    endPoints.put(p, eiInfo);
   }
-
   eiInfo.addEndpoint(isClosed);
 };

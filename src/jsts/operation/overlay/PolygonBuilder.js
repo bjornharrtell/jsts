@@ -40,7 +40,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.add = function(graph) {
  * Add a set of edges and nodes, which form a graph. The graph is assumed to
  * contain one or more polygons, possibly with holes.
  */
-jsts.operation.overlay.PolygonBuilder.prototype.add = function(dirEdges, nodes) {
+jsts.operation.overlay.PolygonBuilder.prototype.add2 = function(dirEdges, nodes) {
   jsts.geomgraph.PlanarGraph.linkResultDirectedEdges(nodes);
   var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
   var freeHoleList = [];

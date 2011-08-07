@@ -269,7 +269,7 @@
   /**
    * @param {LineIntersector}
    *          li
-   * @param {[][]}
+   * @param {Array.<javascript.util.Collection>|javascript.util.Collection}
    *          bdyNodes
    * @return {boolean}
    * @private

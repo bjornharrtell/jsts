@@ -58,7 +58,7 @@ jsts.geomgraph.GraphComponent.prototype.getLabel = function() {
   return this.label;
 };
 jsts.geomgraph.GraphComponent.prototype.setLabel = function(label) {
-  if (arguments.length == 2) {
+  if (arguments.length === 2) {
     this.setLabel2.apply(this, arguments);
     return;
   }
@@ -106,7 +106,7 @@ jsts.geomgraph.GraphComponent.prototype.isCovered = function() {
  * @return {boolean}
  */
 jsts.geomgraph.GraphComponent.prototype.isCoveredSet = function() {
-  return this.isCoveredSet;
+  return this._isCoveredSet;
 };
 
 
@@ -168,8 +168,6 @@ jsts.geomgraph.GraphComponent.prototype.isIsolated = function() {
  *          im
  */
 jsts.geomgraph.GraphComponent.prototype.updateIM = function(im) {
-  if (!(this.label.getGeometryCount() >= 2)) {
-    throw new jsts.error.NotRepresentableError('found partial label');
-  }
+  jsts.util.Assert.isTrue(this.label.getGeometryCount() >= 2, 'found partial label');
   this.computeIM(im);
 };

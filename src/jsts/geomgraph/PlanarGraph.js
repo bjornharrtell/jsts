@@ -11,6 +11,8 @@
 
 (function() {
 
+  var ArrayList = javascript.util.ArrayList;
+
   /**
    * The computation of the <code>IntersectionMatrix</code> relies on the use
    * of a structure called a "topology graph". The topology graph contains nodes
@@ -33,14 +35,15 @@
    * @constructor
    */
   var PlanarGraph = function(nodeFactory) {
-    this.edges = [];
-    this.edgeEndList = [];
+    this.edges = new ArrayList();
+    this.edgeEndList = new ArrayList();
     this.nodes = new jsts.geomgraph.NodeMap(nodeFactory ||
         new jsts.geomgraph.NodeFactory());
   };
 
 
   /**
+   * @type {javascript.util.ArrayList}
    * @protected
    */
   PlanarGraph.prototype.edges = null;
@@ -48,9 +51,13 @@
 
   /**
    * @type {jsts.geomgraph.NodeMap}
+   * @protected
    */
   PlanarGraph.prototype.nodes = null;
-
+  /**
+   * @type {javascript.util.ArrayList}
+   * @protected
+   */
   PlanarGraph.prototype.edgeEndList = null;
 
   /**
@@ -67,14 +74,8 @@
   };
 
 
-  /**
-   * Replaced with getEdges()
-   */
   PlanarGraph.prototype.getEdgeIterator = function() {
-    throw new jsts.error.NotImplementedError();
-  };
-  PlanarGraph.prototype.getEdges = function() {
-    return this.edges;
+    return this.edges.iterator();
   };
   PlanarGraph.prototype.getEdgeEnds = function() {
     return this.edgeEndList;
@@ -92,12 +93,12 @@
   };
 
   PlanarGraph.prototype.insertEdge = function(e) {
-    this.edges.push(e);
+    this.edges.add(e);
   };
 
   PlanarGraph.prototype.add = function(e) {
     this.nodes.add(e);
-    this.edgeEndList.push(e);
+    this.edgeEndList.add(e);
   };
 
   /**
@@ -128,12 +129,13 @@
   /**
    * Add a set of edges to the graph. For each edge two DirectedEdges will be
    * created. DirectedEdges are NOT linked by this method.
+   * @param {javascript.util.List} edgedToAdd
    */
   PlanarGraph.prototype.addEdges = function(edgesToAdd) {
     // create all the nodes for the edges
-    for (var i = 0; i < edgesToAdd.length; i++) {
-      var e = edgesToAdd[i];
-      this.edges.push(e);
+    for (var it = edgesToAdd.iterator(); it.hasNext(); ) {
+      var e = it.next();
+      this.edges.add(e);
 
       var de1 = new jsts.geomgraph.DirectedEdge(e, true);
       var de2 = new jsts.geomgraph.DirectedEdge(e, false);
