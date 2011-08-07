@@ -30,8 +30,6 @@
    * @constructor
    */
   var EdgeEnd = function(edge, p0, p1, label) {
-    this.hashCode = parseInt(Math.random() * 99999999).toString();
-
     this.edge = edge;
     if (p0 && p1) {
       this.init(p0, p1);
@@ -40,8 +38,6 @@
       this.label = label || null;
     }
   };
-
-  EdgeEnd.prototype.hashCode = null;
 
   /**
    * the parent edge of this edge end
@@ -187,17 +183,6 @@
 
   EdgeEnd.prototype.computeLabel = function(boundaryNodeRule) {
   // subclasses should override this if they are using labels
-  };
-
-  /**
-   * Need to be representable by string for use as key in Maps.
-   *
-   * TODO: Might not be equivalent to JTS/Java, need investigation.
-   */
-  EdgeEnd.prototype.toString = function() {
-    var angle = Math.atan2(this.dy, this.dx);
-    //return this.hashCode;
-    return 'EdgeEnd_' + this.dx + '_' + this.dy + '_' + this.quadrant + '_' + angle;
   };
 
   jsts.geomgraph.EdgeEnd = EdgeEnd;
