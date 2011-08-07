@@ -30,16 +30,18 @@
    * @constructor
    */
   var EdgeEnd = function(edge, p0, p1, label) {
+    this.hashCode = parseInt(Math.random() * 99999999).toString();
+
     this.edge = edge;
-    if (p0 !== undefined) {
-      if (p1 === undefined) {
-        throw new jsts.error.IllegalArgumentError('expected two coords');
-      }
+    if (p0 && p1) {
       this.init(p0, p1);
-      this.label = label;
+    }
+    if (label) {
+      this.label = label || null;
     }
   };
 
+  EdgeEnd.prototype.hashCode = null;
 
   /**
    * the parent edge of this edge end
@@ -106,7 +108,7 @@
     this.dx = p1.x - p0.x;
     this.dy = p1.y - p0.y;
     this.quadrant = jsts.geomgraph.Quadrant.quadrant(this.dx, this.dy);
-    TODO: Assert.isTrue(!(this.dx === 0 && this.dy === 0),
+    Assert.isTrue(!(this.dx === 0 && this.dy === 0),
         'EdgeEnd with identical endpoints found');
   };
 
@@ -188,13 +190,14 @@
   };
 
   /**
-   * Need to be representable by string for use as key in Maps. TODO: Might not
-   * be equivalent to JTS/Java, need investigation.
+   * Need to be representable by string for use as key in Maps.
+   *
+   * TODO: Might not be equivalent to JTS/Java, need investigation.
    */
   EdgeEnd.prototype.toString = function() {
-    // TODO: this hashcode might not be equivalent to JTS code, so maps containg
-    // edgeends could be a cause of bugs
-    return 'EdgeEnd_' + this.dx + '_' + this.dy + '_' + this.quadrant;
+    var angle = Math.atan2(this.dy, this.dx);
+    //return this.hashCode;
+    return 'EdgeEnd_' + this.dx + '_' + this.dy + '_' + this.quadrant + '_' + angle;
   };
 
   jsts.geomgraph.EdgeEnd = EdgeEnd;
