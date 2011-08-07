@@ -5,56 +5,61 @@
  */
 
 
+(function() {
 
-/**
- * A Position indicates the position of a Location relative to a graph component
- * (Node, Edge, or Area).
- *
- * @constructor
- */
-jsts.geomgraph.Position = function() {
+  /**
+   * A Position indicates the position of a Location relative to a graph
+   * component (Node, Edge, or Area).
+   *
+   * @constructor
+   */
+  var Position = function() {
 
-};
-
-
-/**
- * An indicator that a Location is <i>on</i> a GraphComponent
- *
- * @type {int}
- */
-jsts.geomgraph.Position.ON = 0;
+  };
 
 
-/**
- * An indicator that a Location is to the <i>left</i> of a GraphComponent
- *
- * @type {int}
- */
-jsts.geomgraph.Position.LEFT = 1;
+  /**
+   * An indicator that a Location is <i>on</i> a GraphComponent
+   *
+   * @type {int}
+   */
+  Position.ON = 0;
 
 
-/**
- * An indicator that a Location is to the <i>right</i> of a GraphComponent
- *
- * @type {int}
- */
-jsts.geomgraph.Position.RIGHT = 2;
+  /**
+   * An indicator that a Location is to the <i>left</i> of a GraphComponent
+   *
+   * @type {int}
+   */
+  Position.LEFT = 1;
 
 
-/**
- * Returns LEFT if the position is RIGHT, RIGHT if the position is LEFT, or the
- * position otherwise.
- *
- * @param {int}
- *          position
- * @return {int}
- */
-jsts.geomgraph.Position.opposite = function(position) {
-  if (position === jsts.geomgraph.Position.LEFT) {
-    return jsts.geomgraph.Position.RIGHT;
-  }
-  if (position === jsts.geomgraph.Position.RIGHT) {
-    return jsts.geomgraph.Position.LEFT;
-  }
-  return position;
-};
+  /**
+   * An indicator that a Location is to the <i>right</i> of a GraphComponent
+   *
+   * @type {int}
+   */
+  Position.RIGHT = 2;
+
+
+  /**
+   * Returns LEFT if the position is RIGHT, RIGHT if the position is LEFT, or
+   * the position otherwise.
+   *
+   * @param {int}
+   *          position
+   * @return {int}
+   */
+  Position.opposite = function(position) {
+    if (position === Position.LEFT) {
+      return Position.RIGHT;
+    }
+    if (position === Position.RIGHT) {
+      return Position.LEFT;
+    }
+    return position;
+  };
+
+  jsts.geomgraph.Position = Position;
+
+})();
