@@ -410,15 +410,17 @@
    * list
    *
    * @param argIndex
+   * @private
    */
   GeometryGraph.prototype.addSelfIntersectionNodes = function(argIndex) {
-    this.edges.forEach(function(edge) {
-      edge.eiList.getSortedIntersections().forEach(
-          function(ei) {
-            this.addSelfIntersectionNode(argIndex, ei.coord, edge.getLabel()
-                .getLocation(argIndex));
-          }, this);
-    }, this);
+    for (var i = this.edges.iterator(); i.hasNext(); ) {
+      var e = i.next();
+      var eLoc = e.getLabel().getLocation(argIndex);
+      for (var eiIt = e.eiList.iterator(); eiIt.hasNext(); ) {
+        var ei = eiIt.next();
+        this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
+      }
+    }
   };
 
 
@@ -426,6 +428,7 @@
    * Add a node for a self-intersection. If the node is a potential boundary
    * node (e.g. came from an edge which is a boundary) then insert it as a
    * potential boundary node. Otherwise, just add it as a regular node.
+   * @private
    */
   GeometryGraph.prototype.addSelfIntersectionNode = function(argIndex, coord,
       loc) {

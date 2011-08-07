@@ -18,7 +18,7 @@ jsts.geomgraph.index.EdgeSetIntersector = function() {
  * Computes all self-intersections between edges in a set of edges, allowing
  * client to choose whether self-intersections are computed.
  *
- * @param {[]}
+ * @param {javascript.util.List}
  *          edges a list of edges to test for intersections.
  * @param {SegmentIntersector}
  *          si the SegmentIntersector to use.
@@ -34,14 +34,14 @@ jsts.geomgraph.index.EdgeSetIntersector.prototype.computeIntersections = functio
 /**
  * Computes all mutual intersections between two sets of edges.
  *
- * @param {[]}
+ * @param {javascript.util.List}
  *          edges0 a list of edges to test for intersections.
- * @param {[]}
+ * @param {javascript.util.List}
  *          edges1 a list of edges to test for intersections.
  * @param {SegmentIntersector}
  *          si the SegmentIntersector to use.
  */
-jsts.geomgraph.index.EdgeSetIntersector.prototype.computeIntersections = function(
+jsts.geomgraph.index.EdgeSetIntersector.prototype.computeIntersections2 = function(
     edges0, edges1, si) {
   throw new jsts.error.AbstractMethodInvocationError();
 };

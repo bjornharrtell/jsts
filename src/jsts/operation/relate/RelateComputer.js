@@ -7,10 +7,14 @@
 (function() {
 
   /**
+   * @requires jsts/geom/Location.js
    * @requires jsts/util/Assert.js
    */
 
+  var Location = jsts.geom.Location;
   var Assert = jsts.util.Assert;
+  var ArrayList = javascript.util.ArrayList;
+
 
   /**
    * Computes the topological relationship between two Geometries.
@@ -26,12 +30,12 @@
    *
    * @constructor
    */
-  jsts.operation.relate.RelateComputer = function(arg) {
+  var RelateComputer = function(arg) {
     this.li = new jsts.algorithm.RobustLineIntersector();
     this.ptLocator = new jsts.algorithm.PointLocator();
     this.nodes = new jsts.geomgraph.NodeMap(
         new jsts.operation.relate.RelateNodeFactory());
-    this.isolatedEdges = [];
+    this.isolatedEdges = new ArrayList();
 
     this.arg = arg;
   };
@@ -41,14 +45,14 @@
    * @type {LineIntersector}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.li = null;
+  RelateComputer.prototype.li = null;
 
 
   /**
    * @type {PointLocator}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.ptLocator = null;
+  RelateComputer.prototype.ptLocator = null;
 
 
   /**
@@ -57,14 +61,14 @@
    * @type {GeometryGraph[]}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.arg = null;
+  RelateComputer.prototype.arg = null;
 
 
   /**
    * @type {NodeMap}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.nodes = null;
+  RelateComputer.prototype.nodes = null;
 
 
   /**
@@ -73,14 +77,14 @@
    * @type {IntersectionMatrix}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.im = null;
+  RelateComputer.prototype.im = null;
 
 
   /**
-   * @type {[]}
+   * @type {javascript.util.ArrayList}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.isolatedEdges = null;
+  RelateComputer.prototype.isolatedEdges = null;
 
 
   /**
@@ -89,14 +93,14 @@
    * @type {Coordinate}
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.invalidPoint = null;
+  RelateComputer.prototype.invalidPoint = null;
 
 
-  jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
+  RelateComputer.prototype.computeIM = function() {
     var im = new jsts.geom.IntersectionMatrix();
     // since Geometries are finite and embedded in a 2-D space, the EE element
     // must always be 2
-    im.set(jsts.geom.Location.EXTERIOR, jsts.geom.Location.EXTERIOR, 2);
+    im.set(Location.EXTERIOR, Location.EXTERIOR, 2);
 
     // if the Geometries don't overlap there is nothing to do
     if (!this.arg[0].getGeometry().getEnvelopeInternal().intersects(
@@ -136,9 +140,9 @@
 
     // build EdgeEnds for all intersections
     var eeBuilder = new jsts.operation.relate.EdgeEndBuilder();
-    var ee0 = eeBuilder.computeEdgeEnds(this.arg[0].getEdges());
+    var ee0 = eeBuilder.computeEdgeEnds(this.arg[0].getEdgeIterator());
     this.insertEdgeEnds(ee0);
-    var ee1 = eeBuilder.computeEdgeEnds(this.arg[1].getEdges());
+    var ee1 = eeBuilder.computeEdgeEnds(this.arg[1].getEdgeIterator());
     this.insertEdgeEnds(ee1);
 
     this.labelNodeEdges();
@@ -164,9 +168,9 @@
   /**
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.insertEdgeEnds = function(ee) {
-    for (var i = 0; i < ee.length; i++) {
-      var e = ee[i];
+  RelateComputer.prototype.insertEdgeEnds = function(ee) {
+    for (var i = ee.iterator(); i.hasNext(); ) {
+      var e = i.next();
       this.nodes.add(e);
     }
   };
@@ -177,7 +181,7 @@
    *          im
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM = function(
+  RelateComputer.prototype.computeProperIntersectionIM = function(
       intersector, im) {
     // If a proper intersection is found, we can set a lower bound on the IM.
     var dimA = this.arg[0].getGeometry().getDimension();
@@ -240,7 +244,7 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels = function(
+  RelateComputer.prototype.copyNodesAndLabels = function(
       argIndex) {
     for (var i = this.arg[argIndex].getNodeIterator(); i.hasNext();) {
       var graphNode = i.next();
@@ -259,21 +263,19 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes = function(
+  RelateComputer.prototype.computeIntersectionNodes = function(
       argIndex) {
-    var edges = this.arg[argIndex].getEdges();
-    for (var i = 0; i < edges.length; i++) {
-      var e = edges[i];
+    for (var i = this.arg[argIndex].getEdgeIterator(); i.hasNext();) {
+      var e = i.next();
       var eLoc = e.getLabel().getLocation(argIndex);
-      var eis = e.eiList.getSortedIntersections();
-      for (var j = 0; j < eis.length; j++) {
-        var ei = eis[j];
+      for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
+        var ei = eiIt.next();
         var n = this.nodes.addNode(ei.coord);
-        if (eLoc === jsts.geom.Location.BOUNDARY)
+        if (eLoc === Location.BOUNDARY)
           n.setLabelBoundary(argIndex);
         else {
           if (n.getLabel().isNull(argIndex))
-            n.setLabel(argIndex, jsts.geom.Location.INTERIOR);
+            n.setLabel(argIndex, Location.INTERIOR);
         }
       }
     }
@@ -288,21 +290,19 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.labelIntersectionNodes = function(
+  RelateComputer.prototype.labelIntersectionNodes = function(
       argIndex) {
-    var edges = this.arg[argIndex].getEdges();
-    for (var i = 0; i < edges.length; i++) {
-      var e = edges[i];
+    for (var i = this.arg[argIndex].getEdgeIterator(); i.hasNext();) {
+      var e = i.next();
       var eLoc = e.getLabel().getLocation(argIndex);
-      var eis = e.eiList.getSortedIntersections();
-      for (var j = 0; j < eis.length; j++) {
-        var ei = eis[j];
+      for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
+        var ei = eiIt.next();
         var n = this.nodes.find(ei.coord);
         if (n.getLabel().isNull(argIndex)) {
-          if (eLoc === jsts.geom.Location.BOUNDARY)
+          if (eLoc === Location.BOUNDARY)
             n.setLabelBoundary(argIndex);
           else
-            n.setLabel(argIndex, jsts.geom.Location.INTERIOR);
+            n.setLabel(argIndex, Location.INTERIOR);
         }
       }
     }
@@ -315,21 +315,17 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.computeDisjointIM = function(
+  RelateComputer.prototype.computeDisjointIM = function(
       im) {
     var ga = this.arg[0].getGeometry();
     if (!ga.isEmpty()) {
-      im.set(jsts.geom.Location.INTERIOR, jsts.geom.Location.EXTERIOR, ga
-          .getDimension());
-      im.set(jsts.geom.Location.BOUNDARY, jsts.geom.Location.EXTERIOR, ga
-          .getBoundaryDimension());
+      im.set(Location.INTERIOR, Location.EXTERIOR, ga.getDimension());
+      im.set(Location.BOUNDARY, Location.EXTERIOR, ga.getBoundaryDimension());
     }
     var gb = this.arg[1].getGeometry();
     if (!gb.isEmpty()) {
-      im.set(jsts.geom.Location.EXTERIOR, jsts.geom.Location.INTERIOR, gb
-          .getDimension());
-      im.set(jsts.geom.Location.EXTERIOR, jsts.geom.Location.BOUNDARY, gb
-          .getBoundaryDimension());
+      im.set(Location.EXTERIOR, Location.INTERIOR, gb.getDimension());
+      im.set(Location.EXTERIOR, Location.BOUNDARY, gb.getBoundaryDimension());
     }
   };
 
@@ -337,7 +333,7 @@
   /**
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.labelNodeEdges = function() {
+  RelateComputer.prototype.labelNodeEdges = function() {
     for (var ni = this.nodes.iterator(); ni.hasNext();) {
       var node = ni.next();
       node.getEdges().computeLabelling(this.arg);
@@ -350,9 +346,9 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.updateIM = function(im) {
-    for (var ei = 0; ei < this.isolatedEdges.length; ei++) {
-      var e = this.isolatedEdges[ei];
+  RelateComputer.prototype.updateIM = function(im) {
+    for (var ei = this.isolatedEdges.iterator(); ei.hasNext();) {
+      var e = ei.next();
       e.updateIM(im);
     }
     for (var ni = this.nodes.iterator(); ni.hasNext();) {
@@ -371,15 +367,13 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdges = function(
+  RelateComputer.prototype.labelIsolatedEdges = function(
       thisIndex, targetIndex) {
-    var edges = this.arg[thisIndex].edges;
-    for (var i = 0; i < edges.length; i++) {
-      var e = edges[i];
+    for (var ei = this.arg[thisIndex].getEdgeIterator(); ei.hasNext();) {
+      var e = ei.next();
       if (e.isIsolated()) {
-        this.labelIsolatedEdge(e, targetIndex, this.arg[targetIndex]
-            .getGeometry());
-        this.isolatedEdges.push(e);
+        this.labelIsolatedEdge(e, targetIndex, this.arg[targetIndex].getGeometry());
+        this.isolatedEdges.add(e);
       }
     }
   };
@@ -393,7 +387,7 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdge = function(
+  RelateComputer.prototype.labelIsolatedEdge = function(
       e, targetIndex, target) {
     // this won't work for GeometryCollections with both dim 2 and 1 geoms
     if (target.getDimension() > 0) {
@@ -404,7 +398,7 @@
       var loc = this.ptLocator.locate(e.getCoordinate(), target);
       e.getLabel().setAllLocations(targetIndex, loc);
     } else {
-      e.getLabel().setAllLocations(targetIndex, jsts.geom.Location.EXTERIOR);
+      e.getLabel().setAllLocations(targetIndex, Location.EXTERIOR);
     }
   };
 
@@ -419,7 +413,7 @@
    *
    * @private
    */
-  jsts.operation.relate.RelateComputer.prototype.labelIsolatedNodes = function() {
+  RelateComputer.prototype.labelIsolatedNodes = function() {
     for (var ni = this.nodes.iterator(); ni.hasNext();) {
       var n = ni.next();
       var label = n.getLabel();
@@ -439,11 +433,13 @@
   /**
    * Label an isolated node with its relationship to the target geometry.
    */
-  jsts.operation.relate.RelateComputer.prototype.labelIsolatedNode = function(
+  RelateComputer.prototype.labelIsolatedNode = function(
       n, targetIndex) {
     var loc = this.ptLocator.locate(n.getCoordinate(), this.arg[targetIndex]
         .getGeometry());
     n.getLabel().setAllLocations(targetIndex, loc);
   };
+
+  jsts.operation.relate.RelateComputer = RelateComputer;
 
 })();

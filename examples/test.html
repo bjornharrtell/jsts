@@ -15,6 +15,9 @@
   <script type="text/javascript" src="../lib/javascript.util.js"></script>
 
   <script type="text/javascript" src="../src/jsts.js"></script>
+  <script type="text/javascript" src="../src/jsts/util.js"></script>
+  <script type="text/javascript" src="../src/jsts/util/AssertionFailedException.js"></script>
+  <script type="text/javascript" src="../src/jsts/util/Assert.js"></script>
   <script type="text/javascript" src="../src/jsts/geom.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/CoordinateArrays.js"></script>
   <script type="text/javascript" src="../src/jsts/geom/CoordinateList.js"></script>
@@ -61,6 +64,7 @@
   <script type="text/javascript" src="../src/jsts/planargraph.js"></script>
   <script type="text/javascript" src="../src/jsts/planargraph/PlanarGraph.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph.js"></script>
+  <script type="text/javascript" src="../src/jsts/geomgraph/Position.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/GraphComponent.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Node.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/NodeFactory.js"></script>
@@ -77,7 +81,6 @@
   <script type="text/javascript" src="../src/jsts/geomgraph/PlanarGraph.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/GeometryGraph.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Label.js"></script>
-  <script type="text/javascript" src="../src/jsts/geomgraph/Position.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Quadrant.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/TopologyLocation.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index.js"></script>
@@ -181,11 +184,11 @@
   function init() {
     var reader = new jsts.io.WKTReader();
     
-    var a = reader.read('POINT (20 20)');
+    var a = reader.read('LINESTRING(20 20, 80 80)');
     
-    var b = reader.read('POINT (20 20)');
+    var b = reader.read('LINESTRING(20 20, 80 80)');
     
-    //var result = a.relate(b, '0FFFFFFF2');
+    //var result = a.relate(b, '1FFF0FFF2');
     
     var result = jsts.operation.relate.RelateOp.relate(a, b);
     

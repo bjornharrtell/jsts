@@ -10,12 +10,11 @@
    * @requires jsts/util/AssertionFailedException.js
    */
 
-
   var AssertionFailedException = jsts.util.AssertionFailedException;
 
   /**
    * A utility for making programming assertions.
-   *
+   * @constructor
    */
   var Assert = function() {
   };

@@ -33,7 +33,7 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.nOverlaps = 0;
 
 
 /**
- * @param {[]}
+ * @param {javascript.util.List}
  *          edges
  * @param {SegmentIntersector}
  *          si
@@ -43,31 +43,28 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.nOverlaps = 0;
 jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections = function(
     edges, si, testAllSegments) {
 
-  if (si instanceof Array) {
+  if (si instanceof javascript.util.List) {
     this.computeIntersections2.apply(this, arguments);
     return;
   }
 
-  var i0, i1, edge0, edge1;
-
   this.nOverlaps = 0;
 
-  for (i0 = 0; i0 < edges.length; i0++) {
-    edge0 = edges[i0];
-    for (i1 = 0; i1 < edges.length; i1++) {
-      edge1 = edges[i1];
-      if (testAllSegments || edge0 !== edge1) {
+  for (var i0 = edges.iterator(); i0.hasNext(); ) {
+    var edge0 = i0.next();
+    for (var i1 = edges.iterator(); i1.hasNext(); ) {
+      var edge1 = i1.next();
+      if (testAllSegments || edge0 != edge1)
         this.computeIntersects(edge0, edge1, si);
-      }
     }
   }
 };
 
 
 /**
- * @param {[]}
+ * @param {javascript.util.List}
  *          edges0
- * @param {[]}
+ * @param {javascript.util.List}
  *          edges1
  * @param {SegmentIntersector}
  *          si
@@ -76,10 +73,10 @@ jsts.geomgraph.index.SimpleEdgeSetIntersector.prototype.computeIntersections2 = 
     edges0, edges1, si) {
   this.nOverlaps = 0;
 
-  for (var i0 = 0; i0 < edges0.length; i0++) {
-    var edge0 = edges0[i0];
-    for (var i1 = 0; i1 < edges1.length; i1++) {
-      var edge1 = edges1[i1];
+  for (var i0 = edges0.iterator(); i0.hasNext(); ) {
+    var edge0 = i0.next();
+    for (var i1 = edges1.iterator(); i1.hasNext(); ) {
+      var edge1 = i1.next();
       this.computeIntersects(edge0, edge1, si);
     }
   }
