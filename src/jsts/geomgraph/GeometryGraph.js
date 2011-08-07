@@ -10,10 +10,12 @@
    * @requires jsts/geom/Location.js
    * @requires jsts/geomgraph/Position.js
    * @requires jsts/geomgraph/PlanarGraph.js
+   * @requires jsts/util/Assert.js
    */
 
   var Location = jsts.geom.Location;
   var Position = jsts.geomgraph.Position;
+  var Assert = jsts.util.Assert;
 
   /**
    * A GeometryGraph is a graph that models a given Geometry
@@ -29,7 +31,7 @@
   var GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
     jsts.geomgraph.PlanarGraph.call(this);
 
-    this.lineEdgeMap = {};
+    this.lineEdgeMap = new javascript.util.HashMap();
 
     this.ptLocator = new jsts.algorithm.PointLocator();
 
@@ -240,10 +242,10 @@
    * @private
    */
   GeometryGraph.prototype.addLineString = function(line) {
-    var coords = jsts.geom.CoordinateArrays.removeRepeatedPoints(line
+    var coord = jsts.geom.CoordinateArrays.removeRepeatedPoints(line
         .getCoordinates());
 
-    if (coords.length < 2) {
+    if (coord.length < 2) {
       this.hasTooFewPoints = true;
       this.invalidPoint = coords[0];
       return;
@@ -251,22 +253,18 @@
 
     // add the edge for the LineString
     // line edges do not have locations for their left and right sides
-    var e = new jsts.geomgraph.Edge(coords, new jsts.geomgraph.Label(
+    var e = new jsts.geomgraph.Edge(coord, new jsts.geomgraph.Label(
         this.argIndex, Location.INTERIOR));
-    this.lineEdgeMap[line] = e;
+    this.lineEdgeMap.put(line, e);
     this.insertEdge(e);
     /**
      * Add the boundary points of the LineString, if any. Even if the LineString
      * is closed, add both points as if they were endpoints. This allows for the
      * case that the node already exists and is a boundary point.
      */
-    if (coords.length >= 2 === false) {
-      throw new jsts.error.IllegalArgumentError(
-          'found LineString with single point');
-    }
-
-    this.insertBoundaryPoint(this.argIndex, coords[0]);
-    this.insertBoundaryPoint(this.argIndex, coords[coords.length - 1]);
+    Assert.isTrue(coord.length >= 2, 'found LineString with single point');
+    this.insertBoundaryPoint(this.argIndex, coord[0]);
+    this.insertBoundaryPoint(this.argIndex, coord[coord.length - 1]);
   };
 
 
@@ -301,7 +299,7 @@
     }
     var e = new jsts.geomgraph.Edge(coord, new jsts.geomgraph.Label(
         this.argIndex, Location.BOUNDARY, left, right));
-    this.lineEdgeMap[lr] = e;
+    this.lineEdgeMap.put(lr, e);
 
     this.insertEdge(e);
     // insert the endpoint as a node, to mark that it is on the boundary
