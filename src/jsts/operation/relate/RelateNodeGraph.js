@@ -55,12 +55,9 @@
     /**
      * Build EdgeEnds for all intersections.
      */
-    var eeBuilder = new EdgeEndBuilder();
+    var eeBuilder = new jsts.operation.relate.EdgeEndBuilder();
     var eeList = eeBuilder.computeEdgeEnds(geomGraph.getEdgeIterator());
     this.insertEdgeEnds(eeList);
-
-    // Debug.println("==== NodeList ===");
-    // Debug.print(nodes);
   };
 
 
