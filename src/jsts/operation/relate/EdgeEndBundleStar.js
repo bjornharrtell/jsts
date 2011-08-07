@@ -26,12 +26,12 @@ jsts.operation.relate.EdgeEndBundleStar.prototype = new jsts.geomgraph.EdgeEndSt
  * EdgeEndBundle is created to contain the EdgeEnd. <br>
  */
 jsts.operation.relate.EdgeEndBundleStar.prototype.insert = function(e) {
-  var eb = this.edgeMap[e];
-
-  if (eb === undefined) {
+  var eb = this.edgeMap.get(e);
+  if (eb === null) {
     eb = new jsts.operation.relate.EdgeEndBundle(e);
     this.insertEdgeEnd(e, eb);
-  } else {
+  }
+  else {
     eb.insert(e);
   }
 };
@@ -41,9 +41,8 @@ jsts.operation.relate.EdgeEndBundleStar.prototype.insert = function(e) {
  * Update the IM with the contribution for the EdgeStubs around the node.
  */
 jsts.operation.relate.EdgeEndBundleStar.prototype.updateIM = function(im) {
-  var edges = this.getEdges();
-  for (var i = 0; i < edges.length; i++) {
-    var esb = edges[i];
+  for (var it = this.iterator(); it.hasNext(); ) {
+    var esb = it.next();
     esb.updateIM(im);
   }
 };

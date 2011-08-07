@@ -18,8 +18,7 @@
  * @constructor
  */
 jsts.geomgraph.EdgeEndStar = function() {
-  this.keyList = [];
-  this.edgeMap = {};
+  this.edgeMap = new javascript.util.TreeMap();
   this.edgeList = null;
   this.ptInAreaLocation = [jsts.geom.Location.NONE, jsts.geom.Location.NONE];
 };
@@ -66,8 +65,7 @@ jsts.geomgraph.EdgeEndStar.prototype.insert = function(e) {
  * @protected
  */
 jsts.geomgraph.EdgeEndStar.prototype.insertEdgeEnd = function(e, obj) {
-  this.edgeMap[e] = obj;
-  this.keyList.push(e);
+  this.edgeMap.put(e, obj);
   this.edgeList = null; // edge list has changed - clear the cache
 };
 
@@ -76,15 +74,14 @@ jsts.geomgraph.EdgeEndStar.prototype.insertEdgeEnd = function(e, obj) {
  * @return the coordinate for the node this star is based at.
  */
 jsts.geomgraph.EdgeEndStar.prototype.getCoordinate = function() {
-  this.getEdges();
-  if (this.edgeList.length === 0)
+  var it = this.iterator();
+  if (!it.hasNext())
     return null;
-  var e = this.edgeList[0];
+  var e = it.next();
   return e.getCoordinate();
 };
 jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
-  this.getEdges();
-  return this.edgeList.length;
+  return this.edgeMap.size();
 };
 
 
@@ -92,20 +89,15 @@ jsts.geomgraph.EdgeEndStar.prototype.getDegree = function() {
  * Iterator access to the ordered list of edges is optimized by copying the map
  * collection to a list. (This assumes that once an iterator is requested, it is
  * likely that insertion into the map is complete).
- *
- * NOTE: jsts does not support iterators
  */
+jsts.geomgraph.EdgeEndStar.prototype.iterator = function() {
+  return this.getEdges().iterator();
+};
+
 jsts.geomgraph.EdgeEndStar.prototype.getEdges = function() {
-  this.edgeList = [];
-  var compare = function(a,b) {
-    return a.compareTo(b);
-  };
-  this.keyList.sort(compare);
-
-  for (var i = 0; i < this.keyList.length; i++) {
-    this.edgeList.push(this.edgeMap[this.keyList[i]]);
+  if (this.edgeList === null) {
+    this.edgeList = new javascript.util.ArrayList(this.edgeMap.values());
   }
-
   return this.edgeList;
 };
 
@@ -155,17 +147,17 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
    * then finally null label resolution.
    */
   var hasDimensionalCollapseEdge = [false, false];
-  this.getEdges();
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var e = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext();) {
+    var e = it.next();
     var label = e.getLabel();
     for (var geomi = 0; geomi < 2; geomi++) {
-      if (label.isLine(geomi) && label.getLocation(geomi) === jsts.geom.Location.BOUNDARY)
+      if (label.isLine(geomi) &&
+          label.getLocation(geomi) === jsts.geom.Location.BOUNDARY)
         hasDimensionalCollapseEdge[geomi] = true;
     }
   }
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var e = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext();) {
+    var e = it.next();
     var label = e.getLabel();
     for (var geomi = 0; geomi < 2; geomi++) {
       if (label.isAnyNull(geomi)) {
@@ -189,9 +181,8 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
 jsts.geomgraph.EdgeEndStar.prototype.computeEdgeEndLabels = function(
     boundaryNodeRule) {
   // Compute edge label for each EdgeEnd
-  this.getEdges();
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var ee = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext();) {
+    var ee = it.next();
     ee.computeLabel(boundaryNodeRule);
   }
 };
@@ -203,8 +194,8 @@ jsts.geomgraph.EdgeEndStar.prototype.computeEdgeEndLabels = function(
 jsts.geomgraph.EdgeEndStar.prototype.getLocation = function(geomIndex, p, geom) {
   // compute location only on demand
   if (this.ptInAreaLocation[geomIndex] === jsts.geom.Location.NONE) {
-    this.ptInAreaLocation[geomIndex] = jsts.algorithm.locate.SimplePointInAreaLocator.locate(p,
-        geom[geomIndex].getGeometry());
+    this.ptInAreaLocation[geomIndex] = jsts.algorithm.locate.SimplePointInAreaLocator
+        .locate(p, geom[geomIndex].getGeometry());
   }
   return this.ptInAreaLocation[geomIndex];
 };
@@ -224,32 +215,31 @@ jsts.geomgraph.EdgeEndStar.prototype.checkAreaLabelsConsistent = function(
   // Since edges are stored in CCW order around the node,
   // As we move around the ring we move from the right to the left side of the
   // edge
-  this.getEdges();
+  var edges = this.getEdges();
   // if no edges, trivially consistent
-  if (this.edgeList.length <= 0)
+  if (edges.size() <= 0)
     return true;
   // initialize startLoc to location of last L side (if any)
-  var lastEdgeIndex = this.edgeList.edges.length - 1;
-  var startLabel = this.edgeList[lastEdgeIndex].getLabel();
-  var startLoc = startLabel.getLocation(geomIndex, jsts.geomgraph.Position.LEFT);
-
-  // TODO: Assert.isTrue(startLoc != Location.NONE, 'Found unlabelled area
-  // edge');
+  var lastEdgeIndex = edges.size() - 1;
+  var startLabel = edges.get(lastEdgeIndex).getLabel();
+  var startLoc = startLabel
+      .getLocation(geomIndex, jsts.geomgraph.Position.LEFT);
+  jsts.util.Assert.isTrue(startLoc != jsts.geom.Location.NONE,
+      'Found unlabelled area edge');
 
   var currLoc = startLoc;
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var e = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext();) {
+    var e = it.next();
     var label = e.getLabel();
     // we assume that we are only checking a area
-    // TODO: Assert.isTrue(label.isArea(geomIndex), 'Found non-area edge');
+    jsts.util.Assert.isTrue(label.isArea(geomIndex), 'Found non-area edge');
     var leftLoc = label.getLocation(geomIndex, jsts.geomgraph.Position.LEFT);
     var rightLoc = label.getLocation(geomIndex, jsts.geomgraph.Position.RIGHT);
     // check that edge is really a boundary between inside and outside!
     if (leftLoc === rightLoc) {
       return false;
     }
-    // check side location conflict
-    // Assert.isTrue(rightLoc == currLoc, "side location conflict " + locStr);
+
     if (rightLoc !== currLoc) {
       return false;
     }
@@ -269,10 +259,8 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
   var startLoc = jsts.geom.Location.NONE;
 
   // initialize loc to location of last L side (if any)
-  // System.out.println("finding start location");
-  this.getEdges();
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var e = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext();) {
+    var e = it.next();
     var label = e.getLabel();
     if (label.isArea(geomIndex) &&
         label.getLocation(geomIndex, jsts.geomgraph.Position.LEFT) !== jsts.geom.Location.NONE)
@@ -280,13 +268,12 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
   }
 
   // no labelled sides found, so no labels to propagate
-  if (startLoc === jsts.geom.Location.NONE)
+  if (startLoc == jsts.geom.Location.NONE)
     return;
 
   var currLoc = startLoc;
-  this.getEdges();
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var e = this.edgeList[i];
+  for (var it = this.iterator(); it.hasNext();) {
+    var e = it.next();
     var label = e.getLabel();
     // set null ON values to be in current location
     if (label.getLocation(geomIndex, jsts.geomgraph.Position.ON) === jsts.geom.Location.NONE)
@@ -298,12 +285,12 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
           .getLocation(geomIndex, jsts.geomgraph.Position.RIGHT);
       // if there is a right location, that is the next location to propagate
       if (rightLoc !== jsts.geom.Location.NONE) {
-        if (rightLoc !== currLoc)
+        if (rightLoc != currLoc)
           throw new jsts.error.TopologyError('side location conflict', e
               .getCoordinate());
         if (leftLoc === jsts.geom.Location.NONE) {
-          // TODO: Assert.shouldNeverReachHere('found single null side (at ' +
-          // e.getCoordinate() + ')');
+          jsts.util.Assert.shouldNeverReachHere('found single null side (at ' +
+              e.getCoordinate() + ')');
         }
         currLoc = leftLoc;
       } else {
@@ -314,8 +301,9 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
          * is determined by the current location). Assign both sides to be the
          * current location.
          */
-        // TODO: Assert.isTrue(label.getLocation(geomIndex, Position.LEFT) ==
-        // Location.NONE, 'found single null side');
+        jsts.util.Assert.isTrue(label.getLocation(geomIndex,
+            jsts.geomgraph.Position.LEFT) === jsts.geom.Location.NONE,
+            'found single null side');
         label.setLocation(geomIndex, jsts.geomgraph.Position.RIGHT, currLoc);
         label.setLocation(geomIndex, jsts.geomgraph.Position.LEFT, currLoc);
       }
@@ -323,12 +311,12 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
   }
 };
 
-/*jsts.geomgraph.EdgeEndStar.prototype.findIndex = function(eSearch) {
-  this.getEdges(); // force edgelist to be computed
-  for (var i = 0; i < this.edgeList.length; i++) {
-    var e = this.edgeList[i];
+jsts.geomgraph.EdgeEndStar.prototype.findIndex = function(eSearch) {
+  this.iterator(); // force edgelist to be computed
+  for (var i = 0; i < this.edgeList.size(); i++) {
+    var e = this.edgeList.get(i);
     if (e === eSearch)
       return i;
   }
   return -1;
-};*/
+};
