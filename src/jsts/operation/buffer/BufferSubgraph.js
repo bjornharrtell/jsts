@@ -127,9 +127,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.addReachable = function(
 jsts.operation.buffer.BufferSubgraph.prototype.add = function(node, nodeStack) {
   node.setVisited(true);
   this.nodes.push(node);
-  var edges = node.getEdges().getEdges();
-  for (var i = 0; i < edges.length; i++) {
-    var de = edges[i];
+  for (var i = node.getEdges().iterator(); i.hasNext(); ) {
+    var de = i.next();
     this.dirEdgeList.push(de);
     sym = de.getSym();
     symNode = sym.getNode();
@@ -192,9 +191,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.computeDepths = function(
 
     // add all adjacent nodes to process queue,
     // unless the node has been visited already
-    var edges = n.getEdges().getEdges();
-    for (var i = 0; i < edges.length; i++) {
-      var de = edges[i];
+    for (var i = n.getEdges().iterator(); i.hasNext(); ) {
+      var de = i.next();
       var sym = de.getSym();
       if (sym.isVisited())
         continue;
@@ -213,9 +211,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.computeDepths = function(
 jsts.operation.buffer.BufferSubgraph.prototype.computeNodeDepth = function(n) {
   // find a visited dirEdge to start at
   var startEdge = null;
-  var edges = n.getEdges().getEdges();
-  for (var i = 0; i < edges.length; i++) {
-    var de = edges[i];
+  for (var i = n.getEdges().iterator(); i.hasNext(); ) {
+    var de = i.next();
     if (de.isVisited() || de.getSym().isVisited()) {
       startEdge = de;
       break;
@@ -232,9 +229,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.computeNodeDepth = function(n) {
   n.getEdges().computeDepths(startEdge);
 
   // copy depths to sym edges
-  var edges = n.getEdges().getEdges();
-  for (var i = 0; i < edges.length; i++) {
-    var de = edges[i];
+  for (var i = n.getEdges().iterator(); i.hasNext(); ) {
+    var de = i.next();
     de.setVisited(true);
     this.copySymDepths(de);
   }

@@ -258,6 +258,3 @@ jsts.geomgraph.DirectedEdge.prototype.setEdgeDepths = function(position, depth) 
   this.setDepth(oppositePos, oppositeDepth);
 };
 
-jsts.geomgraph.DirectedEdge.prototype.toString = function() {
-  return 'DirectedEdge_' + this.dx + '_' + this.dy + '_' + this.quadrant;
-};

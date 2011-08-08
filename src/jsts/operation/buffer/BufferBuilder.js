@@ -129,7 +129,7 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
   var bufferSegStrList = curveSetBuilder.getCurves();
 
   // short-circuit test
-  if (bufferSegStrList.length <= 0) {
+  if (bufferSegStrList.size() <= 0) {
     return this.createEmptyResultGeometry();
   }
 
@@ -176,8 +176,9 @@ jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(buffe
   var noder = this.getNoder(precisionModel);
   noder.computeNodes(bufferSegStrList);
   var nodedSegStrings = noder.getNodedSubstrings();
-  for (var i = 0; i < nodedSegStrings.length; i++) {
-    var segStr = nodedSegStrings[i];
+
+  for (var i = nodedSegStrings.iterator(); i.hasNext(); ) {
+    var segStr = i.next();
     var oldLabel = segStr.getData();
     var edge = new jsts.geomgraph.Edge(segStr.getCoordinates(), new jsts.geomgraph.Label(oldLabel));
     this.insertUniqueEdge(edge);
@@ -228,10 +229,9 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
  */
 jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) {
   var subgraphList = [];
-  var nodes = graph.getNodes();
-  for (var i = 0; i < nodes.length; i++) {
-    var node = nodes[i];
-    if (!node.isVisited()) {
+  for (var i = graph.getNodes().iterator(); i.hasNext(); ) {
+    var node = i.next();
+    if (! node.isVisited()) {
       var subgraph = new jsts.operation.buffer.BufferSubgraph();
       subgraph.create(node);
       subgraphList.push(subgraph);
@@ -243,7 +243,6 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
    * shells will have been built before the subgraphs for any holes they
    * contain.
    */
-  // TODO: decide if sorting is required.
 
   var compare = function(a,b) {
     return e.compareTo(b);
@@ -282,15 +281,11 @@ jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraph
 
 
 /**
- * TODO: need to replace usage of iterator
- *
  * @private
  */
 jsts.operation.buffer.BufferBuilder.convertSegStrings = function(it) {
-  throw new jsts.error.NotImplementedError();
-
   var fact = new jsts.geom.GeometryFactory();
-  var lines = [];
+  var lines = new javascript.util.ArrayList();
   while (it.hasNext()) {
     var ss = it.next();
     var line = fact.createLineString(ss.getCoordinates());
