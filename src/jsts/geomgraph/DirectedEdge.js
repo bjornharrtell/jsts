@@ -15,9 +15,9 @@
  * @extends jsts.geomgraph.EdgeEnd
  */
 jsts.geomgraph.DirectedEdge = function(edge, isForward) {
-  this.depth = [0, -999, -999];
-
   jsts.geomgraph.EdgeEnd.call(this, edge);
+
+  this.depth = [0, -999, -999];
 
   this._isForward = isForward;
   if (isForward) {

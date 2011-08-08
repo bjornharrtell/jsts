@@ -34,9 +34,9 @@ jsts.error.IllegalArgumentError.prototype = new Error();
 /**
  * @constructor
  */
-jsts.error.TopologyError = function(message) {
+jsts.error.TopologyError = function(message, pt) {
   this.name = 'TopologyError';
-  this.message = message;
+  this.message = pt ? message + ' [ ' + pt + ' ]' : message;
 };
 jsts.error.TopologyError.prototype = new Error();
 

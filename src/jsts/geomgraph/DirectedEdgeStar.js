@@ -337,7 +337,7 @@ jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths = function(de) {
   var startDepth = de.getDepth(jsts.geomgraph.Position.LEFT);
   var targetLastDepth = de.getDepth(jsts.geomgraph.Position.RIGHT);
   // compute the depths from this edge up to the end of the edge array
-  var nextDepth = this.computeDepths2(edgeIndex + 1, this.edgeList.length, startDepth);
+  var nextDepth = this.computeDepths2(edgeIndex + 1, this.edgeList.size(), startDepth);
   // compute the depths for the initial part of the array
   var lastDepth = this.computeDepths2(0, edgeIndex, nextDepth);
   if (lastDepth != targetLastDepth)
