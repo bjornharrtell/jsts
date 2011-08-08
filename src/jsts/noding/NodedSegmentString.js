@@ -37,9 +37,9 @@ jsts.noding.NodedSegmentString.constructor = jsts.noding.NodedSegmentString;
 
 /**
  *
- * @param {Array}
+ * @param {javascript.util.Collection}
  *          segStrings a Collection of NodedSegmentStrings.
- * @param resultEdgelist
+ * @param {javascript.util.Collection} resultEdgelist
  *          a List which will collect the NodedSegmentStrings representing the
  *          substrings.
  * @return {Array} a Collection of NodedSegmentStrings representing the
@@ -47,10 +47,11 @@ jsts.noding.NodedSegmentString.constructor = jsts.noding.NodedSegmentString;
  */
 jsts.noding.NodedSegmentString.getNodedSubstrings = function(segStrings) {
   if (arguments.length === 2) {
-    return jsts.noding.NodedSegmentString.getNodedSubstrings2(segStrings, resultEdgelist);
+    jsts.noding.NodedSegmentString.getNodedSubstrings2.apply(this, arguments);
+    return;
   }
 
-  var resultEdgelist = [];
+  var resultEdgelist = new javascript.util.ArrayList();
   jsts.noding.NodedSegmentString.getNodedSubstrings2(segStrings, resultEdgelist);
   return resultEdgelist;
 };
@@ -58,16 +59,16 @@ jsts.noding.NodedSegmentString.getNodedSubstrings = function(segStrings) {
 
 /**
  *
- * @param segStrings
+ * @param {javascript.util.Collection} segStrings
  *          a Collection of NodedSegmentStrings.
- * @param resultEdgelist
+ * @param {javascript.util.Collection} resultEdgelist
  *          a List which will collect the NodedSegmentStrings representing the
  *          substrings.
  */
 jsts.noding.NodedSegmentString.getNodedSubstrings2 = function(segStrings,
     resultEdgelist) {
-  for (var i = 0; i < segStrings.length; i++) {
-    var ss = segStrings[i];
+  for (var i = segStrings.iterator(); i.hasNext(); ) {
+    var ss = i.next();
     ss.getNodeList().addSplitEdges(resultEdgelist);
   }
 };

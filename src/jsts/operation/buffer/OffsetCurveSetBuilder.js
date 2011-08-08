@@ -17,7 +17,7 @@ jsts.operation.buffer.OffsetCurveSetBuilder = function(inputGeom, distance,
   this.distance = distance;
   this.curveBuilder = curveBuilder;
 
-  this.curveList = [];
+  this.curveList = new javascript.util.ArrayList();
 };
 
 
@@ -75,7 +75,7 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addCurve = function(
   // add the edge for a coordinate list which is a raw offset curve
   var e = new jsts.noding.NodedSegmentString(coord, new jsts.geomgraph.Label(0,
       jsts.geom.Location.BOUNDARY, leftLoc, rightLoc));
-  this.curveList.push(e);
+  this.curveList.add(e);
 };
 
 

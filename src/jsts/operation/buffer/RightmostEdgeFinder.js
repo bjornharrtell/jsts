@@ -43,9 +43,8 @@ jsts.operation.buffer.RightmostEdgeFinder.prototype.findEdge = function(
    * If the rightmost point is a node, we need to identify which of the incident
    * edges is rightmost.
    */
-  // TODO: Assert.isTrue(minIndex != 0 || minCoord.equals(minDe.getCoordinate())
-  // , "inconsistency in rightmost processing");
-  if (this.minIndex == 0) {
+  jsts.util.Assert.isTrue(this.minIndex !== 0 || this.minCoord.equals(this.minDe.getCoordinate()) , 'inconsistency in rightmost processing');
+  if (this.minIndex === 0) {
     this.findRightmostEdgeAtNode();
   } else {
     this.findRightmostEdgeAtVertex();

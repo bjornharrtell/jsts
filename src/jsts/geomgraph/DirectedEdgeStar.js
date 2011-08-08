@@ -70,9 +70,9 @@ jsts.geomgraph.DirectedEdgeStar.prototype.getRightmostEdge = function() {
 
   var quad0 = de0.getQuadrant();
   var quad1 = deLast.getQuadrant();
-  if (jsts.geomgraph.Quadrant.isNorthern(quad0) && Quadrant.isNorthern(quad1))
+  if (jsts.geomgraph.Quadrant.isNorthern(quad0) && jsts.geomgraph.Quadrant.isNorthern(quad1))
     return de0;
-  else if (! jsts.geomgraph.Quadrant.isNorthern(quad0) && ! Quadrant.isNorthern(quad1))
+  else if (! jsts.geomgraph.Quadrant.isNorthern(quad0) && ! jsts.geomgraph.Quadrant.isNorthern(quad1))
     return deLast;
   else {
     // edges are in different hemispheres - make sure we return one that is non-horizontal
@@ -94,7 +94,7 @@ jsts.geomgraph.DirectedEdgeStar.prototype.computeLabelling = function(geom) {
 
   // determine the overall labelling for this DirectedEdgeStar
   // (i.e. for the node it is based at)
-  this.label = new Label(jsts.geom.Location.NONE);
+  this.label = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
   for (var it = this.iterator(); it.hasNext(); ) {
     var ee = it.next();
     var e = ee.getEdge();

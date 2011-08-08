@@ -99,8 +99,8 @@
 
   jsts.noding.MCIndexNoder.prototype.computeNodes = function(inputSegStrings) {
     this.nodedSegStrings = inputSegStrings;
-    for (var i = 0; i < inputSegStrings.length; i++) {
-      this.add(inputSegStrings[i]);
+    for (var i = inputSegStrings.iterator(); i.hasNext(); ) {
+      this.add(i.next());
     }
     this.intersectChains();
   };
