@@ -67,7 +67,7 @@
    * interest).
    */
   PlanarGraph.linkResultDirectedEdges = function(nodes) {
-    for (var nodeit = this.nodes.iterator(); nodeit.hasNext();) {
+    for (var nodeit = nodes.iterator(); nodeit.hasNext();) {
       var node = nodeit.next();
       node.getEdges().linkResultDirectedEdges();
     }

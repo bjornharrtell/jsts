@@ -33,6 +33,11 @@ jsts.operation.overlay.PolygonBuilder.prototype.shellList = null;
  *          graph
  */
 jsts.operation.overlay.PolygonBuilder.prototype.add = function(graph) {
+  if (arguments.length === 2) {
+    this.add2.apply(this, arguments);
+    return;
+  }
+
   this.add2(graph.getEdgeEnds(), graph.getNodes());
 };
 
@@ -64,8 +69,8 @@ jsts.operation.overlay.PolygonBuilder.prototype.getPolygons = function() {
 jsts.operation.overlay.PolygonBuilder.prototype.buildMaximalEdgeRings = function(
     dirEdges) {
   var maxEdgeRings = [];
-  for (var i = 0; i < dirEdges.length; i++) {
-    var de = dirEdges[i];
+  for (var it = dirEdges.iterator(); it.hasNext(); ) {
+    var de = it.next();
     if (de.isInResult() && de.getLabel().isArea()) {
       // if this edge has not yet been processed
       if (de.getEdgeRing() == null) {
@@ -128,8 +133,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.findShell = function(
       shellCount++;
     }
   }
-  // TODO: Assert.isTrue(shellCount <= 1, "found two shells in MinimalEdgeRing
-  // list");
+  jsts.util.Assert.isTrue(shellCount <= 1, 'found two shells in MinimalEdgeRing list');
   return shell;
 };
 /**
@@ -199,7 +203,6 @@ jsts.operation.overlay.PolygonBuilder.prototype.placeFreeHoles = function(
       if (shell === null)
         throw new jsts.error.TopologyError('unable to assign hole to a shell',
             hole.getCoordinate(0));
-      // Assert.isTrue(shell != null, "unable to assign hole to a shell");
       hole.setShell(shell);
     }
   }

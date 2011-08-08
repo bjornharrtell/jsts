@@ -16,8 +16,8 @@
  * @constructor
  */
 jsts.operation.buffer.BufferSubgraph = function() {
-  this.dirEdgeList = [];
-  this.nodes = [];
+  this.dirEdgeList = new javascript.util.ArrayList();
+  this.nodes = new javascript.util.ArrayList();
 
   this.finder = new jsts.operation.buffer.RightmostEdgeFinder();
 };
@@ -65,8 +65,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.getNodes = function() {
 jsts.operation.buffer.BufferSubgraph.prototype.getEnvelope = function() {
   if (this.env === null) {
     var edgeEnv = new jsts.geom.Envelope();
-    for (var i = 0; i < this.dirEdgeList.length; i++) {
-      var dirEdge = this.dirEdgeList[i];
+    for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
+      var dirEdge = it.next();
       var pts = dirEdge.getEdge().getCoordinates();
       for (var j = 0; j < pts.length - 1; j++) {
         edgeEnv.expandToInclude(pts[j]);
@@ -126,10 +126,10 @@ jsts.operation.buffer.BufferSubgraph.prototype.addReachable = function(
  */
 jsts.operation.buffer.BufferSubgraph.prototype.add = function(node, nodeStack) {
   node.setVisited(true);
-  this.nodes.push(node);
+  this.nodes.add(node);
   for (var i = node.getEdges().iterator(); i.hasNext(); ) {
     var de = i.next();
-    this.dirEdgeList.push(de);
+    this.dirEdgeList.add(de);
     sym = de.getSym();
     symNode = sym.getNode();
     /**
@@ -143,8 +143,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.add = function(node, nodeStack) {
 };
 
 jsts.operation.buffer.BufferSubgraph.prototype.clearVisitedEdges = function() {
-  for (var i = 0; i < this.dirEdgeList.length; i++) {
-    var de = this.dirEdgeList[i];
+  for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
+    var de = it.next();
     de.setVisited(false);
   }
 };
@@ -255,12 +255,14 @@ jsts.operation.buffer.BufferSubgraph.prototype.copySymDepths = function(de) {
  * the result area boundary.
  */
 jsts.operation.buffer.BufferSubgraph.prototype.findResultEdges = function() {
-  for (var i = 0; i < this.dirEdgeList.length; i++) {
-    var de = this.dirEdgeList[i];
+  for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
+    var de = it.next();
     /**
-     * Select edges which have an interior depth on the RHS and an exterior
-     * depth on the LHS. Note that because of weird rounding effects there may
-     * be edges which have negative depths! Negative depths count as "outside".
+     * Select edges which have an interior depth on the RHS
+     * and an exterior depth on the LHS.
+     * Note that because of weird rounding effects there may be
+     * edges which have negative depths!  Negative depths
+     * count as "outside".
      */
     // <FIX> - handle negative depths
     if (de.getDepth(jsts.geomgraph.Position.RIGHT) >= 1 &&

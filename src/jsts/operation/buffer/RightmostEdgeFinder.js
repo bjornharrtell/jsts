@@ -32,9 +32,9 @@ jsts.operation.buffer.RightmostEdgeFinder.prototype.findEdge = function(
    * Check all forward DirectedEdges only. This is still general, because each
    * edge has a forward DirectedEdge.
    */
-  for (var i = 0; i < dirEdgeList.length; i++) {
-    var de = dirEdgeList[i];
-    if (!de.isForward())
+  for (var i = dirEdgeList.iterator(); i.hasNext();) {
+    var de = i.next();
+    if (! de.isForward())
       continue;
     this.checkForRightmostCoordinate(de);
   }
@@ -83,18 +83,17 @@ jsts.operation.buffer.RightmostEdgeFinder.prototype.findRightmostEdgeAtVertex = 
    * rightmost.
    */
   var pts = this.minDe.getEdge().getCoordinates();
-  // TODO: Assert.isTrue(minIndex > 0 && minIndex < pts.length, "rightmost point
-  // expected to be interior vertex of edge");
+  jsts.util.Assert.isTrue(this.minIndex > 0 && this.minIndex < pts.length, 'rightmost point expected to be interior vertex of edge');
   var pPrev = pts[this.minIndex - 1];
   var pNext = pts[this.minIndex + 1];
   var orientation = jsts.algorithm.CGAlgorithms.computeOrientation(
       this.minCoord, pNext, pPrev);
   var usePrev = false;
   // both segments are below min point
-  if (pPrev.y < minCoord.y && pNext.y < minCoord.y &&
+  if (pPrev.y < this.minCoord.y && pNext.y < this.minCoord.y &&
       orientation === jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE) {
     usePrev = true;
-  } else if (pPrev.y > minCoord.y && pNext.y > this.minCoord.y &&
+  } else if (pPrev.y > this.minCoord.y && pNext.y > this.minCoord.y &&
       orientation === jsts.algorithm.CGAlgorithms.CLOCKWISE) {
     usePrev = true;
   }

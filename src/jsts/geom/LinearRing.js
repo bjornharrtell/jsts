@@ -31,6 +31,8 @@ jsts.geom.LinearRing = function() {
 };
 jsts.geom.LinearRing.prototype = new jsts.geom.LineString();
 
+jsts.geom.LinearRing.MINIMUM_VALID_SIZE = 4;
+
 
 /**
  * Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
