@@ -116,7 +116,7 @@ jsts.operation.buffer.BufferParameters.prototype.mitreLimit = jsts.operation.buf
  * @type {boolean}
  * @private
  */
-jsts.operation.buffer.BufferParameters.prototype.isSingleSided = false;
+jsts.operation.buffer.BufferParameters.prototype._isSingleSided = false;
 
 /**
  * Gets the number of quadrant segments which will be used
@@ -312,7 +312,7 @@ jsts.operation.buffer.BufferParameters.prototype.setMitreLimit = function(
  */
 jsts.operation.buffer.BufferParameters.prototype.setSingleSided = function(
     isSingleSided) {
-  this.isSingleSided = isSingleSided;
+  this._isSingleSided = isSingleSided;
 };
 
 
@@ -322,5 +322,5 @@ jsts.operation.buffer.BufferParameters.prototype.setSingleSided = function(
  * @return true if the generated buffer is to be single-sided.
  */
 jsts.operation.buffer.BufferParameters.prototype.isSingleSided = function() {
-  return this.isSingleSided;
+  return this._isSingleSided;
 };
