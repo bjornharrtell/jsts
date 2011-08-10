@@ -361,7 +361,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addOutsideTurn = function
   }
 
   if (this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_MITRE) {
-    athis.ddMitreJoin(this.s1, this.offset0, this.offset1, this.distance);
+    this.addMitreJoin(this.s1, this.offset0, this.offset1, this.distance);
   } else if (this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_BEVEL) {
     this.addBevelJoin(this.offset0, this.offset1);
   } else {
@@ -498,10 +498,10 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLineEndCap = function(
   var seg = new jsts.geom.LineSegment(p0, p1);
 
   var offsetL = new jsts.geom.LineSegment();
-  this.computeOffsetSegment(seg, jsts.geomgraph.Position.LEFT, distance,
+  this.computeOffsetSegment(seg, jsts.geomgraph.Position.LEFT, this.distance,
       offsetL);
   var offsetR = new jsts.geom.LineSegment();
-  this.computeOffsetSegment(seg, jsts.geomgraph.Position.RIGHT, distance,
+  this.computeOffsetSegment(seg, jsts.geomgraph.Position.RIGHT, this.distance,
       offsetR);
 
   var dx = p1.x - p0.x;
@@ -513,7 +513,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLineEndCap = function(
       // add offset seg points with a fillet between them
       this.segList.addPt(offsetL.p1);
       this.addFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2,
-          CGAlgorithms.CLOCKWISE, distance);
+          jsts.algorithm.CGAlgorithms.CLOCKWISE, this.distance);
       this.segList.addPt(offsetR.p1);
       break;
     case jsts.operation.buffer.BufferParameters.CAP_FLAT:
@@ -685,6 +685,11 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addBevelJoin = function(
  */
 jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet = function(p,
     p0, p1, direction, radius) {
+  if (!(p1 instanceof jsts.geom.Coordinate)) {
+    this.addFillet2.apply(this, arguments);
+    return;
+  }
+
   var dx0 = p0.x - p.x;
   var dy0 = p0.y - p.y;
   var startAngle = Math.atan2(dy0, dx0);
@@ -692,7 +697,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet = function(p,
   var dy1 = p1.y - p.y;
   var endAngle = Math.atan2(dy1, dx1);
 
-  if (direction == jsts.algorithm.CGAlgorithms.CLOCKWISE) {
+  if (direction === jsts.algorithm.CGAlgorithms.CLOCKWISE) {
     if (startAngle <= endAngle)
       startAngle += 2.0 * Math.PI;
   } else { // direction == COUNTERCLOCKWISE
@@ -716,7 +721,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet = function(p,
  *          the radius of the fillet.
  * @private
  */
-jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet = function(p,
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet2 = function(p,
     startAngle, endAngle, direction, radius) {
   var directionFactor = direction === jsts.algorithm.CGAlgorithms.CLOCKWISE ? -1
       : 1;

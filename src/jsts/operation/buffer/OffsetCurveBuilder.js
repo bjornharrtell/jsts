@@ -220,7 +220,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeLineBufferCurve = func
   // Coordinate[] simp1 = inputPts;
 
   var n1 = simp1.length - 1;
-  segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT);
+  segGen.initSideSegments(simp1[0], simp1[1], jsts.geomgraph.Position.LEFT);
   for (var i = 2; i <= n1; i++) {
     segGen.addNextSegment(simp1[i], true);
   }
@@ -238,7 +238,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeLineBufferCurve = func
 
   // since we are traversing line in opposite order, offset position is still
   // LEFT
-  segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT);
+  segGen.initSideSegments(simp2[n2], simp2[n2 - 1], jsts.geomgraph.Position.LEFT);
   for (var i = n2 - 2; i >= 0; i--) {
     segGen.addNextSegment(simp2[i], true);
   }
