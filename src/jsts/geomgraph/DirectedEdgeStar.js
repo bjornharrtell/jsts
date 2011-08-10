@@ -152,7 +152,7 @@
    */
   DirectedEdgeStar.prototype.getResultAreaEdges = function() {
     if (this.resultAreaEdgeList != null)
-      return resultAreaEdgeList;
+      return this.resultAreaEdgeList;
     this.resultAreaEdgeList = new javascript.util.ArrayList();
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next();

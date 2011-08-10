@@ -123,20 +123,20 @@ jsts.geomgraph.EdgeRing.prototype.computePoints = function(start) {
   do {
     if (de === null)
       throw new jsts.error.TopologyError('Found null DirectedEdge');
-    if (de.getEdgeRing() == this)
+    if (de.getEdgeRing() === this)
       throw new jsts.error.TopologyError(
           'Directed Edge visited twice during ring-building at ' +
               de.getCoordinate());
 
     this.edges.push(de);
     var label = de.getLabel();
-    // TODO: Assert.isTrue(label.isArea());
+    jsts.util.Assert.isTrue(label.isArea());
     this.mergeLabel(label);
     this.addPoints(de.getEdge(), de.isForward(), isFirstEdge);
     isFirstEdge = false;
     this.setEdgeRing(de, this);
     de = this.getNext(de);
-  } while (de != this.startDe);
+  } while (de !== this.startDe);
 };
 
 jsts.geomgraph.EdgeRing.prototype.getMaxNodeDegree = function() {
