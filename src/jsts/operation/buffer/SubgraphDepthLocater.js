@@ -13,7 +13,7 @@
  */
 jsts.operation.buffer.SubgraphDepthLocater = function(subgraphs) {
   this.subgraphs = [];
-  this.seg = jsts.geom.LineSegment();
+  this.seg = new jsts.geom.LineSegment();
 
   this.subgraphs = subgraphs;
 };
@@ -89,9 +89,9 @@ jsts.operation.buffer.SubgraphDepthLocater.prototype.findStabbedSegments2 = func
    * Check all forward DirectedEdges only. This is still general, because each
    * Edge has a forward DirectedEdge.
    */
-  for (var i = 0; i < dirEdges.length; i++) {
-    var de = dirEdges[i];
-    if (!de.isForward())
+  for (var i = dirEdges.iterator(); i.hasNext();) {
+    var de = i.next();
+    if (! de.isForward())
       continue;
     this.findStabbedSegments3(stabbingRayLeftPt, de, stabbedSegments);
   }
@@ -112,38 +112,38 @@ jsts.operation.buffer.SubgraphDepthLocater.prototype.findStabbedSegments3 = func
     stabbingRayLeftPt, dirEdge, stabbedSegments) {
   var pts = dirEdge.getEdge().getCoordinates();
   for (var i = 0; i < pts.length - 1; i++) {
-    seg.p0 = pts[i];
-    seg.p1 = pts[i + 1];
+    this.seg.p0 = pts[i];
+    this.seg.p1 = pts[i + 1];
     // ensure segment always points upwards
-    if (seg.p0.y > seg.p1.y)
-      seg.reverse();
+    if (this.seg.p0.y > this.seg.p1.y)
+      this.seg.reverse();
 
     // skip segment if it is left of the stabbing line
-    var maxx = Math.max(seg.p0.x, seg.p1.x);
+    var maxx = Math.max(this.seg.p0.x, this.seg.p1.x);
     if (maxx < stabbingRayLeftPt.x)
       continue;
 
     // skip horizontal segments (there will be a non-horizontal one carrying the
     // same depth info
-    if (seg.isHorizontal())
+    if (this.seg.isHorizontal())
       continue;
 
     // skip if segment is above or below stabbing line
-    if (stabbingRayLeftPt.y < seg.p0.y || stabbingRayLeftPt.y > seg.p1.y)
+    if (stabbingRayLeftPt.y < this.seg.p0.y || stabbingRayLeftPt.y > this.seg.p1.y)
       continue;
 
     // skip if stabbing ray is right of the segment
-    if (jsts.algorithm.CGAlgorithms.computeOrientation(seg.p0, seg.p1,
+    if (jsts.algorithm.CGAlgorithms.computeOrientation(this.seg.p0, this.seg.p1,
         stabbingRayLeftPt) === jsts.algorithm.CGAlgorithms.RIGHT)
       continue;
 
     // stabbing line cuts this segment, so record it
     var depth = dirEdge.getDepth(jsts.geomgraph.Position.LEFT);
     // if segment direction was flipped, use RHS depth instead
-    if (!seg.p0.equals(pts[i]))
+    if (!this.seg.p0.equals(pts[i]))
       depth = dirEdge.getDepth(jsts.geomgraph.Position.RIGHT);
-    var ds = new jsts.operation.buffer.SubgraphDepthLocater.DepthSegment(seg, depth);
-    stabbedSegments.add(ds);
+    var ds = new jsts.operation.buffer.SubgraphDepthLocater.DepthSegment(this.seg, depth);
+    stabbedSegments.push(ds);
   }
 };
 
