@@ -4,6 +4,8 @@
  * See /license.txt for the full text of the license.
  */
 
+(function() {
+
 /**
  * @requires jsts/geom/Geometry.js
  */
@@ -15,16 +17,26 @@
  * @augments OpenLayers.Geometry.Collection
  * @augments jsts.geom.Geometry
  */
-jsts.geom.GeometryCollection = function() {
+var GeometryCollection = function(components) {
+  OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
+  this.components = [];
+  if (components != null) {
+      this.addComponents(components);
+  }
+  this.geometries = [];
 };
 
-jsts.geom.GeometryCollection.prototype = new jsts.geom.Geometry();
+GeometryCollection.prototype = new OpenLayers.Geometry.Collection();
+
+for (key in jsts.geom.Geometry.prototype) {
+  GeometryCollection.prototype[key] = jsts.geom.Geometry.prototype[key];
+}
 
 
 /**
  * @return {boolean}
  */
-jsts.geom.GeometryCollection.prototype.isEmpty = function() {
+GeometryCollection.prototype.isEmpty = function() {
   for (var i = 0; i < this.geometries.length; i++) {
     var geometry = this.geometries[i];
 
@@ -39,7 +51,7 @@ jsts.geom.GeometryCollection.prototype.isEmpty = function() {
 /**
  * @return {Coordinate}
  */
-jsts.geom.GeometryCollection.prototype.getCoordinate = function() {
+GeometryCollection.prototype.getCoordinate = function() {
   if (this.isEmpty())
     return null;
 
@@ -56,7 +68,7 @@ jsts.geom.GeometryCollection.prototype.getCoordinate = function() {
  *
  * @return {Coordinate[]} the collected coordinates.
  */
-jsts.geom.GeometryCollection.prototype.getCoordinates = function() {
+GeometryCollection.prototype.getCoordinates = function() {
   var coordinates = [];
   var k = -1;
   for (var i = 0; i < this.geometries.length; i++) {
@@ -75,7 +87,7 @@ jsts.geom.GeometryCollection.prototype.getCoordinates = function() {
 /**
  * @return {int}
  */
-jsts.geom.GeometryCollection.prototype.getNumGeometries = function() {
+GeometryCollection.prototype.getNumGeometries = function() {
   return this.geometries.length;
 };
 
@@ -85,7 +97,7 @@ jsts.geom.GeometryCollection.prototype.getNumGeometries = function() {
  *          n
  * @return {Geometry}
  */
-jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
+GeometryCollection.prototype.getGeometryN = function(n) {
   return this.geometries[n];
 };
 
@@ -97,7 +109,7 @@ jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
  *          tolerance
  * @return {boolean}
  */
-jsts.geom.GeometryCollection.prototype.equalsExact = function(other, tolerance) {
+GeometryCollection.prototype.equalsExact = function(other, tolerance) {
   if (!this.isEquivalentClass(other)) {
     return false;
   }
@@ -114,7 +126,7 @@ jsts.geom.GeometryCollection.prototype.equalsExact = function(other, tolerance) 
   return true;
 };
 
-jsts.geom.GeometryCollection.prototype.apply = function(filter) {
+GeometryCollection.prototype.apply = function(filter) {
   filter.filter(this);
   for (var i = 0; i < this.geometries.length; i++) {
     this.geometries[i].apply(filter);
@@ -122,7 +134,7 @@ jsts.geom.GeometryCollection.prototype.apply = function(filter) {
 };
 
 
-jsts.geom.GeometryCollection.prototype.getDimension = function() {
+GeometryCollection.prototype.getDimension = function() {
   var dimension = jsts.geom.Dimension.FALSE;
   for (var i = 0; i < this.geometries.length; i++) {
     var geometry = this.geometries[i];
@@ -135,7 +147,7 @@ jsts.geom.GeometryCollection.prototype.getDimension = function() {
 /**
  * @protected
  */
-jsts.geom.GeometryCollection.prototype.computeEnvelopeInternal = function() {
+GeometryCollection.prototype.computeEnvelopeInternal = function() {
   var envelope = new jsts.geom.Envelope();
   for (var i = 0; i < this.geometries.length; i++) {
     var geometry = this.geometries[i];
@@ -144,29 +156,9 @@ jsts.geom.GeometryCollection.prototype.computeEnvelopeInternal = function() {
   return envelope;
 };
 
-OpenLayers.Geometry.Collection = OpenLayers.Class(
-    OpenLayers.Geometry.Collection, jsts.geom.GeometryCollection, {
-      initialize: function(components) {
-        OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
-        this.components = [];
-        if (components != null) {
-          this.addComponents(components);
-        }
-        this.geometries = [];
+jsts.geom.GeometryCollection = GeometryCollection;
+OpenLayers.Geometry.Collection = GeometryCollection;
 
-        // this is for multipoint type
-        // TODO: not needed for non multipart collections, should be run conditionally
-        for (var i = 0; i < this.components.length; i++) {
-          var component = this.components[i];
-          // NOTE: special handling since in JTS the parts would be Points.
-          if (component instanceof jsts.geom.Coordinate) {
-            this.geometries.push(new jsts.geom.Point(component));
-          } else {
-            this.geometries.push(component);
-          }
-        }
-      }
-    });
-jsts.geom.GeometryCollection = OpenLayers.Geometry.Collection;
+})();
 
 // TODO: port rest
