@@ -74,7 +74,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMaximalEdgeRings = function
     if (de.isInResult() && de.getLabel().isArea()) {
       // if this edge has not yet been processed
       if (de.getEdgeRing() == null) {
-        er = new jsts.operation.overlay.MaximalEdgeRing(de, this.geometryFactory);
+        var er = new jsts.operation.overlay.MaximalEdgeRing(de, this.geometryFactory);
         maxEdgeRings.push(er);
         er.setInResult();
         // System.out.println("max node degree = " + er.getMaxDegree());

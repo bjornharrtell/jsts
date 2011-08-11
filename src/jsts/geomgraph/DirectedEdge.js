@@ -21,7 +21,7 @@
    * @constructor
    * @extends jsts.geomgraph.EdgeEnd
    */
-  DirectedEdge = function(edge, isForward) {
+  var DirectedEdge = function(edge, isForward) {
     EdgeEnd.call(this, edge);
 
     this.depth = [0, -999, -999];

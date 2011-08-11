@@ -43,7 +43,7 @@
    *          elements
    * @constructor
    */
-  IntersectionMatrix = function(elements) {
+  var IntersectionMatrix = function(elements) {
     var other = elements;
 
     if (elements === undefined || elements === null) {
