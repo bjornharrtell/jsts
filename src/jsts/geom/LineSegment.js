@@ -4,7 +4,9 @@
  * See /license.txt for the full text of the license.
  */
 
-
+/**
+ * @requires jsts/geom/Coordinate.js
+ */
 
 /**
  * Represents a line segment defined by two {@link Coordinate}s. Provides

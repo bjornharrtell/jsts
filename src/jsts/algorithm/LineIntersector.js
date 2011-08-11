@@ -18,10 +18,7 @@
  */
 jsts.algorithm.LineIntersector = function() {
   this.inputLines = [[], []];
-  this.intPt = [];
-
-  this.intPt[0] = new jsts.geom.Coordinate();
-  this.intPt[1] = new jsts.geom.Coordinate();
+  this.intPt = [null, null];
   // alias the intersection points for ease of reference
   this.pa = this.intPt[0];
   this.pb = this.intPt[1];

@@ -4,7 +4,9 @@
  * See /license.txt for the full text of the license.
  */
 
-
+/**
+ * @requires jsts/geomgraph/Position.js
+ */
 
 /**
  * A TopologyLocation is the labelling of a GraphComponent's topological

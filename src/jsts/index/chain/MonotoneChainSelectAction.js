@@ -5,6 +5,11 @@
  */
 
 /**
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/LineSegment.js
+ */
+
+/**
  * The action for the internal iterator for performing envelope select queries
  * on a MonotoneChain
  *
@@ -36,5 +41,4 @@ jsts.index.chain.MonotoneChainSelectAction.prototype.select = function(mc,
  *
  * @param seg
  */
-jsts.index.chain.MonotoneChainSelectAction.prototype.select2 = function(seg) {
-};
+jsts.index.chain.MonotoneChainSelectAction.prototype.select2 = function(seg) {};

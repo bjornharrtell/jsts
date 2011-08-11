@@ -179,13 +179,13 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   var geomClass = null;
   var isHeterogeneous = false;
   var hasGeometryCollection = false;
-  for (var i = 0; i < geomList.length; i++) {
-    var geom = geomList[i];
+  for (var i = geomList.iterator(); i.hasNext(); ) {
+    var geom = i.next();
     var partClass = geom.constructor;
-    if (geomClass == null) {
+    if (geomClass === null) {
       geomClass = partClass;
     }
-    if (partClass != geomClass) {
+    if (partClass !== geomClass) {
       isHeterogeneous = true;
     }
     if (geom instanceof jsts.geom.GeometryCollection)
@@ -205,19 +205,19 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   // at this point we know the collection is hetereogenous.
   // Determine the type of the result from the first Geometry in the list
   // this should always return a geometry, since otherwise an empty collection would have already been returned
-  var geom0 = geomList[0];
-  var isCollection = geomList.length > 1;
+  var geom0 = geomList.get(0);
+  var isCollection = geomList.size() > 1;
   if (isCollection) {
     if (geom0 instanceof jsts.geom.Polygon) {
-      return this.createMultiPolygon(geomList);
+      return this.createMultiPolygon(geomList.toArray());
     }
     else if (geom0 instanceof jsts.geom.LineString) {
-      return this.createMultiLineString(geomList);
+      return this.createMultiLineString(geomList.toArray());
     }
     else if (geom0 instanceof jsts.geom.Point) {
-      return this.createMultiPoint(geomList);
+      return this.createMultiPoint(geomList.toArray());
     }
-    // TODO: Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
+    jsts.util.Assert.shouldNeverReachHere('Unhandled class: ' + geom0);
   }
   return geom0;
 };

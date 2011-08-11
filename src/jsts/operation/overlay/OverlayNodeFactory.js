@@ -5,6 +5,10 @@
  */
 
 /**
+ * @requires jsts/geomgraph/NodeFactory.js
+ */
+
+/**
  * Creates nodes for use in the {@link PlanarGraph}s constructed during overlay
  * operations.
  *
