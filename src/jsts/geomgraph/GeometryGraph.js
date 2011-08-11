@@ -17,6 +17,8 @@
   var Position = jsts.geomgraph.Position;
   var Assert = jsts.util.Assert;
 
+
+
   /**
    * A GeometryGraph is a graph that models a given Geometry
    *
@@ -46,6 +48,16 @@
 
   GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
 
+
+  /**
+   * @return {EdgeSetIntersector}
+   * @private
+   */
+  GeometryGraph.prototype.createEdgeSetIntersector = function() {
+    return new jsts.geomgraph.index.SimpleEdgeSetIntersector();
+    // TODO: use optimized version when ported
+    // return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
+  };
 
   /**
    * @param {BoundaryNodeRule}
@@ -158,16 +170,17 @@
   };
 
 
-  /**
-   * @return {EdgeSetIntersector}
-   * @private
-   */
-  GeometryGraph.prototype.createEdgeSetIntersector = function() {
-    return new jsts.geomgraph.index.SimpleEdgeSetIntersector();
-    // TODO: use optimized version when ported
-    // return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
-  };
 
+  GeometryGraph.prototype.findEdge = function(line) {
+    return this.lineEdgeMap.get(line);
+  }
+
+  GeometryGraph.prototype.computeSplitEdges = function(edgelist) {
+    for (var i = this.edges.iterator(); i.hasNext();) {
+      var e = i.next();
+      e.eiList.addSplitEdges(edgelist);
+    }
+  }
 
   /**
    * @param {Geometry}
@@ -413,10 +426,10 @@
    * @private
    */
   GeometryGraph.prototype.addSelfIntersectionNodes = function(argIndex) {
-    for (var i = this.edges.iterator(); i.hasNext(); ) {
+    for (var i = this.edges.iterator(); i.hasNext();) {
       var e = i.next();
       var eLoc = e.getLabel().getLocation(argIndex);
-      for (var eiIt = e.eiList.iterator(); eiIt.hasNext(); ) {
+      for (var eiIt = e.eiList.iterator(); eiIt.hasNext();) {
         var ei = eiIt.next();
         this.addSelfIntersectionNode(argIndex, ei.coord, eLoc);
       }
@@ -428,6 +441,7 @@
    * Add a node for a self-intersection. If the node is a potential boundary
    * node (e.g. came from an edge which is a boundary) then insert it as a
    * potential boundary node. Otherwise, just add it as a regular node.
+   *
    * @private
    */
   GeometryGraph.prototype.addSelfIntersectionNode = function(argIndex, coord,

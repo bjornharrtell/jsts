@@ -18,7 +18,7 @@
   var CascadedPolygonUnion = jsts.operation.union.CascadedPolygonUnion;
   var PointGeometryUnion = jsts.operation.union.PointGeometryUnion;
   var OverlayOp = jsts.operation.overlay.OverlayOp;
-  var SnapIfNeededOverlayOp = jsts.operation.overlay.SnapIfNeededOverlayOp;
+  var SnapIfNeededOverlayOp = jsts.operation.overlay.snap.SnapIfNeededOverlayOp;
 
 /**
  * Unions a collection of Geometry or a single Geometry (which may be a
