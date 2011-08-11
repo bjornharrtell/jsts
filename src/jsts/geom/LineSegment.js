@@ -45,6 +45,42 @@ jsts.geom.LineSegment.prototype.p0 = null;
  */
 jsts.geom.LineSegment.prototype.p1 = null;
 
+/**
+ * Computes the length of the line segment.
+ *
+ * @return {number} the length of the line segment.
+ */
+jsts.geom.LineSegment.prototype.getLength = function() {
+  return this.p0.distance(p1);
+};
+
+/**
+ * Tests whether the segment is horizontal.
+ *
+ * @return {boolean} <code>true</code> if the segment is horizontal.
+ */
+jsts.geom.LineSegment.prototype.isHorizontal = function() {
+  return this.p0.y === this.p1.y;
+};
+/**
+ * Tests whether the segment is vertical.
+ *
+ * @return {boolean} <code>true</code> if the segment is vertical.
+ */
+jsts.geom.LineSegment.prototype.isVertical = function() {
+  return this.p0.x === this.p1.x;
+};
+
+
+/**
+ * Reverses the direction of the line segment.
+ */
+jsts.geom.LineSegment.prototype.reverse = function()
+{
+  var temp = this.p0;
+  this.p0 = this.p1;
+  this.p1 = temp;
+};
 
 /**
  * Computes the Projection Factor for the projection of the point p onto this
