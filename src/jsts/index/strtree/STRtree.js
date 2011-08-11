@@ -129,7 +129,7 @@ jsts.index.strtree.STRtree.prototype.intersectsOp = {
  */
 jsts.index.strtree.STRtree.prototype.createParentBoundables = function(
     childBoundables, newLevel) {
-  // TODO: Assert.isTrue(!childBoundables.isEmpty());
+  jsts.util.Assert.isTrue(!(childBoundables.length === 0));
   var minLeafCount = Math.ceil(childBoundables.length / this.getNodeCapacity());
   var sortedChildBoundables = [];
   for (var i = 0; i < childBoundables.length; i++) {
@@ -154,7 +154,7 @@ jsts.index.strtree.STRtree.prototype.createParentBoundables = function(
  */
 jsts.index.strtree.STRtree.prototype.createParentBoundablesFromVerticalSlices = function(
     verticalSlices, newLevel) {
-  // TODO: Assert.isTrue(verticalSlices.length > 0);
+  jsts.util.Assert.isTrue(verticalSlices.length > 0);
   var parentBoundables = [];
   for (var i = 0; i < verticalSlices.length; i++) {
     parentBoundables = parentBoundables.concat(this.createParentBoundablesFromVerticalSlice(
@@ -285,8 +285,8 @@ jsts.index.strtree.STRtree.prototype.query = function(searchEnv, visitor) {
   // Yes this method does something. It specifies that the bounds is an
   // Envelope. super.query takes an Object, not an Envelope. [Jon Aquino
   // 10/24/2003]
-  return jsts.index.strtree.AbstractSTRtree.prototype.query.call(this,
-      searchEnv);
+  return jsts.index.strtree.AbstractSTRtree.prototype.query.apply(this,
+      arguments);
 };
 
 
