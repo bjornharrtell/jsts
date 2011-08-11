@@ -16,7 +16,7 @@ jsts.noding.SegmentNode = function(segString,  coord,  segmentIndex,  segmentOct
   this.coord = new jsts.geom.Coordinate(coord);
   this.segmentIndex = segmentIndex;
   this.segmentOctant = segmentOctant;
-  isInterior = ! coord.equals2D(segString.getCoordinate(segmentIndex));
+  this._isInterior = ! coord.equals2D(segString.getCoordinate(segmentIndex));
 };
 
 
@@ -28,13 +28,13 @@ jsts.noding.SegmentNode.prototype.segString = null;
 jsts.noding.SegmentNode.prototype.coord = null;   // the point of intersection
 jsts.noding.SegmentNode.prototype.segmentIndex = null;   // the index of the containing line segment in the parent edge
 jsts.noding.SegmentNode.prototype.segmentOctant = null;
-jsts.noding.SegmentNode.prototype.isInterior = null;
+jsts.noding.SegmentNode.prototype._isInterior = null;
 
 
-jsts.noding.SegmentNode.prototype.isInterior = function() { return isInterior; };
+jsts.noding.SegmentNode.prototype.isInterior = function() { return this._isInterior; };
 
 jsts.noding.SegmentNode.prototype.isEndPoint = function(maxSegmentIndex)  {
-  if (this.segmentIndex === 0 && ! this.isInterior) return true;
+  if (this.segmentIndex === 0 && ! this._isInterior) return true;
   if (this.segmentIndex === this.maxSegmentIndex) return true;
   return false;
 };

@@ -12,7 +12,9 @@
    *
    * @constructor
    */
-  var AssertionFailedException = function(message) {};
+  var AssertionFailedException = function(message) {
+    this.message = message;
+  };
   AssertionFailedException.prototype = new Error();
   AssertionFailedException.prototype.name = 'AssertionFailedException';
 
