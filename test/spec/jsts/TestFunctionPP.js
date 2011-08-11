@@ -36,23 +36,28 @@ describe('TestFunctionPP', function() {
           var expected = $("op", test).text().trim();
 
           var reader = new jsts.io.WKTReader();
+          
+          var expectedg = reader.read(expected);
+          
           var ag = reader.read(a);
           var bg = reader.read(b);
           if (ag === undefined) continue;
           
-          var result;
+          var opresult;
           
           if (op === 'union') {
-            result = ag.union(bg);
-          } else if (op === 'intersects') {
-            result = ag.intersects(bg);
+            opresult = ag.union(bg);
+          } else if (op === 'intersection') {
+            opresult = ag.intersection(bg);
           } else if (op === 'difference') {
-            result = ag.difference(bg);
+            opresult = ag.difference(bg);
           } else if (op === 'symdifference') {
-            result = ag.symdifference(bg);
+            opresult = ag.symDifference(bg);
           }
           
-          if (result === undefined) continue;
+          if (opresult === undefined) continue;
+          
+          var result = opresult.equalsExact(expectedg);
           
           count++;
           

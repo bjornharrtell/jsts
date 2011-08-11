@@ -93,7 +93,7 @@
   PointBuilder.prototype.filterCoveredNodeToPoint = function(n) {
     var coord = n.getCoordinate();
     if (!this.op.isCoveredByLA(coord)) {
-      var pt = geometryFactory.createPoint(coord);
+      var pt = this.geometryFactory.createPoint(coord);
       this.resultPointList.add(pt);
     }
   };

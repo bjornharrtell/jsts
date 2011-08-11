@@ -1076,7 +1076,7 @@ jsts.geom.Geometry.prototype.buffer = function() {
  *         <code>Geometry</code>' s points.
  */
 jsts.geom.Geometry.prototype.convexHull = function() {
-  return (new ConvexHull(this)).getConvexHull();
+  return new ConvexHull(this).getConvexHull();
 };
 
 
@@ -1121,7 +1121,7 @@ jsts.geom.Geometry.prototype.intersection = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.INTERSECTION);
 };
 
 
@@ -1151,7 +1151,7 @@ jsts.geom.Geometry.prototype.union = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.UNION);
 };
 
 
@@ -1182,9 +1182,9 @@ jsts.geom.Geometry.prototype.difference = function(other) {
     return this.clone();
   }
 
-  this.heckNotGeometryCollection(this);
+  this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.DIFFERENCE);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.DIFFERENCE);
 };
 
 
@@ -1215,7 +1215,7 @@ jsts.geom.Geometry.prototype.symDifference = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.SYMDIFFERENCE);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.SYMDIFFERENCE);
 };
 
 
@@ -1429,8 +1429,31 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
  *         <code>equalsExact</code> method.
  */
 jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
-  // TODO: handle exception for LineString as described above.
-  return other instanceof this.constructor;
+  if (this instanceof jsts.geom.Point && other instanceof jsts.geom.Point) {
+    return true;
+  } else if (this instanceof jsts.geom.LineString && (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
+    return true;
+  }
+  else if (this instanceof jsts.geom.LinearRing && (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
+    return true;
+  }
+  else if (this instanceof jsts.geom.Polygon && (other instanceof jsts.geom.Polygon)) {
+    return true;
+  }
+  else if (this instanceof jsts.geom.MultiPoint && (other instanceof jsts.geom.MultiPoint)) {
+    return true;
+  }
+  else if (this instanceof jsts.geom.MultiLineString && (other instanceof jsts.geom.MultiLineString)) {
+    return true;
+  }
+  else if (this instanceof jsts.geom.MultiPolygon && (other instanceof jsts.geom.MultiPolygon)) {
+    return true;
+  }
+  else if (this instanceof jsts.geom.GeometryCollection && (other instanceof jsts.geom.GeometryCollection)) {
+    return true;
+  }
+
+  return false;
 };
 
 
