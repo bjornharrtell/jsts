@@ -727,7 +727,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet2 = function(p,
       : 1;
 
   var totalAngle = Math.abs(startAngle - endAngle);
-  var nSegs = (totalAngle / this.filletAngleQuantum + 0.5);
+  var nSegs = parseInt((totalAngle / this.filletAngleQuantum + 0.5));
 
   if (nSegs < 1)
     return; // no segments because angle is less than increment - nothing to do!
