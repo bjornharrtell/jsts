@@ -256,12 +256,12 @@ jsts.operation.overlay.PolygonBuilder.prototype.findEdgeRingContaining = functio
  */
 jsts.operation.overlay.PolygonBuilder.prototype.computePolygons = function(
     shellList) {
-  var resultPolyList = [];
+  var resultPolyList = new javascript.util.ArrayList();
   // add Polygons for all shells
   for (var i = 0; i < shellList.length; i++) {
     var er = shellList[i];
     var poly = er.toPolygon(this.geometryFactory);
-    resultPolyList.push(poly);
+    resultPolyList.add(poly);
   }
   return resultPolyList;
 };

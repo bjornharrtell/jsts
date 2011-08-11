@@ -192,7 +192,7 @@
 
     // gather the results from all calculations into a single Geometry for the
     // result set
-    this.resultGeom = computeGeometry(this.resultPointList,
+    this.resultGeom = this.computeGeometry(this.resultPointList,
         this.resultLineList, this.resultPolyList, opCode);
   }
 
