@@ -188,8 +188,8 @@
     //var a = reader.read('POLYGON ((100 100, 100 200, 200 200, 200 100, 100 100))');
     // TODO: find out why buffering fails (depth calc issues) with this poly
     var a = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');
-    
-    var geometry = a.buffer(10);
+
+    var geometry = a.buffer(-10);
     
     console.log(geometry);
     

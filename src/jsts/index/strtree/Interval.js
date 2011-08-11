@@ -22,7 +22,7 @@ jsts.index.strtree.Interval = function() {
     other = arguments[0];
     return jsts.index.strtree.Interval(other.min, other.max);
   } else if (arguments.length === 2) {
-    // TODO: Assert.isTrue(min <= max);
+    jsts.util.Assert.isTrue(this.min <= this.max);
     this.min = arguments[0];
     this.max = arguments[1];
   }

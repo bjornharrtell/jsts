@@ -31,8 +31,7 @@
 jsts.index.strtree.AbstractSTRtree = function(nodeCapacity) {
   this.itemBoundables = [];
 
-  // TODO: Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than
-  // 1");
+  jsts.util.Assert.isTrue(nodeCapacity > 1, 'Node capacity must be greater than 1');
   this.nodeCapacity = nodeCapacity;
 };
 
@@ -102,7 +101,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.nodeCapacity = null;
  * tree.
  */
 jsts.index.strtree.AbstractSTRtree.prototype.build = function() {
-  // TODO: Assert.isTrue(!built);
+  jsts.util.Assert.isTrue(!this.built);
   this.root = this.itemBoundables.length === 0 ? this.createNode(0) : this
       .createHigherLevels(this.itemBoundables, -1);
   this.built = true;
@@ -125,7 +124,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.createNode = function(level) {
  */
 jsts.index.strtree.AbstractSTRtree.prototype.createParentBoundables = function(
     childBoundables, newLevel) {
-  // TODO: Assert.isTrue(!childBoundables.isEmpty());
+  jsts.util.Assert.isTrue(!(childBoundables.length === 0));
   var parentBoundables = [];
   parentBoundables.push(this.createNode(newLevel));
   var sortedChildBoundables = [];
@@ -181,7 +180,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.compareDoubles = function(a, b) {
  */
 jsts.index.strtree.AbstractSTRtree.prototype.createHigherLevels = function(
     boundablesOfALevel, level) {
-  // TODO: Assert.isTrue(!boundablesOfALevel.isEmpty());
+  jsts.util.Assert.isTrue(!(boundablesOfALevel.length === 0));
   var parentBoundables = this.createParentBoundables(boundablesOfALevel,
       level + 1);
   if (parentBoundables.length === 1) {
@@ -293,8 +292,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.depth2 = function() {
  *          item
  */
 jsts.index.strtree.AbstractSTRtree.prototype.insert = function(bounds, item) {
-  // TODO: Assert.isTrue(!built, "Cannot insert items into an STR packed R-tree
-  // after it has been built.");
+  jsts.util.Assert.isTrue(!this.built, 'Cannot insert items into an STR packed R-tree after it has been built.');
   this.itemBoundables.push(new jsts.index.strtree.ItemBoundable(bounds, item));
 };
 
@@ -312,14 +310,16 @@ jsts.index.strtree.AbstractSTRtree.prototype.insert = function(bounds, item) {
  * @return {Array}
  */
 jsts.index.strtree.AbstractSTRtree.prototype.query = function(searchBounds) {
-  // TODO: argument switch
+  if (arguments.length > 1) {
+    this.query2.apply(this, arguments);
+  }
 
   if (!this.built) {
     this.build();
   }
   var matches = [];
   if (this.itemBoundables.length === 0) {
-    // TODO: Assert.isTrue(root.getBounds() === null);
+    jsts.util.Assert.isTrue(this.root.getBounds() === null);
     return matches;
   }
   if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
@@ -330,19 +330,30 @@ jsts.index.strtree.AbstractSTRtree.prototype.query = function(searchBounds) {
 
 jsts.index.strtree.AbstractSTRtree.prototype.query2 = function(searchBounds,
     visitor) {
+  if (arguments.length > 2) {
+    this.query3.apply(this, arguments);
+  }
+
   if (!this.built) {
     this.build();
   }
   if (this.itemBoundables.length === 0) {
-    // TODO: Assert.isTrue(root.getBounds() == null);
+    jsts.util.Assert.isTrue(this.root.getBounds() === null);
   }
   if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
     this.query4(searchBounds, root, visitor);
   }
 };
 
+/**
+ * @private
+ */
 jsts.index.strtree.AbstractSTRtree.prototype.query3 = function(searchBounds,
     node, matches) {
+  if (!(arguments[2] instanceof Array)) {
+    this.query4.apply(this, arguments);
+  }
+
   var childBoundables = node.getChildBoundables();
   for (var i = 0; i < childBoundables.length; i++) {
     var childBoundable = childBoundables[i];
@@ -355,11 +366,14 @@ jsts.index.strtree.AbstractSTRtree.prototype.query3 = function(searchBounds,
     } else if (childBoundable instanceof jsts.index.strtree.ItemBoundable) {
       matches.push(childBoundable.getItem());
     } else {
-      // TODO: Assert.shouldNeverReachHere();
+      jsts.util.Assert.shouldNeverReachHere();
     }
   }
 };
 
+/**
+ * @private
+ */
 jsts.index.strtree.AbstractSTRtree.prototype.query4 = function(searchBounds,
     node, visitor) {
   var childBoundables = node.getChildBoundables();
@@ -374,7 +388,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.query4 = function(searchBounds,
     } else if (childBoundable instanceof jsts.index.strtree.ItemBoundable) {
       visitor.visitItem(childBoundable.getItem());
     } else {
-      // TODO: Assert.shouldNeverReachHere();
+      jsts.util.Assert.shouldNeverReachHere();
     }
   }
 };
@@ -401,17 +415,21 @@ jsts.index.strtree.AbstractSTRtree.prototype.getIntersectsOp = function() {
  * @return {Array} a List of items and/or Lists.
  */
 jsts.index.strtree.AbstractSTRtree.prototype.itemsTree = function() {
+  if (arguments.length === 1) {
+    return this.itemsTree2.apply(this, arguments);
+  }
+
   if (!this.built) {
     this.build();
   }
 
-  var valuesTree = this.itemsTree(this.root);
+  var valuesTree = this.itemsTree2(this.root);
   if (valuesTree === null)
     return [];
   return valuesTree;
 };
 
-jsts.index.strtree.AbstractSTRtree.prototype.itemsTree = function() {
+jsts.index.strtree.AbstractSTRtree.prototype.itemsTree2 = function(node) {
   var valuesTreeForNode = [];
   var childBoundables = node.getChildBoundables();
   for (var i = 0; i < childBoundables.length; i++) {
@@ -424,7 +442,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.itemsTree = function() {
     } else if (childBoundable instanceof jsts.index.strtree.ItemBoundable) {
       valuesTreeForNode.push(childBoundable.getItem());
     } else {
-      // TODO: Assert.shouldNeverReachHere();
+      jsts.util.Assert.shouldNeverReachHere();
     }
   }
   if (valuesTreeForNode.length <= 0)
@@ -452,7 +470,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.remove = function(searchBounds,
     this.build();
   }
   if (this.itemBoundables.length === 0) {
-    // TODO: Assert.isTrue(root.getBounds() == null);
+    jsts.util.Assert.isTrue(this.root.getBounds() == null);
   }
   if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
     return this.remove2(searchBounds, this.root, item);
@@ -523,7 +541,10 @@ jsts.index.strtree.AbstractSTRtree.prototype.removeItem = function(node, item) {
 
 
 jsts.index.strtree.AbstractSTRtree.prototype.boundablesAtLevel = function(level) {
-  // TODO: argument switch
+  if (arguments.length > 1) {
+    this.boundablesAtLevel2.apply(this, arguments);
+    return;
+  }
 
   var boundables = [];
   this.boundablesAtLevel2(level, this.root, boundables);
@@ -541,7 +562,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.boundablesAtLevel = function(level)
  */
 jsts.index.strtree.AbstractSTRtree.prototype.boundablesAtLevel2 = function(
     level, top, boundables) {
-  // TODO: Assert.isTrue(level > -2);
+  jsts.util.Assert.isTrue(level > -2);
   if (top.getLevel() === level) {
     boundables.add(top);
     return;
@@ -552,8 +573,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.boundablesAtLevel2 = function(
     if (boundable instanceof jsts.index.strtree.AbstractNode) {
       this.boundablesAtLevel(level, boundable, boundables);
     } else {
-      // TODO: Assert.isTrue(boundable instanceof
-      // jsts.index.strtree.ItemBoundable);
+      jsts.util.Assert.isTrue(boundable instanceof jsts.index.strtree.ItemBoundable);
       if (level === -1) {
         boundables.add(boundable);
       }
