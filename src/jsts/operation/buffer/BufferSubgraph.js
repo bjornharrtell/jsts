@@ -130,8 +130,8 @@ jsts.operation.buffer.BufferSubgraph.prototype.add = function(node, nodeStack) {
   for (var i = node.getEdges().iterator(); i.hasNext(); ) {
     var de = i.next();
     this.dirEdgeList.add(de);
-    sym = de.getSym();
-    symNode = sym.getNode();
+    var sym = de.getSym();
+    var symNode = sym.getNode();
     /**
      * NOTE: this is a depth-first traversal of the graph. This will cause a
      * large depth of recursion. It might be better to do a breadth-first

@@ -27,7 +27,9 @@
    * @constructor
    * @extends jsts.geomgraph.EdgeEnd
    */
-  DirectedEdgeStar = function() {};
+  DirectedEdgeStar = function() {
+    jsts.geomgraph.EdgeEndStar.call(this);
+  };
   DirectedEdgeStar.prototype = new EdgeEndStar();
   DirectedEdgeStar.constructor = DirectedEdgeStar;
 

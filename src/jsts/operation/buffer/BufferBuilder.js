@@ -245,7 +245,7 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
    */
 
   var compare = function(a,b) {
-    return e.compareTo(b);
+    return a.compareTo(b);
   };
   subgraphList.sort(compare);
   subgraphList.reverse();
