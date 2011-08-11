@@ -108,7 +108,7 @@
    * labelling
    */
   DirectedEdgeStar.prototype.computeLabelling = function(geom) {
-    EdgeEndStar.computeLabelling.call(this, geom);
+    EdgeEndStar.prototype.computeLabelling.call(this, geom);
 
     // determine the overall labelling for this DirectedEdgeStar
     // (i.e. for the node it is based at)

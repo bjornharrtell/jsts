@@ -86,6 +86,10 @@
     return this.edges;
   };
 
+  EdgeList.prototype.iterator = function() {
+    return this.edges.iterator();
+  }
+
   EdgeList.prototype.get = function(i) {
     return this.edges.get(i);
   };
