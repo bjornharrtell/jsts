@@ -65,6 +65,9 @@ jsts.io.WKTReader.prototype.read = function(wkt) {
       case 'multipolygon':
         geometry = new jsts.geom.MultiPolygon();
         break;
+      case 'geometrycollection':
+        geometry = new jsts.geom.GeometryCollection();
+        break;
     }
 
   }

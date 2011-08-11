@@ -4,7 +4,9 @@
  * See /license.txt for the full text of the license.
  */
 
-
+/**
+ * @requires jsts/geomgraph/TopologyLocation.js
+ */
 
 /**
  * A <code>Label</code> indicates the topological relationship of a component

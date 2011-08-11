@@ -19,6 +19,7 @@
   var PointGeometryUnion = jsts.operation.union.PointGeometryUnion;
   var OverlayOp = jsts.operation.overlay.OverlayOp;
   var SnapIfNeededOverlayOp = jsts.operation.overlay.snap.SnapIfNeededOverlayOp;
+  var ArrayList = javascript.util.ArrayList;
 
 /**
  * Unions a collection of Geometry or a single Geometry (which may be a
@@ -62,9 +63,9 @@
    * @constructor
    */
   jsts.operation.union.UnaryUnionOp = function(geoms, geomFact) {
-    this.polygons = [];
-    this.lines = [];
-    this.points = [];
+    this.polygons = new ArrayList();
+    this.lines = new ArrayList();
+    this.points = new ArrayList();
 
     if (geomFact) {
       this.geomFact = geomFact;
@@ -122,9 +123,10 @@
    * @private
    */
   jsts.operation.union.UnaryUnionOp.prototype.extract = function(geoms) {
-    if (geoms instanceof Array) {
-      for (var i = 0, l = geoms.length; i < l; i++) {
-        this.extract(geoms[i]);
+    if (geoms instanceof ArrayList) {
+      for (var i = geoms.iterator(); i.hasNext();) {
+        var geom = i.next();
+        this.extract(geom);
       }
     } else {
       if (this.geomFact === null) {
@@ -160,19 +162,19 @@
      */
 
     var unionPoints = null;
-    if (this.points.length > 0) {
+    if (this.points.size() > 0) {
       var ptGeom = this.geomFact.buildGeometry(this.points);
       unionPoints = this.unionNoOpt(ptGeom);
     }
 
     var unionLines = null;
-    if (this.lines.length > 0) {
+    if (this.lines.size() > 0) {
       var lineGeom = this.geomFact.buildGeometry(this.lines);
       unionLines = this.unionNoOpt(lineGeom);
     }
 
     var unionPolygons = null;
-    if (this.polygons.length > 0) {
+    if (this.polygons.size() > 0) {
       unionPolygons = CascadedPolygonUnion.union(this.polygons);
     }
 

@@ -61,11 +61,11 @@ describe('TestFunctionPP', function() {
           
           count++;
           
-          if (result === expected) {
+          if (result === true) {
             passed++;
           }
           else {
-            console.log('Testcase "' + desc + '" failed. (Result: ' + result + ' / Expected: ' + expected + ')');
+            console.log('Testcase "' + desc + '" failed. (Result: ' + opresult + ' / Expected: ' + expected + ')');
           }
         }
         

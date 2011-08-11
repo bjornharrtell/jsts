@@ -956,44 +956,6 @@ jsts.geom.Geometry.prototype.equals = function(o) {
   return false;
 };
 
-
-/**
- * Tests whether this geometry is topologically equal to the argument geometry
- * as defined by the SFS <tt>equals</tt> predicate.
- * <p>
- * The SFS <code>equals</code> predicate has the following equivalent
- * definitions:
- * <ul>
- * <li>The two geometries have at least one point in common, and no point of
- * either geometry lies in the exterior of the other geometry.
- * <li>The DE-9IM Intersection Matrix for the two geometries matches the
- * pattern <tt>T*F**FFF*</tt>
- * <pre>
- * T*F
- * **F
- * FF*
- * </pre>
- *
- * </ul>
- * <b>Note</b> that this method computes <b>topologically equality</b>. For
- * structural equality, see {@link #equalsExact(Geometry)}.
- *
- * @param {Geometry}
- *          g the <code>Geometry</code> with which to compare this
- *          <code>Geometry.</code>
- * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
- *         are topologically equal.
- *
- * @see #equalsExact(Geometry)
- */
-jsts.geom.Geometry.prototype.equalsTopo = function(g) {
-  // short-circuit test
-  if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal()))
-    return false;
-  return this.relate(g).isEquals(getDimension(), g.getDimension());
-};
-
-
 /**
  * Computes a buffer area around this geometry having the given width and with a
  * specified accuracy of approximation for circular arcs, and using a specified
@@ -1129,6 +1091,20 @@ jsts.geom.Geometry.prototype.intersection = function(other) {
  * Computes a <code>Geometry</code> representing all the points in this
  * <code>Geometry</code> and <code>other</code>.
  *
+ * Or without arguments:
+ *
+ * Computes the union of all the elements of this geometry. Heterogeneous
+ * {@link GeometryCollection}s are fully supported.
+ *
+ * The result obeys the following contract:
+ * <ul>
+ * <li>Unioning a set of {@link LineString}s has the effect of fully noding
+ * and dissolving the linework.
+ * <li>Unioning a set of {@link Polygon}s will always return a
+ * {@link Polygonal} geometry (unlike {link #union(Geometry)}, which may return
+ * geometrys of lower dimension if a topology collapse occurred.
+ * </ul>
+ *
  * @param {Geometry}
  *          other the <code>Geometry</code> with which to compute the union.
  * @return {Geometry} a set combining the points of this <code>Geometry</code>
@@ -1139,6 +1115,10 @@ jsts.geom.Geometry.prototype.intersection = function(other) {
  *           if either input is a non-empty GeometryCollection
  */
 jsts.geom.Geometry.prototype.union = function(other) {
+  if (arguments.length === 0) {
+    return jsts.operation.union.UnaryUnionOp.union(this);
+  }
+
   // special case: if either input is empty ==> other input
   if (this.isEmpty()) {
     return other.clone();
@@ -1217,29 +1197,6 @@ jsts.geom.Geometry.prototype.symDifference = function(other) {
   this.checkNotGeometryCollection(other);
   return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.SYMDIFFERENCE);
 };
-
-
-/**
- * Computes the union of all the elements of this geometry. Heterogeneous
- * {@link GeometryCollection}s are fully supported.
- *
- * The result obeys the following contract:
- * <ul>
- * <li>Unioning a set of {@link LineString}s has the effect of fully noding
- * and dissolving the linework.
- * <li>Unioning a set of {@link Polygon}s will always return a
- * {@link Polygonal} geometry (unlike {link #union(Geometry)}, which may return
- * geometrys of lower dimension if a topology collapse occurred.
- * </ul>
- *
- * @return {Geometry} the union.
- *
- * @see UnaryUnionOp
- */
-jsts.geom.Geometry.prototype.union = function() {
-  return jsts.operation.union.UnaryUnionOp.union(this);
-};
-
 
 /**
  * Returns true if the two <code>Geometry</code>s are exactly equal, up to a

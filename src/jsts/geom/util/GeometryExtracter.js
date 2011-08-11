@@ -34,6 +34,7 @@ jsts.geom.util.GeometryExtracter.prototype.clz = null;
 
 /**
  * @private
+ * @type {javascript.util.List}
  */
 jsts.geom.util.GeometryExtracter.prototype.comps = null;
 
@@ -44,14 +45,14 @@ jsts.geom.util.GeometryExtracter.prototype.comps = null;
  *
  * @param {Geometry} geom the geometry from which to extract.
  * @param {Object} clz
- * @param {[]} [list] the list to add the extracted elements to.
+ * @param {javascript.util.ArrayList} [list] the list to add the extracted elements to.
  *
- * @return {[]}
+ * @return {javascript.util.ArrayList}
  */
 jsts.geom.util.GeometryExtracter.extract = function(geom, clz, list) {
-  list = list || [];
+  list = list || new javascript.util.ArrayList();
   if (geom instanceof clz) {
-    list.push(geom);
+    list.add(geom);
   }
   else if (geom instanceof jsts.geom.GeometryCollection ||
       geom instanceof jsts.geom.MultiPoint ||
@@ -70,6 +71,6 @@ jsts.geom.util.GeometryExtracter.extract = function(geom, clz, list) {
  */
 jsts.geom.util.GeometryExtracter.prototype.filter = function(geom) {
   if (this.clz === null || geom instanceof this.clz) {
-    this.comps.push(geom);
+    this.comps.add(geom);
   }
 };
