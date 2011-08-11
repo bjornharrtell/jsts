@@ -4,77 +4,71 @@
  * See /license.txt for the full text of the license.
  */
 
-/**
- * Models an OGC SFS <code>LinearRing</code>.
- * A LinearRing is a LineString which is both closed and simple.
- * In other words,
- * the first and last coordinate in the ring must be equal,
- * and the interior of the ring must not self-intersect.
- * Either orientation of the ring is allowed.
- * <p>
- * A ring must have either 0 or 4 or more points.
- * The first and last points must be equal (in 2D).
- * If these conditions are not met, the constructors throw
- * an {@link IllegalArgumentException}
- *
- * @requires jsts/geom/LineString.js
- */
+(function() {
+
+  /**
+   * Models an OGC SFS <code>LinearRing</code>. A LinearRing is a LineString
+   * which is both closed and simple. In other words, the first and last
+   * coordinate in the ring must be equal, and the interior of the ring must not
+   * self-intersect. Either orientation of the ring is allowed.
+   * <p>
+   * A ring must have either 0 or 4 or more points. The first and last points
+   * must be equal (in 2D). If these conditions are not met, the constructors
+   * throw an {@link IllegalArgumentException}
+   *
+   * @requires jsts/geom/LineString.js
+   */
 
 
 
-/**
- * @constructor
- * @augments OpenLayers.Geometry.LinearRing
- * @augments jsts.geom.LineString
- */
-jsts.geom.LinearRing = function() {
-};
-jsts.geom.LinearRing.prototype = new jsts.geom.LineString();
+  /**
+   * @constructor
+   * @augments OpenLayers.Geometry.LinearRing
+   * @extends jsts.geom.LineString
+   */
+  var LinearRing = function() {
+    jsts.geom.LineString.apply(this, arguments);
+  };
+  LinearRing.prototype = OpenLayers.Geometry.LinearRing.prototype;
 
-/**
- * Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
- * not have a boundary.
- *
- * @return {int} Dimension.FALSE.
- */
-jsts.geom.LinearRing.prototype.getBoundaryDimension = function() {
-  return jsts.geom.Dimension.FALSE;
-};
+  for (key in jsts.geom.LineString.prototype) {
+    LinearRing.prototype[key] = LinearRing.prototype[key] ? LinearRing.prototype[key] : jsts.geom.LineString.prototype[key];
+  }
 
-
-/**
- * Returns <code>true</code>, since by definition LinearRings are always
- * simple.
- *
- * @return {Boolean} <code>true.</code>
- *
- * @see Geometry#isSimple
- */
-jsts.geom.LinearRing.prototype.isSimple = function() {
-  return true;
-};
+  /**
+   * Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
+   * not have a boundary.
+   *
+   * @return {int} Dimension.FALSE.
+   */
+  LinearRing.prototype.getBoundaryDimension = function() {
+    return jsts.geom.Dimension.FALSE;
+  };
 
 
-/**
- * @return {String} String representation of LinearRing type.
- */
-jsts.geom.LinearRing.prototype.getGeometryType = function() {
-  return 'LinearRing';
-};
+  /**
+   * Returns <code>true</code>, since by definition LinearRings are always
+   * simple.
+   *
+   * @return {Boolean} <code>true.</code>
+   *
+   * @see Geometry#isSimple
+   */
+  LinearRing.prototype.isSimple = function() {
+    return true;
+  };
 
 
-OpenLayers.Geometry.LinearRing = OpenLayers.Class(
-    OpenLayers.Geometry.LinearRing, jsts.geom.LinearRing);
-jsts.geom.LinearRing = OpenLayers.Geometry.LinearRing;
+  /**
+   * @return {String} String representation of LinearRing type.
+   */
+  LinearRing.prototype.getGeometryType = function() {
+    return 'LinearRing';
+  };
 
-OpenLayers.Geometry.LineString = OpenLayers.Class(
-    OpenLayers.Geometry.LineString, jsts.geom.LineString, {
-      initialize: function(points) {
-        OpenLayers.Geometry.Curve.prototype.initialize.apply(this, arguments);
+  LinearRing.MINIMUM_VALID_SIZE = 4;
 
-        this.geometries = this.components;
-      }
-    });
-jsts.geom.LineString = OpenLayers.Geometry.LineString;
+  jsts.geom.LinearRing = LinearRing;
+  OpenLayers.Geometry.LinearRing = LinearRing;
 
-jsts.geom.LinearRing.MINIMUM_VALID_SIZE = 4;
+})();

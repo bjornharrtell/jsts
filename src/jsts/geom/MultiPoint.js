@@ -8,48 +8,67 @@
  * @requires jsts/geom/GeometryCollection.js
  */
 
+(function() {
 
+  /**
+   * @constructor
+   * @augments OpenLayers.Geometry.LineString
+   * @augments jsts.geom.Geometry
+   */
+  var MultiPoint = function() {
+    OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
 
-/**
- * @constructor
- * @augments OpenLayers.Geometry.LineString
- * @augments jsts.geom.Geometry
- */
-jsts.geom.MultiPoint = function() {
+    this.geometries = [];
 
-};
-jsts.geom.MultiPoint.prototype = new jsts.geom.GeometryCollection();
+    for (var i = 0; i < this.components.length; i++) {
+      var component = this.components[i];
+      // NOTE: special handling since in JSTS the parts should be Points.
+      if (component instanceof jsts.geom.Coordinate) {
+        this.geometries.push(new jsts.geom.Point(component));
+      } else {
+        this.geometries.push(component);
+      }
+    }
+  };
+  MultiPoint.prototype = OpenLayers.Geometry.MultiPoint.prototype;
 
-
-/**
- * Gets the boundary of this geometry.
- * Zero-dimensional geometries have no boundary by definition,
- * so an empty GeometryCollection is returned.
- *
- * @return {Geometry} an empty GeometryCollection.
- * @see Geometry#getBoundary
- */
-jsts.geom.MultiPoint.prototype.getBoundary = function() {
-  return this.getFactory().createGeometryCollection(null);
-};
-
-jsts.geom.MultiPoint.prototype.getGeometryN = function(n) {
-  return this.geometries[n];
-};
-
-
-/**
- * @param {Geometry} other
- * @param {double} tolerance
- * @return {boolean}
- */
-jsts.geom.MultiPoint.prototype.equalsExact = function(other, tolerance) {
-  if (!this.isEquivalentClass(other)) {
-    return false;
+  for (key in jsts.geom.GeometryCollection.prototype) {
+    MultiPoint.prototype[key] = MultiPoint.prototype[key] ? MultiPoint.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
   }
-  return jsts.geom.GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
-};
 
-OpenLayers.Geometry.MultiPoint = OpenLayers.Class(
-    OpenLayers.Geometry.MultiPoint, jsts.geom.MultiPoint);
-jsts.geom.MultiPoint = OpenLayers.Geometry.MultiPoint;
+
+  /**
+   * Gets the boundary of this geometry. Zero-dimensional geometries have no
+   * boundary by definition, so an empty GeometryCollection is returned.
+   *
+   * @return {Geometry} an empty GeometryCollection.
+   * @see Geometry#getBoundary
+   */
+  MultiPoint.prototype.getBoundary = function() {
+    return this.getFactory().createGeometryCollection(null);
+  };
+
+  MultiPoint.prototype.getGeometryN = function(n) {
+    return this.geometries[n];
+  };
+
+
+  /**
+   * @param {Geometry}
+   *          other
+   * @param {double}
+   *          tolerance
+   * @return {boolean}
+   */
+  MultiPoint.prototype.equalsExact = function(other, tolerance) {
+    if (!this.isEquivalentClass(other)) {
+      return false;
+    }
+    return jsts.geom.GeometryCollection.prototype.equalsExact.call(this, other,
+        tolerance);
+  };
+
+  jsts.geom.MultiPoint = MultiPoint;
+  OpenLayers.Geometry.MultiPoint = MultiPoint;
+
+})();
