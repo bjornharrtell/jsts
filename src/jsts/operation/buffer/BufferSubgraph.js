@@ -72,9 +72,9 @@ jsts.operation.buffer.BufferSubgraph.prototype.getEnvelope = function() {
         edgeEnv.expandToInclude(pts[j]);
       }
     }
-    env = edgeEnv;
+    this.env = edgeEnv;
   }
-  return env;
+  return this.env;
 };
 
 /**

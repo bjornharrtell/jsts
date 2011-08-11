@@ -25,7 +25,7 @@
    * @constructor
    * @private
    */
-  SegmentOverlapAction = function(si) {
+  var SegmentOverlapAction = function(si) {
     this.si = si;
 
   };

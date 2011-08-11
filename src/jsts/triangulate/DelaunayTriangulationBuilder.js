@@ -54,7 +54,7 @@ jsts.triangulate.DelaunayTriangulationBuilder.unique = function(coords) {
     return a.compareTo(b);
   });
 
-  coordList = new jsts.geom.CoordinateList(coords, false);
+  var coordList = new jsts.geom.CoordinateList(coords, false);
   return coordList;
 };
 
