@@ -7,25 +7,24 @@
 
 /**
  * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Geometry.js
  */
 
 
 
 /**
  * @constructor
- * @augments jsts.geom.Coordinate
+ * @extends jsts.geom.Geometry
  */
-jsts.geom.Point = function() {
+jsts.geom.Point = function(coordinate) {
+  if (coordinate === undefined)
+    return;
+
+  this.coordinate = coordinate;
 };
 
-jsts.geom.Point = OpenLayers.Class(jsts.geom.Geometry, {
-  initialize: function(coordinate) {
-    if (coordinate === undefined)
-      return;
-
-    this.coordinate = coordinate;
-  }
-});
+jsts.geom.Point.prototype = new jsts.geom.Geometry();
+jsts.geom.Point.constructor = jsts.geom.Point;
 
 
 jsts.geom.Point.prototype.coordinate = null;
