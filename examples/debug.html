@@ -195,6 +195,13 @@
   function init() {
     var reader = new jsts.io.WKTReader();
 
+    var a = reader.read('MULTIPOINT((10 10), (20 20) )');
+    var centroid = a.getCentroid();
+    console.log(centroid);
+    
+    /*
+    
+    // TODO: union debug
     var a = reader.read('POINT(100 100)');
     var b = reader.read('POINT(200 200)');
     var union = a.union(b);
@@ -209,6 +216,8 @@
     var geometry = polygon.buffer(-10);
     
     console.log(geometry);
+    
+    */
     
   }
 </script>

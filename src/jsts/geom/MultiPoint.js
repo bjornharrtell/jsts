@@ -34,6 +34,8 @@
 
   for (key in jsts.geom.GeometryCollection.prototype) {
     MultiPoint.prototype[key] = MultiPoint.prototype[key] ? MultiPoint.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
+    // overrides
+    MultiPoint.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
   }
 
 
