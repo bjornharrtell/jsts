@@ -26,6 +26,8 @@
 
   for (key in jsts.geom.GeometryCollection.prototype) {
     MultiPolygon.prototype[key] = MultiPolygon.prototype[key] ? MultiPolygon.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
+    // overrides
+    MultiPolygon.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
   }
 
   /**

@@ -27,6 +27,9 @@
   for (key in jsts.geom.GeometryCollection.prototype) {
     MultiLineString.prototype[key] = MultiLineString.prototype[key] ? MultiLineString.prototype[key]
         : jsts.geom.GeometryCollection.prototype[key];
+
+    // overrides
+    MultiLineString.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
   }
 
   MultiLineString.prototype.getBoundary = function() {
