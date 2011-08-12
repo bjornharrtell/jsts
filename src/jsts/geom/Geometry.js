@@ -1038,7 +1038,7 @@ jsts.geom.Geometry.prototype.buffer = function() {
  *         <code>Geometry</code>' s points.
  */
 jsts.geom.Geometry.prototype.convexHull = function() {
-  return new ConvexHull(this).getConvexHull();
+  return new jsts.algorithm.ConvexHull(this).getConvexHull();
 };
 
 
