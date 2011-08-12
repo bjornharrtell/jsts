@@ -53,6 +53,12 @@ describe('TestFunctionPP', function() {
             opresult = ag.difference(bg);
           } else if (op === 'symdifference') {
             opresult = ag.symDifference(bg);
+          } else if (op === 'convexhull') {
+            opresult = ag.convexHull(bg);
+          } else if (op === 'getboundary') {
+            opresult = ag.getBoundary(bg);
+          } else {
+            opresult = undefined;
           }
           
           if (opresult === undefined) continue;
