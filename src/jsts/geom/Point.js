@@ -111,7 +111,13 @@ jsts.geom.Point.prototype.computeEnvelopeInternal = function() {
 };
 
 jsts.geom.Point.prototype.apply = function(filter) {
-  filter.filter(this);
+  if (filter instanceof jsts.geom.GeometryFilter) {
+    filter.filter(this);
+  } else if (filter instanceof jsts.geom.CoordinateFilter) {
+    if (this.isEmpty()) { return; }
+    filter.filter(this.getCoordinate());
+  }
+
 };
 
 jsts.geom.Point.prototype.clone = function() {

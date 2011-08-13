@@ -123,25 +123,25 @@
   ConvexHull.prototype.getConvexHull = function() {
 
     if (this.inputPts.length == 0) {
-      return geomFactory.createGeometryCollection(null);
+      return this.geomFactory.createGeometryCollection(null);
     }
     if (this.inputPts.length == 1) {
-      return geomFactory.createPoint(this.inputPts[0]);
+      return this.geomFactory.createPoint(this.inputPts[0]);
     }
     if (this.inputPts.length == 2) {
-      return geomFactory.createLineString(this.inputPts);
+      return this.geomFactory.createLineString(this.inputPts);
     }
 
     var reducedPts = this.inputPts;
     // use heuristic to reduce points, if large
     if (this.inputPts.length > 50) {
-      reducedPts = reduce(inputPts);
+      reducedPts = this.reduce(inputPts);
     }
     // sort points for Graham scan.
     var sortedPts = this.preSort(reducedPts);
 
     // Use Graham scan to find convex hull.
-    var cHS = grahamScan(sortedPts);
+    var cHS = this.grahamScan(sortedPts);
 
     // Convert stack to an array.
     var cH = cHS.toArray();
@@ -171,7 +171,7 @@
    * @private
    */
   ConvexHull.prototype.reduce = function(inputPts) {
-    var polyPts = computeOctRing(inputPts);
+    var polyPts = this.computeOctRing(inputPts);
 
     // unable to compute interior polygon for some reason
     if (polyPts == null)
@@ -188,8 +188,8 @@
      * ring, but this doesn't matter since the points of the interior polygon
      * are forced to be in the reduced set.
      */
-    for (var i = 0; i < this.inputPts.length; i++) {
-      if (!CGAlgorithms.isPointInRing(this.inputPts[i], polyPts)) {
+    for (var i = 0; i < inputPts.length; i++) {
+      if (!CGAlgorithms.isPointInRing(inputPts[i], polyPts)) {
         reducedSet.add(inputPts[i]);
       }
     }
@@ -197,7 +197,7 @@
 
     // ensure that computed array has at least 3 points (not necessarily unique)
     if (reducedPts.length < 3)
-      return padArray3(reducedPts);
+      return this.padArray3(reducedPts);
     return reducedPts;
   };
 

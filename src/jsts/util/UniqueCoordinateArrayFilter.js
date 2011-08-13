@@ -40,13 +40,13 @@
    *         <code>CoordinateArrayFilter.</code>
    */
   UniqueCoordinateArrayFilter.prototype.getCoordinates = function() {
-    return list.toArray();
+    return this.list.toArray();
   };
 
   UniqueCoordinateArrayFilter.prototype.filter = function(coord) {
-    if (!treeSet.contains(coord)) {
-      list.add(coord);
-      treeSet.add(coord);
+    if (!this.treeSet.contains(coord)) {
+      this.list.add(coord);
+      this.treeSet.add(coord);
     }
   };
 
