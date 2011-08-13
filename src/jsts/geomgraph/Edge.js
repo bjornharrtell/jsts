@@ -22,6 +22,7 @@ jsts.geomgraph.Edge = function(pts, label) {
   this.pts = pts;
   this.label = label;
   this.eiList = new jsts.geomgraph.EdgeIntersectionList(this);
+  this.depth = new jsts.geomgraph.Depth();
 };
 
 jsts.geomgraph.Edge.prototype = new jsts.geomgraph.GraphComponent();
@@ -237,6 +238,30 @@ jsts.geomgraph.Edge.prototype.getMaximumSegmentIndex = function() {
 
 jsts.geomgraph.Edge.prototype.getEdgeIntersectionList = function() {
   return this.eiList;
+};
+
+jsts.geomgraph.Edge.prototype.isClosed = function()
+{
+  return this.pts[0].equals(this.pts[this.pts.length - 1]);
+};
+/**
+ * An Edge is collapsed if it is an Area edge and it consists of
+ * two segments which are equal and opposite (eg a zero-width V).
+ */
+jsts.geomgraph.Edge.prototype.isCollapsed = function()
+{
+  if (! this.label.isArea()) return false;
+  if (this.pts.length != 3) return false;
+  if (this.pts[0].equals(this.pts[2])) return true;
+  return false;
+};
+jsts.geomgraph.Edge.prototype.getCollapsedEdge = function()
+{
+  var newPts = [];
+  newPts[0] = this.pts[0];
+  newPts[1] = this.pts[1];
+  var newe = new jsts.geomgraph.Edge(newPts, jsts.geomgraph.Label.toLineLabel(this.label));
+  return newe;
 };
 
 

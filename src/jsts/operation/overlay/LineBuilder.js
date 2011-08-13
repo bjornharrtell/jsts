@@ -69,7 +69,7 @@
       var de = it.next();
       var e = de.getEdge();
       if (de.isLineEdge() && !e.isCoveredSet()) {
-        var isCovered = op.isCoveredByA(de.getCoordinate());
+        var isCovered = this.op.isCoveredByA(de.getCoordinate());
         e.setCovered(isCovered);
       }
     }
@@ -81,8 +81,8 @@
   LineBuilder.prototype.collectLines = function(opCode) {
     for (var it = this.op.getGraph().getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next();
-      this.collectLineEdge(de, opCode, lineEdgesList);
-      this.collectBoundaryTouchEdge(de, opCode, lineEdgesList);
+      this.collectLineEdge(de, opCode, this.lineEdgesList);
+      this.collectBoundaryTouchEdge(de, opCode, this.lineEdgesList);
     }
   };
 
@@ -155,7 +155,7 @@
     for (var it = this.lineEdgesList.iterator(); it.hasNext();) {
       var e = it.next();
       var label = e.getLabel();
-      var line = geometryFactory.createLineString(e.getCoordinates());
+      var line = this.geometryFactory.createLineString(e.getCoordinates());
       this.resultLineList.add(line);
       e.setInResult(true);
     }

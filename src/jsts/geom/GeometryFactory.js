@@ -143,6 +143,14 @@ jsts.geom.GeometryFactory.prototype.createMultiLineString = function(lineStrings
   return new jsts.geom.MultiLineString(lineStrings);
 };
 
+jsts.geom.GeometryFactory.prototype.createMultiPolygon = function(polygons) {
+  if (polygons === undefined || polygons === null) {
+    return new jsts.geom.MultiPolygon();
+  }
+
+  return new jsts.geom.MultiPolygon(polygons);
+};
+
 
 /**
  *  Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
