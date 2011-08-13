@@ -165,7 +165,7 @@
    */
   DirectedEdge.prototype.setVisitedEdge = function(isVisited) {
     this.setVisited(isVisited);
-    sym.setVisited(isVisited);
+    this.sym.setVisited(isVisited);
   };
   /**
    * Each Edge gives rise to a pair of symmetric DirectedEdges, in opposite
