@@ -173,6 +173,10 @@ jsts.geom.Point.prototype.normalize = function() {
   // a Point is always in normalized form
 };
 
+jsts.geom.Point.prototype.compareToSameClass = function(other) {
+  var point = other;
+  return getCoordinate().compareTo(point.getCoordinate());
+};
 
 /**
  * @return {string} String representation of Point type.

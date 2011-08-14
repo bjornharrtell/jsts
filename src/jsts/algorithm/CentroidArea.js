@@ -80,16 +80,11 @@ jsts.algorithm.CentroidArea.prototype.totalLength = 0.0;
  *          the geometry to add.
  */
 jsts.algorithm.CentroidArea.prototype.add = function(geom) {
-
-
   if (geom instanceof jsts.geom.Polygon) {
     var poly = geom;
     this.setBasePoint(poly.getExteriorRing().getCoordinateN(0));
     this.add3(poly);
-  } else if (geom instanceof jsts.geom.GeometryCollection ||
-      geom instanceof jsts.geom.MultiPoint ||
-      geom instanceof jsts.geom.MultiLineString ||
-      geom instanceof jsts.geom.MultiPolygon) {
+  } else if (geom instanceof jsts.geom.GeometryCollection || geom instanceof jsts.geom.MultiPolygon) {
     var gc = geom;
     for (var i = 0; i < gc.getNumGeometries(); i++) {
       this.add(gc.getGeometryN(i));

@@ -88,8 +88,7 @@
  *
  * @constructor
  */
-jsts.geom.Geometry = function() {
-};
+jsts.geom.Geometry = function() {};
 
 
 /**
@@ -1083,7 +1082,8 @@ jsts.geom.Geometry.prototype.intersection = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.INTERSECTION);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.INTERSECTION);
 };
 
 
@@ -1131,7 +1131,8 @@ jsts.geom.Geometry.prototype.union = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.UNION);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.UNION);
 };
 
 
@@ -1164,7 +1165,8 @@ jsts.geom.Geometry.prototype.difference = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.DIFFERENCE);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.DIFFERENCE);
 };
 
 
@@ -1195,7 +1197,8 @@ jsts.geom.Geometry.prototype.symDifference = function(other) {
 
   this.checkNotGeometryCollection(this);
   this.checkNotGeometryCollection(other);
-  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this, other, jsts.operation.overlay.OverlayOp.SYMDIFFERENCE);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.SYMDIFFERENCE);
 };
 
 /**
@@ -1303,7 +1306,8 @@ jsts.geom.Geometry.prototype.normalize = function() {
  *         <code>o</code>, as defined in "Normal Form For Geometry" in the
  *         JTS Technical Specifications.
  */
-jsts.geom.Geometry.prototype.compareTo = function(other) {
+jsts.geom.Geometry.prototype.compareTo = function(o) {
+  var other = o;
   if (this.getClassSortIndex() !== other.getClassSortIndex()) {
     return this.getClassSortIndex() - other.getClassSortIndex();
   }
@@ -1318,57 +1322,6 @@ jsts.geom.Geometry.prototype.compareTo = function(other) {
   }
   return this.compareToSameClass(o);
 };
-
-
-/**
- * Returns whether this <code>Geometry</code> is greater than, equal to, or
- * less than another <code>Geometry</code>, using the given
- * {@link CoordinateSequenceComparator}.
- * <P>
- *
- * If their classes are different, they are compared using the following
- * ordering:
- * <UL>
- * <LI> Point (lowest)
- * <LI> MultiPoint
- * <LI> LineString
- * <LI> LinearRing
- * <LI> MultiLineString
- * <LI> Polygon
- * <LI> MultiPolygon
- * <LI> GeometryCollection (highest)
- * </UL>
- * If the two <code>Geometry</code>s have the same class, their first
- * elements are compared. If those are the same, the second elements are
- * compared, etc.
- *
- * @param {Geometry}
- *          other a <code>Geometry</code> with which to compare this
- *          <code>Geometry.</code>
- * @param {CoordinateSequenceComparator}
- *          comp a <code>CoordinateSequenceComparator.</code>
- *
- * @return {number} a positive number, 0, or a negative number, depending on
- *         whether this object is greater than, equal to, or less than
- *         <code>o</code>, as defined in "Normal Form For Geometry" in the
- *         JTS Technical Specifications.
- */
-jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
-  if (this.getClassSortIndex() !== other.getClassSortIndex()) {
-    return this.getClassSortIndex() - other.getClassSortIndex();
-  }
-  if (this.isEmpty() && other.isEmpty()) {
-    return 0;
-  }
-  if (this.isEmpty()) {
-    return -1;
-  }
-  if (other.isEmpty()) {
-    return 1;
-  }
-  return this.compareToSameClass(o, comp);
-};
-
 
 /**
  * Returns whether the two <code>Geometry</code>s are equal, from the point
@@ -1388,25 +1341,26 @@ jsts.geom.Geometry.prototype.compareTo = function(other, comp) {
 jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
   if (this instanceof jsts.geom.Point && other instanceof jsts.geom.Point) {
     return true;
-  } else if (this instanceof jsts.geom.LineString && (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
+  } else if (this instanceof jsts.geom.LineString &&
+      (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
     return true;
-  }
-  else if (this instanceof jsts.geom.LinearRing && (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
+  } else if (this instanceof jsts.geom.LinearRing &&
+      (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
     return true;
-  }
-  else if (this instanceof jsts.geom.Polygon && (other instanceof jsts.geom.Polygon)) {
+  } else if (this instanceof jsts.geom.Polygon &&
+      (other instanceof jsts.geom.Polygon)) {
     return true;
-  }
-  else if (this instanceof jsts.geom.MultiPoint && (other instanceof jsts.geom.MultiPoint)) {
+  } else if (this instanceof jsts.geom.MultiPoint &&
+      (other instanceof jsts.geom.MultiPoint)) {
     return true;
-  }
-  else if (this instanceof jsts.geom.MultiLineString && (other instanceof jsts.geom.MultiLineString)) {
+  } else if (this instanceof jsts.geom.MultiLineString &&
+      (other instanceof jsts.geom.MultiLineString)) {
     return true;
-  }
-  else if (this instanceof jsts.geom.MultiPolygon && (other instanceof jsts.geom.MultiPolygon)) {
+  } else if (this instanceof jsts.geom.MultiPolygon &&
+      (other instanceof jsts.geom.MultiPolygon)) {
     return true;
-  }
-  else if (this instanceof jsts.geom.GeometryCollection && (other instanceof jsts.geom.GeometryCollection)) {
+  } else if (this instanceof jsts.geom.GeometryCollection &&
+      (other instanceof jsts.geom.GeometryCollection)) {
     return true;
   }
 
@@ -1462,38 +1416,17 @@ jsts.geom.Geometry.prototype.computeEnvelopeInternal = function() {
  * Returns whether this <code>Geometry</code> is greater than, equal to, or
  * less than another <code>Geometry</code> having the same class.
  *
- * @param {Geometry}
- *          o a <code>Geometry</code> having the same class as this
+ * @param o
+ *          a <code>Geometry</code> having the same class as this
  *          <code>Geometry.</code>
- * @return {number} a positive number, 0, or a negative number, depending on
- *         whether this object is greater than, equal to, or less than
- *         <code>o</code>, as defined in "Normal Form For Geometry" in the
- *         JTS Technical Specifications.
+ * @return a positive number, 0, or a negative number, depending on whether this
+ *         object is greater than, equal to, or less than <code>o</code>, as
+ *         defined in "Normal Form For Geometry" in the JTS Technical
+ *         Specifications.
  */
 jsts.geom.Geometry.prototype.compareToSameClass = function(o) {
   throw new jsts.error.AbstractMethodInvocationError();
 };
-
-
-/**
- * Returns whether this <code>Geometry</code> is greater than, equal to, or
- * less than another <code>Geometry</code> of the same class. using the given
- * {@link CoordinateSequenceComparator}.
- *
- * @param {Geometry}
- *          o a <code>Geometry</code> having the same class as this
- *          <code>Geometry.</code>
- * @param {CoordinateSequenceComparator}
- *          comp a <code>CoordinateSequenceComparator.</code>
- * @return {number} a positive number, 0, or a negative number, depending on
- *         whether this object is greater than, equal to, or less than
- *         <code>o</code>, as defined in "Normal Form For Geometry" in the
- *         JTS Technical Specifications.
- */
-jsts.geom.Geometry.prototype.compareToSameClass = function(o, comp) {
-  throw new jsts.error.AbstractMethodInvocationError();
-};
-
 
 /**
  * Returns the first non-zero result of <code>compareTo</code> encountered as
@@ -1545,6 +1478,22 @@ jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
     return a.equals(b);
   }
   return a.distance(b) <= tolerance;
+};
+
+/**
+ * @private
+ */
+jsts.geom.Geometry.prototype.getClassSortIndex = function() {
+  var sortedClasses = [jsts.geom.Point, jsts.geom.MultiPoint,
+      jsts.geom.LineString, jsts.geom.LinearRing, jsts.geom.MultiLineString,
+      jsts.geom.Polygon, jsts.geom.MultiPolygon, jsts.geom.GeometryCollection];
+
+  for (var i = 0; i < sortedClasses.length; i++) {
+    if (this instanceof sortedClasses[i])
+      return i;
+  }
+  jsts.util.Assert.shouldNeverReachHere('Class not supported: ' + this);
+  return -1;
 };
 
 jsts.geom.Geometry.prototype.toString = function() {
