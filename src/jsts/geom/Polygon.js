@@ -145,6 +145,12 @@
     return true;
   };
 
+  Polygon.prototype.compareToSameClass = function(o) {
+    var thisShell = this.components[0];
+    var otherShell = o.components[0];
+    return thisShell.compareToSameClass(otherShell);
+  }
+
   Polygon.prototype.apply = function(filter) {
     filter.filter(this);
     if (filter instanceof jsts.geom.GeometryComponentFilter) {

@@ -197,12 +197,18 @@
 <script type="text/javascript">
   function init() {
     var reader = new jsts.io.WKTReader();
-
-    var a = reader.read('MULTIPOINT((40 90), (20 20), (70 70))');
-    var b = reader.read('LINESTRING(20 20, 100 100)');
-    var union = a.union(b);
     
+    // TODO: should be MULTILINESTRING((0 0, 50 50), (0 100, 50 50), (50 50, 100 100), (50 50, 100 0))
+    var a = reader.read('LINESTRING(0 0, 100 100)')
+    var b = reader.read('LINESTRING(0 100, 100 0)')
+    var union = a.union(b);
     console.log(union);
+    
+ 	// TODO: should be POLYGON((220 160, 80 300, 80 320, 220 320, 220 160))
+    var a = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')
+    var b = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')
+    var convexHull = a.convexHull(b);
+    console.log(convexHull);
     
     // TODO: find out why buffering fails (depth calc issues) with this poly
     var polygon = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');

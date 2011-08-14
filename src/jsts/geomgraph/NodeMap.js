@@ -6,9 +6,13 @@
 
 (function() {
 
-  var ArrayList = javascript.util.ArrayList;
-  var HashMap = javascript.util.HashMap;
+  /**
+   * @requires jsts/geom/Location.js
+   */
+
   var Location = jsts.geom.Location;
+  var ArrayList = javascript.util.ArrayList;
+  var TreeMap = javascript.util.TreeMap;
 
   /**
    * A map of nodes, indexed by the coordinate of the node.
@@ -16,7 +20,7 @@
    * @constructor
    */
   jsts.geomgraph.NodeMap = function(nodeFactory) {
-    this.nodeMap = new HashMap();
+    this.nodeMap = new TreeMap();
     this.nodeFact = nodeFactory;
   };
 
