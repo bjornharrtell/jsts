@@ -19,11 +19,23 @@
  */
 var GeometryCollection = function(components) {
   OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
-  this.components = [];
-  if (components != null) {
-      this.addComponents(components);
-  }
+
   this.geometries = [];
+
+  if (!components) {
+    return;
+  }
+
+  for (var i = 0; i < components.length; i++) {
+    var component = components[i];
+    if (component instanceof jsts.geom.Point) {
+      components[i] = component.coordinate;
+    }
+    this.geometries.push(component);
+  }
+
+  this.components = [];
+  this.addComponents(components);
 };
 
 GeometryCollection.prototype = new OpenLayers.Geometry.Collection();

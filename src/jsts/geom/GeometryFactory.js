@@ -208,7 +208,7 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
     return this.createGeometryCollection(null);
   }
   if (isHeterogeneous || hasGeometryCollection) {
-    return this.createGeometryCollection(geomList);
+    return this.createGeometryCollection(geomList.toArray());
   }
   // at this point we know the collection is hetereogenous.
   // Determine the type of the result from the first Geometry in the list

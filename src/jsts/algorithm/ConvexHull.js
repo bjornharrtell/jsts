@@ -16,6 +16,9 @@
   var CGAlgorithms = jsts.algorithm.CGAlgorithms;
   var UniqueCoordinateArrayFilter = jsts.util.UniqueCoordinateArrayFilter;
   var Assert = jsts.util.Assert;
+  var Stack = javascript.util.Stack;
+  var ArrayList = javascript.util.ArrayList;
+  var Arrays = javascript.util.Arrays;
 
   /**
    * Compares {@link Coordinate}s for their angle and distance relative to an
@@ -32,7 +35,7 @@
   RadialComparator.prototype.compare = function(o1, o2) {
     var p1 = o1;
     var p2 = o2;
-    return RadialComparator.polarCompare(origin, p1, p2);
+    return RadialComparator.polarCompare(this.origin, p1, p2);
   };
 
   /**
@@ -363,13 +366,12 @@
    * @private
    */
   ConvexHull.prototype.lineOrPolygon = function(coordinates) {
-
     coordinates = this.cleanRing(coordinates);
     if (coordinates.length == 3) {
-      return geomFactory.createLineString([coordinates[0], coordinates[1]]);
+      return this.geomFactory.createLineString([coordinates[0], coordinates[1]]);
     }
-    var linearRing = geomFactory.createLinearRing(coordinates);
-    return geomFactory.createPolygon(linearRing, null);
+    var linearRing = this.geomFactory.createLinearRing(coordinates);
+    return this.geomFactory.createPolygon(linearRing, null);
   };
 
   /**
@@ -390,7 +392,7 @@
         continue;
       }
       if (previousDistinctCoordinate != null &&
-          isBetween(previousDistinctCoordinate, currentCoordinate,
+          this.isBetween(previousDistinctCoordinate, currentCoordinate,
               nextCoordinate)) {
         continue;
       }

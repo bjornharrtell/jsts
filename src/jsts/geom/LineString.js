@@ -205,6 +205,33 @@
     return clone;
   };
 
+  LineString.prototype.isEquivalentClass = function(other) {
+    return other instanceof LineString;
+  };
+
+  LineString.prototype.compareToSameClass = function(o)
+  {
+    var line = o;
+    // MD - optimized implementation
+    var i = 0;
+    var j = 0;
+    while (i < this.components.length && j < line.components.length) {
+      var comparison = this.components[i].compareTo(line.components[j]);
+      if (comparison !== 0) {
+        return comparison;
+      }
+      i++;
+      j++;
+    }
+    if (i < this.components.length) {
+      return 1;
+    }
+    if (j < line.components.length) {
+      return -1;
+    }
+    return 0;
+  };
+
   LineString.prototype.apply = function(filter) {
     filter.filter(this);
   };
