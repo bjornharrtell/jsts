@@ -33,7 +33,7 @@ describe('TestFunctionPA', function() {
           var test = tests[j];
           
           var op = $("op", test).attr('name');
-          var expected = $("op", test).text().trim();
+          var expected = $("op", test).text().trim().replace(/\n/g,'');
 
           var reader = new jsts.io.WKTReader();
           

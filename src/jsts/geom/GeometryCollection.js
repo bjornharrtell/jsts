@@ -30,6 +30,8 @@ var GeometryCollection = function(components) {
     var component = components[i];
     if (component instanceof jsts.geom.Point) {
       components[i] = component.coordinate;
+    } else if (component instanceof jsts.geom.Coordinate) {
+      component = new jsts.geom.Point(component);
     }
     this.geometries.push(component);
   }
