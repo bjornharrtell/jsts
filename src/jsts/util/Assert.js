@@ -14,10 +14,11 @@
 
   /**
    * A utility for making programming assertions.
+   *
    * @constructor
+   * @name jsts.util.Assert
    */
-  var Assert = function() {
-  };
+  jsts.util.Assert = function() {};
 
   /**
    * Throws an <code>AssertionFailedException</code> with the given message if
@@ -30,7 +31,7 @@
    * @throws AssertionFailedException
    *           if the condition is false
    */
-  Assert.isTrue = function(assertion, message) {
+  jsts.util.Assert.isTrue = function(assertion, message) {
     if (!assertion) {
       if (message === null) {
         throw new AssertionFailedException();
@@ -54,7 +55,7 @@
    * @throws AssertionFailedException
    *           if the two objects are not equal
    */
-  Assert.equals = function(expectedValue, actualValue, message) {
+  jsts.util.Assert.equals = function(expectedValue, actualValue, message) {
     if (!actualValue.equals(expectedValue)) {
       throw new AssertionFailedException('Expected ' + expectedValue +
           ' but encountered ' + actualValue +
@@ -71,12 +72,9 @@
    * @throws AssertionFailedException
    *           thrown always
    */
-  Assert.shouldNeverReachHere = function(message) {
+  jsts.util.Assert.shouldNeverReachHere = function(message) {
     throw new AssertionFailedException('Should never reach here' +
         (message != null ? ': ' + message : ''));
   };
-
-
-  jsts.util.Assert = Assert;
 
 })();

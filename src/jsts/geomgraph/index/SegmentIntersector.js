@@ -20,7 +20,7 @@
    *          recordIsolated
    * @constructor
    */
-  var SegmentIntersector = function(li, includeProper, recordIsolated) {
+  jsts.geomgraph.index.SegmentIntersector = function(li, includeProper, recordIsolated) {
     this.li = li;
     this.includeProper = includeProper;
     this.recordIsolated = recordIsolated;
@@ -34,7 +34,7 @@
    *          i2
    * @return {boolean}
    */
-  SegmentIntersector.isAdjacentSegments = function(i1, i2) {
+  jsts.geomgraph.index.SegmentIntersector.isAdjacentSegments = function(i1, i2) {
     return Math.abs(i1 - i2) === 1;
   };
 
@@ -43,21 +43,21 @@
    * @type {boolean}
    * @private
    */
-  SegmentIntersector.prototype._hasIntersection = false;
+  jsts.geomgraph.index.SegmentIntersector.prototype._hasIntersection = false;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  SegmentIntersector.prototype.hasProper = false;
+  jsts.geomgraph.index.SegmentIntersector.prototype.hasProper = false;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  SegmentIntersector.prototype.hasProperInterior = false;
+  jsts.geomgraph.index.SegmentIntersector.prototype.hasProperInterior = false;
 
 
   /**
@@ -66,42 +66,42 @@
    * @type {Coordinate}
    * @private
    */
-  SegmentIntersector.prototype.properIntersectionPoint = null;
+  jsts.geomgraph.index.SegmentIntersector.prototype.properIntersectionPoint = null;
 
 
   /**
    * @type {LineIntersector}
    * @private
    */
-  SegmentIntersector.prototype.li = null;
+  jsts.geomgraph.index.SegmentIntersector.prototype.li = null;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  SegmentIntersector.prototype.includeProper = null;
+  jsts.geomgraph.index.SegmentIntersector.prototype.includeProper = null;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  SegmentIntersector.prototype.recordIsolated = null;
+  jsts.geomgraph.index.SegmentIntersector.prototype.recordIsolated = null;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  SegmentIntersector.prototype.isSelfIntersection = null;
+  jsts.geomgraph.index.SegmentIntersector.prototype.isSelfIntersection = null;
 
 
   /**
    * @type {number}
    * @private
    */
-  SegmentIntersector.prototype.numIntersections = 0;
+  jsts.geomgraph.index.SegmentIntersector.prototype.numIntersections = 0;
 
 
   /**
@@ -109,14 +109,14 @@
    *
    * @type {number}
    */
-  SegmentIntersector.prototype.numTests = 0;
+  jsts.geomgraph.index.SegmentIntersector.prototype.numTests = 0;
 
 
   /**
    * @type {Array.<javascript.util.Collection>}
    * @private
    */
-  SegmentIntersector.prototype.bdyNodes = null;
+  jsts.geomgraph.index.SegmentIntersector.prototype.bdyNodes = null;
 
 
   /**
@@ -125,7 +125,7 @@
    * @param {javascript.util.Collection}
    *          bdyNodes1
    */
-  SegmentIntersector.prototype.setBoundaryNodes = function(bdyNodes0, bdyNodes1) {
+  jsts.geomgraph.index.SegmentIntersector.prototype.setBoundaryNodes = function(bdyNodes0, bdyNodes1) {
     this.bdyNodes = [];
     this.bdyNodes[0] = bdyNodes0;
     this.bdyNodes[1] = bdyNodes1;
@@ -136,7 +136,7 @@
    * @return {Coordinate} the proper intersection point, or <code>null</code>
    *         if none was found.
    */
-  SegmentIntersector.prototype.getProperIntersectionPoint = function() {
+  jsts.geomgraph.index.SegmentIntersector.prototype.getProperIntersectionPoint = function() {
     return this.properIntersectionPoint;
   };
 
@@ -144,7 +144,7 @@
   /**
    * @return {boolean}
    */
-  SegmentIntersector.prototype.hasIntersection = function() {
+  jsts.geomgraph.index.SegmentIntersector.prototype.hasIntersection = function() {
     return this._hasIntersection;
   };
 
@@ -158,18 +158,18 @@
    *
    * @return {boolean}
    */
-  SegmentIntersector.prototype.hasProperIntersection = function() {
+  jsts.geomgraph.index.SegmentIntersector.prototype.hasProperIntersection = function() {
     return this.hasProper;
   };
 
 
   /**
    * A proper interior intersection is a proper intersection which is <b>not</b>
-   * contained in the set of boundary nodes set for this SegmentIntersector.
+   * contained in the set of boundary nodes set for this jsts.geomgraph.index.SegmentIntersector.
    *
    * @return {boolean}
    */
-  SegmentIntersector.prototype.hasProperInteriorIntersection = function() {
+  jsts.geomgraph.index.SegmentIntersector.prototype.hasProperInteriorIntersection = function() {
     return this.hasProperInterior;
   };
 
@@ -190,11 +190,11 @@
    *          segIndex1
    * @return {boolean}
    */
-  SegmentIntersector.prototype.isTrivialIntersection = function(e0, segIndex0,
+  jsts.geomgraph.index.SegmentIntersector.prototype.isTrivialIntersection = function(e0, segIndex0,
       e1, segIndex1) {
     if (e0 === e1) {
       if (this.li.getIntersectionNum() === 1) {
-        if (SegmentIntersector.isAdjacentSegments(segIndex0, segIndex1))
+        if (jsts.geomgraph.index.SegmentIntersector.isAdjacentSegments(segIndex0, segIndex1))
           return true;
         if (e0.isClosed()) {
           var maxSegIndex = e0.getNumPoints() - 1;
@@ -224,7 +224,7 @@
    * @param {int}
    *          segIndex1
    */
-  SegmentIntersector.prototype.addIntersections = function(e0, segIndex0, e1,
+  jsts.geomgraph.index.SegmentIntersector.prototype.addIntersections = function(e0, segIndex0, e1,
       segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1)
       return;
@@ -274,7 +274,7 @@
    * @return {boolean}
    * @private
    */
-  SegmentIntersector.prototype.isBoundaryPoint = function(li, bdyNodes) {
+  jsts.geomgraph.index.SegmentIntersector.prototype.isBoundaryPoint = function(li, bdyNodes) {
     if (bdyNodes === null)
       return false;
 
@@ -294,7 +294,5 @@
       return false;
     }
   };
-
-  jsts.geomgraph.index.SegmentIntersector = SegmentIntersector;
 
 })();

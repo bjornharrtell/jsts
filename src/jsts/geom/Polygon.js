@@ -24,18 +24,18 @@
    * @extends {jsts.geom.Geometry}
    * @constructor
    */
-  var Polygon = function() {
+  jsts.geom.Polygon = function() {
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
   };
 
-  Polygon.prototype = OpenLayers.Geometry.Polygon.prototype;
+  jsts.geom.Polygon.prototype = OpenLayers.Geometry.Polygon.prototype;
 
   for (key in jsts.geom.Geometry.prototype) {
-    Polygon.prototype[key] = jsts.geom.Geometry.prototype[key];
+    jsts.geom.Polygon.prototype[key] = jsts.geom.Geometry.prototype[key];
   }
 
 
-  Polygon.prototype.getCoordinate = function() {
+  jsts.geom.Polygon.prototype.getCoordinate = function() {
     return this.components[0].getCoordinate();
   };
 
@@ -43,7 +43,7 @@
   /**
    * @return {boolean}
    */
-  Polygon.prototype.isEmpty = function() {
+  jsts.geom.Polygon.prototype.isEmpty = function() {
     for (var i = 0; i < this.components.length; i++) {
       if (!this.components[i].isEmpty()) {
         return false;
@@ -53,16 +53,16 @@
   };
 
 
-  Polygon.prototype.getExteriorRing = function() {
+  jsts.geom.Polygon.prototype.getExteriorRing = function() {
     return this.components[0];
   };
 
-  Polygon.prototype.getInteriorRingN = function(n) {
+  jsts.geom.Polygon.prototype.getInteriorRingN = function(n) {
     var holes = this.components.slice(1);
     return holes[n];
   };
 
-  Polygon.prototype.getNumInteriorRing = function() {
+  jsts.geom.Polygon.prototype.getNumInteriorRing = function() {
     return this.components.slice(1).length;
   };
 
@@ -73,7 +73,7 @@
    * @return {Geometry} a lineal geometry (which may be empty).
    * @see Geometry#getBoundary
    */
-  Polygon.prototype.getBoundary = function() {
+  jsts.geom.Polygon.prototype.getBoundary = function() {
     if (this.isEmpty()) {
       return this.getFactory().createMultiLineString(null);
     }
@@ -90,17 +90,17 @@
     return this.getFactory().createMultiLineString(rings);
   };
 
-  Polygon.prototype.computeEnvelopeInternal = function() {
+  jsts.geom.Polygon.prototype.computeEnvelopeInternal = function() {
     var shell = this.components[0];
 
     return shell.getEnvelopeInternal();
   };
 
-  Polygon.prototype.getDimension = function() {
+  jsts.geom.Polygon.prototype.getDimension = function() {
     return 2;
   };
 
-  Polygon.prototype.getBoundaryDimension = function() {
+  jsts.geom.Polygon.prototype.getBoundaryDimension = function() {
     return 1;
   };
 
@@ -112,7 +112,7 @@
    *          tolerance
    * @return {boolean}
    */
-  Polygon.prototype.equalsExact = function(other, tolerance) {
+  jsts.geom.Polygon.prototype.equalsExact = function(other, tolerance) {
     if (!this.isEquivalentClass(other)) {
       return false;
     }
@@ -126,8 +126,8 @@
     var holes = this.components.slice(1);
     var otherPolygon = other;
     var thisShell = this.components[0];
-    var otherPolygonShell = otherPolygon.components[0];
-    var otherPolygonHoles = otherPolygon.components.slice(1);
+    var otherPolygonShell = other.components[0];
+    var otherPolygonHoles = other.components.slice(1);
     if (!thisShell.equalsExact(otherPolygonShell, tolerance)) {
       return false;
     }
@@ -145,13 +145,13 @@
     return true;
   };
 
-  Polygon.prototype.compareToSameClass = function(o) {
+  jsts.geom.Polygon.prototype.compareToSameClass = function(o) {
     var thisShell = this.components[0];
     var otherShell = o.components[0];
     return thisShell.compareToSameClass(otherShell);
-  }
+  };
 
-  Polygon.prototype.apply = function(filter) {
+  jsts.geom.Polygon.prototype.apply = function(filter) {
     filter.filter(this);
     if (filter instanceof jsts.geom.GeometryComponentFilter) {
       var shell = this.components[0];
@@ -163,7 +163,6 @@
     }
   };
 
-  jsts.geom.Polygon = Polygon;
-  OpenLayers.Geometry.Polygon = Polygon;
+  OpenLayers.Geometry.Polygon = jsts.geom.Polygon;
 
 })();

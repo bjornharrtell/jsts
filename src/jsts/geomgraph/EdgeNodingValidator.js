@@ -24,8 +24,8 @@
    * @param edges
    *          a collection of Edges.
    */
-  var EdgeNodingValidator = function(edges) {
-    this.nv = new FastNodingValidator(EdgeNodingValidator
+  jsts.geomgraph.EdgeNodingValidator = function(edges) {
+    this.nv = new FastNodingValidator(jsts.geomgraph.EdgeNodingValidator
         .toSegmentStrings(edges));
   };
 
@@ -39,12 +39,12 @@
    *           if the SegmentStrings are not correctly noded
    *
    */
-  EdgeNodingValidator.checkValid = function(edges) {
-    var validator = new EdgeNodingValidator(edges);
+  jsts.geomgraph.EdgeNodingValidator.checkValid = function(edges) {
+    var validator = new jsts.geomgraph.EdgeNodingValidator(edges);
     validator.checkValid();
-  }
+  };
 
-  EdgeNodingValidator.toSegmentStrings = function(edges) {
+  jsts.geomgraph.EdgeNodingValidator.toSegmentStrings = function(edges) {
     // convert Edges to SegmentStrings
     var segStrings = new ArrayList();
     for (var i = edges.iterator(); i.hasNext();) {
@@ -52,13 +52,13 @@
       segStrings.add(new BasicSegmentString(e.getCoordinates(), e));
     }
     return segStrings;
-  }
+  };
 
   /**
    * @type {jsts.noding.FastNodingValidator}
    * @private
    */
-  EdgeNodingValidator.prototype.nv = null;
+  jsts.geomgraph.EdgeNodingValidator.prototype.nv = null;
 
 
   /**
@@ -69,10 +69,8 @@
    *           if the SegmentStrings are not correctly noded
    *
    */
-  EdgeNodingValidator.prototype.checkValid = function() {
+  jsts.geomgraph.EdgeNodingValidator.prototype.checkValid = function() {
     this.nv.checkValid();
-  }
-
-  jsts.geomgraph.EdgeNodingValidator = EdgeNodingValidator;
+  };
 
 })();

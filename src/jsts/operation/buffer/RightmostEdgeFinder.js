@@ -9,9 +9,9 @@
  * coordinate, and which is oriented L to R at that point. (I.e. the right side
  * is on the RHS of the edge.)
  *
+ * @constructor
  */
-jsts.operation.buffer.RightmostEdgeFinder = function() {
-};
+jsts.operation.buffer.RightmostEdgeFinder = function() {};
 // private Coordinate extremeCoord;
 jsts.operation.buffer.RightmostEdgeFinder.prototype.minIndex = -1;
 jsts.operation.buffer.RightmostEdgeFinder.prototype.minCoord = null;
@@ -34,7 +34,7 @@ jsts.operation.buffer.RightmostEdgeFinder.prototype.findEdge = function(
    */
   for (var i = dirEdgeList.iterator(); i.hasNext();) {
     var de = i.next();
-    if (! de.isForward())
+    if (!de.isForward())
       continue;
     this.checkForRightmostCoordinate(de);
   }
@@ -43,7 +43,9 @@ jsts.operation.buffer.RightmostEdgeFinder.prototype.findEdge = function(
    * If the rightmost point is a node, we need to identify which of the incident
    * edges is rightmost.
    */
-  jsts.util.Assert.isTrue(this.minIndex !== 0 || this.minCoord.equals(this.minDe.getCoordinate()) , 'inconsistency in rightmost processing');
+  jsts.util.Assert.isTrue(this.minIndex !== 0 ||
+      this.minCoord.equals(this.minDe.getCoordinate()),
+      'inconsistency in rightmost processing');
   if (this.minIndex === 0) {
     this.findRightmostEdgeAtNode();
   } else {
@@ -83,7 +85,8 @@ jsts.operation.buffer.RightmostEdgeFinder.prototype.findRightmostEdgeAtVertex = 
    * rightmost.
    */
   var pts = this.minDe.getEdge().getCoordinates();
-  jsts.util.Assert.isTrue(this.minIndex > 0 && this.minIndex < pts.length, 'rightmost point expected to be interior vertex of edge');
+  jsts.util.Assert.isTrue(this.minIndex > 0 && this.minIndex < pts.length,
+      'rightmost point expected to be interior vertex of edge');
   var pPrev = pts[this.minIndex - 1];
   var pNext = pts[this.minIndex + 1];
   var orientation = jsts.algorithm.CGAlgorithms.computeOrientation(

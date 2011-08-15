@@ -22,32 +22,33 @@
    *
    * @param li
    *          the LineIntersector to use.
+   * @constructor
    */
-  var InteriorIntersectionFinder = function(li) {
+  jsts.noding.InteriorIntersectionFinder = function(li) {
     this.li = li;
     this.intersections = new ArrayList();
     this.interiorIntersection = null;
   };
 
-  InteriorIntersectionFinder.prototype = new SegmentIntersector();
-  InteriorIntersectionFinder.constructor = InteriorIntersectionFinder;
+  jsts.noding.InteriorIntersectionFinder.prototype = new SegmentIntersector();
+  jsts.noding.InteriorIntersectionFinder.constructor = jsts.noding.InteriorIntersectionFinder;
 
-  InteriorIntersectionFinder.prototype.findAllIntersections = false;
-  InteriorIntersectionFinder.prototype.isCheckEndSegmentsOnly = false;
-  InteriorIntersectionFinder.prototype.li = null;
-  InteriorIntersectionFinder.prototype.interiorIntersection = null;
-  InteriorIntersectionFinder.prototype.intSegments = null;
-  InteriorIntersectionFinder.prototype.intersections = null;
+  jsts.noding.InteriorIntersectionFinder.prototype.findAllIntersections = false;
+  jsts.noding.InteriorIntersectionFinder.prototype.isCheckEndSegmentsOnly = false;
+  jsts.noding.InteriorIntersectionFinder.prototype.li = null;
+  jsts.noding.InteriorIntersectionFinder.prototype.interiorIntersection = null;
+  jsts.noding.InteriorIntersectionFinder.prototype.intSegments = null;
+  jsts.noding.InteriorIntersectionFinder.prototype.intersections = null;
 
 
-  InteriorIntersectionFinder.prototype.setFindAllIntersections = function(
+  jsts.noding.InteriorIntersectionFinder.prototype.setFindAllIntersections = function(
       findAllIntersections) {
     this.findAllIntersections = findAllIntersections;
-  }
+  };
 
-  InteriorIntersectionFinder.prototype.getIntersections = function() {
+  jsts.noding.InteriorIntersectionFinder.prototype.getIntersections = function() {
     return intersections;
-  }
+  };
 
   /**
    * Sets whether only end segments should be tested for interior intersection.
@@ -58,7 +59,7 @@
    * @param isCheckEndSegmentsOnly
    *          whether to test only end segments.
    */
-  InteriorIntersectionFinder.prototype.setCheckEndSegmentsOnly = function(
+  jsts.noding.InteriorIntersectionFinder.prototype.setCheckEndSegmentsOnly = function(
       isCheckEndSegmentsOnly) {
     this.isCheckEndSegmentsOnly = isCheckEndSegmentsOnly;
   }
@@ -68,9 +69,9 @@
    *
    * @return true if an intersection was found.
    */
-  InteriorIntersectionFinder.prototype.hasIntersection = function() {
+  jsts.noding.InteriorIntersectionFinder.prototype.hasIntersection = function() {
     return this.interiorIntersection != null;
-  }
+  };
 
   /**
    * Gets the computed location of the intersection. Due to round-off, the
@@ -78,18 +79,18 @@
    *
    * @return the coordinate for the intersection location.
    */
-  InteriorIntersectionFinder.prototype.getInteriorIntersection = function() {
+  jsts.noding.InteriorIntersectionFinder.prototype.getInteriorIntersection = function() {
     return this.interiorIntersection;
-  }
+  };
 
   /**
    * Gets the endpoints of the intersecting segments.
    *
    * @return an array of the segment endpoints (p00, p01, p10, p11).
    */
-  InteriorIntersectionFinder.prototype.getIntersectionSegments = function() {
+  jsts.noding.InteriorIntersectionFinder.prototype.getIntersectionSegments = function() {
     return this.intSegments;
-  }
+  };
 
   /**
    * This method is called by clients of the {@link SegmentIntersector} class to
@@ -98,8 +99,8 @@
    * optimize away this call for segment pairs which they have determined do not
    * intersect (e.g. by an disjoint envelope test).
    */
-  InteriorIntersectionFinder.prototype.processIntersections = function(e0,
-      segIndex0, e1, segIndex1) {
+  jsts.noding.InteriorIntersectionFinder.prototype.processIntersections = function(
+      e0, segIndex0, e1, segIndex1) {
     // short-circuit if intersection already found
     if (this.hasIntersection())
       return;
@@ -139,7 +140,7 @@
         this.intersections.add(interiorIntersection);
       }
     }
-  }
+  };
 
   /**
    * Tests whether a segment in a {@link SegmentString} is an end segment.
@@ -152,20 +153,19 @@
    * @return true if the segment is an end segment.
    * @private
    */
-  InteriorIntersectionFinder.prototype.isEndSegment = function(segStr, index) {
+  jsts.noding.InteriorIntersectionFinder.prototype.isEndSegment = function(
+      segStr, index) {
     if (index == 0)
       return true;
     if (index >= segStr.size() - 2)
       return true;
     return false;
-  }
+  };
 
-  InteriorIntersectionFinder.prototype.isDone = function() {
+  jsts.noding.InteriorIntersectionFinder.prototype.isDone = function() {
     if (this.findAllIntersections)
       return false;
     return this.interiorIntersection != null;
-  }
-
-  jsts.noding.InteriorIntersectionFinder = InteriorIntersectionFinder;
+  };
 
 })();

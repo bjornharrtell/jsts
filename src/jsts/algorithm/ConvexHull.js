@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2011 by The Authors.
  * Published under the LGPL 2.1 license.
  * See /license-notice.txt for the full text of the license notice.
@@ -89,25 +88,27 @@
    * Geometry.
    * <p>
    * Uses the Graham Scan algorithm.
+   *
+   * @constructor
    */
-  var ConvexHull = function() {
+  jsts.algorithm.ConvexHull = function() {
     if (arguments.length === 1) {
       var geometry = arguments[0];
 
-      this.inputPts = ConvexHull.extractCoordinates(geometry);
+      this.inputPts = jsts.algorithm.ConvexHull.extractCoordinates(geometry);
       this.geomFactory = geometry.getFactory();
     } else {
       this.pts = arguments[0];
       this.geomFactory = arguments[1];
     }
   };
-  ConvexHull.prototype.geomFactory = null;
-  ConvexHull.prototype.inputPts = null;
+  jsts.algorithm.ConvexHull.prototype.geomFactory = null;
+  jsts.algorithm.ConvexHull.prototype.inputPts = null;
 
   /**
    * @private
    */
-  ConvexHull.extractCoordinates = function(geom) {
+  jsts.algorithm.ConvexHull.extractCoordinates = function(geom) {
     var filter = new UniqueCoordinateArrayFilter();
     geom.apply(filter);
     return filter.getCoordinates();
@@ -123,7 +124,7 @@
    *         points, a {@link LineString}; 1 point, a {@link Point}; 0 points,
    *         an empty {@link GeometryCollection}.
    */
-  ConvexHull.prototype.getConvexHull = function() {
+  jsts.algorithm.ConvexHull.prototype.getConvexHull = function() {
 
     if (this.inputPts.length == 0) {
       return this.geomFactory.createGeometryCollection(null);
@@ -173,7 +174,7 @@
    * @return the reduced list of points (at least 3).
    * @private
    */
-  ConvexHull.prototype.reduce = function(inputPts) {
+  jsts.algorithm.ConvexHull.prototype.reduce = function(inputPts) {
     var polyPts = this.computeOctRing(inputPts);
 
     // unable to compute interior polygon for some reason
@@ -207,7 +208,7 @@
   /**
    * @private
    */
-  ConvexHull.prototype.padArray3 = function(pts) {
+  jsts.algorithm.ConvexHull.prototype.padArray3 = function(pts) {
     var pad = [];
     for (var i = 0; i < pad.length; i++) {
       if (i < pts.length) {
@@ -221,7 +222,7 @@
   /**
    * @private
    */
-  ConvexHull.prototype.preSort = function(pts) {
+  jsts.algorithm.ConvexHull.prototype.preSort = function(pts) {
     var t;
 
     // find the lowest point in the set. If two or more points have
@@ -252,7 +253,7 @@
   /**
    * @private
    */
-  ConvexHull.prototype.grahamScan = function(c) {
+  jsts.algorithm.ConvexHull.prototype.grahamScan = function(c) {
     var p;
     var ps = new Stack();
     p = ps.push(c[0]);
@@ -278,7 +279,7 @@
    *
    * @private
    */
-  ConvexHull.prototype.isBetween = function(c1, c2, c3) {
+  jsts.algorithm.ConvexHull.prototype.isBetween = function(c1, c2, c3) {
     if (CGAlgorithms.computeOrientation(c1, c2, c3) !== 0) {
       return false;
     }
@@ -304,7 +305,7 @@
   /**
    * @private
    */
-  ConvexHull.prototype.computeOctRing = function(inputPts) {
+  jsts.algorithm.ConvexHull.prototype.computeOctRing = function(inputPts) {
     var octPts = this.computeOctPts(inputPts);
     var coordList = new CoordinateList();
     coordList.add(octPts, false);
@@ -320,7 +321,7 @@
   /**
    * @private
    */
-  ConvexHull.prototype.computeOctPts = function(inputPts) {
+  jsts.algorithm.ConvexHull.prototype.computeOctPts = function(inputPts) {
     var pts = [];
     for (var j = 0; j < pts.length; j++) {
       pts[j] = inputPts[0];
@@ -365,10 +366,11 @@
    *         vertices removed.
    * @private
    */
-  ConvexHull.prototype.lineOrPolygon = function(coordinates) {
+  jsts.algorithm.ConvexHull.prototype.lineOrPolygon = function(coordinates) {
     coordinates = this.cleanRing(coordinates);
     if (coordinates.length == 3) {
-      return this.geomFactory.createLineString([coordinates[0], coordinates[1]]);
+      return this.geomFactory
+          .createLineString([coordinates[0], coordinates[1]]);
     }
     var linearRing = this.geomFactory.createLinearRing(coordinates);
     return this.geomFactory.createPolygon(linearRing, null);
@@ -381,7 +383,7 @@
    * @return the coordinates with unnecessary (collinear) vertices removed.
    * @private
    */
-  ConvexHull.prototype.cleanRing = function(original) {
+  jsts.algorithm.ConvexHull.prototype.cleanRing = function(original) {
     Assert.equals(original[0], original[original.length - 1]);
     var cleanedRing = new ArrayList();
     var previousDistinctCoordinate = null;
@@ -403,7 +405,5 @@
     var cleanedRingCoordinates = [];
     return cleanedRing.toArray(cleanedRingCoordinates);
   };
-
-  jsts.algorithm.ConvexHull = ConvexHull;
 
 })();

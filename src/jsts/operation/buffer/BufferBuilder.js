@@ -98,7 +98,8 @@ jsts.operation.buffer.BufferBuilder.prototype.edgeList = null;
  * @param pm
  *          the precision model to use.
  */
-jsts.operation.buffer.BufferBuilder.prototype.setWorkingPrecisionModel = function(pm) {
+jsts.operation.buffer.BufferBuilder.prototype.setWorkingPrecisionModel = function(
+    pm) {
   this.workingPrecisionModel = pm;
 };
 
@@ -122,9 +123,11 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
   // factory must be the same as the one used by the input
   this.geomFact = g.getFactory();
 
-  var curveBuilder = new jsts.operation.buffer.OffsetCurveBuilder(precisionModel, this.bufParams);
+  var curveBuilder = new jsts.operation.buffer.OffsetCurveBuilder(
+      precisionModel, this.bufParams);
 
-  var curveSetBuilder = new jsts.operation.buffer.OffsetCurveSetBuilder(g, distance, curveBuilder);
+  var curveSetBuilder = new jsts.operation.buffer.OffsetCurveSetBuilder(g,
+      distance, curveBuilder);
 
   var bufferSegStrList = curveSetBuilder.getCurves();
 
@@ -134,7 +137,8 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
   }
 
   this.computeNodedEdges(bufferSegStrList, precisionModel);
-  this.graph = new jsts.geomgraph.PlanarGraph(new jsts.operation.overlay.OverlayNodeFactory());
+  this.graph = new jsts.geomgraph.PlanarGraph(
+      new jsts.operation.overlay.OverlayNodeFactory());
   this.graph.addEdges(this.edgeList.getEdges());
 
   var subgraphList = this.createSubgraphs(this.graph);
@@ -155,7 +159,8 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
 /**
  * @private
  */
-jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel) {
+jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(
+    precisionModel) {
   if (this.workingNoder !== null)
     return this.workingNoder;
 
@@ -171,16 +176,17 @@ jsts.operation.buffer.BufferBuilder.prototype.getNoder = function(precisionModel
 /**
  * @private
  */
-jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(bufferSegStrList,
-    precisionModel) {
+jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(
+    bufferSegStrList, precisionModel) {
   var noder = this.getNoder(precisionModel);
   noder.computeNodes(bufferSegStrList);
   var nodedSegStrings = noder.getNodedSubstrings();
 
-  for (var i = nodedSegStrings.iterator(); i.hasNext(); ) {
+  for (var i = nodedSegStrings.iterator(); i.hasNext();) {
     var segStr = i.next();
     var oldLabel = segStr.getData();
-    var edge = new jsts.geomgraph.Edge(segStr.getCoordinates(), new jsts.geomgraph.Label(oldLabel));
+    var edge = new jsts.geomgraph.Edge(segStr.getCoordinates(),
+        new jsts.geomgraph.Label(oldLabel));
     this.insertUniqueEdge(edge);
   }
 };
@@ -209,7 +215,8 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
     existingLabel.merge(labelToMerge);
 
     // compute new depth delta of sum of edges
-    var mergeDelta = jsts.operation.buffer.BufferBuilder.depthDelta(labelToMerge);
+    var mergeDelta = jsts.operation.buffer.BufferBuilder
+        .depthDelta(labelToMerge);
     var existingDelta = existingEdge.getDepthDelta();
     var newDelta = existingDelta + mergeDelta;
     existingEdge.setDepthDelta(newDelta);
@@ -217,7 +224,8 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
     // no matching existing edge was found
     // add this new edge to the list of edges in this graph
     this.edgeList.add(e);
-    e.setDepthDelta(jsts.operation.buffer.BufferBuilder.depthDelta(e.getLabel()));
+    e.setDepthDelta(jsts.operation.buffer.BufferBuilder
+        .depthDelta(e.getLabel()));
   }
 };
 
@@ -229,9 +237,9 @@ jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
  */
 jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) {
   var subgraphList = [];
-  for (var i = graph.getNodes().iterator(); i.hasNext(); ) {
+  for (var i = graph.getNodes().iterator(); i.hasNext();) {
     var node = i.next();
-    if (! node.isVisited()) {
+    if (!node.isVisited()) {
       var subgraph = new jsts.operation.buffer.BufferSubgraph();
       subgraph.create(node);
       subgraphList.push(subgraph);
@@ -244,7 +252,7 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
    * contain.
    */
 
-  var compare = function(a,b) {
+  var compare = function(a, b) {
     return a.compareTo(b);
   };
   subgraphList.sort(compare);
@@ -264,13 +272,14 @@ jsts.operation.buffer.BufferBuilder.prototype.createSubgraphs = function(graph) 
  *          polyBuilder the PolygonBuilder which will build the final polygons.
  * @private
  */
-jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(subgraphList,
-    polyBuilder) {
+jsts.operation.buffer.BufferBuilder.prototype.buildSubgraphs = function(
+    subgraphList, polyBuilder) {
   var processedGraphs = [];
   for (var i = 0; i < subgraphList.length; i++) {
     var subgraph = subgraphList[i];
     var p = subgraph.getRightmostCoordinate();
-    var locater = new jsts.operation.buffer.SubgraphDepthLocater(processedGraphs);
+    var locater = new jsts.operation.buffer.SubgraphDepthLocater(
+        processedGraphs);
     var outsideDepth = locater.getDepth(p);
     subgraph.computeDepth(outsideDepth);
     subgraph.findResultEdges();

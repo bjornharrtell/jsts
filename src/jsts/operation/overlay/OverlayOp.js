@@ -41,7 +41,7 @@
    * Computes the overlay of two {@link Geometry}s. The overlay can be used to
    * determine any boolean combination of the geometries.
    */
-  var OverlayOp = function(g0, g1) {
+  jsts.operation.overlay.OverlayOp = function(g0, g1) {
     this.ptLocator = new PointLocator();
     this.edgeList = new EdgeList();
     this.resultPolyList = new ArrayList();
@@ -57,31 +57,32 @@
      */
     this.geomFact = g0.getFactory();
   };
-  OverlayOp.prototype = new GeometryGraphOperation();
-  OverlayOp.constructor = OverlayOp;
+  jsts.operation.overlay.OverlayOp.prototype = new GeometryGraphOperation();
+  jsts.operation.overlay.OverlayOp.constructor = jsts.operation.overlay.OverlayOp;
 
   /**
    * The spatial functions supported by this class. These operations implement
    * various boolean combinations of the resultants of the overlay.
    */
-  OverlayOp.INTERSECTION = 1;
-  OverlayOp.UNION = 2;
-  OverlayOp.DIFFERENCE = 3;
-  OverlayOp.SYMDIFFERENCE = 4;
+  jsts.operation.overlay.OverlayOp.INTERSECTION = 1;
+  jsts.operation.overlay.OverlayOp.UNION = 2;
+  jsts.operation.overlay.OverlayOp.DIFFERENCE = 3;
+  jsts.operation.overlay.OverlayOp.SYMDIFFERENCE = 4;
 
-  OverlayOp.overlayOp = function(geom0, geom1, opCode) {
-    var gov = new OverlayOp(geom0, geom1);
+  jsts.operation.overlay.OverlayOp.overlayOp = function(geom0, geom1, opCode) {
+    var gov = new jsts.operation.overlay.OverlayOp(geom0, geom1);
     var geomOv = gov.getResultGeometry(opCode);
     return geomOv;
   }
 
-  OverlayOp.isResultOfOp = function(label, opCode) {
+  jsts.operation.overlay.OverlayOp.isResultOfOp = function(label, opCode) {
     if (arguments.length === 3) {
-      return OverlayOp.isResultOfOp2.apply(this, arguments);
+      return jsts.operation.overlay.OverlayOp.isResultOfOp2.apply(this,
+          arguments);
     }
     var loc0 = label.getLocation(0);
     var loc1 = label.getLocation(1);
-    return OverlayOp.isResultOfOp2(loc0, loc1, opCode);
+    return jsts.operation.overlay.OverlayOp.isResultOfOp2(loc0, loc1, opCode);
   }
 
   /**
@@ -89,50 +90,51 @@
    *
    * @return true if the locations correspond to the opCode.
    */
-  OverlayOp.isResultOfOp2 = function(loc0, loc1, opCode) {
+  jsts.operation.overlay.OverlayOp.isResultOfOp2 = function(loc0, loc1, opCode) {
     if (loc0 == Location.BOUNDARY)
       loc0 = Location.INTERIOR;
     if (loc1 == Location.BOUNDARY)
       loc1 = Location.INTERIOR;
     switch (opCode) {
-    case OverlayOp.INTERSECTION:
+    case jsts.operation.overlay.OverlayOp.INTERSECTION:
       return loc0 == Location.INTERIOR && loc1 == Location.INTERIOR;
-    case OverlayOp.UNION:
+    case jsts.operation.overlay.OverlayOp.UNION:
       return loc0 == Location.INTERIOR || loc1 == Location.INTERIOR;
-    case OverlayOp.DIFFERENCE:
+    case jsts.operation.overlay.OverlayOp.DIFFERENCE:
       return loc0 == Location.INTERIOR && loc1 != Location.INTERIOR;
-    case OverlayOp.SYMDIFFERENCE:
+    case jsts.operation.overlay.OverlayOp.SYMDIFFERENCE:
       return (loc0 == Location.INTERIOR && loc1 != Location.INTERIOR) ||
           (loc0 != Location.INTERIOR && loc1 == Location.INTERIOR);
     }
     return false;
   }
 
-  OverlayOp.prototype.ptLocator = null;
-  OverlayOp.prototype.geomFact = null;
-  OverlayOp.prototype.resultGeom = null;
+  jsts.operation.overlay.OverlayOp.prototype.ptLocator = null;
+  jsts.operation.overlay.OverlayOp.prototype.geomFact = null;
+  jsts.operation.overlay.OverlayOp.prototype.resultGeom = null;
 
-  OverlayOp.prototype.graph = null;
-  OverlayOp.prototype.edgeList = null;
+  jsts.operation.overlay.OverlayOp.prototype.graph = null;
+  jsts.operation.overlay.OverlayOp.prototype.edgeList = null;
 
-  OverlayOp.prototype.resultPolyList = null;
-  OverlayOp.prototype.resultLineList = null;
-  OverlayOp.prototype.resultPointList = null;
+  jsts.operation.overlay.OverlayOp.prototype.resultPolyList = null;
+  jsts.operation.overlay.OverlayOp.prototype.resultLineList = null;
+  jsts.operation.overlay.OverlayOp.prototype.resultPointList = null;
 
 
-  OverlayOp.prototype.getResultGeometry = function(funcCode) {
+  jsts.operation.overlay.OverlayOp.prototype.getResultGeometry = function(
+      funcCode) {
     this.computeOverlay(funcCode);
     return this.resultGeom;
   }
 
-  OverlayOp.prototype.getGraph = function() {
+  jsts.operation.overlay.OverlayOp.prototype.getGraph = function() {
     return this.graph;
   }
 
   /**
    * @private
    */
-  OverlayOp.prototype.computeOverlay = function(opCode) {
+  jsts.operation.overlay.OverlayOp.prototype.computeOverlay = function(opCode) {
     // copy points from input Geometries.
     // This ensures that any Point geometries
     // in the input are considered for inclusion in the result set
@@ -199,7 +201,7 @@
   /**
    * @private
    */
-  OverlayOp.prototype.insertUniqueEdges = function(edges) {
+  jsts.operation.overlay.OverlayOp.prototype.insertUniqueEdges = function(edges) {
     for (var i = edges.iterator(); i.hasNext();) {
       var e = i.next();
       this.insertUniqueEdge(e);
@@ -212,7 +214,7 @@
    *
    * @protected
    */
-  OverlayOp.prototype.insertUniqueEdge = function(e) {
+  jsts.operation.overlay.OverlayOp.prototype.insertUniqueEdge = function(e) {
     // <FIX> MD 8 Oct 03 speed up identical edge lookup
     // fast lookup
     var existingEdge = this.edgeList.findEqualEdge(e);
@@ -245,7 +247,7 @@
       // e.getDepth().add(e.getLabel());
       this.edgeList.add(e);
     }
-  }
+  };
 
 
   /**
@@ -258,7 +260,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.computeLabelsFromDepths = function() {
+  jsts.operation.overlay.OverlayOp.prototype.computeLabelsFromDepths = function() {
     for (var it = this.edgeList.iterator(); it.hasNext();) {
       var e = it.next();
       var lbl = e.getLabel();
@@ -306,7 +308,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.replaceCollapsedEdges = function() {
+  jsts.operation.overlay.OverlayOp.prototype.replaceCollapsedEdges = function() {
     var newEdges = new ArrayList();
     for (var it = this.edgeList.iterator(); it.hasNext();) {
       var e = it.next();
@@ -326,7 +328,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.copyPoints = function(argIndex) {
+  jsts.operation.overlay.OverlayOp.prototype.copyPoints = function(argIndex) {
     for (var i = this.arg[argIndex].getNodeIterator(); i.hasNext();) {
       var graphNode = i.next();
       var newNode = this.graph.addNode(graphNode.getCoordinate());
@@ -342,7 +344,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.computeLabelling = function() {
+  jsts.operation.overlay.OverlayOp.prototype.computeLabelling = function() {
     for (var nodeit = this.graph.getNodes().iterator(); nodeit.hasNext();) {
       var node = nodeit.next();
       node.getEdges().computeLabelling(this.arg);
@@ -358,7 +360,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.mergeSymLabels = function() {
+  jsts.operation.overlay.OverlayOp.prototype.mergeSymLabels = function() {
     for (var nodeit = this.graph.getNodes().iterator(); nodeit.hasNext();) {
       var node = nodeit.next();
       node.getEdges().mergeSymLabels();
@@ -368,7 +370,7 @@
   /**
    * @private
    */
-  OverlayOp.prototype.updateNodeLabelling = function() {
+  jsts.operation.overlay.OverlayOp.prototype.updateNodeLabelling = function() {
     // update the labels for nodes
     // The label for a node is updated from the edges incident on it
     // (Note that a node may have already been labelled
@@ -395,7 +397,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.labelIncompleteNodes = function() {
+  jsts.operation.overlay.OverlayOp.prototype.labelIncompleteNodes = function() {
     var nodeCount = 0;
     for (var ni = this.graph.getNodes().iterator(); ni.hasNext();) {
       var n = ni.next();
@@ -417,7 +419,8 @@
    *
    * @private
    */
-  OverlayOp.prototype.labelIncompleteNode = function(n, targetIndex) {
+  jsts.operation.overlay.OverlayOp.prototype.labelIncompleteNode = function(n,
+      targetIndex) {
     var loc = this.ptLocator.locate(n.getCoordinate(), this.arg[targetIndex]
         .getGeometry());
 
@@ -435,15 +438,16 @@
    *
    * @private
    */
-  OverlayOp.prototype.findResultAreaEdges = function(opCode) {
+  jsts.operation.overlay.OverlayOp.prototype.findResultAreaEdges = function(
+      opCode) {
     for (var it = this.graph.getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next();
       // mark all dirEdges with the appropriate label
       var label = de.getLabel();
       if (label.isArea() &&
           !de.isInteriorAreaEdge() &&
-          OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(
-              1, Position.RIGHT), opCode)) {
+          jsts.operation.overlay.OverlayOp.isResultOfOp(label.getLocation(0,
+              Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
         de.setInResult(true);
       }
     }
@@ -454,7 +458,7 @@
    *
    * @private
    */
-  OverlayOp.prototype.cancelDuplicateResultEdges = function() {
+  jsts.operation.overlay.OverlayOp.prototype.cancelDuplicateResultEdges = function() {
     // remove any dirEdges whose sym is also included
     // (they "cancel each other out")
     for (var it = this.graph.getEdgeEnds().iterator(); it.hasNext();) {
@@ -473,7 +477,7 @@
    * @return {boolean} true if the coord point is covered by a result Line or
    *         Area geometry.
    */
-  OverlayOp.prototype.isCoveredByLA = function(coord) {
+  jsts.operation.overlay.OverlayOp.prototype.isCoveredByLA = function(coord) {
     if (this.isCovered(coord, this.resultLineList))
       return true;
     if (this.isCovered(coord, this.resultPolyList))
@@ -486,7 +490,7 @@
    *
    * @return true if the coord point is covered by a result Area geometry.
    */
-  OverlayOp.prototype.isCoveredByA = function(coord) {
+  jsts.operation.overlay.OverlayOp.prototype.isCoveredByA = function(coord) {
     if (this.isCovered(coord, this.resultPolyList))
       return true;
     return false;
@@ -496,7 +500,8 @@
    *         geometry in the list.
    * @private
    */
-  OverlayOp.prototype.isCovered = function(coord, geomList) {
+  jsts.operation.overlay.OverlayOp.prototype.isCovered = function(coord,
+      geomList) {
     for (var it = geomList.iterator(); it.hasNext();) {
       var geom = it.next();
       var loc = this.ptLocator.locate(coord, geom);
@@ -509,8 +514,8 @@
   /**
    * @private
    */
-  OverlayOp.prototype.computeGeometry = function(resultPointList,
-      resultLineList, resultPolyList, opcode) {
+  jsts.operation.overlay.OverlayOp.prototype.computeGeometry = function(
+      resultPointList, resultLineList, resultPolyList, opcode) {
     var geomList = new ArrayList();
     // element geometries of the result are always in the order P,L,A
     geomList.addAll(resultPointList);
@@ -529,7 +534,8 @@
   /**
    * @private
    */
-  OverlayOp.prototype.createEmptyResult = function(opCode) {
+  jsts.operation.overlay.OverlayOp.prototype.createEmptyResult = function(
+      opCode) {
     var result = null;
     switch (resultDimension(opCode, this.arg[0].getGeometry(), this.arg[1]
         .getGeometry())) {
@@ -547,33 +553,32 @@
       break;
     }
     return result;
-  }
+  };
 
   /**
    * @private
    */
-  OverlayOp.prototype.resultDimension = function(opCode, g0, g1) {
+  jsts.operation.overlay.OverlayOp.prototype.resultDimension = function(opCode,
+      g0, g1) {
     var dim0 = g0.getDimension();
     var dim1 = g1.getDimension();
 
     var resultDimension = -1;
     switch (opCode) {
-    case OverlayOp.INTERSECTION:
+    case jsts.operation.overlay.OverlayOp.INTERSECTION:
       resultDimension = Math.min(dim0, dim1);
       break;
-    case OverlayOp.UNION:
+    case jsts.operation.overlay.OverlayOp.UNION:
       resultDimension = Math.max(dim0, dim1);
       break;
-    case OverlayOp.DIFFERENCE:
+    case jsts.operation.overlay.OverlayOp.DIFFERENCE:
       resultDimension = dim0;
       break;
-    case OverlayOp.SYMDIFFERENCE:
+    case jsts.operation.overlay.OverlayOp.SYMDIFFERENCE:
       resultDimension = Math.max(dim0, dim1);
       break;
     }
     return resultDimension;
-  }
-
-  jsts.operation.overlay.OverlayOp = OverlayOp;
+  };
 
 })();

@@ -30,7 +30,7 @@
    *          boundaryNodeRule
    * @augments jsts.planargraph.PlanarGraph
    */
-  var GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
+  jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
     jsts.geomgraph.PlanarGraph.call(this);
 
     this.lineEdgeMap = new javascript.util.HashMap();
@@ -46,14 +46,14 @@
     }
   };
 
-  GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
+  jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
 
 
   /**
    * @return {EdgeSetIntersector}
    * @private
    */
-  GeometryGraph.prototype.createEdgeSetIntersector = function() {
+  jsts.geomgraph.GeometryGraph.prototype.createEdgeSetIntersector = function() {
     return new jsts.geomgraph.index.SimpleEdgeSetIntersector();
     // TODO: use optimized version when ported
     // return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
@@ -66,7 +66,7 @@
    *          boundaryCount
    * @return {int}
    */
-  GeometryGraph.determineBoundary = function(boundaryNodeRule, boundaryCount) {
+  jsts.geomgraph.GeometryGraph.determineBoundary = function(boundaryNodeRule, boundaryCount) {
     return boundaryNodeRule.isInBoundary(boundaryCount) ? Location.BOUNDARY
         : Location.INTERIOR;
   };
@@ -75,7 +75,7 @@
   /**
    * @type {Geometry}
    */
-  GeometryGraph.prototype.parentGeom = null;
+  jsts.geomgraph.GeometryGraph.prototype.parentGeom = null;
 
 
   /**
@@ -88,13 +88,13 @@
    * @type {Object}
    * @private
    */
-  GeometryGraph.prototype.lineEdgeMap = null;
+  jsts.geomgraph.GeometryGraph.prototype.lineEdgeMap = null;
 
 
   /**
    * @type {BoundaryNodeRule}
    */
-  GeometryGraph.prototype.boundaryNodeRule = null;
+  jsts.geomgraph.GeometryGraph.prototype.boundaryNodeRule = null;
 
 
   /**
@@ -105,7 +105,7 @@
    * @type {boolean}
    * @private
    */
-  GeometryGraph.prototype.useBoundaryDeterminationRule = true;
+  jsts.geomgraph.GeometryGraph.prototype.useBoundaryDeterminationRule = true;
 
 
   /**
@@ -115,35 +115,35 @@
    * @type {number}
    * @private
    */
-  GeometryGraph.prototype.argIndex = null;
+  jsts.geomgraph.GeometryGraph.prototype.argIndex = null;
 
 
   /**
    * @type {javascript.util.Collection}
    * @private
    */
-  GeometryGraph.prototype.boundaryNodes = null;
+  jsts.geomgraph.GeometryGraph.prototype.boundaryNodes = null;
 
 
   /**
    * @type {Coordinate}
    * @private
    */
-  GeometryGraph.prototype.hasTooFewPoints = false;
+  jsts.geomgraph.GeometryGraph.prototype.hasTooFewPoints = false;
 
 
   /**
    * @type {Coordinate}
    * @private
    */
-  GeometryGraph.prototype.invalidPoint = null;
+  jsts.geomgraph.GeometryGraph.prototype.invalidPoint = null;
 
 
   /**
    * @type {PointOnGeometryLocator}
    * @private
    */
-  GeometryGraph.prototype.areaPtLocator = null;
+  jsts.geomgraph.GeometryGraph.prototype.areaPtLocator = null;
 
 
   /**
@@ -152,30 +152,30 @@
    * @type {PointLocator}
    * @private
    */
-  GeometryGraph.prototype.ptLocator = null;
+  jsts.geomgraph.GeometryGraph.prototype.ptLocator = null;
 
 
-  GeometryGraph.prototype.getGeometry = function() {
+  jsts.geomgraph.GeometryGraph.prototype.getGeometry = function() {
     return this.parentGeom;
   };
 
-  GeometryGraph.prototype.getBoundaryNodes = function() {
+  jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodes = function() {
     if (this.boundaryNodes === null)
       this.boundaryNodes = this.nodes.getBoundaryNodes(this.argIndex);
     return this.boundaryNodes;
   };
 
-  GeometryGraph.prototype.getBoundaryNodeRule = function() {
+  jsts.geomgraph.GeometryGraph.prototype.getBoundaryNodeRule = function() {
     return this.boundaryNodeRule;
   };
 
 
 
-  GeometryGraph.prototype.findEdge = function(line) {
+  jsts.geomgraph.GeometryGraph.prototype.findEdge = function(line) {
     return this.lineEdgeMap.get(line);
   }
 
-  GeometryGraph.prototype.computeSplitEdges = function(edgelist) {
+  jsts.geomgraph.GeometryGraph.prototype.computeSplitEdges = function(edgelist) {
     for (var i = this.edges.iterator(); i.hasNext();) {
       var e = i.next();
       e.eiList.addSplitEdges(edgelist);
@@ -186,7 +186,7 @@
    * @param {Geometry}
    *          g
    */
-  GeometryGraph.prototype.add = function(g) {
+  jsts.geomgraph.GeometryGraph.prototype.add = function(g) {
     if (g.isEmpty()) {
       return;
     }
@@ -219,7 +219,7 @@
   /**
    * @private
    */
-  GeometryGraph.prototype.addCollection = function(gc) {
+  jsts.geomgraph.GeometryGraph.prototype.addCollection = function(gc) {
     for (var i = 0; i < gc.getNumGeometries(); i++) {
       var g = gc.getGeometryN(i);
       this.add(g);
@@ -231,7 +231,7 @@
    * Add an Edge computed externally. The label on the Edge is assumed to be
    * correct.
    */
-  GeometryGraph.prototype.addEdge = function(e) {
+  jsts.geomgraph.GeometryGraph.prototype.addEdge = function(e) {
     this.insertEdge(e);
     var coord = e.getCoordinates();
     // insert the endpoint as a node, to mark that it is on the boundary
@@ -243,7 +243,7 @@
   /**
    * Add a Point to the graph.
    */
-  GeometryGraph.prototype.addPoint = function(p) {
+  jsts.geomgraph.GeometryGraph.prototype.addPoint = function(p) {
     var coord = p.getCoordinate();
     this.insertPoint(this.argIndex, coord, Location.INTERIOR);
   };
@@ -254,7 +254,7 @@
    *          line
    * @private
    */
-  GeometryGraph.prototype.addLineString = function(line) {
+  jsts.geomgraph.GeometryGraph.prototype.addLineString = function(line) {
     var coord = jsts.geom.CoordinateArrays.removeRepeatedPoints(line
         .getCoordinates());
 
@@ -290,7 +290,7 @@
    *
    * @private
    */
-  GeometryGraph.prototype.addPolygonRing = function(lr, cwLeft, cwRight) {
+  jsts.geomgraph.GeometryGraph.prototype.addPolygonRing = function(lr, cwLeft, cwRight) {
     // don't bother adding empty holes
     if (lr.isEmpty())
       return;
@@ -323,7 +323,7 @@
   /**
    * @private
    */
-  GeometryGraph.prototype.addPolygon = function(p) {
+  jsts.geomgraph.GeometryGraph.prototype.addPolygon = function(p) {
     this.addPolygonRing(p.getExteriorRing(), Location.EXTERIOR,
         Location.INTERIOR);
 
@@ -338,7 +338,7 @@
   };
 
 
-  GeometryGraph.prototype.computeEdgeIntersections = function(g, li,
+  jsts.geomgraph.GeometryGraph.prototype.computeEdgeIntersections = function(g, li,
       includeProper) {
     var si = new jsts.geomgraph.index.SegmentIntersector(li, includeProper,
         true);
@@ -364,7 +364,7 @@
    * @return {SegmentIntersector} the SegmentIntersector used, containing
    *         information about the intersections found.
    */
-  GeometryGraph.prototype.computeSelfNodes = function(li, computeRingSelfNodes) {
+  jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li, computeRingSelfNodes) {
     var si = new jsts.geomgraph.index.SegmentIntersector(li, true, false);
     var esi = this.createEdgeSetIntersector();
     // optimized test for Polygons and Rings
@@ -383,7 +383,7 @@
   /**
    * @private
    */
-  GeometryGraph.prototype.insertPoint = function(argIndex, coord, onLocation) {
+  jsts.geomgraph.GeometryGraph.prototype.insertPoint = function(argIndex, coord, onLocation) {
     var n = this.nodes.addNode(coord);
     var lbl = n.getLabel();
     if (lbl == null) {
@@ -398,7 +398,7 @@
    * This is used to add the boundary points of dim-1 geometries
    * (Curves/MultiCurves).
    */
-  GeometryGraph.prototype.insertBoundaryPoint = function(argIndex, coord) {
+  jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex, coord) {
     var n = this.nodes.addNode(coord);
     var lbl = n.getLabel();
     // the new point to insert is on a boundary
@@ -412,7 +412,7 @@
 
     // determine the boundary status of the point according to the Boundary
     // Determination Rule
-    var newLoc = GeometryGraph.determineBoundary(this.boundaryNodeRule,
+    var newLoc = jsts.geomgraph.GeometryGraph.determineBoundary(this.boundaryNodeRule,
         boundaryCount);
     lbl.setLocation(argIndex, newLoc);
   };
@@ -425,7 +425,7 @@
    * @param argIndex
    * @private
    */
-  GeometryGraph.prototype.addSelfIntersectionNodes = function(argIndex) {
+  jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(argIndex) {
     for (var i = this.edges.iterator(); i.hasNext();) {
       var e = i.next();
       var eLoc = e.getLabel().getLocation(argIndex);
@@ -444,7 +444,7 @@
    *
    * @private
    */
-  GeometryGraph.prototype.addSelfIntersectionNode = function(argIndex, coord,
+  jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(argIndex, coord,
       loc) {
     // if this node is already a boundary node, don't change it
     if (this.isBoundaryNode(argIndex, coord))
@@ -454,8 +454,6 @@
     else
       this.insertPoint(argIndex, coord, loc);
   };
-
-  jsts.geomgraph.GeometryGraph = GeometryGraph;
 
 })();
 

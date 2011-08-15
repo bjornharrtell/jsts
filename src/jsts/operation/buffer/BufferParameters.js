@@ -7,6 +7,8 @@
 
 /**
  * Contains the parameters which describe how a buffer should be constructed.
+ *
+ * @constructor
  */
 jsts.operation.buffer.BufferParameters = function(quadrantSegments,
     endCapStyle, joinStyle, mitreLimit) {

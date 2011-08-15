@@ -31,7 +31,7 @@
    *
    * @constructor
    */
-  var RelateNodeGraph = function() {
+  jsts.operation.relate.RelateNodeGraph = function() {
     this.nodes = new jsts.geomgraph.NodeMap(
         new jsts.operation.relate.RelateNodeFactory());
   };
@@ -40,10 +40,10 @@
   /**
    * @private
    */
-  RelateNodeGraph.prototype.nodes = null;
+  jsts.operation.relate.RelateNodeGraph.prototype.nodes = null;
 
 
-  RelateNodeGraph.prototype.build = function(geomGraph) {
+  jsts.operation.relate.RelateNodeGraph.prototype.build = function(geomGraph) {
     // compute nodes for intersections between previously noded edges
     this.computeIntersectionNodes(geomGraph, 0);
     /**
@@ -70,7 +70,7 @@
    * <p>
    * Precondition: edge intersections have been computed.
    */
-  RelateNodeGraph.prototype.computeIntersectionNodes = function(geomGraph,
+  jsts.operation.relate.RelateNodeGraph.prototype.computeIntersectionNodes = function(geomGraph,
       argIndex) {
     for (var edgeIt = geomGraph.getEdgeIterator(); edgeIt.hasNext();) {
       var e = edgeIt.next();
@@ -96,7 +96,7 @@
    * but in the original arg Geometry it is actually in the interior due to the
    * Boundary Determination Rule)
    */
-  RelateNodeGraph.prototype.copyNodesAndLabels = function(geomGraph, argIndex) {
+  jsts.operation.relate.RelateNodeGraph.prototype.copyNodesAndLabels = function(geomGraph, argIndex) {
     for (var nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext();) {
       var graphNode = nodeIt.next();
       var newNode = nodes.addNode(graphNode.getCoordinate());
@@ -104,13 +104,11 @@
     }
   };
 
-  RelateNodeGraph.prototype.insertEdgeEnds = function(ee) {
+  jsts.operation.relate.RelateNodeGraph.prototype.insertEdgeEnds = function(ee) {
     for (var i = ee.iterator(); i.hasNext();) {
       var e = i.next();
       this.nodes.add(e);
     }
   };
-
-  jsts.operation.relate.RelateNodeGraph = RelateNodeGraph;
 
 })();

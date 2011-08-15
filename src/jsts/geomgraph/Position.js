@@ -13,7 +13,7 @@
    *
    * @constructor
    */
-  var Position = function() {
+  jsts.geomgraph.Position = function() {
 
   };
 
@@ -23,7 +23,7 @@
    *
    * @type {int}
    */
-  Position.ON = 0;
+  jsts.geomgraph.Position.ON = 0;
 
 
   /**
@@ -31,7 +31,7 @@
    *
    * @type {int}
    */
-  Position.LEFT = 1;
+  jsts.geomgraph.Position.LEFT = 1;
 
 
   /**
@@ -39,7 +39,7 @@
    *
    * @type {int}
    */
-  Position.RIGHT = 2;
+  jsts.geomgraph.Position.RIGHT = 2;
 
 
   /**
@@ -50,16 +50,14 @@
    *          position
    * @return {int}
    */
-  Position.opposite = function(position) {
-    if (position === Position.LEFT) {
-      return Position.RIGHT;
+  jsts.geomgraph.Position.opposite = function(position) {
+    if (position === jsts.geomgraph.Position.LEFT) {
+      return jsts.geomgraph.Position.RIGHT;
     }
-    if (position === Position.RIGHT) {
-      return Position.LEFT;
+    if (position === jsts.geomgraph.Position.RIGHT) {
+      return jsts.geomgraph.Position.LEFT;
     }
     return position;
   };
-
-  jsts.geomgraph.Position = Position;
 
 })();

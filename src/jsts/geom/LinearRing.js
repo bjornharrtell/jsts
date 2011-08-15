@@ -20,19 +20,18 @@
    */
 
 
-
   /**
-   * @constructor
-   * @augments OpenLayers.Geometry.LinearRing
    * @extends jsts.geom.LineString
+   * @constructor
    */
-  var LinearRing = function() {
+  jsts.geom.LinearRing = function() {
     jsts.geom.LineString.apply(this, arguments);
   };
-  LinearRing.prototype = OpenLayers.Geometry.LinearRing.prototype;
+  jsts.geom.LinearRing.prototype = OpenLayers.Geometry.LinearRing.prototype;
 
   for (key in jsts.geom.LineString.prototype) {
-    LinearRing.prototype[key] = LinearRing.prototype[key] ? LinearRing.prototype[key] : jsts.geom.LineString.prototype[key];
+    jsts.geom.LinearRing.prototype[key] = jsts.geom.LinearRing.prototype[key] ? jsts.geom.LinearRing.prototype[key]
+        : jsts.geom.LineString.prototype[key];
   }
 
   /**
@@ -41,7 +40,7 @@
    *
    * @return {int} Dimension.FALSE.
    */
-  LinearRing.prototype.getBoundaryDimension = function() {
+  jsts.geom.LinearRing.prototype.getBoundaryDimension = function() {
     return jsts.geom.Dimension.FALSE;
   };
 
@@ -54,7 +53,7 @@
    *
    * @see Geometry#isSimple
    */
-  LinearRing.prototype.isSimple = function() {
+  jsts.geom.LinearRing.prototype.isSimple = function() {
     return true;
   };
 
@@ -62,13 +61,12 @@
   /**
    * @return {String} String representation of LinearRing type.
    */
-  LinearRing.prototype.getGeometryType = function() {
+  jsts.geom.LinearRing.prototype.getGeometryType = function() {
     return 'LinearRing';
   };
 
-  LinearRing.MINIMUM_VALID_SIZE = 4;
+  jsts.geom.LinearRing.MINIMUM_VALID_SIZE = 4;
 
-  jsts.geom.LinearRing = LinearRing;
-  OpenLayers.Geometry.LinearRing = LinearRing;
+  OpenLayers.Geometry.LinearRing = jsts.geom.LinearRing;
 
 })();

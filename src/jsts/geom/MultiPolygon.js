@@ -14,20 +14,19 @@
 
   /**
    * @constructor
-   * @augments OpenLayers.Geometry.MultiPolygon
-   * @augments jsts.geom.GeometryCollection
+   * @extends jsts.geom.GeometryCollection
    */
-  var MultiPolygon = function() {
+  jsts.geom.MultiPolygon = function() {
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this,
         arguments);
     this.geometries = this.components;
   };
-  MultiPolygon.prototype = OpenLayers.Geometry.MultiPolygon.prototype;
+  jsts.geom.MultiPolygon.prototype = OpenLayers.Geometry.MultiPolygon.prototype;
 
   for (key in jsts.geom.GeometryCollection.prototype) {
-    MultiPolygon.prototype[key] = MultiPolygon.prototype[key] ? MultiPolygon.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
+    jsts.geom.MultiPolygon.prototype[key] = jsts.geom.MultiPolygon.prototype[key] ? jsts.geom.MultiPolygon.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
     // overrides
-    MultiPolygon.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
+    jsts.geom.MultiPolygon.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
   }
 
   /**
@@ -36,7 +35,7 @@
    * @return {Geometry} a lineal geometry (which may be empty).
    * @see Geometry#getBoundary
    */
-  MultiPolygon.prototype.getBoundary = function() {
+  jsts.geom.MultiPolygon.prototype.getBoundary = function() {
     if (this.isEmpty()) {
       return this.getFactory().createMultiLineString(null);
     }
@@ -59,7 +58,7 @@
    *          tolerance
    * @return {boolean}
    */
-  MultiPolygon.prototype.equalsExact = function(other, tolerance) {
+  jsts.geom.MultiPolygon.prototype.equalsExact = function(other, tolerance) {
     if (!this.isEquivalentClass(other)) {
       return false;
     }
@@ -67,7 +66,6 @@
         tolerance);
   };
 
-  jsts.geom.MultiPolygon = MultiPolygon;
-  OpenLayers.Geometry.MultiPolygon = MultiPolygon;
+  OpenLayers.Geometry.MultiPolygon = jsts.geom.MultiPolygon;
 
 })();

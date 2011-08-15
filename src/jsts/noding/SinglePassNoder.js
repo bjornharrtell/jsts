@@ -20,20 +20,20 @@
    *
    * @interface
    */
-  var SinglePassNoder = function() {
+  jsts.noding.SinglePassNoder = function() {
 
   };
 
 
-  SinglePassNoder.prototype = new Noder();
-  SinglePassNoder.constructor = SinglePassNoder;
+  jsts.noding.SinglePassNoder.prototype = new Noder();
+  jsts.noding.SinglePassNoder.constructor = jsts.noding.SinglePassNoder;
 
 
   /**
    * @type {SegmentIntersector}
    * @protected
    */
-  SinglePassNoder.prototype.segInt = null;
+  jsts.noding.SinglePassNoder.prototype.segInt = null;
 
   /**
    * Sets the SegmentIntersector to use with this noder. A SegmentIntersector
@@ -44,10 +44,8 @@
    * @param {SegmentIntersector}
    *          segInt
    */
-  SinglePassNoder.prototype.setSegmentIntersector = function(segInt) {
+  jsts.noding.SinglePassNoder.prototype.setSegmentIntersector = function(segInt) {
     this.segInt = segInt;
   };
-
-  jsts.noding.SinglePassNoder = SinglePassNoder;
 
 })();

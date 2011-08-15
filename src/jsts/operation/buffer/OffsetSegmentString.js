@@ -8,6 +8,7 @@
 /**
  * A dynamic list of the vertices in a constructed offset curve. Automatically
  * removes adjacent vertices which are closer than a given tolerance.
+ * @constructor
  */
 jsts.operation.buffer.OffsetSegmentString = function() {
   this.ptList = [];

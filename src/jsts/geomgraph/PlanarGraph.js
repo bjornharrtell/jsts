@@ -34,7 +34,7 @@
    *
    * @constructor
    */
-  var PlanarGraph = function(nodeFactory) {
+  jsts.geomgraph.PlanarGraph = function(nodeFactory) {
     this.edges = new ArrayList();
     this.edgeEndList = new ArrayList();
     this.nodes = new jsts.geomgraph.NodeMap(nodeFactory ||
@@ -46,19 +46,19 @@
    * @type {javascript.util.ArrayList}
    * @protected
    */
-  PlanarGraph.prototype.edges = null;
+  jsts.geomgraph.PlanarGraph.prototype.edges = null;
 
 
   /**
    * @type {jsts.geomgraph.NodeMap}
    * @protected
    */
-  PlanarGraph.prototype.nodes = null;
+  jsts.geomgraph.PlanarGraph.prototype.nodes = null;
   /**
    * @type {javascript.util.ArrayList}
    * @protected
    */
-  PlanarGraph.prototype.edgeEndList = null;
+  jsts.geomgraph.PlanarGraph.prototype.edgeEndList = null;
 
   /**
    * For nodes in the Collection, link the DirectedEdges at the node that are in
@@ -66,7 +66,7 @@
    * graph, for efficiency (because they know that only a subset is of
    * interest).
    */
-  PlanarGraph.linkResultDirectedEdges = function(nodes) {
+  jsts.geomgraph.PlanarGraph.linkResultDirectedEdges = function(nodes) {
     for (var nodeit = nodes.iterator(); nodeit.hasNext();) {
       var node = nodeit.next();
       node.getEdges().linkResultDirectedEdges();
@@ -74,14 +74,14 @@
   };
 
 
-  PlanarGraph.prototype.getEdgeIterator = function() {
+  jsts.geomgraph.PlanarGraph.prototype.getEdgeIterator = function() {
     return this.edges.iterator();
   };
-  PlanarGraph.prototype.getEdgeEnds = function() {
+  jsts.geomgraph.PlanarGraph.prototype.getEdgeEnds = function() {
     return this.edgeEndList;
   };
 
-  PlanarGraph.prototype.isBoundaryNode = function(geomIndex, coord) {
+  jsts.geomgraph.PlanarGraph.prototype.isBoundaryNode = function(geomIndex, coord) {
     var node = this.nodes.find(coord);
     if (node === null)
       return false;
@@ -92,11 +92,11 @@
     return false;
   };
 
-  PlanarGraph.prototype.insertEdge = function(e) {
+  jsts.geomgraph.PlanarGraph.prototype.insertEdge = function(e) {
     this.edges.add(e);
   };
 
-  PlanarGraph.prototype.add = function(e) {
+  jsts.geomgraph.PlanarGraph.prototype.add = function(e) {
     this.nodes.add(e);
     this.edgeEndList.add(e);
   };
@@ -104,25 +104,25 @@
   /**
    * @return {javascript.util.Iterator}
    */
-  PlanarGraph.prototype.getNodeIterator = function() {
+  jsts.geomgraph.PlanarGraph.prototype.getNodeIterator = function() {
     return this.nodes.values().iterator();
   };
 
   /**
    * @return {javascript.util.Collection}
    */
-  PlanarGraph.prototype.getNodes = function() {
+  jsts.geomgraph.PlanarGraph.prototype.getNodes = function() {
     return this.nodes.values();
   };
 
-  PlanarGraph.prototype.addNode = function(node) {
+  jsts.geomgraph.PlanarGraph.prototype.addNode = function(node) {
     if (node instanceof jsts.geom.Coordinate) {
       return this.addNode2(node);
     }
 
     return this.nodes.addNode(node);
   };
-  PlanarGraph.prototype.addNode2 = function(coord) {
+  jsts.geomgraph.PlanarGraph.prototype.addNode2 = function(coord) {
     return this.nodes.addNode(coord);
   };
 
@@ -131,7 +131,7 @@
    * created. DirectedEdges are NOT linked by this method.
    * @param {javascript.util.List} edgedToAdd
    */
-  PlanarGraph.prototype.addEdges = function(edgesToAdd) {
+  jsts.geomgraph.PlanarGraph.prototype.addEdges = function(edgesToAdd) {
     // create all the nodes for the edges
     for (var it = edgesToAdd.iterator(); it.hasNext(); ) {
       var e = it.next();
@@ -146,8 +146,6 @@
       this.add(de2);
     }
   };
-
-  jsts.geomgraph.PlanarGraph = PlanarGraph;
 
 })();
 
