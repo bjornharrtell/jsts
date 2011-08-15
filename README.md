@@ -8,7 +8,7 @@ established Java library [JTS Topology Suite](http://tsusiatsoftware.net/jts/mai
 OpenLayers compatibility. The core geometry classes are inherited from OpenLayers.Geometry
 and extended with API as close as possible to the corresponding JTS Topology Suite geometry classes.
 
-[SWECO Position AB](http://en.sweco.se/en/enswecose/Expertise-/Geographical-IT) has gratiously 
+[SWECO Position AB](http://en.sweco.se/en/enswecose/Expertise-/Geographical-IT) (my current employer) has gratiously 
 provided sponsoring for this project.
 
 The goal of the project is to provide OpenLayers applications with a complete library for processing
