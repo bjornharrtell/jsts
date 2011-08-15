@@ -12,10 +12,9 @@
 
   /**
    * @constructor
-   * @augments OpenLayers.Geometry.LineString
-   * @augments jsts.geom.Geometry
+   * @extends jsts.geom.GeometryCollection
    */
-  var MultiPoint = function() {
+  jsts.geom.MultiPoint = function() {
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
 
     this.geometries = [];
@@ -30,12 +29,12 @@
       }
     }
   };
-  MultiPoint.prototype = OpenLayers.Geometry.MultiPoint.prototype;
+  jsts.geom.MultiPoint.prototype = OpenLayers.Geometry.MultiPoint.prototype;
 
   for (key in jsts.geom.GeometryCollection.prototype) {
-    MultiPoint.prototype[key] = MultiPoint.prototype[key] ? MultiPoint.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
+    jsts.geom.MultiPoint.prototype[key] = jsts.geom.MultiPoint.prototype[key] ? jsts.geom.MultiPoint.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
     // overrides
-    MultiPoint.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
+    jsts.geom.MultiPoint.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
   }
 
 
@@ -46,11 +45,11 @@
    * @return {Geometry} an empty GeometryCollection.
    * @see Geometry#getBoundary
    */
-  MultiPoint.prototype.getBoundary = function() {
+  jsts.geom.MultiPoint.prototype.getBoundary = function() {
     return this.getFactory().createGeometryCollection(null);
   };
 
-  MultiPoint.prototype.getGeometryN = function(n) {
+  jsts.geom.MultiPoint.prototype.getGeometryN = function(n) {
     return this.geometries[n];
   };
 
@@ -62,7 +61,7 @@
    *          tolerance
    * @return {boolean}
    */
-  MultiPoint.prototype.equalsExact = function(other, tolerance) {
+  jsts.geom.MultiPoint.prototype.equalsExact = function(other, tolerance) {
     if (!this.isEquivalentClass(other)) {
       return false;
     }
@@ -70,7 +69,6 @@
         tolerance);
   };
 
-  jsts.geom.MultiPoint = MultiPoint;
-  OpenLayers.Geometry.MultiPoint = MultiPoint;
+  OpenLayers.Geometry.MultiPoint = jsts.geom.MultiPoint;
 
 })();

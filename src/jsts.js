@@ -4,8 +4,70 @@
  * See /license.txt for the full text of the license.
  */
 
+/** @namespace */
 jsts = {
-  version: '0.1-SNAPSHOT'
+  version: '0.2-SNAPSHOT',
+  /** @namespace */
+  algorithm: {
+    /** @namespace */
+    locate: {}
+  },
+  /** @namespace */
+  error: {},
+  /** @namespace */
+  geom: {
+    /** @namespace */
+    util: {}
+  },
+  /** @namespace */
+  geomgraph: {
+    /** @namespace */
+    index: {}
+  },
+  /** @namespace */
+  index: {
+    /** @namespace */
+    chain: {},
+    /** @namespace */
+    kdtree: {},
+    /** @namespace */
+    quadtree: {},
+    /** @namespace */
+    strtree: {}
+  },
+  /** @namespace */
+  io: {},
+  /** @namespace */
+  noding: {},
+  /** @namespace */
+  operation: {
+    /** @namespace */
+    buffer: {},
+    /** @namespace */
+    distance: {},
+    /** @namespace */
+    overlay: {
+      /** @namespace */
+      snap: {}
+    },
+    /** @namespace */
+    relate: {},
+    /** @namespace */
+    union: {},
+    /** @namespace */
+    valid: {}
+  },
+  /** @namespace */
+  planargraph: {},
+  /** @namespace */
+  simplify: {},
+  /** @namespace */
+  triangulate: {
+    /** @namespace */
+    quadedge: {}
+  },
+  /** @namespace */
+  util: {}
 };
 
 
@@ -72,5 +134,3 @@ jsts.error.NotRepresentableError = function(message) {
   this.message = message;
 };
 jsts.error.NotRepresentableError.prototype = new Error();
-
-

@@ -15,8 +15,9 @@
 
   /**
    * @constructor
+   * @name jsts.geomgraph.EdgeIntersectionList
    */
-  var EdgeIntersectionList = function(edge) {
+  jsts.geomgraph.EdgeIntersectionList = function(edge) {
     this.nodeMap = new TreeMap();
     this.edge = edge;
   };
@@ -26,7 +27,7 @@
    * @type {javascript.util.Map}
    * @private
    */
-  EdgeIntersectionList.prototype.nodeMap = null;
+  jsts.geomgraph.EdgeIntersectionList.prototype.nodeMap = null;
 
 
   /**
@@ -34,7 +35,7 @@
    *
    * @type {Edge}
    */
-  EdgeIntersectionList.prototype.edge = null;
+  jsts.geomgraph.EdgeIntersectionList.prototype.edge = null;
 
 
   /**
@@ -49,7 +50,7 @@
    *          dist
    * @return {EdgeIntersection} the EdgeIntersection found or added.
    */
-  EdgeIntersectionList.prototype.add = function(intPt, segmentIndex, dist) {
+  jsts.geomgraph.EdgeIntersectionList.prototype.add = function(intPt, segmentIndex, dist) {
     var eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
     var ei = this.nodeMap.get(eiNew);
     if (ei !== null) {
@@ -64,7 +65,7 @@
    *
    * @return an Iterator of EdgeIntersections.
    */
-  EdgeIntersectionList.prototype.iterator = function() {
+  jsts.geomgraph.EdgeIntersectionList.prototype.iterator = function() {
     return this.nodeMap.values().iterator();
   };
 
@@ -72,13 +73,11 @@
   /**
    * Adds entries for the first and last points of the edge to the list
    */
-  EdgeIntersectionList.prototype.addEndpoints = function() {
+  jsts.geomgraph.EdgeIntersectionList.prototype.addEndpoints = function() {
     var maxSegIndex = this.edge.pts.length - 1;
     this.add(this.edge.pts[0], 0, 0.0);
     this.add(this.edge.pts[maxSegIndex], maxSegIndex, 0.0);
   };
-
-  jsts.geomgraph.EdgeIntersectionList = EdgeIntersectionList;
 
   /**
    * Creates new edges for all the edges that the intersections in this
@@ -88,7 +87,7 @@
    *
    * @param edgeList a list of EdgeIntersections.
    */
-  EdgeIntersectionList.prototype.addSplitEdges = function(edgeList)
+  jsts.geomgraph.EdgeIntersectionList.prototype.addSplitEdges = function(edgeList)
   {
     // ensure that the list has entries for the first and last point of the edge
     this.addEndpoints();
@@ -109,8 +108,7 @@
    * (and including) the two intersections.
    * The label for the new edge is the same as the label for the parent edge.
    */
-  EdgeIntersectionList.prototype.createSplitEdge = function(ei0,  ei1)
-  {
+  jsts.geomgraph.EdgeIntersectionList.prototype.createSplitEdge = function(ei0,  ei1)  {
     var npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 
     var lastSegStartPt = this.edge.pts[ei1.segmentIndex];

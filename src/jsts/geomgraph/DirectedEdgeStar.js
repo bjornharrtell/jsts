@@ -27,11 +27,11 @@
    * @constructor
    * @extends jsts.geomgraph.EdgeEnd
    */
-  var DirectedEdgeStar = function() {
+  jsts.geomgraph.DirectedEdgeStar = function() {
     jsts.geomgraph.EdgeEndStar.call(this);
   };
-  DirectedEdgeStar.prototype = new EdgeEndStar();
-  DirectedEdgeStar.constructor = DirectedEdgeStar;
+  jsts.geomgraph.DirectedEdgeStar.prototype = new EdgeEndStar();
+  jsts.geomgraph.DirectedEdgeStar.constructor = jsts.geomgraph.DirectedEdgeStar;
 
 
   /**
@@ -39,22 +39,22 @@
    *
    * @private
    */
-  DirectedEdgeStar.prototype.resultAreaEdgeList = null;
-  DirectedEdgeStar.prototype.label = null;
+  jsts.geomgraph.DirectedEdgeStar.prototype.resultAreaEdgeList = null;
+  jsts.geomgraph.DirectedEdgeStar.prototype.label = null;
 
   /**
    * Insert a directed edge in the list
    */
-  DirectedEdgeStar.prototype.insert = function(ee) {
+  jsts.geomgraph.DirectedEdgeStar.prototype.insert = function(ee) {
     var de = ee;
     this.insertEdgeEnd(de, de);
   };
 
-  DirectedEdgeStar.prototype.getLabel = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.getLabel = function() {
     return this.label;
   };
 
-  DirectedEdgeStar.prototype.getOutgoingDegree = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.getOutgoingDegree = function() {
     var degree = 0;
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next();
@@ -63,7 +63,7 @@
     }
     return degree;
   };
-  DirectedEdgeStar.prototype.getOutgoingDegree = function(er) {
+  jsts.geomgraph.DirectedEdgeStar.prototype.getOutgoingDegree = function(er) {
     var degree = 0;
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next();
@@ -73,7 +73,7 @@
     return degree;
   };
 
-  DirectedEdgeStar.prototype.getRightmostEdge = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.getRightmostEdge = function() {
     var edges = this.getEdges();
     var size = edges.size();
     if (size < 1)
@@ -107,7 +107,7 @@
    * Compute the labelling for all dirEdges in this star, as well as the overall
    * labelling
    */
-  DirectedEdgeStar.prototype.computeLabelling = function(geom) {
+  jsts.geomgraph.DirectedEdgeStar.prototype.computeLabelling = function(geom) {
     EdgeEndStar.prototype.computeLabelling.call(this, geom);
 
     // determine the overall labelling for this DirectedEdgeStar
@@ -129,7 +129,7 @@
    * For each dirEdge in the star, merge the label from the sym dirEdge into the
    * label
    */
-  DirectedEdgeStar.prototype.mergeSymLabels = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.mergeSymLabels = function() {
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next();
       var label = de.getLabel();
@@ -140,7 +140,7 @@
   /**
    * Update incomplete dirEdge labels from the labelling for the node
    */
-  DirectedEdgeStar.prototype.updateLabelling = function(nodeLabel) {
+  jsts.geomgraph.DirectedEdgeStar.prototype.updateLabelling = function(nodeLabel) {
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next();
       var label = de.getLabel();
@@ -152,7 +152,7 @@
   /**
    * @private
    */
-  DirectedEdgeStar.prototype.getResultAreaEdges = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.getResultAreaEdges = function() {
     if (this.resultAreaEdgeList != null)
       return this.resultAreaEdgeList;
     this.resultAreaEdgeList = new javascript.util.ArrayList();
@@ -168,11 +168,11 @@
   /**
    * @private
    */
-  DirectedEdgeStar.prototype.SCANNING_FOR_INCOMING = 1;
+  jsts.geomgraph.DirectedEdgeStar.prototype.SCANNING_FOR_INCOMING = 1;
   /**
    * @private
    */
-  DirectedEdgeStar.prototype.LINKING_TO_OUTGOING = 2;
+  jsts.geomgraph.DirectedEdgeStar.prototype.LINKING_TO_OUTGOING = 2;
   /**
    * Traverse the star of DirectedEdges, linking the included edges together. To
    * link two dirEdges, the <next> pointer for an incoming dirEdge is set to the
@@ -190,7 +190,7 @@
    * <p>
    * PRECONDITION: No pair of dirEdges are both marked as being in the result
    */
-  DirectedEdgeStar.prototype.linkResultDirectedEdges = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.linkResultDirectedEdges = function() {
     // make sure edges are copied to resultAreaEdges list
     this.getResultAreaEdges();
     // find first area edge (if any) to start linking at
@@ -236,7 +236,7 @@
       incoming.setNext(firstOut);
     }
   };
-  DirectedEdgeStar.prototype.linkMinimalDirectedEdges = function(er) {
+  jsts.geomgraph.DirectedEdgeStar.prototype.linkMinimalDirectedEdges = function(er) {
     // find first area edge (if any) to start linking at
     var firstOut = null;
     var incoming = null;
@@ -272,7 +272,7 @@
       incoming.setNextMin(firstOut);
     }
   };
-  DirectedEdgeStar.prototype.linkAllDirectedEdges = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.linkAllDirectedEdges = function() {
     this.getEdges();
     // find first area edge (if any) to start linking at
     var prevOut = null;
@@ -296,7 +296,7 @@
    * area at this node (if any). If any L edges are found in the interior of the
    * result, mark them as covered.
    */
-  DirectedEdgeStar.prototype.findCoveredLineEdges = function() {
+  jsts.geomgraph.DirectedEdgeStar.prototype.findCoveredLineEdges = function() {
     // Since edges are stored in CCW order around the node,
     // as we move around the ring we move from the right to the left side of the
     // edge
@@ -346,7 +346,7 @@
     }
   };
 
-  DirectedEdgeStar.prototype.computeDepths = function(de) {
+  jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths = function(de) {
     if (arguments.length === 2) {
       this.computeDepths2.apply(this, arguments);
       return;
@@ -372,7 +372,7 @@
    * @return the last depth assigned (from the R side of the last edge visited).
    * @private
    */
-  DirectedEdgeStar.prototype.computeDepths2 = function(startIndex, endIndex,
+  jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths2 = function(startIndex, endIndex,
       startDepth) {
     var currDepth = startDepth;
     for (var i = startIndex; i < endIndex; i++) {
@@ -383,7 +383,5 @@
     }
     return currDepth;
   };
-
-  jsts.geomgraph.DirectedEdgeStar = DirectedEdgeStar;
 
 })();

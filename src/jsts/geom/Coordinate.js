@@ -22,7 +22,7 @@
   /**
    * @constructor
    */
-  var Coordinate = function(x, y) {
+  jsts.geom.Coordinate = function(x, y) {
     OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
     if (x === undefined || x === null) {
       this.x = 0;
@@ -30,14 +30,14 @@
     } else if (typeof x === 'number' || typeof x === 'string') {
       this.x = parseFloat(x);
       this.y = parseFloat(y);
-    } else if (x instanceof Coordinate) {
+    } else if (x instanceof jsts.geom.Coordinate) {
       y = x.y;
       x = x.x;
       this.x = parseFloat(x);
       this.y = parseFloat(y);
     }
   };
-  Coordinate.prototype = OpenLayers.Geometry.Point.prototype;
+  jsts.geom.Coordinate.prototype = OpenLayers.Geometry.Point.prototype;
 
 
   /**
@@ -47,7 +47,7 @@
    * @param {Coordinate}
    *          other the <code>Coordinate</code> to copy.
    */
-  Coordinate.prototype.setCoordinate = function(other) {
+  jsts.geom.Coordinate.prototype.setCoordinate = function(other) {
     this.x = other.x;
     this.y = other.y;
   };
@@ -58,8 +58,8 @@
    *
    * @return {Coordinate} A point instance cloned from this.
    */
-  Coordinate.prototype.clone = function() {
-    return new Coordinate(this.x, this.y);
+  jsts.geom.Coordinate.prototype.clone = function() {
+    return new jsts.geom.Coordinate(this.x, this.y);
   };
 
 
@@ -72,7 +72,7 @@
    * @return {number} the 2-dimensional Euclidean distance between the
    *         locations.
    */
-  Coordinate.prototype.distance = function(p) {
+  jsts.geom.Coordinate.prototype.distance = function(p) {
     var dx = this.x - p.x;
     var dy = this.y - p.y;
 
@@ -89,7 +89,7 @@
    * @return {boolean} <code>true</code> if the x- and y-coordinates are
    *         equal; the z-coordinates do not have to be equal.
    */
-  Coordinate.prototype.equals2D = function(other) {
+  jsts.geom.Coordinate.prototype.equals2D = function(other) {
     if (this.x !== other.x) {
       return false;
     }
@@ -112,8 +112,8 @@
    *         <code>Coordinate</code> with the same values for the x and y
    *         ordinates.
    */
-  Coordinate.prototype.equals = function(other) {
-    if (!other instanceof Coordinate || other === undefined) {
+  jsts.geom.Coordinate.prototype.equals = function(other) {
+    if (!other instanceof jsts.geom.Coordinate || other === undefined) {
       return false;
     }
     return this.equals2D(other);
@@ -136,7 +136,7 @@
    *          <code>Coordinate</code> is being compared.
    * @return {number} -1, zero, or 1 as explained above.
    */
-  Coordinate.prototype.compareTo = function(other) {
+  jsts.geom.Coordinate.prototype.compareTo = function(other) {
     if (this.x < other.x) {
       return -1;
     }
@@ -153,11 +153,13 @@
     return 0;
   };
 
-  Coordinate.prototype.hashCode = function() {
+  jsts.geom.Coordinate.prototype.hashCode = function() {
     return '' + this.x + this.y;
   };
 
-
+  /**
+   * @private
+   */
   OpenLayers.Geometry.Point = function(x, y) {
     OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
     if (x === undefined || x === null) {
@@ -166,7 +168,7 @@
     } else if (typeof x === 'number' || typeof x === 'string') {
       this.x = parseFloat(x);
       this.y = parseFloat(y);
-    } else if (x instanceof Coordinate) {
+    } else if (x instanceof jsts.geom.Coordinate) {
       y = x.y;
       x = x.x;
       this.x = parseFloat(x);
@@ -174,7 +176,9 @@
     }
   };
 
-  jsts.geom.Coordinate = Coordinate;
-  OpenLayers.Geometry.Point = Coordinate;
+  /**
+   * @private
+   */
+  OpenLayers.Geometry.Point = jsts.geom.Coordinate;
 
 })();

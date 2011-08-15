@@ -18,7 +18,7 @@
    *
    * @constructor
    */
-  var GraphComponent = function(label) {
+  jsts.geomgraph.GraphComponent = function(label) {
     this.label = label;
   };
 
@@ -27,7 +27,7 @@
    * @type {Label}
    * @protected
    */
-  GraphComponent.prototype.label = null;
+  jsts.geomgraph.GraphComponent.prototype.label = null;
 
 
   /**
@@ -37,33 +37,33 @@
    * @type {boolean}
    * @private
    */
-  GraphComponent.prototype._isInResult = false;
+  jsts.geomgraph.GraphComponent.prototype._isInResult = false;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  GraphComponent.prototype._isCovered = false;
+  jsts.geomgraph.GraphComponent.prototype._isCovered = false;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  GraphComponent.prototype._isCoveredSet = false;
+  jsts.geomgraph.GraphComponent.prototype._isCoveredSet = false;
 
 
   /**
    * @type {boolean}
    * @private
    */
-  GraphComponent.prototype._isVisited = false;
+  jsts.geomgraph.GraphComponent.prototype._isVisited = false;
 
-  GraphComponent.prototype.getLabel = function() {
+  jsts.geomgraph.GraphComponent.prototype.getLabel = function() {
     return this.label;
   };
-  GraphComponent.prototype.setLabel = function(label) {
+  jsts.geomgraph.GraphComponent.prototype.setLabel = function(label) {
     if (arguments.length === 2) {
       this.setLabel2.apply(this, arguments);
       return;
@@ -77,7 +77,7 @@
    * @param {boolean}
    *          isInResult
    */
-  GraphComponent.prototype.setInResult = function(isInResult) {
+  jsts.geomgraph.GraphComponent.prototype.setInResult = function(isInResult) {
     this._isInResult = isInResult;
   };
 
@@ -85,7 +85,7 @@
   /**
    * @return {boolean}
    */
-  GraphComponent.prototype.isInResult = function() {
+  jsts.geomgraph.GraphComponent.prototype.isInResult = function() {
     return this._isInResult;
   };
 
@@ -94,7 +94,7 @@
    * @param {boolean}
    *          isCovered
    */
-  GraphComponent.prototype.setCovered = function(isCovered) {
+  jsts.geomgraph.GraphComponent.prototype.setCovered = function(isCovered) {
     this._isCovered = isCovered;
     this._isCoveredSet = true;
   };
@@ -103,7 +103,7 @@
   /**
    * @return {boolean}
    */
-  GraphComponent.prototype.isCovered = function() {
+  jsts.geomgraph.GraphComponent.prototype.isCovered = function() {
     return this._isCovered;
   };
 
@@ -111,7 +111,7 @@
   /**
    * @return {boolean}
    */
-  GraphComponent.prototype.isCoveredSet = function() {
+  jsts.geomgraph.GraphComponent.prototype.isCoveredSet = function() {
     return this._isCoveredSet;
   };
 
@@ -119,7 +119,7 @@
   /**
    * @return {boolean}
    */
-  GraphComponent.prototype.isVisited = function() {
+  jsts.geomgraph.GraphComponent.prototype.isVisited = function() {
     return this._isVisited;
   };
 
@@ -128,7 +128,7 @@
    * @param {boolean}
    *          isVisited
    */
-  GraphComponent.prototype.setVisited = function(isVisited) {
+  jsts.geomgraph.GraphComponent.prototype.setVisited = function(isVisited) {
     this._isVisited = isVisited;
   };
 
@@ -137,7 +137,7 @@
    * @return {Coordinate} a coordinate in this component (or null, if there are
    *         none).
    */
-  GraphComponent.prototype.getCoordinate = function() {
+  jsts.geomgraph.GraphComponent.prototype.getCoordinate = function() {
     throw new jsts.error.AbstractMethodInvocationError();
   };
 
@@ -149,7 +149,7 @@
    *          im
    * @protected
    */
-  GraphComponent.prototype.computeIM = function(im) {
+  jsts.geomgraph.GraphComponent.prototype.computeIM = function(im) {
     throw new jsts.error.AbstractMethodInvocationError();
   };
 
@@ -161,7 +161,7 @@
    *
    * @return true if this component is isolated.
    */
-  GraphComponent.prototype.isIsolated = function() {
+  jsts.geomgraph.GraphComponent.prototype.isIsolated = function() {
     throw new jsts.error.AbstractMethodInvocationError();
   };
 
@@ -173,11 +173,9 @@
    * @param {IntersectionMatrix}
    *          im
    */
-  GraphComponent.prototype.updateIM = function(im) {
+  jsts.geomgraph.GraphComponent.prototype.updateIM = function(im) {
     Assert.isTrue(this.label.getGeometryCount() >= 2, 'found partial label');
     this.computeIM(im);
   };
-
-  jsts.geomgraph.GraphComponent = GraphComponent;
 
 })();

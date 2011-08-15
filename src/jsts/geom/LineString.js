@@ -12,35 +12,35 @@
 
 
   /**
-   * @constructor
    * @extends jsts.geom.Geometry
+   * @constructor
    */
-  var LineString = function(points) {
+  jsts.geom.LineString = function(points) {
     OpenLayers.Geometry.Curve.prototype.initialize.apply(this, arguments);
 
     this.geometries = this.components;
   };
-  LineString.prototype = OpenLayers.Geometry.LineString.prototype;
+  jsts.geom.LineString.prototype = OpenLayers.Geometry.LineString.prototype;
 
   for (key in jsts.geom.Geometry.prototype) {
-    LineString.prototype[key] = jsts.geom.Geometry.prototype[key];
+    jsts.geom.LineString.prototype[key] = jsts.geom.Geometry.prototype[key];
   }
 
   /**
    * @return {jsts.geom.Coordinate[]} this LineString's internal coordinate
    *         array.
    */
-  LineString.prototype.getCoordinates = function() {
+  jsts.geom.LineString.prototype.getCoordinates = function() {
     return this.components;
   };
 
 
   /**
-   * @return {jsts.geom.Coordinate} The n'th coordinate of this LineString.
+   * @return {jsts.geom.Coordinate} The n'th coordinate of this jsts.geom.LineString.
    * @param {int}
    *          n index.
    */
-  LineString.prototype.getCoordinateN = function(n) {
+  jsts.geom.LineString.prototype.getCoordinateN = function(n) {
     return this.components[n];
   };
 
@@ -49,7 +49,7 @@
    * @return {jsts.geom.Coordinate} The first coordinate of this LineString or
    *         null if empty.
    */
-  LineString.prototype.getCoordinate = function() {
+  jsts.geom.LineString.prototype.getCoordinate = function() {
     if (this.isEmpty()) {
       return null;
     }
@@ -60,15 +60,15 @@
   /**
    * @return {int} LineStrings are always 1-dimensional.
    */
-  LineString.prototype.getDimension = function() {
+  jsts.geom.LineString.prototype.getDimension = function() {
     return 1;
   };
 
 
   /**
-   * @return {int} dimension of the boundary of this LineString.
+   * @return {int} dimension of the boundary of this jsts.geom.LineString.
    */
-  LineString.prototype.getBoundaryDimension = function() {
+  jsts.geom.LineString.prototype.getBoundaryDimension = function() {
     if (this.isClosed()) {
       return Dimension.FALSE;
     }
@@ -79,27 +79,27 @@
   /**
    * @return {Boolean} true if empty.
    */
-  LineString.prototype.isEmpty = function() {
+  jsts.geom.LineString.prototype.isEmpty = function() {
     return this.components.length === 0;
   };
 
-  LineString.prototype.getNumPoints = function() {
+  jsts.geom.LineString.prototype.getNumPoints = function() {
     return this.components.length;
   };
 
-  LineString.prototype.getPointN = function(n) {
+  jsts.geom.LineString.prototype.getPointN = function(n) {
     return this.getFactory().createPoint(this.components[n]);
   };
 
 
-  LineString.prototype.getStartPoint = function() {
+  jsts.geom.LineString.prototype.getStartPoint = function() {
     if (this.isEmpty()) {
       return null;
     }
     return this.getPointN(0);
   };
 
-  LineString.prototype.getEndPoint = function() {
+  jsts.geom.LineString.prototype.getEndPoint = function() {
     if (this.isEmpty()) {
       return null;
     }
@@ -110,7 +110,7 @@
   /**
    * @return {Boolean} true if LineString is Closed.
    */
-  LineString.prototype.isClosed = function() {
+  jsts.geom.LineString.prototype.isClosed = function() {
     if (this.isEmpty()) {
       return false;
     }
@@ -122,7 +122,7 @@
   /**
    * @return {Boolean} true if LineString is a Ring.
    */
-  LineString.prototype.isRing = function() {
+  jsts.geom.LineString.prototype.isRing = function() {
     return this.isClosed() && this.isSimple();
   };
 
@@ -130,7 +130,7 @@
   /**
    * @return {String} String representation of LineString type.
    */
-  LineString.prototype.getGeometryType = function() {
+  jsts.geom.LineString.prototype.getGeometryType = function() {
     return 'LineString';
   };
 
@@ -142,12 +142,12 @@
    * @return {Geometry} the boundary geometry.
    * @see Geometry#getBoundary
    */
-  LineString.prototype.getBoundary = function() {
+  jsts.geom.LineString.prototype.getBoundary = function() {
     return (new jsts.operation.BoundaryOp(this)).getBoundary();
   };
 
 
-  LineString.prototype.computeEnvelopeInternal = function() {
+  jsts.geom.LineString.prototype.computeEnvelopeInternal = function() {
     if (this.isEmpty()) {
       return new jsts.geom.Envelope();
     }
@@ -168,7 +168,7 @@
    *          tolerance Tolerance.
    * @return {Boolean} true if equal.
    */
-  LineString.prototype.equalsExact = function(other, tolerance) {
+  jsts.geom.LineString.prototype.equalsExact = function(other, tolerance) {
     if (!this.isEquivalentClass(other)) {
       return false;
     }
@@ -195,21 +195,21 @@
    *
    * @return {LineString} a clone of this instance.
    */
-  LineString.prototype.clone = function() {
+  jsts.geom.LineString.prototype.clone = function() {
     var points = this.components.map(function(component) {
       return component.clone();
     });
 
-    var clone = new LineString(points);
+    var clone = new jsts.geom.LineString(points);
 
     return clone;
   };
 
-  LineString.prototype.isEquivalentClass = function(other) {
-    return other instanceof LineString;
+  jsts.geom.LineString.prototype.isEquivalentClass = function(other) {
+    return other instanceof jsts.geom.LineString;
   };
 
-  LineString.prototype.compareToSameClass = function(o)
+  jsts.geom.LineString.prototype.compareToSameClass = function(o)
   {
     var line = o;
     // MD - optimized implementation
@@ -232,11 +232,10 @@
     return 0;
   };
 
-  LineString.prototype.apply = function(filter) {
+  jsts.geom.LineString.prototype.apply = function(filter) {
     filter.filter(this);
   };
 
-  jsts.geom.LineString = LineString;
-  OpenLayers.Geometry.LineString = LineString;
+  OpenLayers.Geometry.LineString = jsts.geom.LineString;
 
 })();

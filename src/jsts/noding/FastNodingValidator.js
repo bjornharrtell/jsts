@@ -33,37 +33,37 @@
    * @param segStrings
    *          a collection of {@link SegmentString} s.
    */
-  var FastNodingValidator = function(segStrings) {
+  jsts.noding.FastNodingValidator = function(segStrings) {
     this.li = new RobustLineIntersector();
 
     this.segStrings = segStrings;
   };
 
-  FastNodingValidator.prototype.li = null;
+  jsts.noding.FastNodingValidator.prototype.li = null;
 
-  FastNodingValidator.prototype.segStrings = null;
-  FastNodingValidator.prototype.findAllIntersections = false;
-  FastNodingValidator.prototype.segInt = null;
-  FastNodingValidator.prototype._isValid = true;
+  jsts.noding.FastNodingValidator.prototype.segStrings = null;
+  jsts.noding.FastNodingValidator.prototype.findAllIntersections = false;
+  jsts.noding.FastNodingValidator.prototype.segInt = null;
+  jsts.noding.FastNodingValidator.prototype._isValid = true;
 
-  FastNodingValidator.prototype.setFindAllIntersections = function(
+  jsts.noding.FastNodingValidator.prototype.setFindAllIntersections = function(
       findAllIntersections) {
     this.findAllIntersections = findAllIntersections;
-  }
+  };
 
-  FastNodingValidator.prototype.getIntersections = function() {
+  jsts.noding.FastNodingValidator.prototype.getIntersections = function() {
     return segInt.getIntersections();
-  }
+  };
 
   /**
    * Checks for an intersection and reports if one is found.
    *
    * @return true if the arrangement contains an interior intersection.
    */
-  FastNodingValidator.prototype.isValid = function() {
+  jsts.noding.FastNodingValidator.prototype.isValid = function() {
     this.execute();
     return this._isValid;
-  }
+  };
 
   /**
    * Returns an error message indicating the segments containing the
@@ -71,7 +71,7 @@
    *
    * @return an error message documenting the intersection location.
    */
-  FastNodingValidator.prototype.getErrorMessage = function() {
+  jsts.noding.FastNodingValidator.prototype.getErrorMessage = function() {
     if (this._isValid)
       return 'no intersections found';
 
@@ -79,7 +79,7 @@
     return 'found non-noded intersection between ' +
         jsts.io.WKTWriter.toLineString(intSegs[0], intSegs[1]) + ' and ' +
         jsts.io.WKTWriter.toLineString(intSegs[2], intSegs[3]);
-  }
+  };
 
   /**
    * Checks for an intersection and throws a TopologyException if one is found.
@@ -87,26 +87,26 @@
    * @throws TopologyException
    *           if an intersection is found
    */
-  FastNodingValidator.prototype.checkValid = function() {
+  jsts.noding.FastNodingValidator.prototype.checkValid = function() {
     this.execute();
     if (!this._isValid)
       throw new jsts.error.TopologyError(this.getErrorMessage(), this.segInt
           .getInteriorIntersection());
-  }
+  };
 
   /**
    * @private
    */
-  FastNodingValidator.prototype.execute = function() {
+  jsts.noding.FastNodingValidator.prototype.execute = function() {
     if (this.segInt != null)
       return;
     this.checkInteriorIntersections();
-  }
+  };
 
   /**
    * @private
    */
-  FastNodingValidator.prototype.checkInteriorIntersections = function() {
+  jsts.noding.FastNodingValidator.prototype.checkInteriorIntersections = function() {
     /**
      * MD - It may even be reliable to simply check whether end segments (of
      * SegmentStrings) have an interior intersection, since noding should have
@@ -122,8 +122,6 @@
       this._isValid = false;
       return;
     }
-  }
-
-  jsts.noding.FastNodingValidator = FastNodingValidator;
+  };
 
 })();

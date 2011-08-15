@@ -21,16 +21,16 @@
    *
    * @constructor
    */
-  var UniqueCoordinateArrayFilter = function() {
+  jsts.util.UniqueCoordinateArrayFilter = function() {
     this.treeSet = new TreeSet();
     this.list = new ArrayList();
   };
 
 
-  UniqueCoordinateArrayFilter.prototype = new CoordinateFilter();
+  jsts.util.UniqueCoordinateArrayFilter.prototype = new CoordinateFilter();
 
-  UniqueCoordinateArrayFilter.prototype.treeSet = null;
-  UniqueCoordinateArrayFilter.prototype.list = null;
+  jsts.util.UniqueCoordinateArrayFilter.prototype.treeSet = null;
+  jsts.util.UniqueCoordinateArrayFilter.prototype.list = null;
 
 
   /**
@@ -39,16 +39,14 @@
    * @return the <code>Coordinate</code>s collected by this
    *         <code>CoordinateArrayFilter.</code>
    */
-  UniqueCoordinateArrayFilter.prototype.getCoordinates = function() {
+  jsts.util.UniqueCoordinateArrayFilter.prototype.getCoordinates = function() {
     return this.list.toArray();
   };
 
-  UniqueCoordinateArrayFilter.prototype.filter = function(coord) {
+  jsts.util.UniqueCoordinateArrayFilter.prototype.filter = function(coord) {
     if (!this.treeSet.contains(coord)) {
       this.list.add(coord);
       this.treeSet.add(coord);
     }
   };
-
-  jsts.util.UniqueCoordinateArrayFilter = UniqueCoordinateArrayFilter;
 })();

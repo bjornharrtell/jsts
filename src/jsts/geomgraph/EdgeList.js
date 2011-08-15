@@ -20,7 +20,7 @@
    *
    * @constructor
    */
-  var EdgeList = function() {
+  jsts.geomgraph.EdgeList = function() {
     this.edges = new ArrayList();
     this.ocaMap = new TreeMap();
   };
@@ -30,7 +30,7 @@
    * @type {javascript.util.ArrayList}
    * @private
    */
-  EdgeList.prototype.edges = null;
+  jsts.geomgraph.EdgeList.prototype.edges = null;
 
 
   /**
@@ -39,19 +39,19 @@
    * @type {javascript.util.HashMap}
    * @private
    */
-  EdgeList.prototype.ocaMap = null;
+  jsts.geomgraph.EdgeList.prototype.ocaMap = null;
 
 
   /**
    * Insert an edge unless it is already in the list
    */
-  EdgeList.prototype.add = function(e) {
+  jsts.geomgraph.EdgeList.prototype.add = function(e) {
     this.edges.add(e);
     var oca = new jsts.noding.OrientedCoordinateArray(e.getCoordinates());
     this.ocaMap.put(oca, e);
   };
 
-  EdgeList.prototype.addAll = function(edgeColl) {
+  jsts.geomgraph.EdgeList.prototype.addAll = function(edgeColl) {
     for (var i = edgeColl.iterator(); i.hasNext();) {
       this.add(i.next());
     }
@@ -61,7 +61,7 @@
   /**
    * @return {javascript.util.List}
    */
-  EdgeList.prototype.getEdges = function() {
+  jsts.geomgraph.EdgeList.prototype.getEdges = function() {
     return this.edges;
   };
 
@@ -75,22 +75,22 @@
    * @return {Edge} equal edge, if there is one already in the list null
    *         otherwise.
    */
-  EdgeList.prototype.findEqualEdge = function(e) {
+  jsts.geomgraph.EdgeList.prototype.findEqualEdge = function(e) {
     var oca = new jsts.noding.OrientedCoordinateArray(e.getCoordinates());
     // will return null if no edge matches
     var matchEdge = this.ocaMap.get(oca);
     return matchEdge;
   };
 
-  EdgeList.prototype.getEdges = function() {
+  jsts.geomgraph.EdgeList.prototype.getEdges = function() {
     return this.edges;
   };
 
-  EdgeList.prototype.iterator = function() {
+  jsts.geomgraph.EdgeList.prototype.iterator = function() {
     return this.edges.iterator();
-  }
+  };
 
-  EdgeList.prototype.get = function(i) {
+  jsts.geomgraph.EdgeList.prototype.get = function(i) {
     return this.edges.get(i);
   };
 
@@ -100,14 +100,12 @@
    *
    * @return {Number} index, if e is already in the list -1 otherwise.
    */
-  EdgeList.prototype.findEdgeIndex = function(e) {
+  jsts.geomgraph.EdgeList.prototype.findEdgeIndex = function(e) {
     for (var i = 0; i < this.edges.size(); i++) {
       if (this.edges.get(i).equals(e))
         return i;
     }
     return -1;
   };
-
-  jsts.geomgraph.EdgeList = EdgeList;
 
 })();

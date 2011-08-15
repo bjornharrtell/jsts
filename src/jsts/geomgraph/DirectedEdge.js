@@ -21,7 +21,7 @@
    * @constructor
    * @extends jsts.geomgraph.EdgeEnd
    */
-  var DirectedEdge = function(edge, isForward) {
+  jsts.geomgraph.DirectedEdge = function(edge, isForward) {
     EdgeEnd.call(this, edge);
 
     this.depth = [0, -999, -999];
@@ -36,8 +36,8 @@
     this.computeDirectedLabel();
 
   };
-  DirectedEdge.prototype = new EdgeEnd();
-  DirectedEdge.constructor = DirectedEdge;
+  jsts.geomgraph.DirectedEdge.prototype = new EdgeEnd();
+  jsts.geomgraph.DirectedEdge.constructor = jsts.geomgraph.DirectedEdge;
 
 
   /**
@@ -45,7 +45,7 @@
    * to another. E.g. if crossing from the INTERIOR to the EXTERIOR the depth
    * decreases, so the factor is -1
    */
-  DirectedEdge.depthFactor = function(currLocation, nextLocation) {
+  jsts.geomgraph.DirectedEdge.depthFactor = function(currLocation, nextLocation) {
     if (currLocation === Location.EXTERIOR &&
         nextLocation === Location.INTERIOR)
       return 1;
@@ -59,17 +59,17 @@
    * @type {boolean}
    * @protected
    */
-  DirectedEdge.prototype._isForward = null;
+  jsts.geomgraph.DirectedEdge.prototype._isForward = null;
   /**
    * @type {boolean}
    * @private
    */
-  DirectedEdge.prototype._isInResult = false;
+  jsts.geomgraph.DirectedEdge.prototype._isInResult = false;
   /**
    * @type {boolean}
    * @private
    */
-  DirectedEdge.prototype._isVisited = false;
+  jsts.geomgraph.DirectedEdge.prototype._isVisited = false;
 
   /**
    * the symmetric edge
@@ -77,72 +77,72 @@
    * @type {DirectedEdge}
    * @private
    */
-  DirectedEdge.prototype.sym = null;
+  jsts.geomgraph.DirectedEdge.prototype.sym = null;
   /**
    * the next edge in the edge ring for the polygon containing this edge
    *
    * @type {DirectedEdge}
    * @private
    */
-  DirectedEdge.prototype.next = null;
+  jsts.geomgraph.DirectedEdge.prototype.next = null;
   /**
    * the next edge in the MinimalEdgeRing that contains this edge
    *
    * @type {DirectedEdge}
    * @private
    */
-  DirectedEdge.prototype.nextMin = null;
+  jsts.geomgraph.DirectedEdge.prototype.nextMin = null;
   /**
    * the EdgeRing that this edge is part of
    *
    * @type {EdgeRing}
    * @private
    */
-  DirectedEdge.prototype.edgeRing = null;
+  jsts.geomgraph.DirectedEdge.prototype.edgeRing = null;
   /**
    * the MinimalEdgeRing that this edge is part of
    *
    * @type {EdgeRing}
    * @private
    */
-  DirectedEdge.prototype.minEdgeRing = null;
+  jsts.geomgraph.DirectedEdge.prototype.minEdgeRing = null;
   /**
    * The depth of each side (position) of this edge. The 0 element of the array
    * is never used.
    *
    * @type {Array.<number>}
    */
-  DirectedEdge.prototype.depth = null;
+  jsts.geomgraph.DirectedEdge.prototype.depth = null;
 
-  DirectedEdge.prototype.getEdge = function() {
+  jsts.geomgraph.DirectedEdge.prototype.getEdge = function() {
     return this.edge;
   };
-  DirectedEdge.prototype.setInResult = function(isInResult) {
+  jsts.geomgraph.DirectedEdge.prototype.setInResult = function(isInResult) {
     this._isInResult = isInResult;
   };
-  DirectedEdge.prototype.isInResult = function() {
+  jsts.geomgraph.DirectedEdge.prototype.isInResult = function() {
     return this._isInResult;
   };
-  DirectedEdge.prototype.isVisited = function() {
+  jsts.geomgraph.DirectedEdge.prototype.isVisited = function() {
     return this._isVisited;
   };
-  DirectedEdge.prototype.setVisited = function(isVisited) {
+  jsts.geomgraph.DirectedEdge.prototype.setVisited = function(isVisited) {
     this._isVisited = isVisited;
   };
-  DirectedEdge.prototype.setEdgeRing = function(edgeRing) {
+  jsts.geomgraph.DirectedEdge.prototype.setEdgeRing = function(edgeRing) {
     this.edgeRing = edgeRing;
   };
-  DirectedEdge.prototype.getEdgeRing = function() {
+  jsts.geomgraph.DirectedEdge.prototype.getEdgeRing = function() {
     return this.edgeRing;
   };
-  DirectedEdge.prototype.setMinEdgeRing = function(minEdgeRing) {
+  jsts.geomgraph.DirectedEdge.prototype.setMinEdgeRing = function(minEdgeRing) {
     this.minEdgeRing = minEdgeRing;
   };
-  DirectedEdge.prototype.getDepth = function(position) {
+  jsts.geomgraph.DirectedEdge.prototype.getDepth = function(position) {
     return this.depth[position];
   };
 
-  DirectedEdge.prototype.setDepth = function(position, depthVal) {
+  jsts.geomgraph.DirectedEdge.prototype.setDepth = function(position, depthVal) {
     if (this.depth[position] !== -999) {
       if (this.depth[position] !== depthVal)
         throw new jsts.error.TopologyError('assigned depths do not match', this
@@ -151,7 +151,7 @@
     this.depth[position] = depthVal;
   };
 
-  DirectedEdge.prototype.getDepthDelta = function() {
+  jsts.geomgraph.DirectedEdge.prototype.getDepthDelta = function() {
     var depthDelta = this.edge.getDepthDelta();
     if (!this._isForward)
       depthDelta = -depthDelta;
@@ -163,7 +163,7 @@
    * used for edges corresponding to lines, which will only appear oriented in a
    * single direction in the result.
    */
-  DirectedEdge.prototype.setVisitedEdge = function(isVisited) {
+  jsts.geomgraph.DirectedEdge.prototype.setVisitedEdge = function(isVisited) {
     this.setVisited(isVisited);
     this.sym.setVisited(isVisited);
   };
@@ -173,25 +173,25 @@
    *
    * @return the DirectedEdge for the same Edge but in the opposite direction.
    */
-  DirectedEdge.prototype.getSym = function() {
+  jsts.geomgraph.DirectedEdge.prototype.getSym = function() {
     return this.sym;
   };
-  DirectedEdge.prototype.isForward = function() {
+  jsts.geomgraph.DirectedEdge.prototype.isForward = function() {
     return this._isForward;
   };
-  DirectedEdge.prototype.setSym = function(de) {
+  jsts.geomgraph.DirectedEdge.prototype.setSym = function(de) {
     this.sym = de;
   };
-  DirectedEdge.prototype.getNext = function() {
+  jsts.geomgraph.DirectedEdge.prototype.getNext = function() {
     return this.next;
   };
-  DirectedEdge.prototype.setNext = function(next) {
+  jsts.geomgraph.DirectedEdge.prototype.setNext = function(next) {
     this.next = next;
   };
-  DirectedEdge.prototype.getNextMin = function() {
+  jsts.geomgraph.DirectedEdge.prototype.getNextMin = function() {
     return this.nextMin;
   };
-  DirectedEdge.prototype.setNextMin = function(nextMin) {
+  jsts.geomgraph.DirectedEdge.prototype.setNextMin = function(nextMin) {
     this.nextMin = nextMin;
   };
 
@@ -202,7 +202,7 @@
    * <li> any labels which are not line labels have all Locations = EXTERIOR
    * </ul>
    */
-  DirectedEdge.prototype.isLineEdge = function() {
+  jsts.geomgraph.DirectedEdge.prototype.isLineEdge = function() {
     var isLine = this.label.isLine(0) || this.label.isLine(1);
     var isExteriorIfArea0 = !this.label.isArea(0) ||
         this.label.allPositionsEqual(0, Location.EXTERIOR);
@@ -220,7 +220,7 @@
    *
    * @return true if this is an interior Area edge.
    */
-  DirectedEdge.prototype.isInteriorAreaEdge = function() {
+  jsts.geomgraph.DirectedEdge.prototype.isInteriorAreaEdge = function() {
     var isInteriorAreaEdge = true;
     for (var i = 0; i < 2; i++) {
       if (!(this.label.isArea(i) &&
@@ -237,7 +237,7 @@
    *
    * @private
    */
-  DirectedEdge.prototype.computeDirectedLabel = function() {
+  jsts.geomgraph.DirectedEdge.prototype.computeDirectedLabel = function() {
     this.label = new jsts.geomgraph.Label(this.edge.getLabel());
     if (!this._isForward)
       this.label.flip();
@@ -248,7 +248,7 @@
    * computed depending on the Location transition and the depthDelta of the
    * edge.
    */
-  DirectedEdge.prototype.setEdgeDepths = function(position, depth) {
+  jsts.geomgraph.DirectedEdge.prototype.setEdgeDepths = function(position, depth) {
     // get the depth transition delta from R to L for this directed Edge
     var depthDelta = this.getEdge().getDepthDelta();
     if (!this._isForward)
@@ -265,7 +265,5 @@
     this.setDepth(position, depth);
     this.setDepth(oppositePos, oppositeDepth);
   };
-
-  jsts.geomgraph.DirectedEdge = DirectedEdge;
 
 })();

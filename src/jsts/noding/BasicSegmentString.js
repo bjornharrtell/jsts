@@ -23,15 +23,15 @@
    *          the user-defined data of this segment string (may be null).
    * @constructor
    */
-  var BasicSegmentString = function(pts, data) {
+  jsts.noding.BasicSegmentString = function(pts, data) {
     this.pts = pts;
     this.data = data;
   };
-  BasicSegmentString.prototype = new jsts.noding.SegmentString();
+  jsts.noding.BasicSegmentString.prototype = new jsts.noding.SegmentString();
 
 
-  BasicSegmentString.prototype.pts = null;
-  BasicSegmentString.prototype.data = null;
+  jsts.noding.BasicSegmentString.prototype.pts = null;
+  jsts.noding.BasicSegmentString.prototype.data = null;
 
 
   /**
@@ -39,7 +39,7 @@
    *
    * @return the user-defined data.
    */
-  BasicSegmentString.prototype.getData = function() {
+  jsts.noding.BasicSegmentString.prototype.getData = function() {
     return this.data;
   }
 
@@ -49,23 +49,25 @@
    * @param data
    *          an Object containing user-defined data.
    */
-  BasicSegmentString.prototype.setData = function(data) {
+  jsts.noding.BasicSegmentString.prototype.setData = function(data) {
     this.data = data;
-  }
+  };
 
-  BasicSegmentString.prototype.size = function() {
+  jsts.noding.BasicSegmentString.prototype.size = function() {
     return this.pts.length;
-  }
-  BasicSegmentString.prototype.getCoordinate = function(i) {
-    return this.pts[i];
-  }
-  BasicSegmentString.prototype.getCoordinates = function() {
-    return this.pts;
-  }
+  };
 
-  BasicSegmentString.prototype.isClosed = function() {
+  jsts.noding.BasicSegmentString.prototype.getCoordinate = function(i) {
+    return this.pts[i];
+  };
+
+  jsts.noding.BasicSegmentString.prototype.getCoordinates = function() {
+    return this.pts;
+  };
+
+  jsts.noding.BasicSegmentString.prototype.isClosed = function() {
     return this.pts[0].equals(this.pts[this.pts.length - 1]);
-  }
+  };
 
   /**
    * Gets the octant of the segment starting at vertex <code>index</code>.
@@ -75,13 +77,11 @@
    *          index in the vertex list.
    * @return the octant of the segment at the vertex.
    */
-  BasicSegmentString.prototype.getSegmentOctant = function(index) {
+  jsts.noding.BasicSegmentString.prototype.getSegmentOctant = function(index) {
     if (index == this.pts.length - 1)
       return -1;
     return jsts.noding.Octant.octant(this.getCoordinate(index), this
         .getCoordinate(index + 1));
-  }
-
-  jsts.noding.BasicSegmentString = BasicSegmentString;
+  };
 
 })();

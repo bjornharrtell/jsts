@@ -10,6 +10,7 @@
  * options provided for buffering. Implements various heuristics to produce
  * smoother, simpler curves which are still within a reasonable tolerance of the
  * true curve.
+ * @constructor
  */
 jsts.operation.buffer.OffsetSegmentGenerator = function(precisionModel,
     bufParams, distance) {

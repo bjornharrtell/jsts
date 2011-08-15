@@ -29,7 +29,7 @@
    *          label
    * @constructor
    */
-  var EdgeEnd = function(edge, p0, p1, label) {
+  jsts.geomgraph.EdgeEnd = function(edge, p0, p1, label) {
     this.edge = edge;
     if (p0 && p1) {
       this.init(p0, p1);
@@ -45,14 +45,14 @@
    * @type {Edge}
    * @protected
    */
-  EdgeEnd.prototype.edge = null;
+  jsts.geomgraph.EdgeEnd.prototype.edge = null;
 
 
   /**
    * @type {Label}
    * @protected
    */
-  EdgeEnd.prototype.label = null;
+  jsts.geomgraph.EdgeEnd.prototype.label = null;
 
 
   /**
@@ -61,7 +61,7 @@
    * @type {Node}
    * @private
    */
-  EdgeEnd.prototype.node = null;
+  jsts.geomgraph.EdgeEnd.prototype.node = null;
 
 
   /**
@@ -70,8 +70,8 @@
    * @type {Coordinate}
    * @private
    */
-  EdgeEnd.prototype.p0 = null;
-  EdgeEnd.prototype.p1 = null;
+  jsts.geomgraph.EdgeEnd.prototype.p0 = null;
+  jsts.geomgraph.EdgeEnd.prototype.p1 = null;
 
 
   /**
@@ -80,15 +80,15 @@
    * @type {double}
    * @private
    */
-  EdgeEnd.prototype.dx = null;
-  EdgeEnd.prototype.dy = null;
+  jsts.geomgraph.EdgeEnd.prototype.dx = null;
+  jsts.geomgraph.EdgeEnd.prototype.dy = null;
 
 
   /**
    * @type {int}
    * @private
    */
-  EdgeEnd.prototype.quadrant = null;
+  jsts.geomgraph.EdgeEnd.prototype.quadrant = null;
 
 
   /**
@@ -98,7 +98,7 @@
    *          p1
    * @protected
    */
-  EdgeEnd.prototype.init = function(p0, p1) {
+  jsts.geomgraph.EdgeEnd.prototype.init = function(p0, p1) {
     this.p0 = p0;
     this.p1 = p1;
     this.dx = p1.x - p0.x;
@@ -108,44 +108,44 @@
         'EdgeEnd with identical endpoints found');
   };
 
-  EdgeEnd.prototype.getEdge = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getEdge = function() {
     return this.edge;
   };
 
-  EdgeEnd.prototype.getLabel = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getLabel = function() {
     return this.label;
   };
 
-  EdgeEnd.prototype.getCoordinate = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getCoordinate = function() {
     return this.p0;
   };
 
-  EdgeEnd.prototype.getDirectedCoordinate = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getDirectedCoordinate = function() {
     return this.p1;
   };
 
-  EdgeEnd.prototype.getQuadrant = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getQuadrant = function() {
     return this.quadrant;
   };
 
-  EdgeEnd.prototype.getDx = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getDx = function() {
     return this.dx;
   };
 
-  EdgeEnd.prototype.getDy = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getDy = function() {
     return this.dy;
   };
 
 
-  EdgeEnd.prototype.setNode = function(node) {
+  jsts.geomgraph.EdgeEnd.prototype.setNode = function(node) {
     this.node = node;
   };
 
-  EdgeEnd.prototype.getNode = function() {
+  jsts.geomgraph.EdgeEnd.prototype.getNode = function() {
     return this.node;
   };
 
-  EdgeEnd.prototype.compareTo = function(e) {
+  jsts.geomgraph.EdgeEnd.prototype.compareTo = function(e) {
     return this.compareDirection(e);
   };
 
@@ -166,7 +166,7 @@
    *          e
    * @return {number}
    */
-  EdgeEnd.prototype.compareDirection = function(e) {
+  jsts.geomgraph.EdgeEnd.prototype.compareDirection = function(e) {
     if (this.dx === e.dx && this.dy === e.dy)
       return 0;
     // if the rays are in different quadrants, determining the ordering is
@@ -181,10 +181,8 @@
     return jsts.algorithm.CGAlgorithms.computeOrientation(e.p0, e.p1, this.p1);
   };
 
-  EdgeEnd.prototype.computeLabel = function(boundaryNodeRule) {
+  jsts.geomgraph.EdgeEnd.prototype.computeLabel = function(boundaryNodeRule) {
   // subclasses should override this if they are using labels
   };
-
-  jsts.geomgraph.EdgeEnd = EdgeEnd;
 
 })();

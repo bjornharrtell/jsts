@@ -21,12 +21,12 @@
    *
    * @constructor
    */
-  var EdgeEndBuilder = function() {
+  jsts.operation.relate.EdgeEndBuilder = function() {
 
   };
 
 
-  EdgeEndBuilder.prototype.computeEdgeEnds = function(edges) {
+  jsts.operation.relate.EdgeEndBuilder.prototype.computeEdgeEnds = function(edges) {
     if (arguments.length == 2) {
       this.computeEdgeEnds2.apply(this, arguments);
       return;
@@ -45,7 +45,7 @@
    * Creates stub edges for all the intersections in this Edge (if any) and
    * inserts them into the graph.
    */
-  EdgeEndBuilder.prototype.computeEdgeEnds2 = function(edge, l) {
+  jsts.operation.relate.EdgeEndBuilder.prototype.computeEdgeEnds2 = function(edge, l) {
     var eiList = edge.getEdgeIntersectionList();
     // ensure that the list has entries for the first and last point of the edge
     eiList.addEndpoints();
@@ -82,7 +82,7 @@
    *
    * @private
    */
-  EdgeEndBuilder.prototype.createEdgeEndForPrev = function(edge, l, eiCurr,
+  jsts.operation.relate.EdgeEndBuilder.prototype.createEdgeEndForPrev = function(edge, l, eiCurr,
       eiPrev) {
 
     var iPrev = eiCurr.segmentIndex;
@@ -116,7 +116,7 @@
    *
    * @private
    */
-  EdgeEndBuilder.prototype.createEdgeEndForNext = function(edge, l, eiCurr,
+  jsts.operation.relate.EdgeEndBuilder.prototype.createEdgeEndForNext = function(edge, l, eiCurr,
       eiNext) {
 
     var iNext = eiCurr.segmentIndex + 1;
@@ -136,6 +136,5 @@
     l.add(e);
   };
 
-  jsts.operation.relate.EdgeEndBuilder = EdgeEndBuilder;
 
 })();

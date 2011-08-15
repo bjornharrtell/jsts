@@ -43,7 +43,7 @@
    *          elements
    * @constructor
    */
-  var IntersectionMatrix = function(elements) {
+  jsts.geom.IntersectionMatrix = function(elements) {
     var other = elements;
 
     if (elements === undefined || elements === null) {
@@ -51,7 +51,7 @@
       this.setAll(Dimension.FALSE);
     } else if (typeof elements === 'string') {
       this.set(elements);
-    } else if (other instanceof IntersectionMatrix) {
+    } else if (other instanceof jsts.geom.IntersectionMatrix) {
 
       this.matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
       this.matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
@@ -72,7 +72,7 @@
    * @type {int[][]}
    * @private
    */
-  IntersectionMatrix.prototype.matrix = null;
+  jsts.geom.IntersectionMatrix.prototype.matrix = null;
 
 
   /**
@@ -82,7 +82,7 @@
    * @param {IntersectionMatrix}
    *          im the matrix to add.
    */
-  IntersectionMatrix.prototype.add = function(im) {
+  jsts.geom.IntersectionMatrix.prototype.add = function(im) {
     var i, j;
     for (i = 0; i < 3; i++) {
       for (j = 0; j < 3; j++) {
@@ -106,10 +106,10 @@
    * @return {boolean} true if the dimension symbol encompasses the dimension
    *         value.
    */
-  IntersectionMatrix.matches = function(actualDimensionValue,
+  jsts.geom.IntersectionMatrix.matches = function(actualDimensionValue,
       requiredDimensionSymbol) {
     if (typeof actualDimensionValue === 'string') {
-      return IntersectionMatrix.matches2.call(this, arguments);
+      return jsts.geom.IntersectionMatrix.matches2.call(this, arguments);
     }
 
     if (requiredDimensionSymbol === '*') {
@@ -149,9 +149,9 @@
    * @return {boolean} true if each of the required dimension symbols encompass
    *         the corresponding actual dimension symbol.
    */
-  IntersectionMatrix.matches2 = function(actualDimensionSymbols,
+  jsts.geom.IntersectionMatrix.matches2 = function(actualDimensionSymbols,
       requiredDimensionSymbols) {
-    var m = new IntersectionMatrix(actualDimensionSymbols);
+    var m = new jsts.geom.IntersectionMatrix(actualDimensionSymbols);
     return m.matches(requiredDimensionSymbols);
   };
 
@@ -171,7 +171,7 @@
    * @param {int}
    *          dimensionValue the new value of the element.
    */
-  IntersectionMatrix.prototype.set = function(row, column, dimensionValue) {
+  jsts.geom.IntersectionMatrix.prototype.set = function(row, column, dimensionValue) {
     if (typeof row === 'string') {
       this.set2(row);
       return;
@@ -190,7 +190,7 @@
    *          <code>IntersectionMatrix</code> s elements. Possible values are
    *          <code>{T, F, * , 0, 1, 2}.</code>
    */
-  IntersectionMatrix.prototype.set2 = function(dimensionSymbols) {
+  jsts.geom.IntersectionMatrix.prototype.set2 = function(dimensionSymbols) {
     for (var i = 0; i < dimensionSymbols.length(); i++) {
       var row = i / 3;
       var col = i % 3;
@@ -217,7 +217,7 @@
    *          the element. The order of dimension values from least to greatest
    *          is <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>.
    */
-  IntersectionMatrix.prototype.setAtLeast = function(row, column,
+  jsts.geom.IntersectionMatrix.prototype.setAtLeast = function(row, column,
       minimumDimensionValue) {
     if (arguments.length === 1) {
       this.setAtLeast2(arguments[0]);
@@ -248,7 +248,7 @@
    *          the element. The order of dimension values from least to greatest
    *          is <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>.
    */
-  IntersectionMatrix.prototype.setAtLeastIfValid = function(row, column,
+  jsts.geom.IntersectionMatrix.prototype.setAtLeastIfValid = function(row, column,
       minimumDimensionValue) {
     if (row >= 0 && column >= 0) {
       this.setAtLeast(row, column, minimumDimensionValue);
@@ -267,7 +267,7 @@
    *          The order of dimension values from least to greatest is
    *          <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code> .
    */
-  IntersectionMatrix.prototype.setAtLeast2 = function(minimumDimensionSymbols) {
+  jsts.geom.IntersectionMatrix.prototype.setAtLeast2 = function(minimumDimensionSymbols) {
     var i;
     for (i = 0; i < minimumDimensionSymbols.length; i++) {
       var row = parseInt(i / 3);
@@ -287,7 +287,7 @@
    *          <code>IntersectionMatrix</code> s elements. Possible values
    *          <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code> .
    */
-  IntersectionMatrix.prototype.setAll = function(dimensionValue) {
+  jsts.geom.IntersectionMatrix.prototype.setAll = function(dimensionValue) {
     var ai, bi;
     for (ai = 0; ai < 3; ai++) {
       for (bi = 0; bi < 3; bi++) {
@@ -312,7 +312,7 @@
    *          <code>Geometry.</code>
    * @return {int} the dimension value at the given matrix position.
    */
-  IntersectionMatrix.prototype.get = function(row, column) {
+  jsts.geom.IntersectionMatrix.prototype.get = function(row, column) {
     return this.matrix[row][column];
   };
 
@@ -324,7 +324,7 @@
    * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
    *         related by this <code>IntersectionMatrix</code> are disjoint.
    */
-  IntersectionMatrix.prototype.isDisjoint = function() {
+  jsts.geom.IntersectionMatrix.prototype.isDisjoint = function() {
     return this.matrix[Location.INTERIOR][Location.INTERIOR] === Dimension.FALSE &&
         this.matrix[Location.INTERIOR][Location.BOUNDARY] === Dimension.FALSE &&
         this.matrix[Location.BOUNDARY][Location.INTERIOR] === Dimension.FALSE &&
@@ -338,7 +338,7 @@
    * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
    *         related by this <code>IntersectionMatrix</code> intersect.
    */
-  IntersectionMatrix.prototype.isIntersects = function() {
+  jsts.geom.IntersectionMatrix.prototype.isIntersects = function() {
     return !this.isDisjoint();
   };
 
@@ -357,7 +357,7 @@
    *         related by this <code>IntersectionMatrix</code> touch; Returns
    *         false if both <code>Geometry</code>s are points.
    */
-  IntersectionMatrix.prototype.isTouches = function(dimensionOfGeometryA,
+  jsts.geom.IntersectionMatrix.prototype.isTouches = function(dimensionOfGeometryA,
       dimensionOfGeometryB) {
     if (dimensionOfGeometryA > dimensionOfGeometryB) {
       // no need to get transpose because pattern matrix is symmetrical
@@ -369,10 +369,10 @@
         (dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.A) ||
         (dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.L)) {
       return this.matrix[Location.INTERIOR][Location.INTERIOR] === Dimension.FALSE &&
-          (IntersectionMatrix.matches(
+          (jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.INTERIOR][Location.BOUNDARY], 'T') ||
-              IntersectionMatrix.matches(
-                  this.matrix[Location.BOUNDARY][Location.INTERIOR], 'T') || IntersectionMatrix
+              jsts.geom.IntersectionMatrix.matches(
+                  this.matrix[Location.BOUNDARY][Location.INTERIOR], 'T') || jsts.geom.IntersectionMatrix
               .matches(this.matrix[Location.BOUNDARY][Location.BOUNDARY], 'T'));
     }
     return false;
@@ -409,22 +409,22 @@
    * @return {boolean} <code>true</code> if the two <code>Geometry</code>s
    *         related by this <code>IntersectionMatrix</code> cross.
    */
-  IntersectionMatrix.prototype.isCrosses = function(dimensionOfGeometryA,
+  jsts.geom.IntersectionMatrix.prototype.isCrosses = function(dimensionOfGeometryA,
       dimensionOfGeometryB) {
     if ((dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.L) ||
         (dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.A) ||
         (dimensionOfGeometryA == Dimension.L && dimensionOfGeometryB == Dimension.A)) {
-      return IntersectionMatrix.matches(
+      return jsts.geom.IntersectionMatrix.matches(
           this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') &&
-          IntersectionMatrix.matches(
+          jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.INTERIOR][Location.EXTERIOR], 'T');
     }
     if ((dimensionOfGeometryA == Dimension.L && dimensionOfGeometryB == Dimension.P) ||
         (dimensionOfGeometryA == Dimension.A && dimensionOfGeometryB == Dimension.P) ||
         (dimensionOfGeometryA == Dimension.A && dimensionOfGeometryB == Dimension.L)) {
-      return IntersectionMatrix.matches(
+      return jsts.geom.IntersectionMatrix.matches(
           matrix[Location.INTERIOR][Location.INTERIOR], 'T') &&
-          IntersectionMatrix.matches(
+          jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.EXTERIOR][Location.INTERIOR], 'T');
     }
     if (dimensionOfGeometryA === Dimension.L &&
@@ -441,8 +441,8 @@
    * @return {boolean} <code>true</code> if the first <code>Geometry</code>
    *         is within the second.
    */
-  IntersectionMatrix.prototype.isWithin = function() {
-    return IntersectionMatrix.matches(
+  jsts.geom.IntersectionMatrix.prototype.isWithin = function() {
+    return jsts.geom.IntersectionMatrix.matches(
         this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') &&
         this.matrix[Location.INTERIOR][Location.EXTERIOR] == Dimension.FALSE &&
         this.matrix[Location.BOUNDARY][Location.EXTERIOR] == Dimension.FALSE;
@@ -455,8 +455,8 @@
    * @return {boolean} <code>true</code> if the first <code>Geometry</code>
    *         contains the second.
    */
-  IntersectionMatrix.prototype.isContains = function() {
-    return IntersectionMatrix.matches(
+  jsts.geom.IntersectionMatrix.prototype.isContains = function() {
+    return jsts.geom.IntersectionMatrix.matches(
         this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') &&
         this.matrix[Location.EXTERIOR][Location.INTERIOR] == Dimension.FALSE &&
         this.matrix[Location.EXTERIOR][Location.BOUNDARY] == Dimension.FALSE;
@@ -471,14 +471,14 @@
    * @return {boolean} <code>true</code> if the first <code>Geometry</code>
    *         covers the second.
    */
-  IntersectionMatrix.prototype.isCovers = function() {
-    var hasPointInCommon = IntersectionMatrix.matches(
+  jsts.geom.IntersectionMatrix.prototype.isCovers = function() {
+    var hasPointInCommon = jsts.geom.IntersectionMatrix.matches(
         this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') ||
-        IntersectionMatrix.matches(
+        jsts.geom.IntersectionMatrix.matches(
             this.matrix[Location.INTERIOR][Location.BOUNDARY], 'T') ||
-        IntersectionMatrix.matches(
+        jsts.geom.IntersectionMatrix.matches(
             this.matrix[Location.BOUNDARY][Location.INTERIOR], 'T') ||
-        IntersectionMatrix.matches(
+        jsts.geom.IntersectionMatrix.matches(
             this.matrix[Location.BOUNDARY][Location.BOUNDARY], 'T');
 
     return hasPointInCommon &&
@@ -495,14 +495,14 @@
    * @return {boolean} <code>true</code> if the first <code>Geometry</code>
    *         is covered by the second.
    */
-  IntersectionMatrix.prototype.isCoveredBy = function() {
-    var hasPointInCommon = IntersectionMatrix.matches(
+  jsts.geom.IntersectionMatrix.prototype.isCoveredBy = function() {
+    var hasPointInCommon = jsts.geom.IntersectionMatrix.matches(
         this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') ||
-        IntersectionMatrix.matches(
+        jsts.geom.IntersectionMatrix.matches(
             this.matrix[Location.INTERIOR][Location.BOUNDARY], 'T') ||
-        IntersectionMatrix.matches(
+        jsts.geom.IntersectionMatrix.matches(
             this.matrix[Location.BOUNDARY][Location.INTERIOR], 'T') ||
-        IntersectionMatrix.matches(
+        jsts.geom.IntersectionMatrix.matches(
             this.matrix[Location.BOUNDARY][Location.BOUNDARY], 'T');
 
     return hasPointInCommon &&
@@ -526,12 +526,12 @@
    *         <code>Geometry</code>s must have the same dimension for this
    *         function to return <code>true.</code>
    */
-  IntersectionMatrix.prototype.isEquals = function(dimensionOfGeometryA,
+  jsts.geom.IntersectionMatrix.prototype.isEquals = function(dimensionOfGeometryA,
       dimensionOfGeometryB) {
     if (dimensionOfGeometryA !== dimensionOfGeometryB) {
       return false;
     }
-    return IntersectionMatrix.matches(
+    return jsts.geom.IntersectionMatrix.matches(
         this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') &&
         this.matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE &&
         this.matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE &&
@@ -558,23 +558,23 @@
    *         function to return <code>true</code>, the <code>Geometry</code>s
    *         must be two points, two curves or two surfaces.
    */
-  IntersectionMatrix.prototype.isOverlaps = function(dimensionOfGeometryA,
+  jsts.geom.IntersectionMatrix.prototype.isOverlaps = function(dimensionOfGeometryA,
       dimensionOfGeometryB) {
     if ((dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB === Dimension.P) ||
         (dimensionOfGeometryA == Dimension.A && dimensionOfGeometryB === Dimension.A)) {
-      return IntersectionMatrix.matches(
+      return jsts.geom.IntersectionMatrix.matches(
           this.matrix[Location.INTERIOR][Location.INTERIOR], 'T') &&
-          IntersectionMatrix.matches(
+          jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.INTERIOR][Location.EXTERIOR], 'T') &&
-          IntersectionMatrix.matches(
+          jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.EXTERIOR][Location.INTERIOR], 'T');
     }
     if (dimensionOfGeometryA === Dimension.L &&
         dimensionOfGeometryB === Dimension.L) {
       return this.matrix[Location.INTERIOR][Location.INTERIOR] == 1 &&
-          IntersectionMatrix.matches(
+          jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.INTERIOR][Location.EXTERIOR], 'T') &&
-          IntersectionMatrix.matches(
+          jsts.geom.IntersectionMatrix.matches(
               this.matrix[Location.EXTERIOR][Location.INTERIOR], 'T');
     }
     return false;
@@ -593,14 +593,14 @@
    *         <code>IntersectionMatrix</code> matches the required dimension
    *         symbols.
    */
-  IntersectionMatrix.prototype.matches = function(requiredDimensionSymbols) {
+  jsts.geom.IntersectionMatrix.prototype.matches = function(requiredDimensionSymbols) {
     if (requiredDimensionSymbols.length != 9) {
       throw new jsts.error.IllegalArgumentException('Should be length 9: ' +
           requiredDimensionSymbols);
     }
     for (var ai = 0; ai < 3; ai++) {
       for (var bi = 0; bi < 3; bi++) {
-        if (!IntersectionMatrix.matches(this.matrix[ai][bi],
+        if (!jsts.geom.IntersectionMatrix.matches(this.matrix[ai][bi],
             requiredDimensionSymbols.charAt(3 * ai + bi))) {
           return false;
         }
@@ -611,12 +611,12 @@
 
 
   /**
-   * Transposes this IntersectionMatrix.
+   * Transposes this jsts.geom.IntersectionMatrix.
    *
    * @return {IntersectionMatrix} this <code>IntersectionMatrix</code> as a
    *         convenience.
    */
-  IntersectionMatrix.prototype.transpose = function() {
+  jsts.geom.IntersectionMatrix.prototype.transpose = function() {
     var temp = matrix[1][0];
     this.matrix[1][0] = this.matrix[0][1];
     this.matrix[0][1] = temp;
@@ -637,7 +637,7 @@
    * @return {string} the nine dimension symbols of this
    *         <code>IntersectionMatrix</code> in row-major order.
    */
-  IntersectionMatrix.prototype.toString = function() {
+  jsts.geom.IntersectionMatrix.prototype.toString = function() {
     var ai, bi, buf = '';
     for (ai = 0; ai < 3; ai++) {
       for (bi = 0; bi < 3; bi++) {
@@ -646,7 +646,5 @@
     }
     return buf;
   };
-
-  jsts.geom.IntersectionMatrix = IntersectionMatrix;
 
 })();

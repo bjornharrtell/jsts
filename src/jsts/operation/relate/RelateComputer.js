@@ -30,7 +30,7 @@
    *
    * @constructor
    */
-  var RelateComputer = function(arg) {
+  jsts.operation.relate.RelateComputer = function(arg) {
     this.li = new jsts.algorithm.RobustLineIntersector();
     this.ptLocator = new jsts.algorithm.PointLocator();
     this.nodes = new jsts.geomgraph.NodeMap(
@@ -45,14 +45,14 @@
    * @type {LineIntersector}
    * @private
    */
-  RelateComputer.prototype.li = null;
+  jsts.operation.relate.RelateComputer.prototype.li = null;
 
 
   /**
    * @type {PointLocator}
    * @private
    */
-  RelateComputer.prototype.ptLocator = null;
+  jsts.operation.relate.RelateComputer.prototype.ptLocator = null;
 
 
   /**
@@ -61,14 +61,14 @@
    * @type {GeometryGraph[]}
    * @private
    */
-  RelateComputer.prototype.arg = null;
+  jsts.operation.relate.RelateComputer.prototype.arg = null;
 
 
   /**
    * @type {NodeMap}
    * @private
    */
-  RelateComputer.prototype.nodes = null;
+  jsts.operation.relate.RelateComputer.prototype.nodes = null;
 
 
   /**
@@ -77,14 +77,14 @@
    * @type {IntersectionMatrix}
    * @private
    */
-  RelateComputer.prototype.im = null;
+  jsts.operation.relate.RelateComputer.prototype.im = null;
 
 
   /**
    * @type {javascript.util.ArrayList}
    * @private
    */
-  RelateComputer.prototype.isolatedEdges = null;
+  jsts.operation.relate.RelateComputer.prototype.isolatedEdges = null;
 
 
   /**
@@ -93,10 +93,10 @@
    * @type {Coordinate}
    * @private
    */
-  RelateComputer.prototype.invalidPoint = null;
+  jsts.operation.relate.RelateComputer.prototype.invalidPoint = null;
 
 
-  RelateComputer.prototype.computeIM = function() {
+  jsts.operation.relate.RelateComputer.prototype.computeIM = function() {
     var im = new jsts.geom.IntersectionMatrix();
     // since Geometries are finite and embedded in a 2-D space, the EE element
     // must always be 2
@@ -168,8 +168,8 @@
   /**
    * @private
    */
-  RelateComputer.prototype.insertEdgeEnds = function(ee) {
-    for (var i = ee.iterator(); i.hasNext(); ) {
+  jsts.operation.relate.RelateComputer.prototype.insertEdgeEnds = function(ee) {
+    for (var i = ee.iterator(); i.hasNext();) {
       var e = i.next();
       this.nodes.add(e);
     }
@@ -181,7 +181,7 @@
    *          im
    * @private
    */
-  RelateComputer.prototype.computeProperIntersectionIM = function(
+  jsts.operation.relate.RelateComputer.prototype.computeProperIntersectionIM = function(
       intersector, im) {
     // If a proper intersection is found, we can set a lower bound on the IM.
     var dimA = this.arg[0].getGeometry().getDimension();
@@ -244,7 +244,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.copyNodesAndLabels = function(
+  jsts.operation.relate.RelateComputer.prototype.copyNodesAndLabels = function(
       argIndex) {
     for (var i = this.arg[argIndex].getNodeIterator(); i.hasNext();) {
       var graphNode = i.next();
@@ -263,7 +263,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.computeIntersectionNodes = function(
+  jsts.operation.relate.RelateComputer.prototype.computeIntersectionNodes = function(
       argIndex) {
     for (var i = this.arg[argIndex].getEdgeIterator(); i.hasNext();) {
       var e = i.next();
@@ -290,7 +290,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.labelIntersectionNodes = function(
+  jsts.operation.relate.RelateComputer.prototype.labelIntersectionNodes = function(
       argIndex) {
     for (var i = this.arg[argIndex].getEdgeIterator(); i.hasNext();) {
       var e = i.next();
@@ -315,7 +315,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.computeDisjointIM = function(
+  jsts.operation.relate.RelateComputer.prototype.computeDisjointIM = function(
       im) {
     var ga = this.arg[0].getGeometry();
     if (!ga.isEmpty()) {
@@ -333,7 +333,7 @@
   /**
    * @private
    */
-  RelateComputer.prototype.labelNodeEdges = function() {
+  jsts.operation.relate.RelateComputer.prototype.labelNodeEdges = function() {
     for (var ni = this.nodes.iterator(); ni.hasNext();) {
       var node = ni.next();
       node.getEdges().computeLabelling(this.arg);
@@ -346,7 +346,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.updateIM = function(im) {
+  jsts.operation.relate.RelateComputer.prototype.updateIM = function(im) {
     for (var ei = this.isolatedEdges.iterator(); ei.hasNext();) {
       var e = ei.next();
       e.updateIM(im);
@@ -367,12 +367,13 @@
    *
    * @private
    */
-  RelateComputer.prototype.labelIsolatedEdges = function(
+  jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdges = function(
       thisIndex, targetIndex) {
     for (var ei = this.arg[thisIndex].getEdgeIterator(); ei.hasNext();) {
       var e = ei.next();
       if (e.isIsolated()) {
-        this.labelIsolatedEdge(e, targetIndex, this.arg[targetIndex].getGeometry());
+        this.labelIsolatedEdge(e, targetIndex, this.arg[targetIndex]
+            .getGeometry());
         this.isolatedEdges.add(e);
       }
     }
@@ -387,7 +388,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.labelIsolatedEdge = function(
+  jsts.operation.relate.RelateComputer.prototype.labelIsolatedEdge = function(
       e, targetIndex, target) {
     // this won't work for GeometryCollections with both dim 2 and 1 geoms
     if (target.getDimension() > 0) {
@@ -413,7 +414,7 @@
    *
    * @private
    */
-  RelateComputer.prototype.labelIsolatedNodes = function() {
+  jsts.operation.relate.RelateComputer.prototype.labelIsolatedNodes = function() {
     for (var ni = this.nodes.iterator(); ni.hasNext();) {
       var n = ni.next();
       var label = n.getLabel();
@@ -433,13 +434,11 @@
   /**
    * Label an isolated node with its relationship to the target geometry.
    */
-  RelateComputer.prototype.labelIsolatedNode = function(
+  jsts.operation.relate.RelateComputer.prototype.labelIsolatedNode = function(
       n, targetIndex) {
     var loc = this.ptLocator.locate(n.getCoordinate(), this.arg[targetIndex]
         .getGeometry());
     n.getLabel().setAllLocations(targetIndex, loc);
   };
-
-  jsts.operation.relate.RelateComputer = RelateComputer;
 
 })();

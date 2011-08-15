@@ -12,27 +12,25 @@
    */
 
 
-
   /**
    * @constructor
-   * @augments OpenLayers.Geometry.LineString
-   * @augments jsts.geom.Geometry
+   * @extends jsts.geom.GeometryCollection
    */
-  var MultiLineString = function() {
+  jsts.geom.MultiLineString = function() {
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
     this.geometries = this.components;
   };
-  MultiLineString.prototype = OpenLayers.Geometry.MultiLineString.prototype;
+  jsts.geom.MultiLineString.prototype = OpenLayers.Geometry.MultiLineString.prototype;
 
   for (key in jsts.geom.GeometryCollection.prototype) {
-    MultiLineString.prototype[key] = MultiLineString.prototype[key] ? MultiLineString.prototype[key]
+    jsts.geom.MultiLineString.prototype[key] = jsts.geom.MultiLineString.prototype[key] ? jsts.geom.MultiLineString.prototype[key]
         : jsts.geom.GeometryCollection.prototype[key];
 
     // overrides
-    MultiLineString.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
+    jsts.geom.MultiLineString.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
   }
 
-  MultiLineString.prototype.getBoundary = function() {
+  jsts.geom.MultiLineString.prototype.getBoundary = function() {
     return (new jsts.operation.BoundaryOp(this)).getBoundary();
   };
 
@@ -44,7 +42,7 @@
    *          tolerance
    * @return {boolean}
    */
-  MultiLineString.prototype.equalsExact = function(other, tolerance) {
+  jsts.geom.MultiLineString.prototype.equalsExact = function(other, tolerance) {
     if (!this.isEquivalentClass(other)) {
       return false;
     }
@@ -52,7 +50,6 @@
         tolerance);
   };
 
-  jsts.geom.MultiLineString = MultiLineString;
-  OpenLayers.Geometry.MultiLineString = MultiLineString;
+  OpenLayers.Geometry.MultiLineString = jsts.geom.MultiLineString;
 
 })();

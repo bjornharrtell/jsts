@@ -10,6 +10,7 @@
  * curves need to be noded together and polygonized to form the final buffer
  * area.
  *
+ * @constructor
  */
 jsts.operation.buffer.OffsetCurveSetBuilder = function(inputGeom, distance,
     curveBuilder) {
@@ -140,7 +141,8 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addPoint = function(p) {
 jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addLineString = function(
     line) {
   // a zero or negative width buffer of a line/point is empty
-  if (this.distance <= 0.0 && !this.curveBuilder.getBufferParameters().isSingleSided())
+  if (this.distance <= 0.0 &&
+      !this.curveBuilder.getBufferParameters().isSingleSided())
     return;
   var coord = jsts.geom.CoordinateArrays.removeRepeatedPoints(line
       .getCoordinates());
@@ -190,7 +192,8 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.addPolygon = function(p) {
     // the interior of the polygon lies on their opposite side
     // (on the left, if the hole is oriented CCW)
     this.addPolygonRing(holeCoord, offsetDistance, jsts.geomgraph.Position
-        .opposite(offsetSide), jsts.geom.Location.INTERIOR, jsts.geom.Location.EXTERIOR);
+        .opposite(offsetSide), jsts.geom.Location.INTERIOR,
+        jsts.geom.Location.EXTERIOR);
   }
 };
 
