@@ -149,9 +149,15 @@
   };
 
   jsts.geom.GeometryCollection.prototype.apply = function(filter) {
-    filter.filter(this);
-    for (var i = 0; i < this.geometries.length; i++) {
-      this.geometries[i].apply(filter);
+    if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
+      filter.filter(this);
+      for (var i = 0; i < this.geometries.length; i++) {
+        this.geometries[i].apply(filter);
+      }
+    } else if (filter instanceof jsts.geom.CoordinateFilter) {
+      for (var i = 0; i < this.geometries.length; i++) {
+        this.geometries[i].apply(filter);
+      }
     }
   };
 
