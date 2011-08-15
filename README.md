@@ -5,7 +5,7 @@ The JSTS Topology Suite is a JavaScript library of spatial predicates and functi
 for processing geometry conforming to the Simple Features Specification for SQL published by
 the Open Geospatial Consortium. JSTS Topology Suite is also a JavaScript port of the well 
 established Java library [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html) with
-OpenLayers compatibility. The core geometry classes extended from OpenLayers.Geometry
+OpenLayers compatibility. The core geometry classes are extended from OpenLayers.Geometry
 with API as close as possible to the corresponding JTS Topology Suite geometry classes.
 
 [SWECO Position AB](http://en.sweco.se/en/enswecose/Expertise-/Geographical-IT) (my current employer) has gratiously 
