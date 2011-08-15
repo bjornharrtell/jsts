@@ -8,7 +8,7 @@
   <script type="text/javascript" src="../test/lib/jasmine-1.0.1/jasmine.js"></script>
   <script type="text/javascript" src="../test/lib/jasmine-1.0.1/jasmine-html.js"></script>
   
-  <script src="../OpenLayers-2.11-rc1/OpenLayers.js" type="text/javascript"></script>
+  <script src="../OpenLayers-2.11-rc1/lib/OpenLayers.js" type="text/javascript"></script>
 
   <script type="text/javascript" src="../lib/javascript.util.js"></script>
 
@@ -199,10 +199,10 @@
     var reader = new jsts.io.WKTReader();
     
  	// TODO: should be POLYGON((220 160, 80 300, 80 320, 220 320, 220 160))
-    var a = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')
-    var b = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')
-    var convexHull = a.convexHull(b);
-    console.log(convexHull);
+    var a = reader.read('POLYGON((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))')
+    //var b = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')
+    var boundary = a.getBoundary();
+    console.log(boundary);
     
     // TODO: find out why buffering fails (depth calc issues) with this poly
     var polygon = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');

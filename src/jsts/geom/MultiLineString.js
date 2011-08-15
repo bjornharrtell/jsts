@@ -17,6 +17,18 @@
    * @extends jsts.geom.GeometryCollection
    */
   jsts.geom.MultiLineString = function() {
+    if (arguments[0] instanceof Array) {
+      // NOTE: need to support LinearRings as input (OL only supports
+      // LineStrings
+      var array = arguments[0];
+      for (var i = 0; i < array.length; i++) {
+        var e = array[i];
+        if (e.CLASS_NAME === 'OpenLayers.Geometry.LinearRing') {
+          array[i] = new jsts.geom.LineString(e.components);
+        }
+      }
+    }
+
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
     this.geometries = this.components;
   };
