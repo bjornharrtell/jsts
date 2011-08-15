@@ -16,7 +16,7 @@ and analysing simple geometries.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for developer discussions.
 
-Code is conformant to the
+The code tries to be conformant to the
 [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
 [JSLint](http://www.jslint.com/).
 
