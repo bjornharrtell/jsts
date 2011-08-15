@@ -1,10 +1,6 @@
 JSTS Topology Suite
 ===================
 
-DISCLAIMER: JSTS Topology Suite now has functional ports of relate, buffer, overlay, and union operations (see the
-[FAQ](https://github.com/bjornharrtell/jsts/wiki/FAQ)) but is not suitable for production as critical bugs
-remains.
-
 The JSTS Topology Suite is a JavaScript library of spatial predicates and functions 
 for processing geometry conforming to the Simple Features Specification for SQL published by
 the Open Geospatial Consortium. JSTS Topology Suite is also a JavaScript port of the well 
