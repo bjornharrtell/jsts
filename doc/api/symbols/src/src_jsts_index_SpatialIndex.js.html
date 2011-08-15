@@ -1,0 +1,75 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * The basic operations supported by classes
+<span class='line'>  9</span>  * implementing spatial index algorithms.
+<span class='line'> 10</span>  * &lt;p>
+<span class='line'> 11</span>  * A spatial index typically provides a primary filter for range rectangle queries.
+<span class='line'> 12</span>  * A secondary filter is required to test for exact intersection.
+<span class='line'> 13</span>  * The secondary filter may consist of other kinds of tests,
+<span class='line'> 14</span>  * such as testing other spatial relationships.
+<span class='line'> 15</span>  *
+<span class='line'> 16</span>  * @version 1.7
+<span class='line'> 17</span>  */</span><span class="WHIT">
+<span class='line'> 18</span> 
+<span class='line'> 19</span> 
+<span class='line'> 20</span> 
+<span class='line'> 21</span> </span><span class="COMM">/**
+<span class='line'> 22</span>  * @interface
+<span class='line'> 23</span>  */</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="NAME">jsts.index.SpatialIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 25</span> 
+<span class='line'> 26</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> 
+<span class='line'> 29</span> </span><span class="COMM">/**
+<span class='line'> 30</span>  * Adds a spatial item with an extent specified by the given {@link Envelope} to the index
+<span class='line'> 31</span>  *
+<span class='line'> 32</span>  * @param {jsts.geom.Envelope} itemEnv
+<span class='line'> 33</span>  * @param {Object} item
+<span class='line'> 34</span>  * @public
+<span class='line'> 35</span>  */</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="NAME">jsts.index.SpatialIndex.prototype.insert</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">item</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.error.AbstractMethodInvocationError</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
+<span class='line'> 40</span> 
+<span class='line'> 41</span> </span><span class="COMM">/**
+<span class='line'> 42</span>  * Queries the index for all items whose extents intersect the given search {@link Envelope}
+<span class='line'> 43</span>  * and applies an {@link ItemVisitor} to them (if provided).
+<span class='line'> 44</span>  * Note that some kinds of indexes may also return objects which do not in fact
+<span class='line'> 45</span>  * intersect the query envelope.
+<span class='line'> 46</span>  *
+<span class='line'> 47</span>  * @param {jsts.geom.Envelope} searchEnv the envelope to query for.
+<span class='line'> 48</span>  * @param {jsts.index.ItemVisitor=} [visitor] a visitor object to apply to the items found.
+<span class='line'> 49</span>  * @return {?Array} a list of the items found by the query.
+<span class='line'> 50</span>  * @public
+<span class='line'> 51</span>  */</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="NAME">jsts.index.SpatialIndex.prototype.query</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">searchEnv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">visitor</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">  </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.error.AbstractMethodInvocationError</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> 
+<span class='line'> 56</span> 
+<span class='line'> 57</span> </span><span class="COMM">/**
+<span class='line'> 58</span>  * Removes a single item from the tree.
+<span class='line'> 59</span>  *
+<span class='line'> 60</span>  * @param {jsts.geom.Envelope} itemEnv the Envelope of the item to remove.
+<span class='line'> 61</span>  * @param {Object} item the item to remove.
+<span class='line'> 62</span>  * @return {boolean} &lt;code>true&lt;/code> if the item was found.
+<span class='line'> 63</span>  * @public
+<span class='line'> 64</span>  */</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="NAME">jsts.index.SpatialIndex.prototype.remove</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">itemEnv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">item</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.error.AbstractMethodInvocationError</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span></pre></body></html>
