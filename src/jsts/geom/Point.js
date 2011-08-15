@@ -175,7 +175,7 @@ jsts.geom.Point.prototype.normalize = function() {
 
 jsts.geom.Point.prototype.compareToSameClass = function(other) {
   var point = other;
-  return getCoordinate().compareTo(point.getCoordinate());
+  return this.getCoordinate().compareTo(point.getCoordinate());
 };
 
 /**

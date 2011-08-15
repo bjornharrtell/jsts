@@ -38,11 +38,11 @@ describe('TestBoundary', function() {
         //var writer = new jsts.io.WKTWriter();
         //result = writer.write(result);
         
-        var result = boundary.equalsExact(expectedg);
+        var result = boundary.compareTo(expectedg);
         
         count++;
         
-        if (result === true) {
+        if (result === 0) {
           passed++;
         }
         else {

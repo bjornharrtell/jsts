@@ -198,12 +198,6 @@
   function init() {
     var reader = new jsts.io.WKTReader();
     
-    // TODO: should be MULTILINESTRING((0 0, 50 50), (0 100, 50 50), (50 50, 100 100), (50 50, 100 0))
-    var a = reader.read('LINESTRING(0 0, 100 100)')
-    var b = reader.read('LINESTRING(0 100, 100 0)')
-    var union = a.union(b);
-    console.log(union);
-    
  	// TODO: should be POLYGON((220 160, 80 300, 80 320, 220 320, 220 160))
     var a = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')
     var b = reader.read('LINESTRING(80 320, 220 320, 220 160, 80 300)')

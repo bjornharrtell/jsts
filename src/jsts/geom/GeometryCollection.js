@@ -10,7 +10,9 @@
    * @requires jsts/geom/Geometry.js
    */
 
-
+  var Geometry = jsts.geom.Geometry;
+  var TreeSet = javascript.util.TreeSet;
+  var Arrays = javascript.util.Arrays;
 
   /**
    * @constructor
@@ -41,8 +43,8 @@
 
   jsts.geom.GeometryCollection.prototype = new OpenLayers.Geometry.Collection();
 
-  for (key in jsts.geom.Geometry.prototype) {
-    jsts.geom.GeometryCollection.prototype[key] = jsts.geom.Geometry.prototype[key];
+  for (key in Geometry.prototype) {
+    jsts.geom.GeometryCollection.prototype[key] = Geometry.prototype[key];
   }
 
 
@@ -140,6 +142,12 @@
     return true;
   };
 
+  jsts.geom.GeometryCollection.prototype.compareToSameClass = function(o) {
+    var theseElements = new TreeSet(Arrays.asList(this.geometries));
+    var otherElements = new TreeSet(Arrays.asList(o.geometries));
+    return this.compare(theseElements, otherElements);
+  };
+
   jsts.geom.GeometryCollection.prototype.apply = function(filter) {
     filter.filter(this);
     for (var i = 0; i < this.geometries.length; i++) {
@@ -170,6 +178,9 @@
     return envelope;
   };
 
+  /**
+   * @private
+   */
   OpenLayers.Geometry.Collection = jsts.geom.GeometryCollection;
 
 })();
