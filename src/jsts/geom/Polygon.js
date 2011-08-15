@@ -152,8 +152,19 @@
   };
 
   jsts.geom.Polygon.prototype.apply = function(filter) {
-    filter.filter(this);
     if (filter instanceof jsts.geom.GeometryComponentFilter) {
+      filter.filter(this);
+      var shell = this.components[0];
+      shell.apply(filter);
+      var holes = this.components.slice(1);
+      for (var i = 0; i < holes.length; i++) {
+        holes[i].apply(filter);
+      }
+    }
+    else if (filter instanceof jsts.geom.GeometryFilter) {
+      filter.filter(this);
+    }
+    else if (filter instanceof jsts.geom.CoordinateFilter) {
       var shell = this.components[0];
       shell.apply(filter);
       var holes = this.components.slice(1);

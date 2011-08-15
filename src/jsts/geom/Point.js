@@ -111,7 +111,7 @@ jsts.geom.Point.prototype.computeEnvelopeInternal = function() {
 };
 
 jsts.geom.Point.prototype.apply = function(filter) {
-  if (filter instanceof jsts.geom.GeometryFilter) {
+  if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
     filter.filter(this);
   } else if (filter instanceof jsts.geom.CoordinateFilter) {
     if (this.isEmpty()) { return; }

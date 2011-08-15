@@ -36,7 +36,8 @@
 
 
   /**
-   * @return {jsts.geom.Coordinate} The n'th coordinate of this jsts.geom.LineString.
+   * @return {jsts.geom.Coordinate} The n'th coordinate of this
+   *         jsts.geom.LineString.
    * @param {int}
    *          n index.
    */
@@ -209,8 +210,7 @@
     return other instanceof jsts.geom.LineString;
   };
 
-  jsts.geom.LineString.prototype.compareToSameClass = function(o)
-  {
+  jsts.geom.LineString.prototype.compareToSameClass = function(o) {
     var line = o;
     // MD - optimized implementation
     var i = 0;
@@ -233,7 +233,13 @@
   };
 
   jsts.geom.LineString.prototype.apply = function(filter) {
-    filter.filter(this);
+    if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
+      filter.filter(this);
+    } else if (filter instanceof jsts.geom.CoordinateFilter) {
+      for (var i = 0; i < this.components.length; i++) {
+        filter.filter(this.components[i]);
+      }
+    }
   };
 
   OpenLayers.Geometry.LineString = jsts.geom.LineString;
