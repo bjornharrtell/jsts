@@ -8,6 +8,9 @@ established Java library [JTS Topology Suite](http://tsusiatsoftware.net/jts/mai
 OpenLayers compatibility. The core geometry classes are inherited from OpenLayers.Geometry
 and extended with API as close as possible to the corresponding JTS Topology Suite geometry classes.
 
+[SWECO Position AB](http://en.sweco.se/en/enswecose/Expertise-/Geographical-IT) has gratiously 
+provided sponsoring for this project.
+
 The goal of the project is to provide OpenLayers applications with a complete library for processing
 and analysing simple geometries.
 
@@ -25,6 +28,8 @@ A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.c
 A [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
 [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides
 additional tests.
+
+Also available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html) and [overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) operations.
 
 The code is licensed using the LGPL 2.1 license.
 
