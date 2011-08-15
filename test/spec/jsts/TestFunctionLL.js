@@ -63,11 +63,11 @@ describe('TestFunctionLL', function() {
           
           if (opresult === undefined) continue;
           
-          var result = opresult.equalsExact(expectedg);
+          var result = opresult.compareTo(expectedg);
           
           count++;
           
-          if (result === true) {
+          if (result === 0) {
             passed++;
           }
           else {
