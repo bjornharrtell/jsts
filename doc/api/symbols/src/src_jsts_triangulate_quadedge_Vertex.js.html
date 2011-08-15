@@ -1,0 +1,505 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> </span><span class="COMM">/**
+<span class='line'>  9</span>  * Models a site (node) in a {@link QuadEdgeSubdivision}. The sites can be
+<span class='line'> 10</span>  * points on a lineString representing a linear site. The vertex can be
+<span class='line'> 11</span>  * considered as a vector with a norm, length, inner product, cross product,
+<span class='line'> 12</span>  * etc. Additionally, point relations (e.g., is a point to the left of a line,
+<span class='line'> 13</span>  * the circle defined by this point and two others, etc.) are also defined in
+<span class='line'> 14</span>  * this class.
+<span class='line'> 15</span>  *
+<span class='line'> 16</span>  * Initializes a new Vertex. Will call the correct init* -function based on
+<span class='line'> 17</span>  * arguments
+<span class='line'> 18</span>  *
+<span class='line'> 19</span>  * @constructor
+<span class='line'> 20</span>  */</span><span class="WHIT">
+<span class='line'> 21</span> 
+<span class='line'> 22</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">arguments.length</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">    </span><span class="NAME">this.initFromCoordinate</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">    </span><span class="NAME">this.initFromXY</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> 
+<span class='line'> 31</span> </span><span class="COMM">/**
+<span class='line'> 32</span>  * LEFT The integer representing left
+<span class='line'> 33</span>  */</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.LEFT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> 
+<span class='line'> 36</span> 
+<span class='line'> 37</span> </span><span class="COMM">/**
+<span class='line'> 38</span>  * RIGHT The integer representing right
+<span class='line'> 39</span>  */</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.RIGHT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> 
+<span class='line'> 43</span> </span><span class="COMM">/**
+<span class='line'> 44</span>  * BEYOND The integer representing beyond
+<span class='line'> 45</span>  */</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.BEYOND</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 47</span> 
+<span class='line'> 48</span> 
+<span class='line'> 49</span> </span><span class="COMM">/**
+<span class='line'> 50</span>  * BEHIND The integer representing behind
+<span class='line'> 51</span>  */</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.BEHIND</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> 
+<span class='line'> 54</span> 
+<span class='line'> 55</span> </span><span class="COMM">/**
+<span class='line'> 56</span>  * BETWEEN The integer representing between
+<span class='line'> 57</span>  */</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.BETWEEN</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> 
+<span class='line'> 60</span> 
+<span class='line'> 61</span> </span><span class="COMM">/**
+<span class='line'> 62</span>  * ORIGIN The integer representing origin
+<span class='line'> 63</span>  */</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.ORIGIN</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">5</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> 
+<span class='line'> 66</span> 
+<span class='line'> 67</span> </span><span class="COMM">/**
+<span class='line'> 68</span>  * DESTINATION The integer representing destination
+<span class='line'> 69</span>  */</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.DESTINATION</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">6</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> 
+<span class='line'> 72</span> 
+<span class='line'> 73</span> </span><span class="COMM">/**
+<span class='line'> 74</span>  * Initializes a new Vertex
+<span class='line'> 75</span>  *
+<span class='line'> 76</span>  * @param {Number}
+<span class='line'> 77</span>  *          x the X-coordinate.
+<span class='line'> 78</span>  * @param {Number}
+<span class='line'> 79</span>  *          y the Y-coordinate.
+<span class='line'> 80</span>  */</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.initFromXY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">  </span><span class="NAME">this.p</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">y</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> 
+<span class='line'> 85</span> 
+<span class='line'> 86</span> </span><span class="COMM">/**
+<span class='line'> 87</span>  * Initializes a new Vertex
+<span class='line'> 88</span>  *
+<span class='line'> 89</span>  * @param {jsts.geom.Coordinate}
+<span class='line'> 90</span>  *          _p the coordinate to initialize the vertex from.
+<span class='line'> 91</span>  */</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.initFromCoordinate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">_p</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="NAME">this.p</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">_p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span> 
+<span class='line'> 96</span> 
+<span class='line'> 97</span> </span><span class="COMM">/**
+<span class='line'> 98</span>  * Gets the X-coordinate
+<span class='line'> 99</span>  *
+<span class='line'>100</span>  * @return {Number} The X-coordinate.
+<span class='line'>101</span>  */</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.getX</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>105</span> 
+<span class='line'>106</span> 
+<span class='line'>107</span> </span><span class="COMM">/**
+<span class='line'>108</span>  * Gets the Y-coordinate
+<span class='line'>109</span>  *
+<span class='line'>110</span>  * @return {Number} The Y-coordinate.
+<span class='line'>111</span>  */</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.getY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> 
+<span class='line'>116</span> 
+<span class='line'>117</span> </span><span class="COMM">/**
+<span class='line'>118</span>  * Gets the Z-coordinate
+<span class='line'>119</span>  *
+<span class='line'>120</span>  * @return {Number} The Z-coordinate.
+<span class='line'>121</span>  */</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.getZ</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.p.z</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span> 
+<span class='line'>126</span> 
+<span class='line'>127</span> </span><span class="COMM">/**
+<span class='line'>128</span>  * Sets the Z-coordinate
+<span class='line'>129</span>  *
+<span class='line'>130</span>  * @param {Number}
+<span class='line'>131</span>  *          z the new z-coordinate.
+<span class='line'>132</span>  */</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.setZ</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">z</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">  </span><span class="NAME">this.p.z</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">z</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>136</span> 
+<span class='line'>137</span> 
+<span class='line'>138</span> </span><span class="COMM">/**
+<span class='line'>139</span>  * Gets the coordinate of the vertex
+<span class='line'>140</span>  *
+<span class='line'>141</span>  * @return {jsts.geom.Coordinate} The coordinate.
+<span class='line'>142</span>  */</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.getCoordinate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.p</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>146</span> 
+<span class='line'>147</span> 
+<span class='line'>148</span> </span><span class="COMM">/**
+<span class='line'>149</span>  * Gets the string representation of the vertex
+<span class='line'>150</span>  *
+<span class='line'>151</span>  * @return {String} The string representing the vertex.
+<span class='line'>152</span>  */</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.toString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'POINT ('</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">')'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> 
+<span class='line'>157</span> 
+<span class='line'>158</span> </span><span class="COMM">/**
+<span class='line'>159</span>  * Checks if this vertex is identical to another vertex.
+<span class='line'>160</span>  *
+<span class='line'>161</span>  * Calls correct equals* function based on arguments
+<span class='line'>162</span>  *
+<span class='line'>163</span>  * @return {Boolean} true if the vertex equals eachother.
+<span class='line'>164</span>  */</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.equals</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">arguments.length</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.equalsExact</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.equalsWithTolerance</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>172</span> 
+<span class='line'>173</span> 
+<span class='line'>174</span> </span><span class="COMM">/**
+<span class='line'>175</span>  * Checks if this vertex is identical to other
+<span class='line'>176</span>  *
+<span class='line'>177</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>178</span>  *          other The vertex to compare this vertex to.
+<span class='line'>179</span>  * @return {Boolean} true if this vertex equals other.
+<span class='line'>180</span>  */</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.equalsExact</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">other.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">other.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>184</span> 
+<span class='line'>185</span> 
+<span class='line'>186</span> </span><span class="COMM">/**
+<span class='line'>187</span>  * Checks if this vertex is identical to other with respect to a tolerance
+<span class='line'>188</span>  *
+<span class='line'>189</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>190</span>  *          other The vertex to compare this vertex to.
+<span class='line'>191</span>  * @param {Number}
+<span class='line'>192</span>  *          tolerance The tolerance to consider when comparing the two vertexes.
+<span class='line'>193</span>  * @return {Boolean} true if this vertex equals other.
+<span class='line'>194</span>  */</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.equalsExact</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>196</span> </span><span class="WHIT">    </span><span class="NAME">tolerance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.distance</span><span class="PUNC">(</span><span class="NAME">other.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">tolerance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>199</span> 
+<span class='line'>200</span> 
+<span class='line'>201</span> </span><span class="COMM">/**
+<span class='line'>202</span>  * Clasifys a vertex with respect to another vertex
+<span class='line'>203</span>  *
+<span class='line'>204</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>205</span>  *          p0 The first vertex.
+<span class='line'>206</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>207</span>  *          p1 The second vertex.
+<span class='line'>208</span>  * @return {Number} The classification.
+<span class='line'>209</span>  */</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.classify</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>211</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">p2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">sa</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>212</span> 
+<span class='line'>213</span> </span><span class="WHIT">  </span><span class="NAME">p2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>214</span> </span><span class="WHIT">  </span><span class="NAME">a</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p1.sub</span><span class="PUNC">(</span><span class="NAME">p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>215</span> </span><span class="WHIT">  </span><span class="NAME">b</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p2.sub</span><span class="PUNC">(</span><span class="NAME">p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="WHIT">  </span><span class="NAME">sa</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a.crossProduct</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>217</span> 
+<span class='line'>218</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">sa</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.LEFT</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">sa</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.RIGHT</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">b.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">b.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.BEHIND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">a.magn</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">b.magn</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.BEYOND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p0.equals</span><span class="PUNC">(</span><span class="NAME">p2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.ORIGIN</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p1.equals</span><span class="PUNC">(</span><span class="NAME">p2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.DESTINATION</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.BETWEEN</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> 
+<span class='line'>239</span> 
+<span class='line'>240</span> </span><span class="COMM">/**
+<span class='line'>241</span>  * Computes the cross product k = u X v.
+<span class='line'>242</span>  *
+<span class='line'>243</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>244</span>  *          v a vertex.
+<span class='line'>245</span>  * @return {Number} The magnitude of u X v.
+<span class='line'>246</span>  */</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.crossProduct</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">v.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">v.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>250</span> 
+<span class='line'>251</span> 
+<span class='line'>252</span> </span><span class="COMM">/**
+<span class='line'>253</span>  * Computes the inner or dot product
+<span class='line'>254</span>  *
+<span class='line'>255</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>256</span>  *          v a vertex.
+<span class='line'>257</span>  * @return {Number} The dot product u.v.
+<span class='line'>258</span>  */</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.dot</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">v.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">v.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>262</span> 
+<span class='line'>263</span> 
+<span class='line'>264</span> </span><span class="COMM">/**
+<span class='line'>265</span>  * Computes the scalar product c(v).
+<span class='line'>266</span>  *
+<span class='line'>267</span>  * @param {Number}
+<span class='line'>268</span>  *          c The scalar.
+<span class='line'>269</span>  * @return {jsts.triangulate.quadedge.Vertex} The scaled vector.
+<span class='line'>270</span>  */</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.times</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">c</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> 
+<span class='line'>275</span> 
+<span class='line'>276</span> </span><span class="COMM">/**
+<span class='line'>277</span>  * Computes the sum of vectors.
+<span class='line'>278</span>  *
+<span class='line'>279</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>280</span>  *          v Another vertex.
+<span class='line'>281</span>  * @return {jsts.triangulate.quadedge.Vertex} The sum of the this and v.
+<span class='line'>282</span>  */</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.sum</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">v.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">      </span><span class="NAME">v.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> 
+<span class='line'>288</span> 
+<span class='line'>289</span> </span><span class="COMM">/**
+<span class='line'>290</span>  * Computes the substraction of vectors.
+<span class='line'>291</span>  *
+<span class='line'>292</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>293</span>  *          v Another vertex.
+<span class='line'>294</span>  * @return {jsts.triangulate.quadedge.Vertex} The substraction of v from this.
+<span class='line'>295</span>  */</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.sub</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">v.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="WHIT">      </span><span class="NAME">v.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>300</span> 
+<span class='line'>301</span> 
+<span class='line'>302</span> </span><span class="COMM">/**
+<span class='line'>303</span>  * Computes the magnitude.
+<span class='line'>304</span>  *
+<span class='line'>305</span>  * @return {Number} The magnitude of this vertex.
+<span class='line'>306</span>  */</span><span class="WHIT">
+<span class='line'>307</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.magn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Math.sqrt</span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>310</span> 
+<span class='line'>311</span> 
+<span class='line'>312</span> </span><span class="COMM">/**
+<span class='line'>313</span>  * Returns k X v (cross product). This is a vector perpendicular to v.
+<span class='line'>314</span>  *
+<span class='line'>315</span>  * @return {jsts.triangulate.quadedge.Vertex} A perpendicular vertex to this
+<span class='line'>316</span>  *         vertex.
+<span class='line'>317</span>  */</span><span class="WHIT">
+<span class='line'>318</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.cross</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>319</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Vertex</span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>320</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>321</span> 
+<span class='line'>322</span> 
+<span class='line'>323</span> </span><span class="COMM">/**
+<span class='line'>324</span>  * Checks if this vertex lies in the circle defined by a, b and c
+<span class='line'>325</span>  *
+<span class='line'>326</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>327</span>  *          a A vertex.
+<span class='line'>328</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>329</span>  *          b A vertex.
+<span class='line'>330</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>331</span>  *          c A vertex.
+<span class='line'>332</span>  * @return {Boolean} true if this vertex lies in the circle.
+<span class='line'>333</span>  */</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.isInCircle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.TrianglePredicate.prototype</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="WHIT">      </span><span class="PUNC">.</span><span class="NAME">isInCircleRobust</span><span class="PUNC">(</span><span class="NAME">a.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>337</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>338</span> 
+<span class='line'>339</span> 
+<span class='line'>340</span> </span><span class="COMM">/**
+<span class='line'>341</span>  * Tests whether the triangle formed by this vertex and two other vertices is in
+<span class='line'>342</span>  * CCW orientation.
+<span class='line'>343</span>  *
+<span class='line'>344</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>345</span>  *          b a vertex.
+<span class='line'>346</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>347</span>  *          c a vertex.
+<span class='line'>348</span>  * @return {Boolean} true if the triangle is oriented CCW.
+<span class='line'>349</span>  */</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.isCCW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">  </span><span class="COMM">// is equal to the signed area of the triangle</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">b.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">c.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">b.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>353</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">c.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>354</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>355</span> 
+<span class='line'>356</span> 
+<span class='line'>357</span> </span><span class="COMM">/**
+<span class='line'>358</span>  * Tests wheter this vertex lies to the right of an edge
+<span class='line'>359</span>  *
+<span class='line'>360</span>  * @param {jsts.triangulate.quadedge.QuadEdge}
+<span class='line'>361</span>  *          e A quadedge.
+<span class='line'>362</span>  * @return {Boolean} true if this vertex lies to the right of the edge.
+<span class='line'>363</span>  */</span><span class="WHIT">
+<span class='line'>364</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.rightOf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>365</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isCCW</span><span class="PUNC">(</span><span class="NAME">e.dest</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e.orig</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>367</span> 
+<span class='line'>368</span> 
+<span class='line'>369</span> </span><span class="COMM">/**
+<span class='line'>370</span>  * Tests wheter this vertex lies to the left of an edge
+<span class='line'>371</span>  *
+<span class='line'>372</span>  * @param {jsts.triangulate.quadedge.QuadEdge}
+<span class='line'>373</span>  *          e A quadedge.
+<span class='line'>374</span>  * @return {Boolean} true if this vertex lies to the left of the edge.
+<span class='line'>375</span>  */</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.leftOf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>377</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isCCW</span><span class="PUNC">(</span><span class="NAME">e.orig</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e.dest</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>379</span> 
+<span class='line'>380</span> 
+<span class='line'>381</span> </span><span class="COMM">/**
+<span class='line'>382</span>  * Returns the perpendicular bisector of the line between the input vertices
+<span class='line'>383</span>  *
+<span class='line'>384</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>385</span>  *          a A vertex.
+<span class='line'>386</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>387</span>  *          b A vertex.
+<span class='line'>388</span>  * @return {jsts.algorithm.HCoordinate} The bisector.
+<span class='line'>389</span>  */</span><span class="WHIT">
+<span class='line'>390</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.bisector</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>392</span> 
+<span class='line'>393</span> </span><span class="WHIT">  </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="WHIT">  </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>395</span> 
+<span class='line'>396</span> </span><span class="WHIT">  </span><span class="NAME">l1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">  </span><span class="NAME">l1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="WHIT">      </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">l1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>401</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>402</span> 
+<span class='line'>403</span> 
+<span class='line'>404</span> </span><span class="COMM">/**
+<span class='line'>405</span>  * Calculates the distance between two vertices
+<span class='line'>406</span>  *
+<span class='line'>407</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>408</span>  *          v1 a vertex.
+<span class='line'>409</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>410</span>  *          v2 a vertex.
+<span class='line'>411</span>  * @return {Number} The distance.
+<span class='line'>412</span>  */</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.distance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">v2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">v1.p.distance</span><span class="PUNC">(</span><span class="NAME">v2.p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>415</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>416</span> 
+<span class='line'>417</span> 
+<span class='line'>418</span> </span><span class="COMM">/**
+<span class='line'>419</span>  * Computes the value of the ratio of the circumradius to shortest edge. If
+<span class='line'>420</span>  * smaller than some given tolerance B, the associated triangle is considered
+<span class='line'>421</span>  * skinny.
+<span class='line'>422</span>  *
+<span class='line'>423</span>  * For an equal lateral triangle this value is 0.57735. The ratio is related to
+<span class='line'>424</span>  * the minimum triangle angle theta by: circumRadius/shortestEdge =
+<span class='line'>425</span>  * 1/(2sin(theta)).
+<span class='line'>426</span>  *
+<span class='line'>427</span>  * @param {jsts.triangulate.quadedge}
+<span class='line'>428</span>  *          b second vertex of the triangle.
+<span class='line'>429</span>  * @param {jsts.triangulate.quadedge}
+<span class='line'>430</span>  *          c third vertex of the triangle.
+<span class='line'>431</span>  * @return {Number} ratio of circumradius to shortest edge.
+<span class='line'>432</span>  */</span><span class="WHIT">
+<span class='line'>433</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.circumRadiusRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>434</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>435</span> 
+<span class='line'>436</span> </span><span class="WHIT">  </span><span class="NAME">x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.circleCenter</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">  </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>438</span> </span><span class="WHIT">  </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>439</span> </span><span class="WHIT">  </span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>440</span> 
+<span class='line'>441</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="WHIT">    </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>443</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="WHIT">  </span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">c</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">    </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>450</span> 
+<span class='line'>451</span> 
+<span class='line'>452</span> </span><span class="COMM">/**
+<span class='line'>453</span>  * returns a new vertex that is mid-way between this vertex and another end
+<span class='line'>454</span>  * point.
+<span class='line'>455</span>  *
+<span class='line'>456</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>457</span>  *          a the other end point.
+<span class='line'>458</span>  * @return {jsts.triangulate.quadedge.Vertex} the point mid-way between this and
+<span class='line'>459</span>  *         that.
+<span class='line'>460</span>  */</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.midPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>462</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">xm</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ym</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>463</span> </span><span class="WHIT">  </span><span class="NAME">xm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>464</span> </span><span class="WHIT">  </span><span class="NAME">ym</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>465</span> 
+<span class='line'>466</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">xm</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ym</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>467</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>468</span> 
+<span class='line'>469</span> 
+<span class='line'>470</span> </span><span class="COMM">/**
+<span class='line'>471</span>  * Computes the centre of the circumcircle of this vertex and two others.
+<span class='line'>472</span>  *
+<span class='line'>473</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>474</span>  *          b a vertex.
+<span class='line'>475</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>476</span>  *          c a vertex.
+<span class='line'>477</span>  * @return {jsts.triangulate.quadedge.Vertex} the Coordinate which is the
+<span class='line'>478</span>  *         circumcircle of the 3 points.
+<span class='line'>479</span>  */</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.circleCenter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cbc</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hcc</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cc</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>482</span> 
+<span class='line'>483</span> </span><span class="WHIT">  </span><span class="NAME">a</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">this.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>484</span> </span><span class="WHIT">  </span><span class="COMM">// compute the perpendicular bisector of cord ab</span><span class="WHIT">
+<span class='line'>485</span> </span><span class="WHIT">  </span><span class="NAME">cab</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.bisector</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="WHIT">  </span><span class="COMM">// compute the perpendicular bisector of cord bc</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="WHIT">  </span><span class="NAME">cbc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.bisector</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>488</span> </span><span class="WHIT">  </span><span class="COMM">// compute the intersection of the bisectors (circle radii)</span><span class="WHIT">
+<span class='line'>489</span> </span><span class="WHIT">  </span><span class="NAME">hcc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">cab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cbc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>490</span> </span><span class="WHIT">  </span><span class="NAME">cc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>491</span> </span><span class="WHIT">  </span><span class="KEYW">try</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>492</span> </span><span class="WHIT">    </span><span class="NAME">cc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">hcc.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hcc.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>493</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">catch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">err</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>494</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>495</span> 
+<span class='line'>496</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">cc</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>497</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>498</span> </span></pre></body></html>

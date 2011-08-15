@@ -1,0 +1,1519 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta charset="utf-8"></meta>
+		<meta name="generator" content="JsDoc Toolkit"></meta>
+		<title>jsts.operation.buffer.BufferParameters | JSTS Topology Suite Library</title>
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
+		<meta name="mobileoptimized" content="0"></meta>
+	
+		<link rel="stylesheet" href="../css/all.css" media="all"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="only screen and (max-width: 660px)"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="handheld"></link>
+		<link rel="stylesheet" href="../css/screen.css" media="screen and (min-width: 661px)"></link>
+
+		<script src="../javascript/all.js"></script>
+		<!--[if lt IE 9]>
+			<script src="../javascript/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+<div class="index">
+	<div class="menu">
+		<div class="indexLinks">
+			<a href="../index.html">Classes</a>
+			<a href="../files.html">Files</a>
+		</div>
+	
+		<h2 class="heading1">Classes</h2>
+		
+		<input type="text" name="classFilter" class="classFilter" id="ClassFilter" placeholder="Filter"></input>
+		
+		<nav>
+			<ul class="classList" id="ClassList">
+				
+					<li><a href="../symbols/jsts.html">jsts</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.Angle.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>Angle</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.BoundaryNodeRule.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>BoundaryNodeRule</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.CentralEndpointIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>CentralEndpointIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.CGAlgorithms.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>CGAlgorithms</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.ConvexHull.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>ConvexHull</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.HCoordinate.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>HCoordinate</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.LineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>LineIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.locate.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.locate.SimplePointInAreaLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate<span class='break'> </span>.<span class='break'> </span>SimplePointInAreaLocator</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.PointLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>PointLocator</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.RayCrossingCounter.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>RayCrossingCounter</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.RobustDeterminant.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>RobustDeterminant</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.RobustLineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>RobustLineIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.error.html">jsts<span class='break'> </span>.<span class='break'> </span>error</a></li>
+				
+					<li><a href="../symbols/jsts.error.AbstractMethodInvocationError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>AbstractMethodInvocationError</a></li>
+				
+					<li><a href="../symbols/jsts.error.IllegalArgumentError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>IllegalArgumentError</a></li>
+				
+					<li><a href="../symbols/jsts.error.NotImplementedError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>NotImplementedError</a></li>
+				
+					<li><a href="../symbols/jsts.error.NotRepresentableError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>NotRepresentableError</a></li>
+				
+					<li><a href="../symbols/jsts.error.TopologyError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>TopologyError</a></li>
+				
+					<li><a href="../symbols/jsts.geom.html">jsts<span class='break'> </span>.<span class='break'> </span>geom</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Coordinate.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Coordinate</a></li>
+				
+					<li><a href="../symbols/jsts.geom.CoordinateArrays.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>CoordinateArrays</a></li>
+				
+					<li><a href="../symbols/jsts.geom.CoordinateList.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>CoordinateList</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Dimension.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Dimension</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Envelope.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Envelope</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Geometry.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Geometry</a></li>
+				
+					<li><a href="../symbols/jsts.geom.GeometryCollection.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>GeometryCollection</a></li>
+				
+					<li><a href="../symbols/jsts.geom.GeometryFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>GeometryFactory</a></li>
+				
+					<li><a href="../symbols/jsts.geom.IntersectionMatrix.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>IntersectionMatrix</a></li>
+				
+					<li><a href="../symbols/jsts.geom.LinearRing.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>LinearRing</a></li>
+				
+					<li><a href="../symbols/jsts.geom.LineSegment.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>LineSegment</a></li>
+				
+					<li><a href="../symbols/jsts.geom.LineString.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>LineString</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Location.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Location</a></li>
+				
+					<li><a href="../symbols/jsts.geom.MultiLineString.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>MultiLineString</a></li>
+				
+					<li><a href="../symbols/jsts.geom.MultiPoint.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>MultiPoint</a></li>
+				
+					<li><a href="../symbols/jsts.geom.MultiPolygon.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>MultiPolygon</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Point.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Point</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Polygon.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Polygon</a></li>
+				
+					<li><a href="../symbols/jsts.geom.PrecisionModel.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>PrecisionModel</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Triangle.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Triangle</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.GeometryCombiner.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>GeometryCombiner</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.GeometryExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>GeometryExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.LinearComponentExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>LinearComponentExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.PointExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>PointExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.PolygonExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>PolygonExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Depth.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Depth</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.DirectedEdge.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>DirectedEdge</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.DirectedEdgeStar.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>DirectedEdgeStar</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Edge.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Edge</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeEnd.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeEnd</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeEndStar.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeEndStar</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeIntersection.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeIntersection</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeIntersectionList.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeIntersectionList</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeList.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeList</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeRing.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeRing</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.GraphComponent.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>GraphComponent</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.EdgeSetIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>EdgeSetIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.SegmentIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>SegmentIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.SimpleEdgeSetIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>SimpleEdgeSetIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.SimpleMCSweepLineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>SimpleMCSweepLineIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Label.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Label</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Node.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Node</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.NodeFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>NodeFactory</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.NodeMap.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>NodeMap</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.PlanarGraph.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>PlanarGraph</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Position.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Position</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Quadrant.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Quadrant</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.TopologyLocation.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>TopologyLocation</a></li>
+				
+					<li><a href="../symbols/jsts.index.html">jsts<span class='break'> </span>.<span class='break'> </span>index</a></li>
+				
+					<li><a href="../symbols/jsts.index.ArrayListVisitor.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>ArrayListVisitor</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChain.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChain</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChainBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChainBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChainOverlapAction.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChainOverlapAction</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChainSelectAction.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChainSelectAction</a></li>
+				
+					<li><a href="../symbols/jsts.index.DoubleBits.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>DoubleBits</a></li>
+				
+					<li><a href="../symbols/jsts.index.IntervalSize.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>IntervalSize</a></li>
+				
+					<li><a href="../symbols/jsts.index.kdtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>kdtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.kdtree.KdNode.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>kdtree<span class='break'> </span>.<span class='break'> </span>KdNode</a></li>
+				
+					<li><a href="../symbols/jsts.index.kdtree.KdTree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>kdtree<span class='break'> </span>.<span class='break'> </span>KdTree</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Key.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Key</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Node.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Node</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.NodeBase.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>NodeBase</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Quadtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Quadtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Root.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Root</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.AbstractNode.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>AbstractNode</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.AbstractSTRtree.IntersectsOp.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>AbstractSTRtree<span class='break'> </span>.<span class='break'> </span>IntersectsOp</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.Boundable.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>Boundable</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.Interval.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>Interval</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.ItemBoundable.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>ItemBoundable</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.SIRtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>SIRtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.STRtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>STRtree</a></li>
+				
+					<li><a href="../symbols/jsts.io.html">jsts<span class='break'> </span>.<span class='break'> </span>io</a></li>
+				
+					<li><a href="../symbols/jsts.io.WKTReader.html">jsts<span class='break'> </span>.<span class='break'> </span>io<span class='break'> </span>.<span class='break'> </span>WKTReader</a></li>
+				
+					<li><a href="../symbols/jsts.io.WKTWriter.html">jsts<span class='break'> </span>.<span class='break'> </span>io<span class='break'> </span>.<span class='break'> </span>WKTWriter</a></li>
+				
+					<li><a href="../symbols/jsts.noding.html">jsts<span class='break'> </span>.<span class='break'> </span>noding</a></li>
+				
+					<li><a href="../symbols/jsts.noding.BasicSegmentString.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>BasicSegmentString</a></li>
+				
+					<li><a href="../symbols/jsts.noding.InteriorIntersectionFinder.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>InteriorIntersectionFinder</a></li>
+				
+					<li><a href="../symbols/jsts.noding.IntersectionAdder.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>IntersectionAdder</a></li>
+				
+					<li><a href="../symbols/jsts.noding.MCIndexNoder.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>MCIndexNoder</a></li>
+				
+					<li><a href="../symbols/jsts.noding.NodedSegmentString.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>NodedSegmentString</a></li>
+				
+					<li><a href="../symbols/jsts.noding.Octant.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>Octant</a></li>
+				
+					<li><a href="../symbols/jsts.noding.SegmentNode.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>SegmentNode</a></li>
+				
+					<li><a href="../symbols/jsts.noding.SegmentNodeList.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>SegmentNodeList</a></li>
+				
+					<li><a href="../symbols/jsts.operation.html">jsts<span class='break'> </span>.<span class='break'> </span>operation</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferInputLineSimplifier.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferInputLineSimplifier</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferParameters.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferParameters</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferSubgraph.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferSubgraph</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetCurveBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetCurveBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetCurveSetBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetCurveSetBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetSegmentGenerator.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetSegmentGenerator</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetSegmentString.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetSegmentString</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.RightmostEdgeFinder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>RightmostEdgeFinder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.SubgraphDepthLocater.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>SubgraphDepthLocater</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.ConnectedElementLocationFilter.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance<span class='break'> </span>.<span class='break'> </span>ConnectedElementLocationFilter</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.DistanceOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance<span class='break'> </span>.<span class='break'> </span>DistanceOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.GeometryLocation.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance<span class='break'> </span>.<span class='break'> </span>GeometryLocation</a></li>
+				
+					<li><a href="../symbols/jsts.operation.GeometryGraphOperation.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>GeometryGraphOperation</a></li>
+				
+					<li><a href="../symbols/jsts.operation.IsSimpleOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>IsSimpleOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.IsSimpleOp.EndpointInfo.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>IsSimpleOp<span class='break'> </span>.<span class='break'> </span>EndpointInfo</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.MaximalEdgeRing.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>MaximalEdgeRing</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.MinimalEdgeRing.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>MinimalEdgeRing</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.OverlayNodeFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>OverlayNodeFactory</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.snap.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>snap</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundle.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundle</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundleStar</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateComputer.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateComputer</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateNode.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNode</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateNodeFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNodeFactory</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateNodeGraph.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNodeGraph</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.CascadedPolygonUnion.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>CascadedPolygonUnion</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.PointGeometryUnion.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>PointGeometryUnion</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.UnaryUnionOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>UnaryUnionOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.UnionInteracting.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>UnionInteracting</a></li>
+				
+					<li><a href="../symbols/jsts.operation.valid.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>valid</a></li>
+				
+					<li><a href="../symbols/jsts.operation.valid.IsValidOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>valid<span class='break'> </span>.<span class='break'> </span>IsValidOp</a></li>
+				
+					<li><a href="../symbols/jsts.planargraph.html">jsts<span class='break'> </span>.<span class='break'> </span>planargraph</a></li>
+				
+					<li><a href="../symbols/jsts.planargraph.PlanarGraph.html">jsts<span class='break'> </span>.<span class='break'> </span>planargraph<span class='break'> </span>.<span class='break'> </span>PlanarGraph</a></li>
+				
+					<li><a href="../symbols/jsts.simplify.html">jsts<span class='break'> </span>.<span class='break'> </span>simplify</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.DelaunayTriangulationBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>DelaunayTriangulationBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.TrianglePredicate.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>TrianglePredicate</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>Vertex</a></li>
+				
+					<li><a href="../symbols/jsts.util.html">jsts<span class='break'> </span>.<span class='break'> </span>util</a></li>
+				
+					<li><a href="../symbols/jsts.util.Assert.html">jsts<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>Assert</a></li>
+				
+					<li><a href="../symbols/jsts.util.UniqueCoordinateArrayFilter.html">jsts<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>UniqueCoordinateArrayFilter</a></li>
+				
+			</ul>
+		</nav>
+	</div>
+	<div class="fineprint" style="clear:both">
+		
+		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2<br />
+		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
+		Generated on: 2011-7-15 10:19
+	</div>
+</div>
+
+<div class="index indexStatic"></div>
+
+<div class="content">
+	<div class="innerContent">
+		<h1 class="classTitle">
+			
+			Class <span>jsts.operation.buffer.BufferParameters</span>
+		</h1>
+		
+		<div class="intro">
+			<p class="description summary">
+				
+			</p>
+				
+			
+				<ul class="summary">
+					
+					
+					
+						<li>Defined in: <a href="../symbols/src/src_jsts_operation_buffer_BufferParameters.js.html">BufferParameters.js</a></li>
+					
+						
+				</ul>
+			
+		</div>
+		
+		
+			<div class="props">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jsts.operation.buffer.BufferParameters.">
+					<caption class="sectionTitle">Class Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Constructor Attributes</th>
+							<th scope="col">Constructor Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription" >
+								<div class="fixedFont">
+									<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#constructor">jsts.operation.buffer.BufferParameters</a></b>(quadrantSegments, endCapStyle, joinStyle, mitreLimit)
+								</div>
+								<div class="description">Contains the parameters which describe how a buffer should be constructed.</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+		
+		
+			
+			
+				<div class="props">
+					<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class jsts.operation.buffer.BufferParameters.">
+						<caption class="sectionTitle">Field Summary</caption>
+						
+						<thead>
+							<tr>
+								<th scope="col">Field Attributes</th>
+								<th scope="col">Field Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.CAP_FLAT">CAP_FLAT</a></b>
+										</div>
+										<div class="description">Specifies a flat line buffer end cap style.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.CAP_ROUND">CAP_ROUND</a></b>
+										</div>
+										<div class="description">Specifies a round line buffer end cap style.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.CAP_SQUARE">CAP_SQUARE</a></b>
+										</div>
+										<div class="description">Specifies a square line buffer end cap style.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.DEFAULT_MITRE_LIMIT">DEFAULT_MITRE_LIMIT</a></b>
+										</div>
+										<div class="description">The default mitre limit Allows fairly pointy mitres.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.DEFAULT_QUADRANT_SEGMENTS">DEFAULT_QUADRANT_SEGMENTS</a></b>
+										</div>
+										<div class="description">The default number of facets into which to divide a fillet of 90 degrees.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.JOIN_BEVEL">JOIN_BEVEL</a></b>
+										</div>
+										<div class="description">Specifies a bevel join style.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.JOIN_MITRE">JOIN_MITRE</a></b>
+										</div>
+										<div class="description">Specifies a mitre join style.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.JOIN_ROUND">JOIN_ROUND</a></b>
+										</div>
+										<div class="description">Specifies a round join style.</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			
+			
+			
+		
+<!--
+#### METHODS SUMMARY
+-->
+		
+			
+			
+			<div class="props">
+				<h2 class="sectionTitle">Method Summary</h2>
+				
+				
+					<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class jsts.operation.buffer.BufferParameters.">
+						<thead>
+							<tr>
+								<th scope="col">Method Attributes</th>
+								<th scope="col">Method Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+							
+								<tr
+									 class='item0'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">jsts.operation.buffer.BufferParameters.<b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#.bufferDistanceError">bufferDistanceError</a></b>(quadSegs)
+										</div>
+										<div class="description">Computes the maximum distance error due to a given level of approximation to
+a true arc.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item1'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#getEndCapStyle">getEndCapStyle</a></b>()
+										</div>
+										<div class="description">Gets the end cap style.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item2'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#getJoinStyle">getJoinStyle</a></b>()
+										</div>
+										<div class="description">Gets the join style</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item3'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#getMitreLimit">getMitreLimit</a></b>()
+										</div>
+										<div class="description">Gets the mitre ratio limit.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item4'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#getQuadrantSegments">getQuadrantSegments</a></b>()
+										</div>
+										<div class="description">Gets the number of quadrant segments which will be used</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item5'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#isSingleSided">isSingleSided</a></b>()
+										</div>
+										<div class="description">Tests whether the buffer is to be generated on a single side only.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item6'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#setEndCapStyle">setEndCapStyle</a></b>(endCapStyle)
+										</div>
+										<div class="description">Specifies the end cap style of the generated buffer.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item7'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#setJoinStyle">setJoinStyle</a></b>(joinStyle)
+										</div>
+										<div class="description">Sets the join style for outside (reflex) corners between line segments.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item8'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#setMitreLimit">setMitreLimit</a></b>(mitreLimit)
+										</div>
+										<div class="description">Sets the limit on the mitre ratio used for very sharp corners.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item9'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#setQuadrantSegments">setQuadrantSegments</a></b>(quadrantSegments)
+										</div>
+										<div class="description">Sets the number of line segments used to approximate an angle fillet.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item10'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/jsts.operation.buffer.BufferParameters.html#setSingleSided">setSingleSided</a></b>(isSingleSided)
+										</div>
+										<div class="description">Sets whether the computed buffer should be single-sided.</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				
+			
+				
+			</div>
+		
+		
+<!--
+#### EVENTS SUMMARY
+-->
+		
+<!--
+#### CONSTRUCTOR DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle" id="constructor">
+						Class Detail
+					</h2>
+					
+					<div class="fixedFont">
+						<b>jsts.operation.buffer.BufferParameters</b>(quadrantSegments, endCapStyle, joinStyle, mitreLimit)
+					</div>
+					
+					<div class="description">
+						Contains the parameters which describe how a buffer should be constructed.
+						
+					</div>
+					
+					
+				
+					
+						<dl class="detailList params">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									 <b>quadrantSegments</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									 <b>endCapStyle</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									 <b>joinStyle</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									 <b>mitreLimit</b>
+									
+								</dt>
+								<dd></dd>
+							
+						</dl>
+					
+					
+					
+				</div>
+			</div>
+		
+<!--
+#### FIELD DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Field Detail
+					</h2>
+					
+					
+						<div class="fixedFont heading" id=".CAP_FLAT">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>CAP_FLAT</b>							
+						</div>
+						
+						<div class="description">
+							Specifies a flat line buffer end cap style.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".CAP_ROUND">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>CAP_ROUND</b>							
+						</div>
+						
+						<div class="description">
+							Specifies a round line buffer end cap style.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".CAP_SQUARE">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>CAP_SQUARE</b>							
+						</div>
+						
+						<div class="description">
+							Specifies a square line buffer end cap style.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".DEFAULT_MITRE_LIMIT">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>DEFAULT_MITRE_LIMIT</b>							
+						</div>
+						
+						<div class="description">
+							The default mitre limit Allows fairly pointy mitres.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".DEFAULT_QUADRANT_SEGMENTS">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>DEFAULT_QUADRANT_SEGMENTS</b>							
+						</div>
+						
+						<div class="description">
+							The default number of facets into which to divide a fillet of 90 degrees. A
+value of 8 gives less than 2% max error in the buffer distance. For a max
+error of < 1%, use QS = 12. For a max error of < 0.1%, use QS = 18.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".JOIN_BEVEL">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>JOIN_BEVEL</b>							
+						</div>
+						
+						<div class="description">
+							Specifies a bevel join style.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".JOIN_MITRE">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>JOIN_MITRE</b>							
+						</div>
+						
+						<div class="description">
+							Specifies a mitre join style.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".JOIN_ROUND">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							
+							
+							<span class="light">jsts.operation.buffer.BufferParameters.</span><b>JOIN_ROUND</b>							
+						</div>
+						
+						<div class="description">
+							Specifies a round join style.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						
+					
+				</div>
+			</div>
+		
+<!--
+#### METHOD DETAILS
+-->		
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Method Detail
+					</h2>
+					
+					<ul class="methodDetail" id="MethodDetail">
+						
+						
+							<li 
+								 class='item0'
+							>
+								<div class="fixedFont heading" id=".bufferDistanceError">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									
+									
+									<span class="light">jsts.operation.buffer.BufferParameters.</span><b>bufferDistanceError</b>(quadSegs)
+								</div>
+								
+								<div class="description">
+									Computes the maximum distance error due to a given level of approximation to
+a true arc.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>quadSegs</b>
+												
+											</dt>
+											<dd>the number of segments used to approximate a quarter-circle.</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>the error of approximation.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item1'
+							>
+								<div class="fixedFont heading" id="getEndCapStyle">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getEndCapStyle</b>()
+								</div>
+								
+								<div class="description">
+									Gets the end cap style.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>the end cap style.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item2'
+							>
+								<div class="fixedFont heading" id="getJoinStyle">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getJoinStyle</b>()
+								</div>
+								
+								<div class="description">
+									Gets the join style
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>the join style code.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item3'
+							>
+								<div class="fixedFont heading" id="getMitreLimit">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getMitreLimit</b>()
+								</div>
+								
+								<div class="description">
+									Gets the mitre ratio limit.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>the limit value.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item4'
+							>
+								<div class="fixedFont heading" id="getQuadrantSegments">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getQuadrantSegments</b>()
+								</div>
+								
+								<div class="description">
+									Gets the number of quadrant segments which will be used
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>the number of quadrant segments.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item5'
+							>
+								<div class="fixedFont heading" id="isSingleSided">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>isSingleSided</b>()
+								</div>
+								
+								<div class="description">
+									Tests whether the buffer is to be generated on a single side only.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>true if the generated buffer is to be single-sided.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item6'
+							>
+								<div class="fixedFont heading" id="setEndCapStyle">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setEndCapStyle</b>(endCapStyle)
+								</div>
+								
+								<div class="description">
+									Specifies the end cap style of the generated buffer. The styles supported are
+<a href="#CAP_ROUND">#CAP_ROUND</a>, <a href="#CAP_BUTT">#CAP_BUTT</a>, and <a href="#CAP_SQUARE">#CAP_SQUARE</a>. The
+default is CAP_ROUND.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{int}</span> <b>endCapStyle</b>
+												
+											</dt>
+											<dd>the end cap style to specify.</dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item7'
+							>
+								<div class="fixedFont heading" id="setJoinStyle">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setJoinStyle</b>(joinStyle)
+								</div>
+								
+								<div class="description">
+									Sets the join style for outside (reflex) corners between line segments.
+Allowable values are JOIN_ROUND (which is the default),
+JOIN_MITRE and {link JOIN_BEVEL}.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>joinStyle</b>
+												
+											</dt>
+											<dd>the code for the join style.</dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item8'
+							>
+								<div class="fixedFont heading" id="setMitreLimit">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setMitreLimit</b>(mitreLimit)
+								</div>
+								
+								<div class="description">
+									Sets the limit on the mitre ratio used for very sharp corners. The mitre
+ratio is the ratio of the distance from the corner to the end of the mitred
+offset corner. When two line segments meet at a sharp angle, a miter join
+will extend far beyond the original geometry. (and in the extreme case will
+be infinitely far.) To prevent unreasonable geometry, the mitre limit allows
+controlling the maximum length of the join corner. Corners with a ratio which
+exceed the limit will be beveled.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>mitreLimit</b>
+												
+											</dt>
+											<dd>the mitre ratio limit.</dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item9'
+							>
+								<div class="fixedFont heading" id="setQuadrantSegments">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setQuadrantSegments</b>(quadrantSegments)
+								</div>
+								
+								<div class="description">
+									Sets the number of line segments used to approximate an angle fillet.
+<ul>
+<li>If <tt>quadSegs</tt> >= 1, joins are round, and <tt>quadSegs</tt>
+indicates the number of segments to use to approximate a quarter-circle.
+<li>If <tt>quadSegs</tt> = 0, joins are bevelled (flat)
+<li>If <tt>quadSegs</tt> < 0, joins are mitred, and the value of qs
+indicates the mitre ration limit as
+
+<pre>
+mitreLimit= |
+<tt>
+quadSegs
+</tt>
+|
+</pre>
+
+</ul>
+For round joins, <tt>quadSegs</tt> determines the maximum error in the
+approximation to the true buffer curve. The default value of 8 gives less
+than 2% max error in the buffer distance. For a max error of < 1%, use QS =
+12. For a max error of < 0.1%, use QS = 18. The error is always less than the
+buffer distance (in other words, the computed buffer curve is always inside
+the true curve).
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>quadrantSegments</b>
+												
+											</dt>
+											<dd>the number of segments in a fillet for a quadrant.</dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item10'
+							>
+								<div class="fixedFont heading" id="setSingleSided">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setSingleSided</b>(isSingleSided)
+								</div>
+								
+								<div class="description">
+									Sets whether the computed buffer should be single-sided. A single-sided
+buffer is constructed on only one side of each input line.
+<p>
+The side used is determined by the sign of the buffer distance:
+<ul>
+<li>a positive distance indicates the left-hand side
+<li>a negative distance indicates the right-hand side
+</ul>
+The single-sided buffer of point geometries is the same as the regular
+buffer.
+<p>
+The End Cap Style for single-sided buffers is always ignored, and forced to
+the equivalent of <tt>CAP_FLAT</tt>.
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>isSingleSided</b>
+												
+											</dt>
+											<dd>true if a single-sided buffer should be constructed.</dd>
+										
+									</dl>
+								
+								
+								
+								
+							</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+		
+<!--
+#### EVENT DETAILS
+-->		
+		
+	</div>
+</div>
+		<script type="text/javascript">
+			wbos.CssTools.MediaQueryFallBack.LoadCss('../css/screen.css', '../css/handheld.css', 660)
+			codeview.classFilter.Init()
+		</script>
+	</body>
+</html>
+

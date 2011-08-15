@@ -1,0 +1,658 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  8</span> 
+<span class='line'>  9</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 10</span>    * @requires jsts/geom/Location.js
+<span class='line'> 11</span>    * @requires jsts/geom/Dimension.js
+<span class='line'> 12</span>    */</span><span class="WHIT">
+<span class='line'> 13</span> 
+<span class='line'> 14</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Location</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Dimension</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Dimension</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> 
+<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 18</span>    * Models a Dimensionally Extended Nine-Intersection Model (DE-9IM) matrix.
+<span class='line'> 19</span>    * This class is used to represent intersection matrices (such as "212FF1FF2")
+<span class='line'> 20</span>    * capturing the topological relationship between two {@link Geometry}s. It
+<span class='line'> 21</span>    * can also be represent patterns (such as "T*T******")for matching existing
+<span class='line'> 22</span>    * matrices.
+<span class='line'> 23</span>    *
+<span class='line'> 24</span>    * Methods are provided to:
+<span class='line'> 25</span>    * &lt;UL>
+<span class='line'> 26</span>    * &lt;LI> set and query the elements of the matrix in a convenient fashion
+<span class='line'> 27</span>    * &lt;LI> convert to and from the standard string representation (specified in
+<span class='line'> 28</span>    * SFS Section 2.1.13.2).
+<span class='line'> 29</span>    * &lt;LI> test to see if a matrix matches a given pattern string.
+<span class='line'> 30</span>    * &lt;/UL>
+<span class='line'> 31</span>    * &lt;P>
+<span class='line'> 32</span>    *
+<span class='line'> 33</span>    * For a description of the DE-9IM, see the &lt;A
+<span class='line'> 34</span>    * HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+<span class='line'> 35</span>    * Specification for SQL&lt;/A>.
+<span class='line'> 36</span>    *
+<span class='line'> 37</span>    * The entries of the matrix are defined by the constants in the
+<span class='line'> 38</span>    * {@link Dimension} class. The indices of the matrix represent the
+<span class='line'> 39</span>    * topological locations that occur in a geometry (Interior, Boundary,
+<span class='line'> 40</span>    * Exterior). These are provided as constants in the {@link Location} class.
+<span class='line'> 41</span>    *
+<span class='line'> 42</span>    * @param {string/IntersectionMatrix}
+<span class='line'> 43</span>    *          elements
+<span class='line'> 44</span>    * @constructor
+<span class='line'> 45</span>    */</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">elements</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">other</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">elements</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> 
+<span class='line'> 49</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">elements</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">elements</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">      </span><span class="NAME">this.setAll</span><span class="PUNC">(</span><span class="NAME">Dimension.FALSE</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">elements</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">      </span><span class="NAME">this.set</span><span class="PUNC">(</span><span class="NAME">elements</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">other</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 55</span> 
+<span class='line'> 56</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">other.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> 
+<span class='line'> 68</span> 
+<span class='line'> 69</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 70</span>    * Internal representation of this &lt;code>IntersectionMatrix&lt;/code>.
+<span class='line'> 71</span>    *
+<span class='line'> 72</span>    * @type {int[][]}
+<span class='line'> 73</span>    * @private
+<span class='line'> 74</span>    */</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.matrix</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> 
+<span class='line'> 77</span> 
+<span class='line'> 78</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 79</span>    * Adds one matrix to another. Addition is defined by taking the maximum
+<span class='line'> 80</span>    * dimension value of each position in the summand matrices.
+<span class='line'> 81</span>    *
+<span class='line'> 82</span>    * @param {IntersectionMatrix}
+<span class='line'> 83</span>    *          im the matrix to add.
+<span class='line'> 84</span>    */</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.add</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">im</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">      </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">        </span><span class="NAME">this.setAtLeast</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">im.get</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> 
+<span class='line'> 94</span> 
+<span class='line'> 95</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 96</span>    * Returns true if the dimension value satisfies the dimension symbol.
+<span class='line'> 97</span>    *
+<span class='line'> 98</span>    * @param {int}
+<span class='line'> 99</span>    *          actualDimensionValue a number that can be stored in the
+<span class='line'>100</span>    *          &lt;code>IntersectionMatrix&lt;/code> . Possible values are
+<span class='line'>101</span>    *          &lt;code>{TRUE, FALSE, DONTCARE, 0, 1, 2}&lt;/code>.
+<span class='line'>102</span>    * @param {string}
+<span class='line'>103</span>    *          requiredDimensionSymbol a character used in the string
+<span class='line'>104</span>    *          representation of an &lt;code>IntersectionMatrix&lt;/code>. Possible
+<span class='line'>105</span>    *          values are &lt;code>{T, F, * , 0, 1, 2}&lt;/code>.
+<span class='line'>106</span>    * @return {boolean} true if the dimension symbol encompasses the dimension
+<span class='line'>107</span>    *         value.
+<span class='line'>108</span>    */</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">actualDimensionValue</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">      </span><span class="NAME">requiredDimensionSymbol</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches2.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>114</span> 
+<span class='line'>115</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbol</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'*'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbol</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.TRUE</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbol</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'F'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">        </span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbol</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'0'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbol</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'1'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbol</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'2'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">actualDimensionValue</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>137</span> 
+<span class='line'>138</span> 
+<span class='line'>139</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>140</span>    * Returns true if each of the actual dimension symbols satisfies the
+<span class='line'>141</span>    * corresponding required dimension symbol.
+<span class='line'>142</span>    *
+<span class='line'>143</span>    * @param {string}
+<span class='line'>144</span>    *          actualDimensionSymbols nine dimension symbols to validate.
+<span class='line'>145</span>    *          Possible values are &lt;code>{T, F, * , 0, 1, 2}&lt;/code>.
+<span class='line'>146</span>    * @param {string}
+<span class='line'>147</span>    *          requiredDimensionSymbols nine dimension symbols to validate
+<span class='line'>148</span>    *          against. Possible values are &lt;code>{T, F, * , 0, 1, 2}&lt;/code>.
+<span class='line'>149</span>    * @return {boolean} true if each of the required dimension symbols encompass
+<span class='line'>150</span>    *         the corresponding actual dimension symbol.
+<span class='line'>151</span>    */</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.matches2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">actualDimensionSymbols</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">      </span><span class="NAME">requiredDimensionSymbols</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">m</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix</span><span class="PUNC">(</span><span class="NAME">actualDimensionSymbols</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">m.matches</span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbols</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> 
+<span class='line'>158</span> 
+<span class='line'>159</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>160</span>    * Changes the value of one of this &lt;code>IntersectionMatrix&lt;/code>s
+<span class='line'>161</span>    * elements.
+<span class='line'>162</span>    *
+<span class='line'>163</span>    * @param {int}
+<span class='line'>164</span>    *          row the row of this &lt;code>IntersectionMatrix&lt;/code>, indicating
+<span class='line'>165</span>    *          the interior, boundary or exterior of the first
+<span class='line'>166</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>167</span>    * @param {int}
+<span class='line'>168</span>    *          column the column of this &lt;code>IntersectionMatrix&lt;/code>,
+<span class='line'>169</span>    *          indicating the interior, boundary or exterior of the second
+<span class='line'>170</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>171</span>    * @param {int}
+<span class='line'>172</span>    *          dimensionValue the new value of the element.
+<span class='line'>173</span>    */</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.set</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">column</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dimensionValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">row</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">      </span><span class="NAME">this.set2</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>179</span> 
+<span class='line'>180</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">row</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">column</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">dimensionValue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>182</span> 
+<span class='line'>183</span> 
+<span class='line'>184</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>185</span>    * Changes the elements of this &lt;code>IntersectionMatrix&lt;/code> to the
+<span class='line'>186</span>    * dimension symbols in &lt;code>dimensionSymbols&lt;/code>.
+<span class='line'>187</span>    *
+<span class='line'>188</span>    * @param {String}
+<span class='line'>189</span>    *          dimensionSymbols nine dimension symbols to which to set this
+<span class='line'>190</span>    *          &lt;code>IntersectionMatrix&lt;/code> s elements. Possible values are
+<span class='line'>191</span>    *          &lt;code>{T, F, * , 0, 1, 2}.&lt;/code>
+<span class='line'>192</span>    */</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.set2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">dimensionSymbols</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">dimensionSymbols.length</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">row</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>196</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">col</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">row</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">col</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Dimension.toDimensionValue</span><span class="PUNC">(</span><span class="NAME">dimensionSymbols</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="WHIT">          </span><span class="PUNC">.</span><span class="NAME">charAt</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>201</span> 
+<span class='line'>202</span> 
+<span class='line'>203</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>204</span>    * Changes the specified element to &lt;code>minimumDimensionValue&lt;/code> if
+<span class='line'>205</span>    * the element is less.
+<span class='line'>206</span>    *
+<span class='line'>207</span>    * @param {int}
+<span class='line'>208</span>    *          row the row of this &lt;code>IntersectionMatrix&lt;/code> , indicating
+<span class='line'>209</span>    *          the interior, boundary or exterior of the first
+<span class='line'>210</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>211</span>    * @param {int}
+<span class='line'>212</span>    *          column the column of this &lt;code>IntersectionMatrix&lt;/code> ,
+<span class='line'>213</span>    *          indicating the interior, boundary or exterior of the second
+<span class='line'>214</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>215</span>    * @param {int}
+<span class='line'>216</span>    *          minimumDimensionValue the dimension value with which to compare
+<span class='line'>217</span>    *          the element. The order of dimension values from least to greatest
+<span class='line'>218</span>    *          is &lt;code>{DONTCARE, TRUE, FALSE, 0, 1, 2}&lt;/code>.
+<span class='line'>219</span>    */</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.setAtLeast</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">column</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">      </span><span class="NAME">minimumDimensionValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">arguments.length</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">      </span><span class="NAME">this.setAtLeast2</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>226</span> 
+<span class='line'>227</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">row</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">column</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">minimumDimensionValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">      </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">row</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">column</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">minimumDimensionValue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span> 
+<span class='line'>232</span> 
+<span class='line'>233</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>234</span>    * If row >= 0 and column >= 0, changes the specified element to
+<span class='line'>235</span>    * &lt;code>minimumDimensionValue&lt;/code> if the element is less. Does nothing
+<span class='line'>236</span>    * if row &lt;0 or column &lt; 0.
+<span class='line'>237</span>    *
+<span class='line'>238</span>    * @param {int}
+<span class='line'>239</span>    *          row the row of this &lt;code>IntersectionMatrix&lt;/code> , indicating
+<span class='line'>240</span>    *          the interior, boundary or exterior of the first
+<span class='line'>241</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>242</span>    * @param {int}
+<span class='line'>243</span>    *          column the column of this &lt;code>IntersectionMatrix&lt;/code> ,
+<span class='line'>244</span>    *          indicating the interior, boundary or exterior of the second
+<span class='line'>245</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>246</span>    * @param {int}
+<span class='line'>247</span>    *          minimumDimensionValue the dimension value with which to compare
+<span class='line'>248</span>    *          the element. The order of dimension values from least to greatest
+<span class='line'>249</span>    *          is &lt;code>{DONTCARE, TRUE, FALSE, 0, 1, 2}&lt;/code>.
+<span class='line'>250</span>    */</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.setAtLeastIfValid</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">column</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">      </span><span class="NAME">minimumDimensionValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">row</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">column</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">      </span><span class="NAME">this.setAtLeast</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">column</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">minimumDimensionValue</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>257</span> 
+<span class='line'>258</span> 
+<span class='line'>259</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>260</span>    * For each element in this &lt;code>IntersectionMatrix&lt;/code>, changes the
+<span class='line'>261</span>    * element to the corresponding minimum dimension symbol if the element is
+<span class='line'>262</span>    * less.
+<span class='line'>263</span>    *
+<span class='line'>264</span>    * @param {string}
+<span class='line'>265</span>    *          minimumDimensionSymbols nine dimension symbols with which to
+<span class='line'>266</span>    *          compare the elements of this &lt;code>IntersectionMatrix&lt;/code>.
+<span class='line'>267</span>    *          The order of dimension values from least to greatest is
+<span class='line'>268</span>    *          &lt;code>{DONTCARE, TRUE, FALSE, 0, 1, 2}&lt;/code> .
+<span class='line'>269</span>    */</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.setAtLeast2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">minimumDimensionSymbols</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">minimumDimensionSymbols.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">row</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">col</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">      </span><span class="NAME">this.setAtLeast</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">col</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Dimension</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">          </span><span class="PUNC">.</span><span class="NAME">toDimensionValue</span><span class="PUNC">(</span><span class="NAME">minimumDimensionSymbols.charAt</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>279</span> 
+<span class='line'>280</span> 
+<span class='line'>281</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>282</span>    * Changes the elements of this &lt;code>IntersectionMatrix&lt;/code> to
+<span class='line'>283</span>    * &lt;code>dimensionValue&lt;/code> .
+<span class='line'>284</span>    *
+<span class='line'>285</span>    * @param {int}
+<span class='line'>286</span>    *          dimensionValue the dimension value to which to set this
+<span class='line'>287</span>    *          &lt;code>IntersectionMatrix&lt;/code> s elements. Possible values
+<span class='line'>288</span>    *          &lt;code>{TRUE, FALSE, DONTCARE, 0, 1, 2}&lt;/code> .
+<span class='line'>289</span>    */</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.setAll</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">dimensionValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">      </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">bi</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">ai</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">bi</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">dimensionValue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>298</span> 
+<span class='line'>299</span> 
+<span class='line'>300</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>301</span>    * Returns the value of one of this matrix entries. The value of the provided
+<span class='line'>302</span>    * index is one of the values from the {@link Location} class. The value
+<span class='line'>303</span>    * returned is a constant from the {@link Dimension} class.
+<span class='line'>304</span>    *
+<span class='line'>305</span>    * @param {int}
+<span class='line'>306</span>    *          row the row of this &lt;code>IntersectionMatrix&lt;/code>, indicating
+<span class='line'>307</span>    *          the interior, boundary or exterior of the first
+<span class='line'>308</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>309</span>    * @param {int}
+<span class='line'>310</span>    *          column the column of this &lt;code>IntersectionMatrix&lt;/code>,
+<span class='line'>311</span>    *          indicating the interior, boundary or exterior of the second
+<span class='line'>312</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>313</span>    * @return {int} the dimension value at the given matrix position.
+<span class='line'>314</span>    */</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.get</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">row</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">column</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">row</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">column</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>318</span> 
+<span class='line'>319</span> 
+<span class='line'>320</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>321</span>    * Returns &lt;code>true&lt;/code> if this &lt;code>IntersectionMatrix&lt;/code> is
+<span class='line'>322</span>    * FF*FF****.
+<span class='line'>323</span>    *
+<span class='line'>324</span>    * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+<span class='line'>325</span>    *         related by this &lt;code>IntersectionMatrix&lt;/code> are disjoint.
+<span class='line'>326</span>    */</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isDisjoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>329</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>333</span> 
+<span class='line'>334</span> 
+<span class='line'>335</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>336</span>    * Returns &lt;code>true&lt;/code> if &lt;code>isDisjoint&lt;/code> returns false.
+<span class='line'>337</span>    *
+<span class='line'>338</span>    * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+<span class='line'>339</span>    *         related by this &lt;code>IntersectionMatrix&lt;/code> intersect.
+<span class='line'>340</span>    */</span><span class="WHIT">
+<span class='line'>341</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isIntersects</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>342</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">this.isDisjoint</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>343</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>344</span> 
+<span class='line'>345</span> 
+<span class='line'>346</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>347</span>    * Returns &lt;code>true&lt;/code> if this &lt;code>IntersectionMatrix&lt;/code> is
+<span class='line'>348</span>    * FT*******, F**T***** or F***T****.
+<span class='line'>349</span>    *
+<span class='line'>350</span>    * @param {int}
+<span class='line'>351</span>    *          dimensionOfGeometryA the dimension of the first
+<span class='line'>352</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>353</span>    * @param {int}
+<span class='line'>354</span>    *          dimensionOfGeometryB the dimension of the second
+<span class='line'>355</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>356</span>    * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code> s
+<span class='line'>357</span>    *         related by this &lt;code>IntersectionMatrix&lt;/code> touch; Returns
+<span class='line'>358</span>    *         false if both &lt;code>Geometry&lt;/code>s are points.
+<span class='line'>359</span>    */</span><span class="WHIT">
+<span class='line'>360</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isTouches</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>361</span> </span><span class="WHIT">      </span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>362</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>363</span> </span><span class="WHIT">      </span><span class="COMM">// no need to get transpose because pattern matrix is symmetrical</span><span class="WHIT">
+<span class='line'>364</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isTouches</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryA</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>365</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="WHIT">          </span><span class="PUNC">(</span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="WHIT">              </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="WHIT">                  </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="WHIT">              </span><span class="PUNC">.</span><span class="NAME">matches</span><span class="PUNC">(</span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>377</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>379</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>380</span> 
+<span class='line'>381</span> 
+<span class='line'>382</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>383</span>    * Tests whether this geometry crosses the specified geometry.
+<span class='line'>384</span>    * &lt;p>
+<span class='line'>385</span>    * The &lt;code>crosses&lt;/code> predicate has the following equivalent
+<span class='line'>386</span>    * definitions:
+<span class='line'>387</span>    * &lt;ul>
+<span class='line'>388</span>    * &lt;li>The geometries have some but not all interior points in common.
+<span class='line'>389</span>    * &lt;li>The DE-9IM Intersection Matrix for the two geometries is
+<span class='line'>390</span>    * &lt;ul>
+<span class='line'>391</span>    * &lt;li>T*T****** (for P/L, P/A, and L/A situations)
+<span class='line'>392</span>    * &lt;li>T*****T** (for L/P, L/A, and A/L situations)
+<span class='line'>393</span>    * &lt;li>0******** (for L/L situations)
+<span class='line'>394</span>    * &lt;/ul>
+<span class='line'>395</span>    * &lt;/ul>
+<span class='line'>396</span>    * For any other combination of dimensions this predicate returns
+<span class='line'>397</span>    * &lt;code>false&lt;/code>.
+<span class='line'>398</span>    * &lt;p>
+<span class='line'>399</span>    * The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
+<span class='line'>400</span>    * JTS extends the definition to apply to L/P, A/P and A/L situations as well.
+<span class='line'>401</span>    * This makes the relation symmetric.
+<span class='line'>402</span>    *
+<span class='line'>403</span>    * @param {int}
+<span class='line'>404</span>    *          dimensionOfGeometryA the dimension of the first
+<span class='line'>405</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>406</span>    * @param {int}
+<span class='line'>407</span>    *          dimensionOfGeometryB the dimension of the second
+<span class='line'>408</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>409</span>    * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+<span class='line'>410</span>    *         related by this &lt;code>IntersectionMatrix&lt;/code> cross.
+<span class='line'>411</span>    */</span><span class="WHIT">
+<span class='line'>412</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isCrosses</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="WHIT">      </span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>415</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>416</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>417</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>418</span> </span><span class="WHIT">          </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>419</span> </span><span class="WHIT">          </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>420</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>421</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>422</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>423</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>424</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>425</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>426</span> </span><span class="WHIT">          </span><span class="NAME">matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>427</span> </span><span class="WHIT">          </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>428</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>429</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>430</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>431</span> </span><span class="WHIT">        </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>432</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>433</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>434</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>435</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>436</span> 
+<span class='line'>437</span> 
+<span class='line'>438</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>439</span>    * Tests whether this &lt;code>IntersectionMatrix&lt;/code> is T*F**F***.
+<span class='line'>440</span>    *
+<span class='line'>441</span>    * @return {boolean} &lt;code>true&lt;/code> if the first &lt;code>Geometry&lt;/code>
+<span class='line'>442</span>    *         is within the second.
+<span class='line'>443</span>    */</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isWithin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>450</span> 
+<span class='line'>451</span> 
+<span class='line'>452</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>453</span>    * Tests whether this &lt;code>IntersectionMatrix&lt;/code> is T*****FF*.
+<span class='line'>454</span>    *
+<span class='line'>455</span>    * @return {boolean} &lt;code>true&lt;/code> if the first &lt;code>Geometry&lt;/code>
+<span class='line'>456</span>    *         contains the second.
+<span class='line'>457</span>    */</span><span class="WHIT">
+<span class='line'>458</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isContains</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>459</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>460</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>462</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>463</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>464</span> 
+<span class='line'>465</span> 
+<span class='line'>466</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>467</span>    * Returns &lt;code>true&lt;/code> if this &lt;code>IntersectionMatrix&lt;/code> is
+<span class='line'>468</span>    * &lt;code>T*****FF*&lt;/code> or &lt;code>*T****FF*&lt;/code> or
+<span class='line'>469</span>    * &lt;code>***T**FF*&lt;/code> or &lt;code>****T*FF*&lt;/code>
+<span class='line'>470</span>    *
+<span class='line'>471</span>    * @return {boolean} &lt;code>true&lt;/code> if the first &lt;code>Geometry&lt;/code>
+<span class='line'>472</span>    *         covers the second.
+<span class='line'>473</span>    */</span><span class="WHIT">
+<span class='line'>474</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isCovers</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>475</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasPointInCommon</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>476</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>477</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>478</span> </span><span class="WHIT">            </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>479</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="WHIT">            </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>482</span> </span><span class="WHIT">            </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>483</span> 
+<span class='line'>484</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">hasPointInCommon</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>485</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>488</span> 
+<span class='line'>489</span> 
+<span class='line'>490</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>491</span>    * Returns &lt;code>true&lt;/code> if this &lt;code>IntersectionMatrix&lt;/code> is
+<span class='line'>492</span>    * &lt;code>T*F**F***&lt;/code> or &lt;code>*TF**F***&lt;/code> or
+<span class='line'>493</span>    * &lt;code>**FT*F***&lt;/code> or &lt;code>**F*TF***&lt;/code>
+<span class='line'>494</span>    *
+<span class='line'>495</span>    * @return {boolean} &lt;code>true&lt;/code> if the first &lt;code>Geometry&lt;/code>
+<span class='line'>496</span>    *         is covered by the second.
+<span class='line'>497</span>    */</span><span class="WHIT">
+<span class='line'>498</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isCoveredBy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>499</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasPointInCommon</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>500</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>501</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>502</span> </span><span class="WHIT">            </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>503</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>504</span> </span><span class="WHIT">            </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>505</span> </span><span class="WHIT">        </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>506</span> </span><span class="WHIT">            </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>507</span> 
+<span class='line'>508</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">hasPointInCommon</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>509</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>510</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>511</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>512</span> 
+<span class='line'>513</span> 
+<span class='line'>514</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>515</span>    * Returns &lt;code>true&lt;/code> if this &lt;code>IntersectionMatrix&lt;/code> is
+<span class='line'>516</span>    * T*F**FFF*.
+<span class='line'>517</span>    *
+<span class='line'>518</span>    * @param {int}
+<span class='line'>519</span>    *          dimensionOfGeometryA the dimension of the first
+<span class='line'>520</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>521</span>    * @param {int}
+<span class='line'>522</span>    *          dimensionOfGeometryB the dimension of the second
+<span class='line'>523</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>524</span>    * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code> s
+<span class='line'>525</span>    *         related by this &lt;code>IntersectionMatrix&lt;/code> are equal; the
+<span class='line'>526</span>    *         &lt;code>Geometry&lt;/code>s must have the same dimension for this
+<span class='line'>527</span>    *         function to return &lt;code>true.&lt;/code>
+<span class='line'>528</span>    */</span><span class="WHIT">
+<span class='line'>529</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isEquals</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>530</span> </span><span class="WHIT">      </span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>531</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>532</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>533</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>534</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>535</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>536</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>537</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>538</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>539</span> </span><span class="WHIT">        </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.BOUNDARY</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.FALSE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>540</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>541</span> 
+<span class='line'>542</span> 
+<span class='line'>543</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>544</span>    * Returns &lt;code>true&lt;/code> if this &lt;code>IntersectionMatrix&lt;/code> is
+<span class='line'>545</span>    * &lt;UL>
+<span class='line'>546</span>    * &lt;LI> T*T***T** (for two points or two surfaces)
+<span class='line'>547</span>    * &lt;LI> 1*T***T** (for two curves)
+<span class='line'>548</span>    * &lt;/UL>.
+<span class='line'>549</span>    *
+<span class='line'>550</span>    * @param {int}
+<span class='line'>551</span>    *          dimensionOfGeometryA the dimension of the first
+<span class='line'>552</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>553</span>    * @param {int}
+<span class='line'>554</span>    *          dimensionOfGeometryB the dimension of the second
+<span class='line'>555</span>    *          &lt;code>Geometry.&lt;/code>
+<span class='line'>556</span>    * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+<span class='line'>557</span>    *         related by this &lt;code>IntersectionMatrix&lt;/code> overlap. For this
+<span class='line'>558</span>    *         function to return &lt;code>true&lt;/code>, the &lt;code>Geometry&lt;/code>s
+<span class='line'>559</span>    *         must be two points, two curves or two surfaces.
+<span class='line'>560</span>    */</span><span class="WHIT">
+<span class='line'>561</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.isOverlaps</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>562</span> </span><span class="WHIT">      </span><span class="NAME">dimensionOfGeometryB</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>563</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.P</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>564</span> </span><span class="WHIT">        </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.A</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>565</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>566</span> </span><span class="WHIT">          </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>567</span> </span><span class="WHIT">          </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>568</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>569</span> </span><span class="WHIT">          </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>570</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>571</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>572</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dimensionOfGeometryA</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>573</span> </span><span class="WHIT">        </span><span class="NAME">dimensionOfGeometryB</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">Dimension.L</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>574</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>575</span> </span><span class="WHIT">          </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>576</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>577</span> </span><span class="WHIT">          </span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>578</span> </span><span class="WHIT">              </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">Location.EXTERIOR</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">Location.INTERIOR</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'T'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>579</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>580</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>581</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>582</span> 
+<span class='line'>583</span> 
+<span class='line'>584</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>585</span>    * Returns whether the elements of this &lt;code>IntersectionMatrix&lt;/code>
+<span class='line'>586</span>    * satisfies the required dimension symbols.
+<span class='line'>587</span>    *
+<span class='line'>588</span>    * @param {string}
+<span class='line'>589</span>    *          requiredDimensionSymbols nine dimension symbols with which to
+<span class='line'>590</span>    *          compare the elements of this &lt;code>IntersectionMatrix&lt;/code>.
+<span class='line'>591</span>    *          Possible values are &lt;code>{T, F, * , 0, 1, 2}&lt;/code>.
+<span class='line'>592</span>    * @return {boolean} &lt;code>true&lt;/code> if this
+<span class='line'>593</span>    *         &lt;code>IntersectionMatrix&lt;/code> matches the required dimension
+<span class='line'>594</span>    *         symbols.
+<span class='line'>595</span>    */</span><span class="WHIT">
+<span class='line'>596</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.matches</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbols</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>597</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">requiredDimensionSymbols.length</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NUMB">9</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>598</span> </span><span class="WHIT">      </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.error.IllegalArgumentException</span><span class="PUNC">(</span><span class="STRN">'Should be length 9: '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>599</span> </span><span class="WHIT">          </span><span class="NAME">requiredDimensionSymbols</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>600</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>601</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>602</span> </span><span class="WHIT">      </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>603</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">jsts.geom.IntersectionMatrix.matches</span><span class="PUNC">(</span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">ai</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">bi</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>604</span> </span><span class="WHIT">            </span><span class="NAME">requiredDimensionSymbols.charAt</span><span class="PUNC">(</span><span class="NUMB">3</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>605</span> </span><span class="WHIT">          </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>606</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>607</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>608</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>609</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>610</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>611</span> 
+<span class='line'>612</span> 
+<span class='line'>613</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>614</span>    * Transposes this jsts.geom.IntersectionMatrix.
+<span class='line'>615</span>    *
+<span class='line'>616</span>    * @return {IntersectionMatrix} this &lt;code>IntersectionMatrix&lt;/code> as a
+<span class='line'>617</span>    *         convenience.
+<span class='line'>618</span>    */</span><span class="WHIT">
+<span class='line'>619</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.transpose</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>620</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">temp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">matrix</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>621</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>622</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">temp</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>623</span> </span><span class="WHIT">    </span><span class="NAME">temp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>624</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>625</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">temp</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>626</span> </span><span class="WHIT">    </span><span class="NAME">temp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>627</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>628</span> </span><span class="WHIT">    </span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">temp</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>629</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>630</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>631</span> 
+<span class='line'>632</span> 
+<span class='line'>633</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>634</span>    * Returns a nine-character &lt;code>String&lt;/code> representation of this
+<span class='line'>635</span>    * &lt;code>IntersectionMatrix&lt;/code> .
+<span class='line'>636</span>    *
+<span class='line'>637</span>    * @return {string} the nine dimension symbols of this
+<span class='line'>638</span>    *         &lt;code>IntersectionMatrix&lt;/code> in row-major order.
+<span class='line'>639</span>    */</span><span class="WHIT">
+<span class='line'>640</span> </span><span class="WHIT">  </span><span class="NAME">jsts.geom.IntersectionMatrix.prototype.toString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>641</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">buf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>642</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">ai</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>643</span> </span><span class="WHIT">      </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">bi</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">bi</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>644</span> </span><span class="WHIT">        </span><span class="NAME">buf</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Dimension.toDimensionSymbol</span><span class="PUNC">(</span><span class="NAME">this.matrix</span><span class="PUNC">[</span><span class="NAME">ai</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">bi</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>645</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>646</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>647</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">buf</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>648</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>649</span> 
+<span class='line'>650</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>651</span> </span></pre></body></html>

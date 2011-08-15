@@ -1,0 +1,785 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> </span><span class="COMM">/**
+<span class='line'>  9</span>  * Generates segments which form an offset curve. Supports all end cap and join
+<span class='line'> 10</span>  * options provided for buffering. Implements various heuristics to produce
+<span class='line'> 11</span>  * smoother, simpler curves which are still within a reasonable tolerance of the
+<span class='line'> 12</span>  * true curve.
+<span class='line'> 13</span>  * @constructor
+<span class='line'> 14</span>  */</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">precisionModel</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">    </span><span class="NAME">bufParams</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="NAME">this.seg0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">  </span><span class="NAME">this.seg1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">  </span><span class="NAME">this.offset0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">  </span><span class="NAME">this.offset1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> 
+<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="NAME">this.precisionModel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">precisionModel</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">  </span><span class="NAME">this.bufParams</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bufParams</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> 
+<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="COMM">// compute intersections in full precision, to provide accuracy</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">  </span><span class="COMM">// the points are rounded as they are inserted into the curve line</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">  </span><span class="NAME">this.li</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.RobustLineIntersector</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">  </span><span class="NAME">this.filletAngleQuantum</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">bufParams.getQuadrantSegments</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 31</span>    * Non-round joins cause issues with short closing segments, so don't use
+<span class='line'> 32</span>    * them. In any case, non-round joins only really make sense for relatively
+<span class='line'> 33</span>    * small buffer distances.
+<span class='line'> 34</span>    */</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.bufParams.getQuadrantSegments</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">8</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">      </span><span class="NAME">this.bufParams.getJoinStyle</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_ROUND</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">    </span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="NAME">this.init</span><span class="PUNC">(</span><span class="NAME">distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> 
+<span class='line'> 43</span> </span><span class="COMM">/**
+<span class='line'> 44</span>  * Factor which controls how close offset segments can be to skip adding a
+<span class='line'> 45</span>  * filler or mitre.
+<span class='line'> 46</span>  *
+<span class='line'> 47</span>  * @private
+<span class='line'> 48</span>  */</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="NAME">E</span><span class="PUNC">-</span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 50</span> 
+<span class='line'> 51</span> 
+<span class='line'> 52</span> </span><span class="COMM">/**
+<span class='line'> 53</span>  * Factor which controls how close curve vertices on inside turns can be to be
+<span class='line'> 54</span>  * snapped
+<span class='line'> 55</span>  *
+<span class='line'> 56</span>  * @private
+<span class='line'> 57</span>  */</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="NAME">E</span><span class="PUNC">-</span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> 
+<span class='line'> 60</span> 
+<span class='line'> 61</span> </span><span class="COMM">/**
+<span class='line'> 62</span>  * Factor which controls how close curve vertices can be to be snapped
+<span class='line'> 63</span>  *
+<span class='line'> 64</span>  * @private
+<span class='line'> 65</span>  */</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="NAME">E</span><span class="PUNC">-</span><span class="NUMB">6</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> 
+<span class='line'> 68</span> 
+<span class='line'> 69</span> </span><span class="COMM">/**
+<span class='line'> 70</span>  * Factor which determines how short closing segs can be for round buffers *
+<span class='line'> 71</span>  *
+<span class='line'> 72</span>  * @private
+<span class='line'> 73</span>  */</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">80</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> 
+<span class='line'> 76</span> 
+<span class='line'> 77</span> </span><span class="COMM">/**
+<span class='line'> 78</span>  * the max error of approximation (distance) between a quad segment and the true
+<span class='line'> 79</span>  * fillet curve
+<span class='line'> 80</span>  *
+<span class='line'> 81</span>  * @private
+<span class='line'> 82</span>  */</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.maxCurveSegmentError</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> 
+<span class='line'> 85</span> 
+<span class='line'> 86</span> </span><span class="COMM">/**
+<span class='line'> 87</span>  * The angle quantum with which to approximate a fillet curve (based on the
+<span class='line'> 88</span>  * input # of quadrant segments)
+<span class='line'> 89</span>  *
+<span class='line'> 90</span>  * @private
+<span class='line'> 91</span>  */</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.filletAngleQuantum</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> 
+<span class='line'> 94</span> 
+<span class='line'> 95</span> </span><span class="COMM">/**
+<span class='line'> 96</span>  * The Closing Segment Length Factor controls how long "closing segments" are.
+<span class='line'> 97</span>  * Closing segments are added at the middle of inside corners to ensure a
+<span class='line'> 98</span>  * smoother boundary for the buffer offset curve. In some cases (particularly
+<span class='line'> 99</span>  * for round joins with default-or-better quantization) the closing segments can
+<span class='line'>100</span>  * be made quite short. This substantially improves performance (due to fewer
+<span class='line'>101</span>  * intersections being created).
+<span class='line'>102</span>  *
+<span class='line'>103</span>  * A closingSegFactor of 0 results in lines to the corner vertex A
+<span class='line'>104</span>  * closingSegFactor of 1 results in lines halfway to the corner vertex A
+<span class='line'>105</span>  * closingSegFactor of 80 results in lines 1/81 of the way to the corner vertex
+<span class='line'>106</span>  * (this option is reasonable for the very common default situation of round
+<span class='line'>107</span>  * joins and quadrantSegs >= 8)
+<span class='line'>108</span>  *
+<span class='line'>109</span>  * @private
+<span class='line'>110</span>  */</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> 
+<span class='line'>114</span> </span><span class="COMM">/**
+<span class='line'>115</span>  * @type {OffsetSegmentString}
+<span class='line'>116</span>  * @private
+<span class='line'>117</span>  */</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.segList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>119</span> 
+<span class='line'>120</span> 
+<span class='line'>121</span> </span><span class="COMM">/**
+<span class='line'>122</span>  * @private
+<span class='line'>123</span>  */</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.distance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span> 
+<span class='line'>126</span> 
+<span class='line'>127</span> </span><span class="COMM">/**
+<span class='line'>128</span>  * @private
+<span class='line'>129</span>  */</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.precisionModel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> 
+<span class='line'>132</span> 
+<span class='line'>133</span> </span><span class="COMM">/**
+<span class='line'>134</span>  * @private
+<span class='line'>135</span>  */</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.bufParams</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>137</span> 
+<span class='line'>138</span> 
+<span class='line'>139</span> </span><span class="COMM">/**
+<span class='line'>140</span>  * @private
+<span class='line'>141</span>  */</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.li</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>143</span> 
+<span class='line'>144</span> 
+<span class='line'>145</span> </span><span class="COMM">/**
+<span class='line'>146</span>  * @type {Coordinate}
+<span class='line'>147</span>  * @private
+<span class='line'>148</span>  */</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.s0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> 
+<span class='line'>151</span> 
+<span class='line'>152</span> </span><span class="COMM">/**
+<span class='line'>153</span>  * @type {Coordinate}
+<span class='line'>154</span>  * @private
+<span class='line'>155</span>  */</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.s1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> 
+<span class='line'>158</span> 
+<span class='line'>159</span> </span><span class="COMM">/**
+<span class='line'>160</span>  * @type {Coordinate}
+<span class='line'>161</span>  * @private
+<span class='line'>162</span>  */</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.s2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> 
+<span class='line'>165</span> 
+<span class='line'>166</span> </span><span class="COMM">/**
+<span class='line'>167</span>  * @type {LineSegment}
+<span class='line'>168</span>  * @private
+<span class='line'>169</span>  */</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.seg0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>171</span> 
+<span class='line'>172</span> 
+<span class='line'>173</span> </span><span class="COMM">/**
+<span class='line'>174</span>  * @type {LineSegment}
+<span class='line'>175</span>  * @private
+<span class='line'>176</span>  */</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.seg1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> 
+<span class='line'>179</span> 
+<span class='line'>180</span> </span><span class="COMM">/**
+<span class='line'>181</span>  * @type {LineSegment}
+<span class='line'>182</span>  * @private
+<span class='line'>183</span>  */</span><span class="WHIT">
+<span class='line'>184</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.offset0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>185</span> 
+<span class='line'>186</span> 
+<span class='line'>187</span> </span><span class="COMM">/**
+<span class='line'>188</span>  * @type {LineSegment}
+<span class='line'>189</span>  * @private
+<span class='line'>190</span>  */</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.offset1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>192</span> 
+<span class='line'>193</span> 
+<span class='line'>194</span> </span><span class="COMM">/**
+<span class='line'>195</span>  * @type {number}
+<span class='line'>196</span>  * @private
+<span class='line'>197</span>  */</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.side</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>199</span> 
+<span class='line'>200</span> 
+<span class='line'>201</span> </span><span class="COMM">/**
+<span class='line'>202</span>  * @type {boolean}
+<span class='line'>203</span>  * @private
+<span class='line'>204</span>  */</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.hasNarrowConcaveAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span> 
+<span class='line'>207</span> 
+<span class='line'>208</span> </span><span class="COMM">/**
+<span class='line'>209</span>  * Tests whether the input has a narrow concave angle (relative to the offset
+<span class='line'>210</span>  * distance). In this case the generated offset curve will contain
+<span class='line'>211</span>  * self-intersections and heuristic closing segments. This is expected behaviour
+<span class='line'>212</span>  * in the case of buffer curves. For pure offset curves, the output needs to be
+<span class='line'>213</span>  * further treated before it can be used.
+<span class='line'>214</span>  *
+<span class='line'>215</span>  * @return true if the input has a narrow concave angle.
+<span class='line'>216</span>  */</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.hasNarrowConcaveAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.hasNarrowConcaveAngle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>220</span> 
+<span class='line'>221</span> 
+<span class='line'>222</span> </span><span class="COMM">/**
+<span class='line'>223</span>  * @private
+<span class='line'>224</span>  */</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.init</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">distance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="WHIT">  </span><span class="NAME">this.distance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">  </span><span class="NAME">this.maxCurveSegmentError</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">this.filletAngleQuantum</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">  </span><span class="NAME">this.segList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.setPrecisionModel</span><span class="PUNC">(</span><span class="NAME">this.precisionModel</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>232</span>    * Choose the min vertex separation as a small fraction of the offset
+<span class='line'>233</span>    * distance.
+<span class='line'>234</span>    */</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">  </span><span class="NAME">this.segList</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">      </span><span class="PUNC">.</span><span class="NAME">setMinimumVertexDistance</span><span class="PUNC">(</span><span class="NAME">this.distance</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">          </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> 
+<span class='line'>240</span> 
+<span class='line'>241</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.initSideSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">    </span><span class="NAME">s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">s2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">  </span><span class="NAME">this.s1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">s1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">  </span><span class="NAME">this.s2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">s2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">  </span><span class="NAME">this.side</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>246</span> </span><span class="WHIT">  </span><span class="NAME">this.seg1.setCoordinates</span><span class="PUNC">(</span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">  </span><span class="NAME">this.computeOffsetSegment</span><span class="PUNC">(</span><span class="NAME">this.seg1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>249</span> 
+<span class='line'>250</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.getCoordinates</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.segList.getCoordinates</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span> 
+<span class='line'>254</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.closeRing</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.closeRing</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>257</span> 
+<span class='line'>258</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="WHIT">    </span><span class="NAME">pt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isForward</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPts</span><span class="PUNC">(</span><span class="NAME">pt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isForward</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>262</span> 
+<span class='line'>263</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFirstSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset1.p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>266</span> 
+<span class='line'>267</span> 
+<span class='line'>268</span> </span><span class="COMM">/**
+<span class='line'>269</span>  * Add last offset point
+<span class='line'>270</span>  */</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLastSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset1.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> 
+<span class='line'>275</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addNextSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">    </span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="WHIT">  </span><span class="COMM">// s0-s1-s2 are the coordinates of the previous segment and the current one</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">  </span><span class="NAME">this.s0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.s1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>279</span> </span><span class="WHIT">  </span><span class="NAME">this.s1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.s2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>280</span> </span><span class="WHIT">  </span><span class="NAME">this.s2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>281</span> </span><span class="WHIT">  </span><span class="NAME">this.seg0.setCoordinates</span><span class="PUNC">(</span><span class="NAME">this.s0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>282</span> </span><span class="WHIT">  </span><span class="NAME">this.computeOffsetSegment</span><span class="PUNC">(</span><span class="NAME">this.seg0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">  </span><span class="NAME">this.seg1.setCoordinates</span><span class="PUNC">(</span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">  </span><span class="NAME">this.computeOffsetSegment</span><span class="PUNC">(</span><span class="NAME">this.seg1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>285</span> 
+<span class='line'>286</span> </span><span class="WHIT">  </span><span class="COMM">// do nothing if points are equal</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.s1.equals</span><span class="PUNC">(</span><span class="NAME">this.s2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>289</span> 
+<span class='line'>290</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">orientation</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.CGAlgorithms.computeOrientation</span><span class="PUNC">(</span><span class="NAME">this.s0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">      </span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">outsideTurn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">orientation</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.CGAlgorithms.CLOCKWISE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.side</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.LEFT</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">orientation</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.side</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.RIGHT</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>294</span> 
+<span class='line'>295</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">orientation</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// lines are collinear</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">    </span><span class="NAME">this.addCollinear</span><span class="PUNC">(</span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">outsideTurn</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="WHIT">    </span><span class="NAME">this.addOutsideTurn</span><span class="PUNC">(</span><span class="NAME">orientation</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// inside turn</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="WHIT">    </span><span class="NAME">this.addInsideTurn</span><span class="PUNC">(</span><span class="NAME">orientation</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>301</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>303</span> 
+<span class='line'>304</span> 
+<span class='line'>305</span> </span><span class="COMM">/**
+<span class='line'>306</span>  * @private
+<span class='line'>307</span>  */</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addCollinear</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="WHIT">    </span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>311</span>    * This test could probably be done more efficiently, but the situation of
+<span class='line'>312</span>    * exact collinearity should be fairly rare.
+<span class='line'>313</span>    */</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="WHIT">  </span><span class="NAME">this.li.computeIntersection</span><span class="PUNC">(</span><span class="NAME">this.s0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.s2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">numInt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.li.getIntersectionNum</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>317</span>    * if numInt is &lt; 2, the lines are parallel and in the same direction. In this
+<span class='line'>318</span>    * case the point can be ignored, since the offset lines will also be
+<span class='line'>319</span>    * parallel.
+<span class='line'>320</span>    */</span><span class="WHIT">
+<span class='line'>321</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">numInt</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>322</span> </span><span class="WHIT">    </span><span class="COMM">/**
+<span class='line'>323</span>      * segments are collinear but reversing. Add an "end-cap" fillet all the way
+<span class='line'>324</span>      * around to other direction This case should ONLY happen for LineStrings,
+<span class='line'>325</span>      * so the orientation is always CW. (Polygons can never have two consecutive
+<span class='line'>326</span>      * segments which are parallel but reversed, because that would be a self
+<span class='line'>327</span>      * intersection.
+<span class='line'>328</span>      *
+<span class='line'>329</span>      */</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.bufParams.getJoinStyle</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_BEVEL</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">        </span><span class="NAME">this.bufParams.getJoinStyle</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_MITRE</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">        </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset0.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset1.p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="WHIT">      </span><span class="NAME">this.addFillet</span><span class="PUNC">(</span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset0.p1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1.p0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>337</span> </span><span class="WHIT">          </span><span class="NAME">jsts.algorithm.CGAlgorithms.CLOCKWISE</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>338</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>339</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>340</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>341</span> 
+<span class='line'>342</span> 
+<span class='line'>343</span> </span><span class="COMM">/**
+<span class='line'>344</span>  * Adds the offset points for an outside (convex) turn
+<span class='line'>345</span>  *
+<span class='line'>346</span>  * @param orientation
+<span class='line'>347</span>  * @param addStartPoint
+<span class='line'>348</span>  * @private
+<span class='line'>349</span>  */</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addOutsideTurn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">    </span><span class="NAME">orientation</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>353</span>    * Heuristic: If offset endpoints are very close together, just use one of
+<span class='line'>354</span>    * them as the corner vertex. This avoids problems with computing mitre
+<span class='line'>355</span>    * corners in the case where the two segments are almost parallel (which is
+<span class='line'>356</span>    * hard to compute a robust intersection for).
+<span class='line'>357</span>    */</span><span class="WHIT">
+<span class='line'>358</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.offset0.p1.distance</span><span class="PUNC">(</span><span class="NAME">this.offset1.p0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>359</span> </span><span class="WHIT">      </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>360</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset0.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>361</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>362</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>363</span> 
+<span class='line'>364</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.bufParams.getJoinStyle</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_MITRE</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>365</span> </span><span class="WHIT">    </span><span class="NAME">this.addMitreJoin</span><span class="PUNC">(</span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.bufParams.getJoinStyle</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_BEVEL</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="WHIT">    </span><span class="NAME">this.addBevelJoin</span><span class="PUNC">(</span><span class="NAME">this.offset0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="WHIT">    </span><span class="COMM">// add a circular fillet connecting the endpoints of the offset segments</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset0.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="WHIT">    </span><span class="COMM">// TESTING - comment out to produce beveled joins</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">    </span><span class="NAME">this.addFillet</span><span class="PUNC">(</span><span class="NAME">this.s1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset0.p1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">orientation</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="WHIT">        </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset1.p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>377</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>378</span> 
+<span class='line'>379</span> 
+<span class='line'>380</span> </span><span class="COMM">/**
+<span class='line'>381</span>  * Adds the offset points for an inside (concave) turn.
+<span class='line'>382</span>  *
+<span class='line'>383</span>  * @param orientation
+<span class='line'>384</span>  * @param addStartPoint
+<span class='line'>385</span>  * @private
+<span class='line'>386</span>  */</span><span class="WHIT">
+<span class='line'>387</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addInsideTurn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>388</span> </span><span class="WHIT">    </span><span class="NAME">orientation</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">addStartPoint</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>389</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>390</span>    * add intersection point of offset segments (if any)
+<span class='line'>391</span>    */</span><span class="WHIT">
+<span class='line'>392</span> </span><span class="WHIT">  </span><span class="NAME">this.li.computeIntersection</span><span class="PUNC">(</span><span class="NAME">this.offset0.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset0.p1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.offset1.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.li.hasIntersection</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.li.getIntersection</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>395</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>396</span> </span><span class="WHIT">    </span><span class="COMM">/**
+<span class='line'>397</span>      * If no intersection is detected, it means the angle is so small and/or the
+<span class='line'>398</span>      * offset so large that the offsets segments don't intersect. In this case
+<span class='line'>399</span>      * we must add a "closing segment" to make sure the buffer curve is
+<span class='line'>400</span>      * continuous, fairly smooth (e.g. no sharp reversals in direction) and
+<span class='line'>401</span>      * tracks the buffer correctly around the corner. The curve connects the
+<span class='line'>402</span>      * endpoints of the segment offsets to points which lie toward the centre
+<span class='line'>403</span>      * point of the corner. The joining curve will not appear in the final
+<span class='line'>404</span>      * buffer outline, since it is completely internal to the buffer polygon.
+<span class='line'>405</span>      *
+<span class='line'>406</span>      * In complex buffer cases the closing segment may cut across many other
+<span class='line'>407</span>      * segments in the generated offset curve. In order to improve the
+<span class='line'>408</span>      * performance of the noding, the closing segment should be kept as short as
+<span class='line'>409</span>      * possible. (But not too short, since that would defeat its purpose). This
+<span class='line'>410</span>      * is the purpose of the closingSegFactor heuristic value.
+<span class='line'>411</span>      */</span><span class="WHIT">
+<span class='line'>412</span> 
+<span class='line'>413</span> </span><span class="WHIT">    </span><span class="COMM">/**
+<span class='line'>414</span>      * The intersection test above is vulnerable to robustness errors; i.e. it
+<span class='line'>415</span>      * may be that the offsets should intersect very close to their endpoints,
+<span class='line'>416</span>      * but aren't reported as such due to rounding. To handle this situation
+<span class='line'>417</span>      * appropriately, we use the following test: If the offset points are very
+<span class='line'>418</span>      * close, don't add closing segments but simply use one of the offset points
+<span class='line'>419</span>      */</span><span class="WHIT">
+<span class='line'>420</span> </span><span class="WHIT">    </span><span class="NAME">this.hasNarrowConcaveAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>421</span> </span><span class="WHIT">    </span><span class="COMM">// System.out.println("NARROW ANGLE - distance = " + distance);</span><span class="WHIT">
+<span class='line'>422</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.offset0.p1.distance</span><span class="PUNC">(</span><span class="NAME">this.offset1.p0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>423</span> </span><span class="WHIT">        </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>424</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset0.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>425</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>426</span> </span><span class="WHIT">      </span><span class="COMM">// add endpoint of this segment offset</span><span class="WHIT">
+<span class='line'>427</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset0.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>428</span> 
+<span class='line'>429</span> </span><span class="WHIT">      </span><span class="COMM">/**
+<span class='line'>430</span>        * Add "closing segment" of required length.
+<span class='line'>431</span>        */</span><span class="WHIT">
+<span class='line'>432</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>433</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mid0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>434</span> </span><span class="WHIT">            </span><span class="NAME">this.offset0.p1.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.s1.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT">
+<span class='line'>435</span> </span><span class="WHIT">            </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>436</span> </span><span class="WHIT">            </span><span class="NAME">this.offset0.p1.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.s1.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">            </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>438</span> </span><span class="WHIT">        </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">mid0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>439</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mid1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">this.losingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>440</span> </span><span class="WHIT">            </span><span class="NAME">this.offset1.p0.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.s1.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT">
+<span class='line'>441</span> </span><span class="WHIT">            </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="WHIT">            </span><span class="NAME">this.offset1.p0.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.s1.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT">
+<span class='line'>443</span> </span><span class="WHIT">            </span><span class="PUNC">(</span><span class="NAME">this.closingSegLengthFactor</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="WHIT">        </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">mid1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">        </span><span class="COMM">/**
+<span class='line'>447</span>          * This branch is not expected to be used except for testing purposes.
+<span class='line'>448</span>          * It is equivalent to the JTS 1.9 logic for closing segments (which
+<span class='line'>449</span>          * results in very poor performance for large buffer distances)
+<span class='line'>450</span>          */</span><span class="WHIT">
+<span class='line'>451</span> </span><span class="WHIT">        </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.s1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>452</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>453</span> 
+<span class='line'>454</span> </span><span class="WHIT">      </span><span class="COMM">// */</span><span class="WHIT">
+<span class='line'>455</span> </span><span class="WHIT">      </span><span class="COMM">// add start point of next segment offset</span><span class="WHIT">
+<span class='line'>456</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">this.offset1.p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>457</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>458</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>459</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>460</span> 
+<span class='line'>461</span> 
+<span class='line'>462</span> </span><span class="COMM">/**
+<span class='line'>463</span>  * Compute an offset segment for an input segment on a given side and at a given
+<span class='line'>464</span>  * distance. The offset points are computed in full double precision, for
+<span class='line'>465</span>  * accuracy.
+<span class='line'>466</span>  *
+<span class='line'>467</span>  * @param seg
+<span class='line'>468</span>  *          the segment to offset.
+<span class='line'>469</span>  * @param side
+<span class='line'>470</span>  *          the side of the segment ( {@link Position} ) the offset lies on.
+<span class='line'>471</span>  * @param distance
+<span class='line'>472</span>  *          the offset distance.
+<span class='line'>473</span>  * @param offset
+<span class='line'>474</span>  *          the points computed for the offset segment.
+<span class='line'>475</span>  * @private
+<span class='line'>476</span>  */</span><span class="WHIT">
+<span class='line'>477</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.computeOffsetSegment</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>478</span> </span><span class="WHIT">    </span><span class="NAME">seg</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">side</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>479</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">sideSign</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">side</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.LEFT</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">seg.p1.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">seg.p0.x</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">seg.p1.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">seg.p0.y</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>482</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">len</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.sqrt</span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>483</span> </span><span class="WHIT">  </span><span class="COMM">// u is the vector that is the length of the offset, in the direction of the</span><span class="WHIT">
+<span class='line'>484</span> </span><span class="WHIT">  </span><span class="COMM">// segment</span><span class="WHIT">
+<span class='line'>485</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ux</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">sideSign</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">len</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">uy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">sideSign</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">len</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="WHIT">  </span><span class="NAME">offset.p0.x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">seg.p0.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">uy</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>488</span> </span><span class="WHIT">  </span><span class="NAME">offset.p0.y</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">seg.p0.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">ux</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>489</span> </span><span class="WHIT">  </span><span class="NAME">offset.p1.x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">seg.p1.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">uy</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>490</span> </span><span class="WHIT">  </span><span class="NAME">offset.p1.y</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">seg.p1.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">ux</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>491</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>492</span> 
+<span class='line'>493</span> 
+<span class='line'>494</span> </span><span class="COMM">/**
+<span class='line'>495</span>  * Add an end cap around point p1, terminating a line segment coming from p0
+<span class='line'>496</span>  */</span><span class="WHIT">
+<span class='line'>497</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLineEndCap</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>498</span> </span><span class="WHIT">    </span><span class="NAME">p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>499</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">seg</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="NAME">p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>500</span> 
+<span class='line'>501</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">offsetL</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>502</span> </span><span class="WHIT">  </span><span class="NAME">this.computeOffsetSegment</span><span class="PUNC">(</span><span class="NAME">seg</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.LEFT</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>503</span> </span><span class="WHIT">      </span><span class="NAME">offsetL</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>504</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">offsetR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>505</span> </span><span class="WHIT">  </span><span class="NAME">this.computeOffsetSegment</span><span class="PUNC">(</span><span class="NAME">seg</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.RIGHT</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>506</span> </span><span class="WHIT">      </span><span class="NAME">offsetR</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>507</span> 
+<span class='line'>508</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p1.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">p0.x</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>509</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p1.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">p0.y</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>510</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">angle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.atan2</span><span class="PUNC">(</span><span class="NAME">dy</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>511</span> 
+<span class='line'>512</span> </span><span class="WHIT">  </span><span class="KEYW">switch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.bufParams.getEndCapStyle</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>513</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_ROUND</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'>514</span> </span><span class="WHIT">      </span><span class="COMM">// add offset seg points with a fillet between them</span><span class="WHIT">
+<span class='line'>515</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">offsetL.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>516</span> </span><span class="WHIT">      </span><span class="NAME">this.addFillet</span><span class="PUNC">(</span><span class="NAME">p1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">angle</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">angle</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>517</span> </span><span class="WHIT">          </span><span class="NAME">jsts.algorithm.CGAlgorithms.CLOCKWISE</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>518</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">offsetR.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>519</span> </span><span class="WHIT">      </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>520</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_FLAT</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'>521</span> </span><span class="WHIT">      </span><span class="COMM">// only offset segment points are added</span><span class="WHIT">
+<span class='line'>522</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">offsetL.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>523</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">offsetR.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>524</span> </span><span class="WHIT">      </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>525</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_SQUARE</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'>526</span> </span><span class="WHIT">      </span><span class="COMM">// add a square defined by extensions of the offset segment endpoints</span><span class="WHIT">
+<span class='line'>527</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">squareCapSideOffset</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>528</span> </span><span class="WHIT">      </span><span class="NAME">squareCapSideOffset.x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">angle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>529</span> </span><span class="WHIT">      </span><span class="NAME">squareCapSideOffset.y</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.sin</span><span class="PUNC">(</span><span class="NAME">angle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>530</span> 
+<span class='line'>531</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">squareCapLOffset</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">offsetL.p1.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>532</span> </span><span class="WHIT">          </span><span class="NAME">squareCapSideOffset.x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offsetL.p1.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">squareCapSideOffset.y</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>533</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">squareCapROffset</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">offsetR.p1.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>534</span> </span><span class="WHIT">          </span><span class="NAME">squareCapSideOffset.x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offsetR.p1.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">squareCapSideOffset.y</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>535</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">squareCapLOffset</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>536</span> </span><span class="WHIT">      </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">squareCapROffset</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>537</span> </span><span class="WHIT">      </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>538</span> 
+<span class='line'>539</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>540</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>541</span> 
+<span class='line'>542</span> 
+<span class='line'>543</span> </span><span class="COMM">/**
+<span class='line'>544</span>  * Adds a mitre join connecting the two reflex offset segments. The mitre will
+<span class='line'>545</span>  * be beveled if it exceeds the mitre ratio limit.
+<span class='line'>546</span>  *
+<span class='line'>547</span>  * @param offset0
+<span class='line'>548</span>  *          the first offset segment.
+<span class='line'>549</span>  * @param offset1
+<span class='line'>550</span>  *          the second offset segment.
+<span class='line'>551</span>  * @param distance
+<span class='line'>552</span>  *          the offset distance.
+<span class='line'>553</span>  * @private
+<span class='line'>554</span>  */</span><span class="WHIT">
+<span class='line'>555</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addMitreJoin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>556</span> </span><span class="WHIT">    </span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>557</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">isMitreWithinLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>558</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">intPt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>559</span> 
+<span class='line'>560</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>561</span>    * This computation is unstable if the offset segments are nearly collinear.
+<span class='line'>562</span>    * Howver, this situation should have been eliminated earlier by the check for
+<span class='line'>563</span>    * whether the offset segment endpoints are almost coincident
+<span class='line'>564</span>    */</span><span class="WHIT">
+<span class='line'>565</span> </span><span class="WHIT">  </span><span class="KEYW">try</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>566</span> </span><span class="WHIT">    </span><span class="NAME">intPt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate.intersection</span><span class="PUNC">(</span><span class="NAME">offset0.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset0.p1</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>567</span> </span><span class="WHIT">        </span><span class="NAME">offset1.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset1.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>568</span> 
+<span class='line'>569</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mitreRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">intPt.distance</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT">
+<span class='line'>570</span> </span><span class="WHIT">        </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>571</span> 
+<span class='line'>572</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">mitreRatio</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NAME">this.bufParams.getMitreLimit</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>573</span> </span><span class="WHIT">      </span><span class="NAME">this.isMitreWithinLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>574</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">catch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>575</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.error.NotRepresentableError</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>576</span> </span><span class="WHIT">      </span><span class="NAME">intPt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>577</span> </span><span class="WHIT">      </span><span class="NAME">this.isMitreWithinLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>578</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>579</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>580</span> 
+<span class='line'>581</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isMitreWithinLimit</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>582</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">intPt</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>583</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>584</span> </span><span class="WHIT">    </span><span class="NAME">this.addLimitedMitreJoin</span><span class="PUNC">(</span><span class="NAME">offset0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bufParams</span><span class="WHIT">
+<span class='line'>585</span> </span><span class="WHIT">        </span><span class="PUNC">.</span><span class="NAME">getMitreLimit</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>586</span> </span><span class="WHIT">    </span><span class="COMM">// addBevelJoin(offset0, offset1);</span><span class="WHIT">
+<span class='line'>587</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>588</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>589</span> 
+<span class='line'>590</span> 
+<span class='line'>591</span> </span><span class="COMM">/**
+<span class='line'>592</span>  * Adds a limited mitre join connecting the two reflex offset segments. A
+<span class='line'>593</span>  * limited mitre is a mitre which is beveled at the distance determined by the
+<span class='line'>594</span>  * mitre ratio limit.
+<span class='line'>595</span>  *
+<span class='line'>596</span>  * @param offset0
+<span class='line'>597</span>  *          the first offset segment.
+<span class='line'>598</span>  * @param offset1
+<span class='line'>599</span>  *          the second offset segment.
+<span class='line'>600</span>  * @param distance
+<span class='line'>601</span>  *          the offset distance.
+<span class='line'>602</span>  * @param mitreLimit
+<span class='line'>603</span>  *          the mitre limit ratio.
+<span class='line'>604</span>  * @private
+<span class='line'>605</span>  */</span><span class="WHIT">
+<span class='line'>606</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLimitedMitreJoin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>607</span> </span><span class="WHIT">    </span><span class="NAME">offset0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mitreLimit</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>608</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">basePt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.seg0.p1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>609</span> 
+<span class='line'>610</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ang0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.Angle.angle</span><span class="PUNC">(</span><span class="NAME">basePt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.seg0.p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>611</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ang1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.Angle.angle</span><span class="PUNC">(</span><span class="NAME">basePt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.seg1.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>612</span> 
+<span class='line'>613</span> </span><span class="WHIT">  </span><span class="COMM">// oriented angle between segments</span><span class="WHIT">
+<span class='line'>614</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">angDiff</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.Angle.angleBetweenOriented</span><span class="PUNC">(</span><span class="NAME">this.seg0.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">basePt</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>615</span> </span><span class="WHIT">      </span><span class="NAME">this.seg1.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>616</span> </span><span class="WHIT">  </span><span class="COMM">// half of the interior angle</span><span class="WHIT">
+<span class='line'>617</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">angDiffHalf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">angDiff</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>618</span> 
+<span class='line'>619</span> </span><span class="WHIT">  </span><span class="COMM">// angle for bisector of the interior angle between the segments</span><span class="WHIT">
+<span class='line'>620</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">midAng</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.Angle.normalize</span><span class="PUNC">(</span><span class="NAME">ang0</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">angDiffHalf</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>621</span> </span><span class="WHIT">  </span><span class="COMM">// rotating this by PI gives the bisector of the reflex angle</span><span class="WHIT">
+<span class='line'>622</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mitreMidAng</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.Angle.normalize</span><span class="PUNC">(</span><span class="NAME">midAng</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>623</span> 
+<span class='line'>624</span> </span><span class="WHIT">  </span><span class="COMM">// the miterLimit determines the distance to the mitre bevel</span><span class="WHIT">
+<span class='line'>625</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mitreDist</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mitreLimit</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>626</span> </span><span class="WHIT">  </span><span class="COMM">// the bevel delta is the difference between the buffer distance</span><span class="WHIT">
+<span class='line'>627</span> </span><span class="WHIT">  </span><span class="COMM">// and half of the length of the bevel segment</span><span class="WHIT">
+<span class='line'>628</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelDelta</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mitreDist</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">Math.sin</span><span class="PUNC">(</span><span class="NAME">angDiffHalf</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>629</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelHalfLen</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">bevelDelta</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>630</span> 
+<span class='line'>631</span> </span><span class="WHIT">  </span><span class="COMM">// compute the midpoint of the bevel segment</span><span class="WHIT">
+<span class='line'>632</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelMidX</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">basePt.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">mitreDist</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">mitreMidAng</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>633</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelMidY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">basePt.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">mitreDist</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.sin</span><span class="PUNC">(</span><span class="NAME">mitreMidAng</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>634</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelMidPt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">bevelMidX</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bevelMidY</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>635</span> 
+<span class='line'>636</span> </span><span class="WHIT">  </span><span class="COMM">// compute the mitre midline segment from the corner point to the bevel</span><span class="WHIT">
+<span class='line'>637</span> </span><span class="WHIT">  </span><span class="COMM">// segment midpoint</span><span class="WHIT">
+<span class='line'>638</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mitreMidLine</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.LineSegment</span><span class="PUNC">(</span><span class="NAME">basePt</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bevelMidPt</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>639</span> 
+<span class='line'>640</span> </span><span class="WHIT">  </span><span class="COMM">// finally the bevel segment endpoints are computed as offsets from</span><span class="WHIT">
+<span class='line'>641</span> </span><span class="WHIT">  </span><span class="COMM">// the mitre midline</span><span class="WHIT">
+<span class='line'>642</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelEndLeft</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mitreMidLine.pointAlongOffset</span><span class="PUNC">(</span><span class="NUMB">1.0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">bevelHalfLen</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>643</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bevelEndRight</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mitreMidLine.pointAlongOffset</span><span class="PUNC">(</span><span class="NUMB">1.0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NAME">bevelHalfLen</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>644</span> 
+<span class='line'>645</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.side</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">jsts.geomgraph.Position.LEFT</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>646</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">bevelEndLeft</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>647</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">bevelEndRight</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>648</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>649</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">bevelEndRight</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>650</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">bevelEndLeft</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>651</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>652</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>653</span> 
+<span class='line'>654</span> 
+<span class='line'>655</span> </span><span class="COMM">/**
+<span class='line'>656</span>  * Adds a bevel join connecting the two offset segments around a reflex corner.
+<span class='line'>657</span>  *
+<span class='line'>658</span>  * @param {LineSegment}
+<span class='line'>659</span>  *          offset0 the first offset segment.
+<span class='line'>660</span>  * @param {LineSegment}
+<span class='line'>661</span>  *          offset1 the second offset segment.
+<span class='line'>662</span>  * @private
+<span class='line'>663</span>  */</span><span class="WHIT">
+<span class='line'>664</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addBevelJoin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>665</span> </span><span class="WHIT">    </span><span class="NAME">offset0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">offset1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>666</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">offset0.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>667</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">offset1.p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>668</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>669</span> 
+<span class='line'>670</span> 
+<span class='line'>671</span> </span><span class="COMM">/**
+<span class='line'>672</span>  * Add points for a circular fillet around a reflex corner. Adds the start and
+<span class='line'>673</span>  * end points
+<span class='line'>674</span>  *
+<span class='line'>675</span>  * @param p
+<span class='line'>676</span>  *          base point of curve.
+<span class='line'>677</span>  * @param p0
+<span class='line'>678</span>  *          start point of fillet curve.
+<span class='line'>679</span>  * @param p1
+<span class='line'>680</span>  *          endpoint of fillet curve.
+<span class='line'>681</span>  * @param direction
+<span class='line'>682</span>  *          the orientation of the fillet.
+<span class='line'>683</span>  * @param radius
+<span class='line'>684</span>  *          the radius of the fillet.
+<span class='line'>685</span>  * @private
+<span class='line'>686</span>  */</span><span class="WHIT">
+<span class='line'>687</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>688</span> </span><span class="WHIT">    </span><span class="NAME">p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">direction</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>689</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">p1</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>690</span> </span><span class="WHIT">    </span><span class="NAME">this.addFillet2.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>691</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>692</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>693</span> 
+<span class='line'>694</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p0.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">p.x</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>695</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dy0</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p0.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>696</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.atan2</span><span class="PUNC">(</span><span class="NAME">dy0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dx0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>697</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p1.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">p.x</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>698</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dy1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p1.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>699</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">endAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.atan2</span><span class="PUNC">(</span><span class="NAME">dy1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dx1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>700</span> 
+<span class='line'>701</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">direction</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.CGAlgorithms.CLOCKWISE</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>702</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NAME">endAngle</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>703</span> </span><span class="WHIT">      </span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>704</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// direction == COUNTERCLOCKWISE</span><span class="WHIT">
+<span class='line'>705</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">endAngle</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>706</span> </span><span class="WHIT">      </span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>707</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>708</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">p0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>709</span> </span><span class="WHIT">  </span><span class="NAME">this.addFillet</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">startAngle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">endAngle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">direction</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>710</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>711</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>712</span> 
+<span class='line'>713</span> 
+<span class='line'>714</span> </span><span class="COMM">/**
+<span class='line'>715</span>  * Adds points for a circular fillet arc between two specified angles. The start
+<span class='line'>716</span>  * and end point for the fillet are not added - the caller must add them if
+<span class='line'>717</span>  * required.
+<span class='line'>718</span>  *
+<span class='line'>719</span>  * @param direction
+<span class='line'>720</span>  *          is -1 for a CW angle, 1 for a CCW angle.
+<span class='line'>721</span>  * @param radius
+<span class='line'>722</span>  *          the radius of the fillet.
+<span class='line'>723</span>  * @private
+<span class='line'>724</span>  */</span><span class="WHIT">
+<span class='line'>725</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>726</span> </span><span class="WHIT">    </span><span class="NAME">startAngle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">endAngle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">direction</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>727</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">directionFactor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">direction</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.CGAlgorithms.CLOCKWISE</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="WHIT">
+<span class='line'>728</span> </span><span class="WHIT">      </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>729</span> 
+<span class='line'>730</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">totalAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">endAngle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>731</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nSegs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">totalAngle</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">this.filletAngleQuantum</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">0.5</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>732</span> 
+<span class='line'>733</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">nSegs</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>734</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// no segments because angle is less than increment - nothing to do!</span><span class="WHIT">
+<span class='line'>735</span> 
+<span class='line'>736</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">initAngle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">currAngleInc</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>737</span> 
+<span class='line'>738</span> </span><span class="WHIT">  </span><span class="COMM">// choose angle increment so that each segment has equal length</span><span class="WHIT">
+<span class='line'>739</span> </span><span class="WHIT">  </span><span class="NAME">initAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>740</span> </span><span class="WHIT">  </span><span class="NAME">currAngleInc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">totalAngle</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">nSegs</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>741</span> 
+<span class='line'>742</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">currAngle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">initAngle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>743</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>744</span> </span><span class="WHIT">  </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">currAngle</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">totalAngle</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>745</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">angle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">startAngle</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">directionFactor</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">currAngle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>746</span> </span><span class="WHIT">    </span><span class="NAME">pt.x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">angle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>747</span> </span><span class="WHIT">    </span><span class="NAME">pt.y</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.sin</span><span class="PUNC">(</span><span class="NAME">angle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>748</span> </span><span class="WHIT">    </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">pt</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>749</span> </span><span class="WHIT">    </span><span class="NAME">currAngle</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">currAngleInc</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>750</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>751</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>752</span> 
+<span class='line'>753</span> 
+<span class='line'>754</span> </span><span class="COMM">/**
+<span class='line'>755</span>  * Creates a CW circle around a point
+<span class='line'>756</span>  */</span><span class="WHIT">
+<span class='line'>757</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.createCircle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>758</span> </span><span class="WHIT">    </span><span class="NAME">p</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>759</span> </span><span class="WHIT">  </span><span class="COMM">// add start point</span><span class="WHIT">
+<span class='line'>760</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>761</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="NAME">pt</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>762</span> </span><span class="WHIT">  </span><span class="NAME">this.addFillet</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>763</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.closeRing</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>764</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>765</span> 
+<span class='line'>766</span> 
+<span class='line'>767</span> </span><span class="COMM">/**
+<span class='line'>768</span>  * Creates a CW square around a point
+<span class='line'>769</span>  */</span><span class="WHIT">
+<span class='line'>770</span> </span><span class="NAME">jsts.operation.buffer.OffsetSegmentGenerator.prototype.createSquare</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>771</span> </span><span class="WHIT">    </span><span class="NAME">p</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>772</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>773</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>774</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>775</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.addPt</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Coordinate</span><span class="PUNC">(</span><span class="NAME">p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">distance</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>776</span> </span><span class="WHIT">  </span><span class="NAME">this.segList.closeRing</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>777</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>778</span> </span></pre></body></html>

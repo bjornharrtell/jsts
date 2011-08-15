@@ -1,0 +1,91 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> 
+<span class='line'>  9</span> </span><span class="COMM">/**
+<span class='line'> 10</span>  * Constants representing the different topological locations which can occur in
+<span class='line'> 11</span>  * a {@link Geometry}. The constants are also used as the row and column
+<span class='line'> 12</span>  * indices of DE-9IM {@link IntersectionMatrix}es.
+<span class='line'> 13</span>  *
+<span class='line'> 14</span>  * @constructor
+<span class='line'> 15</span>  */</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="NAME">jsts.geom.Location</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 18</span> 
+<span class='line'> 19</span> 
+<span class='line'> 20</span> </span><span class="COMM">/**
+<span class='line'> 21</span>  * The location value for the interior of a geometry. Also, DE-9IM row index of
+<span class='line'> 22</span>  * the interior of the first geometry and column index of the interior of the
+<span class='line'> 23</span>  * second geometry.
+<span class='line'> 24</span>  *
+<span class='line'> 25</span>  * @const
+<span class='line'> 26</span>  * @type {number}
+<span class='line'> 27</span>  */</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> 
+<span class='line'> 31</span> </span><span class="COMM">/**
+<span class='line'> 32</span>  * The location value for the boundary of a geometry. Also, DE-9IM row index of
+<span class='line'> 33</span>  * the boundary of the first geometry and column index of the boundary of the
+<span class='line'> 34</span>  * second geometry.
+<span class='line'> 35</span>  *
+<span class='line'> 36</span>  * @const
+<span class='line'> 37</span>  * @type {number}
+<span class='line'> 38</span>  */</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> 
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="COMM">/**
+<span class='line'> 43</span>  * The location value for the exterior of a geometry. Also, DE-9IM row index of
+<span class='line'> 44</span>  * the exterior of the first geometry and column index of the exterior of the
+<span class='line'> 45</span>  * second geometry.
+<span class='line'> 46</span>  *
+<span class='line'> 47</span>  * @const
+<span class='line'> 48</span>  * @type {number}
+<span class='line'> 49</span>  */</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> 
+<span class='line'> 52</span> 
+<span class='line'> 53</span> </span><span class="COMM">/**
+<span class='line'> 54</span>  * Used for uninitialized location values.
+<span class='line'> 55</span>  *
+<span class='line'> 56</span>  * @const
+<span class='line'> 57</span>  * @type {number}
+<span class='line'> 58</span>  */</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="NAME">jsts.geom.Location.NONE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> 
+<span class='line'> 61</span> 
+<span class='line'> 62</span> </span><span class="COMM">/**
+<span class='line'> 63</span>  * Converts the location value to a location symbol, for example,
+<span class='line'> 64</span>  * &lt;code>EXTERIOR => 'e'&lt;/code> .
+<span class='line'> 65</span>  *
+<span class='line'> 66</span>  * @param {number}
+<span class='line'> 67</span>  *          locationValue either EXTERIOR, BOUNDARY, INTERIOR or NONE.
+<span class='line'> 68</span>  * @return {string} either 'e', 'b', 'i' or '-'.
+<span class='line'> 69</span>  */</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="NAME">jsts.geom.Location.toLocationSymbol</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">locationValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">  </span><span class="KEYW">switch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">locationValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.EXTERIOR</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'e'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.BOUNDARY</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'b'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.INTERIOR</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'i'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">    </span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">jsts.geom.Location.NONE</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'-'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">  </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.IllegalArgumentError</span><span class="PUNC">(</span><span class="STRN">'Unknown location value: '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">      </span><span class="NAME">locationValue</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> </span></pre></body></html>

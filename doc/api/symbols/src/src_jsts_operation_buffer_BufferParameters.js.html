@@ -1,0 +1,336 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> 
+<span class='line'>  8</span> </span><span class="COMM">/**
+<span class='line'>  9</span>  * Contains the parameters which describe how a buffer should be constructed.
+<span class='line'> 10</span>  *
+<span class='line'> 11</span>  * @constructor
+<span class='line'> 12</span>  */</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">quadrantSegments</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">    </span><span class="NAME">endCapStyle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">joinStyle</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mitreLimit</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">quadrantSegments</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">    </span><span class="NAME">this.setQuadrantSegments</span><span class="PUNC">(</span><span class="NAME">quadrantSegments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">endCapStyle</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">    </span><span class="NAME">this.setEndCapStyle</span><span class="PUNC">(</span><span class="NAME">endCapStyle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">joinStyle</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">    </span><span class="NAME">this.setJoinStyle</span><span class="PUNC">(</span><span class="NAME">joinStyle</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">mitreLimit</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">    </span><span class="NAME">this.setMitreLimit</span><span class="PUNC">(</span><span class="NAME">mitreLimit</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> 
+<span class='line'> 25</span> 
+<span class='line'> 26</span> </span><span class="COMM">/**
+<span class='line'> 27</span>  * Specifies a round line buffer end cap style.
+<span class='line'> 28</span>  *
+<span class='line'> 29</span>  * @type {int}
+<span class='line'> 30</span>  */</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_ROUND</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> 
+<span class='line'> 33</span> 
+<span class='line'> 34</span> </span><span class="COMM">/**
+<span class='line'> 35</span>  * Specifies a flat line buffer end cap style.
+<span class='line'> 36</span>  *
+<span class='line'> 37</span>  * @type {int}
+<span class='line'> 38</span>  */</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_FLAT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> 
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="COMM">/**
+<span class='line'> 43</span>  * Specifies a square line buffer end cap style.
+<span class='line'> 44</span>  *
+<span class='line'> 45</span>  * @type {int}
+<span class='line'> 46</span>  */</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_SQUARE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> 
+<span class='line'> 49</span> 
+<span class='line'> 50</span> </span><span class="COMM">/**
+<span class='line'> 51</span>  * Specifies a round join style.
+<span class='line'> 52</span>  *
+<span class='line'> 53</span>  * @type {int}
+<span class='line'> 54</span>  */</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_ROUND</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> 
+<span class='line'> 57</span> 
+<span class='line'> 58</span> </span><span class="COMM">/**
+<span class='line'> 59</span>  * Specifies a mitre join style.
+<span class='line'> 60</span>  */</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_MITRE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 62</span> 
+<span class='line'> 63</span> 
+<span class='line'> 64</span> </span><span class="COMM">/**
+<span class='line'> 65</span>  * Specifies a bevel join style.
+<span class='line'> 66</span>  *
+<span class='line'> 67</span>  * @type {int}
+<span class='line'> 68</span>  */</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_BEVEL</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> 
+<span class='line'> 71</span> 
+<span class='line'> 72</span> </span><span class="COMM">/**
+<span class='line'> 73</span>  * The default number of facets into which to divide a fillet of 90 degrees. A
+<span class='line'> 74</span>  * value of 8 gives less than 2% max error in the buffer distance. For a max
+<span class='line'> 75</span>  * error of &lt; 1%, use QS = 12. For a max error of &lt; 0.1%, use QS = 18.
+<span class='line'> 76</span>  *
+<span class='line'> 77</span>  * @type {int}
+<span class='line'> 78</span>  */</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_QUADRANT_SEGMENTS</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">8</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> 
+<span class='line'> 81</span> 
+<span class='line'> 82</span> </span><span class="COMM">/**
+<span class='line'> 83</span>  * The default mitre limit Allows fairly pointy mitres.
+<span class='line'> 84</span>  *
+<span class='line'> 85</span>  * @type {double}
+<span class='line'> 86</span>  */</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">5.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 88</span> 
+<span class='line'> 89</span> 
+<span class='line'> 90</span> </span><span class="COMM">/**
+<span class='line'> 91</span>  * @type {int}
+<span class='line'> 92</span>  * @private
+<span class='line'> 93</span>  */</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_QUADRANT_SEGMENTS</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span> 
+<span class='line'> 96</span> 
+<span class='line'> 97</span> </span><span class="COMM">/**
+<span class='line'> 98</span>  * @type {int}
+<span class='line'> 99</span>  * @private
+<span class='line'>100</span>  */</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.endCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.CAP_ROUND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> 
+<span class='line'>103</span> 
+<span class='line'>104</span> </span><span class="COMM">/**
+<span class='line'>105</span>  * @type {int}
+<span class='line'>106</span>  * @private
+<span class='line'>107</span>  */</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.joinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_ROUND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>109</span> 
+<span class='line'>110</span> 
+<span class='line'>111</span> </span><span class="COMM">/**
+<span class='line'>112</span>  * @type {double}
+<span class='line'>113</span>  * @private
+<span class='line'>114</span>  */</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.mitreLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_MITRE_LIMIT</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> 
+<span class='line'>117</span> </span><span class="COMM">/**
+<span class='line'>118</span>  * @type {boolean}
+<span class='line'>119</span>  * @private
+<span class='line'>120</span>  */</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype._isSingleSided</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span> 
+<span class='line'>123</span> </span><span class="COMM">/**
+<span class='line'>124</span>  * Gets the number of quadrant segments which will be used
+<span class='line'>125</span>  *
+<span class='line'>126</span>  * @return the number of quadrant segments.
+<span class='line'>127</span>  */</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.getQuadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.quadrantSegments</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> 
+<span class='line'>132</span> 
+<span class='line'>133</span> </span><span class="COMM">/**
+<span class='line'>134</span>  * Sets the number of segments used to approximate a angle fillet
+<span class='line'>135</span>  *
+<span class='line'>136</span>  * @param {int}
+<span class='line'>137</span>  *          quadrantSegments the number of segments in a fillet for a quadrant.
+<span class='line'>138</span>  */</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setQuadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">    </span><span class="NAME">quadrantSegments</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">  </span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">quadrantSegments</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>143</span> 
+<span class='line'>144</span> 
+<span class='line'>145</span> </span><span class="COMM">/**
+<span class='line'>146</span>  * Sets the number of line segments used to approximate an angle fillet.
+<span class='line'>147</span>  * &lt;ul>
+<span class='line'>148</span>  * &lt;li>If &lt;tt>quadSegs&lt;/tt> >= 1, joins are round, and &lt;tt>quadSegs&lt;/tt>
+<span class='line'>149</span>  * indicates the number of segments to use to approximate a quarter-circle.
+<span class='line'>150</span>  * &lt;li>If &lt;tt>quadSegs&lt;/tt> = 0, joins are bevelled (flat)
+<span class='line'>151</span>  * &lt;li>If &lt;tt>quadSegs&lt;/tt> &lt; 0, joins are mitred, and the value of qs
+<span class='line'>152</span>  * indicates the mitre ration limit as
+<span class='line'>153</span>  *
+<span class='line'>154</span>  * &lt;pre>
+<span class='line'>155</span>  * mitreLimit= |
+<span class='line'>156</span>  * &lt;tt>
+<span class='line'>157</span>  * quadSegs
+<span class='line'>158</span>  * &lt;/tt>
+<span class='line'>159</span>  * |
+<span class='line'>160</span>  * &lt;/pre>
+<span class='line'>161</span>  *
+<span class='line'>162</span>  * &lt;/ul>
+<span class='line'>163</span>  * For round joins, &lt;tt>quadSegs&lt;/tt> determines the maximum error in the
+<span class='line'>164</span>  * approximation to the true buffer curve. The default value of 8 gives less
+<span class='line'>165</span>  * than 2% max error in the buffer distance. For a max error of &lt; 1%, use QS =
+<span class='line'>166</span>  * 12. For a max error of &lt; 0.1%, use QS = 18. The error is always less than the
+<span class='line'>167</span>  * buffer distance (in other words, the computed buffer curve is always inside
+<span class='line'>168</span>  * the true curve).
+<span class='line'>169</span>  *
+<span class='line'>170</span>  * @param quadrantSegments
+<span class='line'>171</span>  *          the number of segments in a fillet for a quadrant.
+<span class='line'>172</span>  */</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setQuadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">    </span><span class="NAME">quadSegs</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">  </span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">quadSegs</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>176</span> 
+<span class='line'>177</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>178</span>    * Indicates how to construct fillets. If qs >= 1, fillet is round, and qs
+<span class='line'>179</span>    * indicates number of segments to use to approximate a quarter-circle. If qs =
+<span class='line'>180</span>    * 0, fillet is bevelled flat (i.e. no filleting is performed) If qs &lt; 0,
+<span class='line'>181</span>    * fillet is mitred, and absolute value of qs indicates maximum length of
+<span class='line'>182</span>    * mitre according to
+<span class='line'>183</span>    *
+<span class='line'>184</span>    * mitreLimit = |qs|
+<span class='line'>185</span>    */</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">    </span><span class="NAME">this.joinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_BEVEL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="WHIT">    </span><span class="NAME">this.joinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_MITRE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">    </span><span class="NAME">this.mitreLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.abs</span><span class="PUNC">(</span><span class="NAME">this.quadrantSegments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>192</span> 
+<span class='line'>193</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">quadSegs</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">    </span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>196</span> 
+<span class='line'>197</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>198</span>    * If join style was set by the quadSegs value, use the default for the actual
+<span class='line'>199</span>    * quadrantSegments value.
+<span class='line'>200</span>    */</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.joinStyle</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.JOIN_ROUND</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">    </span><span class="NAME">this.quadrantSegments</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferParameters.DEFAULT_QUADRANT_SEGMENTS</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>205</span> 
+<span class='line'>206</span> 
+<span class='line'>207</span> </span><span class="COMM">/**
+<span class='line'>208</span>  * Computes the maximum distance error due to a given level of approximation to
+<span class='line'>209</span>  * a true arc.
+<span class='line'>210</span>  *
+<span class='line'>211</span>  * @param quadSegs
+<span class='line'>212</span>  *          the number of segments used to approximate a quarter-circle.
+<span class='line'>213</span>  * @return the error of approximation.
+<span class='line'>214</span>  */</span><span class="WHIT">
+<span class='line'>215</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.bufferDistanceError</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">quadSegs</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">alpha</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.PI</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">quadSegs</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">alpha</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>219</span> 
+<span class='line'>220</span> 
+<span class='line'>221</span> </span><span class="COMM">/**
+<span class='line'>222</span>  * Gets the end cap style.
+<span class='line'>223</span>  *
+<span class='line'>224</span>  * @return the end cap style.
+<span class='line'>225</span>  */</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.getEndCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.endCapStyle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> 
+<span class='line'>230</span> 
+<span class='line'>231</span> </span><span class="COMM">/**
+<span class='line'>232</span>  * Specifies the end cap style of the generated buffer. The styles supported are
+<span class='line'>233</span>  * {@link #CAP_ROUND}, {@link #CAP_BUTT}, and {@link #CAP_SQUARE}. The
+<span class='line'>234</span>  * default is CAP_ROUND.
+<span class='line'>235</span>  *
+<span class='line'>236</span>  * @param {int}
+<span class='line'>237</span>  *          endCapStyle the end cap style to specify.
+<span class='line'>238</span>  */</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setEndCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">    </span><span class="NAME">endCapStyle</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">  </span><span class="NAME">this.endCapStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">endCapStyle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>243</span> 
+<span class='line'>244</span> 
+<span class='line'>245</span> </span><span class="COMM">/**
+<span class='line'>246</span>  * Gets the join style
+<span class='line'>247</span>  *
+<span class='line'>248</span>  * @return the join style code.
+<span class='line'>249</span>  */</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.getJoinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.joinStyle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span> 
+<span class='line'>254</span> 
+<span class='line'>255</span> </span><span class="COMM">/**
+<span class='line'>256</span>  * Sets the join style for outside (reflex) corners between line segments.
+<span class='line'>257</span>  * Allowable values are {@link JOIN_ROUND} (which is the default),
+<span class='line'>258</span>  * {@link JOIN_MITRE} and {link JOIN_BEVEL}.
+<span class='line'>259</span>  *
+<span class='line'>260</span>  * @param joinStyle
+<span class='line'>261</span>  *          the code for the join style.
+<span class='line'>262</span>  */</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setJoinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">    </span><span class="NAME">joinStyle</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">  </span><span class="NAME">this.joinStyle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">joinStyle</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>267</span> 
+<span class='line'>268</span> 
+<span class='line'>269</span> </span><span class="COMM">/**
+<span class='line'>270</span>  * Gets the mitre ratio limit.
+<span class='line'>271</span>  *
+<span class='line'>272</span>  * @return the limit value.
+<span class='line'>273</span>  */</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.getMitreLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.mitreLimit</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>277</span> 
+<span class='line'>278</span> 
+<span class='line'>279</span> </span><span class="COMM">/**
+<span class='line'>280</span>  * Sets the limit on the mitre ratio used for very sharp corners. The mitre
+<span class='line'>281</span>  * ratio is the ratio of the distance from the corner to the end of the mitred
+<span class='line'>282</span>  * offset corner. When two line segments meet at a sharp angle, a miter join
+<span class='line'>283</span>  * will extend far beyond the original geometry. (and in the extreme case will
+<span class='line'>284</span>  * be infinitely far.) To prevent unreasonable geometry, the mitre limit allows
+<span class='line'>285</span>  * controlling the maximum length of the join corner. Corners with a ratio which
+<span class='line'>286</span>  * exceed the limit will be beveled.
+<span class='line'>287</span>  *
+<span class='line'>288</span>  * @param mitreLimit
+<span class='line'>289</span>  *          the mitre ratio limit.
+<span class='line'>290</span>  */</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setMitreLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">    </span><span class="NAME">mitreLimit</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">  </span><span class="NAME">this.mitreLimit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mitreLimit</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>295</span> 
+<span class='line'>296</span> 
+<span class='line'>297</span> </span><span class="COMM">/**
+<span class='line'>298</span>  * Sets whether the computed buffer should be single-sided. A single-sided
+<span class='line'>299</span>  * buffer is constructed on only one side of each input line.
+<span class='line'>300</span>  * &lt;p>
+<span class='line'>301</span>  * The side used is determined by the sign of the buffer distance:
+<span class='line'>302</span>  * &lt;ul>
+<span class='line'>303</span>  * &lt;li>a positive distance indicates the left-hand side
+<span class='line'>304</span>  * &lt;li>a negative distance indicates the right-hand side
+<span class='line'>305</span>  * &lt;/ul>
+<span class='line'>306</span>  * The single-sided buffer of point geometries is the same as the regular
+<span class='line'>307</span>  * buffer.
+<span class='line'>308</span>  * &lt;p>
+<span class='line'>309</span>  * The End Cap Style for single-sided buffers is always ignored, and forced to
+<span class='line'>310</span>  * the equivalent of &lt;tt>CAP_FLAT&lt;/tt>.
+<span class='line'>311</span>  *
+<span class='line'>312</span>  * @param isSingleSided
+<span class='line'>313</span>  *          true if a single-sided buffer should be constructed.
+<span class='line'>314</span>  */</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.setSingleSided</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">    </span><span class="NAME">isSingleSided</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="WHIT">  </span><span class="NAME">this._isSingleSided</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">isSingleSided</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>318</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>319</span> 
+<span class='line'>320</span> 
+<span class='line'>321</span> </span><span class="COMM">/**
+<span class='line'>322</span>  * Tests whether the buffer is to be generated on a single side only.
+<span class='line'>323</span>  *
+<span class='line'>324</span>  * @return true if the generated buffer is to be single-sided.
+<span class='line'>325</span>  */</span><span class="WHIT">
+<span class='line'>326</span> </span><span class="NAME">jsts.operation.buffer.BufferParameters.prototype.isSingleSided</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this._isSingleSided</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>329</span> </span></pre></body></html>
