@@ -31,6 +31,8 @@ additional tests.
 
 Also available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html) and [overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) operations.
 
+The current version 0.9.0 is available for download [here](https://github.com/downloads/bjornharrtell/jsts/jsts-0.9.0.tar.gz).
+
 The code is licensed using the LGPL 2.1 license.
 
 Development environment
