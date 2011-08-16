@@ -21,15 +21,14 @@ The code tries to be conformant to the
 [JSLint](http://www.jslint.com/).
 
 [Unit tests](http://bjornharrtell.github.com/jsts/test/SpecRunner.html) are made
-using the [Jasmine testing framework](https://github.com/pivotal/jasmine).
-
-A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). 
-
-A [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
+using the [Jasmine testing framework](https://github.com/pivotal/jasmine). A 
+[port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
 [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides
 additional tests.
 
-Also available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html) and [overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) operations.
+A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). Also
+available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html) and
+[overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) operations.
 
 The current version 0.9.0 is available for download [here](https://github.com/downloads/bjornharrtell/jsts/jsts-0.9.0.tar.gz).
 
