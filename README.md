@@ -16,10 +16,6 @@ and analysing simple geometries.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for developer discussions.
 
-The code tries to be conformant to the
-[Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
-[JSLint](http://www.jslint.com/).
-
 [Unit tests](http://bjornharrtell.github.com/jsts/test/SpecRunner.html) are made
 using the [Jasmine testing framework](https://github.com/pivotal/jasmine). A 
 [port](http://bjornharrtell.github.com/jsts/validationsuite/index.html) of
@@ -30,9 +26,11 @@ A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.c
 available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html) and
 [overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) operations.
 
-The current version 0.9.0 is available for download [here](https://github.com/downloads/bjornharrtell/jsts/jsts-0.9.0.tar.gz).
+The code tries to be conformant to the
+[Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
+[JSLint](http://www.jslint.com/) and is licensed with the LGPL 2.1 license.
 
-The code is licensed using the LGPL 2.1 license.
+The current version 0.9.0 is available for download [here](https://github.com/downloads/bjornharrtell/jsts/jsts-0.9.0.tar.gz).
 
 Development environment
 -----------------------
