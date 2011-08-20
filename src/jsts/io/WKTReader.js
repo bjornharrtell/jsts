@@ -23,8 +23,7 @@
  *
  * @constructor
  */
-jsts.io.WKTReader = function() {
-};
+jsts.io.WKTReader = function() {};
 
 
 /**
@@ -39,35 +38,46 @@ jsts.io.WKTReader = function() {
 jsts.io.WKTReader.prototype.read = function(wkt) {
   var geometry = OpenLayers.Geometry.fromWKT(wkt);
 
+  // Need to convert plain coordinate to JSTS Point
   if (geometry instanceof jsts.geom.Coordinate) {
     geometry = new jsts.geom.Point(geometry);
+  }
+
+  // Need to convert plain Collection as JSTS GeometryCollection
+  if (geometry instanceof OpenLayers.Geometry.Collection &&
+      !(geometry instanceof OpenLayers.Geometry.Point ||
+          geometry instanceof OpenLayers.Geometry.LineString ||
+          geometry instanceof OpenLayers.Geometry.Polygon ||
+          geometry instanceof OpenLayers.Geometry.MultiPoint ||
+          geometry instanceof OpenLayers.Geometry.MultiLineString || geometry instanceof OpenLayers.Geometry.MultiPolygon)) {
+    geometry = new jsts.geom.GeometryCollection(geometry.components);
   }
 
   // handle WKT empty inputs
   if (geometry === undefined) {
     var type = wkt.split(' ')[0].toLowerCase();
     switch (type) {
-      case 'point':
-        geometry = new jsts.geom.Point();
-        break;
-      case 'multipoint':
-        geometry = new jsts.geom.MultiPoint();
-        break;
-      case 'linestring':
-        geometry = new jsts.geom.LineString();
-        break;
-      case 'multilinestring':
-        geometry = new jsts.geom.MultiLineString();
-        break;
-      case 'polygon':
-        geometry = new jsts.geom.Polygon();
-        break;
-      case 'multipolygon':
-        geometry = new jsts.geom.MultiPolygon();
-        break;
-      case 'geometrycollection':
-        geometry = new jsts.geom.GeometryCollection();
-        break;
+    case 'point':
+      geometry = new jsts.geom.Point();
+      break;
+    case 'multipoint':
+      geometry = new jsts.geom.MultiPoint();
+      break;
+    case 'linestring':
+      geometry = new jsts.geom.LineString();
+      break;
+    case 'multilinestring':
+      geometry = new jsts.geom.MultiLineString();
+      break;
+    case 'polygon':
+      geometry = new jsts.geom.Polygon();
+      break;
+    case 'multipolygon':
+      geometry = new jsts.geom.MultiPolygon();
+      break;
+    case 'geometrycollection':
+      geometry = new jsts.geom.GeometryCollection();
+      break;
     }
 
   }

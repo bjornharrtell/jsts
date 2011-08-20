@@ -189,23 +189,6 @@
     });
   };
 
-
-  /**
-   * Creates and returns a full copy of this {@link LineString} object.
-   * (including all coordinates contained by it).
-   *
-   * @return {LineString} a clone of this instance.
-   */
-  jsts.geom.LineString.prototype.clone = function() {
-    var points = this.components.map(function(component) {
-      return component.clone();
-    });
-
-    var clone = new jsts.geom.LineString(points);
-
-    return clone;
-  };
-
   jsts.geom.LineString.prototype.isEquivalentClass = function(other) {
     return other instanceof jsts.geom.LineString;
   };

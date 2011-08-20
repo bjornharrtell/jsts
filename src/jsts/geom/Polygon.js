@@ -28,10 +28,16 @@
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
   };
 
+  for (key in OpenLayers.Geometry.Polygon) {
+    jsts.geom.Polygon[key] = OpenLayers.Geometry.Polygon[key];
+  }
+
   jsts.geom.Polygon.prototype = OpenLayers.Geometry.Polygon.prototype;
 
   for (key in jsts.geom.Geometry.prototype) {
-    jsts.geom.Polygon.prototype[key] = jsts.geom.Geometry.prototype[key];
+    if (key != 'intersects') {
+      jsts.geom.Polygon.prototype[key] = jsts.geom.Geometry.prototype[key];
+    }
   }
 
 
