@@ -344,31 +344,6 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
   return DistanceOp.isWithinDistance(this, geom, distance);
 };
 
-
-/**
- * Returns the area of this <code>Geometry</code>. Areal Geometries have a
- * non-zero area. They override this function to compute the area. Others return
- * 0.0
- *
- * @return {number} the area of the Geometry.
- */
-jsts.geom.Geometry.prototype.getArea = function() {
-  return 0.0;
-};
-
-
-/**
- * Returns the length of this <code>Geometry</code>. Linear geometries return
- * their length. Areal geometries return their perimeter. They override this
- * function to compute the area. Others return 0.0
- *
- * @return {number} the length of the Geometry.
- */
-jsts.geom.Geometry.prototype.getLength = function() {
-  return 0.0;
-};
-
-
 /**
  * Computes the centroid of this <code>Geometry</code>. The centroid is equal
  * to the centroid of the set of component Geometries of highest dimension
@@ -377,7 +352,7 @@ jsts.geom.Geometry.prototype.getLength = function() {
  *
  * @return a {@link Point} which is the centroid of this Geometry.
  */
-jsts.geom.Geometry.prototype.getCentroid = function() {
+jsts.geom.Geometry.prototype.getCentroid_jsts = function() {
   if (this.isEmpty()) {
     return null;
   }
@@ -586,21 +561,12 @@ jsts.geom.Geometry.prototype.touches = function(g) {
  *
  * @see Geometry#disjoint
  */
-jsts.geom.Geometry.prototype.intersects = function(g) {
+jsts.geom.Geometry.prototype.intersects_jsts = function(g) {
 
   // short-circuit envelope test
   if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
     return false;
   }
-
-  /**
-   * TODO: (MD) Add optimizations: - for P-A case: If P is in env(A), test for
-   * point-in-poly - for A-A case: If env(A1).overlaps(env(A2)) test for
-   * overlaps via point-in-poly first (both ways) Possibly optimize selection of
-   * point to test by finding point of A1 closest to centre of env(A2). (Is
-   * there a test where we shouldn't bother - e.g. if env A is much smaller than
-   * env B, maybe there's no point in testing pt(B) in env(A)?
-   */
 
   // optimization for rectangle arguments
   if (this.isRectangle()) {
@@ -1237,27 +1203,6 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
  */
 jsts.geom.Geometry.prototype.apply = function(filter) {
   throw new jsts.error.AbstractMethodInvocationError();
-};
-
-
-/**
- * Creates and returns a full copy of this {@link Geometry} object (including
- * all coordinates contained by it). Subclasses are responsible for overriding
- * this method and copying their internal data. Overrides should call this
- * method first.
- *
- * TODO: I guess the purpose for subclasses is to copy the envelope but won't
- * work for js since it relies on casting. Have to revisit this code and decide
- * what to do.
- *
- * @return {Object} a clone of this instance.
- */
-jsts.geom.Geometry.prototype.clone = function() {
-  var clone = new jsts.geom.Geometry(this.factory);
-  if (clone.envelope !== null) {
-    clone.envelope = new jsts.geom.Envelope(clone.envelope);
-  }
-  return clone;
 };
 
 
