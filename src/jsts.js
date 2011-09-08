@@ -134,3 +134,14 @@ jsts.error.NotRepresentableError = function(message) {
   this.message = message;
 };
 jsts.error.NotRepresentableError.prototype = new Error();
+
+
+
+/**
+ * @constructor message
+ */
+jsts.error.LocateFailureError = function(message) {
+  this.name = 'LocateFailureError';
+  this.message = message;
+};
+jsts.error.LocateFailureError.prototype = new Error();
