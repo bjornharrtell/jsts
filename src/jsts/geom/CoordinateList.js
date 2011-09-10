@@ -76,4 +76,23 @@ jsts.geom.CoordinateList.prototype.addCoordinate = function(coord,
   this.push(coord);
 };
 
+/** Add an array of coordinates
+ * 
+ * @param {jsts.geom.Coordinate[]}
+ *          coll The array of coordinates
+ * @param {boolean}
+ *          allowRepeated if set to false, repeated coordinates are collapsed
+ * @return true (as by general collection contract)
+ */
+jsts.geom.CoordinateList.prototype.addAll = function(coll, allowRepeated)
+{
+  var isChanged = false, i=0, il=coll.length;
+  
+  for(i;i<il;i++){
+    this.add(coll[i], allowRepeated);
+    isChanged = true;
+  }
+  return isChanged;
+};
+
 // TODO: port rest?
