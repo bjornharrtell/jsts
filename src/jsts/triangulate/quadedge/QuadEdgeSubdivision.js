@@ -1043,17 +1043,17 @@ jsts.triangulate.quadedge.TriangleCoordinatesVisitor.prototype.visit = function(
   
   for(i;i<3;i++){
     v = triEdges[i].orig();
-    this.coordList.add(v.getCoordinate());
+    this.coordList.addCoordinate(v.getCoordinate());
   }
   
   if(this.coordList.length > 0){
-    coordList.closeRing();
-    pts = coordList.toCoordinateArray();
+    this.coordList.closeRing();
+    pts = this.coordList;
     if(pts.length !== 4){
       return;
     }
     
-    this.triCoords.add(pts);
+    this.triCoords.push(pts);
   }
 };
 
