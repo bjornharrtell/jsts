@@ -83,6 +83,6 @@ jsts.geom.CoordinateList.prototype.closeRing = function()
 {
   if (this.length > 0)
     this.addCoordinate(new jsts.geom.Coordinate(this[0]), false);
-}
+};
 
 // TODO: port rest?
