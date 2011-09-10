@@ -259,4 +259,17 @@ jsts.geom.LineSegment.prototype.setCoordinates2 = function(p0, p1) {
   this.p1.y = p1.y;
 };
 
+/**
+ * Computes the distance between this line segment and a given point.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p the coordinate
+ * @return {number}
+ *          the distance from this segment to the given point
+ */
+jsts.geom.LineSegment.prototype.distance = function(p)
+{
+  return jsts.algorithm.CGAlgorithms.distancePointLine(p, this.p0, this.p1);
+};
+
 // TODO: port rest
