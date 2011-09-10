@@ -50,13 +50,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision = function(env, tolerance) {
   this.tolerance = tolerance;
   this.edgeCoincidenceTolerance = tolerance / jsts.triangulate.quadedge.QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
 
-  this.frameVertex = new Array(3);
-  this.createFrame(env);
-  
-  this.startingEdge = this.initSubdiv();
-  this.locator = new jsts.triangulate.quadedge.LastFoundQuadEdgeLocator(this);
-  
-  // used for edge extraction to ensure edge uniqueness
+  //used for edge extraction to ensure edge uniqueness
   this.visitedKey = 0;
   this.quadEdges = [];
   this.startingEdge;
@@ -66,6 +60,11 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision = function(env, tolerance) {
   this.locator = null;
   this.seg = new jsts.geom.LineSegment();
   this.triEdges = new Array(3);
+  this.frameVertex = new Array(3);
+  this.createFrame(env);
+  
+  this.startingEdge = this.initSubdiv();
+  this.locator = new jsts.triangulate.quadedge.LastFoundQuadEdgeLocator(this);
 };
 
 jsts.triangulate.quadedge.QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR = 1000;
@@ -167,7 +166,11 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEnvelope = function()
  *          a collection of QuadEdges
  */
 jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdges = function() {
-    return this.quadEdges;
+    if(arguments.length > 0){
+      return this.getEdgesByFactory(arguments[0]);
+    }else{
+      return this.quadEdges;
+    }
 };
 
 /**
@@ -214,7 +217,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.connect = function(a, b)
   var q = jsts.triangulate.quadedge.QuadEdge.connect(a, b);
   this.quadEdges.push(q);
   return q;
-}
+};
 
 /**
  * Deletes a quadedge from the subdivision. Linked quadedges are updated to
@@ -324,12 +327,12 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.locateFromEdge = functio
 jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.locate = function(){
   if(arguments.length === 1){
     if(arguments[0] instanceof jsts.triangulate.quadedge.Vertex){
-      this.locateByVertex(arguments[0]);
+      return this.locateByVertex(arguments[0]);
     }else{
-      this.locateByCoordinate(arguments[0]);
+      return this.locateByCoordinate(arguments[0]);
     }
   }else{
-    this.locateByCoordinates(arguments[0], arguments[1]);
+    return this.locateByCoordinates(arguments[0], arguments[1]);
   }
 };
 
@@ -522,7 +525,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.isFrameVertex = function
  */
 jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.isOnEdge = function(e, p) {
   this.seg.setCoordinates(e.orig().getCoordinate(), e.dest().getCoordinate());
-  var dist = seg.distance(p);
+  var dist = this.seg.distance(p);
   
   // heuristic (hack?)
   return dist < this.edgeCoincidenceTolerance;
@@ -667,7 +670,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getPrimaryEdges = functi
       priQE = edge.getPrimary();
 
       if (includeFrame || !this.isFrameEdge(priQE)){
-        edges.add(priQE);
+        edges.push(priQE);
       }
 
       edgeStack.push(edge.oNext());
@@ -818,7 +821,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getTriangleCoordinates =
  * @return {jsts.geom.Geometry}
  *           a MultiLineString
  */
-jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdges = function(geomFact) {
+jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdgesByFactory = function(geomFact) {
   var quadEdges, edges, i, qe, coords;
   
   quadEdges = this.getPrimaryEdges(false);
@@ -829,8 +832,8 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdges = function(geom
   for(i;i<il;i++){
     qe = quadEdges[i];
     coords = new Array(2);
-    coords[0] = (qe.orig().getCoordinte());
-    coords[1] = push(qe.dest().getCoordinte());
+    coords[0] = (qe.orig().getCoordinate());
+    coords[1] = (qe.dest().getCoordinate());
     edges[i] = geomFact.createLineString(coords);
   }
   
@@ -945,7 +948,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiCellPolygon = 
     qe = qe.oPrev();
   } while (qe !== startQE);
   
-  coordList = new jsts.geom.CoordinateList();
+  coordList = new jsts.geom.CoordinateList([],false);
   coordList.addAll(cellPts, false);
   coordList.closeRing();
   
@@ -1029,21 +1032,21 @@ jsts.triangulate.quadedge.TriangleVertexListVisitor.prototype.getTriangleVertice
 };
 
 jsts.triangulate.quadedge.TriangleCoordinatesVisitor = function(){
-  this.coordList = new jsts.geom.CoordinateList();
+  this.coordList = new jsts.geom.CoordinateList([],false);
   this.triCoords = [];
 };
 
 jsts.triangulate.quadedge.TriangleCoordinatesVisitor.prototype.visit = function(triEdges){
-  this.coordList.clear();
+  this.coordList = new jsts.geom.CoordinateList([],false);
   
   var i=0, v, pts;
   
   for(i;i<3;i++){
     v = triEdges[i].orig();
-    this.coordList.add(v.getCoordinte());
+    this.coordList.add(v.getCoordinate());
   }
   
-  if(this.coordList.size() > 0){
+  if(this.coordList.length > 0){
     coordList.closeRing();
     pts = coordList.toCoordinateArray();
     if(pts.length !== 4){
