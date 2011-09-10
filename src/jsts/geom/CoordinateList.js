@@ -79,10 +79,10 @@ jsts.geom.CoordinateList.prototype.addCoordinate = function(coord,
 /**
  * Ensure this coordList is a ring, by adding the start point if necessary
  */
-jsts.geom.CoordinateList.prototype.closeRing = function()
-{
-  if (this.length > 0)
+jsts.geom.CoordinateList.prototype.closeRing = function() {
+  if (this.length > 0) {
     this.addCoordinate(new jsts.geom.Coordinate(this[0]), false);
+  }
 };
 
 // TODO: port rest?
