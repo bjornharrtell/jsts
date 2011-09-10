@@ -277,7 +277,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.delete_jsts = function(e
  *          startEdge an edge of the subdivision to start searching at.
  * @return {jsts.triangulate.quadedge.QuadEdge}
  *          a QuadEdge which contains v, or is on the edge of a triangle
- *          containing v
+ *          containing v.
  *
  * @throws jsts.error.LocateFailureError
  *           if the location algorithm fails to converge in a reasonable
