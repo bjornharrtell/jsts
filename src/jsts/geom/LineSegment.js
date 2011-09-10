@@ -263,9 +263,9 @@ jsts.geom.LineSegment.prototype.setCoordinates2 = function(p0, p1) {
  * Computes the distance between this line segment and a given point.
  *
  * @param {jsts.geom.Coordinate}
- *          p the coordinate
+ *          p the coordinate.
  * @return {number}
- *          the distance from this segment to the given point
+ *          the distance from this segment to the given point.
  */
 jsts.geom.LineSegment.prototype.distance = function(p)
 {
