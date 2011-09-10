@@ -48,11 +48,12 @@
  */
 jsts.triangulate.quadedge.QuadEdgeSubdivision = function(env, tolerance) {
   this.tolerance = tolerance;
-  this.edgeCoincidenceTolerance = tolerance / EDGE_COINCIDENCE_TOL_FACTOR;
+  this.edgeCoincidenceTolerance = tolerance / jsts.triangulate.quadedge.QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
 
+  this.frameVertex = new Array(3);
   this.createFrame(env);
   
-  this.startingEdge = initSubdiv();
+  this.startingEdge = this.initSubdiv();
   this.locator = new jsts.triangulate.quadedge.LastFoundQuadEdgeLocator(this);
   
   // used for edge extraction to ensure edge uniqueness
@@ -61,7 +62,6 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision = function(env, tolerance) {
   this.startingEdge;
   this.tolerance;
   this.edgeCoincidenceTolerance;
-  this.frameVertex = new Array(3);
   this.frameEnv;
   this.locator = null;
   this.seg = new jsts.geom.LineSegment();
@@ -807,186 +807,160 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getTriangleCoordinates =
   return visitor.getTriangles();
 };
 
-  private static class TriangleCoordinatesVisitor implements TriangleVisitor {
-    private CoordinateList coordList = new CoordinateList();
+  
 
-    private List triCoords = new ArrayList();
+/**
+ * Gets the geometry for the edges in the subdivision as a
+ * {@link MultiLineString} containing 2-point lines.
+ * 
+ * @param {jsts.geom.GeometryFactory}
+ *          geomFact the GeometryFactory to use
+ * @return {jsts.geom.Geometry}
+ *           a MultiLineString
+ */
+jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdges = function(geomFact) {
+  var quadEdges, edges, i, qe, coords;
+  
+  quadEdges = this.getPrimaryEdges(false);
+  edges = new Array(quadEdges.length);
 
-    public TriangleCoordinatesVisitor() {
-    }
-
-    public void visit(QuadEdge[] triEdges) {
-      coordList.clear();
-      for (int i = 0; i < 3; i++) {
-        Vertex v = triEdges[i].orig();
-        coordList.add(v.getCoordinate());
-      }
-      if (coordList.size() > 0) {
-        coordList.closeRing();
-        Coordinate[] pts = coordList.toCoordinateArray();
-        if (pts.length != 4) {
-          // checkTriangleSize(pts);
-          return;
-        }
-
-        triCoords.add(pts);
-      }
-    }
-
-    private void checkTriangleSize(Coordinate[] pts)
-    {
-      String loc = "";
-      if (pts.length >= 2)
-        loc = WKTWriter.toLineString(pts[0], pts[1]);
-      else {
-        if (pts.length >= 1)
-          loc = WKTWriter.toPoint(pts[0]);
-      }
-      // Assert.isTrue(pts.length == 4, "Too few points for visited triangle at
-      // " + loc);
-      // com.vividsolutions.jts.util.Debug.println("too few points for triangle
-      // at " + loc);
-    }
-    
-    public List getTriangles() {
-      return triCoords;
-    }
-  }
-
-  /**
-   * Gets the geometry for the edges in the subdivision as a
-   * {@link MultiLineString} containing 2-point lines.
-   * 
-   * @param geomFact
-   *          the GeometryFactory to use
-   * @return a MultiLineString
-   */
-  public Geometry getEdges(GeometryFactory geomFact) {
-    List quadEdges = getPrimaryEdges(false);
-    LineString[] edges = new LineString[quadEdges.size()];
-    int i = 0;
-    for (Iterator it = quadEdges.iterator(); it.hasNext();) {
-      QuadEdge qe = (QuadEdge) it.next();
-      edges[i++] = geomFact.createLineString(new Coordinate[] {
-          qe.orig().getCoordinate(), qe.dest().getCoordinate() });
-    }
-    return geomFact.createMultiLineString(edges);
-  }
-
-  /**
-   * Gets the geometry for the triangles in a triangulated subdivision as a
-   * {@link GeometryCollection} of triangular {@link Polygon}s.
-   * 
-   * @param geomFact
-   *          the GeometryFactory to use
-   * @return a GeometryCollection of triangular Polygons
-   */
-  public Geometry getTriangles(GeometryFactory geomFact) {
-    List triPtsList = getTriangleCoordinates(false);
-    Polygon[] tris = new Polygon[triPtsList.size()];
-    int i = 0;
-    for (Iterator it = triPtsList.iterator(); it.hasNext();) {
-      Coordinate[] triPt = (Coordinate[]) it.next();
-      tris[i++] = geomFact
-          .createPolygon(geomFact.createLinearRing(triPt), null);
-    }
-    return geomFact.createGeometryCollection(tris);
-  }
-
-  /**
-   * Gets the cells in the Voronoi diagram for this triangulation. The cells are
-   * returned as a {@link GeometryCollection} of {@link Polygon}s
-   * <p>
-   * The userData of each polygon is set to be the {@link Coordinate) of the
-   * cell site. This allows easily associating external data associated with the
-   * sites to the cells.
-   * 
-   * @param geomFact
-   *          a geometry factory
-   * @return a GeometryCollection of Polygons
-   */
-  public Geometry getVoronoiDiagram(GeometryFactory geomFact)
-  {
-    List vorCells = getVoronoiCellPolygons(geomFact);
-    return geomFact.createGeometryCollection(GeometryFactory.toGeometryArray(vorCells));   
+  i= 0, il=quadEdges.length;
+  
+  for(i;i<il;i++){
+    qe = quadEdges[i];
+    coords = new Array(2);
+    coords[0] = (qe.orig().getCoordinte());
+    coords[1] = push(qe.dest().getCoordinte());
+    edges[i] = geomFact.createLineString(coords);
   }
   
-  /**
-   * Gets a List of {@link Polygon}s for the Voronoi cells of this
-   * triangulation.
-   * <p>
-   * The userData of each polygon is set to be the {@link Coordinate) of the
-   * cell site. This allows easily associating external data associated with the
-   * sites to the cells.
-   * 
-   * @param geomFact
-   *          a geometry factory
-   * @return a List of Polygons
-   */
-  public List getVoronoiCellPolygons(GeometryFactory geomFact)
-  {
-    /*
-     * Compute circumcentres of triangles as vertices for dual edges.
-     * Precomputing the circumcentres is more efficient, 
-     * and more importantly ensures that the computed centres
-     * are consistent across the Voronoi cells.
-     */ 
-    visitTriangles(new TriangleCircumcentreVisitor(), true);
-    
-    List cells = new ArrayList();
-    Collection edges = getVertexUniqueEdges(false);
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      QuadEdge qe = (QuadEdge) i.next();
-      cells.add(getVoronoiCellPolygon(qe, geomFact));
-    }
-    return cells;
-  }
-  
-  /**
-   * Gets the Voronoi cell around a site specified by the origin of a QuadEdge.
-   * <p>
-   * The userData of the polygon is set to be the {@link Coordinate) of the
-   * site. This allows attaching external data associated with the site to this
-   * cell polygon.
-   * 
-   * @param qe
-   *          a quadedge originating at the cell site
-   * @param geomFact
-   *          a factory for building the polygon
-   * @return a polygon indicating the cell extent
-   */
-  public Polygon getVoronoiCellPolygon(QuadEdge qe, GeometryFactory geomFact)
-  {
-    List cellPts = new ArrayList();
-    QuadEdge startQE = qe;
-    do {
-// Coordinate cc = circumcentre(qe);
-      // use previously computed circumcentre
-      Coordinate cc = qe.rot().orig().getCoordinate();
-      cellPts.add(cc);
-      
-      // move to next triangle CW around vertex
-      qe = qe.oPrev();
-    } while (qe != startQE);
-    
-    CoordinateList coordList = new CoordinateList();
-    coordList.addAll(cellPts, false);
-    coordList.closeRing();
-    
-    if (coordList.size() < 4) {
-      System.out.println(coordList);
-      coordList.add(coordList.get(coordList.size()-1), true);
-    }
-    
-    Coordinate[] pts = coordList.toCoordinateArray();
-    Polygon cellPoly = geomFact.createPolygon(geomFact.createLinearRing(pts), null);
-    
-    Vertex v = startQE.orig();
-    cellPoly.setUserData(v.getCoordinate());
-    return cellPoly;
-  }
-  
+  return geomFact.createMultiLineString(edges);
 };
+
+/**
+ * Gets the geometry for the triangles in a triangulated subdivision as a
+ * {@link GeometryCollection} of triangular {@link Polygon}s.
+ * 
+ * @param {jsts.geom.GeometryFactory}
+ *          geomFact the GeometryFactory to use
+ * @return {jsts.geom.Geometry}
+ *          a GeometryCollection of triangular Polygons
+ */
+jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getTriangles = function(geomFact) {
+  var triPtsList, tris, triPt, i, il;
+  triPtsList = this.getTriangleCoordinates(false);
+  tris = new Array(triPtsList.length);
+  
+  i=0, il = triPtsList.length;
+  for(i;i<il;i++){
+    triPt = triPtsList[i];
+    tris[i] = geomFact.createPolygon(geomFact.createLinearRing(triPt, null));
+  }
+  
+  return geomFact.createGeometryCollection(tris);
+};
+
+/**
+ * Gets the cells in the Voronoi diagram for this triangulation. The cells are
+ * returned as a {@link GeometryCollection} of {@link Polygon}s
+ * <p>
+ * The userData of each polygon is set to be the {@link Coordinate) of the
+ * cell site. This allows easily associating external data associated with the
+ * sites to the cells.
+ * 
+ * @param {jsts.geom.GeometryFactory}
+ *          geomFact a geometry factory
+ * @return {jsts.geom.Geometry}
+ *          a GeometryCollection of Polygons
+ */
+jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiDiagram = function(geomFact)
+{
+  var vorCells = this.getVoronoiCellPolygons(geomFact);
+  return geomFact.createGeometryCollection(vorCells);   
+};
+  
+/**
+ * Gets a List of {@link Polygon}s for the Voronoi cells of this
+ * triangulation.
+ * <p>
+ * The userData of each polygon is set to be the {@link Coordinate) of the
+ * cell site. This allows easily associating external data associated with the
+ * sites to the cells.
+ * 
+ * @param {jsts.geom.GeometryFactory}
+ *          geomFact a geometry factory
+ * @return {jsts.geom.Polygon[]}
+ *          an array of Polygons
+ */
+jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiCellPolygons = function(geomFact)
+{
+  /*
+   * Compute circumcentres of triangles as vertices for dual edges.
+   * Precomputing the circumcentres is more efficient, 
+   * and more importantly ensures that the computed centres
+   * are consistent across the Voronoi cells.
+   */ 
+  this.visitTriangles(new jsts.triangulate.quadedge.TriangleCircumcentreVisitor(), true);
+  
+  var cells, edges, i, il, qe;
+  cells = [];
+  edges = this.getVertexUniqueEdges(false);
+  
+  i=0, il=edges.length;
+  for(i;i<il;i++){
+    qe = edges[i];
+    cells.push(this.getVoronoiCellPolygon(qe, geomFact));
+  }
+  
+  return cells;
+};
+  
+/**
+ * Gets the Voronoi cell around a site specified by the origin of a QuadEdge.
+ * <p>
+ * The userData of the polygon is set to be the {@link Coordinate) of the
+ * site. This allows attaching external data associated with the site to this
+ * cell polygon.
+ * 
+ * @param {jsts.triangulate.quadedge.QuadEdge}
+ *          qe a quadedge originating at the cell site
+ * @param {jsts.geom.GeometryFactory}
+ *          geomFact a factory for building the polygon
+ * @return {jsts.geom.Polygon}
+ *          a polygon indicating the cell extent
+ */
+jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiCellPolygon = function(qe, geomFact)
+{
+  var cellPts, startQe, cc, coordList, cellPoly, v;
+  
+  cellPts = [];
+  startQE = qe;
+  do {
+    // Coordinate cc = circumcentre(qe);
+    // use previously computed circumcentre
+    cc = qe.rot().orig().getCoordinate();
+    cellPts.push(cc);
+    
+    // move to next triangle CW around vertex
+    qe = qe.oPrev();
+  } while (qe !== startQE);
+  
+  coordList = new jsts.geom.CoordinateList();
+  coordList.addAll(cellPts, false);
+  coordList.closeRing();
+  
+  if (coordList.size() < 4) {
+    //System.out.println(coordList);
+    coordList.add(coordList.get(coordList.length-1), true);
+  }
+  
+  cellPoly = geomFact.createPolygon(geomFact.createLinearRing(coordList), null);
+  
+  v = startQE.orig();
+  cellPoly.setUserData(v.getCoordinate());
+  return cellPoly;
+};
+
 
 
 /**
@@ -1029,9 +1003,9 @@ jsts.triangulate.quadedge.TriangleEdgesListVisitor = function(){
   this.triList = [];
 };
 
-jsts.triangluate.quadedge.TriangleEdgesListVisitor.prototype.visit = function(triEdges){
-  //TODO: This line should be ported:
-  //this.triList.add(triEdges.clone());
+jsts.triangulate.quadedge.TriangleEdgesListVisitor.prototype.visit = function(triEdges){
+  var clone = triEdges.concat(); //concat without arguments returns a copy of the array
+  this.triList.push(clone);
 };
 
 jsts.triangulate.quadedge.TriangleEdgesListVisitor.prototype.getTriangleEdges = function(){
@@ -1052,4 +1026,34 @@ jsts.triangulate.quadedge.TriangleVertexListVisitor.prototype.visit = function(t
 
 jsts.triangulate.quadedge.TriangleVertexListVisitor.prototype.getTriangleVertices = function(){
   return this.triList;
+};
+
+jsts.triangulate.quadedge.TriangleCoordinatesVisitor = function(){
+  this.coordList = new jsts.geom.CoordinateList();
+  this.triCoords = [];
+};
+
+jsts.triangulate.quadedge.TriangleCoordinatesVisitor.prototype.visit = function(triEdges){
+  this.coordList.clear();
+  
+  var i=0, v, pts;
+  
+  for(i;i<3;i++){
+    v = triEdges[i].orig();
+    this.coordList.add(v.getCoordinte());
+  }
+  
+  if(this.coordList.size() > 0){
+    coordList.closeRing();
+    pts = coordList.toCoordinateArray();
+    if(pts.length !== 4){
+      return;
+    }
+    
+    this.triCoords.add(pts);
+  }
+};
+
+jsts.triangulate.quadedge.TriangleCoordinatesVisitor.prototype.getTriangles = function(){
+  return this.triCoords;
 };
