@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title>Triangulation example</title>
+  <link rel="stylesheet" href="http://www.openlayers.org/api/2.11-rc1/theme/default/style.css" type="text/css" />
+  
+  <script src="http://www.openlayers.org/api/2.11-rc1/OpenLayers.js"></script>
+
+  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/lib/javascript.util.js"></script>
+  <script type="text/javascript" src="https://github.com/johanhasselstrom/jsts/raw/master/lib/jsts.js"></script>
+
+<script type="text/javascript">
+  function init() {
+    var geomFact = new jsts.geom.GeometryFactory();
+
+    var points = new Array(50);
+    for (var i=0; i<points.length; i++) {
+        points[i] = new jsts.geom.Coordinate((360 * Math.random()) - 180, (180 * Math.random()) - 90);
+    }
+    var input = new jsts.geom.MultiPoint(points);
+    
+    var builder = new jsts.triangulate.DelaunayTriangulationBuilder();
+    builder.setSites(input);
+    
+    var result = null;
+	result = builder.getTriangles(geomFact);      
+
+    var map = new OpenLayers.Map('map', {
+      maxExtent: new OpenLayers.Bounds(-180, -180, 180, 180),
+      maxResolution: 100,
+      units: 'm',
+      controls: [new OpenLayers.Control.MousePosition(), new OpenLayers.Control.Navigation()]
+    });
+    
+    var layer = new OpenLayers.Layer.Vector('test', {
+      isBaseLayer: true
+    });
+
+    var feature = new OpenLayers.Feature.Vector(result, null, {fillOpacity:0.5});
+    layer.addFeatures([feature]);
+    
+    map.addLayer(layer);
+    map.zoomToExtent(feature.geometry.getBounds());
+  }
+</script>
+</head>
+<body onload="init()">
+En example of delaunay-triangulation using 50 random points. Reloading the page results in a new set of points.
+	<div id="map" style="width:500px;height=500px;"></div>
+</body>
+</html>
