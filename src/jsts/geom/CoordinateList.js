@@ -85,4 +85,21 @@ jsts.geom.CoordinateList.prototype.closeRing = function() {
   }
 };
 
+/**
+ * Creates a standard javascript-array from the contents of this list
+ * 
+ * @return {Array}
+ *            the created array
+ */
+jsts.geom.CoordinateList.prototype.toArray = function() {
+  var i, il, arr;
+  i=0, il=this.length, arr = new Array(il);
+  
+  for(i;i<il;i++){
+    arr[i] = this[i];
+  }
+  
+  return arr;
+};
+
 // TODO: port rest?
