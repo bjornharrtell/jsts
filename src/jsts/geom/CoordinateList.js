@@ -76,4 +76,30 @@ jsts.geom.CoordinateList.prototype.addCoordinate = function(coord,
   this.push(coord);
 };
 
+/**
+ * Ensure this coordList is a ring, by adding the start point if necessary
+ */
+jsts.geom.CoordinateList.prototype.closeRing = function() {
+  if (this.length > 0) {
+    this.addCoordinate(new jsts.geom.Coordinate(this[0]), false);
+  }
+};
+
+/**
+ * Creates a standard javascript-array from the contents of this list
+ * 
+ * @return {Array}
+ *            the created array
+ */
+jsts.geom.CoordinateList.prototype.toArray = function() {
+  var i, il, arr;
+  i=0, il=this.length, arr = new Array(il);
+  
+  for(i;i<il;i++){
+    arr[i] = this[i];
+  }
+  
+  return arr;
+};
+
 // TODO: port rest?

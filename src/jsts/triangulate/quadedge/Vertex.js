@@ -192,7 +192,7 @@ jsts.triangulate.quadedge.Vertex.prototype.equalsExact = function(other) {
  *          tolerance The tolerance to consider when comparing the two vertexes.
  * @return {Boolean} true if this vertex equals other.
  */
-jsts.triangulate.quadedge.Vertex.prototype.equalsExact = function(other,
+jsts.triangulate.quadedge.Vertex.prototype.equalsWithTolerance = function(other,
     tolerance) {
   return (this.p.distance(other.getCoordinate()) < tolerance);
 };
@@ -332,8 +332,7 @@ jsts.triangulate.quadedge.Vertex.prototype.cross = function() {
  * @return {Boolean} true if this vertex lies in the circle.
  */
 jsts.triangulate.quadedge.Vertex.prototype.isInCircle = function(a, b, c) {
-  return jsts.triangulate.quadedge.TrianglePredicate.prototype
-      .isInCircleRobust(a.p, b.p, c.p, this.p);
+  return jsts.triangulate.quadedge.TrianglePredicate.isInCircleRobust(a.p, b.p, c.p, this.p);
 };
 
 
