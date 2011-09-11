@@ -1048,7 +1048,7 @@ jsts.triangulate.quadedge.TriangleCoordinatesVisitor.prototype.visit = function(
 
   if (this.coordList.length > 0) {
     this.coordList.closeRing();
-    pts = this.coordList;
+    pts = this.coordList.toArray();
     if (pts.length !== 4) {
       return;
     }
