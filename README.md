@@ -23,8 +23,9 @@ using the [Jasmine testing framework](https://github.com/pivotal/jasmine). A
 additional tests.
 
 A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). Also
-available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html) and
-[overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) operations.
+available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html), 
+[overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) and [triangulation](http://bjornharrtell.github.com/jsts/examples/triangulation.html)
+operations.
 
 The code tries to be conformant to the
 [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
