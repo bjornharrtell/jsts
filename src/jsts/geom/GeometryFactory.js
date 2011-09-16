@@ -22,10 +22,10 @@
  * @constructor
  */
 jsts.geom.GeometryFactory = function(precisionModel) {
-  this.precisionModel = precisionModel;
+  this.precisionModel = precisionModel || new jsts.geom.PrecisionModel();
 };
 
-jsts.geom.GeometryFactory.precisionModel = null;
+jsts.geom.GeometryFactory.prototype.precisionModel = null;
 
 
 /**
