@@ -22,8 +22,9 @@
     builder.setSites(input);
     var delaunayResult = builder.getTriangles(geomFact);
     
-    var subdiv = builder.getSubdivision();
-	var voronoiResult = subdiv.getVoronoiDiagram(geomFact);      
+    builder = new jsts.triangulate.VoronoiDiagramBuilder();
+    builder.setSites(input);
+	var voronoiResult = builder.getDiagram(geomFact);      
 
     var map = new OpenLayers.Map('map', {
       maxExtent: new OpenLayers.Bounds(-180, -180, 180, 180),
