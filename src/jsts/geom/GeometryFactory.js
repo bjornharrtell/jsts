@@ -233,3 +233,55 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
 jsts.geom.GeometryFactory.prototype.createGeometryCollection = function(geometries) {
   return new jsts.geom.GeometryCollection(geometries);
 };
+
+/**
+ * Creates a {@link Geometry} with the same extent as the given envelope.
+ * The Geometry returned is guaranteed to be valid.
+ * To provide this behaviour, the following cases occur:
+ * <p>
+ * If the <code>Envelope</code> is:
+ * <ul>
+ * <li>null : returns an empty {@link Point}
+ * <li>a point : returns a non-empty {@link Point}
+ * <li>a line : returns a two-point {@link LineString}
+ * <li>a rectangle : returns a {@link Polygon}> whose points are (minx, miny),
+ *  (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).
+ * </ul>
+ *
+ *@param  {jsts.geom.Envelope}
+ *          envelope the <code>Envelope</code> to convert
+ *@return {jsts.geom.Geometry}
+ *          an empty <code>Point</code> (for null <code>Envelope</code>s),
+ *          a <code>Point</code> (when min x = max x and min y = max y) or a
+ *          <code>Polygon</code> (in all other cases)
+ */
+jsts.geom.GeometryFactory.prototype.toGeometry = function(envelope) 
+{
+  // null envelope - return empty point geometry
+  if (envelope.isNull()) {
+    return this.createPoint(null);
+  }
+
+  // point?
+  if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY()) {
+    return this.createPoint(new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY()));
+  }
+
+  // vertical or horizontal line?
+  if (envelope.getMinX() === envelope.getMaxX()
+      || envelope.getMinY() === envelope.getMaxY()) {
+    return this.createLineString([
+        new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY()),
+        new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMaxY())
+        ]);
+  }
+
+  // create a CW ring for the polygon
+  return this.createPolygon(this.createLinearRing([
+      new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY()),
+      new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMaxY()),
+      new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMaxY()),
+      new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMinY()),
+      new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY())
+      ]), null);
+};
