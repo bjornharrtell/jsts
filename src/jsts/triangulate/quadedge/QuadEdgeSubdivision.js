@@ -232,9 +232,10 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.delete_jsts = function(e
 
   var eSym, eRot, eRotSym;
 
+  e.
   eSym = e.sym();
-  eRot = e.rot();
-  eRotSym = e.rot().sym();
+  eRot = e.rot;
+  eRotSym = e.rot.sym();
 
   var idx = this.quadEdges.indexOf(e);
   if (idx !== -1) {
@@ -941,7 +942,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiCellPolygon = 
   do {
     // Coordinate cc = circumcentre(qe);
     // use previously computed circumcentre
-    cc = qe.rot().orig().getCoordinate();
+    cc = qe.rot.orig().getCoordinate();
     cellPts.push(cc);
 
     // move to next triangle CW around vertex
@@ -949,18 +950,18 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiCellPolygon = 
   } while (qe !== startQE);
 
   coordList = new jsts.geom.CoordinateList([], false);
-  coordList.addAll(cellPts, false);
+  coordList.add(cellPts, false);
   coordList.closeRing();
 
-  if (coordList.size() < 4) {
+  if (coordList.length < 4) {
     //System.out.println(coordList);
     coordList.add(coordList.get(coordList.length - 1), true);
   }
 
-  cellPoly = geomFact.createPolygon(geomFact.createLinearRing(coordList), null);
+  cellPoly = geomFact.createPolygon(geomFact.createLinearRing(coordList.toArray()), null);
 
   v = startQE.orig();
-  cellPoly.setUserData(v.getCoordinate());
+  //cellPoly.setUserData(v.getCoordinate());
   return cellPoly;
 };
 
@@ -998,7 +999,7 @@ jsts.triangulate.quadedge.TriangleCircumcentreVisitor.prototype.visit = function
   i = 0;
 
   for (i; i < 3; i++) {
-    triEdges[i].rot().setOrig(ccVertex);
+    triEdges[i].rot.setOrig(ccVertex);
   }
 };
 
