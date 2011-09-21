@@ -1,8 +1,8 @@
-2011-09-16: Version 0.10.0
+2011-09-21: Version 0.10.0
 
 		Polygon.precisionModel === undefined (#60)
-		Port of DelaunayTriangulationBuilder is now functional
-		Tested with OpenLayers 2.11 release version
+		Ports of DelaunayTriangulationBuilder and VoronoiDiagramBuilder are now functional
+		Based on OpenLayers 2.11 release version
 
 2011-08-20: Version 0.9.1
 
@@ -10,4 +10,4 @@
 
 2011-08-16: Version 0.9.0
 
-		Initial release.
+		Initial release
