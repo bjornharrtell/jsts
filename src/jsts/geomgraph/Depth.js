@@ -47,7 +47,8 @@
     return this.depth[geomIndex][posIndex];
   };
 
-  jsts.geomgraph.Depth.prototype.setDepth = function(geomIndex, posIndex, depthValue) {
+  jsts.geomgraph.Depth.prototype.setDepth = function(geomIndex, posIndex,
+      depthValue) {
     this.depth[geomIndex][posIndex] = depthValue;
   };
 
@@ -66,8 +67,8 @@
    * A Depth object is null (has never been initialized) if all depths are null.
    */
   jsts.geomgraph.Depth.prototype.isNull = function() {
-    if (arguments.length > 1) {
-      this.isNull2.apply(this, arguments);
+    if (arguments.length > 0) {
+      return this.isNull2.apply(this, arguments);
     }
 
     for (var i = 0; i < 2; i++) {
@@ -80,8 +81,8 @@
   };
 
   jsts.geomgraph.Depth.prototype.isNull2 = function(geomIndex) {
-    if (arguments.length > 2) {
-      this.isNull3.apply(this, arguments);
+    if (arguments.length > 1) {
+      return this.isNull3.apply(this, arguments);
     }
 
     return this.depth[geomIndex][1] == jsts.geomgraph.Depth.NULL_VALUE;
