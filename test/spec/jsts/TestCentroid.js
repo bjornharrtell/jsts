@@ -27,7 +27,7 @@ describe('TestCentroid', function() {
         var wkt = $("a", testcase).text().trim().replace(/\n/g,'');
         var expected = $("op", testcase).text().trim();
         
-        var reader = new jsts.io.WKTReader();
+        var reader = new jsts.io.WKTReader(new jsts.geom.GeometryFactory(new jsts.geom.PrecisionModel(1)));
         var geometry = reader.read(wkt);
         // TODO: should force geometry to fixed precision with scale 1.
         var expectedg = reader.read(expected);

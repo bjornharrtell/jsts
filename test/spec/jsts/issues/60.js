@@ -11,6 +11,5 @@ describe('GitHub issue #60', function() {
       var precisionModel = poly3.getPrecisionModel();
       
       expect(precisionModel).toBeDefined();
-      
   });
 });
