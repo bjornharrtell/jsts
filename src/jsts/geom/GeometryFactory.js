@@ -27,6 +27,10 @@ jsts.geom.GeometryFactory = function(precisionModel) {
 
 jsts.geom.GeometryFactory.prototype.precisionModel = null;
 
+jsts.geom.GeometryFactory.prototype.getPrecisionModel = function() {
+  return this.precisionModel;
+};
+
 
 /**
  * Creates a Point using the given Coordinate; a null Coordinate will create an

@@ -18,7 +18,8 @@
    * @constructor
    * @extends jsts.geom.Geometry
    */
-  jsts.geom.GeometryCollection = function() {
+  jsts.geom.GeometryCollection = function(geometries, factory) {
+    this.factory = factory;
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
 
     /*OpenLayers.Geometry.prototype.initialize.apply(this, arguments);

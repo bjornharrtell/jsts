@@ -88,7 +88,9 @@
  *
  * @constructor
  */
-jsts.geom.Geometry = function() {};
+jsts.geom.Geometry = function(factory) {
+  this.factory = factory;
+};
 
 
 /**
@@ -96,11 +98,11 @@ jsts.geom.Geometry = function() {};
  */
 jsts.geom.Geometry.prototype.envelope = null;
 
-
 /**
- * The PrecisionModel of this <code>Geometry</code>.
+ * The {@link GeometryFactory} used to create this Geometry
+ * @protected
  */
-jsts.geom.Geometry.prototype.precisionModel = null;
+jsts.geom.Geometry.prototype.factory = null;
 
 
 /**
@@ -161,7 +163,12 @@ jsts.geom.Geometry.hasNullElements = function(array) {
  * @return {jsts.geom.GeometryFactory} the factory for this geometry.
  */
 jsts.geom.Geometry.prototype.getFactory = function() {
-  return new jsts.geom.GeometryFactory();
+  // NOTE: Geometry could be created without JSTS constructor so need to check for member data
+  if (this.factory === null || this.factory === undefined) {
+    this.factory = new jsts.geom.GeometryFactory();
+  }
+
+  return this.factory;
 };
 
 
@@ -196,11 +203,7 @@ jsts.geom.Geometry.prototype.getGeometryN = function(n) {
  *         for this <code>Geometry</code> and all other <code>Geometry</code>s.
  */
 jsts.geom.Geometry.prototype.getPrecisionModel = function() {
-  if (this.precisionModel === null) {
-    this.precisionModel = new jsts.geom.PrecisionModel();
-  }
-
-  return this.precisionModel;
+  return this.getFactory().getPrecisionModel();
 };
 
 
