@@ -203,9 +203,6 @@ jsts.geom.Geometry.prototype.getPrecisionModel = function() {
   return this.precisionModel;
 };
 
-jsts.geom.Geometry.prototype.setPrecisionModel = function(precisionModel) {
-  this.precisionModel = precisionModel;
-};
 
 
 /**

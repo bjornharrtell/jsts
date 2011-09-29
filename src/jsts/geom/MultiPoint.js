@@ -14,7 +14,9 @@
    * @constructor
    * @extends jsts.geom.GeometryCollection
    */
-  jsts.geom.MultiPoint = function() {
+  jsts.geom.MultiPoint = function(points, factory) {
+    this.factory = factory;
+
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
 
     this.geometries = [];
