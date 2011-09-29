@@ -16,7 +16,9 @@
    * @constructor
    * @extends jsts.geom.GeometryCollection
    */
-  jsts.geom.MultiLineString = function() {
+  jsts.geom.MultiLineString = function(lineStrings, factory) {
+    this.factory = factory;
+
     if (arguments[0] instanceof Array) {
       // NOTE: need to support LinearRings as input (OL only supports
       // LineStrings

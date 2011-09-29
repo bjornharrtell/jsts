@@ -16,7 +16,9 @@
  * @constructor
  * @extends jsts.geom.Geometry
  */
-jsts.geom.Point = function(coordinate) {
+jsts.geom.Point = function(coordinate, factory) {
+  this.factory = factory;
+
   if (coordinate === undefined)
     return;
 

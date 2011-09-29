@@ -37,16 +37,7 @@ jsts.geom.GeometryFactory.prototype.precisionModel = null;
  * @return {Point} A new Point.
  */
 jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
-  var point = null;
-
-  if (coordinate === null) {
-    point = new jsts.geom.Point();
-    point.setPrecisionModel(this.precisionModel);
-  } else {
-    point = new jsts.geom.Point(coordinate);
-  }
-
-  point.setPrecisionModel(this.precisionModel);
+  var point = new jsts.geom.Point(coordinate, this);
 
   return point;
 };
@@ -62,8 +53,7 @@ jsts.geom.GeometryFactory.prototype.createPoint = function(coordinate) {
  * @return {LineString} A new LineString.
  */
 jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
-  var lineString = new jsts.geom.LineString(coordinates);
-  lineString.setPrecisionModel(this.precisionModel);
+  var lineString = new jsts.geom.LineString(coordinates, this);
 
   return lineString;
 };
@@ -80,8 +70,8 @@ jsts.geom.GeometryFactory.prototype.createLineString = function(coordinates) {
  * @return {LinearRing} A new LinearRing.
  */
 jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
-  var linearRing = new jsts.geom.LinearRing(coordinates);
-  linearRing.setPrecisionModel(this.precisionModel);
+  var linearRing = new jsts.geom.LinearRing(coordinates, this);
+
   return linearRing;
 };
 
@@ -101,54 +91,42 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  * @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
-  if (shell === null || shell === undefined) {
-    return new jsts.geom.Polygon();
+  var rings;
+
+  if (shell) {
+    rings = [shell];
+
+    if (holes !== undefined) {
+      rings = rings.concat(holes);
+    }
   }
 
-  var rings = [shell];
-
-  if (holes !== undefined) {
-    rings = rings.concat(holes);
-  }
-
-  var polygon = new jsts.geom.Polygon(rings);
-
-  polygon.setPrecisionModel(this.precisionModel);
+  var polygon = new jsts.geom.Polygon(rings, this);
 
   return polygon;
 };
 
 
 jsts.geom.GeometryFactory.prototype.createMultiPoint = function(coordinates) {
-  if (coordinates === undefined || coordinates === null) {
-    return new jsts.geom.MultiPoint();
+  if (coordinates) {
+    if (coordinates[0] instanceof jsts.geom.Point) {
+      var temp = [];
+      coordinates.forEach(function(point) {
+        temp.push(point.coordinate);
+      });
+      coordinates = temp;
+    }
   }
 
-  if (coordinates[0] instanceof jsts.geom.Point) {
-    var temp = [];
-    coordinates.forEach(function(point) {
-      temp.push(point.coordinate);
-    });
-    coordinates = temp;
-  }
-
-  return new jsts.geom.MultiPoint(coordinates);
+  return new jsts.geom.MultiPoint(coordinates, this);
 };
 
 jsts.geom.GeometryFactory.prototype.createMultiLineString = function(lineStrings) {
-  if (lineStrings === undefined || lineStrings === null) {
-    return new jsts.geom.MultiLineString();
-  }
-
-  return new jsts.geom.MultiLineString(lineStrings);
+  return new jsts.geom.MultiLineString(lineStrings, this);
 };
 
 jsts.geom.GeometryFactory.prototype.createMultiPolygon = function(polygons) {
-  if (polygons === undefined || polygons === null) {
-    return new jsts.geom.MultiPolygon();
-  }
-
-  return new jsts.geom.MultiPolygon(polygons);
+  return new jsts.geom.MultiPolygon(polygons, this);
 };
 
 
@@ -231,7 +209,7 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
 };
 
 jsts.geom.GeometryFactory.prototype.createGeometryCollection = function(geometries) {
-  return new jsts.geom.GeometryCollection(geometries);
+  return new jsts.geom.GeometryCollection(geometries, this);
 };
 
 /**

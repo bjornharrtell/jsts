@@ -29,12 +29,10 @@ describe('TestCentroid', function() {
         
         var reader = new jsts.io.WKTReader();
         var geometry = reader.read(wkt);
+        // TODO: should force geometry to fixed precision with scale 1.
         var expectedg = reader.read(expected);
         
         if (geometry === undefined) continue;
-        
-        // TODO: this should be taken care of more properly
-        geometry.setPrecisionModel(new jsts.geom.PrecisionModel(1));
         
         var centroid = geometry.getCentroid_jsts();
         

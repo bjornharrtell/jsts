@@ -24,7 +24,8 @@
    * @extends jsts.geom.LineString
    * @constructor
    */
-  jsts.geom.LinearRing = function() {
+  jsts.geom.LinearRing = function(coordinates, factory) {
+    this.factory = factory;
     jsts.geom.LineString.apply(this, arguments);
   };
   jsts.geom.LinearRing.prototype = OpenLayers.Geometry.LinearRing.prototype;

@@ -15,7 +15,9 @@
    * @extends jsts.geom.Geometry
    * @constructor
    */
-  jsts.geom.LineString = function(points) {
+  jsts.geom.LineString = function(points, factory) {
+    this.factory = factory;
+
     OpenLayers.Geometry.Curve.prototype.initialize.apply(this, arguments);
 
     this.geometries = this.components;
