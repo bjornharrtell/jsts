@@ -1,6 +1,7 @@
 2011-09-21: Version 0.10.0
 
 		Polygon.precisionModel === undefined (#60)
+		Port errors causing unioning touching polygons to fail are fixed
 		Ports of DelaunayTriangulationBuilder and VoronoiDiagramBuilder are now functional
 		Based on OpenLayers 2.11 release version
 
