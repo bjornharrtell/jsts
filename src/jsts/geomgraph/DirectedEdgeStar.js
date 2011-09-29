@@ -258,16 +258,16 @@
         state = this.LINKING_TO_OUTGOING;
         break;
       case this.LINKING_TO_OUTGOING:
-        if (nextOut.getEdgeRing() != er)
+        if (nextOut.getEdgeRing() !== er)
           continue;
         incoming.setNextMin(nextOut);
         state = this.SCANNING_FOR_INCOMING;
         break;
       }
     }
-    if (state === thisLINKING_TO_OUTGOING) {
-      Assert.isTrue(firstOut != null, 'found null for first outgoing dirEdge');
-      Assert.isTrue(firstOut.getEdgeRing() == er,
+    if (state === this.LINKING_TO_OUTGOING) {
+      Assert.isTrue(firstOut !== null, 'found null for first outgoing dirEdge');
+      Assert.isTrue(firstOut.getEdgeRing() === er,
           'unable to link last incoming dirEdge');
       incoming.setNextMin(firstOut);
     }

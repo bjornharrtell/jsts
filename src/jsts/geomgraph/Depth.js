@@ -33,9 +33,9 @@
   jsts.geomgraph.Depth.NULL_VALUE = -1;
 
   jsts.geomgraph.Depth.depthAtLocation = function(location) {
-    if (location == Location.EXTERIOR)
+    if (location === Location.EXTERIOR)
       return 0;
-    if (location == Location.INTERIOR)
+    if (location === Location.INTERIOR)
       return 1;
     return jsts.geomgraph.Depth.NULL_VALUE;
   };
@@ -59,7 +59,7 @@
   };
 
   jsts.geomgraph.Depth.prototype.add = function(geomIndex, posIndex, location) {
-    if (location == Location.INTERIOR)
+    if (location === Location.INTERIOR)
       this.depth[geomIndex][posIndex]++;
   };
 
@@ -73,7 +73,7 @@
 
     for (var i = 0; i < 2; i++) {
       for (var j = 0; j < 3; j++) {
-        if (this.depth[i][j] != jsts.geomgraph.Depth.NULL_VALUE)
+        if (this.depth[i][j] !== jsts.geomgraph.Depth.NULL_VALUE)
           return false;
       }
     }
@@ -96,7 +96,7 @@
     for (var i = 0; i < 2; i++) {
       for (var j = 1; j < 3; j++) {
         var loc = lbl.getLocation(i, j);
-        if (loc == Location.EXTERIOR || loc == Location.INTERIOR) {
+        if (loc === Location.EXTERIOR || loc === Location.INTERIOR) {
           // initialize depth if it is null, otherwise add this location value
           if (this.isNull(i, j)) {
             this.depth[i][j] = jsts.geomgraph.Depth.depthAtLocation(loc);
@@ -138,8 +138,7 @@
   };
 
   jsts.geomgraph.Depth.prototype.toString = function() {
-    return;
-    'A: ' + this.depth[0][1] + ',' + this.depth[0][2] + ' B: ' +
+    return 'A: ' + this.depth[0][1] + ',' + this.depth[0][2] + ' B: ' +
         this.depth[1][1] + ',' + this.depth[1][2];
   };
 

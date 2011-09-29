@@ -98,11 +98,11 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMinimalEdgeRings = function
       // at this point we can go ahead and attempt to place holes, if this
       // EdgeRing is a polygon
       var shell = this.findShell(minEdgeRings);
-      if (shell != null) {
+      if (shell !== null) {
         this.placePolygonHoles(shell, minEdgeRings);
         shellList.push(shell);
       } else {
-        freeHoleList.addAll(minEdgeRings);
+        freeHoleList = freeHoleList.concat(minEdgeRings);
       }
     } else {
       edgeRings.push(er);
@@ -233,7 +233,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.findEdgeRingContaining = functio
     var tryShell = shellList[i];
     var tryRing = tryShell.getLinearRing();
     var tryEnv = tryRing.getEnvelopeInternal();
-    if (minShell != null)
+    if (minShell !== null)
       minEnv = minShell.getLinearRing().getEnvelopeInternal();
     var isContained = false;
     if (tryEnv.contains(testEnv) &&
