@@ -138,6 +138,7 @@
   jsts.geomgraph.DirectedEdge.prototype.setMinEdgeRing = function(minEdgeRing) {
     this.minEdgeRing = minEdgeRing;
   };
+  jsts.geomgraph.DirectedEdge.prototype.getMinEdgeRing = function() { return this.minEdgeRing; };
   jsts.geomgraph.DirectedEdge.prototype.getDepth = function(position) {
     return this.depth[position];
   };
