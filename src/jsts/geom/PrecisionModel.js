@@ -41,7 +41,7 @@ jsts.geom.PrecisionModel = function(modelType) {
     return;
   }
 
-  this.modelType = modelType || this.modelType;
+  this.modelType = modelType || jsts.geom.PrecisionModel.FLOATING;
 
   if (this.modelType === jsts.geom.PrecisionModel.FIXED) {
     this.scale = 1.0;
@@ -50,28 +50,29 @@ jsts.geom.PrecisionModel = function(modelType) {
 
 
 /**
- * @type {int}
+ * @type {string}
  */
 jsts.geom.PrecisionModel.FLOATING = 'FLOATING';
 
 
 /**
- * @type {int}
+ * @type {string}
  */
 jsts.geom.PrecisionModel.FIXED = 'FIXED';
 
 
 /**
- * @type {int}
+ * @type {string}
  */
-jsts.geom.PrecisionModel.FLOATING_SINLGE = 'FLOATING_SINLGE';
+jsts.geom.PrecisionModel.FLOATING_SINGLE = 'FLOATING_SINGLE';
 
-jsts.geom.PrecisionModel.prototype.scale = 1.0;
-jsts.geom.PrecisionModel.prototype.modelType = jsts.geom.PrecisionModel.FLOATING;
+jsts.geom.PrecisionModel.prototype.scale = null;
+jsts.geom.PrecisionModel.prototype.modelType = null;
 
 
 /**
- * @return {boolean} always true.
+ * Tests whether the precision model supports floating point
+ * @return {boolean} if the precision model supports floating point.
  */
 jsts.geom.PrecisionModel.prototype.isFloating = function() {
   return this.modelType === jsts.geom.PrecisionModel.FLOATING || this.modelType === jsts.geom.PrecisionModel.FLOATING_SINLGE;
@@ -79,7 +80,7 @@ jsts.geom.PrecisionModel.prototype.isFloating = function() {
 
 
 /**
- * @return {int} always jsts.geom.PrecisionModel.FLOATING.
+ * @return {string} always jsts.geom.PrecisionModel.FLOATING.
  */
 jsts.geom.PrecisionModel.prototype.getType = function() {
   return this.modelType;
@@ -88,14 +89,12 @@ jsts.geom.PrecisionModel.prototype.getType = function() {
 jsts.geom.PrecisionModel.prototype.equals = function(other) {
   return true;
 
-  //TODO: needs to be ported for fixed precision
-
-  /*if (!(other instanceof PrecisionModel)) {
+  if (!(other instanceof jsts.geom.PrecisionModel)) {
     return false;
   }
   var otherPrecisionModel = other;
-  return this.modelType == otherPrecisionModel.modelType &&
-      this.scale == otherPrecisionModel.scale;*/
+  return this.modelType === otherPrecisionModel.modelType &&
+      this.scale === otherPrecisionModel.scale;
 };
 
 

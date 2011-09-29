@@ -24,7 +24,8 @@
    * @extends {jsts.geom.Geometry}
    * @constructor
    */
-  jsts.geom.Polygon = function() {
+  jsts.geom.Polygon = function(rings, factory) {
+    this.factory = factory;
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
   };
 
@@ -34,8 +35,9 @@
 
   jsts.geom.Polygon.prototype = OpenLayers.Geometry.Polygon.prototype;
 
+  // NOTE: this is to avoid overriding OpenLayers API.
   for (key in jsts.geom.Geometry.prototype) {
-    if (key != 'intersects') {
+    if (key !== 'intersects') {
       jsts.geom.Polygon.prototype[key] = jsts.geom.Geometry.prototype[key];
     }
   }

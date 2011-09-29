@@ -16,7 +16,9 @@
    * @constructor
    * @extends jsts.geom.GeometryCollection
    */
-  jsts.geom.MultiPolygon = function() {
+  jsts.geom.MultiPolygon = function(polygons, factory) {
+    this.factory = factory;
+
     OpenLayers.Geometry.Collection.prototype.initialize.apply(this,
         arguments);
     this.geometries = this.components;
