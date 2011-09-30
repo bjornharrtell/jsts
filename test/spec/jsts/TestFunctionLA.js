@@ -35,7 +35,7 @@ describe('TestFunctionLA', function() {
           var op = $("op", test).attr('name');
           var expected = $("op", test).text().trim().replace(/\n/g,'');
 
-          var reader = new jsts.io.WKTReader();
+          var reader = new jsts.io.WKTReader(new jsts.geom.GeometryFactory(new jsts.geom.PrecisionModel(1)));
           
           var expectedg = reader.read(expected);
           

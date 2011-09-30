@@ -123,7 +123,7 @@ jsts.geom.Point.prototype.apply = function(filter) {
 };
 
 jsts.geom.Point.prototype.clone = function() {
-  return new jsts.geom.Point(this.coordinate.clone());
+  return new jsts.geom.Point(this.coordinate.clone(), this.factory);
 };
 
 
