@@ -149,6 +149,14 @@
     return true;
   };
 
+  jsts.geom.GeometryCollection.prototype.normalize = function() {
+    for (var i = 0; i < this.components.length; i++) {
+      this.getGeometryN(i).normalize();
+    }
+    // TODO: might need to supply comparison function
+    this.components.sort();
+  };
+
   jsts.geom.GeometryCollection.prototype.compareToSameClass = function(o) {
     var theseElements = new TreeSet(Arrays.asList(this.components));
     var otherElements = new TreeSet(Arrays.asList(o.components));

@@ -63,6 +63,9 @@ describe('TestFunctionAA', function() {
           
           if (opresult === undefined) continue;
           
+          opresult.normalize();
+          expectedg.normalize();
+          
           var result = opresult.compareTo(expectedg);
           
           count++;

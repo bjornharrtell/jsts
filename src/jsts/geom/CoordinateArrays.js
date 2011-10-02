@@ -50,18 +50,16 @@ jsts.geom.CoordinateArrays.hasRepeatedPoints = function(coord) {
 };
 
 /**
- * Determines which orientation of the {@link Coordinate} array
- * is (overall) increasing.
- * In other words, determines which end of the array is "smaller"
- * (using the standard ordering on {@link Coordinate}).
- * Returns an integer indicating the increasing direction.
- * If the sequence is a palindrome, it is defined to be
- * oriented in a positive direction.
+ * Determines which orientation of the {@link Coordinate} array is (overall)
+ * increasing. In other words, determines which end of the array is "smaller"
+ * (using the standard ordering on {@link Coordinate}). Returns an integer
+ * indicating the increasing direction. If the sequence is a palindrome, it is
+ * defined to be oriented in a positive direction.
  *
- * @param pts the array of Coordinates to test.
- * @return <code>1</code> if the array is smaller at the start
- * or is a palindrome,
- * <code>-1</code> if smaller at the end.
+ * @param pts
+ *          the array of Coordinates to test.
+ * @return <code>1</code> if the array is smaller at the start or is a
+ *         palindrome, <code>-1</code> if smaller at the end.
  */
 jsts.geom.CoordinateArrays.increasingDirection = function(pts) {
   for (var i = 0; i < parseInt(pts.length / 2); i++) {
@@ -73,4 +71,62 @@ jsts.geom.CoordinateArrays.increasingDirection = function(pts) {
   }
   // array must be a palindrome - defined to be in positive direction
   return 1;
+};
+
+/**
+ * Returns the minimum coordinate, using the usual lexicographic comparison.
+ *
+ * @param coordinates
+ *          the array to search.
+ * @return the minimum coordinate in the array, found using
+ *         <code>compareTo.</code>
+ * @see Coordinate#compareTo(Object)
+ */
+jsts.geom.CoordinateArrays.minCoordinate = function(coordinates) {
+  var minCoord = null;
+  for (var i = 0; i < coordinates.length; i++) {
+    if (minCoord === null || minCoord.compareTo(coordinates[i]) > 0) {
+      minCoord = coordinates[i];
+    }
+  }
+  return minCoord;
+};
+
+/**
+ * Shifts the positions of the coordinates until <code>firstCoordinate</code>
+ * is first.
+ *
+ * @param coordinates
+ *          the array to rearrange.
+ * @param firstCoordinate
+ *          the coordinate to make first.
+ */
+jsts.geom.CoordinateArrays.scroll = function(coordinates, firstCoordinate) {
+  var i = jsts.geom.CoordinateArrays.indexOf(firstCoordinate, coordinates);
+  if (i < 0)
+    return;
+
+  var newCoordinates = coordinates.slice(i).concat(coordinates.slice(0, i));
+  for (i = 0; i < newCoordinates.length; i++) {
+    coordinates[i] = newCoordinates[i];
+  }
+};
+
+/**
+ * Returns the index of <code>coordinate</code> in <code>coordinates</code>.
+ * The first position is 0; the second, 1; etc.
+ *
+ * @param coordinate
+ *          the <code>Coordinate</code> to search for.
+ * @param coordinates
+ *          the array to search.
+ * @return the position of <code>coordinate</code>, or -1 if it is not found.
+ */
+jsts.geom.CoordinateArrays.indexOf = function(coordinate, coordinates) {
+  for (var i = 0; i < coordinates.length; i++) {
+    if (coordinate.equals(coordinates[i])) {
+      return i;
+    }
+  }
+  return -1;
 };

@@ -182,6 +182,35 @@
     }
   };
 
+  jsts.geom.Polygon.prototype.normalize = function() {
+    var shell = this.components[0];
+    this.normalize2(shell, true);
+    var holes = this.components.slice(1);
+    for (var i = 0; i < holes.length; i++) {
+      this.normalize2(holes[i], false);
+    }
+    // TODO: might need to supply comparison function
+    holes.sort();
+    this.components = [shell].concat(holes);
+  };
+
+  /**
+   * @private
+   */
+  jsts.geom.Polygon.prototype.normalize2 = function(ring, clockwise) {
+    if (ring.isEmpty()) {
+      return;
+    }
+    var uniqueCoordinates = ring.components.slice(0, ring.components.length - 1);
+    var minCoordinate = jsts.geom.CoordinateArrays.minCoordinate(ring.components);
+    jsts.geom.CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
+    ring.components = uniqueCoordinates.concat();
+    ring.components[uniqueCoordinates.length] = uniqueCoordinates[0];
+    if (jsts.algorithm.CGAlgorithms.isCCW(ring.components) === clockwise) {
+      ring.components.reverse();
+    }
+  };
+
   OpenLayers.Geometry.Polygon = jsts.geom.Polygon;
 
 })();
