@@ -179,11 +179,12 @@
   function init() {
     var reader = new jsts.io.WKTReader();
     
- 	// TODO: should be POLYGON((50 50, 50 100, 100 100, 100 50, 50 50))
+ 	// TODO: should be POLYGON((10 10, 10 100, 50 100, 50 200, 200 200, 200 50, 100 50, 100 10, 10 10))
     var a = reader.read('POLYGON((10 10, 100 10, 100 100, 10 100, 10 10))')
     var b = reader.read('POLYGON((50 50, 200 50, 200 200, 50 200, 50 50)) ')
-    var intersection = a.intersection(b);
-    console.log(intersection.toString());
+    var union = a.union(b);
+    union.normalize();
+    console.log(union.toString());
     
     // TODO: find out why buffering fails (depth calc issues) with this poly
     //var polygon = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');

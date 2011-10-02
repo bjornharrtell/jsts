@@ -189,6 +189,7 @@
     for (var i = 0; i < holes.length; i++) {
       this.normalize2(holes[i], false);
     }
+    // TODO: might need to supply comparison function
     holes.sort();
     this.components = [shell].concat(holes);
   };
@@ -200,10 +201,10 @@
     if (ring.isEmpty()) {
       return;
     }
-    // TODO: this port does not seem to work yet.
-    var uniqueCoordinates = ring.components.concat(); // TODO: clone elements?
+    var uniqueCoordinates = ring.components.slice(0, ring.components.length - 1);
     var minCoordinate = jsts.geom.CoordinateArrays.minCoordinate(ring.components);
     jsts.geom.CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
+    ring.components = uniqueCoordinates.concat();
     ring.components[uniqueCoordinates.length] = uniqueCoordinates[0];
     if (jsts.algorithm.CGAlgorithms.isCCW(ring.components) === clockwise) {
       ring.components.reverse();

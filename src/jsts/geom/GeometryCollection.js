@@ -153,6 +153,7 @@
     for (var i = 0; i < this.components.length; i++) {
       this.getGeometryN(i).normalize();
     }
+    // TODO: might need to supply comparison function
     this.components.sort();
   };
 

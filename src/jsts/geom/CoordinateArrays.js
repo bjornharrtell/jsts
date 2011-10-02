@@ -105,9 +105,11 @@ jsts.geom.CoordinateArrays.scroll = function(coordinates, firstCoordinate) {
   var i = jsts.geom.CoordinateArrays.indexOf(firstCoordinate, coordinates);
   if (i < 0)
     return;
-  var el = coordinates[i];
-  coordinates.splice(i, 1);
-  coordinates.unshift(el);
+
+  var newCoordinates = coordinates.slice(i).concat(coordinates.slice(0, i));
+  for (i = 0; i < newCoordinates.length; i++) {
+    coordinates[i] = newCoordinates[i];
+  }
 };
 
 /**
