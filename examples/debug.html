@@ -179,9 +179,9 @@
   function init() {
     var reader = new jsts.io.WKTReader();
     
- 	// TODO: should be POLYGON((10 10, 10 100, 50 100, 50 200, 200 200, 200 50, 100 50, 100 10, 10 10))
-    var a = reader.read('POLYGON((10 10, 100 10, 100 100, 10 100, 10 10))')
-    var b = reader.read('POLYGON((50 50, 200 50, 200 200, 50 200, 50 50)) ')
+ 	// TODO: result should be GEOMETRYCOLLECTION(LINESTRING(240 190, 177 153), POLYGON((177 153, 240 70, 50 80, 110 240, 177 153))))
+    var a = reader.read('LINESTRING(240 190, 120 120)')
+    var b = reader.read('POLYGON((110 240, 50 80, 240 70, 110 240))')
     var union = a.union(b);
     union.normalize();
     console.log(union.toString());
@@ -191,8 +191,6 @@
     //var geometry = polygon.buffer(-10);
     
     //console.log(geometry);
-   
-    
   }
 </script>
 </head>
