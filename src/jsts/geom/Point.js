@@ -29,6 +29,9 @@ jsts.geom.Point.prototype = new jsts.geom.Geometry();
 jsts.geom.Point.constructor = jsts.geom.Point;
 
 
+jsts.geom.Point.CLASS_NAME = 'jsts.geom.Point';
+
+
 jsts.geom.Point.prototype.coordinate = null;
 
 
