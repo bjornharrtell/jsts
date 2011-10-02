@@ -1221,6 +1221,19 @@ jsts.geom.Geometry.prototype.normalize = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
+/**
+ * Creates a new Geometry which is a normalized
+ * copy of this Geometry.
+ *
+ * @return a normalized copy of this geometry.
+ * @see #normalize()
+ */
+jsts.geom.Geometry.prototype.norm = function() {
+  var copy = this.clone();
+  copy.normalize();
+  return copy;
+};
+
 
 /**
  * Returns whether this <code>Geometry</code> is greater than, equal to, or

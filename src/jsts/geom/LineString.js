@@ -227,6 +227,30 @@
     }
   };
 
+  /**
+   * Normalizes a LineString.  A normalized linestring
+   * has the first point which is not equal to it's reflected point
+   * less than the reflected point.
+   */
+  jsts.geom.LineString.prototype.normalize = function() {
+      var i, il, j, ci, cj;
+
+      il = parseInt(this.components.length / 2);
+
+      for (i = 0; i < il; i++) {
+        j = this.components.length - 1 - i;
+        // skip equal points on both ends
+        ci = this.components[i];
+        cj = this.components[j];
+        if (!ci.equals(cj)) {
+          if (ci.compareTo(cj) > 0) {
+            this.components.reverse();
+          }
+          return;
+        }
+      }
+  };
+
   OpenLayers.Geometry.LineString = jsts.geom.LineString;
 
 })();
