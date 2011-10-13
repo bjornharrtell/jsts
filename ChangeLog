@@ -1,7 +1,9 @@
-2011-09-21: Version 0.10.0
+2011-10-07: Version 0.10.0
 
-		Polygon.precisionModel === undefined (#60)
+		FunctionLA LA - A and B simple union fails (#65)
 		Port fixed precision (#64)
+		Polygon intersection fails (#63)
+		Polygon.precisionModel === undefined (#60)
 		Port normalize operation
 		Port errors causing union of touching polygons to fail are fixed
 		Ports of DelaunayTriangulationBuilder and VoronoiDiagramBuilder are now functional

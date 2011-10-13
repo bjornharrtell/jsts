@@ -171,7 +171,7 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   var hasGeometryCollection = false;
   for (var i = geomList.iterator(); i.hasNext(); ) {
     var geom = i.next();
-    var partClass = geom.constructor;
+    var partClass = geom.CLASS_NAME;
     if (geomClass === null) {
       geomClass = partClass;
     }
@@ -186,7 +186,7 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
    * Now construct an appropriate geometry to return
    */
   // for the empty geometry, return an empty GeometryCollection
-  if (geomClass == null) {
+  if (geomClass === null) {
     return this.createGeometryCollection(null);
   }
   if (isHeterogeneous || hasGeometryCollection) {
