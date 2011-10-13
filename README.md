@@ -25,7 +25,7 @@ additional tests.
 A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). Also
 available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html), 
 [overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) and [triangulation](http://bjornharrtell.github.com/jsts/examples/triangulation.html)
-operations.
+operations. The examples uses a build of [attache-array-js](http://github.com/olooney/attache-array-js) to meet JavaScript ES5 requirements in some browsers.
 
 The code tries to be conformant to the
 [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
