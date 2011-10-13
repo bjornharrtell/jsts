@@ -143,8 +143,7 @@ jsts.triangulate.DelaunayTriangulationBuilder.prototype.setSitesFromGeometry = f
 jsts.triangulate.DelaunayTriangulationBuilder.prototype.setSitesFromCollection = function(
     coords) {
   // remove any duplicate points (they will cause the triangulation to fail)
-  this.siteCoords = jsts.triangulate.DelaunayTriangulationBuilder.extractUniqueCoordinates
-      .unique(coords);
+  this.siteCoords = jsts.triangulate.DelaunayTriangulationBuilder.unique(coords);
 };
 
 
