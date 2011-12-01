@@ -11,12 +11,12 @@
  * performed.
  * <p>
  * The implementation handles empty geometry and empty snap vertex sets.
- * 
+ *
  */
 (function() {
   /**
    * Constructs a new LineStringSnapper based on provided arguments
-   * 
+   *
    * @constructor
    */
   var LineStringSnapper = function() {
@@ -36,7 +36,7 @@
   /**
    * Creates a new snapper using the points in the given {@link LineString} as
    * source snap points.
-   * 
+   *
    * @param {jsts.geom.LineString}
    *          srcLine a LineString to snap (may be empty).
    * @param {Number}
@@ -49,7 +49,7 @@
   /**
    * Creates a new snapper using the given points as source points to be
    * snapped.
-   * 
+   *
    * @param {Array{jsts.geom.Coordinate}}
    *          srcPts the points to snap
    * @param {Number}
@@ -77,7 +77,7 @@
   /**
    * Snaps the vertices and segments of the source LineString to the given set
    * of snap vertices.
-   * 
+   *
    * @param {Array{Coordinate}}
    *          snapPts the vertices to snap to
    * @return {Array{Coordinate}} a list of the snapped points
@@ -92,7 +92,7 @@
 
   /**
    * Snap source vertices to vertices in the target.
-   * 
+   *
    * @param {jsts.geom.CoordinateList}
    *          srcCoords the points to snap.
    * @param {Array{Coordinate}}
@@ -138,7 +138,7 @@
    * For each distinct snap vertex, at most one source segment is snapped to.
    * This prevents "cracking" multiple segments at the same point, which would
    * likely cause topology collapse when being used on polygonal linework.
-   * 
+   *
    * @param {jsts.geom.CoordinateList}
    *          srcCoords the coordinates of the source linestring to be snapped.
    * @param {Array{jsts.geom.Coordinate}}
@@ -187,7 +187,7 @@
    * <p>
    * Also, if the snap vertex occurs as a vertex in the src coordinate list, no
    * snapping is performed.
-   * 
+   *
    * @param {jsts.geom.Coordinate}
    *          snapPt the point to snap to.
    * @param {jsts.geom.CoordinateList}
@@ -204,7 +204,7 @@
 
       /**
        * Check if the snap pt is equal to one of the segment endpoints.
-       * 
+       *
        * If the snap pt is already in the src list, don't snap at all.
        */
       if (this.seg.p0.equals(snapPt) || this.seg.p1.equals(snapPt)) {
