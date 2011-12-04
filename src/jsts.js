@@ -27,6 +27,8 @@ jsts = {
   /** @namespace */
   index: {
     /** @namespace */
+    bintree: {},
+    /** @namespace */
     chain: {},
     /** @namespace */
     kdtree: {},
