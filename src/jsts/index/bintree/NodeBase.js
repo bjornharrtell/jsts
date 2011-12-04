@@ -73,7 +73,7 @@
    *
    * @param {javascript.util.ArrayList}
    *          items the list to add to.
-   * @return {javscript.util.ArrayList} the input list filled with items
+   * @return {javscript.util.ArrayList} the input list filled with items.
    */
   NodeBase.prototype.addAllItems = function(items) {
     // TODO: Check if addAll really takes an ordinary javascript array
@@ -123,7 +123,7 @@
    *          itemInterval the envelope containing the item.
    * @param {Object}
    *          item the item to remove.
-   * @return <code>true</code> if the item was found and removed
+   * @return <code>true</code> if the item was found and removed.
    */
   NodeBase.prototype.remove = function(itemInterval, item) {
     if (!this.isSearchMatch(itemInterval)) {
@@ -157,7 +157,7 @@
   /**
    * Checks if this tree has any children or items
    *
-   * @return {Boolean} true if it has children or items (or both)
+   * @return {Boolean} true if it has children or items (or both).
    */
   NodeBase.prototype.isPrunable = function() {
     return !(this.hasChildren() || this.hasItems());
@@ -166,7 +166,7 @@
   /**
    * Checks if this tree has any children
    *
-   * @return {Boolean} true if it has children
+   * @return {Boolean} true if it has children.
    */
   NodeBase.prototype.hasChildren = function() {
     var i = 0, il = 2;
@@ -181,7 +181,7 @@
   /**
    * Checks i this node has any items
    *
-   * @return {Boolean} true if it has items
+   * @return {Boolean} true if it has items.
    */
   NodeBase.prototype.hasItems = function() {
     return !this.items.isEmpty();

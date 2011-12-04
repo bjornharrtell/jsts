@@ -80,7 +80,7 @@
    * Checks if this interval overlaps. Calls correct overlaps- function based on
    * arguments
    *
-   * @return {Boolean} true if the interval overlaps
+   * @return {Boolean} true if the interval overlaps.
    */
   Interval.prototype.overlaps = function() {
     if (arguments.length === 1) {
@@ -95,7 +95,7 @@
    *
    * @param {jsts.index.bintree.Interval}
    *          interval the interval to check.
-   * @return {Boolean} true if the interval overlaps
+   * @return {Boolean} true if the interval overlaps.
    */
   Interval.prototype.overlapsInterval = function(interval) {
     return this.overlaps(interval.min, interval.max);
@@ -108,7 +108,7 @@
    *          min minimum.
    * @param {Number}
    *          max maximum.
-   * @return {Boolean} true if the interval overlaps
+   * @return {Boolean} true if the interval overlaps.
    */
   Interval.prototype.overlapsMinMax = function(min, max) {
     if (this.min > max || this.max < min) {
@@ -120,7 +120,7 @@
   /**
    * Checks if this interval contains an interval, min -max pair or a point
    *
-   * @return {Boolean} true if this interval contains the specified argument
+   * @return {Boolean} true if this interval contains the specified argument.
    */
   Interval.prototype.contains = function() {
     var interval;

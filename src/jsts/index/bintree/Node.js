@@ -42,7 +42,7 @@
    *
    * @param {jsts.index.bintree.Interval}
    *          itemInterval the interval.
-   * @return {jsts.index.bintree.Node} the created node
+   * @return {jsts.index.bintree.Node} the created node.
    */
   Node.createNode = function(itemInterval) {
     var key, node;
@@ -59,7 +59,7 @@
    *          node the node.
    * @param {jsts.index.bintree.Interval}
    *          addInterval the interval to add.
-   * @return {jsts.index.bintree.Node} the expanded node
+   * @return {jsts.index.bintree.Node} the expanded node.
    */
   Node.createExpanded = function(node, addInterval) {
     var expandInt, largerNode;
@@ -84,7 +84,7 @@
   /**
    * Checks if the input interval matches any items in this node
    *
-   * @return {Boolean} true if there is a search match
+   * @return {Boolean} true if there is a search match.
    */
   Node.prototype.isSearchMatch = function(itemInterval) {
     return itemInterval.overlaps(this.interval);
@@ -96,7 +96,7 @@
    *
    * @param {jsts.index.bintree.Interval}
    *          serachInterval the interval.
-   * @return {jsts.index.bintree.Node} the node
+   * @return {jsts.index.bintree.Node} the node.
    */
   Node.prototype.getNode = function(searchInterval) {
     var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this.centre), node;
@@ -116,7 +116,7 @@
    *
    * @param {jsts.index.bintree.Interval}
    *          searchInterval the interval.
-   * @return {jsts.index.bintree.Node} the smallest node contained
+   * @return {jsts.index.bintree.Node} the smallest node contained.
    */
   Node.prototype.find = function(searchInterval) {
     var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this.centre), node;
@@ -162,7 +162,7 @@
    *
    * @param {Number}
    *          index
-   * @return {jsts.index.bintree.Node} the found or created node
+   * @return {jsts.index.bintree.Node} the found or created node.
    */
   Node.prototype.getSubnode = function(index) {
     if (this.subnode[index] === null) {
@@ -176,7 +176,7 @@
    *
    * @param {Number}
    *          index the index to create the subnode at.
-   * @return {jsts.index.bintree.Node} the created node
+   * @return {jsts.index.bintree.Node} the created node.
    */
   Node.prototype.createSubnode = function(index) {
     // create a new subnode in the appropriate interval

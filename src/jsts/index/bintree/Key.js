@@ -50,7 +50,7 @@
   /**
    * Returns the point
    *
-   * @return {Number} point
+   * @return {Number} point.
    */
   Key.prototype.getPoint = function() {
     return this.pt;
@@ -59,7 +59,7 @@
   /**
    * Returns the level
    *
-   * @return {Number} level
+   * @return {Number} level.
    */
   Key.prototype.getLevel = function() {
     return this.level;

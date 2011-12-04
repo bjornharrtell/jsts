@@ -90,7 +90,7 @@
   /**
    * Calculates the depth of the tree
    *
-   * @return {Number} the depth
+   * @return {Number} the depth.
    */
   Bintree.prototype.depth = function() {
     if (this.root !== null) {
@@ -102,7 +102,7 @@
   /**
    * Calculates the size of the tree
    *
-   * @return {Number} the size
+   * @return {Number} the size.
    */
   Bintree.prototype.size = function() {
     if (this.root !== null) {
@@ -115,7 +115,7 @@
   /**
    * Compute the total number of nodes in the tree
    *
-   * @return {Number} the number of nodes in the tree
+   * @return {Number} the number of nodes in the tree.
    */
   Bintree.prototype.nodeSize = function() {
     if (this.root !== null) {
@@ -146,7 +146,7 @@
    * @param {Object}
    *          item the item to remove.
    * @return {Boolean} <code>true</code> if the item was found (and thus
-   *         removed)
+   *         removed).
    */
   Bintree.prototype.remove = function(itemInterval, item) {
     var insertInterval = Bintree.ensureExtent(itemInterval, this.minExtent);
@@ -164,7 +164,7 @@
    *
    * @param {Number}
    *          x OR {jsts.index.bintree.Interval} x.
-   * @return {javascript.util.ArrayList} the found items
+   * @return {javascript.util.ArrayList} the found items.
    */
   Bintree.prototype.query = function() {
     if (arguments.length === 2) {
