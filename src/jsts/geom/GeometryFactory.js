@@ -95,34 +95,23 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  * @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
-  var rings;
-
-  if (shell) {
-    rings = [shell];
-
-    if (holes !== undefined) {
-      rings = rings.concat(holes);
-    }
-  }
-
-  var polygon = new jsts.geom.Polygon(rings, this);
+  var polygon = new jsts.geom.Polygon(shell, holes, this);
 
   return polygon;
 };
 
 
-jsts.geom.GeometryFactory.prototype.createMultiPoint = function(coordinates) {
-  if (coordinates) {
-    if (coordinates[0] instanceof jsts.geom.Point) {
-      var temp = [];
-      coordinates.forEach(function(point) {
-        temp.push(point.coordinate);
-      });
-      coordinates = temp;
+jsts.geom.GeometryFactory.prototype.createMultiPoint = function(points) {
+  if (points && points[0] instanceof jsts.geom.Coordinate) {
+    var converted = [];
+    var i;
+    for (i = 0; i < points.length; i++) {
+      converted.push(this.createPoint(points[i]));
     }
+    points = converted;
   }
 
-  return new jsts.geom.MultiPoint(coordinates, this);
+  return new jsts.geom.MultiPoint(points, this);
 };
 
 jsts.geom.GeometryFactory.prototype.createMultiLineString = function(lineStrings) {
@@ -171,14 +160,16 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   var hasGeometryCollection = false;
   for (var i = geomList.iterator(); i.hasNext(); ) {
     var geom = i.next();
+
     var partClass = geom.CLASS_NAME;
+
     if (geomClass === null) {
       geomClass = partClass;
     }
-    if (partClass !== geomClass) {
+    if (!(partClass === geomClass)) {
       isHeterogeneous = true;
     }
-    if (geom instanceof jsts.geom.GeometryCollection)
+    if (geom.isGeometryCollectionBase())
       hasGeometryCollection = true;
   }
 

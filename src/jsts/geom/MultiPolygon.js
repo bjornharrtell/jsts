@@ -16,20 +16,13 @@
    * @constructor
    * @extends jsts.geom.GeometryCollection
    */
-  jsts.geom.MultiPolygon = function(polygons, factory) {
+  jsts.geom.MultiPolygon = function(geometries, factory) {
+    this.geometries = geometries || [];
     this.factory = factory;
-
-    OpenLayers.Geometry.Collection.prototype.initialize.apply(this,
-        arguments);
-    this.geometries = this.components;
   };
-  jsts.geom.MultiPolygon.prototype = OpenLayers.Geometry.MultiPolygon.prototype;
 
-  for (key in jsts.geom.GeometryCollection.prototype) {
-    jsts.geom.MultiPolygon.prototype[key] = jsts.geom.MultiPolygon.prototype[key] ? jsts.geom.MultiPolygon.prototype[key] : jsts.geom.GeometryCollection.prototype[key];
-    // overrides
-    jsts.geom.MultiPolygon.prototype.getCentroid = jsts.geom.GeometryCollection.prototype.getCentroid;
-  }
+  jsts.geom.MultiPolygon.prototype = new jsts.geom.GeometryCollection();
+  jsts.geom.MultiPolygon.constructor = jsts.geom.MultiPolygon;
 
   /**
    * Computes the boundary of this geometry
@@ -68,6 +61,6 @@
         tolerance);
   };
 
-  OpenLayers.Geometry.MultiPolygon = jsts.geom.MultiPolygon;
+  jsts.geom.MultiPolygon.prototype.CLASS_NAME = 'jsts.geom.MultiPolygon';
 
 })();

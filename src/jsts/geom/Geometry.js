@@ -100,6 +100,7 @@ jsts.geom.Geometry.prototype.envelope = null;
 
 /**
  * The {@link GeometryFactory} used to create this Geometry
+ *
  * @protected
  */
 jsts.geom.Geometry.prototype.factory = null;
@@ -163,7 +164,9 @@ jsts.geom.Geometry.hasNullElements = function(array) {
  * @return {jsts.geom.GeometryFactory} the factory for this geometry.
  */
 jsts.geom.Geometry.prototype.getFactory = function() {
-  // NOTE: Geometry could be created without JSTS constructor so need to check for member data
+  // NOTE: Geometry could be created without JSTS constructor so need to check
+  // for member data
+  // TODO: above should not happen
   if (this.factory === null || this.factory === undefined) {
     this.factory = new jsts.geom.GeometryFactory();
   }
@@ -1205,6 +1208,18 @@ jsts.geom.Geometry.prototype.apply = function(filter) {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
+/**
+ * Creates and returns a full copy of this {@link Geometry} object
+ * (including all coordinates contained by it).
+ * Subclasses are responsible for overriding this method and copying
+ * their internal data.  Overrides should call this method first.
+ *
+ * @return a clone of this instance.
+ */
+jsts.geom.Geometry.prototype.clone = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
 
 /**
  * Converts this <code>Geometry</code> to <b>normal form</b> (or <b>
@@ -1222,8 +1237,7 @@ jsts.geom.Geometry.prototype.normalize = function() {
 };
 
 /**
- * Creates a new Geometry which is a normalized
- * copy of this Geometry.
+ * Creates a new Geometry which is a normalized copy of this Geometry.
  *
  * @return a normalized copy of this geometry.
  * @see #normalize()
@@ -1326,6 +1340,7 @@ jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
 };
 
 
+
 /**
  * Throws an exception if <code>g</code>'s class is
  * <code>GeometryCollection</code> . (Its subclasses do not trigger an
@@ -1338,7 +1353,7 @@ jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
  *           one of its subclasses
  */
 jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
-  if (g instanceof jsts.geom.GeometryCollection) {
+  if (g.isGeometryCollectionBase()) {
     throw new jsts.error.IllegalArgumentError(
         'This method does not support GeometryCollection');
   }
@@ -1351,6 +1366,14 @@ jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
  */
 jsts.geom.Geometry.prototype.isGeometryCollection = function() {
   return (this instanceof jsts.geom.GeometryCollection);
+};
+
+/**
+*
+* @return {boolean} true if this is a GeometryCollection but not subclass.
+*/
+jsts.geom.Geometry.prototype.isGeometryCollectionBase = function() {
+ return (this.CLASS_NAME === 'jsts.geom.GeometryCollection');
 };
 
 
@@ -1457,7 +1480,6 @@ jsts.geom.Geometry.prototype.getClassSortIndex = function() {
 jsts.geom.Geometry.prototype.toString = function() {
   return new jsts.io.WKTWriter().write(this);
 };
-
 
 /**
  * @return {Point}

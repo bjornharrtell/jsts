@@ -41,29 +41,10 @@ jsts.io.WKTReader = function(geometryFactory) {
  *         <code>string.</code>
  */
 jsts.io.WKTReader.prototype.read = function(wkt) {
-  var geometry = OpenLayers.Geometry.fromWKT(wkt);
+  var geometryOpenLayers = OpenLayers.Geometry.fromWKT(wkt);
 
-  // NOTE: need to convert plain coordinate to JSTS Point
-  if (geometry instanceof jsts.geom.Coordinate) {
-    geometry = new jsts.geom.Point(geometry, this.geometryFactory);
-  }
-
-  // NOTE: need to convert plain Collection as JSTS GeometryCollection
-  if (geometry instanceof OpenLayers.Geometry.Collection &&
-      !(geometry instanceof OpenLayers.Geometry.Point ||
-          geometry instanceof OpenLayers.Geometry.LineString ||
-          geometry instanceof OpenLayers.Geometry.Polygon ||
-          geometry instanceof OpenLayers.Geometry.MultiPoint ||
-          geometry instanceof OpenLayers.Geometry.MultiLineString || geometry instanceof OpenLayers.Geometry.MultiPolygon)) {
-    geometry = new jsts.geom.GeometryCollection(geometry.components, this.geometryFactory);
-  }
-
-  if (geometry !== undefined && geometry.factory === undefined) {
-    geometry.factory = this.geometryFactory;
-  }
-
-  // handle WKT empty inputs
-  if (geometry === undefined) {
+  //handle WKT empty inputs
+  if (geometryOpenLayers === undefined) {
     var type = wkt.split(' ')[0].toLowerCase();
     switch (type) {
     case 'point':
@@ -79,7 +60,7 @@ jsts.io.WKTReader.prototype.read = function(wkt) {
       geometry = new jsts.geom.MultiLineString(null, this.geometryFactory);
       break;
     case 'polygon':
-      geometry = new jsts.geom.Polygon(null, this.geometryFactory);
+      geometry = new jsts.geom.Polygon(null, null, this.geometryFactory);
       break;
     case 'multipolygon':
       geometry = new jsts.geom.MultiPolygon(null, this.geometryFactory);
@@ -88,11 +69,16 @@ jsts.io.WKTReader.prototype.read = function(wkt) {
       geometry = new jsts.geom.GeometryCollection(null, this.geometryFactory);
       break;
     }
+    return geometry;
   }
 
-  if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
-    this.reducePrecision(geometry.components);
-  }
+  var converter = new jsts.geom.OpenLayersConverter(this.geometryFactory);
+  var geometry = converter.convertFrom(geometryOpenLayers);
+
+  // TODO: decide if precision should be enforced
+  //if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
+  //  this.reducePrecision(geometry.components);
+  //}
 
   return geometry;
 };

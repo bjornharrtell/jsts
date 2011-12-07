@@ -19,43 +19,18 @@
    * @extends jsts.geom.Geometry
    */
   jsts.geom.GeometryCollection = function(geometries, factory) {
+    this.geometries = geometries || [];
     this.factory = factory;
-    OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
-
-    /*OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
-
-    this.components = [];
-
-    if (!components) {
-      return;
-    }
-
-    for (var i = 0; i < components.length; i++) {
-      var component = components[i];
-      if (component instanceof jsts.geom.Point) {
-        components[i] = component.coordinate;
-      } else if (component instanceof jsts.geom.Coordinate) {
-        component = new jsts.geom.Point(component);
-      }
-      this.components.push(component);
-    }
-
-    this.components = [];
-    this.addComponents(components);*/
   };
 
-  jsts.geom.GeometryCollection.prototype = new OpenLayers.Geometry.Collection();
-
-  for (key in Geometry.prototype) {
-    jsts.geom.GeometryCollection.prototype[key] = Geometry.prototype[key];
-  }
-
+  jsts.geom.GeometryCollection.prototype = new Geometry();
+  jsts.geom.GeometryCollection.constructor = jsts.geom.GeometryCollection;
 
   /**
    * @return {boolean}
    */
   jsts.geom.GeometryCollection.prototype.isEmpty = function() {
-    for (var i = 0; i < this.components.length; i++) {
+    for (var i = 0; i < this.geometries.length; i++) {
       var geometry = this.getGeometryN(i);
 
       if (!geometry.isEmpty()) {
@@ -89,7 +64,7 @@
   jsts.geom.GeometryCollection.prototype.getCoordinates = function() {
     var coordinates = [];
     var k = -1;
-    for (var i = 0; i < this.components.length; i++) {
+    for (var i = 0; i < this.geometries.length; i++) {
       var geometry = this.getGeometryN(i);
 
       var childCoordinates = geometry.getCoordinates();
@@ -106,7 +81,7 @@
    * @return {int}
    */
   jsts.geom.GeometryCollection.prototype.getNumGeometries = function() {
-    return this.components.length;
+    return this.geometries.length;
   };
 
 
@@ -116,7 +91,7 @@
    * @return {Geometry}
    */
   jsts.geom.GeometryCollection.prototype.getGeometryN = function(n) {
-    var geometry = this.components[n];
+    var geometry = this.geometries[n];
     if (geometry instanceof jsts.geom.Coordinate) {
       geometry = new jsts.geom.Point(geometry);
     }
@@ -136,10 +111,10 @@
     if (!this.isEquivalentClass(other)) {
       return false;
     }
-    if (this.components.length !== other.components.length) {
+    if (this.geometries.length !== other.geometries.length) {
       return false;
     }
-    for (var i = 0; i < this.components.length; i++) {
+    for (var i = 0; i < this.geometries.length; i++) {
       var geometry = this.getGeometryN(i);
 
       if (!geometry.equalsExact(other.getGeometryN(i), tolerance)) {
@@ -150,27 +125,27 @@
   };
 
   jsts.geom.GeometryCollection.prototype.normalize = function() {
-    for (var i = 0; i < this.components.length; i++) {
+    for (var i = 0; i < this.geometries.length; i++) {
       this.getGeometryN(i).normalize();
     }
     // TODO: might need to supply comparison function
-    this.components.sort();
+    this.geometries.sort();
   };
 
   jsts.geom.GeometryCollection.prototype.compareToSameClass = function(o) {
-    var theseElements = new TreeSet(Arrays.asList(this.components));
-    var otherElements = new TreeSet(Arrays.asList(o.components));
+    var theseElements = new TreeSet(Arrays.asList(this.geometries));
+    var otherElements = new TreeSet(Arrays.asList(o.geometries));
     return this.compare(theseElements, otherElements);
   };
 
   jsts.geom.GeometryCollection.prototype.apply = function(filter) {
     if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
-      for (var i = 0; i < this.components.length; i++) {
+      for (var i = 0; i < this.geometries.length; i++) {
         this.getGeometryN(i).apply(filter);
       }
     } else if (filter instanceof jsts.geom.CoordinateFilter) {
-      for (var i = 0; i < this.components.length; i++) {
+      for (var i = 0; i < this.geometries.length; i++) {
         this.getGeometryN(i).apply(filter);
       }
     }
@@ -179,7 +154,7 @@
 
   jsts.geom.GeometryCollection.prototype.getDimension = function() {
     var dimension = jsts.geom.Dimension.FALSE;
-    for (var i = 0; i < this.components.length; i++) {
+    for (var i = 0; i < this.geometries.length; i++) {
       var geometry = this.getGeometryN(i);
       dimension = Math.max(dimension, geometry.getDimension());
     }
@@ -192,14 +167,14 @@
    */
   jsts.geom.GeometryCollection.prototype.computeEnvelopeInternal = function() {
     var envelope = new jsts.geom.Envelope();
-    for (var i = 0; i < this.components.length; i++) {
+    for (var i = 0; i < this.geometries.length; i++) {
       var geometry = this.getGeometryN(i);
       envelope.expandToInclude(geometry.getEnvelopeInternal());
     }
     return envelope;
   };
 
-  //OpenLayers.Geometry.Collection = jsts.geom.GeometryCollection;
+  jsts.geom.GeometryCollection.prototype.CLASS_NAME = 'jsts.geom.GeometryCollection';
 
 })();
 

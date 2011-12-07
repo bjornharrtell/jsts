@@ -8,8 +8,10 @@
 
   /**
    * @requires jsts/geom/Geometry.js
+   * @requires jsts/geom/Dimension.js
    */
 
+  var Dimension = jsts.geom.Dimension;
 
   /**
    * @extends jsts.geom.Geometry
@@ -17,23 +19,18 @@
    */
   jsts.geom.LineString = function(points, factory) {
     this.factory = factory;
-
-    OpenLayers.Geometry.Curve.prototype.initialize.apply(this, arguments);
-
-    this.geometries = this.components;
+    this.points = points || [];
   };
-  jsts.geom.LineString.prototype = OpenLayers.Geometry.LineString.prototype;
 
-  for (key in jsts.geom.Geometry.prototype) {
-    jsts.geom.LineString.prototype[key] = jsts.geom.Geometry.prototype[key];
-  }
+  jsts.geom.LineString.prototype = new jsts.geom.Geometry();
+  jsts.geom.LineString.constructor = jsts.geom.LineString;
 
   /**
    * @return {jsts.geom.Coordinate[]} this LineString's internal coordinate
    *         array.
    */
   jsts.geom.LineString.prototype.getCoordinates = function() {
-    return this.components;
+    return this.points;
   };
 
 
@@ -44,7 +41,7 @@
    *          n index.
    */
   jsts.geom.LineString.prototype.getCoordinateN = function(n) {
-    return this.components[n];
+    return this.points[n];
   };
 
 
@@ -83,15 +80,15 @@
    * @return {Boolean} true if empty.
    */
   jsts.geom.LineString.prototype.isEmpty = function() {
-    return this.components.length === 0;
+    return this.points.length === 0;
   };
 
   jsts.geom.LineString.prototype.getNumPoints = function() {
-    return this.components.length;
+    return this.points.length;
   };
 
   jsts.geom.LineString.prototype.getPointN = function(n) {
-    return this.getFactory().createPoint(this.components[n]);
+    return this.getFactory().createPoint(this.points[n]);
   };
 
 
@@ -118,7 +115,7 @@
       return false;
     }
     return this.getCoordinateN(0).equals2D(
-        this.getCoordinateN(this.components.length - 1));
+        this.getCoordinateN(this.points.length - 1));
   };
 
 
@@ -156,7 +153,7 @@
     }
 
     var env = new jsts.geom.Envelope();
-    this.components.forEach(function(component) {
+    this.points.forEach(function(component) {
       env.expandToInclude(component);
     });
 
@@ -176,7 +173,7 @@
       return false;
     }
 
-    if (this.components.length !== other.components.length) {
+    if (this.points.length !== other.points.length) {
       return false;
     }
 
@@ -184,9 +181,9 @@
       return true;
     }
 
-    return this.components.reduce(function(equal, component, i) {
+    return this.points.reduce(function(equal, point, i) {
       return equal &&
-          jsts.geom.Geometry.prototype.equal(component, other.components[i],
+          jsts.geom.Geometry.prototype.equal(point, other.points[i],
               tolerance);
     });
   };
@@ -200,18 +197,18 @@
     // MD - optimized implementation
     var i = 0;
     var j = 0;
-    while (i < this.components.length && j < line.components.length) {
-      var comparison = this.components[i].compareTo(line.components[j]);
+    while (i < this.points.length && j < line.points.length) {
+      var comparison = this.points[i].compareTo(line.points[j]);
       if (comparison !== 0) {
         return comparison;
       }
       i++;
       j++;
     }
-    if (i < this.components.length) {
+    if (i < this.points.length) {
       return 1;
     }
-    if (j < line.components.length) {
+    if (j < line.points.length) {
       return -1;
     }
     return 0;
@@ -221,10 +218,20 @@
     if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
     } else if (filter instanceof jsts.geom.CoordinateFilter) {
-      for (var i = 0; i < this.components.length; i++) {
-        filter.filter(this.components[i]);
+      for (var i = 0; i < this.points.length; i++) {
+        filter.filter(this.points[i]);
       }
     }
+  };
+
+  jsts.geom.LineString.prototype.clone = function() {
+    var i, points = [];
+
+    for (i = 0; i < this.points.length; i++) {
+      points.push(this.points[i].clone());
+    }
+
+    return this.factory.createLineString(points);
   };
 
   /**
@@ -235,22 +242,22 @@
   jsts.geom.LineString.prototype.normalize = function() {
       var i, il, j, ci, cj;
 
-      il = parseInt(this.components.length / 2);
+      il = parseInt(this.points.length / 2);
 
       for (i = 0; i < il; i++) {
-        j = this.components.length - 1 - i;
+        j = this.points.length - 1 - i;
         // skip equal points on both ends
-        ci = this.components[i];
-        cj = this.components[j];
+        ci = this.points[i];
+        cj = this.points[j];
         if (!ci.equals(cj)) {
           if (ci.compareTo(cj) > 0) {
-            this.components.reverse();
+            this.points.reverse();
           }
           return;
         }
       }
   };
 
-  OpenLayers.Geometry.LineString = jsts.geom.LineString;
+  jsts.geom.LineString.prototype.CLASS_NAME = 'jsts.geom.LineString';
 
 })();

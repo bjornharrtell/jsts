@@ -193,3 +193,5 @@ jsts.geom.Point.prototype.getGeometryType = function() {
 jsts.geom.Point.prototype.hashCode = function() {
   return 'Point_' + this.coordinate.hashCode();
 };
+
+jsts.geom.Point.prototype.CLASS_NAME = 'jsts.geom.Point';

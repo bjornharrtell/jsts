@@ -24,27 +24,17 @@
    * @extends {jsts.geom.Geometry}
    * @constructor
    */
-  jsts.geom.Polygon = function(rings, factory) {
+  jsts.geom.Polygon = function(shell, holes, factory) {
+    this.shell = shell || factory.createLinearRing(null);
+    this.holes = holes || [];
     this.factory = factory;
-    OpenLayers.Geometry.Collection.prototype.initialize.apply(this, arguments);
   };
 
-  for (key in OpenLayers.Geometry.Polygon) {
-    jsts.geom.Polygon[key] = OpenLayers.Geometry.Polygon[key];
-  }
-
-  jsts.geom.Polygon.prototype = OpenLayers.Geometry.Polygon.prototype;
-
-  // NOTE: this is to avoid overriding OpenLayers API.
-  for (key in jsts.geom.Geometry.prototype) {
-    if (key !== 'intersects') {
-      jsts.geom.Polygon.prototype[key] = jsts.geom.Geometry.prototype[key];
-    }
-  }
-
+  jsts.geom.Polygon.prototype = new jsts.geom.Geometry();
+  jsts.geom.Polygon.constructor = jsts.geom.Polygon;
 
   jsts.geom.Polygon.prototype.getCoordinate = function() {
-    return this.components[0].getCoordinate();
+    return this.shell.getCoordinate();
   };
 
 
@@ -52,26 +42,19 @@
    * @return {boolean}
    */
   jsts.geom.Polygon.prototype.isEmpty = function() {
-    for (var i = 0; i < this.components.length; i++) {
-      if (!this.components[i].isEmpty()) {
-        return false;
-      }
-    }
-    return true;
+    return this.shell.isEmpty();
   };
 
-
   jsts.geom.Polygon.prototype.getExteriorRing = function() {
-    return this.components[0];
+    return this.shell;
   };
 
   jsts.geom.Polygon.prototype.getInteriorRingN = function(n) {
-    var holes = this.components.slice(1);
-    return holes[n];
+    return this.holes[n];
   };
 
   jsts.geom.Polygon.prototype.getNumInteriorRing = function() {
-    return this.components.slice(1).length;
+    return this.holes.length;
   };
 
 
@@ -86,22 +69,18 @@
       return this.getFactory().createMultiLineString(null);
     }
     var rings = [];
-    var shell = this.components[0];
-    rings[0] = shell;
-    var holes = this.components.slice(1);
-    for (var i = 0; i < holes.length; i++) {
-      rings[i + 1] = holes[i];
+    rings[0] = this.shell.clone();
+    for (var i = 0; i < this.holes.length; i++) {
+      rings[i + 1] = this.holes[i].clone();
     }
     // create LineString or MultiLineString as appropriate
     if (rings.length <= 1)
-      return this.getFactory().createLinearRing(rings[0].components);
+      return rings[0];
     return this.getFactory().createMultiLineString(rings);
   };
 
   jsts.geom.Polygon.prototype.computeEnvelopeInternal = function() {
-    var shell = this.components[0];
-
-    return shell.getEnvelopeInternal();
+    return this.shell.getEnvelopeInternal();
   };
 
   jsts.geom.Polygon.prototype.getDimension = function() {
@@ -131,22 +110,17 @@
       return false;
     }
 
-    var holes = this.components.slice(1);
-    var otherPolygon = other;
-    var thisShell = this.components[0];
-    var otherPolygonShell = other.components[0];
-    var otherPolygonHoles = other.components.slice(1);
-    if (!thisShell.equalsExact(otherPolygonShell, tolerance)) {
+    if (!this.shell.equalsExact(other.shell, tolerance)) {
       return false;
     }
-    if (holes.length !== otherPolygonHoles.length) {
+    if (this.holes.length !== other.holes.length) {
       return false;
     }
-    if (holes.length !== otherPolygonHoles.length) {
+    if (this.holes.length !== other.holes.length) {
       return false;
     }
-    for (var i = 0; i < holes.length; i++) {
-      if (!(holes[i]).equalsExact(otherPolygonHoles[i], tolerance)) {
+    for (var i = 0; i < this.holes.length; i++) {
+      if (!(this.holes[i]).equalsExact(other.holes[i], tolerance)) {
         return false;
       }
     }
@@ -154,44 +128,35 @@
   };
 
   jsts.geom.Polygon.prototype.compareToSameClass = function(o) {
-    var thisShell = this.components[0];
-    var otherShell = o.components[0];
-    return thisShell.compareToSameClass(otherShell);
+    return this.shell.compareToSameClass(o.shell);
   };
 
   jsts.geom.Polygon.prototype.apply = function(filter) {
     if (filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
-      var shell = this.components[0];
-      shell.apply(filter);
-      var holes = this.components.slice(1);
-      for (var i = 0; i < holes.length; i++) {
-        holes[i].apply(filter);
+      this.shell.apply(filter);
+      for (var i = 0; i < this.holes.length; i++) {
+        this.holes[i].apply(filter);
       }
     }
     else if (filter instanceof jsts.geom.GeometryFilter) {
       filter.filter(this);
     }
     else if (filter instanceof jsts.geom.CoordinateFilter) {
-      var shell = this.components[0];
-      shell.apply(filter);
-      var holes = this.components.slice(1);
-      for (var i = 0; i < holes.length; i++) {
-        holes[i].apply(filter);
+      this.shell.apply(filter);
+      for (var i = 0; i < this.holes.length; i++) {
+        this.holes[i].apply(filter);
       }
     }
   };
 
   jsts.geom.Polygon.prototype.normalize = function() {
-    var shell = this.components[0];
-    this.normalize2(shell, true);
-    var holes = this.components.slice(1);
-    for (var i = 0; i < holes.length; i++) {
-      this.normalize2(holes[i], false);
+    this.normalize2(this.shell, true);
+    for (var i = 0; i < this.holes.length; i++) {
+      this.normalize2(this.holes[i], false);
     }
     // TODO: might need to supply comparison function
-    holes.sort();
-    this.components = [shell].concat(holes);
+    this.holes.sort();
   };
 
   /**
@@ -201,16 +166,16 @@
     if (ring.isEmpty()) {
       return;
     }
-    var uniqueCoordinates = ring.components.slice(0, ring.components.length - 1);
-    var minCoordinate = jsts.geom.CoordinateArrays.minCoordinate(ring.components);
+    var uniqueCoordinates = ring.points.slice(0, ring.points.length - 1);
+    var minCoordinate = jsts.geom.CoordinateArrays.minCoordinate(ring.points);
     jsts.geom.CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
-    ring.components = uniqueCoordinates.concat();
-    ring.components[uniqueCoordinates.length] = uniqueCoordinates[0];
-    if (jsts.algorithm.CGAlgorithms.isCCW(ring.components) === clockwise) {
-      ring.components.reverse();
+    ring.points = uniqueCoordinates.concat();
+    ring.points[uniqueCoordinates.length] = uniqueCoordinates[0];
+    if (jsts.algorithm.CGAlgorithms.isCCW(ring.points) === clockwise) {
+      ring.points.reverse();
     }
   };
 
-  OpenLayers.Geometry.Polygon = jsts.geom.Polygon;
+  jsts.geom.Polygon.prototype.CLASS_NAME = 'jsts.geom.Polygon';
 
 })();
