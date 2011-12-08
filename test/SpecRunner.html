@@ -1,21 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>JSTS Test Runner</title>
-  
-  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.0.1/jasmine.css">
-  
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  
-  <script type="text/javascript" src="lib/jasmine-1.0.1/jasmine.js"></script>
-  <script type="text/javascript" src="lib/jasmine-1.0.1/jasmine-html.js"></script>
+  <title>Jasmine Spec Runner</title>
 
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.1.0/jasmine_favicon.png">
+
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0/jasmine.css">
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine-html.js"></script>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  
   <script src="../OpenLayers-2.11/lib/OpenLayers.js" type="text/javascript"></script> 
   
   <script type="text/javascript" src="../lib/javascript.util.js"></script>
-  
-  <!--  
-  <script type="text/javascript" src="../lib/jsts.js"></script>
-  -->
   
   <script type="text/javascript" src="../src/jsts.js"></script>
   <script type="text/javascript" src="../src/jsts/util/AssertionFailedException.js"></script>
@@ -212,6 +211,7 @@
   <script type="text/javascript" src="spec/jsts/triangulate/DelaunayTriangulationBuilder.js"></script>
   <script type="text/javascript" src="spec/jsts/triangulate/VoronoiDiagramBuilder.js"></script>
   <script type="text/javascript" src="spec/jsts/io.js"></script>
+  
   <script type="text/javascript" src="spec/jsts/TestBoundary.js"></script>
   <script type="text/javascript" src="spec/jsts/TestBuffer.js"></script>
   <script type="text/javascript" src="spec/jsts/TestCentroid.js"></script>
@@ -223,24 +223,60 @@
   <script type="text/javascript" src="spec/jsts/TestFunctionPA.js"></script>
   <script type="text/javascript" src="spec/jsts/TestFunctionPL.js"></script>
   <script type="text/javascript" src="spec/jsts/TestFunctionPP.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelateAA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelateLA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelateLL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelatePA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelatePL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelatePP.js"></script>
   <script type="text/javascript" src="spec/jsts/TestSimple.js"></script>
   <!-- script type="text/javascript" src="spec/jsts/TestValid.js"></script-->
   
   <script type="text/javascript" src="spec/jsts/issues/60.js"></script>
   
-</head>
-<body>
+  <script type="text/javascript" src="spec/jsts/JTSTestFactory.js"></script>
 
 <script type="text/javascript">
-  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-  jasmine.getEnv().execute();
+  (function() {
+
+
+    function onReady() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var trivialReporter = new jasmine.TrivialReporter();
+
+      jasmineEnv.addReporter(trivialReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return trivialReporter.specFilter(spec);
+      };
+
+      jasmineEnv.execute();
+    }
+
+    var jtsXMLs = ['TestRelateAA', 'TestRelateAC', 'TestRelateLA',
+        'TestRelateLC', 'TestRelateLL', 'TestRelatePA',
+        'TestRelatePL', 'TestRelatePP'];
+    var count = jtsXMLs.length;
+
+	for ( var i = 0; i < jtsXMLs.length; i++) {
+		(function() {
+		  var xml = jtsXMLs[i];
+		
+		  $.ajax({
+		    url: '../testxml/general/' + xml + '.xml',
+		    success: function(response) {
+		      JTSTestFactory.generate(response, xml);
+		      count--;
+		
+		      if (count === 0) {
+		        onReady();
+		      }
+		    }
+		  });
+	  	})();
+	}
+    
+  })();
 </script>
 
+</head>
+
+<body>
 </body>
 </html>

@@ -18,7 +18,7 @@ jasmine.TrivialReporter.prototype.createDom = function(type, attrs, childrenVarA
   }
 
   for (var attr in attrs) {
-    if (attr == 'className') {
+    if (attr == "className") {
       el[attr] = attrs[attr];
     } else {
       el.setAttribute(attr, attrs[attr]);
@@ -33,22 +33,22 @@ jasmine.TrivialReporter.prototype.reportRunnerStarting = function(runner) {
 
   this.outerDiv = this.createDom('div', { className: 'jasmine_reporter' },
       this.createDom('div', { className: 'banner' },
-      this.createDom('div', { className: 'logo' },
-      this.createDom('a', { href: 'http://pivotal.github.com/jasmine/', target: '_blank' }, 'Jasmine'),
-      this.createDom('span', { className: 'version' }, runner.env.versionString())),
-      this.createDom('div', { className: 'options' },
-      'Show ',
-      showPassed = this.createDom('input', { id: '__jasmine_TrivialReporter_showPassed__', type: 'checkbox' }),
-      this.createDom('label', { 'for': '__jasmine_TrivialReporter_showPassed__' }, ' passed '),
-      showSkipped = this.createDom('input', { id: '__jasmine_TrivialReporter_showSkipped__', type: 'checkbox' }),
-      this.createDom('label', { 'for': '__jasmine_TrivialReporter_showSkipped__' }, ' skipped')
-      )
+        this.createDom('div', { className: 'logo' },
+            this.createDom('span', { className: 'title' }, "Jasmine"),
+            this.createDom('span', { className: 'version' }, runner.env.versionString())),
+        this.createDom('div', { className: 'options' },
+            "Show ",
+            showPassed = this.createDom('input', { id: "__jasmine_TrivialReporter_showPassed__", type: 'checkbox' }),
+            this.createDom('label', { "for": "__jasmine_TrivialReporter_showPassed__" }, " passed "),
+            showSkipped = this.createDom('input', { id: "__jasmine_TrivialReporter_showSkipped__", type: 'checkbox' }),
+            this.createDom('label', { "for": "__jasmine_TrivialReporter_showSkipped__" }, " skipped")
+            )
           ),
 
       this.runnerDiv = this.createDom('div', { className: 'runner running' },
-          this.createDom('a', { className: 'run_spec', href: '?' }, 'run all'),
-          this.runnerMessageSpan = this.createDom('span', {}, 'Running...'),
-          this.finishedAtSpan = this.createDom('span', { className: 'finished-at' }, ''))
+          this.createDom('a', { className: 'run_spec', href: '?' }, "run all"),
+          this.runnerMessageSpan = this.createDom('span', {}, "Running..."),
+          this.finishedAtSpan = this.createDom('span', { className: 'finished-at' }, ""))
       );
 
   this.document.body.appendChild(this.outerDiv);
@@ -57,7 +57,7 @@ jasmine.TrivialReporter.prototype.reportRunnerStarting = function(runner) {
   for (var i = 0; i < suites.length; i++) {
     var suite = suites[i];
     var suiteDiv = this.createDom('div', { className: 'suite' },
-        this.createDom('a', { className: 'run_spec', href: '?spec=' + encodeURIComponent(suite.getFullName()) }, 'run'),
+        this.createDom('a', { className: 'run_spec', href: '?spec=' + encodeURIComponent(suite.getFullName()) }, "run"),
         this.createDom('a', { className: 'description', href: '?spec=' + encodeURIComponent(suite.getFullName()) }, suite.description));
     this.suiteDivs[suite.id] = suiteDiv;
     var parentDiv = this.outerDiv;
@@ -89,10 +89,10 @@ jasmine.TrivialReporter.prototype.reportRunnerStarting = function(runner) {
 
 jasmine.TrivialReporter.prototype.reportRunnerResults = function(runner) {
   var results = runner.results();
-  var className = (results.failedCount > 0) ? 'runner failed' : 'runner passed';
-  this.runnerDiv.setAttribute('class', className);
+  var className = (results.failedCount > 0) ? "runner failed" : "runner passed";
+  this.runnerDiv.setAttribute("class", className);
   //do it twice for IE
-  this.runnerDiv.setAttribute('className', className);
+  this.runnerDiv.setAttribute("className", className);
   var specs = runner.specs();
   var specCount = 0;
   for (var i = 0; i < specs.length; i++) {
@@ -100,20 +100,20 @@ jasmine.TrivialReporter.prototype.reportRunnerResults = function(runner) {
       specCount++;
     }
   }
-  var message = '' + specCount + ' spec' + (specCount == 1 ? '' : 's') + ', ' + results.failedCount + ' failure' + ((results.failedCount == 1) ? '' : 's');
-  message += ' in ' + ((new Date().getTime() - this.startedAt.getTime()) / 1000) + 's';
+  var message = "" + specCount + " spec" + (specCount == 1 ? "" : "s" ) + ", " + results.failedCount + " failure" + ((results.failedCount == 1) ? "" : "s");
+  message += " in " + ((new Date().getTime() - this.startedAt.getTime()) / 1000) + "s";
   this.runnerMessageSpan.replaceChild(this.createDom('a', { className: 'description', href: '?'}, message), this.runnerMessageSpan.firstChild);
 
-  this.finishedAtSpan.appendChild(document.createTextNode('Finished at ' + new Date().toString()));
+  this.finishedAtSpan.appendChild(document.createTextNode("Finished at " + new Date().toString()));
 };
 
 jasmine.TrivialReporter.prototype.reportSuiteResults = function(suite) {
   var results = suite.results();
   var status = results.passed() ? 'passed' : 'failed';
-  if (results.totalCount == 0) { // todo: change this to check results.skipped
+  if (results.totalCount === 0) { // todo: change this to check results.skipped
     status = 'skipped';
   }
-  this.suiteDivs[suite.id].className += ' ' + status;
+  this.suiteDivs[suite.id].className += " " + status;
 };
 
 jasmine.TrivialReporter.prototype.reportSpecStarting = function(spec) {
@@ -128,8 +128,8 @@ jasmine.TrivialReporter.prototype.reportSpecResults = function(spec) {
   if (results.skipped) {
     status = 'skipped';
   }
-  var specDiv = this.createDom('div', { className: 'spec ' + status },
-      this.createDom('a', { className: 'run_spec', href: '?spec=' + encodeURIComponent(spec.getFullName()) }, 'run'),
+  var specDiv = this.createDom('div', { className: 'spec '  + status },
+      this.createDom('a', { className: 'run_spec', href: '?spec=' + encodeURIComponent(spec.getFullName()) }, "run"),
       this.createDom('a', {
         className: 'description',
         href: '?spec=' + encodeURIComponent(spec.getFullName()),
@@ -183,6 +183,8 @@ jasmine.TrivialReporter.prototype.specFilter = function(spec) {
     paramMap[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
   }
 
-  if (!paramMap['spec']) return true;
-  return spec.getFullName().indexOf(paramMap['spec']) == 0;
+  if (!paramMap.spec) {
+    return true;
+  }
+  return spec.getFullName().indexOf(paramMap.spec) === 0;
 };

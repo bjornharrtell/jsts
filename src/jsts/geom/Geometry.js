@@ -347,6 +347,11 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
   return DistanceOp.isWithinDistance(this, geom, distance);
 };
 
+jsts.geom.Geometry.prototype.isRectangle = function() {
+  // Polygon overrides to check for actual rectangle
+  return false;
+};
+
 /**
  * Computes the centroid of this <code>Geometry</code>. The centroid is equal
  * to the centroid of the set of component Geometries of highest dimension
@@ -355,7 +360,7 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
  *
  * @return a {@link Point} which is the centroid of this Geometry.
  */
-jsts.geom.Geometry.prototype.getCentroid_jsts = function() {
+jsts.geom.Geometry.prototype.getCentroid = function() {
   if (this.isEmpty()) {
     return null;
   }
