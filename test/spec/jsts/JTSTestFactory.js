@@ -65,14 +65,17 @@ JTSTestFactory.generate = function(doc, title) {
             if (expectedBool !== result) {
               throw new Error('Result: ' + result + ' Expected: ' + expected +
                   inputs);
+            } else {
+              expect(true).toBeTruthy();
             }
           } else if (opname === 'distance') {
             var expectedDistance = parseFloat(expected);
             if (result !== expectedDistance) {
               throw new Error('Result: ' + result + ' Expected: ' + parseFloat(expectedDistance) +
                   inputs);
+            } else {
+              expect(true).toBeTruthy();
             }
-            expect(result).toEqual(parseFloat(expected));
           } else {
             var expectedGeometry = reader.read(expected);
             result.normalize();
@@ -81,6 +84,8 @@ JTSTestFactory.generate = function(doc, title) {
             if (result.compareTo(expectedGeometry) !== 0) {
               throw new Error('Result: ' + result + ' Expected: ' + expectedGeometry +
                   inputs);
+            } else {
+              expect(true).toBeTruthy();
             }
           }
 
