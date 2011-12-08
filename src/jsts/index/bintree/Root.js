@@ -11,7 +11,7 @@
 (function() {
 
   /**
-   * @requires jsts/index/bintree/Nodebase.js
+   * @requires jsts/index/bintree/NodeBase.js
    * @requires jsts/index/bintree/Node.js
    */
 

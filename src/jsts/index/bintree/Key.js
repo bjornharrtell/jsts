@@ -13,7 +13,7 @@
 
   /**
    * @requires jsts/index/bintree/Interval.js
-   * @requires jsts/index/quadtree/DoubleBits.js
+   * @requires jsts/index/DoubleBits.js
    */
 
   var DoubleBits = jsts.index.DoubleBits;

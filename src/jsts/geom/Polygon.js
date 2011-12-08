@@ -150,6 +150,22 @@
     }
   };
 
+  /**
+   * Creates and returns a full copy of this {@link Polygon} object.
+   * (including all coordinates contained by it).
+   *
+   * @return a clone of this instance.
+   */
+  jsts.geom.Polygon.prototype.clone = function() {
+    var holes = [];
+
+    for (var i = 0; i < this.holes.length; i++) {
+      holes.push(this.holes[i].clone());
+    }
+
+    return this.factory.createPolygon(this.shell.clone(), holes);
+  };
+
   jsts.geom.Polygon.prototype.normalize = function() {
     this.normalize2(this.shell, true);
     for (var i = 0; i < this.holes.length; i++) {

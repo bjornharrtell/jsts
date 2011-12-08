@@ -16,6 +16,10 @@
 
     var buffer = input.buffer(20);
     
+    var converter = new jsts.geom.OpenLayersConverter();
+    input = converter.convertTo(input);
+    buffer = converter.convertTo(buffer);
+    
     var map = new OpenLayers.Map('map', {
       maxExtent: new OpenLayers.Bounds(0, 0, 300, 300),
       maxResolution: 100,

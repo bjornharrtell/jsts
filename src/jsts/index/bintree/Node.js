@@ -10,7 +10,7 @@
 (function() {
 
   /**
-   * @requires jsts/index/bintree/Nodebase.js
+   * @requires jsts/index/bintree/NodeBase.js
    */
 
   var NodeBase = jsts.index.bintree.NodeBase;

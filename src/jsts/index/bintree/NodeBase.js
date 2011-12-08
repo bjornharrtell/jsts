@@ -10,10 +10,6 @@
 (function() {
 
   /**
-   * @requires jsts/index/bintree/Nodebase.js
-   */
-
-  /**
    * Constructs a new NodeBase
    *
    * @constructor

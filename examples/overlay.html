@@ -18,6 +18,12 @@
     var union = a.union(b);
     var intersection = a.intersection(b);
     
+    var converter = new jsts.geom.OpenLayersConverter();
+    a = converter.convertTo(a);
+    b = converter.convertTo(b);
+    union = converter.convertTo(buffer);
+    intersection = converter.convertTo(a);
+    
     var map = new OpenLayers.Map('map', {
       maxExtent: new OpenLayers.Bounds(0, 0, 200, 200),
       maxResolution: 100,

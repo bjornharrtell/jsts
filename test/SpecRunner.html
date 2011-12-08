@@ -212,68 +212,11 @@
   <script type="text/javascript" src="spec/jsts/triangulate/VoronoiDiagramBuilder.js"></script>
   <script type="text/javascript" src="spec/jsts/io.js"></script>
   
-  <script type="text/javascript" src="spec/jsts/TestBoundary.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestBuffer.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestCentroid.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestDistance.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestEqualsExact.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionAA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionLA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionLL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionPA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionPL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionPP.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestSimple.js"></script>
-  <!-- script type="text/javascript" src="spec/jsts/TestValid.js"></script-->
-  
   <script type="text/javascript" src="spec/jsts/issues/60.js"></script>
   
   <script type="text/javascript" src="spec/jsts/JTSTestFactory.js"></script>
 
-<script type="text/javascript">
-  (function() {
-
-
-    function onReady() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
-
-      var trivialReporter = new jasmine.TrivialReporter();
-
-      jasmineEnv.addReporter(trivialReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return trivialReporter.specFilter(spec);
-      };
-
-      jasmineEnv.execute();
-    }
-
-    var jtsXMLs = ['TestRelateAA', 'TestRelateAC', 'TestRelateLA',
-        'TestRelateLC', 'TestRelateLL', 'TestRelatePA',
-        'TestRelatePL', 'TestRelatePP'];
-    var count = jtsXMLs.length;
-
-	for ( var i = 0; i < jtsXMLs.length; i++) {
-		(function() {
-		  var xml = jtsXMLs[i];
-		
-		  $.ajax({
-		    url: '../testxml/general/' + xml + '.xml',
-		    success: function(response) {
-		      JTSTestFactory.generate(response, xml);
-		      count--;
-		
-		      if (count === 0) {
-		        onReady();
-		      }
-		    }
-		  });
-	  	})();
-	}
-    
-  })();
-</script>
+  <script type="text/javascript" src="SpecRunner.js"></script>
 
 </head>
 

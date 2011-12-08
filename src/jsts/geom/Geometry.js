@@ -569,7 +569,7 @@ jsts.geom.Geometry.prototype.touches = function(g) {
  *
  * @see Geometry#disjoint
  */
-jsts.geom.Geometry.prototype.intersects_jsts = function(g) {
+jsts.geom.Geometry.prototype.intersects = function(g) {
 
   // short-circuit envelope test
   if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
@@ -1197,6 +1197,25 @@ jsts.geom.Geometry.prototype.symDifference = function(other) {
  */
 jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
   throw new jsts.error.AbstractMethodInvocationError();
+};
+
+/**
+ * Tests whether two geometries are exactly equal
+ * in their normalized forms.
+ * This is a convenience method which creates normalized
+ * versions of both geometries before computing
+ * {@link #equalsExact(Geometry)}.
+ * This method is relatively expensive to compute.
+ * For maximum performance, the client
+ * should instead perform normalization itself
+ * at an appropriate point during execution.
+ *
+ * @param {Geometry} g a Geometry.
+ * @return {boolean} true if the input geometries are exactly equal in their normalized form.
+ */
+jsts.geom.Geometry.prototype.equalsNorm = function(g) {
+  if (g === null || g === undefined) return false;
+  return this.norm().equalsExact(g.norm());
 };
 
 

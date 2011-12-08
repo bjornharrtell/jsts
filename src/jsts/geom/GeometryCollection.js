@@ -124,6 +124,20 @@
     return true;
   };
 
+  /**
+   * Creates and returns a full copy of this {@link GeometryCollection} object.
+   * (including all coordinates contained by it).
+   *
+   * @return a clone of this instance.
+   */
+  jsts.geom.GeometryCollection.prototype.clone = function() {
+    var geometries = [];
+    for (var i = 0; i < this.geometries.length; i++) {
+      geometries.push(this.geometries[i].clone());
+    }
+    return this.factory.createGeometryCollection(geometries);
+  };
+
   jsts.geom.GeometryCollection.prototype.normalize = function() {
     for (var i = 0; i < this.geometries.length; i++) {
       this.getGeometryN(i).normalize();

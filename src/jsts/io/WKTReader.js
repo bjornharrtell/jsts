@@ -42,10 +42,20 @@ jsts.io.WKTReader = function(geometryFactory) {
  */
 jsts.io.WKTReader.prototype.read = function(wkt) {
   var geometryOpenLayers = OpenLayers.Geometry.fromWKT(wkt);
+  var geometry;
 
-  //handle WKT empty inputs
+  //handle WKT empty inputs and linearring
   if (geometryOpenLayers === undefined) {
+    if (wkt.search('LINEARRING') >= 0) {
+      geometry = this.read(wkt.replace('LINEARRING', 'LINESTRING'));
+
+      geometry = this.geometryFactory.createLinearRing(geometry.points);
+
+      return geometry;
+    }
+
     var type = wkt.split(' ')[0].toLowerCase();
+
     switch (type) {
     case 'point':
       geometry = new jsts.geom.Point(null, this.geometryFactory);
@@ -73,26 +83,30 @@ jsts.io.WKTReader.prototype.read = function(wkt) {
   }
 
   var converter = new jsts.geom.OpenLayersConverter(this.geometryFactory);
-  var geometry = converter.convertFrom(geometryOpenLayers);
+  geometry = converter.convertFrom(geometryOpenLayers);
 
-  // TODO: decide if precision should be enforced
-  //if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
-  //  this.reducePrecision(geometry.components);
-  //}
+  // TODO: port and use GeometryPrecisionReducer
+  // NOTE: this is a hack
+  if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
+    this.reducePrecision(geometry);
+  }
 
   return geometry;
 };
 
-jsts.io.WKTReader.prototype.reducePrecision = function(components) {
-  var i, component;
+//NOTE: this is a hack
+jsts.io.WKTReader.prototype.reducePrecision = function(geometry) {
+  var i;
 
-  if (!components) return;
-
-  for (i = 0; i < components.length; i++) {
-    component = components[i];
-    if (component instanceof jsts.geom.Coordinate) {
-      this.precisionModel.makePrecise(component);
+  if (geometry.coordinate) {
+    this.precisionModel.makePrecise(geometry.coordinate);
+  } else if (geometry.points) {
+    for (i = 0; i < geometry.points.length; i++) {
+      this.precisionModel.makePrecise(geometry.points[i]);
     }
-    this.reducePrecision(component);
+  } else if (geometry.geometries) {
+    for (i = 0; i < geometry.geometries.length; i++) {
+      this.reducePrecision(geometry.geometries[i]);
+    }
   }
 };
