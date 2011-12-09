@@ -134,7 +134,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromCollection = function(
 
 jsts.geom.OpenLayersConverter.prototype.convertTo = function(geometry) {
   if (geometry.CLASS_NAME === 'jsts.geom.Point') {
-    return this.convertToPoint(geometry);
+    return this.convertToPoint(geometry.getCoordinate());
   } else if (geometry.CLASS_NAME === 'jsts.geom.LineString') {
     return this.convertToLineString(geometry);
   } else if (geometry.CLASS_NAME === 'jsts.geom.LinearRing') {
@@ -152,8 +152,7 @@ jsts.geom.OpenLayersConverter.prototype.convertTo = function(geometry) {
   }
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToPoint = function(point) {
-  var coordinate = point.getCoordinate();
+jsts.geom.OpenLayersConverter.prototype.convertToPoint = function(coordinate) {
   return new OpenLayers.Geometry.Point(coordinate.x, coordinate.y);
 };
 
