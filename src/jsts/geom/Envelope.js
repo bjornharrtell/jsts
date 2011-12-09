@@ -140,7 +140,7 @@ jsts.geom.Envelope.prototype.initFromCoordinates = function(p1, p2) {
  *          p the Coordinate.
  */
 jsts.geom.Envelope.prototype.initFromCoordinate = function(p) {
-  this.initFromCoordinates(p.x, p.x, p.y, p.y);
+  this.initFromCoordinates(p, p);
 };
 
 
