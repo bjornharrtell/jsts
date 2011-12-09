@@ -25,6 +25,11 @@ describe('jsts.geom.Point', function() {
     expect(isEmpty).toBeFalsy();
   });
   
+  it('can be converted to an envelope which should be a Point', function() {
+    var envelope = point.getEnvelope();
+    expect(envelope.getX()).toEqual(1);
+  });
+  
   it('can be empty', function() {
     var isEmpty = pointEmpty.isEmpty();
     expect(isEmpty).toBeTruthy();
