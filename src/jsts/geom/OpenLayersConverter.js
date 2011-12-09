@@ -152,7 +152,8 @@ jsts.geom.OpenLayersConverter.prototype.convertTo = function(geometry) {
   }
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToPoint = function(coordinate) {
+jsts.geom.OpenLayersConverter.prototype.convertToPoint = function(point) {
+  var coordinate = point.getCoordinate();
   return new OpenLayers.Geometry.Point(coordinate.x, coordinate.y);
 };
 
