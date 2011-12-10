@@ -213,7 +213,7 @@ jsts.io.WKTParser.prototype.extract = {
    *          collection
    * @return {String} internal WKT representation of the collection.
    */
-  'collection': function(collection) {
+  'geometrycollection': function(collection) {
     var array = [];
     for (var i = 0, len = collection.geometries.length; i < len; ++i) {
       array.push(this.extractGeometry.apply(this, [collection.geometries[i]]));
