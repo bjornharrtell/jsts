@@ -102,7 +102,7 @@ JTSTestFactory.generate = function(doc, title) {
         var expected = $("op", test).text().trim().replace(/\n/g, '');
 
         var a = reader.read(awkt);
-        var b = reader.read(bwkt);
+        var b = bwkt.length > 0 ? reader.read(bwkt) : undefined;
 
         generateSpec(a, b, opname, arg2, arg3, expected);
       }

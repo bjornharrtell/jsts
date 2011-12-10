@@ -6,11 +6,9 @@
 
 (function() {
 
-
   /**
    * @requires jsts/geom/GeometryCollection.js
    */
-
 
   /**
    * @constructor

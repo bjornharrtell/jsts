@@ -19,6 +19,9 @@
    */
 
 
+  /**
+   * @requires jsts/geom/Geometry.js
+   */
 
   /**
    * @extends {jsts.geom.Geometry}

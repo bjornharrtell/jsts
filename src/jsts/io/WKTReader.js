@@ -26,13 +26,12 @@
 jsts.io.WKTReader = function(geometryFactory) {
   this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
   this.precisionModel = this.geometryFactory.getPrecisionModel();
+  this.parser = new jsts.io.WKTParser(this.geometryFactory);
 };
 
 
 /**
  * Reads a Well-Known Text representation of a {@link Geometry}
- *
- * NOTE: OL WKT format does not handle LINEARRING type.
  *
  * @param {string}
  *          wkt a <Geometry Tagged Text> string (see the OpenGIS Simple Features
@@ -41,52 +40,9 @@ jsts.io.WKTReader = function(geometryFactory) {
  *         <code>string.</code>
  */
 jsts.io.WKTReader.prototype.read = function(wkt) {
-  var geometryOpenLayers = OpenLayers.Geometry.fromWKT(wkt);
-  var geometry;
+  var geometry = this.parser.read(wkt);
 
-  //handle WKT empty inputs and linearring
-  if (geometryOpenLayers === undefined) {
-    if (wkt.search('LINEARRING') >= 0) {
-      geometry = this.read(wkt.replace('LINEARRING', 'LINESTRING'));
-
-      geometry = this.geometryFactory.createLinearRing(geometry.points);
-
-      return geometry;
-    }
-
-    var type = wkt.split(' ')[0].toLowerCase();
-
-    switch (type) {
-    case 'point':
-      geometry = new jsts.geom.Point(null, this.geometryFactory);
-      break;
-    case 'multipoint':
-      geometry = new jsts.geom.MultiPoint(null, this.geometryFactory);
-      break;
-    case 'linestring':
-      geometry = new jsts.geom.LineString(null, this.geometryFactory);
-      break;
-    case 'multilinestring':
-      geometry = new jsts.geom.MultiLineString(null, this.geometryFactory);
-      break;
-    case 'polygon':
-      geometry = new jsts.geom.Polygon(null, null, this.geometryFactory);
-      break;
-    case 'multipolygon':
-      geometry = new jsts.geom.MultiPolygon(null, this.geometryFactory);
-      break;
-    case 'geometrycollection':
-      geometry = new jsts.geom.GeometryCollection(null, this.geometryFactory);
-      break;
-    }
-    return geometry;
-  }
-
-  var converter = new jsts.geom.OpenLayersConverter(this.geometryFactory);
-  geometry = converter.convertFrom(geometryOpenLayers);
-
-  // TODO: port and use GeometryPrecisionReducer
-  // NOTE: this is a hack
+  // TODO: port and use GeometryPrecisionReducer, this is a hack
   if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
     this.reducePrecision(geometry);
   }
@@ -96,16 +52,16 @@ jsts.io.WKTReader.prototype.read = function(wkt) {
 
 //NOTE: this is a hack
 jsts.io.WKTReader.prototype.reducePrecision = function(geometry) {
-  var i;
+  var i, len;
 
   if (geometry.coordinate) {
     this.precisionModel.makePrecise(geometry.coordinate);
   } else if (geometry.points) {
-    for (i = 0; i < geometry.points.length; i++) {
+    for (i = 0, len = geometry.points.length; i < len; i++) {
       this.precisionModel.makePrecise(geometry.points[i]);
     }
   } else if (geometry.geometries) {
-    for (i = 0; i < geometry.geometries.length; i++) {
+    for (i = 0, len = geometry.geometries.length; i < len; i++) {
       this.reducePrecision(geometry.geometries[i]);
     }
   }

@@ -10,8 +10,6 @@
    * @requires jsts/geom/GeometryCollection.js
    */
 
-
-
   /**
    * @constructor
    * @extends jsts.geom.GeometryCollection
