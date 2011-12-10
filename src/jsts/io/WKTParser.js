@@ -95,7 +95,12 @@ jsts.io.WKTParser.prototype.extractGeometry = function(geometry) {
     return null;
   }
   var wktType = type.toUpperCase();
-  var data = wktType + '(' + this.extract[type].apply(this, [geometry]) + ')';
+  var data;
+  if (geometry.isEmpty()) {
+    data = wktType + ' EMPTY';
+  } else {
+    data = wktType + '(' + this.extract[type].apply(this, [geometry]) + ')';
+  }
   return data;
 };
 
