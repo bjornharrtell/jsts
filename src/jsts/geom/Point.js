@@ -112,7 +112,7 @@ jsts.geom.Point.prototype.computeEnvelopeInternal = function() {
   if (this.isEmpty()) {
     return new jsts.geom.Envelope();
   }
-  return new jsts.geom.Envelope(this);
+  return new jsts.geom.Envelope(this.coordinate);
 };
 
 jsts.geom.Point.prototype.apply = function(filter) {
@@ -193,3 +193,5 @@ jsts.geom.Point.prototype.getGeometryType = function() {
 jsts.geom.Point.prototype.hashCode = function() {
   return 'Point_' + this.coordinate.hashCode();
 };
+
+jsts.geom.Point.prototype.CLASS_NAME = 'jsts.geom.Point';

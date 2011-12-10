@@ -24,7 +24,12 @@
     
     builder = new jsts.triangulate.VoronoiDiagramBuilder();
     builder.setSites(input);
-	var voronoiResult = builder.getDiagram(geomFact);      
+	var voronoiResult = builder.getDiagram(geomFact);    
+	
+	var parser = new jsts.io.OpenLayersParser();
+	input = parser.write(input);
+	delaunayResult = parser.write(delaunayResult);
+	voronoiResult = parser.write(voronoiResult);
 
     var map = new OpenLayers.Map('map', {
       maxExtent: new OpenLayers.Bounds(-180, -180, 180, 180),

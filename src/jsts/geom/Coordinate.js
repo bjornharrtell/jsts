@@ -23,22 +23,20 @@
    * @constructor
    */
   jsts.geom.Coordinate = function(x, y) {
-    OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
-    if (x === undefined || x === null) {
+    if (typeof x === 'number') {
+      this.x = x;
+      this.y = y;
+    } else if (x instanceof jsts.geom.Coordinate) {
+      this.x = parseFloat(x.x);
+      this.y = parseFloat(x.y);
+    } else if (x === undefined || x === null) {
       this.x = 0;
       this.y = 0;
-    } else if (typeof x === 'number' || typeof x === 'string') {
-      this.x = parseFloat(x);
-      this.y = parseFloat(y);
-    } else if (x instanceof jsts.geom.Coordinate) {
-      y = x.y;
-      x = x.x;
+    } else if (typeof x === 'string') {
       this.x = parseFloat(x);
       this.y = parseFloat(y);
     }
   };
-  jsts.geom.Coordinate.prototype = OpenLayers.Geometry.Point.prototype;
-
 
   /**
    * Sets this <code>Coordinate</code>s (x,y,z) values to that of
@@ -154,31 +152,8 @@
   };
 
   jsts.geom.Coordinate.prototype.hashCode = function() {
+    // TODO: might not work as expected, JTS does some magic here.
     return '' + this.x + this.y;
   };
-
-  /**
-   * @private
-   */
-  OpenLayers.Geometry.Point = function(x, y) {
-    OpenLayers.Geometry.prototype.initialize.apply(this, arguments);
-    if (x === undefined || x === null) {
-      this.x = 0;
-      this.y = 0;
-    } else if (typeof x === 'number' || typeof x === 'string') {
-      this.x = parseFloat(x);
-      this.y = parseFloat(y);
-    } else if (x instanceof jsts.geom.Coordinate) {
-      y = x.y;
-      x = x.x;
-      this.x = parseFloat(x);
-      this.y = parseFloat(y);
-    }
-  };
-
-  /**
-   * @private
-   */
-  OpenLayers.Geometry.Point = jsts.geom.Coordinate;
 
 })();

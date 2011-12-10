@@ -1,3 +1,10 @@
+2011-12-24: Version 0.11.0
+
+		Rewrite code for running JTS tests (#80)
+		Remove hard dependency on OpenLayers (#79)
+		Bintree index port (#76)
+		LineStringSnapper port (#75)
+
 2011-10-07: Version 0.10.0
 
 		FunctionLA LA - A and B simple union fails (#65)

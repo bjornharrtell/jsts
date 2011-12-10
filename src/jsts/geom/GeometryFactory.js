@@ -4,8 +4,6 @@
  * See /license.txt for the full text of the license.
  */
 
-
-
 /**
  * Supplies a set of utility methods for building Geometry objects from lists
  * of Coordinates.
@@ -15,7 +13,13 @@
  *
  * In particular, they are not rounded to the supplied <tt>PrecisionModel</tt>.
  * It is assumed that input Coordinates meet the given precision.
- *
+ */
+
+/**
+ * @requires jsts/geom/PrecisionModel.js
+ */
+
+/**
  * Constructs a GeometryFactory that generates Geometries having a floating
  * PrecisionModel and a spatial-reference ID of 0.
  *
@@ -95,37 +99,27 @@ jsts.geom.GeometryFactory.prototype.createLinearRing = function(coordinates) {
  * @return {Polygon} A new Polygon.
  */
 jsts.geom.GeometryFactory.prototype.createPolygon = function(shell, holes) {
-  var rings;
-
-  if (shell) {
-    rings = [shell];
-
-    if (holes !== undefined) {
-      rings = rings.concat(holes);
-    }
-  }
-
-  var polygon = new jsts.geom.Polygon(rings, this);
+  var polygon = new jsts.geom.Polygon(shell, holes, this);
 
   return polygon;
 };
 
 
-jsts.geom.GeometryFactory.prototype.createMultiPoint = function(coordinates) {
-  if (coordinates) {
-    if (coordinates[0] instanceof jsts.geom.Point) {
-      var temp = [];
-      coordinates.forEach(function(point) {
-        temp.push(point.coordinate);
-      });
-      coordinates = temp;
+jsts.geom.GeometryFactory.prototype.createMultiPoint = function(points) {
+  if (points && points[0] instanceof jsts.geom.Coordinate) {
+    var converted = [];
+    var i;
+    for (i = 0; i < points.length; i++) {
+      converted.push(this.createPoint(points[i]));
     }
+    points = converted;
   }
 
-  return new jsts.geom.MultiPoint(coordinates, this);
+  return new jsts.geom.MultiPoint(points, this);
 };
 
-jsts.geom.GeometryFactory.prototype.createMultiLineString = function(lineStrings) {
+jsts.geom.GeometryFactory.prototype.createMultiLineString = function(
+    lineStrings) {
   return new jsts.geom.MultiLineString(lineStrings, this);
 };
 
@@ -135,31 +129,31 @@ jsts.geom.GeometryFactory.prototype.createMultiPolygon = function(polygons) {
 
 
 /**
- *  Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
- *  <code>GeometryCollection</code> to contain the <code>Geometry</code>s in
- *  it.
- * For example:<br>
+ * Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>,
+ * or <code>GeometryCollection</code> to contain the <code>Geometry</code>s
+ * in it. For example:<br>
  *
- *  <ul>
- *    <li> If <code>geomList</code> contains a single <code>Polygon</code>,
- *    the <code>Polygon</code> is returned.
- *    <li> If <code>geomList</code> contains several <code>Polygon</code>s, a
- *    <code>MultiPolygon</code> is returned.
- *    <li> If <code>geomList</code> contains some <code>Polygon</code>s and
- *    some <code>LineString</code>s, a <code>GeometryCollection</code> is
- *    returned.
- *    <li> If <code>geomList</code> is empty, an empty <code>GeometryCollection</code>
- *    is returned
- *  </ul>
+ * <ul>
+ * <li> If <code>geomList</code> contains a single <code>Polygon</code>,
+ * the <code>Polygon</code> is returned.
+ * <li> If <code>geomList</code> contains several <code>Polygon</code>s, a
+ * <code>MultiPolygon</code> is returned.
+ * <li> If <code>geomList</code> contains some <code>Polygon</code>s and
+ * some <code>LineString</code>s, a <code>GeometryCollection</code> is
+ * returned.
+ * <li> If <code>geomList</code> is empty, an empty
+ * <code>GeometryCollection</code> is returned
+ * </ul>
  *
- * Note that this method does not "flatten" Geometries in the input, and hence if
- * any MultiGeometries are contained in the input a GeometryCollection containing
- * them will be returned.
+ * Note that this method does not "flatten" Geometries in the input, and hence
+ * if any MultiGeometries are contained in the input a GeometryCollection
+ * containing them will be returned.
  *
- *@param  geomList  the <code>Geometry</code>s to combine
- *@return {Geometry}          a <code>Geometry</code> of the "smallest", "most
- *      type-specific" class that can contain the elements of <code>geomList</code>
- *      .
+ * @param geomList
+ *          the <code>Geometry</code>s to combine.
+ * @return {Geometry} a <code>Geometry</code> of the "smallest", "most
+ *         type-specific" class that can contain the elements of
+ *         <code>geomList</code> .
  */
 jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
 
@@ -169,16 +163,18 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   var geomClass = null;
   var isHeterogeneous = false;
   var hasGeometryCollection = false;
-  for (var i = geomList.iterator(); i.hasNext(); ) {
+  for (var i = geomList.iterator(); i.hasNext();) {
     var geom = i.next();
+
     var partClass = geom.CLASS_NAME;
+
     if (geomClass === null) {
       geomClass = partClass;
     }
-    if (partClass !== geomClass) {
+    if (!(partClass === geomClass)) {
       isHeterogeneous = true;
     }
-    if (geom instanceof jsts.geom.GeometryCollection)
+    if (geom.isGeometryCollectionBase())
       hasGeometryCollection = true;
   }
 
@@ -194,17 +190,16 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   }
   // at this point we know the collection is hetereogenous.
   // Determine the type of the result from the first Geometry in the list
-  // this should always return a geometry, since otherwise an empty collection would have already been returned
+  // this should always return a geometry, since otherwise an empty collection
+  // would have already been returned
   var geom0 = geomList.get(0);
   var isCollection = geomList.size() > 1;
   if (isCollection) {
     if (geom0 instanceof jsts.geom.Polygon) {
       return this.createMultiPolygon(geomList.toArray());
-    }
-    else if (geom0 instanceof jsts.geom.LineString) {
+    } else if (geom0 instanceof jsts.geom.LineString) {
       return this.createMultiLineString(geomList.toArray());
-    }
-    else if (geom0 instanceof jsts.geom.Point) {
+    } else if (geom0 instanceof jsts.geom.Point) {
       return this.createMultiPoint(geomList.toArray());
     }
     jsts.util.Assert.shouldNeverReachHere('Unhandled class: ' + geom0);
@@ -212,14 +207,15 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   return geom0;
 };
 
-jsts.geom.GeometryFactory.prototype.createGeometryCollection = function(geometries) {
+jsts.geom.GeometryFactory.prototype.createGeometryCollection = function(
+    geometries) {
   return new jsts.geom.GeometryCollection(geometries, this);
 };
 
 /**
- * Creates a {@link Geometry} with the same extent as the given envelope.
- * The Geometry returned is guaranteed to be valid.
- * To provide this behaviour, the following cases occur:
+ * Creates a {@link Geometry} with the same extent as the given envelope. The
+ * Geometry returned is guaranteed to be valid. To provide this behaviour, the
+ * following cases occur:
  * <p>
  * If the <code>Envelope</code> is:
  * <ul>
@@ -227,35 +223,34 @@ jsts.geom.GeometryFactory.prototype.createGeometryCollection = function(geometri
  * <li>a point : returns a non-empty {@link Point}
  * <li>a line : returns a two-point {@link LineString}
  * <li>a rectangle : returns a {@link Polygon}> whose points are (minx, miny),
- *  (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).
+ * (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).
  * </ul>
  *
- *@param  {jsts.geom.Envelope}
- *          envelope the <code>Envelope</code> to convert
- *@return {jsts.geom.Geometry}
- *          an empty <code>Point</code> (for null <code>Envelope</code>s),
- *          a <code>Point</code> (when min x = max x and min y = max y) or a
- *          <code>Polygon</code> (in all other cases)
+ * @param {jsts.geom.Envelope}
+ *          envelope the <code>Envelope</code> to convert.
+ * @return {jsts.geom.Geometry} an empty <code>Point</code> (for null
+ *         <code>Envelope</code>s), a <code>Point</code> (when min x = max
+ *         x and min y = max y) or a <code>Polygon</code> (in all other cases).
  */
-jsts.geom.GeometryFactory.prototype.toGeometry = function(envelope) 
-{
+jsts.geom.GeometryFactory.prototype.toGeometry = function(envelope) {
   // null envelope - return empty point geometry
   if (envelope.isNull()) {
     return this.createPoint(null);
   }
 
   // point?
-  if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY()) {
-    return this.createPoint(new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY()));
+  if (envelope.getMinX() === envelope.getMaxX() &&
+      envelope.getMinY() === envelope.getMaxY()) {
+    return this.createPoint(new jsts.geom.Coordinate(envelope.getMinX(),
+        envelope.getMinY()));
   }
 
   // vertical or horizontal line?
-  if (envelope.getMinX() === envelope.getMaxX()
-      || envelope.getMinY() === envelope.getMaxY()) {
+  if (envelope.getMinX() === envelope.getMaxX() ||
+      envelope.getMinY() === envelope.getMaxY()) {
     return this.createLineString([
         new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY()),
-        new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMaxY())
-        ]);
+        new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMaxY())]);
   }
 
   // create a CW ring for the polygon
@@ -264,6 +259,5 @@ jsts.geom.GeometryFactory.prototype.toGeometry = function(envelope)
       new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMaxY()),
       new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMaxY()),
       new jsts.geom.Coordinate(envelope.getMaxX(), envelope.getMinY()),
-      new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY())
-      ]), null);
+      new jsts.geom.Coordinate(envelope.getMinX(), envelope.getMinY())]), null);
 };

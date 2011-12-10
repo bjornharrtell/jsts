@@ -8,6 +8,7 @@
 
 /**
  * The base class for nodes in a {@link Quadtree}.
+ *
  * @constructor
  */
 jsts.index.quadtree.NodeBase = function() {
@@ -127,8 +128,14 @@ jsts.index.quadtree.NodeBase.prototype.remove = function(itemEnv, item) {
   }
   // otherwise, try and remove the item from the list of items in this node
 
-  if (OpenLayers.Util.indexOf(this.items, item) !== -1) {
-    OpenLayers.Util.removeItem(this.items, item);
+  if (this.items.indexOf(item) !== -1) {
+    for (var i = this.items.length - 1; i >= 0; i--) {
+      if (this.items[i] === item) {
+        this.items.splice(i, 1);
+        // break;more than once??
+      }
+    }
+
     found = true;
   }
   return found;
@@ -193,7 +200,7 @@ jsts.index.quadtree.NodeBase.prototype.addAllItems = function(resultItems) {
   for (i; i < 4; i++) {
     if (this.subnode[i] !== null) {
       resultItems = this.subnode[i].addAllItems(resultItems);
-      //resultItems = resultItems.concat(this.subnode[i]);
+      // resultItems = resultItems.concat(this.subnode[i]);
     }
   }
 

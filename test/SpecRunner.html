@@ -1,21 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>JSTS Test Runner</title>
-  
-  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.0.1/jasmine.css">
-  
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  
-  <script type="text/javascript" src="lib/jasmine-1.0.1/jasmine.js"></script>
-  <script type="text/javascript" src="lib/jasmine-1.0.1/jasmine-html.js"></script>
+  <title>Jasmine Spec Runner</title>
 
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.1.0/jasmine_favicon.png">
+
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0/jasmine.css">
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine-html.js"></script>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  
   <script src="../OpenLayers-2.11/lib/OpenLayers.js" type="text/javascript"></script> 
   
   <script type="text/javascript" src="../lib/javascript.util.js"></script>
-  
-  <!--  
-  <script type="text/javascript" src="../lib/jsts.js"></script>
-  -->
   
   <script type="text/javascript" src="../src/jsts.js"></script>
   <script type="text/javascript" src="../src/jsts/util/AssertionFailedException.js"></script>
@@ -87,6 +86,12 @@
   <script type="text/javascript" src="../src/jsts/index/strtree/ItemBoundable.js"></script>
   <script type="text/javascript" src="../src/jsts/index/strtree/SIRtree.js"></script>
   <script type="text/javascript" src="../src/jsts/index/strtree/STRtree.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Interval.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/NodeBase.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Key.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Node.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Root.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Bintree.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/SegmentIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/InteriorIntersectionFinder.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/IntersectionAdder.js"></script>
@@ -129,6 +134,8 @@
   <script type="text/javascript" src="../src/jsts/geomgraph/index/SegmentIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index/SimpleEdgeSetIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index/SimpleMCSweepLineIntersector.js"></script>
+  <script type="text/javascript" src="../src/jsts/io/OpenLayersParser.js"></script>
+  <script type="text/javascript" src="../src/jsts/io/WKTParser.js"></script>
   <script type="text/javascript" src="../src/jsts/io/WKTReader.js"></script>
   <script type="text/javascript" src="../src/jsts/io/WKTWriter.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/BoundaryOp.js"></script>
@@ -158,6 +165,7 @@
   <script type="text/javascript" src="../src/jsts/operation/overlay/OverlayOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/overlay/snap/SnapOverlayOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/overlay/snap/LineStringSnapper.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/relate/EdgeEndBuilder.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/relate/EdgeEndBundle.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/relate/EdgeEndBundleStar.js"></script>
@@ -190,6 +198,8 @@
   <script type="text/javascript" src="spec/jsts/geom/Polygon.js"></script>
   <script type="text/javascript" src="spec/jsts/index/DoubleBits.js"></script>
   <script type="text/javascript" src="spec/jsts/index/IntervalSize.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/bintree/Interval.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/bintree/Bintree.js"></script>
   <script type="text/javascript" src="spec/jsts/index/quadtree/Node.js"></script>
   <script type="text/javascript" src="spec/jsts/index/quadtree/Key.js"></script>
   <script type="text/javascript" src="spec/jsts/index/quadtree/Quadtree.js"></script>
@@ -197,38 +207,19 @@
   <script type="text/javascript" src="spec/jsts/operation/union/UnionOp.js"></script>
   <script type="text/javascript" src="spec/jsts/operation/valid/IsValidOp.js"></script>
   <script type="text/javascript" src="spec/jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js"></script>
+  <script type="text/javascript" src="spec/jsts/operation/overlay/snap/LineStringSnapper.js"></script>
   <script type="text/javascript" src="spec/jsts/triangulate/DelaunayTriangulationBuilder.js"></script>
   <script type="text/javascript" src="spec/jsts/triangulate/VoronoiDiagramBuilder.js"></script>
   <script type="text/javascript" src="spec/jsts/io.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestBoundary.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestBuffer.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestCentroid.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestDistance.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestEqualsExact.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionAA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionLA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionLL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionPA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionPL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestFunctionPP.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelateAA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelateLA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelateLL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelatePA.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelatePL.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestRelatePP.js"></script>
-  <script type="text/javascript" src="spec/jsts/TestSimple.js"></script>
-  <!-- script type="text/javascript" src="spec/jsts/TestValid.js"></script-->
   
   <script type="text/javascript" src="spec/jsts/issues/60.js"></script>
   
+  <script type="text/javascript" src="spec/jsts/JTSTestFactory.js"></script>
+
+  <script type="text/javascript" src="SpecRunner.js"></script>
+
 </head>
+
 <body>
-
-<script type="text/javascript">
-  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-  jasmine.getEnv().execute();
-</script>
-
 </body>
 </html>

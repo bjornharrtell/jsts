@@ -44,8 +44,8 @@ jsts.index.strtree.STRtree = function(nodeCapacity) {
   jsts.index.strtree.AbstractSTRtree.call(this, nodeCapacity);
 };
 
-OpenLayers.inherit(jsts.index.strtree.STRtree, jsts.index.SpatialIndex, jsts.index.strtree.AbstractSTRtree);
-
+jsts.index.strtree.STRtree.prototype = new jsts.index.strtree.AbstractSTRtree();
+jsts.index.strtree.STRtree.constructor = jsts.index.strtree.STRtree;
 
 /**
  * @type {Object} implements function for comparison

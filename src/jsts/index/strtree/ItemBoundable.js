@@ -24,7 +24,8 @@ jsts.index.strtree.ItemBoundable = function(bounds, item) {
   this.item = item;
 };
 
-OpenLayers.inherit(jsts.index.strtree.ItemBoundable, jsts.index.strtree.Boundable);
+jsts.index.strtree.ItemBoundable.prototype = new jsts.index.strtree.Boundable();
+jsts.index.strtree.ItemBoundable.constructor = jsts.index.strtree.ItemBoundable;
 
 
 /**
