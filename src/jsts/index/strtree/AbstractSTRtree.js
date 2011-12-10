@@ -29,6 +29,9 @@
  * @constuctor
  */
 jsts.index.strtree.AbstractSTRtree = function(nodeCapacity) {
+  if (nodeCapacity === undefined)
+    return;
+
   this.itemBoundables = [];
 
   jsts.util.Assert.isTrue(nodeCapacity > 1, 'Node capacity must be greater than 1');

@@ -28,8 +28,8 @@ jsts.index.strtree.AbstractNode = function(level) {
   this.childBoundables = [];
 };
 
-OpenLayers.inherit(jsts.index.strtree.AbstractNode, jsts.index.strtree.Boundable);
-
+jsts.index.strtree.AbstractNode.prototype = new jsts.index.strtree.Boundable();
+jsts.index.strtree.AbstractNode.constructor = jsts.index.strtree.AbstractNode;
 
 /**
  * @type {Array}
