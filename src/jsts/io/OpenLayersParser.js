@@ -4,18 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
-/**
- * @requires jsts/geom/GeometryConverter.js
- */
-
-jsts.geom.OpenLayersConverter = function(geometryFactory) {
+jsts.io.OpenLayersParser = function(geometryFactory) {
   this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
 };
 
-jsts.geom.OpenLayersConverter.prototype = new jsts.geom.GeometryConverter();
-jsts.geom.OpenLayersConverter.constructor = jsts.geom.OpenLayersConverter;
-
-jsts.geom.OpenLayersConverter.prototype.convertFrom = function(geometry) {
+/**
+ * @param geometry
+ *          {OpenLayers.Geometry}
+ * @return {jsts.geom.Geometry}
+ */
+jsts.io.OpenLayersParser.prototype.read = function(geometry) {
   if (geometry.CLASS_NAME === 'OpenLayers.Geometry.Point') {
     return this.convertFromPoint(geometry);
   } else if (geometry.CLASS_NAME === 'OpenLayers.Geometry.LineString') {
@@ -35,13 +33,12 @@ jsts.geom.OpenLayersConverter.prototype.convertFrom = function(geometry) {
   }
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromPoint = function(point) {
+jsts.io.OpenLayersParser.prototype.convertFromPoint = function(point) {
   return this.geometryFactory.createPoint(new jsts.geom.Coordinate(point.x,
       point.y));
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromLineString = function(
-    lineString) {
+jsts.io.OpenLayersParser.prototype.convertFromLineString = function(lineString) {
   var i;
   var coordinates = [];
 
@@ -53,8 +50,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromLineString = function(
   return this.geometryFactory.createLineString(coordinates);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromLinearRing = function(
-    linearRing) {
+jsts.io.OpenLayersParser.prototype.convertFromLinearRing = function(linearRing) {
   var i;
   var coordinates = [];
 
@@ -66,7 +62,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromLinearRing = function(
   return this.geometryFactory.createLinearRing(coordinates);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromPolygon = function(polygon) {
+jsts.io.OpenLayersParser.prototype.convertFromPolygon = function(polygon) {
   var i;
   var shell = null;
   var holes = [];
@@ -84,8 +80,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromPolygon = function(polygon) {
   return this.geometryFactory.createPolygon(shell, holes);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromMultiPoint = function(
-    multiPoint) {
+jsts.io.OpenLayersParser.prototype.convertFromMultiPoint = function(multiPoint) {
   var i;
   var points = [];
 
@@ -96,7 +91,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromMultiPoint = function(
   return this.geometryFactory.createMultiPoint(points);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromMultiLineString = function(
+jsts.io.OpenLayersParser.prototype.convertFromMultiLineString = function(
     multiLineString) {
   var i;
   var lineStrings = [];
@@ -108,7 +103,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromMultiLineString = function(
   return this.geometryFactory.createMultiLineString(lineStrings);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromMultiPolygon = function(
+jsts.io.OpenLayersParser.prototype.convertFromMultiPolygon = function(
     multiPolygon) {
   var i;
   var polygons = [];
@@ -120,8 +115,7 @@ jsts.geom.OpenLayersConverter.prototype.convertFromMultiPolygon = function(
   return this.geometryFactory.createMultiPolygon(polygons);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertFromCollection = function(
-    collection) {
+jsts.io.OpenLayersParser.prototype.convertFromCollection = function(collection) {
   var i;
   var geometries = [];
 
@@ -132,7 +126,12 @@ jsts.geom.OpenLayersConverter.prototype.convertFromCollection = function(
   return this.geometryFactory.createGeometryCollection(geometries);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertTo = function(geometry) {
+/**
+ * @param geometry
+ *          {jsts.geom.Geometry}
+ * @return {OpenLayers.Geometry}
+ */
+jsts.io.OpenLayersParser.prototype.write = function(geometry) {
   if (geometry.CLASS_NAME === 'jsts.geom.Point') {
     return this.convertToPoint(geometry);
   } else if (geometry.CLASS_NAME === 'jsts.geom.LineString') {
@@ -152,12 +151,11 @@ jsts.geom.OpenLayersConverter.prototype.convertTo = function(geometry) {
   }
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToPoint = function(coordinate) {
+jsts.io.OpenLayersParser.prototype.convertToPoint = function(coordinate) {
   return new OpenLayers.Geometry.Point(coordinate.x, coordinate.y);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToLineString = function(
-    lineString) {
+jsts.io.OpenLayersParser.prototype.convertToLineString = function(lineString) {
   var i;
   var points = [];
 
@@ -169,8 +167,7 @@ jsts.geom.OpenLayersConverter.prototype.convertToLineString = function(
   return new OpenLayers.Geometry.LineString(points);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToLinearRing = function(
-    linearRing) {
+jsts.io.OpenLayersParser.prototype.convertToLinearRing = function(linearRing) {
   var i;
   var points = [];
 
@@ -182,7 +179,7 @@ jsts.geom.OpenLayersConverter.prototype.convertToLinearRing = function(
   return new OpenLayers.Geometry.LinearRing(points);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToPolygon = function(polygon) {
+jsts.io.OpenLayersParser.prototype.convertToPolygon = function(polygon) {
   var i;
   var rings = [];
 
@@ -196,8 +193,7 @@ jsts.geom.OpenLayersConverter.prototype.convertToPolygon = function(polygon) {
   return new OpenLayers.Geometry.Polygon(rings);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToMultiPoint = function(
-    multiPoint) {
+jsts.io.OpenLayersParser.prototype.convertToMultiPoint = function(multiPoint) {
   var i;
   var points = [];
 
@@ -209,7 +205,7 @@ jsts.geom.OpenLayersConverter.prototype.convertToMultiPoint = function(
   return new OpenLayers.Geometry.MultiPoint(points);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToMultiLineString = function(
+jsts.io.OpenLayersParser.prototype.convertToMultiLineString = function(
     multiLineString) {
   var i;
   var lineStrings = [];
@@ -221,7 +217,7 @@ jsts.geom.OpenLayersConverter.prototype.convertToMultiLineString = function(
   return new OpenLayers.Geometry.MultiLineString(lineStrings);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToMultiPolygon = function(
+jsts.io.OpenLayersParser.prototype.convertToMultiPolygon = function(
     multiPolygon) {
   var i;
   var polygons = [];
@@ -233,7 +229,7 @@ jsts.geom.OpenLayersConverter.prototype.convertToMultiPolygon = function(
   return new OpenLayers.Geometry.MultiPolygon(polygons);
 };
 
-jsts.geom.OpenLayersConverter.prototype.convertToCollection = function(
+jsts.io.OpenLayersParser.prototype.convertToCollection = function(
     geometryCollection) {
   var i;
   var geometries = [];

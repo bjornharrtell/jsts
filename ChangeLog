@@ -1,6 +1,5 @@
-2011-12-xx: Version 0.11.0
+2011-12-24: Version 0.11.0
 
-		
 		Rewrite code for running JTS tests (#80)
 		Bintree index port (#76)
 		LineStringSnapper port (#75)
