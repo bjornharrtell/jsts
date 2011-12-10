@@ -27,8 +27,8 @@ jsts.index.strtree.SIRtree = function(nodeCapacity) {
   jsts.index.strtree.AbstractSTRtree.call(this, nodeCapacity);
 };
 
-//TODO: OpenLayers.inherit does not set the constructor right
-OpenLayers.inherit(jsts.index.strtree.SIRtree, jsts.index.strtree.AbstractSTRtree);
+jsts.index.strtree.SIRtree.prototype = new jsts.index.strtree.AbstractSTRtree();
+jsts.index.strtree.SIRtree.constructor = jsts.index.strtree.SIRtree;
 
 //TODO: Verify that this comparison really works
 jsts.index.strtree.SIRtree.prototype.comperator = {
@@ -63,7 +63,8 @@ jsts.index.strtree.SIRtree.prototype.createNode = function(level) {
     jsts.index.strtree.AbstractNode.apply(this, arguments);
   };
 
-  OpenLayers.inherit(AbstractNode, jsts.index.strtree.AbstractNode);
+  AbstractNode.prototype = new jsts.index.strtree.AbstractNode();
+  AbstractNode.constructor = AbstractNode;
 
   AbstractNode.prototype.computeBounds = function() {
     var bounds = null,

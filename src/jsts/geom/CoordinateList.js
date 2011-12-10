@@ -77,6 +77,33 @@ jsts.geom.CoordinateList.prototype.addCoordinate = function(coord,
 };
 
 /**
+ * Inserts a coordinate at the specified place in the list
+ *
+ * @param {Number}
+ *          index The index where to insert the coordinate.
+ * @param {Coordinate}
+ *          coord The coordinate.
+ * @param {boolean}
+ *          allowRepeated if set to false, repeated coordinates are collapsed.
+ */
+jsts.geom.CoordinateList.prototype.insertCoordinate = function(index, coord,
+    allowRepeated) {
+  // don't add duplicate coordinates
+  if (!allowRepeated) {
+    var before = index > 0 ? index - 1 : -1;
+    if (before !== -1 && this[before].equals2D(coord)) {
+      return;
+    }
+
+    var after = index < this.length - 1 ? index + 1 : -1;
+    if (after !== -1 && this[after].equals2D(coord)) {
+      return;
+    }
+  }
+  this.splice(index, 0, coord);
+};
+
+/**
  * Ensure this coordList is a ring, by adding the start point if necessary
  */
 jsts.geom.CoordinateList.prototype.closeRing = function() {

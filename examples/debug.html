@@ -5,9 +5,6 @@
   
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   
-  <script type="text/javascript" src="../test/lib/jasmine-1.0.1/jasmine.js"></script>
-  <script type="text/javascript" src="../test/lib/jasmine-1.0.1/jasmine-html.js"></script>
-  
   <script src="../OpenLayers-2.11/lib/OpenLayers.js" type="text/javascript"></script>
 
   <script type="text/javascript" src="../lib/javascript.util.js"></script>
@@ -124,6 +121,8 @@
   <script type="text/javascript" src="../src/jsts/geomgraph/index/SegmentIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index/SimpleEdgeSetIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/index/SimpleMCSweepLineIntersector.js"></script>
+  <script type="text/javascript" src="../src/jsts/io/OpenLayersParser.js"></script>
+  <script type="text/javascript" src="../src/jsts/io/WKTParser.js"></script>
   <script type="text/javascript" src="../src/jsts/io/WKTReader.js"></script>
   <script type="text/javascript" src="../src/jsts/io/WKTWriter.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/BoundaryOp.js"></script>
@@ -186,11 +185,21 @@
     union.normalize();
     console.log(union.toString());
     
-    // TODO: find out why buffering fails (depth calc issues) with this poly
-    //var polygon = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');
-    //var geometry = polygon.buffer(-10);
+    // TODO: fails because comparison for buffer test results in JTS has tolerance
+    a = reader.read('LINESTRING(10 10,100 100)');
+    b = reader.read('POLYGON ((92.92893218813452 107.07106781186548, 94.44429766980397 108.31469612302546, 96.1731656763491 109.23879532511287, 98.04909677983872 109.80785280403231, 100 110, 101.95090322016128 109.80785280403231, 103.8268343236509 109.23879532511287, 105.55570233019603 108.31469612302546, 107.07106781186548 107.07106781186548, 108.31469612302546 105.55570233019603, 109.23879532511287 103.8268343236509, 109.80785280403231 101.95090322016128, 110 100, 109.80785280403231 98.04909677983872, 109.23879532511286 96.1731656763491, 108.31469612302544 94.44429766980397, 107.07106781186548 92.92893218813452, 17.071067811865476 2.9289321881345254, 15.555702330196024 1.6853038769745474, 13.826834323650898 0.7612046748871322, 11.950903220161283 0.1921471959676957, 10 0, 8.049096779838719 0.1921471959676957, 6.173165676349103 0.7612046748871322, 4.44429766980398 1.6853038769745474, 2.9289321881345254 2.9289321881345245, 1.6853038769745474 4.444297669803978, 0.7612046748871322 6.173165676349101, 0.1921471959676957 8.049096779838713, 0 9.999999999999998, 0.1921471959676957 11.950903220161283, 0.761204674887134 13.8268343236509, 1.685303876974551 15.555702330196027, 2.9289321881345254 17.071067811865476, 92.92893218813452 107.07106781186548))');
+    var buffer = a.buffer(10);
+    buffer.normalize();
+    b.normalize();
+    console.log(buffer.compareTo(b));
+    console.log(buffer.toString());
+    console.log(b.toString());
     
-    //console.log(geometry);
+    // TODO: find out why buffering fails (depth calc issues) with this poly
+    var polygon = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');
+    var geometry = polygon.buffer(-10);
+    
+    console.log(geometry.toString());
   }
 </script>
 </head>

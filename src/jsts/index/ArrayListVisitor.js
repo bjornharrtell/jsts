@@ -9,8 +9,6 @@
 /**
  * An array-visitor
  *
- * Initializes this class with the openlayers inheritance mechanism
- *
  * @constructor
  */
 jsts.index.ArrayListVisitor = function() {

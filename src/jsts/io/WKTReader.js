@@ -26,13 +26,12 @@
 jsts.io.WKTReader = function(geometryFactory) {
   this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
   this.precisionModel = this.geometryFactory.getPrecisionModel();
+  this.parser = new jsts.io.WKTParser(this.geometryFactory);
 };
 
 
 /**
  * Reads a Well-Known Text representation of a {@link Geometry}
- *
- * NOTE: OL WKT format does not handle LINEARRING type.
  *
  * @param {string}
  *          wkt a <Geometry Tagged Text> string (see the OpenGIS Simple Features
@@ -41,72 +40,29 @@ jsts.io.WKTReader = function(geometryFactory) {
  *         <code>string.</code>
  */
 jsts.io.WKTReader.prototype.read = function(wkt) {
-  var geometry = OpenLayers.Geometry.fromWKT(wkt);
+  var geometry = this.parser.read(wkt);
 
-  // NOTE: need to convert plain coordinate to JSTS Point
-  if (geometry instanceof jsts.geom.Coordinate) {
-    geometry = new jsts.geom.Point(geometry, this.geometryFactory);
-  }
-
-  // NOTE: need to convert plain Collection as JSTS GeometryCollection
-  if (geometry instanceof OpenLayers.Geometry.Collection &&
-      !(geometry instanceof OpenLayers.Geometry.Point ||
-          geometry instanceof OpenLayers.Geometry.LineString ||
-          geometry instanceof OpenLayers.Geometry.Polygon ||
-          geometry instanceof OpenLayers.Geometry.MultiPoint ||
-          geometry instanceof OpenLayers.Geometry.MultiLineString || geometry instanceof OpenLayers.Geometry.MultiPolygon)) {
-    geometry = new jsts.geom.GeometryCollection(geometry.components, this.geometryFactory);
-  }
-
-  if (geometry !== undefined && geometry.factory === undefined) {
-    geometry.factory = this.geometryFactory;
-  }
-
-  // handle WKT empty inputs
-  if (geometry === undefined) {
-    var type = wkt.split(' ')[0].toLowerCase();
-    switch (type) {
-    case 'point':
-      geometry = new jsts.geom.Point(null, this.geometryFactory);
-      break;
-    case 'multipoint':
-      geometry = new jsts.geom.MultiPoint(null, this.geometryFactory);
-      break;
-    case 'linestring':
-      geometry = new jsts.geom.LineString(null, this.geometryFactory);
-      break;
-    case 'multilinestring':
-      geometry = new jsts.geom.MultiLineString(null, this.geometryFactory);
-      break;
-    case 'polygon':
-      geometry = new jsts.geom.Polygon(null, this.geometryFactory);
-      break;
-    case 'multipolygon':
-      geometry = new jsts.geom.MultiPolygon(null, this.geometryFactory);
-      break;
-    case 'geometrycollection':
-      geometry = new jsts.geom.GeometryCollection(null, this.geometryFactory);
-      break;
-    }
-  }
-
+  // TODO: port and use GeometryPrecisionReducer, this is a hack
   if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
-    this.reducePrecision(geometry.components);
+    this.reducePrecision(geometry);
   }
 
   return geometry;
 };
 
-jsts.io.WKTReader.prototype.reducePrecision = function(components) {
-  var i, component;
+//NOTE: this is a hack
+jsts.io.WKTReader.prototype.reducePrecision = function(geometry) {
+  var i, len;
 
-  if (!components) return;
-
-  for (i = 0; i < components.length; i++) {
-    component = components[i];
-    if (component instanceof jsts.geom.Coordinate) {
-      this.precisionModel.makePrecise(component);
+  if (geometry.coordinate) {
+    this.precisionModel.makePrecise(geometry.coordinate);
+  } else if (geometry.points) {
+    for (i = 0, len = geometry.points.length; i < len; i++) {
+      this.precisionModel.makePrecise(geometry.points[i]);
     }
-    this.reducePrecision(component);
+  } else if (geometry.geometries) {
+    for (i = 0, len = geometry.geometries.length; i < len; i++) {
+      this.reducePrecision(geometry.geometries[i]);
+    }
   }
 };

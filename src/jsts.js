@@ -6,7 +6,7 @@
 
 /** @namespace */
 jsts = {
-  version: '0.10.0',
+  version: '0.11.0',
   /** @namespace */
   algorithm: {
     /** @namespace */
@@ -26,6 +26,8 @@ jsts = {
   },
   /** @namespace */
   index: {
+    /** @namespace */
+    bintree: {},
     /** @namespace */
     chain: {},
     /** @namespace */

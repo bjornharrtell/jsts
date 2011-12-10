@@ -100,6 +100,7 @@ jsts.geom.Geometry.prototype.envelope = null;
 
 /**
  * The {@link GeometryFactory} used to create this Geometry
+ *
  * @protected
  */
 jsts.geom.Geometry.prototype.factory = null;
@@ -163,7 +164,9 @@ jsts.geom.Geometry.hasNullElements = function(array) {
  * @return {jsts.geom.GeometryFactory} the factory for this geometry.
  */
 jsts.geom.Geometry.prototype.getFactory = function() {
-  // NOTE: Geometry could be created without JSTS constructor so need to check for member data
+  // NOTE: Geometry could be created without JSTS constructor so need to check
+  // for member data
+  // TODO: above should not happen
   if (this.factory === null || this.factory === undefined) {
     this.factory = new jsts.geom.GeometryFactory();
   }
@@ -344,6 +347,11 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
   return DistanceOp.isWithinDistance(this, geom, distance);
 };
 
+jsts.geom.Geometry.prototype.isRectangle = function() {
+  // Polygon overrides to check for actual rectangle
+  return false;
+};
+
 /**
  * Computes the centroid of this <code>Geometry</code>. The centroid is equal
  * to the centroid of the set of component Geometries of highest dimension
@@ -352,7 +360,7 @@ jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
  *
  * @return a {@link Point} which is the centroid of this Geometry.
  */
-jsts.geom.Geometry.prototype.getCentroid_jsts = function() {
+jsts.geom.Geometry.prototype.getCentroid = function() {
   if (this.isEmpty()) {
     return null;
   }
@@ -561,7 +569,7 @@ jsts.geom.Geometry.prototype.touches = function(g) {
  *
  * @see Geometry#disjoint
  */
-jsts.geom.Geometry.prototype.intersects_jsts = function(g) {
+jsts.geom.Geometry.prototype.intersects = function(g) {
 
   // short-circuit envelope test
   if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
@@ -1191,6 +1199,25 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
+/**
+ * Tests whether two geometries are exactly equal
+ * in their normalized forms.
+ * This is a convenience method which creates normalized
+ * versions of both geometries before computing
+ * {@link #equalsExact(Geometry)}.
+ * This method is relatively expensive to compute.
+ * For maximum performance, the client
+ * should instead perform normalization itself
+ * at an appropriate point during execution.
+ *
+ * @param {Geometry} g a Geometry.
+ * @return {boolean} true if the input geometries are exactly equal in their normalized form.
+ */
+jsts.geom.Geometry.prototype.equalsNorm = function(g) {
+  if (g === null || g === undefined) return false;
+  return this.norm().equalsExact(g.norm());
+};
+
 
 /**
  * Performs an operation with or on this <code>Geometry</code> and its
@@ -1202,6 +1229,18 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
  *          children, if it is a <code>GeometryCollection</code>).
  */
 jsts.geom.Geometry.prototype.apply = function(filter) {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+/**
+ * Creates and returns a full copy of this {@link Geometry} object
+ * (including all coordinates contained by it).
+ * Subclasses are responsible for overriding this method and copying
+ * their internal data.  Overrides should call this method first.
+ *
+ * @return a clone of this instance.
+ */
+jsts.geom.Geometry.prototype.clone = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
@@ -1222,8 +1261,7 @@ jsts.geom.Geometry.prototype.normalize = function() {
 };
 
 /**
- * Creates a new Geometry which is a normalized
- * copy of this Geometry.
+ * Creates a new Geometry which is a normalized copy of this Geometry.
  *
  * @return a normalized copy of this geometry.
  * @see #normalize()
@@ -1326,6 +1364,7 @@ jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
 };
 
 
+
 /**
  * Throws an exception if <code>g</code>'s class is
  * <code>GeometryCollection</code> . (Its subclasses do not trigger an
@@ -1338,7 +1377,7 @@ jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
  *           one of its subclasses
  */
 jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
-  if (g instanceof jsts.geom.GeometryCollection) {
+  if (g.isGeometryCollectionBase()) {
     throw new jsts.error.IllegalArgumentError(
         'This method does not support GeometryCollection');
   }
@@ -1351,6 +1390,14 @@ jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
  */
 jsts.geom.Geometry.prototype.isGeometryCollection = function() {
   return (this instanceof jsts.geom.GeometryCollection);
+};
+
+/**
+*
+* @return {boolean} true if this is a GeometryCollection but not subclass.
+*/
+jsts.geom.Geometry.prototype.isGeometryCollectionBase = function() {
+ return (this.CLASS_NAME === 'jsts.geom.GeometryCollection');
 };
 
 
@@ -1457,7 +1504,6 @@ jsts.geom.Geometry.prototype.getClassSortIndex = function() {
 jsts.geom.Geometry.prototype.toString = function() {
   return new jsts.io.WKTWriter().write(this);
 };
-
 
 /**
  * @return {Point}

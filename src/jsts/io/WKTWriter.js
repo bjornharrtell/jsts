@@ -23,6 +23,7 @@
  * @constructor
  */
 jsts.io.WKTWriter = function() {
+  this.parser = new jsts.io.WKTParser(this.geometryFactory);
 };
 
 
@@ -35,14 +36,7 @@ jsts.io.WKTWriter = function() {
  *         Features Specification).
  */
 jsts.io.WKTWriter.prototype.write = function(geometry) {
-
-  if (geometry instanceof jsts.geom.Point) {
-    geometry = geometry.coordinate;
-  }
-
-  var format = new OpenLayers.Format.WKT();
-  var feature = new OpenLayers.Feature.Vector(geometry);
-  var wkt = format.write(feature);
+  var wkt = this.parser.write(geometry);
 
   return wkt;
 };

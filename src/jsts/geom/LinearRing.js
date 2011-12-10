@@ -24,16 +24,12 @@
    * @extends jsts.geom.LineString
    * @constructor
    */
-  jsts.geom.LinearRing = function(coordinates, factory) {
-    this.factory = factory;
+  jsts.geom.LinearRing = function(points, factory) {
     jsts.geom.LineString.apply(this, arguments);
   };
-  jsts.geom.LinearRing.prototype = OpenLayers.Geometry.LinearRing.prototype;
+  jsts.geom.LinearRing.prototype = new jsts.geom.LineString();
+  jsts.geom.LinearRing.constructor = jsts.geom.LinearRing;
 
-  for (key in jsts.geom.LineString.prototype) {
-    jsts.geom.LinearRing.prototype[key] = jsts.geom.LinearRing.prototype[key] ? jsts.geom.LinearRing.prototype[key]
-        : jsts.geom.LineString.prototype[key];
-  }
 
   /**
    * Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
@@ -68,6 +64,6 @@
 
   jsts.geom.LinearRing.MINIMUM_VALID_SIZE = 4;
 
-  OpenLayers.Geometry.LinearRing = jsts.geom.LinearRing;
+  jsts.geom.LinearRing.prototype.CLASS_NAME = 'jsts.geom.LinearRing';
 
 })();
