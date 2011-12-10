@@ -73,7 +73,7 @@
     }
     var rings = [];
     rings[0] = this.shell.clone();
-    for (var i = 0; i < this.holes.length; i++) {
+    for (var i = 0, len = this.holes.length; i < len; i++) {
       rings[i + 1] = this.holes[i].clone();
     }
     // create LineString or MultiLineString as appropriate
@@ -138,7 +138,7 @@
     if (filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
       this.shell.apply(filter);
-      for (var i = 0; i < this.holes.length; i++) {
+      for (var i = 0, len = this.holes.length; i < len; i++) {
         this.holes[i].apply(filter);
       }
     }
@@ -147,7 +147,7 @@
     }
     else if (filter instanceof jsts.geom.CoordinateFilter) {
       this.shell.apply(filter);
-      for (var i = 0; i < this.holes.length; i++) {
+      for (var i = 0, len = this.holes.length; i < len; i++) {
         this.holes[i].apply(filter);
       }
     }
@@ -162,7 +162,7 @@
   jsts.geom.Polygon.prototype.clone = function() {
     var holes = [];
 
-    for (var i = 0; i < this.holes.length; i++) {
+    for (var i = 0, len = this.holes.length; i < len; i++) {
       holes.push(this.holes[i].clone());
     }
 
@@ -171,7 +171,7 @@
 
   jsts.geom.Polygon.prototype.normalize = function() {
     this.normalize2(this.shell, true);
-    for (var i = 0; i < this.holes.length; i++) {
+    for (var i = 0, len = this.holes.length; i < len; i++) {
       this.normalize2(this.holes[i], false);
     }
     // TODO: might need to supply comparison function

@@ -30,7 +30,7 @@
    * @return {boolean}
    */
   jsts.geom.GeometryCollection.prototype.isEmpty = function() {
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       var geometry = this.getGeometryN(i);
 
       if (!geometry.isEmpty()) {
@@ -64,7 +64,7 @@
   jsts.geom.GeometryCollection.prototype.getCoordinates = function() {
     var coordinates = [];
     var k = -1;
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       var geometry = this.getGeometryN(i);
 
       var childCoordinates = geometry.getCoordinates();
@@ -114,7 +114,7 @@
     if (this.geometries.length !== other.geometries.length) {
       return false;
     }
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       var geometry = this.getGeometryN(i);
 
       if (!geometry.equalsExact(other.getGeometryN(i), tolerance)) {
@@ -132,14 +132,14 @@
    */
   jsts.geom.GeometryCollection.prototype.clone = function() {
     var geometries = [];
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       geometries.push(this.geometries[i].clone());
     }
     return this.factory.createGeometryCollection(geometries);
   };
 
   jsts.geom.GeometryCollection.prototype.normalize = function() {
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       this.getGeometryN(i).normalize();
     }
     // TODO: might need to supply comparison function
@@ -155,11 +155,11 @@
   jsts.geom.GeometryCollection.prototype.apply = function(filter) {
     if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
-      for (var i = 0; i < this.geometries.length; i++) {
+      for (var i = 0, len = this.geometries.length; i < len; i++) {
         this.getGeometryN(i).apply(filter);
       }
     } else if (filter instanceof jsts.geom.CoordinateFilter) {
-      for (var i = 0; i < this.geometries.length; i++) {
+      for (var i = 0, len = this.geometries.length; i < len; i++) {
         this.getGeometryN(i).apply(filter);
       }
     }
@@ -168,7 +168,7 @@
 
   jsts.geom.GeometryCollection.prototype.getDimension = function() {
     var dimension = jsts.geom.Dimension.FALSE;
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       var geometry = this.getGeometryN(i);
       dimension = Math.max(dimension, geometry.getDimension());
     }
@@ -181,7 +181,7 @@
    */
   jsts.geom.GeometryCollection.prototype.computeEnvelopeInternal = function() {
     var envelope = new jsts.geom.Envelope();
-    for (var i = 0; i < this.geometries.length; i++) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
       var geometry = this.getGeometryN(i);
       envelope.expandToInclude(geometry.getEnvelopeInternal());
     }

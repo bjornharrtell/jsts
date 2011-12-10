@@ -195,9 +195,9 @@
   jsts.geom.LineString.prototype.compareToSameClass = function(o) {
     var line = o;
     // MD - optimized implementation
-    var i = 0;
-    var j = 0;
-    while (i < this.points.length && j < line.points.length) {
+    var i = 0, il = this.points.length;
+    var j = 0, jl = line.points.length;
+    while (i < il && j < jl) {
       var comparison = this.points[i].compareTo(line.points[j]);
       if (comparison !== 0) {
         return comparison;
@@ -205,10 +205,10 @@
       i++;
       j++;
     }
-    if (i < this.points.length) {
+    if (i < il) {
       return 1;
     }
-    if (j < line.points.length) {
+    if (j < jl) {
       return -1;
     }
     return 0;
@@ -218,16 +218,16 @@
     if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
     } else if (filter instanceof jsts.geom.CoordinateFilter) {
-      for (var i = 0; i < this.points.length; i++) {
+      for (var i = 0, len = this.points.length; i < len; i++) {
         filter.filter(this.points[i]);
       }
     }
   };
 
   jsts.geom.LineString.prototype.clone = function() {
-    var i, points = [];
+    var points = [];
 
-    for (i = 0; i < this.points.length; i++) {
+    for (var i = 0, len = this.points.length; i < len; i++) {
       points.push(this.points[i].clone());
     }
 
@@ -240,12 +240,13 @@
    * less than the reflected point.
    */
   jsts.geom.LineString.prototype.normalize = function() {
-      var i, il, j, ci, cj;
+      var i, il, j, ci, cj, len;
 
-      il = parseInt(this.points.length / 2);
+      len = this.points.length;
+      il = parseInt(len / 2);
 
       for (i = 0; i < il; i++) {
-        j = this.points.length - 1 - i;
+        j = len - 1 - i;
         // skip equal points on both ends
         ci = this.points[i];
         cj = this.points[j];
