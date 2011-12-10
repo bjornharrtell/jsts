@@ -125,6 +125,7 @@ jsts.operation.BoundaryOp.prototype.addEndpoint = function(pt) {
     endpoint = this.endpoints[i];
     if (endpoint.coordinate.equals(pt)) {
       found = true;
+      break;
     }
   }
 
