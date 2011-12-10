@@ -11,7 +11,6 @@
  * {@link HCoordinate}s are used as a clean way of computing intersections
  * between line segments.
  *
- * Initializes a new HCoordinate using the OpenLayers inheritance mechanism.
  * Will call correct init* function depending on argument.
  *
  * @constructor

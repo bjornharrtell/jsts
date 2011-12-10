@@ -26,7 +26,7 @@
     if (typeof x === 'number') {
       this.x = x;
       this.y = y;
-    } else if (x instanceof jsts.geom.Coordinate || x instanceof OpenLayers.Geometry.Point) {
+    } else if (x instanceof jsts.geom.Coordinate) {
       this.x = parseFloat(x.x);
       this.y = parseFloat(x.y);
     } else if (x === undefined || x === null) {
@@ -154,10 +154,6 @@
   jsts.geom.Coordinate.prototype.hashCode = function() {
     // TODO: might not work as expected, JTS does some magic here.
     return '' + this.x + this.y;
-  };
-
-  jsts.geom.Geometry.prototype.toOL = function() {
-    return new OpenLayers.Geometry.Point(this.x, this.y);
   };
 
 })();
