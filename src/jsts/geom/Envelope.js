@@ -84,6 +84,8 @@ jsts.geom.Envelope.prototype.init = function() {
   } else if (arguments[0] instanceof jsts.geom.Envelope &&
       arguments.length === 1) {
     this.initFromEnvelope(arguments[0]);
+  } else {
+    this.setToNull();
   }
 };
 

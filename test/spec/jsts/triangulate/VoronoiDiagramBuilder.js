@@ -28,8 +28,12 @@ describe('jsts.triangulate.VoronoiDiagramBuilder', function() {
      * The important vertexes are identical with JTS-results. And JTS-test seems erratic to.
      */
     var expectedTri = reader.read("GEOMETRYCOLLECTION(POLYGON((-80 55.833333333333336,-80 150,50 150,50 60,27.857142857142854 37.857142857142854,-80 55.833333333333336)),POLYGON((-80 -80,-80 55.833333333333336,27.857142857142854 37.857142857142854,74.99999999999999 -80,-80 -80)),POLYGON((160 4.999999999999995,160 -80,74.99999999999999 -80,27.857142857142854 37.857142857142854,50 60,160 4.999999999999995)),POLYGON((50 150,160 150,160 4.999999999999995,50 60,50 150)))");
+    expectedTri.normalize();
     
-    var computedTri = runVoronoi(wkt);    
-    expect(computedTri.equals(expectedTri,1.0e-7)).toBeTruthy();
+    var computedTri = runVoronoi(wkt);
+    computedTri.normalize();
+    
+    // TODO: this fails after fixing jsts.io.Envelope code so that new Envelopes are initialized to "null" values
+    expect(computedTri.equalsExact(expectedTri,1.0e-7)).toBeTruthy();
   });
 });
