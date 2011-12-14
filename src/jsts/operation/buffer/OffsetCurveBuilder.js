@@ -145,8 +145,8 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.getOffsetCurve = function(
  */
 jsts.operation.buffer.OffsetCurveBuilder.copyCoordinates = function(pts) {
   var copy = [];
-  for (var i = 0; i < copy.length; i++) {
-    copy[i] = new jsts.geom.Coordinate(pts[i]);
+  for (var i = 0; i < pts.length; i++) {
+    copy.push(pts[i].clone());
   }
   return copy;
 };

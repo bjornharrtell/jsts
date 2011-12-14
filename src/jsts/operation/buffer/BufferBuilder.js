@@ -147,7 +147,7 @@ jsts.operation.buffer.BufferBuilder.prototype.buffer = function(g, distance) {
   var resultPolyList = polyBuilder.getPolygons();
 
   // just in case...
-  if (resultPolyList.length <= 0) {
+  if (resultPolyList.size() <= 0) {
     return this.createEmptyResultGeometry();
   }
 
