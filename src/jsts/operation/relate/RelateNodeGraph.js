@@ -77,7 +77,7 @@
       var eLoc = e.getLabel().getLocation(argIndex);
       for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
         var ei = eiIt.next();
-        var n = nodes.addNode(ei.coord);
+        var n = this.nodes.addNode(ei.coord);
         if (eLoc === Location.BOUNDARY)
           n.setLabelBoundary(argIndex);
         else {
@@ -99,7 +99,7 @@
   jsts.operation.relate.RelateNodeGraph.prototype.copyNodesAndLabels = function(geomGraph, argIndex) {
     for (var nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext();) {
       var graphNode = nodeIt.next();
-      var newNode = nodes.addNode(graphNode.getCoordinate());
+      var newNode = this.nodes.addNode(graphNode.getCoordinate());
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
     }
   };
@@ -109,6 +109,10 @@
       var e = i.next();
       this.nodes.add(e);
     }
+  };
+  
+  jsts.operation.relate.RelateNodeGraph.prototype.getNodeIterator = function(){
+    return this.nodes.iterator();
   };
 
 })();
