@@ -30,7 +30,8 @@
    *          boundaryNodeRule
    * @augments jsts.planargraph.PlanarGraph
    */
-  jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom, boundaryNodeRule) {
+  jsts.geomgraph.GeometryGraph = function(argIndex, parentGeom,
+      boundaryNodeRule) {
     jsts.geomgraph.PlanarGraph.call(this);
 
     this.lineEdgeMap = new javascript.util.HashMap();
@@ -47,7 +48,7 @@
   };
 
   jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
-
+  jsts.geomgraph.GeometryGraph.constructor = jsts.geomgraph.GeometryGraph;
 
   /**
    * @return {EdgeSetIntersector}
@@ -66,7 +67,8 @@
    *          boundaryCount
    * @return {int}
    */
-  jsts.geomgraph.GeometryGraph.determineBoundary = function(boundaryNodeRule, boundaryCount) {
+  jsts.geomgraph.GeometryGraph.determineBoundary = function(boundaryNodeRule,
+      boundaryCount) {
     return boundaryNodeRule.isInBoundary(boundaryCount) ? Location.BOUNDARY
         : Location.INTERIOR;
   };
@@ -82,8 +84,6 @@
    * The lineEdgeMap is a map of the linestring components of the parentGeometry
    * to the edges which are derived from them. This is used to efficiently
    * perform findEdge queries
-   *
-   * NOTE: In JSTS a JS object replaces HashMap.
    *
    * @type {Object}
    * @private
@@ -173,7 +173,7 @@
 
   jsts.geomgraph.GeometryGraph.prototype.findEdge = function(line) {
     return this.lineEdgeMap.get(line);
-  }
+  };
 
   jsts.geomgraph.GeometryGraph.prototype.computeSplitEdges = function(edgelist) {
     for (var i = this.edges.iterator(); i.hasNext();) {
@@ -290,7 +290,8 @@
    *
    * @private
    */
-  jsts.geomgraph.GeometryGraph.prototype.addPolygonRing = function(lr, cwLeft, cwRight) {
+  jsts.geomgraph.GeometryGraph.prototype.addPolygonRing = function(lr, cwLeft,
+      cwRight) {
     // don't bother adding empty holes
     if (lr.isEmpty())
       return;
@@ -338,8 +339,8 @@
   };
 
 
-  jsts.geomgraph.GeometryGraph.prototype.computeEdgeIntersections = function(g, li,
-      includeProper) {
+  jsts.geomgraph.GeometryGraph.prototype.computeEdgeIntersections = function(g,
+      li, includeProper) {
     var si = new jsts.geomgraph.index.SegmentIntersector(li, includeProper,
         true);
     si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes());
@@ -364,7 +365,8 @@
    * @return {SegmentIntersector} the SegmentIntersector used, containing
    *         information about the intersections found.
    */
-  jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li, computeRingSelfNodes) {
+  jsts.geomgraph.GeometryGraph.prototype.computeSelfNodes = function(li,
+      computeRingSelfNodes) {
     var si = new jsts.geomgraph.index.SegmentIntersector(li, true, false);
     var esi = this.createEdgeSetIntersector();
     // optimized test for Polygons and Rings
@@ -383,7 +385,8 @@
   /**
    * @private
    */
-  jsts.geomgraph.GeometryGraph.prototype.insertPoint = function(argIndex, coord, onLocation) {
+  jsts.geomgraph.GeometryGraph.prototype.insertPoint = function(argIndex,
+      coord, onLocation) {
     var n = this.nodes.addNode(coord);
     var lbl = n.getLabel();
     if (lbl == null) {
@@ -398,7 +401,8 @@
    * This is used to add the boundary points of dim-1 geometries
    * (Curves/MultiCurves).
    */
-  jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(argIndex, coord) {
+  jsts.geomgraph.GeometryGraph.prototype.insertBoundaryPoint = function(
+      argIndex, coord) {
     var n = this.nodes.addNode(coord);
     var lbl = n.getLabel();
     // the new point to insert is on a boundary
@@ -412,8 +416,8 @@
 
     // determine the boundary status of the point according to the Boundary
     // Determination Rule
-    var newLoc = jsts.geomgraph.GeometryGraph.determineBoundary(this.boundaryNodeRule,
-        boundaryCount);
+    var newLoc = jsts.geomgraph.GeometryGraph.determineBoundary(
+        this.boundaryNodeRule, boundaryCount);
     lbl.setLocation(argIndex, newLoc);
   };
 
@@ -425,7 +429,8 @@
    * @param argIndex
    * @private
    */
-  jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(argIndex) {
+  jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNodes = function(
+      argIndex) {
     for (var i = this.edges.iterator(); i.hasNext();) {
       var e = i.next();
       var eLoc = e.getLabel().getLocation(argIndex);
@@ -444,8 +449,8 @@
    *
    * @private
    */
-  jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(argIndex, coord,
-      loc) {
+  jsts.geomgraph.GeometryGraph.prototype.addSelfIntersectionNode = function(
+      argIndex, coord, loc) {
     // if this node is already a boundary node, don't change it
     if (this.isBoundaryNode(argIndex, coord))
       return;

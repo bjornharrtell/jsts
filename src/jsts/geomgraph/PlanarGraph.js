@@ -105,7 +105,7 @@
    * @return {javascript.util.Iterator}
    */
   jsts.geomgraph.PlanarGraph.prototype.getNodeIterator = function() {
-    return this.nodes.values().iterator();
+    return this.nodes.iterator();
   };
 
   /**
@@ -116,14 +116,7 @@
   };
 
   jsts.geomgraph.PlanarGraph.prototype.addNode = function(node) {
-    if (node instanceof jsts.geom.Coordinate) {
-      return this.addNode2(node);
-    }
-
     return this.nodes.addNode(node);
-  };
-  jsts.geomgraph.PlanarGraph.prototype.addNode2 = function(coord) {
-    return this.nodes.addNode(coord);
   };
 
   /**

@@ -153,7 +153,7 @@
    * @private
    */
   jsts.geomgraph.DirectedEdgeStar.prototype.getResultAreaEdges = function() {
-    if (this.resultAreaEdgeList != null)
+    if (this.resultAreaEdgeList !== null)
       return this.resultAreaEdgeList;
     this.resultAreaEdgeList = new javascript.util.ArrayList();
     for (var it = this.iterator(); it.hasNext();) {
@@ -349,6 +349,7 @@
   jsts.geomgraph.DirectedEdgeStar.prototype.computeDepths = function(de) {
     if (arguments.length === 2) {
       this.computeDepths2.apply(this, arguments);
+      // NOTE: intentional, this function returns void
       return;
     }
 
