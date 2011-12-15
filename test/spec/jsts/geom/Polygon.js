@@ -17,13 +17,18 @@ describe('jsts.geom.Polygon', function() {
     
     var c1 = new jsts.geom.Coordinate(1,2);
     var c2 = new jsts.geom.Coordinate(3,4);
-    var c3 = new jsts.geom.Coordinate(5,6);
+    var c3 = new jsts.geom.Coordinate(5,5);
     c4 = new jsts.geom.Coordinate(1,2);
 
     shell = geometryFactory.createLinearRing([c1,c2,c3,c4]);
     polygon = geometryFactory.createPolygon(shell, null);
     
     expect(polygon).toBeDefined();
+  });
+  
+  it('can be validated', function(){
+    var valid = polygon.isValid();
+    expect(valid).toBeTruthy();
   });
   
 });

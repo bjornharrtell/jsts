@@ -45,4 +45,9 @@ describe('jsts.geom.LineString', function() {
     expect(clone.equalsExact(lineString, 0)).toBeTruthy();
   });
   
+  it('can be validated', function(){
+    var valid = lineString.isValid();
+    expect(valid).toBeTruthy();
+  });
+  
 });

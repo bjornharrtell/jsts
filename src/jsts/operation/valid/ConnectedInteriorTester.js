@@ -131,11 +131,16 @@ jsts.operation.valid.ConnectedInteriorTester.prototype.buildEdgeRings = function
 
     && de.getEdgeRing() == null) {
 
-      var er = new jsts.operation.overlay.MaximalEdgeRing(de, geometryFactory);
+      var er = new jsts.operation.overlay.MaximalEdgeRing(de,
+          this.geometryFactory);
       er.linkDirectedEdgesForMinimalEdgeRings();
 
       var minEdgeRings = er.buildMinimalRings();
-      edgeRings.addAll(minEdgeRings);
+
+      var i = 0, il = minEdgeRings.length;
+      for (i; i < il; i++) {
+        edgeRings.add(minEdgeRings[i]);
+      }
     }
   }
 
@@ -151,7 +156,7 @@ jsts.operation.valid.ConnectedInteriorTester.prototype.buildEdgeRings = function
  */
 jsts.operation.valid.ConnectedInteriorTester.prototype.visitShellInteriors = function(
     g, graph) {
-  if (g instanceof Polygon) {
+  if (g instanceof jsts.geom.Polygon) {
     var p = g;
     this.visitInteriorRing(p.getExteriorRing(), graph);
   }
@@ -177,7 +182,8 @@ jsts.operation.valid.ConnectedInteriorTester.prototype.visitInteriorRing = funct
    * check since the first point may be repeated.
    *
    */
-  var pt1 = findDifferentPoint(pts, pt0);
+  var pt1 = jsts.operation.valid.ConnectedInteriorTester.findDifferentPoint(
+      pts, pt0);
   var e = graph.findEdgeInSameDirection(pt0, pt1);
   var de = graph.findEdgeEnd(e);
   var intDe = null;
@@ -224,7 +230,7 @@ jsts.operation.valid.ConnectedInteriorTester.prototype.hasUnvisitedShellEdge = f
     }
 
     var edges = er.getEdges();
-    var de = edges.get(0);
+    var de = edges[0];
 
     // don't check CW rings which are holes
     // (MD - this check may now be irrelevant)
@@ -241,8 +247,8 @@ jsts.operation.valid.ConnectedInteriorTester.prototype.hasUnvisitedShellEdge = f
      *
      */
 
-    for (var j = 0; j < edges.size(); j++) {
-      de = edges.get(j);
+    for (var j = 0; j < edges.length; j++) {
+      de = edges[j];
       if (!de.isVisited()) {
         disconnectedRingcoord = de.getCoordinate();
         return true;
