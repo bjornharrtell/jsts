@@ -48,7 +48,7 @@ jsts.operation.valid.ConnectedInteriorTester.findDifferentPoint = function(
 /**
  * Returns the coordinate for a disconnected interior
  *
- * @return {jsts.geom.Coordinate} the coordinate
+ * @return {jsts.geom.Coordinate} the coordinate.
  */
 jsts.operation.valid.ConnectedInteriorTester.prototype.getCoordinate = function() {
   return this.disconnectedRingcoord;
