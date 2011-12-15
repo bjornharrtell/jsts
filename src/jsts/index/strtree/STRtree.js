@@ -194,13 +194,13 @@ jsts.index.strtree.STRtree.prototype.verticalSlices = function(childBoundables,
   var sliceCapacity = Math.ceil(childBoundables.length / sliceCount);
   var slices = [];
 
+  var i = 0, boundablesAddedToSlice, childBoundable;
+
   for (var j = 0; j < sliceCount; j++) {
     slices[j] = [];
-    var boundablesAddedToSlice = 0;
-    for (var i = 0; i < childBoundables.length; i++) {
-      if (boundablesAddedToSlice >= sliceCapacity)
-        break;
-      var childBoundable = childBoundables[i];
+    boundablesAddedToSlice = 0;
+    while (i < childBoundables.length && boundablesAddedToSlice < sliceCapacity) {
+      childBoundable = childBoundables[i++];
       slices[j].push(childBoundable);
       boundablesAddedToSlice++;
     }
