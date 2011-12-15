@@ -56,11 +56,3 @@ jsts.noding.SegmentNode.prototype.compareTo = function(obj)  {
   return jsts.noding.SegmentPointComparator.compare(this.segmentOctant, this.coord, other.coord);
 };
 
-/**
- * Used as hashcode in JSTS
- */
-jsts.noding.SegmentNode.prototype.toString = function() {
-  return 'SegmentNode_' + this.coord + '_' + this.segmentIndex;
-};
-
-
