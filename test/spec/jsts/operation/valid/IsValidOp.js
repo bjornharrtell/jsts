@@ -2,6 +2,8 @@ describe('jsts.operation.valid.IsValidOp', function() {
   
   var geometryFactory = new jsts.geom.GeometryFactory(), coordinate, point, isValidOp, valid, line, pts, err;
 
+  var wktReader = new jsts.io.WKTReader();
+  
   it('Can be created',function(){
     coordinate = new jsts.geom.Coordinate(1,2);
     point = geometryFactory.createPoint(coordinate);
@@ -11,7 +13,7 @@ describe('jsts.operation.valid.IsValidOp', function() {
     expect(isValidOp).toBeDefined();
   });
   
-  it('Returns true for a valid point.', function() {
+  it('Returns true for a valid line.', function() {
     var goodCoord0 = new jsts.geom.Coordinate(1.0, 1.0);
     var goodCoord1 = new jsts.geom.Coordinate(0.0, 0.0);
     pts = [goodCoord0, goodCoord1];
@@ -41,7 +43,7 @@ describe('jsts.operation.valid.IsValidOp', function() {
     expect(valid).toBeFalsy();
     
     err = isValidOp.getValidationError();
-    expect(err.getErrorType()).toBe(jsts.error.TopologyValidationError.RING_SELF_INTERSECTION);
+    expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.SELF_INTERSECTION);
   });
   
   it('Detects a NaN- coordinate.', function() {
@@ -56,6 +58,35 @@ describe('jsts.operation.valid.IsValidOp', function() {
     expect(valid).toBeFalsy();
     
     err = isValidOp.getValidationError();
-    expect(err.getErrorType()).toBe(jsts.error.TopologyValidationError.INVALID_COORDINATE);
+    expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.INVALID_COORDINATE);
+  });
+  it('Detects nested holes.', function() {
+    var nestedPoly = wktReader.read('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0),(1 1, 1 9, 9 9, 9 1, 1 1),(2 2, 2 8, 8 8, 8 2, 2 2))');
+    
+    isValidOp = new jsts.operation.valid.IsValidOp(nestedPoly);    
+    valid = isValidOp.isValid();
+    err = isValidOp.getValidationError();
+    expect(valid).toBeFalsy();
+    expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.NESTED_HOLES);
+  });
+  
+  it('Detects hole in the exterior of the outer ring.', function() {
+    var nestedPoly = wktReader.read('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0),(100 100, 100 110, 110 110, 110 100, 100 100))');
+    
+    isValidOp = new jsts.operation.valid.IsValidOp(nestedPoly);    
+    valid = isValidOp.isValid();
+    err = isValidOp.getValidationError();
+    expect(valid).toBeFalsy();
+    expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.HOLE_OUTSIDE_SHELL);
+  });
+  
+  it('Detects intersecting rings.', function() {
+    var poly = wktReader.read('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0),(1 1, 1 11, 9 9, 9 1, 1 1))');
+    
+    isValidOp = new jsts.operation.valid.IsValidOp(poly);    
+    valid = isValidOp.isValid();
+    err = isValidOp.getValidationError();
+    expect(valid).toBeFalsy();
+    expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.SELF_INTERSECTION);
   });
 });
