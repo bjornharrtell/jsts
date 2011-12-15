@@ -26,7 +26,7 @@ jsts.geomgraph.Edge = function(pts, label) {
 };
 
 jsts.geomgraph.Edge.prototype = new jsts.geomgraph.GraphComponent();
-
+jsts.geomgraph.Edge.constructor = jsts.geomgraph.Edge;
 
 /**
  * Updates an IM from the label for an edge. Handles edges from both L and A

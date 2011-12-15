@@ -268,7 +268,7 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
   }
 
   // no labelled sides found, so no labels to propagate
-  if (startLoc == jsts.geom.Location.NONE)
+  if (startLoc === jsts.geom.Location.NONE)
     return;
 
   var currLoc = startLoc;
@@ -285,7 +285,7 @@ jsts.geomgraph.EdgeEndStar.prototype.propagateSideLabels = function(geomIndex) {
           .getLocation(geomIndex, jsts.geomgraph.Position.RIGHT);
       // if there is a right location, that is the next location to propagate
       if (rightLoc !== jsts.geom.Location.NONE) {
-        if (rightLoc != currLoc)
+        if (rightLoc !== currLoc)
           throw new jsts.error.TopologyError('side location conflict', e
               .getCoordinate());
         if (leftLoc === jsts.geom.Location.NONE) {
