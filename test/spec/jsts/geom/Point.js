@@ -45,4 +45,9 @@ describe('jsts.geom.Point', function() {
     expect(clone.equalsExact(point, 0)).toBeTruthy();
   });
   
+  it('can be validated', function(){
+    var valid = point.isValid();
+    expect(valid).toBeTruthy();
+  });
+  
 });
