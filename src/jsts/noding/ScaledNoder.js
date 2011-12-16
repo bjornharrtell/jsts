@@ -4,8 +4,88 @@
  * See /license.txt for the full text of the license.
  */
 
-jsts.noding.ScaledNoder = function() {
+jsts.noding.ScaledNoder = function(noder, scaleFactor, offsetX, offsetY) {
+  this.offsetX = offsetX ? offsetX : 0;
+  this.offsetY = offsetY ? offsetY : 0;
 
+  this.noder = noder;
+  this.scaleFactor = scaleFactor;
+
+  // no need to scale if input precision is already integral
+  this.isScaled = !this.isIntegerPrecision();
 };
 
-// TODO: port rest
+jsts.noding.ScaledNoder.prototype = new jsts.noding.Noder();
+jsts.noding.ScaledNoder.constructor = jsts.noding.ScaledNoder;
+
+jsts.noding.ScaledNoder.prototype.noder = null;
+jsts.noding.ScaledNoder.prototype.scaleFactor = undefined;
+jsts.noding.ScaledNoder.prototype.offsetX = undefined;
+jsts.noding.ScaledNoder.prototype.offsetY = undefined;
+jsts.noding.ScaledNoder.prototype.isScaled = false;
+
+jsts.noding.ScaledNoder.prototype.isIntegerPrecision = function() {
+  return this.scaleFactor === 1.0;
+};
+
+jsts.noding.ScaledNoder.prototype.getNodedSubstrings = function() {
+  var splitSS = this.noder.getNodedSubstrings();
+  if (this.isScaled)
+    this.rescale(splitSS);
+  return splitSS;
+};
+
+jsts.noding.ScaledNoder.prototype.computeNodes = function(inputSegStrings) {
+  var intSegStrings = inputSegStrings;
+  if (this.isScaled)
+    intSegStrings = this.scale(inputSegStrings);
+  this.noder.computeNodes(intSegStrings);
+};
+
+/**
+ * @private
+ */
+jsts.noding.ScaledNoder.prototype.scale = function(segStrings) {
+  var transformed = [];
+  for (var i = segStrings.iterator(); i.hasNext();) {
+    var ss = i.next();
+    transformed.push(new jsts.noding.NodedSegmentString(this.scale(ss
+        .getCoordinates()), ss.getData()));
+  }
+
+  return transformed;
+};
+
+/**
+ * @private
+ */
+jsts.noding.ScaledNoder.prototype.scale = function(pts) {
+  var roundPts = [];
+  for (var i = 0; i < pts.length; i++) {
+    roundPts[i] = new jsts.geom.Coordinate(Math
+        .round((pts[i].x - this.offsetX) * this.scaleFactor), Math
+        .round((pts[i].y - this.offsetY) * this.scaleFactor));
+  }
+  var roundPtsNoDup = jsts.geom.CoordinateArrays.removeRepeatedPoints(roundPts);
+  return roundPtsNoDup;
+};
+
+/**
+ * @private
+ */
+jsts.noding.ScaledNoder.prototype.rescale = function(segStrings) {
+  for (var i = segStrings.iterator(); i.hasNext();) {
+    var ss = i.next();
+    this.rescale(ss.getCoordinates());
+  }
+};
+
+/**
+ * @private
+ */
+jsts.noding.ScaledNoder.prototype.rescale2 = function(pts) {
+  for (var i = 0; i < pts.length; i++) {
+    pts[i].x = pts[i].x / this.scaleFactor + this.offsetX;
+    pts[i].y = pts[i].y / this.scaleFactor + this.offsetY;
+  }
+};
