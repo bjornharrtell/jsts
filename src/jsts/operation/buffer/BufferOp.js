@@ -274,7 +274,7 @@ jsts.operation.buffer.BufferOp.prototype.computeGeometry = function() {
 
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
   var precDigits;
-  var saveException;
+  var saveException = null;
 
   // try and compute with decreasing precision
   for (precDigits = jsts.operation.buffer.BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
@@ -296,9 +296,14 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision = function() {
 
 
 jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
-  // use fast noding by default
-  var bufBuilder = new jsts.operation.buffer.BufferBuilder(this.bufParams);
-  this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
+  try {
+    // use fast noding by default
+    var bufBuilder = new jsts.operation.buffer.BufferBuilder(this.bufParams);
+    this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
+  } catch (e) {
+    // don't propagate the exception - it will be detected by fact that
+    // resultGeometry is null
+  }
 };
 
 
@@ -309,8 +314,8 @@ jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision = function() {
 jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision2 = function(
     precisionDigits) {
 
-  var sizeBasedScaleFactor = jsts.operation.buffer.BufferOp.precisionScaleFactor(this.argGeom, this.distance,
-      precisionDigits);
+  var sizeBasedScaleFactor = jsts.operation.buffer.BufferOp
+      .precisionScaleFactor(this.argGeom, this.distance, precisionDigits);
 
   var fixedPM = new jsts.geom.PrecisionModel(sizeBasedScaleFactor);
   this.bufferFixedPrecision(fixedPM);
@@ -323,8 +328,9 @@ jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision2 = function(
  */
 jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision = function(
     fixedPM) {
-  var noder = new jsts.noding.ScaledNoder(new jsts.noding.snapround.MCIndexSnapRounder(new jsts.geom.PrecisionModel(1.0)),
-      fixedPM.getScale());
+  var noder = new jsts.noding.ScaledNoder(
+      new jsts.noding.snapround.MCIndexSnapRounder(
+          new jsts.geom.PrecisionModel(1.0)), fixedPM.getScale());
 
   var bufBuilder = new jsts.operation.buffer.BufferBuilder(bufParams);
   bufBuilder.setWorkingPrecisionModel(fixedPM);

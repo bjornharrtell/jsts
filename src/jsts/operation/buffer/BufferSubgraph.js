@@ -95,6 +95,11 @@ jsts.operation.buffer.BufferSubgraph.prototype.create = function(node) {
   this.addReachable(node);
   this.finder.findEdge(this.dirEdgeList);
   this.rightMostCoord = this.finder.getCoordinate();
+
+  for (var i = this.nodes.iterator(); i.hasNext();) {
+    var n = i.next();
+    console.log('Node coord: ' + n.getCoordinate().x + ' , ' + n.getCoordinate().y);
+  }
 };
 
 /**
