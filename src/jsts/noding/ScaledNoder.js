@@ -4,6 +4,11 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/ScaledNoder.java
+ * Revision: 478
+ */
+
 jsts.noding.ScaledNoder = function(noder, scaleFactor, offsetX, offsetY) {
   this.offsetX = offsetX ? offsetX : 0;
   this.offsetY = offsetY ? offsetY : 0;
