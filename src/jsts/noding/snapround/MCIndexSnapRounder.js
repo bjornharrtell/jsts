@@ -80,8 +80,8 @@ jsts.noding.snapround.MCIndexSnapRounder.prototype.snapRound = function(
 jsts.noding.snapround.MCIndexSnapRounder.prototype.findInteriorIntersections = function(
     segStrings, li) {
   var intFinderAdder = new jsts.noding.IntersectionFinderAdder(li);
-  noder.setSegmentIntersector(intFinderAdder);
-  noder.computeNodes(segStrings);
+  this.noder.setSegmentIntersector(intFinderAdder);
+  this.noder.computeNodes(segStrings);
   return intFinderAdder.getInteriorIntersections();
 };
 
@@ -95,7 +95,8 @@ jsts.noding.snapround.MCIndexSnapRounder.prototype.computeIntersectionSnaps = fu
     snapPts) {
   for (var it = snapPts.iterator(); it.hasNext();) {
     var snapPt = it.next();
-    var hotPixel = new jsts.noding.snapround.HotPixel(snapPt, this.scaleFactor, this.li);
+    var hotPixel = new jsts.noding.snapround.HotPixel(snapPt, this.scaleFactor,
+        this.li);
     this.pointSnapper.snap(hotPixel);
   }
 };
@@ -109,6 +110,11 @@ jsts.noding.snapround.MCIndexSnapRounder.prototype.computeIntersectionSnaps = fu
  */
 jsts.noding.snapround.MCIndexSnapRounder.prototype.computeVertexSnaps = function(
     edges) {
+  if (edges instanceof jsts.noding.NodedSegmentString) {
+    this.computeVertexSnaps2.apply(this, arguments);
+    return;
+  }
+
   for (var i0 = edges.iterator(); i0.hasNext();) {
     var edge0 = i0.next();
     this.computeVertexSnaps(edge0);
@@ -121,11 +127,12 @@ jsts.noding.snapround.MCIndexSnapRounder.prototype.computeVertexSnaps = function
  *
  * @private
  */
-jsts.noding.snapround.MCIndexSnapRounder.prototype.computeVertexSnaps = function(
+jsts.noding.snapround.MCIndexSnapRounder.prototype.computeVertexSnaps2 = function(
     e) {
   var pts0 = e.getCoordinates();
   for (var i = 0; i < pts0.length - 1; i++) {
-    var hotPixel = new jsts.noding.snapround.HotPixel(pts0[i], this.scaleFactor, this.li);
+    var hotPixel = new jsts.noding.snapround.HotPixel(pts0[i],
+        this.scaleFactor, this.li);
     var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
     // if a node is created for a vertex, that vertex must be noded too
     if (isNodeAdded) {

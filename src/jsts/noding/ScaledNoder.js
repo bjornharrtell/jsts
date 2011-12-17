@@ -51,10 +51,14 @@ jsts.noding.ScaledNoder.prototype.computeNodes = function(inputSegStrings) {
  * @private
  */
 jsts.noding.ScaledNoder.prototype.scale = function(segStrings) {
-  var transformed = [];
+  if (segStrings instanceof Array) {
+    return this.scale2(segStrings);
+  }
+
+  var transformed = new javascript.util.ArrayList();
   for (var i = segStrings.iterator(); i.hasNext();) {
     var ss = i.next();
-    transformed.push(new jsts.noding.NodedSegmentString(this.scale(ss
+    transformed.add(new jsts.noding.NodedSegmentString(this.scale(ss
         .getCoordinates()), ss.getData()));
   }
 
@@ -64,7 +68,7 @@ jsts.noding.ScaledNoder.prototype.scale = function(segStrings) {
 /**
  * @private
  */
-jsts.noding.ScaledNoder.prototype.scale = function(pts) {
+jsts.noding.ScaledNoder.prototype.scale2 = function(pts) {
   var roundPts = [];
   for (var i = 0; i < pts.length; i++) {
     roundPts[i] = new jsts.geom.Coordinate(Math
@@ -79,6 +83,11 @@ jsts.noding.ScaledNoder.prototype.scale = function(pts) {
  * @private
  */
 jsts.noding.ScaledNoder.prototype.rescale = function(segStrings) {
+  if (segStrings instanceof Array) {
+    this.rescale2(segStrings);
+    return;
+  }
+
   for (var i = segStrings.iterator(); i.hasNext();) {
     var ss = i.next();
     this.rescale(ss.getCoordinates());

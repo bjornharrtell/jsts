@@ -332,7 +332,7 @@ jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision = function(
       new jsts.noding.snapround.MCIndexSnapRounder(
           new jsts.geom.PrecisionModel(1.0)), fixedPM.getScale());
 
-  var bufBuilder = new jsts.operation.buffer.BufferBuilder(bufParams);
+  var bufBuilder = new jsts.operation.buffer.BufferBuilder(this.bufParams);
   bufBuilder.setWorkingPrecisionModel(fixedPM);
   bufBuilder.setNoder(noder);
   // this may throw an exception, if robustness errors are encountered

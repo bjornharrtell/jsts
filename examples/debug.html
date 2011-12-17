@@ -79,9 +79,16 @@
   <script type="text/javascript" src="../src/jsts/index/strtree/ItemBoundable.js"></script>
   <script type="text/javascript" src="../src/jsts/index/strtree/SIRtree.js"></script>
   <script type="text/javascript" src="../src/jsts/index/strtree/STRtree.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Interval.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/NodeBase.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Key.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Node.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Root.js"></script>
+  <script type="text/javascript" src="../src/jsts/index/bintree/Bintree.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/SegmentIntersector.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/InteriorIntersectionFinder.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/IntersectionAdder.js"></script>
+  <script type="text/javascript" src="../src/jsts/noding/IntersectionFinderAdder.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/SegmentString.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/BasicSegmentString.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/NodableSegmentString.js"></script>
@@ -97,6 +104,8 @@
   <script type="text/javascript" src="../src/jsts/noding/SegmentNode.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/SegmentNodeList.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/SegmentPointComparator.js"></script>
+  <script type="text/javascript" src="../src/jsts/noding/snapround/HotPixel.js"></script>
+  <script type="text/javascript" src="../src/jsts/noding/snapround/MCIndexPointSnapper.js"></script>
   <script type="text/javascript" src="../src/jsts/noding/snapround/MCIndexSnapRounder.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Position.js"></script>
   <script type="text/javascript" src="../src/jsts/geomgraph/Depth.js"></script>
@@ -154,6 +163,7 @@
   <script type="text/javascript" src="../src/jsts/operation/overlay/OverlayOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/overlay/snap/SnapOverlayOp.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js"></script>
+  <script type="text/javascript" src="../src/jsts/operation/overlay/snap/LineStringSnapper.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/relate/EdgeEndBuilder.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/relate/EdgeEndBundle.js"></script>
   <script type="text/javascript" src="../src/jsts/operation/relate/EdgeEndBundleStar.js"></script>
@@ -179,13 +189,6 @@
 <script type="text/javascript">
   function init() {
     var reader = new jsts.io.WKTReader();
-    
-    // TODO: fails with TopologyException at setDepth in DirectedEdge
-    // TODO: third iteration of computeDepths of BufferSubgraph, the third DirectedEdge in the Node is not the same as in JTS
-    var a = reader.read('MULTILINESTRING ((1335558.59524 631743.01449, 1335572.28215 631775.89056, 1335573.2578018496 631782.1915185435), (1335573.2578018496 631782.1915185435, 1335576.62035 631803.90754), (1335573.2578018496 631782.1915185435, 1335580.70187 631802.08139))');
-    var buffer = a.buffer(10);
-    buffer.normalize();
-    console.log(buffer.toString());
     
     // TODO: fails because comparison for buffer test results in JTS has tolerance
     var a = reader.read('LINESTRING(10 10,100 100)');

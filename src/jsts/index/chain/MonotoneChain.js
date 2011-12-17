@@ -146,7 +146,7 @@ jsts.index.chain.MonotoneChain.prototype.getCoordinates = function() {
  *          mcs the select action to execute on selected segments.
  */
 jsts.index.chain.MonotoneChain.prototype.select = function(searchEnv, mcs) {
-  this.computeSelect2(searchEnv, start, end, mcs);
+  this.computeSelect2(searchEnv, this.start, this.end, mcs);
 };
 
 /**
@@ -154,8 +154,8 @@ jsts.index.chain.MonotoneChain.prototype.select = function(searchEnv, mcs) {
  */
 jsts.index.chain.MonotoneChain.prototype.computeSelect2 = function(searchEnv,
     start0, end0, mcs) {
-  var p0 = pts[start0];
-  var p1 = pts[end0];
+  var p0 = this.pts[start0];
+  var p1 = this.pts[end0];
   mcs.tempEnv1.init(p0, p1);
 
   // terminating condition for the recursion
