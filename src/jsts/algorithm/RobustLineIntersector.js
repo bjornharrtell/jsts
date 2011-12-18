@@ -66,7 +66,7 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersection = function(
  *          q1
  * @param {Coordinate}
  *          q2
- * @return {int}
+ * @return {Number}
  * @protected
  */
 jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
@@ -167,7 +167,7 @@ jsts.algorithm.RobustLineIntersector.prototype.computeIntersect = function(p1,
  *          q1
  * @param {Coordinate}
  *          q2
- * @return {int}
+ * @return {Number}
  * @private
  */
 jsts.algorithm.RobustLineIntersector.prototype.computeCollinearIntersection = function(

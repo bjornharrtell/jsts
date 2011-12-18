@@ -40,7 +40,10 @@ jsts = {
   /** @namespace */
   io: {},
   /** @namespace */
-  noding: {},
+  noding: {
+    /** @namespace */
+    snapround: {}
+  },
   /** @namespace */
   operation: {
     /** @namespace */

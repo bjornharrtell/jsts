@@ -48,7 +48,7 @@
   };
 
   jsts.geomgraph.GeometryGraph.prototype = new jsts.geomgraph.PlanarGraph();
-
+  jsts.geomgraph.GeometryGraph.constructor = jsts.geomgraph.GeometryGraph;
 
   /**
    * @return {EdgeSetIntersector}
@@ -84,8 +84,6 @@
    * The lineEdgeMap is a map of the linestring components of the parentGeometry
    * to the edges which are derived from them. This is used to efficiently
    * perform findEdge queries
-   *
-   * NOTE: In JSTS a JS object replaces HashMap.
    *
    * @type {Object}
    * @private
@@ -175,7 +173,7 @@
 
   jsts.geomgraph.GeometryGraph.prototype.findEdge = function(line) {
     return this.lineEdgeMap.get(line);
-  }
+  };
 
   jsts.geomgraph.GeometryGraph.prototype.computeSplitEdges = function(edgelist) {
     for (var i = this.edges.iterator(); i.hasNext();) {

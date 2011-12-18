@@ -344,7 +344,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.query2 = function(searchBounds,
     jsts.util.Assert.isTrue(this.root.getBounds() === null);
   }
   if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
-    this.query4(searchBounds, root, visitor);
+    this.query4(searchBounds, this.root, visitor);
   }
 };
 

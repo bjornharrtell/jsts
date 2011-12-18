@@ -5,6 +5,11 @@
  */
 
 /**
+ * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/NodedSegmentString.java
+ * Revision: 478
+ */
+
+/**
  * @requires jsts/noding/NodableSegmentString.js
  */
 
@@ -36,6 +41,7 @@ jsts.noding.NodedSegmentString.constructor = jsts.noding.NodedSegmentString;
 
 
 /**
+ * Gets the {@link SegmentString}s which result from splitting this string at node points.
  *
  * @param {javascript.util.Collection}
  *          segStrings a Collection of NodedSegmentStrings.
@@ -58,6 +64,7 @@ jsts.noding.NodedSegmentString.getNodedSubstrings = function(segStrings) {
 
 
 /**
+ * Adds the noded {@link SegmentString}s which result from splitting this string at node points.
  *
  * @param {javascript.util.Collection} segStrings
  *          a Collection of NodedSegmentStrings.
@@ -220,4 +227,9 @@ jsts.noding.NodedSegmentString.prototype.addIntersectionNode = function(intPt,
    */
   var ei = this.nodeList.add(intPt, normalizedSegmentIndex);
   return ei;
+};
+
+jsts.noding.NodedSegmentString.prototype.toString = function() {
+  var geometryFactory = new jsts.geom.GeometryFactory();
+  return new jsts.io.WKTWriter().write(geometryFactory.createLineString(this.pts));
 };

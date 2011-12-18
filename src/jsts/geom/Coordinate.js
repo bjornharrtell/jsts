@@ -151,9 +151,8 @@
     return 0;
   };
 
-  jsts.geom.Coordinate.prototype.hashCode = function() {
-    // TODO: might not work as expected, JTS does some magic here.
-    return '' + this.x + this.y;
+  jsts.geom.Coordinate.prototype.toString = function() {
+    return '(' + this.x + ', ' + this.y + ')';
   };
 
 })();
