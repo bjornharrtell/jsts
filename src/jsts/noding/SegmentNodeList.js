@@ -4,6 +4,10 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/SegmentNodeList.java
+ * Revision: 478
+ */
 
 
 /**
@@ -199,7 +203,7 @@ jsts.noding.SegmentNodeList.prototype.addSplitEdges = function(edgeList) {
 
 
 /**
- * Checks the correctness of the set of split edges corresponding to this edge
+ * Checks the correctness of the set of split edges corresponding to this edge.
  *
  * @param {Array}
  *          splitEdges the split edges for this edge (in order).

@@ -823,7 +823,7 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getTriangleCoordinates =
  *           a MultiLineString.
  */
 jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdgesByFactory = function(geomFact) {
-  var quadEdges, edges, i, qe, coords;
+  var quadEdges, edges, i, il, qe, coords;
 
   quadEdges = this.getPrimaryEdges(false);
   edges = new Array(quadEdges.length);

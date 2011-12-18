@@ -20,7 +20,6 @@
   var NodedSegmentString = jsts.noding.NodedSegmentString;
   var MonotoneChainBuilder = jsts.index.chain.MonotoneChainBuilder;
 
-
   /**
    * @constructor
    * @private

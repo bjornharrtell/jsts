@@ -32,8 +32,7 @@ jsts.noding.Octant = function() {
  */
 jsts.noding.Octant.octant = function(dx,  dy)  {
   if (dx instanceof jsts.geom.Coordinate) {
-    jsts.noding.Octant.octant2.apply(this, arguments);
-    return;
+    return jsts.noding.Octant.octant2.apply(this, arguments);
   }
 
   if (dx === 0.0 && dy === 0.0)

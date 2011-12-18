@@ -4,7 +4,10 @@
  * See /license.txt for the full text of the license.
  */
 
-
+/**
+ * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/SegmentNode.java
+ * Revision: 478
+ */
 
 /**
  * Represents an intersection point between two {@link SegmentString}s.
@@ -29,6 +32,15 @@ jsts.noding.SegmentNode.prototype.coord = null;   // the point of intersection
 jsts.noding.SegmentNode.prototype.segmentIndex = null;   // the index of the containing line segment in the parent edge
 jsts.noding.SegmentNode.prototype.segmentOctant = null;
 jsts.noding.SegmentNode.prototype._isInterior = null;
+
+/**
+ * Gets the {@link Coordinate} giving the location of this node.
+ *
+ * @return the coordinate of the node.
+ */
+jsts.noding.SegmentNode.prototype.getCoordinate = function() {
+  return this.coord;
+};
 
 
 jsts.noding.SegmentNode.prototype.isInterior = function() { return this._isInterior; };
@@ -55,12 +67,4 @@ jsts.noding.SegmentNode.prototype.compareTo = function(obj)  {
 
   return jsts.noding.SegmentPointComparator.compare(this.segmentOctant, this.coord, other.coord);
 };
-
-/**
- * Used as hashcode in JSTS
- */
-jsts.noding.SegmentNode.prototype.toString = function() {
-  return 'SegmentNode_' + this.coord + '_' + this.segmentIndex;
-};
-
 

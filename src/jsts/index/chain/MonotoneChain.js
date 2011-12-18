@@ -146,7 +146,6 @@ jsts.index.chain.MonotoneChain.prototype.getCoordinates = function() {
  *          mcs the select action to execute on selected segments.
  */
 jsts.index.chain.MonotoneChain.prototype.select = function(searchEnv, mcs) {
-  //this.computeSelect2(searchEnv, start, end, mcs);
   this.computeSelect2(searchEnv, this.start, this.end, mcs);
 };
 
