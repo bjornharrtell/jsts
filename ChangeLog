@@ -4,6 +4,7 @@
 		Remove hard dependency on OpenLayers (#79)
 		Bintree index port (#76)
 		LineStringSnapper port (#75)
+		IsValidOp port (#71)
 		Buffering fails on complex cases that requires precision reduction (#66)
 
 2011-10-07: Version 0.10.0
