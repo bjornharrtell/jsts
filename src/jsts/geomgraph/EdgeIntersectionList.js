@@ -23,6 +23,7 @@
   };
 
 
+
   /**
    * @type {javascript.util.Map}
    * @private
@@ -36,6 +37,16 @@
    * @type {Edge}
    */
   jsts.geomgraph.EdgeIntersectionList.prototype.edge = null;
+
+  jsts.geomgraph.EdgeIntersectionList.prototype.isIntersection = function(pt) {
+    for (var it = this.iterator(); it.hasNext(); ) {
+      var ei = it.next();
+      if (ei.coord.equals(pt)) {
+       return true;
+      }
+    }
+    return false;
+  };
 
 
   /**

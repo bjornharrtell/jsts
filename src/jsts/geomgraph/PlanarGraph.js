@@ -81,7 +81,8 @@
     return this.edgeEndList;
   };
 
-  jsts.geomgraph.PlanarGraph.prototype.isBoundaryNode = function(geomIndex, coord) {
+  jsts.geomgraph.PlanarGraph.prototype.isBoundaryNode = function(geomIndex,
+      coord) {
     var node = this.nodes.find(coord);
     if (node === null)
       return false;
@@ -122,11 +123,13 @@
   /**
    * Add a set of edges to the graph. For each edge two DirectedEdges will be
    * created. DirectedEdges are NOT linked by this method.
-   * @param {javascript.util.List} edgedToAdd
+   *
+   * @param {javascript.util.List}
+   *          edgedToAdd
    */
   jsts.geomgraph.PlanarGraph.prototype.addEdges = function(edgesToAdd) {
     // create all the nodes for the edges
-    for (var it = edgesToAdd.iterator(); it.hasNext(); ) {
+    for (var it = edgesToAdd.iterator(); it.hasNext();) {
       var e = it.next();
       this.edges.add(e);
 
@@ -140,6 +143,72 @@
     }
   };
 
+  jsts.geomgraph.PlanarGraph.prototype.linkResultDirectedEdges = function() {
+    for (var nodeit = this.nodes.iterator(); nodeit.hasNext();) {
+      var node = nodeit.next();
+      node.getEdges().linkResultDirectedEdges();
+    }
+  };
+
+  /**
+   * Returns the edge which starts at p0 and whose first segment is parallel to
+   * p1
+   *
+   * @return the edge, if found <code>null</code> if the edge was not found.
+   */
+  jsts.geomgraph.PlanarGraph.prototype.findEdgeInSameDirection = function(p0,
+      p1) {
+    var i = 0, il = this.edges.size(), e, eCoord;
+    for (i; i < il; i++) {
+      e = this.edges.get(i);
+      eCoord = e.getCoordinates();
+
+      if (this.matchInSameDirection(p0, p1, eCoord[0], eCoord[1])) {
+        return e;
+      }
+
+      if (this.matchInSameDirection(p0, p1, eCoord[eCoord.length - 1],
+          eCoord[eCoord.length - 2])) {
+        return e;
+      }
+    }
+    return null;
+  };
+
+  /**
+   * The coordinate pairs match if they define line segments lying in the same
+   * direction. E.g. the segments are parallel and in the same quadrant (as
+   * opposed to parallel and opposite!).
+   */
+  jsts.geomgraph.PlanarGraph.prototype.matchInSameDirection = function(p0, p1,
+      ep0, ep1) {
+    if (!p0.equals(ep0)) {
+      return false;
+    }
+
+    if (jsts.algorithm.CGAlgorithms.computeOrientation(p0, p1, ep1) === jsts.algorithm.CGAlgorithms.COLLINEAR &&
+        jsts.geomgraph.Quadrant.quadrant(p0, p1) === jsts.geomgraph.Quadrant
+            .quadrant(ep0, ep1)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Returns the EdgeEnd which has edge e as its base edge (MD 18 Feb 2002 -
+   * this should return a pair of edges)
+   *
+   * @return the edge, if found <code>null</code> if the edge was not found.
+   */
+  jsts.geomgraph.PlanarGraph.prototype.findEdgeEnd = function(e) {
+    for (var i = this.getEdgeEnds().iterator(); i.hasNext();) {
+      var ee = i.next();
+      if (ee.getEdge() === e) {
+        return ee;
+      }
+    }
+    return null;
+  };
 })();
 
 // TODO: port rest of class

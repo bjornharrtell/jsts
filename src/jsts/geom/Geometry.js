@@ -295,7 +295,7 @@ jsts.geom.Geometry.prototype.isSimple = function() {
  * @see IsValidOp
  */
 jsts.geom.Geometry.prototype.isValid = function() {
-  var isValidOp = new IsValidOp(this);
+  var isValidOp = new jsts.operation.valid.IsValidOp(this);
   return isValidOp.isValid();
 };
 

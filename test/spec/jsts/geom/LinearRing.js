@@ -41,4 +41,9 @@ describe('jsts.geom.LinearRing', function() {
     expect(clone.equalsExact(linearRing, 0)).toBeTruthy();
   });
   
+  it('can be validated', function(){
+    var valid = linearRing.isValid();
+    expect(valid).toBeTruthy();
+  });
+  
 });
