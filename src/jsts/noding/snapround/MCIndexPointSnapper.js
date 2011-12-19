@@ -10,6 +10,10 @@
  * Revision: 486
  */
 
+/**
+ * @requires jsts/index/chain/MonotoneChainSelectAction.js
+ */
+
 (function() {
 
   var HotPixelSnapAction = function(hotPixel, parentEdge, vertexIndex) {
@@ -74,8 +78,8 @@
     }
 
     var pixelEnv = hotPixel.getSafeEnvelope();
-    var hotPixelSnapAction = new HotPixelSnapAction(
-        hotPixel, parentEdge, vertexIndex);
+    var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge,
+        vertexIndex);
 
     this.index.query(pixelEnv, {
       visitItem: function(testChain) {

@@ -67,6 +67,19 @@ JTSTestFactory.generate = function(doc, title) {
         } else {
           expect(true).toBeTruthy();
         }
+      } else if (opname === 'buffer') {
+        var expectedGeometry = reader.read(expected);
+        result.normalize();
+        expectedGeometry.normalize();
+        
+        var matcher = new BufferResultMatcher();
+
+        if (!matcher.isBufferResultMatch(result, expectedGeometry, parseFloat(arg2))) {
+          throw new Error('Result: ' + result + ' Expected: ' +
+              expectedGeometry + inputs);
+        } else {
+          expect(true).toBeTruthy();
+        }
       } else {
         var expectedGeometry = reader.read(expected);
         result.normalize();
@@ -108,5 +121,5 @@ JTSTestFactory.generate = function(doc, title) {
       }
     });
   }
-  
+
 };

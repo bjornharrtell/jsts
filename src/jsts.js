@@ -10,6 +10,8 @@ jsts = {
   /** @namespace */
   algorithm: {
     /** @namespace */
+    distance: {},
+    /** @namespace */
     locate: {}
   },
   /** @namespace */
@@ -78,6 +80,7 @@ jsts = {
 
 /**
  * Global function intended for use as a generic abstract method.
+ * @private
  */
 jsts.abstractFunc = function() {
   throw new jsts.error.AbstractMethodInvocationError();

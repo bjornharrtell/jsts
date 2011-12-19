@@ -60,6 +60,35 @@
     return this.holes.length;
   };
 
+  /**
+   * Returns the area of this <code>Polygon</code>
+   *
+   * @return the area of the polygon.
+   */
+  jsts.geom.Polygon.prototype.getArea = function() {
+    var area = 0.0;
+    area += Math.abs(jsts.algorithm.CGAlgorithms.signedArea(this.shell
+        .getCoordinateSequence()));
+    for (var i = 0; i < this.holes.length; i++) {
+      area -= Math.abs(jsts.algorithm.CGAlgorithms.signedArea(this.holes[i]
+          .getCoordinateSequence()));
+    }
+    return area;
+  };
+
+  /**
+   * Returns the perimeter of this <code>Polygon</code>
+   *
+   * @return the perimeter of the polygon.
+   */
+  jsts.geom.Polygon.prototype.getLength = function() {
+    var len = 0.0;
+    len += this.shell.getLength();
+    for (var i = 0; i < this.holes.length; i++) {
+      len += this.holes[i].getLength();
+    }
+    return len;
+  };
 
   /**
    * Computes the boundary of this geometry
@@ -141,21 +170,35 @@
       for (var i = 0, len = this.holes.length; i < len; i++) {
         this.holes[i].apply(filter);
       }
-    }
-    else if (filter instanceof jsts.geom.GeometryFilter) {
+    } else if (filter instanceof jsts.geom.GeometryFilter) {
       filter.filter(this);
-    }
-    else if (filter instanceof jsts.geom.CoordinateFilter) {
+    } else if (filter instanceof jsts.geom.CoordinateFilter) {
       this.shell.apply(filter);
       for (var i = 0, len = this.holes.length; i < len; i++) {
         this.holes[i].apply(filter);
       }
+    } else if (filter instanceof jsts.geom.CoordinateSequenceFilter) {
+      this.apply2.apply(this, arguments);
+    }
+  };
+
+  jsts.geom.Polygon.prototype.apply2 = function(filter) {
+    this.shell.apply(filter);
+    if (!filter.isDone()) {
+      for (var i = 0; i < this.holes.length; i++) {
+        this.holes[i].apply(filter);
+        if (filter.isDone())
+          break;
+      }
+    }
+    if (filter.isGeometryChanged()) {
+      // TODO: call this.geometryChanged(); when ported
     }
   };
 
   /**
-   * Creates and returns a full copy of this {@link Polygon} object.
-   * (including all coordinates contained by it).
+   * Creates and returns a full copy of this {@link Polygon} object. (including
+   * all coordinates contained by it).
    *
    * @return a clone of this instance.
    */

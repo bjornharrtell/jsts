@@ -26,10 +26,20 @@
   jsts.geom.LineString.constructor = jsts.geom.LineString;
 
   /**
+   * @type {jsts.geom.Coordinate[]}
+   * @private
+   */
+  jsts.geom.LineString.prototype.points = null;
+
+  /**
    * @return {jsts.geom.Coordinate[]} this LineString's internal coordinate
    *         array.
    */
   jsts.geom.LineString.prototype.getCoordinates = function() {
+    return this.points;
+  };
+
+  jsts.geom.LineString.prototype.getCoordinateSequence = function() {
     return this.points;
   };
 
@@ -58,7 +68,7 @@
 
 
   /**
-   * @return {int} LineStrings are always 1-dimensional.
+   * @return {number} LineStrings are always 1-dimensional.
    */
   jsts.geom.LineString.prototype.getDimension = function() {
     return 1;
@@ -66,7 +76,7 @@
 
 
   /**
-   * @return {int} dimension of the boundary of this jsts.geom.LineString.
+   * @return {number} dimension of the boundary of this jsts.geom.LineString.
    */
   jsts.geom.LineString.prototype.getBoundaryDimension = function() {
     if (this.isClosed()) {
@@ -136,6 +146,15 @@
 
 
   /**
+   * Returns the length of this <code>LineString</code>
+   *
+   * @return the length of the linestring.
+   */
+  jsts.geom.LineString.prototype.getLength = function() {
+    return jsts.algorithm.CGAlgorithms.length(points);
+  };
+
+  /**
    * Gets the boundary of this geometry. The boundary of a lineal geometry is
    * always a zero-dimensional geometry (which may be empty).
    *
@@ -181,11 +200,12 @@
       return true;
     }
 
-    return this.points.reduce(function(equal, point, i) {
-      return equal &&
-          jsts.geom.Geometry.prototype.equal(point, other.points[i],
-              tolerance);
-    });
+    return this.points
+        .reduce(function(equal, point, i) {
+          return equal &&
+              jsts.geom.Geometry.prototype.equal(point, other.points[i],
+                  tolerance);
+        });
   };
 
   jsts.geom.LineString.prototype.isEquivalentClass = function(other) {
@@ -215,12 +235,28 @@
   };
 
   jsts.geom.LineString.prototype.apply = function(filter) {
-    if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
+    if (filter instanceof jsts.geom.GeometryFilter ||
+        filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
     } else if (filter instanceof jsts.geom.CoordinateFilter) {
       for (var i = 0, len = this.points.length; i < len; i++) {
         filter.filter(this.points[i]);
       }
+    } else if (filter instanceof jsts.geom.CoordinateSequenceFilter) {
+      this.apply2.apply(this, arguments);
+    }
+  };
+
+  jsts.geom.LineString.prototype.apply2 = function(filter) {
+    if (this.points.length === 0)
+      return;
+    for (var i = 0; i < this.points.length; i++) {
+      filter.filter(this.points, i);
+      if (filter.isDone())
+        break;
+    }
+    if (filter.isGeometryChanged()) {
+      // TODO: call geometryChanged(); when ported
     }
   };
 
@@ -235,28 +271,27 @@
   };
 
   /**
-   * Normalizes a LineString.  A normalized linestring
-   * has the first point which is not equal to it's reflected point
-   * less than the reflected point.
+   * Normalizes a LineString. A normalized linestring has the first point which
+   * is not equal to it's reflected point less than the reflected point.
    */
   jsts.geom.LineString.prototype.normalize = function() {
-      var i, il, j, ci, cj, len;
+    var i, il, j, ci, cj, len;
 
-      len = this.points.length;
-      il = parseInt(len / 2);
+    len = this.points.length;
+    il = parseInt(len / 2);
 
-      for (i = 0; i < il; i++) {
-        j = len - 1 - i;
-        // skip equal points on both ends
-        ci = this.points[i];
-        cj = this.points[j];
-        if (!ci.equals(cj)) {
-          if (ci.compareTo(cj) > 0) {
-            this.points.reverse();
-          }
-          return;
+    for (i = 0; i < il; i++) {
+      j = len - 1 - i;
+      // skip equal points on both ends
+      ci = this.points[i];
+      cj = this.points[j];
+      if (!ci.equals(cj)) {
+        if (ci.compareTo(cj) > 0) {
+          this.points.reverse();
         }
+        return;
       }
+    }
   };
 
   jsts.geom.LineString.prototype.CLASS_NAME = 'jsts.geom.LineString';

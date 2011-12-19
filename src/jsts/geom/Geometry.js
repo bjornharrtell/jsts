@@ -353,6 +353,28 @@ jsts.geom.Geometry.prototype.isRectangle = function() {
 };
 
 /**
+ * Returns the area of this <code>Geometry</code>. Areal Geometries have a
+ * non-zero area. They override this function to compute the area. Others return
+ * 0.0
+ *
+ * @return the area of the Geometry.
+ */
+jsts.geom.Geometry.prototype.getArea = function() {
+  return 0.0;
+};
+
+/**
+ * Returns the length of this <code>Geometry</code>. Linear geometries return
+ * their length. Areal geometries return their perimeter. They override this
+ * function to compute the area. Others return 0.0
+ *
+ * @return the length of the Geometry.
+ */
+jsts.geom.Geometry.prototype.getLength = function() {
+  return 0.0;
+};
+
+/**
  * Computes the centroid of this <code>Geometry</code>. The centroid is equal
  * to the centroid of the set of component Geometries of highest dimension
  * (since the lower-dimension geometries contribute zero "weight" to the
@@ -1200,21 +1222,21 @@ jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
 };
 
 /**
- * Tests whether two geometries are exactly equal
- * in their normalized forms.
- * This is a convenience method which creates normalized
- * versions of both geometries before computing
- * {@link #equalsExact(Geometry)}.
- * This method is relatively expensive to compute.
- * For maximum performance, the client
- * should instead perform normalization itself
- * at an appropriate point during execution.
+ * Tests whether two geometries are exactly equal in their normalized forms.
+ * This is a convenience method which creates normalized versions of both
+ * geometries before computing {@link #equalsExact(Geometry)}. This method is
+ * relatively expensive to compute. For maximum performance, the client should
+ * instead perform normalization itself at an appropriate point during
+ * execution.
  *
- * @param {Geometry} g a Geometry.
- * @return {boolean} true if the input geometries are exactly equal in their normalized form.
+ * @param {Geometry}
+ *          g a Geometry.
+ * @return {boolean} true if the input geometries are exactly equal in their
+ *         normalized form.
  */
 jsts.geom.Geometry.prototype.equalsNorm = function(g) {
-  if (g === null || g === undefined) return false;
+  if (g === null || g === undefined)
+    return false;
   return this.norm().equalsExact(g.norm());
 };
 
@@ -1233,10 +1255,10 @@ jsts.geom.Geometry.prototype.apply = function(filter) {
 };
 
 /**
- * Creates and returns a full copy of this {@link Geometry} object
- * (including all coordinates contained by it).
- * Subclasses are responsible for overriding this method and copying
- * their internal data.  Overrides should call this method first.
+ * Creates and returns a full copy of this {@link Geometry} object (including
+ * all coordinates contained by it). Subclasses are responsible for overriding
+ * this method and copying their internal data. Overrides should call this
+ * method first.
  *
  * @return a clone of this instance.
  */
@@ -1393,11 +1415,11 @@ jsts.geom.Geometry.prototype.isGeometryCollection = function() {
 };
 
 /**
-*
-* @return {boolean} true if this is a GeometryCollection but not subclass.
-*/
+ *
+ * @return {boolean} true if this is a GeometryCollection but not subclass.
+ */
 jsts.geom.Geometry.prototype.isGeometryCollectionBase = function() {
- return (this.CLASS_NAME === 'jsts.geom.GeometryCollection');
+  return (this.CLASS_NAME === 'jsts.geom.GeometryCollection');
 };
 
 

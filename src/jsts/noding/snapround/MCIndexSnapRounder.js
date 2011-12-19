@@ -10,6 +10,11 @@
  */
 
 /**
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/noding/Noder.js
+ */
+
+/**
  * Uses Snap Rounding to compute a rounded, fully noded arrangement from a set
  * of {@link SegmentString}s. Implements the Snap Rounding technique described
  * in papers by Hobby, Guibas & Marimont, and Goodrich et al. Snap Rounding

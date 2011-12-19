@@ -153,7 +153,8 @@
   };
 
   jsts.geom.GeometryCollection.prototype.apply = function(filter) {
-    if (filter instanceof jsts.geom.GeometryFilter || filter instanceof jsts.geom.GeometryComponentFilter) {
+    if (filter instanceof jsts.geom.GeometryFilter ||
+        filter instanceof jsts.geom.GeometryComponentFilter) {
       filter.filter(this);
       for (var i = 0, len = this.geometries.length; i < len; i++) {
         this.getGeometryN(i).apply(filter);
@@ -162,9 +163,24 @@
       for (var i = 0, len = this.geometries.length; i < len; i++) {
         this.getGeometryN(i).apply(filter);
       }
+    } else if (filter instanceof jsts.geom.CoordinateSequenceFilter) {
+      this.apply2.apply(this, arguments);
     }
   };
 
+  jsts.geom.GeometryCollection.prototype.apply2 = function(filter) {
+    if (this.geometries.length == 0)
+      return;
+    for (var i = 0; i < this.geometries.length; i++) {
+      this.geometries[i].apply(filter);
+      if (filter.isDone()) {
+        break;
+      }
+    }
+    if (filter.isGeometryChanged()) {
+      // TODO: call this.geometryChanged(); when ported
+    }
+  };
 
   jsts.geom.GeometryCollection.prototype.getDimension = function() {
     var dimension = jsts.geom.Dimension.FALSE;
@@ -174,7 +190,6 @@
     }
     return dimension;
   };
-
 
   /**
    * @protected
