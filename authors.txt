@@ -2,6 +2,7 @@ JSTS contributors:
 
 Björn Harrtell
 Johan Hasselström
+Anna Hall
 Felix Kling
 
 JSTS uses the LGPL 2.1 license, see license.txt.
