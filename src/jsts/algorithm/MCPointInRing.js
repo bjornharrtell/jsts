@@ -5,13 +5,14 @@
  */
 
 /**
+ * @requires jsts/index/chain/MonotoneChainSelectAction.js
+ */
+
+/**
  * Implements {@link PointInRing} using {@link MonotoneChain}s and a
  * {@link Bintree} index to increase performance.
  *
- * @version 1.7
- *
  * @see IndexedPointInAreaLocator for more general functionality
- * @requires jsts.index.chain.MonotoneChainSelectAction
  */
 jsts.algorithm.MCPointInRing = function(ring) {
   this.ring = ring;
