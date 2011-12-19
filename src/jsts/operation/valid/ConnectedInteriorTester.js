@@ -165,7 +165,7 @@ jsts.operation.valid.ConnectedInteriorTester.prototype.visitShellInteriors = fun
     var mp = g;
     for (var i = 0; i < mp.getNumGeometries(); i++) {
       var p = mp.getGeometryN(i);
-      visitInteriorRing(p.getExteriorRing(), graph);
+      this.visitInteriorRing(p.getExteriorRing(), graph);
     }
   }
 };

@@ -247,7 +247,7 @@ jsts.operation.valid.IsValidOp.prototype.checkValidMultiPolygon = function(g) {
   if (this.validErr != null) {
     return;
   }
-  if (!isSelfTouchingRingFormingHoleValid) {
+  if (!this.isSelfTouchingRingFormingHoleValid) {
     this.checkNoSelfIntersectingRings(graph);
     if (this.validErr != null) {
       return;
@@ -535,13 +535,13 @@ jsts.operation.valid.IsValidOp.prototype.checkShellNotNested = function(shell,
   // test if shell is inside polygon shell
   var polyShell = p.getExteriorRing();
   var polyPts = polyShell.getCoordinates();
-  var shellPt = this.findPtNotNode(shellPts, polyShell, graph);
+  var shellPt = jsts.operation.valid.IsValidOp.findPtNotNode(shellPts, polyShell, graph);
   // if no point could be found, we can assume that the shell is outside the
   // polygon
   if (shellPt == null) {
     return;
   }
-  var insidePolyShell = CGAlgorithms.isPointInRing(shellPt, polyPts);
+  var insidePolyShell = jsts.algorithm.CGAlgorithms.isPointInRing(shellPt, polyPts);
   if (!insidePolyShell) {
     return;
   }
@@ -583,20 +583,20 @@ jsts.operation.valid.IsValidOp.prototype.checkShellInsideHole = function(shell,
   var shellPts = shell.getCoordinates();
   var holePts = hole.getCoordinates();
   // TODO: improve performance of this - by sorting pointlists for instance?
-  var shellPt = this.findPtNotNode(shellPts, hole, graph);
+  var shellPt = jsts.operation.valid.IsValidOp.findPtNotNode(shellPts, hole, graph);
   // if point is on shell but not hole, check that the shell is inside the
   // hole
   if (shellPt != null) {
-    var insideHole = CGAlgorithms.isPointInRing(shellPt, holePts);
+    var insideHole = jsts.algorithm.CGAlgorithms.isPointInRing(shellPt, holePts);
     if (!insideHole) {
       return shellPt;
     }
   }
-  var holePt = this.findPtNotNode(holePts, shell, graph);
+  var holePt = jsts.operation.valid.IsValidOp.findPtNotNode(holePts, shell, graph);
   // if point is on hole but not shell, check that the hole is outside the
   // shell
   if (holePt != null) {
-    var insideShell = CGAlgorithms.isPointInRing(holePt, shellPts);
+    var insideShell = jsts.algorithm.CGAlgorithms.isPointInRing(holePt, shellPts);
     if (insideShell) {
       return holePt;
     }

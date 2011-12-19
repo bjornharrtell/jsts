@@ -460,6 +460,10 @@
       this.insertPoint(argIndex, coord, loc);
   };
 
+  jsts.geomgraph.GeometryGraph.prototype.getInvalidPoint = function() {
+    return this.invalidPoint;
+  };
+
 })();
 
 // TODO: port rest of class
