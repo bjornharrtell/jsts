@@ -11,6 +11,8 @@
 
   /**
    * @requires jsts/index/bintree/NodeBase.js
+   * @requires jsts/index/bintree/Interval.js
+   * @requires jsts/index/bintree/Key.js
    */
 
   var NodeBase = jsts.index.bintree.NodeBase;
@@ -144,9 +146,6 @@
 
     var index = NodeBase.getSubnodeIndex(node.interval, this.centre), childNode;
     if (node.level === this.level - 1) {
-      if (index === 1 && node.interval.min < 0) {
-        var stop;
-      }
       this.subnode[index] = node;
     } else {
       // the node is not a direct child, so make a new child node to contain it
