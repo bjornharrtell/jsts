@@ -1,62 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>JSTS Test Runner</title>
-  
-  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.0.1/jasmine.css">
-  
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  
-  <script type="text/javascript" src="lib/jasmine-1.0.1/jasmine.js"></script>
-  <script type="text/javascript" src="lib/jasmine-1.0.1/jasmine-html.js"></script>
+  <title>Jasmine Spec Runner</title>
 
-  <script src="http://www.openlayers.org/api/2.11/OpenLayers.js" type="text/javascript"></script> 
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.1.0/jasmine_favicon.png">
+
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0/jasmine.css">
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0/jasmine-html.js"></script>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/lib/javascript.util.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/lib/jsts.js"></script>
+  <script src="../OpenLayers-2.11/lib/OpenLayers.js" type="text/javascript"></script> 
   
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/Geometry.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/Coordinate.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/Envelope.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/GeometryFactory.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/LineString.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/LinearRing.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/Point.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/geom/Polygon.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/index/DoubleBits.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/index/IntervalSize.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/index/quadtree/Node.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/index/quadtree/Key.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/index/quadtree/Quadtree.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/operation/buffer/BufferOp.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/triangulate/DelaunayTriangulationBuilder.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/io.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestBoundary.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestBuffer.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestCentroid.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestDistance.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestEqualsExact.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestFunctionAA.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestFunctionLA.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestFunctionLL.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestFunctionPA.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestFunctionPL.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestFunctionPP.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestRelateAA.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestRelateLA.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestRelateLL.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestRelatePA.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestRelatePL.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestRelatePP.js"></script>
-  <script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestSimple.js"></script>
-  <!-- script type="text/javascript" src="https://github.com/bjornharrtell/jsts/raw/master/test/spec/jsts/TestValid.js"></script-->
+  <script type="text/javascript" src="../lib/javascript.util.js"></script>
+  <script type="text/javascript" src="../lib/jsts.js"></script>
+  <script type="text/javascript" src="../lib/attache.array.min.js"></script>
   
+  <script type="text/javascript" src="spec/jsts/geom/Geometry.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/Coordinate.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/Envelope.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/GeometryFactory.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/LineString.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/LinearRing.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/Point.js"></script>
+  <script type="text/javascript" src="spec/jsts/geom/Polygon.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/DoubleBits.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/IntervalSize.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/bintree/Interval.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/bintree/Bintree.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/quadtree/Node.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/quadtree/Key.js"></script>
+  <script type="text/javascript" src="spec/jsts/index/quadtree/Quadtree.js"></script>
+  <script type="text/javascript" src="spec/jsts/operation/buffer/BufferOp.js"></script>
+  <script type="text/javascript" src="spec/jsts/operation/union/UnionOp.js"></script>
+  <script type="text/javascript" src="spec/jsts/operation/valid/IsValidOp.js"></script>
+  <script type="text/javascript" src="spec/jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js"></script>
+  <script type="text/javascript" src="spec/jsts/operation/overlay/snap/LineStringSnapper.js"></script>
+  <script type="text/javascript" src="spec/jsts/triangulate/DelaunayTriangulationBuilder.js"></script>
+  <script type="text/javascript" src="spec/jsts/triangulate/VoronoiDiagramBuilder.js"></script>
+  <script type="text/javascript" src="spec/jsts/io.js"></script>
+  
+  <script type="text/javascript" src="spec/jsts/issues/60.js"></script>
+  
+  <script type="text/javascript" src="spec/jsts/JTSTestFactory.js"></script>
+
+  <script type="text/javascript" src="SpecRunner.js"></script>
+
 </head>
+
 <body>
-
-<script type="text/javascript">
-  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-  jasmine.getEnv().execute();
-</script>
-
 </body>
 </html>

@@ -17,6 +17,10 @@
 
     var buffer = input.buffer(20);
     
+    var parser = new jsts.io.OpenLayersParser();
+    input = parser.write(input);
+    buffer = parser.write(buffer);
+    
     var map = new OpenLayers.Map('map', {
       maxExtent: new OpenLayers.Bounds(0, 0, 300, 300),
       maxResolution: 100,
