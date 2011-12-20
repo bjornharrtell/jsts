@@ -20,20 +20,13 @@ describe('jsts.triangulate.VoronoiDiagramBuilder', function() {
   
   it('can build from multipoints', function() {
     var wkt = "MULTIPOINT ((10 10), (20 70), (60 30), (80 70))";
-    
-    /**
-     * TODO: ? This is not the same as in JTS, however, after analyzing the resulting edges,
-     * the only thing that differs is how far away the line goes "to eternity".
-     * 
-     * The important vertexes are identical with JTS-results. And JTS-test seems erratic to.
-     */
-    var expectedTri = reader.read("GEOMETRYCOLLECTION(POLYGON((-80 55.833333333333336,-80 150,50 150,50 60,27.857142857142854 37.857142857142854,-80 55.833333333333336)),POLYGON((-80 -80,-80 55.833333333333336,27.857142857142854 37.857142857142854,74.99999999999999 -80,-80 -80)),POLYGON((160 4.999999999999995,160 -80,74.99999999999999 -80,27.857142857142854 37.857142857142854,50 60,160 4.999999999999995)),POLYGON((50 150,160 150,160 4.999999999999995,50 60,50 150)))");
+
+    var expectedTri = reader.read("GEOMETRYCOLLECTION (POLYGON ((-60 52.5, -60 140, 50 140, 50 60, 27.857142857142854 37.857142857142854, -60 52.5)), POLYGON ((-60 -60, -60 52.5, 27.857142857142854 37.857142857142854, 67 -60, -60 -60)), POLYGON ((150 10, 150 -60, 67 -60, 27.857142857142854 37.857142857142854, 50 60, 150 10)), POLYGON ((50 140, 150 140, 150 10, 50 60, 50 140)))");
     expectedTri.normalize();
     
     var computedTri = runVoronoi(wkt);
     computedTri.normalize();
     
-    // TODO: this fails after fixing jsts.io.Envelope code so that new Envelopes are initialized to "null" values
     expect(computedTri.equalsExact(expectedTri,1.0e-7)).toBeTruthy();
   });
 });
