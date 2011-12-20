@@ -1,5 +1,8 @@
 2011-12-24: Version 0.11.0
-
+		
+		jsts.triangulate.VoronoiDiagramBuilder test failure (#86)
+		Some buffer test fails (#84)
+		Include WKT parser into JSTS (#81)
 		Rewrite code for running JTS tests (#80)
 		Remove hard dependency on OpenLayers (#79)
 		Bintree index port (#76)
