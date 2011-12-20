@@ -89,4 +89,26 @@ describe('jsts.operation.valid.IsValidOp', function() {
     expect(valid).toBeFalsy();
     expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.SELF_INTERSECTION);
   });
+  
+  it('Handles MultiPolygons', function() {
+    var multiPoly = wktReader.read('MULTIPOLYGON(((0 0, 0 1, 1 1, 1 0, 0 0)),((10 10, 10 11, 11 11, 11 10, 10 10)))');
+    isValidOp = new jsts.operation.valid.IsValidOp(multiPoly);    
+    valid = isValidOp.isValid();
+    err = isValidOp.getValidationError();
+    expect(valid).toBeTruthy();      
+  });
+  
+  it('Detects too few points in a polygon.', function() {
+    var p1 = new jsts.geom.Coordinate(0,0);
+    var p2 = new jsts.geom.Coordinate(1,1);
+    var points = [p1,p2,p1];
+    var ring = new jsts.geom.LinearRing(points);  
+    var poly = new jsts.geom.Polygon(ring,[]);
+
+    isValidOp = new jsts.operation.valid.IsValidOp(poly);    
+    valid = isValidOp.isValid();
+    err = isValidOp.getValidationError(); 
+    expect(valid).toBeFalsy();
+    expect(err.getErrorType()).toBe(jsts.operation.valid.TopologyValidationError.TOO_FEW_POINTS);
+  });
 });
