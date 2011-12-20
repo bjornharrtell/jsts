@@ -7,9 +7,10 @@
 
 
 /**
- * Specifies and implements various fundamental Computational
- * Geometric algorithms. The algorithms supplied in this class are robust
- * for double-precision floating point.
+ * Specifies and implements various fundamental Computational Geometric
+ * algorithms. The algorithms supplied in this class are robust for
+ * double-precision floating point.
+ *
  * @constructor
  */
 jsts.algorithm.CGAlgorithms = function() {
@@ -38,8 +39,7 @@ jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE = 1;
 /**
  * A value that indicates an orientation of counterclockwise, or a left turn.
  */
-jsts.algorithm.CGAlgorithms.LEFT =
-    jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE;
+jsts.algorithm.CGAlgorithms.LEFT = jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE;
 
 
 /**
@@ -55,46 +55,40 @@ jsts.algorithm.CGAlgorithms.STRAIGHT = jsts.algorithm.CGAlgorithms.COLLINEAR;
 
 
 /**
- * Returns the index of the direction of the point <code>q</code>
- * relative to a
- * vector specified by <code>p1-p2</code>.
+ * Returns the index of the direction of the point <code>q</code> relative to
+ * a vector specified by <code>p1-p2</code>.
  *
  * @param {jsts.geom.Coordinate}
- *        p1 the origin point of the vector.
+ *          p1 the origin point of the vector.
  * @param {jsts.geom.Coordinate}
- *        p2 the final point of the vector.
+ *          p2 the final point of the vector.
  * @param {jsts.geom.Coordinate}
- *        q the point to compute the direction to.
+ *          q the point to compute the direction to.
  *
- * @return {Number}
- *         1 if q is counter-clockwise (left) from p1-p2.
- * @return {Number}
- *         -1 if q is clockwise (right) from p1-p2.
- * @return {Number}
- *         0 if q is collinear with p1-p2.
+ * @return {Number} 1 if q is counter-clockwise (left) from p1-p2.
+ * @return {Number} -1 if q is clockwise (right) from p1-p2.
+ * @return {Number} 0 if q is collinear with p1-p2.
  */
 jsts.algorithm.CGAlgorithms.orientationIndex = function(p1, p2, q) {
   /**
-   * MD - 9 Aug 2010
-   * It seems that the basic algorithm is slightly orientation dependent,
-   * when computing the orientation of a point very close to a line.
+   * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
+   * dependent, when computing the orientation of a point very close to a line.
    * This is possibly due to the arithmetic in the translation to the origin.
    *
-   * For instance, the following situation produces identical results
-   * in spite of the inverse orientation of the line segment:
+   * For instance, the following situation produces identical results in spite
+   * of the inverse orientation of the line segment:
    *
    * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
    * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
    *
-   * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556);
-   * int orient = orientationIndex(p0, p1, p);
-   * int orientInv = orientationIndex(p1, p0, p);
-
-   * A way to force consistent results is to normalize the orientation of
-   * the vector using the following code.
-   * However, this may make the results of orientationIndex inconsistent
-   * through the triangle of points, so it's not clear this is
-   * an appropriate patch.
+   * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556); int
+   * orient = orientationIndex(p0, p1, p); int orientInv = orientationIndex(p1,
+   * p0, p);
+   *
+   * A way to force consistent results is to normalize the orientation of the
+   * vector using the following code. However, this may make the results of
+   * orientationIndex inconsistent through the triangle of points, so it's not
+   * clear this is an appropriate patch.
    *
    */
 
@@ -109,45 +103,40 @@ jsts.algorithm.CGAlgorithms.orientationIndex = function(p1, p2, q) {
 
 
 /**
- * Tests whether a point lies inside or on a ring.
- * The ring may be oriented in either direction.
- * A point lying exactly on the ring boundary is
- * considered to be inside the ring.
+ * Tests whether a point lies inside or on a ring. The ring may be oriented in
+ * either direction. A point lying exactly on the ring boundary is considered to
+ * be inside the ring.
  * <p>
- * This method does <i>not</i> first check the point against the envelope
- * of the ring.
+ * This method does <i>not</i> first check the point against the envelope of
+ * the ring.
  *
  * @param {jsts.geom.Coordinate}
- *        p point to check for ring inclusion.
+ *          p point to check for ring inclusion.
  * @param {Array{jsts.geom.Coordinate}}
- *        ring an array of coordinates representing the ring
- *        (which must have first point identical to last point)
- * @return {Boolean}
- *         true if p is inside ring.
+ *          ring an array of coordinates representing the ring (which must have
+ *          first point identical to last point)
+ * @return {Boolean} true if p is inside ring.
  *
  * @see locatePointInRing
  */
 jsts.algorithm.CGAlgorithms.isPointInRing = function(p, ring) {
-  return jsts.algorithm.CGAlgorithms.locatePointInRing(p, ring) !==
-      jsts.geom.Location.EXTERIOR;
+  return jsts.algorithm.CGAlgorithms.locatePointInRing(p, ring) !== jsts.geom.Location.EXTERIOR;
 };
 
 
 /**
- * Determines whether a point lies in the interior, on the boundary,
- * or in the exterior of a ring.
- * The ring may be oriented in either direction.
+ * Determines whether a point lies in the interior, on the boundary, or in the
+ * exterior of a ring. The ring may be oriented in either direction.
  * <p>
- * This method does <i>not</i> first check the point against the envelope
- * of the ring.
+ * This method does <i>not</i> first check the point against the envelope of
+ * the ring.
  *
  * @param {jsts.geom.Coordinate}
- *        p point to check for ring inclusion.
+ *          p point to check for ring inclusion.
  * @param {Array{jsts.geom.Coordinate}}
- *        ring an array of coordinates representing the ring
- *        (which must have first point identical to last point)
- * @return {jsts.geom.Location}
- *         the {@link Location} of p relative to the ring.
+ *          ring an array of coordinates representing the ring (which must have
+ *          first point identical to last point)
+ * @return {jsts.geom.Location} the {@link Location} of p relative to the ring.
  */
 jsts.algorithm.CGAlgorithms.locatePointInRing = function(p, ring) {
   return jsts.algorithm.RayCrossingCounter.locatePointInRing(p, ring);
@@ -155,16 +144,15 @@ jsts.algorithm.CGAlgorithms.locatePointInRing = function(p, ring) {
 
 
 /**
- * Tests whether a point lies on the line segments defined by a
- * list of coordinates.
+ * Tests whether a point lies on the line segments defined by a list of
+ * coordinates.
  *
- * @param  {jsts.geom.Coordinate}
- *         p the coordinate to test.
- * @param  {Array{jsts.geom.Coordinate}}
- *         pt An array of coordinates defining line segments
- * @return {Boolean}
- *         true if the point is a vertex of the line
- *         or lies in the interior of a line segment in the linestring.
+ * @param {jsts.geom.Coordinate}
+ *          p the coordinate to test.
+ * @param {Array{jsts.geom.Coordinate}}
+ *          pt An array of coordinates defining line segments
+ * @return {Boolean} true if the point is a vertex of the line or lies in the
+ *         interior of a line segment in the linestring.
  */
 jsts.algorithm.CGAlgorithms.isOnLine = function(p, pt) {
   var lineIntersector, i, il, p0, p1;
@@ -190,28 +178,29 @@ jsts.algorithm.CGAlgorithms.isOnLine = function(p, pt) {
  * <li>The list of points is assumed to have the first and last points equal.
  * <li>This will handle coordinate lists which contain repeated points.
  * </ul>
- * This algorithm is <b>only</b> guaranteed to work with valid rings.
- * If the ring is invalid (e.g. self-crosses or touches),
- * the computed result may not be correct.
+ * This algorithm is <b>only</b> guaranteed to work with valid rings. If the
+ * ring is invalid (e.g. self-crosses or touches), the computed result may not
+ * be correct.
  *
  * @param {Array{jsts.geom.Coordinate}}
- *        ring an array of Coordinates forming a ring
- * @return {Boolean}
- *         true if the ring is oriented counter-clockwise.
- * @throws IllegalArgumentException if there are too few points to determine orientation (< 3)
+ *          ring an array of Coordinates forming a ring
+ * @return {Boolean} true if the ring is oriented counter-clockwise.
+ * @throws IllegalArgumentException
+ *           if there are too few points to determine orientation (< 3)
  */
 jsts.algorithm.CGAlgorithms.isCCW = function(ring) {
   var nPts, hiPt, hiIndex, p, iPrev, iNext, prev, next, i, disc, isCCW;
 
-  //# of points without closing endpoint
+  // # of points without closing endpoint
   nPts = ring.length - 1;
 
-  //sanity check
+  // sanity check
   if (nPts < 3) {
-    throw new jsts.IllegalArgumentError('Ring has fewer than 3 points, so orientation cannot be determined');
+    throw new jsts.IllegalArgumentError(
+        'Ring has fewer than 3 points, so orientation cannot be determined');
   }
 
-  //find highets point
+  // find highets point
   hiPt = ring[0];
   hiIndex = 0;
 
@@ -224,29 +213,29 @@ jsts.algorithm.CGAlgorithms.isCCW = function(ring) {
     }
   }
 
-  //find distinct point before highest point
+  // find distinct point before highest point
   iPrev = hiIndex;
   do {
     iPrev = iPrev - 1;
     if (iPrev < 0) {
       iPrev = nPts;
     }
-  }while (ring[iPrev].equals2D(hiPt) && iPrev !== hiIndex);
+  } while (ring[iPrev].equals2D(hiPt) && iPrev !== hiIndex);
 
-  //find distinct point after highest point
+  // find distinct point after highest point
   iNext = hiIndex;
   do {
     iNext = (iNext + 1) % nPts;
-  }while (ring[iNext].equals2D(hiPt) && iNext !== hiIndex);
+  } while (ring[iNext].equals2D(hiPt) && iNext !== hiIndex);
 
   prev = ring[iPrev];
   next = ring[iNext];
 
   /**
-   * This check catches cases where the ring contains an A-B-A configuration of points.
-   * This can happen if the ring does not contain 3 distinct points
-   * (including the case where the input array has fewer than 4 elements),
-   * or it contains coincident line segments.
+   * This check catches cases where the ring contains an A-B-A configuration of
+   * points. This can happen if the ring does not contain 3 distinct points
+   * (including the case where the input array has fewer than 4 elements), or it
+   * contains coincident line segments.
    */
   if (prev.equals2D(hiPt) || next.equals2D(hiPt) || prev.equals2D(next)) {
     return false;
@@ -255,20 +244,19 @@ jsts.algorithm.CGAlgorithms.isCCW = function(ring) {
   disc = jsts.algorithm.CGAlgorithms.computeOrientation(prev, hiPt, next);
 
   /**
-   *  If disc is exactly 0, lines are collinear.  There are two possible cases:
-   *  (1) the lines lie along the x axis in opposite directions
-   *  (2) the lines lie on top of one another
+   * If disc is exactly 0, lines are collinear. There are two possible cases:
+   * (1) the lines lie along the x axis in opposite directions (2) the lines lie
+   * on top of one another
    *
-   *  (1) is handled by checking if next is left of prev ==> CCW
-   *  (2) will never happen if the ring is valid, so don't check for it
-   *  (Might want to assert this)
+   * (1) is handled by checking if next is left of prev ==> CCW (2) will never
+   * happen if the ring is valid, so don't check for it (Might want to assert
+   * this)
    */
   isCCW = false;
   if (disc === 0) {
     // poly is CCW if prev x is right of next x
     isCCW = (prev.x > next.x);
-  }
-  else {
+  } else {
     // if area is positive, points are ordered CCW
     isCCW = (disc > 0);
   }
@@ -278,23 +266,20 @@ jsts.algorithm.CGAlgorithms.isCCW = function(ring) {
 
 
 /**
- * Computes the orientation of a point q to the directed line segment p1-p2.
- * The orientation of a point relative to a directed line segment indicates
- * which way you turn to get to q after travelling from p1 to p2.
+ * Computes the orientation of a point q to the directed line segment p1-p2. The
+ * orientation of a point relative to a directed line segment indicates which
+ * way you turn to get to q after travelling from p1 to p2.
  *
  * @param {jsts.geom.Coordinate}
- *        p1 First coordinate of the linesegment.
+ *          p1 First coordinate of the linesegment.
  * @param {jsts.geom.Coordinate}
- *        p2 Second coordinate of the linesegment.
+ *          p2 Second coordinate of the linesegment.
  * @param {jsts.geom.Coordinate}
- *        q The point to calculate orientation of.
+ *          q The point to calculate orientation of.
  *
- * @return {Number}
- *         1 if q is counter-clockwise from p1-p2.
- * @return {Number}
- *         -1 if q is clockwise from p1-p2.
- * @return {Number}
- *         0 if q is collinear with p1-p2.
+ * @return {Number} 1 if q is counter-clockwise from p1-p2.
+ * @return {Number} -1 if q is clockwise from p1-p2.
+ * @return {Number} 0 if q is collinear with p1-p2.
  */
 jsts.algorithm.CGAlgorithms.computeOrientation = function(p1, p2, q) {
   return jsts.algorithm.CGAlgorithms.orientationIndex(p1, p2, q);
@@ -307,24 +292,23 @@ jsts.algorithm.CGAlgorithms.computeOrientation = function(p1, p2, q) {
  * Note: NON-ROBUST!
  *
  * @param {jsts.geom.Coordinate}
- *        p the point to compute the distance for.
+ *          p the point to compute the distance for.
  * @param {jsts.geom.Coordinate}
- *        A one point of the line.
+ *          A one point of the line.
  * @param {jsts.geom.Coordinate}
- *        B another point of the line (must be different to A).
- * @return {Number}
- *         the distance from p to line segment AB.
+ *          B another point of the line (must be different to A).
+ * @return {Number} the distance from p to line segment AB.
  */
 jsts.algorithm.CGAlgorithms.distancePointLine = function(p, A, B) {
   if (!(A instanceof jsts.geom.Coordinate)) {
     jsts.algorithm.CGAlgorithms.distancePointLine2.apply(this, arguments);
   }
 
-  //if start = end, then just compute distance to one of the endpoints
+  // if start = end, then just compute distance to one of the endpoints
   if (A.x === B.x && A.y === B.y) {
     return p.distance(A);
   }
-  //otherwise use comp.graphics.algorithms Frequently Asked Questions method
+  // otherwise use comp.graphics.algorithms Frequently Asked Questions method
   /*(1)             AC dot AB
                    r = ---------
                          ||AB||^2
@@ -363,20 +347,19 @@ jsts.algorithm.CGAlgorithms.distancePointLine = function(p, A, B) {
 
 
 /**
- * Computes the perpendicular distance from a point p
- * to the (infinite) line containing the points AB
+ * Computes the perpendicular distance from a point p to the (infinite) line
+ * containing the points AB
  *
  * @param {jsts.geom.Coordinate}
- *        p the point to compute the distance for.
+ *          p the point to compute the distance for.
  * @param {jsts.geom.Coordinate}
- *        A one point of the line.
+ *          A one point of the line.
  * @param {jsts.geom.Coordinate}
- *        B another point of the line (must be different to A).
- * @return {Number}
- *         the distance from p to line AB.
+ *          B another point of the line (must be different to A).
+ * @return {Number} the distance from p to line AB.
  */
 jsts.algorithm.CGAlgorithms.distancePointLinePerpendicular = function(p, A, B) {
-  //use comp.graphics.algorithms Frequently Asked Questions method
+  // use comp.graphics.algorithms Frequently Asked Questions method
   /*(2)
                    (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
               s = -----------------------------
@@ -393,24 +376,26 @@ jsts.algorithm.CGAlgorithms.distancePointLinePerpendicular = function(p, A, B) {
 
 
 /**
- * Computes the distance from a point to a sequence
- * of line segments.
+ * Computes the distance from a point to a sequence of line segments.
  *
  * @param {jsts.geom.Coordinate}
- *        p a point.
+ *          p a point.
  * @param {Array{jsts.geom.Coordinate}}
- *        line a sequence of contiguous line segments defined by their vertices
- * @return {Number}
- *         the minimum distance between the point and the line segments.
+ *          line a sequence of contiguous line segments defined by their
+ *          vertices
+ * @return {Number} the minimum distance between the point and the line
+ *         segments.
  */
 jsts.algorithm.CGAlgorithms.distancePointLine2 = function(p, line) {
   var minDistance, i, il, dist;
   if (line.length === 0) {
-    throw new jsts.error.IllegalArgumentError('Line array must contain at least one vertex');
+    throw new jsts.error.IllegalArgumentError(
+        'Line array must contain at least one vertex');
   }
   minDistance = p.distance(line[0]);
   for (i = 0, il = line.length - 1; i < il; i++) {
-    dist = jsts.algorithm.CGAlgorithms.distancePointLine(p, line[i], line[i + 1]);
+    dist = jsts.algorithm.CGAlgorithms.distancePointLine(p, line[i],
+        line[i + 1]);
     if (dist < minDistance) {
       minDistance = dist;
     }
@@ -424,19 +409,18 @@ jsts.algorithm.CGAlgorithms.distancePointLine2 = function(p, line) {
  * Note: NON-ROBUST!
  *
  * @param {jsts.geom.Coordinate}
- *        A a point of one line.
+ *          A a point of one line.
  * @param {jsts.geom.Coordinate}
- *        B the second point of  (must be different to A).
+ *          B the second point of (must be different to A).
  * @param {jsts.geom.Coordinate}
- *        C one point of the line.
+ *          C one point of the line.
  * @param {jsts.geom.Coordinate}
- *        D another point of the line (must be different to A).
- * @return {Number}
- *         the distance.
+ *          D another point of the line (must be different to A).
+ * @return {Number} the distance.
  */
 
 jsts.algorithm.CGAlgorithms.distanceLineLine = function(A, B, C, D) {
-  //check for zero-length segments
+  // check for zero-length segments
   if (A.equals(B)) {
     return jsts.algorithm.CGAlgorithms.distancePointLine(A, C, D);
   }
@@ -444,7 +428,7 @@ jsts.algorithm.CGAlgorithms.distanceLineLine = function(A, B, C, D) {
     return jsts.algorithm.CGAlgorithms.distancePointLine(D, A, B);
   }
 
-  //AB and CD are line segments
+  // AB and CD are line segments
   /* from comp.graphics.algo
 
   Solving the above for r and s yields
@@ -477,35 +461,33 @@ jsts.algorithm.CGAlgorithms.distanceLineLine = function(A, B, C, D) {
 
   if ((r_bot === 0) || (s_bot === 0)) {
     return Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(A, C, D),
-        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(B, C, D),
-            Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(C, A, B),
+        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(B, C, D), Math
+            .min(jsts.algorithm.CGAlgorithms.distancePointLine(C, A, B),
                 jsts.algorithm.CGAlgorithms.distancePointLine(D, A, B))));
   }
 
   s = s_top / s_bot;
   r = r_top / r_bot;
   if ((r < 0) || (r > 1) || (s < 0) || (s > 1)) {
-    //no intersection
+    // no intersection
     return Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(A, C, D),
-        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(B, C, D),
-        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(C, A, B),
-            jsts.algorithm.CGAlgorithms.distancePointLine(D, A, B))));
+        Math.min(jsts.algorithm.CGAlgorithms.distancePointLine(B, C, D), Math
+            .min(jsts.algorithm.CGAlgorithms.distancePointLine(C, A, B),
+                jsts.algorithm.CGAlgorithms.distancePointLine(D, A, B))));
   }
 
-  return 0.0; //intersection exists
+  return 0.0; // intersection exists
 };
 
 
 /**
- * Computes the signed area for a ring.
- * The signed area is positive if
- * the ring is oriented CW, negative if the ring is oriented CCW,
- * and zero if the ring is degenerate or flat.
+ * Computes the signed area for a ring. The signed area is positive if the ring
+ * is oriented CW, negative if the ring is oriented CCW, and zero if the ring is
+ * degenerate or flat.
  *
  * @param {Array{jsts.geom.Coordinate}}
- *        ring the coordinates forming the ring
- * @return {Number}
- *         the signed area of the ring.
+ *          ring the coordinates forming the ring
+ * @return {Number} the signed area of the ring.
  */
 jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
   if (ring.length < 3) {
@@ -528,8 +510,7 @@ jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
 
 
 /**
- * Computes the signed area for a ring.
- * The signed area is:
+ * Computes the signed area for a ring. The signed area is:
  * <ul>
  * <li>positive if the ring is oriented CW
  * <li>negative if the ring is oriented CCW
@@ -537,9 +518,8 @@ jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
  * </ul>
  *
  * @param {Array{jsts.geom.Coordinate}}
- *        ring the coordinates forming the ring
- * @return {Number}
- *         the signed area of the ring.
+ *          ring the coordinates forming the ring
+ * @return {Number} the signed area of the ring.
  */
 jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
   var n, sum, p, bx, by, i, cx, cy;
@@ -566,3 +546,51 @@ jsts.algorithm.CGAlgorithms.signedArea = function(ring) {
 
   return -sum / 2.0;
 };
+
+/**
+ * Computes the length of a linestring specified by a sequence of points.
+ *
+ * NOTE: This is renamed from length() to computeLength() because 'length' is a
+ * reserved keyword in javascript.
+ *
+ * @param {Array{jsts.geom.Coordinate}}
+ *          pts the points specifying the linestring
+ * @return {Number} the length of the linestring.
+ */
+jsts.algorithm.CGAlgorithms.computeLength = function(pts) {
+  // optimized for processing CoordinateSequences
+  var n = pts.length, len, x0, y0, x1, y1, dx, dy, p, i, il;
+  if (n <= 1) {
+    return 0.0;
+  }
+
+  len = 0.0;
+
+  p = pts[0];
+
+  x0 = p.x;
+  y0 = p.y;
+
+  i = 1, il = n;
+  for (i; i < n; i++) {
+    p = pts[i];
+
+    x1 = p.x;
+    y1 = p.y;
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    len += Math.sqrt(dx * dx + dy * dy);
+
+    x0 = x1;
+    y0 = y1;
+  }
+  return len;
+};
+
+/**
+ * @see {jsts.algorithm.CGAlgorithms.computeLength} Since 'length' is a reserved
+ *      keyword in javascript this function does not act as a function. Please
+ *      use 'computeLength' instead.
+ */
+jsts.algorithm.CGAlgorithms.length = function() {};

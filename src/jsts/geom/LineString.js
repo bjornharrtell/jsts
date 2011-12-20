@@ -151,7 +151,7 @@
    * @return the length of the linestring.
    */
   jsts.geom.LineString.prototype.getLength = function() {
-    return jsts.algorithm.CGAlgorithms.length(points);
+    return jsts.algorithm.CGAlgorithms.computeLength(this.points);
   };
 
   /**
