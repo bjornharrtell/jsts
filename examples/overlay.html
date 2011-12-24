@@ -22,8 +22,8 @@
     var parser = new jsts.io.OpenLayersParser();
     a = parser.write(a);
     b = parser.write(b);
-    union = parser.write(buffer);
-    intersection = parser.write(a);
+    union = parser.write(union);
+    intersection = parser.write(intersection);
     
     var map = new OpenLayers.Map('map', {
       maxExtent: new OpenLayers.Bounds(0, 0, 200, 200),
