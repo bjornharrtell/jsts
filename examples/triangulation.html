@@ -17,7 +17,7 @@
     for (var i=0; i<points.length; i++) {
         points[i] = new jsts.geom.Coordinate((360 * Math.random()) - 180, (180 * Math.random()) - 90);
     }
-    var input = new jsts.geom.MultiPoint(points);
+    var input = geomFact.createMultiPoint(points);
     
     var builder = new jsts.triangulate.DelaunayTriangulationBuilder();
     builder.setSites(input);

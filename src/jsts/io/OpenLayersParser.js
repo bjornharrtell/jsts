@@ -236,7 +236,7 @@ jsts.io.OpenLayersParser.prototype.convertToCollection = function(
 
   for (i = 0; i < geometryCollection.geometries.length; i++) {
     var geometry = geometryCollection.geometries[i];
-    var geometryOpenLayers = this.convertTo(geometry);
+    var geometryOpenLayers = this.write(geometry);
 
     geometries.push(geometryOpenLayers);
   }
