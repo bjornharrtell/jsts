@@ -436,7 +436,7 @@ jsts.operation.buffer.OffsetSegmentGenerator.prototype.addInsideTurn = function(
             this.offset0.p1.y + this.s1.y) /
             (this.closingSegLengthFactor + 1));
         this.segList.addPt(mid0);
-        var mid1 = new jsts.geom.Coordinate((this.losingSegLengthFactor *
+        var mid1 = new jsts.geom.Coordinate((this.closingSegLengthFactor *
             this.offset1.p0.x + this.s1.x) /
             (this.closingSegLengthFactor + 1), (this.closingSegLengthFactor *
             this.offset1.p0.y + this.s1.y) /
