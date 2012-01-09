@@ -21,7 +21,11 @@
  * @constructor
  */
 jsts.geom.CoordinateList = function(coord, allowRepeated) {
-  this.add(coord, allowRepeated);
+  allowRepeated = (allowRepeated === undefined) ? true : allowRepeated;
+
+  if (coord !== undefined) {
+    this.add(coord, allowRepeated);
+  }
 };
 
 jsts.geom.CoordinateList.prototype = new Array();

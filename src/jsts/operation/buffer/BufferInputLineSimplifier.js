@@ -115,7 +115,6 @@ jsts.operation.buffer.BufferInputLineSimplifier.prototype.simplify = function(
     this.angleOrientation = jsts.algorithm.CGAlgorithms.CLOCKWISE;
 
   // rely on fact that boolean array is filled with false value
-  // TODO: need to check if this holds true in js
   this.isDeleted = [];
   this.isDeleted.length = this.inputLine.length;
 
@@ -261,8 +260,8 @@ jsts.operation.buffer.BufferInputLineSimplifier.NUM_PTS_TO_CHECK = 10;
 jsts.operation.buffer.BufferInputLineSimplifier.prototype.isShallowSampled = function(
     p0, p2, i0, i2, distanceTol) {
   // check every n'th point to see if it is within tolerance
-  var inc = (i2 - i0) /
-      jsts.operation.buffer.BufferInputLineSimplifier.NUM_PTS_TO_CHECK;
+  var inc = parseInt((i2 - i0) /
+      jsts.operation.buffer.BufferInputLineSimplifier.NUM_PTS_TO_CHECK);
   if (inc <= 0)
     inc = 1;
 

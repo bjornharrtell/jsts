@@ -139,7 +139,7 @@
     var reducedPts = this.inputPts;
     // use heuristic to reduce points, if large
     if (this.inputPts.length > 50) {
-      reducedPts = this.reduce(inputPts);
+      reducedPts = this.reduce(this.inputPts);
     }
     // sort points for Graham scan.
     var sortedPts = this.preSort(reducedPts);
@@ -182,7 +182,7 @@
       return this.inputPts;
 
     // add points defining polygon
-    var reducedSet = new TreeSet();
+    var reducedSet = new javascript.util.TreeSet();
     for (var i = 0; i < polyPts.length; i++) {
       reducedSet.add(polyPts[i]);
     }
@@ -307,15 +307,15 @@
    */
   jsts.algorithm.ConvexHull.prototype.computeOctRing = function(inputPts) {
     var octPts = this.computeOctPts(inputPts);
-    var coordList = new CoordinateList();
+    var coordList = new jsts.geom.CoordinateList();
     coordList.add(octPts, false);
 
     // points must all lie in a line
-    if (coordList.size() < 3) {
+    if (coordList.length < 3) {
       return null;
     }
     coordList.closeRing();
-    return coordList.toCoordinateArray();
+    return coordList;
   };
 
   /**
@@ -323,7 +323,7 @@
    */
   jsts.algorithm.ConvexHull.prototype.computeOctPts = function(inputPts) {
     var pts = [];
-    for (var j = 0; j < pts.length; j++) {
+    for (var j = 0; j < 8; j++) {
       pts[j] = inputPts[0];
     }
     for (var i = 1; i < inputPts.length; i++) {

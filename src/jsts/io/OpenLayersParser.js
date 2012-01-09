@@ -133,7 +133,7 @@ jsts.io.OpenLayersParser.prototype.convertFromCollection = function(collection) 
  */
 jsts.io.OpenLayersParser.prototype.write = function(geometry) {
   if (geometry.CLASS_NAME === 'jsts.geom.Point') {
-    return this.convertToPoint(geometry);
+    return this.convertToPoint(geometry.coordinate);
   } else if (geometry.CLASS_NAME === 'jsts.geom.LineString') {
     return this.convertToLineString(geometry);
   } else if (geometry.CLASS_NAME === 'jsts.geom.LinearRing') {
