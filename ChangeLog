@@ -1,8 +1,8 @@
-2012-01-xx: Version 0.11.1
+2012-01-09: Version 0.11.1
 
 		Cannot convert to OpenLayers point (#94)
 		Buffer failure (#93)
-        ConvexHull failure (#92)
+		ConvexHull failure (#92)
 		Certain buffers not covered by tests fails (#90)
 
 2011-12-24: Version 0.11.0
