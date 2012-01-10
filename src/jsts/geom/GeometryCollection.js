@@ -40,6 +40,26 @@
     return true;
   };
 
+  jsts.geom.Geometry.prototype.getArea = function() {
+    var area = 0.0;
+
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
+      area += this.getGeometryN(i).getArea();
+    }
+
+    return area;
+  };
+
+  jsts.geom.Geometry.prototype.getLength = function() {
+    var length = 0.0;
+
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
+      length += this.getGeometryN(i).getLength();
+    }
+
+    return length;
+  };
+
 
   /**
    * @return {Coordinate}
