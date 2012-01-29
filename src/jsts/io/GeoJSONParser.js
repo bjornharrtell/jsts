@@ -7,6 +7,7 @@
 
     jsts.io.GeoJSONParser = function(geometryFactory) {
         this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
+        this.geometryTypes = [ 'point', 'multipoint', 'linestring', 'multilinestring', 'polygon', 'multipolygon' ];
     };
 
     jsts.io.GeoJSONParser.prototype.read = function(json) {
@@ -29,13 +30,14 @@
                 throw new Error('Unknown GeoJSON type: ' + obj.type);
             }
 
-            var geometryTypes = [ 'point', 'multipoint', 'linestring', 'multilinestring', 'polygon', 'multipolygon' ];
-            if (geometryTypes.indexOf(type) != -1) {
+            if (this.geometryTypes.indexOf(type) != -1) {
                 return this.parse[type].apply(this, [ obj.coordinates ]);
-            } else if (type == 'geometrycollection') {
+            } else if (type === 'geometrycollection') {
                 return this.parse[type].apply(this, [ obj.geometries ]);
             }
 
+            // feature or feature collection
+            return this.parse[type].apply(this, [ obj ]);
         },
 
         'feature': function(obj) {
@@ -46,11 +48,11 @@
             }
             // parse geometry
             if (obj.geometry) {
-                var type = obj.geometry.type;
+                var type = obj.geometry.type.toLowerCase();
                 if (!this.parse[type]) {
                     throw new Error('Unknown GeoJSON type: ' + obj.type);
                 }
-                feature.geometry = this.parse[type].apply(this, [ obj.geometry ]);
+                feature.geometry = this.parse.geometry.apply(this, [ obj.geometry ]);
             }
             // bbox?
             if (obj.bbox) {
@@ -61,6 +63,22 @@
         },
 
         'featurecollection': function(obj) {
+            var featureCollection = {};
+
+            if (obj.features) {
+                featureCollection.features = [];
+
+                for (var i = 0; i < obj.features.length; ++i) {
+                    featureCollection.features.push(this.parse.geometry.apply(this, [ obj.features[i] ]));
+                }
+            }
+
+            if (obj.bbox) {
+                featureCollection.bbox = this.parse.bbox.apply(this, [ obj.bbox ]);
+            }
+
+
+            return featureCollection;
         },
 
 
@@ -82,10 +100,6 @@
                 new jsts.geom.Coordinate(array[0], array[3]),
                 new jsts.geom.Coordinate(array[0], array[1]),
             ]);
-        },
-
-
-        'featurecollection': function(obj) {
         },
 
 
