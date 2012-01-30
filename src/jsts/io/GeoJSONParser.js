@@ -55,6 +55,14 @@
     };
 
     jsts.io.GeoJSONParser.prototype.parse = {
+        /**
+         * Parse a GeoJSON Feature object
+         *
+         * @param {Object}
+         *          obj Object to parse
+         *
+         * @return {Object} Feature with geometry/bbox converted to JSTS Geometries
+         */
         'feature': function(obj) {
             var feature = {};
 
@@ -80,6 +88,14 @@
             return feature;
         },
 
+        /**
+         * Parse a GeoJSON FeatureCollection object
+         *
+         * @param {Object}
+         *          obj Object to parse
+         *
+         * @return {Object} FeatureCollection with geometry/bbox converted to JSTS Geometries
+         */
         'featurecollection': function(obj) {
             var featureCollection = {};
 
@@ -99,7 +115,14 @@
         },
 
 
-        // utility functions
+        /**
+         * Convert the ordinates in an array to an array of jsts.geom.Coordinates
+         *
+         * @param {Array}
+         *          array Array with {Number}s
+         *
+         * @return {Array} Array with jsts.geom.Coordinates
+         */
         'coordinates': function(array) {
             var coordinates = [];
 
@@ -111,6 +134,14 @@
             return coordinates;
         },
 
+        /**
+         * Convert the bbox to a jsts.geom.LinearRing
+         *
+         * @param {Array}
+         *          array Array with [xMin, yMin, xMax, yMax]
+         *
+         * @return {Array} Array with jsts.geom.Coordinates
+         */
         'bbox': function(array) {
             return this.geometryFactory.createLinearRing([
                 new jsts.geom.Coordinate(array[0], array[1]),
@@ -122,12 +153,27 @@
         },
 
 
-        // GeoJSON geometry types
+        /**
+         * Convert an Array with ordinates to a jsts.geom.Point
+         *
+         * @param {Array}
+         *          array Array with ordinates
+         *
+         * @return {jsts.geom.Point} Point
+         */
         'point': function(array) {
             var coordinate = new jsts.geom.Coordinate(array[0], array[1]);
             return this.geometryFactory.createPoint(coordinate);
         },
 
+        /**
+         * Convert an Array with coordinates to a jsts.geom.MultiPoint
+         *
+         * @param {Array}
+         *          array Array with coordinates
+         *
+         * @return {jsts.geom.MultiPoint} MultiPoint
+         */
         'multipoint': function(array) {
             var points = [];
 
@@ -138,11 +184,27 @@
             return this.geometryFactory.createMultiPoint(points);
         },
 
+        /**
+         * Convert an Array with coordinates to a jsts.geom.LineString
+         *
+         * @param {Array}
+         *          array Array with coordinates
+         *
+         * @return {jsts.geom.LineString} LineString
+         */
         'linestring': function(array) {
             var coordinates = this.parse.coordinates.apply(this, [ array ]);
             return this.geometryFactory.createLineString(coordinates);
         },
 
+        /**
+         * Convert an Array with coordinates to a jsts.geom.MultiLineString
+         *
+         * @param {Array}
+         *          array Array with coordinates
+         *
+         * @return {jsts.geom.MultiLineString} MultiLineString
+         */
         'multilinestring': function(array) {
             var lineStrings = [];
 
@@ -153,6 +215,14 @@
             return this.geometryFactory.createMultiLineString(lineStrings);
         },
 
+        /**
+         * Convert an Array to a jsts.geom.Polygon
+         *
+         * @param {Array}
+         *          array Array with shell and holes
+         *
+         * @return {jsts.geom.Polygon} Polygon
+         */
         'polygon': function(array) {
             // shell
             var shellCoordinates = this.parse.coordinates.apply(this, [ array[0] ]);
@@ -170,6 +240,14 @@
             return this.geometryFactory.createPolygon(shell, holes);
         },
 
+        /**
+         * Convert an Array to a jsts.geom.MultiPolygon
+         *
+         * @param {Array}
+         *          array Array of arrays with shell and rings
+         *
+         * @return {jsts.geom.MultiPolygon} MultiPolygon
+         */
         'multipolygon': function(array) {
             var polygons = [];
 
@@ -181,6 +259,14 @@
             return this.geometryFactory.createMultiPolygon(polygons);
         },
 
+        /**
+         * Convert an Array to a jsts.geom.GeometryCollection
+         *
+         * @param {Array}
+         *          array Array of GeoJSON geometries
+         *
+         * @return {jsts.geom.GeometryCollection} GeometryCollection
+         */
         'geometrycollection': function(array) {
             var geometries = [];
 
@@ -215,6 +301,14 @@
     };
 
     jsts.io.GeoJSONParser.prototype.extract = {
+        /**
+         * Convert a Geometry to a GeoJSON object
+         *
+         * @param {jsts.geom.Geometry}
+         *          geometry Geometry to convert
+         *
+         * @return {Object} GeoJSON object
+         */
         'geometry': function(geometry) {
             var type = geometry.CLASS_NAME.split('.')[2];
             if (!this.extract[type.toLowerCase()]) {
@@ -227,16 +321,39 @@
             };
         },
 
-
+        /**
+         * Convert a jsts.geom.Coordinate to an Array
+         *
+         * @param {jsts.geom.Coordinate}
+         *          coordinate Coordinate to convert
+         *
+         * @return {Array} Array of ordinates
+         */
         'coordinate': function(coordinate) {
             return [ coordinate.x, coordinate.y ];
         },
 
+        /**
+         * Convert a jsts.geom.Point to a GeoJSON object
+         *
+         * @param {jsts.geom.Point}
+         *          point Point to convert
+         *
+         * @return {Array} Array of 2 ordinates (paired to a coordinate)
+         */
         'point': function(point) {
             var coordinate = point.coordinate;
             return this.extract.coordinate.apply(this, [ coordinate ]);
         },
 
+        /**
+         * Convert a jsts.geom.MultiPoint to a GeoJSON object
+         *
+         * @param {jsts.geom.MultiPoint}
+         *          multipoint MultiPoint to convert
+         *
+         * @return {Array} Array of coordinates
+         */
         'multipoint': function(multipoint) {
             var array = [];
 
@@ -248,6 +365,14 @@
             return array;
         },
 
+        /**
+         * Convert a jsts.geom.LineString to a GeoJSON object
+         *
+         * @param {jsts.geom.LineString}
+         *          linestring LineString to convert
+         *
+         * @return {Array} Array of coordinates
+         */
         'linestring': function(linestring) {
             var array = [];
 
@@ -259,6 +384,14 @@
             return array;
         },
 
+        /**
+         * Convert a jsts.geom.MultiLineString to a GeoJSON object
+         *
+         * @param {jsts.geom.MultiLineString}
+         *          multilinestring MultiLineString to convert
+         *
+         * @return {Array} Array of Array of coordinates
+         */
         'multilinestring': function(multilinestring) {
             var array = [];
 
@@ -270,6 +403,14 @@
             return array;
         },
 
+        /**
+         * Convert a jsts.geom.Polygon to a GeoJSON object
+         *
+         * @param {jsts.geom.Polygon}
+         *          polygon Polygon to convert
+         *
+         * @return {Array} Array with shell, holes
+         */
         'polygon': function(polygon) {
             var array = [];
 
@@ -282,6 +423,14 @@
             return array;
         },
 
+        /**
+         * Convert a jsts.geom.MultiPolygon to a GeoJSON object
+         *
+         * @param {jsts.geom.MultiPolygon}
+         *          multipolygon MultiPolygon to convert
+         *
+         * @return {Array} Array of polygons
+         */
         'multipolygon': function(multipolygon) {
             var array = [];
 
@@ -293,6 +442,14 @@
             return array;
         },
 
+        /**
+         * Convert a jsts.geom.GeometryCollection to a GeoJSON object
+         *
+         * @param {jsts.geom.GeometryCollection}
+         *          collection GeometryCollection to convert
+         *
+         * @return {Array} Array of geometries
+         */
         'geometrycollection': function(collection) {
             var array = [];
 
