@@ -3,13 +3,33 @@
  * See /license-notice.txt for the full text of the license notice.
  * See /license.txt for the full text of the license.
  */
-(function() {
 
+/**
+ * Class for reading and writing Well-Known Text.
+ *
+ * NOTE: Adapted from OpenLayers 2.11 implementation.
+ */
+
+(function() {
+    /**
+     * Create a new parser for GeoJSON
+     *
+     * @param {GeometryFactory}
+     *          geometryFactory
+     * @return An instance of GeoJsonParser.
+     */
     jsts.io.GeoJSONParser = function(geometryFactory) {
         this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
         this.geometryTypes = [ 'point', 'multipoint', 'linestring', 'multilinestring', 'polygon', 'multipolygon' ];
     };
 
+    /**
+     * Deserialize a GeoJSON object and return the Geometry or Feature(Collection) with JSTS Geometries
+     *
+     * @param {}
+     *          A GeoJSON object
+     * @return {} A Geometry instance or object representing a Feature(Collection) with Geometry instances
+     */
     jsts.io.GeoJSONParser.prototype.read = function(json) {
         var obj;
         if (typeof json === 'string') {
@@ -173,6 +193,13 @@
         }
     };
 
+    /**
+     * Serialize a Geometry object into GeoJSON
+     *
+     * @param {jsts.geom.geometry}
+     *          geometry A Geometry or array of Geometries
+     * @return {Object} A GeoJSON object represting the input Geometry/Geometries
+     */
     jsts.io.GeoJSONParser.prototype.write = function(geometry) {
         var geoJson = {
             'type': null
