@@ -20,7 +20,7 @@
      */
     jsts.io.GeoJSONParser = function(geometryFactory) {
         this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
-        this.geometryTypes = [ 'point', 'multipoint', 'linestring', 'multilinestring', 'polygon', 'multipolygon' ];
+        this.geometryTypes = [ 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon' ];
     };
 
     /**
@@ -38,7 +38,7 @@
             obj = json;
         }
 
-        var type = obj.type.toLowerCase();
+        var type = obj.type;
 
         if (!this.parse[type]) {
             throw new Error('Unknown GeoJSON type: ' + obj.type);
@@ -46,7 +46,7 @@
 
         if (this.geometryTypes.indexOf(type) != -1) {
             return this.parse[type].apply(this, [ obj.coordinates ]);
-        } else if (type === 'geometrycollection') {
+        } else if (type === 'GeometryCollection') {
             return this.parse[type].apply(this, [ obj.geometries ]);
         }
 
@@ -63,7 +63,7 @@
          *
          * @return {Object} Feature with geometry/bbox converted to JSTS Geometries
          */
-        'feature': function(obj) {
+        'Feature': function(obj) {
             var feature = {};
 
             // copy features
@@ -73,7 +73,7 @@
 
             // parse geometry
             if (obj.geometry) {
-                var type = obj.geometry.type.toLowerCase();
+                var type = obj.geometry.type;
                 if (!this.parse[type]) {
                     throw new Error('Unknown GeoJSON type: ' + obj.type);
                 }
@@ -96,7 +96,7 @@
          *
          * @return {Object} FeatureCollection with geometry/bbox converted to JSTS Geometries
          */
-        'featurecollection': function(obj) {
+        'FeatureCollection': function(obj) {
             var featureCollection = {};
 
             if (obj.features) {
@@ -161,7 +161,7 @@
          *
          * @return {jsts.geom.Point} Point
          */
-        'point': function(array) {
+        'Point': function(array) {
             var coordinate = new jsts.geom.Coordinate(array[0], array[1]);
             return this.geometryFactory.createPoint(coordinate);
         },
@@ -174,11 +174,11 @@
          *
          * @return {jsts.geom.MultiPoint} MultiPoint
          */
-        'multipoint': function(array) {
+        'MultiPoint': function(array) {
             var points = [];
 
             for (var i = 0; i < array.length; ++i) {
-                points.push(this.parse.point.apply(this, [ array[i] ]));
+                points.push(this.parse.Point.apply(this, [ array[i] ]));
             }
 
             return this.geometryFactory.createMultiPoint(points);
@@ -192,7 +192,7 @@
          *
          * @return {jsts.geom.LineString} LineString
          */
-        'linestring': function(array) {
+        'LineString': function(array) {
             var coordinates = this.parse.coordinates.apply(this, [ array ]);
             return this.geometryFactory.createLineString(coordinates);
         },
@@ -205,11 +205,11 @@
          *
          * @return {jsts.geom.MultiLineString} MultiLineString
          */
-        'multilinestring': function(array) {
+        'MultiLineString': function(array) {
             var lineStrings = [];
 
             for (var i = 0; i < array.length; ++i) {
-                lineStrings.push(this.parse.linestring.apply(this, [ array[i] ]));
+                lineStrings.push(this.parse.LineString.apply(this, [ array[i] ]));
             }
 
             return this.geometryFactory.createMultiLineString(lineStrings);
@@ -223,7 +223,7 @@
          *
          * @return {jsts.geom.Polygon} Polygon
          */
-        'polygon': function(array) {
+        'Polygon': function(array) {
             // shell
             var shellCoordinates = this.parse.coordinates.apply(this, [ array[0] ]);
             var shell = this.geometryFactory.createLinearRing(shellCoordinates);
@@ -248,12 +248,12 @@
          *
          * @return {jsts.geom.MultiPolygon} MultiPolygon
          */
-        'multipolygon': function(array) {
+        'MultiPolygon': function(array) {
             var polygons = [];
 
             for (var i = 0; i < array.length; ++i) {
                 var polygon = array[i];
-                polygons.push(this.parse.polygon.apply(this, [ polygon ]));
+                polygons.push(this.parse.Polygon.apply(this, [ polygon ]));
             }
 
             return this.geometryFactory.createMultiPolygon(polygons);
@@ -267,7 +267,7 @@
          *
          * @return {jsts.geom.GeometryCollection} GeometryCollection
          */
-        'geometrycollection': function(array) {
+        'GeometryCollection': function(array) {
             var geometries = [];
 
             for (var i = 0; i < array.length; ++i) {
@@ -287,40 +287,16 @@
      * @return {Object} A GeoJSON object represting the input Geometry/Geometries
      */
     jsts.io.GeoJSONParser.prototype.write = function(geometry) {
-        var geoJson = {
-            'type': null
-        };
+        var type = geometry.CLASS_NAME.slice(10);
 
-        if (geometry instanceof Array) {
-            // XXX: TODO
-        } else if (geometry.CLASS_NAME.indexOf('jsts.geom') == 0) {
-            geoJson = this.extract.geometry.apply(this, [ geometry]);
+        if (!this.extract[type]) {
+            throw new Error('Geometry is not supported');
         }
 
-        return geoJson;
+        return this.extract[type].apply(this, [ geometry ]);
     };
 
     jsts.io.GeoJSONParser.prototype.extract = {
-        /**
-         * Convert a Geometry to a GeoJSON object
-         *
-         * @param {jsts.geom.Geometry}
-         *          geometry Geometry to convert
-         *
-         * @return {Object} GeoJSON object
-         */
-        'geometry': function(geometry) {
-            var type = geometry.CLASS_NAME.split('.')[2];
-            if (!this.extract[type.toLowerCase()]) {
-                return null;
-            }
-
-            return {
-                'type': type,
-                'geometry': this.extract[type.toLowerCase()].apply(this, [ geometry ])
-            };
-        },
-
         /**
          * Convert a jsts.geom.Coordinate to an Array
          *
@@ -341,9 +317,13 @@
          *
          * @return {Array} Array of 2 ordinates (paired to a coordinate)
          */
-        'point': function(point) {
-            var coordinate = point.coordinate;
-            return this.extract.coordinate.apply(this, [ coordinate ]);
+        'Point': function(point) {
+            var array = this.extract.coordinate.apply(this, [ point.coordinate ])
+
+            return {
+                type: 'Point',
+                coordinates: array
+            };
         },
 
         /**
@@ -354,15 +334,19 @@
          *
          * @return {Array} Array of coordinates
          */
-        'multipoint': function(multipoint) {
+        'MultiPoint': function(multipoint) {
             var array = [];
 
             for (var i = 0; i < multipoint.geometries.length; ++i) {
                 var point = multipoint.geometries[i];
-                array.push(this.extract.point.apply(this, [ point ]));
+                var geoJson = this.extract.Point.apply(this, [ point ]);
+                array.push(geoJson.coordinates);
             }
 
-            return array;
+            return {
+                type: 'MultiPoint',
+                coordinates: array
+            };
         },
 
         /**
@@ -373,7 +357,7 @@
          *
          * @return {Array} Array of coordinates
          */
-        'linestring': function(linestring) {
+        'LineString': function(linestring) {
             var array = [];
 
             for (var i = 0; i < linestring.points.length; ++i) {
@@ -381,7 +365,10 @@
                 array.push(this.extract.coordinate.apply(this, [ coordinate ]));
             }
 
-            return array;
+            return {
+                type: 'LineString',
+                coordinates: array
+            };
         },
 
         /**
@@ -392,15 +379,19 @@
          *
          * @return {Array} Array of Array of coordinates
          */
-        'multilinestring': function(multilinestring) {
+        'MultiLineString': function(multilinestring) {
             var array = [];
 
             for (var i = 0; i < multilinestring.geometries.length; ++i) {
                 var linestring = multilinestring.geometries[i];
-                array.push(this.extract.linestring.apply(this, [ linestring ]));
+                var geoJson = this.extract.LineString.apply(this, [ linestring ]);
+                array.push(geoJson.coordinates);
             }
 
-            return array;
+            return {
+                type: 'MultiLineString',
+                coordinates: array
+            };
         },
 
         /**
@@ -411,16 +402,24 @@
          *
          * @return {Array} Array with shell, holes
          */
-        'polygon': function(polygon) {
+        'Polygon': function(polygon) {
             var array = [];
 
-            array.push(this.extract.linestring.apply(this, [ polygon.shell ]));
+            // shell
+            var shellGeoJson = this.extract.LineString.apply(this, [ polygon.shell ]);
+            array.push(shellGeoJson.coordinates);
+
+            // holes
             for (var i = 0; i < polygon.holes.length; ++i) {
                 var hole = polygon.holes[i];
-                array.push(this.extract.linestring.apply(this, [ hole ]));
+                var holeGeoJson = this.extract.LineString.apply(this, [ hole ]);
+                array.push(holeGeoJson.coordinates);
             }
 
-            return array;
+            return {
+                type: 'Polygon',
+                coordinates: array
+            };
         },
 
         /**
@@ -431,15 +430,19 @@
          *
          * @return {Array} Array of polygons
          */
-        'multipolygon': function(multipolygon) {
+        'MultiPolygon': function(multipolygon) {
             var array = [];
 
             for (var i = 0; i < multipolygon.geometries.length; ++i) {
                 var polygon = multipolygon.geometries[i];
-                array.push(this.extract.polygon.apply(this, [ polygon ]));
+                var geoJson = this.extract.Polygon.apply(this, [ polygon ]);
+                array.push(geoJson.coordinates);
             }
 
-            return array;
+            return {
+                type: 'MultiPolygon',
+                coordinates: array
+            };
         },
 
         /**
@@ -450,15 +453,19 @@
          *
          * @return {Array} Array of geometries
          */
-        'geometrycollection': function(collection) {
+        'GeometryCollection': function(collection) {
             var array = [];
 
             for (var i = 0; i < collection.geometries.length; ++i) {
                 var geometry = collection.geometries[i];
-                array.push(this.extract.geometry.apply(this, [ geometry ]));
+                var type = geometry.CLASS_NAME.slice(10);
+                array.push(this.extract[type].apply(this, [ geometry ]));
             }
 
-            return array;
+            return {
+                type: 'GeometryCollection',
+                geometries: array
+            };
         }
     };
 })();
