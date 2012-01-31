@@ -27,7 +27,7 @@
      *
      * @param {jsts.geom.Geometry}
      *          geometry a <code>Geometry</code> to process.
-     * @return {Object} The GeoJSON representation of the Geometry
+     * @return {Object} The GeoJSON representation of the Geometry.
      */
 
     jsts.io.GeoJSONWriter.prototype.write = function(geometry) {

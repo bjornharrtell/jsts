@@ -26,8 +26,8 @@
      * Reads a GeoJSON representation of a {@link Geometry}
      *
      * @param {object}
-     *          geoJson a GeoJSON Object or String
-     * @return {jsts.geom.Geometry} a <code>Geometry</code>
+     *          geoJson a GeoJSON Object or String.
+     * @return {jsts.geom.Geometry} a <code>Geometry.</code>
      */
     jsts.io.GeoJSONReader.prototype.read = function(geoJson) {
       var geometry = this.parser.read(geoJson);
