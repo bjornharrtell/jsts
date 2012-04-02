@@ -45,7 +45,6 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
   map: null,
   layer: null,
   showTestCase: function(record) {
-
     var reader = new jsts.io.WKTReader();
     var writer = new jsts.io.WKTWriter();
 
@@ -53,6 +52,12 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
     var b = reader.read(record.data.b);
     
     this.testCaseResultsPanel.showTestResults(a, b);
+    this.geometry.update(writer.write(a) + '<br><br>' + writer.write(b));
+    
+    var parser = new jsts.io.OpenLayersParser();
+    
+    a = parser.write(a);
+    b = parser.write(b);
     
     if (a instanceof jsts.geom.Point) {
       a = a.coordinate;
@@ -65,7 +70,6 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
       graphicName: 'square',
       pointRadius: 2
     });
-
     
     if (b instanceof jsts.geom.Point) {
       b = b.coordinate;
@@ -85,8 +89,6 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
     var bounds = this.layer.getDataExtent();
 
     this.map.map.zoomToExtent(bounds, false);
-
-    this.geometry.update(writer.write(a) + '<br><br>' + writer.write(b));
   },
   reset: function() {
     this.layer.destroyFeatures();
