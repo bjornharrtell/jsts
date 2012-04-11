@@ -50,6 +50,22 @@ jsts.geom.CoordinateArrays.hasRepeatedPoints = function(coord) {
 };
 
 /**
+ * Finds a point in a list of points which is not contained in another list of points
+ * @param testPts the {@link Coordinate}s to test
+ * @param pts an array of {@link Coordinate}s to test the input points against
+ * @return a {@link Coordinate} from <code>testPts</code> which is not in <code>pts</code>, '
+ * or <code>null</code>
+ */
+jsts.geom.CoordinateArrays.ptNotInList= function(testPts, pts){
+  for (var i = 0; i < testPts.length; i++) {
+    var testPt = testPts[i];
+    if (jsts.geom.CoordinateArrays.indexOf(testPt, pts) < 0)
+        return testPt;
+  }
+  return null;
+};
+
+/**
  * Determines which orientation of the {@link Coordinate} array is (overall)
  * increasing. In other words, determines which end of the array is "smaller"
  * (using the standard ordering on {@link Coordinate}). Returns an integer

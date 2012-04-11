@@ -58,6 +58,8 @@ jsts = {
       snap: {}
     },
     /** @namespace */
+    polygonize: {},
+    /** @namespace */
     relate: {},
     /** @namespace */
     union: {},
