@@ -42,6 +42,8 @@
    * Create a new polygonization graph.
    */
   var PolygonizeGraph = function(factory) {
+    PlanarGraph.apply(this);
+    
     this.factory = factory;
   };
 

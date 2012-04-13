@@ -51,7 +51,7 @@
     var dx = this.p1.x - this.p0.x;
     var dy = this.p1.y - this.p0.y;
     this.quadrant = jsts.geomgraph.Quadrant.quadrant(dx, dy);
-    angle = Math.atan2(dy, dx);
+    this.angle = Math.atan2(dy, dx);
   };
 
   DirectedEdge.prototype = new GraphComponent();

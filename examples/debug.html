@@ -224,6 +224,13 @@
     
     var polygons = polygonizer.getPolygons();
     console.log(polygons.toArray().toString());
+    
+    var polygonizer2 = new jsts.operation.polygonize.Polygonizer();
+    var union2 = a.union(b);
+    polygonizer2.add(union2);
+    
+    var polygons2 = polygonizer2.getPolygons();
+    console.log(polygons2.toArray().toString());
   }
 </script>
 </head>

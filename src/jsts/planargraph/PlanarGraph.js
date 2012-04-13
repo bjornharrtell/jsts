@@ -34,13 +34,15 @@
    * Constructs a empty graph.
    */
   var PlanarGraph = function() {
-
+    this.edges = new javascript.util.HashSet();
+    this.dirEdges = new javascript.util.HashSet();
+    this.nodeMap = new jsts.planargraph.NodeMap();
   };
 
 
-  PlanarGraph.prototype.edges = new javascript.util.HashSet();
-  PlanarGraph.prototype.dirEdges = new javascript.util.HashSet();
-  PlanarGraph.prototype.nodeMap = new jsts.planargraph.NodeMap();
+  PlanarGraph.prototype.edges = null;
+  PlanarGraph.prototype.dirEdges = null;
+  PlanarGraph.prototype.nodeMap = null;
 
 
   /**
