@@ -40,3 +40,22 @@ jsts.io.WKTWriter.prototype.write = function(geometry) {
 
   return wkt;
 };
+
+/**
+ * Generates the WKT for a <tt>LINESTRING</tt> specified by two
+ * {@link Coordinate}s.
+ *
+ * @param p0
+ *          the first coordinate.
+ * @param p1
+ *          the second coordinate.
+ *
+ * @return the WKT.
+ */
+jsts.io.WKTWriter.toLineString = function(p0, p1) {
+  if (arguments.length !== 2) {
+    throw new jsts.error.NotImplementedError();
+  }
+
+  return 'LINESTRING ( ' + p0.x + ' ' + p0.y + ', ' + p1.x + ' ' + p1.y + ' )';
+};

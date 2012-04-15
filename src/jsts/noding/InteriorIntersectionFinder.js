@@ -136,8 +136,8 @@
         this.intSegments[2] = p10;
         this.intSegments[3] = p11;
 
-        this.interiorIntersection = li.getIntersection(0);
-        this.intersections.add(interiorIntersection);
+        this.interiorIntersection = this.li.getIntersection(0);
+        this.intersections.add(this.interiorIntersection);
       }
     }
   };

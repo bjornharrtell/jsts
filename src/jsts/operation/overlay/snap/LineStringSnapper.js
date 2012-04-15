@@ -13,6 +13,7 @@
  * The implementation handles empty geometry and empty snap vertex sets.
  *
  */
+
 (function() {
   /**
    * Constructs a new LineStringSnapper based on provided arguments

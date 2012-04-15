@@ -40,6 +40,26 @@
     return this.shell.getCoordinate();
   };
 
+  jsts.geom.Polygon.prototype.getCoordinates = function() {
+    if (this.isEmpty()) {
+      return [];
+    }
+    var coordinates = [];
+    var k = -1;
+    var shellCoordinates = this.shell.getCoordinates();
+    for (var x = 0; x < shellCoordinates.length; x++) {
+      k++;
+      coordinates[k] = shellCoordinates[x];
+    }
+    for (var i = 0; i < this.holes.length; i++) {
+      var childCoordinates = this.holes[i].getCoordinates();
+      for (var j = 0; j < childCoordinates.length; j++) {
+        k++;
+        coordinates[k] = childCoordinates[j];
+      }
+    }
+    return coordinates;
+  };
 
   /**
    * @return {boolean}

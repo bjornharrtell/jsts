@@ -1,5 +1,6 @@
 2012-04-xx: Version 0.12.0
 
+		Ported robust overlay operation
 		Implemented Polygonizer
 		Implemented GeoJSON reader/writer
 		getArea returns 0 for Multipolygon (#95)

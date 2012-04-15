@@ -14,7 +14,6 @@
   var OverlayOp = jsts.operation.overlay.OverlayOp;
   var SnapOverlayOp = jsts.operation.overlay.snap.SnapOverlayOp;
 
-
   /**
    * Performs an overlay operation using snapping and enhanced precision to
    * improve the robustness of the result. This class only uses snapping if an
@@ -31,23 +30,23 @@
   SnapIfNeededOverlayOp.overlayOp = function(g0, g1, opCode) {
     var op = new SnapIfNeededOverlayOp(g0, g1);
     return op.getResultGeometry(opCode);
-  }
+  };
 
   SnapIfNeededOverlayOp.intersection = function(g0, g1) {
     return overlayOp(g0, g1, OverlayOp.INTERSECTION);
-  }
+  };
 
   SnapIfNeededOverlayOp.union = function(g0, g1) {
     return overlayOp(g0, g1, OverlayOp.UNION);
-  }
+  };
 
   SnapIfNeededOverlayOp.difference = function(g0, g1) {
     return overlayOp(g0, g1, OverlayOp.DIFFERENCE);
-  }
+  };
 
   SnapIfNeededOverlayOp.symDifference = function(g0, g1) {
     return overlayOp(g0, g1, OverlayOp.SYMDIFFERENCE);
-  }
+  };
 
   /**
    * @private
@@ -79,7 +78,7 @@
       }
     }
     return result;
-  }
+  };
 
   jsts.operation.overlay.snap.SnapIfNeededOverlayOp = SnapIfNeededOverlayOp;
 

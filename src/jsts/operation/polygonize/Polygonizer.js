@@ -26,8 +26,6 @@
   var PolygonizeGraph = jsts.operation.polygonize.PolygonizeGraph;
 
 
-
-
   /**
    * Polygonizes a set of {@link Geometry}s which contain linework that
    * represents the edges of a planar graph. All types of Geometry are accepted
