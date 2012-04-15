@@ -25,7 +25,7 @@
   var EdgeRing = jsts.operation.polygonize.EdgeRing;
   var PolygonizeGraph = jsts.operation.polygonize.PolygonizeGraph;
 
-  
+
 
 
   /**
@@ -52,7 +52,7 @@
    */
   var Polygonizer = function() {
     var that = this;
-    
+
     /**
      * Adds every linear element in a {@link Geometry} into the polygonizer graph.
      */
@@ -66,7 +66,7 @@
       if (g instanceof LineString)
         that.add(g);
     };
-    
+
     this.lineStringAdder = new LineStringAdder();
     this.dangles = new ArrayList();
     this.cutEdges = new ArrayList();

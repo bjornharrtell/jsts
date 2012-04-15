@@ -46,8 +46,8 @@ jsts.geom.CoordinateList.prototype.add = function(coord, allowRepeated,
     direction) {
   if (coord instanceof jsts.geom.Coordinate) {
     return this.addCoordinate.apply(this, arguments);
-  };
-  
+  }
+
   direction = direction || true;
 
   if (direction) {
@@ -139,9 +139,9 @@ jsts.geom.CoordinateList.prototype.toArray = function() {
 
 /** Returns the Coordinates in this collection.
 *
-* @return the coordinates
+* @return the coordinates.
 */
-jsts.geom.CoordinateList.prototype.toCoordinateArray= function() {
+jsts.geom.CoordinateList.prototype.toCoordinateArray = function() {
   return this.toArray();
 };
 
