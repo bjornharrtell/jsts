@@ -418,7 +418,7 @@ jsts.geom.Geometry.prototype.getCentroid = function() {
 jsts.geom.Geometry.prototype.getInteriorPoint = function() {
   var intPt;
   var interiorPt = null;
-  var dim = getDimension();
+  var dim = this.getDimension();
   if (dim === 0) {
     intPt = new InteriorPointPoint(this);
     interiorPt = intPt.getInteriorPoint();
