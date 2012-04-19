@@ -31,7 +31,7 @@ The code tries to be conformant to the
 [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
 [JSLint](http://www.jslint.com/) and is licensed with the LGPL 2.1 license.
 
-The current version 0.11.1 is available for download as [tar.gz](https://github.com/downloads/bjornharrtell/jsts/jsts-0.11.1.tar.gz) or [zip](https://github.com/downloads/bjornharrtell/jsts/jsts-0.11.1.zip).
+The current version 0.12.0 is available for download as [tar.gz](https://github.com/downloads/bjornharrtell/jsts/jsts-0.12.0.tar.gz) or [zip](https://github.com/downloads/bjornharrtell/jsts/jsts-0.12.0.zip).
 
 Development environment
 -----------------------
