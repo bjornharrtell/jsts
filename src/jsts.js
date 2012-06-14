@@ -6,7 +6,7 @@
 
 /** @namespace */
 jsts = {
-  version: '0.12.0',
+  version: '0.12.1',
   /** @namespace */
   algorithm: {
     /** @namespace */
@@ -79,6 +79,14 @@ jsts = {
   util: {}
 };
 
+/**
+ * Implement String.trim if native support is missing.
+ */
+if(typeof String.prototype.trim !== 'function') {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, ''); 
+  };
+}
 
 /**
  * Global function intended for use as a generic abstract method.

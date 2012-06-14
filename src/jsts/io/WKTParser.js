@@ -20,7 +20,7 @@
 
 /**
  * Create a new parser for WKT
- *
+ * 
  * @param {}
  *          geometryFactory
  * @return An instance of WKTParser.
@@ -43,7 +43,7 @@ jsts.io.WKTParser = function(geometryFactory) {
  * Deserialize a WKT string and return a geometry. Supports WKT for POINT,
  * MULTIPOINT, LINESTRING, LINEARRING, MULTILINESTRING, POLYGON, MULTIPOLYGON,
  * and GEOMETRYCOLLECTION.
- *
+ * 
  * @param {String}
  *          wkt A WKT string.
  * @return {jsts.geom.Geometry} A geometry instance.
@@ -72,7 +72,7 @@ jsts.io.WKTParser.prototype.read = function(wkt) {
 
 /**
  * Serialize a geometry into a WKT string.
- *
+ * 
  * @param {jsts.geom.Geometry}
  *          geometry A feature or array of features.
  * @return {String} The WKT string representation of the input geometries.
@@ -83,10 +83,10 @@ jsts.io.WKTParser.prototype.write = function(geometry) {
 
 /**
  * Entry point to construct the WKT for a single Geometry object.
- *
+ * 
  * @param {jsts.geom.Geometry}
  *          geometry
- *
+ * 
  * @return {String} A WKT string of representing the geometry.
  */
 jsts.io.WKTParser.prototype.extractGeometry = function(geometry) {
@@ -115,7 +115,7 @@ jsts.io.WKTParser.prototype.extract = {
 
   /**
    * Return a space delimited string of point coordinates.
-   *
+   * 
    * @param {jsts.geom.Point}
    *          point
    * @return {String} A string of coordinates representing the point.
@@ -126,7 +126,7 @@ jsts.io.WKTParser.prototype.extract = {
 
   /**
    * Return a comma delimited string of point coordinates from a multipoint.
-   *
+   * 
    * @param {jsts.geom.MultiPoint>}
    *          multipoint
    * @return {String} A string of point coordinate strings representing the
@@ -134,7 +134,7 @@ jsts.io.WKTParser.prototype.extract = {
    */
   'multipoint': function(multipoint) {
     var array = [];
-    for (var i = 0, len = multipoint.geometries.length; i < len; ++i) {
+    for ( var i = 0, len = multipoint.geometries.length; i < len; ++i) {
       array.push('(' +
           this.extract.point.apply(this, [multipoint.geometries[i]]) + ')');
     }
@@ -143,7 +143,7 @@ jsts.io.WKTParser.prototype.extract = {
 
   /**
    * Return a comma delimited string of point coordinates from a line.
-   *
+   * 
    * @param {jsts.geom.LineString>}
    *          linestring
    * @return {String} A string of point coordinate strings representing the
@@ -151,7 +151,7 @@ jsts.io.WKTParser.prototype.extract = {
    */
   'linestring': function(linestring) {
     var array = [];
-    for (var i = 0, len = linestring.points.length; i < len; ++i) {
+    for ( var i = 0, len = linestring.points.length; i < len; ++i) {
       array.push(this.extract.coordinate.apply(this, [linestring.points[i]]));
     }
     return array.join(',');
@@ -160,7 +160,7 @@ jsts.io.WKTParser.prototype.extract = {
   /**
    * Return a comma delimited string of linestring strings from a
    * multilinestring.
-   *
+   * 
    * @param {jsts.geom.MultiLineString>}
    *          multilinestring
    * @return {String} A string of of linestring strings representing the
@@ -168,7 +168,7 @@ jsts.io.WKTParser.prototype.extract = {
    */
   'multilinestring': function(multilinestring) {
     var array = [];
-    for (var i = 0, len = multilinestring.geometries.length; i < len; ++i) {
+    for ( var i = 0, len = multilinestring.geometries.length; i < len; ++i) {
       array.push('(' +
           this.extract.linestring.apply(this, [multilinestring.geometries[i]]) +
           ')');
@@ -178,34 +178,31 @@ jsts.io.WKTParser.prototype.extract = {
 
   /**
    * Return a comma delimited string of linear ring arrays from a polygon.
-   *
+   * 
    * @param {jsts.geom.Polygon>}
    *          polygon
    * @return {String} An array of linear ring arrays representing the polygon.
    */
   'polygon': function(polygon) {
     var array = [];
-    array
-        .push('(' + this.extract.linestring.apply(this, [polygon.shell]) + ')');
-    for (var i = 0, len = polygon.holes.length; i < len; ++i) {
-      array.push('(' + this.extract.linestring.apply(this, [polygon.holes[i]]) +
-          ')');
+    array.push('(' + this.extract.linestring.apply(this, [polygon.shell]) + ')');
+    for ( var i = 0, len = polygon.holes.length; i < len; ++i) {
+      array.push('(' + this.extract.linestring.apply(this, [polygon.holes[i]]) + ')');
     }
     return array.join(',');
   },
 
   /**
    * Return an array of polygon arrays from a multipolygon.
-   *
+   * 
    * @param {jsts.geom.MultiPolygon>}
    *          multipolygon
    * @return {String} An array of polygon arrays representing the multipolygon.
    */
   'multipolygon': function(multipolygon) {
     var array = [];
-    for (var i = 0, len = multipolygon.geometries.length; i < len; ++i) {
-      array.push('(' +
-          this.extract.polygon.apply(this, [multipolygon.geometries[i]]) + ')');
+    for ( var i = 0, len = multipolygon.geometries.length; i < len; ++i) {
+      array.push('(' + this.extract.polygon.apply(this, [multipolygon.geometries[i]]) + ')');
     }
     return array.join(',');
   },
@@ -213,14 +210,14 @@ jsts.io.WKTParser.prototype.extract = {
   /**
    * Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an
    * geometrycollection.
-   *
+   * 
    * @param {jsts.geom.GeometryCollection>}
    *          collection
    * @return {String} internal WKT representation of the collection.
    */
   'geometrycollection': function(collection) {
     var array = [];
-    for (var i = 0, len = collection.geometries.length; i < len; ++i) {
+    for ( var i = 0, len = collection.geometries.length; i < len; ++i) {
       array.push(this.extractGeometry.apply(this, [collection.geometries[i]]));
     }
     return array.join(',');
@@ -235,7 +232,7 @@ jsts.io.WKTParser.prototype.extract = {
 jsts.io.WKTParser.prototype.parse = {
   /**
    * Return point geometry given a point WKT fragment.
-   *
+   * 
    * @param {String}
    *          str A WKT fragment representing the point.
    * @return {jsts.geom.Point} A point geometry.
@@ -253,7 +250,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a multipoint geometry given a multipoint WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the multipoint.
    * @return {jsts.geom.Point} A multipoint feature.
@@ -267,7 +264,7 @@ jsts.io.WKTParser.prototype.parse = {
     var point;
     var points = str.trim().split(',');
     var components = [];
-    for (var i = 0, len = points.length; i < len; ++i) {
+    for ( var i = 0, len = points.length; i < len; ++i) {
       point = points[i].replace(this.regExes.trimParens, '$1');
       components.push(this.parse.point.apply(this, [point]));
     }
@@ -276,7 +273,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a linestring geometry given a linestring WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the linestring.
    * @return {jsts.geom.LineString} A linestring geometry.
@@ -290,7 +287,7 @@ jsts.io.WKTParser.prototype.parse = {
     var points = str.trim().split(',');
     var components = [];
     var coords;
-    for (var i = 0, len = points.length; i < len; ++i) {
+    for ( var i = 0, len = points.length; i < len; ++i) {
       coords = points[i].trim().split(this.regExes.spaces);
       components.push(new jsts.geom.Coordinate(coords[0], coords[1]));
     }
@@ -299,7 +296,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a linearring geometry given a linearring WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the linearring.
    * @return {jsts.geom.LinearRing} A linearring geometry.
@@ -313,7 +310,7 @@ jsts.io.WKTParser.prototype.parse = {
     var points = str.trim().split(',');
     var components = [];
     var coords;
-    for (var i = 0, len = points.length; i < len; ++i) {
+    for ( var i = 0, len = points.length; i < len; ++i) {
       coords = points[i].trim().split(this.regExes.spaces);
       components.push(new jsts.geom.Coordinate(coords[0], coords[1]));
     }
@@ -322,7 +319,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a multilinestring geometry given a multilinestring WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the multilinestring.
    * @return {jsts.geom.MultiLineString} A multilinestring geometry.
@@ -336,7 +333,7 @@ jsts.io.WKTParser.prototype.parse = {
     var line;
     var lines = str.trim().split(this.regExes.parenComma);
     var components = [];
-    for (var i = 0, len = lines.length; i < len; ++i) {
+    for ( var i = 0, len = lines.length; i < len; ++i) {
       line = lines[i].replace(this.regExes.trimParens, '$1');
       components.push(this.parse.linestring.apply(this, [line]));
     }
@@ -345,7 +342,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a polygon geometry given a polygon WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the polygon.
    * @return {jsts.geom.Polygon} A polygon geometry.
@@ -360,7 +357,7 @@ jsts.io.WKTParser.prototype.parse = {
     var rings = str.trim().split(this.regExes.parenComma);
     var shell;
     var holes = [];
-    for (var i = 0, len = rings.length; i < len; ++i) {
+    for ( var i = 0, len = rings.length; i < len; ++i) {
       ring = rings[i].replace(this.regExes.trimParens, '$1');
       linestring = this.parse.linestring.apply(this, [ring]);
       linearring = this.geometryFactory.createLinearRing(linestring.points);
@@ -376,7 +373,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a multipolygon geometry given a multipolygon WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the multipolygon.
    * @return {jsts.geom.MultiPolygon} A multipolygon geometry.
@@ -390,7 +387,7 @@ jsts.io.WKTParser.prototype.parse = {
     var polygon;
     var polygons = str.trim().split(this.regExes.doubleParenComma);
     var components = [];
-    for (var i = 0, len = polygons.length; i < len; ++i) {
+    for ( var i = 0, len = polygons.length; i < len; ++i) {
       polygon = polygons[i].replace(this.regExes.trimParens, '$1');
       components.push(this.parse.polygon.apply(this, [polygon]));
     }
@@ -399,7 +396,7 @@ jsts.io.WKTParser.prototype.parse = {
 
   /**
    * Return a geometrycollection given a geometrycollection WKT fragment.
-   *
+   * 
    * @param {String}
    *          A WKT fragment representing the geometrycollection.
    * @return {jsts.geom.GeometryCollection}
@@ -414,7 +411,7 @@ jsts.io.WKTParser.prototype.parse = {
     str = str.replace(/,\s*([A-Za-z])/g, '|$1');
     var wktArray = str.trim().split('|');
     var components = [];
-    for (var i = 0, len = wktArray.length; i < len; ++i) {
+    for ( var i = 0, len = wktArray.length; i < len; ++i) {
       components.push(jsts.io.WKTParser.prototype.read.apply(this,
           [wktArray[i]]));
     }
