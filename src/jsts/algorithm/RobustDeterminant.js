@@ -4,7 +4,11 @@
  * See /license.txt for the full text of the license.
  */
 
-
+/**
+ * Port source:
+ * /jts/jts/java/src/com/vividsolutions/jts/algorithm/RobustDeterminant.java
+ * Revision: 626
+ */
 
 /**
  * Implements an algorithm to compute the
@@ -18,6 +22,10 @@
  * Author : Olivier Devillers
  * Olivier.Devillers@sophia.inria.fr
  * http:/www.inria.fr:/prisme/personnel/devillers/anglais/determinant.html
+ * 
+ * Olivier Devillers has allowed the code to be distributed under
+ * the LGPL (2012-02-16) saying "It is ok for LGPL distribution."
+ * 
  **************************************************************************
  *
  **************************************************************************
@@ -56,7 +64,7 @@ jsts.algorithm.RobustDeterminant = function() {
 jsts.algorithm.RobustDeterminant.signOfDet2x2 = function(x1, y1, x2, y2) {
   //returns -1 if the determinant is negative,
   // returns  1 if the determinant is positive,
-  // retunrs  0 if the determinant is null.
+  // returns  0 if the determinant is null.
   var sign, swap, k, count;
   count = 0;
 
@@ -211,8 +219,6 @@ jsts.algorithm.RobustDeterminant.signOfDet2x2 = function(x1, y1, x2, y2) {
    */
   while (true) {
     count = count + 1;
-    // MD - UNSAFE HACK for testing only!
-    //    k = (int) (x2 / x1);
     k = Math.floor(x2 / x1);
     x2 = x2 - k * x1;
     y2 = y2 - k * y1;
@@ -260,8 +266,6 @@ jsts.algorithm.RobustDeterminant.signOfDet2x2 = function(x1, y1, x2, y2) {
     /*
      *  exchange 1 and 2 role.
      */
-    // MD - UNSAFE HACK for testing only!
-    //    k = (int) (x1 / x2);
     k = Math.floor(x1 / x2);
     x1 = x1 - k * x2;
     y1 = y1 - k * y2;
@@ -306,4 +310,44 @@ jsts.algorithm.RobustDeterminant.signOfDet2x2 = function(x1, y1, x2, y2) {
       return -sign;
     }
   }
+};
+
+
+/**
+ * Returns the index of the direction of the point <code>q</code> relative to
+ * a vector specified by <code>p1-p2</code>.
+ * 
+ * @param p1 the origin point of the vector
+ * @param p2 the final point of the vector
+ * @param q the point to compute the direction to
+ * 
+ * @return 1 if q is counter-clockwise (left) from p1-p2
+ * @return -1 if q is clockwise (right) from p1-p2
+ * @return 0 if q is collinear with p1-p2
+ */
+jsts.algorithm.RobustDeterminant.orientationIndex = function(p1, p2, q) {
+  /**
+   * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
+   * dependent, when computing the orientation of a point very close to a
+   * line. This is possibly due to the arithmetic in the translation to the
+   * origin.
+   * 
+   * For instance, the following situation produces identical results in spite
+   * of the inverse orientation of the line segment:
+   * 
+   * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
+   * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
+   * 
+   * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556); int
+   * orient = orientationIndex(p0, p1, p); int orientInv =
+   * orientationIndex(p1, p0, p);
+   * 
+   * 
+   */
+  
+  var dx1 = p2.x - p1.x;
+  var dy1 = p2.y - p1.y;
+  var dx2 = q.x - p2.x;
+  var dy2 = q.y - p2.y;
+  return jsts.algorithm.RobustDeterminant.signOfDet2x2(dx1, dy1, dx2, dy2);
 };
