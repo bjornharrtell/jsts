@@ -1,6 +1,8 @@
-2012-06-xx: Version 0.12.1
+2012-07-02: Version 0.12.1
 
 		Fix for IE8 (#101 and #102)
+		Tested with OpenLayers 2.12
+		Upgrade Jasmine
 
 2012-04-19: Version 0.12.0
 
