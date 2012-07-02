@@ -31,7 +31,7 @@ The code tries to be conformant to the
 [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
 [JSLint](http://www.jslint.com/) and is licensed with the LGPL 2.1 license.
 
-The current version 0.12.0 is available for download as [tar.gz](https://github.com/downloads/bjornharrtell/jsts/jsts-0.12.0.tar.gz) or [zip](https://github.com/downloads/bjornharrtell/jsts/jsts-0.12.0.zip).
+The current version 0.12.1 is available for download as [tar.gz](https://github.com/downloads/bjornharrtell/jsts/jsts-0.12.1.tar.gz) or [zip](https://github.com/downloads/bjornharrtell/jsts/jsts-0.12.1.zip).
 
 Development environment
 -----------------------
@@ -41,7 +41,7 @@ Development environment
   * Installed Closure Linter from http://code.google.com/closure/utilities
   * Compiled 'shell' sample from V8 JavaScript Engine (http://code.google.com/apis/v8) in /tools
   * External JavaScript jslint.js and json2.js from https://github.com/douglascrockford in /tools
-* Assumes OpenLayers 2.11 distribution in project root from http://www.openlayers.org/
+* Assumes OpenLayers 2.12 distribution in project root from http://www.openlayers.org/
 * Assumes OS Ubuntu/Linux
 
 Design changes
