@@ -6,7 +6,7 @@
 
 /** @namespace */
 jsts = {
-  version: '0.12.1',
+  version: '0.13.0',
   /** @namespace */
   algorithm: {
     /** @namespace */
@@ -163,3 +163,6 @@ jsts.error.LocateFailureError = function(message) {
   this.message = message;
 };
 jsts.error.LocateFailureError.prototype = new Error();
+
+if (typeof module !== "undefined") module.exports = jsts;
+
