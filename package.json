@@ -1,9 +1,9 @@
 {
     "name": "jsts",
     "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-    "version": "0.13.0-rc1",
+    "version": "0.13.0",
     "author": "Björn Harrtell <bjorn@wololo.org>",
-    "keywords": [ "java toplology suite", "geometry" ],
+    "keywords": [ "java topology suite", "geometry" ],
     "licenses" : [
         {
             "type": "MIT License",
