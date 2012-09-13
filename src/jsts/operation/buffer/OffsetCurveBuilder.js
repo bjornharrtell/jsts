@@ -135,7 +135,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.getOffsetCurve = function(
   // for right side line is traversed in reverse direction, so have to reverse
   // generated line
   if (isRightSide)
-    jsts.geom.CoordinateArrays.reverse(curvePts);
+    curvePts.reverse();
   return curvePts;
 };
 
@@ -307,7 +307,7 @@ jsts.operation.buffer.OffsetCurveBuilder.prototype.computeSingleSidedBufferCurve
 jsts.operation.buffer.OffsetCurveBuilder.prototype.computeOffsetCurve = function(
     inputPts, isRightSide, segGen) {
   var distTol = jsts.operation.buffer.OffsetCurveBuilder
-      .simplifyTolerance(distance);
+      .simplifyTolerance(this.distance);
 
   if (isRightSide) {
     // ---------- compute points for right side of line
