@@ -394,7 +394,7 @@ jsts.triangulate.quadedge.Vertex.prototype.bisector = function(a, b) {
 
   l1 = new jsts.algorithm.HCoordinate(a.getX() + (dx / 2.0), a.getY() +
       (dy / 2.0), 1.0);
-  l1 = new jsts.algorithm.HCoordinate(a.getX() - dy + (dx / 2.0), a.getY() +
+  l2 = new jsts.algorithm.HCoordinate(a.getX() - dy + (dx / 2.0), a.getY() +
       dx + (dy / 2.0), 1.0);
   return new jsts.algorithm.HCoordinate(l1, l2);
 };
