@@ -260,7 +260,7 @@ jsts.geom.Envelope.prototype.getMaxY = function() {
  * @return {number} the area of the envelope, 0.0 if the envelope is null.
  */
 jsts.geom.Envelope.prototype.getArea = function() {
-  return getWidth() * getHeight();
+  return this.getWidth() * this.getHeight();
 };
 
 
