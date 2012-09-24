@@ -293,7 +293,7 @@ jsts.operation.buffer.OffsetCurveSetBuilder.prototype.isErodedCompletely = funct
  */
 jsts.operation.buffer.OffsetCurveSetBuilder.prototype.isTriangleErodedCompletely = function(
     triangleCoord, bufferDistance) {
-  var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
+  var tri = new jsts.geom.Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
   var inCentre = tri.inCentre();
   var distToCentre = jsts.algorithm.CGAlgorithms.distancePointLine(inCentre,
       tri.p0, tri.p1);
