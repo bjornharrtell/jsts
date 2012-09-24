@@ -33,11 +33,12 @@ jsts.geom.util.GeometryCombiner = function(geoms) {
 /**
  * Combines a collection of geometries.
  *
- * @param {Array} geoms the geometries to combine.
- * @return {jsts.geom.Geometry} the combined geometry.
+ * @param {ArrayList} geoms the geometries to combine.
+ * @return {Geometry} the combined geometry.
  * @public
  */
-jsts.geom.util.GeometryCombiner.combiner = function(geoms) {
+jsts.geom.util.GeometryCombiner.combine = function(geoms) {
+  if (arguments.length>1) return this.combine2.apply(this, arguments);
   var combiner = new jsts.geom.util.GeometryCombiner(geoms);
   return combiner.combine();
 };
@@ -46,20 +47,20 @@ jsts.geom.util.GeometryCombiner.combiner = function(geoms) {
 /**
  * Combines two or three geometries.
  *
- * @param {jsts.geom.Geometry} g0 a geometry to combine.
- * @param {jsts.geom.Geometry} g1 a geometry to combine.
- * @param {jsts.geom.Geometry=} [g2] a geometry to combine.
- * @return {jsts.geom.Geometry} the combined geometry.
+ * @param {Geometry} g0 a geometry to combine.
+ * @param {Geometry} g1 a geometry to combine.
+ * @param {Geometry=} [g2] a geometry to combine.
+ * @return {Geometry} the combined geometry.
  * @public
  */
-jsts.geom.util.GeometryCombiner.combine = function() {
-  var combiner = jsts.geom.util.GeometryCombiner([].slice.call(arguments));
+jsts.geom.util.GeometryCombiner.combine2 = function() {
+  var combiner = jsts.geom.util.GeometryCombiner(arguments);
   return combiner.combine();
 };
 
 
 /**
- * @type {jsts.geom.GeometryFactory}
+ * @type {GeometryFactory}
  * @private
  */
 jsts.geom.util.GeometryCombiner.prototype.geomFactory = null;
@@ -87,10 +88,8 @@ jsts.geom.util.GeometryCombiner.prototype.inputGeoms;
  * @public
  */
 jsts.geom.util.GeometryCombiner.extractFactory = function(geoms) {
-  if (geoms.length === 0) {
-    return null;
-  }
-  return geoms[0].getFactory();
+  if (geoms.isEmpty()) return null;
+  return geoms.iterator().next().getFactory();
 };
 
 
@@ -102,20 +101,21 @@ jsts.geom.util.GeometryCombiner.extractFactory = function(geoms) {
  * @public
  */
 jsts.geom.util.GeometryCombiner.prototype.combine = function() {
-  var elems = [];
-  for (var i = 0, l = this.inputGeoms.length; i < l; i++) {
-    var g = this.inputGeoms[i];
-    this.extractElements(g, elems);
-  }
-  if (elems.length === 0) {
-    if (this.geomFactory !== null) {
-      // return an empty GC
-      return this.geomFactory.createGeometryCollection(null);
+    var elems = new javascript.util.ArrayList(), i;
+  	for (i = this.inputGeoms.iterator(); i.hasNext(); ) {
+        var g = i.next();
+        this.extractElements(g, elems);
+  	}
+    
+    if (elems.size() === 0) {
+    	if (this.geomFactory !== null) {
+            // return an empty GC
+            return geomFactory.createGeometryCollection(null);
+    	}
+    	return null;
     }
-    return null;
-  }
-  // return the "simplest possible" geometry
-  return this.geomFactory.buildGeometry(elems);
+    // return the "simplest possible" geometry
+    return this.geomFactory.buildGeometry(elems);
 };
 
 
