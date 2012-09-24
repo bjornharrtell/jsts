@@ -826,13 +826,14 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getEdgesByFactory = func
   var quadEdges, edges, i, il, qe, coords;
 
   quadEdges = this.getPrimaryEdges(false);
-  edges = new Array(quadEdges.length);
+  edges = [];
 
-  i = 0, il = quadEdges.length;
+  i = 0;
+  il = quadEdges.length;
 
   for (i; i < il; i++) {
     qe = quadEdges[i];
-    coords = new Array(2);
+    coords = [];
     coords[0] = (qe.orig().getCoordinate());
     coords[1] = (qe.dest().getCoordinate());
     edges[i] = geomFact.createLineString(coords);
@@ -953,9 +954,9 @@ jsts.triangulate.quadedge.QuadEdgeSubdivision.prototype.getVoronoiCellPolygon = 
   coordList.add(cellPts, false);
   coordList.closeRing();
 
-  if (coordList.length < 4) {
+  if (coordList.size() < 4) {
     //System.out.println(coordList);
-    coordList.add(coordList.get(coordList.length - 1), true);
+    coordList.add(coordList.get(coordList.size() - 1), true);
   }
 
   cellPoly = geomFact.createPolygon(geomFact.createLinearRing(coordList.toArray()), null);
@@ -1044,10 +1045,10 @@ jsts.triangulate.quadedge.TriangleCoordinatesVisitor.prototype.visit = function(
 
   for (i; i < 3; i++) {
     v = triEdges[i].orig();
-    this.coordList.addCoordinate(v.getCoordinate());
+    this.coordList.add(v.getCoordinate());
   }
 
-  if (this.coordList.length > 0) {
+  if (this.coordList.size() > 0) {
     this.coordList.closeRing();
     pts = this.coordList.toArray();
     if (pts.length !== 4) {

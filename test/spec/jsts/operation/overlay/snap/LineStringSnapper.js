@@ -8,7 +8,7 @@ describe('jsts.operation.overlay.snap.LineStringSnapper', function() {
     
     var snapper = new jsts.operation.overlay.snap.LineStringSnapper(line, 1E-6);
     var newPoints = snapper.snapTo([point.coordinate]);
-    var snappedGeom = factory.createLineString(newPoints.toArray());
+    var snappedGeom = factory.createLineString(newPoints);
     
     var expectedWKT = 'LINESTRING (0 0, 0 5, 0 10)'; 
     var expectedGeom = reader.read(expectedWKT);
@@ -22,7 +22,7 @@ describe('jsts.operation.overlay.snap.LineStringSnapper', function() {
     
     var snapper = new jsts.operation.overlay.snap.LineStringSnapper(line, 1E-6);
     var newPoints = snapper.snapTo([point.coordinate]);
-    var snappedGeom = factory.createLineString(newPoints.toArray());
+    var snappedGeom = factory.createLineString(newPoints);
     
     var expectedWKT = 'LINESTRING (0 0, 0 5.000000001, 0 10)'; 
     var expectedGeom = reader.read(expectedWKT);
@@ -36,7 +36,7 @@ describe('jsts.operation.overlay.snap.LineStringSnapper', function() {
     
     var snapper = new jsts.operation.overlay.snap.LineStringSnapper(line, 1E-6);
     var newPoints = snapper.snapTo([point.coordinate]);
-    var snappedGeom = factory.createLineString(newPoints.toArray());
+    var snappedGeom = factory.createLineString(newPoints);
     
     var expectedWKT = 'LINESTRING (0 0, 0 10)'; 
     var expectedGeom = reader.read(expectedWKT);
@@ -50,7 +50,7 @@ describe('jsts.operation.overlay.snap.LineStringSnapper', function() {
     
     var snapper = new jsts.operation.overlay.snap.LineStringSnapper(line, 1E-6);
     var newPoints = snapper.snapTo([point.coordinate]);
-    var snappedGeom = factory.createLineString(newPoints.toArray());
+    var snappedGeom = factory.createLineString(newPoints);
     
     var expectedWKT = 'LINESTRING (0 0.000000001, 0 10)'; 
     var expectedGeom = reader.read(expectedWKT);

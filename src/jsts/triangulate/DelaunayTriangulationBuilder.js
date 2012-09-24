@@ -33,7 +33,7 @@ jsts.triangulate.DelaunayTriangulationBuilder = function() {
 jsts.triangulate.DelaunayTriangulationBuilder.extractUniqueCoordinates = function(
     geom) {
   if (geom === undefined || geom === null) {
-    return new jsts.geom.CoordinateList([], false);
+    return new jsts.geom.CoordinateList([], false).toArray();
   }
 
   var coords = geom.getCoordinates();

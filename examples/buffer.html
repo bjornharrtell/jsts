@@ -13,9 +13,10 @@
   function init() {
     var reader = new jsts.io.WKTReader();
 
-    var input = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');
-
-    var buffer = input.buffer(20);
+    //var input = reader.read('POLYGON ((80 300, 280 300, 280 80, 80 80, 80 300), (260 280, 180 200, 100 280, 100 100, 260 100, 260 280))');	
+    var input = reader.read('POLYGON ((-69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90, -69 -90))');
+    
+    var buffer = input.buffer(0);
     
     var parser = new jsts.io.OpenLayersParser();
     input = parser.write(input);

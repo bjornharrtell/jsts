@@ -311,11 +311,11 @@
     coordList.add(octPts, false);
 
     // points must all lie in a line
-    if (coordList.length < 3) {
+    if (coordList.size() < 3) {
       return null;
     }
     coordList.closeRing();
-    return coordList;
+    return coordList.toCoordinateArray();
   };
 
   /**

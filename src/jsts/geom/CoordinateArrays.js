@@ -27,7 +27,7 @@ jsts.geom.CoordinateArrays.removeRepeatedPoints = function(coord) {
     return coord;
   }
   coordList = new jsts.geom.CoordinateList(coord, false);
-  return coordList;
+  return coordList.toCoordinateArray();
 };
 
 

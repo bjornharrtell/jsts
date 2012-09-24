@@ -92,9 +92,8 @@
    * @private
    */
   SnapOverlayOp.prototype.snap = function(geom) {
-    // TODO: reenable when CommonBitsRemover is ported
-    // var remGeom = this.removeCommonBits(geom);
-    remGeom = geom;
+    // TODO: CommonBitsRemover isn't ported yet...
+    var remGeom = geom;//this.removeCommonBits(geom);
 
     var snapGeom = GeometrySnapper.snap(remGeom[0], remGeom[1],
         this.snapTolerance);
@@ -106,8 +105,8 @@
    * @private
    */
   SnapOverlayOp.prototype.prepareResult = function(geom) {
-    // TODO: reenable when CommonBitsRemover is ported
-    // this.cbr.addCommonBits(geom);
+ // TODO: CommonBitsRemover isn't ported yet...
+    //this.cbr.addCommonBits(geom);
     return geom;
   };
 

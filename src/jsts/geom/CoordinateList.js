@@ -10,9 +10,6 @@
  * Constructs a new list from an array of Coordinates, allowing caller to
  * specify if repeated points are to be removed.
  *
- * In JSTS CoordinateList do *not* expose an API extended from ArrayList in Java, instead it is based on a simple JavaScript array.
- * CoordinateList does not seem to be used extensively which would warrant keeping the API.
- *
  * @param {Array.<jsts.geom.Coordinate>}
  *          coord the array of coordinates to load into the list.
  * @param {boolean}
@@ -21,6 +18,8 @@
  * @constructor
  */
 jsts.geom.CoordinateList = function(coord, allowRepeated) {
+  javascript.util.ArrayList.apply(this, arguments);
+  
   allowRepeated = (allowRepeated === undefined) ? true : allowRepeated;
 
   if (coord !== undefined) {
@@ -28,8 +27,17 @@ jsts.geom.CoordinateList = function(coord, allowRepeated) {
   }
 };
 
-jsts.geom.CoordinateList.prototype = new Array();
+jsts.geom.CoordinateList.prototype = new javascript.util.ArrayList();
 
+
+// simulate overloaded methods...
+jsts.geom.CoordinateList.prototype.add = function() {
+    if (arguments.length>1) {
+        return this.addCoordinates.apply(this, arguments);
+    } else {
+        return javascript.util.ArrayList.prototype.add.apply(this, arguments);
+    }
+};
 
 /**
  * Adds an array of coordinates to the list.
@@ -42,10 +50,12 @@ jsts.geom.CoordinateList.prototype = new Array();
  *          direction if false, the array is added in reverse order.
  * @return {boolean} true (as by general collection contract).
  */
-jsts.geom.CoordinateList.prototype.add = function(coord, allowRepeated,
+jsts.geom.CoordinateList.prototype.addCoordinates = function(coord, allowRepeated,
     direction) {
   if (coord instanceof jsts.geom.Coordinate) {
     return this.addCoordinate.apply(this, arguments);
+  } else if (typeof coord === 'number') {
+    return this.insertCoordinate.apply(this, arguments);
   }
 
   direction = direction || true;
@@ -75,13 +85,12 @@ jsts.geom.CoordinateList.prototype.addCoordinate = function(coord,
     allowRepeated) {
   // don't add duplicate coordinates
   if (!allowRepeated) {
-    if (this.length >= 1) {
-      var last = this[this.length - 1];
-      if (last.equals2D(coord))
-        return;
+    if (this.size() >= 1) {
+      var last = this.get(this.size() - 1);
+      if (last.equals2D(coord)) return;
     }
   }
-  this.push(coord);
+  this.add(coord);
 };
 
 /**
@@ -99,24 +108,24 @@ jsts.geom.CoordinateList.prototype.insertCoordinate = function(index, coord,
   // don't add duplicate coordinates
   if (!allowRepeated) {
     var before = index > 0 ? index - 1 : -1;
-    if (before !== -1 && this[before].equals2D(coord)) {
+    if (before !== -1 && this.get(before).equals2D(coord)) {
       return;
     }
 
-    var after = index < this.length - 1 ? index + 1 : -1;
-    if (after !== -1 && this[after].equals2D(coord)) {
+    var after = index < this.size() - 1 ? index + 1 : -1;
+    if (after !== -1 && this.get(after).equals2D(coord)) {
       return;
     }
   }
-  this.splice(index, 0, coord);
+  this.array.splice(index, 0, coord);
 };
 
 /**
  * Ensure this coordList is a ring, by adding the start point if necessary
  */
 jsts.geom.CoordinateList.prototype.closeRing = function() {
-  if (this.length > 0) {
-    this.addCoordinate(new jsts.geom.Coordinate(this[0]), false);
+  if (this.size() > 0) {
+    this.addCoordinate(new jsts.geom.Coordinate(this.get(0)), false);
   }
 };
 
@@ -128,10 +137,10 @@ jsts.geom.CoordinateList.prototype.closeRing = function() {
  */
 jsts.geom.CoordinateList.prototype.toArray = function() {
   var i, il, arr;
-  i = 0, il = this.length, arr = new Array(il);
+  i = 0, il = this.size(), arr = [];
 
   for (i; i < il; i++) {
-    arr[i] = this[i];
+    arr[i] = this.get(i);
   }
 
   return arr;
