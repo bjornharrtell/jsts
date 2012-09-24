@@ -11,11 +11,18 @@
  * properties of triangles.
  *
  * @constructor
+ * @param {jsts.geom.Coordinate}
+ *          p0 a coordinate.
+ * @param {jsts.geom.Coordinate}
+ *          p1 a coordinate.
+ * @param {jsts.geom.Coordinate}
+ *          p2 a coordinate.
  */
-jsts.geom.Triangle = function() {
-
+jsts.geom.Triangle = function(p0, p1, p2) {
+  this.p0 = p0;
+  this.p1 = p1;
+  this.p2 = p2;
 };
-
 
 /**
  * Tests whether a triangle is acute. A triangle is acute iff all interior
@@ -290,24 +297,6 @@ jsts.geom.Triangle.signedArea = function(a, b, c) {
    */
   return ((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2.0;
 };
-
-
-/**
- * Initializes a new triangle from provided points
- *
- * @param {jsts.geom.Coordinate}
- *          p0 a coordinate.
- * @param {jsts.geom.Coordinate}
- *          p1 a coordinate.
- * @param {jsts.geom.Coordinate}
- *          p2 a coordinate.
- */
-jsts.geom.Triangle.prototype.initialize = function(p0, p1, p2) {
-  this.p0 = p0;
-  this.p1 = p1;
-  this.p2 = p2;
-};
-
 
 /**
  * Computes the incentre of a triangle. The <i>incentre</i> of a triangle is
