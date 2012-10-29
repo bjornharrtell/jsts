@@ -118,7 +118,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTre
    * The result is a list of Geometrys only
    */
   var geoms = this.reduceToGeometries(geomTree);
-  var union = this.bindayUnion(geoms);
+  var union = this.binaryUnion(geoms);
   return union;
 };
 
