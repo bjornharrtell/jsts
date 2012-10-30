@@ -118,7 +118,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTre
    * The result is a list of Geometrys only
    */
   var geoms = this.reduceToGeometries(geomTree);
-  var union = this.bindayUnion(geoms);
+  var union = this.binaryUnion(geoms);
   return union;
 };
 
@@ -168,11 +168,11 @@ jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms
  * @return {jsts.geom.Geometry}
  * @private
  */
-jsts.operation.union.CascadedPolygonUnion.getGeometry = function(list, index) {
+jsts.operation.union.CascadedPolygonUnion.prototype.getGeometry = function(list, index) {
   if (index >= list.length) {
     return null;
   }
-  return list[i];
+  return list[index];
 };
 
 
@@ -224,7 +224,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionSafe = function(g0, g1)
 
   //what if both are null?  Maybe return empty GC?
 
-  return unionOptimized(g0, g1);
+  return this.unionOptimized(g0, g1);
 };
 
 
