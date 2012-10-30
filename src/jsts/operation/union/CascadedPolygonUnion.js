@@ -153,7 +153,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms
   }
   else {
     // recurse on both halves of the list
-    var mid = (end + start) / 2;
+    var mid = parseInt((end + start) / 2);
     var g0 = this.binaryUnion(geoms, start, mid);
     var g1 = this.binaryUnion(geoms, mid, end);
     return this.unionSafe(g0, g1);
