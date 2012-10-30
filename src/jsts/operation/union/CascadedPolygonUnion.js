@@ -268,13 +268,13 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized = function(g0
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersection = function(g0, g1, common) {
-  var disjointPolys = [];
+  var disjointPolys = new javascript.util.ArrayList();
   var g0Int = this.extractByEnvelope(common, g0, disjointPolys);
   var g1Int = this.extractByEnvelope(common, g1, disjointPolys);
 
   var union = this.unionActual(g0Int, g1Int);
 
-  disjointPolys.push(union);
+  disjointPolys.add(union);
   var overallUnion = jsts.geom.util.GeometryCombiner.combine(disjointPolys);
 
   return overallUnion;
@@ -290,12 +290,12 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersecti
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope = function(env, geom, disjointGeoms) {
-  var intersectingGeoms = [];
+  var intersectingGeoms = new javascript.util.ArrayList();
 
   for (var i = 0; i < geom.getNumGeometries(); i++) {
     var elem = geom.getGeometryN(i);
     if (elem.getEnvelopeInternal().intersects(env)) {
-      intersectingGeoms.push(elem);
+      intersectingGeoms.add(elem);
     }
     else {
       disjointGeoms.add(elem);
