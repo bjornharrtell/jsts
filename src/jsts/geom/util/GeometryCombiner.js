@@ -55,9 +55,12 @@ jsts.geom.util.GeometryCombiner.combine = function(geoms) {
  */
 jsts.geom.util.GeometryCombiner.combine2 = function() {
   var arrayList = new javascript.util.ArrayList();
-  arguments.foreach(function(a) { arrayList.add(a); })
+  for (var a in arguments) {
+    arrayList.add(arguments[a]);
+  }
+  // arguments.foreach(function(a) { arrayList.add(a); })
 
-  var combiner = jsts.geom.util.GeometryCombiner(arrayList);
+  var combiner = new jsts.geom.util.GeometryCombiner(arrayList);
   return combiner.combine();
 };
 
@@ -105,17 +108,17 @@ jsts.geom.util.GeometryCombiner.extractFactory = function(geoms) {
  */
 jsts.geom.util.GeometryCombiner.prototype.combine = function() {
     var elems = new javascript.util.ArrayList(), i;
-  	for (i = this.inputGeoms.iterator(); i.hasNext(); ) {
+    for (i = this.inputGeoms.iterator(); i.hasNext(); ) {
         var g = i.next();
         this.extractElements(g, elems);
-  	}
+    }
     
     if (elems.size() === 0) {
-    	if (this.geomFactory !== null) {
+        if (this.geomFactory !== null) {
             // return an empty GC
             return geomFactory.createGeometryCollection(null);
-    	}
-    	return null;
+        }
+        return null;
     }
     // return the "simplest possible" geometry
     return this.geomFactory.buildGeometry(elems);
