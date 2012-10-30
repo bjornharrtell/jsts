@@ -118,7 +118,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionTree = function(geomTre
    * The result is a list of Geometrys only
    */
   var geoms = this.reduceToGeometries(geomTree);
-  var union = this.bindayUnion(geoms);
+  var union = this.binaryUnion(geoms);
   return union;
 };
 
@@ -153,7 +153,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms
   }
   else {
     // recurse on both halves of the list
-    var mid = (end + start) / 2;
+    var mid = parseInt((end + start) / 2);
     var g0 = this.binaryUnion(geoms, start, mid);
     var g1 = this.binaryUnion(geoms, mid, end);
     return this.unionSafe(g0, g1);
@@ -168,11 +168,11 @@ jsts.operation.union.CascadedPolygonUnion.prototype.binaryUnion = function(geoms
  * @return {jsts.geom.Geometry}
  * @private
  */
-jsts.operation.union.CascadedPolygonUnion.getGeometry = function(list, index) {
+jsts.operation.union.CascadedPolygonUnion.prototype.getGeometry = function(list, index) {
   if (index >= list.length) {
     return null;
   }
-  return list[i];
+  return list[index];
 };
 
 
@@ -224,7 +224,7 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionSafe = function(g0, g1)
 
   //what if both are null?  Maybe return empty GC?
 
-  return unionOptimized(g0, g1);
+  return this.unionOptimized(g0, g1);
 };
 
 
@@ -268,13 +268,13 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionOptimized = function(g0
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersection = function(g0, g1, common) {
-  var disjointPolys = [];
+  var disjointPolys = new javascript.util.ArrayList();
   var g0Int = this.extractByEnvelope(common, g0, disjointPolys);
   var g1Int = this.extractByEnvelope(common, g1, disjointPolys);
 
   var union = this.unionActual(g0Int, g1Int);
 
-  disjointPolys.push(union);
+  disjointPolys.add(union);
   var overallUnion = jsts.geom.util.GeometryCombiner.combine(disjointPolys);
 
   return overallUnion;
@@ -290,12 +290,12 @@ jsts.operation.union.CascadedPolygonUnion.prototype.unionUsingEnvelopeIntersecti
  * @private
  */
 jsts.operation.union.CascadedPolygonUnion.prototype.extractByEnvelope = function(env, geom, disjointGeoms) {
-  var intersectingGeoms = [];
+  var intersectingGeoms = new javascript.util.ArrayList();
 
   for (var i = 0; i < geom.getNumGeometries(); i++) {
     var elem = geom.getGeometryN(i);
     if (elem.getEnvelopeInternal().intersects(env)) {
-      intersectingGeoms.push(elem);
+      intersectingGeoms.add(elem);
     }
     else {
       disjointGeoms.add(elem);
