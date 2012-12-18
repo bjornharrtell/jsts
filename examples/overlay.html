@@ -1,14 +1,13 @@
+<!DOCTYPE HTML>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Overlay example</title>
-  <link rel="stylesheet" href="http://www.openlayers.org/api/2.11/theme/default/style.css" type="text/css" />
-  
-  <script src="http://www.openlayers.org/api/2.11/OpenLayers.js"></script>
+  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 
   <script type="text/javascript" src="../lib/javascript.util.js"></script>
   <script type="text/javascript" src="../lib/jsts.js"></script>
-  <script type="text/javascript" src="../lib/attache.array.min.js"></script>
-
+  <script type="text/javascript" src="https://raw.github.com/olooney/attache-array-js/master/attache.array.min.js"></script>
 <script type="text/javascript">
   function init() {
     var reader = new jsts.io.WKTReader();
@@ -53,6 +52,6 @@
 </head>
 <body onload="init()">
   Input polygons (blue and red) have union outlined by green and intersection outlined by yellow.
-  <div id="map" style="width:500px;height=500px;"></div>
+  <div id="map" style="width:500px;height:500px;"></div>
 </body>
 </html>
