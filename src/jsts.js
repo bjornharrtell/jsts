@@ -6,7 +6,7 @@
 
 /** @namespace */
 jsts = {
-  version: '0.13.1',
+  version: '0.13.2',
   /** @namespace */
   algorithm: {
     /** @namespace */

@@ -1,4 +1,4 @@
 'use strict';
-require('./lib/javascript.util');
+GLOBAL.javascript.util = require('javascript.util');
 var jsts = require('./lib/jsts');
 module.exports = jsts
