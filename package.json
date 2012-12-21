@@ -11,7 +11,7 @@
         }
     ],
     "dependencies": {
-        "javascript-util": "0.10.0"
+        "javascript.util": "0.10.0"
     },
     "devDependencies": {
         "jasmine-node": "1.0.21"
