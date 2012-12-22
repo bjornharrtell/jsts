@@ -278,7 +278,7 @@ jsts.index.strtree.STRtree.prototype.insert = function(itemEnv, item) {
  *          searchEnv
  * @param {jsts.index.ItemVisitor}
  *          visitor
- * @return {?Array}
+ * @return {Array}
  * @public
  */
 jsts.index.strtree.STRtree.prototype.query = function(searchEnv, visitor) {
@@ -343,7 +343,7 @@ jsts.index.strtree.STRtree.prototype.getComparator = function() {
  *
  * @param {ItemDistance}
  *          itemDist a distance metric applicable to the items in this tree.
- * @return {Array.<Object>} the pair of the nearest items.
+ * @return {Object[]} the pair of the nearest items.
  */
 jsts.index.strtree.STRtree.prototype.nearestNeighbour = function(itemDist) {
   var bp = new jsts.index.strtree.BoundablePair(this.getRoot(), this.getRoot(),
@@ -363,7 +363,7 @@ jsts.index.strtree.STRtree.prototype.nearestNeighbour = function(itemDist) {
  * @param {ItemDistance}
  *          itemDist a distance metric applicable to the items in this tree and
  *          the query item.
- * @return {Array.<Object>} the nearest item in this tree.
+ * @return {Object[]} the nearest item in this tree.
  */
 jsts.index.strtree.STRtree.prototype.nearestNeighbour2 = function(env, item,
     itemDist) {
@@ -383,7 +383,7 @@ jsts.index.strtree.STRtree.prototype.nearestNeighbour2 = function(env, item,
  *          tree another tree.
  * @param {ItemDistance}
  *          itemDist a distance metric applicable to the items in the trees.
- * @return {Array.<Object>} the pair of the nearest items, one from each tree.
+ * @return {Object[]} the pair of the nearest items, one from each tree.
  */
 jsts.index.strtree.STRtree.prototype.nearestNeighbour3 = function(tree,
     itemDist) {
