@@ -1,5 +1,5 @@
 #!/bin/sh
-jsbuild full.cfg -v -o ../lib -j jsts.js
+jsbuild full.cfg -v -o ../lib -j jsts.min.js
 tar -cvf jsts-0.13.2.tar ../src ../doc ../lib ../examples ../src ../license.txt ../authors.txt ../ChangeLog ../README.md
 rm jsts-0.13.2.tar.gz
 gzip -9 jsts-0.13.2.tar
