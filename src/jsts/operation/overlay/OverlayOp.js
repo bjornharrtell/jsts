@@ -4,6 +4,24 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/PointLocator.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/EdgeList.js
+ * @requires jsts/geomgraph/EdgeNodingValidator.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/PlanarGraph.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/operation/GeometryGraphOperation.js
+ * @requires jsts/operation/overlay/LineBuilder.js
+ * @requires jsts/operation/overlay/OverlayNodeFactory.js
+ * @requires jsts/operation/overlay/PointBuilder.js
+ * @requires jsts/operation/overlay/PolygonBuilder.js
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
   /**

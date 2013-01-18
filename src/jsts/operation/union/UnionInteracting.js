@@ -5,6 +5,14 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/util/GeometryCombiner.js
+ */
+
+
+/**
  * Experimental code to union MultiPolygons
  * with processing limited to the elements which actually interact.
  *

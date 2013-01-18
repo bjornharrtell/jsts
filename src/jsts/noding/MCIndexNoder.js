@@ -4,6 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/index/chain/MonotoneChainBuilder.js
+ * @requires jsts/index/chain/MonotoneChainOverlapAction.js
+ * @requires jsts/index/strtree/STRtree.js
+ * @requires jsts/noding/NodedSegmentString.js
+ * @requires jsts/noding/SinglePassNoder.js
+ */
+
+
 (function() {
 
   /**

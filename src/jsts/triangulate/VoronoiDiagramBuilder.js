@@ -5,6 +5,26 @@
 */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/triangulate/DelaunayTriangulationBuilder.js
+ * @requires jsts/triangulate/IncrementalDelaunayTriangulator.js
+ * @requires jsts/triangulate/quadedge/QuadEdgeSubdivision.js
+ */
+
+
+/**
  * A utility class which creates Voronoi Diagrams
  * from collections of points.
  * The diagram is returned as a {@link GeometryCollection} of {@link Polygon}s,

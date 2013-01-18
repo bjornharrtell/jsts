@@ -5,6 +5,20 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geomgraph/PlanarGraph.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/operation/overlay/MaximalEdgeRing.js
+ * @requires jsts/operation/overlay/OverlayNodeFactory.js
+ */
+
+
+/**
  * This class tests that the interior of an area {@link Geometry} (
  * {@link Polygon} or {@link MultiPolygon} ) is connected. This can happen if:
  * <ul>

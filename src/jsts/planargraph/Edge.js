@@ -5,6 +5,13 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/planargraph/GraphComponent.js
+ * @requires jsts/planargraph/Node.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/Edge.java
  * Revision: 6

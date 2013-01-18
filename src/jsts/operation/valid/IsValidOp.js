@@ -5,6 +5,28 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/algorithm/MCPointInRing.js
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geomgraph/GeometryGraph.js
+ * @requires jsts/operation/valid/ConnectedInteriorTester.js
+ * @requires jsts/operation/valid/ConsistentAreaTester.js
+ * @requires jsts/operation/valid/IndexedNestedRingTester.js
+ * @requires jsts/operation/valid/TopologyValidationError.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Implements the algorithms required to compute the <code>isValid()</code>
  * method for {@link Geometry}s. See the documentation for the various geometry
  * types for a specification of validity.

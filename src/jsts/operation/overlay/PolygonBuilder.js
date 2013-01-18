@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geomgraph/PlanarGraph.js
+ * @requires jsts/operation/overlay/MaximalEdgeRing.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Forms {@link Polygon}s out of a graph of {@link DirectedEdge}s. The edges
  * to use are marked as being in the result Area.
  * <p>

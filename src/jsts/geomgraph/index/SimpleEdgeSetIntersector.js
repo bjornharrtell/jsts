@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geomgraph/index/EdgeSetIntersector.js
+ */
+
+
+/**
  * @requires jsts/geomgraph/index/EdgeSetIntersector.js
  */
 

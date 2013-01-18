@@ -4,6 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/EdgeEnd.js
+ * @requires jsts/geomgraph/Node.js
+ */
+
+
 (function() {
 
   /**

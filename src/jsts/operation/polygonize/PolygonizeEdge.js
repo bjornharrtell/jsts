@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/planargraph/Edge.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/polygonize/PolygonizeEdge.java
  * Revision: 6

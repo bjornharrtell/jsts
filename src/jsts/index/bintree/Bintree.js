@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/index/bintree/Interval.js
+ * @requires jsts/index/bintree/Root.js
+ */
+
+
 
 /**
  * An <code>BinTree</code> (or "Binary Interval Tree") is a 1-dimensional

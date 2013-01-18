@@ -4,6 +4,20 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/Angle.js
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/algorithm/HCoordinate.js
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/operation/buffer/BufferParameters.js
+ * @requires jsts/operation/buffer/OffsetSegmentString.js
+ */
+
+
 
 /**
  * Generates segments which form an offset curve. Supports all end cap and join

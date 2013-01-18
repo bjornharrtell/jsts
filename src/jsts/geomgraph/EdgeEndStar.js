@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/locate/SimplePointInAreaLocator.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * @requires jsts/geom/Location.js
  */
 

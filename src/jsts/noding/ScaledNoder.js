@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateArrays.js
+ * @requires jsts/noding/NodedSegmentString.js
+ * @requires jsts/noding/Noder.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/ScaledNoder.java
  * Revision: 478
  */

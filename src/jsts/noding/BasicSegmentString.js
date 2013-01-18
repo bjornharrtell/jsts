@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/noding/Octant.js
+ * @requires jsts/noding/SegmentString.js
+ */
+
+
 (function() {
 
   /**

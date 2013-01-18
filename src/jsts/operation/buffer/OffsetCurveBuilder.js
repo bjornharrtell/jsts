@@ -4,6 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/operation/buffer/BufferInputLineSimplifier.js
+ * @requires jsts/operation/buffer/BufferParameters.js
+ * @requires jsts/operation/buffer/OffsetSegmentGenerator.js
+ */
+
+
 
 
 /**

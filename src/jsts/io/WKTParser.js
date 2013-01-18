@@ -13,6 +13,22 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ */
+
+
+/**
  * Class for reading and writing Well-Known Text.
  *
  * NOTE: Adapted from OpenLayers 2.11 implementation.

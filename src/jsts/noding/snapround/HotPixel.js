@@ -5,6 +5,14 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/noding/snapround/HotPixel.java
  * Revision: 143

@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/algorithm/distance/PointPairDistance.java
  * Revision: 6
  */

@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/Coordinate.js
+ */
+
+
 
 
 /**

@@ -5,6 +5,14 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/PrecisionModel.js
+ * @requires jsts/geom/util/GeometryTransformer.js
+ * @requires jsts/operation/overlay/snap/LineStringSnapper.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/overlay/snap/GeometrySnapper.java
  * Revision: 167

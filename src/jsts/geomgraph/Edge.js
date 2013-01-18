@@ -5,6 +5,18 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geomgraph/Depth.js
+ * @requires jsts/geomgraph/EdgeIntersectionList.js
+ * @requires jsts/geomgraph/GraphComponent.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/Position.js
+ */
+
+
+/**
  * @requires jsts/geomgraph/GraphComponent.js
  */
 

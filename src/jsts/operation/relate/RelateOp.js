@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/operation/GeometryGraphOperation.js
+ * @requires jsts/operation/relate/RelateComputer.js
+ */
+
+
 
 
 /**

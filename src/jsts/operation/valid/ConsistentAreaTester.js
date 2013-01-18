@@ -5,6 +5,13 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/operation/relate/RelateNodeGraph.js
+ */
+
+
+/**
  * Checks that a {@link GeometryGraph} representing an area
  * (a {@link Polygon} or {@link MultiPolygon} )
  * has consistent semantics for area geometries.

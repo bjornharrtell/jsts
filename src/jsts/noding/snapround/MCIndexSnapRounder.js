@@ -5,6 +5,18 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/noding/IntersectionFinderAdder.js
+ * @requires jsts/noding/MCIndexNoder.js
+ * @requires jsts/noding/NodedSegmentString.js
+ * @requires jsts/noding/Noder.js
+ * @requires jsts/noding/snapround/HotPixel.js
+ * @requires jsts/noding/snapround/MCIndexPointSnapper.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/snapround/MCIndexSnapRounder.java
  * Revision: 486
  */

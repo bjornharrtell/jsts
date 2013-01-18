@@ -12,6 +12,16 @@
  *
  * @version 1.7
  */
+
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Polygon.js
+ */
+
 jsts.algorithm.CentroidArea = function() {
   this.basePt = null;
   this.triangleCent3 = new jsts.geom.Coordinate();

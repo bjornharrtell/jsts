@@ -5,6 +5,13 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/index/ItemVisitor.js
+ */
+
+
+/**
  * The basic operations supported by classes
  * implementing spatial index algorithms.
  * <p>

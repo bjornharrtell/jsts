@@ -4,6 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/index/ItemVisitor.js
+ * @requires jsts/index/quadtree/Quadtree.js
+ */
+
+
 
 /**
  * An spatial index on a set of {@link LineSegment}s. Supports adding and

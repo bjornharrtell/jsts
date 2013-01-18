@@ -4,6 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/BoundaryNodeRule.js
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geomgraph/GeometryGraph.js
+ */
+
+
 
 
 /**

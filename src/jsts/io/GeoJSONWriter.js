@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/io/GeoJSONParser.js
+ */
+
+
 (function() {
     /**
      * Writes the GeoJSON representation of a {@link Geometry}. The

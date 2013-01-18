@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/index/bintree/Interval.js
+ */
+
+
+/**
  * The base class for nodes in a {@link Bintree}.
  */
 (function() {

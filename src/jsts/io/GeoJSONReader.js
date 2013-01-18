@@ -3,6 +3,15 @@
  * See /license-notice.txt for the full text of the license notice.
  * See /license.txt for the full text of the license.
  */
+
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/PrecisionModel.js
+ * @requires jsts/io/GeoJSONParser.js
+ */
+
 (function() {
 
     /**

@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/operation/overlay/OverlayOp.js
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
   /**

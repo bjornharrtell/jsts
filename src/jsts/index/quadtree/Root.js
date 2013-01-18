@@ -4,6 +4,16 @@
  * See /license.txt for the full text of the license.
 */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/index/IntervalSize.js
+ * @requires jsts/index/quadtree/Node.js
+ * @requires jsts/index/quadtree/NodeBase.js
+ */
+
+
 
 
 /**

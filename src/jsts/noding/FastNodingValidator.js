@@ -4,6 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/io/WKTWriter.js
+ * @requires jsts/noding/InteriorIntersectionFinder.js
+ * @requires jsts/noding/MCIndexNoder.js
+ */
+
+
 (function() {
 
   /**

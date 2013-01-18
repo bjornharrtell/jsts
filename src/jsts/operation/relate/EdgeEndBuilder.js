@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geomgraph/EdgeEnd.js
+ * @requires jsts/geomgraph/Label.js
+ */
+
+
 (function() {
 
   /**

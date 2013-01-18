@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/index/chain/MonotoneChainSelectAction.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/noding/snapround/MCIndexPointSnapper.java
  * Revision: 486

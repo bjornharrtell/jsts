@@ -4,6 +4,13 @@
  * @requires jsts/geomgraph/EdgeEndStar.js
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geomgraph/EdgeEndStar.js
+ * @requires jsts/operation/relate/EdgeEndBundle.js
+ */
+
+
 
 
 /**

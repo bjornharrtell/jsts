@@ -4,6 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geomgraph/Quadrant.js
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
   /**

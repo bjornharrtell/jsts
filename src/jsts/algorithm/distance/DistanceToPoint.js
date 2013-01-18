@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/Polygon.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/algorithm/distance/DistanceToPoint.java
  * Revision: 6
  */

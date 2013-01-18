@@ -5,6 +5,19 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/index/ItemVisitor.js
+ * @requires jsts/index/SpatialIndex.js
+ * @requires jsts/index/strtree/AbstractNode.js
+ * @requires jsts/index/strtree/AbstractSTRtree.js
+ * @requires jsts/index/strtree/BoundablePair.js
+ * @requires jsts/index/strtree/ItemBoundable.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  *  A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
  *  For two-dimensional spatial data.
  * <P>

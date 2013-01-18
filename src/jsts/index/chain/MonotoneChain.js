@@ -5,6 +5,13 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ */
+
+
+/**
  * Monotone Chains are a way of partitioning the segments of a linestring to
  * allow for fast searching of intersections. They have the following
  * properties:

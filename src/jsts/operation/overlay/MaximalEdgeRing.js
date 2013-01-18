@@ -5,6 +5,13 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geomgraph/EdgeRing.js
+ * @requires jsts/operation/overlay/MinimalEdgeRing.js
+ */
+
+
+/**
  * @requires jsts/geomgraph/EdgeRing.js
  */
 

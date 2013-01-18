@@ -4,6 +4,21 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateFilter.js
+ * @requires jsts/geom/CoordinateSequenceFilter.js
+ * @requires jsts/geom/Dimension.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryComponentFilter.js
+ * @requires jsts/geom/GeometryFilter.js
+ * @requires jsts/operation/BoundaryOp.js
+ */
+
+
 (function() {
 
   /**

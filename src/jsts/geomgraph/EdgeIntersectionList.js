@@ -4,6 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geomgraph/Edge.js
+ * @requires jsts/geomgraph/EdgeIntersection.js
+ * @requires jsts/geomgraph/Label.js
+ */
+
+
 (function() {
 
   /**

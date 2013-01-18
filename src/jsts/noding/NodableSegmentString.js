@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/noding/SegmentString.js
+ */
+
+
+/**
  * @requires jsts/noding/SegmentString.js
  */
 

@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/index/ItemVisitor.js
+ * @requires jsts/index/strtree/AbstractNode.js
+ * @requires jsts/index/strtree/ItemBoundable.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Base class for STRtree and SIRtree. STR-packed R-trees are described in:
  * P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
  * Application To GIS. Morgan Kaufmann, San Francisco, 2002.

@@ -4,6 +4,22 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geom/util/GeometryExtracter.js
+ * @requires jsts/operation/overlay/OverlayOp.js
+ * @requires jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js
+ * @requires jsts/operation/union/CascadedPolygonUnion.js
+ * @requires jsts/operation/union/PointGeometryUnion.js
+ */
+
+
 (function() {
 
 /**

@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/noding/SegmentIntersector.js
+ */
+
+
+/**
  *@requires jsts/noding/SegmentIntersector.js
  */
 

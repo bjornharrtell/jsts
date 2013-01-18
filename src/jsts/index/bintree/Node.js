@@ -5,6 +5,14 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/index/bintree/Interval.js
+ * @requires jsts/index/bintree/Key.js
+ * @requires jsts/index/bintree/NodeBase.js
+ */
+
+
+/**
  * A node of a {@link Bintree}.
  */
 (function() {

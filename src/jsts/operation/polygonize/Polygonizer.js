@@ -5,6 +5,16 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryComponentFilter.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/operation/polygonize/EdgeRing.js
+ * @requires jsts/operation/polygonize/PolygonizeGraph.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/polygonize/Polygonizer.java
  * Revision: 6

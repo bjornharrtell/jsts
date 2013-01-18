@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ */
+
+
 
 /**
  * A dynamic list of the vertices in a constructed offset curve. Automatically

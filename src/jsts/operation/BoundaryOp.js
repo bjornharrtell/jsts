@@ -1,6 +1,14 @@
 
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/BoundaryNodeRule.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/MultiLineString.js
+ */
+
+
+/**
  * Computes the boundary of a {@link Geometry}.
  * Allows specifying the {@link BoundaryNodeRule} to be used.
  * This operation will always return a {@link Geometry} of the appropriate

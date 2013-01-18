@@ -5,6 +5,13 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/planargraph/DirectedEdgeStar.js
+ * @requires jsts/planargraph/GraphComponent.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/Node.java
  * Revision: 6

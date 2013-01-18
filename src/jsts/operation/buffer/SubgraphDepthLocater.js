@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geomgraph/DirectedEdge.js
+ * @requires jsts/geomgraph/Position.js
+ */
+
+
+/**
  * Locates a subgraph inside a set of subgraphs, in order to determine the
  * outside depth of the subgraph. The input subgraphs are assumed to have had
  * depths already calculated for their edges.

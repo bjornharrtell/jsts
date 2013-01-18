@@ -5,6 +5,17 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/io/WKTWriter.js
+ * @requires jsts/noding/NodableSegmentString.js
+ * @requires jsts/noding/Octant.js
+ * @requires jsts/noding/SegmentNodeList.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/NodedSegmentString.java
  * Revision: 478
  */

@@ -5,6 +5,22 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateList.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geom/Triangle.js
+ * @requires jsts/triangulate/quadedge/LastFoundQuadEdgeLocator.js
+ * @requires jsts/triangulate/quadedge/QuadEdge.js
+ * @requires jsts/triangulate/quadedge/Vertex.js
+ */
+
+
+/**
  * @requires jsts/io/WKTWriter.js
  */
 

@@ -5,6 +5,12 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/geomgraph/Node.js
+ */
+
+
+/**
  * @requires jsts/geomgraph/Node.js
  */
 

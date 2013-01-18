@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * Other modules referenced here:
+ * @requires jsts/geom/CoordinateArrays.js
+ */
+
+
 
 /**
  * Allows comparing {@link Coordinate} arrays in an orientation-independent way.

@@ -5,6 +5,14 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/index/strtree/AbstractNode.js
+ * @requires jsts/index/strtree/AbstractSTRtree.js
+ * @requires jsts/index/strtree/Interval.js
+ */
+
+
+/**
  * One-dimensional version of an STR-packed R-tree. SIR stands for
  * "Sort-Interval-Recursive". STR-packed R-trees are described in:
  * P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With

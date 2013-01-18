@@ -5,6 +5,15 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/index/IntervalSize.js
+ * @requires jsts/index/bintree/Interval.js
+ * @requires jsts/index/bintree/Node.js
+ * @requires jsts/index/bintree/NodeBase.js
+ */
+
+
+/**
  * The root node of a single {@link Bintree}. It is centred at the origin, and
  * does not have a defined extent.
  */

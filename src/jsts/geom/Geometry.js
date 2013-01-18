@@ -5,6 +5,36 @@
  */
 
 /**
+ * Other modules referenced here:
+ * @requires jsts/algorithm/CentroidArea.js
+ * @requires jsts/algorithm/CentroidLine.js
+ * @requires jsts/algorithm/CentroidPoint.js
+ * @requires jsts/algorithm/ConvexHull.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/io/WKTWriter.js
+ * @requires jsts/operation/IsSimpleOp.js
+ * @requires jsts/operation/buffer/BufferOp.js
+ * @requires jsts/operation/buffer/BufferParameters.js
+ * @requires jsts/operation/distance/DistanceOp.js
+ * @requires jsts/operation/overlay/OverlayOp.js
+ * @requires jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js
+ * @requires jsts/operation/relate/RelateOp.js
+ * @requires jsts/operation/union/UnaryUnionOp.js
+ * @requires jsts/operation/valid/IsValidOp.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * The base class for all geometric objects.
  *
  *  <H3>Binary Predicates</H3>
