@@ -4,6 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/PrecisionModel.js
+ * @requires jsts/io/WKTParser.js
+ */
+
+
 
 
 /**

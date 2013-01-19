@@ -4,10 +4,17 @@
  * See /license.txt for the full text of the license.
  */
 
-
 /**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/algorithm/CentralEndpointIntersector.js
+ * @requires jsts/algorithm/HCoordinate.js
  * @requires jsts/algorithm/LineIntersector.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
  */
+
+
+
 
 
 

@@ -5,19 +5,22 @@
  */
 
 /**
+ * @requires jsts/geom/CoordinateArrays.js
+ * @requires jsts/operation/polygonize/EdgeRing.js
+ * @requires jsts/operation/polygonize/PolygonizeDirectedEdge.js
+ * @requires jsts/operation/polygonize/PolygonizeEdge.js
+ * @requires jsts/planargraph/Node.js
+ * @requires jsts/planargraph/PlanarGraph.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/polygonize/PolygonizeDirectedEdge.java
  * Revision: 6
  */
 
-/**
- * @requires jsts/operation/polygonize/EdgeRing.js
- * @requires jsts/operation/polygonize/PolygonizeEdge.js
- * @requires jsts/operation/polygonize/PolygonizeDirectedEdge.js
- * @requires jsts/geom/Coordinate.js
- * @requires jsts/planargraph/PlanarGraph.js
- * @requires jsts/planargraph/Node.js
- */
 
 (function() {
 

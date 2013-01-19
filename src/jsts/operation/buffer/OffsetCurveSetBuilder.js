@@ -4,6 +4,25 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/CoordinateArrays.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geom/Triangle.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/noding/NodedSegmentString.js
+ */
+
+
 
 /**
  * Creates all the raw offset curves for a buffer of a {@link Geometry}. Raw

@@ -4,11 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/EdgeEnd.js
+ * @requires jsts/geomgraph/Node.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   */
 
   var Location = jsts.geom.Location;
   var ArrayList = javascript.util.ArrayList;

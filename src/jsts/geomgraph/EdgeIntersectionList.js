@@ -4,11 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geomgraph/Edge.js
+ * @requires jsts/geomgraph/EdgeIntersection.js
+ * @requires jsts/geomgraph/Label.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geomgraph/EdgeIntersection.js
-   */
 
   var EdgeIntersection = jsts.geomgraph.EdgeIntersection;
   var TreeMap = javascript.util.TreeMap;

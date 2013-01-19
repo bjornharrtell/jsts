@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/RobustDeterminant.js
+ * @requires jsts/geom/Location.js
+ */
+
+
 
 
 /**

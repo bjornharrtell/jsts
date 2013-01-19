@@ -4,12 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/operation/overlay/OverlayOp.js
+ * @requires jsts/operation/overlay/snap/SnapOverlayOp.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/operation/overlay/OverlayOp.js
-   * @requires jsts/operation/overlay/snap/SnapOverlayOp.js
-   */
 
   var OverlayOp = jsts.operation.overlay.OverlayOp;
   var SnapOverlayOp = jsts.operation.overlay.snap.SnapOverlayOp;

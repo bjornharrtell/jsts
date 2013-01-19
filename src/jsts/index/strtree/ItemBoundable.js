@@ -5,10 +5,15 @@
  */
 
 /**
+ * @requires jsts/index/strtree/Boundable.js
+ */
+
+
+/**
  * Boundable wrapper for a non-Boundable spatial object. Used internally by
  * AbstractSTRtree.
  *
- * @requires jsts/index/strtree/Boundable.js
+ * 
  */
 
 

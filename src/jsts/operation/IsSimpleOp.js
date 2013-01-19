@@ -5,6 +5,17 @@
  */
 
 /**
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geomgraph/GeometryGraph.js
+ */
+
+
+/**
  * Tests whether a <code>Geometry</code> is simple.
  * In general, the SFS specification of simplicity
  * follows the rule:

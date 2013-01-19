@@ -5,6 +5,12 @@
  */
 
 /**
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryFactory.js
+ */
+
+
+/**
  * Combines {@link Geometry}s
  * to produce a {@link GeometryCollection} of the most appropriate type.
  * Input geometries which are already collections

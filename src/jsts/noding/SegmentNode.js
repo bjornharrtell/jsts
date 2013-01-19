@@ -5,6 +5,12 @@
  */
 
 /**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/noding/SegmentPointComparator.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/SegmentNode.java
  * Revision: 478
  */

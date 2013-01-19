@@ -6,7 +6,10 @@
 
 /**
  * @requires jsts/geomgraph/EdgeRing.js
+ * @requires jsts/operation/overlay/MinimalEdgeRing.js
  */
+
+
 
 /**
  * A ring of {@link DirectedEdge}s which may contain nodes of degree > 2.

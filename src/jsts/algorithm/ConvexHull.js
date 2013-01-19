@@ -4,13 +4,16 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/CoordinateList.js
+ * @requires jsts/util/Assert.js
+ * @requires jsts/util/UniqueCoordinateArrayFilter.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/algorithm/CGAlgorithms.js
-   * @requires jsts/util/UniqueCoordinateArrayFilter.js
-   * @requires jsts/util/Assert.js
-   */
 
   var CGAlgorithms = jsts.algorithm.CGAlgorithms;
   var UniqueCoordinateArrayFilter = jsts.util.UniqueCoordinateArrayFilter;

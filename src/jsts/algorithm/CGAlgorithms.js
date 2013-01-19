@@ -4,6 +4,15 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/RayCrossingCounter.js
+ * @requires jsts/algorithm/RobustDeterminant.js
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Location.js
+ */
+
+
 
 
 /**

@@ -4,11 +4,19 @@
  * See /license.txt for the full text of the license.
  */
 
-
 /**
- * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateFilter.js
+ * @requires jsts/geom/Dimension.js
+ * @requires jsts/geom/Envelope.js
  * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/GeometryComponentFilter.js
+ * @requires jsts/geom/GeometryFilter.js
+ * @requires jsts/operation/valid/IsValidOp.js
  */
+
+
+
 
 
 
@@ -171,9 +179,6 @@ jsts.geom.Point.prototype.isValid = function() {
 };
 
 
-/**
- *
- */
 jsts.geom.Point.prototype.normalize = function() {
   // a Point is always in normalized form
 };

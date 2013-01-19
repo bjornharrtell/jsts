@@ -5,6 +5,11 @@
  */
 
 /**
+ * @requires jsts/planargraph/DirectedEdge.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/DirectedEdge.java
  * Revision: 6

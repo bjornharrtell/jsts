@@ -4,6 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateList.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geom/LineString.js
+ */
+
+
 
 /**
  * Snaps the vertices and segments of a {@link LineString} to a set of target

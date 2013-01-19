@@ -5,8 +5,14 @@
  */
 
 /**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/util/Assert.js
  */
+
+
 
 /**
  * Port source: com.vividsolutions.jts.geomgraph.EdgeRing r6

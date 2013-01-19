@@ -6,6 +6,17 @@
  *
  * @version 1.7
  */
+
+/**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Polygon.js
+ */
+
 jsts.algorithm.CentroidLine = function() {
   this.centSum = new jsts.geom.Coordinate();
 };

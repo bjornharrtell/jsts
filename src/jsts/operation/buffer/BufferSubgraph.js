@@ -5,6 +5,13 @@
  */
 
 /**
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/operation/buffer/RightmostEdgeFinder.js
+ */
+
+
+/**
  * A connected subset of the graph of {@link DirectedEdge}s and {@link Node}s.
  * Its edges will generate either
  * <ul>

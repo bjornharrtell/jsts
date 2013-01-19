@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/io/WKTWriter.js
+ * @requires jsts/triangulate/quadedge/Vertex.js
+ */
+
+
 
 (function() {
   /**

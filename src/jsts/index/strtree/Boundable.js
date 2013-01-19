@@ -5,6 +5,11 @@
  */
 
 /**
+ * @requires jsts/index/strtree/AbstractSTRtree.js
+ */
+
+
+/**
  * A spatial object in an AbstractSTRtree.
  *
  * @version 1.7

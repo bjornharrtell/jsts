@@ -9,6 +9,8 @@
  * @requires jsts/geom/LineSegment.js
  */
 
+
+
 /**
  * The action for the internal iterator for performing overlap queries on a
  * MonotoneChain

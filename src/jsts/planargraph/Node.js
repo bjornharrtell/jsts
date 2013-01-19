@@ -5,15 +5,17 @@
  */
 
 /**
+ * @requires jsts/planargraph/DirectedEdgeStar.js
+ * @requires jsts/planargraph/GraphComponent.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/Node.java
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/GraphComponent.js
- * @requires jsts/planargraph/DirectedEdgeStar.js
- */
 
 (function() {
 

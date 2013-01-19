@@ -5,16 +5,18 @@
  */
 
 /**
+ * @requires jsts/index/DoubleBits.js
+ * @requires jsts/index/bintree/Interval.js
+ */
+
+
+/**
  * A Key is a unique identifier for a node in a tree. It contains a lower-left
  * point and a level number. The level number is the power of two for the size
  * of the node envelope
  */
 (function() {
 
-  /**
-   * @requires jsts/index/bintree/Interval.js
-   * @requires jsts/index/DoubleBits.js
-   */
 
   var DoubleBits = jsts.index.DoubleBits;
   var Interval = jsts.index.bintree.Interval;

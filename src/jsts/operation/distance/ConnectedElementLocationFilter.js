@@ -6,7 +6,13 @@
 
 /**
  * @requires jsts/geom/GeometryFilter.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/operation/distance/GeometryLocation.js
  */
+
+
 
 
 

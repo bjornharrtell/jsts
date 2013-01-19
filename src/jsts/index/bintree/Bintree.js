@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/index/bintree/Interval.js
+ * @requires jsts/index/bintree/Root.js
+ */
+
+
 
 /**
  * An <code>BinTree</code> (or "Binary Interval Tree") is a 1-dimensional
@@ -29,10 +35,6 @@
  */
 (function() {
 
-  /**
-   * @requires jsts/index/bintree/Root.js
-   * @requires jsts/index/bintree/Interval.js
-   */
 
   var Interval = jsts.index.bintree.Interval;
   var Root = jsts.index.bintree.Root;

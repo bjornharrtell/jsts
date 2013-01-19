@@ -5,6 +5,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/index/kdtree/KdNode.js
+ */
+
+
 
 
 /**

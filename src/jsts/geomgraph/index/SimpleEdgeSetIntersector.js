@@ -10,6 +10,8 @@
 
 
 
+
+
 /**
  * Finds all intersections in one or two sets of edges, using the
  * straightforward method of comparing all segments. This algorithm is too slow

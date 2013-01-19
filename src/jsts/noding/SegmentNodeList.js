@@ -5,6 +5,14 @@
  */
 
 /**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/noding/NodedSegmentString.js
+ * @requires jsts/noding/SegmentNode.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/noding/SegmentNodeList.java
  * Revision: 478
  */

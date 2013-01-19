@@ -4,11 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/noding/Noder.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/noding/Noder.js
-   */
 
   var Noder = jsts.noding.Noder;
 

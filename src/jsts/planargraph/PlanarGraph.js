@@ -5,14 +5,19 @@
  */
 
 /**
+ * @requires jsts/planargraph/DirectedEdge.js
+ * @requires jsts/planargraph/Edge.js
+ * @requires jsts/planargraph/Node.js
+ * @requires jsts/planargraph/NodeMap.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/PlanarGraph.java
  * Revision: 107
  */
 
-/**
- * @requires jsts/planargraph/NodeMap.js
- */
 
 (function() {
 

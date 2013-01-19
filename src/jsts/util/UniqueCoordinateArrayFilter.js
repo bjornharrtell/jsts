@@ -4,11 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/CoordinateFilter.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/CoordinateFilter.js
-   */
 
   var ArrayList = javascript.util.ArrayList;
   var TreeSet = javascript.util.TreeSet;

@@ -5,8 +5,11 @@
  */
 
 /**
+ * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/Position.js
  */
+
+
 
 /**
  * A TopologyLocation is the labelling of a GraphComponent's topological

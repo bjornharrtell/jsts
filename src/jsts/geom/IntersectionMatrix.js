@@ -4,12 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Dimension.js
+ * @requires jsts/geom/Location.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/geom/Dimension.js
-   */
 
   var Location = jsts.geom.Location;
   var Dimension = jsts.geom.Dimension;

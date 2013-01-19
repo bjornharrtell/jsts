@@ -5,6 +5,11 @@
  */
 
 /**
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * A contiguous portion of 1D-space. Used internally by SIRtree.
  *
  * @param {jsts.index.strtree.Interval}

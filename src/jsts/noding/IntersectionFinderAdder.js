@@ -5,6 +5,11 @@
  */
 
 /**
+ * @requires jsts/noding/SegmentIntersector.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/noding/IntersectionFinderAdder.java
  * Revision: 108

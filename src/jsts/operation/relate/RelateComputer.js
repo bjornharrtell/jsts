@@ -4,12 +4,20 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/PointLocator.js
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geom/IntersectionMatrix.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/NodeMap.js
+ * @requires jsts/operation/relate/EdgeEndBuilder.js
+ * @requires jsts/operation/relate/RelateNodeFactory.js
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/util/Assert.js
-   */
 
   var Location = jsts.geom.Location;
   var Assert = jsts.util.Assert;

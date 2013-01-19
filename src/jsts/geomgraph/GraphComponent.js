@@ -4,11 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/util/Assert.js
-   */
 
   var Assert = jsts.util.Assert;
 

@@ -4,6 +4,11 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/CoordinateList.js
+ */
+
+
 
 
 /**

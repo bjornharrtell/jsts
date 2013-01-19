@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geomgraph/NodeFactory.js
+ * @requires jsts/operation/relate/EdgeEndBundleStar.js
+ * @requires jsts/operation/relate/RelateNode.js
+ */
+
+
 
 
 /**

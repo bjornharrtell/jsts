@@ -4,14 +4,34 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/BoundaryNodeRule.js
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/algorithm/PointLocator.js
+ * @requires jsts/geom/CoordinateArrays.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geomgraph/Edge.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/PlanarGraph.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/geomgraph/index/SegmentIntersector.js
+ * @requires jsts/geomgraph/index/SimpleEdgeSetIntersector.js
+ * @requires jsts/geomgraph/index/SimpleMCSweepLineIntersector.js
+ * @requires jsts/planargraph/PlanarGraph.js
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/geomgraph/Position.js
-   * @requires jsts/geomgraph/PlanarGraph.js
-   * @requires jsts/util/Assert.js
-   */
 
   var Location = jsts.geom.Location;
   var Position = jsts.geomgraph.Position;

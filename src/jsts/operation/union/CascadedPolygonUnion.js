@@ -3,6 +3,15 @@
  * See /license-notice.txt for the full text of the license notice.
  * See /license.txt for the full text of the license.
  */
+
+/**
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/util/GeometryCombiner.js
+ * @requires jsts/index/strtree/STRtree.js
+ */
+
 /**
  * Provides an efficient method of unioning a collection of
  * {@link Polygonal} geometrys.

@@ -4,11 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/operation/BoundaryOp.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/GeometryCollection.js
-   */
 
   /**
    * @constructor

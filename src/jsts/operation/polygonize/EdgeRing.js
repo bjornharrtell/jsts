@@ -5,6 +5,13 @@
  */
 
 /**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/CoordinateArrays.js
+ * @requires jsts/geom/CoordinateList.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/polygonize/EdgeRing.java
  * Revision: 109

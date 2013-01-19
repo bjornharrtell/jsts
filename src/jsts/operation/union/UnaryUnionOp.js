@@ -4,15 +4,23 @@
  * See /license.txt for the full text of the license.
  */
 
-(function() {
-
 /**
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
  * @requires jsts/geom/util/GeometryExtracter.js
- * @requires jsts/operation/union/CascadedPolygonUnion.js
- * @requires jsts/operation/union/PointGeometryUnion.js
  * @requires jsts/operation/overlay/OverlayOp.js
  * @requires jsts/operation/overlay/snap/SnapIfNeededOverlayOp.js
+ * @requires jsts/operation/union/CascadedPolygonUnion.js
+ * @requires jsts/operation/union/PointGeometryUnion.js
  */
+
+
+(function() {
+
 
   var GeometryExtracter = jsts.geom.util.GeometryExtracter;
   var CascadedPolygonUnion = jsts.operation.union.CascadedPolygonUnion;

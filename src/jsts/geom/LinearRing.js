@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Dimension.js
+ * @requires jsts/geom/LineString.js
+ */
+
+
 (function() {
 
   /**
@@ -16,7 +22,7 @@
    * must be equal (in 2D). If these conditions are not met, the constructors
    * throw an {@link IllegalArgumentException}
    *
-   * @requires jsts/geom/LineString.js
+   * 
    */
 
 

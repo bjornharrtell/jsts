@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/operation/GeometryGraphOperation.js
+ * @requires jsts/operation/relate/RelateComputer.js
+ */
+
+
 
 
 /**

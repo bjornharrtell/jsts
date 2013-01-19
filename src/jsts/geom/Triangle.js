@@ -4,6 +4,13 @@
  * See /license.txt for the full text of the license.
 */
 
+/**
+ * @requires jsts/algorithm/Angle.js
+ * @requires jsts/algorithm/HCoordinate.js
+ * @requires jsts/geom/Coordinate.js
+ */
+
+
 
 
 /**

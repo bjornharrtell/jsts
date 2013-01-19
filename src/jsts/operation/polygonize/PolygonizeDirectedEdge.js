@@ -5,14 +5,16 @@
  */
 
 /**
+ * @requires jsts/planargraph/DirectedEdge.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/polygonize/PolygonizeDirectedEdge.java
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/DirectedEdge.js
- */
 
 (function() {
 

@@ -4,11 +4,13 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/util/AssertionFailedException.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/util/AssertionFailedException.js
-   */
 
   var AssertionFailedException = jsts.util.AssertionFailedException;
 

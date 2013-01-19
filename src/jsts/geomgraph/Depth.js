@@ -4,12 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/Position.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/geomgraph/Position.js
-   */
 
   var Location = jsts.geom.Location;
   var Position = jsts.geomgraph.Position;

@@ -3,6 +3,20 @@
  * See /license-notice.txt for the full text of the license notice.
  * See /license.txt for the full text of the license.
  */
+
+/**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/algorithm/PointLocator.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/util/LinearComponentExtracter.js
+ * @requires jsts/geom/util/PointExtracter.js
+ * @requires jsts/geom/util/PolygonExtracter.js
+ * @requires jsts/operation/distance/ConnectedElementLocationFilter.js
+ * @requires jsts/operation/distance/GeometryLocation.js
+ */
+
 /**
  * Find two points on two {@link Geometry}s which lie
  * within a given distance, or else are the nearest points

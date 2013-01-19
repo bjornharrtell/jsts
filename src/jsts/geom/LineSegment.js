@@ -5,8 +5,12 @@
  */
 
 /**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/algorithm/RobustLineIntersector.js
  * @requires jsts/geom/Coordinate.js
  */
+
+
 
 /**
  * Represents a line segment defined by two {@link Coordinate}s. Provides

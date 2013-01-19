@@ -5,6 +5,12 @@
  */
 
 /**
+ * @requires jsts/geomgraph/Quadrant.js
+ * @requires jsts/index/chain/MonotoneChain.js
+ */
+
+
+/**
  * Constructs {@link MonotoneChain}s for sequences of {@link Coordinate}s.
  *
  * @constructor

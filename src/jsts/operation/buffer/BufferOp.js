@@ -5,6 +5,15 @@
  */
 
 /**
+ * @requires jsts/geom/PrecisionModel.js
+ * @requires jsts/noding/ScaledNoder.js
+ * @requires jsts/noding/snapround/MCIndexSnapRounder.js
+ * @requires jsts/operation/buffer/BufferBuilder.js
+ * @requires jsts/operation/buffer/BufferParameters.js
+ */
+
+
+/**
  * Computes the buffer of a geometry, for both positive and negative buffer
  * distances.
  *

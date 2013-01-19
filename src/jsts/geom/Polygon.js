@@ -4,6 +4,17 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/CoordinateArrays.js
+ * @requires jsts/geom/CoordinateFilter.js
+ * @requires jsts/geom/CoordinateSequenceFilter.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryComponentFilter.js
+ * @requires jsts/geom/GeometryFilter.js
+ */
+
+
 (function() {
 
   /**
@@ -19,9 +30,6 @@
    */
 
 
-  /**
-   * @requires jsts/geom/Geometry.js
-   */
 
   /**
    * @extends {jsts.geom.Geometry}

@@ -5,6 +5,14 @@
  */
 
 /**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/index/strtree/STRtree.js
+ * @requires jsts/operation/valid/IsValidOp.js
+ */
+
+
+/**
  *
  * Tests whether any of a set of {@link LinearRing}s are nested inside another
  * ring in the set, using a spatial index to speed up the comparisons.

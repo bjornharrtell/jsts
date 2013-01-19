@@ -5,17 +5,20 @@
  */
 
 /**
+ * @requires jsts/algorithm/distance/DistanceToPoint.js
+ * @requires jsts/algorithm/distance/PointPairDistance.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateFilter.js
+ * @requires jsts/geom/CoordinateSequenceFilter.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/algorithm/distance/DiscreteHausdorffDistance.java
  * Revision: 6
  */
 
-/**
- * @requires jsts/geom/CoordinateFilter.js
- * @requires jsts/geom/CoordinateSequenceFilter.js
- * @requires jsts/algorithm/distance/PointPairDistance.js
- * @requires jsts/algorithm/distance/DistanceToPoint.js
- */
 
 (function() {
 

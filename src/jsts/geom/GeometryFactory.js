@@ -5,6 +5,23 @@
  */
 
 /**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/LinearRing.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
+ * @requires jsts/geom/Polygon.js
+ * @requires jsts/geom/PrecisionModel.js
+ * @requires jsts/util/Assert.js
+ */
+
+
+/**
  * Supplies a set of utility methods for building Geometry objects from lists
  * of Coordinates.
  *
@@ -15,9 +32,6 @@
  * It is assumed that input Coordinates meet the given precision.
  */
 
-/**
- * @requires jsts/geom/PrecisionModel.js
- */
 
 /**
  * Constructs a GeometryFactory that generates Geometries having a floating

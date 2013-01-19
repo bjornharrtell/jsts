@@ -5,14 +5,18 @@
  */
 
 /**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geomgraph/Quadrant.js
+ * @requires jsts/planargraph/GraphComponent.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/DirectedEdge.java
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/GraphComponent.js
- */
 
 (function() {
 

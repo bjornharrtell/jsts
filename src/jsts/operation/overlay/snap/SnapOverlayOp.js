@@ -5,14 +5,20 @@
  */
 
 /**
+ * @requires jsts/operation/overlay/OverlayOp.js
+ * @requires jsts/operation/overlay/snap/GeometrySnapper.js
+ */
+
+
+/**
  * Port source:
  * /jts/jts/java/src/com/vividsolutions/jts/operation/overlay/snap/SnapOverlayOp.java
  * Revision: 150
  */
 
 /**
- * @requires jsts/operation/overlay/snap/GeometrySnapper.js
- * @requires jsts/operation/overlay/OverlayOp.js
+ * 
+ * 
  * TODO: reenable when ported: requires jsts/precision/CommonBitsRemover.js
  */
 

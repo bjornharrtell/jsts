@@ -4,6 +4,17 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/CGAlgorithms.js
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Polygon.js
+ */
+
+
 
 
 /**

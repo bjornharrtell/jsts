@@ -4,6 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/index/ItemVisitor.js
+ * @requires jsts/index/quadtree/Quadtree.js
+ */
+
+
 
 /**
  * An spatial index on a set of {@link LineSegment}s. Supports adding and
@@ -68,9 +76,6 @@ jsts.simplify.LineSegmentIndex.prototype.query = function(querySeg) {
 };
 
 
-/**
- * @requires jsts/index/ItemVisitor.js
- */
 /**
  * ItemVisitor subclass to reduce volume of query results.
  *

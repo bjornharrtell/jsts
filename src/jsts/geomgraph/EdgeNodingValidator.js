@@ -4,12 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/noding/BasicSegmentString.js
+ * @requires jsts/noding/FastNodingValidator.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/noding/FastNodingValidator.js
-   * @requires jsts/noding/BasicSegmentString.js
-   */
 
   var FastNodingValidator = jsts.noding.FastNodingValidator;
   var BasicSegmentString = jsts.noding.BasicSegmentString;

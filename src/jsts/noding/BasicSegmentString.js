@@ -4,6 +4,12 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/noding/Octant.js
+ * @requires jsts/noding/SegmentString.js
+ */
+
+
 (function() {
 
   /**

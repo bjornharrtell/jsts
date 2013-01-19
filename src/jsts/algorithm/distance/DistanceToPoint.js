@@ -5,13 +5,18 @@
  */
 
 /**
+ * @requires jsts/geom/GeometryCollection.js
+ * @requires jsts/geom/LineSegment.js
+ * @requires jsts/geom/LineString.js
+ * @requires jsts/geom/Polygon.js
+ */
+
+
+/**
  * Port source: /jts/jts/java/src/com/vividsolutions/jts/algorithm/distance/DistanceToPoint.java
  * Revision: 6
  */
 
-/**
- * @requires jsts/geom/Polygon.js
- */
 
 /**
  * Computes the Euclidean distance (L2 metric) from a Point to a Geometry. Also

@@ -4,14 +4,19 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/EdgeEnd.js
+ * @requires jsts/geomgraph/EdgeEndStar.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/geomgraph/Quadrant.js
+ * @requires jsts/util/Assert.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/geomgraph/Position.js
-   * @requires jsts/geomgraph/EdgeEndStar.js
-   * @requires jsts/util/Assert.js
-   */
 
   var Location = jsts.geom.Location;
   var Position = jsts.geomgraph.Position;

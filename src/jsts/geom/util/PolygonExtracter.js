@@ -5,8 +5,13 @@
  */
 
 /**
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryCollection.js
  * @requires jsts/geom/GeometryFilter.js
+ * @requires jsts/geom/Polygon.js
  */
+
+
 
 
 

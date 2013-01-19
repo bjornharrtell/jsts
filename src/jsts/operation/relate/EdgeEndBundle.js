@@ -4,6 +4,16 @@
  * @requires jsts/geomgraph/EdgeEnd.js
  */
 
+/**
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/Edge.js
+ * @requires jsts/geomgraph/EdgeEnd.js
+ * @requires jsts/geomgraph/GeometryGraph.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/Position.js
+ */
+
+
 
 
 /**

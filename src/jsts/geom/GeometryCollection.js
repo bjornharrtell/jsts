@@ -4,11 +4,21 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/geom/CoordinateFilter.js
+ * @requires jsts/geom/CoordinateSequenceFilter.js
+ * @requires jsts/geom/Dimension.js
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/Geometry.js
+ * @requires jsts/geom/GeometryComponentFilter.js
+ * @requires jsts/geom/GeometryFilter.js
+ * @requires jsts/geom/Point.js
+ */
+
+
 (function() {
 
-  /**
-   * @requires jsts/geom/Geometry.js
-   */
 
   var Geometry = jsts.geom.Geometry;
   var TreeSet = javascript.util.TreeSet;

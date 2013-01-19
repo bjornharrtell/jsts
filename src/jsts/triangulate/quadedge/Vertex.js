@@ -4,6 +4,14 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/HCoordinate.js
+ * @requires jsts/geom/Coordinate.js
+ * @requires jsts/triangulate/quadedge/QuadEdge.js
+ * @requires jsts/triangulate/quadedge/TrianglePredicate.js
+ */
+
+
 
 /**
  * Models a site (node) in a {@link QuadEdgeSubdivision}. The sites can be

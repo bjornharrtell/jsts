@@ -4,6 +4,26 @@
  * See /license.txt for the full text of the license.
  */
 
+/**
+ * @requires jsts/algorithm/RobustLineIntersector.js
+ * @requires jsts/geom/GeometryFactory.js
+ * @requires jsts/geom/Location.js
+ * @requires jsts/geomgraph/Edge.js
+ * @requires jsts/geomgraph/EdgeList.js
+ * @requires jsts/geomgraph/Label.js
+ * @requires jsts/geomgraph/PlanarGraph.js
+ * @requires jsts/geomgraph/Position.js
+ * @requires jsts/noding/IntersectionAdder.js
+ * @requires jsts/noding/MCIndexNoder.js
+ * @requires jsts/operation/buffer/BufferSubgraph.js
+ * @requires jsts/operation/buffer/OffsetCurveBuilder.js
+ * @requires jsts/operation/buffer/OffsetCurveSetBuilder.js
+ * @requires jsts/operation/buffer/SubgraphDepthLocater.js
+ * @requires jsts/operation/overlay/OverlayNodeFactory.js
+ * @requires jsts/operation/overlay/PolygonBuilder.js
+ */
+
+
 
 
 /**

@@ -5,8 +5,15 @@
  */
 
 /**
+ * @requires jsts/geom/GeometryCollection.js
  * @requires jsts/geom/GeometryFilter.js
+ * @requires jsts/geom/MultiLineString.js
+ * @requires jsts/geom/MultiPoint.js
+ * @requires jsts/geom/MultiPolygon.js
+ * @requires jsts/geom/Point.js
  */
+
+
 
 
 
