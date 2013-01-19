@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/strtree/AbstractNode.js
  * @requires jsts/index/strtree/AbstractSTRtree.js
  * @requires jsts/index/strtree/Interval.js
@@ -19,8 +18,8 @@
  * Application To GIS. Morgan Kaufmann, San Francisco, 2002.
  * @see STRtree
  *
- * @requires jsts/index/strtree/AbstractNode.js
- * @requires jsts/index/strtree/AbstractSTRtree.js
+ * 
+ * 
  */
 
 

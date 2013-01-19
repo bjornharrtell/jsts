@@ -5,16 +5,12 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/Position.js
  * @requires jsts/geomgraph/TopologyLocation.js
  */
 
 
-/**
- * @requires jsts/geomgraph/TopologyLocation.js
- */
 
 /**
  * A <code>Label</code> indicates the topological relationship of a component

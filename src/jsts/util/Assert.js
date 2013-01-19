@@ -5,16 +5,12 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/util/AssertionFailedException.js
  */
 
 
 (function() {
 
-  /**
-   * @requires jsts/util/AssertionFailedException.js
-   */
 
   var AssertionFailedException = jsts.util.AssertionFailedException;
 

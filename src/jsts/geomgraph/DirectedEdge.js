@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/EdgeEnd.js
  * @requires jsts/geomgraph/Label.js
@@ -15,11 +14,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/geomgraph/Position.js
-   * @requires jsts/geomgraph/EdgeEnd.js
-   */
 
   var Location = jsts.geom.Location;
   var Position = jsts.geomgraph.Position;

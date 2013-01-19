@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/RobustDeterminant.js
  * @requires jsts/geom/Location.js
  */

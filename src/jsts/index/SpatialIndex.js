@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Envelope.js
  * @requires jsts/index/ItemVisitor.js
  */

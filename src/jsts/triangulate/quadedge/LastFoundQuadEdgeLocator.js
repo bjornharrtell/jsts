@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/triangulate/quadedge/QuadEdgeSubdivision.js
  * @requires jsts/triangulate/quadedge/Vertex.js
  */

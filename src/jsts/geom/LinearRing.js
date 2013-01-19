@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Dimension.js
  * @requires jsts/geom/LineString.js
  */
@@ -23,7 +22,7 @@
    * must be equal (in 2D). If these conditions are not met, the constructors
    * throw an {@link IllegalArgumentException}
    *
-   * @requires jsts/geom/LineString.js
+   * 
    */
 
 

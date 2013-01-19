@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geom/LineSegment.js
  * @requires jsts/geomgraph/DirectedEdge.js

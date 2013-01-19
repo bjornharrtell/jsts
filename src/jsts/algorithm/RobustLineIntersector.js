@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/algorithm/CentralEndpointIntersector.js
  * @requires jsts/algorithm/HCoordinate.js
@@ -16,9 +15,6 @@
 
 
 
-/**
- * @requires jsts/algorithm/LineIntersector.js
- */
 
 
 

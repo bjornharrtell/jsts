@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/operation/overlay/OverlayOp.js
  * @requires jsts/util/Assert.js
  */
@@ -13,9 +12,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/util/Assert.js
-   */
 
   var Assert = jsts.util.Assert;
   var ArrayList = javascript.util.ArrayList;

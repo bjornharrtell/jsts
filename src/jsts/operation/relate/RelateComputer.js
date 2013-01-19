@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/PointLocator.js
  * @requires jsts/algorithm/RobustLineIntersector.js
  * @requires jsts/geom/IntersectionMatrix.js
@@ -19,10 +18,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/util/Assert.js
-   */
 
   var Location = jsts.geom.Location;
   var Assert = jsts.util.Assert;

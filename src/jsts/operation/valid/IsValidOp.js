@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/algorithm/MCPointInRing.js
  * @requires jsts/algorithm/RobustLineIntersector.js

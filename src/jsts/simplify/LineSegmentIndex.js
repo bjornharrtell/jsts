@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Envelope.js
  * @requires jsts/geom/LineSegment.js
  * @requires jsts/index/ItemVisitor.js
@@ -77,9 +76,6 @@ jsts.simplify.LineSegmentIndex.prototype.query = function(querySeg) {
 };
 
 
-/**
- * @requires jsts/index/ItemVisitor.js
- */
 /**
  * ItemVisitor subclass to reduce volume of query results.
  *

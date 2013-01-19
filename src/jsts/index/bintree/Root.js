@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/IntervalSize.js
  * @requires jsts/index/bintree/Interval.js
  * @requires jsts/index/bintree/Node.js
@@ -19,10 +18,6 @@
  */
 (function() {
 
-  /**
-   * @requires jsts/index/bintree/NodeBase.js
-   * @requires jsts/index/bintree/Node.js
-   */
 
   var Node = jsts.index.bintree.Node;
   var NodeBase = jsts.index.bintree.NodeBase;

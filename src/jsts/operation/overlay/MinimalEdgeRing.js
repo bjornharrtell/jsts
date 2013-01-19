@@ -5,14 +5,10 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geomgraph/EdgeRing.js
  */
 
 
-/**
- * @requires jsts/geomgraph/EdgeRing.js
- */
 
 /**
  * A ring of {@link Edge}s with the property that no node has degree greater

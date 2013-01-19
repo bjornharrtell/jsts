@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geomgraph/Position.js
  * @requires jsts/operation/buffer/BufferInputLineSimplifier.js
  * @requires jsts/operation/buffer/BufferParameters.js

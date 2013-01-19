@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CentroidArea.js
  * @requires jsts/algorithm/CentroidLine.js
  * @requires jsts/algorithm/CentroidPoint.js

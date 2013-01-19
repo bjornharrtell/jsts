@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/CoordinateFilter.js
  * @requires jsts/geom/CoordinateSequenceFilter.js
@@ -20,9 +19,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Geometry.js
-   */
 
   var Geometry = jsts.geom.Geometry;
   var TreeSet = javascript.util.TreeSet;

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/RobustLineIntersector.js
  * @requires jsts/geom/GeometryFactory.js
  * @requires jsts/geom/Location.js

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/HCoordinate.js
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/triangulate/quadedge/QuadEdge.js

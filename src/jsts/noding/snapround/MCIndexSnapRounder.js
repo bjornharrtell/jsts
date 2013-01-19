@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/RobustLineIntersector.js
  * @requires jsts/noding/IntersectionFinderAdder.js
  * @requires jsts/noding/MCIndexNoder.js
@@ -21,10 +20,6 @@
  * Revision: 486
  */
 
-/**
- * @requires jsts/algorithm/RobustLineIntersector.js
- * @requires jsts/noding/Noder.js
- */
 
 /**
  * Uses Snap Rounding to compute a rounded, fully noded arrangement from a set

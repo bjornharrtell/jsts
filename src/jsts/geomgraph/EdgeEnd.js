@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geomgraph/Quadrant.js
  * @requires jsts/util/Assert.js
@@ -14,9 +13,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/util/Assert.js
-   */
 
   var Assert = jsts.util.Assert;
 

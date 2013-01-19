@@ -1,7 +1,6 @@
 
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/BoundaryNodeRule.js
  * @requires jsts/geom/LineString.js
  * @requires jsts/geom/MultiLineString.js

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/GeometryFactory.js
  * @requires jsts/io/WKTWriter.js
@@ -20,9 +19,6 @@
  * Revision: 478
  */
 
-/**
- * @requires jsts/noding/NodableSegmentString.js
- */
 
 /**
  * Represents a list of contiguous line segments, and supports noding the

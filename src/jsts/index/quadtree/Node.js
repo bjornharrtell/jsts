@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/Envelope.js
  * @requires jsts/index/quadtree/Key.js
@@ -25,7 +24,7 @@
  *          level The level.
  *
  * @constructor
- * @requires jsts/index/quadtree/NodeBase.js
+ * 
  */
 jsts.index.quadtree.Node = function(env, level) {
   jsts.index.quadtree.NodeBase.prototype.constructor.apply(this, arguments);

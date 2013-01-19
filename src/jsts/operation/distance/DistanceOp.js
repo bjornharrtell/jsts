@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/algorithm/PointLocator.js
  * @requires jsts/geom/LineSegment.js

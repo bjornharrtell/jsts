@@ -14,7 +14,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/GeometryCollection.js

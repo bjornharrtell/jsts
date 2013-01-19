@@ -5,16 +5,12 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/noding/SegmentIntersector.js
  */
 
 
 (function() {
 
-  /**
-   * @requires jsts/noding/SegmentIntersector.js
-   */
 
   var SegmentIntersector = jsts.noding.SegmentIntersector;
   var ArrayList = javascript.util.ArrayList;

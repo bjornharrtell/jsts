@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geom/Coordinate.js
  */
@@ -17,7 +16,7 @@
  * Utility functions for working with angles.
  * Unless otherwise noted, methods in this class express angles in radians.
  *
- * @requires jsts/algorithm/CGAlgorithms.js
+ * 
  *
  * @constructor
  */

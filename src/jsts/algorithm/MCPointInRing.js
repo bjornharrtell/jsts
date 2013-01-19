@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/RobustDeterminant.js
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/CoordinateArrays.js
@@ -17,9 +16,6 @@
  */
 
 
-/**
- * @requires jsts/index/chain/MonotoneChainSelectAction.js
- */
 
 /**
  * Implements {@link PointInRing} using {@link MonotoneChain}s and a

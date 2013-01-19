@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/DoubleBits.js
  * @requires jsts/index/bintree/Interval.js
  */
@@ -18,10 +17,6 @@
  */
 (function() {
 
-  /**
-   * @requires jsts/index/bintree/Interval.js
-   * @requires jsts/index/DoubleBits.js
-   */
 
   var DoubleBits = jsts.index.DoubleBits;
   var Interval = jsts.index.bintree.Interval;

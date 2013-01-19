@@ -5,16 +5,12 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/GeometryCollection.js
  */
 
 
 (function() {
 
-  /**
-   * @requires jsts/geom/GeometryCollection.js
-   */
 
   /**
    * @constructor

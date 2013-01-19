@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/BoundaryNodeRule.js
  * @requires jsts/algorithm/RobustLineIntersector.js
  * @requires jsts/geomgraph/GeometryGraph.js

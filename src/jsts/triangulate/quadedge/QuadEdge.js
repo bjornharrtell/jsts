@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/LineSegment.js
  * @requires jsts/io/WKTWriter.js
  * @requires jsts/triangulate/quadedge/Vertex.js

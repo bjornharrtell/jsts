@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/noding/Octant.js
  * @requires jsts/noding/SegmentString.js
  */

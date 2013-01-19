@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/DirectedEdge.js
@@ -15,10 +14,6 @@
  */
 
 
-/**
- * @requires jsts/geomgraph/NodeMap.js
- * @requires jsts/geomgraph/NodeFactory.js
- */
 
 (function() {
 

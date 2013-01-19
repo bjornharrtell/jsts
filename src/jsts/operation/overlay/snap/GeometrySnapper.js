@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/PrecisionModel.js
  * @requires jsts/geom/util/GeometryTransformer.js
  * @requires jsts/operation/overlay/snap/LineStringSnapper.js
@@ -18,11 +17,6 @@
  * Revision: 167
  */
 
-/**
- * @requires jsts/operation/overlay/snap/LineStringSnapper.js
- * @requires jsts/geom/PrecisionModel.js
- * @requires jsts/geom/util/GeometryTransformer.js
- */
 
 /**
  * Snaps the vertices and segments of a {@link Geometry} to another Geometry's

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/planargraph/GraphComponent.js
  * @requires jsts/planargraph/Node.js
  */
@@ -17,9 +16,6 @@
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/GraphComponent.js
- */
 
 (function() {
 

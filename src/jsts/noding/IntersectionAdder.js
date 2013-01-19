@@ -5,14 +5,10 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/noding/SegmentIntersector.js
  */
 
 
-/**
- *@requires jsts/noding/SegmentIntersector.js
- */
 
 /**
  * Computes the intersections between two line segments in {@link SegmentString}s

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Envelope.js
  * @requires jsts/geomgraph/Position.js
  * @requires jsts/operation/buffer/RightmostEdgeFinder.js

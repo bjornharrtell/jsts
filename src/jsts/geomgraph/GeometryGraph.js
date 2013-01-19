@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/BoundaryNodeRule.js
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/algorithm/PointLocator.js
@@ -33,12 +32,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/geomgraph/Position.js
-   * @requires jsts/geomgraph/PlanarGraph.js
-   * @requires jsts/util/Assert.js
-   */
 
   var Location = jsts.geom.Location;
   var Position = jsts.geomgraph.Position;

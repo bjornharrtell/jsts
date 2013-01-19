@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Geometry.js
  * @requires jsts/geom/GeometryComponentFilter.js
  * @requires jsts/geom/LineString.js
@@ -13,9 +12,6 @@
  */
 
 
-/**
- * @requires jsts/geom/GeometryComponentFilter.js
- */
 
 
 

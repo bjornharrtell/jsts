@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/CoordinateFilter.js
  * @requires jsts/geom/Dimension.js
  * @requires jsts/geom/Envelope.js
@@ -18,10 +17,6 @@
 
 
 
-/**
- * @requires jsts/geom/Coordinate.js
- * @requires jsts/geom/Geometry.js
- */
 
 
 
@@ -184,9 +179,6 @@ jsts.geom.Point.prototype.isValid = function() {
 };
 
 
-/**
- *
- */
 jsts.geom.Point.prototype.normalize = function() {
   // a Point is always in normalized form
 };

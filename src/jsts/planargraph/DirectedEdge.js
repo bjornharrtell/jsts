@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geomgraph/Quadrant.js
  * @requires jsts/planargraph/GraphComponent.js
@@ -18,9 +17,6 @@
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/GraphComponent.js
- */
 
 (function() {
 

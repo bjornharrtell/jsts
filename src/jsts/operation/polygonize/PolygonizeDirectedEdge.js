@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/planargraph/DirectedEdge.js
  */
 
@@ -16,9 +15,6 @@
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/DirectedEdge.js
- */
 
 (function() {
 

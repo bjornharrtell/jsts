@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/strtree/Boundable.js
  */
 
@@ -15,7 +14,7 @@
  * (AbstractNodes) or real data (ItemBoundables). If this node contains real data
  * (rather than nodes), then we say that this node is a "leaf node".
  *
- * @requires jsts/index/strtree/Boundable.js
+ * 
  */
 
 

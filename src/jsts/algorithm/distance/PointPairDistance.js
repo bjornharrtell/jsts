@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  */
 
@@ -15,9 +14,6 @@
  * Revision: 6
  */
 
-/**
- * @requires jsts/geom/Coordinate.js
- */
 
 
 /**

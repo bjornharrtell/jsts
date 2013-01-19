@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/bintree/Interval.js
  * @requires jsts/index/bintree/Key.js
  * @requires jsts/index/bintree/NodeBase.js
@@ -17,11 +16,6 @@
  */
 (function() {
 
-  /**
-   * @requires jsts/index/bintree/NodeBase.js
-   * @requires jsts/index/bintree/Interval.js
-   * @requires jsts/index/bintree/Key.js
-   */
 
   var NodeBase = jsts.index.bintree.NodeBase;
   var Key = jsts.index.bintree.Key;

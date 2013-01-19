@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/chain/MonotoneChainSelectAction.js
  */
 
@@ -16,9 +15,6 @@
  * Revision: 486
  */
 
-/**
- * @requires jsts/index/chain/MonotoneChainSelectAction.js
- */
 
 (function() {
 

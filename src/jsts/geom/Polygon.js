@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geom/CoordinateArrays.js
  * @requires jsts/geom/CoordinateFilter.js
@@ -31,9 +30,6 @@
    */
 
 
-  /**
-   * @requires jsts/geom/Geometry.js
-   */
 
   /**
    * @extends {jsts.geom.Geometry}

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/GeometryCollection.js
  * @requires jsts/geom/LineString.js
  * @requires jsts/geom/LinearRing.js

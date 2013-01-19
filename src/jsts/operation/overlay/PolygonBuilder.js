@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geomgraph/PlanarGraph.js
  * @requires jsts/operation/overlay/MaximalEdgeRing.js

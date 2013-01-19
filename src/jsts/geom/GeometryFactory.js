@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/Envelope.js
  * @requires jsts/geom/Geometry.js
@@ -33,9 +32,6 @@
  * It is assumed that input Coordinates meet the given precision.
  */
 
-/**
- * @requires jsts/geom/PrecisionModel.js
- */
 
 /**
  * Constructs a GeometryFactory that generates Geometries having a floating

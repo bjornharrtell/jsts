@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/noding/OrientedCoordinateArray.js
  */
 
@@ -13,9 +12,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/util/Assert.js
-   */
 
   var ArrayList = javascript.util.ArrayList;
   var TreeMap = javascript.util.TreeMap;

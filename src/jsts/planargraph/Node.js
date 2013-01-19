@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/planargraph/DirectedEdgeStar.js
  * @requires jsts/planargraph/GraphComponent.js
  */
@@ -17,10 +16,6 @@
  * Revision: 6
  */
 
-/**
- * @requires jsts/planargraph/GraphComponent.js
- * @requires jsts/planargraph/DirectedEdgeStar.js
- */
 
 (function() {
 

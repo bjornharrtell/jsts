@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/Edge.js
  * @requires jsts/geomgraph/EdgeEnd.js

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geomgraph/Quadrant.js
  * @requires jsts/index/chain/MonotoneChain.js
  */

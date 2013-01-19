@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/GeometryCollection.js
  * @requires jsts/operation/BoundaryOp.js
  */
@@ -13,9 +12,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/GeometryCollection.js
-   */
 
   /**
    * @constructor

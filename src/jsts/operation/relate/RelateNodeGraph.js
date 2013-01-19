@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/NodeMap.js
  * @requires jsts/operation/relate/EdgeEndBuilder.js
@@ -15,10 +14,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   * @requires jsts/util/Assert.js
-   */
 
   var Location = jsts.geom.Location;
 

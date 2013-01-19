@@ -8,7 +8,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/GeometryCollection.js
  * @requires jsts/geom/LineString.js

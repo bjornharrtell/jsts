@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/bintree/Interval.js
  * @requires jsts/index/bintree/Root.js
  */
@@ -36,10 +35,6 @@
  */
 (function() {
 
-  /**
-   * @requires jsts/index/bintree/Root.js
-   * @requires jsts/index/bintree/Interval.js
-   */
 
   var Interval = jsts.index.bintree.Interval;
   var Root = jsts.index.bintree.Root;

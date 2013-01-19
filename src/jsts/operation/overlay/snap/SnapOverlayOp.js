@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/operation/overlay/OverlayOp.js
  * @requires jsts/operation/overlay/snap/GeometrySnapper.js
  */
@@ -18,8 +17,8 @@
  */
 
 /**
- * @requires jsts/operation/overlay/snap/GeometrySnapper.js
- * @requires jsts/operation/overlay/OverlayOp.js
+ * 
+ * 
  * TODO: reenable when ported: requires jsts/precision/CommonBitsRemover.js
  */
 

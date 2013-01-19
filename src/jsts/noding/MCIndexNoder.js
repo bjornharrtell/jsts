@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/chain/MonotoneChainBuilder.js
  * @requires jsts/index/chain/MonotoneChainOverlapAction.js
  * @requires jsts/index/strtree/STRtree.js
@@ -16,13 +15,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/noding/SinglePassNoder.js
-   * @requires jsts/index/strtree/STRtree.js
-   * @requires jsts/noding/NodedSegmentString.js
-   * @requires jsts/index/chain/MonotoneChainBuilder.js
-   * @requires jsts/index/chain/MonotoneChainOverlapAction.js
-   */
 
   var MonotoneChainOverlapAction = jsts.index.chain.MonotoneChainOverlapAction;
   var SinglePassNoder = jsts.noding.SinglePassNoder;

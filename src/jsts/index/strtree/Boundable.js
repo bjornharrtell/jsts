@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/index/strtree/AbstractSTRtree.js
  */
 

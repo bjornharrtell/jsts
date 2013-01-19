@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/CGAlgorithms.js
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/CoordinateFilter.js
@@ -21,10 +20,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Geometry.js
-   * @requires jsts/geom/Dimension.js
-   */
 
   var Dimension = jsts.geom.Dimension;
 

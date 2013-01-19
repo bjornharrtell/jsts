@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/CoordinateList.js
  * @requires jsts/geom/Envelope.js
@@ -20,9 +19,6 @@
  */
 
 
-/**
- * @requires jsts/io/WKTWriter.js
- */
 
 /**
  * A class that contains the {@link QuadEdge}s representing a planar

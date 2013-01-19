@@ -13,7 +13,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/Geometry.js
  * @requires jsts/geom/GeometryCollection.js

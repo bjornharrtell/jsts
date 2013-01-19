@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/Location.js
  * @requires jsts/geomgraph/EdgeEnd.js
@@ -15,9 +14,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geom/Location.js
-   */
 
   var Location = jsts.geom.Location;
   var ArrayList = javascript.util.ArrayList;

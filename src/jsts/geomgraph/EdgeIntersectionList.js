@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geomgraph/Edge.js
  * @requires jsts/geomgraph/EdgeIntersection.js
@@ -15,9 +14,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/geomgraph/EdgeIntersection.js
-   */
 
   var EdgeIntersection = jsts.geomgraph.EdgeIntersection;
   var TreeMap = javascript.util.TreeMap;

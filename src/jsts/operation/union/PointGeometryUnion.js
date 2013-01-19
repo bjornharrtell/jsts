@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/PointLocator.js
  * @requires jsts/geom/CoordinateArrays.js
  * @requires jsts/geom/Geometry.js
@@ -19,7 +18,7 @@
  * another arbitrary {@link Geometry}.
  * Does not copy any component geometries.
  *
- * @requires jsts/algorithm/PointLocator.js
+ * 
  *
  */
 

@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/CoordinateArrays.js
  * @requires jsts/operation/polygonize/EdgeRing.js
  * @requires jsts/operation/polygonize/PolygonizeDirectedEdge.js
@@ -22,14 +21,6 @@
  * Revision: 6
  */
 
-/**
- * @requires jsts/operation/polygonize/EdgeRing.js
- * @requires jsts/operation/polygonize/PolygonizeEdge.js
- * @requires jsts/operation/polygonize/PolygonizeDirectedEdge.js
- * @requires jsts/geom/Coordinate.js
- * @requires jsts/planargraph/PlanarGraph.js
- * @requires jsts/planargraph/Node.js
- */
 
 (function() {
 

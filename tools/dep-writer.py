@@ -73,7 +73,6 @@ if __name__ == '__main__':
         index = 0
     
     out.write('\n\n/**\n')
-    out.write(' * Other modules referenced here:\n')
     
     for file in required:
         out.write(' * @requires %(file)s\n' % locals())

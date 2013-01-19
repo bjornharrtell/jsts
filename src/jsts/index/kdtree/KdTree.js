@@ -6,7 +6,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  * @requires jsts/geom/Envelope.js
  * @requires jsts/index/kdtree/KdNode.js

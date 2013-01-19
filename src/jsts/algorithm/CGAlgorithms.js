@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/RayCrossingCounter.js
  * @requires jsts/algorithm/RobustDeterminant.js
  * @requires jsts/algorithm/RobustLineIntersector.js

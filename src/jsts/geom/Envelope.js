@@ -5,14 +5,10 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/Coordinate.js
  */
 
 
-/**
- * @requires jsts/geom/Coordinate.js
- */
 
 /**
  * Defines a rectangular region of the 2D coordinate plane. It is often used to

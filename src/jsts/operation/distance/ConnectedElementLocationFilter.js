@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geom/GeometryFilter.js
  * @requires jsts/geom/LineString.js
  * @requires jsts/geom/Point.js
@@ -14,9 +13,6 @@
  */
 
 
-/**
- * @requires jsts/geom/GeometryFilter.js
- */
 
 
 

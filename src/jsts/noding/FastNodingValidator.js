@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/RobustLineIntersector.js
  * @requires jsts/io/WKTWriter.js
  * @requires jsts/noding/InteriorIntersectionFinder.js
@@ -15,11 +14,6 @@
 
 (function() {
 
-  /**
-   * @requires jsts/algorithm/RobustLineIntersector.js
-   * @requires jsts/noding/InteriorIntersectionFinder.js
-   * @requires jsts/noding/MCIndexNoder.js
-   */
 
   var RobustLineIntersector = jsts.algorithm.RobustLineIntersector;
   var InteriorIntersectionFinder = jsts.noding.InteriorIntersectionFinder;

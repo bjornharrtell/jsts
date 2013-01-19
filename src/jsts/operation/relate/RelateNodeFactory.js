@@ -5,7 +5,6 @@
  */
 
 /**
- * Other modules referenced here:
  * @requires jsts/geomgraph/NodeFactory.js
  * @requires jsts/operation/relate/EdgeEndBundleStar.js
  * @requires jsts/operation/relate/RelateNode.js

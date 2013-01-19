@@ -5,7 +5,6 @@
 */
 
 /**
- * Other modules referenced here:
  * @requires jsts/algorithm/Angle.js
  * @requires jsts/algorithm/HCoordinate.js
  * @requires jsts/geom/Coordinate.js
