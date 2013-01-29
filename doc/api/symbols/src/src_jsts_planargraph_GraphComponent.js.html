@@ -1,0 +1,190 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/* Copyright (c) 2011 by The Authors.
+<span class='line'>  2</span>  * Published under the LGPL 2.1 license.
+<span class='line'>  3</span>  * See /license-notice.txt for the full text of the license notice.
+<span class='line'>  4</span>  * See /license.txt for the full text of the license.
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> 
+<span class='line'>  7</span> </span><span class="COMM">/**
+<span class='line'>  8</span>  * Port source:
+<span class='line'>  9</span>  * /jts/jts/java/src/com/vividsolutions/jts/planargraph/GraphComponent.java
+<span class='line'> 10</span>  * Revision: 6
+<span class='line'> 11</span>  */</span><span class="WHIT">
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 14</span> 
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 16</span>    * The base class for all graph component classes. Maintains flags of use in
+<span class='line'> 17</span>    * generic graph algorithms. Provides two flags:
+<span class='line'> 18</span>    * &lt;ul>
+<span class='line'> 19</span>    * &lt;li>&lt;b>marked&lt;/b> - typically this is used to indicate a state that
+<span class='line'> 20</span>    * persists for the course of the graph's lifetime. For instance, it can be
+<span class='line'> 21</span>    * used to indicate that a component has been logically deleted from the
+<span class='line'> 22</span>    * graph.
+<span class='line'> 23</span>    * &lt;li>&lt;b>visited&lt;/b> - this is used to indicate that a component has been
+<span class='line'> 24</span>    * processed or visited by an single graph algorithm. For instance, a
+<span class='line'> 25</span>    * breadth-first traversal of the graph might use this to indicate that a node
+<span class='line'> 26</span>    * has already been traversed. The visited flag may be set and cleared many
+<span class='line'> 27</span>    * times during the lifetime of a graph.
+<span class='line'> 28</span>    *
+<span class='line'> 29</span>    * &lt;p>
+<span class='line'> 30</span>    * Graph components support storing user context data. This will typically be
+<span class='line'> 31</span>    * used by client algorithms which use planar graphs.
+<span class='line'> 32</span>    */</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">GraphComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> 
+<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> 
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 38</span>    * Sets the Visited state for all {@link GraphComponent}s in an
+<span class='line'> 39</span>    * {@link Iterator}
+<span class='line'> 40</span>    *
+<span class='line'> 41</span>    * @param i
+<span class='line'> 42</span>    *          the Iterator to scan.
+<span class='line'> 43</span>    * @param visited
+<span class='line'> 44</span>    *          the state to set the visited flag to.
+<span class='line'> 45</span>    */</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.setVisited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">visited</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i.hasNext</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">comp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">i.next</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">      </span><span class="NAME">comp.setVisited</span><span class="PUNC">(</span><span class="NAME">visited</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> 
+<span class='line'> 53</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 54</span>    * Sets the Marked state for all {@link GraphComponent}s in an
+<span class='line'> 55</span>    * {@link Iterator}
+<span class='line'> 56</span>    *
+<span class='line'> 57</span>    * @param i
+<span class='line'> 58</span>    *          the Iterator to scan.
+<span class='line'> 59</span>    * @param marked
+<span class='line'> 60</span>    *          the state to set the Marked flag to.
+<span class='line'> 61</span>    */</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.setMarked</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">marked</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i.hasNext</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">comp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">i.next</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">      </span><span class="NAME">comp.setMarked</span><span class="PUNC">(</span><span class="NAME">marked</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> 
+<span class='line'> 69</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 70</span>    * Finds the first {@link GraphComponent} in a {@link Iterator} set which has
+<span class='line'> 71</span>    * the specified visited state.
+<span class='line'> 72</span>    *
+<span class='line'> 73</span>    * @param i
+<span class='line'> 74</span>    *          an Iterator of GraphComponents.
+<span class='line'> 75</span>    * @param visitedState
+<span class='line'> 76</span>    *          the visited state to test.
+<span class='line'> 77</span>    * @return the first component found, or &lt;code>null&lt;/code> if none found.
+<span class='line'> 78</span>    */</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.getComponentWithVisitedState</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">visitedState</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i.hasNext</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">comp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">i.next</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">comp.isVisited</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">visitedState</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">comp</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> 
+<span class='line'> 88</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype._isMarked</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype._isVisited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.data</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 91</span> 
+<span class='line'> 92</span> 
+<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 94</span>    * Tests if a component has been visited during the course of a graph
+<span class='line'> 95</span>    * algorithm
+<span class='line'> 96</span>    *
+<span class='line'> 97</span>    * @return &lt;code>true&lt;/code> if the component has been visited.
+<span class='line'> 98</span>    */</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.isVisited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this._isVisited</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> 
+<span class='line'>103</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>104</span>    * Sets the visited flag for this component.
+<span class='line'>105</span>    *
+<span class='line'>106</span>    * @param isVisited
+<span class='line'>107</span>    *          the desired value of the visited flag.
+<span class='line'>108</span>    */</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.setVisited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">isVisited</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">    </span><span class="NAME">this._isVisited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">isVisited</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>114</span>    * Tests if a component has been marked at some point during the processing
+<span class='line'>115</span>    * involving this graph.
+<span class='line'>116</span>    *
+<span class='line'>117</span>    * @return &lt;code>true&lt;/code> if the component has been marked.
+<span class='line'>118</span>    */</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.isMarked</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this._isMarked</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span> 
+<span class='line'>123</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>124</span>    * Sets the marked flag for this component.
+<span class='line'>125</span>    *
+<span class='line'>126</span>    * @param isMarked
+<span class='line'>127</span>    *          the desired value of the marked flag.
+<span class='line'>128</span>    */</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.setMarked</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">isMarked</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">    </span><span class="NAME">this._isMarked</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">isMarked</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>132</span> 
+<span class='line'>133</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>134</span>    * Sets the user-defined data for this component.
+<span class='line'>135</span>    *
+<span class='line'>136</span>    * @param data
+<span class='line'>137</span>    *          an Object containing user-defined data.
+<span class='line'>138</span>    */</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.setContext</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">    </span><span class="NAME">this.data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> 
+<span class='line'>143</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>144</span>    * Gets the user-defined data for this component.
+<span class='line'>145</span>    *
+<span class='line'>146</span>    * @return the user-defined data.
+<span class='line'>147</span>    */</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.getContext</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span> 
+<span class='line'>152</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>153</span>    * Sets the user-defined data for this component.
+<span class='line'>154</span>    *
+<span class='line'>155</span>    * @param data
+<span class='line'>156</span>    *          an Object containing user-defined data.
+<span class='line'>157</span>    */</span><span class="WHIT">
+<span class='line'>158</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.setData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">    </span><span class="NAME">this.data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>161</span> 
+<span class='line'>162</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>163</span>    * Gets the user-defined data for this component.
+<span class='line'>164</span>    *
+<span class='line'>165</span>    * @return the user-defined data.
+<span class='line'>166</span>    */</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.getData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>170</span> 
+<span class='line'>171</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>172</span>    * Tests whether this component has been removed from its containing graph
+<span class='line'>173</span>    *
+<span class='line'>174</span>    * @return &lt;code>true&lt;/code> if this component is removed.
+<span class='line'>175</span>    */</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">  </span><span class="NAME">GraphComponent.prototype.isRemoved</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">    </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.error.AbstractMethodInvocationError</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>179</span> 
+<span class='line'>180</span> </span><span class="WHIT">  </span><span class="NAME">jsts.planargraph.GraphComponent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">GraphComponent</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>181</span> 
+<span class='line'>182</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>183</span> </span></pre></body></html>

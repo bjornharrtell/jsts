@@ -1,0 +1,3045 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>jsts.triangulate.quadedge.QuadEdgeSubdivision | JSTS Topology Suite Library</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="mobileoptimized" content="0" />
+	
+		<link rel="stylesheet" href="../css/all.css" media="all" />
+		<link rel="stylesheet" href="../css/handheld.css" media="only screen and (max-width: 660px)" />
+		<link rel="stylesheet" href="../css/handheld.css" media="handheld" />
+		<link rel="stylesheet" href="../css/screen.css" media="screen and (min-width: 661px)" />
+
+		<script src="../javascript/all.js"></script>
+		<!--[if lt IE 9]>
+			<script src="../javascript/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+<div class="index">
+	<div class="menu">
+		<div class="indexLinks">
+			<a href="../index.html">Classes</a>
+			<a href="../files.html">Files</a>
+		</div>
+	
+		<h2 class="heading1">Classes</h2>
+		
+		<input type="text" name="classFilter" class="classFilter" id="ClassFilter" placeholder="Filter"></input>
+		
+		<nav>
+			<ul class="classList" id="ClassList">
+				
+					<li><a href="../symbols/jsts.html">jsts</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.Angle.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>Angle</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.BoundaryNodeRule.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>BoundaryNodeRule</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.CentralEndpointIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>CentralEndpointIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.CGAlgorithms.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>CGAlgorithms</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.ConvexHull.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>ConvexHull</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.distance.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>distance</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.HCoordinate.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>HCoordinate</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.LineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>LineIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.locate.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.locate.SimplePointInAreaLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>locate<span class='break'> </span>.<span class='break'> </span>SimplePointInAreaLocator</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.MCPointInRing.MCSelecter.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>MCPointInRing<span class='break'> </span>.<span class='break'> </span>MCSelecter</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.PointLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>PointLocator</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.RayCrossingCounter.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>RayCrossingCounter</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.RobustDeterminant.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>RobustDeterminant</a></li>
+				
+					<li><a href="../symbols/jsts.algorithm.RobustLineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>algorithm<span class='break'> </span>.<span class='break'> </span>RobustLineIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.error.html">jsts<span class='break'> </span>.<span class='break'> </span>error</a></li>
+				
+					<li><a href="../symbols/jsts.error.AbstractMethodInvocationError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>AbstractMethodInvocationError</a></li>
+				
+					<li><a href="../symbols/jsts.error.IllegalArgumentError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>IllegalArgumentError</a></li>
+				
+					<li><a href="../symbols/jsts.error.LocateFailureError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>LocateFailureError</a></li>
+				
+					<li><a href="../symbols/jsts.error.NotImplementedError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>NotImplementedError</a></li>
+				
+					<li><a href="../symbols/jsts.error.NotRepresentableError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>NotRepresentableError</a></li>
+				
+					<li><a href="../symbols/jsts.error.TopologyError.html">jsts<span class='break'> </span>.<span class='break'> </span>error<span class='break'> </span>.<span class='break'> </span>TopologyError</a></li>
+				
+					<li><a href="../symbols/jsts.geom.html">jsts<span class='break'> </span>.<span class='break'> </span>geom</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Coordinate.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Coordinate</a></li>
+				
+					<li><a href="../symbols/jsts.geom.CoordinateArrays.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>CoordinateArrays</a></li>
+				
+					<li><a href="../symbols/jsts.geom.CoordinateList.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>CoordinateList</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Dimension.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Dimension</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Envelope.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Envelope</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Geometry.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Geometry</a></li>
+				
+					<li><a href="../symbols/jsts.geom.GeometryCollection.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>GeometryCollection</a></li>
+				
+					<li><a href="../symbols/jsts.geom.GeometryFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>GeometryFactory</a></li>
+				
+					<li><a href="../symbols/jsts.geom.IntersectionMatrix.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>IntersectionMatrix</a></li>
+				
+					<li><a href="../symbols/jsts.geom.LinearRing.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>LinearRing</a></li>
+				
+					<li><a href="../symbols/jsts.geom.LineSegment.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>LineSegment</a></li>
+				
+					<li><a href="../symbols/jsts.geom.LineString.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>LineString</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Location.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Location</a></li>
+				
+					<li><a href="../symbols/jsts.geom.MultiLineString.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>MultiLineString</a></li>
+				
+					<li><a href="../symbols/jsts.geom.MultiPoint.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>MultiPoint</a></li>
+				
+					<li><a href="../symbols/jsts.geom.MultiPolygon.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>MultiPolygon</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Point.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Point</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Polygon.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Polygon</a></li>
+				
+					<li><a href="../symbols/jsts.geom.PrecisionModel.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>PrecisionModel</a></li>
+				
+					<li><a href="../symbols/jsts.geom.Triangle.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>Triangle</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.GeometryCombiner.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>GeometryCombiner</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.GeometryExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>GeometryExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.LinearComponentExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>LinearComponentExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.PointExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>PointExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geom.util.PolygonExtracter.html">jsts<span class='break'> </span>.<span class='break'> </span>geom<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>PolygonExtracter</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Depth.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Depth</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.DirectedEdge.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>DirectedEdge</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.DirectedEdgeStar.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>DirectedEdgeStar</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Edge.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Edge</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeEnd.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeEnd</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeEndStar.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeEndStar</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeIntersection.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeIntersection</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeIntersectionList.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeIntersectionList</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeList.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeList</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.EdgeRing.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>EdgeRing</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.GraphComponent.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>GraphComponent</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.EdgeSetIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>EdgeSetIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.SegmentIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>SegmentIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.SimpleEdgeSetIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>SimpleEdgeSetIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.index.SimpleMCSweepLineIntersector.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>SimpleMCSweepLineIntersector</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Label.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Label</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Node.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Node</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.NodeFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>NodeFactory</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.NodeMap.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>NodeMap</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.PlanarGraph.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>PlanarGraph</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Position.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Position</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.Quadrant.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>Quadrant</a></li>
+				
+					<li><a href="../symbols/jsts.geomgraph.TopologyLocation.html">jsts<span class='break'> </span>.<span class='break'> </span>geomgraph<span class='break'> </span>.<span class='break'> </span>TopologyLocation</a></li>
+				
+					<li><a href="../symbols/jsts.index.html">jsts<span class='break'> </span>.<span class='break'> </span>index</a></li>
+				
+					<li><a href="../symbols/jsts.index.ArrayListVisitor.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>ArrayListVisitor</a></li>
+				
+					<li><a href="../symbols/jsts.index.bintree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>bintree</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChain.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChain</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChainBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChainBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChainOverlapAction.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChainOverlapAction</a></li>
+				
+					<li><a href="../symbols/jsts.index.chain.MonotoneChainSelectAction.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>chain<span class='break'> </span>.<span class='break'> </span>MonotoneChainSelectAction</a></li>
+				
+					<li><a href="../symbols/jsts.index.DoubleBits.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>DoubleBits</a></li>
+				
+					<li><a href="../symbols/jsts.index.IntervalSize.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>IntervalSize</a></li>
+				
+					<li><a href="../symbols/jsts.index.kdtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>kdtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.kdtree.KdNode.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>kdtree<span class='break'> </span>.<span class='break'> </span>KdNode</a></li>
+				
+					<li><a href="../symbols/jsts.index.kdtree.KdTree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>kdtree<span class='break'> </span>.<span class='break'> </span>KdTree</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Key.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Key</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Node.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Node</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.NodeBase.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>NodeBase</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Quadtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Quadtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.quadtree.Root.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>quadtree<span class='break'> </span>.<span class='break'> </span>Root</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.AbstractNode.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>AbstractNode</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.AbstractSTRtree.IntersectsOp.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>AbstractSTRtree<span class='break'> </span>.<span class='break'> </span>IntersectsOp</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.Boundable.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>Boundable</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.Interval.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>Interval</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.ItemBoundable.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>ItemBoundable</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.SIRtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>SIRtree</a></li>
+				
+					<li><a href="../symbols/jsts.index.strtree.STRtree.html">jsts<span class='break'> </span>.<span class='break'> </span>index<span class='break'> </span>.<span class='break'> </span>strtree<span class='break'> </span>.<span class='break'> </span>STRtree</a></li>
+				
+					<li><a href="../symbols/jsts.io.html">jsts<span class='break'> </span>.<span class='break'> </span>io</a></li>
+				
+					<li><a href="../symbols/jsts.io.GeoJSONReader.html">jsts<span class='break'> </span>.<span class='break'> </span>io<span class='break'> </span>.<span class='break'> </span>GeoJSONReader</a></li>
+				
+					<li><a href="../symbols/jsts.io.GeoJSONWriter.html">jsts<span class='break'> </span>.<span class='break'> </span>io<span class='break'> </span>.<span class='break'> </span>GeoJSONWriter</a></li>
+				
+					<li><a href="../symbols/jsts.io.WKTReader.html">jsts<span class='break'> </span>.<span class='break'> </span>io<span class='break'> </span>.<span class='break'> </span>WKTReader</a></li>
+				
+					<li><a href="../symbols/jsts.io.WKTWriter.html">jsts<span class='break'> </span>.<span class='break'> </span>io<span class='break'> </span>.<span class='break'> </span>WKTWriter</a></li>
+				
+					<li><a href="../symbols/jsts.noding.html">jsts<span class='break'> </span>.<span class='break'> </span>noding</a></li>
+				
+					<li><a href="../symbols/jsts.noding.BasicSegmentString.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>BasicSegmentString</a></li>
+				
+					<li><a href="../symbols/jsts.noding.InteriorIntersectionFinder.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>InteriorIntersectionFinder</a></li>
+				
+					<li><a href="../symbols/jsts.noding.IntersectionAdder.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>IntersectionAdder</a></li>
+				
+					<li><a href="../symbols/jsts.noding.MCIndexNoder.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>MCIndexNoder</a></li>
+				
+					<li><a href="../symbols/jsts.noding.NodedSegmentString.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>NodedSegmentString</a></li>
+				
+					<li><a href="../symbols/jsts.noding.Octant.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>Octant</a></li>
+				
+					<li><a href="../symbols/jsts.noding.SegmentNode.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>SegmentNode</a></li>
+				
+					<li><a href="../symbols/jsts.noding.SegmentNodeList.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>SegmentNodeList</a></li>
+				
+					<li><a href="../symbols/jsts.noding.snapround.html">jsts<span class='break'> </span>.<span class='break'> </span>noding<span class='break'> </span>.<span class='break'> </span>snapround</a></li>
+				
+					<li><a href="../symbols/jsts.operation.html">jsts<span class='break'> </span>.<span class='break'> </span>operation</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferInputLineSimplifier.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferInputLineSimplifier</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferParameters.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferParameters</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.BufferSubgraph.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>BufferSubgraph</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetCurveBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetCurveBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetCurveSetBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetCurveSetBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetSegmentGenerator.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetSegmentGenerator</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.OffsetSegmentString.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>OffsetSegmentString</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.RightmostEdgeFinder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>RightmostEdgeFinder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.buffer.SubgraphDepthLocater.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>buffer<span class='break'> </span>.<span class='break'> </span>SubgraphDepthLocater</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.ConnectedElementLocationFilter.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance<span class='break'> </span>.<span class='break'> </span>ConnectedElementLocationFilter</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.DistanceOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance<span class='break'> </span>.<span class='break'> </span>DistanceOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.distance.GeometryLocation.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>distance<span class='break'> </span>.<span class='break'> </span>GeometryLocation</a></li>
+				
+					<li><a href="../symbols/jsts.operation.GeometryGraphOperation.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>GeometryGraphOperation</a></li>
+				
+					<li><a href="../symbols/jsts.operation.IsSimpleOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>IsSimpleOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.IsSimpleOp.EndpointInfo.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>IsSimpleOp<span class='break'> </span>.<span class='break'> </span>EndpointInfo</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.MaximalEdgeRing.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>MaximalEdgeRing</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.MinimalEdgeRing.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>MinimalEdgeRing</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.OverlayNodeFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>OverlayNodeFactory</a></li>
+				
+					<li><a href="../symbols/jsts.operation.overlay.snap.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>overlay<span class='break'> </span>.<span class='break'> </span>snap</a></li>
+				
+					<li><a href="../symbols/jsts.operation.polygonize.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>polygonize</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundle.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundle</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.EdgeEndBundleStar.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>EdgeEndBundleStar</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateComputer.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateComputer</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateNode.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNode</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateNodeFactory.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNodeFactory</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateNodeGraph.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateNodeGraph</a></li>
+				
+					<li><a href="../symbols/jsts.operation.relate.RelateOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>relate<span class='break'> </span>.<span class='break'> </span>RelateOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.CascadedPolygonUnion.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>CascadedPolygonUnion</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.PointGeometryUnion.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>PointGeometryUnion</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.UnaryUnionOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>UnaryUnionOp</a></li>
+				
+					<li><a href="../symbols/jsts.operation.union.UnionInteracting.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>union<span class='break'> </span>.<span class='break'> </span>UnionInteracting</a></li>
+				
+					<li><a href="../symbols/jsts.operation.valid.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>valid</a></li>
+				
+					<li><a href="../symbols/jsts.operation.valid.ConnectedInteriorTester.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>valid<span class='break'> </span>.<span class='break'> </span>ConnectedInteriorTester</a></li>
+				
+					<li><a href="../symbols/jsts.operation.valid.IsValidOp.html">jsts<span class='break'> </span>.<span class='break'> </span>operation<span class='break'> </span>.<span class='break'> </span>valid<span class='break'> </span>.<span class='break'> </span>IsValidOp</a></li>
+				
+					<li><a href="../symbols/jsts.planargraph.html">jsts<span class='break'> </span>.<span class='break'> </span>planargraph</a></li>
+				
+					<li><a href="../symbols/jsts.simplify.html">jsts<span class='break'> </span>.<span class='break'> </span>simplify</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.DelaunayTriangulationBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>DelaunayTriangulationBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>LastFoundQuadEdgeLocator</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>QuadEdge</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>QuadEdgeSubdivision</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.TrianglePredicate.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>TrianglePredicate</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>quadedge<span class='break'> </span>.<span class='break'> </span>Vertex</a></li>
+				
+					<li><a href="../symbols/jsts.triangulate.VoronoiDiagramBuilder.html">jsts<span class='break'> </span>.<span class='break'> </span>triangulate<span class='break'> </span>.<span class='break'> </span>VoronoiDiagramBuilder</a></li>
+				
+					<li><a href="../symbols/jsts.util.html">jsts<span class='break'> </span>.<span class='break'> </span>util</a></li>
+				
+					<li><a href="../symbols/jsts.util.Assert.html">jsts<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>Assert</a></li>
+				
+					<li><a href="../symbols/jsts.util.UniqueCoordinateArrayFilter.html">jsts<span class='break'> </span>.<span class='break'> </span>util<span class='break'> </span>.<span class='break'> </span>UniqueCoordinateArrayFilter</a></li>
+				
+			</ul>
+		</nav>
+	</div>
+	<div class="fineprint" style="clear:both">
+		<footer>
+			
+			Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
+			Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
+			Generated on:
+			<time datetime='2012-3-19' pubdate>2012-3-19 11:27</time>
+		</footer>
+	</div>
+</div>
+
+<div class="index indexStatic"></div>
+
+<div class="content">
+	<div class="innerContent">
+		<article>
+			<header>
+				<h1 class="classTitle">
+					
+					Class <span>jsts.triangulate.quadedge.QuadEdgeSubdivision</span>
+				</h1>
+				
+				<div class="intro">
+					<p class="description summary">
+						
+					</p>
+						
+					
+						<ul class="summary">
+							
+							
+							
+								<li>Defined in: <a href="../symbols/src/src_jsts_triangulate_quadedge_QuadEdgeSubdivision.js.html">QuadEdgeSubdivision.js</a></li>
+							
+							
+						</ul>
+					
+				</div>
+			</header>
+			
+			
+				<section>
+					<div class="props">
+						<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jsts.triangulate.quadedge.QuadEdgeSubdivision.">
+							<caption class="sectionTitle">Class Summary</caption>
+							<thead>
+								<tr>
+									<th scope="col">Constructor Attributes</th>
+									<th scope="col">Constructor Name and Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription" >
+										<div class="fixedFont">
+											<b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#constructor">jsts.triangulate.quadedge.QuadEdgeSubdivision</a></b>(env, tolerance)
+										</div>
+										<div class="description">Creates a new instance of a quad-edge subdivision based on a frame triangle
+that encloses a supplied bounding box.</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+			
+			
+			
+	<!--
+	#### METHODS SUMMARY
+	-->
+			
+				<section>
+					
+					
+					<div class="props">
+						<h2 class="sectionTitle">Method Summary</h2>
+						
+						
+							<nav>
+								<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class jsts.triangulate.quadedge.QuadEdgeSubdivision.">
+									<thead>
+										<tr>
+											<th scope="col">Method Attributes</th>
+											<th scope="col">Method Name and Description</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+										
+										
+											<tr
+												 class='item0'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#connect">connect</a></b>(a, b)
+													</div>
+													<div class="description">Creates a new QuadEdge connecting the destination of a to the origin of b,
+in such a way that all three have the same left face after the connection
+is complete.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item1'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#createFrame">createFrame</a></b>(env)
+													</div>
+													<div class="description">Creates the framing envelope</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item2'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#delete_jsts">delete_jsts</a></b>(e)
+													</div>
+													<div class="description">Deletes a quadedge from the subdivision.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item3'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#fetchTriangleToVisit">fetchTriangleToVisit</a></b>(edge, edgeStack, includeFrame, visitedEdges)
+													</div>
+													<div class="description">Stores the edges for a visited triangle.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item4'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getEdges">getEdges</a></b>()
+													</div>
+													<div class="description">Gets the collection of base Quadedges (one for every pair of
+vertices which is connected).</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item5'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getEdgesByFactory">getEdgesByFactory</a></b>(geomFact)
+													</div>
+													<div class="description">Gets the geometry for the edges in the subdivision as a
+MultiLineString containing 2-point lines.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item6'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getEnvelope">getEnvelope</a></b>()
+													</div>
+													<div class="description">Gets the envelope of the Subdivision (including the frame).</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item7'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getPrimaryEdges">getPrimaryEdges</a></b>(includeFrame)
+													</div>
+													<div class="description">Gets all primary quadedges in the subdivision.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item8'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getTolerance">getTolerance</a></b>()
+													</div>
+													<div class="description">Gets the vertex-equality tolerance value used in this subdivision</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item9'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getTriangleCoordinates">getTriangleCoordinates</a></b>(includeFrame)
+													</div>
+													<div class="description">Gets the coordinates for each triangle in the subdivision as an array.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item10'
+											>
+												<td class="attributes">&lt;static&gt; &nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont">jsts.triangulate.quadedge.QuadEdgeSubdivision.<b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#.getTriangleEdges">getTriangleEdges</a></b>(startQE, triEdge)
+													</div>
+													<div class="description">Gets the edges for the triangle to the left of the given QuadEdge.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item11'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getTriangleEdges">getTriangleEdges</a></b>(includeFrame)
+													</div>
+													<div class="description">Gets a list of the triangles in the subdivision, specified as an array of
+the primary quadedges around the triangle.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item12'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getTriangles">getTriangles</a></b>(geomFact)
+													</div>
+													<div class="description">Gets the geometry for the triangles in a triangulated subdivision as a
+GeometryCollection of triangular Polygons.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item13'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getTriangleVertices">getTriangleVertices</a></b>(includeFrame)
+													</div>
+													<div class="description">Gets a list of the triangles in the subdivision, specified as an array of
+the triangle Vertexes.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item14'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getVertexUniqueEdges">getVertexUniqueEdges</a></b>(includeFrame)
+													</div>
+													<div class="description">Gets a collection of QuadEdges whose origin vertices are a unique
+set which includes all vertices in the subdivision.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item15'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getVertices">getVertices</a></b>(includeFrame)
+													</div>
+													<div class="description">Gets the unique Vertexes in the subdivision, including the frame
+vertices if desired.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item16'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getVoronoiCellPolygon">getVoronoiCellPolygon</a></b>(qe, geomFact)
+													</div>
+													<div class="description">Gets the Voronoi cell around a site specified by the origin of a QuadEdge.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item17'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getVoronoiCellPolygons">getVoronoiCellPolygons</a></b>(geomFact)
+													</div>
+													<div class="description">Gets a List of Polygons for the Voronoi cells of this
+triangulation.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item18'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#getVoronoiDiagram">getVoronoiDiagram</a></b>(geomFact)
+													</div>
+													<div class="description">Gets the cells in the Voronoi diagram for this triangulation.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item19'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#initSubdiv">initSubdiv</a></b>()
+													</div>
+													<div class="description"></div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item20'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#insertSite">insertSite</a></b>(v)
+													</div>
+													<div class="description">Inserts a new site into the Subdivision, connecting it to the vertices of
+the containing triangle (or quadrilateral, if the split point falls on an
+existing edge).</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item21'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#isFrameBorderEdge">isFrameBorderEdge</a></b>(e)
+													</div>
+													<div class="description">Tests whether a QuadEdge is an edge on the border of the frame facets and
+the internal facets.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item22'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#isFrameEdge">isFrameEdge</a></b>(e)
+													</div>
+													<div class="description">Tests whether a QuadEdge is an edge incident on a frame triangle vertex.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item23'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#isFrameVertex">isFrameVertex</a></b>(v)
+													</div>
+													<div class="description">Tests whether a vertex is a vertex of the outer triangle.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item24'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#isOnEdge">isOnEdge</a></b>(e, p)
+													</div>
+													<div class="description">Tests whether a Coordinate lies on a QuadEdge, up to a
+tolerance determined by the subdivision tolerance.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item25'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#isVertexOfEdge">isVertexOfEdge</a></b>(e, v)
+													</div>
+													<div class="description">Tests whether a Vertex is the start or end vertex of a
+QuadEdge, up to the subdivision tolerance distance.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item26'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#locate">locate</a></b>()
+													</div>
+													<div class="description">Locates a quadedge
+Will call correct locate* -function based on arguments</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item27'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#locateByCoordinate">locateByCoordinate</a></b>(p)
+													</div>
+													<div class="description">Finds a quadedge of a triangle containing a location specified by a
+Coordinate, if one exists.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item28'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#locateByCoordinates">locateByCoordinates</a></b>(p0, p1)
+													</div>
+													<div class="description">Locates the edge between the given vertices, if it exists in the
+subdivision.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item29'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#locateByVertex">locateByVertex</a></b>(x)
+													</div>
+													<div class="description">Finds a quadedge of a triangle containing a location specified by a
+Vertex, if one exists.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item30'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#locateFromEdge">locateFromEdge</a></b>(v, startEdge)
+													</div>
+													<div class="description">Locates an edge of a triangle which contains a location specified by a
+Vertex v.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item31'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#makeEdge">makeEdge</a></b>(o, d)
+													</div>
+													<div class="description">Creates a new quadedge, recording it in the edges list.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item32'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#setLocator">setLocator</a></b>(locator)
+													</div>
+													<div class="description">Sets the QuadEdgeLocator to use for locating containing triangles
+in this subdivision.</div>
+												</td>
+											</tr>
+										
+											<tr
+												 class='item33'
+											>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont"><b><a href="../symbols/jsts.triangulate.quadedge.QuadEdgeSubdivision.html#visitTriangles">visitTriangles</a></b>(triVisitor, includeFrame)
+													</div>
+													<div class="description">Visits all quadedges with the specified visitor.</div>
+												</td>
+											</tr>
+										
+									</tbody>
+								</table>
+							</nav>
+						
+					
+						
+					</div>
+				</section>
+			
+			
+	<!--
+	#### EVENTS SUMMARY
+	-->
+			
+	<!--
+	#### CONSTRUCTOR DETAILS
+	-->
+			
+				<section>
+					<div class="details props">
+						<div class="innerProps">
+							<h2 class="sectionTitle" id="constructor">
+								Class Detail
+							</h2>
+							
+							<div class="fixedFont">
+								<b>jsts.triangulate.quadedge.QuadEdgeSubdivision</b>(env, tolerance)
+							</div>
+							
+							<div class="description">
+								Creates a new instance of a quad-edge subdivision based on a frame triangle
+that encloses a supplied bounding box. A new super-bounding box that contains
+the triangle is computed and stored.
+								
+							</div>
+							
+							
+						
+							
+								<dl class="detailList params">
+									<dt class="heading">Parameters:</dt>
+									
+										<dt>
+											 <b>env</b>
+											
+										</dt>
+										<dd>the bouding box to surround.</dd>
+									
+										<dt>
+											 <b>tolerance</b>
+											
+										</dt>
+										<dd>the tolerance value for determining if two sites are equal.</dd>
+									
+								</dl>
+							
+							
+							
+						</div>
+					</div>
+				</section>
+			
+	<!--
+	#### FIELD DETAILS
+	-->
+			
+	<!--
+	#### METHOD DETAILS
+	-->		
+			
+				<section>
+					<div class="details props">
+						<div class="innerProps">
+							<h2 class="sectionTitle">
+								Method Detail
+							</h2>
+							
+							<ul class="methodDetail" id="MethodDetail">
+								
+								
+									<li 
+										 class='item0'
+									>
+										<div class="fixedFont heading" id="connect">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>connect</b>(a, b)
+										</div>
+										
+										<div class="description">
+											Creates a new QuadEdge connecting the destination of a to the origin of b,
+in such a way that all three have the same left face after the connection
+is complete. The quadedge is recorded in the edges list.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>a</b>
+														
+													</dt>
+													<dd>The first quadedge.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>b</b>
+														
+													</dt>
+													<dd>The second quadedge.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> </dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item1'
+									>
+										<div class="fixedFont heading" id="createFrame">
+											<span class='lighter'>
+											
+											</span>
+											
+											
+											
+											<b>createFrame</b>(env)
+										</div>
+										
+										<div class="description">
+											Creates the framing envelope
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.Envelope.html">jsts.geom.Envelope</a>}</span> <b>env</b>
+														
+													</dt>
+													<dd>an envelope.</dd>
+												
+											</dl>
+										
+										
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item2'
+									>
+										<div class="fixedFont heading" id="delete_jsts">
+											<span class='lighter'>
+											
+											</span>
+											
+											
+											
+											<b>delete_jsts</b>(e)
+										</div>
+										
+										<div class="description">
+											Deletes a quadedge from the subdivision. Linked quadedges are updated to
+reflect the deletion.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>e</b>
+														
+													</dt>
+													<dd>the quadedge to delete.</dd>
+												
+											</dl>
+										
+										
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item3'
+									>
+										<div class="fixedFont heading" id="fetchTriangleToVisit">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span>
+											
+											<b>fetchTriangleToVisit</b>(edge, edgeStack, includeFrame, visitedEdges)
+										</div>
+										
+										<div class="description">
+											Stores the edges for a visited triangle. Also pushes sym (neighbour) edges
+on stack to visit later.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>edge</b>
+														
+													</dt>
+													<dd>the quadedge.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> <b>edgeStack</b>
+														
+													</dt>
+													<dd>an array used as a stack.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true to include frame.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{jsts.traingulate.quadedge.QuadEdge[]}</span> <b>visitedEdges</b>
+														
+													</dt>
+													<dd>the edges that are already visited.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> the visited triangle edges or null if the triangle should not be visited.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item4'
+									>
+										<div class="fixedFont heading" id="getEdges">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span>
+											
+											<b>getEdges</b>()
+										</div>
+										
+										<div class="description">
+											Gets the collection of base Quadedges (one for every pair of
+vertices which is connected).
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> a collection of QuadEdges.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item5'
+									>
+										<div class="fixedFont heading" id="getEdgesByFactory">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span>
+											
+											<b>getEdgesByFactory</b>(geomFact)
+										</div>
+										
+										<div class="description">
+											Gets the geometry for the edges in the subdivision as a
+MultiLineString containing 2-point lines.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.GeometryFactory.html">jsts.geom.GeometryFactory</a>}</span> <b>geomFact</b>
+														
+													</dt>
+													<dd>the GeometryFactory to use.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span> a MultiLineString.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item6'
+									>
+										<div class="fixedFont heading" id="getEnvelope">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Envelope.html">jsts.geom.Envelope</a>}</span>
+											
+											<b>getEnvelope</b>()
+										</div>
+										
+										<div class="description">
+											Gets the envelope of the Subdivision (including the frame).
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Envelope.html">jsts.geom.Envelope</a>}</span> the envelope.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item7'
+									>
+										<div class="fixedFont heading" id="getPrimaryEdges">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span>
+											
+											<b>getPrimaryEdges</b>(includeFrame)
+										</div>
+										
+										<div class="description">
+											Gets all primary quadedges in the subdivision. A primary edge is a
+QuadEdge which occupies the 0'th position in its array of
+associated quadedges. These provide the unique geometric edges of the
+triangulation.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true if the frame edges are to be included.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> a List of QuadEdges.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item8'
+									>
+										<div class="fixedFont heading" id="getTolerance">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{Number}</span>
+											
+											<b>getTolerance</b>()
+										</div>
+										
+										<div class="description">
+											Gets the vertex-equality tolerance value used in this subdivision
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{Number}</span> the tolerance value.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item9'
+									>
+										<div class="fixedFont heading" id="getTriangleCoordinates">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>[][]}</span>
+											
+											<b>getTriangleCoordinates</b>(includeFrame)
+										</div>
+										
+										<div class="description">
+											Gets the coordinates for each triangle in the subdivision as an array.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true if the frame triangles should be included.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>[][]}</span> a list of Coordinate[4] representing each triangle.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item10'
+									>
+										<div class="fixedFont heading" id=".getTriangleEdges">
+											<span class='lighter'>
+											&lt;static&gt; 
+											</span>
+											
+											
+											
+											<span class="light">jsts.triangulate.quadedge.QuadEdgeSubdivision.</span><b>getTriangleEdges</b>(startQE, triEdge)
+										</div>
+										
+										<div class="description">
+											Gets the edges for the triangle to the left of the given QuadEdge.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>startQE</b>
+														
+													</dt>
+													<dd>the starting quad-edge.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> <b>triEdge</b>
+														
+													</dt>
+													<dd>array of quadedges.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+													<dt class="heading">Throws:</dt>
+													
+														<dt>
+															 <b></b>
+														</dt>
+														<dd>IllegalArgumentException
+          if the edges do not form a triangle</dd>
+													
+												
+												
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item11'
+									>
+										<div class="fixedFont heading" id="getTriangleEdges">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span>
+											
+											<b>getTriangleEdges</b>(includeFrame)
+										</div>
+										
+										<div class="description">
+											Gets a list of the triangles in the subdivision, specified as an array of
+the primary quadedges around the triangle.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<b>includeFrame</b>
+														
+													</dt>
+													<dd>true if the frame triangles should be included.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> a List of QuadEdge[3] arrays.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item12'
+									>
+										<div class="fixedFont heading" id="getTriangles">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span>
+											
+											<b>getTriangles</b>(geomFact)
+										</div>
+										
+										<div class="description">
+											Gets the geometry for the triangles in a triangulated subdivision as a
+GeometryCollection of triangular Polygons.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.GeometryFactory.html">jsts.geom.GeometryFactory</a>}</span> <b>geomFact</b>
+														
+													</dt>
+													<dd>the GeometryFactory to use.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span> a GeometryCollection of triangular Polygons.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item13'
+									>
+										<div class="fixedFont heading" id="getTriangleVertices">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>[][]}</span>
+											
+											<b>getTriangleVertices</b>(includeFrame)
+										</div>
+										
+										<div class="description">
+											Gets a list of the triangles in the subdivision, specified as an array of
+the triangle Vertexes.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true if the frame triangles should be included.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>[][]}</span> a List of Vertex[3] arrays.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item14'
+									>
+										<div class="fixedFont heading" id="getVertexUniqueEdges">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span>
+											
+											<b>getVertexUniqueEdges</b>(includeFrame)
+										</div>
+										
+										<div class="description">
+											Gets a collection of QuadEdges whose origin vertices are a unique
+set which includes all vertices in the subdivision. The frame vertices can
+be included if required.
+<p>
+This is useful for algorithms which require traversing the subdivision
+starting at all vertices. Returning a quadedge for each vertex is more
+efficient than the alternative of finding the actual vertices using
+{@link #getVertices) and then locating  quadedges attached to them.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true if the frame vertices should be included.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>[]}</span> a collection of QuadEdge with the vertices of the subdivision as
+           their origins.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item15'
+									>
+										<div class="fixedFont heading" id="getVertices">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>[]}</span>
+											
+											<b>getVertices</b>(includeFrame)
+										</div>
+										
+										<div class="description">
+											Gets the unique Vertexes in the subdivision, including the frame
+vertices if desired.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true if the frame vertices should be included.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>[]}</span> an array of the subdivision vertices.</dd>
+													
+												
+												
+												
+												
+												
+													<dt class="heading">See:</dt>
+													
+														<dd>#getVertexUniqueEdges</dd>
+													
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item16'
+									>
+										<div class="fixedFont heading" id="getVoronoiCellPolygon">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Polygon.html">jsts.geom.Polygon</a>}</span>
+											
+											<b>getVoronoiCellPolygon</b>(qe, geomFact)
+										</div>
+										
+										<div class="description">
+											Gets the Voronoi cell around a site specified by the origin of a QuadEdge.
+<p>
+The userData of the polygon is set to be the {@link Coordinate) of the
+site. This allows attaching external data associated with the site to this
+cell polygon.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>qe</b>
+														
+													</dt>
+													<dd>a quadedge originating at the cell site.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.GeometryFactory.html">jsts.geom.GeometryFactory</a>}</span> <b>geomFact</b>
+														
+													</dt>
+													<dd>a factory for building the polygon.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Polygon.html">jsts.geom.Polygon</a>}</span> a polygon indicating the cell extent.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item17'
+									>
+										<div class="fixedFont heading" id="getVoronoiCellPolygons">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Polygon.html">jsts.geom.Polygon</a>[]}</span>
+											
+											<b>getVoronoiCellPolygons</b>(geomFact)
+										</div>
+										
+										<div class="description">
+											Gets a List of Polygons for the Voronoi cells of this
+triangulation.
+<p>
+The userData of each polygon is set to be the {@link Coordinate) of the
+cell site. This allows easily associating external data associated with the
+sites to the cells.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.GeometryFactory.html">jsts.geom.GeometryFactory</a>}</span> <b>geomFact</b>
+														
+													</dt>
+													<dd>a geometry factory.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Polygon.html">jsts.geom.Polygon</a>[]}</span> an array of Polygons.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item18'
+									>
+										<div class="fixedFont heading" id="getVoronoiDiagram">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span>
+											
+											<b>getVoronoiDiagram</b>(geomFact)
+										</div>
+										
+										<div class="description">
+											Gets the cells in the Voronoi diagram for this triangulation. The cells are
+returned as a GeometryCollection of Polygons
+<p>
+The userData of each polygon is set to be the {@link Coordinate) of the
+cell site. This allows easily associating external data associated with the
+sites to the cells.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.GeometryFactory.html">jsts.geom.GeometryFactory</a>}</span> <b>geomFact</b>
+														
+													</dt>
+													<dd>a geometry factory.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span> a GeometryCollection of Polygons.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item19'
+									>
+										<div class="fixedFont heading" id="initSubdiv">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{jsts.geom.triangulate.quadedge.QuadEdge}</span>
+											
+											<b>initSubdiv</b>()
+										</div>
+										
+										<div class="description">
+											
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{jsts.geom.triangulate.quadedge.QuadEdge}</span> The quadedge.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item20'
+									>
+										<div class="fixedFont heading" id="insertSite">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>insertSite</b>(v)
+										</div>
+										
+										<div class="description">
+											Inserts a new site into the Subdivision, connecting it to the vertices of
+the containing triangle (or quadrilateral, if the split point falls on an
+existing edge).
+<p>
+This method does NOT maintain the Delaunay condition. If desired, this must
+be checked and enforced by the caller.
+<p>
+This method does NOT check if the inserted vertex falls on an edge. This
+must be checked by the caller, since this situation may cause erroneous
+triangulation
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>v</b>
+														
+													</dt>
+													<dd>the vertex to insert.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> a new quad edge terminating in v.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item21'
+									>
+										<div class="fixedFont heading" id="isFrameBorderEdge">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{boolean}</span>
+											
+											<b>isFrameBorderEdge</b>(e)
+										</div>
+										
+										<div class="description">
+											Tests whether a QuadEdge is an edge on the border of the frame facets and
+the internal facets. E.g. an edge which does not itself touch a frame
+vertex, but which touches an edge which does.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>e</b>
+														
+													</dt>
+													<dd>the edge to test.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{boolean}</span> true if the edge is on the border of the frame.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item22'
+									>
+										<div class="fixedFont heading" id="isFrameEdge">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{boolean}</span>
+											
+											<b>isFrameEdge</b>(e)
+										</div>
+										
+										<div class="description">
+											Tests whether a QuadEdge is an edge incident on a frame triangle vertex.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>e</b>
+														
+													</dt>
+													<dd>the edge to test.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{boolean}</span> true if the edge is connected to the frame triangle.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item23'
+									>
+										<div class="fixedFont heading" id="isFrameVertex">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{boolean}</span>
+											
+											<b>isFrameVertex</b>(v)
+										</div>
+										
+										<div class="description">
+											Tests whether a vertex is a vertex of the outer triangle.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>v</b>
+														
+													</dt>
+													<dd>the vertex to test.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{boolean}</span> true if the vertex is an outer triangle vertex.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item24'
+									>
+										<div class="fixedFont heading" id="isOnEdge">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{boolean}</span>
+											
+											<b>isOnEdge</b>(e, p)
+										</div>
+										
+										<div class="description">
+											Tests whether a Coordinate lies on a QuadEdge, up to a
+tolerance determined by the subdivision tolerance.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>e</b>
+														
+													</dt>
+													<dd>a QuadEdge.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span> <b>p</b>
+														
+													</dt>
+													<dd>a point.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{boolean}</span> true if the vertex lies on the edge.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item25'
+									>
+										<div class="fixedFont heading" id="isVertexOfEdge">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{boolean}</span>
+											
+											<b>isVertexOfEdge</b>(e, v)
+										</div>
+										
+										<div class="description">
+											Tests whether a Vertex is the start or end vertex of a
+QuadEdge, up to the subdivision tolerance distance.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>e</b>
+														
+													</dt>
+													<dd>the quadedge to test.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>v</b>
+														
+													</dt>
+													<dd>the vertex to test.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{boolean}</span> true if the vertex is a endpoint of the edge.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item26'
+									>
+										<div class="fixedFont heading" id="locate">
+											<span class='lighter'>
+											
+											</span>
+											
+											
+											
+											<b>locate</b>()
+										</div>
+										
+										<div class="description">
+											Locates a quadedge
+Will call correct locate* -function based on arguments
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item27'
+									>
+										<div class="fixedFont heading" id="locateByCoordinate">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>locateByCoordinate</b>(p)
+										</div>
+										
+										<div class="description">
+											Finds a quadedge of a triangle containing a location specified by a
+Coordinate, if one exists.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span> <b>p</b>
+														
+													</dt>
+													<dd>the Coordinate to locate.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> a quadedge on the edge of a triangle which touches or contains the
+         location or null if no such triangle exists.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item28'
+									>
+										<div class="fixedFont heading" id="locateByCoordinates">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>locateByCoordinates</b>(p0, p1)
+										</div>
+										
+										<div class="description">
+											Locates the edge between the given vertices, if it exists in the
+subdivision.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span> <b>p0</b>
+														
+													</dt>
+													<dd>a coordinate.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span> <b>p1</b>
+														
+													</dt>
+													<dd>another coordinate.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> the edge joining the coordinates, if present, null if no such edge exists.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item29'
+									>
+										<div class="fixedFont heading" id="locateByVertex">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>locateByVertex</b>(x)
+										</div>
+										
+										<div class="description">
+											Finds a quadedge of a triangle containing a location specified by a
+Vertex, if one exists.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>x</b>
+														
+													</dt>
+													<dd>the vertex to locate.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> a quadedge on the edge of a triangle which touches or contains the location, null of no such triangle exists.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item30'
+									>
+										<div class="fixedFont heading" id="locateFromEdge">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>locateFromEdge</b>(v, startEdge)
+										</div>
+										
+										<div class="description">
+											Locates an edge of a triangle which contains a location specified by a
+Vertex v. The edge returned has the property that either v is on e, or e is
+an edge of a triangle containing v. The search starts from startEdge amd
+proceeds on the general direction of v.
+<p>
+This locate algorithm relies on the subdivision being Delaunay. For
+non-Delaunay subdivisions, this may loop for ever.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>v</b>
+														
+													</dt>
+													<dd>the location to search for.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> <b>startEdge</b>
+														
+													</dt>
+													<dd>an edge of the subdivision to start searching at.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+													<dt class="heading">Throws:</dt>
+													
+														<dt>
+															 <b></b>
+														</dt>
+														<dd>jsts.error.LocateFailureError
+          if the location algorithm fails to converge in a reasonable
+          number of iterations</dd>
+													
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> a QuadEdge which contains v, or is on the edge of a triangle
+         containing v.</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item31'
+									>
+										<div class="fixedFont heading" id="makeEdge">
+											<span class='lighter'>
+											
+											</span>
+											
+											<span class="light">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span>
+											
+											<b>makeEdge</b>(o, d)
+										</div>
+										
+										<div class="description">
+											Creates a new quadedge, recording it in the edges list.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>o</b>
+														
+													</dt>
+													<dd>a Vertex.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.Vertex.html">jsts.triangulate.quadedge.Vertex</a>}</span> <b>d</b>
+														
+													</dt>
+													<dd>another Vertex.</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd><span class="light fixedFont">{<a href="../symbols/jsts.triangulate.quadedge.QuadEdge.html">jsts.triangulate.quadedge.QuadEdge</a>}</span> </dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item32'
+									>
+										<div class="fixedFont heading" id="setLocator">
+											<span class='lighter'>
+											
+											</span>
+											
+											
+											
+											<b>setLocator</b>(locator)
+										</div>
+										
+										<div class="description">
+											Sets the QuadEdgeLocator to use for locating containing triangles
+in this subdivision.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{jsts.triangulate.quadedge.QuadEdgeLocator}</span> <b>locator</b>
+														
+													</dt>
+													<dd>a QuadEdgeLocator.</dd>
+												
+											</dl>
+										
+										
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item33'
+									>
+										<div class="fixedFont heading" id="visitTriangles">
+											<span class='lighter'>
+											
+											</span>
+											
+											
+											
+											<b>visitTriangles</b>(triVisitor, includeFrame)
+										</div>
+										
+										<div class="description">
+											Visits all quadedges with the specified visitor.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<span class="light fixedFont">{jsts.triangulate.TriangleVisitor}</span> <b>triVisitor</b>
+														
+													</dt>
+													<dd>the visitor to use.</dd>
+												
+													<dt>
+														<span class="light fixedFont">{boolean}</span> <b>includeFrame</b>
+														
+													</dt>
+													<dd>true to include frame-edges.</dd>
+												
+											</dl>
+										
+										
+										
+										
+									</li>
+								
+							</ul>
+						</div>
+					</div>
+				</section>
+			
+			
+	<!--
+	#### EVENT DETAILS
+	-->		
+			
+		</article>
+	</div>
+</div>
+
+		<script type="text/javascript">
+			wbos.CssTools.MediaQueryFallBack.LoadCss('../css/screen.css', '../css/handheld.css', 660)
+			codeview.classFilter.Init()
+		</script>
+	</body>
+</html>
+

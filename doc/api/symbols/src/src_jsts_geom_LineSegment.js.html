@@ -266,5 +266,18 @@
 <span class='line'>259</span> </span><span class="WHIT">  </span><span class="NAME">this.p1.y</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">p1.y</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>260</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>261</span> 
-<span class='line'>262</span> </span><span class="COMM">// TODO: port rest</span><span class="WHIT">
-<span class='line'>263</span> </span></pre></body></html>
+<span class='line'>262</span> </span><span class="COMM">/**
+<span class='line'>263</span>  * Computes the distance between this line segment and a given point.
+<span class='line'>264</span>  *
+<span class='line'>265</span>  * @param {jsts.geom.Coordinate}
+<span class='line'>266</span>  *          p the coordinate.
+<span class='line'>267</span>  * @return {number}
+<span class='line'>268</span>  *          the distance from this segment to the given point.
+<span class='line'>269</span>  */</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="NAME">jsts.geom.LineSegment.prototype.distance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.CGAlgorithms.distancePointLine</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> 
+<span class='line'>275</span> </span><span class="COMM">// TODO: port rest</span><span class="WHIT">
+<span class='line'>276</span> </span></pre></body></html>
