@@ -55,9 +55,10 @@ jsts.geom.util.GeometryCombiner.combine = function(geoms) {
  */
 jsts.geom.util.GeometryCombiner.combine2 = function() {
   var arrayList = new javascript.util.ArrayList();
-  arguments.foreach(function(a) { arrayList.add(a); })
-
-  var combiner = jsts.geom.util.GeometryCombiner(arrayList);
+  Array.prototype.slice.call(arguments).forEach(function(a) {
+    arrayList.add(a);
+  });
+  var combiner = new jsts.geom.util.GeometryCombiner(arrayList);
   return combiner.combine();
 };
 
