@@ -11,10 +11,10 @@
         }
     ],
     "dependencies": {
-        "javascript.util": "0.10.0"
+        "javascript.util": "~0.10.0"
     },
     "devDependencies": {
-        "jasmine-node": "1.0.21"
+        "jasmine-node": "~1.3.0"
     },
     "directories": {
         "lib": "./src",
@@ -25,5 +25,8 @@
     "repository": {
         "type": "git",
         "url": "git://github.com/bjornharrtell/jsts.git"
+    },
+    "scripts": {
+        "test": "node_modules/.bin/jasmine-node --matchall test/spec/"
     }
 }
