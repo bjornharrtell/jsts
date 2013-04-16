@@ -62,16 +62,6 @@
     return 'LinearRing';
   };
 
-  jsts.geom.LinearRing.prototype.clone = function() {
-    var points = [];
-
-    for (var i = 0, len = this.points.length; i < len; i++) {
-      points.push(this.points[i].clone());
-    }
-
-    return this.factory.createLinearRing(points);
-  };
-
   jsts.geom.LinearRing.MINIMUM_VALID_SIZE = 4;
 
   jsts.geom.LinearRing.prototype.CLASS_NAME = 'jsts.geom.LinearRing';
