@@ -156,6 +156,8 @@ jsts.geom.GeometryFactory.prototype.createMultiPolygon = function(polygons) {
  *         <code>geomList</code> .
  */
 jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
+  // Compatibility with javascript.util.ArrayList
+  if (geomList.array) geomList = geomList.array;
 
   /**
    * Determine some facts about the geometries in the list
@@ -163,8 +165,8 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
   var geomClass = null;
   var isHeterogeneous = false;
   var hasGeometryCollection = false;
-  for (var i = geomList.iterator(); i.hasNext();) {
-    var geom = i.next();
+  for (var i = 0, len = geomList.length; i < len; i++) {
+    var geom = geomList[i];
 
     var partClass = geom.CLASS_NAME;
 
@@ -186,21 +188,21 @@ jsts.geom.GeometryFactory.prototype.buildGeometry = function(geomList) {
     return this.createGeometryCollection(null);
   }
   if (isHeterogeneous || hasGeometryCollection) {
-    return this.createGeometryCollection(geomList.toArray());
+    return this.createGeometryCollection(geomList.slice());
   }
   // at this point we know the collection is hetereogenous.
   // Determine the type of the result from the first Geometry in the list
   // this should always return a geometry, since otherwise an empty collection
   // would have already been returned
-  var geom0 = geomList.get(0);
-  var isCollection = geomList.size() > 1;
+  var geom0 = geomList[0];
+  var isCollection = geomList.length > 1;
   if (isCollection) {
     if (geom0 instanceof jsts.geom.Polygon) {
-      return this.createMultiPolygon(geomList.toArray());
+      return this.createMultiPolygon(geomList.slice());
     } else if (geom0 instanceof jsts.geom.LineString) {
-      return this.createMultiLineString(geomList.toArray());
+      return this.createMultiLineString(geomList.slice());
     } else if (geom0 instanceof jsts.geom.Point) {
-      return this.createMultiPoint(geomList.toArray());
+      return this.createMultiPoint(geomList.slice());
     }
     jsts.util.Assert.shouldNeverReachHere('Unhandled class: ' + geom0);
   }
