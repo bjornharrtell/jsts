@@ -53,7 +53,7 @@ jsts.geom.LineSegment.prototype.p1 = null;
  * @return {number} the length of the line segment.
  */
 jsts.geom.LineSegment.prototype.getLength = function() {
-  return this.p0.distance(p1);
+  return this.p0.distance(this.p1);
 };
 
 /**
