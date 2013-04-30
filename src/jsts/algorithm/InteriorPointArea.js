@@ -7,14 +7,19 @@
 
 
 /**
- * Computes a point in the interior of an area geometry.
+ * Computes a point in the interior of an areal geometry.
  *
  * <h2>Algorithm</h2>
  * <ul>
- *   <li>Find the intersections between the geometry
- *       and the horizontal bisector of the area's envelope
- *   <li>Pick the midpoint of the largest intersection (the intersections
- *       will be lines and points)
+ *   <li>Find a Y value which is close to the centre of
+ *       the geometry's vertical extent but is different
+ *       to any of it's Y ordinates.
+ *   <li>Create a horizontal bisector line using the Y value
+ *       and the geometry's horizontal extent
+ *   <li>Find the intersection between the geometry
+ *       and the horizontal bisector line.
+ *       The intersection is a collection of lines and points.
+ *   <li>Pick the midpoint of the largest intersection geometry
  * </ul>
  *
  * <h3>KNOWN BUGS</h3>
@@ -38,13 +43,15 @@ jsts.algorithm.InteriorPointArea = function(geometry) {
     this.add(geometry);
 };
 
-/**
- * @private
- */
 jsts.algorithm.InteriorPointArea.avg = function(a, b) {
     return (a + b) / 2;
 };
 
+/**
+ * Gets the computed interior point.
+ *
+ * @return {jsts.geom.Coordinate} the coordinate of an interior point
+ */
 jsts.algorithm.InteriorPointArea.prototype.getInteriorPoint = function() {
     return this.interiorPoint;
 };
@@ -68,18 +75,29 @@ jsts.algorithm.InteriorPointArea.prototype.add = function(geometry) {
 };
 
 /**
- * Finds a reasonable point at which to label a Geometry.
+ * Finds an interior point of a Polygon.
  * @param {jsts.geom.Geometry} geometry the geometry to analyze
  */
 jsts.algorithm.InteriorPointArea.prototype.addPolygon = function(geometry) {
+    if (geometry.isEmpty()) {
+        return;
+    }
+
+    var intPt;
+    var width = 0;
+
     var bisector = this.horizontalBisector(geometry);
-
-    var intersections = bisector.intersection(geometry);
-    var widestIntersection = this.widestGeometry(intersections);
-
-    var width = widestIntersection.getEnvelopeInternal().getWidth();
+    if (bisector.getLength() == 0.0) {
+        width = 0;
+        intPt = bisector.getCoordinate();
+    } else {
+        var intersections = bisector.intersection(geometry);
+        var widestIntersection = this.widestGeometry(intersections);
+        width = widestIntersection.getEnvelopeInternal().getWidth();
+        intPt = this.centre(widestIntersection.getEnvelopeInternal());
+    }
     if (this.interiorPoint == null || width > this.maxWidth) {
-        this.interiorPoint = this.centre(widestIntersection.getEnvelopeInternal());
+        this.interiorPoint = intPt;
         this.maxWidth = width;
     }
 };
@@ -87,7 +105,7 @@ jsts.algorithm.InteriorPointArea.prototype.addPolygon = function(geometry) {
 /**
  * Finds widest geometry
  * @return if geometry is a collection, the widest sub-geometry; otherwise, the geometry itself
- * @protected
+ * @private
  */
 jsts.algorithm.InteriorPointArea.prototype.widestGeometry = function(obj) {
 
@@ -98,7 +116,8 @@ jsts.algorithm.InteriorPointArea.prototype.widestGeometry = function(obj) {
         }
 
         var widestGeometry = gc.getGeometryN(0);
-        for (var i = 1; i < gc.getNumGeometries(); i++) { //Start at 1
+        // scan remaining geom components to see if any are wider
+        for (var i = 1; i < gc.getNumGeometries(); i++) {
             if (gc.getGeometryN(i).getEnvelopeInternal().getWidth() >
                 widestGeometry.getEnvelopeInternal().getWidth()) {
                 
@@ -117,10 +136,10 @@ jsts.algorithm.InteriorPointArea.prototype.widestGeometry = function(obj) {
 jsts.algorithm.InteriorPointArea.prototype.horizontalBisector = function(geometry) {
     var envelope = geometry.getEnvelopeInternal();
 
-    var avgY = jsts.algorithm.InteriorPointArea.avg(envelope.getMinY(), envelope.getMaxY());
+    var bisectY = jsts.algorithm.SafeBisectorFinder.getBisectorY(geometry);
     return this.factory.createLineString([
-        new jsts.geom.Coordinate(envelope.getMinX(), avgY),
-        new jsts.geom.Coordinate(envelope.getMaxX(), avgY)
+        new jsts.geom.Coordinate(envelope.getMinX(), bisectY),
+        new jsts.geom.Coordinate(envelope.getMaxX(), bisectY)
     ]);
 };
 
@@ -134,4 +153,67 @@ jsts.algorithm.InteriorPointArea.prototype.centre = function(envelope) {
         jsts.algorithm.InteriorPointArea.avg(envelope.getMinX(), envelope.getMaxX()),
         jsts.algorithm.InteriorPointArea.avg(envelope.getMinY(), envelope.getMaxY())
     );
+};
+
+
+/**
+ * Finds a safe bisector Y ordinate
+ * by projecting to the Y axis
+ * and finding the Y-ordinate interval
+ * which contains the centre of the Y extent.
+ * The centre of this interval is returned as the bisector Y-ordinate.
+ *
+ * @author mdavis
+ *
+ * @constructor
+ */
+jsts.algorithm.SafeBisectorFinder = function(poly) {
+
+    this.poly;
+
+    this.centreY;
+    this.hiY = Number.MAX_VALUE;
+    this.loY = -Number.MAX_VALUE;
+
+
+    this.poly = poly;
+
+    // initialize using extremal values
+    this.hiY = poly.getEnvelopeInternal().getMaxY();
+    this.loY = poly.getEnvelopeInternal().getMinY();
+    this.centreY = jsts.algorithm.InteriorPointArea.avg(this.loY, this.hiY);
+};
+
+jsts.algorithm.SafeBisectorFinder.getBisectorY = function(poly) {
+    var finder = new jsts.algorithm.SafeBisectorFinder(poly);
+    return finder.getBisectorY();
+};
+
+jsts.algorithm.SafeBisectorFinder.prototype.getBisectorY = function() {
+    this.process(this.poly.getExteriorRing());
+    for (var i = 0; i < this.poly.getNumInteriorRing(); i++) {
+        this.process(this.poly.getInteriorRingN(i));
+    }
+    var bisectY = jsts.algorithm.InteriorPointArea.avg(this.hiY, this.loY);
+    return bisectY;
+};
+
+jsts.algorithm.SafeBisectorFinder.prototype.process = function(line) {
+    var seq = line.getCoordinateSequence();
+    for (var i = 0; i < seq.length; i++) {
+        var y = seq[i].y;
+        this.updateInterval(y);
+    }
+};
+
+jsts.algorithm.SafeBisectorFinder.prototype.updateInterval = function(y) {
+    if (y <= this.centreY) {
+        if (y > this.loY) {
+            this.loY = y;
+        }
+    } else if (y > this.centreY) {
+        if (y < this.hiY) {
+            this.hiY = y;
+        }
+    }
 };
