@@ -420,13 +420,13 @@ jsts.geom.Geometry.prototype.getInteriorPoint = function() {
   var interiorPt = null;
   var dim = this.getDimension();
   if (dim === 0) {
-    intPt = new InteriorPointPoint(this);
+    intPt = new jsts.algorithm.InteriorPointPoint(this);
     interiorPt = intPt.getInteriorPoint();
   } else if (dim === 1) {
-    intPt = new InteriorPointLine(this);
+    intPt = new jsts.algorithm.InteriorPointLine(this);
     interiorPt = intPt.getInteriorPoint();
   } else {
-    intPt = new InteriorPointArea(this);
+    intPt = new jsts.algorithm.InteriorPointArea(this);
     interiorPt = intPt.getInteriorPoint();
   }
   return this.createPointFromInternalCoord(interiorPt, this);
