@@ -7,5 +7,6 @@ Anna Hall
 Steven Looman
 Pau Rodriguez
 Ivor (ivorbosloper)
+Sergey Kolosov
 
 JSTS uses the LGPL 2.1 license, see license.txt.
