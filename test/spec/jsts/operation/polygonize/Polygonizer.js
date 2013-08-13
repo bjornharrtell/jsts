@@ -39,7 +39,7 @@ describe('jsts.operation.polygonize.Polygonizer', function() {
     // initialize noder with a segment intersector
     var noder = new jsts.noding.MCIndexNoder();
     var li = new jsts.algorithm.RobustLineIntersector();
-    var intFinderAdder = new jsts.noding.IntersectionFinderAdder(li);
+    var intFinderAdder = new jsts.noding.IntersectionAdder(li);
     noder.setSegmentIntersector(intFinderAdder);
     
     noder.computeNodes(segmentStrings);
