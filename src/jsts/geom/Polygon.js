@@ -258,6 +258,13 @@
     }
   };
 
+  /**
+   * @return {String} String representation of Polygon type.
+   */
+  jsts.geom.Polygon.prototype.getGeometryType = function() {
+    return 'Polygon';
+  };
+  
   jsts.geom.Polygon.prototype.CLASS_NAME = 'jsts.geom.Polygon';
 
 })();
