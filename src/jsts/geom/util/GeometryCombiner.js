@@ -114,7 +114,7 @@ jsts.geom.util.GeometryCombiner.prototype.combine = function() {
     if (elems.size() === 0) {
     	if (this.geomFactory !== null) {
             // return an empty GC
-            return geomFactory.createGeometryCollection(null);
+            return this.geomFactory.createGeometryCollection(null);
     	}
     	return null;
     }
