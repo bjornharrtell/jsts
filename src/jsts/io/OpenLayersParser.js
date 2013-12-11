@@ -120,7 +120,7 @@ jsts.io.OpenLayersParser.prototype.convertFromCollection = function(collection) 
   var geometries = [];
 
   for (i = 0; i < collection.components.length; i++) {
-    geometries.push(this.convertFrom(collection.components[i]));
+    geometries.push(this.read(collection.components[i]));
   }
 
   return this.geometryFactory.createGeometryCollection(geometries);
