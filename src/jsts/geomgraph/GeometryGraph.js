@@ -55,9 +55,10 @@
    * @private
    */
   jsts.geomgraph.GeometryGraph.prototype.createEdgeSetIntersector = function() {
-    return new jsts.geomgraph.index.SimpleEdgeSetIntersector();
+    //return new jsts.geomgraph.index.SimpleEdgeSetIntersector();
     // TODO: use optimized version when ported
-    // return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
+    return new jsts.geomgraph.index.SimpleMCSweepLineIntersector();
+    //return new jsts.geomgraph.index.SimpleSweepLineIntersector();
   };
 
   /**
