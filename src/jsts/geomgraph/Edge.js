@@ -240,6 +240,13 @@ jsts.geomgraph.Edge.prototype.getEdgeIntersectionList = function() {
   return this.eiList;
 };
 
+jsts.geomgraph.Edge.prototype.getMonotoneChainEdge = function() {
+  if (this.mce == null) {
+    this.mce = new jsts.geomgraph.index.MonotoneChainEdge(this);
+  }
+  return this.mce;
+};
+
 jsts.geomgraph.Edge.prototype.isClosed = function()
 {
   return this.pts[0].equals(this.pts[this.pts.length - 1]);
