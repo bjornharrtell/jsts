@@ -37,11 +37,6 @@ show("a.length", a.getLength()); // 40
 show("b.length", b.getLength()); // 60
 show("c.length", c.getLength()); // 10
 
-//show("a.numpoints", a.getNumPoints()); // 40
-//show("b.numpoints", b.getNumPoints()); // 60
-//show("c.numpoints", c.getNumPoints()); // 10
-
-
-show("a.isRectangle", a.isRectangle()); // false?!
-show("b.isRectangle", b.isRectangle()); // false?!
-show("c.isRectangle", c.isRectangle()); // false?!
+show("a.area", a.getArea()); // 100 (10x10)
+show("b.area", b.getArea()); // 225 (15x15)
+// show("c.area", c.getArea()); // error: a linestring doesn't have area
