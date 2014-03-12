@@ -1,5 +1,5 @@
 /**
- * Example of calculating intersection and union between polygons.
+ * Example of calculating intersection and union between polygons, normalization and equality checking.
  */
 
 var jsts = require("jsts");
