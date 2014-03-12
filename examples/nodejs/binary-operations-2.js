@@ -18,11 +18,24 @@ show("c",c);
 show("d",d);
 
 console.log(a.intersects(b)? "a intersects b": "a does not intersect b");
-show("a ^ b",a.intersection(b)); // the square between (5,5) and (10,10)
+var a_intersection_b = a.intersection(b);
+show("a ^ b",a_intersection_b); // the square between (5,5) and (10,10)
+var e = reader.read('POLYGON((5 5, 5 10, 10 10, 10 5, 5 5))'); // also the square between (5,5) and (10,10)
+show("e",e);
+show("a^b equalsExact e",a_intersection_b.equalsExact(e)); // false
+show("a^b equalsTopo  e",a_intersection_b.equalsTopo(e));  // true
+a_intersection_b = a_intersection_b.norm();
+e = e.norm();
+show("a^b normalized",a_intersection_b);
+show("e normalized",e);
+show("a^b normalized equalsExact e normalized",a_intersection_b.equalsExact(e)); // false
+
 console.log(a.intersects(c)? "a intersects c": "a does not intersect c");
 show("a ^ c",a.intersection(c)); // empty intersection
+
 console.log(a.intersects(d)? "a intersects d": "a does not intersect d");
 show("a ^ d",a.intersection(d)); // a RAIT
+
 show("a U b",a.union(b));        // octagon
 show("a U c",a.union(c));        // two disjoint squares
 show("a U d",a.union(d));        // a house-shaped pentagon

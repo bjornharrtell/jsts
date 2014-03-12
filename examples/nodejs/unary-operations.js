@@ -39,4 +39,5 @@ show("c.length", c.getLength()); // 10
 
 show("a.area", a.getArea()); // 100 (10x10)
 show("b.area", b.getArea()); // 225 (15x15)
+
 // show("c.area", c.getArea()); // error: a linestring doesn't have area
