@@ -25,4 +25,5 @@ console.log(a.intersects(d)? "a intersects d": "a does not intersect d");
 show("a ^ d",a.intersection(d)); // a RAIT
 show("a U b",a.union(b));        // octagon
 show("a U c",a.union(c));        // two disjoint squares
-show("a U d",a.union(d));        // two disjoint squares
+show("a U d",a.union(d));        // a house-shaped pentagon
+

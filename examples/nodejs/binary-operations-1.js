@@ -26,3 +26,5 @@ show("polygon ^ line2", polygon.intersection(line2));
 show("point1 ^ polygon", point1.intersection(polygon));
 show("polygon ^ point2", polygon.intersection(point2));
 
+show("point1 ? polygon", point1.relate(polygon));
+show("polygon ? line2", polygon.relate(line2));
