@@ -1,5 +1,5 @@
 /**
- * Example of calculating intersection between a reference and a line or a point.
+ * Calculating the various boolean relations (overlaps, contains, etc.)
  */
 
 var jsts = require("jsts");
