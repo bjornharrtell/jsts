@@ -1,6 +1,6 @@
 describe("GitHub issue #156 - RectangleContains", function() {
   var reader = new jsts.io.WKTReader();
-  it("works for two rectangles", function() {
+  it("works for axis-parallel rectangles", function() {
     var a = reader.read('POLYGON((0 0, 0 10, 20 10, 20 0, 0 0))');
     var part_of_a = reader.read('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))');
     var inside_a = reader.read('POLYGON((2 2, 2 8, 18 8, 18 2, 2 2))');
@@ -22,5 +22,19 @@ describe("GitHub issue #156 - RectangleContains", function() {
     expect(a.contains(boundary)).toBe(false);
     expect(a.contains(corner)).toBe(false);
     expect(a.contains(internal)).toBe(true);
+  }); 
+  it("works for rotated rectangles", function() {
+    var rotated = reader.read('POLYGON((-20 0, 0 20, 20 0, 0 -20, -20 0))');
+    var small = reader.read('POLYGON((-5 -5, 5 -5, 5 5, -5 5, -5 -5))');
+    var medium = reader.read('POLYGON((-15 -15, 15 -15, 15 15, -15 15, -15 -15))');
+    var large = reader.read('POLYGON((-25 -25, 25 -25, 25 25, -25 25, -25 -25))');
+    expect(rotated.contains(rotated)).toBe(true);
+    expect(rotated.contains(small)).toBe(true);
+    expect(rotated.contains(medium)).toBe(false);
+    expect(rotated.contains(large)).toBe(false);
+    expect(rotated.within(rotated)).toBe(true);
+    expect(rotated.within(small)).toBe(false);
+    expect(rotated.within(medium)).toBe(false);
+    expect(rotated.within(large)).toBe(true);
   }); 
 });
