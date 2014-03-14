@@ -1,4 +1,9 @@
-2012-12-24: Version 0.13.3
+2014-03-14: Version 0.13.4
+
+        index.js references an undefined global variable (#149)
+        covers throws an exception (#147)
+
+2013-12-24: Version 0.13.3
 
         Port of SimpleMCSweepLineIntersector and supporting classes (#145)
         Bad method call in OpenLayersParser.convertFromCollection (#144)
