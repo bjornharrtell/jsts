@@ -62,6 +62,17 @@
   };
 
   /**
+   * @return {number}
+   */
+  jsts.geom.Polygon.prototype.getNumPoints = function() {
+    var numPoints = this.shell.getNumPoints();
+    for (var i = 0; i < this.holes.length; i++) {
+      numPoints += this.holes[i].getNumPoints();
+    }
+    return numPoints;
+  };
+
+  /**
    * @return {boolean}
    */
   jsts.geom.Polygon.prototype.isEmpty = function() {

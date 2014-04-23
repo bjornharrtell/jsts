@@ -13,6 +13,46 @@ jsts.geom.CoordinateArrays = function() {
   throw new jsts.error.AbstractMethodInvocationError();
 };
 
+jsts.geom.CoordinateArrays.copyDeep = function () {
+    if (arguments.length === 1) {
+        return jsts.geom.CoordinateArrays.copyDeep1(arguments[0]);
+    } else if (arguments.length === 5) {
+        jsts.geom.CoordinateArrays.copyDeep2(
+            arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    }
+};
+
+/**
+ * Creates a deep copy of the argument {@link Coordinate} array.
+ *
+ * @param {jsts.geom.Coordinate[]} coordinates an array of Coordinates
+ * @return {jsts.geom.Coordinate[]} a deep copy of the input
+ */
+jsts.geom.CoordinateArrays.copyDeep1 = function (coordinates) {
+    var copy = [];
+    for (var i = 0; i < coordinates.length; i++) {
+        copy[i] = new jsts.geom.Coordinate(coordinates[i]);
+    }
+    return copy;
+};
+
+/**
+ * Creates a deep copy of a given section of a source {@link Coordinate} array
+ * into a destination Coordinate array.
+ * The destination array must be an appropriate size to receive
+ * the copied coordinates.
+ *
+ * @param {jsts.geom.Coordinate[]} src an array of Coordinates
+ * @param {number} srcStart the index to start copying from
+ * @param {jsts.geom.Coordinate[]} dest the
+ * @param {number} destStart the destination index to start copying to
+ * @param {number} length the number of items to copy
+ */
+jsts.geom.CoordinateArrays.copyDeep2 = function (src, srcStart, dest, destStart, length) {
+    for (var i = 0; i < length; i++) {
+        dest[destStart + i] = new jsts.geom.Coordinate(src[srcStart + i]);
+    }
+};
 
 /**
  * If the coordinate array argument has repeated points, constructs a new array
