@@ -7,8 +7,7 @@ the Open Geospatial Consortium. JSTS Topology Suite is also a JavaScript port of
 established Java library [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html) with
 a built in parser for OpenLayers geometries.
 
-[SWECO Position AB](http://en.sweco.se/en/enswecose/Expertise-/Geographical-IT) (my current employer) has gratiously 
-provided sponsoring for this project.
+[SWECO Position AB](http://www.swecogroup.com/en/Sweco-group/Services/Geographical-IT/) (my current employer) has gratiously provided sponsoring for this project.
 
 The primary goal of the project is to provide OpenLayers applications with a complete library for processing
 and analysing simple geometries, but as of version 0.11.0 hard dependencies to OpenLayers was removed
@@ -22,14 +21,10 @@ using the [Jasmine testing framework](https://github.com/pivotal/jasmine). A
 [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides
 additional tests.
 
-A recent trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). Also
+A "recent" trunk snapshot of [API docs is available](http://bjornharrtell.github.com/jsts/doc/api/index.html). Also
 available are simple example use of [buffer](http://bjornharrtell.github.com/jsts/examples/buffer.html), 
 [overlay](http://bjornharrtell.github.com/jsts/examples/overlay.html) and [triangulation](http://bjornharrtell.github.com/jsts/examples/triangulation.html)
 operations. The examples uses a build of [attache-array-js](http://github.com/olooney/attache-array-js) to meet JavaScript ES5 requirements in some browsers.
-
-The code tries to be conformant to the
-[Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) and
-[JSLint](http://www.jslint.com/) and is licensed with the LGPL 2.1 license.
 
 Development environment
 -----------------------
