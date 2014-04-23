@@ -40,19 +40,19 @@ jsts.algorithm.Angle.PI_OVER_4 = Math.PI / 4.0;
 /**
  * Constant representing counterclockwise orientation
  */
-jsts.algorithm.Angle.COUNTERCLOCKWISE = jsts.algorithm.CGAlgorithms.prototype.COUNTERCLOCKWISE;
+jsts.algorithm.Angle.COUNTERCLOCKWISE = jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE;
 
 
 /**
  * Constant representing clockwise orientation
  */
-jsts.algorithm.Angle.CLOCKWISE = jsts.algorithm.CGAlgorithms.prototype.CLOCKWISE;
+jsts.algorithm.Angle.CLOCKWISE = jsts.algorithm.CGAlgorithms.CLOCKWISE;
 
 
 /**
  * Constant representing no orientation
  */
-jsts.algorithm.Angle.NONE = jsts.algorithm.CGAlgorithms.prototype.COLLINEAR;
+jsts.algorithm.Angle.NONE = jsts.algorithm.CGAlgorithms.COLLINEAR;
 
 
 /**

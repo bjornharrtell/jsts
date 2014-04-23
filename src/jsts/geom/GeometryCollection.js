@@ -118,6 +118,16 @@
     return geometry;
   };
 
+  /**
+   * @return {number}
+   */
+  jsts.geom.GeometryCollection.prototype.getNumPoints = function(n) {
+    var numPoints = 0;
+    for (var i = 0; i < this.geometries.length; i++) {
+      numPoints += this.geometries[i].getNumPoints();
+    }
+    return numPoints;
+  }
 
   /**
    * @param {Geometry}
