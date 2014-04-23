@@ -1,3 +1,8 @@
+2014-xx-xx: Version 0.14.0
+
+        Ported MinimumDiameter and MinimumBoundingCircle (#160)
+        LineSegment completed port (#159)
+
 2014-03-14: Version 0.13.4
 
         index.js references an undefined global variable (#149)
