@@ -62,6 +62,10 @@ jsts.geom.Point.prototype.getCoordinates = function() {
   return this.isEmpty() ? [] : [this.coordinate];
 };
 
+jsts.geom.Point.prototype.getCoordinateSequence = function() {
+  return this.isEmpty() ? [] : [this.coordinate];
+};
+
 jsts.geom.Point.prototype.isEmpty = function() {
   return this.coordinate === null;
 };
