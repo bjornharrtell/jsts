@@ -627,11 +627,11 @@ jsts.geom.Envelope.prototype.containsValues = function(x, y) {
  */
 jsts.geom.Envelope.prototype.covers = function() {
   if (arguments[0] instanceof jsts.geom.Envelope) {
-    this.coversEnvelope(arguments[0]);
+    return this.coversEnvelope(arguments[0]);
   } else if (arguments[0] instanceof jsts.geom.Coordinate) {
-    this.coversCoordinate(arguments[0]);
+    return this.coversCoordinate(arguments[0]);
   } else {
-    this.coversValues(arguments[0], arguments[1]);
+    return this.coversValues(arguments[0], arguments[1]);
   }
 };
 

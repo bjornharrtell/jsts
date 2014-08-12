@@ -707,7 +707,7 @@ jsts.geom.Geometry.prototype.contains = function(g) {
   }
   // optimization for rectangle arguments
   if (this.isRectangle()) {
-    return RectangleContains.contains(this, g);
+    return jsts.operation.predicate.RectangleContains.contains(this, g);
   }
   // general case
   return this.relate(g).isContains();

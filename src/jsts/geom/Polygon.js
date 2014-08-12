@@ -78,6 +78,42 @@
   jsts.geom.Polygon.prototype.isEmpty = function() {
     return this.shell.isEmpty();
   };
+  
+  jsts.geom.Polygon.prototype.isRectangle = function() {
+    if (this.getNumInteriorRing() != 0) return false;
+    if (this.shell == null) return false;
+    if (this.shell.getNumPoints() != 5) return false;
+
+    var seq = this.shell.getCoordinateSequence();
+
+    // check vertices have correct values
+    var env = this.getEnvelopeInternal();
+    for (var i = 0; i < 5; i++) {
+      // TODO: reworked cause CoordinateSequence is currently a simple array
+      var x = seq[i].x;
+      if (! (x == env.getMinX() || x == env.getMaxX())) return false;
+      // TODO: reworked cause CoordinateSequence is currently a simple array
+      var y = seq[i].y;
+      if (! (y == env.getMinY() || y == env.getMaxY())) return false;
+    }
+
+    // check vertices are in right order
+    // TODO: reworked cause CoordinateSequence is currently a simple array
+    var prevX = seq[0].x;
+    var prevY = seq[0].y;
+    for (var i = 1; i <= 4; i++) {
+      // TODO: reworked cause CoordinateSequence is currently a simple array
+      var x = seq[i].x;
+      var y = seq[i].y;
+      var xChanged = x != prevX;
+      var yChanged = y != prevY;
+      if (xChanged == yChanged)
+        return false;
+      prevX = x;
+      prevY = y;
+    }
+    return true;
+  };
 
   jsts.geom.Polygon.prototype.getExteriorRing = function() {
     return this.shell;
