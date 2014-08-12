@@ -1,5 +1,6 @@
-2014-xx-xx: Version 0.14.0
+2014-08-12: Version 0.14.0
 
+        Ported isRectangle (#152, #154, #156)
         Ported MinimumDiameter and MinimumBoundingCircle (#160)
         LineSegment completed port (#159)
 

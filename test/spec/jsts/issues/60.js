@@ -1,5 +1,7 @@
 describe('GitHub issue #60', function() {
 
+  if (typeof OpenLayers === 'undefined') return;
+
   it('PrecisionModel on difference result should not be undefined', function() {
       var poly1 = OpenLayers.Geometry.Polygon.createRegularPolygon(
           new OpenLayers.Geometry.Point(0.0, 0.0), 2, 5);
