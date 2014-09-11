@@ -40,7 +40,7 @@
     return true;
   };
 
-  jsts.geom.Geometry.prototype.getArea = function() {
+  jsts.geom.GeometryCollection.prototype.getArea = function() {
     var area = 0.0;
 
     for (var i = 0, len = this.geometries.length; i < len; i++) {
@@ -50,7 +50,7 @@
     return area;
   };
 
-  jsts.geom.Geometry.prototype.getLength = function() {
+  jsts.geom.GeometryCollection.prototype.getLength = function() {
     var length = 0.0;
 
     for (var i = 0, len = this.geometries.length; i < len; i++) {
