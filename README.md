@@ -1,5 +1,4 @@
-JSTS Topology Suite
-===================
+# JSTS Topology Suite
 
 The JSTS Topology Suite is a JavaScript library of spatial predicates and functions 
 for processing geometry conforming to the Simple Features Specification for SQL published by
@@ -27,21 +26,18 @@ available are simple example use of [buffer](http://bjornharrtell.github.com/jst
 operations. The examples uses a build of [attache-array-js](http://github.com/olooney/attache-array-js) to meet JavaScript ES5 requirements in some browsers.
 There are also some [examples of using JSTS with Node.js](https://github.com/bjornharrtell/jsts/tree/master/examples/nodejs).
 
-Development environment
------------------------
+## Development environment
 
 * Eclipse 4.3.1 (Kepler)
 * Assumes OpenLayers 2.13.1 distribution in project root from http://www.openlayers.org/
 * Assumes OS Ubuntu/Linux
 
-Design changes
---------------
+## Design changes
 
 These are effective/potential changes from the original JTS Topology Suite:
 
 * Skip abstracted CoordinateSequence interface/implementation
 
-JSTS in use
------------
+##JSTS in use
 
 * [Viper](https://github.com/bjornharrtell/viper) - a game that uses quadtree index and the robust line intersection algorithm.

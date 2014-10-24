@@ -18,7 +18,7 @@
  * @constructor
  */
 jsts.geom.CoordinateList = function(coord, allowRepeated) {
-  javascript.util.ArrayList.apply(this, arguments);
+  this.array = [];
   
   allowRepeated = (allowRepeated === undefined) ? true : allowRepeated;
 
@@ -29,13 +29,29 @@ jsts.geom.CoordinateList = function(coord, allowRepeated) {
 
 jsts.geom.CoordinateList.prototype = new javascript.util.ArrayList();
 
+jsts.geom.CoordinateList.prototype.iterator = null;
+jsts.geom.CoordinateList.prototype.remove = null;
+
+jsts.geom.CoordinateList.prototype.get = function(i) {
+    return this.array[i];
+};
+
+jsts.geom.CoordinateList.prototype.set = function(i, e) {
+    var o = this.array[i];
+    this.array[i] = e;
+    return o;
+};
+
+jsts.geom.CoordinateList.prototype.size = function() {
+    return this.array.length;
+};
 
 // simulate overloaded methods...
 jsts.geom.CoordinateList.prototype.add = function() {
     if (arguments.length>1) {
         return this.addCoordinates.apply(this, arguments);
     } else {
-        return javascript.util.ArrayList.prototype.add.apply(this, arguments);
+        return this.array.push(arguments[0]);
     }
 };
 
@@ -136,14 +152,7 @@ jsts.geom.CoordinateList.prototype.closeRing = function() {
  *            the created array.
  */
 jsts.geom.CoordinateList.prototype.toArray = function() {
-  var i, il, arr;
-  i = 0, il = this.size(), arr = [];
-
-  for (i; i < il; i++) {
-    arr[i] = this.get(i);
-  }
-
-  return arr;
+  return this.array;
 };
 
 /** Returns the Coordinates in this collection.
@@ -151,7 +160,7 @@ jsts.geom.CoordinateList.prototype.toArray = function() {
 * @return the coordinates.
 */
 jsts.geom.CoordinateList.prototype.toCoordinateArray = function() {
-  return this.toArray();
+  return this.array;
 };
 
 // TODO: port rest?
