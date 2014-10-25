@@ -19,7 +19,7 @@ describe('jsts.operation.polygonize.Polygonizer', function() {
     expect(polygonizer).toBeDefined();
   });
   
-  it('Can add lines',function() {
+  it('Can get polygons result',function() {
     var polygons = polygonizer.getPolygons();
     
     expect(polygons).toBeDefined();

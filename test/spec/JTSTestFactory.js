@@ -1,3 +1,5 @@
+var $ = require('cheerio');
+
 JTSTestFactory = {};
 
 /**

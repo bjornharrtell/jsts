@@ -11,14 +11,11 @@
         }
     ],
     "dependencies": {
-        "javascript.util": "~0.12.1"
+        "javascript.util": "~0.12.5"
     },
     "devDependencies": {
-        "jasmine-node": "~1.14.5"
-    },
-    "directories": {
-        "lib": "./src",
-        "test": "./test"
+        "mocha": "~2.0.1",
+        "cheerio": "~0.17.0"
     },
     "main": "index.js",
     "engines": { "node": ">= 0.10.0" },
@@ -27,6 +24,6 @@
         "url": "git://github.com/bjornharrtell/jsts.git"
     },
     "scripts": {
-        "test": "node_modules/.bin/jasmine-node --matchall test/spec/"
+        "test": "mocha --recursive test/spec/ -r ./ -r test/init.js"
     }
 }
