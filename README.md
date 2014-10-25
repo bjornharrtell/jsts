@@ -1,5 +1,7 @@
 # JSTS Topology Suite
 
+[![Build Status](https://travis-ci.org/bjornharrtell/jsts.svg)](https://travis-ci.org/bjornharrtell/jsts)
+
 The JSTS Topology Suite is a JavaScript library of spatial predicates and functions 
 for processing geometry conforming to the Simple Features Specification for SQL published by
 the Open Geospatial Consortium. JSTS Topology Suite is also a JavaScript port of the well 
