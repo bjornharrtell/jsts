@@ -102,7 +102,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.buildMinimalEdgeRings = function
         this.placePolygonHoles(shell, minEdgeRings);
         shellList.push(shell);
       } else {
-        freeHoleList = freeHoleList.concat(minEdgeRings);
+        minEdgeRings.forEach(function(ring) { freeHoleList.push(ring); });
       }
     } else {
       edgeRings.push(er);
