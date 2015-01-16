@@ -1,3 +1,9 @@
+2014-10-26: Version 0.15.0
+
+        Upgraded javascript.util with optimized TreeMap making buffer and possibly other operation alot faster
+        Headless tests and continuous integration with Travis CI
+        Fixed crash caused by typo in GeometryCollection (#162)
+
 2014-08-12: Version 0.14.0
 
         Ported isRectangle (#152, #154, #156)
