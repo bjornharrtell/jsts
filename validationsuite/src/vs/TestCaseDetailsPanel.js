@@ -26,6 +26,7 @@ jsts.vs.TestCaseDetailsPanel = Ext.extend(Ext.Panel, {
         y: 5,
         height: 150,
         width: 150,
+        layout: 'fit',
         frame: true,
         items: this.map
       }, {
