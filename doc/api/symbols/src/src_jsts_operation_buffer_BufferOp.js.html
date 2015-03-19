@@ -281,7 +281,7 @@
 <span class='line'>274</span> 
 <span class='line'>275</span> </span><span class="NAME">jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'>276</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">precDigits</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>277</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">saveException</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">saveException</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>278</span> 
 <span class='line'>279</span> </span><span class="WHIT">  </span><span class="COMM">// try and compute with decreasing precision</span><span class="WHIT">
 <span class='line'>280</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">precDigits</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferOp.MAX_PRECISION_DIGITS</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">precDigits</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">precDigits</span><span class="PUNC">--</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
@@ -303,46 +303,40 @@
 <span class='line'>296</span> 
 <span class='line'>297</span> 
 <span class='line'>298</span> </span><span class="NAME">jsts.operation.buffer.BufferOp.prototype.bufferOriginalPrecision</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>299</span> </span><span class="WHIT">  </span><span class="KEYW">try</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>300</span> </span><span class="WHIT">    </span><span class="COMM">// use fast noding by default</span><span class="WHIT">
-<span class='line'>301</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bufBuilder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferBuilder</span><span class="PUNC">(</span><span class="NAME">this.bufParams</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>302</span> </span><span class="WHIT">    </span><span class="NAME">this.resultGeometry</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bufBuilder.buffer</span><span class="PUNC">(</span><span class="NAME">this.argGeom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>303</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">catch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>304</span> </span><span class="WHIT">    </span><span class="COMM">// don't propagate the exception - it will be detected by fact that</span><span class="WHIT">
-<span class='line'>305</span> </span><span class="WHIT">    </span><span class="COMM">// resultGeometry is null</span><span class="WHIT">
-<span class='line'>306</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>307</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>308</span> 
-<span class='line'>309</span> 
-<span class='line'>310</span> </span><span class="COMM">/**
-<span class='line'>311</span>  * @param {int}
-<span class='line'>312</span>  *          precisionDigits
-<span class='line'>313</span>  */</span><span class="WHIT">
-<span class='line'>314</span> </span><span class="NAME">jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>315</span> </span><span class="WHIT">    </span><span class="NAME">precisionDigits</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>316</span> 
-<span class='line'>317</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">sizeBasedScaleFactor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferOp</span><span class="WHIT">
-<span class='line'>318</span> </span><span class="WHIT">      </span><span class="PUNC">.</span><span class="NAME">precisionScaleFactor</span><span class="PUNC">(</span><span class="NAME">this.argGeom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">precisionDigits</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">  </span><span class="COMM">// use fast noding by default</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bufBuilder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferBuilder</span><span class="PUNC">(</span><span class="NAME">this.bufParams</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>301</span> </span><span class="WHIT">  </span><span class="NAME">this.resultGeometry</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bufBuilder.buffer</span><span class="PUNC">(</span><span class="NAME">this.argGeom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>303</span> 
+<span class='line'>304</span> 
+<span class='line'>305</span> </span><span class="COMM">/**
+<span class='line'>306</span>  * @param {int}
+<span class='line'>307</span>  *          precisionDigits
+<span class='line'>308</span>  */</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="NAME">jsts.operation.buffer.BufferOp.prototype.bufferReducedPrecision2</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="WHIT">    </span><span class="NAME">precisionDigits</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>311</span> 
+<span class='line'>312</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">sizeBasedScaleFactor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferOp.precisionScaleFactor</span><span class="PUNC">(</span><span class="NAME">this.argGeom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="WHIT">      </span><span class="NAME">precisionDigits</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>314</span> 
+<span class='line'>315</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">fixedPM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.PrecisionModel</span><span class="PUNC">(</span><span class="NAME">sizeBasedScaleFactor</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">  </span><span class="NAME">this.bufferFixedPrecision</span><span class="PUNC">(</span><span class="NAME">fixedPM</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>318</span> 
 <span class='line'>319</span> 
-<span class='line'>320</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">fixedPM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.PrecisionModel</span><span class="PUNC">(</span><span class="NAME">sizeBasedScaleFactor</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>321</span> </span><span class="WHIT">  </span><span class="NAME">this.bufferFixedPrecision</span><span class="PUNC">(</span><span class="NAME">fixedPM</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>322</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>323</span> 
-<span class='line'>324</span> 
-<span class='line'>325</span> </span><span class="COMM">/**
-<span class='line'>326</span>  * @param {PrecisionModel}
-<span class='line'>327</span>  *          fixedPM
-<span class='line'>328</span>  */</span><span class="WHIT">
-<span class='line'>329</span> </span><span class="NAME">jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>330</span> </span><span class="WHIT">    </span><span class="NAME">fixedPM</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>331</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">noder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.noding.ScaledNoder</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>332</span> </span><span class="WHIT">      </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.noding.snapround.MCIndexSnapRounder</span><span class="PUNC">(</span><span class="WHIT">
-<span class='line'>333</span> </span><span class="WHIT">          </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.PrecisionModel</span><span class="PUNC">(</span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">fixedPM.getScale</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>334</span> 
-<span class='line'>335</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bufBuilder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferBuilder</span><span class="PUNC">(</span><span class="NAME">this.bufParams</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>336</span> </span><span class="WHIT">  </span><span class="NAME">bufBuilder.setWorkingPrecisionModel</span><span class="PUNC">(</span><span class="NAME">fixedPM</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>337</span> </span><span class="WHIT">  </span><span class="NAME">bufBuilder.setNoder</span><span class="PUNC">(</span><span class="NAME">noder</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>338</span> </span><span class="WHIT">  </span><span class="COMM">// this may throw an exception, if robustness errors are encountered</span><span class="WHIT">
-<span class='line'>339</span> </span><span class="WHIT">  </span><span class="NAME">this.resultGeometry</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bufBuilder.buffer</span><span class="PUNC">(</span><span class="NAME">this.argGeom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>340</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>341</span> </span></pre></body></html>
+<span class='line'>320</span> </span><span class="COMM">/**
+<span class='line'>321</span>  * @param {PrecisionModel}
+<span class='line'>322</span>  *          fixedPM
+<span class='line'>323</span>  */</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="NAME">jsts.operation.buffer.BufferOp.prototype.bufferFixedPrecision</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>325</span> </span><span class="WHIT">    </span><span class="NAME">fixedPM</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>326</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">noder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.noding.ScaledNoder</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.noding.snapround.MCIndexSnapRounder</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.geom.PrecisionModel</span><span class="PUNC">(</span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="WHIT">      </span><span class="NAME">fixedPM.getScale</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>328</span> 
+<span class='line'>329</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">bufBuilder</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.operation.buffer.BufferBuilder</span><span class="PUNC">(</span><span class="NAME">bufParams</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="WHIT">  </span><span class="NAME">bufBuilder.setWorkingPrecisionModel</span><span class="PUNC">(</span><span class="NAME">fixedPM</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">  </span><span class="NAME">bufBuilder.setNoder</span><span class="PUNC">(</span><span class="NAME">noder</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">  </span><span class="COMM">// this may throw an exception, if robustness errors are encountered</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">  </span><span class="NAME">this.resultGeometry</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">bufBuilder.buffer</span><span class="PUNC">(</span><span class="NAME">this.argGeom</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>335</span> </span></pre></body></html>

@@ -199,7 +199,7 @@
 <span class='line'>192</span>  *          tolerance The tolerance to consider when comparing the two vertexes.
 <span class='line'>193</span>  * @return {Boolean} true if this vertex equals other.
 <span class='line'>194</span>  */</span><span class="WHIT">
-<span class='line'>195</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.equalsWithTolerance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.equalsExact</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">other</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'>196</span> </span><span class="WHIT">    </span><span class="NAME">tolerance</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'>197</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.distance</span><span class="PUNC">(</span><span class="NAME">other.getCoordinate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">tolerance</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>198</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
@@ -339,166 +339,167 @@
 <span class='line'>332</span>  * @return {Boolean} true if this vertex lies in the circle.
 <span class='line'>333</span>  */</span><span class="WHIT">
 <span class='line'>334</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.isInCircle</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>335</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.TrianglePredicate.isInCircleRobust</span><span class="PUNC">(</span><span class="NAME">a.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>336</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>337</span> 
+<span class='line'>335</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.TrianglePredicate.prototype</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="WHIT">      </span><span class="PUNC">.</span><span class="NAME">isInCircleRobust</span><span class="PUNC">(</span><span class="NAME">a.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c.p</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>337</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>338</span> 
-<span class='line'>339</span> </span><span class="COMM">/**
-<span class='line'>340</span>  * Tests whether the triangle formed by this vertex and two other vertices is in
-<span class='line'>341</span>  * CCW orientation.
-<span class='line'>342</span>  *
-<span class='line'>343</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>344</span>  *          b a vertex.
-<span class='line'>345</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>346</span>  *          c a vertex.
-<span class='line'>347</span>  * @return {Boolean} true if the triangle is oriented CCW.
-<span class='line'>348</span>  */</span><span class="WHIT">
-<span class='line'>349</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.isCCW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>350</span> </span><span class="WHIT">  </span><span class="COMM">// is equal to the signed area of the triangle</span><span class="WHIT">
-<span class='line'>351</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">b.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">c.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">b.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
-<span class='line'>352</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">c.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>353</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>354</span> 
+<span class='line'>339</span> 
+<span class='line'>340</span> </span><span class="COMM">/**
+<span class='line'>341</span>  * Tests whether the triangle formed by this vertex and two other vertices is in
+<span class='line'>342</span>  * CCW orientation.
+<span class='line'>343</span>  *
+<span class='line'>344</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>345</span>  *          b a vertex.
+<span class='line'>346</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>347</span>  *          c a vertex.
+<span class='line'>348</span>  * @return {Boolean} true if the triangle is oriented CCW.
+<span class='line'>349</span>  */</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.isCCW</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">  </span><span class="COMM">// is equal to the signed area of the triangle</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">b.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">c.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">b.p.y</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.y</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT">
+<span class='line'>353</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">c.p.x</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">this.p.x</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>354</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>355</span> 
-<span class='line'>356</span> </span><span class="COMM">/**
-<span class='line'>357</span>  * Tests wheter this vertex lies to the right of an edge
-<span class='line'>358</span>  *
-<span class='line'>359</span>  * @param {jsts.triangulate.quadedge.QuadEdge}
-<span class='line'>360</span>  *          e A quadedge.
-<span class='line'>361</span>  * @return {Boolean} true if this vertex lies to the right of the edge.
-<span class='line'>362</span>  */</span><span class="WHIT">
-<span class='line'>363</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.rightOf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>364</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isCCW</span><span class="PUNC">(</span><span class="NAME">e.dest</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e.orig</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>365</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>366</span> 
+<span class='line'>356</span> 
+<span class='line'>357</span> </span><span class="COMM">/**
+<span class='line'>358</span>  * Tests wheter this vertex lies to the right of an edge
+<span class='line'>359</span>  *
+<span class='line'>360</span>  * @param {jsts.triangulate.quadedge.QuadEdge}
+<span class='line'>361</span>  *          e A quadedge.
+<span class='line'>362</span>  * @return {Boolean} true if this vertex lies to the right of the edge.
+<span class='line'>363</span>  */</span><span class="WHIT">
+<span class='line'>364</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.rightOf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>365</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isCCW</span><span class="PUNC">(</span><span class="NAME">e.dest</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e.orig</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>367</span> 
-<span class='line'>368</span> </span><span class="COMM">/**
-<span class='line'>369</span>  * Tests wheter this vertex lies to the left of an edge
-<span class='line'>370</span>  *
-<span class='line'>371</span>  * @param {jsts.triangulate.quadedge.QuadEdge}
-<span class='line'>372</span>  *          e A quadedge.
-<span class='line'>373</span>  * @return {Boolean} true if this vertex lies to the left of the edge.
-<span class='line'>374</span>  */</span><span class="WHIT">
-<span class='line'>375</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.leftOf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>376</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isCCW</span><span class="PUNC">(</span><span class="NAME">e.orig</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e.dest</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>377</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>378</span> 
+<span class='line'>368</span> 
+<span class='line'>369</span> </span><span class="COMM">/**
+<span class='line'>370</span>  * Tests wheter this vertex lies to the left of an edge
+<span class='line'>371</span>  *
+<span class='line'>372</span>  * @param {jsts.triangulate.quadedge.QuadEdge}
+<span class='line'>373</span>  *          e A quadedge.
+<span class='line'>374</span>  * @return {Boolean} true if this vertex lies to the left of the edge.
+<span class='line'>375</span>  */</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.leftOf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>377</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.isCCW</span><span class="PUNC">(</span><span class="NAME">e.orig</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">e.dest</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>379</span> 
-<span class='line'>380</span> </span><span class="COMM">/**
-<span class='line'>381</span>  * Returns the perpendicular bisector of the line between the input vertices
-<span class='line'>382</span>  *
-<span class='line'>383</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>384</span>  *          a A vertex.
-<span class='line'>385</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>386</span>  *          b A vertex.
-<span class='line'>387</span>  * @return {jsts.algorithm.HCoordinate} The bisector.
-<span class='line'>388</span>  */</span><span class="WHIT">
-<span class='line'>389</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.bisector</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>390</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l2</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>391</span> 
-<span class='line'>392</span> </span><span class="WHIT">  </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>393</span> </span><span class="WHIT">  </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>394</span> 
-<span class='line'>395</span> </span><span class="WHIT">  </span><span class="NAME">l1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
-<span class='line'>396</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>397</span> </span><span class="WHIT">  </span><span class="NAME">l1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
-<span class='line'>398</span> </span><span class="WHIT">      </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>399</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">l1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>400</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>401</span> 
+<span class='line'>380</span> 
+<span class='line'>381</span> </span><span class="COMM">/**
+<span class='line'>382</span>  * Returns the perpendicular bisector of the line between the input vertices
+<span class='line'>383</span>  *
+<span class='line'>384</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>385</span>  *          a A vertex.
+<span class='line'>386</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>387</span>  *          b A vertex.
+<span class='line'>388</span>  * @return {jsts.algorithm.HCoordinate} The bisector.
+<span class='line'>389</span>  */</span><span class="WHIT">
+<span class='line'>390</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.bisector</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dx</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>392</span> 
+<span class='line'>393</span> </span><span class="WHIT">  </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="WHIT">  </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>395</span> 
+<span class='line'>396</span> </span><span class="WHIT">  </span><span class="NAME">l1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="WHIT">      </span><span class="PUNC">(</span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">  </span><span class="NAME">l1</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="WHIT">      </span><span class="NAME">dx</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">dy</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1.0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">l1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">l2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>401</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>402</span> 
-<span class='line'>403</span> </span><span class="COMM">/**
-<span class='line'>404</span>  * Calculates the distance between two vertices
-<span class='line'>405</span>  *
-<span class='line'>406</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>407</span>  *          v1 a vertex.
-<span class='line'>408</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>409</span>  *          v2 a vertex.
-<span class='line'>410</span>  * @return {Number} The distance.
-<span class='line'>411</span>  */</span><span class="WHIT">
-<span class='line'>412</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.distance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">v2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>413</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">v1.p.distance</span><span class="PUNC">(</span><span class="NAME">v2.p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>414</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>415</span> 
+<span class='line'>403</span> 
+<span class='line'>404</span> </span><span class="COMM">/**
+<span class='line'>405</span>  * Calculates the distance between two vertices
+<span class='line'>406</span>  *
+<span class='line'>407</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>408</span>  *          v1 a vertex.
+<span class='line'>409</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>410</span>  *          v2 a vertex.
+<span class='line'>411</span>  * @return {Number} The distance.
+<span class='line'>412</span>  */</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.distance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">v2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">v1.p.distance</span><span class="PUNC">(</span><span class="NAME">v2.p</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>415</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>416</span> 
-<span class='line'>417</span> </span><span class="COMM">/**
-<span class='line'>418</span>  * Computes the value of the ratio of the circumradius to shortest edge. If
-<span class='line'>419</span>  * smaller than some given tolerance B, the associated triangle is considered
-<span class='line'>420</span>  * skinny.
-<span class='line'>421</span>  *
-<span class='line'>422</span>  * For an equal lateral triangle this value is 0.57735. The ratio is related to
-<span class='line'>423</span>  * the minimum triangle angle theta by: circumRadius/shortestEdge =
-<span class='line'>424</span>  * 1/(2sin(theta)).
-<span class='line'>425</span>  *
-<span class='line'>426</span>  * @param {jsts.triangulate.quadedge}
-<span class='line'>427</span>  *          b second vertex of the triangle.
-<span class='line'>428</span>  * @param {jsts.triangulate.quadedge}
-<span class='line'>429</span>  *          c third vertex of the triangle.
-<span class='line'>430</span>  * @return {Number} ratio of circumradius to shortest edge.
-<span class='line'>431</span>  */</span><span class="WHIT">
-<span class='line'>432</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.circumRadiusRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>433</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>434</span> 
-<span class='line'>435</span> </span><span class="WHIT">  </span><span class="NAME">x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.circleCenter</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>436</span> </span><span class="WHIT">  </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>437</span> </span><span class="WHIT">  </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>438</span> </span><span class="WHIT">  </span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>439</span> 
-<span class='line'>440</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>441</span> </span><span class="WHIT">    </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>442</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>443</span> </span><span class="WHIT">  </span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">c</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>444</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>445</span> </span><span class="WHIT">    </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>446</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>447</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>448</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>449</span> 
+<span class='line'>417</span> 
+<span class='line'>418</span> </span><span class="COMM">/**
+<span class='line'>419</span>  * Computes the value of the ratio of the circumradius to shortest edge. If
+<span class='line'>420</span>  * smaller than some given tolerance B, the associated triangle is considered
+<span class='line'>421</span>  * skinny.
+<span class='line'>422</span>  *
+<span class='line'>423</span>  * For an equal lateral triangle this value is 0.57735. The ratio is related to
+<span class='line'>424</span>  * the minimum triangle angle theta by: circumRadius/shortestEdge =
+<span class='line'>425</span>  * 1/(2sin(theta)).
+<span class='line'>426</span>  *
+<span class='line'>427</span>  * @param {jsts.triangulate.quadedge}
+<span class='line'>428</span>  *          b second vertex of the triangle.
+<span class='line'>429</span>  * @param {jsts.triangulate.quadedge}
+<span class='line'>430</span>  *          c third vertex of the triangle.
+<span class='line'>431</span>  * @return {Number} ratio of circumradius to shortest edge.
+<span class='line'>432</span>  */</span><span class="WHIT">
+<span class='line'>433</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.circumRadiusRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>434</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>435</span> 
+<span class='line'>436</span> </span><span class="WHIT">  </span><span class="NAME">x</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.circleCenter</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">  </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">x</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>438</span> </span><span class="WHIT">  </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>439</span> </span><span class="WHIT">  </span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>440</span> 
+<span class='line'>441</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="WHIT">    </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>443</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="WHIT">  </span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.distance</span><span class="PUNC">(</span><span class="NAME">c</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">el</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">    </span><span class="NAME">edgeLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">el</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">radius</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">edgeLength</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>450</span> 
-<span class='line'>451</span> </span><span class="COMM">/**
-<span class='line'>452</span>  * returns a new vertex that is mid-way between this vertex and another end
-<span class='line'>453</span>  * point.
-<span class='line'>454</span>  *
-<span class='line'>455</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>456</span>  *          a the other end point.
-<span class='line'>457</span>  * @return {jsts.triangulate.quadedge.Vertex} the point mid-way between this and
-<span class='line'>458</span>  *         that.
-<span class='line'>459</span>  */</span><span class="WHIT">
-<span class='line'>460</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.midPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>461</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">xm</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ym</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>462</span> </span><span class="WHIT">  </span><span class="NAME">xm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>463</span> </span><span class="WHIT">  </span><span class="NAME">ym</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>464</span> 
-<span class='line'>465</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">xm</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ym</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>466</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>467</span> 
+<span class='line'>451</span> 
+<span class='line'>452</span> </span><span class="COMM">/**
+<span class='line'>453</span>  * returns a new vertex that is mid-way between this vertex and another end
+<span class='line'>454</span>  * point.
+<span class='line'>455</span>  *
+<span class='line'>456</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>457</span>  *          a the other end point.
+<span class='line'>458</span>  * @return {jsts.triangulate.quadedge.Vertex} the point mid-way between this and
+<span class='line'>459</span>  *         that.
+<span class='line'>460</span>  */</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.midPoint</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>462</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">xm</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ym</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>463</span> </span><span class="WHIT">  </span><span class="NAME">xm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.x</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">a.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>464</span> </span><span class="WHIT">  </span><span class="NAME">ym</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.p.y</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">a.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">2.0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>465</span> 
+<span class='line'>466</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">xm</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ym</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>467</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>468</span> 
-<span class='line'>469</span> </span><span class="COMM">/**
-<span class='line'>470</span>  * Computes the centre of the circumcircle of this vertex and two others.
-<span class='line'>471</span>  *
-<span class='line'>472</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>473</span>  *          b a vertex.
-<span class='line'>474</span>  * @param {jsts.triangulate.quadedge.Vertex}
-<span class='line'>475</span>  *          c a vertex.
-<span class='line'>476</span>  * @return {jsts.triangulate.quadedge.Vertex} the Coordinate which is the
-<span class='line'>477</span>  *         circumcircle of the 3 points.
-<span class='line'>478</span>  */</span><span class="WHIT">
-<span class='line'>479</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.circleCenter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>480</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cbc</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hcc</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cc</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>481</span> 
-<span class='line'>482</span> </span><span class="WHIT">  </span><span class="NAME">a</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">this.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>483</span> </span><span class="WHIT">  </span><span class="COMM">// compute the perpendicular bisector of cord ab</span><span class="WHIT">
-<span class='line'>484</span> </span><span class="WHIT">  </span><span class="NAME">cab</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.bisector</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>485</span> </span><span class="WHIT">  </span><span class="COMM">// compute the perpendicular bisector of cord bc</span><span class="WHIT">
-<span class='line'>486</span> </span><span class="WHIT">  </span><span class="NAME">cbc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.bisector</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>487</span> </span><span class="WHIT">  </span><span class="COMM">// compute the intersection of the bisectors (circle radii)</span><span class="WHIT">
-<span class='line'>488</span> </span><span class="WHIT">  </span><span class="NAME">hcc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">cab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cbc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>489</span> </span><span class="WHIT">  </span><span class="NAME">cc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>490</span> </span><span class="WHIT">  </span><span class="KEYW">try</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>491</span> </span><span class="WHIT">    </span><span class="NAME">cc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">hcc.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hcc.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>492</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">catch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">err</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>493</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>494</span> 
-<span class='line'>495</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">cc</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>496</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>497</span> </span></pre></body></html>
+<span class='line'>469</span> 
+<span class='line'>470</span> </span><span class="COMM">/**
+<span class='line'>471</span>  * Computes the centre of the circumcircle of this vertex and two others.
+<span class='line'>472</span>  *
+<span class='line'>473</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>474</span>  *          b a vertex.
+<span class='line'>475</span>  * @param {jsts.triangulate.quadedge.Vertex}
+<span class='line'>476</span>  *          c a vertex.
+<span class='line'>477</span>  * @return {jsts.triangulate.quadedge.Vertex} the Coordinate which is the
+<span class='line'>478</span>  *         circumcircle of the 3 points.
+<span class='line'>479</span>  */</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="NAME">jsts.triangulate.quadedge.Vertex.prototype.circleCenter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cbc</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hcc</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cc</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>482</span> 
+<span class='line'>483</span> </span><span class="WHIT">  </span><span class="NAME">a</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">this.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>484</span> </span><span class="WHIT">  </span><span class="COMM">// compute the perpendicular bisector of cord ab</span><span class="WHIT">
+<span class='line'>485</span> </span><span class="WHIT">  </span><span class="NAME">cab</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.bisector</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="WHIT">  </span><span class="COMM">// compute the perpendicular bisector of cord bc</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="WHIT">  </span><span class="NAME">cbc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.bisector</span><span class="PUNC">(</span><span class="NAME">b</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>488</span> </span><span class="WHIT">  </span><span class="COMM">// compute the intersection of the bisectors (circle radii)</span><span class="WHIT">
+<span class='line'>489</span> </span><span class="WHIT">  </span><span class="NAME">hcc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.algorithm.HCoordinate</span><span class="PUNC">(</span><span class="NAME">cab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cbc</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>490</span> </span><span class="WHIT">  </span><span class="NAME">cc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>491</span> </span><span class="WHIT">  </span><span class="KEYW">try</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>492</span> </span><span class="WHIT">    </span><span class="NAME">cc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">jsts.triangulate.quadedge.Vertex</span><span class="PUNC">(</span><span class="NAME">hcc.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hcc.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>493</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">catch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">err</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>494</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>495</span> 
+<span class='line'>496</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">cc</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>497</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>498</span> </span></pre></body></html>
