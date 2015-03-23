@@ -11,7 +11,7 @@
         }
     ],
     "dependencies": {
-        "javascript.util": "~0.12.5"
+        "javascript.util": "0.12.5"
     },
     "devDependencies": {
         "mocha": "~2.0.1",
