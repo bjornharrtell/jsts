@@ -1,0 +1,28 @@
+{
+    "name": "jsts",
+    "version": "0.15.0",
+    "main": [
+        "lib/javascript.util.js",
+        "lib/jsts.js"
+    ],
+    "license": "LGPL",
+    "ignore": [
+        "authors.txt",
+        "bower.json",
+        "build/*",
+        "ChangeLog",
+        "examples/*",
+        "index.js",
+        "license-notice.txt",
+        "license.txt",
+        "package.json",
+        "README.md",
+        "src/*",
+        "test/*",
+        "testxml/*",
+        "tools",
+        "validationsuite/*",
+        ".settings/*",
+        ".git/*"
+    ]
+}
