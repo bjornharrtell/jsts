@@ -1,6 +1,5 @@
 {
     "name": "jsts",
-    "version": "0.15.0",
     "main": [
         "lib/javascript.util.js",
         "lib/jsts.js"
@@ -9,20 +8,18 @@
     "ignore": [
         "authors.txt",
         "bower.json",
-        "build/*",
+        "build",
         "ChangeLog",
-        "examples/*",
+        "examples",
         "index.js",
         "license-notice.txt",
         "license.txt",
         "package.json",
         "README.md",
-        "src/*",
-        "test/*",
-        "testxml/*",
+        "src",
+        "test",
+        "testxml",
         "tools",
-        "validationsuite/*",
-        ".settings/*",
-        ".git/*"
+        "validationsuite",
     ]
 }
