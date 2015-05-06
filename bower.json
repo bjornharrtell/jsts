@@ -20,6 +20,6 @@
         "test",
         "testxml",
         "tools",
-        "validationsuite",
+        "validationsuite"
     ]
 }
