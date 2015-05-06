@@ -1,8 +1,8 @@
 {
     "name": "jsts",
     "main": [
-        "lib/javascript.util.js",
-        "lib/jsts.js"
+        "lib/javascript.util.min.js",
+        "lib/jsts.min.js"
     ],
     "license": "LGPL",
     "ignore": [
