@@ -1,29 +1,37 @@
 {
-    "name": "jsts",
-    "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-    "version": "0.15.0",
-    "author": "Björn Harrtell <bjorn@wololo.org>",
-    "keywords": [ "JTS", "JSTS", "java", "topology", "geometry" ],
-    "licenses" : [
-        {
-            "type": "LGPL",
-            "url": "https://raw.github.com/bjornharrtell/jsts/master/license-notice.txt"
-        }
-    ],
-    "dependencies": {
-        "javascript.util": "~0.12.5"
-    },
-    "devDependencies": {
-        "mocha": "~2.0.1",
-        "cheerio": "~0.17.0"
-    },
-    "main": "index.js",
-    "engines": { "node": ">= 0.10.0" },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/bjornharrtell/jsts.git"
-    },
-    "scripts": {
-        "test": "mocha --recursive test/spec/ -r ./ -r test/init.js"
+  "name": "jsts",
+  "description": "A JavaScript library of spatial predicates and functions for processing geometry",
+  "version": "0.15.0",
+  "author": "Björn Harrtell <bjorn@wololo.org>",
+  "keywords": [
+    "JTS",
+    "JSTS",
+    "java",
+    "topology",
+    "geometry"
+  ],
+  "licenses": [
+    {
+      "type": "LGPL",
+      "url": "https://raw.github.com/bjornharrtell/jsts/master/license-notice.txt"
     }
+  ],
+  "dependencies": {
+    "javascript.util": "~0.12.11"
+  },
+  "devDependencies": {
+    "mocha": "~2.2.4",
+    "cheerio": "~0.19.0"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bjornharrtell/jsts.git"
+  },
+  "scripts": {
+    "test": "mocha --recursive test/spec/ -r ./ -r test/init.js"
+  }
 }
