@@ -6,6 +6,6 @@ describe("GitHub issue #175", function() {
     var intersects = a.intersects(b);
     var intersection = a.intersection(b);
     expect(intersection.toString()).toBe('GEOMETRYCOLLECTION EMPTY');
-    expect(intersects).toBe(true);
+    expect(intersects).toBe(false);
   });
 });

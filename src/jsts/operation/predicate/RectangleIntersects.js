@@ -13,8 +13,15 @@
 (function() {
 
 /**
+ * @requires jsts/geom/util/LinearComponentExtracter.js
+ * @requires jsts/algorithm/RectangleLineIntersector.js
+ * @requires jsts/algorithm/locate/SimplePointInAreaLocator.js
  * @requires jsts/geom/util/ShortCircuitedGeometryVisitor.js
  */
+ 
+var LinearComponentExtracter = jsts.geom.util.LinearComponentExtracter;
+var RectangleLineIntersector = jsts.algorithm.RectangleLineIntersector;
+var SimplePointInAreaLocator = jsts.algorithm.locate.SimplePointInAreaLocator;
 
 /**
  * Tests whether it can be concluded that a rectangle intersects a geometry,
@@ -31,7 +38,7 @@ EnvelopeIntersectsVisitor.prototype = new jsts.geom.util.ShortCircuitedGeometryV
 EnvelopeIntersectsVisitor.constructor = EnvelopeIntersectsVisitor;
 
 EnvelopeIntersectsVisitor.prototype.rectEnv = null;
-EnvelopeIntersectsVisitor.prototype.intersects = false;
+EnvelopeIntersectsVisitor.prototype.intersects_ = false;
 
   /**
    * Reports whether it can be concluded that an intersection occurs, 
@@ -41,7 +48,7 @@ EnvelopeIntersectsVisitor.prototype.intersects = false;
    * or false if no conclusion about intersection can be made
    */
   EnvelopeIntersectsVisitor.prototype.intersects = function() {
-    return this.intersects;
+    return this.intersects_;
   }
 
   EnvelopeIntersectsVisitor.prototype.visit = function(element) {
@@ -53,7 +60,7 @@ EnvelopeIntersectsVisitor.prototype.intersects = false;
     }
     // rectangle contains target env => must intersect
     if (this.rectEnv.contains(elementEnv)) {
-      this.intersects = true;
+      this.intersects_ = true;
       return;
     }
     /**
@@ -65,20 +72,20 @@ EnvelopeIntersectsVisitor.prototype.intersects = false;
      * completely bisected. In this case it is not possible to make a conclusion
      * about the presence of an intersection.
      */
-    if (elementEnv.getMinX() >= rectEnv.getMinX()
-        && elementEnv.getMaxX() <= rectEnv.getMaxX()) {
-      this.intersects = true;
+    if (elementEnv.getMinX() >= this.rectEnv.getMinX()
+        && elementEnv.getMaxX() <= this.rectEnv.getMaxX()) {
+      this.intersects_ = true;
       return;
     }
-    if (elementEnv.getMinY() >= rectEnv.getMinY()
-        && elementEnv.getMaxY() <= rectEnv.getMaxY()) {
-      this.intersects = true;
+    if (elementEnv.getMinY() >= this.rectEnv.getMinY()
+        && elementEnv.getMaxY() <= this.rectEnv.getMaxY()) {
+      this.intersects_ = true;
       return;
     }
   }
 
   EnvelopeIntersectsVisitor.prototype.isDone = function() {
-    return this.intersects == true;
+    return this.intersects_ == true;
   }
   
   
@@ -109,7 +116,7 @@ GeometryContainsPointVisitor.prototype.containsPoint = false;
    * or false if no conclusion about intersection can be made
    */
 GeometryContainsPointVisitor.prototype.containsPoint = function() {
-    return this.containsPoint;
+    return this.containsPoint_;
   }
 
 GeometryContainsPointVisitor.prototype.visit = function(geom) {
@@ -125,20 +132,20 @@ GeometryContainsPointVisitor.prototype.visit = function(geom) {
     // test each corner of rectangle for inclusion
     var rectPt = new jsts.geom.Coordinate();
     for (var i = 0; i < 4; i++) {
-      this.rectSeq.getCoordinate(i, rectPt);
+      var rectPt = this.rectSeq[i];
       if (!elementEnv.contains(rectPt))
         continue;
       // check rect point in poly (rect is known not to touch polygon at this
       // point)
       if (SimplePointInAreaLocator.containsPointInPolygon(rectPt, geom)) {
-        this.containsPoint = true;
+        this.containsPoint_ = true;
         return;
       }
     }
   }
 
   GeometryContainsPointVisitor.prototype.isDone = function() {
-    return this.containsPoint == true;
+    return this.containsPoint_ == true;
   }
   
 /**
@@ -155,7 +162,7 @@ GeometryContainsPointVisitor.prototype.visit = function(geom) {
  */
 var RectangleIntersectsSegmentVisitor = function(rectangle) {
     this.rectEnv = rectangle.getEnvelopeInternal();
-    this.rectIntersector = new RectangleLineIntersector(rectEnv);
+    this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
 };
 RectangleIntersectsSegmentVisitor.prototype = new jsts.geom.util.ShortCircuitedGeometryVisitor();
 RectangleIntersectsSegmentVisitor.constructor = RectangleIntersectsSegmentVisitor;
@@ -194,8 +201,9 @@ RectangleIntersectsSegmentVisitor.prototype.p1 = null;
   }
 
   RectangleIntersectsSegmentVisitor.prototype.checkIntersectionWithLineStrings = function(lines) {
-    for (var i = lines.iterator(); i.hasNext(); ) {
-      var testLine = i.next();
+    // TODO: reworked to use plain arrays instead of original API
+    for (var i = 0; i < lines.length; i++) {
+      var testLine = lines[0];
       this.checkIntersectionWithSegments(testLine);
       if (this.hasIntersection)
         return;
@@ -209,7 +217,7 @@ RectangleIntersectsSegmentVisitor.prototype.p1 = null;
       this.p0 = seq1[j - 1];
       this.p1 = seq1[j];
 
-      if (rectIntersector.intersects(p0, p1)) {
+      if (this.rectIntersector.intersects(this.p0, this.p1)) {
         this.hasIntersection = true;
         return;
       }
@@ -284,7 +292,7 @@ RectangleIntersectsSegmentVisitor.prototype.p1 = null;
     /**
      * Test if any rectangle vertex is contained in the target geometry
      */
-    var ecpVisitor = new GeometryContainsPointVisitor(rectangle);
+    var ecpVisitor = new GeometryContainsPointVisitor(this.rectangle);
     ecpVisitor.applyTo(geom);
     if (ecpVisitor.containsPoint())
       return true;
@@ -292,7 +300,7 @@ RectangleIntersectsSegmentVisitor.prototype.p1 = null;
     /**
      * Test if any target geometry line segment intersects the rectangle
      */
-    var riVisitor = new RectangleIntersectsSegmentVisitor(rectangle);
+    var riVisitor = new RectangleIntersectsSegmentVisitor(this.rectangle);
     riVisitor.applyTo(geom);
     if (riVisitor.intersects())
       return true;

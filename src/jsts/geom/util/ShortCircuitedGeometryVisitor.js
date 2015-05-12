@@ -22,15 +22,15 @@ jsts.geom.util.ShortCircuitedGeometryVisitor = function() {
 
 };
 
-jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.isDone = false;
+jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.isDone_ = false;
 
 jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.applyTo = function(geom) {
-    for (var i = 0; i < geom.getNumGeometries() && ! this.isDone; i++) {
+    for (var i = 0; i < geom.getNumGeometries() && ! this.isDone_; i++) {
       var element = geom.getGeometryN(i);
       if (! (element instanceof jsts.geom.GeometryCollection)) {
         this.visit(element);
         if (this.isDone()) {
-          this.isDone = true;
+          this.isDone_ = true;
           return;
         }
       }
