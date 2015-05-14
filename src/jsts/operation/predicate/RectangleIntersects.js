@@ -203,7 +203,7 @@ RectangleIntersectsSegmentVisitor.prototype.p1 = null;
   RectangleIntersectsSegmentVisitor.prototype.checkIntersectionWithLineStrings = function(lines) {
     // TODO: reworked to use plain arrays instead of original API
     for (var i = 0; i < lines.length; i++) {
-      var testLine = lines[0];
+      var testLine = lines[i];
       this.checkIntersectionWithSegments(testLine);
       if (this.hasIntersection)
         return;
