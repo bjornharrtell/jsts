@@ -261,7 +261,7 @@
 
     if (coord.length < 2) {
       this.hasTooFewPoints = true;
-      this.invalidPoint = coords[0];
+      this.invalidPoint = coord[0];
       return;
     }
 
