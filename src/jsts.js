@@ -71,6 +71,8 @@ jsts = {
   /** @namespace */
   planargraph: {},
   /** @namespace */
+  precision: {},
+  /** @namespace */
   simplify: {},
   /** @namespace */
   triangulate: {
