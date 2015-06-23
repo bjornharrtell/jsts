@@ -192,10 +192,9 @@
    */
   jsts.geom.IntersectionMatrix.prototype.set2 = function(dimensionSymbols) {
     for (var i = 0; i < dimensionSymbols.length(); i++) {
-      var row = i / 3;
+      var row = Math.floor(i/3);
       var col = i % 3;
-      this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols
-          .charAt(i));
+      this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
     }
   };
 
