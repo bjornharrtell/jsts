@@ -74,7 +74,7 @@ jsts.geom.CoordinateList.prototype.addCoordinates = function(coord, allowRepeate
     return this.insertCoordinate.apply(this, arguments);
   }
 
-  direction = direction || true;
+  direction = typeof(direction) !== 'undefined' ? direction : true;
 
   if (direction) {
     for (var i = 0; i < coord.length; i++) {
