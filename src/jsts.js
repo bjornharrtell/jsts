@@ -53,6 +53,8 @@ jsts = {
     /** @namespace */
     distance: {},
     /** @namespace */
+    linemerge: {},
+    /** @namespace */
     overlay: {
       /** @namespace */
       snap: {}
