@@ -172,7 +172,6 @@
    *          dimensionValue the new value of the element.
    */
   jsts.geom.IntersectionMatrix.prototype.set = function(row, column, dimensionValue) {
-    this.matrix = [[], [], []]; this.setAll(Dimension.FALSE);
 	if (typeof row === 'string') {
 		this.set2(row);
 		return;
