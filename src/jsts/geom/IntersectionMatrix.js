@@ -172,12 +172,11 @@
    *          dimensionValue the new value of the element.
    */
   jsts.geom.IntersectionMatrix.prototype.set = function(row, column, dimensionValue) {
-    if (typeof row === 'string') {
-      this.set2(row);
-      return;
-    }
-
-    this.matrix[row][column] = dimensionValue;
+	if (typeof row === 'string') {
+		this.set2(row);
+		return;
+	}
+	this.matrix[row][column] = dimensionValue;    
   };
 
 
@@ -191,13 +190,13 @@
    *          <code>{T, F, * , 0, 1, 2}.</code>
    */
   jsts.geom.IntersectionMatrix.prototype.set2 = function(dimensionSymbols) {
-    for (var i = 0; i < dimensionSymbols.length(); i++) {
-      var row = Math.floor(i/3);
-      var col = i % 3;
-      this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
-    }
+	this.matrix = [[], [], []]; this.setAll(Dimension.FALSE);
+	for (var i = 0; i < dimensionSymbols.length; i++) {
+		var col = i % 3;
+		var row = Math.floor(i / 3);
+		this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
+	}    
   };
-
 
   /**
    * Changes the specified element to <code>minimumDimensionValue</code> if
@@ -271,8 +270,7 @@
     for (i = 0; i < minimumDimensionSymbols.length; i++) {
       var row = parseInt(i / 3);
       var col = parseInt(i % 3);
-      this.setAtLeast(row, col, jsts.geom.Dimension
-          .toDimensionValue(minimumDimensionSymbols.charAt(i)));
+      this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
     }
   };
 
