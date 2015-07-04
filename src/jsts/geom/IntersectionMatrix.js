@@ -12,7 +12,7 @@
    */
 
   var Location = jsts.geom.Location;
-  var Dimension = Dimension;
+  var Dimension = jsts.geom.Dimension;
 
   /**
    * Models a Dimensionally Extended Nine-Intersection Model (DE-9IM) matrix.
