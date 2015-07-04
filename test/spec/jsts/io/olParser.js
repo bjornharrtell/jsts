@@ -4,7 +4,7 @@ describe('jsts.io.olParser', function() {
 
 	var pm = new jsts.geom.PrecisionModel(jsts.geom.PrecisionModel.FLOATING);
 	var factory = new jsts.geom.GeometryFactory(pm);
-	var parser = new fire.gear.io.olParser(factory); 
+	var parser = new jsts.io.olParser(factory); 
 
 	it("check olParser.write(Point) from jsts to ol3", function() {
         var geom = new jsts.geom.Point(new jsts.geom.Coordinate(11, 41, 3.2));
