@@ -2,13 +2,9 @@ describe('jsts.io.olParser', function() {
 
 	if (typeof ol === 'undefined') return;
 
-	var parser;
-
-	beforeEach(function() {
-		var pm = new jsts.geom.PrecisionModel(jsts.geom.PrecisionModel.FLOATING);
-		var factory = new jsts.geom.GeometryFactory(pm);
-		parser = new fire.gear.io.olParser(factory); 
-	});
+	var pm = new jsts.geom.PrecisionModel(jsts.geom.PrecisionModel.FLOATING);
+	var factory = new jsts.geom.GeometryFactory(pm);
+	var parser = new fire.gear.io.olParser(factory); 
 
 	it("check olParser.write(Point) from jsts to ol3", function() {
         var geom = new jsts.geom.Point(new jsts.geom.Coordinate(11, 41, 3.2));
