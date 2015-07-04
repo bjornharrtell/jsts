@@ -10,7 +10,7 @@ jsts.io.olParser = function(geometryFactory) {
 
 /**
  * @param geometry
- *          {OpenLayers.Geometry}
+ *          {ol.geom.Geometry}
  * @return {jsts.geom.Geometry}
  */
 jsts.io.olParser.prototype.read = function(geometry) {
@@ -35,8 +35,7 @@ jsts.io.olParser.prototype.read = function(geometry) {
 
 jsts.io.olParser.prototype.convertFromPoint = function(point) {
   var coordinates = point.getCoordinates();
-  return this.geometryFactory.createPoint(new jsts.geom.Coordinate(coordinates[0],
-      coordinates[1]));
+  return this.geometryFactory.createPoint(new jsts.geom.Coordinate(coordinates[0], coordinates[1]));
 };
 
 jsts.io.olParser.prototype.convertFromLineString = function(lineString) {
@@ -53,21 +52,17 @@ jsts.io.olParser.prototype.convertFromLinearRing = function(linearRing) {
 
 jsts.io.olParser.prototype.convertFromPolygon = function(polygon) {
   var linearRings = polygon.getLinearRings();
-
   var i;
   var shell = null;
   var holes = [];
-
   for (i = 0; i < linearRings.length; i++) {
     var linearRing = this.convertFromLinearRing(linearRings[i]);
-
     if (i === 0) {
       shell = linearRing;
     } else {
       holes.push(linearRing);
     }
   }
-
   return this.geometryFactory.createPolygon(shell, holes);
 };
 
@@ -75,26 +70,20 @@ jsts.io.olParser.prototype.convertFromMultiPoint = function(multiPoint) {
   var points =  multiPoint.getPoints().map(function(point) {
     return this.convertFromPoint(point);
   }, this);
-
   return this.geometryFactory.createMultiPoint(points);
 };
 
-jsts.io.olParser.prototype.convertFromMultiLineString = function(
-    multiLineString) {
+jsts.io.olParser.prototype.convertFromMultiLineString = function(multiLineString) {
   var lineStrings = multiLineString.getLineStrings().map(function(lineString) {
     return this.convertFromLineString(lineString);
   }, this);
-
   return this.geometryFactory.createMultiLineString(lineStrings);
 };
 
-jsts.io.olParser.prototype.convertFromMultiPolygon = function(
-    multiPolygon) {
-  
+jsts.io.olParser.prototype.convertFromMultiPolygon = function(multiPolygon) {
   var polygons = multiPolygon.getPolygons().map(function(polygon) {
     return this.convertFromPolygon(polygon);
   }, this);
-  
   return this.geometryFactory.createMultiPolygon(polygons);
 };
 
@@ -102,14 +91,13 @@ jsts.io.olParser.prototype.convertFromCollection = function(collection) {
   var geometries = collection.getGeometries().map(function(geometry) {
     return this.read(geometry);
   }, this);
-
   return this.geometryFactory.createGeometryCollection(geometries);
 };
 
 /**
  * @param geometry
  *          {jsts.geom.Geometry}
- * @return {OpenLayers.Geometry}
+ * @return {ol.geom.Geometry}
  */
 jsts.io.olParser.prototype.write = function(geometry) {
   if (geometry.CLASS_NAME === 'jsts.geom.Point') {
@@ -137,89 +125,67 @@ jsts.io.olParser.prototype.convertToPoint = function(coordinate) {
 
 jsts.io.olParser.prototype.convertToLineString = function(lineString) {
   var i;
-  var points = [];
-
-  for (i = 0; i < lineString.points.length; i++) {
-    var coordinate = lineString.points[i];
-    points.push(this.convertToPoint(coordinate));
-  }
-
-  return new new ol.geom.LineString(points);
+  var points =  lineString.points.map(function(point) {
+    return [point.x, point.y];
+  }, this);
+  return new ol.geom.LineString(points);
 };
 
 jsts.io.olParser.prototype.convertToLinearRing = function(linearRing) {
   var i;
-  var points = [];
-
-  for (i = 0; i < linearRing.points.length; i++) {
-    var coordinate = linearRing.points[i];
-    points.push([coordinate.x, coordinate.y]);
-  }
-
+  var points =  linearRing.points.map(function(point) {
+    return [point.x, point.y];
+  }, this);
   return new ol.geom.LinearRing(points);
 };
 
 jsts.io.olParser.prototype.convertToPolygon = function(polygon) {
   var i;
   var rings = [];
-
-  rings.push(this.convertToLinearRing(polygon.shell).getCoordinates());
-
+  rings.push(polygon.shell.points.map(function(point) {
+    return [point.x, point.y];
+  }, this));
   for (i = 0; i < polygon.holes.length; i++) {
-    var ring = polygon.holes[i];
-    rings.push(this.convertToLinearRing(ring).getCoordinates());
+    rings.push(polygon.holes[i].points.map(function(point) {
+		return [point.x, point.y];
+	}, this));
   }
-
   return new ol.geom.Polygon(rings);
 };
 
 jsts.io.olParser.prototype.convertToMultiPoint = function(multiPoint) {
   var i;
   var points = [];
-
   for (i = 0; i < multiPoint.geometries.length; i++) {
-    var coordinate = multiPoint.geometries[i].coordinate;
-    points.push(new ol.geom.Point([coordinate.x, coordinate.y]));
+    points.push(this.convertToPoint(multiPoint.geometries[i]).getCoordinates());
   }
-
-  return new new ol.geom.MultiPoint(points);
+  return new ol.geom.MultiPoint(points);
 };
 
-jsts.io.olParser.prototype.convertToMultiLineString = function(
-    multiLineString) {
+jsts.io.olParser.prototype.convertToMultiLineString = function(multiLineString) {
   var i;
   var lineStrings = [];
-
   for (i = 0; i < multiLineString.geometries.length; i++) {
-    lineStrings.push(this.convertToLineString(multiLineString.geometries[i]));
+	lineStrings.push(this.convertToLineString(multiLineString.geometries[i]).getCoordinates());
   }
-
   return new ol.geom.MultiLineString(lineStrings);
 };
 
-jsts.io.olParser.prototype.convertToMultiPolygon = function(
-    multiPolygon) {
+jsts.io.olParser.prototype.convertToMultiPolygon = function(multiPolygon) {
   var i;
   var polygons = [];
-
   for (i = 0; i < multiPolygon.geometries.length; i++) {
-    polygons.push(this.convertToPolygon(multiPolygon.geometries[i]));
+	polygons.push(this.convertToPolygon(multiPolygon.geometries[i]).getCoordinates());
   }
-
   return new ol.geom.MultiPolygon(polygons);
 };
 
-jsts.io.olParser.prototype.convertToCollection = function(
-    geometryCollection) {
+jsts.io.olParser.prototype.convertToCollection = function(geometryCollection) {
   var i;
   var geometries = [];
-
   for (i = 0; i < geometryCollection.geometries.length; i++) {
     var geometry = geometryCollection.geometries[i];
-    var geometryOpenLayers = this.write(geometry);
-
-    geometries.push(geometryOpenLayers);
+    geometries.push(this.write(geometry));
   }
-
   return new ol.geom.GeometryCollection(geometries);
 };
