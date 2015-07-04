@@ -172,7 +172,7 @@
    *          dimensionValue the new value of the element.
    */
   jsts.geom.IntersectionMatrix.prototype.set = function(row, column, dimensionValue) {
-    this.matrix = [[], [], []]; this.setAll(fire.gear.geom.Dimension.FALSE);
+    this.matrix = [[], [], []]; this.setAll(jsts.geom.Dimension.FALSE);
 	if (typeof row === 'string') {
 		this.set2(row);
 		return;
@@ -191,11 +191,11 @@
    *          <code>{T, F, * , 0, 1, 2}.</code>
    */
   jsts.geom.IntersectionMatrix.prototype.set2 = function(dimensionSymbols) {
-	this.matrix = [[], [], []]; this.setAll(fire.gear.geom.Dimension.FALSE);
+	this.matrix = [[], [], []]; this.setAll(jsts.geom.Dimension.FALSE);
 	for (var i = 0; i < dimensionSymbols.length; i++) {
 		var col = i % 3;
 		var row = Math.floor(i / 3);
-		this.matrix[row][col] = fire.gear.geom.Dimension.toDimensionValue(dimensionSymbols.charAt(i));
+		this.matrix[row][col] = jsts.geom.Dimension.toDimensionValue(dimensionSymbols.charAt(i));
 	}    
   };
 
