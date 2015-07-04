@@ -1,6 +1,6 @@
 describe('jsts.io.olParser', function() {
 
-	//if (typeof ol === 'undefined') return;
+	if (typeof ol === 'undefined') return;
 
 	var pm = new jsts.geom.PrecisionModel(jsts.geom.PrecisionModel.FLOATING);
 	var factory = new jsts.geom.GeometryFactory(pm);
