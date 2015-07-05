@@ -1,4 +1,9 @@
 language: node_js
 node_js:
-  - "0.10"
-
+  - "0.12"
+install: 
+  - sudo pip install jstools
+  - npm install
+script: 
+  - ./build.sh
+  - npm test

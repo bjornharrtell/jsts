@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JTS",
@@ -17,7 +17,7 @@
     }
   ],
   "dependencies": {
-    "javascript.util": "~0.12.11"
+    "javascript.util": "~0.12.12"
   },
   "devDependencies": {
     "mocha": "~2.2.4",
