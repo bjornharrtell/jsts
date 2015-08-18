@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Buffer example</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css" type="text/css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.8.2/ol.js"></script>
 
   <script type="text/javascript" src="../lib/javascript.util.min.js"></script>
   <script type="text/javascript" src="../lib/jsts.min.js"></script>
@@ -22,7 +22,7 @@
     input = parser.write(input);
     buffer = parser.write(buffer);
     
-    var source = new ol.source.StaticVector({});
+    var source = new ol.source.Vector({});
     var layer = new ol.layer.Vector({
       source: source
     });
