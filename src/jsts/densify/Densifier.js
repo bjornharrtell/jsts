@@ -60,7 +60,7 @@ jsts.densify.Densifier.prototype.setDistanceTolerance = function(distanceToleran
 };
 
 jsts.densify.Densifier.prototype.getResultGeometry = function() {
-  return jsts.densify.Densifier.DensifyTransformer.prototype.transform(this.geom);
+  return (new jsts.densify.Densifier.DensifyTransformer()).transform(this.geom);
 };
 
 /*
@@ -70,10 +70,10 @@ jsts.densify.Densifier.prototype.getResultGeometry = function() {
 jsts.densify.Densifier.DensifyTransformer = function() {};
 
 jsts.densify.Densifier.DensifyTransformer.prototype = new jsts.geom.util.GeometryTransformer();
-jsts.densify.Densifier.DensifyTransformer.constructor = jsts.densify.Densifier.DensifyTransformer;
+//jsts.densify.Densifier.DensifyTransformer.constructor = jsts.densify.Densifier.DensifyTransformer;
 
 // Below not added to prototype, as they're protected in the java source
-jsts.densify.Densifier.DensifyTransformer.transformCoordinates = function(coords, parent) {
+jsts.densify.Densifier.DensifyTransformer.prototype.transformCoordinates = function(coords, parent) {
   inputPts = coords.toCoordinateArray();
   newPts = jsts.densify.Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel());
 
@@ -84,7 +84,7 @@ jsts.densify.Densifier.DensifyTransformer.transformCoordinates = function(coords
   return this.factory.getCoordinateSequenceFactory().create(newPts);
 };
 
-jsts.densify.Densifier.DensifyTransformer.transformPolygon = function(geom, parent) {
+jsts.densify.Densifier.DensifyTransformer.prototype.transformPolygon = function(geom, parent) {
   roughGeom = this.transformPolygon(geom, parent);
 
   if (parent instanceof jsts.geom.MultiPolygon) {
@@ -93,11 +93,11 @@ jsts.densify.Densifier.DensifyTransformer.transformPolygon = function(geom, pare
   return this.createValidArea(roughGeom);
 };
 
-jsts.densify.Densifier.DensifyTransformer.transformMultiPolygon = function(geom, parent) {
+jsts.densify.Densifier.DensifyTransformer.prototype.transformMultiPolygon = function(geom, parent) {
   roughGeom = this.transformMultiPolygon(geom, parent);
   return this.createValidArea(roughGeom);
 };
 
-jsts.densify.Densifier.DensifyTransformer.createValidArea = function(roughAreaGeom) {
+jsts.densify.Densifier.DensifyTransformer.prototype.createValidArea = function(roughAreaGeom) {
   return roughAreaGeom.buffer(0.0);
 };
