@@ -29,6 +29,6 @@ global.expect = function(e) {
                 return e !== a;
             },
         }
-    }
+    };
 };
 
