@@ -39,6 +39,29 @@
       return geometry;
     };
 
+    /**
+     * Turns GeoJSON FeatureCollections into a GeometryCollection
+     *
+     * @param {object}
+     *          geoJson a GeoJSON Object or String.
+     * @return {jsts.geom.GeometryCollection} a <code>GeometryCollection.</code>
+     */
+    jsts.io.GeoJSONReader.prototype.readAsGeometryCollection = function(geoJson) {
+      var geometry = this.read(geoJson);
+      
+      var geometries = [];
+      if (geometry.features !== null){
+        for (var i = 0, len = geometry.features.length; i < len; i++) {
+          geometries.push(geometry.features[0].geometry);
+        }
+      }
+
+      var geometryCollection = new jsts.geom.GeometryCollection(
+        geometries, new jsts.geom.GeometryFactory());
+
+      return geometryCollection;
+    };
+
     // NOTE: this is a hack
     jsts.io.GeoJSONReader.prototype.reducePrecision = function(geometry) {
       var i, len;

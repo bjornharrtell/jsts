@@ -54,6 +54,15 @@ describe('jsts.io.*', function() {
     expect(geometry).toBeDefined();
   });
 
+  it('can read GeometryCollection GeoJSON with a FeatureCollection into a jsts.GeometryCollection', function() {
+    var input = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[-73.95833,40.80068],[-73.98184,40.768061],[-73.97300,40.76455],[-73.94923,40.79691],[-73.95833,40.80068]]]}}]};
+  
+    var geometryCollection = reader.readAsGeometryCollection(input);
+    expect(geometryCollection).toBeDefined();
+    expect(geometryCollection.isEmpty()).toBeFalsy();
+    expect(geometryCollection.getArea()).toBeCloseTo(1.3); // sq miles?  
+  });
+
 
   it('can write Point GeoJSON', function() {
     var geometry = reader.read({ "type": "Point", "coordinates": [100.0, 0.0] });
