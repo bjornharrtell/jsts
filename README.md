@@ -36,6 +36,7 @@ operations. There are also some [examples of using JSTS with Node.js](https://gi
 
 ## Building
 
+* Make sure you've read the readme in the `build` folder.
 * `sudo npm install`
 * `./build.sh`
 
