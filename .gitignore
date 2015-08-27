@@ -4,3 +4,6 @@
 /doc
 /OpenLayers-2.11
 *.swp
+node_modules
+dist
+lib
