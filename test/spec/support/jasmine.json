@@ -1,0 +1,10 @@
+{
+  "spec_dir": "test/spec",
+  "spec_files": [
+    "**/*.js",
+    "jsts/geom/GeometryCollection.js"
+  ],
+  "helpers": [
+    "../init.js"
+  ]
+}
