@@ -5,7 +5,7 @@
  */
 
 /**
- * Class for reading and writing Well-Known Text.
+ * Class for reading and writing GeoJSON
  *
  * NOTE: Adapted from OpenLayers 2.11 implementation.
  */
