@@ -1,11 +1,11 @@
-2015-08-26: Version 0.16.1
-        
-        (All Contributions http://www.github.com/mikeatlas)
+2015-08-26: Version 0.17.0
+
+        (All Contributions below here are from @mikeatlas)
         Add GeometryCollection `contains` method
-        Add proper GeoJSONReader `readAsGeometryCollection` to handle returning an array of geometries from the feature collection in the GeoJSON
-        Add jsbuild to preinstall npm package.json; requires sudo priviliges to install, otherwise there is a conflicting npm package with the same name and different options and could be confusing (also, especially not using travis locally)
+        Add GeoJSONReader `readAsGeometryCollection` to handle GeoJSON FeatureCollections correctly.
+        Add jsbuild to prepublish npm package.json; requires sudo priviliges to install, otherwise there is a conflicting npm package with the same name and different options and could be confusing if you don't read the build/readme.txt
         Added ability to run raw jasmine (~>2.0) tests with `jasmine JASMINE_CONFIG_PATH=test/spec/support/jasmine.json`
-        A few other minor cleanups here and there to make command line build/testing easier (no IDE needed!)
+        A few other minor cleanups here and there to make command line build/testing easier (no IDE needed)
 
 2015-05-06: Version 0.16.0
     
