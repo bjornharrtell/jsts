@@ -41,6 +41,8 @@ operations. There are also some [examples of using JSTS with Node.js](https://gi
 
 ## Testing
 
+Make sure you've built the project first.
+
 * `npm test`
 or, presuming you already have Jasmine installed:
 * `jasmine JASMINE_CONFIG_PATH=test/spec/support/jasmine.json`
