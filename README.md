@@ -32,6 +32,17 @@ operations. There are also some [examples of using JSTS with Node.js](https://gi
 * Eclipse 4.3.1 (Kepler)
 * Assumes OpenLayers 2.13.1 distribution in project root from http://www.openlayers.org/
 * Assumes OS Ubuntu/Linux
+* Assumes Python and `easy_install` are available (for building).
+
+## Building
+
+* `sudo npm install`
+
+## Testing
+
+* `npm test`
+or, presuming you already have Jasmine installed:
+* `jasmine JASMINE_CONFIG_PATH=test/spec/support/jasmine.json`
 
 ## Design changes
 
