@@ -40,6 +40,27 @@
     return true;
   };
 
+/**
+ * Tests whether this geometry contains the specified geometry.
+ * @param {Geometry}
+ *          g the <code>Geometry</code> with which to compare this
+ *          <code>Geometry.</code>
+ * @return {boolean} <code>true</code> if this <code>GeometryCollection</code>
+ *         contains <code>g.</code>
+ *
+ * @see Geometry#contains
+ */
+  jsts.geom.GeometryCollection.prototype.contains = function(g) {
+    for (var i = 0, len = this.geometries.length; i < len; i++) {
+      var geometry = this.getGeometryN(i);
+
+      if (geometry.contains(g)) {
+        return true;
+      }
+    }
+    return true;
+  };
+
   jsts.geom.GeometryCollection.prototype.getArea = function() {
     var area = 0.0;
 
