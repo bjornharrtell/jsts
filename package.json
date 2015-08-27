@@ -32,6 +32,7 @@
     "url": "git://github.com/bjornharrtell/jsts.git"
   },
   "scripts": {
-    "test": "mocha --recursive test/spec/ -r ./ -r test/init.js"
+    "test": "mocha --recursive test/spec/ -r ./ -r test/init.js",
+    "prepublish" : "sudo easy_install jstools"
   }
 }
