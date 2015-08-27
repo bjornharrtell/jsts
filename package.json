@@ -33,6 +33,6 @@
   },
   "scripts": {
     "test": "mocha --recursive test/spec/ -r ./ -r test/init.js",
-    "prepublish" : "sudo easy_install jstools"
+    "preinstall" : "sudo easy_install jstools"
   }
 }
