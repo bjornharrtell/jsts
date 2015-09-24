@@ -211,8 +211,10 @@
    */
   GeometryTransformer.prototype.transformLineString = function(geom, parent) {
     // should check for 1-point sequences and downgrade them to points
-    return this.factory.createLineString(this.transformCoordinates(geom
-        .getCoordinateSequence(), geom));
+    //return this.factory.createLineString(this.transformCoordinates(geom
+        //.getCoordinateSequence(), geom));
+
+    return this.factory.createLineString(geom.getCoordinateSequence());
   };
 
   GeometryTransformer.prototype.transformMultiLineString = function(geom,
