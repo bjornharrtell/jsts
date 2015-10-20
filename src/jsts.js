@@ -82,6 +82,8 @@ jsts = {
     quadedge: {}
   },
   /** @namespace */
+  densify: {},
+  /** @namespace */
   util: {}
 };
 

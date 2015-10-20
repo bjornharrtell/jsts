@@ -139,7 +139,24 @@
    * @return a deep copy of the sequence.
    */
   GeometryTransformer.prototype.copy = function(seq) {
-    return seq.clone();
+	// TODO Gregers:
+	// Broken if called with LineString.getCoordinateSequence() as this returns array
+	if( seq instanceof javascript.util.ArrayList )
+	{
+		return seq.clone();// I think it was inteded to be an ArrayList?
+	}
+	else if( seq instanceof Array)
+	{
+	  //TODO  Gregers:
+	  // Iterations on Arrays in javascript.util broken?
+          var a = new Array()
+          for(var i = 0; i < seq.length; i++)
+          {
+	    a.push(seq[i]);
+          }
+          return a;
+	}
+
   };
 
   /**
@@ -211,8 +228,7 @@
    */
   GeometryTransformer.prototype.transformLineString = function(geom, parent) {
     // should check for 1-point sequences and downgrade them to points
-    return this.factory.createLineString(this.transformCoordinates(geom
-        .getCoordinateSequence(), geom));
+    return this.factory.createLineString(this.transformCoordinates(geom.getCoordinateSequence(), geom));
   };
 
   GeometryTransformer.prototype.transformMultiLineString = function(geom,
