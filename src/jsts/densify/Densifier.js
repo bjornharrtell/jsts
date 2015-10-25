@@ -70,7 +70,7 @@ jsts.densify.Densifier.prototype.setDistanceTolerance = function(distanceToleran
 
 
 jsts.densify.Densifier.prototype.getResultGeometry = function() {
-  return (new jsts.densify.Densifier.DensifyTransformer()).transform(this.geom);
+  return (new jsts.densify.Densifier.DensifyTransformer(this.distanceTolerance)).transform(this.geom);
 };
 
 
@@ -81,8 +81,9 @@ jsts.densify.Densifier.prototype.getResultGeometry = function() {
  */
 
 // Extend jsts.geom.util.GeometryTransformer by calling constructor and prototyping new object
-jsts.densify.Densifier.DensifyTransformer = function() {
+jsts.densify.Densifier.DensifyTransformer = function(distanceTolerance) {
 	jsts.geom.util.GeometryTransformer.call(this); // super called
+	this.distanceTolerance = distanceTolerance;
 };
 
 jsts.densify.Densifier.DensifyTransformer.prototype = new jsts.geom.util.GeometryTransformer();
@@ -93,7 +94,6 @@ jsts.densify.Densifier.DensifyTransformer.prototype.transformCoordinates = funct
   var inputPts = coords;
   if( !(inputPts instanceof Array) ) {  inputPts = coords.toCoordinateArray() };
 
-  this.distanceTolerance = 0.5; //TODO: It was a nested class, so it had access to distanceTolerance, but not in JS :-|
   var newPts = jsts.densify.Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel());
 
   if (parent instanceof jsts.geom.LineString && newPts.length == 1) {
