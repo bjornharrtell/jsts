@@ -4,8 +4,12 @@
  * See /license.txt for the full text of the license.
 */
 
+/**
+ * @requires jsts/geom/util/GeometryTransformer.js
+ */
 
 (function() {
+
 /**
  * Densifies a {@link Geometry} by inserting extra vertices along the line
  * segments contained in the geometry.  All segments in the created densified
