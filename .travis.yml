@@ -3,7 +3,7 @@ node_js:
   - "4.1"
 sudo: false
 install: 
-  - pip install jstools
+  - pip install --user jstools
   - npm install
 script: 
   - ./build.sh
