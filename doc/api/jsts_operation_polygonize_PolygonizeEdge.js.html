@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/operation/polygonize/PolygonizeEdge.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,49 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/operation/polygonize/PolygonizeEdge.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+/**
+ * Port source:
+ * /jts/jts/java/src/com/vividsolutions/jts/operation/polygonize/PolygonizeEdge.java
+ * Revision: 6
+ */
+
+/**
+ * @requires jsts/planargraph/Edge.js
+ */
 
 
-    <h3> </h3>
+/**
+ * An edge of a polygonization graph.
+ */
+jsts.operation.polygonize.PolygonizeEdge = function(line) {
+  this.line = line;
+};
 
+jsts.operation.polygonize.PolygonizeEdge.prototype = new jsts.planargraph.Edge();
 
+jsts.operation.polygonize.PolygonizeEdge.prototype.line = null;
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
+  return this.line;
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

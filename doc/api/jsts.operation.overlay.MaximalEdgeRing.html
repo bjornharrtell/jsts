@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: MaximalEdgeRing</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,682 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: MaximalEdgeRing</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.operation.html">.operation</a><a href="jsts.operation.overlay.html">.overlay</a>.</span>MaximalEdgeRing</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="MaximalEdgeRing"><span class="type-signature"></span>new MaximalEdgeRing<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    A ring of DirectedEdges which may contain nodes of degree > 2.
+A <tt>MaximalEdgeRing</tt> may represent two different spatial entities:
+<ul>
+<li>a single polygon possibly containing inversions (if the ring is oriented CW)
+<li>a single hole possibly containing exversions (if the ring is oriented CCW)
+</ul>
+If the MaximalEdgeRing represents a polygon,
+the interior of the polygon is strongly connected.
+<p>
+These are the form of rings used to define polygons under some spatial data models.
+However, under the OGC SFS model, MinimalEdgeRings are required.
+A MaximalEdgeRing can be converted to a list of MinimalEdgeRings using the
+#buildMinimalRings() method.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_operation_overlay_MaximalEdgeRing.js.html">jsts/operation/overlay/MaximalEdgeRing.js</a>, <a href="jsts_operation_overlay_MaximalEdgeRing.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="jsts.geomgraph.EdgeRing.html">jsts.geomgraph.EdgeRing</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="computePoints"><span class="type-signature"></span>computePoints<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Collect all the points from the DirectedEdges of this ring into a contiguous
+list
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="jsts.geomgraph.EdgeRing.html#computePoints">jsts.geomgraph.EdgeRing#computePoints</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geomgraph_EdgeRing.js.html">jsts/geomgraph/EdgeRing.js</a>, <a href="jsts_geomgraph_EdgeRing.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="computeRing"><span class="type-signature"></span>computeRing<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Compute a LinearRing from the point list previously collected. Test if the
+ring is a hole (i.e. if it is CCW) and set the hole flag accordingly.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="jsts.geomgraph.EdgeRing.html#computeRing">jsts.geomgraph.EdgeRing#computeRing</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geomgraph_EdgeRing.js.html">jsts/geomgraph/EdgeRing.js</a>, <a href="jsts_geomgraph_EdgeRing.js.html#line92">line 92</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="containsPoint"><span class="type-signature"></span>containsPoint<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    This method will cause the ring to be computed. It will also check any holes,
+if they have been assigned.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="jsts.geomgraph.EdgeRing.html#containsPoint">jsts.geomgraph.EdgeRing#containsPoint</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geomgraph_EdgeRing.js.html">jsts/geomgraph/EdgeRing.js</a>, <a href="jsts_geomgraph_EdgeRing.js.html#line216">line 216</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getEdges"><span class="type-signature"></span>getEdges<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns the list of DirectedEdges that make up this EdgeRing
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="jsts.geomgraph.EdgeRing.html#getEdges">jsts.geomgraph.EdgeRing#getEdges</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geomgraph_EdgeRing.js.html">jsts/geomgraph/EdgeRing.js</a>, <a href="jsts_geomgraph_EdgeRing.js.html#line111">line 111</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="linkDirectedEdgesForMinimalEdgeRings"><span class="type-signature"></span>linkDirectedEdgesForMinimalEdgeRings<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    For all nodes in this EdgeRing,
+link the DirectedEdges at the node to form minimalEdgeRings
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_operation_overlay_MaximalEdgeRing.js.html">jsts/operation/overlay/MaximalEdgeRing.js</a>, <a href="jsts_operation_overlay_MaximalEdgeRing.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mergeLabel2"><span class="type-signature"></span>mergeLabel2<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Merge the RHS label from a DirectedEdge into the label for this EdgeRing. The
+DirectedEdge label may be null. This is acceptable - it results from a node
+which is NOT an intersection node between the Geometries (e.g. the end node
+of a LinearRing). In this case the DirectedEdge label does not contribute any
+information to the overall labelling, and is simply skipped.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="jsts.geomgraph.EdgeRing.html#mergeLabel2">jsts.geomgraph.EdgeRing#mergeLabel2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geomgraph_EdgeRing.js.html">jsts/geomgraph/EdgeRing.js</a>, <a href="jsts_geomgraph_EdgeRing.js.html#line181">line 181</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +706,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:07 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

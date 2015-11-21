@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: NodedSegmentString</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,1163 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: NodedSegmentString</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.noding.html">.noding</a>.</span>NodedSegmentString</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="NodedSegmentString"><span class="type-signature"></span>new NodedSegmentString<span class="signature">(pts, data)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Represents a list of contiguous line segments, and supports noding the
+segments. The line segments are represented by an array of Coordinates.
+Intended to optimize the noding of contiguous segments by reducing the number
+of allocated objects. SegmentStrings can carry a context object, which is
+useful for preserving topological or parentage information. All noded
+substrings are initialized with the same context object.
+
+Creates a new segment string from a list of vertices.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pts</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the vertices of the segment string.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the user-defined data of this segment string (may be null).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getNodedSubstrings"><span class="type-signature">(static) </span>getNodedSubstrings<span class="signature">(segStrings, resultEdgelist)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Gets the SegmentStrings which result from splitting this string at node points.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>segStrings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">javascript.util.Collection</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a Collection of NodedSegmentStrings.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resultEdgelist</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">javascript.util.Collection</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a List which will collect the NodedSegmentStrings representing the
+         substrings.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    a Collection of NodedSegmentStrings representing the
+        substrings.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getNodedSubstrings2"><span class="type-signature">(static) </span>getNodedSubstrings2<span class="signature">(segStrings, resultEdgelist)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds the noded SegmentStrings which result from splitting this string at node points.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>segStrings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">javascript.util.Collection</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a Collection of NodedSegmentStrings.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resultEdgelist</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">javascript.util.Collection</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a List which will collect the NodedSegmentStrings representing the
+         substrings.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="addIntersection"><span class="type-signature"></span>addIntersection<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Add an SegmentNode for intersection intIndex. An intersection that falls
+exactly on a vertex of the SegmentString is normalized to use the higher of
+the two possible segmentIndexes
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line171">line 171</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="addIntersection2"><span class="type-signature"></span>addIntersection2<span class="signature">(intPt, segmentIndex)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds an intersection node for a given point and segment to this segment
+string.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>intPt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the location of the intersection.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>segmentIndex</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the index of the segment containing the intersection.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line193">line 193</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="addIntersectionNode"><span class="type-signature"></span>addIntersectionNode<span class="signature">(intPt, segmentIndex)</span><span class="type-signature"> &rarr; {SegmentNode}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds an intersection node for a given point and segment to this segment
+string. If an intersection already exists for this exact location, the
+existing node will be returned.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>intPt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the location of the intersection.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>segmentIndex</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the index of the segment containing the intersection.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line210">line 210</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the intersection node for the point.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">SegmentNode</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="addIntersections"><span class="type-signature"></span>addIntersections<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds EdgeIntersections for one or both intersections found for a segment of
+an edge to the edge intersection list.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getSegmentOctant"><span class="type-signature"></span>getSegmentOctant<span class="signature">(index)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Gets the octant of the segment starting at vertex <code>index</code>.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the index of the vertex starting the segment. Must not be the last
+         index in the vertex list.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_noding_NodedSegmentString.js.html">jsts/noding/NodedSegmentString.js</a>, <a href="jsts_noding_NodedSegmentString.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the octant of the segment at the vertex.
+</div>
+
+
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +1187,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:07 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

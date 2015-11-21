@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: CommonBitsRemover</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,681 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: CommonBitsRemover</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.precision.html">.precision</a>.</span>CommonBitsRemover</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="CommonBitsRemover"><span class="type-signature"></span>new CommonBitsRemover<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Removes common most-significant mantissa bits 
+from one or more Geometrys.
+<p>
+The CommonBitsRemover "scavenges" precision 
+which is "wasted" by a large displacement of the geometry 
+from the origin.  
+For example, if a small geometry is displaced from the origin 
+by a large distance, 
+the displacement increases the significant figures in the coordinates, 
+but does not affect the <i>relative</i> topology of the geometry.  
+Thus the geometry can be translated back to the origin 
+without affecting its topology.
+In order to compute the translation without affecting 
+the full precision of the coordinate values, 
+the translation is performed at the bit level by
+removing the common leading mantissa bits.
+<p>
+If the geometry envelope already contains the origin, 
+the translation procedure cannot be applied.  
+In this case, the common bits value is computed as zero.
+<p>
+If the geometry crosses the Y axis but not the X axis 
+(and <i>mutatis mutandum</i>), 
+the common bits for Y are zero, 
+but the common bits for X are non-zero.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.7</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_CommonBitsRemover.js.html">jsts/precision/CommonBitsRemover.js</a>, <a href="jsts_precision_CommonBitsRemover.js.html#line45">line 45</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="add"><span class="type-signature"></span>add<span class="signature">(geom)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Add a geometry to the set of geometries whose common bits are
+being computed.  After this method has executed the
+common coordinate reflects the common bits of all added
+geometries.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a Geometry to test for common bits</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_CommonBitsRemover.js.html">jsts/precision/CommonBitsRemover.js</a>, <a href="jsts_precision_CommonBitsRemover.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="addCommonBits"><span class="type-signature"></span>addCommonBits<span class="signature">(geom)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds the common coordinate bits back into a Geometry.
+The coordinates of the Geometry are changed.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the Geometry to which to add the common coordinate bits</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_CommonBitsRemover.js.html">jsts/precision/CommonBitsRemover.js</a>, <a href="jsts_precision_CommonBitsRemover.js.html#line108">line 108</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getCommonCoordinate"><span class="type-signature"></span>getCommonCoordinate<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    The common bits of the Coordinates in the supplied Geometries.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_CommonBitsRemover.js.html">jsts/precision/CommonBitsRemover.js</a>, <a href="jsts_precision_CommonBitsRemover.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="removeCommonBits"><span class="type-signature"></span>removeCommonBits<span class="signature">(geom)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Removes the common coordinate bits from a Geometry.
+The coordinates of the Geometry are changed.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the Geometry from which to remove the common coordinate bits</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_CommonBitsRemover.js.html">jsts/precision/CommonBitsRemover.js</a>, <a href="jsts_precision_CommonBitsRemover.js.html#line89">line 89</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the shifted Geometry
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +705,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:08 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

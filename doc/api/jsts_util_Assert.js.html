@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/util/Assert.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,98 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/util/Assert.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
+(function() {
 
-    <h3> </h3>
+  /**
+   * @requires jsts/util/AssertionFailedException.js
+   */
 
+  var AssertionFailedException = jsts.util.AssertionFailedException;
 
+  /**
+   * A utility for making programming assertions.
+   *
+   * @constructor
+   * @name jsts.util.Assert
+   */
+  jsts.util.Assert = function() {};
 
+  /**
+   * Throws an &lt;code>AssertionFailedException&lt;/code> with the given message if
+   * the given assertion is not true.
+   *
+   * @param {boolean}
+   *          assertion a condition that is supposed to be true.
+   * @param {String=}
+   *          message a description of the assertion.
+   * @throws AssertionFailedException
+   *           if the condition is false
+   */
+  jsts.util.Assert.isTrue = function(assertion, message) {
+    if (!assertion) {
+      if (message === null) {
+        throw new AssertionFailedException();
+      } else {
+        throw new AssertionFailedException(message);
+      }
+    }
+  };
 
+  /**
+   * Throws an &lt;code>AssertionFailedException&lt;/code> with the given message if
+   * the given objects are not equal, according to the &lt;code>equals&lt;/code>
+   * method.
+   *
+   * @param expectedValue
+   *          the correct value.
+   * @param actualValue
+   *          the value being checked.
+   * @param {string=}
+   *          message a description of the assertion.
+   * @throws AssertionFailedException
+   *           if the two objects are not equal
+   */
+  jsts.util.Assert.equals = function(expectedValue, actualValue, message) {
+    if (!actualValue.equals(expectedValue)) {
+      throw new AssertionFailedException('Expected ' + expectedValue +
+          ' but encountered ' + actualValue +
+          (message != null ? ': ' + message : ''));
+    }
+  };
 
+  /**
+   * Always throws an &lt;code>AssertionFailedException&lt;/code> with the given
+   * message.
+   *
+   * @param {string=}
+   *          message a description of the assertion.
+   * @throws AssertionFailedException
+   *           thrown always
+   */
+  jsts.util.Assert.shouldNeverReachHere = function(message) {
+    throw new AssertionFailedException('Should never reach here' +
+        (message != null ? ': ' + message : ''));
+  };
 
-
-
-
-
-    
-
-
-
-
-
+})();
+</code></pre>
+        </article>
+    </section>
 
 
 

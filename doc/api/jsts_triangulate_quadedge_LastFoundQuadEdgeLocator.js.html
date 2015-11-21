@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/triangulate/quadedge/LastFoundQuadEdgeLocator.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,70 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/triangulate/quadedge/LastFoundQuadEdgeLocator.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
 
-    
+/**
+ * Locates {@link QuadEdge}s in a {@link QuadEdgeSubdivision},
+ * optimizing the search by starting in the
+ * locality of the last edge found.
+ *
+ * @author Martin Davis
+ */
 
+/**
+ * @constructor
+ * @param {jsts.triangulate.quadedge.QuadEdgeSubdivision}
+ *          subdiv the subdivision.
+ */
+jsts.triangulate.quadedge.LastFoundQuadEdgeLocator = function(subdiv) {
+  this.subdiv = subdiv;
+  this.lastEdge = null;
+  this.init();
+};
 
+jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.prototype.init = function() {
+  this.lastEdge = this.findEdge();
+};
 
+jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.prototype.findEdge = function() {
+  var edges = this.subdiv.getEdges();
+  return edges[0];
+};
 
+/**
+ * Locates an edge e, such that either v is on e, or e is an edge of a triangle containing v.
+ * The search starts from the last located edge amd proceeds on the general direction of v.
+ *
+ * @param {jsts.triangulate.quadedge.Vertex}
+ *          v the vertex.
+ */
+jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.prototype.locate = function(v) {
+    if (!this.lastEdge.isLive()) {
+        this.init();
+    }
 
+    var e = this.subdiv.locateFromEdge(v, this.lastEdge);
+    this.lastEdge = e;
+    return e;
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

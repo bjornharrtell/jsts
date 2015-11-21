@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/io/GeoJSONWriter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,56 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/io/GeoJSONWriter.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011, 2012 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
+(function() {
+    /**
+     * Writes the GeoJSON representation of a {@link Geometry}. The
+     * The GeoJSON format is defined &lt;A
+     * HREF="http://geojson.org/geojson-spec.html">here&lt;/A>.
+     * &lt;p>
+     * The &lt;code>GeoJSONWriter&lt;/code> outputs coordinates rounded to the precision
+     * model. Only the maximum number of decimal places necessary to represent the
+     * ordinates to the required precision will be output.
+     * &lt;p>
+     *
+     * @see WKTReader
+     * @constructor
+     */
+    jsts.io.GeoJSONWriter = function() {
+      this.parser = new jsts.io.GeoJSONParser(this.geometryFactory);
+    };
 
-    <h3> </h3>
+    /**
+     * Converts a &lt;code>Geometry&lt;/code> to its GeoJSON representation.
+     *
+     * @param {jsts.geom.Geometry}
+     *          geometry a &lt;code>Geometry&lt;/code> to process.
+     * @return {Object} The GeoJSON representation of the Geometry.
+     */
 
+    jsts.io.GeoJSONWriter.prototype.write = function(geometry) {
+      var geoJson = this.parser.write(geometry);
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+      return geoJson;
+    };
+})();
+</code></pre>
+        </article>
+    </section>
 
 
 

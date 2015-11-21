@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: InteriorPointArea</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,623 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: InteriorPointArea</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.algorithm.html">.algorithm</a>.</span>InteriorPointArea</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="InteriorPointArea"><span class="type-signature"></span>new InteriorPointArea<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes a point in the interior of an areal geometry.
+
+<h2>Algorithm</h2>
+<ul>
+  <li>Find a Y value which is close to the centre of
+      the geometry's vertical extent but is different
+      to any of it's Y ordinates.
+  <li>Create a horizontal bisector line using the Y value
+      and the geometry's horizontal extent
+  <li>Find the intersection between the geometry
+      and the horizontal bisector line.
+      The intersection is a collection of lines and points.
+  <li>Pick the midpoint of the largest intersection geometry
+</ul>
+
+<h3>KNOWN BUGS</h3>
+<ul>
+<li>If a fixed precision model is used,
+in some cases this method may return a point
+which does not lie in the interior.
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.7</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_InteriorPointArea.js.html">jsts/algorithm/InteriorPointArea.js</a>, <a href="jsts_algorithm_InteriorPointArea.js.html#line36">line 36</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="addPolygon"><span class="type-signature"></span>addPolygon<span class="signature">(geometry)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Finds an interior point of a Polygon.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geometry</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the geometry to analyze</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_InteriorPointArea.js.html">jsts/algorithm/InteriorPointArea.js</a>, <a href="jsts_algorithm_InteriorPointArea.js.html#line81">line 81</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="centre"><span class="type-signature"></span>centre<span class="signature">(envelope)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns the centre point of the envelope.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>envelope</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Envelope.html">jsts.geom.Envelope</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the envelope to analyze</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_InteriorPointArea.js.html">jsts/algorithm/InteriorPointArea.js</a>, <a href="jsts_algorithm_InteriorPointArea.js.html#line151">line 151</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the centre of the envelope
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getInteriorPoint"><span class="type-signature"></span>getInteriorPoint<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Gets the computed interior point.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_InteriorPointArea.js.html">jsts/algorithm/InteriorPointArea.js</a>, <a href="jsts_algorithm_InteriorPointArea.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the coordinate of an interior point
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="horizontalBisector"><span class="type-signature">(protected) </span>horizontalBisector<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_InteriorPointArea.js.html">jsts/algorithm/InteriorPointArea.js</a>, <a href="jsts_algorithm_InteriorPointArea.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +647,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:05 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

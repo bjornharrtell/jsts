@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: jsts/geom/Envelope.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: jsts/geom/Envelope.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+/**
+ * @requires jsts/geom/Coordinate.js
+ */
+
+/**
+ * Defines a rectangular region of the 2D coordinate plane. It is often used to
+ * represent the bounding box of a {@link Geometry}, e.g. the minimum and
+ * maximum x and y values of the {@link Coordinate}s.
+ * &lt;p>
+ * Note that Envelopes support infinite or half-infinite regions, by using the
+ * values of &lt;code>Double.POSITIVE_INFINITY&lt;/code> and
+ * &lt;code>Double.NEGATIVE_INFINITY&lt;/code>.
+ * &lt;p>
+ * When Envelope objects are created or initialized, the supplies extent values
+ * are automatically sorted into the correct order.
+ */
+
+
+
+/**
+ * Creates an &lt;code>Envelope&lt;/code> for a region defined by maximum and
+ * minimum values.
+ *
+ * @constructor
+ */
+jsts.geom.Envelope = function() {
+  jsts.geom.Envelope.prototype.init.apply(this, arguments);
+};
+
+
+/**
+ * the minimum x-coordinate
+ *
+ * @type {?number}
+ */
+jsts.geom.Envelope.prototype.minx = null;
+
+
+/**
+ * the maximum x-coordinate
+ *
+ * @type {?number}
+ */
+jsts.geom.Envelope.prototype.maxx = null;
+
+
+/**
+ * the minimum y-coordinate
+ *
+ * @type {?number}
+ */
+jsts.geom.Envelope.prototype.miny = null;
+
+
+/**
+ * the maximum y-coordinate
+ *
+ * @type {?number}
+ */
+jsts.geom.Envelope.prototype.maxy = null;
+
+
+/**
+ * Creates an &lt;code>Envelope&lt;/code> for a region defined by maximum and
+ * minimum values.
+ *
+ * Will call appropriate init* method depending on arguments.
+ */
+jsts.geom.Envelope.prototype.init = function() {
+  if (typeof arguments[0] === 'number' &amp;&amp; arguments.length === 4) {
+    this.initFromValues(arguments[0], arguments[1], arguments[2], arguments[3]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate &amp;&amp;
+      arguments.length === 1) {
+    this.initFromCoordinate(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate &amp;&amp;
+      arguments.length === 2) {
+    this.initFromCoordinates(arguments[0], arguments[1]);
+  } else if (arguments[0] instanceof jsts.geom.Envelope &amp;&amp;
+      arguments.length === 1) {
+    this.initFromEnvelope(arguments[0]);
+  } else {
+    this.setToNull();
+  }
+};
+
+
+/**
+ * Initialize an &lt;code>Envelope&lt;/code> for a region defined by maximum and
+ * minimum values.
+ *
+ * @param {number}
+ *          x1 the first x-value.
+ * @param {number}
+ *          x2 the second x-value.
+ * @param {number}
+ *          y1 the first y-value.
+ * @param {number}
+ *          y2 the second y-value.
+ */
+jsts.geom.Envelope.prototype.initFromValues = function(x1, x2, y1, y2) {
+  if (x1 &lt; x2) {
+    this.minx = x1;
+    this.maxx = x2;
+  } else {
+    this.minx = x2;
+    this.maxx = x1;
+  }
+  if (y1 &lt; y2) {
+    this.miny = y1;
+    this.maxy = y2;
+  } else {
+    this.miny = y2;
+    this.maxy = y1;
+  }
+};
+
+
+/**
+ * Initialize an &lt;code>Envelope&lt;/code> to a region defined by two Coordinates.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p1 the first Coordinate.
+ * @param {jsts.geom.Coordinate}
+ *          p2 the second Coordinate.
+ */
+jsts.geom.Envelope.prototype.initFromCoordinates = function(p1, p2) {
+  this.initFromValues(p1.x, p2.x, p1.y, p2.y);
+};
+
+
+/**
+ * Initialize an &lt;code>Envelope&lt;/code> to a region defined by a single
+ * Coordinate.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p the Coordinate.
+ */
+jsts.geom.Envelope.prototype.initFromCoordinate = function(p) {
+  this.initFromValues(p.x, p.x, p.y, p.y);
+};
+
+
+/**
+ * Initialize an &lt;code>Envelope&lt;/code> from an existing Envelope.
+ *
+ * @param {jsts.geom.Envelope}
+ *          env the Envelope to initialize from.
+ */
+jsts.geom.Envelope.prototype.initFromEnvelope = function(env) {
+  this.minx = env.minx;
+  this.maxx = env.maxx;
+  this.miny = env.miny;
+  this.maxy = env.maxy;
+};
+
+
+/**
+ * Makes this &lt;code>Envelope&lt;/code> a "null" envelope, that is, the envelope
+ * of the empty geometry.
+ */
+jsts.geom.Envelope.prototype.setToNull = function() {
+  this.minx = 0;
+  this.maxx = -1;
+  this.miny = 0;
+  this.maxy = -1;
+};
+
+
+/**
+ * Returns &lt;code>true&lt;/code> if this &lt;code>Envelope&lt;/code> is a "null"
+ * envelope.
+ *
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Envelope&lt;/code> is
+ *         uninitialized or is the envelope of the empty geometry.
+ */
+jsts.geom.Envelope.prototype.isNull = function() {
+  return this.maxx &lt; this.minx;
+};
+
+
+/**
+ * Returns the difference between the maximum and minimum y values.
+ *
+ * @return {number} max y - min y, or 0 if this is a null &lt;code>Envelope.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.getHeight = function() {
+  if (this.isNull()) {
+    return 0;
+  }
+  return this.maxy - this.miny;
+};
+
+
+/**
+ * Returns the difference between the maximum and minimum x values.
+ *
+ * @return {number} max x - min x, or 0 if this is a null &lt;code>Envelope.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.getWidth = function() {
+  if (this.isNull()) {
+    return 0;
+  }
+  return this.maxx - this.minx;
+};
+
+
+/**
+ * Returns the &lt;code>Envelope&lt;/code>s minimum x-value. min x > max x
+ * indicates that this is a null &lt;code>Envelope&lt;/code>.
+ *
+ * @return {number} the minimum x-coordinate.
+ */
+jsts.geom.Envelope.prototype.getMinX = function() {
+  return this.minx;
+};
+
+
+/**
+ * Returns the &lt;code>Envelope&lt;/code>s maximum x-value. min x > max x
+ * indicates that this is a null &lt;code>Envelope&lt;/code>.
+ *
+ * @return {number} the maximum x-coordinate.
+ */
+jsts.geom.Envelope.prototype.getMaxX = function() {
+  return this.maxx;
+};
+
+
+/**
+ * Returns the &lt;code>Envelope&lt;/code>s minimum y-value. min y > max y
+ * indicates that this is a null &lt;code>Envelope&lt;/code>.
+ *
+ * @return {number} the minimum y-coordinate.
+ */
+jsts.geom.Envelope.prototype.getMinY = function() {
+  return this.miny;
+};
+
+
+/**
+ * Returns the &lt;code>Envelope&lt;/code>s maximum y-value. min y > max y
+ * indicates that this is a null &lt;code>Envelope&lt;/code>.
+ *
+ * @return {number} the maximum y-coordinate.
+ */
+jsts.geom.Envelope.prototype.getMaxY = function() {
+  return this.maxy;
+};
+
+
+/**
+ * Gets the area of this envelope.
+ *
+ * @return {number} the area of the envelope, 0.0 if the envelope is null.
+ */
+jsts.geom.Envelope.prototype.getArea = function() {
+  return this.getWidth() * this.getHeight();
+};
+
+
+/**
+ * Enlarges this &lt;code>Envelope&lt;/code>
+ *
+ * Will call appropriate expandToInclude* depending on arguments.
+ */
+jsts.geom.Envelope.prototype.expandToInclude = function() {
+  if (arguments[0] instanceof jsts.geom.Coordinate) {
+    this.expandToIncludeCoordinate(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Envelope) {
+    this.expandToIncludeEnvelope(arguments[0]);
+  } else {
+    this.expandToIncludeValues(arguments[0], arguments[1]);
+  }
+};
+
+
+/**
+ * Enlarges this &lt;code>Envelope&lt;/code> so that it contains the given
+ * {@link Coordinate}. Has no effect if the point is already on or within the
+ * envelope.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p the Coordinate to expand to include.
+ */
+jsts.geom.Envelope.prototype.expandToIncludeCoordinate = function(p) {
+  this.expandToIncludeValues(p.x, p.y);
+};
+
+
+/**
+ * Enlarges this &lt;code>Envelope&lt;/code> so that it contains the given point.
+ * Has no effect if the point is already on or within the envelope.
+ *
+ * @param {number}
+ *          x the value to lower the minimum x to or to raise the maximum x to.
+ * @param {number}
+ *          y the value to lower the minimum y to or to raise the maximum y to.
+ */
+jsts.geom.Envelope.prototype.expandToIncludeValues = function(x, y) {
+  if (this.isNull()) {
+    this.minx = x;
+    this.maxx = x;
+    this.miny = y;
+    this.maxy = y;
+  } else {
+    if (x &lt; this.minx) {
+      this.minx = x;
+    }
+    if (x > this.maxx) {
+      this.maxx = x;
+    }
+    if (y &lt; this.miny) {
+      this.miny = y;
+    }
+    if (y > this.maxy) {
+      this.maxy = y;
+    }
+  }
+};
+
+
+/**
+ * Enlarges this &lt;code>Envelope&lt;/code> so that it contains the
+ * &lt;code>other&lt;/code> Envelope. Has no effect if &lt;code>other&lt;/code> is
+ * wholly on or within the envelope.
+ *
+ * @param {jsts.geom.Envelope}
+ *          other the &lt;code>Envelope&lt;/code> to expand to include.
+ */
+jsts.geom.Envelope.prototype.expandToIncludeEnvelope = function(other) {
+  if (other.isNull()) {
+    return;
+  }
+  if (this.isNull()) {
+    this.minx = other.getMinX();
+    this.maxx = other.getMaxX();
+    this.miny = other.getMinY();
+    this.maxy = other.getMaxY();
+  } else {
+    if (other.minx &lt; this.minx) {
+      this.minx = other.minx;
+    }
+    if (other.maxx > this.maxx) {
+      this.maxx = other.maxx;
+    }
+    if (other.miny &lt; this.miny) {
+      this.miny = other.miny;
+    }
+    if (other.maxy > this.maxy) {
+      this.maxy = other.maxy;
+    }
+  }
+};
+
+
+/**
+ * Enlarges this &lt;code>Envelope&lt;/code>
+ *
+ * Will call appropriate expandBy* depending on arguments.
+ */
+jsts.geom.Envelope.prototype.expandBy = function() {
+  if (arguments.length === 1) {
+    this.expandByDistance(arguments[0]);
+  } else {
+    this.expandByDistances(arguments[0], arguments[1]);
+  }
+};
+
+
+/**
+ * Expands this envelope by a given distance in all directions. Both positive
+ * and negative distances are supported.
+ *
+ * @param {number}
+ *          distance the distance to expand the envelope.
+ */
+jsts.geom.Envelope.prototype.expandByDistance = function(distance) {
+  this.expandByDistances(distance, distance);
+};
+
+
+/**
+ * Expands this envelope by a given distance in all directions. Both positive
+ * and negative distances are supported.
+ *
+ * @param {number}
+ *          deltaX the distance to expand the envelope along the the X axis.
+ * @param {number}
+ *          deltaY the distance to expand the envelope along the the Y axis.
+ */
+jsts.geom.Envelope.prototype.expandByDistances = function(deltaX, deltaY) {
+  if (this.isNull()) {
+    return;
+  }
+
+  this.minx -= deltaX;
+  this.maxx += deltaX;
+  this.miny -= deltaY;
+  this.maxy += deltaY;
+
+  // check for envelope disappearing
+  if (this.minx > this.maxx || this.miny > this.maxy) {
+    this.setToNull();
+  }
+};
+
+
+/**
+ * Translates this envelope by given amounts in the X and Y direction.
+ *
+ * @param {number}
+ *          transX the amount to translate along the X axis.
+ * @param {number}
+ *          transY the amount to translate along the Y axis.
+ */
+jsts.geom.Envelope.prototype.translate = function(transX, transY) {
+  if (this.isNull()) {
+    return;
+  }
+  this.init(this.minx + transX, this.maxx + transX, this.miny + transY,
+      this.maxy + transY);
+};
+
+
+/**
+ * Computes the coordinate of the centre of this envelope (as long as it is
+ * non-null
+ *
+ * @return {jsts.geom.Coordinate} the centre coordinate of this envelope &lt;code>null&lt;/code>
+ *         if the envelope is null.
+ */
+jsts.geom.Envelope.prototype.centre = function() {
+  if (this.isNull()) {
+    return null;
+  }
+  return new jsts.geom.Coordinate((this.minx + this.maxx) / 2.0,
+      (this.miny + this.maxy) / 2.0);
+};
+
+
+/**
+ * Computes the intersection of two {@link Envelopes}
+ *
+ * @param {jsts.geom.Envelope}
+ *          env the envelope to intersect with.
+ * @return {jsts.geom.Envelope} a new Envelope representing the intersection of
+ *         the envelopes (this will be the null envelope if either argument is
+ *         null, or they do not intersect.
+ */
+jsts.geom.Envelope.prototype.intersection = function(env) {
+  if (this.isNull() || env.isNull() || !this.intersects(env)) {
+    return new jsts.geom.Envelope();
+  }
+
+  var intMinX = this.minx > env.minx ? this.minx : env.minx;
+  var intMinY = this.miny > env.miny ? this.miny : env.miny;
+  var intMaxX = this.maxx &lt; env.maxx ? this.maxx : env.maxx;
+  var intMaxY = this.maxy &lt; env.maxy ? this.maxy : env.maxy;
+
+  return new jsts.geom.Envelope(intMinX, intMaxX, intMinY, intMaxY);
+};
+
+
+/**
+ * Check if the region defined by input overlaps (intersects) the region of this
+ * &lt;code>Envelope&lt;/code>.
+ *
+ * Will call appropriate intersects* depending on arguments.
+ *
+ * @return {boolean} &lt;code>true&lt;/code> if an overlap is found.
+ */
+jsts.geom.Envelope.prototype.intersects = function() {
+  if (arguments[0] instanceof jsts.geom.Envelope) {
+    return this.intersectsEnvelope(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate) {
+    return this.intersectsCoordinate(arguments[0]);
+  } else {
+    return this.intersectsValues(arguments[0], arguments[1]);
+  }
+};
+
+
+/**
+ * Check if the region defined by &lt;code>other&lt;/code> overlaps (intersects) the
+ * region of this &lt;code>Envelope&lt;/code>.
+ *
+ * @param {jsts.geom.Envelope}
+ *          other the &lt;code>Envelope&lt;/code> which this &lt;code>Envelope&lt;/code>
+ *          is being checked for overlapping.
+ * @return {boolean} &lt;code>true&lt;/code> if the &lt;code>Envelope&lt;/code>s
+ *         overlap.
+ */
+jsts.geom.Envelope.prototype.intersectsEnvelope = function(other) {
+  if (this.isNull() || other.isNull()) {
+    return false;
+  }
+
+  var result = !(other.minx > this.maxx || other.maxx &lt; this.minx ||
+      other.miny > this.maxy || other.maxy &lt; this.miny);
+  return result;
+};
+
+
+/**
+ * Check if the point &lt;code>p&lt;/code> overlaps (lies inside) the region of this
+ * &lt;code>Envelope&lt;/code>.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p the &lt;code>Coordinate&lt;/code> to be tested.
+ * @return {boolean} &lt;code>true&lt;/code> if the point overlaps this
+ *         &lt;code>Envelope.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.intersectsCoordinate = function(p) {
+  return this.intersectsValues(p.x, p.y);
+};
+
+
+/**
+ * Check if the point &lt;code>(x, y)&lt;/code> overlaps (lies inside) the region of
+ * this &lt;code>Envelope&lt;/code>.
+ *
+ * @param {number}
+ *          x the x-ordinate of the point.
+ * @param {number}
+ *          y the y-ordinate of the point.
+ * @return {boolean} &lt;code>true&lt;/code> if the point overlaps this
+ *         &lt;code>Envelope.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.intersectsValues = function(x, y) {
+  if (this.isNull()) {
+    return false;
+  }
+
+  return !(x > this.maxx || x &lt; this.minx || y > this.maxy || y &lt; this.miny);
+};
+
+
+/**
+ * Tests if the input lies wholely inside this &lt;code>Envelope&lt;/code>
+ * (inclusive of the boundary).
+ *
+ * Will call appropriate contains* depending on arguments.
+ *
+ * @return {boolean} true if input is contained in this &lt;code>Envelope.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.contains = function() {
+  if (arguments[0] instanceof jsts.geom.Envelope) {
+    return this.containsEnvelope(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate) {
+    return this.containsCoordinate(arguments[0]);
+  } else {
+    return this.containsValues(arguments[0], arguments[1]);
+  }
+};
+
+
+/**
+ * Tests if the &lt;code>Envelope other&lt;/code> lies wholely inside this
+ * &lt;code>Envelope&lt;/code> (inclusive of the boundary).
+ * &lt;p>
+ * Note that this is &lt;b>not&lt;/b> the same definition as the SFS
+ * &lt;tt>contains&lt;/tt>, which would exclude the envelope boundary.
+ *
+ * @param {jsts.geom.Envelope}
+ *          other the &lt;code>Envelope&lt;/code> to check.
+ * @return {boolean} true if &lt;code>other&lt;/code> is contained in this
+ *         &lt;code>Envelope.&lt;/code>
+ *
+ * @see covers(Envelope)
+ */
+jsts.geom.Envelope.prototype.containsEnvelope = function(other) {
+  return this.coversEnvelope(other);
+};
+
+
+/**
+ * Tests if the given point lies in or on the envelope.
+ * &lt;p>
+ * Note that this is &lt;b>not&lt;/b> the same definition as the SFS
+ * &lt;tt>contains&lt;/tt>, which would exclude the envelope boundary.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p the point which this &lt;code>Envelope&lt;/code> is being checked for
+ *          containing.
+ * @return {boolean} &lt;code>true&lt;/code> if the point lies in the interior or on
+ *         the boundary of this &lt;code>Envelope&lt;/code>.
+ *
+ * @see covers(Coordinate)
+ */
+jsts.geom.Envelope.prototype.containsCoordinate = function(p) {
+  return this.coversCoordinate(p);
+};
+
+
+/**
+ * Tests if the given point lies in or on the envelope.
+ * &lt;p>
+ * Note that this is &lt;b>not&lt;/b> the same definition as the SFS
+ * &lt;tt>contains&lt;/tt>, which would exclude the envelope boundary.
+ *
+ * @param {number}
+ *          x the x-coordinate of the point which this &lt;code>Envelope&lt;/code>
+ *          is being checked for containing.
+ * @param {number}
+ *          y the y-coordinate of the point which this &lt;code>Envelope&lt;/code>
+ *          is being checked for containing.
+ * @return {boolean} &lt;code>true&lt;/code> if &lt;code>(x, y)&lt;/code> lies in the
+ *         interior or on the boundary of this &lt;code>Envelope&lt;/code>.
+ *
+ * @see covers(double, double)
+ */
+jsts.geom.Envelope.prototype.containsValues = function(x, y) {
+  return this.coversValues(x, y);
+};
+
+
+/**
+ * Tests if the given point lies in or on the envelope.
+ *
+ * Will call appropriate contains* depending on arguments.
+ */
+jsts.geom.Envelope.prototype.covers = function() {
+  if (arguments[0] instanceof jsts.geom.Envelope) {
+    return this.coversEnvelope(arguments[0]);
+  } else if (arguments[0] instanceof jsts.geom.Coordinate) {
+    return this.coversCoordinate(arguments[0]);
+  } else {
+    return this.coversValues(arguments[0], arguments[1]);
+  }
+};
+
+
+/**
+ * Tests if the given point lies in or on the envelope.
+ *
+ * @param {number}
+ *          x the x-coordinate of the point which this &lt;code>Envelope&lt;/code>
+ *          is being checked for containing.
+ * @param {number}
+ *          y the y-coordinate of the point which this &lt;code>Envelope&lt;/code>
+ *          is being checked for containing.
+ * @return {boolean} &lt;code>true&lt;/code> if &lt;code>(x, y)&lt;/code> lies in the
+ *         interior or on the boundary of this &lt;code>Envelope&lt;/code>.
+ */
+jsts.geom.Envelope.prototype.coversValues = function(x, y) {
+  if (this.isNull()) {
+    return false;
+  }
+  return x >= this.minx &amp;&amp; x &lt;= this.maxx &amp;&amp; y >= this.miny &amp;&amp; y &lt;= this.maxy;
+};
+
+
+/**
+ * Tests if the given point lies in or on the envelope.
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p the point which this &lt;code>Envelope&lt;/code> is being checked for
+ *          containing.
+ * @return {boolean} &lt;code>true&lt;/code> if the point lies in the interior or on
+ *         the boundary of this &lt;code>Envelope&lt;/code>.
+ */
+jsts.geom.Envelope.prototype.coversCoordinate = function(p) {
+  return this.coversValues(p.x, p.y);
+};
+
+
+/**
+ * Tests if the &lt;code>Envelope other&lt;/code> lies wholely inside this
+ * &lt;code>Envelope&lt;/code> (inclusive of the boundary).
+ *
+ * @param {jsts.geom.Envelope}
+ *          other the &lt;code>Envelope&lt;/code> to check.
+ * @return {boolean} true if this &lt;code>Envelope&lt;/code> covers the
+ *         &lt;code>other.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.coversEnvelope = function(other) {
+  if (this.isNull() || other.isNull()) {
+    return false;
+  }
+  return other.minx >= this.minx &amp;&amp; other.maxx &lt;= this.maxx &amp;&amp;
+      other.miny >= this.miny &amp;&amp; other.maxy &lt;= this.maxy;
+};
+
+
+/**
+ * Computes the distance between this and another &lt;code>Envelope&lt;/code>.
+ *
+ * @param {jsts.geom.Envelope}
+ *          env The &lt;code>Envelope&lt;/code> to test this &lt;code>Envelope&lt;/code>
+ *          against.
+ * @return {number} The distance between overlapping Envelopes is 0. Otherwise,
+ *         the distance is the Euclidean distance between the closest points.
+ */
+jsts.geom.Envelope.prototype.distance = function(env) {
+  if (this.intersects(env)) {
+    return 0;
+  }
+  var dx = 0.0;
+  if (this.maxx &lt; env.minx) {
+    dx = env.minx - this.maxx;
+  }
+  if (this.minx > env.maxx) {
+    dx = this.minx - env.maxx;
+  }
+
+  var dy = 0.0;
+  if (this.maxy &lt; env.miny) {
+    dy = env.miny - this.maxy;
+  }
+  if (this.miny > env.maxy) {
+    dy = this.miny - env.maxy;
+  }
+
+  // if either is zero, the envelopes overlap either vertically or horizontally
+  if (dx === 0.0) {
+    return dy;
+  }
+  if (dy === 0.0) {
+    return dx;
+  }
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+
+/**
+ * @param {jsts.geom.Envelope}
+ *          other the &lt;code>Envelope&lt;/code> to check against.
+ * @return {boolean} true if envelopes are equal.
+ */
+jsts.geom.Envelope.prototype.equals = function(other) {
+  if (this.isNull()) {
+    return other.isNull();
+  }
+  return this.maxx === other.maxx &amp;&amp; this.maxy === other.maxy &amp;&amp;
+      this.minx === other.minx &amp;&amp; this.miny === other.miny;
+};
+
+
+/**
+ * @return {string} String representation of this &lt;code>Envelope.&lt;/code>
+ */
+jsts.geom.Envelope.prototype.toString = function() {
+  return 'Env[' + this.minx + ' : ' + this.maxx + ', ' + this.miny + ' : ' +
+      this.maxy + ']';
+};
+
+
+/**
+ * Test the point q to see whether it intersects the Envelope defined by p1-p2
+ *
+ * NOTE: calls intersectsEnvelope if four arguments are given to simulate
+ * overloaded function
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p1 one extremal point of the envelope.
+ * @param {jsts.geom.Coordinate}
+ *          p2 another extremal point of the envelope.
+ * @param {jsts.geom.Coordinate}
+ *          q the point to test for intersection.
+ * @return {boolean} &lt;code>true&lt;/code> if q intersects the envelope p1-p2.
+ */
+jsts.geom.Envelope.intersects = function(p1, p2, q) {
+  if (arguments.length === 4) {
+    return jsts.geom.Envelope.intersectsEnvelope(arguments[0], arguments[1],
+        arguments[2], arguments[3]);
+  }
+
+  var xc1 = p1.x &lt; p2.x ? p1.x : p2.x;
+  var xc2 = p1.x > p2.x ? p1.x : p2.x;
+  var yc1 = p1.y &lt; p2.y ? p1.y : p2.y;
+  var yc2 = p1.y > p2.y ? p1.y : p2.y;
+
+  if (((q.x >= xc1) &amp;&amp; (q.x &lt;= xc2)) &amp;&amp; ((q.y >= yc1) &amp;&amp; (q.y &lt;= yc2))) {
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Test the envelope defined by p1-p2 for intersection with the envelope defined
+ * by q1-q2
+ *
+ * @param {jsts.geom.Coordinate}
+ *          p1 one extremal point of the envelope P.
+ * @param {jsts.geom.Coordinate}
+ *          p2 another extremal point of the envelope P.
+ * @param {jsts.geom.Coordinate}
+ *          q1 one extremal point of the envelope Q.
+ * @param {jsts.geom.Coordinate}
+ *          q2 another extremal point of the envelope Q.
+ * @return {boolean} &lt;code>true&lt;/code> if Q intersects P.
+ */
+jsts.geom.Envelope.intersectsEnvelope = function(p1, p2, q1, q2) {
+  var minq = Math.min(q1.x, q2.x);
+  var maxq = Math.max(q1.x, q2.x);
+  var minp = Math.min(p1.x, p2.x);
+  var maxp = Math.max(p1.x, p2.x);
+
+  if (minp > maxq) {
+    return false;
+  }
+  if (maxp &lt; minq) {
+    return false;
+  }
+
+  minq = Math.min(q1.y, q2.y);
+  maxq = Math.max(q1.y, q2.y);
+  minp = Math.min(p1.y, p2.y);
+  maxp = Math.max(p1.y, p2.y);
+
+  if (minp > maxq) {
+    return false;
+  }
+  if (maxp &lt; minq) {
+    return false;
+  }
+  return true;
+};
+
+
+/**
+ * @return {jsts.geom.Envelope} A new instance copied from this.
+ */
+jsts.geom.Envelope.prototype.clone = function() {
+  return new jsts.geom.Envelope(this.minx, this.maxx, this.miny, this.maxy);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="jsts.algorithm.Angle.html">Angle</a></li><li><a href="jsts.algorithm.BoundaryNodeRule.html">BoundaryNodeRule</a></li><li><a href="jsts.algorithm.CentralEndpointIntersector.html">CentralEndpointIntersector</a></li><li><a href="jsts.algorithm.Centroid.html">Centroid</a></li><li><a href="jsts.algorithm.CGAlgorithms.html">CGAlgorithms</a></li><li><a href="jsts.algorithm.ConvexHull.html">ConvexHull</a></li><li><a href="jsts.algorithm.HCoordinate.html">HCoordinate</a></li><li><a href="jsts.algorithm.InteriorPointArea.html">InteriorPointArea</a></li><li><a href="jsts.algorithm.InteriorPointLine.html">InteriorPointLine</a></li><li><a href="jsts.algorithm.InteriorPointPoint.html">InteriorPointPoint</a></li><li><a href="jsts.algorithm.LineIntersector.html">LineIntersector</a></li><li><a href="jsts.algorithm.locate.SimplePointInAreaLocator.html">SimplePointInAreaLocator</a></li><li><a href="jsts.algorithm.MCPointInRing.MCSelecter.html">MCSelecter</a></li><li><a href="jsts.algorithm.MinimumDiameter.html">MinimumDiameter</a></li><li><a href="jsts.algorithm.PointLocator.html">PointLocator</a></li><li><a href="jsts.algorithm.RayCrossingCounter.html">RayCrossingCounter</a></li><li><a href="jsts.algorithm.RobustDeterminant.html">RobustDeterminant</a></li><li><a href="jsts.algorithm.RobustLineIntersector.html">RobustLineIntersector</a></li><li><a href="jsts.algorithm.SafeBisectorFinder.html">SafeBisectorFinder</a></li><li><a href="jsts.error.AbstractMethodInvocationError.html">AbstractMethodInvocationError</a></li><li><a href="jsts.error.IllegalArgumentError.html">IllegalArgumentError</a></li><li><a href="jsts.error.NotImplementedError.html">NotImplementedError</a></li><li><a href="jsts.error.NotRepresentableError.html">NotRepresentableError</a></li><li><a href="jsts.error.TopologyError.html">TopologyError</a></li><li><a href="jsts.geom.Coordinate.html">Coordinate</a></li><li><a href="jsts.geom.CoordinateArrays.html">CoordinateArrays</a></li><li><a href="jsts.geom.CoordinateList.html">CoordinateList</a></li><li><a href="jsts.geom.Dimension.html">Dimension</a></li><li><a href="jsts.geom.Envelope.html">Envelope</a></li><li><a href="jsts.geom.Geometry.html">Geometry</a></li><li><a href="jsts.geom.GeometryCollection.html">GeometryCollection</a></li><li><a href="jsts.geom.GeometryFactory.html">GeometryFactory</a></li><li><a href="jsts.geom.IntersectionMatrix.html">IntersectionMatrix</a></li><li><a href="jsts.geom.LinearRing.html">LinearRing</a></li><li><a href="jsts.geom.LineSegment.html">LineSegment</a></li><li><a href="jsts.geom.LineString.html">LineString</a></li><li><a href="jsts.geom.Location.html">Location</a></li><li><a href="jsts.geom.MultiLineString.html">MultiLineString</a></li><li><a href="jsts.geom.MultiPoint.html">MultiPoint</a></li><li><a href="jsts.geom.MultiPolygon.html">MultiPolygon</a></li><li><a href="jsts.geom.Point.html">Point</a></li><li><a href="jsts.geom.Polygon.html">Polygon</a></li><li><a href="jsts.geom.PrecisionModel.html">PrecisionModel</a></li><li><a href="jsts.geom.Triangle.html">Triangle</a></li><li><a href="jsts.geom.util.GeometryCombiner.html">GeometryCombiner</a></li><li><a href="jsts.geom.util.GeometryExtracter.html">GeometryExtracter</a></li><li><a href="jsts.geom.util.LinearComponentExtracter.html">LinearComponentExtracter</a></li><li><a href="jsts.geom.util.PointExtracter.html">PointExtracter</a></li><li><a href="jsts.geom.util.PolygonExtracter.html">PolygonExtracter</a></li><li><a href="jsts.geomgraph.Depth.html">Depth</a></li><li><a href="jsts.geomgraph.DirectedEdge.html">DirectedEdge</a></li><li><a href="jsts.geomgraph.DirectedEdgeStar.html">DirectedEdgeStar</a></li><li><a href="jsts.geomgraph.Edge.html">Edge</a></li><li><a href="jsts.geomgraph.EdgeEnd.html">EdgeEnd</a></li><li><a href="jsts.geomgraph.EdgeEndStar.html">EdgeEndStar</a></li><li><a href="jsts.geomgraph.EdgeIntersection.html">EdgeIntersection</a></li><li><a href="jsts.geomgraph.EdgeIntersectionList.html">EdgeIntersectionList</a></li><li><a href="jsts.geomgraph.EdgeList.html">EdgeList</a></li><li><a href="jsts.geomgraph.EdgeRing.html">EdgeRing</a></li><li><a href="jsts.geomgraph.GraphComponent.html">GraphComponent</a></li><li><a href="jsts.geomgraph.index.EdgeSetIntersector.html">EdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.MonotoneChainEdge.html">MonotoneChainEdge</a></li><li><a href="jsts.geomgraph.index.MonotoneChainIndexer.html">MonotoneChainIndexer</a></li><li><a href="jsts.geomgraph.index.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleEdgeSetIntersector.html">SimpleEdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleMCSweepLineIntersector.html">SimpleMCSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleSweepLineIntersector.html">SimpleSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SweepLineEvent.html">SweepLineEvent</a></li><li><a href="jsts.geomgraph.index.SweepLineSegment.html">SweepLineSegment</a></li><li><a href="jsts.geomgraph.Label.html">Label</a></li><li><a href="jsts.geomgraph.Node.html">Node</a></li><li><a href="jsts.geomgraph.NodeFactory.html">NodeFactory</a></li><li><a href="jsts.geomgraph.NodeMap.html">NodeMap</a></li><li><a href="jsts.geomgraph.PlanarGraph.html">PlanarGraph</a></li><li><a href="jsts.geomgraph.Position.html">Position</a></li><li><a href="jsts.geomgraph.Quadrant.html">Quadrant</a></li><li><a href="jsts.geomgraph.TopologyLocation.html">TopologyLocation</a></li><li><a href="jsts.index.ArrayListVisitor.html">ArrayListVisitor</a></li><li><a href="jsts.index.chain.MonotoneChain.html">MonotoneChain</a></li><li><a href="jsts.index.chain.MonotoneChainBuilder.html">MonotoneChainBuilder</a></li><li><a href="jsts.index.chain.MonotoneChainOverlapAction.html">MonotoneChainOverlapAction</a></li><li><a href="jsts.index.chain.MonotoneChainSelectAction.html">MonotoneChainSelectAction</a></li><li><a href="jsts.index.DoubleBits.html">DoubleBits</a></li><li><a href="jsts.index.IntervalSize.html">IntervalSize</a></li><li><a href="jsts.index.kdtree.KdNode.html">KdNode</a></li><li><a href="jsts.index.kdtree.KdTree.html">KdTree</a></li><li><a href="jsts.index.quadtree.Key.html">Key</a></li><li><a href="jsts.index.quadtree.Node.html">Node</a></li><li><a href="jsts.index.quadtree.NodeBase.html">NodeBase</a></li><li><a href="jsts.index.quadtree.Quadtree.html">Quadtree</a></li><li><a href="jsts.index.quadtree.Root.html">Root</a></li><li><a href="jsts.index.strtree.AbstractSTRtree.IntersectsOp.html">IntersectsOp</a></li><li><a href="jsts.index.strtree.Interval.html">Interval</a></li><li><a href="jsts.index.strtree.ItemBoundable.html">ItemBoundable</a></li><li><a href="jsts.index.strtree.SIRtree.html">SIRtree</a></li><li><a href="jsts.index.strtree.STRtree.html">STRtree</a></li><li><a href="jsts.io.GeoJSONReader.html">GeoJSONReader</a></li><li><a href="jsts.io.GeoJSONWriter.html">GeoJSONWriter</a></li><li><a href="jsts.io.WKTReader.html">WKTReader</a></li><li><a href="jsts.io.WKTWriter.html">WKTWriter</a></li><li><a href="jsts.noding.BasicSegmentString.html">BasicSegmentString</a></li><li><a href="jsts.noding.InteriorIntersectionFinder.html">InteriorIntersectionFinder</a></li><li><a href="jsts.noding.IntersectionAdder.html">IntersectionAdder</a></li><li><a href="jsts.noding.MCIndexNoder.html">MCIndexNoder</a></li><li><a href="jsts.noding.NodedSegmentString.html">NodedSegmentString</a></li><li><a href="jsts.noding.Octant.html">Octant</a></li><li><a href="jsts.noding.SegmentNode.html">SegmentNode</a></li><li><a href="jsts.noding.SegmentNodeList.html">SegmentNodeList</a></li><li><a href="jsts.operation.buffer.BufferBuilder.html">BufferBuilder</a></li><li><a href="jsts.operation.buffer.BufferInputLineSimplifier.html">BufferInputLineSimplifier</a></li><li><a href="jsts.operation.buffer.BufferOp.html">BufferOp</a></li><li><a href="jsts.operation.buffer.BufferParameters.html">BufferParameters</a></li><li><a href="jsts.operation.buffer.BufferSubgraph.html">BufferSubgraph</a></li><li><a href="jsts.operation.buffer.OffsetCurveBuilder.html">OffsetCurveBuilder</a></li><li><a href="jsts.operation.buffer.OffsetCurveSetBuilder.html">OffsetCurveSetBuilder</a></li><li><a href="jsts.operation.buffer.OffsetSegmentGenerator.html">OffsetSegmentGenerator</a></li><li><a href="jsts.operation.buffer.OffsetSegmentString.html">OffsetSegmentString</a></li><li><a href="jsts.operation.buffer.RightmostEdgeFinder.html">RightmostEdgeFinder</a></li><li><a href="jsts.operation.buffer.SubgraphDepthLocater.html">SubgraphDepthLocater</a></li><li><a href="jsts.operation.distance.ConnectedElementLocationFilter.html">ConnectedElementLocationFilter</a></li><li><a href="jsts.operation.distance.DistanceOp.html">DistanceOp</a></li><li><a href="jsts.operation.distance.GeometryLocation.html">GeometryLocation</a></li><li><a href="jsts.operation.GeometryGraphOperation.html">GeometryGraphOperation</a></li><li><a href="jsts.operation.IsSimpleOp.html">IsSimpleOp</a></li><li><a href="jsts.operation.IsSimpleOp.EndpointInfo.html">EndpointInfo</a></li><li><a href="jsts.operation.linemerge.EdgeString.html">EdgeString</a></li><li><a href="jsts.operation.linemerge.LineMergeDirectedEdge.html">LineMergeDirectedEdge</a></li><li><a href="jsts.operation.linemerge.LineMergeEdge.html">LineMergeEdge</a></li><li><a href="jsts.operation.linemerge.LineMerger.html">LineMerger</a></li><li><a href="jsts.operation.overlay.MaximalEdgeRing.html">MaximalEdgeRing</a></li><li><a href="jsts.operation.overlay.MinimalEdgeRing.html">MinimalEdgeRing</a></li><li><a href="jsts.operation.overlay.OverlayNodeFactory.html">OverlayNodeFactory</a></li><li><a href="jsts.operation.relate.EdgeEndBuilder.html">EdgeEndBuilder</a></li><li><a href="jsts.operation.relate.EdgeEndBundle.html">EdgeEndBundle</a></li><li><a href="jsts.operation.relate.EdgeEndBundleStar.html">EdgeEndBundleStar</a></li><li><a href="jsts.operation.relate.RelateComputer.html">RelateComputer</a></li><li><a href="jsts.operation.relate.RelateNode.html">RelateNode</a></li><li><a href="jsts.operation.relate.RelateNodeFactory.html">RelateNodeFactory</a></li><li><a href="jsts.operation.relate.RelateNodeGraph.html">RelateNodeGraph</a></li><li><a href="jsts.operation.relate.RelateOp.html">RelateOp</a></li><li><a href="jsts.operation.union.CascadedPolygonUnion.html">CascadedPolygonUnion</a></li><li><a href="jsts.operation.union.PointGeometryUnion.html">PointGeometryUnion</a></li><li><a href="jsts.operation.union.UnaryUnionOp.html">UnaryUnionOp</a></li><li><a href="jsts.operation.union.UnionInteracting.html">UnionInteracting</a></li><li><a href="jsts.operation.valid.ConnectedInteriorTester.html">ConnectedInteriorTester</a></li><li><a href="jsts.operation.valid.IsValidOp.html">IsValidOp</a></li><li><a href="jsts.precision.CommonBits.html">CommonBits</a></li><li><a href="jsts.precision.CommonBitsOp.html">CommonBitsOp</a></li><li><a href="jsts.precision.CommonBitsRemover.html">CommonBitsRemover</a></li><li><a href="jsts.precision.CommonCoordinateFilter.html">CommonCoordinateFilter</a></li><li><a href="jsts.precision.EnhancedPrecisionOp.html">EnhancedPrecisionOp</a></li><li><a href="jsts.precision.Translater.html">Translater</a></li><li><a href="jsts.simplify.DouglasPeuckerLineSimplifier.html">DouglasPeuckerLineSimplifier</a></li><li><a href="jsts.simplify.DouglasPeuckerSimplifier.html">DouglasPeuckerSimplifier</a></li><li><a href="jsts.simplify.DPTransformer.html">DPTransformer</a></li><li><a href="jsts.triangulate.DelaunayTriangulationBuilder.html">DelaunayTriangulationBuilder</a></li><li><a href="jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.html">LastFoundQuadEdgeLocator</a></li><li><a href="jsts.triangulate.quadedge.QuadEdge.html">QuadEdge</a></li><li><a href="jsts.triangulate.quadedge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></li><li><a href="jsts.triangulate.quadedge.TrianglePredicate.html">TrianglePredicate</a></li><li><a href="jsts.triangulate.quadedge.Vertex.html">Vertex</a></li><li><a href="jsts.triangulate.VoronoiDiagramBuilder.html">VoronoiDiagramBuilder</a></li><li><a href="jsts.util.Assert.html">Assert</a></li><li><a href="jsts.util.UniqueCoordinateArrayFilter.html">UniqueCoordinateArrayFilter</a></li><li><a href="message.html">message</a></li></ul><h3>Namespaces</h3><ul><li><a href="jsts.html">jsts</a></li><li><a href="jsts.algorithm.html">algorithm</a></li><li><a href="jsts.algorithm.distance.html">distance</a></li><li><a href="jsts.algorithm.locate.html">locate</a></li><li><a href="jsts.densify.html">densify</a></li><li><a href="jsts.error.html">error</a></li><li><a href="jsts.geom.html">geom</a></li><li><a href="jsts.geom.util.html">util</a></li><li><a href="jsts.geomgraph.html">geomgraph</a></li><li><a href="jsts.geomgraph.index.html">index</a></li><li><a href="jsts.index.html">index</a></li><li><a href="jsts.index.bintree.html">bintree</a></li><li><a href="jsts.index.chain.html">chain</a></li><li><a href="jsts.index.kdtree.html">kdtree</a></li><li><a href="jsts.index.quadtree.html">quadtree</a></li><li><a href="jsts.index.strtree.html">strtree</a></li><li><a href="jsts.io.html">io</a></li><li><a href="jsts.noding.html">noding</a></li><li><a href="jsts.noding.snapround.html">snapround</a></li><li><a href="jsts.operation.html">operation</a></li><li><a href="jsts.operation.buffer.html">buffer</a></li><li><a href="jsts.operation.distance.html">distance</a></li><li><a href="jsts.operation.linemerge.html">linemerge</a></li><li><a href="jsts.operation.overlay.html">overlay</a></li><li><a href="jsts.operation.overlay.snap.html">snap</a></li><li><a href="jsts.operation.polygonize.html">polygonize</a></li><li><a href="jsts.operation.predicate.html">predicate</a></li><li><a href="jsts.operation.relate.html">relate</a></li><li><a href="jsts.operation.union.html">union</a></li><li><a href="jsts.operation.valid.html">valid</a></li><li><a href="jsts.planargraph.html">planargraph</a></li><li><a href="jsts.precision.html">precision</a></li><li><a href="jsts.simplify.html">simplify</a></li><li><a href="jsts.triangulate.html">triangulate</a></li><li><a href="jsts.triangulate.quadedge.html">quadedge</a></li><li><a href="jsts.util.html">util</a></li></ul><h3>Interfaces</h3><ul><li><a href="jsts.geom.CoordinateFilter.html">CoordinateFilter</a></li><li><a href="jsts.index.ItemVisitor.html">ItemVisitor</a></li><li><a href="jsts.index.SpatialIndex.html">SpatialIndex</a></li><li><a href="jsts.index.strtree.AbstractNode.html">AbstractNode</a></li><li><a href="jsts.index.strtree.Boundable.html">Boundable</a></li><li><a href="jsts.noding.NodableSegmentString.html">NodableSegmentString</a></li><li><a href="jsts.noding.Noder.html">Noder</a></li><li><a href="jsts.noding.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.noding.SegmentString.html">SegmentString</a></li><li><a href="jsts.noding.SinglePassNoder.html">SinglePassNoder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

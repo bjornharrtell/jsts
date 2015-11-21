@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: jsts/geom/Geometry.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: jsts/geom/Geometry.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+/**
+ * The base class for all geometric objects.
+ *
+ *  &lt;H3>Binary Predicates&lt;/H3>
+ * Because it is not clear at this time
+ * what semantics for spatial
+ *  analysis methods involving &lt;code>GeometryCollection&lt;/code>s would be useful,
+ *  &lt;code>GeometryCollection&lt;/code>s are not supported as arguments to binary
+ *  predicates (other than &lt;code>convexHull&lt;/code>) or the &lt;code>relate&lt;/code>
+ *  method.
+ *
+ *  &lt;H3>Set-Theoretic Methods&lt;/H3>
+ *
+ *  The spatial analysis methods will
+ *  return the most specific class possible to represent the result. If the
+ *  result is homogeneous, a &lt;code>Point&lt;/code>, &lt;code>LineString&lt;/code>, or
+ *  &lt;code>Polygon&lt;/code> will be returned if the result contains a single
+ *  element; otherwise, a &lt;code>MultiPoint&lt;/code>, &lt;code>MultiLineString&lt;/code>,
+ *  or &lt;code>MultiPolygon&lt;/code> will be returned. If the result is
+ *  heterogeneous a &lt;code>GeometryCollection&lt;/code> will be returned. &lt;P>
+ *
+ *  Because it is not clear at this time what semantics for set-theoretic
+ *  methods involving &lt;code>GeometryCollection&lt;/code>s would be useful,
+ * &lt;code>GeometryCollections&lt;/code>
+ *  are not supported as arguments to the set-theoretic methods.
+ *
+ *  &lt;H4>Representation of Computed Geometries &lt;/H4>
+ *
+ *  The SFS states that the result
+ *  of a set-theoretic method is the "point-set" result of the usual
+ *  set-theoretic definition of the operation (SFS 3.2.21.1). However, there are
+ *  sometimes many ways of representing a point set as a &lt;code>Geometry&lt;/code>.
+ *  &lt;P>
+ *
+ *  The SFS does not specify an unambiguous representation of a given point set
+ *  returned from a spatial analysis method. One goal of JTS is to make this
+ *  specification precise and unambiguous. JTS will use a canonical form for
+ *  &lt;code>Geometry&lt;/code>s returned from spatial analysis methods. The canonical
+ *  form is a &lt;code>Geometry&lt;/code> which is simple and noded:
+ *  &lt;UL>
+ *    &lt;LI> Simple means that the Geometry returned will be simple according to
+ *    the JTS definition of &lt;code>isSimple&lt;/code>.
+ *    &lt;LI> Noded applies only to overlays involving &lt;code>LineString&lt;/code>s. It
+ *    means that all intersection points on &lt;code>LineString&lt;/code>s will be
+ *    present as endpoints of &lt;code>LineString&lt;/code>s in the result.
+ *  &lt;/UL>
+ *  This definition implies that non-simple geometries which are arguments to
+ *  spatial analysis methods must be subjected to a line-dissolve process to
+ *  ensure that the results are simple.
+ *
+ *  &lt;H4> Constructed Points And The Precision Model &lt;/H4>
+ *
+ *  The results computed by the set-theoretic methods may contain constructed
+ *  points which are not present in the input &lt;code>Geometry&lt;/code>.
+ *  These new points arise from intersections between line segments in the
+ *  edges of the input &lt;code>Geometry&lt;/code>s. In the general case it is not
+ *  possible to represent constructed points exactly. This is due to the fact
+ *  that the coordinates of an intersection point may contain twice as many bits
+ *  of precision as the coordinates of the input line segments. In order to
+ *  represent these constructed points explicitly, JTS must truncate them to fit
+ *  the &lt;code>PrecisionModel&lt;/code>.
+ *
+ *  Unfortunately, truncating coordinates moves them slightly. Line segments
+ *  which would not be coincident in the exact result may become coincident in
+ *  the truncated representation. This in turn leads to "topology collapses" --
+ *  situations where a computed element has a lower dimension than it would in
+ *  the exact result.
+ *
+ *  When JTS detects topology collapses during the computation of spatial
+ *  analysis methods, it will throw an exception. If possible the exception will
+ *  report the location of the collapse.
+ *
+ *  #equals(Object) and #hashCode are not overridden, so that when two
+ *  topologically equal Geometries are added to HashMaps and HashSets, they
+ *  remain distinct. This behaviour is desired in many cases.
+ */
+
+
+
+/**
+ * Creates a new &lt;tt>Geometry&lt;/tt> via the specified GeometryFactory.
+ *
+ * @constructor
+ */
+jsts.geom.Geometry = function(factory) {
+  this.factory = factory;
+};
+
+
+/**
+ * The bounding box of this &lt;code>Geometry&lt;/code>.
+ */
+jsts.geom.Geometry.prototype.envelope = null;
+
+/**
+ * The {@link GeometryFactory} used to create this Geometry
+ *
+ * @protected
+ */
+jsts.geom.Geometry.prototype.factory = null;
+
+
+/**
+ * Returns the name of this object's &lt;code>com.vivid.jts.geom&lt;/code>
+ * interface.
+ *
+ * @return {string} the name of this &lt;code>Geometry&lt;/code>s most specific
+ *         &lt;code>jsts.geom&lt;/code> interface.
+ */
+jsts.geom.Geometry.prototype.getGeometryType = function() {
+  return 'Geometry';
+};
+
+
+/**
+ * Returns true if the array contains any non-empty &lt;code>Geometry&lt;/code>s.
+ *
+ * @param {Geometry[]}
+ *          geometries an array of &lt;code>Geometry&lt;/code>s; no elements may be
+ *          &lt;code>null.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if any of the &lt;code>Geometry&lt;/code>s
+ *         &lt;code>isEmpty&lt;/code> methods return &lt;code>false.&lt;/code>
+ */
+jsts.geom.Geometry.hasNonEmptyElements = function(geometries) {
+  var i;
+  for (i = 0; i &lt; geometries.length; i++) {
+    if (!geometries[i].isEmpty()) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Returns true if the array contains any &lt;code>null&lt;/code> elements.
+ *
+ * @param {Object[]}
+ *          array an array to validate.
+ * @return {boolean} &lt;code>true&lt;/code> if any of &lt;code>array&lt;/code>s
+ *         elements are &lt;code>null.&lt;/code>
+ */
+jsts.geom.Geometry.hasNullElements = function(array) {
+  var i;
+  for (i = 0; i &lt; array.length; i++) {
+    if (array[i] === null) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Gets the factory which contains the context in which this geometry was
+ * created.
+ *
+ * @return {jsts.geom.GeometryFactory} the factory for this geometry.
+ */
+jsts.geom.Geometry.prototype.getFactory = function() {
+  // NOTE: Geometry could be created without JSTS constructor so need to check
+  // for member data
+  // TODO: above should not happen
+  if (this.factory === null || this.factory === undefined) {
+    this.factory = new jsts.geom.GeometryFactory();
+  }
+
+  return this.factory;
+};
+
+
+/**
+ * Returns the number of {@link Geometry}s in a {@link GeometryCollection} (or
+ * 1, if the geometry is not a collection).
+ *
+ * @return {number} the number of geometries contained in this geometry.
+ */
+jsts.geom.Geometry.prototype.getNumGeometries = function() {
+  return 1;
+};
+
+
+/**
+ * Returns an element {@link Geometry} from a {@link GeometryCollection} (or
+ * &lt;code>this&lt;/code>, if the geometry is not a collection).
+ *
+ * @param {number}
+ *          n the index of the geometry element.
+ * @return {Geometry} the n'th geometry contained in this geometry.
+ */
+jsts.geom.Geometry.prototype.getGeometryN = function(n) {
+  return this;
+};
+
+
+/**
+ * Returns the &lt;code>PrecisionModel&lt;/code> used by the &lt;code>Geometry&lt;/code>.
+ *
+ * @return {PrecisionModel} the specification of the grid of allowable points,
+ *         for this &lt;code>Geometry&lt;/code> and all other &lt;code>Geometry&lt;/code>s.
+ */
+jsts.geom.Geometry.prototype.getPrecisionModel = function() {
+  return this.getFactory().getPrecisionModel();
+};
+
+
+
+/**
+ * Returns a vertex of this &lt;code>Geometry&lt;/code> (usually, but not
+ * necessarily, the first one). The returned coordinate should not be assumed to
+ * be an actual Coordinate object used in the internal representation.
+ *
+ * @return {Coordinate} a {@link Coordinate} which is a vertex of this
+ *         &lt;code>Geometry&lt;/code>. null if this Geometry is empty.
+ */
+jsts.geom.Geometry.prototype.getCoordinate = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns an array containing the values of all the vertices for this geometry.
+ * If the geometry is a composite, the array will contain all the vertices for
+ * the components, in the order in which the components occur in the geometry.
+ * &lt;p>
+ * In general, the array cannot be assumed to be the actual internal storage for
+ * the vertices. Thus modifying the array may not modify the geometry itself.
+ * Use the {@link CoordinateSequence#setOrdinate} method (possibly on the
+ * components) to modify the underlying data. If the coordinates are modified,
+ * {@link #geometryChanged} must be called afterwards.
+ *
+ * @return {Coordinate[]} the vertices of this &lt;code>Geometry.&lt;/code>
+ * @see geometryChanged
+ * @see CoordinateSequence#setOrdinate
+ */
+jsts.geom.Geometry.prototype.getCoordinates = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns the count of this &lt;code>Geometry&lt;/code>s vertices. The
+ * &lt;code>Geometry&lt;/code> s contained by composite &lt;code>Geometry&lt;/code>s
+ * must be Geometry's; that is, they must implement &lt;code>getNumPoints&lt;/code>
+ *
+ * @return {number} the number of vertices in this &lt;code>Geometry.&lt;/code>
+ */
+jsts.geom.Geometry.prototype.getNumPoints = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Tests whether this {@link Geometry} is simple. In general, the SFS
+ * specification of simplicity follows the rule:
+ * &lt;UL>
+ * &lt;LI> A Geometry is simple iff the only self-intersections are at boundary
+ * points.
+ * &lt;/UL>
+ * Simplicity is defined for each {@link Geometry} subclass as follows:
+ * &lt;ul>
+ * &lt;li>Valid polygonal geometries are simple by definition, so
+ * &lt;code>isSimple&lt;/code> trivially returns true.
+ * &lt;li>Linear geometries are simple iff they do not self-intersect at points
+ * other than boundary points.
+ * &lt;li>Zero-dimensional geometries (points) are simple iff they have no
+ * repeated points.
+ * &lt;li>Empty &lt;code>Geometry&lt;/code>s are always simple
+ * &lt;ul>
+ *
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code> has any
+ *         points of self-tangency, self-intersection or other anomalous points.
+ * @see #isValid
+ */
+jsts.geom.Geometry.prototype.isSimple = function() {
+  this.checkNotGeometryCollection(this);
+  var op = new jsts.operation.IsSimpleOp(this);
+  return op.isSimple();
+};
+
+
+/**
+ * Tests the validity of this &lt;code>Geometry&lt;/code>. Subclasses provide their
+ * own definition of "valid".
+ *
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code> is
+ *         valid.
+ *
+ * @see IsValidOp
+ */
+jsts.geom.Geometry.prototype.isValid = function() {
+  var isValidOp = new jsts.operation.valid.IsValidOp(this);
+  return isValidOp.isValid();
+};
+
+
+/**
+ * Returns whether or not the set of points in this &lt;code>Geometry&lt;/code> is
+ * empty.
+ *
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code> equals
+ *         the empty geometry.
+ */
+jsts.geom.Geometry.prototype.isEmpty = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns the minimum distance between this &lt;code>Geometry&lt;/code> and the
+ * &lt;code>Geometry&lt;/code> g
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> from which to compute the distance.
+ * @return {number} the distance between the geometries. 0 if either input
+ *         geometry is empty.
+ * @throws IllegalArgumentException
+ *           if g is null
+ */
+jsts.geom.Geometry.prototype.distance = function(g) {
+  return jsts.operation.distance.DistanceOp.distance(this, g);
+};
+
+
+/**
+ * Tests whether the distance from this &lt;code>Geometry&lt;/code> to another is
+ * less than or equal to a specified value.
+ *
+ * @param {Geometry}
+ *          geom the Geometry to check the distance to.
+ * @param {number}
+ *          distance the distance value to compare.
+ * @return {boolean} &lt;code>true&lt;/code> if the geometries are less than
+ *         &lt;code>distance&lt;/code> apart.
+ */
+jsts.geom.Geometry.prototype.isWithinDistance = function(geom, distance) {
+  var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal());
+  if (envDist > distance) {
+    return false;
+  }
+  return DistanceOp.isWithinDistance(this, geom, distance);
+};
+
+jsts.geom.Geometry.prototype.isRectangle = function() {
+  // Polygon overrides to check for actual rectangle
+  return false;
+};
+
+/**
+ * Returns the area of this &lt;code>Geometry&lt;/code>. Areal Geometries have a
+ * non-zero area. They override this function to compute the area. Others return
+ * 0.0
+ *
+ * @return the area of the Geometry.
+ */
+jsts.geom.Geometry.prototype.getArea = function() {
+  return 0.0;
+};
+
+/**
+ * Returns the length of this &lt;code>Geometry&lt;/code>. Linear geometries return
+ * their length. Areal geometries return their perimeter. They override this
+ * function to compute the area. Others return 0.0
+ *
+ * @return the length of the Geometry.
+ */
+jsts.geom.Geometry.prototype.getLength = function() {
+  return 0.0;
+};
+
+/**
+ * Computes the centroid of this &lt;code>Geometry&lt;/code>. The centroid is equal
+ * to the centroid of the set of component Geometries of highest dimension
+ * (since the lower-dimension geometries contribute zero "weight" to the
+ * centroid)
+ *
+ * @return a {@link Point} which is the centroid of this Geometry.
+ */
+jsts.geom.Geometry.prototype.getCentroid = function() {
+  if (this.isEmpty()) {
+    return null;
+  }
+  var cent;
+  var centPt = null;
+  var dim = this.getDimension();
+  if (dim === 0) {
+    cent = new jsts.algorithm.CentroidPoint();
+    cent.add(this);
+    centPt = cent.getCentroid();
+  } else if (dim === 1) {
+    cent = new jsts.algorithm.CentroidLine();
+    cent.add(this);
+    centPt = cent.getCentroid();
+  } else {
+    cent = new jsts.algorithm.CentroidArea();
+    cent.add(this);
+    centPt = cent.getCentroid();
+  }
+  return this.createPointFromInternalCoord(centPt, this);
+
+};
+
+
+/**
+ * Computes an interior point of this &lt;code>Geometry&lt;/code>. An interior
+ * point is guaranteed to lie in the interior of the Geometry, if it possible to
+ * calculate such a point exactly. Otherwise, the point may lie on the boundary
+ * of the geometry.
+ *
+ * @return {Point} a {@link Point} which is in the interior of this Geometry.
+ */
+jsts.geom.Geometry.prototype.getInteriorPoint = function() {
+  var intPt;
+  var interiorPt = null;
+  var dim = this.getDimension();
+  if (dim === 0) {
+    intPt = new jsts.algorithm.InteriorPointPoint(this);
+    interiorPt = intPt.getInteriorPoint();
+  } else if (dim === 1) {
+    intPt = new jsts.algorithm.InteriorPointLine(this);
+    interiorPt = intPt.getInteriorPoint();
+  } else {
+    intPt = new jsts.algorithm.InteriorPointArea(this);
+    interiorPt = intPt.getInteriorPoint();
+  }
+  return this.createPointFromInternalCoord(interiorPt, this);
+};
+
+
+/**
+ * Returns the dimension of this geometry. The dimension of a geometry is is the
+ * topological dimension of its embedding in the 2-D Euclidean plane. In the JTS
+ * spatial model, dimension values are in the set {0,1,2}.
+ * &lt;p>
+ * Note that this is a different concept to the dimension of the vertex
+ * {@link Coordinate}s. The geometry dimension can never be greater than the
+ * coordinate dimension. For example, a 0-dimensional geometry (e.g. a Point)
+ * may have a coordinate dimension of 3 (X,Y,Z).
+ *
+ * @return {number} the topological dimension of this geometry.
+ */
+jsts.geom.Geometry.prototype.getDimension = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns the boundary, or an empty geometry of appropriate dimension if this
+ * &lt;code>Geometry&lt;/code> is empty. (In the case of zero-dimensional
+ * geometries, ' an empty GeometryCollection is returned.) For a discussion of
+ * this function, see the OpenGIS Simple Features Specification. As stated in
+ * SFS Section 2.1.13.1, "the boundary of a Geometry is a set of Geometries of
+ * the next lower dimension."
+ *
+ * @return {Geometry} the closure of the combinatorial boundary of this
+ *         &lt;code>Geometry.&lt;/code>
+ */
+jsts.geom.Geometry.prototype.getBoundary = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns the dimension of this &lt;code>Geometry&lt;/code>s inherent boundary.
+ *
+ * @return {number} the dimension of the boundary of the class implementing this
+ *         interface, whether or not this object is the empty geometry. Returns
+ *         &lt;code>Dimension.FALSE&lt;/code> if the boundary is the empty geometry.
+ */
+jsts.geom.Geometry.prototype.getBoundaryDimension = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns this &lt;code>Geometry&lt;/code>s bounding box. If this
+ * &lt;code>Geometry&lt;/code> is the empty geometry, returns an empty
+ * &lt;code>Point&lt;/code>. If the &lt;code>Geometry&lt;/code> is a point, returns a
+ * non-empty &lt;code>Point&lt;/code>. Otherwise, returns a &lt;code>Polygon&lt;/code>
+ * whose points are (minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy),
+ * (minx, miny).
+ *
+ * @return {Geometry} an empty &lt;code>Point&lt;/code> (for empty
+ *         &lt;code>Geometry&lt;/code>s), a &lt;code>Point&lt;/code> (for
+ *         &lt;code>Point&lt;/code>s) or a &lt;code>Polygon&lt;/code> (in all other
+ *         cases).
+ */
+jsts.geom.Geometry.prototype.getEnvelope = function() {
+  return this.getFactory().toGeometry(this.getEnvelopeInternal());
+};
+
+
+/**
+ * Returns the minimum and maximum x and y values in this &lt;code>Geometry&lt;/code>,
+ * or a null &lt;code>Envelope&lt;/code> if this &lt;code>Geometry&lt;/code> is empty.
+ *
+ * @return {Envelope} this &lt;code>Geometry&lt;/code>s bounding box; if the
+ *         &lt;code>Geometry&lt;/code> is empty, &lt;code>Envelope#isNull&lt;/code> will
+ *         return &lt;code>true.&lt;/code>
+ */
+jsts.geom.Geometry.prototype.getEnvelopeInternal = function() {
+  if (this.envelope === null) {
+    this.envelope = this.computeEnvelopeInternal();
+  }
+  return this.envelope;
+};
+
+
+/**
+ * Tests whether this geometry is disjoint from the specified geometry.
+ * &lt;p>
+ * The &lt;code>disjoint&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>The two geometries have no point in common
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[FF*FF****]&lt;/code>
+ * &lt;li>&lt;code>! g.intersects(this)&lt;/code> (&lt;code>disjoint&lt;/code> is the
+ * inverse of &lt;code>intersects&lt;/code>)
+ * &lt;/ul>
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+ *         are disjoint.
+ *
+ * @see Geometry#intersects
+ */
+jsts.geom.Geometry.prototype.disjoint = function(g) {
+  return !this.intersects(g);
+};
+
+
+/**
+ * Tests whether this geometry touches the specified geometry.
+ * &lt;p>
+ * The &lt;code>touches&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>The geometries have at least one point in common, but their interiors do
+ * not intersect.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[FT*******]&lt;/code> or &lt;code>[F**T*****]&lt;/code> or
+ * &lt;code>[F***T****]&lt;/code>
+ * &lt;/ul>
+ * If both geometries have dimension 0, this predicate returns
+ * &lt;code>false&lt;/code>
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+ *         touch; Returns &lt;code>false&lt;/code> if both &lt;code>Geometry&lt;/code>s
+ *         are points.
+ */
+jsts.geom.Geometry.prototype.touches = function(g) {
+  // short-circuit test
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+    return false;
+  }
+  return this.relate(g).isTouches(this.getDimension(), g.getDimension());
+};
+
+
+/**
+ * Tests whether this geometry intersects the specified geometry.
+ * &lt;p>
+ * The &lt;code>intersects&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>The two geometries have at least one point in common
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[T********]&lt;/code> or &lt;code>[*T*******]&lt;/code> or
+ * &lt;code>[***T*****]&lt;/code> or &lt;code>[****T****]&lt;/code>
+ * &lt;li>&lt;code>! g.disjoint(this)&lt;/code> (&lt;code>intersects&lt;/code> is the
+ * inverse of &lt;code>disjoint&lt;/code>)
+ * &lt;/ul>
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+ *         intersect.
+ *
+ * @see Geometry#disjoint
+ */
+jsts.geom.Geometry.prototype.intersects = function(g) {
+
+  // short-circuit envelope test
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+    return false;
+  }
+
+  // optimization for rectangle arguments
+  if (this.isRectangle()) {
+    return jsts.operation.predicate.RectangleIntersects.intersects(this, g);
+  }
+  if (g.isRectangle()) {
+    return jsts.operation.predicate.RectangleIntersects.intersects(g, this);
+  }
+  // general case
+  return this.relate(g).isIntersects();
+};
+
+
+/**
+ * Tests whether this geometry crosses the specified geometry.
+ * &lt;p>
+ * The &lt;code>crosses&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>The geometries have some but not all interior points in common.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;ul>
+ * &lt;li>&lt;code>[T*T******]&lt;/code> (for P/L, P/A, and L/A situations)
+ * &lt;li>&lt;code>[T*****T**]&lt;/code> (for L/P, A/P, and A/L situations)
+ * &lt;li>&lt;code>[0********]&lt;/code> (for L/L situations)
+ * &lt;/ul>
+ * &lt;/ul>
+ * For any other combination of dimensions this predicate returns
+ * &lt;code>false&lt;/code>.
+ * &lt;p>
+ * The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
+ * JTS extends the definition to apply to L/P, A/P and A/L situations as well,
+ * in order to make the relation symmetric.
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+ *         cross.
+ */
+jsts.geom.Geometry.prototype.crosses = function(g) {
+  // short-circuit test
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+    return false;
+  }
+  return this.relate(g).isCrosses(this.getDimension(), g.getDimension());
+};
+
+
+/**
+ * Tests whether this geometry is within the specified geometry.
+ * &lt;p>
+ * The &lt;code>within&lt;/code> predicate has the following equivalent definitions:
+ * &lt;ul>
+ * &lt;li>Every point of this geometry is a point of the other geometry, and the
+ * interiors of the two geometries have at least one point in common.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[T*F**F***]&lt;/code>
+ * &lt;li>&lt;code>g.contains(this)&lt;/code> (&lt;code>within&lt;/code> is the converse
+ * of &lt;code>contains&lt;/code>)
+ * &lt;/ul>
+ * An implication of the definition is that "The boundary of a Geometry is not
+ * within the Geometry". In other words, if a geometry A is a subset of the
+ * points in the boundary of a geomtry B, &lt;code>A.within(B) = false&lt;/code>
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code> is
+ *         within &lt;code>other.&lt;/code>
+ *
+ * @see Geometry#contains
+ */
+jsts.geom.Geometry.prototype.within = function(g) {
+  return g.contains(this);
+};
+
+
+/**
+ * Tests whether this geometry contains the specified geometry.
+ * &lt;p>
+ * The &lt;code>contains&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>Every point of the other geometry is a point of this geometry, and the
+ * interiors of the two geometries have at least one point in common.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[T*****FF*]&lt;/code>
+ * &lt;li>&lt;code>g.within(this)&lt;/code> (&lt;code>contains&lt;/code> is the converse
+ * of &lt;code>within&lt;/code>)
+ * &lt;/ul>
+ * An implication of the definition is that "Geometries do not contain their
+ * boundary". In other words, if a geometry A is a subset of the points in the
+ * boundary of a geometry B, &lt;code>B.contains(A) = false&lt;/code>
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code>
+ *         contains &lt;code>g.&lt;/code>
+ *
+ * @see Geometry#within
+ */
+jsts.geom.Geometry.prototype.contains = function(g) {
+  // short-circuit test
+  if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal())) {
+    return false;
+  }
+  // optimization for rectangle arguments
+  if (this.isRectangle()) {
+    return jsts.operation.predicate.RectangleContains.contains(this, g);
+  }
+  // general case
+  return this.relate(g).isContains();
+};
+
+
+/**
+ * Tests whether this geometry overlaps the specified geometry.
+ * &lt;p>
+ * The &lt;code>overlaps&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>The geometries have at least one point each not shared by the other (or
+ * equivalently neither covers the other), they have the same dimension, and the
+ * intersection of the interiors of the two geometries has the same dimension as
+ * the geometries themselves.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[T*T***T**]&lt;/code> (for two points or two surfaces) or
+ * &lt;code>[1*T***T**]&lt;/code> (for two curves)
+ * &lt;/ul>
+ * If the geometries are of different dimension this predicate returns
+ * &lt;code>false&lt;/code>.
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+ *         overlap.
+ */
+jsts.geom.Geometry.prototype.overlaps = function(g) {
+  // short-circuit test
+  if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+    return false;
+  }
+  return this.relate(g).isOverlaps(this.getDimension(), g.getDimension());
+};
+
+
+/**
+ * Tests whether this geometry covers the specified geometry.
+ * &lt;p>
+ * The &lt;code>covers&lt;/code> predicate has the following equivalent definitions:
+ * &lt;ul>
+ * &lt;li>Every point of the other geometry is a point of this geometry.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[T*****FF*]&lt;/code> or &lt;code>[*T****FF*]&lt;/code> or
+ * &lt;code>[***T**FF*]&lt;/code> or &lt;code>[****T*FF*]&lt;/code>
+ * &lt;li>&lt;code>g.coveredBy(this)&lt;/code> (&lt;code>covers&lt;/code> is the converse
+ * of &lt;code>coveredBy&lt;/code>)
+ * &lt;/ul>
+ * If either geometry is empty, the value of this predicate is &lt;tt>false&lt;/tt>.
+ * &lt;p>
+ * This predicate is similar to {@link #contains}, but is more inclusive (i.e.
+ * returns &lt;tt>true&lt;/tt> for more cases). In particular, unlike
+ * &lt;code>contains&lt;/code> it does not distinguish between points in the
+ * boundary and in the interior of geometries. For most situations,
+ * &lt;code>covers&lt;/code> should be used in preference to &lt;code>contains&lt;/code>.
+ * As an added benefit, &lt;code>covers&lt;/code> is more amenable to optimization,
+ * and hence should be more performant.
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code> covers
+ *         &lt;code>g.&lt;/code>
+ *
+ * @see Geometry#contains
+ * @see Geometry#coveredBy
+ */
+jsts.geom.Geometry.prototype.covers = function(g) {
+  // short-circuit test
+  if (!this.getEnvelopeInternal().covers(g.getEnvelopeInternal())) {
+    return false;
+  }
+  // optimization for rectangle arguments
+  if (this.isRectangle()) {
+    // since we have already tested that the test envelope is covered
+    return true;
+  }
+  return this.relate(g).isCovers();
+};
+
+
+/**
+ * Tests whether this geometry is covered by the specified geometry.
+ * &lt;p>
+ * The &lt;code>coveredBy&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>Every point of this geometry is a point of the other geometry.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches
+ * &lt;code>[T*F**F***]&lt;/code> or &lt;code>[*TF**F***]&lt;/code> or
+ * &lt;code>[**FT*F***]&lt;/code> or &lt;code>[**F*TF***]&lt;/code>
+ * &lt;li>&lt;code>g.covers(this)&lt;/code> (&lt;code>coveredBy&lt;/code> is the converse
+ * of &lt;code>covers&lt;/code>)
+ * &lt;/ul>
+ * If either geometry is empty, the value of this predicate is &lt;tt>false&lt;/tt>.
+ * &lt;p>
+ * This predicate is similar to {@link #within}, but is more inclusive (i.e.
+ * returns &lt;tt>true&lt;/tt> for more cases).
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if this &lt;code>Geometry&lt;/code> is
+ *         covered by &lt;code>g.&lt;/code>
+ *
+ * @see Geometry#within
+ * @see Geometry#covers
+ */
+jsts.geom.Geometry.prototype.coveredBy = function(g) {
+  return g.covers(this);
+};
+
+
+/**
+ * Tests whether the elements in the DE-9IM {@link IntersectionMatrix} for the
+ * two &lt;code>Geometry&lt;/code>s match the elements in
+ * &lt;code>intersectionPattern&lt;/code>. The pattern is a 9-character string,
+ * with symbols drawn from the following set:
+ * &lt;UL>
+ * &lt;LI> 0 (dimension 0)
+ * &lt;LI> 1 (dimension 1)
+ * &lt;LI> 2 (dimension 2)
+ * &lt;LI> T ( matches 0, 1 or 2)
+ * &lt;LI> F ( matches FALSE)
+ * &lt;LI> * ( matches any value)
+ * &lt;/UL>
+ * For more information on the DE-9IM, see the &lt;i>OpenGIS Simple Features
+ * Specification&lt;/i>.
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @param {string}
+ *          intersectionPattern the pattern against which to check the
+ *          intersection matrix for the two &lt;code>Geometry&lt;/code>s.
+ * @return {boolean} &lt;code>true&lt;/code> if the DE-9IM intersection matrix for
+ *         the two &lt;code>Geometry&lt;/code>s match
+ *         &lt;code>intersectionPattern.&lt;/code>
+ * @see IntersectionMatrix
+ */
+jsts.geom.Geometry.prototype.relate = function(g, intersectionPattern) {
+  if (arguments.length === 1) {
+    return this.relate2.apply(this, arguments);
+  }
+
+  return this.relate2(g).matches(intersectionPattern);
+};
+
+
+/**
+ * Returns the DE-9IM {@link IntersectionMatrix} for the two
+ * &lt;code>Geometry&lt;/code>s.
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {IntersectionMatrix} an {@link IntersectionMatrix} describing the
+ *         intersections of the interiors, boundaries and exteriors of the two
+ *         &lt;code>Geometry&lt;/code>s.
+ */
+jsts.geom.Geometry.prototype.relate2 = function(g) {
+  this.checkNotGeometryCollection(this);
+  this.checkNotGeometryCollection(g);
+  return jsts.operation.relate.RelateOp.relate(this, g);
+};
+
+
+/**
+ * Tests whether this geometry is topologically equal to the argument geometry
+ * as defined by the SFS &lt;tt>equals&lt;/tt> predicate.
+ * &lt;p>
+ * The SFS &lt;code>equals&lt;/code> predicate has the following equivalent
+ * definitions:
+ * &lt;ul>
+ * &lt;li>The two geometries have at least one point in common, and no point of
+ * either geometry lies in the exterior of the other geometry.
+ * &lt;li>The DE-9IM Intersection Matrix for the two geometries matches the
+ * pattern &lt;tt>T*F**FFF*&lt;/tt>
+ * &lt;pre>
+ * T*F
+ * **F
+ * FF*
+ * &lt;/pre>
+ *
+ * &lt;/ul>
+ * &lt;b>Note&lt;/b> that this method computes &lt;b>topologically equality&lt;/b>. For
+ * structural equality, see {@link #equalsExact(Geometry)}.
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {boolean} &lt;code>true&lt;/code> if the two &lt;code>Geometry&lt;/code>s
+ *         are topologically equal.
+ *
+ * @see #equalsExact(Geometry)
+ */
+jsts.geom.Geometry.prototype.equalsTopo = function(g) {
+  // short-circuit test
+  if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
+    return false;
+  }
+  return this.relate(g).isEquals(this.getDimension(), g.getDimension());
+};
+
+
+/**
+ * Tests whether this geometry is structurally and numerically equal to a given
+ * &lt;tt>Object&lt;/tt>. If the argument &lt;tt>Object&lt;/tt> is not a
+ * &lt;tt>Geometry&lt;/tt>, the result is &lt;tt>false&lt;/tt>. Otherwise, the result
+ * is computed using {@link #equalsExact(Geometry)}.
+ * &lt;p>
+ * This method is provided to fulfill the Java contract for value-based object
+ * equality. In conjunction with {@link #hashCode()} it provides semantics which
+ * are most useful for using &lt;tt>Geometry&lt;/tt>s as keys and values in Java
+ * collections.
+ * &lt;p>
+ * Note that to produce the expected result the input geometries should be in
+ * normal form. It is the caller's responsibility to perform this where required
+ * (using {@link Geometry#norm() or {@link #normalize()} as appropriate).
+ *
+ * @param {Object}
+ *          o the Object to compare.
+ * @return {boolean} true if this geometry is exactly equal to the argument.
+ *
+ * @see #equalsExact(Geometry)
+ * @see #hashCode()
+ * @see #norm()
+ * @see #normalize()
+ */
+jsts.geom.Geometry.prototype.equals = function(o) {
+  if (o instanceof jsts.geom.Geometry || o instanceof jsts.geom.LinearRing ||
+      o instanceof jsts.geom.Polygon ||
+      o instanceof jsts.geom.GeometryCollection ||
+      o instanceof jsts.geom.MultiPoint ||
+      o instanceof jsts.geom.MultiLineString ||
+      o instanceof jsts.geom.MultiPolygon) {
+    return this.equalsExact(o);
+  }
+  return false;
+};
+
+/**
+ * Computes a buffer area around this geometry having the given width and with a
+ * specified accuracy of approximation for circular arcs, and using a specified
+ * end cap style.
+ * &lt;p>
+ * Mathematically-exact buffer area boundaries can contain circular arcs. To
+ * represent these arcs using linear geometry they must be approximated with
+ * line segments. The &lt;code>quadrantSegments&lt;/code> argument allows
+ * controlling the accuracy of the approximation by specifying the number of
+ * line segments used to represent a quadrant of a circle
+ * &lt;p>
+ * The end cap style specifies the buffer geometry that will be created at the
+ * ends of linestrings. The styles provided are:
+ * &lt;ul>
+ * &lt;li>&lt;tt>BufferOp.CAP_ROUND&lt;/tt> - (default) a semi-circle
+ * &lt;li>&lt;tt>BufferOp.CAP_BUTT&lt;/tt> - a straight line perpendicular to the end
+ * segment
+ * &lt;li>&lt;tt>BufferOp.CAP_SQUARE&lt;/tt> - a half-square
+ * &lt;/ul>
+ * &lt;p>
+ * The buffer operation always returns a polygonal result. The negative or
+ * zero-distance buffer of lines and points is always an empty {@link Polygon}.
+ * This is also the result for the buffers of degenerate (zero-area) polygons.
+ *
+ * @param {number}
+ *          distance the width of the buffer (may be positive, negative or 0).
+ * @param {number}
+ *          quadrantSegments the number of line segments used to represent a
+ *          quadrant of a circle.
+ * @param {number}
+ *          endCapStyle the end cap style to use.
+ * @return {Geometry} a polygonal geometry representing the buffer region (which
+ *         may be empty).
+ *
+ * @throws TopologyException
+ *           if a robustness error occurs
+ *
+ * @see #buffer(double)
+ * @see #buffer(double, int)
+ * @see BufferOp
+ */
+jsts.geom.Geometry.prototype.buffer = function(distance, quadrantSegments, endCapStyle) {
+  var params = new jsts.operation.buffer.BufferParameters(quadrantSegments, endCapStyle)
+  return jsts.operation.buffer.BufferOp.bufferOp2(this, distance, params);
+};
+
+
+/**
+ * Computes the smallest convex &lt;code>Polygon&lt;/code> that contains all the
+ * points in the &lt;code>Geometry&lt;/code>. This obviously applies only to
+ * &lt;code>Geometry&lt;/code> s which contain 3 or more points; the results for
+ * degenerate cases are specified as follows: &lt;TABLE>
+ * &lt;TR>
+ * &lt;TH> Number of &lt;code>Point&lt;/code>s in argument &lt;code>Geometry&lt;/code>
+ * &lt;/TH>
+ * &lt;TH> &lt;code>Geometry&lt;/code> class of result &lt;/TH>
+ * &lt;/TR>
+ * &lt;TR>
+ * &lt;TD> 0 &lt;/TD>
+ * &lt;TD> empty &lt;code>GeometryCollection&lt;/code> &lt;/TD>
+ * &lt;/TR>
+ * &lt;TR>
+ * &lt;TD> 1 &lt;/TD>
+ * &lt;TD> &lt;code>Point&lt;/code> &lt;/TD>
+ * &lt;/TR>
+ * &lt;TR>
+ * &lt;TD> 2 &lt;/TD>
+ * &lt;TD> &lt;code>LineString&lt;/code> &lt;/TD>
+ * &lt;/TR>
+ * &lt;TR>
+ * &lt;TD> 3 or more &lt;/TD>
+ * &lt;TD> &lt;code>Polygon&lt;/code> &lt;/TD>
+ * &lt;/TR>
+ * &lt;/TABLE>
+ *
+ * @return {Geometry} the minimum-area convex polygon containing this
+ *         &lt;code>Geometry&lt;/code>' s points.
+ */
+jsts.geom.Geometry.prototype.convexHull = function() {
+  return new jsts.algorithm.ConvexHull(this).getConvexHull();
+};
+
+
+/**
+ * Computes a &lt;code>Geometry&lt;/code> representing the points shared by this
+ * &lt;code>Geometry&lt;/code> and &lt;code>other&lt;/code>. {@link GeometryCollection}s
+ * support intersection with homogeneous collection types, with the semantics
+ * that the result is a {@link GeometryCollection} of the intersection of each
+ * element of the target with the argument.
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compute the
+ *          intersection.
+ * @return {Geometry} the points common to the two &lt;code>Geometry&lt;/code>s.
+ * @throws TopologyException
+ *           if a robustness error occurs
+ * @throws IllegalArgumentException
+ *           if the argument is a non-empty GeometryCollection
+ */
+jsts.geom.Geometry.prototype.intersection = function(other) {
+  /**
+   * TODO: MD - add optimization for P-A case using Point-In-Polygon
+   */
+  // special case: if one input is empty ==> empty
+  if (this.isEmpty()) {
+    return this.getFactory().createGeometryCollection(null);
+  }
+  if (other.isEmpty()) {
+    return this.getFactory().createGeometryCollection(null);
+  }
+
+  // compute for GCs
+  if (this.isGeometryCollection(this)) {
+    var g2 = other;
+    // TODO: probably not straightforward to port...
+    /*
+     * return GeometryCollectionMapper.map(this, new
+     * GeometryCollectionMapper.MapOp() { public Geometry map(Geometry g) {
+     * return g.intersection(g2); } });
+     */
+  }
+
+  this.checkNotGeometryCollection(this);
+  this.checkNotGeometryCollection(other);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.INTERSECTION);
+};
+
+
+/**
+ * Computes a &lt;code>Geometry&lt;/code> representing all the points in this
+ * &lt;code>Geometry&lt;/code> and &lt;code>other&lt;/code>.
+ *
+ * Or without arguments:
+ *
+ * Computes the union of all the elements of this geometry. Heterogeneous
+ * {@link GeometryCollection}s are fully supported.
+ *
+ * The result obeys the following contract:
+ * &lt;ul>
+ * &lt;li>Unioning a set of {@link LineString}s has the effect of fully noding
+ * and dissolving the linework.
+ * &lt;li>Unioning a set of {@link Polygon}s will always return a
+ * {@link Polygonal} geometry (unlike {link #union(Geometry)}, which may return
+ * geometrys of lower dimension if a topology collapse occurred.
+ * &lt;/ul>
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compute the union.
+ * @return {Geometry} a set combining the points of this &lt;code>Geometry&lt;/code>
+ *         and the points of &lt;code>other.&lt;/code>
+ * @throws TopologyException
+ *           if a robustness error occurs
+ * @throws IllegalArgumentException
+ *           if either input is a non-empty GeometryCollection
+ */
+jsts.geom.Geometry.prototype.union = function(other) {
+  if (arguments.length === 0) {
+    return jsts.operation.union.UnaryUnionOp.union(this);
+  }
+
+  // special case: if either input is empty ==> other input
+  if (this.isEmpty()) {
+    return other.clone();
+  }
+  if (other.isEmpty()) {
+    return this.clone();
+  }
+
+  // TODO: optimize if envelopes of geometries do not intersect
+
+  this.checkNotGeometryCollection(this);
+  this.checkNotGeometryCollection(other);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.UNION);
+};
+
+
+/**
+ * Computes a &lt;code>Geometry&lt;/code> representing the points making up this
+ * &lt;code>Geometry&lt;/code> that do not make up &lt;code>other&lt;/code>. This
+ * method returns the closure of the resultant &lt;code>Geometry&lt;/code>.
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compute the
+ *          difference.
+ * @return {Geometry} the point set difference of this &lt;code>Geometry&lt;/code>
+ *         with &lt;code>other.&lt;/code>
+ * @throws TopologyException
+ *           if a robustness error occurs
+ * @throws IllegalArgumentException
+ *           if either input is a non-empty GeometryCollection
+ */
+jsts.geom.Geometry.prototype.difference = function(other) {
+  // mod to handle empty cases better - return type of input
+  // if (this.isEmpty() || other.isEmpty()) return (Geometry) clone();
+
+  // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
+  if (this.isEmpty()) {
+    return this.getFactory().createGeometryCollection(null);
+  }
+  if (other.isEmpty()) {
+    return this.clone();
+  }
+
+  this.checkNotGeometryCollection(this);
+  this.checkNotGeometryCollection(other);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.DIFFERENCE);
+};
+
+
+/**
+ * Returns a set combining the points in this &lt;code>Geometry&lt;/code> not in
+ * &lt;code>other&lt;/code>, and the points in &lt;code>other&lt;/code> not in this
+ * &lt;code>Geometry&lt;/code>. This method returns the closure of the resultant
+ * &lt;code>Geometry&lt;/code>.
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compute the
+ *          symmetric difference.
+ * @return {Geometry} the point set symmetric difference of this
+ *         &lt;code>Geometry&lt;/code> with &lt;code>other.&lt;/code>
+ * @throws TopologyException
+ *           if a robustness error occurs
+ * @throws IllegalArgumentException
+ *           if either input is a non-empty GeometryCollection
+ */
+jsts.geom.Geometry.prototype.symDifference = function(other) {
+  // special case: if either input is empty ==> other input
+  if (this.isEmpty()) {
+    return other.clone();
+  }
+  if (other.isEmpty()) {
+    return this.clone();
+  }
+
+  this.checkNotGeometryCollection(this);
+  this.checkNotGeometryCollection(other);
+  return jsts.operation.overlay.snap.SnapIfNeededOverlayOp.overlayOp(this,
+      other, jsts.operation.overlay.OverlayOp.SYMDIFFERENCE);
+};
+
+/**
+ * Returns true if the two &lt;code>Geometry&lt;/code>s are exactly equal, up to a
+ * specified distance tolerance. Two Geometries are exactly equal within a
+ * distance tolerance if and only if:
+ * &lt;ul>
+ * &lt;li>they have the same class
+ * &lt;li>they have the same values for their vertices, within the given tolerance
+ * distance, in exactly the same order.
+ * &lt;/ul>
+ * If this and the other &lt;code>Geometry&lt;/code>s are composites and any
+ * children are not &lt;code>Geometry&lt;/code>s, returns &lt;code>false&lt;/code>.
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @param {number}
+ *          tolerance distance at or below which two &lt;code>Coordinate&lt;/code>s
+ *          are considered equal.
+ * @return {boolean}
+ */
+jsts.geom.Geometry.prototype.equalsExact = function(other, tolerance) {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+/**
+ * Tests whether two geometries are exactly equal in their normalized forms.
+ * This is a convenience method which creates normalized versions of both
+ * geometries before computing {@link #equalsExact(Geometry)}. This method is
+ * relatively expensive to compute. For maximum performance, the client should
+ * instead perform normalization itself at an appropriate point during
+ * execution.
+ *
+ * @param {Geometry}
+ *          g a Geometry.
+ * @return {boolean} true if the input geometries are exactly equal in their
+ *         normalized form.
+ */
+jsts.geom.Geometry.prototype.equalsNorm = function(g) {
+  if (g === null || g === undefined)
+    return false;
+  return this.norm().equalsExact(g.norm());
+};
+
+
+/**
+ * Performs an operation with or on this &lt;code>Geometry&lt;/code> and its
+ * subelement &lt;code>Geometry&lt;/code>s (if any). Only GeometryCollections and
+ * subclasses have subelement Geometry's.
+ *
+ * @param filter
+ *          the filter to apply to this &lt;code>Geometry&lt;/code> (and its
+ *          children, if it is a &lt;code>GeometryCollection&lt;/code>).
+ */
+jsts.geom.Geometry.prototype.apply = function(filter) {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+/**
+ * Creates and returns a full copy of this {@link Geometry} object (including
+ * all coordinates contained by it). Subclasses are responsible for overriding
+ * this method and copying their internal data. Overrides should call this
+ * method first.
+ *
+ * @return a clone of this instance.
+ */
+jsts.geom.Geometry.prototype.clone = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Converts this &lt;code>Geometry&lt;/code> to &lt;b>normal form&lt;/b> (or &lt;b>
+ * canonical form&lt;/b> ). Normal form is a unique representation for
+ * &lt;code>Geometry&lt;/code> s. It can be used to test whether two
+ * &lt;code>Geometry&lt;/code>s are equal in a way that is independent of the
+ * ordering of the coordinates within them. Normal form equality is a stronger
+ * condition than topological equality, but weaker than pointwise equality. The
+ * definitions for normal form use the standard lexicographical ordering for
+ * coordinates. "Sorted in order of coordinates" means the obvious extension of
+ * this ordering to sequences of coordinates.
+ */
+jsts.geom.Geometry.prototype.normalize = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+/**
+ * Creates a new Geometry which is a normalized copy of this Geometry.
+ *
+ * @return a normalized copy of this geometry.
+ * @see #normalize()
+ */
+jsts.geom.Geometry.prototype.norm = function() {
+  var copy = this.clone();
+  copy.normalize();
+  return copy;
+};
+
+
+/**
+ * Returns whether this &lt;code>Geometry&lt;/code> is greater than, equal to, or
+ * less than another &lt;code>Geometry&lt;/code>.
+ * &lt;P>
+ *
+ * If their classes are different, they are compared using the following
+ * ordering:
+ * &lt;UL>
+ * &lt;LI> Point (lowest)
+ * &lt;LI> MultiPoint
+ * &lt;LI> LineString
+ * &lt;LI> LinearRing
+ * &lt;LI> MultiLineString
+ * &lt;LI> Polygon
+ * &lt;LI> MultiPolygon
+ * &lt;LI> GeometryCollection (highest)
+ * &lt;/UL>
+ * If the two &lt;code>Geometry&lt;/code>s have the same class, their first
+ * elements are compared. If those are the same, the second elements are
+ * compared, etc.
+ *
+ * @param {Geometry}
+ *          other a &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return {number} a positive number, 0, or a negative number, depending on
+ *         whether this object is greater than, equal to, or less than
+ *         &lt;code>o&lt;/code>, as defined in "Normal Form For Geometry" in the
+ *         JTS Technical Specifications.
+ */
+jsts.geom.Geometry.prototype.compareTo = function(o) {
+  var other = o;
+  if (this.getClassSortIndex() !== other.getClassSortIndex()) {
+    return this.getClassSortIndex() - other.getClassSortIndex();
+  }
+  if (this.isEmpty() &amp;&amp; other.isEmpty()) {
+    return 0;
+  }
+  if (this.isEmpty()) {
+    return -1;
+  }
+  if (other.isEmpty()) {
+    return 1;
+  }
+  return this.compareToSameClass(o);
+};
+
+/**
+ * Returns whether the two &lt;code>Geometry&lt;/code>s are equal, from the point
+ * of view of the &lt;code>equalsExact&lt;/code> method. Called by
+ * &lt;code>equalsExact&lt;/code> . In general, two &lt;code>Geometry&lt;/code> classes
+ * are considered to be "equivalent" only if they are the same class. An
+ * exception is &lt;code>LineString&lt;/code> , which is considered to be equivalent
+ * to its subclasses.
+ *
+ * @param {Geometry}
+ *          other the &lt;code>Geometry&lt;/code> with which to compare this
+ *          &lt;code>Geometry&lt;/code> for equality.
+ * @return {boolean} &lt;code>true&lt;/code> if the classes of the two
+ *         &lt;code>Geometry&lt;/code> s are considered to be equal by the
+ *         &lt;code>equalsExact&lt;/code> method.
+ */
+jsts.geom.Geometry.prototype.isEquivalentClass = function(other) {
+  if (this instanceof jsts.geom.Point &amp;&amp; other instanceof jsts.geom.Point) {
+    return true;
+  } else if (this instanceof jsts.geom.LineString &amp;&amp;
+      (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
+    return true;
+  } else if (this instanceof jsts.geom.LinearRing &amp;&amp;
+      (other instanceof jsts.geom.LineString | other instanceof jsts.geom.LinearRing)) {
+    return true;
+  } else if (this instanceof jsts.geom.Polygon &amp;&amp;
+      (other instanceof jsts.geom.Polygon)) {
+    return true;
+  } else if (this instanceof jsts.geom.MultiPoint &amp;&amp;
+      (other instanceof jsts.geom.MultiPoint)) {
+    return true;
+  } else if (this instanceof jsts.geom.MultiLineString &amp;&amp;
+      (other instanceof jsts.geom.MultiLineString)) {
+    return true;
+  } else if (this instanceof jsts.geom.MultiPolygon &amp;&amp;
+      (other instanceof jsts.geom.MultiPolygon)) {
+    return true;
+  } else if (this instanceof jsts.geom.GeometryCollection &amp;&amp;
+      (other instanceof jsts.geom.GeometryCollection)) {
+    return true;
+  }
+
+  return false;
+};
+
+
+
+/**
+ * Throws an exception if &lt;code>g&lt;/code>'s class is
+ * &lt;code>GeometryCollection&lt;/code> . (Its subclasses do not trigger an
+ * exception).
+ *
+ * @param {Geometry}
+ *          g the &lt;code>Geometry&lt;/code> to check.
+ * @throws Error
+ *           if &lt;code>g&lt;/code> is a &lt;code>GeometryCollection&lt;/code> but not
+ *           one of its subclasses
+ */
+jsts.geom.Geometry.prototype.checkNotGeometryCollection = function(g) {
+  if (g.isGeometryCollectionBase()) {
+    throw new jsts.error.IllegalArgumentError(
+        'This method does not support GeometryCollection');
+  }
+};
+
+
+/**
+ *
+ * @return {boolean} true if this is a GeometryCollection.
+ */
+jsts.geom.Geometry.prototype.isGeometryCollection = function() {
+  return (this instanceof jsts.geom.GeometryCollection);
+};
+
+/**
+ *
+ * @return {boolean} true if this is a GeometryCollection but not subclass.
+ */
+jsts.geom.Geometry.prototype.isGeometryCollectionBase = function() {
+  return (this.CLASS_NAME === 'jsts.geom.GeometryCollection');
+};
+
+
+/**
+ * Returns the minimum and maximum x and y values in this &lt;code>Geometry&lt;/code>,
+ * or a null &lt;code>Envelope&lt;/code> if this &lt;code>Geometry&lt;/code> is empty.
+ * Unlike &lt;code>getEnvelopeInternal&lt;/code>, this method calculates the
+ * &lt;code>Envelope&lt;/code> each time it is called;
+ * &lt;code>getEnvelopeInternal&lt;/code> caches the result of this method.
+ *
+ * @return {Envelope} this &lt;code>Geometry&lt;/code>s bounding box; if the
+ *         &lt;code>Geometry&lt;/code> is empty, &lt;code>Envelope#isNull&lt;/code> will
+ *         return &lt;code>true.&lt;/code>
+ */
+jsts.geom.Geometry.prototype.computeEnvelopeInternal = function() {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+
+/**
+ * Returns whether this &lt;code>Geometry&lt;/code> is greater than, equal to, or
+ * less than another &lt;code>Geometry&lt;/code> having the same class.
+ *
+ * @param o
+ *          a &lt;code>Geometry&lt;/code> having the same class as this
+ *          &lt;code>Geometry.&lt;/code>
+ * @return a positive number, 0, or a negative number, depending on whether this
+ *         object is greater than, equal to, or less than &lt;code>o&lt;/code>, as
+ *         defined in "Normal Form For Geometry" in the JTS Technical
+ *         Specifications.
+ */
+jsts.geom.Geometry.prototype.compareToSameClass = function(o) {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+
+/**
+ * Returns the first non-zero result of &lt;code>compareTo&lt;/code> encountered as
+ * the two &lt;code>Collection&lt;/code>s are iterated over. If, by the time one of
+ * the iterations is complete, no non-zero result has been encountered, returns
+ * 0 if the other iteration is also complete. If &lt;code>b&lt;/code> completes
+ * before &lt;code>a&lt;/code>, a positive number is returned; if a before b, a
+ * negative number.
+ *
+ * @param {Array}
+ *          a a &lt;code>Collection&lt;/code> of &lt;code>Comparable&lt;/code>s.
+ * @param {Array}
+ *          b a &lt;code>Collection&lt;/code> of &lt;code>Comparable&lt;/code>s.
+ * @return {number} the first non-zero &lt;code>compareTo&lt;/code> result, if any;
+ *         otherwise, zero.
+ */
+jsts.geom.Geometry.prototype.compare = function(a, b) {
+  var i = a.iterator();
+  var j = b.iterator();
+  while (i.hasNext() &amp;&amp; j.hasNext()) {
+    var aElement = i.next();
+    var bElement = j.next();
+    var comparison = aElement.compareTo(bElement);
+    if (comparison !== 0) {
+      return comparison;
+    }
+  }
+  if (i.hasNext()) {
+    return 1;
+  }
+  if (j.hasNext()) {
+    return -1;
+  }
+  return 0;
+};
+
+
+/**
+ * @param {jsts.geom.Coordinate}
+ *          a first Coordinate to compare.
+ * @param {jsts.geom.Coordinate}
+ *          b second Coordinate to compare.
+ * @param {number}
+ *          tolerance tolerance when comparing.
+ * @return {boolean} true if equal.
+ */
+jsts.geom.Geometry.prototype.equal = function(a, b, tolerance) {
+  if (tolerance === undefined || tolerance === null || tolerance === 0) {
+    return a.equals(b);
+  }
+  return a.distance(b) &lt;= tolerance;
+};
+
+/**
+ * @private
+ */
+jsts.geom.Geometry.prototype.getClassSortIndex = function() {
+  var sortedClasses = [jsts.geom.Point, jsts.geom.MultiPoint,
+      jsts.geom.LineString, jsts.geom.LinearRing, jsts.geom.MultiLineString,
+      jsts.geom.Polygon, jsts.geom.MultiPolygon, jsts.geom.GeometryCollection];
+
+  for (var i = 0; i &lt; sortedClasses.length; i++) {
+    if (this instanceof sortedClasses[i])
+      return i;
+  }
+  jsts.util.Assert.shouldNeverReachHere('Class not supported: ' + this);
+  return -1;
+};
+
+jsts.geom.Geometry.prototype.toString = function() {
+  return new jsts.io.WKTWriter().write(this);
+};
+
+/**
+ * @return {Point}
+ * @private
+ */
+jsts.geom.Geometry.prototype.createPointFromInternalCoord = function(coord,
+    exemplar) {
+  exemplar.getPrecisionModel().makePrecise(coord);
+  return exemplar.getFactory().createPoint(coord);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="jsts.algorithm.Angle.html">Angle</a></li><li><a href="jsts.algorithm.BoundaryNodeRule.html">BoundaryNodeRule</a></li><li><a href="jsts.algorithm.CentralEndpointIntersector.html">CentralEndpointIntersector</a></li><li><a href="jsts.algorithm.Centroid.html">Centroid</a></li><li><a href="jsts.algorithm.CGAlgorithms.html">CGAlgorithms</a></li><li><a href="jsts.algorithm.ConvexHull.html">ConvexHull</a></li><li><a href="jsts.algorithm.HCoordinate.html">HCoordinate</a></li><li><a href="jsts.algorithm.InteriorPointArea.html">InteriorPointArea</a></li><li><a href="jsts.algorithm.InteriorPointLine.html">InteriorPointLine</a></li><li><a href="jsts.algorithm.InteriorPointPoint.html">InteriorPointPoint</a></li><li><a href="jsts.algorithm.LineIntersector.html">LineIntersector</a></li><li><a href="jsts.algorithm.locate.SimplePointInAreaLocator.html">SimplePointInAreaLocator</a></li><li><a href="jsts.algorithm.MCPointInRing.MCSelecter.html">MCSelecter</a></li><li><a href="jsts.algorithm.MinimumDiameter.html">MinimumDiameter</a></li><li><a href="jsts.algorithm.PointLocator.html">PointLocator</a></li><li><a href="jsts.algorithm.RayCrossingCounter.html">RayCrossingCounter</a></li><li><a href="jsts.algorithm.RobustDeterminant.html">RobustDeterminant</a></li><li><a href="jsts.algorithm.RobustLineIntersector.html">RobustLineIntersector</a></li><li><a href="jsts.algorithm.SafeBisectorFinder.html">SafeBisectorFinder</a></li><li><a href="jsts.error.AbstractMethodInvocationError.html">AbstractMethodInvocationError</a></li><li><a href="jsts.error.IllegalArgumentError.html">IllegalArgumentError</a></li><li><a href="jsts.error.NotImplementedError.html">NotImplementedError</a></li><li><a href="jsts.error.NotRepresentableError.html">NotRepresentableError</a></li><li><a href="jsts.error.TopologyError.html">TopologyError</a></li><li><a href="jsts.geom.Coordinate.html">Coordinate</a></li><li><a href="jsts.geom.CoordinateArrays.html">CoordinateArrays</a></li><li><a href="jsts.geom.CoordinateList.html">CoordinateList</a></li><li><a href="jsts.geom.Dimension.html">Dimension</a></li><li><a href="jsts.geom.Envelope.html">Envelope</a></li><li><a href="jsts.geom.Geometry.html">Geometry</a></li><li><a href="jsts.geom.GeometryCollection.html">GeometryCollection</a></li><li><a href="jsts.geom.GeometryFactory.html">GeometryFactory</a></li><li><a href="jsts.geom.IntersectionMatrix.html">IntersectionMatrix</a></li><li><a href="jsts.geom.LinearRing.html">LinearRing</a></li><li><a href="jsts.geom.LineSegment.html">LineSegment</a></li><li><a href="jsts.geom.LineString.html">LineString</a></li><li><a href="jsts.geom.Location.html">Location</a></li><li><a href="jsts.geom.MultiLineString.html">MultiLineString</a></li><li><a href="jsts.geom.MultiPoint.html">MultiPoint</a></li><li><a href="jsts.geom.MultiPolygon.html">MultiPolygon</a></li><li><a href="jsts.geom.Point.html">Point</a></li><li><a href="jsts.geom.Polygon.html">Polygon</a></li><li><a href="jsts.geom.PrecisionModel.html">PrecisionModel</a></li><li><a href="jsts.geom.Triangle.html">Triangle</a></li><li><a href="jsts.geom.util.GeometryCombiner.html">GeometryCombiner</a></li><li><a href="jsts.geom.util.GeometryExtracter.html">GeometryExtracter</a></li><li><a href="jsts.geom.util.LinearComponentExtracter.html">LinearComponentExtracter</a></li><li><a href="jsts.geom.util.PointExtracter.html">PointExtracter</a></li><li><a href="jsts.geom.util.PolygonExtracter.html">PolygonExtracter</a></li><li><a href="jsts.geomgraph.Depth.html">Depth</a></li><li><a href="jsts.geomgraph.DirectedEdge.html">DirectedEdge</a></li><li><a href="jsts.geomgraph.DirectedEdgeStar.html">DirectedEdgeStar</a></li><li><a href="jsts.geomgraph.Edge.html">Edge</a></li><li><a href="jsts.geomgraph.EdgeEnd.html">EdgeEnd</a></li><li><a href="jsts.geomgraph.EdgeEndStar.html">EdgeEndStar</a></li><li><a href="jsts.geomgraph.EdgeIntersection.html">EdgeIntersection</a></li><li><a href="jsts.geomgraph.EdgeIntersectionList.html">EdgeIntersectionList</a></li><li><a href="jsts.geomgraph.EdgeList.html">EdgeList</a></li><li><a href="jsts.geomgraph.EdgeRing.html">EdgeRing</a></li><li><a href="jsts.geomgraph.GraphComponent.html">GraphComponent</a></li><li><a href="jsts.geomgraph.index.EdgeSetIntersector.html">EdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.MonotoneChainEdge.html">MonotoneChainEdge</a></li><li><a href="jsts.geomgraph.index.MonotoneChainIndexer.html">MonotoneChainIndexer</a></li><li><a href="jsts.geomgraph.index.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleEdgeSetIntersector.html">SimpleEdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleMCSweepLineIntersector.html">SimpleMCSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleSweepLineIntersector.html">SimpleSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SweepLineEvent.html">SweepLineEvent</a></li><li><a href="jsts.geomgraph.index.SweepLineSegment.html">SweepLineSegment</a></li><li><a href="jsts.geomgraph.Label.html">Label</a></li><li><a href="jsts.geomgraph.Node.html">Node</a></li><li><a href="jsts.geomgraph.NodeFactory.html">NodeFactory</a></li><li><a href="jsts.geomgraph.NodeMap.html">NodeMap</a></li><li><a href="jsts.geomgraph.PlanarGraph.html">PlanarGraph</a></li><li><a href="jsts.geomgraph.Position.html">Position</a></li><li><a href="jsts.geomgraph.Quadrant.html">Quadrant</a></li><li><a href="jsts.geomgraph.TopologyLocation.html">TopologyLocation</a></li><li><a href="jsts.index.ArrayListVisitor.html">ArrayListVisitor</a></li><li><a href="jsts.index.chain.MonotoneChain.html">MonotoneChain</a></li><li><a href="jsts.index.chain.MonotoneChainBuilder.html">MonotoneChainBuilder</a></li><li><a href="jsts.index.chain.MonotoneChainOverlapAction.html">MonotoneChainOverlapAction</a></li><li><a href="jsts.index.chain.MonotoneChainSelectAction.html">MonotoneChainSelectAction</a></li><li><a href="jsts.index.DoubleBits.html">DoubleBits</a></li><li><a href="jsts.index.IntervalSize.html">IntervalSize</a></li><li><a href="jsts.index.kdtree.KdNode.html">KdNode</a></li><li><a href="jsts.index.kdtree.KdTree.html">KdTree</a></li><li><a href="jsts.index.quadtree.Key.html">Key</a></li><li><a href="jsts.index.quadtree.Node.html">Node</a></li><li><a href="jsts.index.quadtree.NodeBase.html">NodeBase</a></li><li><a href="jsts.index.quadtree.Quadtree.html">Quadtree</a></li><li><a href="jsts.index.quadtree.Root.html">Root</a></li><li><a href="jsts.index.strtree.AbstractSTRtree.IntersectsOp.html">IntersectsOp</a></li><li><a href="jsts.index.strtree.Interval.html">Interval</a></li><li><a href="jsts.index.strtree.ItemBoundable.html">ItemBoundable</a></li><li><a href="jsts.index.strtree.SIRtree.html">SIRtree</a></li><li><a href="jsts.index.strtree.STRtree.html">STRtree</a></li><li><a href="jsts.io.GeoJSONReader.html">GeoJSONReader</a></li><li><a href="jsts.io.GeoJSONWriter.html">GeoJSONWriter</a></li><li><a href="jsts.io.WKTReader.html">WKTReader</a></li><li><a href="jsts.io.WKTWriter.html">WKTWriter</a></li><li><a href="jsts.noding.BasicSegmentString.html">BasicSegmentString</a></li><li><a href="jsts.noding.InteriorIntersectionFinder.html">InteriorIntersectionFinder</a></li><li><a href="jsts.noding.IntersectionAdder.html">IntersectionAdder</a></li><li><a href="jsts.noding.MCIndexNoder.html">MCIndexNoder</a></li><li><a href="jsts.noding.NodedSegmentString.html">NodedSegmentString</a></li><li><a href="jsts.noding.Octant.html">Octant</a></li><li><a href="jsts.noding.SegmentNode.html">SegmentNode</a></li><li><a href="jsts.noding.SegmentNodeList.html">SegmentNodeList</a></li><li><a href="jsts.operation.buffer.BufferBuilder.html">BufferBuilder</a></li><li><a href="jsts.operation.buffer.BufferInputLineSimplifier.html">BufferInputLineSimplifier</a></li><li><a href="jsts.operation.buffer.BufferOp.html">BufferOp</a></li><li><a href="jsts.operation.buffer.BufferParameters.html">BufferParameters</a></li><li><a href="jsts.operation.buffer.BufferSubgraph.html">BufferSubgraph</a></li><li><a href="jsts.operation.buffer.OffsetCurveBuilder.html">OffsetCurveBuilder</a></li><li><a href="jsts.operation.buffer.OffsetCurveSetBuilder.html">OffsetCurveSetBuilder</a></li><li><a href="jsts.operation.buffer.OffsetSegmentGenerator.html">OffsetSegmentGenerator</a></li><li><a href="jsts.operation.buffer.OffsetSegmentString.html">OffsetSegmentString</a></li><li><a href="jsts.operation.buffer.RightmostEdgeFinder.html">RightmostEdgeFinder</a></li><li><a href="jsts.operation.buffer.SubgraphDepthLocater.html">SubgraphDepthLocater</a></li><li><a href="jsts.operation.distance.ConnectedElementLocationFilter.html">ConnectedElementLocationFilter</a></li><li><a href="jsts.operation.distance.DistanceOp.html">DistanceOp</a></li><li><a href="jsts.operation.distance.GeometryLocation.html">GeometryLocation</a></li><li><a href="jsts.operation.GeometryGraphOperation.html">GeometryGraphOperation</a></li><li><a href="jsts.operation.IsSimpleOp.html">IsSimpleOp</a></li><li><a href="jsts.operation.IsSimpleOp.EndpointInfo.html">EndpointInfo</a></li><li><a href="jsts.operation.linemerge.EdgeString.html">EdgeString</a></li><li><a href="jsts.operation.linemerge.LineMergeDirectedEdge.html">LineMergeDirectedEdge</a></li><li><a href="jsts.operation.linemerge.LineMergeEdge.html">LineMergeEdge</a></li><li><a href="jsts.operation.linemerge.LineMerger.html">LineMerger</a></li><li><a href="jsts.operation.overlay.MaximalEdgeRing.html">MaximalEdgeRing</a></li><li><a href="jsts.operation.overlay.MinimalEdgeRing.html">MinimalEdgeRing</a></li><li><a href="jsts.operation.overlay.OverlayNodeFactory.html">OverlayNodeFactory</a></li><li><a href="jsts.operation.relate.EdgeEndBuilder.html">EdgeEndBuilder</a></li><li><a href="jsts.operation.relate.EdgeEndBundle.html">EdgeEndBundle</a></li><li><a href="jsts.operation.relate.EdgeEndBundleStar.html">EdgeEndBundleStar</a></li><li><a href="jsts.operation.relate.RelateComputer.html">RelateComputer</a></li><li><a href="jsts.operation.relate.RelateNode.html">RelateNode</a></li><li><a href="jsts.operation.relate.RelateNodeFactory.html">RelateNodeFactory</a></li><li><a href="jsts.operation.relate.RelateNodeGraph.html">RelateNodeGraph</a></li><li><a href="jsts.operation.relate.RelateOp.html">RelateOp</a></li><li><a href="jsts.operation.union.CascadedPolygonUnion.html">CascadedPolygonUnion</a></li><li><a href="jsts.operation.union.PointGeometryUnion.html">PointGeometryUnion</a></li><li><a href="jsts.operation.union.UnaryUnionOp.html">UnaryUnionOp</a></li><li><a href="jsts.operation.union.UnionInteracting.html">UnionInteracting</a></li><li><a href="jsts.operation.valid.ConnectedInteriorTester.html">ConnectedInteriorTester</a></li><li><a href="jsts.operation.valid.IsValidOp.html">IsValidOp</a></li><li><a href="jsts.precision.CommonBits.html">CommonBits</a></li><li><a href="jsts.precision.CommonBitsOp.html">CommonBitsOp</a></li><li><a href="jsts.precision.CommonBitsRemover.html">CommonBitsRemover</a></li><li><a href="jsts.precision.CommonCoordinateFilter.html">CommonCoordinateFilter</a></li><li><a href="jsts.precision.EnhancedPrecisionOp.html">EnhancedPrecisionOp</a></li><li><a href="jsts.precision.Translater.html">Translater</a></li><li><a href="jsts.simplify.DouglasPeuckerLineSimplifier.html">DouglasPeuckerLineSimplifier</a></li><li><a href="jsts.simplify.DouglasPeuckerSimplifier.html">DouglasPeuckerSimplifier</a></li><li><a href="jsts.simplify.DPTransformer.html">DPTransformer</a></li><li><a href="jsts.triangulate.DelaunayTriangulationBuilder.html">DelaunayTriangulationBuilder</a></li><li><a href="jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.html">LastFoundQuadEdgeLocator</a></li><li><a href="jsts.triangulate.quadedge.QuadEdge.html">QuadEdge</a></li><li><a href="jsts.triangulate.quadedge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></li><li><a href="jsts.triangulate.quadedge.TrianglePredicate.html">TrianglePredicate</a></li><li><a href="jsts.triangulate.quadedge.Vertex.html">Vertex</a></li><li><a href="jsts.triangulate.VoronoiDiagramBuilder.html">VoronoiDiagramBuilder</a></li><li><a href="jsts.util.Assert.html">Assert</a></li><li><a href="jsts.util.UniqueCoordinateArrayFilter.html">UniqueCoordinateArrayFilter</a></li><li><a href="message.html">message</a></li></ul><h3>Namespaces</h3><ul><li><a href="jsts.html">jsts</a></li><li><a href="jsts.algorithm.html">algorithm</a></li><li><a href="jsts.algorithm.distance.html">distance</a></li><li><a href="jsts.algorithm.locate.html">locate</a></li><li><a href="jsts.densify.html">densify</a></li><li><a href="jsts.error.html">error</a></li><li><a href="jsts.geom.html">geom</a></li><li><a href="jsts.geom.util.html">util</a></li><li><a href="jsts.geomgraph.html">geomgraph</a></li><li><a href="jsts.geomgraph.index.html">index</a></li><li><a href="jsts.index.html">index</a></li><li><a href="jsts.index.bintree.html">bintree</a></li><li><a href="jsts.index.chain.html">chain</a></li><li><a href="jsts.index.kdtree.html">kdtree</a></li><li><a href="jsts.index.quadtree.html">quadtree</a></li><li><a href="jsts.index.strtree.html">strtree</a></li><li><a href="jsts.io.html">io</a></li><li><a href="jsts.noding.html">noding</a></li><li><a href="jsts.noding.snapround.html">snapround</a></li><li><a href="jsts.operation.html">operation</a></li><li><a href="jsts.operation.buffer.html">buffer</a></li><li><a href="jsts.operation.distance.html">distance</a></li><li><a href="jsts.operation.linemerge.html">linemerge</a></li><li><a href="jsts.operation.overlay.html">overlay</a></li><li><a href="jsts.operation.overlay.snap.html">snap</a></li><li><a href="jsts.operation.polygonize.html">polygonize</a></li><li><a href="jsts.operation.predicate.html">predicate</a></li><li><a href="jsts.operation.relate.html">relate</a></li><li><a href="jsts.operation.union.html">union</a></li><li><a href="jsts.operation.valid.html">valid</a></li><li><a href="jsts.planargraph.html">planargraph</a></li><li><a href="jsts.precision.html">precision</a></li><li><a href="jsts.simplify.html">simplify</a></li><li><a href="jsts.triangulate.html">triangulate</a></li><li><a href="jsts.triangulate.quadedge.html">quadedge</a></li><li><a href="jsts.util.html">util</a></li></ul><h3>Interfaces</h3><ul><li><a href="jsts.geom.CoordinateFilter.html">CoordinateFilter</a></li><li><a href="jsts.index.ItemVisitor.html">ItemVisitor</a></li><li><a href="jsts.index.SpatialIndex.html">SpatialIndex</a></li><li><a href="jsts.index.strtree.AbstractNode.html">AbstractNode</a></li><li><a href="jsts.index.strtree.Boundable.html">Boundable</a></li><li><a href="jsts.noding.NodableSegmentString.html">NodableSegmentString</a></li><li><a href="jsts.noding.Noder.html">Noder</a></li><li><a href="jsts.noding.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.noding.SegmentString.html">SegmentString</a></li><li><a href="jsts.noding.SinglePassNoder.html">SinglePassNoder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

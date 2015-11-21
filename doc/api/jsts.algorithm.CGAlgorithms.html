@@ -1,0 +1,3064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: CGAlgorithms</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: CGAlgorithms</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.algorithm.html">.algorithm</a>.</span>CGAlgorithms</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="CGAlgorithms"><span class="type-signature"></span>new CGAlgorithms<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Specifies and implements various fundamental Computational Geometric
+algorithms. The algorithms supplied in this class are robust for
+double-precision floating point.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".CLOCKWISE"><span class="type-signature">(static) </span>CLOCKWISE<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A value that indicates an orientation of clockwise, or a right turn.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".COLLINEAR"><span class="type-signature">(static) </span>COLLINEAR<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A value that indicates an orientation of collinear, or no turn (straight).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".COUNTERCLOCKWISE"><span class="type-signature">(static) </span>COUNTERCLOCKWISE<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A value that indicates an orientation of counterclockwise, or a left turn.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line36">line 36</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".LEFT"><span class="type-signature">(static) </span>LEFT<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A value that indicates an orientation of counterclockwise, or a left turn.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".RIGHT"><span class="type-signature">(static) </span>RIGHT<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A value that indicates an orientation of clockwise, or a right turn.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line30">line 30</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".STRAIGHT"><span class="type-signature">(static) </span>STRAIGHT<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A value that indicates an orientation of collinear, or no turn (straight).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".computeLength"><span class="type-signature">(static) </span>computeLength<span class="signature">(pts)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the length of a linestring specified by a sequence of points.
+
+NOTE: This is renamed from length() to computeLength() because 'length' is a
+reserved keyword in javascript.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pts</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line560">line 560</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the length of the linestring.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".computeOrientation"><span class="type-signature">(static) </span>computeOrientation<span class="signature">(p1, p2, q)</span><span class="type-signature"> &rarr; {Number|Number|Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the orientation of a point q to the directed line segment p1-p2. The
+orientation of a point relative to a directed line segment indicates which
+way you turn to get to q after travelling from p1 to p2.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">First coordinate of the linesegment.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>p2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Second coordinate of the linesegment.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>q</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The point to calculate orientation of.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line284">line 284</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    1 if q is counter-clockwise from p1-p2.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    -1 if q is clockwise from p1-p2.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    0 if q is collinear with p1-p2.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".distanceLineLine"><span class="type-signature">(static) </span>distanceLineLine<span class="signature">(A, B, C, D)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the distance from a line segment AB to a line segment CD
+
+Note: NON-ROBUST!
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>A</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a point of one line.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>B</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second point of (must be different to A).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>C</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">one point of the line.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>D</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another point of the line (must be different to A).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line422">line 422</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the distance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".distancePointLine"><span class="type-signature">(static) </span>distancePointLine<span class="signature">(p, A, B)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the distance from a point p to a line segment AB
+
+Note: NON-ROBUST!
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the point to compute the distance for.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>A</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">one point of the line.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>B</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another point of the line (must be different to A).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line302">line 302</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the distance from p to line segment AB.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".distancePointLine2"><span class="type-signature">(static) </span>distancePointLine2<span class="signature">(p, line)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the distance from a point to a sequence of line segments.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a point.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>line</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line389">line 389</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the minimum distance between the point and the line
+        segments.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".distancePointLinePerpendicular"><span class="type-signature">(static) </span>distancePointLinePerpendicular<span class="signature">(p, A, B)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the perpendicular distance from a point p to the (infinite) line
+containing the points AB
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the point to compute the distance for.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>A</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">one point of the line.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>B</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another point of the line (must be different to A).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line361">line 361</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the distance from p to line AB.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isCCW"><span class="type-signature">(static) </span>isCCW<span class="signature">(ring)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes whether a ring defined by an array of Coordinates is
+oriented counter-clockwise.
+<ul>
+<li>The list of points is assumed to have the first and last points equal.
+<li>This will handle coordinate lists which contain repeated points.
+</ul>
+This algorithm is <b>only</b> guaranteed to work with valid rings. If the
+ring is invalid (e.g. self-crosses or touches), the computed result may not
+be correct.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ring</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line191">line 191</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        IllegalArgumentException
+          if there are too few points to determine orientation (< 3)
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if the ring is oriented counter-clockwise.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isOnLine"><span class="type-signature">(static) </span>isOnLine<span class="signature">(p, pt)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Tests whether a point lies on the line segments defined by a list of
+coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the coordinate to test.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pt</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if the point is a vertex of the line or lies in the
+        interior of a line segment in the linestring.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isPointInRing"><span class="type-signature">(static) </span>isPointInRing<span class="signature">(p, ring)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Tests whether a point lies inside or on a ring. The ring may be oriented in
+either direction. A point lying exactly on the ring boundary is considered to
+be inside the ring.
+<p>
+This method does <i>not</i> first check the point against the envelope of
+the ring.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">point to check for ring inclusion.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ring</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>locatePointInRing</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if p is inside ring.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".length"><span class="type-signature">(static) </span>length<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line596">line 596</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>{jsts.algorithm.CGAlgorithms.computeLength} Since 'length' is a reserved
+     keyword in javascript this function does not act as a function. Please
+     use 'computeLength' instead.</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".locatePointInRing"><span class="type-signature">(static) </span>locatePointInRing<span class="signature">(p, ring)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Location.html">jsts.geom.Location</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Determines whether a point lies in the interior, on the boundary, or in the
+exterior of a ring. The ring may be oriented in either direction.
+<p>
+This method does <i>not</i> first check the point against the envelope of
+the ring.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">point to check for ring inclusion.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ring</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the Location of p relative to the ring.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Location.html">jsts.geom.Location</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".orientationIndex"><span class="type-signature">(static) </span>orientationIndex<span class="signature">(p1, p2, q)</span><span class="type-signature"> &rarr; {Number|Number|Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns the index of the direction of the point <code>q</code> relative to
+a vector specified by <code>p1-p2</code>.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the origin point of the vector.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>p2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the final point of the vector.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>q</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the point to compute the direction to.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    1 if q is counter-clockwise (left) from p1-p2.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    -1 if q is clockwise (right) from p1-p2.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    0 if q is collinear with p1-p2.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".signedArea"><span class="type-signature">(static) </span>signedArea<span class="signature">(ring)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the signed area for a ring. The signed area is:
+<ul>
+<li>positive if the ring is oriented CW
+<li>negative if the ring is oriented CCW
+<li>zero if the ring is degenerate or flat
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ring</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line524">line 524</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the signed area of the ring.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".signedArea"><span class="type-signature">(static) </span>signedArea<span class="signature">(ring)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the signed area for a ring. The signed area is positive if the ring
+is oriented CW, negative if the ring is oriented CCW, and zero if the ring is
+degenerate or flat.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ring</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CGAlgorithms.js.html">jsts/algorithm/CGAlgorithms.js</a>, <a href="jsts_algorithm_CGAlgorithms.js.html#line492">line 492</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the signed area of the ring.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="jsts.algorithm.Angle.html">Angle</a></li><li><a href="jsts.algorithm.BoundaryNodeRule.html">BoundaryNodeRule</a></li><li><a href="jsts.algorithm.CentralEndpointIntersector.html">CentralEndpointIntersector</a></li><li><a href="jsts.algorithm.Centroid.html">Centroid</a></li><li><a href="jsts.algorithm.CGAlgorithms.html">CGAlgorithms</a></li><li><a href="jsts.algorithm.ConvexHull.html">ConvexHull</a></li><li><a href="jsts.algorithm.HCoordinate.html">HCoordinate</a></li><li><a href="jsts.algorithm.InteriorPointArea.html">InteriorPointArea</a></li><li><a href="jsts.algorithm.InteriorPointLine.html">InteriorPointLine</a></li><li><a href="jsts.algorithm.InteriorPointPoint.html">InteriorPointPoint</a></li><li><a href="jsts.algorithm.LineIntersector.html">LineIntersector</a></li><li><a href="jsts.algorithm.locate.SimplePointInAreaLocator.html">SimplePointInAreaLocator</a></li><li><a href="jsts.algorithm.MCPointInRing.MCSelecter.html">MCSelecter</a></li><li><a href="jsts.algorithm.MinimumDiameter.html">MinimumDiameter</a></li><li><a href="jsts.algorithm.PointLocator.html">PointLocator</a></li><li><a href="jsts.algorithm.RayCrossingCounter.html">RayCrossingCounter</a></li><li><a href="jsts.algorithm.RobustDeterminant.html">RobustDeterminant</a></li><li><a href="jsts.algorithm.RobustLineIntersector.html">RobustLineIntersector</a></li><li><a href="jsts.algorithm.SafeBisectorFinder.html">SafeBisectorFinder</a></li><li><a href="jsts.error.AbstractMethodInvocationError.html">AbstractMethodInvocationError</a></li><li><a href="jsts.error.IllegalArgumentError.html">IllegalArgumentError</a></li><li><a href="jsts.error.NotImplementedError.html">NotImplementedError</a></li><li><a href="jsts.error.NotRepresentableError.html">NotRepresentableError</a></li><li><a href="jsts.error.TopologyError.html">TopologyError</a></li><li><a href="jsts.geom.Coordinate.html">Coordinate</a></li><li><a href="jsts.geom.CoordinateArrays.html">CoordinateArrays</a></li><li><a href="jsts.geom.CoordinateList.html">CoordinateList</a></li><li><a href="jsts.geom.Dimension.html">Dimension</a></li><li><a href="jsts.geom.Envelope.html">Envelope</a></li><li><a href="jsts.geom.Geometry.html">Geometry</a></li><li><a href="jsts.geom.GeometryCollection.html">GeometryCollection</a></li><li><a href="jsts.geom.GeometryFactory.html">GeometryFactory</a></li><li><a href="jsts.geom.IntersectionMatrix.html">IntersectionMatrix</a></li><li><a href="jsts.geom.LinearRing.html">LinearRing</a></li><li><a href="jsts.geom.LineSegment.html">LineSegment</a></li><li><a href="jsts.geom.LineString.html">LineString</a></li><li><a href="jsts.geom.Location.html">Location</a></li><li><a href="jsts.geom.MultiLineString.html">MultiLineString</a></li><li><a href="jsts.geom.MultiPoint.html">MultiPoint</a></li><li><a href="jsts.geom.MultiPolygon.html">MultiPolygon</a></li><li><a href="jsts.geom.Point.html">Point</a></li><li><a href="jsts.geom.Polygon.html">Polygon</a></li><li><a href="jsts.geom.PrecisionModel.html">PrecisionModel</a></li><li><a href="jsts.geom.Triangle.html">Triangle</a></li><li><a href="jsts.geom.util.GeometryCombiner.html">GeometryCombiner</a></li><li><a href="jsts.geom.util.GeometryExtracter.html">GeometryExtracter</a></li><li><a href="jsts.geom.util.LinearComponentExtracter.html">LinearComponentExtracter</a></li><li><a href="jsts.geom.util.PointExtracter.html">PointExtracter</a></li><li><a href="jsts.geom.util.PolygonExtracter.html">PolygonExtracter</a></li><li><a href="jsts.geomgraph.Depth.html">Depth</a></li><li><a href="jsts.geomgraph.DirectedEdge.html">DirectedEdge</a></li><li><a href="jsts.geomgraph.DirectedEdgeStar.html">DirectedEdgeStar</a></li><li><a href="jsts.geomgraph.Edge.html">Edge</a></li><li><a href="jsts.geomgraph.EdgeEnd.html">EdgeEnd</a></li><li><a href="jsts.geomgraph.EdgeEndStar.html">EdgeEndStar</a></li><li><a href="jsts.geomgraph.EdgeIntersection.html">EdgeIntersection</a></li><li><a href="jsts.geomgraph.EdgeIntersectionList.html">EdgeIntersectionList</a></li><li><a href="jsts.geomgraph.EdgeList.html">EdgeList</a></li><li><a href="jsts.geomgraph.EdgeRing.html">EdgeRing</a></li><li><a href="jsts.geomgraph.GraphComponent.html">GraphComponent</a></li><li><a href="jsts.geomgraph.index.EdgeSetIntersector.html">EdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.MonotoneChainEdge.html">MonotoneChainEdge</a></li><li><a href="jsts.geomgraph.index.MonotoneChainIndexer.html">MonotoneChainIndexer</a></li><li><a href="jsts.geomgraph.index.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleEdgeSetIntersector.html">SimpleEdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleMCSweepLineIntersector.html">SimpleMCSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleSweepLineIntersector.html">SimpleSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SweepLineEvent.html">SweepLineEvent</a></li><li><a href="jsts.geomgraph.index.SweepLineSegment.html">SweepLineSegment</a></li><li><a href="jsts.geomgraph.Label.html">Label</a></li><li><a href="jsts.geomgraph.Node.html">Node</a></li><li><a href="jsts.geomgraph.NodeFactory.html">NodeFactory</a></li><li><a href="jsts.geomgraph.NodeMap.html">NodeMap</a></li><li><a href="jsts.geomgraph.PlanarGraph.html">PlanarGraph</a></li><li><a href="jsts.geomgraph.Position.html">Position</a></li><li><a href="jsts.geomgraph.Quadrant.html">Quadrant</a></li><li><a href="jsts.geomgraph.TopologyLocation.html">TopologyLocation</a></li><li><a href="jsts.index.ArrayListVisitor.html">ArrayListVisitor</a></li><li><a href="jsts.index.chain.MonotoneChain.html">MonotoneChain</a></li><li><a href="jsts.index.chain.MonotoneChainBuilder.html">MonotoneChainBuilder</a></li><li><a href="jsts.index.chain.MonotoneChainOverlapAction.html">MonotoneChainOverlapAction</a></li><li><a href="jsts.index.chain.MonotoneChainSelectAction.html">MonotoneChainSelectAction</a></li><li><a href="jsts.index.DoubleBits.html">DoubleBits</a></li><li><a href="jsts.index.IntervalSize.html">IntervalSize</a></li><li><a href="jsts.index.kdtree.KdNode.html">KdNode</a></li><li><a href="jsts.index.kdtree.KdTree.html">KdTree</a></li><li><a href="jsts.index.quadtree.Key.html">Key</a></li><li><a href="jsts.index.quadtree.Node.html">Node</a></li><li><a href="jsts.index.quadtree.NodeBase.html">NodeBase</a></li><li><a href="jsts.index.quadtree.Quadtree.html">Quadtree</a></li><li><a href="jsts.index.quadtree.Root.html">Root</a></li><li><a href="jsts.index.strtree.AbstractSTRtree.IntersectsOp.html">IntersectsOp</a></li><li><a href="jsts.index.strtree.Interval.html">Interval</a></li><li><a href="jsts.index.strtree.ItemBoundable.html">ItemBoundable</a></li><li><a href="jsts.index.strtree.SIRtree.html">SIRtree</a></li><li><a href="jsts.index.strtree.STRtree.html">STRtree</a></li><li><a href="jsts.io.GeoJSONReader.html">GeoJSONReader</a></li><li><a href="jsts.io.GeoJSONWriter.html">GeoJSONWriter</a></li><li><a href="jsts.io.WKTReader.html">WKTReader</a></li><li><a href="jsts.io.WKTWriter.html">WKTWriter</a></li><li><a href="jsts.noding.BasicSegmentString.html">BasicSegmentString</a></li><li><a href="jsts.noding.InteriorIntersectionFinder.html">InteriorIntersectionFinder</a></li><li><a href="jsts.noding.IntersectionAdder.html">IntersectionAdder</a></li><li><a href="jsts.noding.MCIndexNoder.html">MCIndexNoder</a></li><li><a href="jsts.noding.NodedSegmentString.html">NodedSegmentString</a></li><li><a href="jsts.noding.Octant.html">Octant</a></li><li><a href="jsts.noding.SegmentNode.html">SegmentNode</a></li><li><a href="jsts.noding.SegmentNodeList.html">SegmentNodeList</a></li><li><a href="jsts.operation.buffer.BufferBuilder.html">BufferBuilder</a></li><li><a href="jsts.operation.buffer.BufferInputLineSimplifier.html">BufferInputLineSimplifier</a></li><li><a href="jsts.operation.buffer.BufferOp.html">BufferOp</a></li><li><a href="jsts.operation.buffer.BufferParameters.html">BufferParameters</a></li><li><a href="jsts.operation.buffer.BufferSubgraph.html">BufferSubgraph</a></li><li><a href="jsts.operation.buffer.OffsetCurveBuilder.html">OffsetCurveBuilder</a></li><li><a href="jsts.operation.buffer.OffsetCurveSetBuilder.html">OffsetCurveSetBuilder</a></li><li><a href="jsts.operation.buffer.OffsetSegmentGenerator.html">OffsetSegmentGenerator</a></li><li><a href="jsts.operation.buffer.OffsetSegmentString.html">OffsetSegmentString</a></li><li><a href="jsts.operation.buffer.RightmostEdgeFinder.html">RightmostEdgeFinder</a></li><li><a href="jsts.operation.buffer.SubgraphDepthLocater.html">SubgraphDepthLocater</a></li><li><a href="jsts.operation.distance.ConnectedElementLocationFilter.html">ConnectedElementLocationFilter</a></li><li><a href="jsts.operation.distance.DistanceOp.html">DistanceOp</a></li><li><a href="jsts.operation.distance.GeometryLocation.html">GeometryLocation</a></li><li><a href="jsts.operation.GeometryGraphOperation.html">GeometryGraphOperation</a></li><li><a href="jsts.operation.IsSimpleOp.html">IsSimpleOp</a></li><li><a href="jsts.operation.IsSimpleOp.EndpointInfo.html">EndpointInfo</a></li><li><a href="jsts.operation.linemerge.EdgeString.html">EdgeString</a></li><li><a href="jsts.operation.linemerge.LineMergeDirectedEdge.html">LineMergeDirectedEdge</a></li><li><a href="jsts.operation.linemerge.LineMergeEdge.html">LineMergeEdge</a></li><li><a href="jsts.operation.linemerge.LineMerger.html">LineMerger</a></li><li><a href="jsts.operation.overlay.MaximalEdgeRing.html">MaximalEdgeRing</a></li><li><a href="jsts.operation.overlay.MinimalEdgeRing.html">MinimalEdgeRing</a></li><li><a href="jsts.operation.overlay.OverlayNodeFactory.html">OverlayNodeFactory</a></li><li><a href="jsts.operation.relate.EdgeEndBuilder.html">EdgeEndBuilder</a></li><li><a href="jsts.operation.relate.EdgeEndBundle.html">EdgeEndBundle</a></li><li><a href="jsts.operation.relate.EdgeEndBundleStar.html">EdgeEndBundleStar</a></li><li><a href="jsts.operation.relate.RelateComputer.html">RelateComputer</a></li><li><a href="jsts.operation.relate.RelateNode.html">RelateNode</a></li><li><a href="jsts.operation.relate.RelateNodeFactory.html">RelateNodeFactory</a></li><li><a href="jsts.operation.relate.RelateNodeGraph.html">RelateNodeGraph</a></li><li><a href="jsts.operation.relate.RelateOp.html">RelateOp</a></li><li><a href="jsts.operation.union.CascadedPolygonUnion.html">CascadedPolygonUnion</a></li><li><a href="jsts.operation.union.PointGeometryUnion.html">PointGeometryUnion</a></li><li><a href="jsts.operation.union.UnaryUnionOp.html">UnaryUnionOp</a></li><li><a href="jsts.operation.union.UnionInteracting.html">UnionInteracting</a></li><li><a href="jsts.operation.valid.ConnectedInteriorTester.html">ConnectedInteriorTester</a></li><li><a href="jsts.operation.valid.IsValidOp.html">IsValidOp</a></li><li><a href="jsts.precision.CommonBits.html">CommonBits</a></li><li><a href="jsts.precision.CommonBitsOp.html">CommonBitsOp</a></li><li><a href="jsts.precision.CommonBitsRemover.html">CommonBitsRemover</a></li><li><a href="jsts.precision.CommonCoordinateFilter.html">CommonCoordinateFilter</a></li><li><a href="jsts.precision.EnhancedPrecisionOp.html">EnhancedPrecisionOp</a></li><li><a href="jsts.precision.Translater.html">Translater</a></li><li><a href="jsts.simplify.DouglasPeuckerLineSimplifier.html">DouglasPeuckerLineSimplifier</a></li><li><a href="jsts.simplify.DouglasPeuckerSimplifier.html">DouglasPeuckerSimplifier</a></li><li><a href="jsts.simplify.DPTransformer.html">DPTransformer</a></li><li><a href="jsts.triangulate.DelaunayTriangulationBuilder.html">DelaunayTriangulationBuilder</a></li><li><a href="jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.html">LastFoundQuadEdgeLocator</a></li><li><a href="jsts.triangulate.quadedge.QuadEdge.html">QuadEdge</a></li><li><a href="jsts.triangulate.quadedge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></li><li><a href="jsts.triangulate.quadedge.TrianglePredicate.html">TrianglePredicate</a></li><li><a href="jsts.triangulate.quadedge.Vertex.html">Vertex</a></li><li><a href="jsts.triangulate.VoronoiDiagramBuilder.html">VoronoiDiagramBuilder</a></li><li><a href="jsts.util.Assert.html">Assert</a></li><li><a href="jsts.util.UniqueCoordinateArrayFilter.html">UniqueCoordinateArrayFilter</a></li><li><a href="message.html">message</a></li></ul><h3>Namespaces</h3><ul><li><a href="jsts.html">jsts</a></li><li><a href="jsts.algorithm.html">algorithm</a></li><li><a href="jsts.algorithm.distance.html">distance</a></li><li><a href="jsts.algorithm.locate.html">locate</a></li><li><a href="jsts.densify.html">densify</a></li><li><a href="jsts.error.html">error</a></li><li><a href="jsts.geom.html">geom</a></li><li><a href="jsts.geom.util.html">util</a></li><li><a href="jsts.geomgraph.html">geomgraph</a></li><li><a href="jsts.geomgraph.index.html">index</a></li><li><a href="jsts.index.html">index</a></li><li><a href="jsts.index.bintree.html">bintree</a></li><li><a href="jsts.index.chain.html">chain</a></li><li><a href="jsts.index.kdtree.html">kdtree</a></li><li><a href="jsts.index.quadtree.html">quadtree</a></li><li><a href="jsts.index.strtree.html">strtree</a></li><li><a href="jsts.io.html">io</a></li><li><a href="jsts.noding.html">noding</a></li><li><a href="jsts.noding.snapround.html">snapround</a></li><li><a href="jsts.operation.html">operation</a></li><li><a href="jsts.operation.buffer.html">buffer</a></li><li><a href="jsts.operation.distance.html">distance</a></li><li><a href="jsts.operation.linemerge.html">linemerge</a></li><li><a href="jsts.operation.overlay.html">overlay</a></li><li><a href="jsts.operation.overlay.snap.html">snap</a></li><li><a href="jsts.operation.polygonize.html">polygonize</a></li><li><a href="jsts.operation.predicate.html">predicate</a></li><li><a href="jsts.operation.relate.html">relate</a></li><li><a href="jsts.operation.union.html">union</a></li><li><a href="jsts.operation.valid.html">valid</a></li><li><a href="jsts.planargraph.html">planargraph</a></li><li><a href="jsts.precision.html">precision</a></li><li><a href="jsts.simplify.html">simplify</a></li><li><a href="jsts.triangulate.html">triangulate</a></li><li><a href="jsts.triangulate.quadedge.html">quadedge</a></li><li><a href="jsts.util.html">util</a></li></ul><h3>Interfaces</h3><ul><li><a href="jsts.geom.CoordinateFilter.html">CoordinateFilter</a></li><li><a href="jsts.index.ItemVisitor.html">ItemVisitor</a></li><li><a href="jsts.index.SpatialIndex.html">SpatialIndex</a></li><li><a href="jsts.index.strtree.AbstractNode.html">AbstractNode</a></li><li><a href="jsts.index.strtree.Boundable.html">Boundable</a></li><li><a href="jsts.noding.NodableSegmentString.html">NodableSegmentString</a></li><li><a href="jsts.noding.Noder.html">Noder</a></li><li><a href="jsts.noding.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.noding.SegmentString.html">SegmentString</a></li><li><a href="jsts.noding.SinglePassNoder.html">SinglePassNoder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:05 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

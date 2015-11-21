@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: jsts/operation/buffer/OffsetSegmentGenerator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: jsts/operation/buffer/OffsetSegmentGenerator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+
+/**
+ * Generates segments which form an offset curve. Supports all end cap and join
+ * options provided for buffering. Implements various heuristics to produce
+ * smoother, simpler curves which are still within a reasonable tolerance of the
+ * true curve.
+ * @constructor
+ */
+jsts.operation.buffer.OffsetSegmentGenerator = function(precisionModel,
+    bufParams, distance) {
+  this.seg0 = new jsts.geom.LineSegment();
+  this.seg1 = new jsts.geom.LineSegment();
+  this.offset0 = new jsts.geom.LineSegment();
+  this.offset1 = new jsts.geom.LineSegment();
+
+  this.precisionModel = precisionModel;
+  this.bufParams = bufParams;
+
+  // compute intersections in full precision, to provide accuracy
+  // the points are rounded as they are inserted into the curve line
+  this.li = new jsts.algorithm.RobustLineIntersector();
+  this.filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments();
+
+  /**
+   * Non-round joins cause issues with short closing segments, so don't use
+   * them. In any case, non-round joins only really make sense for relatively
+   * small buffer distances.
+   */
+  if (this.bufParams.getQuadrantSegments() >= 8 &amp;&amp;
+      this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_ROUND) {
+    this.closingSegLengthFactor = jsts.operation.buffer.OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
+  }
+  this.init(distance);
+};
+
+
+/**
+ * Factor which controls how close offset segments can be to skip adding a
+ * filler or mitre.
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR = 1.0E-3;
+
+
+/**
+ * Factor which controls how close curve vertices on inside turns can be to be
+ * snapped
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
+
+
+/**
+ * Factor which controls how close curve vertices can be to be snapped
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-6;
+
+
+/**
+ * Factor which determines how short closing segs can be for round buffers *
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR = 80;
+
+
+/**
+ * the max error of approximation (distance) between a quad segment and the true
+ * fillet curve
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.maxCurveSegmentError = 0.0;
+
+
+/**
+ * The angle quantum with which to approximate a fillet curve (based on the
+ * input # of quadrant segments)
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.filletAngleQuantum = null;
+
+
+/**
+ * The Closing Segment Length Factor controls how long "closing segments" are.
+ * Closing segments are added at the middle of inside corners to ensure a
+ * smoother boundary for the buffer offset curve. In some cases (particularly
+ * for round joins with default-or-better quantization) the closing segments can
+ * be made quite short. This substantially improves performance (due to fewer
+ * intersections being created).
+ *
+ * A closingSegFactor of 0 results in lines to the corner vertex A
+ * closingSegFactor of 1 results in lines halfway to the corner vertex A
+ * closingSegFactor of 80 results in lines 1/81 of the way to the corner vertex
+ * (this option is reasonable for the very common default situation of round
+ * joins and quadrantSegs >= 8)
+ *
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.closingSegLengthFactor = 1;
+
+
+/**
+ * @type {OffsetSegmentString}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.segList = null;
+
+
+/**
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.distance = 0.0;
+
+
+/**
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.precisionModel = null;
+
+
+/**
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.bufParams = null;
+
+
+/**
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.li = null;
+
+
+/**
+ * @type {Coordinate}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.s0 = null;
+
+
+/**
+ * @type {Coordinate}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.s1 = null;
+
+
+/**
+ * @type {Coordinate}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.s2 = null;
+
+
+/**
+ * @type {LineSegment}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.seg0 = null;
+
+
+/**
+ * @type {LineSegment}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.seg1 = null;
+
+
+/**
+ * @type {LineSegment}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.offset0 = null;
+
+
+/**
+ * @type {LineSegment}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.offset1 = null;
+
+
+/**
+ * @type {number}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.side = 0;
+
+
+/**
+ * @type {boolean}
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.hasNarrowConcaveAngle = false;
+
+
+/**
+ * Tests whether the input has a narrow concave angle (relative to the offset
+ * distance). In this case the generated offset curve will contain
+ * self-intersections and heuristic closing segments. This is expected behaviour
+ * in the case of buffer curves. For pure offset curves, the output needs to be
+ * further treated before it can be used.
+ *
+ * @return true if the input has a narrow concave angle.
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.hasNarrowConcaveAngle = function() {
+  return this.hasNarrowConcaveAngle;
+};
+
+
+/**
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.init = function(distance) {
+  this.distance = distance;
+  this.maxCurveSegmentError = this.distance *
+      (1 - Math.cos(this.filletAngleQuantum / 2.0));
+  this.segList = new jsts.operation.buffer.OffsetSegmentString();
+  this.segList.setPrecisionModel(this.precisionModel);
+  /**
+   * Choose the min vertex separation as a small fraction of the offset
+   * distance.
+   */
+  this.segList
+      .setMinimumVertexDistance(this.distance *
+          jsts.operation.buffer.OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR);
+};
+
+
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.initSideSegments = function(
+    s1, s2, side) {
+  this.s1 = s1;
+  this.s2 = s2;
+  this.side = side;
+  this.seg1.setCoordinates(this.s1, this.s2);
+  this.computeOffsetSegment(this.seg1, this.side, this.distance, this.offset1);
+};
+
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.getCoordinates = function() {
+  return this.segList.getCoordinates();
+};
+
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.closeRing = function() {
+  this.segList.closeRing();
+};
+
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addSegments = function(
+    pt, isForward) {
+  this.segList.addPts(pt, isForward);
+};
+
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFirstSegment = function() {
+  this.segList.addPt(this.offset1.p0);
+};
+
+
+/**
+ * Add last offset point
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLastSegment = function() {
+  this.segList.addPt(this.offset1.p1);
+};
+
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addNextSegment = function(
+    p, addStartPoint) {
+  // s0-s1-s2 are the coordinates of the previous segment and the current one
+  this.s0 = this.s1;
+  this.s1 = this.s2;
+  this.s2 = p;
+  this.seg0.setCoordinates(this.s0, this.s1);
+  this.computeOffsetSegment(this.seg0, this.side, this.distance, this.offset0);
+  this.seg1.setCoordinates(this.s1, this.s2);
+  this.computeOffsetSegment(this.seg1, this.side, this.distance, this.offset1);
+
+  // do nothing if points are equal
+  if (this.s1.equals(this.s2))
+    return;
+
+  var orientation = jsts.algorithm.CGAlgorithms.computeOrientation(this.s0,
+      this.s1, this.s2);
+  var outsideTurn = (orientation === jsts.algorithm.CGAlgorithms.CLOCKWISE &amp;&amp; this.side === jsts.geomgraph.Position.LEFT) ||
+      (orientation === jsts.algorithm.CGAlgorithms.COUNTERCLOCKWISE &amp;&amp; this.side === jsts.geomgraph.Position.RIGHT);
+
+  if (orientation == 0) { // lines are collinear
+    this.addCollinear(addStartPoint);
+  } else if (outsideTurn) {
+    this.addOutsideTurn(orientation, addStartPoint);
+  } else { // inside turn
+    this.addInsideTurn(orientation, addStartPoint);
+  }
+};
+
+
+/**
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addCollinear = function(
+    addStartPoint) {
+  /**
+   * This test could probably be done more efficiently, but the situation of
+   * exact collinearity should be fairly rare.
+   */
+  this.li.computeIntersection(this.s0, this.s1, this.s1, this.s2);
+  var numInt = this.li.getIntersectionNum();
+  /**
+   * if numInt is &lt; 2, the lines are parallel and in the same direction. In this
+   * case the point can be ignored, since the offset lines will also be
+   * parallel.
+   */
+  if (numInt >= 2) {
+    /**
+     * segments are collinear but reversing. Add an "end-cap" fillet all the way
+     * around to other direction This case should ONLY happen for LineStrings,
+     * so the orientation is always CW. (Polygons can never have two consecutive
+     * segments which are parallel but reversed, because that would be a self
+     * intersection.
+     *
+     */
+    if (this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_BEVEL ||
+        this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_MITRE) {
+      if (addStartPoint)
+        this.segList.addPt(this.offset0.p1);
+      this.segList.addPt(this.offset1.p0);
+    } else {
+      this.addFillet(this.s1, this.offset0.p1, this.offset1.p0,
+          jsts.algorithm.CGAlgorithms.CLOCKWISE, this.distance);
+    }
+  }
+};
+
+
+/**
+ * Adds the offset points for an outside (convex) turn
+ *
+ * @param orientation
+ * @param addStartPoint
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addOutsideTurn = function(
+    orientation, addStartPoint) {
+  /**
+   * Heuristic: If offset endpoints are very close together, just use one of
+   * them as the corner vertex. This avoids problems with computing mitre
+   * corners in the case where the two segments are almost parallel (which is
+   * hard to compute a robust intersection for).
+   */
+  if (this.offset0.p1.distance(this.offset1.p0) &lt; this.distance *
+      jsts.operation.buffer.OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
+    this.segList.addPt(this.offset0.p1);
+    return;
+  }
+
+  if (this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_MITRE) {
+    this.addMitreJoin(this.s1, this.offset0, this.offset1, this.distance);
+  } else if (this.bufParams.getJoinStyle() === jsts.operation.buffer.BufferParameters.JOIN_BEVEL) {
+    this.addBevelJoin(this.offset0, this.offset1);
+  } else {
+    // add a circular fillet connecting the endpoints of the offset segments
+    if (addStartPoint)
+      this.segList.addPt(this.offset0.p1);
+    // TESTING - comment out to produce beveled joins
+    this.addFillet(this.s1, this.offset0.p1, this.offset1.p0, orientation,
+        this.distance);
+    this.segList.addPt(this.offset1.p0);
+  }
+};
+
+
+/**
+ * Adds the offset points for an inside (concave) turn.
+ *
+ * @param orientation
+ * @param addStartPoint
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addInsideTurn = function(
+    orientation, addStartPoint) {
+  /**
+   * add intersection point of offset segments (if any)
+   */
+  this.li.computeIntersection(this.offset0.p0, this.offset0.p1, this.offset1.p0, this.offset1.p1);
+  if (this.li.hasIntersection()) {
+    this.segList.addPt(this.li.getIntersection(0));
+  } else {
+    /**
+     * If no intersection is detected, it means the angle is so small and/or the
+     * offset so large that the offsets segments don't intersect. In this case
+     * we must add a "closing segment" to make sure the buffer curve is
+     * continuous, fairly smooth (e.g. no sharp reversals in direction) and
+     * tracks the buffer correctly around the corner. The curve connects the
+     * endpoints of the segment offsets to points which lie toward the centre
+     * point of the corner. The joining curve will not appear in the final
+     * buffer outline, since it is completely internal to the buffer polygon.
+     *
+     * In complex buffer cases the closing segment may cut across many other
+     * segments in the generated offset curve. In order to improve the
+     * performance of the noding, the closing segment should be kept as short as
+     * possible. (But not too short, since that would defeat its purpose). This
+     * is the purpose of the closingSegFactor heuristic value.
+     */
+
+    /**
+     * The intersection test above is vulnerable to robustness errors; i.e. it
+     * may be that the offsets should intersect very close to their endpoints,
+     * but aren't reported as such due to rounding. To handle this situation
+     * appropriately, we use the following test: If the offset points are very
+     * close, don't add closing segments but simply use one of the offset points
+     */
+    this.hasNarrowConcaveAngle = true;
+    // System.out.println("NARROW ANGLE - distance = " + distance);
+    if (this.offset0.p1.distance(this.offset1.p0) &lt; this.distance *
+        jsts.operation.buffer.OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR) {
+      this.segList.addPt(this.offset0.p1);
+    } else {
+      // add endpoint of this segment offset
+      this.segList.addPt(this.offset0.p1);
+
+      /**
+       * Add "closing segment" of required length.
+       */
+      if (this.closingSegLengthFactor > 0) {
+        var mid0 = new jsts.geom.Coordinate((this.closingSegLengthFactor *
+            this.offset0.p1.x + this.s1.x) /
+            (this.closingSegLengthFactor + 1), (this.closingSegLengthFactor *
+            this.offset0.p1.y + this.s1.y) /
+            (this.closingSegLengthFactor + 1));
+        this.segList.addPt(mid0);
+        var mid1 = new jsts.geom.Coordinate((this.closingSegLengthFactor *
+            this.offset1.p0.x + this.s1.x) /
+            (this.closingSegLengthFactor + 1), (this.closingSegLengthFactor *
+            this.offset1.p0.y + this.s1.y) /
+            (this.closingSegLengthFactor + 1));
+        this.segList.addPt(mid1);
+      } else {
+        /**
+         * This branch is not expected to be used except for testing purposes.
+         * It is equivalent to the JTS 1.9 logic for closing segments (which
+         * results in very poor performance for large buffer distances)
+         */
+        this.segList.addPt(this.s1);
+      }
+
+      // */
+      // add start point of next segment offset
+      this.segList.addPt(this.offset1.p0);
+    }
+  }
+};
+
+
+/**
+ * Compute an offset segment for an input segment on a given side and at a given
+ * distance. The offset points are computed in full double precision, for
+ * accuracy.
+ *
+ * @param seg
+ *          the segment to offset.
+ * @param side
+ *          the side of the segment ( {@link Position} ) the offset lies on.
+ * @param distance
+ *          the offset distance.
+ * @param offset
+ *          the points computed for the offset segment.
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.computeOffsetSegment = function(
+    seg, side, distance, offset) {
+  var sideSign = side === jsts.geomgraph.Position.LEFT ? 1 : -1;
+  var dx = seg.p1.x - seg.p0.x;
+  var dy = seg.p1.y - seg.p0.y;
+  var len = Math.sqrt(dx * dx + dy * dy);
+  // u is the vector that is the length of the offset, in the direction of the
+  // segment
+  var ux = sideSign * distance * dx / len;
+  var uy = sideSign * distance * dy / len;
+  offset.p0.x = seg.p0.x - uy;
+  offset.p0.y = seg.p0.y + ux;
+  offset.p1.x = seg.p1.x - uy;
+  offset.p1.y = seg.p1.y + ux;
+};
+
+
+/**
+ * Add an end cap around point p1, terminating a line segment coming from p0
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLineEndCap = function(
+    p0, p1) {
+  var seg = new jsts.geom.LineSegment(p0, p1);
+
+  var offsetL = new jsts.geom.LineSegment();
+  this.computeOffsetSegment(seg, jsts.geomgraph.Position.LEFT, this.distance,
+      offsetL);
+  var offsetR = new jsts.geom.LineSegment();
+  this.computeOffsetSegment(seg, jsts.geomgraph.Position.RIGHT, this.distance,
+      offsetR);
+
+  var dx = p1.x - p0.x;
+  var dy = p1.y - p0.y;
+  var angle = Math.atan2(dy, dx);
+
+  switch (this.bufParams.getEndCapStyle()) {
+    case jsts.operation.buffer.BufferParameters.CAP_ROUND:
+      // add offset seg points with a fillet between them
+      this.segList.addPt(offsetL.p1);
+      this.addFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2,
+          jsts.algorithm.CGAlgorithms.CLOCKWISE, this.distance);
+      this.segList.addPt(offsetR.p1);
+      break;
+    case jsts.operation.buffer.BufferParameters.CAP_FLAT:
+      // only offset segment points are added
+      this.segList.addPt(offsetL.p1);
+      this.segList.addPt(offsetR.p1);
+      break;
+    case jsts.operation.buffer.BufferParameters.CAP_SQUARE:
+      // add a square defined by extensions of the offset segment endpoints
+      var squareCapSideOffset = new jsts.geom.Coordinate();
+      squareCapSideOffset.x = Math.abs(this.distance) * Math.cos(angle);
+      squareCapSideOffset.y = Math.abs(this.distance) * Math.sin(angle);
+
+      var squareCapLOffset = new jsts.geom.Coordinate(offsetL.p1.x +
+          squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y);
+      var squareCapROffset = new jsts.geom.Coordinate(offsetR.p1.x +
+          squareCapSideOffset.x, offsetR.p1.y + squareCapSideOffset.y);
+      this.segList.addPt(squareCapLOffset);
+      this.segList.addPt(squareCapROffset);
+      break;
+
+  }
+};
+
+
+/**
+ * Adds a mitre join connecting the two reflex offset segments. The mitre will
+ * be beveled if it exceeds the mitre ratio limit.
+ *
+ * @param offset0
+ *          the first offset segment.
+ * @param offset1
+ *          the second offset segment.
+ * @param distance
+ *          the offset distance.
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addMitreJoin = function(
+    p, offset0, offset1, distance) {
+  var isMitreWithinLimit = true;
+  var intPt = null;
+
+  /**
+   * This computation is unstable if the offset segments are nearly collinear.
+   * Howver, this situation should have been eliminated earlier by the check for
+   * whether the offset segment endpoints are almost coincident
+   */
+  try {
+    intPt = jsts.algorithm.HCoordinate.intersection(offset0.p0, offset0.p1,
+        offset1.p0, offset1.p1);
+
+    var mitreRatio = distance &lt;= 0.0 ? 1.0 : intPt.distance(p) /
+        Math.abs(distance);
+
+    if (mitreRatio > this.bufParams.getMitreLimit())
+      this.isMitreWithinLimit = false;
+  } catch (e) {
+    if (e instanceof jsts.error.NotRepresentableError) {
+      intPt = new jsts.geom.Coordinate(0, 0);
+      this.isMitreWithinLimit = false;
+    }
+  }
+
+  if (isMitreWithinLimit) {
+    this.segList.addPt(intPt);
+  } else {
+    this.addLimitedMitreJoin(offset0, offset1, distance, bufParams
+        .getMitreLimit());
+    // addBevelJoin(offset0, offset1);
+  }
+};
+
+
+/**
+ * Adds a limited mitre join connecting the two reflex offset segments. A
+ * limited mitre is a mitre which is beveled at the distance determined by the
+ * mitre ratio limit.
+ *
+ * @param offset0
+ *          the first offset segment.
+ * @param offset1
+ *          the second offset segment.
+ * @param distance
+ *          the offset distance.
+ * @param mitreLimit
+ *          the mitre limit ratio.
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addLimitedMitreJoin = function(
+    offset0, offset1, distance, mitreLimit) {
+  var basePt = this.seg0.p1;
+
+  var ang0 = jsts.algorithm.Angle.angle(basePt, this.seg0.p0);
+  var ang1 = jsts.algorithm.Angle.angle(basePt, this.seg1.p1);
+
+  // oriented angle between segments
+  var angDiff = jsts.algorithm.Angle.angleBetweenOriented(this.seg0.p0, basePt,
+      this.seg1.p1);
+  // half of the interior angle
+  var angDiffHalf = angDiff / 2;
+
+  // angle for bisector of the interior angle between the segments
+  var midAng = jsts.algorithm.Angle.normalize(ang0 + angDiffHalf);
+  // rotating this by PI gives the bisector of the reflex angle
+  var mitreMidAng = jsts.algorithm.Angle.normalize(midAng + Math.PI);
+
+  // the miterLimit determines the distance to the mitre bevel
+  var mitreDist = mitreLimit * distance;
+  // the bevel delta is the difference between the buffer distance
+  // and half of the length of the bevel segment
+  var bevelDelta = mitreDist * Math.abs(Math.sin(angDiffHalf));
+  var bevelHalfLen = distance - bevelDelta;
+
+  // compute the midpoint of the bevel segment
+  var bevelMidX = basePt.x + mitreDist * Math.cos(mitreMidAng);
+  var bevelMidY = basePt.y + mitreDist * Math.sin(mitreMidAng);
+  var bevelMidPt = new jsts.geom.Coordinate(bevelMidX, bevelMidY);
+
+  // compute the mitre midline segment from the corner point to the bevel
+  // segment midpoint
+  var mitreMidLine = new jsts.geom.LineSegment(basePt, bevelMidPt);
+
+  // finally the bevel segment endpoints are computed as offsets from
+  // the mitre midline
+  var bevelEndLeft = mitreMidLine.pointAlongOffset(1.0, bevelHalfLen);
+  var bevelEndRight = mitreMidLine.pointAlongOffset(1.0, -bevelHalfLen);
+
+  if (this.side == jsts.geomgraph.Position.LEFT) {
+    this.segList.addPt(bevelEndLeft);
+    this.segList.addPt(bevelEndRight);
+  } else {
+    this.segList.addPt(bevelEndRight);
+    this.segList.addPt(bevelEndLeft);
+  }
+};
+
+
+/**
+ * Adds a bevel join connecting the two offset segments around a reflex corner.
+ *
+ * @param {LineSegment}
+ *          offset0 the first offset segment.
+ * @param {LineSegment}
+ *          offset1 the second offset segment.
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addBevelJoin = function(
+    offset0, offset1) {
+  this.segList.addPt(offset0.p1);
+  this.segList.addPt(offset1.p0);
+};
+
+
+/**
+ * Add points for a circular fillet around a reflex corner. Adds the start and
+ * end points
+ *
+ * @param p
+ *          base point of curve.
+ * @param p0
+ *          start point of fillet curve.
+ * @param p1
+ *          endpoint of fillet curve.
+ * @param direction
+ *          the orientation of the fillet.
+ * @param radius
+ *          the radius of the fillet.
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet = function(p,
+    p0, p1, direction, radius) {
+  if (!(p1 instanceof jsts.geom.Coordinate)) {
+    this.addFillet2.apply(this, arguments);
+    return;
+  }
+
+  var dx0 = p0.x - p.x;
+  var dy0 = p0.y - p.y;
+  var startAngle = Math.atan2(dy0, dx0);
+  var dx1 = p1.x - p.x;
+  var dy1 = p1.y - p.y;
+  var endAngle = Math.atan2(dy1, dx1);
+
+  if (direction === jsts.algorithm.CGAlgorithms.CLOCKWISE) {
+    if (startAngle &lt;= endAngle)
+      startAngle += 2.0 * Math.PI;
+  } else { // direction == COUNTERCLOCKWISE
+    if (startAngle >= endAngle)
+      startAngle -= 2.0 * Math.PI;
+  }
+  this.segList.addPt(p0);
+  this.addFillet(p, startAngle, endAngle, direction, radius);
+  this.segList.addPt(p1);
+};
+
+
+/**
+ * Adds points for a circular fillet arc between two specified angles. The start
+ * and end point for the fillet are not added - the caller must add them if
+ * required.
+ *
+ * @param direction
+ *          is -1 for a CW angle, 1 for a CCW angle.
+ * @param radius
+ *          the radius of the fillet.
+ * @private
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.addFillet2 = function(p,
+    startAngle, endAngle, direction, radius) {
+  var directionFactor = direction === jsts.algorithm.CGAlgorithms.CLOCKWISE ? -1
+      : 1;
+
+  var totalAngle = Math.abs(startAngle - endAngle);
+  var nSegs = parseInt((totalAngle / this.filletAngleQuantum + 0.5));
+
+  if (nSegs &lt; 1)
+    return; // no segments because angle is less than increment - nothing to do!
+
+  var initAngle, currAngleInc;
+
+  // choose angle increment so that each segment has equal length
+  initAngle = 0.0;
+  currAngleInc = totalAngle / nSegs;
+
+  var currAngle = initAngle;
+  var pt = new jsts.geom.Coordinate();
+  while (currAngle &lt; totalAngle) {
+    var angle = startAngle + directionFactor * currAngle;
+    pt.x = p.x + radius * Math.cos(angle);
+    pt.y = p.y + radius * Math.sin(angle);
+    this.segList.addPt(pt);
+    currAngle += currAngleInc;
+  }
+};
+
+
+/**
+ * Creates a CW circle around a point
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.createCircle = function(
+    p) {
+  // add start point
+  var pt = new jsts.geom.Coordinate(p.x + this.distance, p.y);
+  this.segList.addPt(pt);
+  this.addFillet(p, 0.0, 2.0 * Math.PI, -1, this.distance);
+  this.segList.closeRing();
+};
+
+
+/**
+ * Creates a CW square around a point
+ */
+jsts.operation.buffer.OffsetSegmentGenerator.prototype.createSquare = function(
+    p) {
+  this.segList.addPt(new jsts.geom.Coordinate(p.x + distance, p.y + distance));
+  this.segList.addPt(new jsts.geom.Coordinate(p.x + distance, p.y - distance));
+  this.segList.addPt(new jsts.geom.Coordinate(p.x - distance, p.y - distance));
+  this.segList.addPt(new jsts.geom.Coordinate(p.x - distance, p.y + distance));
+  this.segList.closeRing();
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="jsts.algorithm.Angle.html">Angle</a></li><li><a href="jsts.algorithm.BoundaryNodeRule.html">BoundaryNodeRule</a></li><li><a href="jsts.algorithm.CentralEndpointIntersector.html">CentralEndpointIntersector</a></li><li><a href="jsts.algorithm.Centroid.html">Centroid</a></li><li><a href="jsts.algorithm.CGAlgorithms.html">CGAlgorithms</a></li><li><a href="jsts.algorithm.ConvexHull.html">ConvexHull</a></li><li><a href="jsts.algorithm.HCoordinate.html">HCoordinate</a></li><li><a href="jsts.algorithm.InteriorPointArea.html">InteriorPointArea</a></li><li><a href="jsts.algorithm.InteriorPointLine.html">InteriorPointLine</a></li><li><a href="jsts.algorithm.InteriorPointPoint.html">InteriorPointPoint</a></li><li><a href="jsts.algorithm.LineIntersector.html">LineIntersector</a></li><li><a href="jsts.algorithm.locate.SimplePointInAreaLocator.html">SimplePointInAreaLocator</a></li><li><a href="jsts.algorithm.MCPointInRing.MCSelecter.html">MCSelecter</a></li><li><a href="jsts.algorithm.MinimumDiameter.html">MinimumDiameter</a></li><li><a href="jsts.algorithm.PointLocator.html">PointLocator</a></li><li><a href="jsts.algorithm.RayCrossingCounter.html">RayCrossingCounter</a></li><li><a href="jsts.algorithm.RobustDeterminant.html">RobustDeterminant</a></li><li><a href="jsts.algorithm.RobustLineIntersector.html">RobustLineIntersector</a></li><li><a href="jsts.algorithm.SafeBisectorFinder.html">SafeBisectorFinder</a></li><li><a href="jsts.error.AbstractMethodInvocationError.html">AbstractMethodInvocationError</a></li><li><a href="jsts.error.IllegalArgumentError.html">IllegalArgumentError</a></li><li><a href="jsts.error.NotImplementedError.html">NotImplementedError</a></li><li><a href="jsts.error.NotRepresentableError.html">NotRepresentableError</a></li><li><a href="jsts.error.TopologyError.html">TopologyError</a></li><li><a href="jsts.geom.Coordinate.html">Coordinate</a></li><li><a href="jsts.geom.CoordinateArrays.html">CoordinateArrays</a></li><li><a href="jsts.geom.CoordinateList.html">CoordinateList</a></li><li><a href="jsts.geom.Dimension.html">Dimension</a></li><li><a href="jsts.geom.Envelope.html">Envelope</a></li><li><a href="jsts.geom.Geometry.html">Geometry</a></li><li><a href="jsts.geom.GeometryCollection.html">GeometryCollection</a></li><li><a href="jsts.geom.GeometryFactory.html">GeometryFactory</a></li><li><a href="jsts.geom.IntersectionMatrix.html">IntersectionMatrix</a></li><li><a href="jsts.geom.LinearRing.html">LinearRing</a></li><li><a href="jsts.geom.LineSegment.html">LineSegment</a></li><li><a href="jsts.geom.LineString.html">LineString</a></li><li><a href="jsts.geom.Location.html">Location</a></li><li><a href="jsts.geom.MultiLineString.html">MultiLineString</a></li><li><a href="jsts.geom.MultiPoint.html">MultiPoint</a></li><li><a href="jsts.geom.MultiPolygon.html">MultiPolygon</a></li><li><a href="jsts.geom.Point.html">Point</a></li><li><a href="jsts.geom.Polygon.html">Polygon</a></li><li><a href="jsts.geom.PrecisionModel.html">PrecisionModel</a></li><li><a href="jsts.geom.Triangle.html">Triangle</a></li><li><a href="jsts.geom.util.GeometryCombiner.html">GeometryCombiner</a></li><li><a href="jsts.geom.util.GeometryExtracter.html">GeometryExtracter</a></li><li><a href="jsts.geom.util.LinearComponentExtracter.html">LinearComponentExtracter</a></li><li><a href="jsts.geom.util.PointExtracter.html">PointExtracter</a></li><li><a href="jsts.geom.util.PolygonExtracter.html">PolygonExtracter</a></li><li><a href="jsts.geomgraph.Depth.html">Depth</a></li><li><a href="jsts.geomgraph.DirectedEdge.html">DirectedEdge</a></li><li><a href="jsts.geomgraph.DirectedEdgeStar.html">DirectedEdgeStar</a></li><li><a href="jsts.geomgraph.Edge.html">Edge</a></li><li><a href="jsts.geomgraph.EdgeEnd.html">EdgeEnd</a></li><li><a href="jsts.geomgraph.EdgeEndStar.html">EdgeEndStar</a></li><li><a href="jsts.geomgraph.EdgeIntersection.html">EdgeIntersection</a></li><li><a href="jsts.geomgraph.EdgeIntersectionList.html">EdgeIntersectionList</a></li><li><a href="jsts.geomgraph.EdgeList.html">EdgeList</a></li><li><a href="jsts.geomgraph.EdgeRing.html">EdgeRing</a></li><li><a href="jsts.geomgraph.GraphComponent.html">GraphComponent</a></li><li><a href="jsts.geomgraph.index.EdgeSetIntersector.html">EdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.MonotoneChainEdge.html">MonotoneChainEdge</a></li><li><a href="jsts.geomgraph.index.MonotoneChainIndexer.html">MonotoneChainIndexer</a></li><li><a href="jsts.geomgraph.index.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleEdgeSetIntersector.html">SimpleEdgeSetIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleMCSweepLineIntersector.html">SimpleMCSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SimpleSweepLineIntersector.html">SimpleSweepLineIntersector</a></li><li><a href="jsts.geomgraph.index.SweepLineEvent.html">SweepLineEvent</a></li><li><a href="jsts.geomgraph.index.SweepLineSegment.html">SweepLineSegment</a></li><li><a href="jsts.geomgraph.Label.html">Label</a></li><li><a href="jsts.geomgraph.Node.html">Node</a></li><li><a href="jsts.geomgraph.NodeFactory.html">NodeFactory</a></li><li><a href="jsts.geomgraph.NodeMap.html">NodeMap</a></li><li><a href="jsts.geomgraph.PlanarGraph.html">PlanarGraph</a></li><li><a href="jsts.geomgraph.Position.html">Position</a></li><li><a href="jsts.geomgraph.Quadrant.html">Quadrant</a></li><li><a href="jsts.geomgraph.TopologyLocation.html">TopologyLocation</a></li><li><a href="jsts.index.ArrayListVisitor.html">ArrayListVisitor</a></li><li><a href="jsts.index.chain.MonotoneChain.html">MonotoneChain</a></li><li><a href="jsts.index.chain.MonotoneChainBuilder.html">MonotoneChainBuilder</a></li><li><a href="jsts.index.chain.MonotoneChainOverlapAction.html">MonotoneChainOverlapAction</a></li><li><a href="jsts.index.chain.MonotoneChainSelectAction.html">MonotoneChainSelectAction</a></li><li><a href="jsts.index.DoubleBits.html">DoubleBits</a></li><li><a href="jsts.index.IntervalSize.html">IntervalSize</a></li><li><a href="jsts.index.kdtree.KdNode.html">KdNode</a></li><li><a href="jsts.index.kdtree.KdTree.html">KdTree</a></li><li><a href="jsts.index.quadtree.Key.html">Key</a></li><li><a href="jsts.index.quadtree.Node.html">Node</a></li><li><a href="jsts.index.quadtree.NodeBase.html">NodeBase</a></li><li><a href="jsts.index.quadtree.Quadtree.html">Quadtree</a></li><li><a href="jsts.index.quadtree.Root.html">Root</a></li><li><a href="jsts.index.strtree.AbstractSTRtree.IntersectsOp.html">IntersectsOp</a></li><li><a href="jsts.index.strtree.Interval.html">Interval</a></li><li><a href="jsts.index.strtree.ItemBoundable.html">ItemBoundable</a></li><li><a href="jsts.index.strtree.SIRtree.html">SIRtree</a></li><li><a href="jsts.index.strtree.STRtree.html">STRtree</a></li><li><a href="jsts.io.GeoJSONReader.html">GeoJSONReader</a></li><li><a href="jsts.io.GeoJSONWriter.html">GeoJSONWriter</a></li><li><a href="jsts.io.WKTReader.html">WKTReader</a></li><li><a href="jsts.io.WKTWriter.html">WKTWriter</a></li><li><a href="jsts.noding.BasicSegmentString.html">BasicSegmentString</a></li><li><a href="jsts.noding.InteriorIntersectionFinder.html">InteriorIntersectionFinder</a></li><li><a href="jsts.noding.IntersectionAdder.html">IntersectionAdder</a></li><li><a href="jsts.noding.MCIndexNoder.html">MCIndexNoder</a></li><li><a href="jsts.noding.NodedSegmentString.html">NodedSegmentString</a></li><li><a href="jsts.noding.Octant.html">Octant</a></li><li><a href="jsts.noding.SegmentNode.html">SegmentNode</a></li><li><a href="jsts.noding.SegmentNodeList.html">SegmentNodeList</a></li><li><a href="jsts.operation.buffer.BufferBuilder.html">BufferBuilder</a></li><li><a href="jsts.operation.buffer.BufferInputLineSimplifier.html">BufferInputLineSimplifier</a></li><li><a href="jsts.operation.buffer.BufferOp.html">BufferOp</a></li><li><a href="jsts.operation.buffer.BufferParameters.html">BufferParameters</a></li><li><a href="jsts.operation.buffer.BufferSubgraph.html">BufferSubgraph</a></li><li><a href="jsts.operation.buffer.OffsetCurveBuilder.html">OffsetCurveBuilder</a></li><li><a href="jsts.operation.buffer.OffsetCurveSetBuilder.html">OffsetCurveSetBuilder</a></li><li><a href="jsts.operation.buffer.OffsetSegmentGenerator.html">OffsetSegmentGenerator</a></li><li><a href="jsts.operation.buffer.OffsetSegmentString.html">OffsetSegmentString</a></li><li><a href="jsts.operation.buffer.RightmostEdgeFinder.html">RightmostEdgeFinder</a></li><li><a href="jsts.operation.buffer.SubgraphDepthLocater.html">SubgraphDepthLocater</a></li><li><a href="jsts.operation.distance.ConnectedElementLocationFilter.html">ConnectedElementLocationFilter</a></li><li><a href="jsts.operation.distance.DistanceOp.html">DistanceOp</a></li><li><a href="jsts.operation.distance.GeometryLocation.html">GeometryLocation</a></li><li><a href="jsts.operation.GeometryGraphOperation.html">GeometryGraphOperation</a></li><li><a href="jsts.operation.IsSimpleOp.html">IsSimpleOp</a></li><li><a href="jsts.operation.IsSimpleOp.EndpointInfo.html">EndpointInfo</a></li><li><a href="jsts.operation.linemerge.EdgeString.html">EdgeString</a></li><li><a href="jsts.operation.linemerge.LineMergeDirectedEdge.html">LineMergeDirectedEdge</a></li><li><a href="jsts.operation.linemerge.LineMergeEdge.html">LineMergeEdge</a></li><li><a href="jsts.operation.linemerge.LineMerger.html">LineMerger</a></li><li><a href="jsts.operation.overlay.MaximalEdgeRing.html">MaximalEdgeRing</a></li><li><a href="jsts.operation.overlay.MinimalEdgeRing.html">MinimalEdgeRing</a></li><li><a href="jsts.operation.overlay.OverlayNodeFactory.html">OverlayNodeFactory</a></li><li><a href="jsts.operation.relate.EdgeEndBuilder.html">EdgeEndBuilder</a></li><li><a href="jsts.operation.relate.EdgeEndBundle.html">EdgeEndBundle</a></li><li><a href="jsts.operation.relate.EdgeEndBundleStar.html">EdgeEndBundleStar</a></li><li><a href="jsts.operation.relate.RelateComputer.html">RelateComputer</a></li><li><a href="jsts.operation.relate.RelateNode.html">RelateNode</a></li><li><a href="jsts.operation.relate.RelateNodeFactory.html">RelateNodeFactory</a></li><li><a href="jsts.operation.relate.RelateNodeGraph.html">RelateNodeGraph</a></li><li><a href="jsts.operation.relate.RelateOp.html">RelateOp</a></li><li><a href="jsts.operation.union.CascadedPolygonUnion.html">CascadedPolygonUnion</a></li><li><a href="jsts.operation.union.PointGeometryUnion.html">PointGeometryUnion</a></li><li><a href="jsts.operation.union.UnaryUnionOp.html">UnaryUnionOp</a></li><li><a href="jsts.operation.union.UnionInteracting.html">UnionInteracting</a></li><li><a href="jsts.operation.valid.ConnectedInteriorTester.html">ConnectedInteriorTester</a></li><li><a href="jsts.operation.valid.IsValidOp.html">IsValidOp</a></li><li><a href="jsts.precision.CommonBits.html">CommonBits</a></li><li><a href="jsts.precision.CommonBitsOp.html">CommonBitsOp</a></li><li><a href="jsts.precision.CommonBitsRemover.html">CommonBitsRemover</a></li><li><a href="jsts.precision.CommonCoordinateFilter.html">CommonCoordinateFilter</a></li><li><a href="jsts.precision.EnhancedPrecisionOp.html">EnhancedPrecisionOp</a></li><li><a href="jsts.precision.Translater.html">Translater</a></li><li><a href="jsts.simplify.DouglasPeuckerLineSimplifier.html">DouglasPeuckerLineSimplifier</a></li><li><a href="jsts.simplify.DouglasPeuckerSimplifier.html">DouglasPeuckerSimplifier</a></li><li><a href="jsts.simplify.DPTransformer.html">DPTransformer</a></li><li><a href="jsts.triangulate.DelaunayTriangulationBuilder.html">DelaunayTriangulationBuilder</a></li><li><a href="jsts.triangulate.quadedge.LastFoundQuadEdgeLocator.html">LastFoundQuadEdgeLocator</a></li><li><a href="jsts.triangulate.quadedge.QuadEdge.html">QuadEdge</a></li><li><a href="jsts.triangulate.quadedge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></li><li><a href="jsts.triangulate.quadedge.TrianglePredicate.html">TrianglePredicate</a></li><li><a href="jsts.triangulate.quadedge.Vertex.html">Vertex</a></li><li><a href="jsts.triangulate.VoronoiDiagramBuilder.html">VoronoiDiagramBuilder</a></li><li><a href="jsts.util.Assert.html">Assert</a></li><li><a href="jsts.util.UniqueCoordinateArrayFilter.html">UniqueCoordinateArrayFilter</a></li><li><a href="message.html">message</a></li></ul><h3>Namespaces</h3><ul><li><a href="jsts.html">jsts</a></li><li><a href="jsts.algorithm.html">algorithm</a></li><li><a href="jsts.algorithm.distance.html">distance</a></li><li><a href="jsts.algorithm.locate.html">locate</a></li><li><a href="jsts.densify.html">densify</a></li><li><a href="jsts.error.html">error</a></li><li><a href="jsts.geom.html">geom</a></li><li><a href="jsts.geom.util.html">util</a></li><li><a href="jsts.geomgraph.html">geomgraph</a></li><li><a href="jsts.geomgraph.index.html">index</a></li><li><a href="jsts.index.html">index</a></li><li><a href="jsts.index.bintree.html">bintree</a></li><li><a href="jsts.index.chain.html">chain</a></li><li><a href="jsts.index.kdtree.html">kdtree</a></li><li><a href="jsts.index.quadtree.html">quadtree</a></li><li><a href="jsts.index.strtree.html">strtree</a></li><li><a href="jsts.io.html">io</a></li><li><a href="jsts.noding.html">noding</a></li><li><a href="jsts.noding.snapround.html">snapround</a></li><li><a href="jsts.operation.html">operation</a></li><li><a href="jsts.operation.buffer.html">buffer</a></li><li><a href="jsts.operation.distance.html">distance</a></li><li><a href="jsts.operation.linemerge.html">linemerge</a></li><li><a href="jsts.operation.overlay.html">overlay</a></li><li><a href="jsts.operation.overlay.snap.html">snap</a></li><li><a href="jsts.operation.polygonize.html">polygonize</a></li><li><a href="jsts.operation.predicate.html">predicate</a></li><li><a href="jsts.operation.relate.html">relate</a></li><li><a href="jsts.operation.union.html">union</a></li><li><a href="jsts.operation.valid.html">valid</a></li><li><a href="jsts.planargraph.html">planargraph</a></li><li><a href="jsts.precision.html">precision</a></li><li><a href="jsts.simplify.html">simplify</a></li><li><a href="jsts.triangulate.html">triangulate</a></li><li><a href="jsts.triangulate.quadedge.html">quadedge</a></li><li><a href="jsts.util.html">util</a></li></ul><h3>Interfaces</h3><ul><li><a href="jsts.geom.CoordinateFilter.html">CoordinateFilter</a></li><li><a href="jsts.index.ItemVisitor.html">ItemVisitor</a></li><li><a href="jsts.index.SpatialIndex.html">SpatialIndex</a></li><li><a href="jsts.index.strtree.AbstractNode.html">AbstractNode</a></li><li><a href="jsts.index.strtree.Boundable.html">Boundable</a></li><li><a href="jsts.noding.NodableSegmentString.html">NodableSegmentString</a></li><li><a href="jsts.noding.Noder.html">Noder</a></li><li><a href="jsts.noding.SegmentIntersector.html">SegmentIntersector</a></li><li><a href="jsts.noding.SegmentString.html">SegmentString</a></li><li><a href="jsts.noding.SinglePassNoder.html">SinglePassNoder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

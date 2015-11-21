@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/geom/util/ShortCircuitedGeometryVisitor.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,64 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/geom/util/ShortCircuitedGeometryVisitor.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+ 
+/**
+ * Port source:
+ * /jts/jts/java/src/com/vividsolutions/jts/geom/util/ShortCircuitedGeometryVisitor.java
+ * Revision: 707
+ */
 
+(function() {
 
-    <h3> </h3>
+/**
+ * A visitor to {@link Geometry} componets, which 
+ * allows short-circuiting when a defined condition holds.
+ *
+ * @version 1.7
+ */
+jsts.geom.util.ShortCircuitedGeometryVisitor = function() {
 
+};
 
+jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.isDone_ = false;
 
+jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.applyTo = function(geom) {
+    for (var i = 0; i &lt; geom.getNumGeometries() &amp;&amp; ! this.isDone_; i++) {
+      var element = geom.getGeometryN(i);
+      if (! (element instanceof jsts.geom.GeometryCollection)) {
+        this.visit(element);
+        if (this.isDone()) {
+          this.isDone_ = true;
+          return;
+        }
+      }
+      else
+        this.applyTo(element);
+    }
+  }
 
+jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.visit = function(element) {};
 
+jsts.geom.util.ShortCircuitedGeometryVisitor.prototype.isDone = function() {};
 
-
-
-
-
-    
-
-
-
-
-
+})();
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: EnhancedPrecisionOp</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,1020 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: EnhancedPrecisionOp</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.precision.html">.precision</a>.</span>EnhancedPrecisionOp</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="EnhancedPrecisionOp"><span class="type-signature"></span>new EnhancedPrecisionOp<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Provides versions of Geometry spatial functions which use
+enhanced precision techniques to reduce the likelihood of robustness problems.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.7</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_EnhancedPrecisionOp.js.html">jsts/precision/EnhancedPrecisionOp.js</a>, <a href="jsts_precision_EnhancedPrecisionOp.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".buffer"><span class="type-signature">(static) </span>buffer<span class="signature">(geom, distance)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the buffer of a Geometry, using enhanced precision.
+This method should no longer be necessary, since the buffer algorithm
+now is highly robust.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first Geometry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>distance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the buffer distance</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_EnhancedPrecisionOp.js.html">jsts/precision/EnhancedPrecisionOp.js</a>, <a href="jsts_precision_EnhancedPrecisionOp.js.html#line164">line 164</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the Geometry representing the buffer of the input Geometry.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".difference"><span class="type-signature">(static) </span>difference<span class="signature">(geom0, geom1)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the set-theoretic difference of two <a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>s, using enhanced precision.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first Geometry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>geom1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second Geometry</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_EnhancedPrecisionOp.js.html">jsts/precision/EnhancedPrecisionOp.js</a>, <a href="jsts_precision_EnhancedPrecisionOp.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the Geometry representing the set-theoretic difference of the input Geometries.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".intersection"><span class="type-signature">(static) </span>intersection<span class="signature">(geom0, geom1)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the set-theoretic intersection of two <a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>s, using enhanced precision.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first Geometry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>geom1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second Geometry</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_EnhancedPrecisionOp.js.html">jsts/precision/EnhancedPrecisionOp.js</a>, <a href="jsts_precision_EnhancedPrecisionOp.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the Geometry representing the set-theoretic intersection of the input Geometries.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".symDifference"><span class="type-signature">(static) </span>symDifference<span class="signature">(geom0, geom1)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the set-theoretic symmetric difference of two <a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>s, using enhanced precision.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first Geometry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>geom1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second Geometry</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_EnhancedPrecisionOp.js.html">jsts/precision/EnhancedPrecisionOp.js</a>, <a href="jsts_precision_EnhancedPrecisionOp.js.html#line128">line 128</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the Geometry representing the set-theoretic symmetric difference of the input Geometries.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".union"><span class="type-signature">(static) </span>union<span class="signature">(geom0, geom1)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the set-theoretic union of two <a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a>s, using enhanced precision.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first Geometry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>geom1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second Geometry</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_precision_EnhancedPrecisionOp.js.html">jsts/precision/EnhancedPrecisionOp.js</a>, <a href="jsts_precision_EnhancedPrecisionOp.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the Geometry representing the set-theoretic union of the input Geometries.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +1044,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:08 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

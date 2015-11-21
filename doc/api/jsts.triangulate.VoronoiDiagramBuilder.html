@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: VoronoiDiagramBuilder</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,1015 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: VoronoiDiagramBuilder</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.triangulate.html">.triangulate</a>.</span>VoronoiDiagramBuilder</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="VoronoiDiagramBuilder"><span class="type-signature"></span>new VoronoiDiagramBuilder<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    A utility class which creates Voronoi Diagrams
+from collections of points.
+The diagram is returned as a GeometryCollection of Polygons,
+clipped to the larger of a supplied envelope or to an envelope determined
+by the input sites.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Martin Davis</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="getDiagram"><span class="type-signature"></span>getDiagram<span class="signature">(geomFact)</span><span class="type-signature"> &rarr; {<a href="jsts.geom.GeometryCollection.html">jsts.geom.GeometryCollection</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Gets the faces of the computed diagram as a GeometryCollection
+of Polygons, clipped as specified.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geomFact</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.GeometryFactory.html">jsts.geom.GeometryFactory</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the geometry factory to use to create the output.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the faces of the diagram.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.geom.GeometryCollection.html">jsts.geom.GeometryCollection</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getSubdivision"><span class="type-signature"></span>getSubdivision<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="jsts.triangulate.quadedge.QuadEdgeSubdivision.html">jsts.triangulate.quadedge.QuadEdgeSubdivision</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Gets the QuadEdgeSubdivision which models the computed diagram.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the subdivision containing the triangulation.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="jsts.triangulate.quadedge.QuadEdgeSubdivision.html">jsts.triangulate.quadedge.QuadEdgeSubdivision</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setClipEnvelope"><span class="type-signature"></span>setClipEnvelope<span class="signature">(clipEnv)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the envelope to clip the diagram to.
+The diagram will be clipped to the larger
+of this envelope or an envelope surrounding the sites.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>clipEnv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Envelope.html">jsts.geom.Envelope</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the clip envelope.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setSites"><span class="type-signature"></span>setSites<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the sites of the builder. Will call correct setSites* based on arguments
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setSitesByArray"><span class="type-signature"></span>setSitesByArray<span class="signature">(coords)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the sites (point or vertices) which will be diagrammed
+from a collection of Coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coords</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="jsts.geom.Coordinate.html">jsts.geom.Coordinate</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">an array of Coordinates.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line64">line 64</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setSitesByGeometry"><span class="type-signature"></span>setSitesByGeometry<span class="signature">(geom)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the sites (point or vertices) which will be diagrammed.
+All vertices of the given geometry will be used as sites.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>geom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="jsts.geom.Geometry.html">jsts.geom.Geometry</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the geometry from which the sites will be extracted.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setTolerance"><span class="type-signature"></span>setTolerance<span class="signature">(tolerance)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the snapping tolerance which will be used
+to improved the robustness of the triangulation computation.
+A tolerance of 0.0 specifies that no snapping will take place.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tolerance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the tolerance distance to use.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html">jsts/triangulate/VoronoiDiagramBuilder.js</a>, <a href="jsts_triangulate_VoronoiDiagramBuilder.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +1039,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:08 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

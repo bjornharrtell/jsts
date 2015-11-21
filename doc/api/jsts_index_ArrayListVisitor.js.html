@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/index/ArrayListVisitor.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,55 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/index/ArrayListVisitor.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+* Published under the LGPL 2.1 license.
+* See /license-notice.txt for the full text of the license notice.
+* See /license.txt for the full text of the license.
+*/
 
 
 
-    
+/**
+ * An array-visitor
+ *
+ * @constructor
+ */
+jsts.index.ArrayListVisitor = function() {
+  this.items = [];
+};
 
 
+/**
+ * Visits an item
+ *
+ * @param {Object}
+ *          item the item to visit.
+ */
+jsts.index.ArrayListVisitor.prototype.visitItem = function(item) {
+  this.items.push(item);
+};
 
 
-
+/**
+ * Returns all visited items
+ *
+ * @return {Array} An array with all visited items.
+ */
+jsts.index.ArrayListVisitor.prototype.getItems = function() {
+  return this.items;
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

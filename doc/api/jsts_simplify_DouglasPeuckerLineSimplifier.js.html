@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/simplify/DouglasPeuckerLineSimplifier.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,132 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/simplify/DouglasPeuckerLineSimplifier.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
+/**
+ * Simplifies a linestring (sequence of points) using
+ * the standard Douglas-Peucker algorithm.
+ * @constructor
+ * 
+ * @param {jsts.geom.Coordinate}
+ *          pts 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier = function(
+    pts) {
+  this.pts = pts;
+  this.seg = new jsts.geom.LineSegment();
+};
 
-    <h3> </h3>
+/**
+ * @type {jsts.geom.Coordinate[]} 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.pts = null;
 
+/**
+ * @type {boolean[]}
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.usePt = null;
 
+/**
+ * @type {double} 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.distanceTolerance = null;
 
+/**
+ * @param {jsts.geom.Coordinate[]}
+ *          pts
+ * @param {double}
+ *          distanceTolerance
+ * @return {jsts.geom.Coordinate[]} 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.simplify = function(
+    pts, distanceTolerance) {
+  var simp = new jsts.simplify.DouglasPeuckerLineSimplifier(pts);
+  simp.setDistanceTolerance(distanceTolerance);
+  return simp.simplify();
+};
 
+/**
+ * Set the distance tolerance for the simplification.
+ * All vertices in the simplified linestring will be within this
+ * distance of the original linestring.
+ * @param {double}
+ *          distanceTolerance 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.setDistanceTolerance = function(
+    distanceTolerance) {
+  this.distanceTolerance = distanceTolerance;
+};
 
+/**
+ * @return {jsts.geom.Coordinate[]} 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.simplify = function() {
+  this.usePt = [];
+  for (var i = 0; i &lt; this.pts.length; i++) {
+    this.usePt[i] = true;
+  }
+  this.simplifySection(0, this.pts.length - 1);
+  var coordList = new jsts.geom.CoordinateList();
+  for (var j = 0; j &lt; this.pts.length; j++) {
+    if (this.usePt[j]) {
+      coordList.add(new jsts.geom.Coordinate(this.pts[j]));
+    }
+  }
+  return coordList.toCoordinateArray();
+};
 
+/**
+ * @type {jsts.geom.LineSegment}
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.seg = null;
 
-
-
-
-    
-
-
-
-
-
+/**
+ * @param {int}
+ *          i
+ * @param {int}
+ *          j 
+ */
+jsts.simplify.DouglasPeuckerLineSimplifier.prototype.simplifySection = function(
+    i, j) {
+  if (i+1 == j) {
+    return;
+  }
+  this.seg.p0 = this.pts[i];
+  this.seg.p1 = this.pts[j];
+  var maxDistance = -1.0;
+  var maxIndex = i;
+  for (var k = i + 1; k &lt; j; k++) {
+    var distance = this.seg.distance(this.pts[k]);
+    if (distance > maxDistance) {
+      maxDistance = distance;
+      maxIndex = k;
+    }
+  }
+  if (maxDistance &lt;= this.distanceTolerance) {
+    for (var l = i + 1; l &lt; j; l++) {
+      this.usePt[l] = false;
+    }
+  } else {
+    this.simplifySection(i, maxIndex);
+    this.simplifySection(maxIndex, j);
+  }
+};</code></pre>
+        </article>
+    </section>
 
 
 

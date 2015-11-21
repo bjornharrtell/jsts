@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/index/chain/MonotoneChainSelectAction.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,62 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/index/chain/MonotoneChainSelectAction.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+/**
+ * @requires jsts/geom/Envelope.js
+ * @requires jsts/geom/LineSegment.js
+ */
+
+/**
+ * The action for the internal iterator for performing envelope select queries
+ * on a MonotoneChain
+ *
+ * @constructor
+ */
+jsts.index.chain.MonotoneChainSelectAction = function() {
+  this.tempEnv1 = new jsts.geom.Envelope();
+  this.selectedSegment = new jsts.geom.LineSegment();
+};
 
 
-    <h3> </h3>
 
+jsts.index.chain.MonotoneChainSelectAction.prototype.tempEnv1 = null;
 
+jsts.index.chain.MonotoneChainSelectAction.prototype.selectedSegment = null;
 
+/**
+ * This function can be overridden if the original chain is needed.
+ */
+jsts.index.chain.MonotoneChainSelectAction.prototype.select = function(mc,
+    start) {
+  mc.getLineSegment(start, this.selectedSegment);
+  this.select2(this.selectedSegment);
+};
 
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * This is a convenience function which can be overridden to obtain the actual
+ * line segment which is selected.
+ *
+ * @param seg
+ */
+jsts.index.chain.MonotoneChainSelectAction.prototype.select2 = function(seg) {};
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/operation/linemerge/LineMergeEdge.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,49 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/operation/linemerge/LineMergeEdge.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2015 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
+/**
+ * An edge of a {@link LineMergeGraph}. The &lt;code>marked&lt;/code> field indicates
+ * whether this Edge has been logically deleted from the graph.
+ *
+ * @version 1.7
+ */
 
-    <h3> </h3>
+/**
+ * Constructs a LineMergeEdge with vertices given by the specified LineString.
+ * @constructor
+ */
+jsts.operation.linemerge.LineMergeEdge = function(line) {
+    jsts.planargraph.Edge.call(this); 
+    this.line = line;
+};
 
+jsts.operation.linemerge.LineMergeEdge.prototype = new jsts.planargraph.Edge();
+jsts.operation.linemerge.LineMergeEdge.constructor = jsts.operation.linemerge.LineMergeEdge;
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Returns the LineString specifying the vertices of this edge.
+ */
+jsts.operation.linemerge.LineMergeEdge.prototype.getLine = function() {
+    return this.line;
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

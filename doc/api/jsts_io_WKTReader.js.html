@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/io/WKTReader.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,86 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/io/WKTReader.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
 
-    
+/**
+ * Converts a geometry in Well-Known Text format to a {@link Geometry}.
+ * &lt;p>
+ * &lt;code>WKTReader&lt;/code> supports extracting &lt;code>Geometry&lt;/code> objects
+ * from either {@link Reader}s or {@link String}s. This allows it to function
+ * as a parser to read &lt;code>Geometry&lt;/code> objects from text blocks embedded
+ * in other data formats (e.g. XML).
+ * &lt;P>
+ * &lt;p>
+ * A &lt;code>WKTReader&lt;/code> is parameterized by a &lt;code>GeometryFactory&lt;/code>,
+ * to allow it to create &lt;code>Geometry&lt;/code> objects of the appropriate
+ * implementation. In particular, the &lt;code>GeometryFactory&lt;/code> determines
+ * the &lt;code>PrecisionModel&lt;/code> and &lt;code>SRID&lt;/code> that is used.
+ * &lt;P>
+ *
+ * @constructor
+ */
+jsts.io.WKTReader = function(geometryFactory) {
+  this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
+  this.precisionModel = this.geometryFactory.getPrecisionModel();
+  this.parser = new jsts.io.WKTParser(this.geometryFactory);
+};
 
 
+/**
+ * Reads a Well-Known Text representation of a {@link Geometry}
+ *
+ * @param {string}
+ *          wkt a &lt;Geometry Tagged Text> string (see the OpenGIS Simple Features
+ *          Specification).
+ * @return {jsts.geom.Geometry} a &lt;code>Geometry&lt;/code> read from
+ *         &lt;code>string.&lt;/code>
+ */
+jsts.io.WKTReader.prototype.read = function(wkt) {
+  var geometry = this.parser.read(wkt);
 
+  // TODO: port and use GeometryPrecisionReducer, this is a hack
+  if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
+    this.reducePrecision(geometry);
+  }
 
+  return geometry;
+};
 
+//NOTE: this is a hack
+jsts.io.WKTReader.prototype.reducePrecision = function(geometry) {
+  var i, len;
+
+  if (geometry.coordinate) {
+    this.precisionModel.makePrecise(geometry.coordinate);
+  } else if (geometry.points) {
+    for (i = 0, len = geometry.points.length; i &lt; len; i++) {
+      this.precisionModel.makePrecise(geometry.points[i]);
+    }
+  } else if (geometry.geometries) {
+    for (i = 0, len = geometry.geometries.length; i &lt; len; i++) {
+      this.reducePrecision(geometry.geometries[i]);
+    }
+  }
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

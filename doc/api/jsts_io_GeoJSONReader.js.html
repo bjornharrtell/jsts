@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/io/GeoJSONReader.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,76 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/io/GeoJSONReader.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011, 2012 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+(function() {
 
+    /**
+     * Converts a geometry in GeoJSON to a {@link Geometry}.
+     * &lt;p>
+     * A &lt;code>GeoJSONReader&lt;/code> is parameterized by a &lt;code>GeometryFactory&lt;/code>,
+     * to allow it to create &lt;code>Geometry&lt;/code> objects of the appropriate
+     * implementation. In particular, the &lt;code>GeometryFactory&lt;/code> determines
+     * the &lt;code>PrecisionModel&lt;/code> and &lt;code>SRID&lt;/code> that is used.
+     * &lt;P>
+     *
+     * @constructor
+     */
+    jsts.io.GeoJSONReader = function(geometryFactory) {
+      this.geometryFactory = geometryFactory || new jsts.geom.GeometryFactory();
+      this.precisionModel = this.geometryFactory.getPrecisionModel();
+      this.parser = new jsts.io.GeoJSONParser(this.geometryFactory);
+    };
 
-    <h3> </h3>
+    /**
+     * Reads a GeoJSON representation of a {@link Geometry}
+     *
+     * @param {object}
+     *          geoJson a GeoJSON Object or String.
+     * @return {jsts.geom.Geometry} a &lt;code>Geometry.&lt;/code>
+     */
+    jsts.io.GeoJSONReader.prototype.read = function(geoJson) {
+      var geometry = this.parser.read(geoJson);
 
+      if (this.precisionModel.getType() === jsts.geom.PrecisionModel.FIXED) {
+        this.reducePrecision(geometry);
+      }
 
+      return geometry;
+    };
 
+    // NOTE: this is a hack
+    jsts.io.GeoJSONReader.prototype.reducePrecision = function(geometry) {
+      var i, len;
 
-
-
-
-
-
-
-    
-
-
-
-
-
+      if (geometry.coordinate) {
+        this.precisionModel.makePrecise(geometry.coordinate);
+      } else if (geometry.points) {
+        for (i = 0, len = geometry.points.length; i &lt; len; i++) {
+          this.precisionModel.makePrecise(geometry.points[i]);
+        }
+      } else if (geometry.geometries) {
+        for (i = 0, len = geometry.geometries.length; i &lt; len; i++) {
+          this.reducePrecision(geometry.geometries[i]);
+        }
+      }
+    };
+})();
+</code></pre>
+        </article>
+    </section>
 
 
 

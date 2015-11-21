@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/index/strtree/Interval.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,112 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/index/strtree/Interval.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
+
+/**
+ * A contiguous portion of 1D-space. Used internally by SIRtree.
+ *
+ * @param {jsts.index.strtree.Interval}
+ *          [other].
+ * @param {number}
+ *          [min].
+ * @param {number}
+ *          [max].
+ * @see SIRtree
+ * @constructor
+ */
+jsts.index.strtree.Interval = function() {
+  var other;
+  if (arguments.length === 1) {
+    other = arguments[0];
+    return jsts.index.strtree.Interval(other.min, other.max);
+  } else if (arguments.length === 2) {
+    jsts.util.Assert.isTrue(this.min &lt;= this.max);
+    this.min = arguments[0];
+    this.max = arguments[1];
+  }
+};
 
 
-    <h3> </h3>
+/**
+ * @type {number}
+ * @private
+ */
+jsts.index.strtree.Interval.prototype.min = null;
 
 
+/**
+ * @type {number}
+ * @private
+ */
+jsts.index.strtree.Interval.prototype.max = null;
 
 
+/**
+ * @return {number}
+ * @public
+ */
+jsts.index.strtree.Interval.prototype.getCentre = function() {
+  return (this.min + this.max) / 2;
+};
 
 
+/**
+ *
+ * @param {jsts.index.strtree.Interval}
+ *          other
+ * @return {jsts.index.strtree.Interval} this.
+ * @public
+ */
+jsts.index.strtree.Interval.prototype.expandToInclude = function(other) {
+  this.max = Math.max(this.max, other.max);
+  this.min = Math.min(this.min, other.min);
+  return this;
+};
 
 
+/**
+ *
+ * @param {jsts.index.strtree.Interval}
+ *          other
+ * @return {boolean}
+ * @public
+ */
+jsts.index.strtree.Interval.prototype.intersects = function(other) {
+  return !(other.min > this.max || other.max &lt; this.min);
+};
 
 
-    
-
-
-
-
-
+/**
+ *
+ * @param {Object}
+ *          o
+ * @return {boolean}
+ * @public
+ */
+jsts.index.strtree.Interval.prototype.equals = function(o) {
+  if (!(o instanceof jsts.index.strtree.Interval)) {
+    return false;
+  }
+  other = o;
+  return this.min === other.min &amp;&amp; this.max === other.max;
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

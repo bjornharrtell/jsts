@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Namespace: algorithm</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,877 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Namespace: algorithm</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a>.</span>algorithm</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts.js.html">jsts.js</a>, <a href="jsts.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="jsts.algorithm.Angle.html">Angle</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.BoundaryNodeRule.html">BoundaryNodeRule</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.CentralEndpointIntersector.html">CentralEndpointIntersector</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.Centroid.html">Centroid</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.CGAlgorithms.html">CGAlgorithms</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.ConvexHull.html">ConvexHull</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.HCoordinate.html">HCoordinate</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.InteriorPointArea.html">InteriorPointArea</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.InteriorPointLine.html">InteriorPointLine</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.InteriorPointPoint.html">InteriorPointPoint</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.LineIntersector.html">LineIntersector</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.MinimumDiameter.html">MinimumDiameter</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.PointLocator.html">PointLocator</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.RayCrossingCounter.html">RayCrossingCounter</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.RobustDeterminant.html">RobustDeterminant</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.RobustLineIntersector.html">RobustLineIntersector</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.SafeBisectorFinder.html">SafeBisectorFinder</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="jsts.algorithm.distance.html">distance</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.algorithm.locate.html">locate</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".CentroidArea"><span class="type-signature">(static) </span>CentroidArea<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the centroid of an area geometry.
+<h2>Algorithm</h2>
+Based on the usual algorithm for calculating the centroid as a weighted sum
+of the centroids of a decomposition of the area into (possibly overlapping)
+triangles. The algorithm has been extended to handle holes and
+multi-polygons. See
+<code>http://www.faqs.org/faqs/graphics/algorithms-faq/</code> for further
+details of the basic approach. The code has also be extended to handle
+degenerate (zero-area) polygons. In this case, the centroid of the line
+segments in the polygon will be returned.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.7</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CentroidArea.js.html">jsts/algorithm/CentroidArea.js</a>, <a href="jsts_algorithm_CentroidArea.js.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".CentroidLine"><span class="type-signature">(static) </span>CentroidLine<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the centroid of a linear geometry.
+<h2>Algorithm</h2>
+Compute the average of the midpoints of all line segments weighted by the
+segment length.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.7</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CentroidLine.js.html">jsts/algorithm/CentroidLine.js</a>, <a href="jsts_algorithm_CentroidLine.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".CentroidPoint"><span class="type-signature">(static) </span>CentroidPoint<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the centroid of a point geometry.
+<h2>Algorithm</h2>
+Compute the average of all points.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.7</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_CentroidPoint.js.html">jsts/algorithm/CentroidPoint.js</a>, <a href="jsts_algorithm_CentroidPoint.js.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".MCPointInRing"><span class="type-signature">(static) </span>MCPointInRing<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Implements PointInRing using MonotoneChains and a
+Bintree index to increase performance.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_MCPointInRing.js.html">jsts/algorithm/MCPointInRing.js</a>, <a href="jsts_algorithm_MCPointInRing.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>IndexedPointInAreaLocator for more general functionality</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".MinimumBoundingCircle"><span class="type-signature">(static) </span>MinimumBoundingCircle<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes the <b>Minimum Bounding Circle</b> (MBC)
+for the points in a Geometry.
+The MBC is the smallest circle which <tt>cover</tt>s
+all the input points 
+(this is also known as the <b>Smallest Enclosing Circle</b>).
+This is equivalent to computing the Maximum Diameter 
+of the input point set.
+<p>
+The computed circle can be specified in two equivalent ways,
+both of which are provide as output by this class:
+<ul>
+<li>As a centre point and a radius
+<li>By the set of points defining the circle.
+Depending on the number of points in the input
+and their relative positions, this
+will be specified by anywhere from 0 to 3 points. 
+<ul>
+<li>0 or 1 points indicate an empty or trivial input point arrangement.
+<li>2 or 3 points define a circle which contains 
+all the input points.
+</ul>
+</ul>
+The class can also output a Geometry which approximates the
+shape of the MBC (although as an approximation 
+it is <b>not</b> guaranteed to <tt>cover</tt> all the input points.)
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Martin Davis</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_MinimumBoundingCircle.js.html">jsts/algorithm/MinimumBoundingCircle.js</a>, <a href="jsts_algorithm_MinimumBoundingCircle.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>MinimumDiameter</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".Mod2BoundaryNodeRule"><span class="type-signature">(static) </span>Mod2BoundaryNodeRule<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    A BoundaryNodeRule specifies that points are in the boundary of a
+lineal geometry iff the point lies on the boundary of an odd number of
+components. Under this rule LinearRings and closed
+LineStrings have an empty boundary.
+<p>
+This is the rule specified by the <i>OGC SFS</i>, and is the default rule
+used in JTS.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_BoundaryNodeRule.js.html">jsts/algorithm/BoundaryNodeRule.js</a>, <a href="jsts_algorithm_BoundaryNodeRule.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".RectangleLineIntersector"><span class="type-signature">(static) </span>RectangleLineIntersector<span class="signature">(rectEnv)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Computes whether a rectangle intersects line segments.
+<p>
+Rectangles contain a large amount of inherent symmetry
+(or to put it another way, although they contain four
+coordinates they only actually contain 4 ordinates
+worth of information).
+The algorithm used takes advantage of the symmetry of 
+the geometric situation 
+to optimize performance by minimizing the number
+of line intersection tests.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rectEnv</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the query rectangle, specified as an Envelope</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Martin Davis
+
+Creates a new intersector for the given query rectangle,
+specified as an Envelope.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_algorithm_RectangleLineIntersector.js.html">jsts/algorithm/RectangleLineIntersector.js</a>, <a href="jsts_algorithm_RectangleLineIntersector.js.html#line43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

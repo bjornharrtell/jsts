@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/geom/GeometryComponentFilter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,54 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/geom/GeometryComponentFilter.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
-    <h3> </h3>
+/**
+ * &lt;code>Geometry&lt;/code> classes support the concept of applying a
+ * &lt;code>GeometryComponentFilter&lt;/code> filter to the &lt;code>Geometry&lt;/code>.
+ * The filter is applied to every component of the &lt;code>Geometry&lt;/code> which
+ * is itself a &lt;code>Geometry&lt;/code> and which does not itself contain any
+ * components. (For instance, all the {@link LinearRing}s in {@link Polygon}s
+ * are visited, but in a {@link MultiPolygon} the {@link Polygon}s themselves
+ * are not visited.) Thus the only classes of Geometry which must be handled as
+ * arguments to {@link #filter} are {@link LineString}s, {@link LinearRing}s
+ * and {@link Point}s.
+ * &lt;p>
+ * A &lt;code>GeometryComponentFilter&lt;/code> filter can either record information
+ * about the &lt;code>Geometry&lt;/code> or change the &lt;code>Geometry&lt;/code> in
+ * some way. &lt;code>GeometryComponentFilter&lt;/code> is an example of the
+ * Gang-of-Four Visitor pattern.
+ */
+jsts.geom.GeometryComponentFilter = function() {
+};
 
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Performs an operation with or on &lt;code>geom&lt;/code>.
+ *
+ * @param {Geometry}
+ *          geom a &lt;code>Geometry&lt;/code> to which the filter is applied.
+ */
+jsts.geom.GeometryComponentFilter.prototype.filter = function(geom) {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

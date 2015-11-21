@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/geomgraph/index/MonotoneChain.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,48 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/geomgraph/index/MonotoneChain.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
+/**
+ * @param {MonotoneChainEdge}
+ *          mce
+ * @param {int}
+ *          chainIndex 
+ */
+jsts.geomgraph.index.MonotoneChain = function(mce, chainIndex) {
+  this.mce = mce;
+  this.chainIndex = chainIndex;
+};
 
-    <h3> </h3>
+/**
+ * @type {MonotoneChainEdge} 
+ */
+jsts.geomgraph.index.MonotoneChain.prototype.mce = null;
 
+/**
+ * @type {int} 
+ */
+jsts.geomgraph.index.MonotoneChain.prototype.chainIndex = null;
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+jsts.geomgraph.index.MonotoneChain.prototype.computeIntersections = function(
+    mc, si) {
+  this.mce.computeIntersectsForChain(this.chainIndex, mc.mce, mc.chainIndex, si);
+};</code></pre>
+        </article>
+    </section>
 
 
 

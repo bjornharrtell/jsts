@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/operation/linemerge/EdgeString.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,75 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/operation/linemerge/EdgeString.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2015 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
+/**
+ * A sequence of {@link LineMergeDirectedEdge}s forming one of the lines that will
+ * be output by the line-merging process.
+ *
+ * @version 1.7
+ *
+ * @constructor
+ */
+jsts.operation.linemerge.EdgeString = function(factory) {
+    this.factory = factory;
+    this.directedEdges = [];
+    this.coordinates = null;
+};
 
-    <h3> </h3>
+/**
+ * Adds a directed edge which is known to form part of this line.
+ */
+jsts.operation.linemerge.EdgeString.prototype.add = function(directedEdge) {
+    this.directedEdges.push(directedEdge);
+};
 
+jsts.operation.linemerge.EdgeString.prototype.getCoordinates = function() {
+    if (this.coordinates===null)
+    {
+        var forwardDirectedEdges = 0;
+        var reverseDirectedEdges = 0;
+        var coordinateList = new jsts.geom.CoordinateList();
+        for (var i = 0; i &lt; this.directedEdges.length; ++i) {
+            var directedEdge = this.directedEdges[i];
+            if (directedEdge.getEdgeDirection()) {
+                forwardDirectedEdges++;
+            }
+            else {
+                reverseDirectedEdges++;
+            }
+            coordinateList.add(directedEdge.getEdge().getLine().getCoordinates(), false, directedEdge.getEdgeDirection());
+        }
+        this.coordinates = coordinateList.toCoordinateArray();
+        if (reverseDirectedEdges > forwardDirectedEdges) {
+            this.coordinates = this.coordinates.reverse();
+        }
+    }
+    return this.coordinates;
+};
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Converts this EdgeString into a LineString.
+ */
+jsts.operation.linemerge.EdgeString.prototype.toLineString = function() {
+    return this.factory.createLineString(this.getCoordinates());
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

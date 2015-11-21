@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Namespace: geom</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,454 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Namespace: geom</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a>.</span>geom</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts.js.html">jsts.js</a>, <a href="jsts.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="jsts.geom.Coordinate.html">Coordinate</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.CoordinateArrays.html">CoordinateArrays</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.CoordinateList.html">CoordinateList</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Dimension.html">Dimension</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Envelope.html">Envelope</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Geometry.html">Geometry</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.GeometryCollection.html">GeometryCollection</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.GeometryFactory.html">GeometryFactory</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.IntersectionMatrix.html">IntersectionMatrix</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.LinearRing.html">LinearRing</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.LineSegment.html">LineSegment</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.LineString.html">LineString</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Location.html">Location</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.MultiLineString.html">MultiLineString</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.MultiPoint.html">MultiPoint</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.MultiPolygon.html">MultiPolygon</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Point.html">Point</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Polygon.html">Polygon</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.PrecisionModel.html">PrecisionModel</a></dt>
+            <dd></dd>
+        
+            <dt><a href="jsts.geom.Triangle.html">Triangle</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="jsts.geom.util.html">util</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".CoordinateSequenceFilter"><span class="type-signature">(static) </span>CoordinateSequenceFilter<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Interface for classes which provide operations that can be applied to the
+coordinates in a CoordinateSequence. A CoordinateSequence filter can
+either record information about each coordinate or change the coordinate in
+some way. CoordinateSequence filters can be used to implement such things as
+coordinate transformations, centroid and envelope computation, and many other
+functions. For maximum efficiency, the execution of filters can be
+short-circuited. Geometry classes support the concept of applying a
+<code>CoordinateSequenceFilter</code> to each CoordinateSequences
+they contain.
+<p>
+<code>CoordinateSequenceFilter</code> is an example of the Gang-of-Four
+Visitor pattern.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geom_CoordinateSequenceFilter.js.html">jsts/geom/CoordinateSequenceFilter.js</a>, <a href="jsts_geom_CoordinateSequenceFilter.js.html#line30">line 30</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Geometry#apply(CoordinateSequenceFilter)</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".GeometryComponentFilter"><span class="type-signature">(static) </span>GeometryComponentFilter<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <code>Geometry</code> classes support the concept of applying a
+<code>GeometryComponentFilter</code> filter to the <code>Geometry</code>.
+The filter is applied to every component of the <code>Geometry</code> which
+is itself a <code>Geometry</code> and which does not itself contain any
+components. (For instance, all the LinearRings in Polygons
+are visited, but in a MultiPolygon the Polygons themselves
+are not visited.) Thus the only classes of Geometry which must be handled as
+arguments to #filter are LineStrings, LinearRings
+and Points.
+<p>
+A <code>GeometryComponentFilter</code> filter can either record information
+about the <code>Geometry</code> or change the <code>Geometry</code> in
+some way. <code>GeometryComponentFilter</code> is an example of the
+Gang-of-Four Visitor pattern.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geom_GeometryComponentFilter.js.html">jsts/geom/GeometryComponentFilter.js</a>, <a href="jsts_geom_GeometryComponentFilter.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".GeometryFilter"><span class="type-signature">(static) </span>GeometryFilter<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <code>GeometryCollection</code> classes support the concept of applying a
+<code>GeometryFilter</code> to the <code>Geometry</code>. The filter is
+applied to every element <code>Geometry</code>. A
+<code>GeometryFilter</code> can either record information about the
+<code>Geometry</code> or change the <code>Geometry</code> in some way.
+<code>GeometryFilter</code> is an example of the Gang-of-Four Visitor
+pattern.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_geom_GeometryFilter.js.html">jsts/geom/GeometryFilter.js</a>, <a href="jsts_geom_GeometryFilter.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +478,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:05 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

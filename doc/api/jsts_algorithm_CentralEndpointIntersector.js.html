@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/algorithm/CentralEndpointIntersector.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,136 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/algorithm/CentralEndpointIntersector.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
 
-    
+/**
+ * @param {Coordinate}
+ *          p00
+ * @param {Coordinate}
+ *          p01
+ * @param {Coordinate}
+ *          p10
+ * @param {Coordinate}
+ *          p11
+ * @constructor
+ */
+jsts.algorithm.CentralEndpointIntersector = function(p00, p01, p10, p11) {
+  this.pts = [p00, p01, p10, p11];
+  this.compute();
+};
 
 
+/**
+ * @param {Coordinate}
+ *          p00
+ * @param {Coordinate}
+ *          p01
+ * @param {Coordinate}
+ *          p10
+ * @param {Coordinate}
+ *          p11
+ * @return {Coordinate}
+ */
+jsts.algorithm.CentralEndpointIntersector.getIntersection = function(p00, p01,
+    p10, p11) {
+  var intor = new jsts.algorithm.CentralEndpointIntersector(p00, p01, p10, p11);
+  return intor.getIntersection();
+};
 
 
+/**
+ * @type {Coordinate[]}
+ * @private
+ */
+jsts.algorithm.CentralEndpointIntersector.prototype.pts = null;
 
+
+/**
+ * @type {Coordinate}
+ * @private
+ */
+jsts.algorithm.CentralEndpointIntersector.prototype.intPt = null;
+
+
+/**
+ * @private
+ */
+jsts.algorithm.CentralEndpointIntersector.prototype.compute = function() {
+  var centroid = jsts.algorithm.CentralEndpointIntersector.average(this.pts);
+  this.intPt = this.findNearestPoint(centroid, this.pts);
+};
+
+
+/**
+ * @return {Coordinate}
+ */
+jsts.algorithm.CentralEndpointIntersector.prototype.getIntersection = function() {
+  return this.intPt;
+};
+
+
+/**
+ * @param {Coordinate[]}
+ *          pts
+ * @return {Coordinate}
+ * @private
+ */
+jsts.algorithm.CentralEndpointIntersector.average = function(pts) {
+  var avg = new jsts.geom.Coordinate();
+  var i, n = pts.length;
+  for (i = 0; i &lt; n; i++) {
+    avg.x += pts[i].x;
+    avg.y += pts[i].y;
+  }
+  if (n > 0) {
+    avg.x /= n;
+    avg.y /= n;
+  }
+  return avg;
+};
+
+
+/**
+ * Determines a point closest to the given point.
+ *
+ * @param {Coordinate}
+ *          p the point to compare against.
+ * @param {Coordinate[]}
+ *          pts
+ * @return {Coordinate} the point closest to the input point p.
+ * @private
+ */
+jsts.algorithm.CentralEndpointIntersector.prototype.findNearestPoint = function(
+    p, pts) {
+  var minDist = Number.MAX_VALUE;
+  var i, result = null, dist;
+  for (i = 0; i &lt; pts.length; i++) {
+    dist = p.distance(pts[i]);
+    if (dist &lt; minDist) {
+      minDist = dist;
+      result = pts[i];
+    }
+  }
+  return result;
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

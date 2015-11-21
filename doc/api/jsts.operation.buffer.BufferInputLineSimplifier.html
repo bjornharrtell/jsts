@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: BufferInputLineSimplifier</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,450 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: BufferInputLineSimplifier</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.operation.html">.operation</a><a href="jsts.operation.buffer.html">.buffer</a>.</span>BufferInputLineSimplifier</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="BufferInputLineSimplifier"><span class="type-signature"></span>new BufferInputLineSimplifier<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Simplifies a buffer input line to remove concavities with shallow depth.
+<p>
+The most important benefit of doing this is to reduce the number of points
+and the complexity of shape which will be buffered. It also reduces the risk
+of gores created by the quantized fillet arcs (although this issue should be
+eliminated in any case by the offset curve generation logic).
+<p>
+A key aspect of the simplification is that it affects inside (concave or
+inward) corners only. Convex (outward) corners are preserved, since they are
+required to ensure that the generated buffer curve lies at the correct
+distance from the input geometry.
+<p>
+Another important heuristic used is that the end segments of the input are
+never simplified. This ensures that the client buffer code is able to
+generate end caps faithfully.
+<p>
+No attempt is made to avoid self-intersections in the output. This is
+acceptable for use for generating a buffer offset curve, since the buffer
+algorithm is insensitive to invalid polygonal geometry. However, this means
+that this algorithm cannot be used as a general-purpose polygon
+simplification technique.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_operation_buffer_BufferInputLineSimplifier.js.html">jsts/operation/buffer/BufferInputLineSimplifier.js</a>, <a href="jsts_operation_buffer_BufferInputLineSimplifier.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".simplify"><span class="type-signature">(static) </span>simplify<span class="signature">(inputLine, distanceTol)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Simplify the input coordinate list. If the distance tolerance is positive,
+concavities on the LEFT side of the line are simplified. If the supplied
+distance tolerance is negative, concavities on the RIGHT side of the line are
+simplified.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>inputLine</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the coordinate list to simplify.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>distanceTol</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">simplification distance tolerance to use.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_operation_buffer_BufferInputLineSimplifier.js.html">jsts/operation/buffer/BufferInputLineSimplifier.js</a>, <a href="jsts_operation_buffer_BufferInputLineSimplifier.js.html#line51">line 51</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the simplified coordinate list.
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="simplify"><span class="type-signature"></span>simplify<span class="signature">(distanceTol)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Simplify the input coordinate list. If the distance tolerance is positive,
+concavities on the LEFT side of the line are simplified. If the supplied
+distance tolerance is negative, concavities on the RIGHT side of the line are
+simplified.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>distanceTol</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">simplification distance tolerance to use.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_operation_buffer_BufferInputLineSimplifier.js.html">jsts/operation/buffer/BufferInputLineSimplifier.js</a>, <a href="jsts_operation_buffer_BufferInputLineSimplifier.js.html#line111">line 111</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the simplified coordinate list.
+</div>
+
+
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +474,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:07 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

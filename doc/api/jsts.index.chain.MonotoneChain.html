@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: MonotoneChain</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,574 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: MonotoneChain</h1>
 
     
 
 
 
 
+<section>
 
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="jsts.html">jsts</a><a href="jsts.index.html">.index</a><a href="jsts.index.chain.html">.chain</a>.</span>MonotoneChain</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="MonotoneChain"><span class="type-signature"></span>new MonotoneChain<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Monotone Chains are a way of partitioning the segments of a linestring to
+allow for fast searching of intersections. They have the following
+properties:
+<ol>
+<li>the segments within a monotone chain never intersect each other
+<li>the envelope of any contiguous subset of the segments in a monotone
+chain is equal to the envelope of the endpoints of the subset.
+</ol>
+Property 1 means that there is no need to test pairs of segments from within
+the same monotone chain for intersection.
+<p>
+Property 2 allows an efficient binary search to be used to find the
+intersection points of two monotone chains. For many types of real-world
+data, these properties eliminate a large number of segment comparisons,
+producing substantial speed gains.
+<p>
+One of the goals of this implementation of MonotoneChains is to be as space
+and time efficient as possible. One design choice that aids this is that a
+MonotoneChain is based on a subarray of a list of points. This means that new
+arrays of points (potentially very large) do not have to be allocated.
+<p>
+
+MonotoneChains support the following kinds of queries:
+<ul>
+<li>Envelope select: determine all the segments in the chain which intersect
+a given envelope
+<li>Overlap: determine all the pairs of segments in two chains whose
+envelopes overlap
+</ul>
+
+This implementation of MonotoneChains uses the concept of internal iterators
+to return the resultsets for the above queries. This has time and space
+advantages, since it is not necessary to build lists of instantiated objects
+to represent the segments returned by the query. However, it does mean that
+the queries are not thread-safe.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_index_chain_MonotoneChain.js.html">jsts/index/chain/MonotoneChain.js</a>, <a href="jsts_index_chain_MonotoneChain.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="computeOverlaps"><span class="type-signature"></span>computeOverlaps<span class="signature">(searchEnv, mco)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Determine all the line segments in two chains which may overlap, and process
+them.
+<p>
+The monotone chain search algorithm attempts to optimize performance by not
+calling the overlap action on chain segments which it can determine do not
+overlap. However, it *may* call the overlap action on segments which do not
+actually interact. This saves on the overhead of checking intersection each
+time, since clients may be able to do this more efficiently.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>searchEnv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MonotoneChain</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the search envelope.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mco</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MonotoneChainOverlapAction</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the overlap action to execute on selected segments.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_index_chain_MonotoneChain.js.html">jsts/index/chain/MonotoneChain.js</a>, <a href="jsts_index_chain_MonotoneChain.js.html#line198">line 198</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getCoordinates"><span class="type-signature"></span>getCoordinates<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Return the subsequence of coordinates forming this chain. Allocates a new
+array to hold the Coordinates
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_index_chain_MonotoneChain.js.html">jsts/index/chain/MonotoneChain.js</a>, <a href="jsts_index_chain_MonotoneChain.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="select"><span class="type-signature"></span>select<span class="signature">(searchEnv, mcs)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Determine all the line segments in the chain whose envelopes overlap the
+searchEnvelope, and process them.
+<p>
+The monotone chain search algorithm attempts to optimize performance by not
+calling the select action on chain segments which it can determine are not in
+the search envelope. However, it *may* call the select action on segments
+which do not intersect the search envelope. This saves on the overhead of
+checking envelope intersection each time, since clients may be able to do
+this more efficiently.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>searchEnv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Envelope</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the search envelope.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mcs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MonotoneChainSelectAction</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the select action to execute on selected segments.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jsts_index_chain_MonotoneChain.js.html">jsts/index/chain/MonotoneChain.js</a>, <a href="jsts_index_chain_MonotoneChain.js.html#line148">line 148</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -56,7 +598,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 21 2015 16:13:06 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

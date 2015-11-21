@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: jsts/geom/CoordinateFilter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,47 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: jsts/geom/CoordinateFilter.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Copyright (c) 2011 by The Authors.
+ * Published under the LGPL 2.1 license.
+ * See /license-notice.txt for the full text of the license notice.
+ * See /license.txt for the full text of the license.
+ */
 
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * &lt;code>Geometry&lt;/code> classes support the concept of applying a coordinate
+ * filter to every coordinate in the &lt;code>Geometry&lt;/code>. A coordinate
+ * filter can either record information about each coordinate or change the
+ * coordinate in some way. Coordinate filters implement the interface
+ * &lt;code>CoordinateFilter&lt;/code>. (&lt;code>CoordinateFilter&lt;/code> is an
+ * example of the Gang-of-Four Visitor pattern). Coordinate filters can be used
+ * to implement such things as coordinate transformations, centroid and envelope
+ * computation, and many other functions.
+ *
+ * @interface
+ */
+jsts.geom.CoordinateFilter = function() {};
+/**
+ * Performs an operation with or on &lt;code>coord&lt;/code>.
+ *
+ * @param coord
+ *          a &lt;code>Coordinate&lt;/code> to which the filter is applied.
+ */
+jsts.geom.CoordinateFilter.prototype.filter = function(coord) {
+  throw new jsts.error.AbstractMethodInvocationError();
+};
+</code></pre>
+        </article>
+    </section>
 
 
 
