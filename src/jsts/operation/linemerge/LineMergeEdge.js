@@ -9,9 +9,11 @@
  * whether this Edge has been logically deleted from the graph.
  *
  * @version 1.7
- *
- * @constructor
+ */
+
+/**
  * Constructs a LineMergeEdge with vertices given by the specified LineString.
+ * @constructor
  */
 jsts.operation.linemerge.LineMergeEdge = function(line) {
     jsts.planargraph.Edge.call(this); 

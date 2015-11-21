@@ -25,11 +25,11 @@
  * in the merging.
  *
  * @version 1.7
- *
- * @constructor
- *
+ */
+ 
+/**
  * Creates a new line merger.
- *
+ * @constructor
  */
 jsts.operation.linemerge.LineMerger = function() {
     this.graph = new jsts.operation.linemerge.LineMergeGraph();

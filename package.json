@@ -21,7 +21,8 @@
   },
   "devDependencies": {
     "mocha": "~2.2.4",
-    "cheerio": "~0.19.0"
+    "cheerio": "~0.19.0",
+    "jsdoc": "3.4.0"
   },
   "main": "index.js",
   "engines": {
