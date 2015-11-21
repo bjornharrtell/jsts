@@ -1,3 +1,16 @@
+2015-11-21: Version 0.17.0
+
+        Densifier port (#201)
+        Automate build and remove from repo (#192)
+        Correct array matrix initialization when create instance from string (#190)
+        Incoorect row in IntersectionMatrix.set2 (#184)
+        Update ol3 example to work with ol 3.8.2
+        LineMerge class ported (#187)
+        Fix default parameter interpretation for 'direction' (#186)
+        Enhanced precision operations (#181)
+        Corrected misprint in variable's name (#180)
+        Fix another rectangle intersects issue (#175)
+
 2015-05-06: Version 0.16.0
     
         Union resulting in two holes with shared node yields invalid result (#135)
