@@ -227,7 +227,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.size = function() {
   if (this.itemBoundables.length === 0) {
     return 0;
   }
-  return this.size2(root);
+  return this.size2(this.root);
 };
 
 /**
@@ -241,7 +241,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.size2 = function(node) {
   for (var i = 0; i < childBoundables.length; i++) {
     var childBoundable = childBoundables[i];
     if (childBoundable instanceof jsts.index.strtree.AbstractNode) {
-      size += this.size(childBoundable);
+      size += this.size2(childBoundable);
     } else if (childBoundable instanceof jsts.index.strtree.ItemBoundable) {
       size += 1;
     }
@@ -264,7 +264,7 @@ jsts.index.strtree.AbstractSTRtree.prototype.depth = function() {
   if (this.itemBoundables.length === 0) {
     return 0;
   }
-  return this.depth2(root);
+  return this.depth2(this.root);
 };
 
 /**
@@ -272,13 +272,13 @@ jsts.index.strtree.AbstractSTRtree.prototype.depth = function() {
  *          [node].
  * @return {number}
  */
-jsts.index.strtree.AbstractSTRtree.prototype.depth2 = function() {
+jsts.index.strtree.AbstractSTRtree.prototype.depth2 = function(node) {
   var maxChildDepth = 0;
   var childBoundables = node.getChildBoundables();
   for (var i = 0; i < childBoundables.length; i++) {
     var childBoundable = childBoundables[i];
     if (childBoundable instanceof jsts.index.strtree.AbstractNode) {
-      var childDepth = this.depth(childBoundable);
+      var childDepth = this.depth2(childBoundable);
       if (childDepth > maxChildDepth)
         maxChildDepth = childDepth;
     }
