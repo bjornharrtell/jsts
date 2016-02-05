@@ -13,6 +13,8 @@ and analyzing simple geometries but JSTS can also be used as a free standing geo
 
 Because JSTS was made using automatic translation of the original Java source via AST to AST transformation JSTS implements the original [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-beta1/apidocs/).
 
+Browser build is available [here](https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.0.0-beta1/jsts.min.js).
+
 A [Google group](http://groups.google.com/group/jsts-devs) is available for developer discussions.
 
 A [port](http://bjornharrtell.github.com/jsts/1.0.0-beta1/validationsuite/index.html) of
