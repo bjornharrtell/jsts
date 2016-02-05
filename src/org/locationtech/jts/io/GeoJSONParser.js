@@ -64,7 +64,7 @@ export default class GeoJSONParser {
    * @return {Object} A GeoJSON object represting the input Geometry/Geometries.
    */
   write (geometry) {
-    var type = geometry.getGeometryType().slice(10)
+    var type = geometry.getGeometryType()
 
     if (!extract[type]) {
       throw new Error('Geometry is not supported')
@@ -319,7 +319,7 @@ const extract = {
    * @return {Array} Array of 2 ordinates (paired to a coordinate).
    */
   'Point': function (point) {
-    var array = extract.coordinate.apply(this, [point.coordinate])
+    var array = extract.coordinate.apply(this, [point.getCoordinate()])
 
     return {
       type: 'Point',
