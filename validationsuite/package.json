@@ -1,0 +1,32 @@
+{
+  "name": "jsts-validationsuite",
+  "description": "JTS test case runner for JSTS",
+  "version": "0.1.0",
+  "author": "Björn Harrtell <bjorn@wololo.org>",
+  "licenses": [
+    {
+      "type": "LGPL",
+      "url": "https://raw.github.com/bjornharrtell/jsts/master/license-notice.txt"
+    }
+  ],
+  "devDependencies": {
+    "babel-preset-es2015": "6.3.13",
+    "babel-register": "6.4.3",
+    "browserify": "13.0.0",
+    "rollup": "0.25.2",
+    "uglify-js": "2.6.1"
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "standard": {
+    "globals": [
+      "Ext",
+      "jsts",
+      "ol"
+    ]
+  },
+  "scripts": {
+    "build": "rollup -c | browserify -t babelify - | uglifyjs -c -m > vs.js"
+  }
+}
