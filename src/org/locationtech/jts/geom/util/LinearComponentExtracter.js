@@ -56,7 +56,16 @@ export default class LinearComponentExtracter {
 						return LinearComponentExtracter.getLines(geom, false);
 					})(...args);
 				case 2:
-					if (args[0] instanceof Geometry && typeof args[1] === "boolean") {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
+						return ((...args) => {
+							let [geoms, lines] = args;
+							for (var i = geoms.iterator(); i.hasNext(); ) {
+								var g = i.next();
+								LinearComponentExtracter.getLines(g, lines);
+							}
+							return lines;
+						})(...args);
+					} else if (args[0] instanceof Geometry && typeof args[1] === "boolean") {
 						return ((...args) => {
 							let [geom, forceToLineString] = args;
 							var lines = new ArrayList();
@@ -73,30 +82,21 @@ export default class LinearComponentExtracter {
 							}
 							return lines;
 						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
-						return ((...args) => {
-							let [geoms, lines] = args;
-							for (var i = geoms.iterator(); i.hasNext(); ) {
-								var g = i.next();
-								LinearComponentExtracter.getLines(g, lines);
-							}
-							return lines;
-						})(...args);
 					}
 				case 3:
-					if (typeof args[2] === "boolean" && (args[0] instanceof Geometry && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1))) {
-						return ((...args) => {
-							let [geom, lines, forceToLineString] = args;
-							geom.apply(new LinearComponentExtracter(lines, forceToLineString));
-							return lines;
-						})(...args);
-					} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1))) {
+					if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1))) {
 						return ((...args) => {
 							let [geoms, lines, forceToLineString] = args;
 							for (var i = geoms.iterator(); i.hasNext(); ) {
 								var g = i.next();
 								LinearComponentExtracter.getLines(g, lines, forceToLineString);
 							}
+							return lines;
+						})(...args);
+					} else if (typeof args[2] === "boolean" && (args[0] instanceof Geometry && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1))) {
+						return ((...args) => {
+							let [geom, lines, forceToLineString] = args;
+							geom.apply(new LinearComponentExtracter(lines, forceToLineString));
 							return lines;
 						})(...args);
 					}

@@ -63,7 +63,13 @@ export default class CoordinateList extends ArrayList {
 						super.add(coord);
 					})(...args);
 				case 2:
-					if (args[0] instanceof Coordinate && typeof args[1] === "boolean") {
+					if (args[0] instanceof Array && typeof args[1] === "boolean") {
+						return ((...args) => {
+							let [coord, allowRepeated] = args;
+							this.add(coord, allowRepeated, true);
+							return true;
+						})(...args);
+					} else if (args[0] instanceof Coordinate && typeof args[1] === "boolean") {
 						return ((...args) => {
 							let [coord, allowRepeated] = args;
 							if (!allowRepeated) {
@@ -73,12 +79,6 @@ export default class CoordinateList extends ArrayList {
 								}
 							}
 							super.add(coord);
-						})(...args);
-					} else if (args[0] instanceof Array && typeof args[1] === "boolean") {
-						return ((...args) => {
-							let [coord, allowRepeated] = args;
-							this.add(coord, allowRepeated, true);
-							return true;
 						})(...args);
 					} else if (args[0] instanceof Object && typeof args[1] === "boolean") {
 						return ((...args) => {

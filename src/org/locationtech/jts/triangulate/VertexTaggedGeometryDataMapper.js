@@ -24,19 +24,19 @@ export default class VertexTaggedGeometryDataMapper {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geomColl] = args;
-							for (var i = 0; i < geomColl.getNumGeometries(); i++) {
-								var geom = geomColl.getGeometryN(i);
-								this.loadVertices(geom.getCoordinates(), geom.getUserData());
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 						return ((...args) => {
 							let [geoms] = args;
 							for (var i = geoms.iterator(); i.hasNext(); ) {
 								var geom = i.next();
+								this.loadVertices(geom.getCoordinates(), geom.getUserData());
+							}
+						})(...args);
+					} else if (args[0] instanceof Geometry) {
+						return ((...args) => {
+							let [geomColl] = args;
+							for (var i = 0; i < geomColl.getNumGeometries(); i++) {
+								var geom = geomColl.getGeometryN(i);
 								this.loadVertices(geom.getCoordinates(), geom.getUserData());
 							}
 						})(...args);

@@ -64,7 +64,15 @@ export default class MCIndexSnapRounder {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof NodedSegmentString) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+						return ((...args) => {
+							let [edges] = args;
+							for (var i0 = edges.iterator(); i0.hasNext(); ) {
+								var edge0 = i0.next();
+								this.computeVertexSnaps(edge0);
+							}
+						})(...args);
+					} else if (args[0] instanceof NodedSegmentString) {
 						return ((...args) => {
 							let [e] = args;
 							var pts0 = e.getCoordinates();
@@ -74,14 +82,6 @@ export default class MCIndexSnapRounder {
 								if (isNodeAdded) {
 									e.addIntersection(pts0[i], i);
 								}
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [edges] = args;
-							for (var i0 = edges.iterator(); i0.hasNext(); ) {
-								var edge0 = i0.next();
-								this.computeVertexSnaps(edge0);
 							}
 						})(...args);
 					}

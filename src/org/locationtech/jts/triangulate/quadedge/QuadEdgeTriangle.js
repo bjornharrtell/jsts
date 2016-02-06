@@ -122,19 +122,19 @@ export default class QuadEdgeTriangle {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Vertex) {
-						return ((...args) => {
-							let [v] = args;
-							for (var i = 0; i < 3; i++) {
-								if (this.edge[i].orig() === v) return i;
-							}
-							return -1;
-						})(...args);
-					} else if (args[0] instanceof QuadEdge) {
+					if (args[0] instanceof QuadEdge) {
 						return ((...args) => {
 							let [e] = args;
 							for (var i = 0; i < 3; i++) {
 								if (this.edge[i] === e) return i;
+							}
+							return -1;
+						})(...args);
+					} else if (args[0] instanceof Vertex) {
+						return ((...args) => {
+							let [v] = args;
+							for (var i = 0; i < 3; i++) {
+								if (this.edge[i].orig() === v) return i;
 							}
 							return -1;
 						})(...args);

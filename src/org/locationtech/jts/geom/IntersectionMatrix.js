@@ -17,7 +17,13 @@ export default class IntersectionMatrix {
 						this.setAll(Dimension.FALSE);
 					})(...args);
 				case 1:
-					if (args[0] instanceof IntersectionMatrix) {
+					if (typeof args[0] === "string") {
+						return ((...args) => {
+							let [elements] = args;
+							overloads.call(this);
+							this.set(elements);
+						})(...args);
+					} else if (args[0] instanceof IntersectionMatrix) {
 						return ((...args) => {
 							let [other] = args;
 							overloads.call(this);
@@ -31,12 +37,6 @@ export default class IntersectionMatrix {
 							this.matrix[Location.EXTERIOR][Location.BOUNDARY] = other.matrix[Location.EXTERIOR][Location.BOUNDARY];
 							this.matrix[Location.EXTERIOR][Location.EXTERIOR] = other.matrix[Location.EXTERIOR][Location.EXTERIOR];
 						})(...args);
-					} else if (typeof args[0] === "string") {
-						return ((...args) => {
-							let [elements] = args;
-							overloads.call(this);
-							this.set(elements);
-						})(...args);
 					}
 			}
 		};
@@ -49,13 +49,7 @@ export default class IntersectionMatrix {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
-					if (typeof args[0] === "string" && typeof args[1] === "string") {
-						return ((...args) => {
-							let [actualDimensionSymbols, requiredDimensionSymbols] = args;
-							var m = new IntersectionMatrix(actualDimensionSymbols);
-							return m.matches(requiredDimensionSymbols);
-						})(...args);
-					} else if (Number.isInteger(args[0]) && typeof args[1] === "string") {
+					if (Number.isInteger(args[0]) && typeof args[1] === "string") {
 						return ((...args) => {
 							let [actualDimensionValue, requiredDimensionSymbol] = args;
 							if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
@@ -77,6 +71,12 @@ export default class IntersectionMatrix {
 								return true;
 							}
 							return false;
+						})(...args);
+					} else if (typeof args[0] === "string" && typeof args[1] === "string") {
+						return ((...args) => {
+							let [actualDimensionSymbols, requiredDimensionSymbols] = args;
+							var m = new IntersectionMatrix(actualDimensionSymbols);
+							return m.matches(requiredDimensionSymbols);
 						})(...args);
 					}
 			}

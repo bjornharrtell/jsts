@@ -362,15 +362,15 @@ export default class QuadEdgeSubdivision {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.locator.locate(new Vertex(p));
-						})(...args);
-					} else if (args[0] instanceof Vertex) {
+					if (args[0] instanceof Vertex) {
 						return ((...args) => {
 							let [v] = args;
 							return this.locator.locate(v);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							return this.locator.locate(new Vertex(p));
 						})(...args);
 					}
 				case 2:

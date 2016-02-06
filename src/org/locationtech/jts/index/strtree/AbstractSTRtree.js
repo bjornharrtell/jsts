@@ -190,25 +190,7 @@ export default class AbstractSTRtree {
 						}
 					})(...args);
 				case 3:
-					if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-						return ((...args) => {
-							let [searchBounds, node, matches] = args;
-							var childBoundables = node.getChildBoundables();
-							for (var i = 0; i < childBoundables.size(); i++) {
-								var childBoundable = childBoundables.get(i);
-								if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
-									continue;
-								}
-								if (childBoundable instanceof AbstractNode) {
-									this.query(searchBounds, childBoundable, matches);
-								} else if (childBoundable instanceof ItemBoundable) {
-									matches.add(childBoundable.getItem());
-								} else {
-									Assert.shouldNeverReachHere();
-								}
-							}
-						})(...args);
-					} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+					if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
 						return ((...args) => {
 							let [searchBounds, node, visitor] = args;
 							var childBoundables = node.getChildBoundables();
@@ -221,6 +203,24 @@ export default class AbstractSTRtree {
 									this.query(searchBounds, childBoundable, visitor);
 								} else if (childBoundable instanceof ItemBoundable) {
 									visitor.visitItem(childBoundable.getItem());
+								} else {
+									Assert.shouldNeverReachHere();
+								}
+							}
+						})(...args);
+					} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+						return ((...args) => {
+							let [searchBounds, node, matches] = args;
+							var childBoundables = node.getChildBoundables();
+							for (var i = 0; i < childBoundables.size(); i++) {
+								var childBoundable = childBoundables.get(i);
+								if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
+									continue;
+								}
+								if (childBoundable instanceof AbstractNode) {
+									this.query(searchBounds, childBoundable, matches);
+								} else if (childBoundable instanceof ItemBoundable) {
+									matches.add(childBoundable.getItem());
 								} else {
 									Assert.shouldNeverReachHere();
 								}

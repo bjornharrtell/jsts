@@ -124,16 +124,16 @@ export default class GeometryGraph extends PlanarGraph {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [pt] = args;
-							this.insertPoint(this.argIndex, pt, Location.INTERIOR);
-						})(...args);
-					} else if (args[0] instanceof Point) {
+					if (args[0] instanceof Point) {
 						return ((...args) => {
 							let [p] = args;
 							var coord = p.getCoordinate();
 							this.insertPoint(this.argIndex, coord, Location.INTERIOR);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [pt] = args;
+							this.insertPoint(this.argIndex, pt, Location.INTERIOR);
 						})(...args);
 					}
 			}

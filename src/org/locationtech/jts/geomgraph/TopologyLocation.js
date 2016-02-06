@@ -9,17 +9,7 @@ export default class TopologyLocation {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof TopologyLocation) {
-						return ((...args) => {
-							let [gl] = args;
-							this.init(gl.location.length);
-							if (gl !== null) {
-								for (var i = 0; i < this.location.length; i++) {
-									this.location[i] = gl.location[i];
-								}
-							}
-						})(...args);
-					} else if (args[0] instanceof Array) {
+					if (args[0] instanceof Array) {
 						return ((...args) => {
 							let [location] = args;
 							this.init(location.length);
@@ -29,6 +19,16 @@ export default class TopologyLocation {
 							let [on] = args;
 							this.init(1);
 							this.location[Position.ON] = on;
+						})(...args);
+					} else if (args[0] instanceof TopologyLocation) {
+						return ((...args) => {
+							let [gl] = args;
+							this.init(gl.location.length);
+							if (gl !== null) {
+								for (var i = 0; i < this.location.length; i++) {
+									this.location[i] = gl.location[i];
+								}
+							}
 						})(...args);
 					}
 				case 3:

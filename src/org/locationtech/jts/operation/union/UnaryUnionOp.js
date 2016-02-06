@@ -20,15 +20,15 @@ export default class UnaryUnionOp {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							this.extract(geom);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 						return ((...args) => {
 							let [geoms] = args;
 							this.extract(geoms);
+						})(...args);
+					} else if (args[0] instanceof Geometry) {
+						return ((...args) => {
+							let [geom] = args;
+							this.extract(geom);
 						})(...args);
 					}
 				case 2:
@@ -48,16 +48,16 @@ export default class UnaryUnionOp {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							var op = new UnaryUnionOp(geom);
-							return op.union();
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 						return ((...args) => {
 							let [geoms] = args;
 							var op = new UnaryUnionOp(geoms);
+							return op.union();
+						})(...args);
+					} else if (args[0] instanceof Geometry) {
+						return ((...args) => {
+							let [geom] = args;
+							var op = new UnaryUnionOp(geom);
 							return op.union();
 						})(...args);
 					}
@@ -85,21 +85,21 @@ export default class UnaryUnionOp {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							if (this.geomFact === null) this.geomFact = geom.getFactory();
-							GeometryExtracter.extract(geom, Polygon, this.polygons);
-							GeometryExtracter.extract(geom, LineString, this.lines);
-							GeometryExtracter.extract(geom, Point, this.points);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 						return ((...args) => {
 							let [geoms] = args;
 							for (var i = geoms.iterator(); i.hasNext(); ) {
 								var geom = i.next();
 								this.extract(geom);
 							}
+						})(...args);
+					} else if (args[0] instanceof Geometry) {
+						return ((...args) => {
+							let [geom] = args;
+							if (this.geomFact === null) this.geomFact = geom.getFactory();
+							GeometryExtracter.extract(geom, Polygon, this.polygons);
+							GeometryExtracter.extract(geom, LineString, this.lines);
+							GeometryExtracter.extract(geom, Point, this.points);
 						})(...args);
 					}
 			}

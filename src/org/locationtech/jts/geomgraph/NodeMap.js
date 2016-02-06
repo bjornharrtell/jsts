@@ -30,7 +30,17 @@ export default class NodeMap {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Node) {
+					if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [coord] = args;
+							var node = this.nodeMap.get(coord);
+							if (node === null) {
+								node = this.nodeFact.createNode(coord);
+								this.nodeMap.put(coord, node);
+							}
+							return node;
+						})(...args);
+					} else if (args[0] instanceof Node) {
 						return ((...args) => {
 							let [n] = args;
 							var node = this.nodeMap.get(n.getCoordinate());
@@ -39,16 +49,6 @@ export default class NodeMap {
 								return n;
 							}
 							node.mergeLabel(n);
-							return node;
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							var node = this.nodeMap.get(coord);
-							if (node === null) {
-								node = this.nodeFact.createNode(coord);
-								this.nodeMap.put(coord, node);
-							}
 							return node;
 						})(...args);
 					}

@@ -29,12 +29,7 @@ export default class LineSegmentIndex {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof LineSegment) {
-						return ((...args) => {
-							let [seg] = args;
-							this.index.insert(new Envelope(seg.p0, seg.p1), seg);
-						})(...args);
-					} else if (args[0] instanceof TaggedLineString) {
+					if (args[0] instanceof TaggedLineString) {
 						return ((...args) => {
 							let [line] = args;
 							var segs = line.getSegments();
@@ -42,6 +37,11 @@ export default class LineSegmentIndex {
 								var seg = segs[i];
 								this.add(seg);
 							}
+						})(...args);
+					} else if (args[0] instanceof LineSegment) {
+						return ((...args) => {
+							let [seg] = args;
+							this.index.insert(new Envelope(seg.p0, seg.p1), seg);
 						})(...args);
 					}
 			}

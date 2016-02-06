@@ -44,17 +44,17 @@ export default class Bintree {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Interval) {
+					if (typeof args[0] === "number") {
+						return ((...args) => {
+							let [x] = args;
+							return this.query(new Interval(x, x));
+						})(...args);
+					} else if (args[0] instanceof Interval) {
 						return ((...args) => {
 							let [interval] = args;
 							var foundItems = new ArrayList();
 							this.query(interval, foundItems);
 							return foundItems;
-						})(...args);
-					} else if (typeof args[0] === "number") {
-						return ((...args) => {
-							let [x] = args;
-							return this.query(new Interval(x, x));
 						})(...args);
 					}
 				case 2:

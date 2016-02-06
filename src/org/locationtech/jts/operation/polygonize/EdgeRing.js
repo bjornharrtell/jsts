@@ -146,17 +146,17 @@ export default class EdgeRing {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof EdgeRing) {
+					if (args[0] instanceof LinearRing) {
+						return ((...args) => {
+							let [hole] = args;
+							if (this.holes === null) this.holes = new ArrayList();
+							this.holes.add(hole);
+						})(...args);
+					} else if (args[0] instanceof EdgeRing) {
 						return ((...args) => {
 							let [holeER] = args;
 							holeER.setShell(this);
 							var hole = holeER.getRing();
-							if (this.holes === null) this.holes = new ArrayList();
-							this.holes.add(hole);
-						})(...args);
-					} else if (args[0] instanceof LinearRing) {
-						return ((...args) => {
-							let [hole] = args;
 							if (this.holes === null) this.holes = new ArrayList();
 							this.holes.add(hole);
 						})(...args);

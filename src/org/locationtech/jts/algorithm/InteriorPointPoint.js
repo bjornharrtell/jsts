@@ -32,16 +32,7 @@ export default class InteriorPointPoint {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [point] = args;
-							var dist = point.distance(this.centroid);
-							if (dist < this.minDistance) {
-								this.interiorPoint = new Coordinate(point);
-								this.minDistance = dist;
-							}
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
+					if (args[0] instanceof Geometry) {
 						return ((...args) => {
 							let [geom] = args;
 							if (geom instanceof Point) {
@@ -51,6 +42,15 @@ export default class InteriorPointPoint {
 								for (var i = 0; i < gc.getNumGeometries(); i++) {
 									this.add(gc.getGeometryN(i));
 								}
+							}
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [point] = args;
+							var dist = point.distance(this.centroid);
+							if (dist < this.minDistance) {
+								this.interiorPoint = new Coordinate(point);
+								this.minDistance = dist;
 							}
 						})(...args);
 					}

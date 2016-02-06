@@ -52,12 +52,7 @@ export default class LineSegment {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
-						})(...args);
-					} else if (args[0] instanceof LineSegment) {
+					if (args[0] instanceof LineSegment) {
 						return ((...args) => {
 							let [seg] = args;
 							var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
@@ -65,6 +60,11 @@ export default class LineSegment {
 							if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
 							if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
 							return 0;
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
 						})(...args);
 					}
 			}
@@ -94,7 +94,17 @@ export default class LineSegment {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof LineSegment) {
+					if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
+							var r = this.projectionFactor(p);
+							var coord = new Coordinate();
+							coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
+							coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
+							return coord;
+						})(...args);
+					} else if (args[0] instanceof LineSegment) {
 						return ((...args) => {
 							let [seg] = args;
 							var pf0 = this.projectionFactor(seg.p0);
@@ -108,16 +118,6 @@ export default class LineSegment {
 							if (pf1 < 0.0) newp1 = this.p0;
 							if (pf1 > 1.0) newp1 = this.p1;
 							return new LineSegment(newp0, newp1);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
-							var r = this.projectionFactor(p);
-							var coord = new Coordinate();
-							coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
-							coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
-							return coord;
 						})(...args);
 					}
 			}
@@ -283,15 +283,15 @@ export default class LineSegment {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
-						})(...args);
-					} else if (args[0] instanceof LineSegment) {
+					if (args[0] instanceof LineSegment) {
 						return ((...args) => {
 							let [ls] = args;
 							return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
 						})(...args);
 					}
 			}

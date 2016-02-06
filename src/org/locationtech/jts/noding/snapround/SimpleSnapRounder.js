@@ -102,7 +102,15 @@ export default class SimpleSnapRounder {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
-					if (args[0] instanceof NodedSegmentString && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
+						return ((...args) => {
+							let [segStrings, snapPts] = args;
+							for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
+								var ss = i0.next();
+								this.computeSnaps(ss, snapPts);
+							}
+						})(...args);
+					} else if (args[0] instanceof NodedSegmentString && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
 						return ((...args) => {
 							let [ss, snapPts] = args;
 							for (var it = snapPts.iterator(); it.hasNext(); ) {
@@ -111,14 +119,6 @@ export default class SimpleSnapRounder {
 								for (var i = 0; i < ss.size() - 1; i++) {
 									hotPixel.addSnappedNode(ss, i);
 								}
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
-						return ((...args) => {
-							let [segStrings, snapPts] = args;
-							for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
-								var ss = i0.next();
-								this.computeSnaps(ss, snapPts);
 							}
 						})(...args);
 					}

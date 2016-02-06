@@ -226,7 +226,15 @@ export default class LineSequencer {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Geometry) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+						return ((...args) => {
+							let [geometries] = args;
+							for (var i = geometries.iterator(); i.hasNext(); ) {
+								var geometry = i.next();
+								this.add(geometry);
+							}
+						})(...args);
+					} else if (args[0] instanceof Geometry) {
 						return ((...args) => {
 							let [geometry] = args;
 							geometry.apply(new (class {
@@ -239,14 +247,6 @@ export default class LineSequencer {
 									return [GeometryComponentFilter];
 								}
 							})());
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [geometries] = args;
-							for (var i = geometries.iterator(); i.hasNext(); ) {
-								var geometry = i.next();
-								this.add(geometry);
-							}
 						})(...args);
 					}
 			}

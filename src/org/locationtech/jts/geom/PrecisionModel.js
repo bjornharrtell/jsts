@@ -18,13 +18,7 @@ export default class PrecisionModel {
 						this.modelType = PrecisionModel.FLOATING;
 					})(...args);
 				case 1:
-					if (args[0] instanceof PrecisionModel) {
-						return ((...args) => {
-							let [pm] = args;
-							this.modelType = pm.modelType;
-							this.scale = pm.scale;
-						})(...args);
-					} else if (args[0] instanceof Type) {
+					if (args[0] instanceof Type) {
 						return ((...args) => {
 							let [modelType] = args;
 							this.modelType = modelType;
@@ -37,6 +31,12 @@ export default class PrecisionModel {
 							let [scale] = args;
 							this.modelType = PrecisionModel.FIXED;
 							this.setScale(scale);
+						})(...args);
+					} else if (args[0] instanceof PrecisionModel) {
+						return ((...args) => {
+							let [pm] = args;
+							this.modelType = pm.modelType;
+							this.scale = pm.scale;
 						})(...args);
 					}
 			}
@@ -90,14 +90,7 @@ export default class PrecisionModel {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							if (this.modelType === PrecisionModel.FLOATING) return null;
-							coord.x = this.makePrecise(coord.x);
-							coord.y = this.makePrecise(coord.y);
-						})(...args);
-					} else if (typeof args[0] === "number") {
+					if (typeof args[0] === "number") {
 						return ((...args) => {
 							let [val] = args;
 							if (Double.isNaN(val)) return val;
@@ -109,6 +102,13 @@ export default class PrecisionModel {
 								return Math.round(val * this.scale) / this.scale;
 							}
 							return val;
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [coord] = args;
+							if (this.modelType === PrecisionModel.FLOATING) return null;
+							coord.x = this.makePrecise(coord.x);
+							coord.y = this.makePrecise(coord.y);
 						})(...args);
 					}
 			}

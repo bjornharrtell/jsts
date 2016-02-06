@@ -123,24 +123,7 @@ export default class LineDissolver {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof LineString) {
-						return ((...args) => {
-							let [lineString] = args;
-							if (this.factory === null) {
-								this.factory = lineString.getFactory();
-							}
-							var seq = lineString.getCoordinateSequence();
-							var doneStart = false;
-							for (var i = 1; i < seq.size(); i++) {
-								var e = this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
-								if (e === null) continue;
-								if (!doneStart) {
-									e.setStart();
-									doneStart = true;
-								}
-							}
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
+					if (args[0] instanceof Geometry) {
 						return ((...args) => {
 							let [geometry] = args;
 							geometry.apply(new (class {
@@ -160,6 +143,23 @@ export default class LineDissolver {
 							for (var i = geometries.iterator(); i.hasNext(); ) {
 								var geometry = i.next();
 								this.add(geometry);
+							}
+						})(...args);
+					} else if (args[0] instanceof LineString) {
+						return ((...args) => {
+							let [lineString] = args;
+							if (this.factory === null) {
+								this.factory = lineString.getFactory();
+							}
+							var seq = lineString.getCoordinateSequence();
+							var doneStart = false;
+							for (var i = 1; i < seq.size(); i++) {
+								var e = this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
+								if (e === null) continue;
+								if (!doneStart) {
+									e.setStart();
+									doneStart = true;
+								}
 							}
 						})(...args);
 					}

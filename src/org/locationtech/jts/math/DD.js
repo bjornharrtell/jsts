@@ -19,20 +19,20 @@ export default class DD {
 						this.init(0.0);
 					})(...args);
 				case 1:
-					if (typeof args[0] === "string") {
+					if (typeof args[0] === "number") {
 						return ((...args) => {
-							let [str] = args;
-							overloads.call(this, DD.parse(str));
+							let [x] = args;
+							this.init(x);
 						})(...args);
 					} else if (args[0] instanceof DD) {
 						return ((...args) => {
 							let [dd] = args;
 							this.init(dd);
 						})(...args);
-					} else if (typeof args[0] === "number") {
+					} else if (typeof args[0] === "string") {
 						return ((...args) => {
-							let [x] = args;
-							this.init(x);
+							let [str] = args;
+							overloads.call(this, DD.parse(str));
 						})(...args);
 					}
 				case 2:
@@ -664,17 +664,17 @@ export default class DD {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof DD) {
-						return ((...args) => {
-							let [dd] = args;
-							this.hi = dd.hi;
-							this.lo = dd.lo;
-						})(...args);
-					} else if (typeof args[0] === "number") {
+					if (typeof args[0] === "number") {
 						return ((...args) => {
 							let [x] = args;
 							this.hi = x;
 							this.lo = 0.0;
+						})(...args);
+					} else if (args[0] instanceof DD) {
+						return ((...args) => {
+							let [dd] = args;
+							this.hi = dd.hi;
+							this.lo = dd.lo;
 						})(...args);
 					}
 				case 2:

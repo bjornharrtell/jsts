@@ -56,23 +56,23 @@ export default class DirectedEdgeStar {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof DirectedEdge) {
-						return ((...args) => {
-							let [dirEdge] = args;
-							this.sortEdges();
-							for (var i = 0; i < this.outEdges.size(); i++) {
-								var de = this.outEdges.get(i);
-								if (de === dirEdge) return i;
-							}
-							return -1;
-						})(...args);
-					} else if (args[0] instanceof Edge) {
+					if (args[0] instanceof Edge) {
 						return ((...args) => {
 							let [edge] = args;
 							this.sortEdges();
 							for (var i = 0; i < this.outEdges.size(); i++) {
 								var de = this.outEdges.get(i);
 								if (de.getEdge() === edge) return i;
+							}
+							return -1;
+						})(...args);
+					} else if (args[0] instanceof DirectedEdge) {
+						return ((...args) => {
+							let [dirEdge] = args;
+							this.sortEdges();
+							for (var i = 0; i < this.outEdges.size(); i++) {
+								var de = this.outEdges.get(i);
+								if (de === dirEdge) return i;
 							}
 							return -1;
 						})(...args);

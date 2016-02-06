@@ -59,15 +59,15 @@ export default class RectangleContains {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [pt] = args;
-							return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
-						})(...args);
-					} else if (args[0] instanceof Point) {
+					if (args[0] instanceof Point) {
 						return ((...args) => {
 							let [point] = args;
 							return this.isPointContainedInBoundary(point.getCoordinate());
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [pt] = args;
+							return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
 						})(...args);
 					}
 			}

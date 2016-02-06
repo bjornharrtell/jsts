@@ -64,17 +64,17 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
 						}
 					})(...args);
 				case 3:
-					if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
-						return ((...args) => {
-							let [edges, si, testAllSegments] = args;
-							if (testAllSegments) this.add(edges, null); else this.add(edges);
-							this.computeIntersections(si);
-						})(...args);
-					} else if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
+					if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
 						return ((...args) => {
 							let [edges0, edges1, si] = args;
 							this.add(edges0, edges0);
 							this.add(edges1, edges1);
+							this.computeIntersections(si);
+						})(...args);
+					} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
+						return ((...args) => {
+							let [edges, si, testAllSegments] = args;
+							if (testAllSegments) this.add(edges, null); else this.add(edges);
 							this.computeIntersections(si);
 						})(...args);
 					}
@@ -94,7 +94,15 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
 						}
 					})(...args);
 				case 2:
-					if (args[0] instanceof Edge && args[1] instanceof Object) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof Object) {
+						return ((...args) => {
+							let [edges, edgeSet] = args;
+							for (var i = edges.iterator(); i.hasNext(); ) {
+								var edge = i.next();
+								this.add(edge, edgeSet);
+							}
+						})(...args);
+					} else if (args[0] instanceof Edge && args[1] instanceof Object) {
 						return ((...args) => {
 							let [edge, edgeSet] = args;
 							var pts = edge.getCoordinates();
@@ -103,14 +111,6 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
 								var insertEvent = new SweepLineEvent(edgeSet, ss.getMinX(), null);
 								this.events.add(insertEvent);
 								this.events.add(new SweepLineEvent(ss.getMaxX(), insertEvent));
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof Object) {
-						return ((...args) => {
-							let [edges, edgeSet] = args;
-							for (var i = edges.iterator(); i.hasNext(); ) {
-								var edge = i.next();
-								this.add(edge, edgeSet);
 							}
 						})(...args);
 					}

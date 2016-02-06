@@ -30,15 +30,7 @@ export default class EdgeGraphBuilder {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof LineString) {
-						return ((...args) => {
-							let [lineString] = args;
-							var seq = lineString.getCoordinateSequence();
-							for (var i = 1; i < seq.size(); i++) {
-								this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
-							}
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
+					if (args[0] instanceof Geometry) {
 						return ((...args) => {
 							let [geometry] = args;
 							geometry.apply(new (class {
@@ -58,6 +50,14 @@ export default class EdgeGraphBuilder {
 							for (var i = geometries.iterator(); i.hasNext(); ) {
 								var geometry = i.next();
 								this.add(geometry);
+							}
+						})(...args);
+					} else if (args[0] instanceof LineString) {
+						return ((...args) => {
+							let [lineString] = args;
+							var seq = lineString.getCoordinateSequence();
+							for (var i = 1; i < seq.size(); i++) {
+								this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
 							}
 						})(...args);
 					}

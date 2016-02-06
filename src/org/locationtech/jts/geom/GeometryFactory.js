@@ -30,15 +30,15 @@ export default class GeometryFactory {
 						overloads.call(this, new PrecisionModel(), 0);
 					})(...args);
 				case 1:
-					if (args[0] instanceof PrecisionModel) {
-						return ((...args) => {
-							let [precisionModel] = args;
-							overloads.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFactory) > -1) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFactory) > -1) {
 						return ((...args) => {
 							let [coordinateSequenceFactory] = args;
 							overloads.call(this, new PrecisionModel(), 0, coordinateSequenceFactory);
+						})(...args);
+					} else if (args[0] instanceof PrecisionModel) {
+						return ((...args) => {
+							let [precisionModel] = args;
+							overloads.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
 						})(...args);
 					}
 				case 2:
@@ -227,12 +227,7 @@ export default class GeometryFactory {
 						return new Polygon(null, null, this);
 					})(...args);
 				case 1:
-					if (args[0] instanceof LinearRing) {
-						return ((...args) => {
-							let [shell] = args;
-							return this.createPolygon(shell, null);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
 						return ((...args) => {
 							let [coordinates] = args;
 							return this.createPolygon(this.createLinearRing(coordinates));
@@ -241,6 +236,11 @@ export default class GeometryFactory {
 						return ((...args) => {
 							let [coordinates] = args;
 							return this.createPolygon(this.createLinearRing(coordinates));
+						})(...args);
+					} else if (args[0] instanceof LinearRing) {
+						return ((...args) => {
+							let [shell] = args;
+							return this.createPolygon(shell, null);
 						})(...args);
 					}
 				case 2:

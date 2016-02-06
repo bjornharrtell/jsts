@@ -10,17 +10,17 @@ export default class Label {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Label) {
-						return ((...args) => {
-							let [lbl] = args;
-							this.elt[0] = new TopologyLocation(lbl.elt[0]);
-							this.elt[1] = new TopologyLocation(lbl.elt[1]);
-						})(...args);
-					} else if (Number.isInteger(args[0])) {
+					if (Number.isInteger(args[0])) {
 						return ((...args) => {
 							let [onLoc] = args;
 							this.elt[0] = new TopologyLocation(onLoc);
 							this.elt[1] = new TopologyLocation(onLoc);
+						})(...args);
+					} else if (args[0] instanceof Label) {
+						return ((...args) => {
+							let [lbl] = args;
+							this.elt[0] = new TopologyLocation(lbl.elt[0]);
+							this.elt[1] = new TopologyLocation(lbl.elt[1]);
 						})(...args);
 					}
 				case 2:

@@ -32,19 +32,7 @@ export default class PlanarPolygon3D {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
-					if (args[0] instanceof Coordinate && Number.isInteger(args[1])) {
-						return ((...args) => {
-							let [p, facingPlane] = args;
-							switch (facingPlane) {
-								case Plane3D.XY_PLANE:
-									return new Coordinate(p.x, p.y);
-								case Plane3D.XZ_PLANE:
-									return new Coordinate(p.x, p.z);
-								default:
-									return new Coordinate(p.y, p.z);
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && Number.isInteger(args[1])) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && Number.isInteger(args[1])) {
 						return ((...args) => {
 							let [seq, facingPlane] = args;
 							switch (facingPlane) {
@@ -54,6 +42,18 @@ export default class PlanarPolygon3D {
 									return AxisPlaneCoordinateSequence.projectToXZ(seq);
 								default:
 									return AxisPlaneCoordinateSequence.projectToYZ(seq);
+							}
+						})(...args);
+					} else if (args[0] instanceof Coordinate && Number.isInteger(args[1])) {
+						return ((...args) => {
+							let [p, facingPlane] = args;
+							switch (facingPlane) {
+								case Plane3D.XY_PLANE:
+									return new Coordinate(p.x, p.y);
+								case Plane3D.XZ_PLANE:
+									return new Coordinate(p.x, p.z);
+								default:
+									return new Coordinate(p.y, p.z);
 							}
 						})(...args);
 					}

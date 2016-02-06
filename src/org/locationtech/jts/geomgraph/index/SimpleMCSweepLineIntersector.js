@@ -53,17 +53,17 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 						}
 					})(...args);
 				case 3:
-					if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
-						return ((...args) => {
-							let [edges, si, testAllSegments] = args;
-							if (testAllSegments) this.addEdges(edges, null); else this.addEdges(edges);
-							this.computeIntersections(si);
-						})(...args);
-					} else if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
+					if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
 						return ((...args) => {
 							let [edges0, edges1, si] = args;
 							this.addEdges(edges0, edges0);
 							this.addEdges(edges1, edges1);
+							this.computeIntersections(si);
+						})(...args);
+					} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
+						return ((...args) => {
+							let [edges, si, testAllSegments] = args;
+							if (testAllSegments) this.addEdges(edges, null); else this.addEdges(edges);
 							this.computeIntersections(si);
 						})(...args);
 					}

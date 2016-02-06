@@ -56,15 +56,15 @@ export default class PlanarGraph {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							return this.nodes.addNode(coord);
-						})(...args);
-					} else if (args[0] instanceof Node) {
+					if (args[0] instanceof Node) {
 						return ((...args) => {
 							let [node] = args;
 							return this.nodes.addNode(node);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [coord] = args;
+							return this.nodes.addNode(coord);
 						})(...args);
 					}
 			}

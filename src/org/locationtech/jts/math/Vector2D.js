@@ -16,13 +16,13 @@ export default class Vector2D {
 						overloads.call(this, 0.0, 0.0);
 					})(...args);
 				case 1:
-					if (args[0] instanceof Coordinate) {
+					if (args[0] instanceof Vector2D) {
 						return ((...args) => {
 							let [v] = args;
 							this.x = v.x;
 							this.y = v.y;
 						})(...args);
-					} else if (args[0] instanceof Vector2D) {
+					} else if (args[0] instanceof Coordinate) {
 						return ((...args) => {
 							let [v] = args;
 							this.x = v.x;
@@ -30,17 +30,17 @@ export default class Vector2D {
 						})(...args);
 					}
 				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-						return ((...args) => {
-							let [from, to] = args;
-							this.x = to.x - from.x;
-							this.y = to.y - from.y;
-						})(...args);
-					} else if (typeof args[0] === "number" && typeof args[1] === "number") {
+					if (typeof args[0] === "number" && typeof args[1] === "number") {
 						return ((...args) => {
 							let [x, y] = args;
 							this.x = x;
 							this.y = y;
+						})(...args);
+					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+						return ((...args) => {
+							let [from, to] = args;
+							this.x = to.x - from.x;
+							this.y = to.y - from.y;
 						})(...args);
 					}
 			}
@@ -54,27 +54,27 @@ export default class Vector2D {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							return new Vector2D(coord);
-						})(...args);
-					} else if (args[0] instanceof Vector2D) {
+					if (args[0] instanceof Vector2D) {
 						return ((...args) => {
 							let [v] = args;
 							return new Vector2D(v);
 						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [coord] = args;
+							return new Vector2D(coord);
+						})(...args);
 					}
 				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-						return ((...args) => {
-							let [from, to] = args;
-							return new Vector2D(from, to);
-						})(...args);
-					} else if (typeof args[0] === "number" && typeof args[1] === "number") {
+					if (typeof args[0] === "number" && typeof args[1] === "number") {
 						return ((...args) => {
 							let [x, y] = args;
 							return new Vector2D(x, y);
+						})(...args);
+					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+						return ((...args) => {
+							let [from, to] = args;
+							return new Vector2D(from, to);
 						})(...args);
 					}
 			}

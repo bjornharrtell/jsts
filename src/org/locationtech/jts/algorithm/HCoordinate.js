@@ -25,12 +25,12 @@ export default class HCoordinate {
 						this.w = 1.0;
 					})(...args);
 				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+					if (typeof args[0] === "number" && typeof args[1] === "number") {
 						return ((...args) => {
-							let [p1, p2] = args;
-							this.x = p1.y - p2.y;
-							this.y = p2.x - p1.x;
-							this.w = p1.x * p2.y - p2.x * p1.y;
+							let [_x, _y] = args;
+							this.x = _x;
+							this.y = _y;
+							this.w = 1.0;
 						})(...args);
 					} else if (args[0] instanceof HCoordinate && args[1] instanceof HCoordinate) {
 						return ((...args) => {
@@ -39,12 +39,12 @@ export default class HCoordinate {
 							this.y = p2.x * p1.w - p1.x * p2.w;
 							this.w = p1.x * p2.y - p2.x * p1.y;
 						})(...args);
-					} else if (typeof args[0] === "number" && typeof args[1] === "number") {
+					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
 						return ((...args) => {
-							let [_x, _y] = args;
-							this.x = _x;
-							this.y = _y;
-							this.w = 1.0;
+							let [p1, p2] = args;
+							this.x = p1.y - p2.y;
+							this.y = p2.x - p1.x;
+							this.w = p1.x * p2.y - p2.x * p1.y;
 						})(...args);
 					}
 				case 3:

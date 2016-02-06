@@ -26,25 +26,25 @@ export default class OctagonalEnvelope {
 						let [] = args;
 					})(...args);
 				case 1:
-					if (args[0] instanceof Geometry) {
+					if (args[0] instanceof Coordinate) {
 						return ((...args) => {
-							let [geom] = args;
-							this.expandToInclude(geom);
-						})(...args);
-					} else if (args[0] instanceof OctagonalEnvelope) {
-						return ((...args) => {
-							let [oct] = args;
-							this.expandToInclude(oct);
+							let [p] = args;
+							this.expandToInclude(p);
 						})(...args);
 					} else if (args[0] instanceof Envelope) {
 						return ((...args) => {
 							let [env] = args;
 							this.expandToInclude(env);
 						})(...args);
-					} else if (args[0] instanceof Coordinate) {
+					} else if (args[0] instanceof OctagonalEnvelope) {
 						return ((...args) => {
-							let [p] = args;
-							this.expandToInclude(p);
+							let [oct] = args;
+							this.expandToInclude(oct);
+						})(...args);
+					} else if (args[0] instanceof Geometry) {
+						return ((...args) => {
+							let [geom] = args;
+							this.expandToInclude(geom);
 						})(...args);
 					}
 				case 2:
@@ -133,22 +133,7 @@ export default class OctagonalEnvelope {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							if (this.minX > p.x) return false;
-							if (this.maxX < p.x) return false;
-							if (this.minY > p.y) return false;
-							if (this.maxY < p.y) return false;
-							var A = OctagonalEnvelope.computeA(p.x, p.y);
-							var B = OctagonalEnvelope.computeB(p.x, p.y);
-							if (this.minA > A) return false;
-							if (this.maxA < A) return false;
-							if (this.minB > B) return false;
-							if (this.maxB < B) return false;
-							return true;
-						})(...args);
-					} else if (args[0] instanceof OctagonalEnvelope) {
+					if (args[0] instanceof OctagonalEnvelope) {
 						return ((...args) => {
 							let [other] = args;
 							if (this.isNull() || other.isNull()) {
@@ -162,6 +147,21 @@ export default class OctagonalEnvelope {
 							if (this.maxA < other.minA) return false;
 							if (this.minB > other.maxB) return false;
 							if (this.maxB < other.minB) return false;
+							return true;
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							if (this.minX > p.x) return false;
+							if (this.maxX < p.x) return false;
+							if (this.minY > p.y) return false;
+							if (this.maxY < p.y) return false;
+							var A = OctagonalEnvelope.computeA(p.x, p.y);
+							var B = OctagonalEnvelope.computeB(p.x, p.y);
+							if (this.minA > A) return false;
+							if (this.maxA < A) return false;
+							if (this.minB > B) return false;
+							if (this.maxB < B) return false;
 							return true;
 						})(...args);
 					}
@@ -179,19 +179,19 @@ export default class OctagonalEnvelope {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Envelope) {
+					if (args[0] instanceof Geometry) {
 						return ((...args) => {
-							let [env] = args;
-							this.expandToInclude(env.getMinX(), env.getMinY());
-							this.expandToInclude(env.getMinX(), env.getMaxY());
-							this.expandToInclude(env.getMaxX(), env.getMinY());
-							this.expandToInclude(env.getMaxX(), env.getMaxY());
-							return this;
+							let [g] = args;
+							g.apply(new BoundingOctagonComponentFilter(this));
 						})(...args);
-					} else if (args[0] instanceof Coordinate) {
+					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
 						return ((...args) => {
-							let [p] = args;
-							this.expandToInclude(p.x, p.y);
+							let [seq] = args;
+							for (var i = 0; i < seq.size(); i++) {
+								var x = seq.getX(i);
+								var y = seq.getY(i);
+								this.expandToInclude(x, y);
+							}
 							return this;
 						})(...args);
 					} else if (args[0] instanceof OctagonalEnvelope) {
@@ -219,19 +219,19 @@ export default class OctagonalEnvelope {
 							if (oct.maxB > this.maxB) this.maxB = oct.maxB;
 							return this;
 						})(...args);
-					} else if (args[0] instanceof Geometry) {
+					} else if (args[0] instanceof Coordinate) {
 						return ((...args) => {
-							let [g] = args;
-							g.apply(new BoundingOctagonComponentFilter(this));
+							let [p] = args;
+							this.expandToInclude(p.x, p.y);
+							return this;
 						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					} else if (args[0] instanceof Envelope) {
 						return ((...args) => {
-							let [seq] = args;
-							for (var i = 0; i < seq.size(); i++) {
-								var x = seq.getX(i);
-								var y = seq.getY(i);
-								this.expandToInclude(x, y);
-							}
+							let [env] = args;
+							this.expandToInclude(env.getMinX(), env.getMinY());
+							this.expandToInclude(env.getMinX(), env.getMaxY());
+							this.expandToInclude(env.getMaxX(), env.getMinY());
+							this.expandToInclude(env.getMaxX(), env.getMaxY());
 							return this;
 						})(...args);
 					}

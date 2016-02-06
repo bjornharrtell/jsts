@@ -222,12 +222,7 @@ export default class ConformingDelaunayTriangulator {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							this.insertSite(this.createVertex(p));
-						})(...args);
-					} else if (args[0] instanceof ConstraintVertex) {
+					if (args[0] instanceof ConstraintVertex) {
 						return ((...args) => {
 							let [v] = args;
 							var kdnode = this.kdt.insert(v.getCoordinate(), v);
@@ -239,6 +234,11 @@ export default class ConformingDelaunayTriangulator {
 								return snappedV;
 							}
 							return v;
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							this.insertSite(this.createVertex(p));
 						})(...args);
 					}
 			}

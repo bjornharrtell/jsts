@@ -32,17 +32,7 @@ export default class Quadrant {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-						return ((...args) => {
-							let [p0, p1] = args;
-							if (p1.x === p0.x && p1.y === p0.y) throw new IllegalArgumentException("Cannot compute the quadrant for two identical points " + p0);
-							if (p1.x >= p0.x) {
-								if (p1.y >= p0.y) return Quadrant.NE; else return Quadrant.SE;
-							} else {
-								if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW;
-							}
-						})(...args);
-					} else if (typeof args[0] === "number" && typeof args[1] === "number") {
+					if (typeof args[0] === "number" && typeof args[1] === "number") {
 						return ((...args) => {
 							let [dx, dy] = args;
 							if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
@@ -50,6 +40,16 @@ export default class Quadrant {
 								if (dy >= 0.0) return Quadrant.NE; else return Quadrant.SE;
 							} else {
 								if (dy >= 0.0) return Quadrant.NW; else return Quadrant.SW;
+							}
+						})(...args);
+					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+						return ((...args) => {
+							let [p0, p1] = args;
+							if (p1.x === p0.x && p1.y === p0.y) throw new IllegalArgumentException("Cannot compute the quadrant for two identical points " + p0);
+							if (p1.x >= p0.x) {
+								if (p1.y >= p0.y) return Quadrant.NE; else return Quadrant.SE;
+							} else {
+								if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW;
 							}
 						})(...args);
 					}

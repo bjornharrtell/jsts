@@ -24,12 +24,7 @@ export default class AffineTransformation {
 						this.setToIdentity();
 					})(...args);
 				case 1:
-					if (args[0] instanceof AffineTransformation) {
-						return ((...args) => {
-							let [trans] = args;
-							this.setTransformation(trans);
-						})(...args);
-					} else if (args[0] instanceof Array) {
+					if (args[0] instanceof Array) {
 						return ((...args) => {
 							let [matrix] = args;
 							this.m00 = matrix[0];
@@ -39,16 +34,21 @@ export default class AffineTransformation {
 							this.m11 = matrix[4];
 							this.m12 = matrix[5];
 						})(...args);
+					} else if (args[0] instanceof AffineTransformation) {
+						return ((...args) => {
+							let [trans] = args;
+							this.setTransformation(trans);
+						})(...args);
 					}
 				case 6:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [src0, src1, src2, dest0, dest1, dest2] = args;
-						})(...args);
-					} else if (typeof args[0] === "number") {
+					if (typeof args[0] === "number") {
 						return ((...args) => {
 							let [m00, m01, m02, m10, m11, m12] = args;
 							this.setTransformation(m00, m01, m02, m10, m11, m12);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [src0, src1, src2, dest0, dest1, dest2] = args;
 						})(...args);
 					}
 			}

@@ -149,7 +149,15 @@ export default class Polygonizer {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof LineString) {
+					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+						return ((...args) => {
+							let [geomList] = args;
+							for (var i = geomList.iterator(); i.hasNext(); ) {
+								var geometry = i.next();
+								this.add(geometry);
+							}
+						})(...args);
+					} else if (args[0] instanceof LineString) {
 						return ((...args) => {
 							let [line] = args;
 							this.geomFactory = line.getFactory();
@@ -160,14 +168,6 @@ export default class Polygonizer {
 						return ((...args) => {
 							let [g] = args;
 							g.apply(this.lineStringAdder);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [geomList] = args;
-							for (var i = geomList.iterator(); i.hasNext(); ) {
-								var geometry = i.next();
-								this.add(geometry);
-							}
 						})(...args);
 					}
 			}

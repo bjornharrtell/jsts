@@ -65,7 +65,12 @@ export default class Node extends GraphComponent {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Label) {
+					if (args[0] instanceof Node) {
+						return ((...args) => {
+							let [n] = args;
+							this.mergeLabel(n.label);
+						})(...args);
+					} else if (args[0] instanceof Label) {
 						return ((...args) => {
 							let [label2] = args;
 							for (var i = 0; i < 2; i++) {
@@ -73,11 +78,6 @@ export default class Node extends GraphComponent {
 								var thisLoc = this.label.getLocation(i);
 								if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
 							}
-						})(...args);
-					} else if (args[0] instanceof Node) {
-						return ((...args) => {
-							let [n] = args;
-							this.mergeLabel(n.label);
 						})(...args);
 					}
 			}

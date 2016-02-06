@@ -42,7 +42,24 @@ export default class PlanarGraph {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Node) {
+					if (args[0] instanceof Edge) {
+						return ((...args) => {
+							let [edge] = args;
+							this.remove(edge.getDirEdge(0));
+							this.remove(edge.getDirEdge(1));
+							this.edges.remove(edge);
+							edge.remove();
+						})(...args);
+					} else if (args[0] instanceof DirectedEdge) {
+						return ((...args) => {
+							let [de] = args;
+							var sym = de.getSym();
+							if (sym !== null) sym.setSym(null);
+							de.getFromNode().remove(de);
+							de.remove();
+							this.dirEdges.remove(de);
+						})(...args);
+					} else if (args[0] instanceof Node) {
 						return ((...args) => {
 							let [node] = args;
 							var outEdges = node.getOutEdges().getEdges();
@@ -58,23 +75,6 @@ export default class PlanarGraph {
 							}
 							this.nodeMap.remove(node.getCoordinate());
 							node.remove();
-						})(...args);
-					} else if (args[0] instanceof DirectedEdge) {
-						return ((...args) => {
-							let [de] = args;
-							var sym = de.getSym();
-							if (sym !== null) sym.setSym(null);
-							de.getFromNode().remove(de);
-							de.remove();
-							this.dirEdges.remove(de);
-						})(...args);
-					} else if (args[0] instanceof Edge) {
-						return ((...args) => {
-							let [edge] = args;
-							this.remove(edge.getDirEdge(0));
-							this.remove(edge.getDirEdge(1));
-							this.edges.remove(edge);
-							edge.remove();
 						})(...args);
 					}
 			}
@@ -94,15 +94,15 @@ export default class PlanarGraph {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof DirectedEdge) {
-						return ((...args) => {
-							let [de] = args;
-							return this.dirEdges.contains(de);
-						})(...args);
-					} else if (args[0] instanceof Edge) {
+					if (args[0] instanceof Edge) {
 						return ((...args) => {
 							let [e] = args;
 							return this.edges.contains(e);
+						})(...args);
+					} else if (args[0] instanceof DirectedEdge) {
+						return ((...args) => {
+							let [de] = args;
+							return this.dirEdges.contains(de);
 						})(...args);
 					}
 			}
@@ -113,10 +113,10 @@ export default class PlanarGraph {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof DirectedEdge) {
+					if (args[0] instanceof Node) {
 						return ((...args) => {
-							let [dirEdge] = args;
-							this.dirEdges.add(dirEdge);
+							let [node] = args;
+							this.nodeMap.add(node);
 						})(...args);
 					} else if (args[0] instanceof Edge) {
 						return ((...args) => {
@@ -125,10 +125,10 @@ export default class PlanarGraph {
 							this.add(edge.getDirEdge(0));
 							this.add(edge.getDirEdge(1));
 						})(...args);
-					} else if (args[0] instanceof Node) {
+					} else if (args[0] instanceof DirectedEdge) {
 						return ((...args) => {
-							let [node] = args;
-							this.nodeMap.add(node);
+							let [dirEdge] = args;
+							this.dirEdges.add(dirEdge);
 						})(...args);
 					}
 			}

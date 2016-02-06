@@ -117,7 +117,15 @@ class MinClearanceDistance {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
-					if (args[0] instanceof FacetSequence && args[1] instanceof FacetSequence) {
+					if (args[0] instanceof ItemBoundable && args[1] instanceof ItemBoundable) {
+						return ((...args) => {
+							let [b1, b2] = args;
+							var fs1 = b1.getItem();
+							var fs2 = b2.getItem();
+							this.minDist = Double.MAX_VALUE;
+							return this.distance(fs1, fs2);
+						})(...args);
+					} else if (args[0] instanceof FacetSequence && args[1] instanceof FacetSequence) {
 						return ((...args) => {
 							let [fs1, fs2] = args;
 							this.vertexDistance(fs1, fs2);
@@ -127,14 +135,6 @@ class MinClearanceDistance {
 							if (this.minDist <= 0.0) return this.minDist;
 							this.segmentDistance(fs2, fs1);
 							return this.minDist;
-						})(...args);
-					} else if (args[0] instanceof ItemBoundable && args[1] instanceof ItemBoundable) {
-						return ((...args) => {
-							let [b1, b2] = args;
-							var fs1 = b1.getItem();
-							var fs2 = b2.getItem();
-							this.minDist = Double.MAX_VALUE;
-							return this.distance(fs1, fs2);
 						})(...args);
 					}
 			}

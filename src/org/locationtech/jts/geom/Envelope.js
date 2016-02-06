@@ -17,15 +17,15 @@ export default class Envelope {
 						this.init();
 					})(...args);
 				case 1:
-					if (args[0] instanceof Envelope) {
-						return ((...args) => {
-							let [env] = args;
-							this.init(env);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
+					if (args[0] instanceof Coordinate) {
 						return ((...args) => {
 							let [p] = args;
 							this.init(p.x, p.x, p.y, p.y);
+						})(...args);
+					} else if (args[0] instanceof Envelope) {
+						return ((...args) => {
+							let [env] = args;
+							this.init(env);
 						})(...args);
 					}
 				case 2:
@@ -108,18 +108,18 @@ export default class Envelope {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Envelope) {
+					if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							return this.covers(p.x, p.y);
+						})(...args);
+					} else if (args[0] instanceof Envelope) {
 						return ((...args) => {
 							let [other] = args;
 							if (this.isNull() || other.isNull()) {
 								return false;
 							}
 							return other.getMinX() >= this.minx && other.getMaxX() <= this.maxx && other.getMinY() >= this.miny && other.getMaxY() <= this.maxy;
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.covers(p.x, p.y);
 						})(...args);
 					}
 				case 2:
@@ -136,18 +136,18 @@ export default class Envelope {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.intersects(p.x, p.y);
-						})(...args);
-					} else if (args[0] instanceof Envelope) {
+					if (args[0] instanceof Envelope) {
 						return ((...args) => {
 							let [other] = args;
 							if (this.isNull() || other.isNull()) {
 								return false;
 							}
 							return !(other.minx > this.maxx || other.maxx < this.minx || other.miny > this.maxy || other.maxy < this.miny);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							return this.intersects(p.x, p.y);
 						})(...args);
 					}
 				case 2:
@@ -170,7 +170,12 @@ export default class Envelope {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Envelope) {
+					if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							this.expandToInclude(p.x, p.y);
+						})(...args);
+					} else if (args[0] instanceof Envelope) {
 						return ((...args) => {
 							let [other] = args;
 							if (other.isNull()) {
@@ -195,11 +200,6 @@ export default class Envelope {
 									this.maxy = other.maxy;
 								}
 							}
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							this.expandToInclude(p.x, p.y);
 						})(...args);
 					}
 				case 2:
@@ -314,15 +314,15 @@ export default class Envelope {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.covers(p);
-						})(...args);
-					} else if (args[0] instanceof Envelope) {
+					if (args[0] instanceof Envelope) {
 						return ((...args) => {
 							let [other] = args;
 							return this.covers(other);
+						})(...args);
+					} else if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							return this.covers(p);
 						})(...args);
 					}
 				case 2:
@@ -347,18 +347,18 @@ export default class Envelope {
 						this.setToNull();
 					})(...args);
 				case 1:
-					if (args[0] instanceof Envelope) {
+					if (args[0] instanceof Coordinate) {
+						return ((...args) => {
+							let [p] = args;
+							this.init(p.x, p.x, p.y, p.y);
+						})(...args);
+					} else if (args[0] instanceof Envelope) {
 						return ((...args) => {
 							let [env] = args;
 							this.minx = env.minx;
 							this.maxx = env.maxx;
 							this.miny = env.miny;
 							this.maxy = env.maxy;
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							this.init(p.x, p.x, p.y, p.y);
 						})(...args);
 					}
 				case 2:

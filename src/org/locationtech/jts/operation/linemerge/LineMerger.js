@@ -92,15 +92,7 @@ export default class LineMerger {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof LineString) {
-						return ((...args) => {
-							let [lineString] = args;
-							if (this.factory === null) {
-								this.factory = lineString.getFactory();
-							}
-							this.graph.addEdge(lineString);
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
+					if (args[0] instanceof Geometry) {
 						return ((...args) => {
 							let [geometry] = args;
 							geometry.apply(new (class {
@@ -122,6 +114,14 @@ export default class LineMerger {
 								var geometry = i.next();
 								this.add(geometry);
 							}
+						})(...args);
+					} else if (args[0] instanceof LineString) {
+						return ((...args) => {
+							let [lineString] = args;
+							if (this.factory === null) {
+								this.factory = lineString.getFactory();
+							}
+							this.graph.addEdge(lineString);
 						})(...args);
 					}
 			}

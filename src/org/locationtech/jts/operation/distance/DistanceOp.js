@@ -83,7 +83,18 @@ export default class DistanceOp {
 						}
 					})(...args);
 				case 3:
-					if (args[2] instanceof Array && (args[0] instanceof GeometryLocation && args[1] instanceof Polygon)) {
+					if (args[2] instanceof Array && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
+						return ((...args) => {
+							let [locs, polys, locPtPoly] = args;
+							for (var i = 0; i < locs.size(); i++) {
+								var loc = locs.get(i);
+								for (var j = 0; j < polys.size(); j++) {
+									this.computeContainmentDistance(loc, polys.get(j), locPtPoly);
+									if (this.minDistance <= this.terminateDistance) return null;
+								}
+							}
+						})(...args);
+					} else if (args[2] instanceof Array && (args[0] instanceof GeometryLocation && args[1] instanceof Polygon)) {
 						return ((...args) => {
 							let [ptLoc, poly, locPtPoly] = args;
 							var pt = ptLoc.getCoordinate();
@@ -93,17 +104,6 @@ export default class DistanceOp {
 								locPtPoly[1] = new GeometryLocation(poly, pt);
 								;
 								return null;
-							}
-						})(...args);
-					} else if (args[2] instanceof Array && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-						return ((...args) => {
-							let [locs, polys, locPtPoly] = args;
-							for (var i = 0; i < locs.size(); i++) {
-								var loc = locs.get(i);
-								for (var j = 0; j < polys.size(); j++) {
-									this.computeContainmentDistance(loc, polys.get(j), locPtPoly);
-									if (this.minDistance <= this.terminateDistance) return null;
-								}
 							}
 						})(...args);
 					}

@@ -20,15 +20,7 @@ export default class Octant {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-						return ((...args) => {
-							let [p0, p1] = args;
-							var dx = p1.x - p0.x;
-							var dy = p1.y - p0.y;
-							if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException("Cannot compute the octant for two identical points " + p0);
-							return Octant.octant(dx, dy);
-						})(...args);
-					} else if (typeof args[0] === "number" && typeof args[1] === "number") {
+					if (typeof args[0] === "number" && typeof args[1] === "number") {
 						return ((...args) => {
 							let [dx, dy] = args;
 							if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException("Cannot compute the octant for point ( " + dx + ", " + dy + " )");
@@ -47,6 +39,14 @@ export default class Octant {
 									if (adx >= ady) return 4; else return 5;
 								}
 							}
+						})(...args);
+					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+						return ((...args) => {
+							let [p0, p1] = args;
+							var dx = p1.x - p0.x;
+							var dy = p1.y - p0.y;
+							if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException("Cannot compute the octant for two identical points " + p0);
+							return Octant.octant(dx, dy);
 						})(...args);
 					}
 			}

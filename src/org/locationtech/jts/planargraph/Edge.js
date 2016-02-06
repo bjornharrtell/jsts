@@ -40,17 +40,17 @@ export default class Edge extends GraphComponent {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof Node) {
+					if (Number.isInteger(args[0])) {
+						return ((...args) => {
+							let [i] = args;
+							return this.dirEdge[i];
+						})(...args);
+					} else if (args[0] instanceof Node) {
 						return ((...args) => {
 							let [fromNode] = args;
 							if (this.dirEdge[0].getFromNode() === fromNode) return this.dirEdge[0];
 							if (this.dirEdge[1].getFromNode() === fromNode) return this.dirEdge[1];
 							return null;
-						})(...args);
-					} else if (Number.isInteger(args[0])) {
-						return ((...args) => {
-							let [i] = args;
-							return this.dirEdge[i];
 						})(...args);
 					}
 			}

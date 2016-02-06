@@ -29,25 +29,7 @@ export default class RepeatedPointTester {
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
-					if (args[0] instanceof GeometryCollection) {
-						return ((...args) => {
-							let [gc] = args;
-							for (var i = 0; i < gc.getNumGeometries(); i++) {
-								var g = gc.getGeometryN(i);
-								if (this.hasRepeatedPoint(g)) return true;
-							}
-							return false;
-						})(...args);
-					} else if (args[0] instanceof Polygon) {
-						return ((...args) => {
-							let [p] = args;
-							if (this.hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true;
-							for (var i = 0; i < p.getNumInteriorRing(); i++) {
-								if (this.hasRepeatedPoint(p.getInteriorRingN(i).getCoordinates())) return true;
-							}
-							return false;
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
+					if (args[0] instanceof Geometry) {
 						return ((...args) => {
 							let [g] = args;
 							if (g.isEmpty()) return false;
@@ -61,6 +43,24 @@ export default class RepeatedPointTester {
 									this.repeatedCoord = coord[i];
 									return true;
 								}
+							}
+							return false;
+						})(...args);
+					} else if (args[0] instanceof Polygon) {
+						return ((...args) => {
+							let [p] = args;
+							if (this.hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true;
+							for (var i = 0; i < p.getNumInteriorRing(); i++) {
+								if (this.hasRepeatedPoint(p.getInteriorRingN(i).getCoordinates())) return true;
+							}
+							return false;
+						})(...args);
+					} else if (args[0] instanceof GeometryCollection) {
+						return ((...args) => {
+							let [gc] = args;
+							for (var i = 0; i < gc.getNumGeometries(); i++) {
+								var g = gc.getGeometryN(i);
+								if (this.hasRepeatedPoint(g)) return true;
 							}
 							return false;
 						})(...args);
