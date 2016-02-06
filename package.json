@@ -37,7 +37,7 @@
     ]
   },
   "scripts": {
-    "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test/spec",
+    "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
     "build": "rollup -c | browserify -t babelify - | uglifyjs -c -m > jsts.min.js"
   }
 }
