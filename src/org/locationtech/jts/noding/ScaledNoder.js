@@ -4,7 +4,7 @@ import Coordinate from '../geom/Coordinate';
 import NodedSegmentString from './NodedSegmentString';
 import System from '../../../../java/lang/System';
 import CoordinateArrays from '../geom/CoordinateArrays';
-import CollectionUtil from '../util/CollectionUtil';
+import ArrayList from '../../../../java/util/ArrayList';
 export default class ScaledNoder {
 	constructor(...args) {
 		(() => {
@@ -42,13 +42,10 @@ export default class ScaledNoder {
 					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 						return ((...args) => {
 							let [segStrings] = args;
-							CollectionUtil.apply(segStrings, new (class {
-								execute(obj) {
-									var ss = obj;
-									this.rescale(ss.getCoordinates());
-									return null;
-								}
-							})());
+							for (var i = segStrings.iterator(); i.hasNext(); ) {
+								var ss = i.next();
+								this.rescale(ss.getCoordinates());
+							}
 						})(...args);
 					} else if (args[0] instanceof Array) {
 						return ((...args) => {
@@ -79,12 +76,12 @@ export default class ScaledNoder {
 					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 						return ((...args) => {
 							let [segStrings] = args;
-							return CollectionUtil.transform(segStrings, new (class {
-								execute(obj) {
-									var ss = obj;
-									return new NodedSegmentString(this.scale(ss.getCoordinates()), ss.getData());
-								}
-							})());
+							var nodedSegmentStrings = new ArrayList();
+							for (var i = segStrings.iterator(); i.hasNext(); ) {
+								var ss = i.next();
+								nodedSegmentStrings.add(new NodedSegmentString(this.scale(ss.getCoordinates()), ss.getData()));
+							}
+							return nodedSegmentStrings;
 						})(...args);
 					} else if (args[0] instanceof Array) {
 						return ((...args) => {

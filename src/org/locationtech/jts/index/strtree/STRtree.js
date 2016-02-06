@@ -1,5 +1,6 @@
 import ItemBoundable from './ItemBoundable';
 import PriorityQueue from '../../util/PriorityQueue';
+import ItemVisitor from '../ItemVisitor';
 import SpatialIndex from '../SpatialIndex';
 import AbstractNode from './AbstractNode';
 import Double from '../../../../../java/lang/Double';
@@ -9,6 +10,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
+import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 import ItemDistance from './ItemDistance';
 export default class STRtree extends AbstractSTRtree {
@@ -103,6 +105,18 @@ export default class STRtree extends AbstractSTRtree {
 						let [searchEnv, visitor] = args;
 						super.query(searchEnv, visitor);
 					})(...args);
+				case 3:
+					if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+						return ((...args) => {
+							let [searchBounds, node, matches] = args;
+							super.query(searchBounds, node, matches);
+						})(...args);
+					} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+						return ((...args) => {
+							let [searchBounds, node, visitor] = args;
+							super.query(searchBounds, node, visitor);
+						})(...args);
+					}
 			}
 		};
 		return overloads.apply(this, args);

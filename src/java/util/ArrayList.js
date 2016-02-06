@@ -27,7 +27,7 @@ export default class ArrayList extends List {
   }
 
   ensureCapacity () {}
-  get interfaces_() { return [List] }
+  get interfaces_() { return [List, Collection] }
 };
 
 

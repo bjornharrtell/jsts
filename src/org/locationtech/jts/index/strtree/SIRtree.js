@@ -1,4 +1,7 @@
+import ItemVisitor from '../ItemVisitor';
+import AbstractNode from './AbstractNode';
 import Interval from './Interval';
+import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 export default class SIRtree extends AbstractSTRtree {
 	constructor(...args) {
@@ -72,6 +75,18 @@ export default class SIRtree extends AbstractSTRtree {
 						let [x1, x2] = args;
 						return super.query(new Interval(Math.min(x1, x2), Math.max(x1, x2)));
 					})(...args);
+				case 3:
+					if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+						return ((...args) => {
+							let [searchBounds, node, matches] = args;
+							super.query(searchBounds, node, matches);
+						})(...args);
+					} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+						return ((...args) => {
+							let [searchBounds, node, visitor] = args;
+							super.query(searchBounds, node, visitor);
+						})(...args);
+					}
 			}
 		};
 		return overloads.apply(this, args);
