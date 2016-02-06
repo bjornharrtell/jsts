@@ -2,6 +2,7 @@ import LineString from '../../geom/LineString';
 import FacetSequence from './FacetSequence';
 import STRtree from '../../index/strtree/STRtree';
 import Point from '../../geom/Point';
+import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class FacetSequenceTreeBuilder {
 	get interfaces_() {
@@ -30,6 +31,9 @@ export default class FacetSequenceTreeBuilder {
 					seq = geom.getCoordinateSequence();
 					FacetSequenceTreeBuilder.addFacetSequences(seq, sections);
 				}
+			}
+			get interfaces_() {
+				return [GeometryComponentFilter];
 			}
 		})());
 		return sections;

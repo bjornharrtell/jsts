@@ -7,6 +7,7 @@ import Double from '../../../../../java/lang/Double';
 import Collections from '../../../../../java/util/Collections';
 import BoundablePair from './BoundablePair';
 import ArrayList from '../../../../../java/util/ArrayList';
+import Comparator from '../../../../../java/util/Comparator';
 import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
@@ -245,15 +246,24 @@ STRtree.xComparator = new (class {
 	compare(o1, o2) {
 		return STRtree.compareDoubles(STRtree.centreX(o1.getBounds()), STRtree.centreX(o2.getBounds()));
 	}
+	get interfaces_() {
+		return [Comparator];
+	}
 })();
 STRtree.yComparator = new (class {
 	compare(o1, o2) {
 		return STRtree.compareDoubles(STRtree.centreY(o1.getBounds()), STRtree.centreY(o2.getBounds()));
 	}
+	get interfaces_() {
+		return [Comparator];
+	}
 })();
 STRtree.intersectsOp = new (class {
 	intersects(aBounds, bBounds) {
 		return aBounds.intersects(bBounds);
+	}
+	get interfaces_() {
+		return [IntersectsOp];
 	}
 })();
 STRtree.DEFAULT_NODE_CAPACITY = 10;

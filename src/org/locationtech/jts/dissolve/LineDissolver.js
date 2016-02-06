@@ -5,6 +5,7 @@ import Collection from '../../../../java/util/Collection';
 import Stack from '../../../../java/util/Stack';
 import MarkHalfEdge from '../edgegraph/MarkHalfEdge';
 import DissolveEdgeGraph from './DissolveEdgeGraph';
+import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class LineDissolver {
 	constructor(...args) {
@@ -147,6 +148,9 @@ export default class LineDissolver {
 									if (component instanceof LineString) {
 										this.add(component);
 									}
+								}
+								get interfaces_() {
+									return [GeometryComponentFilter];
 								}
 							})());
 						})(...args);

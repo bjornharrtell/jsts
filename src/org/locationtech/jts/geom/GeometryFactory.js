@@ -274,7 +274,7 @@ export default class GeometryFactory {
 	}
 	createGeometry(g) {
 		var editor = new GeometryEditor(this);
-		return editor.edit(g, new (class {
+		return editor.edit(g, new (class extends CoordinateSequenceOperation {
 			edit(...args) {
 				if (args.length === 2) {
 					let [coordSeq, geometry] = args;

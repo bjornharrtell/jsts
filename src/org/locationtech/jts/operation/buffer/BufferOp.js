@@ -100,14 +100,13 @@ export default class BufferOp {
 					return ((...args) => {
 						let [] = args;
 						for (var precDigits = BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
-							this.bufferReducedPrecision(precDigits);
-							/*try {
+							try {
 								this.bufferReducedPrecision(precDigits);
 							} catch (ex) {
 								if (ex instanceof TopologyException) {
 									this.saveException = ex;
 								} else throw ex;
-							} finally {}*/
+							} finally {}
 							if (this.resultGeometry !== null) return null;
 						}
 						throw this.saveException;
@@ -159,3 +158,4 @@ BufferOp.CAP_BUTT = BufferParameters.CAP_FLAT;
 BufferOp.CAP_FLAT = BufferParameters.CAP_FLAT;
 BufferOp.CAP_SQUARE = BufferParameters.CAP_SQUARE;
 BufferOp.MAX_PRECISION_DIGITS = 12;
+

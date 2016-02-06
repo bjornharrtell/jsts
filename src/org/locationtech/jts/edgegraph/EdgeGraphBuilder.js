@@ -2,6 +2,7 @@ import LineString from '../geom/LineString';
 import Geometry from '../geom/Geometry';
 import Collection from '../../../../java/util/Collection';
 import EdgeGraph from './EdgeGraph';
+import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 export default class EdgeGraphBuilder {
 	constructor(...args) {
 		(() => {
@@ -45,6 +46,9 @@ export default class EdgeGraphBuilder {
 									if (component instanceof LineString) {
 										this.add(component);
 									}
+								}
+								get interfaces_() {
+									return [GeometryComponentFilter];
 								}
 							})());
 						})(...args);

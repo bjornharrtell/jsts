@@ -3,6 +3,7 @@ import Geometry from '../../geom/Geometry';
 import Collection from '../../../../../java/util/Collection';
 import EdgeString from './EdgeString';
 import LineMergeGraph from './LineMergeGraph';
+import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import GraphComponent from '../../planargraph/GraphComponent';
@@ -107,6 +108,9 @@ export default class LineMerger {
 									if (component instanceof LineString) {
 										this.add(component);
 									}
+								}
+								get interfaces_() {
+									return [GeometryComponentFilter];
 								}
 							})());
 						})(...args);

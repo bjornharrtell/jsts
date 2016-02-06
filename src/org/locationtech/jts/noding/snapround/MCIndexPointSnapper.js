@@ -1,4 +1,5 @@
 import MonotoneChainSelectAction from '../../index/chain/MonotoneChainSelectAction';
+import ItemVisitor from '../../index/ItemVisitor';
 export default class MCIndexPointSnapper {
 	constructor(...args) {
 		(() => {
@@ -38,6 +39,9 @@ export default class MCIndexPointSnapper {
 							visitItem(item) {
 								var testChain = item;
 								testChain.select(pixelEnv, hotPixelSnapAction);
+							}
+							get interfaces_() {
+								return [ItemVisitor];
 							}
 						})());
 						return hotPixelSnapAction.isNodeAdded();

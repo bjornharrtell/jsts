@@ -7,6 +7,7 @@ import Coordinate from '../../geom/Coordinate';
 import Integer from '../../../../../java/lang/Integer';
 import LineMergeGraph from './LineMergeGraph';
 import LinkedList from '../../../../../java/util/LinkedList';
+import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 import ConnectedSubgraphFinder from '../../planargraph/algorithm/ConnectedSubgraphFinder';
 import Assert from '../../util/Assert';
@@ -233,6 +234,9 @@ export default class LineSequencer {
 									if (component instanceof LineString) {
 										this.addLine(component);
 									}
+								}
+								get interfaces_() {
+									return [GeometryComponentFilter];
 								}
 							})());
 						})(...args);

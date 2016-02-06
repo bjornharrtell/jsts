@@ -104,6 +104,9 @@ export default class KdTree {
 								visit(node) {
 									result.add(node);
 								}
+								get interfaces_() {
+									return [KdNodeVisitor];
+								}
 							})());
 						})(...args);
 					} else if (args[0] instanceof Envelope && (args[1].interfaces_ && args[1].interfaces_.indexOf(KdNodeVisitor) > -1)) {

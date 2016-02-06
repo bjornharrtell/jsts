@@ -1,6 +1,7 @@
 import ItemVisitor from '../ItemVisitor';
 import AbstractNode from './AbstractNode';
 import Interval from './Interval';
+import Comparator from '../../../../../java/util/Comparator';
 import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 export default class SIRtree extends AbstractSTRtree {
@@ -11,10 +12,16 @@ export default class SIRtree extends AbstractSTRtree {
 				compare(o1, o2) {
 					return SIRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre());
 				}
+				get interfaces_() {
+					return [Comparator];
+				}
 			})();
 			this.intersectsOp = new (class {
 				intersects(aBounds, bBounds) {
 					return aBounds.intersects(bBounds);
+				}
+				get interfaces_() {
+					return [IntersectsOp];
 				}
 			})();
 		})();
@@ -38,7 +45,7 @@ export default class SIRtree extends AbstractSTRtree {
 		return [];
 	}
 	createNode(level) {
-		return new (class {
+		return new (class extends AbstractNode {
 			computeBounds() {
 				var bounds = null;
 				for (var i = this.getChildBoundables().iterator(); i.hasNext(); ) {
