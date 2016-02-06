@@ -24,7 +24,7 @@ export default class LinearIterator {
 				case 3:
 					return ((...args) => {
 						let [linearGeom, componentIndex, vertexIndex] = args;
-						if (!(linearGeom instanceof Lineal)) throw new IllegalArgumentException("Lineal geometry is required");
+						if (!(linearGeom.interfaces_ && linearGeom.interfaces_.indexOf(Lineal) > -1)) throw new IllegalArgumentException("Lineal geometry is required");
 						this.linearGeom = linearGeom;
 						this.numLines = linearGeom.getNumGeometries();
 						this.componentIndex = componentIndex;

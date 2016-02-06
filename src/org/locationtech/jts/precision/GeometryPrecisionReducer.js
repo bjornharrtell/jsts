@@ -73,7 +73,7 @@ export default class GeometryPrecisionReducer {
 	reduce(geom) {
 		var reducePW = this.reducePointwise(geom);
 		if (this.isPointwise) return reducePW;
-		if (!(reducePW instanceof Polygonal)) return reducePW;
+		if (!(reducePW.interfaces_ && reducePW.interfaces_.indexOf(Polygonal) > -1)) return reducePW;
 		if (reducePW.isValid()) return reducePW;
 		return this.fixPolygonalTopology(reducePW);
 	}

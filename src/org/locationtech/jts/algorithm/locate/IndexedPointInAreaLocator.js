@@ -17,7 +17,7 @@ export default class IndexedPointInAreaLocator {
 				case 1:
 					return ((...args) => {
 						let [g] = args;
-						if (!(g instanceof Polygonal)) throw new IllegalArgumentException("Argument must be Polygonal");
+						if (!(g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Argument must be Polygonal");
 						this.index = new IntervalIndexedGeometry(g);
 					})(...args);
 			}

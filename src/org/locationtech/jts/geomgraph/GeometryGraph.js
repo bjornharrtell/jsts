@@ -242,7 +242,7 @@ export default class GeometryGraph extends PlanarGraph {
 		}
 	}
 	locate(pt) {
-		if (this.parentGeom instanceof Polygonal && this.parentGeom.getNumGeometries() > 50) {
+		if ((this.parentGeom.interfaces_ && this.parentGeom.interfaces_.indexOf(Polygonal) > -1) && this.parentGeom.getNumGeometries() > 50) {
 			if (this.areaPtLocator === null) {
 				this.areaPtLocator = new IndexedPointInAreaLocator(this.parentGeom);
 			}

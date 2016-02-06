@@ -28,7 +28,7 @@ export default class CascadedPolygonUnion {
 		return [];
 	}
 	static restrictToPolygons(g) {
-		if (g instanceof Polygonal) {
+		if (g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1) {
 			return g;
 		}
 		var polygons = PolygonExtracter.getPolygons(g);
@@ -48,7 +48,7 @@ export default class CascadedPolygonUnion {
 		for (var i = geomTree.iterator(); i.hasNext(); ) {
 			var o = i.next();
 			var geom = null;
-			if (o instanceof List) {
+			if (o.interfaces_ && o.interfaces_.indexOf(List) > -1) {
 				geom = this.unionTree(o);
 			} else if (o instanceof Geometry) {
 				geom = o;

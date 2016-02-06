@@ -127,7 +127,7 @@ export default class IsSimpleOp {
 		if (geom instanceof LineString) return this.isSimpleLinearGeometry(geom);
 		if (geom instanceof MultiLineString) return this.isSimpleLinearGeometry(geom);
 		if (geom instanceof MultiPoint) return this.isSimpleMultiPoint(geom);
-		if (geom instanceof Polygonal) return this.isSimplePolygonal(geom);
+		if (geom.interfaces_ && geom.interfaces_.indexOf(Polygonal) > -1) return this.isSimplePolygonal(geom);
 		if (geom instanceof GeometryCollection) return this.isSimpleGeometryCollection(geom);
 		return true;
 	}

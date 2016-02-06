@@ -53,7 +53,7 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
 	setExtent(...args) {
 		if (args.length === 1) {
 			let [mask] = args;
-			if (!(mask instanceof Polygonal)) throw new IllegalArgumentException("Only polygonal extents are supported");
+			if (!(mask.interfaces_ && mask.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Only polygonal extents are supported");
 			this.maskPoly = mask;
 			this.setExtent(mask.getEnvelopeInternal());
 			this.extentLocator = new IndexedPointInAreaLocator(mask);

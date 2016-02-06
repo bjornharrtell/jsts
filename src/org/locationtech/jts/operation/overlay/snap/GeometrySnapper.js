@@ -74,7 +74,7 @@ export default class GeometrySnapper {
 		var snapTrans = new SnapTransformer(snapTolerance, snapPts, true);
 		var snappedGeom = snapTrans.transform(this.srcGeom);
 		var result = snappedGeom;
-		if (cleanResult && result instanceof Polygonal) {
+		if (cleanResult && (result.interfaces_ && result.interfaces_.indexOf(Polygonal) > -1)) {
 			result = snappedGeom.buffer(0);
 		}
 		return result;
