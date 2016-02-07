@@ -21,6 +21,7 @@
     "rollup": "0.25.2",
     "uglify-js": "2.6.1"
   },
+  "main": "./src",
   "engines": {
     "node": ">= 4"
   },
