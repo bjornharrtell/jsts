@@ -8,10 +8,21 @@ The primary goal of the project is to provide web mapping applications with a co
 
 JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-beta2/apidocs/).
 
-An ES5 compatible build for browser use is available [here](https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.0.0-beta2/jsts.min.js).
-
 A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
 
 A [port](http://bjornharrtell.github.com/jsts/1.0.0-beta2/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
 
 Basic functionality is [demonstrated in an example](http://bjornharrtell.github.io/jsts/1.0.0-beta2/examples/demo.html) using OpenLayers 3.
+
+## Usage
+
+### Browser
+
+An ES5 compatible build for browser use is available [here](https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.0.0-beta2/jsts.min.js).
+
+Including the above build as a script will import a global object `jsts` exposing everthing under `org.locationtech.jts` in the JTS API.
+
+### Node JS
+
+Install using `npm install jsts@1.0.0-beta2` after which `require('jsts')` will import an object that exposes everthing under `org.locationtech.jts` in the JTS API.
+
