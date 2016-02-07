@@ -21,7 +21,7 @@
     "rollup": "0.25.2",
     "uglify-js": "2.6.1"
   },
-  "main": "src/index.js",
+  "main": "dist/jsts.min.js",
   "engines": {
     "node": ">= 4"
   },
@@ -39,7 +39,8 @@
   },
   "scripts": {
     "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
-    "build": "rollup -c | browserify -t babelify - | uglifyjs -c -m > jsts.min.js"
+    "build node": "rollup -c rollup.config.node.js | babel --presets es2015 | uglifyjs -c -m > dist/jsts.min.js",
+    "build browser": "rollup -c rollup.config.browser.js | browserify -t babelify - | uglifyjs -c -m > dist/jsts.min.js"
   },
   "jspm": {
     "devDependencies": {

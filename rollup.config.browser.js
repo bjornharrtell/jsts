@@ -1,5 +1,5 @@
 export default {
-  entry: 'src/lib.js',
+  entry: 'src/global.js',
   format: 'iife',
   moduleName: 'jsts'
 }
