@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-beta2",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -15,10 +15,10 @@
     "babel-preset-es2015": "6.3.13",
     "babel-register": "6.4.3",
     "browserify": "13.0.0",
-    "cheerio": "0.19.0",
+    "cheerio": "0.20.0",
     "expect.js": "0.3.1",
-    "mocha": "2.3.4",
-    "rollup": "0.25.2",
+    "mocha": "2.4.5",
+    "rollup": "0.25.3",
     "uglify-js": "2.6.1"
   },
   "main": "dist/jsts.min.js",
