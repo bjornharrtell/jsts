@@ -17,26 +17,26 @@ import patch from './org/locationtech/jts/monkey'
 
 (function () {
   patch()
-
-  global.jsts = {
-    geom: {
-      Coordinate,
-      GeometryFactory,
-      Geometry,
-      Point,
-      LineString,
-      Polygon,
-      GeometryCollection,
-      MultiPoint,
-      MultiLineString,
-      MultiPolygon
-    },
-    io: {
-      GeoJSONReader,
-      GeoJSONWriter,
-      WKTReader,
-      WKTWriter,
-      olParser
-    }
-  }
 })()
+
+export default {
+  geom: {
+    Coordinate,
+    GeometryFactory,
+    Geometry,
+    Point,
+    LineString,
+    Polygon,
+    GeometryCollection,
+    MultiPoint,
+    MultiLineString,
+    MultiPolygon
+  },
+  io: {
+    GeoJSONReader,
+    GeoJSONWriter,
+    WKTReader,
+    WKTWriter,
+    olParser
+  }
+}
