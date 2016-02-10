@@ -3,9 +3,7 @@ import FastNodingValidator from '../noding/FastNodingValidator';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class EdgeNodingValidator {
 	constructor(...args) {
-		(() => {
-			this.nv = null;
-		})();
+		this.nv = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -8,11 +8,9 @@ import Serializable from '../../../../java/io/Serializable';
 import Assert from '../util/Assert';
 export default class Coordinate {
 	constructor(...args) {
-		(() => {
-			this.x = null;
-			this.y = null;
-			this.z = null;
-		})();
+		this.x = null;
+		this.y = null;
+		this.z = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -174,9 +172,7 @@ export default class Coordinate {
 }
 class DimensionalComparator {
 	constructor(...args) {
-		(() => {
-			this.dimensionsToTest = 2;
-		})();
+		this.dimensionsToTest = 2;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

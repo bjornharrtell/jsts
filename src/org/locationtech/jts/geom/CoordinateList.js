@@ -3,7 +3,6 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default class CoordinateList extends ArrayList {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

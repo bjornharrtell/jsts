@@ -1,10 +1,8 @@
 import QuadEdge from './quadedge/QuadEdge';
 export default class IncrementalDelaunayTriangulator {
 	constructor(...args) {
-		(() => {
-			this.subdiv = null;
-			this.isUsingTolerance = false;
-		})();
+		this.subdiv = null;
+		this.isUsingTolerance = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

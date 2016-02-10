@@ -9,7 +9,6 @@ import Dimension from './Dimension';
 export default class LinearRing extends LineString {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -6,11 +6,9 @@ import LineSegment from '../geom/LineSegment';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default class SimpleMinimumClearance {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.minClearance = null;
-			this.minClearancePts = null;
-		})();
+		this.inputGeom = null;
+		this.minClearance = null;
+		this.minClearancePts = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -85,9 +83,7 @@ export default class SimpleMinimumClearance {
 }
 class VertexCoordinateFilter {
 	constructor(...args) {
-		(() => {
-			this.smc = null;
-		})();
+		this.smc = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -111,10 +107,8 @@ class VertexCoordinateFilter {
 }
 class ComputeMCCoordinateSequenceFilter {
 	constructor(...args) {
-		(() => {
-			this.smc = null;
-			this.queryPt = null;
-		})();
+		this.smc = null;
+		this.queryPt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

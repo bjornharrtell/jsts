@@ -1,11 +1,9 @@
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class GeometryCombiner {
 	constructor(...args) {
-		(() => {
-			this.geomFactory = null;
-			this.skipEmpty = false;
-			this.inputGeoms = null;
-		})();
+		this.geomFactory = null;
+		this.skipEmpty = false;
+		this.inputGeoms = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -8,10 +8,8 @@ import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default class RandomPointsBuilder extends GeometricShapeBuilder {
 	constructor(...args) {
 		super();
-		(() => {
-			this.maskPoly = null;
-			this.extentLocator = null;
-		})();
+		this.maskPoly = null;
+		this.extentLocator = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

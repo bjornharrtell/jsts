@@ -2,9 +2,7 @@ import SegmentIntersectionDetector from './SegmentIntersectionDetector';
 import MCIndexSegmentSetMutualIntersector from './MCIndexSegmentSetMutualIntersector';
 export default class FastSegmentSetIntersectionFinder {
 	constructor(...args) {
-		(() => {
-			this.segSetMutInt = null;
-		})();
+		this.segSetMutInt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

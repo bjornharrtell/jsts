@@ -11,9 +11,7 @@ import PlanarGraph from '../../planargraph/PlanarGraph';
 export default class PolygonizeGraph extends PlanarGraph {
 	constructor(...args) {
 		super();
-		(() => {
-			this.factory = null;
-		})();
+		this.factory = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

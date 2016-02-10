@@ -4,11 +4,9 @@ import Serializable from '../../../../../java/io/Serializable';
 import Assert from '../../util/Assert';
 export default class AbstractNode {
 	constructor(...args) {
-		(() => {
-			this.childBoundables = new ArrayList();
-			this.bounds = null;
-			this.level = null;
-		})();
+		this.childBoundables = new ArrayList();
+		this.bounds = null;
+		this.level = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

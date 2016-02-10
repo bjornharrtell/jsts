@@ -10,10 +10,8 @@ import UniqueCoordinateArrayFilter from '../util/UniqueCoordinateArrayFilter';
 import Assert from '../util/Assert';
 export default class ConvexHull {
 	constructor(...args) {
-		(() => {
-			this.geomFactory = null;
-			this.inputPts = null;
-		})();
+		this.geomFactory = null;
+		this.inputPts = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -222,9 +220,7 @@ export default class ConvexHull {
 }
 class RadialComparator {
 	constructor(...args) {
-		(() => {
-			this.origin = null;
-		})();
+		this.origin = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

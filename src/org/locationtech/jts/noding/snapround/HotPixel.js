@@ -4,21 +4,19 @@ import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
 export default class HotPixel {
 	constructor(...args) {
-		(() => {
-			this.li = null;
-			this.pt = null;
-			this.originalPt = null;
-			this.ptScaled = null;
-			this.p0Scaled = null;
-			this.p1Scaled = null;
-			this.scaleFactor = null;
-			this.minx = null;
-			this.maxx = null;
-			this.miny = null;
-			this.maxy = null;
-			this.corner = new Array(4);
-			this.safeEnv = null;
-		})();
+		this.li = null;
+		this.pt = null;
+		this.originalPt = null;
+		this.ptScaled = null;
+		this.p0Scaled = null;
+		this.p1Scaled = null;
+		this.scaleFactor = null;
+		this.minx = null;
+		this.maxx = null;
+		this.miny = null;
+		this.maxy = null;
+		this.corner = new Array(4);
+		this.safeEnv = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

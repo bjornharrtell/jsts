@@ -2,12 +2,10 @@ import LineSegment from '../../geom/LineSegment';
 import Envelope from '../../geom/Envelope';
 export default class MonotoneChainOverlapAction {
 	constructor(...args) {
-		(() => {
-			this.tempEnv1 = new Envelope();
-			this.tempEnv2 = new Envelope();
-			this.overlapSeg1 = new LineSegment();
-			this.overlapSeg2 = new LineSegment();
-		})();
+		this.tempEnv1 = new Envelope();
+		this.tempEnv2 = new Envelope();
+		this.overlapSeg1 = new LineSegment();
+		this.overlapSeg2 = new LineSegment();
 	}
 	get interfaces_() {
 		return [];

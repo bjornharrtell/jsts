@@ -3,12 +3,10 @@ import Comparable from '../../../../java/lang/Comparable';
 import Serializable from '../../../../java/io/Serializable';
 export default class Envelope {
 	constructor(...args) {
-		(() => {
-			this.minx = null;
-			this.maxx = null;
-			this.miny = null;
-			this.maxy = null;
-		})();
+		this.minx = null;
+		this.maxx = null;
+		this.miny = null;
+		this.maxy = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

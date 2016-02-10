@@ -15,16 +15,14 @@ import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default class OverlayOp extends GeometryGraphOperation {
 	constructor(...args) {
 		super();
-		(() => {
-			this.ptLocator = new PointLocator();
-			this.geomFact = null;
-			this.resultGeom = null;
-			this.graph = null;
-			this.edgeList = new EdgeList();
-			this.resultPolyList = new ArrayList();
-			this.resultLineList = new ArrayList();
-			this.resultPointList = new ArrayList();
-		})();
+		this.ptLocator = new PointLocator();
+		this.geomFact = null;
+		this.resultGeom = null;
+		this.graph = null;
+		this.edgeList = new EdgeList();
+		this.resultPolyList = new ArrayList();
+		this.resultLineList = new ArrayList();
+		this.resultPointList = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

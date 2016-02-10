@@ -5,13 +5,11 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
 export default class IndexedNestedRingTester {
 	constructor(...args) {
-		(() => {
-			this.graph = null;
-			this.rings = new ArrayList();
-			this.totalEnv = new Envelope();
-			this.index = null;
-			this.nestedPt = null;
-		})();
+		this.graph = null;
+		this.rings = new ArrayList();
+		this.totalEnv = new Envelope();
+		this.index = null;
+		this.nestedPt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

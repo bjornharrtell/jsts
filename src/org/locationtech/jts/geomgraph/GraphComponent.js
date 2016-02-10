@@ -1,13 +1,11 @@
 import Assert from '../util/Assert';
 export default class GraphComponent {
 	constructor(...args) {
-		(() => {
-			this.label = null;
-			this._isInResult = false;
-			this._isCovered = false;
-			this._isCoveredSet = false;
-			this._isVisited = false;
-		})();
+		this.label = null;
+		this._isInResult = false;
+		this._isCovered = false;
+		this._isCoveredSet = false;
+		this._isVisited = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

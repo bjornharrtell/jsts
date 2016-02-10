@@ -2,16 +2,14 @@ import SegmentIntersector from './SegmentIntersector';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 export default class SegmentIntersectionDetector {
 	constructor(...args) {
-		(() => {
-			this.li = null;
-			this.findProper = false;
-			this.findAllTypes = false;
-			this._hasIntersection = false;
-			this._hasProperIntersection = false;
-			this._hasNonProperIntersection = false;
-			this.intPt = null;
-			this.intSegments = null;
-		})();
+		this.li = null;
+		this.findProper = false;
+		this.findAllTypes = false;
+		this._hasIntersection = false;
+		this._hasProperIntersection = false;
+		this._hasNonProperIntersection = false;
+		this.intPt = null;
+		this.intSegments = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

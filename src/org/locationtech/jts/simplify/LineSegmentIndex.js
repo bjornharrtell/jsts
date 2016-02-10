@@ -6,9 +6,7 @@ import Envelope from '../geom/Envelope';
 import TaggedLineString from './TaggedLineString';
 export default class LineSegmentIndex {
 	constructor(...args) {
-		(() => {
-			this.index = new Quadtree();
-		})();
+		this.index = new Quadtree();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -61,10 +59,8 @@ export default class LineSegmentIndex {
 }
 class LineSegmentVisitor {
 	constructor(...args) {
-		(() => {
-			this.querySeg = null;
-			this.items = new ArrayList();
-		})();
+		this.querySeg = null;
+		this.items = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

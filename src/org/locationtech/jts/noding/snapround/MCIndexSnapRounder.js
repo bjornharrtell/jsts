@@ -10,14 +10,12 @@ import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder';
 export default class MCIndexSnapRounder {
 	constructor(...args) {
-		(() => {
-			this.pm = null;
-			this.li = null;
-			this.scaleFactor = null;
-			this.noder = null;
-			this.pointSnapper = null;
-			this.nodedSegStrings = null;
-		})();
+		this.pm = null;
+		this.li = null;
+		this.scaleFactor = null;
+		this.noder = null;
+		this.pointSnapper = null;
+		this.nodedSegStrings = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

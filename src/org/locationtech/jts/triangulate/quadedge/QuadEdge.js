@@ -2,12 +2,10 @@ import WKTWriter from '../../io/WKTWriter';
 import LineSegment from '../../geom/LineSegment';
 export default class QuadEdge {
 	constructor(...args) {
-		(() => {
-			this._rot = null;
-			this.vertex = null;
-			this.next = null;
-			this.data = null;
-		})();
+		this._rot = null;
+		this.vertex = null;
+		this.next = null;
+		this.data = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

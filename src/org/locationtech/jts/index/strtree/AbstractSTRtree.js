@@ -8,12 +8,10 @@ import Assert from '../../util/Assert';
 import List from '../../../../../java/util/List';
 export default class AbstractSTRtree {
 	constructor(...args) {
-		(() => {
-			this.root = null;
-			this.built = false;
-			this.itemBoundables = new ArrayList();
-			this.nodeCapacity = null;
-		})();
+		this.root = null;
+		this.built = false;
+		this.itemBoundables = new ArrayList();
+		this.nodeCapacity = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

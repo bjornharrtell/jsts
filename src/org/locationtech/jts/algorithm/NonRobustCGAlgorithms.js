@@ -3,7 +3,6 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 export default class NonRobustCGAlgorithms extends CGAlgorithms {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

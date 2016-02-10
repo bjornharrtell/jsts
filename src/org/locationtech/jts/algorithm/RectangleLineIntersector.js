@@ -3,14 +3,12 @@ import RobustLineIntersector from './RobustLineIntersector';
 import Envelope from '../geom/Envelope';
 export default class RectangleLineIntersector {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.rectEnv = null;
-			this.diagUp0 = null;
-			this.diagUp1 = null;
-			this.diagDown0 = null;
-			this.diagDown1 = null;
-		})();
+		this.li = new RobustLineIntersector();
+		this.rectEnv = null;
+		this.diagUp0 = null;
+		this.diagUp1 = null;
+		this.diagDown0 = null;
+		this.diagDown1 = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -3,11 +3,9 @@ import Collections from '../../../../../java/util/Collections';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class SweepLineIndex {
 	constructor(...args) {
-		(() => {
-			this.events = new ArrayList();
-			this.indexBuilt = null;
-			this.nOverlaps = null;
-		})();
+		this.events = new ArrayList();
+		this.indexBuilt = null;
+		this.nOverlaps = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

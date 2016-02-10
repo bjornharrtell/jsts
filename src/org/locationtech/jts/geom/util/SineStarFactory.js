@@ -3,10 +3,8 @@ import GeometricShapeFactory from '../../util/GeometricShapeFactory';
 export default class SineStarFactory extends GeometricShapeFactory {
 	constructor(...args) {
 		super();
-		(() => {
-			this.numArms = 8;
-			this.armLengthRatio = 0.5;
-		})();
+		this.numArms = 8;
+		this.armLengthRatio = 0.5;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

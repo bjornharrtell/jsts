@@ -3,11 +3,9 @@ import LineSegment from '../geom/LineSegment';
 import Comparable from '../../../../java/lang/Comparable';
 export default class LinearLocation {
 	constructor(...args) {
-		(() => {
-			this.componentIndex = 0;
-			this.segmentIndex = 0;
-			this.segmentFraction = 0.0;
-		})();
+		this.componentIndex = 0;
+		this.segmentIndex = 0;
+		this.segmentFraction = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -4,10 +4,8 @@ import Coordinate from '../geom/Coordinate';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default class CommonBitsRemover {
 	constructor(...args) {
-		(() => {
-			this.commonCoord = null;
-			this.ccFilter = new CommonCoordinateFilter();
-		})();
+		this.commonCoord = null;
+		this.ccFilter = new CommonCoordinateFilter();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -55,10 +53,8 @@ export default class CommonBitsRemover {
 }
 class CommonCoordinateFilter {
 	constructor(...args) {
-		(() => {
-			this.commonBitsX = new CommonBits();
-			this.commonBitsY = new CommonBits();
-		})();
+		this.commonBitsX = new CommonBits();
+		this.commonBitsY = new CommonBits();
 	}
 	get interfaces_() {
 		return [CoordinateFilter];
@@ -76,9 +72,7 @@ class CommonCoordinateFilter {
 }
 class Translater {
 	constructor(...args) {
-		(() => {
-			this.trans = null;
-		})();
+		this.trans = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

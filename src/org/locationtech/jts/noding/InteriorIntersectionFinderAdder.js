@@ -2,10 +2,8 @@ import SegmentIntersector from './SegmentIntersector';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class InteriorIntersectionFinderAdder {
 	constructor(...args) {
-		(() => {
-			this.li = null;
-			this.interiorIntersections = null;
-		})();
+		this.li = null;
+		this.interiorIntersections = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

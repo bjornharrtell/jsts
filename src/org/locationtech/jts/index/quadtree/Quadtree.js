@@ -6,10 +6,8 @@ import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 export default class Quadtree {
 	constructor(...args) {
-		(() => {
-			this.root = null;
-			this.minExtent = 1.0;
-		})();
+		this.root = null;
+		this.minExtent = 1.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

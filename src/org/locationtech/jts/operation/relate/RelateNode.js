@@ -2,7 +2,6 @@ import Node from '../../geomgraph/Node';
 export default class RelateNode extends Node {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

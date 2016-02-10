@@ -1,20 +1,18 @@
 export default class SegmentIntersector {
 	constructor(...args) {
-		(() => {
-			this._hasIntersection = false;
-			this.hasProper = false;
-			this.hasProperInterior = false;
-			this.properIntersectionPoint = null;
-			this.li = null;
-			this.includeProper = null;
-			this.recordIsolated = null;
-			this.isSelfIntersection = null;
-			this.numIntersections = 0;
-			this.numTests = 0;
-			this.bdyNodes = null;
-			this._isDone = false;
-			this.isDoneWhenProperInt = false;
-		})();
+		this._hasIntersection = false;
+		this.hasProper = false;
+		this.hasProperInterior = false;
+		this.properIntersectionPoint = null;
+		this.li = null;
+		this.includeProper = null;
+		this.recordIsolated = null;
+		this.isSelfIntersection = null;
+		this.numIntersections = 0;
+		this.numTests = 0;
+		this.bdyNodes = null;
+		this._isDone = false;
+		this.isDoneWhenProperInt = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

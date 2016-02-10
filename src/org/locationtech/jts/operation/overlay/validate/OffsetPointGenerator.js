@@ -3,11 +3,9 @@ import ArrayList from '../../../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter';
 export default class OffsetPointGenerator {
 	constructor(...args) {
-		(() => {
-			this.g = null;
-			this.doLeft = true;
-			this.doRight = true;
-		})();
+		this.g = null;
+		this.doLeft = true;
+		this.doRight = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

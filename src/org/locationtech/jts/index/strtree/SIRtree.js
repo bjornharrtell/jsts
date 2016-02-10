@@ -7,23 +7,21 @@ import AbstractSTRtree from './AbstractSTRtree';
 export default class SIRtree extends AbstractSTRtree {
 	constructor(...args) {
 		super();
-		(() => {
-			this.comparator = new (class {
-				compare(o1, o2) {
-					return SIRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre());
-				}
-				get interfaces_() {
-					return [Comparator];
-				}
-			})();
-			this.intersectsOp = new (class {
-				intersects(aBounds, bBounds) {
-					return aBounds.intersects(bBounds);
-				}
-				get interfaces_() {
-					return [IntersectsOp];
-				}
-			})();
+		this.comparator = new (class {
+			compare(o1, o2) {
+				return SIRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre());
+			}
+			get interfaces_() {
+				return [Comparator];
+			}
+		})();
+		this.intersectsOp = new (class {
+			intersects(aBounds, bBounds) {
+				return aBounds.intersects(bBounds);
+			}
+			get interfaces_() {
+				return [IntersectsOp];
+			}
 		})();
 		const overloads = (...args) => {
 			switch (args.length) {

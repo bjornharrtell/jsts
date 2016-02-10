@@ -12,10 +12,8 @@ import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 export default class Polygon extends Geometry {
 	constructor(...args) {
 		super();
-		(() => {
-			this.shell = null;
-			this.holes = null;
-		})();
+		this.shell = null;
+		this.holes = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

@@ -5,9 +5,7 @@ import LineSegment from '../geom/LineSegment';
 import Assert from '../util/Assert';
 export default class LocationIndexOfPoint {
 	constructor(...args) {
-		(() => {
-			this.linearGeom = null;
-		})();
+		this.linearGeom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

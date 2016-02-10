@@ -3,13 +3,11 @@ import Coordinate from '../geom/Coordinate';
 import AffineTransformation from '../geom/util/AffineTransformation';
 export default class GeometricShapeFactory {
 	constructor(...args) {
-		(() => {
-			this.geomFact = null;
-			this.precModel = null;
-			this.dim = new Dimensions();
-			this.nPts = 100;
-			this.rotationAngle = 0.0;
-		})();
+		this.geomFact = null;
+		this.precModel = null;
+		this.dim = new Dimensions();
+		this.nPts = 100;
+		this.rotationAngle = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

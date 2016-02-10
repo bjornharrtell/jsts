@@ -1,6 +1,5 @@
 export default class EdgeSetIntersector {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

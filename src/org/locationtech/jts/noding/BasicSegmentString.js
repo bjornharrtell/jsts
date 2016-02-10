@@ -4,10 +4,8 @@ import Octant from './Octant';
 import SegmentString from './SegmentString';
 export default class BasicSegmentString {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this.data = null;
-		})();
+		this.pts = null;
+		this.data = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

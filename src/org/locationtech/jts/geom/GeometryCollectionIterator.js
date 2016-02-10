@@ -3,13 +3,11 @@ import NoSuchElementException from '../../../../java/util/NoSuchElementException
 import GeometryCollection from './GeometryCollection';
 export default class GeometryCollectionIterator {
 	constructor(...args) {
-		(() => {
-			this.parent = null;
-			this.atStart = null;
-			this.max = null;
-			this.index = null;
-			this.subcollectionIterator = null;
-		})();
+		this.parent = null;
+		this.atStart = null;
+		this.max = null;
+		this.index = null;
+		this.subcollectionIterator = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -5,9 +5,7 @@ import Dimension from './Dimension';
 import Cloneable from '../../../../java/lang/Cloneable';
 export default class IntersectionMatrix {
 	constructor(...args) {
-		(() => {
-			this.matrix = null;
-		})();
+		this.matrix = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

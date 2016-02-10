@@ -10,9 +10,7 @@ import Assert from '../util/Assert';
 export default class Point extends Geometry {
 	constructor(...args) {
 		super();
-		(() => {
-			this.coordinates = null;
-		})();
+		this.coordinates = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

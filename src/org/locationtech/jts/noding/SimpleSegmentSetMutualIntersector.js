@@ -1,9 +1,7 @@
 import SegmentSetMutualIntersector from './SegmentSetMutualIntersector';
 export default class SimpleSegmentSetMutualIntersector {
 	constructor(...args) {
-		(() => {
-			this.baseSegStrings = null;
-		})();
+		this.baseSegStrings = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

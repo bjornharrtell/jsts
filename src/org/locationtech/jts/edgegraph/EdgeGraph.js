@@ -2,9 +2,7 @@ import HashMap from '../../../../java/util/HashMap';
 import HalfEdge from './HalfEdge';
 export default class EdgeGraph {
 	constructor(...args) {
-		(() => {
-			this.vertexMap = new HashMap();
-		})();
+		this.vertexMap = new HashMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

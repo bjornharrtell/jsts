@@ -2,10 +2,8 @@ import LineSegment from '../../geom/LineSegment';
 import Envelope from '../../geom/Envelope';
 export default class MonotoneChainSelectAction {
 	constructor(...args) {
-		(() => {
-			this.tempEnv1 = new Envelope();
-			this.selectedSegment = new LineSegment();
-		})();
+		this.tempEnv1 = new Envelope();
+		this.selectedSegment = new LineSegment();
 	}
 	get interfaces_() {
 		return [];

@@ -11,14 +11,12 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import MultiLineString from '../MultiLineString';
 export default class GeometryTransformer {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.factory = null;
-			this.pruneEmptyGeometry = true;
-			this.preserveGeometryCollectionType = true;
-			this.preserveCollections = false;
-			this.preserveType = false;
-		})();
+		this.inputGeom = null;
+		this.factory = null;
+		this.pruneEmptyGeometry = true;
+		this.preserveGeometryCollectionType = true;
+		this.preserveCollections = false;
+		this.preserveType = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

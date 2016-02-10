@@ -1,10 +1,8 @@
 export default class GraphComponent {
 	constructor(...args) {
-		(() => {
-			this._isMarked = false;
-			this._isVisited = false;
-			this.data = null;
-		})();
+		this._isMarked = false;
+		this._isVisited = false;
+		this.data = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -2,10 +2,8 @@ import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentEx
 import Double from '../../../../../java/lang/Double';
 export default class DoubleBits {
 	constructor(...args) {
-		(() => {
-			this.x = null;
-			this.xBits = null;
-		})();
+		this.x = null;
+		this.xBits = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

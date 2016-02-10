@@ -3,10 +3,8 @@ import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class EdgeList {
 	constructor(...args) {
-		(() => {
-			this.edges = new ArrayList();
-			this.ocaMap = new TreeMap();
-		})();
+		this.edges = new ArrayList();
+		this.ocaMap = new TreeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

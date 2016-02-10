@@ -1,10 +1,8 @@
 export default class GeometryLocation {
 	constructor(...args) {
-		(() => {
-			this.component = null;
-			this.segIndex = null;
-			this.pt = null;
-		})();
+		this.component = null;
+		this.segIndex = null;
+		this.pt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

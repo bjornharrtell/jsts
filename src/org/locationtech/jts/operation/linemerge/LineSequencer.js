@@ -15,14 +15,12 @@ import MultiLineString from '../../geom/MultiLineString';
 import GraphComponent from '../../planargraph/GraphComponent';
 export default class LineSequencer {
 	constructor(...args) {
-		(() => {
-			this.graph = new LineMergeGraph();
-			this.factory = new GeometryFactory();
-			this.lineCount = 0;
-			this.isRun = false;
-			this.sequencedGeometry = null;
-			this._isSequenceable = false;
-		})();
+		this.graph = new LineMergeGraph();
+		this.factory = new GeometryFactory();
+		this.lineCount = 0;
+		this.isRun = false;
+		this.sequencedGeometry = null;
+		this._isSequenceable = false;
 	}
 	get interfaces_() {
 		return [];

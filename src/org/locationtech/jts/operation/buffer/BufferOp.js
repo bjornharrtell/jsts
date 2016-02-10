@@ -9,13 +9,11 @@ import RuntimeException from '../../../../../java/lang/RuntimeException';
 import MCIndexSnapRounder from '../../noding/snapround/MCIndexSnapRounder';
 export default class BufferOp {
 	constructor(...args) {
-		(() => {
-			this.argGeom = null;
-			this.distance = null;
-			this.bufParams = new BufferParameters();
-			this.resultGeometry = null;
-			this.saveException = null;
-		})();
+		this.argGeom = null;
+		this.distance = null;
+		this.bufParams = new BufferParameters();
+		this.resultGeometry = null;
+		this.saveException = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

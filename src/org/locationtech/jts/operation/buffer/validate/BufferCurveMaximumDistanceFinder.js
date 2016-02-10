@@ -5,10 +5,8 @@ import PointPairDistance from './PointPairDistance';
 import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter';
 export default class BufferCurveMaximumDistanceFinder {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.maxPtDist = new PointPairDistance();
-		})();
+		this.inputGeom = null;
+		this.maxPtDist = new PointPairDistance();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -53,11 +51,9 @@ export default class BufferCurveMaximumDistanceFinder {
 }
 class MaxPointDistanceFilter {
 	constructor(...args) {
-		(() => {
-			this.maxPtDist = new PointPairDistance();
-			this.minPtDist = new PointPairDistance();
-			this.geom = null;
-		})();
+		this.maxPtDist = new PointPairDistance();
+		this.minPtDist = new PointPairDistance();
+		this.geom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -86,11 +82,9 @@ class MaxPointDistanceFilter {
 }
 class MaxMidpointDistanceFilter {
 	constructor(...args) {
-		(() => {
-			this.maxPtDist = new PointPairDistance();
-			this.minPtDist = new PointPairDistance();
-			this.geom = null;
-		})();
+		this.maxPtDist = new PointPairDistance();
+		this.minPtDist = new PointPairDistance();
+		this.geom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -6,11 +6,9 @@ import CoordinateArrays from '../../geom/CoordinateArrays';
 import OffsetSegmentGenerator from './OffsetSegmentGenerator';
 export default class OffsetCurveBuilder {
 	constructor(...args) {
-		(() => {
-			this.distance = 0.0;
-			this.precisionModel = null;
-			this.bufParams = null;
-		})();
+		this.distance = 0.0;
+		this.precisionModel = null;
+		this.bufParams = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

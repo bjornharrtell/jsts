@@ -4,7 +4,6 @@ import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
 export default class CoordinateArraySequenceFactory {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

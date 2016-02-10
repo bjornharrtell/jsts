@@ -1,7 +1,6 @@
 import SimilarityMeasure from './SimilarityMeasure';
 export default class AreaSimilarityMeasure {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -1,13 +1,11 @@
 import Comparable from '../../../../../java/lang/Comparable';
 export default class SweepLineEvent {
 	constructor(...args) {
-		(() => {
-			this.xValue = null;
-			this.eventType = null;
-			this.insertEvent = null;
-			this.deleteEventIndex = null;
-			this.sweepInt = null;
-		})();
+		this.xValue = null;
+		this.eventType = null;
+		this.insertEvent = null;
+		this.deleteEventIndex = null;
+		this.sweepInt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

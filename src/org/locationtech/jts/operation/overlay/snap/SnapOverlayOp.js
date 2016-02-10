@@ -4,11 +4,9 @@ import CommonBitsRemover from '../../../precision/CommonBitsRemover';
 import OverlayOp from '../OverlayOp';
 export default class SnapOverlayOp {
 	constructor(...args) {
-		(() => {
-			this.geom = new Array(2);
-			this.snapTolerance = null;
-			this.cbr = null;
-		})();
+		this.geom = new Array(2);
+		this.snapTolerance = null;
+		this.cbr = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

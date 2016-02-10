@@ -2,9 +2,7 @@ import LinearIterator from './LinearIterator';
 import LinearLocation from './LinearLocation';
 export default class LengthLocationMap {
 	constructor(...args) {
-		(() => {
-			this.linearGeom = null;
-		})();
+		this.linearGeom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

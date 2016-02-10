@@ -9,9 +9,7 @@ import ArrayListVisitor from '../../index/ArrayListVisitor';
 import RayCrossingCounter from '../RayCrossingCounter';
 export default class IndexedPointInAreaLocator {
 	constructor(...args) {
-		(() => {
-			this.index = null;
-		})();
+		this.index = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -45,9 +43,7 @@ export default class IndexedPointInAreaLocator {
 }
 class SegmentVisitor {
 	constructor(...args) {
-		(() => {
-			this.counter = null;
-		})();
+		this.counter = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -72,9 +68,7 @@ class SegmentVisitor {
 }
 class IntervalIndexedGeometry {
 	constructor(...args) {
-		(() => {
-			this.index = new SortedPackedIntervalRTree();
-		})();
+		this.index = new SortedPackedIntervalRTree();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

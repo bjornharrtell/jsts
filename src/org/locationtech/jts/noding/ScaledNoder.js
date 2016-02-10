@@ -7,13 +7,11 @@ import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class ScaledNoder {
 	constructor(...args) {
-		(() => {
-			this.noder = null;
-			this.scaleFactor = null;
-			this.offsetX = null;
-			this.offsetY = null;
-			this.isScaled = false;
-		})();
+		this.noder = null;
+		this.scaleFactor = null;
+		this.offsetX = null;
+		this.offsetY = null;
+		this.isScaled = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

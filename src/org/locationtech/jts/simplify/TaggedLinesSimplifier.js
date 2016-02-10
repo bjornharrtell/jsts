@@ -2,11 +2,9 @@ import TaggedLineStringSimplifier from './TaggedLineStringSimplifier';
 import LineSegmentIndex from './LineSegmentIndex';
 export default class TaggedLinesSimplifier {
 	constructor(...args) {
-		(() => {
-			this.inputIndex = new LineSegmentIndex();
-			this.outputIndex = new LineSegmentIndex();
-			this.distanceTolerance = 0.0;
-		})();
+		this.inputIndex = new LineSegmentIndex();
+		this.outputIndex = new LineSegmentIndex();
+		this.distanceTolerance = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -3,11 +3,9 @@ import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
 export default class HCoordinate {
 	constructor(...args) {
-		(() => {
-			this.x = null;
-			this.y = null;
-			this.w = null;
-		})();
+		this.x = null;
+		this.y = null;
+		this.w = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

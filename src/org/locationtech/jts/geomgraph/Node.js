@@ -4,10 +4,8 @@ import GraphComponent from './GraphComponent';
 export default class Node extends GraphComponent {
 	constructor(...args) {
 		super();
-		(() => {
-			this.coord = null;
-			this.edges = null;
-		})();
+		this.coord = null;
+		this.edges = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

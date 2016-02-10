@@ -20,11 +20,9 @@ import TopologyValidationError from './TopologyValidationError';
 import Assert from '../../util/Assert';
 export default class IsValidOp {
 	constructor(...args) {
-		(() => {
-			this.parentGeometry = null;
-			this.isSelfTouchingRingFormingHoleValid = false;
-			this.validErr = null;
-		})();
+		this.parentGeometry = null;
+		this.isSelfTouchingRingFormingHoleValid = false;
+		this.validErr = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

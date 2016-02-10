@@ -6,10 +6,8 @@ import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default class PolygonBuilder {
 	constructor(...args) {
-		(() => {
-			this.geometryFactory = null;
-			this.shellList = new ArrayList();
-		})();
+		this.geometryFactory = null;
+		this.shellList = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

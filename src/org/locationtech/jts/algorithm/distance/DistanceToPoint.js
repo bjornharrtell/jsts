@@ -7,7 +7,6 @@ import PointPairDistance from './PointPairDistance';
 import GeometryCollection from '../../geom/GeometryCollection';
 export default class DistanceToPoint {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

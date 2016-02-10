@@ -8,14 +8,12 @@ import CoordinateSequenceFilter from '../CoordinateSequenceFilter';
 import Assert from '../../util/Assert';
 export default class AffineTransformation {
 	constructor(...args) {
-		(() => {
-			this.m00 = null;
-			this.m01 = null;
-			this.m02 = null;
-			this.m10 = null;
-			this.m11 = null;
-			this.m12 = null;
-		})();
+		this.m00 = null;
+		this.m01 = null;
+		this.m02 = null;
+		this.m10 = null;
+		this.m11 = null;
+		this.m12 = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

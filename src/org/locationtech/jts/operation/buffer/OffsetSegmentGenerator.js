@@ -10,25 +10,23 @@ import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import HCoordinate from '../../algorithm/HCoordinate';
 export default class OffsetSegmentGenerator {
 	constructor(...args) {
-		(() => {
-			this.maxCurveSegmentError = 0.0;
-			this.filletAngleQuantum = null;
-			this.closingSegLengthFactor = 1;
-			this.segList = null;
-			this.distance = 0.0;
-			this.precisionModel = null;
-			this.bufParams = null;
-			this.li = null;
-			this.s0 = null;
-			this.s1 = null;
-			this.s2 = null;
-			this.seg0 = new LineSegment();
-			this.seg1 = new LineSegment();
-			this.offset0 = new LineSegment();
-			this.offset1 = new LineSegment();
-			this.side = 0;
-			this._hasNarrowConcaveAngle = false;
-		})();
+		this.maxCurveSegmentError = 0.0;
+		this.filletAngleQuantum = null;
+		this.closingSegLengthFactor = 1;
+		this.segList = null;
+		this.distance = 0.0;
+		this.precisionModel = null;
+		this.bufParams = null;
+		this.li = null;
+		this.s0 = null;
+		this.s1 = null;
+		this.s2 = null;
+		this.seg0 = new LineSegment();
+		this.seg1 = new LineSegment();
+		this.offset0 = new LineSegment();
+		this.offset1 = new LineSegment();
+		this.side = 0;
+		this._hasNarrowConcaveAngle = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

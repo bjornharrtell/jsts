@@ -9,7 +9,6 @@ import LineIntersector from './LineIntersector';
 export default class RobustLineIntersector extends LineIntersector {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -3,7 +3,6 @@ import Label from '../../geomgraph/Label';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class EdgeEndBuilder {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

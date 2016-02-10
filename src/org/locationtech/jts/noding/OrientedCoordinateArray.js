@@ -2,10 +2,8 @@ import Comparable from '../../../../java/lang/Comparable';
 import CoordinateArrays from '../geom/CoordinateArrays';
 export default class OrientedCoordinateArray {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this._orientation = null;
-		})();
+		this.pts = null;
+		this._orientation = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

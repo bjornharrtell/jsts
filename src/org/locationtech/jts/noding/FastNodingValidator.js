@@ -5,13 +5,11 @@ import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinder from './InteriorIntersectionFinder';
 export default class FastNodingValidator {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.segStrings = null;
-			this.findAllIntersections = false;
-			this.segInt = null;
-			this._isValid = true;
-		})();
+		this.li = new RobustLineIntersector();
+		this.segStrings = null;
+		this.findAllIntersections = false;
+		this.segInt = null;
+		this._isValid = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

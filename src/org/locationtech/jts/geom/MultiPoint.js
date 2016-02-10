@@ -5,7 +5,6 @@ import Puntal from './Puntal';
 export default class MultiPoint extends GeometryCollection {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

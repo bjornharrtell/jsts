@@ -4,10 +4,8 @@ import Double from '../../../../../java/lang/Double';
 import Comparator from '../../../../../java/util/Comparator';
 export default class IntervalRTreeNode {
 	constructor(...args) {
-		(() => {
-			this.min = Double.POSITIVE_INFINITY;
-			this.max = Double.NEGATIVE_INFINITY;
-		})();
+		this.min = Double.POSITIVE_INFINITY;
+		this.max = Double.NEGATIVE_INFINITY;
 	}
 	get interfaces_() {
 		return [];

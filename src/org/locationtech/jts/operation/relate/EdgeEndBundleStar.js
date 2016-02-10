@@ -3,7 +3,6 @@ import EdgeEndBundle from './EdgeEndBundle';
 export default class EdgeEndBundleStar extends EdgeEndStar {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -7,10 +7,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import TriangleVisitor from './TriangleVisitor';
 export default class QuadEdgeTriangle {
 	constructor(...args) {
-		(() => {
-			this.edge = null;
-			this.data = null;
-		})();
+		this.edge = null;
+		this.data = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -220,9 +218,7 @@ export default class QuadEdgeTriangle {
 }
 class QuadEdgeTriangleBuilderVisitor {
 	constructor(...args) {
-		(() => {
-			this.triangles = new ArrayList();
-		})();
+		this.triangles = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

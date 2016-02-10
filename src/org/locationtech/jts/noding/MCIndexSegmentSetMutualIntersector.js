@@ -5,9 +5,7 @@ import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class MCIndexSegmentSetMutualIntersector {
 	constructor(...args) {
-		(() => {
-			this.index = new STRtree();
-		})();
+		this.index = new STRtree();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -74,9 +72,7 @@ export default class MCIndexSegmentSetMutualIntersector {
 class SegmentOverlapAction extends MonotoneChainOverlapAction {
 	constructor(...args) {
 		super();
-		(() => {
-			this.si = null;
-		})();
+		this.si = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

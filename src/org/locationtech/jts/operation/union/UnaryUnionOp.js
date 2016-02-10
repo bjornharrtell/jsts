@@ -11,12 +11,10 @@ import OverlayOp from '../overlay/OverlayOp';
 import CascadedPolygonUnion from './CascadedPolygonUnion';
 export default class UnaryUnionOp {
 	constructor(...args) {
-		(() => {
-			this.polygons = new ArrayList();
-			this.lines = new ArrayList();
-			this.points = new ArrayList();
-			this.geomFact = null;
-		})();
+		this.polygons = new ArrayList();
+		this.lines = new ArrayList();
+		this.points = new ArrayList();
+		this.geomFact = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

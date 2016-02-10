@@ -8,10 +8,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import List from '../../../../../java/util/List';
 export default class CascadedPolygonUnion {
 	constructor(...args) {
-		(() => {
-			this.inputPolys = null;
-			this.geomFactory = null;
-		})();
+		this.inputPolys = null;
+		this.geomFactory = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

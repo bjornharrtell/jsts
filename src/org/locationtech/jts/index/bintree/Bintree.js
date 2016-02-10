@@ -3,10 +3,8 @@ import Interval from './Interval';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class Bintree {
 	constructor(...args) {
-		(() => {
-			this.root = null;
-			this.minExtent = 1.0;
-		})();
+		this.root = null;
+		this.minExtent = 1.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

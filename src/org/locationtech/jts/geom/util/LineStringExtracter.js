@@ -4,9 +4,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default class LineStringExtracter {
 	constructor(...args) {
-		(() => {
-			this.comps = null;
-		})();
+		this.comps = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

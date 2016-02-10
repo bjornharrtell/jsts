@@ -5,10 +5,8 @@ import GraphComponent from './GraphComponent';
 export default class Node extends GraphComponent {
 	constructor(...args) {
 		super();
-		(() => {
-			this.pt = null;
-			this.deStar = null;
-		})();
+		this.pt = null;
+		this.deStar = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

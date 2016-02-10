@@ -7,14 +7,12 @@ import ArrayList from '../../../../../../java/util/ArrayList';
 import OverlayOp from '../OverlayOp';
 export default class OverlayResultValidator {
 	constructor(...args) {
-		(() => {
-			this.geom = null;
-			this.locFinder = null;
-			this.location = new Array(3);
-			this.invalidLocation = null;
-			this.boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE;
-			this.testCoords = new ArrayList();
-		})();
+		this.geom = null;
+		this.locFinder = null;
+		this.location = new Array(3);
+		this.invalidLocation = null;
+		this.boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE;
+		this.testCoords = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

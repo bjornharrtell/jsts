@@ -3,11 +3,9 @@ import Quadrant from '../geomgraph/Quadrant';
 import Assert from '../util/Assert';
 export default class HalfEdge {
 	constructor(...args) {
-		(() => {
-			this._orig = null;
-			this._sym = null;
-			this._next = null;
-		})();
+		this._orig = null;
+		this._sym = null;
+		this._next = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

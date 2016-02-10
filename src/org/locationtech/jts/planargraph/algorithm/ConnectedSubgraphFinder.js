@@ -4,9 +4,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GraphComponent from '../GraphComponent';
 export default class ConnectedSubgraphFinder {
 	constructor(...args) {
-		(() => {
-			this.graph = null;
-		})();
+		this.graph = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

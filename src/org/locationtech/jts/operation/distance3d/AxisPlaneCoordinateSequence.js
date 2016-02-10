@@ -2,10 +2,8 @@ import Coordinate from '../../geom/Coordinate';
 import CoordinateSequence from '../../geom/CoordinateSequence';
 export default class AxisPlaneCoordinateSequence {
 	constructor(...args) {
-		(() => {
-			this.seq = null;
-			this.indexMap = null;
-		})();
+		this.seq = null;
+		this.indexMap = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

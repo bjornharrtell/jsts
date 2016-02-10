@@ -2,9 +2,7 @@ import IntervalRTreeNode from './IntervalRTreeNode';
 export default class IntervalRTreeLeafNode extends IntervalRTreeNode {
 	constructor(...args) {
 		super();
-		(() => {
-			this.item = null;
-		})();
+		this.item = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

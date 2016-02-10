@@ -1,13 +1,11 @@
 export default class BufferParameters {
 	constructor(...args) {
-		(() => {
-			this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
-			this.endCapStyle = BufferParameters.CAP_ROUND;
-			this.joinStyle = BufferParameters.JOIN_ROUND;
-			this.mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
-			this._isSingleSided = false;
-			this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
-		})();
+		this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
+		this.endCapStyle = BufferParameters.CAP_ROUND;
+		this.joinStyle = BufferParameters.JOIN_ROUND;
+		this.mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
+		this._isSingleSided = false;
+		this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

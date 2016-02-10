@@ -2,16 +2,14 @@ import SegmentIntersector from './SegmentIntersector';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class InteriorIntersectionFinder {
 	constructor(...args) {
-		(() => {
-			this.findAllIntersections = false;
-			this.isCheckEndSegmentsOnly = false;
-			this.li = null;
-			this.interiorIntersection = null;
-			this.intSegments = null;
-			this.intersections = new ArrayList();
-			this.intersectionCount = 0;
-			this.keepIntersections = true;
-		})();
+		this.findAllIntersections = false;
+		this.isCheckEndSegmentsOnly = false;
+		this.li = null;
+		this.interiorIntersection = null;
+		this.intSegments = null;
+		this.intersections = new ArrayList();
+		this.intersectionCount = 0;
+		this.keepIntersections = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

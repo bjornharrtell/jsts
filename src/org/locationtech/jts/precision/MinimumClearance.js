@@ -8,11 +8,9 @@ import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBui
 import ItemDistance from '../index/strtree/ItemDistance';
 export default class MinimumClearance {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.minClearance = null;
-			this.minClearancePts = null;
-		})();
+		this.inputGeom = null;
+		this.minClearance = null;
+		this.minClearancePts = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -66,10 +64,8 @@ export default class MinimumClearance {
 }
 class MinClearanceDistance {
 	constructor(...args) {
-		(() => {
-			this.minDist = Double.MAX_VALUE;
-			this.minPts = new Array(2);
-		})();
+		this.minDist = Double.MAX_VALUE;
+		this.minPts = new Array(2);
 	}
 	get interfaces_() {
 		return [ItemDistance];

@@ -11,19 +11,17 @@ import Comparator from '../../../../../java/util/Comparator';
 import Assert from '../../util/Assert';
 export default class EdgeRing {
 	constructor(...args) {
-		(() => {
-			this.factory = null;
-			this.deList = new ArrayList();
-			this.lowestEdge = null;
-			this.ring = null;
-			this.ringPts = null;
-			this.holes = null;
-			this.shell = null;
-			this._isHole = null;
-			this._isProcessed = false;
-			this._isIncludedSet = false;
-			this._isIncluded = false;
-		})();
+		this.factory = null;
+		this.deList = new ArrayList();
+		this.lowestEdge = null;
+		this.ring = null;
+		this.ringPts = null;
+		this.holes = null;
+		this.shell = null;
+		this._isHole = null;
+		this._isProcessed = false;
+		this._isIncludedSet = false;
+		this._isIncluded = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -2,7 +2,6 @@ import Coordinate from '../geom/Coordinate';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 export default class Octant {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

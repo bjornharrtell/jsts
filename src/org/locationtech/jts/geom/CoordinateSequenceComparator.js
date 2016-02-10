@@ -3,9 +3,7 @@ import Integer from '../../../../java/lang/Integer';
 import Comparator from '../../../../java/util/Comparator';
 export default class CoordinateSequenceComparator {
 	constructor(...args) {
-		(() => {
-			this.dimensionLimit = null;
-		})();
+		this.dimensionLimit = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

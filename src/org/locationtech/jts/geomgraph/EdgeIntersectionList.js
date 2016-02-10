@@ -5,10 +5,8 @@ import Edge from './Edge';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class EdgeIntersectionList {
 	constructor(...args) {
-		(() => {
-			this.nodeMap = new TreeMap();
-			this.edge = null;
-		})();
+		this.nodeMap = new TreeMap();
+		this.edge = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

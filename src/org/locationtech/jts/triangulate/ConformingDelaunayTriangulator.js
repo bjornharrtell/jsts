@@ -15,20 +15,18 @@ import ConstraintEnforcementException from './ConstraintEnforcementException';
 import Envelope from '../geom/Envelope';
 export default class ConformingDelaunayTriangulator {
 	constructor(...args) {
-		(() => {
-			this.initialVertices = null;
-			this.segVertices = null;
-			this.segments = new ArrayList();
-			this.subdiv = null;
-			this.incDel = null;
-			this.convexHull = null;
-			this.splitFinder = new NonEncroachingSplitPointFinder();
-			this.kdt = null;
-			this.vertexFactory = null;
-			this.computeAreaEnv = null;
-			this.splitPt = null;
-			this.tolerance = null;
-		})();
+		this.initialVertices = null;
+		this.segVertices = null;
+		this.segments = new ArrayList();
+		this.subdiv = null;
+		this.incDel = null;
+		this.convexHull = null;
+		this.splitFinder = new NonEncroachingSplitPointFinder();
+		this.kdt = null;
+		this.vertexFactory = null;
+		this.computeAreaEnv = null;
+		this.splitPt = null;
+		this.tolerance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

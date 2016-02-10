@@ -10,11 +10,9 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Envelope from '../geom/Envelope';
 export default class DelaunayTriangulationBuilder {
 	constructor(...args) {
-		(() => {
-			this.siteCoords = null;
-			this.tolerance = 0.0;
-			this.subdiv = null;
-		})();
+		this.siteCoords = null;
+		this.tolerance = 0.0;
+		this.subdiv = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

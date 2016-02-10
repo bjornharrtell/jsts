@@ -3,11 +3,9 @@ import CoordinateArrays from '../../geom/CoordinateArrays';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class EdgeString {
 	constructor(...args) {
-		(() => {
-			this.factory = null;
-			this.directedEdges = new ArrayList();
-			this.coordinates = null;
-		})();
+		this.factory = null;
+		this.directedEdges = new ArrayList();
+		this.coordinates = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

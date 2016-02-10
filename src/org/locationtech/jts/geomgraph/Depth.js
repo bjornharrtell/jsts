@@ -2,9 +2,7 @@ import Location from '../geom/Location';
 import Position from './Position';
 export default class Depth {
 	constructor(...args) {
-		(() => {
-			this.depth = Array(2).fill().map(() => Array(3));
-		})();
+		this.depth = Array(2).fill().map(() => Array(3));
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

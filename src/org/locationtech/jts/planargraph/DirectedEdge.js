@@ -6,17 +6,15 @@ import GraphComponent from './GraphComponent';
 export default class DirectedEdge extends GraphComponent {
 	constructor(...args) {
 		super();
-		(() => {
-			this.parentEdge = null;
-			this.from = null;
-			this.to = null;
-			this.p0 = null;
-			this.p1 = null;
-			this.sym = null;
-			this.edgeDirection = null;
-			this.quadrant = null;
-			this.angle = null;
-		})();
+		this.parentEdge = null;
+		this.from = null;
+		this.to = null;
+		this.p0 = null;
+		this.p1 = null;
+		this.sym = null;
+		this.edgeDirection = null;
+		this.quadrant = null;
+		this.angle = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 4:

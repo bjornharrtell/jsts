@@ -9,15 +9,13 @@ import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import Assert from '../../util/Assert';
 export default class RelateComputer {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.ptLocator = new PointLocator();
-			this.arg = null;
-			this.nodes = new NodeMap(new RelateNodeFactory());
-			this.im = null;
-			this.isolatedEdges = new ArrayList();
-			this.invalidPoint = null;
-		})();
+		this.li = new RobustLineIntersector();
+		this.ptLocator = new PointLocator();
+		this.arg = null;
+		this.nodes = new NodeMap(new RelateNodeFactory());
+		this.im = null;
+		this.isolatedEdges = new ArrayList();
+		this.invalidPoint = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

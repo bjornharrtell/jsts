@@ -6,12 +6,10 @@ import PointPairDistance from './PointPairDistance';
 import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter';
 export default class DiscreteHausdorffDistance {
 	constructor(...args) {
-		(() => {
-			this.g0 = null;
-			this.g1 = null;
-			this.ptDist = new PointPairDistance();
-			this.densifyFrac = 0.0;
-		})();
+		this.g0 = null;
+		this.g1 = null;
+		this.ptDist = new PointPairDistance();
+		this.densifyFrac = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
@@ -88,12 +86,10 @@ export default class DiscreteHausdorffDistance {
 }
 class MaxPointDistanceFilter {
 	constructor(...args) {
-		(() => {
-			this.maxPtDist = new PointPairDistance();
-			this.minPtDist = new PointPairDistance();
-			this.euclideanDist = new DistanceToPoint();
-			this.geom = null;
-		})();
+		this.maxPtDist = new PointPairDistance();
+		this.minPtDist = new PointPairDistance();
+		this.euclideanDist = new DistanceToPoint();
+		this.geom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -122,12 +118,10 @@ class MaxPointDistanceFilter {
 }
 class MaxDensifiedByFractionDistanceFilter {
 	constructor(...args) {
-		(() => {
-			this.maxPtDist = new PointPairDistance();
-			this.minPtDist = new PointPairDistance();
-			this.geom = null;
-			this.numSubSegs = 0;
-		})();
+		this.maxPtDist = new PointPairDistance();
+		this.minPtDist = new PointPairDistance();
+		this.geom = null;
+		this.numSubSegs = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

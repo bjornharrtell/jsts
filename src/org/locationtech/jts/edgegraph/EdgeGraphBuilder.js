@@ -5,9 +5,7 @@ import EdgeGraph from './EdgeGraph';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 export default class EdgeGraphBuilder {
 	constructor(...args) {
-		(() => {
-			this.graph = new EdgeGraph();
-		})();
+		this.graph = new EdgeGraph();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

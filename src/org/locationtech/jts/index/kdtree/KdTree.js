@@ -6,11 +6,9 @@ import List from '../../../../../java/util/List';
 import KdNode from './KdNode';
 export default class KdTree {
 	constructor(...args) {
-		(() => {
-			this.root = null;
-			this.numberOfNodes = null;
-			this.tolerance = null;
-		})();
+		this.root = null;
+		this.numberOfNodes = null;
+		this.tolerance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -195,12 +193,10 @@ export default class KdTree {
 }
 class BestMatchVisitor {
 	constructor(...args) {
-		(() => {
-			this.tolerance = null;
-			this.matchNode = null;
-			this.matchDist = 0.0;
-			this.p = null;
-		})();
+		this.tolerance = null;
+		this.matchNode = null;
+		this.matchDist = 0.0;
+		this.p = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

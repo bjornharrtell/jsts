@@ -5,13 +5,11 @@ import Double from '../../../../../../java/lang/Double';
 import LineSegment from '../../../geom/LineSegment';
 export default class LineStringSnapper {
 	constructor(...args) {
-		(() => {
-			this.snapTolerance = 0.0;
-			this.srcPts = null;
-			this.seg = new LineSegment();
-			this.allowSnappingToSourceVertices = false;
-			this._isClosed = false;
-		})();
+		this.snapTolerance = 0.0;
+		this.srcPts = null;
+		this.seg = new LineSegment();
+		this.allowSnappingToSourceVertices = false;
+		this._isClosed = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -9,16 +9,14 @@ import CoordinateSequence from './CoordinateSequence';
 import Envelope from './Envelope';
 export default class OctagonalEnvelope {
 	constructor(...args) {
-		(() => {
-			this.minX = Double.NaN;
-			this.maxX = null;
-			this.minY = null;
-			this.maxY = null;
-			this.minA = null;
-			this.maxA = null;
-			this.minB = null;
-			this.maxB = null;
-		})();
+		this.minX = Double.NaN;
+		this.maxX = null;
+		this.minY = null;
+		this.maxY = null;
+		this.minA = null;
+		this.maxA = null;
+		this.minB = null;
+		this.maxB = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -302,9 +300,7 @@ export default class OctagonalEnvelope {
 }
 class BoundingOctagonComponentFilter {
 	constructor(...args) {
-		(() => {
-			this.oe = null;
-		})();
+		this.oe = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

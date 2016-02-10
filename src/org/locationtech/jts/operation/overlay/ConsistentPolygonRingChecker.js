@@ -4,11 +4,9 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import OverlayOp from './OverlayOp';
 export default class ConsistentPolygonRingChecker {
 	constructor(...args) {
-		(() => {
-			this.graph = null;
-			this.SCANNING_FOR_INCOMING = 1;
-			this.LINKING_TO_OUTGOING = 2;
-		})();
+		this.graph = null;
+		this.SCANNING_FOR_INCOMING = 1;
+		this.LINKING_TO_OUTGOING = 2;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

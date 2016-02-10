@@ -3,10 +3,8 @@ import SegmentIntersector from '../../geomgraph/index/SegmentIntersector';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class EdgeSetNoder {
 	constructor(...args) {
-		(() => {
-			this.li = null;
-			this.inputEdges = new ArrayList();
-		})();
+		this.li = null;
+		this.inputEdges = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

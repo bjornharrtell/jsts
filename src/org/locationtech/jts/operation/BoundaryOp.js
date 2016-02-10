@@ -6,12 +6,10 @@ import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
 export default class BoundaryOp {
 	constructor(...args) {
-		(() => {
-			this.geom = null;
-			this.geomFact = null;
-			this.bnRule = null;
-			this.endpointMap = null;
-		})();
+		this.geom = null;
+		this.geomFact = null;
+		this.bnRule = null;
+		this.endpointMap = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -117,9 +115,7 @@ export default class BoundaryOp {
 }
 class Counter {
 	constructor(...args) {
-		(() => {
-			this.count = null;
-		})();
+		this.count = null;
 	}
 	get interfaces_() {
 		return [];

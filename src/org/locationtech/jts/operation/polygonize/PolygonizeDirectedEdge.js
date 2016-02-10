@@ -2,11 +2,9 @@ import DirectedEdge from '../../planargraph/DirectedEdge';
 export default class PolygonizeDirectedEdge extends DirectedEdge {
 	constructor(...args) {
 		super();
-		(() => {
-			this.edgeRing = null;
-			this.next = null;
-			this.label = -1;
-		})();
+		this.edgeRing = null;
+		this.next = null;
+		this.label = -1;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 4:

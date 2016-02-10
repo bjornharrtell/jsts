@@ -5,9 +5,7 @@ import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
 	constructor(...args) {
 		super();
-		(() => {
-			this.coordList = new CoordinateList();
-		})();
+		this.coordList = new CoordinateList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -5,12 +5,10 @@ import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import IntersectionAdder from './IntersectionAdder';
 export default class IteratedNoder {
 	constructor(...args) {
-		(() => {
-			this.pm = null;
-			this.li = null;
-			this.nodedSegStrings = null;
-			this.maxIter = IteratedNoder.MAX_ITER;
-		})();
+		this.pm = null;
+		this.li = null;
+		this.nodedSegStrings = null;
+		this.maxIter = IteratedNoder.MAX_ITER;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

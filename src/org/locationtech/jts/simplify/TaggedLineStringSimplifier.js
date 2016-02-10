@@ -3,14 +3,12 @@ import LineSegmentIndex from './LineSegmentIndex';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 export default class TaggedLineStringSimplifier {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.inputIndex = new LineSegmentIndex();
-			this.outputIndex = new LineSegmentIndex();
-			this.line = null;
-			this.linePts = null;
-			this.distanceTolerance = 0.0;
-		})();
+		this.li = new RobustLineIntersector();
+		this.inputIndex = new LineSegmentIndex();
+		this.outputIndex = new LineSegmentIndex();
+		this.line = null;
+		this.linePts = null;
+		this.distanceTolerance = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

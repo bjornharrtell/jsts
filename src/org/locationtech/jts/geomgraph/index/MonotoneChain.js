@@ -1,9 +1,7 @@
 export default class MonotoneChain {
 	constructor(...args) {
-		(() => {
-			this.mce = null;
-			this.chainIndex = null;
-		})();
+		this.mce = null;
+		this.chainIndex = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

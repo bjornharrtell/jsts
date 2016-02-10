@@ -7,18 +7,16 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
 export default class EdgeRing {
 	constructor(...args) {
-		(() => {
-			this.startDe = null;
-			this.maxNodeDegree = -1;
-			this.edges = new ArrayList();
-			this.pts = new ArrayList();
-			this.label = new Label(Location.NONE);
-			this.ring = null;
-			this._isHole = null;
-			this.shell = null;
-			this.holes = new ArrayList();
-			this.geometryFactory = null;
-		})();
+		this.startDe = null;
+		this.maxNodeDegree = -1;
+		this.edges = new ArrayList();
+		this.pts = new ArrayList();
+		this.label = new Label(Location.NONE);
+		this.ring = null;
+		this._isHole = null;
+		this.shell = null;
+		this.holes = new ArrayList();
+		this.geometryFactory = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

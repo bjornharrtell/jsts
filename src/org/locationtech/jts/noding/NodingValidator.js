@@ -3,10 +3,8 @@ import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import RuntimeException from '../../../../java/lang/RuntimeException';
 export default class NodingValidator {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.segStrings = null;
-		})();
+		this.li = new RobustLineIntersector();
+		this.segStrings = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

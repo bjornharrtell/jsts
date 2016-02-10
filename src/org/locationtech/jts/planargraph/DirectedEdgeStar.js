@@ -4,10 +4,8 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Edge from './Edge';
 export default class DirectedEdgeStar {
 	constructor(...args) {
-		(() => {
-			this.outEdges = new ArrayList();
-			this.sorted = false;
-		})();
+		this.outEdges = new ArrayList();
+		this.sorted = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -2,13 +2,11 @@ import MonotoneChainIndexer from './MonotoneChainIndexer';
 import Envelope from '../../geom/Envelope';
 export default class MonotoneChainEdge {
 	constructor(...args) {
-		(() => {
-			this.e = null;
-			this.pts = null;
-			this.startIndex = null;
-			this.env1 = new Envelope();
-			this.env2 = new Envelope();
-		})();
+		this.e = null;
+		this.pts = null;
+		this.startIndex = null;
+		this.env1 = new Envelope();
+		this.env2 = new Envelope();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

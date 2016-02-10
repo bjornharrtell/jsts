@@ -3,10 +3,8 @@ import Double from '../../../../java/lang/Double';
 import Vector3D from './Vector3D';
 export default class Plane3D {
 	constructor(...args) {
-		(() => {
-			this.normal = null;
-			this.basePt = null;
-		})();
+		this.normal = null;
+		this.basePt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

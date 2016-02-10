@@ -2,12 +2,10 @@ import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import CoordinateList from '../../geom/CoordinateList';
 export default class BufferInputLineSimplifier {
 	constructor(...args) {
-		(() => {
-			this.inputLine = null;
-			this.distanceTol = null;
-			this.isDeleted = null;
-			this.angleOrientation = CGAlgorithms.COUNTERCLOCKWISE;
-		})();
+		this.inputLine = null;
+		this.distanceTol = null;
+		this.isDeleted = null;
+		this.angleOrientation = CGAlgorithms.COUNTERCLOCKWISE;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

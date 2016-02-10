@@ -2,9 +2,7 @@ import HalfEdge from './HalfEdge';
 export default class MarkHalfEdge extends HalfEdge {
 	constructor(...args) {
 		super();
-		(() => {
-			this._isMarked = false;
-		})();
+		this._isMarked = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

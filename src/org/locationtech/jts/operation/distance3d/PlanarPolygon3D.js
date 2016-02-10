@@ -7,11 +7,9 @@ import Plane3D from '../../math/Plane3D';
 import RayCrossingCounter from '../../algorithm/RayCrossingCounter';
 export default class PlanarPolygon3D {
 	constructor(...args) {
-		(() => {
-			this.plane = null;
-			this.poly = null;
-			this.facingPlane = -1;
-		})();
+		this.plane = null;
+		this.poly = null;
+		this.facingPlane = -1;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

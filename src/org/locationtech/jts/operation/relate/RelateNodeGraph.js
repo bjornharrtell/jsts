@@ -4,9 +4,7 @@ import NodeMap from '../../geomgraph/NodeMap';
 import RelateNodeFactory from './RelateNodeFactory';
 export default class RelateNodeGraph {
 	constructor(...args) {
-		(() => {
-			this.nodes = new NodeMap(new RelateNodeFactory());
-		})();
+		this.nodes = new NodeMap(new RelateNodeFactory());
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

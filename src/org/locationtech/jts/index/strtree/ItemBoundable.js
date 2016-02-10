@@ -2,10 +2,8 @@ import Boundable from './Boundable';
 import Serializable from '../../../../../java/io/Serializable';
 export default class ItemBoundable {
 	constructor(...args) {
-		(() => {
-			this.bounds = null;
-			this.item = null;
-		})();
+		this.bounds = null;
+		this.item = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -3,9 +3,7 @@ import RuntimeException from '../../../../java/lang/RuntimeException';
 export default class TopologyException extends RuntimeException {
 	constructor(...args) {
 		super();
-		(() => {
-			this.pt = null;
-		})();
+		this.pt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

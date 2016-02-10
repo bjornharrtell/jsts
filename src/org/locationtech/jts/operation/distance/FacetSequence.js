@@ -5,17 +5,15 @@ import Double from '../../../../../java/lang/Double';
 import Envelope from '../../geom/Envelope';
 export default class FacetSequence {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this.start = null;
-			this.end = null;
-			this.pt = new Coordinate();
-			this.seqPt = new Coordinate();
-			this.p0 = new Coordinate();
-			this.p1 = new Coordinate();
-			this.q0 = new Coordinate();
-			this.q1 = new Coordinate();
-		})();
+		this.pts = null;
+		this.start = null;
+		this.end = null;
+		this.pt = new Coordinate();
+		this.seqPt = new Coordinate();
+		this.p0 = new Coordinate();
+		this.p1 = new Coordinate();
+		this.q0 = new Coordinate();
+		this.q1 = new Coordinate();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

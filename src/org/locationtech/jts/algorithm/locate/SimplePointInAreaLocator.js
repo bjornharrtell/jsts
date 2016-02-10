@@ -6,9 +6,7 @@ import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator';
 import GeometryCollection from '../../geom/GeometryCollection';
 export default class SimplePointInAreaLocator {
 	constructor(...args) {
-		(() => {
-			this.geom = null;
-		})();
+		this.geom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

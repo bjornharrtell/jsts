@@ -25,18 +25,16 @@ import PlanarGraph from './PlanarGraph';
 export default class GeometryGraph extends PlanarGraph {
 	constructor(...args) {
 		super();
-		(() => {
-			this.parentGeom = null;
-			this.lineEdgeMap = new HashMap();
-			this.boundaryNodeRule = null;
-			this.useBoundaryDeterminationRule = true;
-			this.argIndex = null;
-			this.boundaryNodes = null;
-			this._hasTooFewPoints = false;
-			this.invalidPoint = null;
-			this.areaPtLocator = null;
-			this.ptLocator = new PointLocator();
-		})();
+		this.parentGeom = null;
+		this.lineEdgeMap = new HashMap();
+		this.boundaryNodeRule = null;
+		this.useBoundaryDeterminationRule = true;
+		this.argIndex = null;
+		this.boundaryNodes = null;
+		this._hasTooFewPoints = false;
+		this.invalidPoint = null;
+		this.areaPtLocator = null;
+		this.ptLocator = new PointLocator();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

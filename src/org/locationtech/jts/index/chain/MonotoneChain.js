@@ -1,14 +1,12 @@
 import Envelope from '../../geom/Envelope';
 export default class MonotoneChain {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this.start = null;
-			this.end = null;
-			this.env = null;
-			this.context = null;
-			this.id = null;
-		})();
+		this.pts = null;
+		this.start = null;
+		this.end = null;
+		this.env = null;
+		this.context = null;
+		this.id = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 4:

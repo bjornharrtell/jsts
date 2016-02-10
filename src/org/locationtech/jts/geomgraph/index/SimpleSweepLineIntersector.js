@@ -9,10 +9,8 @@ import List from '../../../../../java/util/List';
 export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
 	constructor(...args) {
 		super();
-		(() => {
-			this.events = new ArrayList();
-			this.nOverlaps = null;
-		})();
+		this.events = new ArrayList();
+		this.nOverlaps = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

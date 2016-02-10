@@ -1,10 +1,8 @@
 export default class SweepLineSegment {
 	constructor(...args) {
-		(() => {
-			this.edge = null;
-			this.pts = null;
-			this.ptIndex = null;
-		})();
+		this.edge = null;
+		this.pts = null;
+		this.ptIndex = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

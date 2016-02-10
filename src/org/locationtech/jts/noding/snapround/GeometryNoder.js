@@ -5,11 +5,9 @@ import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import MCIndexSnapRounder from './MCIndexSnapRounder';
 export default class GeometryNoder {
 	constructor(...args) {
-		(() => {
-			this.geomFact = null;
-			this.pm = null;
-			this.isValidityChecked = false;
-		})();
+		this.geomFact = null;
+		this.pm = null;
+		this.isValidityChecked = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

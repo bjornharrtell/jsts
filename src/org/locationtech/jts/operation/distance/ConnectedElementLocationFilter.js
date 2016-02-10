@@ -6,9 +6,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../../geom/GeometryFilter';
 export default class ConnectedElementLocationFilter {
 	constructor(...args) {
-		(() => {
-			this.locations = null;
-		})();
+		this.locations = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

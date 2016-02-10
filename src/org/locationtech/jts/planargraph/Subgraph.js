@@ -3,12 +3,10 @@ import NodeMap from './NodeMap';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class Subgraph {
 	constructor(...args) {
-		(() => {
-			this.parentGraph = null;
-			this.edges = new HashSet();
-			this.dirEdges = new ArrayList();
-			this.nodeMap = new NodeMap();
-		})();
+		this.parentGraph = null;
+		this.edges = new HashSet();
+		this.dirEdges = new ArrayList();
+		this.nodeMap = new NodeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

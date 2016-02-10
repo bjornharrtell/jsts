@@ -5,11 +5,9 @@ import Double from '../../../../java/lang/Double';
 import GeometryCollection from '../geom/GeometryCollection';
 export default class InteriorPointLine {
 	constructor(...args) {
-		(() => {
-			this.centroid = null;
-			this.minDistance = Double.MAX_VALUE;
-			this.interiorPoint = null;
-		})();
+		this.centroid = null;
+		this.minDistance = Double.MAX_VALUE;
+		this.interiorPoint = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

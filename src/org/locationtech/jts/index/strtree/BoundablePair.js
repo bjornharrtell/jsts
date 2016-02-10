@@ -3,12 +3,10 @@ import AbstractNode from './AbstractNode';
 import Comparable from '../../../../../java/lang/Comparable';
 export default class BoundablePair {
 	constructor(...args) {
-		(() => {
-			this.boundable1 = null;
-			this.boundable2 = null;
-			this._distance = null;
-			this.itemDistance = null;
-		})();
+		this.boundable1 = null;
+		this.boundable2 = null;
+		this._distance = null;
+		this.itemDistance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

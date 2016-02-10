@@ -2,9 +2,7 @@ import Edge from '../../planargraph/Edge';
 export default class PolygonizeEdge extends Edge {
 	constructor(...args) {
 		super();
-		(() => {
-			this.line = null;
-		})();
+		this.line = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

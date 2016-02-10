@@ -4,10 +4,8 @@ import Double from '../../../../java/lang/Double';
 import Triangle from '../geom/Triangle';
 export default class VWLineSimplifier {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this.tolerance = null;
-		})();
+		this.pts = null;
+		this.tolerance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
@@ -66,13 +64,11 @@ export default class VWLineSimplifier {
 }
 class VWVertex {
 	constructor(...args) {
-		(() => {
-			this.pt = null;
-			this.prev = null;
-			this.next = null;
-			this.area = VWVertex.MAX_AREA;
-			this._isLive = true;
-		})();
+		this.pt = null;
+		this.prev = null;
+		this.next = null;
+		this.area = VWVertex.MAX_AREA;
+		this._isLive = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

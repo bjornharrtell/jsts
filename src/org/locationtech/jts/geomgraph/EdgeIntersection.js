@@ -2,11 +2,9 @@ import Coordinate from '../geom/Coordinate';
 import Comparable from '../../../../java/lang/Comparable';
 export default class EdgeIntersection {
 	constructor(...args) {
-		(() => {
-			this.coord = null;
-			this.segmentIndex = null;
-			this.dist = null;
-		})();
+		this.coord = null;
+		this.segmentIndex = null;
+		this.dist = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

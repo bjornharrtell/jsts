@@ -1,7 +1,6 @@
 import System from '../../../java/lang/System';
 export default class JTSVersion {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

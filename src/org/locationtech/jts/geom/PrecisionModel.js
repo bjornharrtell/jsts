@@ -6,10 +6,8 @@ import Comparable from '../../../../java/lang/Comparable';
 import Serializable from '../../../../java/io/Serializable';
 export default class PrecisionModel {
 	constructor(...args) {
-		(() => {
-			this.modelType = null;
-			this.scale = null;
-		})();
+		this.modelType = null;
+		this.scale = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -135,9 +133,7 @@ export default class PrecisionModel {
 }
 class Type {
 	constructor(...args) {
-		(() => {
-			this.name = null;
-		})();
+		this.name = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

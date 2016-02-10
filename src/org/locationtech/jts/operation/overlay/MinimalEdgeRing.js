@@ -2,7 +2,6 @@ import EdgeRing from '../../geomgraph/EdgeRing';
 export default class MinimalEdgeRing extends EdgeRing {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

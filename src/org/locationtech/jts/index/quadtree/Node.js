@@ -5,12 +5,10 @@ import Key from './Key';
 export default class Node extends NodeBase {
 	constructor(...args) {
 		super();
-		(() => {
-			this.env = null;
-			this.centrex = null;
-			this.centrey = null;
-			this.level = null;
-		})();
+		this.env = null;
+		this.centrex = null;
+		this.centrey = null;
+		this.level = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

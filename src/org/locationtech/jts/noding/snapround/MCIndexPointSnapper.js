@@ -2,9 +2,7 @@ import MonotoneChainSelectAction from '../../index/chain/MonotoneChainSelectActi
 import ItemVisitor from '../../index/ItemVisitor';
 export default class MCIndexPointSnapper {
 	constructor(...args) {
-		(() => {
-			this.index = null;
-		})();
+		this.index = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -57,12 +55,10 @@ export default class MCIndexPointSnapper {
 class HotPixelSnapAction extends MonotoneChainSelectAction {
 	constructor(...args) {
 		super();
-		(() => {
-			this.hotPixel = null;
-			this.parentEdge = null;
-			this.hotPixelVertexIndex = null;
-			this._isNodeAdded = false;
-		})();
+		this.hotPixel = null;
+		this.parentEdge = null;
+		this.hotPixelVertexIndex = null;
+		this._isNodeAdded = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

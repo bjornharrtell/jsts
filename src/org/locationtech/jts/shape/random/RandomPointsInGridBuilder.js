@@ -5,10 +5,8 @@ import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
 	constructor(...args) {
 		super();
-		(() => {
-			this.isConstrainedToCircle = false;
-			this.gutterFraction = 0;
-		})();
+		this.isConstrainedToCircle = false;
+		this.gutterFraction = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -3,11 +3,9 @@ import LineSegment from '../geom/LineSegment';
 import Envelope from '../geom/Envelope';
 export default class GeometricShapeBuilder {
 	constructor(...args) {
-		(() => {
-			this.extent = new Envelope(0, 1, 0, 1);
-			this.numPts = 0;
-			this.geomFactory = null;
-		})();
+		this.extent = new Envelope(0, 1, 0, 1);
+		this.numPts = 0;
+		this.geomFactory = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -6,9 +6,7 @@ import PrecisionModel from '../../../geom/PrecisionModel';
 import Polygonal from '../../../geom/Polygonal';
 export default class GeometrySnapper {
 	constructor(...args) {
-		(() => {
-			this.srcGeom = null;
-		})();
+		this.srcGeom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -108,11 +106,9 @@ GeometrySnapper.SNAP_PRECISION_FACTOR = 1e-9;
 class SnapTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
-		(() => {
-			this.snapTolerance = null;
-			this.snapPts = null;
-			this.isSelfSnap = false;
-		})();
+		this.snapTolerance = null;
+		this.snapPts = null;
+		this.isSelfSnap = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

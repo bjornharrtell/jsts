@@ -1,12 +1,10 @@
 import Double from '../../../../java/lang/Double';
 export default class CommonBits {
 	constructor(...args) {
-		(() => {
-			this.isFirst = true;
-			this.commonMantissaBitsCount = 53;
-			this.commonBits = 0;
-			this.commonSignExp = null;
-		})();
+		this.isFirst = true;
+		this.commonMantissaBitsCount = 53;
+		this.commonBits = 0;
+		this.commonSignExp = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

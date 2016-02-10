@@ -12,9 +12,7 @@ import Assert from '../util/Assert';
 export default class GeometryCollection extends Geometry {
 	constructor(...args) {
 		super();
-		(() => {
-			this.geometries = null;
-		})();
+		this.geometries = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -3,13 +3,11 @@ import SegmentPointComparator from './SegmentPointComparator';
 import Comparable from '../../../../java/lang/Comparable';
 export default class SegmentNode {
 	constructor(...args) {
-		(() => {
-			this.segString = null;
-			this.coord = null;
-			this.segmentIndex = null;
-			this.segmentOctant = null;
-			this._isInterior = null;
-		})();
+		this.segString = null;
+		this.coord = null;
+		this.segmentIndex = null;
+		this.segmentOctant = null;
+		this._isInterior = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 4:

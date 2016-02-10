@@ -1,9 +1,7 @@
 import LocationIndexOfPoint from './LocationIndexOfPoint';
 export default class LocationIndexOfLine {
 	constructor(...args) {
-		(() => {
-			this.linearGeom = null;
-		})();
+		this.linearGeom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

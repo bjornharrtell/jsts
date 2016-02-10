@@ -3,10 +3,8 @@ import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentEx
 import CoordinateSequence from '../CoordinateSequence';
 export default class PackedCoordinateSequenceFactory {
 	constructor(...args) {
-		(() => {
-			this.type = PackedCoordinateSequenceFactory.DOUBLE;
-			this.dimension = 3;
-		})();
+		this.type = PackedCoordinateSequenceFactory.DOUBLE;
+		this.dimension = 3;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

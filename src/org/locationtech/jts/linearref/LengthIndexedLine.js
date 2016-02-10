@@ -5,9 +5,7 @@ import LengthLocationMap from './LengthLocationMap';
 import ExtractLineByLocation from './ExtractLineByLocation';
 export default class LengthIndexedLine {
 	constructor(...args) {
-		(() => {
-			this.linearGeom = null;
-		})();
+		this.linearGeom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

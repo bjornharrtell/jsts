@@ -15,13 +15,11 @@ import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import List from '../../../../../java/util/List';
 export default class DistanceOp {
 	constructor(...args) {
-		(() => {
-			this.geom = null;
-			this.terminateDistance = 0.0;
-			this.ptLocator = new PointLocator();
-			this.minDistanceLocation = null;
-			this.minDistance = Double.MAX_VALUE;
-		})();
+		this.geom = null;
+		this.terminateDistance = 0.0;
+		this.ptLocator = new PointLocator();
+		this.minDistanceLocation = null;
+		this.minDistance = Double.MAX_VALUE;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

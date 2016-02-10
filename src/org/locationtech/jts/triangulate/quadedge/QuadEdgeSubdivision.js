@@ -17,18 +17,16 @@ import Triangle from '../../geom/Triangle';
 import TriangleVisitor from './TriangleVisitor';
 export default class QuadEdgeSubdivision {
 	constructor(...args) {
-		(() => {
-			this.visitedKey = 0;
-			this.quadEdges = new ArrayList();
-			this.startingEdge = null;
-			this.tolerance = null;
-			this.edgeCoincidenceTolerance = null;
-			this.frameVertex = new Array(3);
-			this.frameEnv = null;
-			this.locator = null;
-			this.seg = new LineSegment();
-			this.triEdges = new Array(3);
-		})();
+		this.visitedKey = 0;
+		this.quadEdges = new ArrayList();
+		this.startingEdge = null;
+		this.tolerance = null;
+		this.edgeCoincidenceTolerance = null;
+		this.frameVertex = new Array(3);
+		this.frameEnv = null;
+		this.locator = null;
+		this.seg = new LineSegment();
+		this.triEdges = new Array(3);
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
@@ -397,7 +395,6 @@ export default class QuadEdgeSubdivision {
 }
 class TriangleCircumcentreVisitor {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -427,9 +424,7 @@ class TriangleCircumcentreVisitor {
 }
 class TriangleEdgesListVisitor {
 	constructor(...args) {
-		(() => {
-			this.triList = new ArrayList();
-		})();
+		this.triList = new ArrayList();
 	}
 	get interfaces_() {
 		return [TriangleVisitor];
@@ -446,9 +441,7 @@ class TriangleEdgesListVisitor {
 }
 class TriangleVertexListVisitor {
 	constructor(...args) {
-		(() => {
-			this.triList = new ArrayList();
-		})();
+		this.triList = new ArrayList();
 	}
 	get interfaces_() {
 		return [TriangleVisitor];
@@ -465,10 +458,8 @@ class TriangleVertexListVisitor {
 }
 class TriangleCoordinatesVisitor {
 	constructor(...args) {
-		(() => {
-			this.coordList = new CoordinateList();
-			this.triCoords = new ArrayList();
-		})();
+		this.coordList = new CoordinateList();
+		this.triCoords = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

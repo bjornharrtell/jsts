@@ -4,7 +4,6 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Quadrant from '../../geomgraph/Quadrant';
 export default class MonotoneChainBuilder {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

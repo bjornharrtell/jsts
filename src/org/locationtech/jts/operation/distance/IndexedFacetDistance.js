@@ -2,9 +2,7 @@ import FacetSequenceTreeBuilder from './FacetSequenceTreeBuilder';
 import ItemDistance from '../../index/strtree/ItemDistance';
 export default class IndexedFacetDistance {
 	constructor(...args) {
-		(() => {
-			this.cachedTree = null;
-		})();
+		this.cachedTree = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

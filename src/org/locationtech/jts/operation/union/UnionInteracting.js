@@ -3,13 +3,11 @@ import System from '../../../../../java/lang/System';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class UnionInteracting {
 	constructor(...args) {
-		(() => {
-			this.geomFactory = null;
-			this.g0 = null;
-			this.g1 = null;
-			this.interacts0 = null;
-			this.interacts1 = null;
-		})();
+		this.geomFactory = null;
+		this.g0 = null;
+		this.g1 = null;
+		this.interacts0 = null;
+		this.interacts1 = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

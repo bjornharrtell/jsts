@@ -7,10 +7,8 @@ import System from '../../../../../java/lang/System';
 import CoordinateSequence from '../CoordinateSequence';
 export default class PackedCoordinateSequence {
 	constructor(...args) {
-		(() => {
-			this.dimension = null;
-			this.coordRef = null;
-		})();
+		this.dimension = null;
+		this.coordRef = null;
 	}
 	get interfaces_() {
 		return [CoordinateSequence];
@@ -94,9 +92,7 @@ export default class PackedCoordinateSequence {
 class Double extends PackedCoordinateSequence {
 	constructor(...args) {
 		super();
-		(() => {
-			this.coords = null;
-		})();
+		this.coords = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -194,9 +190,7 @@ class Double extends PackedCoordinateSequence {
 class Float extends PackedCoordinateSequence {
 	constructor(...args) {
 		super();
-		(() => {
-			this.coords = null;
-		})();
+		this.coords = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

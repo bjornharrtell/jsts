@@ -5,11 +5,9 @@ import GeometryCombiner from '../../geom/util/GeometryCombiner';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 export default class PointGeometryUnion {
 	constructor(...args) {
-		(() => {
-			this.pointGeom = null;
-			this.otherGeom = null;
-			this.geomFact = null;
-		})();
+		this.pointGeom = null;
+		this.otherGeom = null;
+		this.geomFact = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -8,10 +8,8 @@ import HCoordinate from '../algorithm/HCoordinate';
 import Serializable from '../../../../java/io/Serializable';
 export default class LineSegment {
 	constructor(...args) {
-		(() => {
-			this.p0 = null;
-			this.p1 = null;
-		})();
+		this.p0 = null;
+		this.p1 = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

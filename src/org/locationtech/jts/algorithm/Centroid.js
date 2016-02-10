@@ -7,16 +7,14 @@ import Polygon from '../geom/Polygon';
 import GeometryCollection from '../geom/GeometryCollection';
 export default class Centroid {
 	constructor(...args) {
-		(() => {
-			this.areaBasePt = null;
-			this.triangleCent3 = new Coordinate();
-			this.areasum2 = 0;
-			this.cg3 = new Coordinate();
-			this.lineCentSum = new Coordinate();
-			this.totalLength = 0.0;
-			this.ptCount = 0;
-			this.ptCentSum = new Coordinate();
-		})();
+		this.areaBasePt = null;
+		this.triangleCent3 = new Coordinate();
+		this.areasum2 = 0;
+		this.cg3 = new Coordinate();
+		this.lineCentSum = new Coordinate();
+		this.totalLength = 0.0;
+		this.ptCount = 0;
+		this.ptCentSum = new Coordinate();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

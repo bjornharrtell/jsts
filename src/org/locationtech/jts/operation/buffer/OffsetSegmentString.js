@@ -3,11 +3,9 @@ import Coordinate from '../../geom/Coordinate';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class OffsetSegmentString {
 	constructor(...args) {
-		(() => {
-			this.ptList = null;
-			this.precisionModel = null;
-			this.minimimVertexDistance = 0.0;
-		})();
+		this.ptList = null;
+		this.precisionModel = null;
+		this.minimimVertexDistance = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

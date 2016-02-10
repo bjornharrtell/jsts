@@ -1,10 +1,8 @@
 import CoordinateFilter from '../geom/CoordinateFilter';
 export default class CoordinateArrayFilter {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this.n = 0;
-		})();
+		this.pts = null;
+		this.n = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

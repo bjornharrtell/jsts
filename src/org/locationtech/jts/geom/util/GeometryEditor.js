@@ -10,10 +10,8 @@ import Assert from '../../util/Assert';
 import MultiLineString from '../MultiLineString';
 export default class GeometryEditor {
 	constructor(...args) {
-		(() => {
-			this.factory = null;
-			this.isUserDataCopied = false;
-		})();
+		this.factory = null;
+		this.isUserDataCopied = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

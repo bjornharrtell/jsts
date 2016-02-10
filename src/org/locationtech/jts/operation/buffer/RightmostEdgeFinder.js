@@ -3,12 +3,10 @@ import Position from '../../geomgraph/Position';
 import Assert from '../../util/Assert';
 export default class RightmostEdgeFinder {
 	constructor(...args) {
-		(() => {
-			this.minIndex = -1;
-			this.minCoord = null;
-			this.minDe = null;
-			this.orientedDe = null;
-		})();
+		this.minIndex = -1;
+		this.minCoord = null;
+		this.minDe = null;
+		this.orientedDe = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

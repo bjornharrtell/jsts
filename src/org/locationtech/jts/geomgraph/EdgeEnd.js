@@ -4,16 +4,14 @@ import Quadrant from './Quadrant';
 import Assert from '../util/Assert';
 export default class EdgeEnd {
 	constructor(...args) {
-		(() => {
-			this.edge = null;
-			this.label = null;
-			this.node = null;
-			this.p0 = null;
-			this.p1 = null;
-			this.dx = null;
-			this.dy = null;
-			this.quadrant = null;
-		})();
+		this.edge = null;
+		this.label = null;
+		this.node = null;
+		this.p0 = null;
+		this.p1 = null;
+		this.dx = null;
+		this.dy = null;
+		this.quadrant = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

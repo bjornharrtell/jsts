@@ -1,9 +1,7 @@
 import CoordinateFilter from '../geom/CoordinateFilter';
 export default class CoordinateCountFilter {
 	constructor(...args) {
-		(() => {
-			this.n = 0;
-		})();
+		this.n = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

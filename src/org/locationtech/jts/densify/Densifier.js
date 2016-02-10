@@ -6,10 +6,8 @@ import MultiPolygon from '../geom/MultiPolygon';
 import LineSegment from '../geom/LineSegment';
 export default class Densifier {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.distanceTolerance = null;
-		})();
+		this.inputGeom = null;
+		this.distanceTolerance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -68,9 +66,7 @@ export default class Densifier {
 class DensifyTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
-		(() => {
-			this.distanceTolerance = null;
-		})();
+		this.distanceTolerance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

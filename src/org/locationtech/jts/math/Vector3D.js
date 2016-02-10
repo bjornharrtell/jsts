@@ -1,11 +1,9 @@
 import Coordinate from '../geom/Coordinate';
 export default class Vector3D {
 	constructor(...args) {
-		(() => {
-			this.x = null;
-			this.y = null;
-			this.z = null;
-		})();
+		this.x = null;
+		this.y = null;
+		this.z = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

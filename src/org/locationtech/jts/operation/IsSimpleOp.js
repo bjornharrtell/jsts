@@ -10,11 +10,9 @@ import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
 export default class IsSimpleOp {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.isClosedEndpointsInInterior = true;
-			this.nonSimpleLocation = null;
-		})();
+		this.inputGeom = null;
+		this.isClosedEndpointsInInterior = true;
+		this.nonSimpleLocation = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -148,11 +146,9 @@ export default class IsSimpleOp {
 }
 class EndpointInfo {
 	constructor(...args) {
-		(() => {
-			this.pt = null;
-			this.isClosed = null;
-			this.degree = null;
-		})();
+		this.pt = null;
+		this.isClosed = null;
+		this.degree = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

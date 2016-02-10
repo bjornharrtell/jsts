@@ -6,10 +6,8 @@ import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
 export default class CoordinateArraySequence {
 	constructor(...args) {
-		(() => {
-			this.dimension = 3;
-			this.coordinates = null;
-		})();
+		this.dimension = 3;
+		this.coordinates = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -3,9 +3,7 @@ import GraphComponent from './GraphComponent';
 export default class Edge extends GraphComponent {
 	constructor(...args) {
 		super();
-		(() => {
-			this.dirEdge = null;
-		})();
+		this.dirEdge = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

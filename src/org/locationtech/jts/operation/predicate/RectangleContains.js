@@ -4,9 +4,7 @@ import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
 export default class RectangleContains {
 	constructor(...args) {
-		(() => {
-			this.rectEnv = null;
-		})();
+		this.rectEnv = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

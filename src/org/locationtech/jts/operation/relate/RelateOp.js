@@ -3,9 +3,7 @@ import GeometryGraphOperation from '../GeometryGraphOperation';
 export default class RelateOp extends GeometryGraphOperation {
 	constructor(...args) {
 		super();
-		(() => {
-			this._relate = null;
-		})();
+		this._relate = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

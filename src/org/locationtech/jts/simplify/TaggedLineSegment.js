@@ -2,10 +2,8 @@ import LineSegment from '../geom/LineSegment';
 export default class TaggedLineSegment extends LineSegment {
 	constructor(...args) {
 		super();
-		(() => {
-			this.parent = null;
-			this.index = null;
-		})();
+		this.parent = null;
+		this.index = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

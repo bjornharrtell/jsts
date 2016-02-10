@@ -5,15 +5,13 @@ import System from '../../../../../../java/lang/System';
 import Envelope from '../../../geom/Envelope';
 export default class BufferResultValidator {
 	constructor(...args) {
-		(() => {
-			this.input = null;
-			this.distance = null;
-			this.result = null;
-			this._isValid = true;
-			this.errorMsg = null;
-			this.errorLocation = null;
-			this.errorIndicator = null;
-		})();
+		this.input = null;
+		this.distance = null;
+		this.result = null;
+		this._isValid = true;
+		this.errorMsg = null;
+		this.errorLocation = null;
+		this.errorIndicator = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

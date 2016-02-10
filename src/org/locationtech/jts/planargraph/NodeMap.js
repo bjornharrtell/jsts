@@ -1,9 +1,7 @@
 import TreeMap from '../../../../java/util/TreeMap';
 export default class NodeMap {
 	constructor(...args) {
-		(() => {
-			this.nodeMap = new TreeMap();
-		})();
+		this.nodeMap = new TreeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

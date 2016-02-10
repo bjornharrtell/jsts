@@ -4,9 +4,7 @@ import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class VertexTaggedGeometryDataMapper {
 	constructor(...args) {
-		(() => {
-			this.coordDataMap = new TreeMap();
-		})();
+		this.coordDataMap = new TreeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

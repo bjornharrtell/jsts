@@ -2,12 +2,10 @@ import TaggedLineSegment from './TaggedLineSegment';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class TaggedLineString {
 	constructor(...args) {
-		(() => {
-			this.parentLine = null;
-			this.segs = null;
-			this.resultSegs = new ArrayList();
-			this.minimumSize = null;
-		})();
+		this.parentLine = null;
+		this.segs = null;
+		this.resultSegs = new ArrayList();
+		this.minimumSize = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

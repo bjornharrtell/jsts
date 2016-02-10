@@ -3,9 +3,7 @@ import QuadEdgeTriangle from './QuadEdgeTriangle';
 import LinkedList from '../../../../../java/util/LinkedList';
 export default class EdgeConnectedTriangleTraversal {
 	constructor(...args) {
-		(() => {
-			this.triQueue = new LinkedList();
-		})();
+		this.triQueue = new LinkedList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

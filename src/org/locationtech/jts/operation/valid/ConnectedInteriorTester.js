@@ -10,11 +10,9 @@ import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default class ConnectedInteriorTester {
 	constructor(...args) {
-		(() => {
-			this.geometryFactory = new GeometryFactory();
-			this.geomGraph = null;
-			this.disconnectedRingcoord = null;
-		})();
+		this.geometryFactory = new GeometryFactory();
+		this.geomGraph = null;
+		this.disconnectedRingcoord = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

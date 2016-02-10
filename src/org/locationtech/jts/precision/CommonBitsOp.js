@@ -1,10 +1,8 @@
 import CommonBitsRemover from './CommonBitsRemover';
 export default class CommonBitsOp {
 	constructor(...args) {
-		(() => {
-			this.returnToOriginalPrecision = true;
-			this.cbr = null;
-		})();
+		this.returnToOriginalPrecision = true;
+		this.cbr = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

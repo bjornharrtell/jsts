@@ -10,10 +10,8 @@ import Assert from '../util/Assert';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class SegmentNodeList {
 	constructor(...args) {
-		(() => {
-			this.nodeMap = new TreeMap();
-			this.edge = null;
-		})();
+		this.nodeMap = new TreeMap();
+		this.edge = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -170,14 +168,12 @@ export default class SegmentNodeList {
 }
 class NodeVertexIterator {
 	constructor(...args) {
-		(() => {
-			this.nodeList = null;
-			this.edge = null;
-			this.nodeIt = null;
-			this.currNode = null;
-			this.nextNode = null;
-			this.currSegIndex = 0;
-		})();
+		this.nodeList = null;
+		this.edge = null;
+		this.nodeIt = null;
+		this.currNode = null;
+		this.nextNode = null;
+		this.currSegIndex = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

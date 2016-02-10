@@ -3,9 +3,7 @@ import RuntimeException from '../../../../../java/lang/RuntimeException';
 export default class LocateFailureException extends RuntimeException {
 	constructor(...args) {
 		super();
-		(() => {
-			this.seg = null;
-		})();
+		this.seg = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

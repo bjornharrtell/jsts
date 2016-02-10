@@ -3,12 +3,10 @@ import Coordinate from '../geom/Coordinate';
 import LineSegment from '../geom/LineSegment';
 export default class DouglasPeuckerLineSimplifier {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-			this.usePt = null;
-			this.distanceTolerance = null;
-			this.seg = new LineSegment();
-		})();
+		this.pts = null;
+		this.usePt = null;
+		this.distanceTolerance = null;
+		this.seg = new LineSegment();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

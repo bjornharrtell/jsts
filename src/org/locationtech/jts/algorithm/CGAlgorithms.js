@@ -9,7 +9,6 @@ import Envelope from '../geom/Envelope';
 import RayCrossingCounter from './RayCrossingCounter';
 export default class CGAlgorithms {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

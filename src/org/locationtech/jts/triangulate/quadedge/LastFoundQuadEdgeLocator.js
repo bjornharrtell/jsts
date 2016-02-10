@@ -1,10 +1,8 @@
 import QuadEdgeLocator from './QuadEdgeLocator';
 export default class LastFoundQuadEdgeLocator {
 	constructor(...args) {
-		(() => {
-			this.subdiv = null;
-			this.lastEdge = null;
-		})();
+		this.subdiv = null;
+		this.lastEdge = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

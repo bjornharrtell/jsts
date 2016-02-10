@@ -4,9 +4,7 @@ import Position from './Position';
 import TopologyLocation from './TopologyLocation';
 export default class Label {
 	constructor(...args) {
-		(() => {
-			this.elt = new Array(2);
-		})();
+		this.elt = new Array(2);
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

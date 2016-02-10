@@ -9,13 +9,11 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
 export default class BufferSubgraph {
 	constructor(...args) {
-		(() => {
-			this.finder = null;
-			this.dirEdgeList = new ArrayList();
-			this.nodes = new ArrayList();
-			this.rightMostCoord = null;
-			this.env = null;
-		})();
+		this.finder = null;
+		this.dirEdgeList = new ArrayList();
+		this.nodes = new ArrayList();
+		this.rightMostCoord = null;
+		this.env = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

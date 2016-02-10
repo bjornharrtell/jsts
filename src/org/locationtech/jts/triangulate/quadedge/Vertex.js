@@ -5,9 +5,7 @@ import System from '../../../../../java/lang/System';
 import HCoordinate from '../../algorithm/HCoordinate';
 export default class Vertex {
 	constructor(...args) {
-		(() => {
-			this.p = null;
-		})();
+		this.p = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

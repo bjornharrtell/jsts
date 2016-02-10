@@ -4,7 +4,6 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default class MaximalEdgeRing extends EdgeRing {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

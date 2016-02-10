@@ -9,11 +9,9 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import List from '../../../../../java/util/List';
 export default class SubgraphDepthLocater {
 	constructor(...args) {
-		(() => {
-			this.subgraphs = null;
-			this.seg = new LineSegment();
-			this.cga = new CGAlgorithms();
-		})();
+		this.subgraphs = null;
+		this.seg = new LineSegment();
+		this.cga = new CGAlgorithms();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -92,10 +90,8 @@ export default class SubgraphDepthLocater {
 }
 class DepthSegment {
 	constructor(...args) {
-		(() => {
-			this.upwardSeg = null;
-			this.leftDepth = null;
-		})();
+		this.upwardSeg = null;
+		this.leftDepth = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -2,13 +2,11 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import Lineal from '../geom/Lineal';
 export default class LinearIterator {
 	constructor(...args) {
-		(() => {
-			this.linearGeom = null;
-			this.numLines = null;
-			this.currentLine = null;
-			this.componentIndex = 0;
-			this.vertexIndex = 0;
-		})();
+		this.linearGeom = null;
+		this.numLines = null;
+		this.currentLine = null;
+		this.componentIndex = 0;
+		this.vertexIndex = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -6,11 +6,9 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Edge from './Edge';
 export default class PlanarGraph {
 	constructor(...args) {
-		(() => {
-			this.edges = new HashSet();
-			this.dirEdges = new HashSet();
-			this.nodeMap = new NodeMap();
-		})();
+		this.edges = new HashSet();
+		this.dirEdges = new HashSet();
+		this.nodeMap = new NodeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

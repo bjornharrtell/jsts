@@ -3,11 +3,9 @@ import DoubleBits from './DoubleBits';
 import Envelope from '../../geom/Envelope';
 export default class Key {
 	constructor(...args) {
-		(() => {
-			this.pt = new Coordinate();
-			this.level = 0;
-			this.env = null;
-		})();
+		this.pt = new Coordinate();
+		this.level = 0;
+		this.env = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

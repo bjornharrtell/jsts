@@ -5,10 +5,8 @@ import CoordinateArrays from '../geom/CoordinateArrays';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class SegmentStringDissolver {
 	constructor(...args) {
-		(() => {
-			this.merger = null;
-			this.ocaMap = new TreeMap();
-		})();
+		this.merger = null;
+		this.ocaMap = new TreeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

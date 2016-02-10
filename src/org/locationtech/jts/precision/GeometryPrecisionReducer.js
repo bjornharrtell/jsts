@@ -4,12 +4,10 @@ import Polygonal from '../geom/Polygonal';
 import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation';
 export default class GeometryPrecisionReducer {
 	constructor(...args) {
-		(() => {
-			this.targetPM = null;
-			this.removeCollapsed = true;
-			this.changePrecisionModel = false;
-			this.isPointwise = false;
-		})();
+		this.targetPM = null;
+		this.removeCollapsed = true;
+		this.changePrecisionModel = false;
+		this.isPointwise = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -7,11 +7,9 @@ import ArrayList from '../../../../java/util/ArrayList';
 import NodableSegmentString from './NodableSegmentString';
 export default class NodedSegmentString {
 	constructor(...args) {
-		(() => {
-			this.nodeList = new SegmentNodeList(this);
-			this.pts = null;
-			this.data = null;
-		})();
+		this.nodeList = new SegmentNodeList(this);
+		this.pts = null;
+		this.data = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

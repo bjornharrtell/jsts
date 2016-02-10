@@ -8,13 +8,11 @@ import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class VoronoiDiagramBuilder {
 	constructor(...args) {
-		(() => {
-			this.siteCoords = null;
-			this.tolerance = 0.0;
-			this.subdiv = null;
-			this.clipEnv = null;
-			this.diagramEnv = null;
-		})();
+		this.siteCoords = null;
+		this.tolerance = 0.0;
+		this.subdiv = null;
+		this.clipEnv = null;
+		this.diagramEnv = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -4,11 +4,9 @@ import CoordinateSequence from '../geom/CoordinateSequence';
 import RobustDeterminant from './RobustDeterminant';
 export default class RayCrossingCounter {
 	constructor(...args) {
-		(() => {
-			this.p = null;
-			this.crossingCount = 0;
-			this.isPointOnSegment = false;
-		})();
+		this.p = null;
+		this.crossingCount = 0;
+		this.isPointOnSegment = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -6,11 +6,9 @@ import LinearRing from '../geom/LinearRing';
 import MultiPolygon from '../geom/MultiPolygon';
 export default class DouglasPeuckerSimplifier {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.distanceTolerance = null;
-			this.isEnsureValidTopology = true;
-		})();
+		this.inputGeom = null;
+		this.distanceTolerance = null;
+		this.isEnsureValidTopology = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -51,10 +49,8 @@ export default class DouglasPeuckerSimplifier {
 class DPTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
-		(() => {
-			this.isEnsureValidTopology = true;
-			this.distanceTolerance = null;
-		})();
+		this.isEnsureValidTopology = true;
+		this.distanceTolerance = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

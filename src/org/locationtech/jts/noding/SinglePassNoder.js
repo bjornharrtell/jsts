@@ -1,9 +1,7 @@
 import Noder from './Noder';
 export default class SinglePassNoder {
 	constructor(...args) {
-		(() => {
-			this.segInt = null;
-		})();
+		this.segInt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

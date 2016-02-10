@@ -1,9 +1,7 @@
 export default class Interval {
 	constructor(...args) {
-		(() => {
-			this.min = null;
-			this.max = null;
-		})();
+		this.min = null;
+		this.max = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

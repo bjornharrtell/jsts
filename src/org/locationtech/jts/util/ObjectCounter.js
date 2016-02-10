@@ -1,9 +1,7 @@
 import HashMap from '../../../../java/util/HashMap';
 export default class ObjectCounter {
 	constructor(...args) {
-		(() => {
-			this.counts = new HashMap();
-		})();
+		this.counts = new HashMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -34,9 +32,7 @@ export default class ObjectCounter {
 }
 class Counter {
 	constructor(...args) {
-		(() => {
-			this._count = 0;
-		})();
+		this._count = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

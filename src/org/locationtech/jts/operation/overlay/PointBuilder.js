@@ -2,11 +2,9 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import OverlayOp from './OverlayOp';
 export default class PointBuilder {
 	constructor(...args) {
-		(() => {
-			this.op = null;
-			this.geometryFactory = null;
-			this.resultPointList = new ArrayList();
-		})();
+		this.op = null;
+		this.geometryFactory = null;
+		this.resultPointList = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

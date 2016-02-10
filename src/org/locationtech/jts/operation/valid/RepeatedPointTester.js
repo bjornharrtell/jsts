@@ -6,9 +6,7 @@ import MultiPoint from '../../geom/MultiPoint';
 import GeometryCollection from '../../geom/GeometryCollection';
 export default class RepeatedPointTester {
 	constructor(...args) {
-		(() => {
-			this.repeatedCoord = null;
-		})();
+		this.repeatedCoord = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

@@ -6,12 +6,10 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 export default class SweeplineNestedRingTester {
 	constructor(...args) {
-		(() => {
-			this.graph = null;
-			this.rings = new ArrayList();
-			this.sweepLine = null;
-			this.nestedPt = null;
-		})();
+		this.graph = null;
+		this.rings = new ArrayList();
+		this.sweepLine = null;
+		this.nestedPt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -6,7 +6,6 @@ import Assert from '../../util/Assert';
 export default class Root extends NodeBase {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

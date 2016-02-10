@@ -2,10 +2,8 @@ import Coordinate from '../geom/Coordinate';
 import LineSegment from '../geom/LineSegment';
 export default class Segment {
 	constructor(...args) {
-		(() => {
-			this.ls = null;
-			this.data = null;
-		})();
+		this.ls = null;
+		this.data = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

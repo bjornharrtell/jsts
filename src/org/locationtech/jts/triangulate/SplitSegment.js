@@ -1,12 +1,10 @@
 import Coordinate from '../geom/Coordinate';
 export default class SplitSegment {
 	constructor(...args) {
-		(() => {
-			this.seg = null;
-			this.segLen = null;
-			this.splitPt = null;
-			this.minimumLen = 0.0;
-		})();
+		this.seg = null;
+		this.segLen = null;
+		this.splitPt = null;
+		this.minimumLen = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

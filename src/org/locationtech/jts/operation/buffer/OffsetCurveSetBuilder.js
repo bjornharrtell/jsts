@@ -16,12 +16,10 @@ import MultiLineString from '../../geom/MultiLineString';
 import Triangle from '../../geom/Triangle';
 export default class OffsetCurveSetBuilder {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.distance = null;
-			this.curveBuilder = null;
-			this.curveList = new ArrayList();
-		})();
+		this.inputGeom = null;
+		this.distance = null;
+		this.curveBuilder = null;
+		this.curveList = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

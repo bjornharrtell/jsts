@@ -1,9 +1,7 @@
 export default class TopologyValidationError {
 	constructor(...args) {
-		(() => {
-			this.errorType = null;
-			this.pt = null;
-		})();
+		this.errorType = null;
+		this.pt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

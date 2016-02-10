@@ -9,12 +9,10 @@ import Envelope from '../geom/Envelope';
 import PointInRing from './PointInRing';
 export default class MCPointInRing {
 	constructor(...args) {
-		(() => {
-			this.ring = null;
-			this.tree = null;
-			this.crossings = 0;
-			this.interval = new Interval();
-		})();
+		this.ring = null;
+		this.tree = null;
+		this.crossings = 0;
+		this.interval = new Interval();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -90,10 +88,8 @@ export default class MCPointInRing {
 class MCSelecter extends MonotoneChainSelectAction {
 	constructor(...args) {
 		super();
-		(() => {
-			this.mcp = null;
-			this.p = null;
-		})();
+		this.mcp = null;
+		this.p = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

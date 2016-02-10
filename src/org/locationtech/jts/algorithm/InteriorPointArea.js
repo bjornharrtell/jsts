@@ -5,11 +5,9 @@ import Double from '../../../../java/lang/Double';
 import GeometryCollection from '../geom/GeometryCollection';
 export default class InteriorPointArea {
 	constructor(...args) {
-		(() => {
-			this.factory = null;
-			this.interiorPoint = null;
-			this.maxWidth = 0.0;
-		})();
+		this.factory = null;
+		this.interiorPoint = null;
+		this.maxWidth = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -108,12 +106,10 @@ export default class InteriorPointArea {
 }
 class SafeBisectorFinder {
 	constructor(...args) {
-		(() => {
-			this.poly = null;
-			this.centreY = null;
-			this.hiY = Double.MAX_VALUE;
-			this.loY = -Double.MAX_VALUE;
-		})();
+		this.poly = null;
+		this.centreY = null;
+		this.hiY = Double.MAX_VALUE;
+		this.loY = -Double.MAX_VALUE;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

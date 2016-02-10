@@ -6,10 +6,8 @@ import GeometryComponentFilter from '../GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class LinearComponentExtracter {
 	constructor(...args) {
-		(() => {
-			this.lines = null;
-			this.isForcedToLineString = false;
-		})();
+		this.lines = null;
+		this.isForcedToLineString = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

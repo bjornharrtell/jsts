@@ -7,9 +7,7 @@ import ExtractLineByLocation from './ExtractLineByLocation';
 import MultiLineString from '../geom/MultiLineString';
 export default class LocationIndexedLine {
 	constructor(...args) {
-		(() => {
-			this.linearGeom = null;
-		})();
+		this.linearGeom = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -5,15 +5,13 @@ import LineSegment from '../geom/LineSegment';
 import ConvexHull from './ConvexHull';
 export default class MinimumDiameter {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.isConvex = null;
-			this.convexHullPts = null;
-			this.minBaseSeg = new LineSegment();
-			this.minWidthPt = null;
-			this.minPtIndex = null;
-			this.minWidth = 0.0;
-		})();
+		this.inputGeom = null;
+		this.isConvex = null;
+		this.convexHullPts = null;
+		this.minBaseSeg = new LineSegment();
+		this.minWidthPt = null;
+		this.minPtIndex = null;
+		this.minWidth = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

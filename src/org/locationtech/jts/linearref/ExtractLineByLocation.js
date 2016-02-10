@@ -6,9 +6,7 @@ import LinearGeometryBuilder from './LinearGeometryBuilder';
 import MultiLineString from '../geom/MultiLineString';
 export default class ExtractLineByLocation {
 	constructor(...args) {
-		(() => {
-			this.line = null;
-		})();
+		this.line = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

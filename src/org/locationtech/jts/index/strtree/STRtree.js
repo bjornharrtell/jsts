@@ -17,7 +17,6 @@ import ItemDistance from './ItemDistance';
 export default class STRtree extends AbstractSTRtree {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -210,7 +209,6 @@ export default class STRtree extends AbstractSTRtree {
 class STRtreeNode extends AbstractNode {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

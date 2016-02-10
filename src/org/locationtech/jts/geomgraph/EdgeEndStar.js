@@ -9,11 +9,9 @@ import Assert from '../util/Assert';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class EdgeEndStar {
 	constructor(...args) {
-		(() => {
-			this.edgeMap = new TreeMap();
-			this.edgeList = null;
-			this.ptInAreaLocation = [Location.NONE, Location.NONE];
-		})();
+		this.edgeMap = new TreeMap();
+		this.edgeList = null;
+		this.ptInAreaLocation = [Location.NONE, Location.NONE];
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

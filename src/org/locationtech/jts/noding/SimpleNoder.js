@@ -3,9 +3,7 @@ import SinglePassNoder from './SinglePassNoder';
 export default class SimpleNoder extends SinglePassNoder {
 	constructor(...args) {
 		super();
-		(() => {
-			this.nodedSegStrings = null;
-		})();
+		this.nodedSegStrings = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

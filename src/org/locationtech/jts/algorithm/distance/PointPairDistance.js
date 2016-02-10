@@ -3,11 +3,9 @@ import Coordinate from '../../geom/Coordinate';
 import Double from '../../../../../java/lang/Double';
 export default class PointPairDistance {
 	constructor(...args) {
-		(() => {
-			this.pt = [new Coordinate(), new Coordinate()];
-			this.distance = Double.NaN;
-			this.isNull = true;
-		})();
+		this.pt = [new Coordinate(), new Coordinate()];
+		this.distance = Double.NaN;
+		this.isNull = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

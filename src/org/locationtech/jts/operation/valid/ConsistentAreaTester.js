@@ -2,12 +2,10 @@ import RelateNodeGraph from '../relate/RelateNodeGraph';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 export default class ConsistentAreaTester {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.geomGraph = null;
-			this.nodeGraph = new RelateNodeGraph();
-			this.invalidPoint = null;
-		})();
+		this.li = new RobustLineIntersector();
+		this.geomGraph = null;
+		this.nodeGraph = new RelateNodeGraph();
+		this.invalidPoint = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

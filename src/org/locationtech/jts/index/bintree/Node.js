@@ -5,11 +5,9 @@ import Key from './Key';
 export default class Node extends NodeBase {
 	constructor(...args) {
 		super();
-		(() => {
-			this.interval = null;
-			this.centre = null;
-			this.level = null;
-		})();
+		this.interval = null;
+		this.centre = null;
+		this.level = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

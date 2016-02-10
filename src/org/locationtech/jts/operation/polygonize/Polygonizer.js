@@ -9,19 +9,17 @@ import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class Polygonizer {
 	constructor(...args) {
-		(() => {
-			this.lineStringAdder = new LineStringAdder(this);
-			this.graph = null;
-			this.dangles = new ArrayList();
-			this.cutEdges = new ArrayList();
-			this.invalidRingLines = new ArrayList();
-			this.holeList = null;
-			this.shellList = null;
-			this.polyList = null;
-			this.isCheckingRingsValid = true;
-			this.extractOnlyPolygonal = null;
-			this.geomFactory = null;
-		})();
+		this.lineStringAdder = new LineStringAdder(this);
+		this.graph = null;
+		this.dangles = new ArrayList();
+		this.cutEdges = new ArrayList();
+		this.invalidRingLines = new ArrayList();
+		this.holeList = null;
+		this.shellList = null;
+		this.polyList = null;
+		this.isCheckingRingsValid = true;
+		this.extractOnlyPolygonal = null;
+		this.geomFactory = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -192,9 +190,7 @@ export default class Polygonizer {
 }
 class LineStringAdder {
 	constructor(...args) {
-		(() => {
-			this.p = null;
-		})();
+		this.p = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

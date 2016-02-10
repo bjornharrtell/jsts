@@ -7,11 +7,9 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import IntervalRTreeBranchNode from './IntervalRTreeBranchNode';
 export default class SortedPackedIntervalRTree {
 	constructor(...args) {
-		(() => {
-			this.leaves = new ArrayList();
-			this.root = null;
-			this.level = 0;
-		})();
+		this.leaves = new ArrayList();
+		this.root = null;
+		this.level = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

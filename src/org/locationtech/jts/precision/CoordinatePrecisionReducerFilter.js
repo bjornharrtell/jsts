@@ -1,9 +1,7 @@
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default class CoordinatePrecisionReducerFilter {
 	constructor(...args) {
-		(() => {
-			this.precModel = null;
-		})();
+		this.precModel = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

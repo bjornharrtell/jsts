@@ -10,19 +10,17 @@ import DistanceOp from '../../distance/DistanceOp';
 import DiscreteHausdorffDistance from '../../../algorithm/distance/DiscreteHausdorffDistance';
 export default class BufferDistanceValidator {
 	constructor(...args) {
-		(() => {
-			this.input = null;
-			this.bufDistance = null;
-			this.result = null;
-			this.minValidDistance = null;
-			this.maxValidDistance = null;
-			this.minDistanceFound = null;
-			this.maxDistanceFound = null;
-			this._isValid = true;
-			this.errMsg = null;
-			this.errorLocation = null;
-			this.errorIndicator = null;
-		})();
+		this.input = null;
+		this.bufDistance = null;
+		this.result = null;
+		this.minValidDistance = null;
+		this.maxValidDistance = null;
+		this.minDistanceFound = null;
+		this.maxDistanceFound = null;
+		this._isValid = true;
+		this.errMsg = null;
+		this.errorLocation = null;
+		this.errorIndicator = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

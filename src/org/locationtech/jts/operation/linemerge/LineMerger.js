@@ -9,12 +9,10 @@ import Assert from '../../util/Assert';
 import GraphComponent from '../../planargraph/GraphComponent';
 export default class LineMerger {
 	constructor(...args) {
-		(() => {
-			this.graph = new LineMergeGraph();
-			this.mergedLineStrings = null;
-			this.factory = null;
-			this.edgeStrings = null;
-		})();
+		this.graph = new LineMergeGraph();
+		this.mergedLineStrings = null;
+		this.factory = null;
+		this.edgeStrings = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

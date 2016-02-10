@@ -3,13 +3,11 @@ import Assert from '../../util/Assert';
 import OverlayOp from './OverlayOp';
 export default class LineBuilder {
 	constructor(...args) {
-		(() => {
-			this.op = null;
-			this.geometryFactory = null;
-			this.ptLocator = null;
-			this.lineEdgesList = new ArrayList();
-			this.resultLineList = new ArrayList();
-		})();
+		this.op = null;
+		this.geometryFactory = null;
+		this.ptLocator = null;
+		this.lineEdgesList = new ArrayList();
+		this.resultLineList = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

@@ -2,9 +2,7 @@ import ItemVisitor from './ItemVisitor';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class ArrayListVisitor {
 	constructor(...args) {
-		(() => {
-			this.items = new ArrayList();
-		})();
+		this.items = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

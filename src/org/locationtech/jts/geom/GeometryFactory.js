@@ -17,11 +17,9 @@ import Assert from '../util/Assert';
 import MultiLineString from './MultiLineString';
 export default class GeometryFactory {
 	constructor(...args) {
-		(() => {
-			this.precisionModel = null;
-			this.coordinateSequenceFactory = null;
-			this.SRID = null;
-		})();
+		this.precisionModel = null;
+		this.coordinateSequenceFactory = null;
+		this.SRID = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

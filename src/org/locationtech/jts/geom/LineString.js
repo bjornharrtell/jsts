@@ -13,9 +13,7 @@ import Envelope from './Envelope';
 export default class LineString extends Geometry {
 	constructor(...args) {
 		super();
-		(() => {
-			this.points = null;
-		})();
+		this.points = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

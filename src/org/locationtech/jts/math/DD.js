@@ -7,10 +7,8 @@ import Cloneable from '../../../../java/lang/Cloneable';
 import Serializable from '../../../../java/io/Serializable';
 export default class DD {
 	constructor(...args) {
-		(() => {
-			this.hi = 0.0;
-			this.lo = 0.0;
-		})();
+		this.hi = 0.0;
+		this.lo = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

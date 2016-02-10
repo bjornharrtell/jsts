@@ -4,11 +4,9 @@ import Angle from '../algorithm/Angle';
 import HCoordinate from '../algorithm/HCoordinate';
 export default class Triangle {
 	constructor(...args) {
-		(() => {
-			this.p0 = null;
-			this.p1 = null;
-			this.p2 = null;
-		})();
+		this.p0 = null;
+		this.p1 = null;
+		this.p2 = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 3:

@@ -1,10 +1,8 @@
 export default class SweepLineInterval {
 	constructor(...args) {
-		(() => {
-			this.min = null;
-			this.max = null;
-			this.item = null;
-		})();
+		this.min = null;
+		this.max = null;
+		this.item = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

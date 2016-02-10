@@ -1,10 +1,8 @@
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class NodeBase {
 	constructor(...args) {
-		(() => {
-			this.items = new ArrayList();
-			this.subnode = [null, null];
-		})();
+		this.items = new ArrayList();
+		this.subnode = [null, null];
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

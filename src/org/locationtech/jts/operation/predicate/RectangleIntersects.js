@@ -6,10 +6,8 @@ import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLo
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 export default class RectangleIntersects {
 	constructor(...args) {
-		(() => {
-			this.rectangle = null;
-			this.rectEnv = null;
-		})();
+		this.rectangle = null;
+		this.rectEnv = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -49,10 +47,8 @@ export default class RectangleIntersects {
 class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 	constructor(...args) {
 		super();
-		(() => {
-			this.rectEnv = null;
-			this._intersects = false;
-		})();
+		this.rectEnv = null;
+		this._intersects = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -98,11 +94,9 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 	constructor(...args) {
 		super();
-		(() => {
-			this.rectSeq = null;
-			this.rectEnv = null;
-			this._containsPoint = false;
-		})();
+		this.rectSeq = null;
+		this.rectEnv = null;
+		this._containsPoint = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -145,13 +139,11 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
 	constructor(...args) {
 		super();
-		(() => {
-			this.rectEnv = null;
-			this.rectIntersector = null;
-			this.hasIntersection = false;
-			this.p0 = new Coordinate();
-			this.p1 = new Coordinate();
-		})();
+		this.rectEnv = null;
+		this.rectIntersector = null;
+		this.hasIntersection = false;
+		this.p0 = new Coordinate();
+		this.p1 = new Coordinate();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

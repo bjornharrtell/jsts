@@ -10,12 +10,10 @@ import Assert from '../util/Assert';
 export default class DirectedEdgeStar extends EdgeEndStar {
 	constructor(...args) {
 		super();
-		(() => {
-			this.resultAreaEdgeList = null;
-			this.label = null;
-			this.SCANNING_FOR_INCOMING = 1;
-			this.LINKING_TO_OUTGOING = 2;
-		})();
+		this.resultAreaEdgeList = null;
+		this.label = null;
+		this.SCANNING_FOR_INCOMING = 1;
+		this.LINKING_TO_OUTGOING = 2;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

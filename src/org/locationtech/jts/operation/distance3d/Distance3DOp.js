@@ -12,13 +12,11 @@ import GeometryCollection from '../../geom/GeometryCollection';
 import CGAlgorithms3D from '../../algorithm/CGAlgorithms3D';
 export default class Distance3DOp {
 	constructor(...args) {
-		(() => {
-			this.geom = null;
-			this.terminateDistance = 0.0;
-			this.minDistanceLocation = null;
-			this.minDistance = Double.MAX_VALUE;
-			this.isDone = false;
-		})();
+		this.geom = null;
+		this.terminateDistance = 0.0;
+		this.minDistanceLocation = null;
+		this.minDistance = Double.MAX_VALUE;
+		this.isDone = false;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

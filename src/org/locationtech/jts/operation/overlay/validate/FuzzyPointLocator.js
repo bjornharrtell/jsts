@@ -7,13 +7,11 @@ import ArrayList from '../../../../../../java/util/ArrayList';
 import GeometryFilter from '../../../geom/GeometryFilter';
 export default class FuzzyPointLocator {
 	constructor(...args) {
-		(() => {
-			this.g = null;
-			this.boundaryDistanceTolerance = null;
-			this.linework = null;
-			this.ptLocator = new PointLocator();
-			this.seg = new LineSegment();
-		})();
+		this.g = null;
+		this.boundaryDistanceTolerance = null;
+		this.linework = null;
+		this.ptLocator = new PointLocator();
+		this.seg = new LineSegment();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:
@@ -60,9 +58,7 @@ export default class FuzzyPointLocator {
 }
 class PolygonalLineworkExtracter {
 	constructor(...args) {
-		(() => {
-			this.linework = null;
-		})();
+		this.linework = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

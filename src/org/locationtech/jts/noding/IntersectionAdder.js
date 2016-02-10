@@ -1,19 +1,17 @@
 import SegmentIntersector from './SegmentIntersector';
 export default class IntersectionAdder {
 	constructor(...args) {
-		(() => {
-			this._hasIntersection = false;
-			this.hasProper = false;
-			this.hasProperInterior = false;
-			this.hasInterior = false;
-			this.properIntersectionPoint = null;
-			this.li = null;
-			this.isSelfIntersection = null;
-			this.numIntersections = 0;
-			this.numInteriorIntersections = 0;
-			this.numProperIntersections = 0;
-			this.numTests = 0;
-		})();
+		this._hasIntersection = false;
+		this.hasProper = false;
+		this.hasProperInterior = false;
+		this.hasInterior = false;
+		this.properIntersectionPoint = null;
+		this.li = null;
+		this.isSelfIntersection = null;
+		this.numIntersections = 0;
+		this.numInteriorIntersections = 0;
+		this.numProperIntersections = 0;
+		this.numTests = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

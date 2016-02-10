@@ -6,17 +6,15 @@ import Label from './Label';
 export default class DirectedEdge extends EdgeEnd {
 	constructor(...args) {
 		super();
-		(() => {
-			this._isForward = null;
-			this._isInResult = false;
-			this._isVisited = false;
-			this.sym = null;
-			this.next = null;
-			this.nextMin = null;
-			this.edgeRing = null;
-			this.minEdgeRing = null;
-			this.depth = [0, -999, -999];
-		})();
+		this._isForward = null;
+		this._isInResult = false;
+		this._isVisited = false;
+		this.sym = null;
+		this.next = null;
+		this.nextMin = null;
+		this.edgeRing = null;
+		this.minEdgeRing = null;
+		this.depth = [0, -999, -999];
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

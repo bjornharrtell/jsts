@@ -5,7 +5,6 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default class MultiPolygon extends GeometryCollection {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

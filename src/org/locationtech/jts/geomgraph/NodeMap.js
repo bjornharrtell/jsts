@@ -5,10 +5,8 @@ import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class NodeMap {
 	constructor(...args) {
-		(() => {
-			this.nodeMap = new TreeMap();
-			this.nodeFact = null;
-		})();
+		this.nodeMap = new TreeMap();
+		this.nodeFact = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

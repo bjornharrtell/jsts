@@ -10,11 +10,9 @@ import Quadrant from './Quadrant';
 import NodeFactory from './NodeFactory';
 export default class PlanarGraph {
 	constructor(...args) {
-		(() => {
-			this.edges = new ArrayList();
-			this.nodes = null;
-			this.edgeEndList = new ArrayList();
-		})();
+		this.edges = new ArrayList();
+		this.nodes = null;
+		this.edgeEndList = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

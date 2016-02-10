@@ -3,14 +3,12 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import ArrayList from '../../../../java/util/ArrayList';
 export default class LinearGeometryBuilder {
 	constructor(...args) {
-		(() => {
-			this.geomFact = null;
-			this.lines = new ArrayList();
-			this.coordList = null;
-			this.ignoreInvalidLines = false;
-			this.fixInvalidLines = false;
-			this.lastPt = null;
-		})();
+		this.geomFact = null;
+		this.lines = new ArrayList();
+		this.coordList = null;
+		this.ignoreInvalidLines = false;
+		this.fixInvalidLines = false;
+		this.lastPt = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -13,11 +13,9 @@ import GeometryCollection from '../geom/GeometryCollection';
 import MultiLineString from '../geom/MultiLineString';
 export default class PointLocator {
 	constructor(...args) {
-		(() => {
-			this.boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
-			this.isIn = null;
-			this.numBoundaries = null;
-		})();
+		this.boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+		this.isIn = null;
+		this.numBoundaries = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

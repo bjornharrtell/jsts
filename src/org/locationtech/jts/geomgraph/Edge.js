@@ -10,16 +10,14 @@ import GraphComponent from './GraphComponent';
 export default class Edge extends GraphComponent {
 	constructor(...args) {
 		super();
-		(() => {
-			this.pts = null;
-			this.env = null;
-			this.eiList = new EdgeIntersectionList(this);
-			this.name = null;
-			this.mce = null;
-			this._isIsolated = true;
-			this.depth = new Depth();
-			this.depthDelta = 0;
-		})();
+		this.pts = null;
+		this.env = null;
+		this.eiList = new EdgeIntersectionList(this);
+		this.name = null;
+		this.mce = null;
+		this._isIsolated = true;
+		this.depth = new Depth();
+		this.depthDelta = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

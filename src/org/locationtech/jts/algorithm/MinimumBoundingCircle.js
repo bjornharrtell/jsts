@@ -6,12 +6,10 @@ import Assert from '../util/Assert';
 import Triangle from '../geom/Triangle';
 export default class MinimumBoundingCircle {
 	constructor(...args) {
-		(() => {
-			this.input = null;
-			this.extremalPts = null;
-			this.centre = null;
-			this.radius = 0.0;
-		})();
+		this.input = null;
+		this.extremalPts = null;
+		this.centre = null;
+		this.radius = 0.0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

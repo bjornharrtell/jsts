@@ -6,7 +6,6 @@ import Dimension from './Dimension';
 export default class MultiLineString extends GeometryCollection {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

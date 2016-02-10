@@ -3,7 +3,6 @@ import Assert from '../../util/Assert';
 export default class LineMergeDirectedEdge extends DirectedEdge {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 4:

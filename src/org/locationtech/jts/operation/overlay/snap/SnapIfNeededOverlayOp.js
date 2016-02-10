@@ -3,9 +3,7 @@ import RuntimeException from '../../../../../../java/lang/RuntimeException';
 import OverlayOp from '../OverlayOp';
 export default class SnapIfNeededOverlayOp {
 	constructor(...args) {
-		(() => {
-			this.geom = new Array(2);
-		})();
+		this.geom = new Array(2);
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

@@ -4,9 +4,7 @@ import List from '../../../../../java/util/List';
 export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
 	constructor(...args) {
 		super();
-		(() => {
-			this.nOverlaps = null;
-		})();
+		this.nOverlaps = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

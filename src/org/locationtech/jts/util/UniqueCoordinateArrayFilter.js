@@ -3,10 +3,8 @@ import CoordinateFilter from '../geom/CoordinateFilter';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class UniqueCoordinateArrayFilter {
 	constructor(...args) {
-		(() => {
-			this.treeSet = new TreeSet();
-			this.list = new ArrayList();
-		})();
+		this.treeSet = new TreeSet();
+		this.list = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

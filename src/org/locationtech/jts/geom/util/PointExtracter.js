@@ -5,9 +5,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default class PointExtracter {
 	constructor(...args) {
-		(() => {
-			this.pts = null;
-		})();
+		this.pts = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

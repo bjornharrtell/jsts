@@ -4,9 +4,7 @@ import GeometryComponentFilter from '../GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class ComponentCoordinateExtracter {
 	constructor(...args) {
-		(() => {
-			this.coords = null;
-		})();
+		this.coords = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -9,14 +9,12 @@ import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import ArrayList from '../../../../java/util/ArrayList';
 export default class LineDissolver {
 	constructor(...args) {
-		(() => {
-			this.result = null;
-			this.factory = null;
-			this.graph = null;
-			this.lines = new ArrayList();
-			this.nodeEdgeStack = new Stack();
-			this.ringStartEdge = null;
-		})();
+		this.result = null;
+		this.factory = null;
+		this.graph = null;
+		this.lines = new ArrayList();
+		this.nodeEdgeStack = new Stack();
+		this.ringStartEdge = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

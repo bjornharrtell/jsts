@@ -2,20 +2,18 @@ import AffineTransformation from './AffineTransformation';
 import Matrix from '../../math/Matrix';
 export default class AffineTransformationBuilder {
 	constructor(...args) {
-		(() => {
-			this.src0 = null;
-			this.src1 = null;
-			this.src2 = null;
-			this.dest0 = null;
-			this.dest1 = null;
-			this.dest2 = null;
-			this.m00 = null;
-			this.m01 = null;
-			this.m02 = null;
-			this.m10 = null;
-			this.m11 = null;
-			this.m12 = null;
-		})();
+		this.src0 = null;
+		this.src1 = null;
+		this.src2 = null;
+		this.dest0 = null;
+		this.dest1 = null;
+		this.dest2 = null;
+		this.m00 = null;
+		this.m01 = null;
+		this.m02 = null;
+		this.m10 = null;
+		this.m11 = null;
+		this.m12 = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 6:

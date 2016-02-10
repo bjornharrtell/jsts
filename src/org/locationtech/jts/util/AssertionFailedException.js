@@ -2,7 +2,6 @@ import RuntimeException from '../../../../java/lang/RuntimeException';
 export default class AssertionFailedException extends RuntimeException {
 	constructor(...args) {
 		super();
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

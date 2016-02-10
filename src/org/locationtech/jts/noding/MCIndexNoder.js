@@ -7,13 +7,11 @@ import SinglePassNoder from './SinglePassNoder';
 export default class MCIndexNoder extends SinglePassNoder {
 	constructor(...args) {
 		super();
-		(() => {
-			this.monoChains = new ArrayList();
-			this.index = new STRtree();
-			this.idCounter = 0;
-			this.nodedSegStrings = null;
-			this.nOverlaps = 0;
-		})();
+		this.monoChains = new ArrayList();
+		this.index = new STRtree();
+		this.idCounter = 0;
+		this.nodedSegStrings = null;
+		this.nOverlaps = 0;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:
@@ -82,9 +80,7 @@ export default class MCIndexNoder extends SinglePassNoder {
 class SegmentOverlapAction extends MonotoneChainOverlapAction {
 	constructor(...args) {
 		super();
-		(() => {
-			this.si = null;
-		})();
+		this.si = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

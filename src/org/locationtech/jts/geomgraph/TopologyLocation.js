@@ -3,9 +3,7 @@ import Location from '../geom/Location';
 import Position from './Position';
 export default class TopologyLocation {
 	constructor(...args) {
-		(() => {
-			this.location = null;
-		})();
+		this.location = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

@@ -2,11 +2,9 @@ import Interval from './Interval';
 import DoubleBits from '../quadtree/DoubleBits';
 export default class Key {
 	constructor(...args) {
-		(() => {
-			this.pt = 0.0;
-			this.level = 0;
-			this.interval = null;
-		})();
+		this.pt = 0.0;
+		this.level = 0;
+		this.interval = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

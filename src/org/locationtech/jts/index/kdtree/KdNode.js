@@ -1,13 +1,11 @@
 import Coordinate from '../../geom/Coordinate';
 export default class KdNode {
 	constructor(...args) {
-		(() => {
-			this.p = null;
-			this.data = null;
-			this.left = null;
-			this.right = null;
-			this.count = null;
-		})();
+		this.p = null;
+		this.data = null;
+		this.left = null;
+		this.right = null;
+		this.count = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

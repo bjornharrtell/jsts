@@ -7,13 +7,11 @@ import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
 import TreeMap from '../../../../java/util/TreeMap';
 export default class ConformingDelaunayTriangulationBuilder {
 	constructor(...args) {
-		(() => {
-			this.siteCoords = null;
-			this.constraintLines = null;
-			this.tolerance = 0.0;
-			this.subdiv = null;
-			this.constraintVertexMap = new TreeMap();
-		})();
+		this.siteCoords = null;
+		this.constraintLines = null;
+		this.tolerance = 0.0;
+		this.subdiv = null;
+		this.constraintVertexMap = new TreeMap();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

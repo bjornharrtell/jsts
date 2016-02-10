@@ -18,14 +18,12 @@ import Edge from '../../geomgraph/Edge';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default class BufferBuilder {
 	constructor(...args) {
-		(() => {
-			this.bufParams = null;
-			this.workingPrecisionModel = null;
-			this.workingNoder = null;
-			this.geomFact = null;
-			this.graph = null;
-			this.edgeList = new EdgeList();
-		})();
+		this.bufParams = null;
+		this.workingPrecisionModel = null;
+		this.workingNoder = null;
+		this.geomFact = null;
+		this.graph = null;
+		this.edgeList = new EdgeList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

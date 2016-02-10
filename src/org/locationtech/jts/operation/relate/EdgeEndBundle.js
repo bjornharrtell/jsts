@@ -8,9 +8,7 @@ import Edge from '../../geomgraph/Edge';
 export default class EdgeEndBundle extends EdgeEnd {
 	constructor(...args) {
 		super();
-		(() => {
-			this.edgeEnds = new ArrayList();
-		})();
+		this.edgeEnds = new ArrayList();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

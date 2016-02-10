@@ -2,10 +2,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 export default class NodeBase {
 	constructor(...args) {
-		(() => {
-			this.items = new ArrayList();
-			this.subnode = new Array(4);
-		})();
+		this.items = new ArrayList();
+		this.subnode = new Array(4);
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

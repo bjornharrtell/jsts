@@ -2,10 +2,8 @@ import Vertex from './quadedge/Vertex';
 export default class ConstraintVertex extends Vertex {
 	constructor(...args) {
 		super();
-		(() => {
-			this._isOnConstraint = null;
-			this.constraint = null;
-		})();
+		this._isOnConstraint = null;
+		this.constraint = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

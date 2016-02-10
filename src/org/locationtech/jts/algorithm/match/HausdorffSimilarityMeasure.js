@@ -3,7 +3,6 @@ import Envelope from '../../geom/Envelope';
 import DiscreteHausdorffDistance from '../distance/DiscreteHausdorffDistance';
 export default class HausdorffSimilarityMeasure {
 	constructor(...args) {
-		(() => {})();
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

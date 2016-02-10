@@ -4,10 +4,8 @@ import RobustDeterminant from '../algorithm/RobustDeterminant';
 import Assert from '../util/Assert';
 export default class Vector2D {
 	constructor(...args) {
-		(() => {
-			this.x = null;
-			this.y = null;
-		})();
+		this.x = null;
+		this.y = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 0:

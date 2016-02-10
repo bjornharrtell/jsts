@@ -5,10 +5,8 @@ import LinearRing from '../geom/LinearRing';
 export default class PrecisionReducerCoordinateOperation extends CoordinateOperation {
 	constructor(...args) {
 		super();
-		(() => {
-			this.targetPM = null;
-			this.removeCollapsed = true;
-		})();
+		this.targetPM = null;
+		this.removeCollapsed = true;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 2:

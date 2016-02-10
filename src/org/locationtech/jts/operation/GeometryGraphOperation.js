@@ -3,11 +3,9 @@ import GeometryGraph from '../geomgraph/GeometryGraph';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 export default class GeometryGraphOperation {
 	constructor(...args) {
-		(() => {
-			this.li = new RobustLineIntersector();
-			this.resultPrecisionModel = null;
-			this.arg = null;
-		})();
+		this.li = new RobustLineIntersector();
+		this.resultPrecisionModel = null;
+		this.arg = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:

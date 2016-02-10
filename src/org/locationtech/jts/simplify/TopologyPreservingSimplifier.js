@@ -7,11 +7,9 @@ import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import TaggedLineString from './TaggedLineString';
 export default class TopologyPreservingSimplifier {
 	constructor(...args) {
-		(() => {
-			this.inputGeom = null;
-			this.lineSimplifier = new TaggedLinesSimplifier();
-			this.linestringMap = null;
-		})();
+		this.inputGeom = null;
+		this.lineSimplifier = new TaggedLinesSimplifier();
+		this.linestringMap = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -56,9 +54,7 @@ export default class TopologyPreservingSimplifier {
 class LineStringTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
-		(() => {
-			this.linestringMap = null;
-		})();
+		this.linestringMap = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
@@ -87,9 +83,7 @@ class LineStringTransformer extends GeometryTransformer {
 }
 class LineStringMapBuilderFilter {
 	constructor(...args) {
-		(() => {
-			this.tps = null;
-		})();
+		this.tps = null;
 		const overloads = (...args) => {
 			switch (args.length) {
 				case 1:
