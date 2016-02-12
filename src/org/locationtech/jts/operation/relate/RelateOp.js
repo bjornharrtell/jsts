@@ -4,7 +4,7 @@ export default class RelateOp extends GeometryGraphOperation {
 	constructor(...args) {
 		super();
 		this._relate = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
@@ -20,31 +20,28 @@ export default class RelateOp extends GeometryGraphOperation {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
 	}
 	static relate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [a, b] = args;
-						var relOp = new RelateOp(a, b);
-						var im = relOp.getIntersectionMatrix();
-						return im;
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [a, b, boundaryNodeRule] = args;
-						var relOp = new RelateOp(a, b, boundaryNodeRule);
-						var im = relOp.getIntersectionMatrix();
-						return im;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [a, b] = args;
+					var relOp = new RelateOp(a, b);
+					var im = relOp.getIntersectionMatrix();
+					return im;
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [a, b, boundaryNodeRule] = args;
+					var relOp = new RelateOp(a, b, boundaryNodeRule);
+					var im = relOp.getIntersectionMatrix();
+					return im;
+				})(...args);
+		}
 	}
 	getIntersectionMatrix() {
 		return this._relate.computeIM();

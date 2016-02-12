@@ -12,16 +12,13 @@ export default class IntersectionAdder {
 		this.numInteriorIntersections = 0;
 		this.numProperIntersections = 0;
 		this.numTests = 0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [li] = args;
-						this.li = li;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [li] = args;
+					this.li = li;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SegmentIntersector];

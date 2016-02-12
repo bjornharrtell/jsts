@@ -10,42 +10,36 @@ export default class NodedSegmentString {
 		this.nodeList = new SegmentNodeList(this);
 		this.pts = null;
 		this.data = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [pts, data] = args;
-						this.pts = pts;
-						this.data = data;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [pts, data] = args;
+					this.pts = pts;
+					this.data = data;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [NodableSegmentString];
 	}
 	static getNodedSubstrings(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [segStrings] = args;
-						var resultEdgelist = new ArrayList();
-						NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
-						return resultEdgelist;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [segStrings, resultEdgelist] = args;
-						for (var i = segStrings.iterator(); i.hasNext(); ) {
-							var ss = i.next();
-							ss.getNodeList().addSplitEdges(resultEdgelist);
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [segStrings] = args;
+					var resultEdgelist = new ArrayList();
+					NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
+					return resultEdgelist;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [segStrings, resultEdgelist] = args;
+					for (var i = segStrings.iterator(); i.hasNext(); ) {
+						var ss = i.next();
+						ss.getNodeList().addSplitEdges(resultEdgelist);
+					}
+				})(...args);
+		}
 	}
 	getCoordinates() {
 		return this.pts;
@@ -74,22 +68,19 @@ export default class NodedSegmentString {
 		return this.data;
 	}
 	addIntersection(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [intPt, segmentIndex] = args;
-						this.addIntersectionNode(intPt, segmentIndex);
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [li, segmentIndex, geomIndex, intIndex] = args;
-						var intPt = new Coordinate(li.getIntersection(intIndex));
-						this.addIntersection(intPt, segmentIndex);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [intPt, segmentIndex] = args;
+					this.addIntersectionNode(intPt, segmentIndex);
+				})(...args);
+			case 4:
+				return ((...args) => {
+					let [li, segmentIndex, geomIndex, intIndex] = args;
+					var intPt = new Coordinate(li.getIntersection(intIndex));
+					this.addIntersection(intPt, segmentIndex);
+				})(...args);
+		}
 	}
 	toString() {
 		return WKTWriter.toLineString(new CoordinateArraySequence(this.pts));

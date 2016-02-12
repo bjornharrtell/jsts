@@ -8,16 +8,13 @@ export default class GeometryNoder {
 		this.geomFact = null;
 		this.pm = null;
 		this.isValidityChecked = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pm] = args;
-						this.pm = pm;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pm] = args;
+					this.pm = pm;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

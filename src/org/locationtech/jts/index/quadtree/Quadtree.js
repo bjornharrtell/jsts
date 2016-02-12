@@ -8,16 +8,13 @@ export default class Quadtree {
 	constructor(...args) {
 		this.root = null;
 		this.minExtent = 1.0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.root = new Root();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					this.root = new Root();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SpatialIndex, Serializable];
@@ -48,23 +45,20 @@ export default class Quadtree {
 		this.root.insert(insertEnv, item);
 	}
 	query(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [searchEnv] = args;
-						var visitor = new ArrayListVisitor();
-						this.query(searchEnv, visitor);
-						return visitor.getItems();
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [searchEnv, visitor] = args;
-						this.root.visit(searchEnv, visitor);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [searchEnv] = args;
+					var visitor = new ArrayListVisitor();
+					this.query(searchEnv, visitor);
+					return visitor.getItems();
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [searchEnv, visitor] = args;
+					this.root.visit(searchEnv, visitor);
+				})(...args);
+		}
 	}
 	queryAll() {
 		var foundItems = new ArrayList();

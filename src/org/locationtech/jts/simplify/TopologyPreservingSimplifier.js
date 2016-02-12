@@ -10,16 +10,13 @@ export default class TopologyPreservingSimplifier {
 		this.inputGeom = null;
 		this.lineSimplifier = new TaggedLinesSimplifier();
 		this.linestringMap = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [inputGeom] = args;
-						this.inputGeom = inputGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [inputGeom] = args;
+					this.inputGeom = inputGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -55,16 +52,13 @@ class LineStringTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
 		this.linestringMap = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [linestringMap] = args;
-						this.linestringMap = linestringMap;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [linestringMap] = args;
+					this.linestringMap = linestringMap;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -84,16 +78,13 @@ class LineStringTransformer extends GeometryTransformer {
 class LineStringMapBuilderFilter {
 	constructor(...args) {
 		this.tps = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [tps] = args;
-						this.tps = tps;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [tps] = args;
+					this.tps = tps;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [GeometryComponentFilter];

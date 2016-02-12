@@ -3,16 +3,13 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default class GeometryCollectionMapper {
 	constructor(...args) {
 		this.mapOp = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [mapOp] = args;
-						this.mapOp = mapOp;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [mapOp] = args;
+					this.mapOp = mapOp;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

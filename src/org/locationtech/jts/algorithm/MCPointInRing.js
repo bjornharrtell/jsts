@@ -13,17 +13,14 @@ export default class MCPointInRing {
 		this.tree = null;
 		this.crossings = 0;
 		this.interval = new Interval();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [ring] = args;
-						this.ring = ring;
-						this.buildIndex();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [ring] = args;
+					this.ring = ring;
+					this.buildIndex();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [PointInRing];
@@ -90,17 +87,14 @@ class MCSelecter extends MonotoneChainSelectAction {
 		super();
 		this.mcp = null;
 		this.p = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [mcp, p] = args;
-						this.mcp = mcp;
-						this.p = p;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [mcp, p] = args;
+					this.mcp = mcp;
+					this.p = p;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

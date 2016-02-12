@@ -9,17 +9,14 @@ export default class TaggedLineStringSimplifier {
 		this.line = null;
 		this.linePts = null;
 		this.distanceTolerance = 0.0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [inputIndex, outputIndex] = args;
-						this.inputIndex = inputIndex;
-						this.outputIndex = outputIndex;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [inputIndex, outputIndex] = args;
+					this.inputIndex = inputIndex;
+					this.outputIndex = outputIndex;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -3,16 +3,13 @@ import Assert from '../../util/Assert';
 export default class LineMergeDirectedEdge extends DirectedEdge {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 4:
-					return ((...args) => {
-						let [from, to, directionPt, edgeDirection] = args;
-						super(from, to, directionPt, edgeDirection);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 4:
+				return ((...args) => {
+					let [from, to, directionPt, edgeDirection] = args;
+					super(from, to, directionPt, edgeDirection);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

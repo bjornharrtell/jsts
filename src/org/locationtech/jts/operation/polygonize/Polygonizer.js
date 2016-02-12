@@ -20,12 +20,12 @@ export default class Polygonizer {
 		this.isCheckingRingsValid = true;
 		this.extractOnlyPolygonal = null;
 		this.geomFactory = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, false);
+						overloaded.call(this, false);
 					})(...args);
 				case 1:
 					return ((...args) => {
@@ -34,7 +34,7 @@ export default class Polygonizer {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -144,33 +144,30 @@ export default class Polygonizer {
 		return this.polyList;
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [geomList] = args;
-							for (var i = geomList.iterator(); i.hasNext(); ) {
-								var geometry = i.next();
-								this.add(geometry);
-							}
-						})(...args);
-					} else if (args[0] instanceof LineString) {
-						return ((...args) => {
-							let [line] = args;
-							this.geomFactory = line.getFactory();
-							if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
-							this.graph.addEdge(line);
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [g] = args;
-							g.apply(this.lineStringAdder);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					return ((...args) => {
+						let [geomList] = args;
+						for (var i = geomList.iterator(); i.hasNext(); ) {
+							var geometry = i.next();
+							this.add(geometry);
+						}
+					})(...args);
+				} else if (args[0] instanceof LineString) {
+					return ((...args) => {
+						let [line] = args;
+						this.geomFactory = line.getFactory();
+						if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
+						this.graph.addEdge(line);
+					})(...args);
+				} else if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [g] = args;
+						g.apply(this.lineStringAdder);
+					})(...args);
+				}
+		}
 	}
 	setCheckRingsValid(isCheckingRingsValid) {
 		this.isCheckingRingsValid = isCheckingRingsValid;
@@ -191,16 +188,13 @@ export default class Polygonizer {
 class LineStringAdder {
 	constructor(...args) {
 		this.p = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [p] = args;
-						this.p = p;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [p] = args;
+					this.p = p;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [GeometryComponentFilter];

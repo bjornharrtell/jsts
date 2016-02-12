@@ -5,16 +5,13 @@ export default class EdgeSetNoder {
 	constructor(...args) {
 		this.li = null;
 		this.inputEdges = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [li] = args;
-						this.li = li;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [li] = args;
+					this.li = li;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

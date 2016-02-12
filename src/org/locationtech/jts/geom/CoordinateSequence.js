@@ -7,19 +7,16 @@ export default class CoordinateSequence {
 	size() {}
 	getOrdinate(index, ordinateIndex) {}
 	getCoordinate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [i] = args;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [index, coord] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [i] = args;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [index, coord] = args;
+				})(...args);
+		}
 	}
 	getCoordinateCopy(i) {}
 	getDimension() {}

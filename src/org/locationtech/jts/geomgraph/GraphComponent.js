@@ -6,7 +6,7 @@ export default class GraphComponent {
 		this._isCovered = false;
 		this._isCoveredSet = false;
 		this._isVisited = false;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -19,7 +19,7 @@ export default class GraphComponent {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

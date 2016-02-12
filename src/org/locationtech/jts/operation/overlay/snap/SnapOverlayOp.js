@@ -7,18 +7,15 @@ export default class SnapOverlayOp {
 		this.geom = new Array(2);
 		this.snapTolerance = null;
 		this.cbr = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [g1, g2] = args;
-						this.geom[0] = g1;
-						this.geom[1] = g2;
-						this.computeSnapTolerance();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [g1, g2] = args;
+					this.geom[0] = g1;
+					this.geom[1] = g2;
+					this.computeSnapTolerance();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

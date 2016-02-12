@@ -7,19 +7,16 @@ export default class BoundablePair {
 		this.boundable2 = null;
 		this._distance = null;
 		this.itemDistance = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [boundable1, boundable2, itemDistance] = args;
-						this.boundable1 = boundable1;
-						this.boundable2 = boundable2;
-						this.itemDistance = itemDistance;
-						this._distance = this.distance();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [boundable1, boundable2, itemDistance] = args;
+					this.boundable1 = boundable1;
+					this.boundable2 = boundable2;
+					this.itemDistance = itemDistance;
+					this._distance = this.distance();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

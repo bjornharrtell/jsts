@@ -5,18 +5,15 @@ export default class EdgeIntersection {
 		this.coord = null;
 		this.segmentIndex = null;
 		this.dist = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [coord, segmentIndex, dist] = args;
-						this.coord = new Coordinate(coord);
-						this.segmentIndex = segmentIndex;
-						this.dist = dist;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [coord, segmentIndex, dist] = args;
+					this.coord = new Coordinate(coord);
+					this.segmentIndex = segmentIndex;
+					this.dist = dist;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

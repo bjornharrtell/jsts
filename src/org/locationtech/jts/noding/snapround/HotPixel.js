@@ -17,26 +17,23 @@ export default class HotPixel {
 		this.maxy = null;
 		this.corner = new Array(4);
 		this.safeEnv = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [pt, scaleFactor, li] = args;
-						this.originalPt = pt;
-						this.pt = pt;
-						this.scaleFactor = scaleFactor;
-						this.li = li;
-						if (scaleFactor <= 0) throw new IllegalArgumentException("Scale factor must be non-zero");
-						if (scaleFactor !== 1.0) {
-							this.pt = new Coordinate(this.scale(pt.x), this.scale(pt.y));
-							this.p0Scaled = new Coordinate();
-							this.p1Scaled = new Coordinate();
-						}
-						this.initCorners(this.pt);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [pt, scaleFactor, li] = args;
+					this.originalPt = pt;
+					this.pt = pt;
+					this.scaleFactor = scaleFactor;
+					this.li = li;
+					if (scaleFactor <= 0) throw new IllegalArgumentException("Scale factor must be non-zero");
+					if (scaleFactor !== 1.0) {
+						this.pt = new Coordinate(this.scale(pt.x), this.scale(pt.y));
+						this.p0Scaled = new Coordinate();
+						this.p1Scaled = new Coordinate();
+					}
+					this.initCorners(this.pt);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

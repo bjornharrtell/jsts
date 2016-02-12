@@ -8,16 +8,13 @@ export default class GeometryPrecisionReducer {
 		this.removeCollapsed = true;
 		this.changePrecisionModel = false;
 		this.isPointwise = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pm] = args;
-						this.targetPM = pm;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pm] = args;
+					this.targetPM = pm;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

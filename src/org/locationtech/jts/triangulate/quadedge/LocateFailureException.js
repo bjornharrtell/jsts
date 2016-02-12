@@ -4,7 +4,7 @@ export default class LocateFailureException extends RuntimeException {
 	constructor(...args) {
 		super();
 		this.seg = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					if (typeof args[0] === "string") {
@@ -27,7 +27,7 @@ export default class LocateFailureException extends RuntimeException {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

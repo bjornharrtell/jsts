@@ -15,24 +15,21 @@ export default class DirectedEdge extends GraphComponent {
 		this.edgeDirection = null;
 		this.quadrant = null;
 		this.angle = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 4:
-					return ((...args) => {
-						let [from, to, directionPt, edgeDirection] = args;
-						this.from = from;
-						this.to = to;
-						this.edgeDirection = edgeDirection;
-						this.p0 = from.getCoordinate();
-						this.p1 = directionPt;
-						var dx = this.p1.x - this.p0.x;
-						var dy = this.p1.y - this.p0.y;
-						this.quadrant = Quadrant.quadrant(dx, dy);
-						this.angle = Math.atan2(dy, dx);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 4:
+				return ((...args) => {
+					let [from, to, directionPt, edgeDirection] = args;
+					this.from = from;
+					this.to = to;
+					this.edgeDirection = edgeDirection;
+					this.p0 = from.getCoordinate();
+					this.p1 = directionPt;
+					var dx = this.p1.x - this.p0.x;
+					var dy = this.p1.y - this.p0.y;
+					this.quadrant = Quadrant.quadrant(dx, dy);
+					this.angle = Math.atan2(dy, dx);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

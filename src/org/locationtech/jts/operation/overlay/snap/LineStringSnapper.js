@@ -10,13 +10,13 @@ export default class LineStringSnapper {
 		this.seg = new LineSegment();
 		this.allowSnappingToSourceVertices = false;
 		this._isClosed = false;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					if (args[0] instanceof LineString && typeof args[1] === "number") {
 						return ((...args) => {
 							let [srcLine, snapTolerance] = args;
-							overloads.call(this, srcLine.getCoordinates(), snapTolerance);
+							overloaded.call(this, srcLine.getCoordinates(), snapTolerance);
 						})(...args);
 					} else if (args[0] instanceof Array && typeof args[1] === "number") {
 						return ((...args) => {
@@ -28,7 +28,7 @@ export default class LineStringSnapper {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

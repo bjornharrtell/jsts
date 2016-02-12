@@ -27,20 +27,17 @@ export default class QuadEdgeSubdivision {
 		this.locator = null;
 		this.seg = new LineSegment();
 		this.triEdges = new Array(3);
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [env, tolerance] = args;
-						this.tolerance = tolerance;
-						this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
-						this.createFrame(env);
-						this.startingEdge = this.initSubdiv();
-						this.locator = new LastFoundQuadEdgeLocator(this);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [env, tolerance] = args;
+					this.tolerance = tolerance;
+					this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
+					this.createFrame(env);
+					this.startingEdge = this.initSubdiv();
+					this.locator = new LastFoundQuadEdgeLocator(this);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -207,28 +204,25 @@ export default class QuadEdgeSubdivision {
 		return this.triEdges;
 	}
 	getEdges(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return this.quadEdges;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [geomFact] = args;
-						var quadEdges = this.getPrimaryEdges(false);
-						var edges = new Array(quadEdges.size());
-						var i = 0;
-						for (var it = quadEdges.iterator(); it.hasNext(); ) {
-							var qe = it.next();
-							edges[i++] = geomFact.createLineString([qe.orig().getCoordinate(), qe.dest().getCoordinate()]);
-						}
-						return geomFact.createMultiLineString(edges);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return this.quadEdges;
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [geomFact] = args;
+					var quadEdges = this.getPrimaryEdges(false);
+					var edges = new Array(quadEdges.size());
+					var i = 0;
+					for (var it = quadEdges.iterator(); it.hasNext(); ) {
+						var qe = it.next();
+						edges[i++] = geomFact.createLineString([qe.orig().getCoordinate(), qe.dest().getCoordinate()]);
+					}
+					return geomFact.createMultiLineString(edges);
+				})(...args);
+		}
 	}
 	getVertexUniqueEdges(includeFrame) {
 		var edges = new ArrayList();
@@ -357,37 +351,34 @@ export default class QuadEdgeSubdivision {
 		return startEdge;
 	}
 	locate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Vertex) {
-						return ((...args) => {
-							let [v] = args;
-							return this.locator.locate(v);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.locator.locate(new Vertex(p));
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Vertex) {
 					return ((...args) => {
-						let [p0, p1] = args;
-						var e = this.locator.locate(new Vertex(p0));
-						if (e === null) return null;
-						var base = e;
-						if (e.dest().getCoordinate().equals2D(p0)) base = e.sym();
-						var locEdge = base;
-						do {
-							if (locEdge.dest().getCoordinate().equals2D(p1)) return locEdge;
-							locEdge = locEdge.oNext();
-						} while (locEdge !== base);
-						return null;
+						let [v] = args;
+						return this.locator.locate(v);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [p] = args;
+						return this.locator.locate(new Vertex(p));
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [p0, p1] = args;
+					var e = this.locator.locate(new Vertex(p0));
+					if (e === null) return null;
+					var base = e;
+					if (e.dest().getCoordinate().equals2D(p0)) base = e.sym();
+					var locEdge = base;
+					do {
+						if (locEdge.dest().getCoordinate().equals2D(p1)) return locEdge;
+						locEdge = locEdge.oNext();
+					} while (locEdge !== base);
+					return null;
+				})(...args);
+		}
 	}
 	getClass() {
 		return QuadEdgeSubdivision;
@@ -395,15 +386,12 @@ export default class QuadEdgeSubdivision {
 }
 class TriangleCircumcentreVisitor {
 	constructor(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [TriangleVisitor];
@@ -460,15 +448,12 @@ class TriangleCoordinatesVisitor {
 	constructor(...args) {
 		this.coordList = new CoordinateList();
 		this.triCoords = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [TriangleVisitor];

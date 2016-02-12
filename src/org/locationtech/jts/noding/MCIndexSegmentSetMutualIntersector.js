@@ -6,16 +6,13 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default class MCIndexSegmentSetMutualIntersector {
 	constructor(...args) {
 		this.index = new STRtree();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [baseSegStrings] = args;
-						this.initBaseSegments(baseSegStrings);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [baseSegStrings] = args;
+					this.initBaseSegments(baseSegStrings);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SegmentSetMutualIntersector];
@@ -73,16 +70,13 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
 	constructor(...args) {
 		super();
 		this.si = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [si] = args;
-						this.si = si;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [si] = args;
+					this.si = si;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

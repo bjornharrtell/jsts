@@ -6,16 +6,13 @@ export default class BufferInputLineSimplifier {
 		this.distanceTol = null;
 		this.isDeleted = null;
 		this.angleOrientation = CGAlgorithms.COUNTERCLOCKWISE;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [inputLine] = args;
-						this.inputLine = inputLine;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [inputLine] = args;
+					this.inputLine = inputLine;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -8,19 +8,16 @@ export default class GeometryCollectionIterator {
 		this.max = null;
 		this.index = null;
 		this.subcollectionIterator = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [parent] = args;
-						this.parent = parent;
-						this.atStart = true;
-						this.index = 0;
-						this.max = parent.getNumGeometries();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [parent] = args;
+					this.parent = parent;
+					this.atStart = true;
+					this.index = 0;
+					this.max = parent.getNumGeometries();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Iterator];

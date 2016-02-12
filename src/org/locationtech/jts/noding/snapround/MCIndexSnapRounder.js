@@ -16,19 +16,16 @@ export default class MCIndexSnapRounder {
 		this.noder = null;
 		this.pointSnapper = null;
 		this.nodedSegStrings = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pm] = args;
-						this.pm = pm;
-						this.li = new RobustLineIntersector();
-						this.li.setPrecisionModel(pm);
-						this.scaleFactor = pm.getScale();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pm] = args;
+					this.pm = pm;
+					this.li = new RobustLineIntersector();
+					this.li.setPrecisionModel(pm);
+					this.scaleFactor = pm.getScale();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Noder];
@@ -59,33 +56,30 @@ export default class MCIndexSnapRounder {
 		return intFinderAdder.getInteriorIntersections();
 	}
 	computeVertexSnaps(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [edges] = args;
-							for (var i0 = edges.iterator(); i0.hasNext(); ) {
-								var edge0 = i0.next();
-								this.computeVertexSnaps(edge0);
+		switch (args.length) {
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					return ((...args) => {
+						let [edges] = args;
+						for (var i0 = edges.iterator(); i0.hasNext(); ) {
+							var edge0 = i0.next();
+							this.computeVertexSnaps(edge0);
+						}
+					})(...args);
+				} else if (args[0] instanceof NodedSegmentString) {
+					return ((...args) => {
+						let [e] = args;
+						var pts0 = e.getCoordinates();
+						for (var i = 0; i < pts0.length; i++) {
+							var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
+							var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
+							if (isNodeAdded) {
+								e.addIntersection(pts0[i], i);
 							}
-						})(...args);
-					} else if (args[0] instanceof NodedSegmentString) {
-						return ((...args) => {
-							let [e] = args;
-							var pts0 = e.getCoordinates();
-							for (var i = 0; i < pts0.length; i++) {
-								var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
-								var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
-								if (isNodeAdded) {
-									e.addIntersection(pts0[i], i);
-								}
-							}
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+						}
+					})(...args);
+				}
+		}
 	}
 	computeNodes(inputSegmentStrings) {
 		this.nodedSegStrings = inputSegmentStrings;

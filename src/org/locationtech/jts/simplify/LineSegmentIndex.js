@@ -7,15 +7,12 @@ import TaggedLineString from './TaggedLineString';
 export default class LineSegmentIndex {
 	constructor(...args) {
 		this.index = new Quadtree();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -24,27 +21,24 @@ export default class LineSegmentIndex {
 		this.index.remove(new Envelope(seg.p0, seg.p1), seg);
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof TaggedLineString) {
-						return ((...args) => {
-							let [line] = args;
-							var segs = line.getSegments();
-							for (var i = 0; i < segs.length; i++) {
-								var seg = segs[i];
-								this.add(seg);
-							}
-						})(...args);
-					} else if (args[0] instanceof LineSegment) {
-						return ((...args) => {
-							let [seg] = args;
-							this.index.insert(new Envelope(seg.p0, seg.p1), seg);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof TaggedLineString) {
+					return ((...args) => {
+						let [line] = args;
+						var segs = line.getSegments();
+						for (var i = 0; i < segs.length; i++) {
+							var seg = segs[i];
+							this.add(seg);
+						}
+					})(...args);
+				} else if (args[0] instanceof LineSegment) {
+					return ((...args) => {
+						let [seg] = args;
+						this.index.insert(new Envelope(seg.p0, seg.p1), seg);
+					})(...args);
+				}
+		}
 	}
 	query(querySeg) {
 		var env = new Envelope(querySeg.p0, querySeg.p1);
@@ -61,16 +55,13 @@ class LineSegmentVisitor {
 	constructor(...args) {
 		this.querySeg = null;
 		this.items = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [querySeg] = args;
-						this.querySeg = querySeg;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [querySeg] = args;
+					this.querySeg = querySeg;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [ItemVisitor];

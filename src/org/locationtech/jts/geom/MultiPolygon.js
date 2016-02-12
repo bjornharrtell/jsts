@@ -5,16 +5,13 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default class MultiPolygon extends GeometryCollection {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [polygons, factory] = args;
-						super(polygons, factory);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [polygons, factory] = args;
+					super(polygons, factory);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Polygonal];

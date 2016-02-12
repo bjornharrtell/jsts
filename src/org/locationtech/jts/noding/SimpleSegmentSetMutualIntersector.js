@@ -2,16 +2,13 @@ import SegmentSetMutualIntersector from './SegmentSetMutualIntersector';
 export default class SimpleSegmentSetMutualIntersector {
 	constructor(...args) {
 		this.baseSegStrings = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [segStrings] = args;
-						this.baseSegStrings = segStrings;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [segStrings] = args;
+					this.baseSegStrings = segStrings;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SegmentSetMutualIntersector];

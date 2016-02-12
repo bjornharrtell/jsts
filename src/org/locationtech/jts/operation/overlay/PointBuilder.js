@@ -5,17 +5,14 @@ export default class PointBuilder {
 		this.op = null;
 		this.geometryFactory = null;
 		this.resultPointList = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [op, geometryFactory, ptLocator] = args;
-						this.op = op;
-						this.geometryFactory = geometryFactory;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [op, geometryFactory, ptLocator] = args;
+					this.op = op;
+					this.geometryFactory = geometryFactory;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

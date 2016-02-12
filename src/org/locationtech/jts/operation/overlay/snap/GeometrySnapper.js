@@ -7,16 +7,13 @@ import Polygonal from '../../../geom/Polygonal';
 export default class GeometrySnapper {
 	constructor(...args) {
 		this.srcGeom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [srcGeom] = args;
-						this.srcGeom = srcGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [srcGeom] = args;
+					this.srcGeom = srcGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -30,27 +27,24 @@ export default class GeometrySnapper {
 		return snapGeom;
 	}
 	static computeOverlaySnapTolerance(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [g] = args;
-						var snapTolerance = GeometrySnapper.computeSizeBasedSnapTolerance(g);
-						var pm = g.getPrecisionModel();
-						if (pm.getType() === PrecisionModel.FIXED) {
-							var fixedSnapTol = 1 / pm.getScale() * 2 / 1.415;
-							if (fixedSnapTol > snapTolerance) snapTolerance = fixedSnapTol;
-						}
-						return snapTolerance;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [g0, g1] = args;
-						return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1));
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [g] = args;
+					var snapTolerance = GeometrySnapper.computeSizeBasedSnapTolerance(g);
+					var pm = g.getPrecisionModel();
+					if (pm.getType() === PrecisionModel.FIXED) {
+						var fixedSnapTol = 1 / pm.getScale() * 2 / 1.415;
+						if (fixedSnapTol > snapTolerance) snapTolerance = fixedSnapTol;
+					}
+					return snapTolerance;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [g0, g1] = args;
+					return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1));
+				})(...args);
+		}
 	}
 	static computeSizeBasedSnapTolerance(g) {
 		var env = g.getEnvelopeInternal();
@@ -109,7 +103,7 @@ class SnapTransformer extends GeometryTransformer {
 		this.snapTolerance = null;
 		this.snapPts = null;
 		this.isSelfSnap = false;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
@@ -126,7 +120,7 @@ class SnapTransformer extends GeometryTransformer {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

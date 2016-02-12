@@ -7,16 +7,13 @@ export default class BufferCurveMaximumDistanceFinder {
 	constructor(...args) {
 		this.inputGeom = null;
 		this.maxPtDist = new PointPairDistance();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [inputGeom] = args;
-						this.inputGeom = inputGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [inputGeom] = args;
+					this.inputGeom = inputGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -54,16 +51,13 @@ class MaxPointDistanceFilter {
 		this.maxPtDist = new PointPairDistance();
 		this.minPtDist = new PointPairDistance();
 		this.geom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.geom = geom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom] = args;
+					this.geom = geom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [CoordinateFilter];
@@ -85,16 +79,13 @@ class MaxMidpointDistanceFilter {
 		this.maxPtDist = new PointPairDistance();
 		this.minPtDist = new PointPairDistance();
 		this.geom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.geom = geom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom] = args;
+					this.geom = geom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [CoordinateSequenceFilter];

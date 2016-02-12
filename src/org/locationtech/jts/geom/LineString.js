@@ -14,17 +14,14 @@ export default class LineString extends Geometry {
 	constructor(...args) {
 		super();
 		this.points = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [points, factory] = args;
-						super(factory);
-						this.init(points);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [points, factory] = args;
+					super(factory);
+					this.init(points);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Lineal];
@@ -111,75 +108,69 @@ export default class LineString extends Geometry {
 		return revLine;
 	}
 	compareToSameClass(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [o] = args;
-						var line = o;
-						var i = 0;
-						var j = 0;
-						while (i < this.points.size() && j < line.points.size()) {
-							var comparison = this.points.getCoordinate(i).compareTo(line.points.getCoordinate(j));
-							if (comparison !== 0) {
-								return comparison;
-							}
-							i++;
-							j++;
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [o] = args;
+					var line = o;
+					var i = 0;
+					var j = 0;
+					while (i < this.points.size() && j < line.points.size()) {
+						var comparison = this.points.getCoordinate(i).compareTo(line.points.getCoordinate(j));
+						if (comparison !== 0) {
+							return comparison;
 						}
-						if (i < this.points.size()) {
-							return 1;
-						}
-						if (j < line.points.size()) {
-							return -1;
-						}
-						return 0;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [o, comp] = args;
-						var line = o;
-						return comp.compare(this.points, line.points);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+						i++;
+						j++;
+					}
+					if (i < this.points.size()) {
+						return 1;
+					}
+					if (j < line.points.size()) {
+						return -1;
+					}
+					return 0;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [o, comp] = args;
+					var line = o;
+					return comp.compare(this.points, line.points);
+				})(...args);
+		}
 	}
 	apply(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							for (var i = 0; i < this.points.size(); i++) {
-								filter.filter(this.points.getCoordinate(i));
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							if (this.points.size() === 0) return null;
-							for (var i = 0; i < this.points.size(); i++) {
-								filter.filter(this.points, i);
-								if (filter.isDone()) break;
-							}
-							if (filter.isGeometryChanged()) this.geometryChanged();
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							filter.filter(this);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							filter.filter(this);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						for (var i = 0; i < this.points.size(); i++) {
+							filter.filter(this.points.getCoordinate(i));
+						}
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						if (this.points.size() === 0) return null;
+						for (var i = 0; i < this.points.size(); i++) {
+							filter.filter(this.points, i);
+							if (filter.isDone()) break;
+						}
+						if (filter.isGeometryChanged()) this.geometryChanged();
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						filter.filter(this);
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						filter.filter(this);
+					})(...args);
+				}
+		}
 	}
 	getBoundary() {
 		return new BoundaryOp(this).getBoundary();

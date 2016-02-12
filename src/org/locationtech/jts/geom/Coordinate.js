@@ -58,24 +58,29 @@ export default class Coordinate {
 		}
 	}
 	equals2D(...args) {
-		if (args.length === 1) {
-			let [other] = args;
-			if (this.x !== other.x) {
-				return false;
-			}
-			if (this.y !== other.y) {
-				return false;
-			}
-			return true;
-		} else {
-			let [c, tolerance] = args;
-			if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
-				return false;
-			}
-			if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
-				return false;
-			}
-			return true;
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [other] = args;
+					if (this.x !== other.x) {
+						return false;
+					}
+					if (this.y !== other.y) {
+						return false;
+					}
+					return true;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [c, tolerance] = args;
+					if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
+						return false;
+					}
+					if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
+						return false;
+					}
+					return true;
+				})(...args);
 		}
 	}
 	getOrdinate(ordinateIndex) {
@@ -155,12 +160,12 @@ export default class Coordinate {
 class DimensionalComparator {
 	constructor(...args) {
 		this.dimensionsToTest = 2;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, 2);
+						overloaded.call(this, 2);
 					})(...args);
 				case 1:
 					return ((...args) => {
@@ -170,7 +175,7 @@ class DimensionalComparator {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparator];

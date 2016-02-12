@@ -8,17 +8,14 @@ import MultiLineString from '../geom/MultiLineString';
 export default class LocationIndexedLine {
 	constructor(...args) {
 		this.linearGeom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [linearGeom] = args;
-						this.linearGeom = linearGeom;
-						this.checkGeometryType();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [linearGeom] = args;
+					this.linearGeom = linearGeom;
+					this.checkGeometryType();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -35,22 +32,19 @@ export default class LocationIndexedLine {
 		if (!(this.linearGeom instanceof LineString || this.linearGeom instanceof MultiLineString)) throw new IllegalArgumentException("Input geometry must be linear");
 	}
 	extractPoint(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [index] = args;
-						return index.getCoordinate(this.linearGeom);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [index, offsetDistance] = args;
-						var indexLow = index.toLowest(this.linearGeom);
-						return indexLow.getSegment(this.linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [index] = args;
+					return index.getCoordinate(this.linearGeom);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [index, offsetDistance] = args;
+					var indexLow = index.toLowest(this.linearGeom);
+					return indexLow.getSegment(this.linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
+				})(...args);
+		}
 	}
 	isValidIndex(index) {
 		return index.isValid(this.linearGeom);

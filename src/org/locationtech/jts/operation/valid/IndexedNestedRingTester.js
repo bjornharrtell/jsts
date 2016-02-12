@@ -10,16 +10,13 @@ export default class IndexedNestedRingTester {
 		this.totalEnv = new Envelope();
 		this.index = null;
 		this.nestedPt = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [graph] = args;
-						this.graph = graph;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [graph] = args;
+					this.graph = graph;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

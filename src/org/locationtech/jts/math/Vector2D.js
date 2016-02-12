@@ -6,12 +6,12 @@ export default class Vector2D {
 	constructor(...args) {
 		this.x = null;
 		this.y = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, 0.0, 0.0);
+						overloaded.call(this, 0.0, 0.0);
 					})(...args);
 				case 1:
 					if (args[0] instanceof Vector2D) {
@@ -43,41 +43,38 @@ export default class Vector2D {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
 	}
 	static create(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Vector2D) {
-						return ((...args) => {
-							let [v] = args;
-							return new Vector2D(v);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							return new Vector2D(coord);
-						})(...args);
-					}
-				case 2:
-					if (typeof args[0] === "number" && typeof args[1] === "number") {
-						return ((...args) => {
-							let [x, y] = args;
-							return new Vector2D(x, y);
-						})(...args);
-					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-						return ((...args) => {
-							let [from, to] = args;
-							return new Vector2D(from, to);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Vector2D) {
+					return ((...args) => {
+						let [v] = args;
+						return new Vector2D(v);
+					})(...args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [coord] = args;
+						return new Vector2D(coord);
+					})(...args);
+				}
+			case 2:
+				if (typeof args[0] === "number" && typeof args[1] === "number") {
+					return ((...args) => {
+						let [x, y] = args;
+						return new Vector2D(x, y);
+					})(...args);
+				} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+					return ((...args) => {
+						let [from, to] = args;
+						return new Vector2D(from, to);
+					})(...args);
+				}
+		}
 	}
 	dot(v) {
 		return this.x * v.x + this.y * v.y;
@@ -105,21 +102,18 @@ export default class Vector2D {
 		return Vector2D.create(0.0, 0.0);
 	}
 	angle(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return Math.atan2(this.y, this.x);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [v] = args;
-						return Angle.diff(v.angle(), this.angle());
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return Math.atan2(this.y, this.x);
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [v] = args;
+					return Angle.diff(v.angle(), this.angle());
+				})(...args);
+		}
 	}
 	weightedSum(v, frac) {
 		return Vector2D.create(frac * this.x + (1.0 - frac) * v.x, frac * this.y + (1.0 - frac) * v.y);

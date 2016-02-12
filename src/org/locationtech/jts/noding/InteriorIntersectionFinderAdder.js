@@ -4,17 +4,14 @@ export default class InteriorIntersectionFinderAdder {
 	constructor(...args) {
 		this.li = null;
 		this.interiorIntersections = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [li] = args;
-						this.li = li;
-						this.interiorIntersections = new ArrayList();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [li] = args;
+					this.li = li;
+					this.interiorIntersections = new ArrayList();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SegmentIntersector];

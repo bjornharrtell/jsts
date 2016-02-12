@@ -6,16 +6,13 @@ import ExtractLineByLocation from './ExtractLineByLocation';
 export default class LengthIndexedLine {
 	constructor(...args) {
 		this.linearGeom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [linearGeom] = args;
-						this.linearGeom = linearGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [linearGeom] = args;
+					this.linearGeom = linearGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -29,21 +26,18 @@ export default class LengthIndexedLine {
 		return posIndex;
 	}
 	locationOf(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [index] = args;
-						return LengthLocationMap.getLocation(this.linearGeom, index);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [index, resolveLower] = args;
-						return LengthLocationMap.getLocation(this.linearGeom, index, resolveLower);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [index] = args;
+					return LengthLocationMap.getLocation(this.linearGeom, index);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [index, resolveLower] = args;
+					return LengthLocationMap.getLocation(this.linearGeom, index, resolveLower);
+				})(...args);
+		}
 	}
 	project(pt) {
 		return LengthIndexOfPoint.indexOf(this.linearGeom, pt);
@@ -53,24 +47,21 @@ export default class LengthIndexedLine {
 		return this.linearGeom.getLength() + index;
 	}
 	extractPoint(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [index] = args;
-						var loc = LengthLocationMap.getLocation(this.linearGeom, index);
-						return loc.getCoordinate(this.linearGeom);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [index, offsetDistance] = args;
-						var loc = LengthLocationMap.getLocation(this.linearGeom, index);
-						var locLow = loc.toLowest(this.linearGeom);
-						return locLow.getSegment(this.linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [index] = args;
+					var loc = LengthLocationMap.getLocation(this.linearGeom, index);
+					return loc.getCoordinate(this.linearGeom);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [index, offsetDistance] = args;
+					var loc = LengthLocationMap.getLocation(this.linearGeom, index);
+					var locLow = loc.toLowest(this.linearGeom);
+					return locLow.getSegment(this.linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance);
+				})(...args);
+		}
 	}
 	isValidIndex(index) {
 		return index >= this.getStartIndex() && index <= this.getEndIndex();

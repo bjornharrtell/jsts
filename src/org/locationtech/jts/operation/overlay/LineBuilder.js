@@ -8,18 +8,15 @@ export default class LineBuilder {
 		this.ptLocator = null;
 		this.lineEdgesList = new ArrayList();
 		this.resultLineList = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [op, geometryFactory, ptLocator] = args;
-						this.op = op;
-						this.geometryFactory = geometryFactory;
-						this.ptLocator = ptLocator;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [op, geometryFactory, ptLocator] = args;
+					this.op = op;
+					this.geometryFactory = geometryFactory;
+					this.ptLocator = ptLocator;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

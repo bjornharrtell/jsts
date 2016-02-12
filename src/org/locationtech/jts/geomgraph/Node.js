@@ -6,18 +6,15 @@ export default class Node extends GraphComponent {
 		super();
 		this.coord = null;
 		this.edges = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [coord, edges] = args;
-						this.coord = coord;
-						this.edges = edges;
-						this.label = new Label(0, Location.NONE);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [coord, edges] = args;
+					this.coord = coord;
+					this.edges = edges;
+					this.label = new Label(0, Location.NONE);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -60,27 +57,24 @@ export default class Node extends GraphComponent {
 		return this.edges;
 	}
 	mergeLabel(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Node) {
-						return ((...args) => {
-							let [n] = args;
-							this.mergeLabel(n.label);
-						})(...args);
-					} else if (args[0] instanceof Label) {
-						return ((...args) => {
-							let [label2] = args;
-							for (var i = 0; i < 2; i++) {
-								var loc = this.computeMergedLocation(label2, i);
-								var thisLoc = this.label.getLocation(i);
-								if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
-							}
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Node) {
+					return ((...args) => {
+						let [n] = args;
+						this.mergeLabel(n.label);
+					})(...args);
+				} else if (args[0] instanceof Label) {
+					return ((...args) => {
+						let [label2] = args;
+						for (var i = 0; i < 2; i++) {
+							var loc = this.computeMergedLocation(label2, i);
+							var thisLoc = this.label.getLocation(i);
+							if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
+						}
+					})(...args);
+				}
+		}
 	}
 	add(e) {
 		this.edges.insert(e);

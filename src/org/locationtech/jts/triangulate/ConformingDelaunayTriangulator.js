@@ -27,18 +27,15 @@ export default class ConformingDelaunayTriangulator {
 		this.computeAreaEnv = null;
 		this.splitPt = null;
 		this.tolerance = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [initialVertices, tolerance] = args;
-						this.initialVertices = new ArrayList(initialVertices);
-						this.tolerance = tolerance;
-						this.kdt = new KdTree(tolerance);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [initialVertices, tolerance] = args;
+					this.initialVertices = new ArrayList(initialVertices);
+					this.tolerance = tolerance;
+					this.kdt = new KdTree(tolerance);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -171,26 +168,23 @@ export default class ConformingDelaunayTriangulator {
 		return splits;
 	}
 	createVertex(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [p] = args;
-						var v = null;
-						if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p);
-						return v;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [p, seg] = args;
-						var v = null;
-						if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p);
-						v.setOnConstraint(true);
-						return v;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [p] = args;
+					var v = null;
+					if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p);
+					return v;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [p, seg] = args;
+					var v = null;
+					if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p);
+					v.setOnConstraint(true);
+					return v;
+				})(...args);
+		}
 	}
 	getSubdivision() {
 		return this.subdiv;
@@ -217,31 +211,28 @@ export default class ConformingDelaunayTriangulator {
 		this.insertSites(this.initialVertices);
 	}
 	insertSite(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof ConstraintVertex) {
-						return ((...args) => {
-							let [v] = args;
-							var kdnode = this.kdt.insert(v.getCoordinate(), v);
-							if (!kdnode.isRepeated()) {
-								this.incDel.insertSite(v);
-							} else {
-								var snappedV = kdnode.getData();
-								snappedV.merge(v);
-								return snappedV;
-							}
-							return v;
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							this.insertSite(this.createVertex(p));
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof ConstraintVertex) {
+					return ((...args) => {
+						let [v] = args;
+						var kdnode = this.kdt.insert(v.getCoordinate(), v);
+						if (!kdnode.isRepeated()) {
+							this.incDel.insertSite(v);
+						} else {
+							var snappedV = kdnode.getData();
+							snappedV.merge(v);
+							return snappedV;
+						}
+						return v;
+					})(...args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [p] = args;
+						this.insertSite(this.createVertex(p));
+					})(...args);
+				}
+		}
 	}
 	getClass() {
 		return ConformingDelaunayTriangulator;

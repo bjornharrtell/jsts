@@ -3,16 +3,13 @@ import PointInRing from './PointInRing';
 export default class SimplePointInRing {
 	constructor(...args) {
 		this.pts = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [ring] = args;
-						this.pts = ring.getCoordinates();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [ring] = args;
+					this.pts = ring.getCoordinates();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [PointInRing];

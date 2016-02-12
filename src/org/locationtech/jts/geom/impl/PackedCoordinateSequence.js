@@ -20,24 +20,21 @@ export default class PackedCoordinateSequence {
 		return Float;
 	}
 	getCoordinate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [i] = args;
-						var coords = this.getCachedCoords();
-						if (coords !== null) return coords[i]; else return this.getCoordinateInternal(i);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [i, coord] = args;
-						coord.x = this.getOrdinate(i, 0);
-						coord.y = this.getOrdinate(i, 1);
-						if (this.dimension > 2) coord.z = this.getOrdinate(i, 2);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [i] = args;
+					var coords = this.getCachedCoords();
+					if (coords !== null) return coords[i]; else return this.getCoordinateInternal(i);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [i, coord] = args;
+					coord.x = this.getOrdinate(i, 0);
+					coord.y = this.getOrdinate(i, 1);
+					if (this.dimension > 2) coord.z = this.getOrdinate(i, 2);
+				})(...args);
+		}
 	}
 	setX(index, value) {
 		this.coordRef = null;
@@ -93,12 +90,12 @@ class Double extends PackedCoordinateSequence {
 	constructor(...args) {
 		super();
 		this.coords = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [coordinates] = args;
-						overloads.call(this, coordinates, 3);
+						overloaded.call(this, coordinates, 3);
 					})(...args);
 				case 2:
 					if (args[0] instanceof Array && Number.isInteger(args[1])) {
@@ -143,7 +140,7 @@ class Double extends PackedCoordinateSequence {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -191,7 +188,7 @@ class Float extends PackedCoordinateSequence {
 	constructor(...args) {
 		super();
 		this.coords = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					if (args[0] instanceof Array && Number.isInteger(args[1])) {
@@ -236,7 +233,7 @@ class Float extends PackedCoordinateSequence {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

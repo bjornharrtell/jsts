@@ -16,16 +16,13 @@ export default class RelateComputer {
 		this.im = null;
 		this.isolatedEdges = new ArrayList();
 		this.invalidPoint = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [arg] = args;
-						this.arg = arg;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [arg] = args;
+					this.arg = arg;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

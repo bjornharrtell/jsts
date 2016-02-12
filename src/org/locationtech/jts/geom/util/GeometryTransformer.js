@@ -17,15 +17,12 @@ export default class GeometryTransformer {
 		this.preserveGeometryCollectionType = true;
 		this.preserveCollections = false;
 		this.preserveType = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

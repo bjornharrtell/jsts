@@ -6,7 +6,7 @@ export default class BufferParameters {
 		this.mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
 		this._isSingleSided = false;
 		this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -33,7 +33,7 @@ export default class BufferParameters {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

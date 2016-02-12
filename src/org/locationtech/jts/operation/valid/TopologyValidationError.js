@@ -2,12 +2,12 @@ export default class TopologyValidationError {
 	constructor(...args) {
 		this.errorType = null;
 		this.pt = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [errorType] = args;
-						overloads.call(this, errorType, null);
+						overloaded.call(this, errorType, null);
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -17,7 +17,7 @@ export default class TopologyValidationError {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

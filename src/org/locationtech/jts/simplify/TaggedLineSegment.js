@@ -4,12 +4,12 @@ export default class TaggedLineSegment extends LineSegment {
 		super();
 		this.parent = null;
 		this.index = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
 						let [p0, p1] = args;
-						overloads.call(this, p0, p1, null, -1);
+						overloaded.call(this, p0, p1, null, -1);
 					})(...args);
 				case 4:
 					return ((...args) => {
@@ -20,7 +20,7 @@ export default class TaggedLineSegment extends LineSegment {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

@@ -6,17 +6,14 @@ export default class BasicSegmentString {
 	constructor(...args) {
 		this.pts = null;
 		this.data = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [pts, data] = args;
-						this.pts = pts;
-						this.data = data;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [pts, data] = args;
+					this.pts = pts;
+					this.data = data;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SegmentString];

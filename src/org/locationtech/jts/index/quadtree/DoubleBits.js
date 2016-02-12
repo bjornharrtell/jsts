@@ -4,17 +4,14 @@ export default class DoubleBits {
 	constructor(...args) {
 		this.x = null;
 		this.xBits = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [x] = args;
-						this.x = x;
-						this.xBits = Double.doubleToLongBits(x);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [x] = args;
+					this.x = x;
+					this.xBits = Double.doubleToLongBits(x);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -5,16 +5,13 @@ export default class PolygonizeDirectedEdge extends DirectedEdge {
 		this.edgeRing = null;
 		this.next = null;
 		this.label = -1;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 4:
-					return ((...args) => {
-						let [from, to, directionPt, edgeDirection] = args;
-						super(from, to, directionPt, edgeDirection);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 4:
+				return ((...args) => {
+					let [from, to, directionPt, edgeDirection] = args;
+					super(from, to, directionPt, edgeDirection);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

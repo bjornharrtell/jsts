@@ -221,35 +221,32 @@ export default class LineSequencer {
 		return this._isSequenceable;
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [geometries] = args;
-							for (var i = geometries.iterator(); i.hasNext(); ) {
-								var geometry = i.next();
-								this.add(geometry);
+		switch (args.length) {
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					return ((...args) => {
+						let [geometries] = args;
+						for (var i = geometries.iterator(); i.hasNext(); ) {
+							var geometry = i.next();
+							this.add(geometry);
+						}
+					})(...args);
+				} else if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [geometry] = args;
+						geometry.apply(new (class {
+							filter(component) {
+								if (component instanceof LineString) {
+									this.addLine(component);
+								}
 							}
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geometry] = args;
-							geometry.apply(new (class {
-								filter(component) {
-									if (component instanceof LineString) {
-										this.addLine(component);
-									}
-								}
-								get interfaces_() {
-									return [GeometryComponentFilter];
-								}
-							})());
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+							get interfaces_() {
+								return [GeometryComponentFilter];
+							}
+						})());
+					})(...args);
+				}
+		}
 	}
 	getClass() {
 		return LineSequencer;

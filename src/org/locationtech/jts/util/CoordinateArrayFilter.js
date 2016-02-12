@@ -3,16 +3,13 @@ export default class CoordinateArrayFilter {
 	constructor(...args) {
 		this.pts = null;
 		this.n = 0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [size] = args;
-						this.pts = new Array(size);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [size] = args;
+					this.pts = new Array(size);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [CoordinateFilter];

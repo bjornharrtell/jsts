@@ -12,18 +12,15 @@ export default class BufferResultValidator {
 		this.errorMsg = null;
 		this.errorLocation = null;
 		this.errorIndicator = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [input, distance, result] = args;
-						this.input = input;
-						this.distance = distance;
-						this.result = result;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [input, distance, result] = args;
+					this.input = input;
+					this.distance = distance;
+					this.result = result;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

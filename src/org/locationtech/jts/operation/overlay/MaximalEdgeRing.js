@@ -4,16 +4,13 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default class MaximalEdgeRing extends EdgeRing {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [start, geometryFactory] = args;
-						super(start, geometryFactory);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [start, geometryFactory] = args;
+					super(start, geometryFactory);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -4,15 +4,12 @@ import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
 export default class CoordinateArraySequenceFactory {
 	constructor(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [CoordinateSequenceFactory, Serializable];
@@ -24,30 +21,27 @@ export default class CoordinateArraySequenceFactory {
 		return CoordinateArraySequenceFactory.instance();
 	}
 	create(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return new CoordinateArraySequence(coordinates);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordSeq] = args;
-							return new CoordinateArraySequence(coordSeq);
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Array) {
 					return ((...args) => {
-						let [size, dimension] = args;
-						if (dimension > 3) dimension = 3;
-						if (dimension < 2) return new CoordinateArraySequence(size);
-						return new CoordinateArraySequence(size, dimension);
+						let [coordinates] = args;
+						return new CoordinateArraySequence(coordinates);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [coordSeq] = args;
+						return new CoordinateArraySequence(coordSeq);
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [size, dimension] = args;
+					if (dimension > 3) dimension = 3;
+					if (dimension < 2) return new CoordinateArraySequence(size);
+					return new CoordinateArraySequence(size, dimension);
+				})(...args);
+		}
 	}
 	getClass() {
 		return CoordinateArraySequenceFactory;

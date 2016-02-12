@@ -3,18 +3,15 @@ export default class SweepLineSegment {
 		this.edge = null;
 		this.pts = null;
 		this.ptIndex = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [edge, ptIndex] = args;
-						this.edge = edge;
-						this.ptIndex = ptIndex;
-						this.pts = edge.getCoordinates();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [edge, ptIndex] = args;
+					this.edge = edge;
+					this.ptIndex = ptIndex;
+					this.pts = edge.getCoordinates();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

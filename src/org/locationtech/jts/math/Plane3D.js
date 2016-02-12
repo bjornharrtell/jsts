@@ -5,17 +5,14 @@ export default class Plane3D {
 	constructor(...args) {
 		this.normal = null;
 		this.basePt = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [normal, basePt] = args;
-						this.normal = normal;
-						this.basePt = basePt;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [normal, basePt] = args;
+					this.normal = normal;
+					this.basePt = basePt;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

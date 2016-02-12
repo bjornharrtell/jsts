@@ -9,15 +9,12 @@ import Envelope from '../geom/Envelope';
 import RayCrossingCounter from './RayCrossingCounter';
 export default class CGAlgorithms {
 	constructor(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -26,50 +23,47 @@ export default class CGAlgorithms {
 		return CGAlgorithmsDD.orientationIndex(p1, p2, q);
 	}
 	static signedArea(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [ring] = args;
-							if (ring.length < 3) return 0.0;
-							var sum = 0.0;
-							var x0 = ring[0].x;
-							for (var i = 1; i < ring.length - 1; i++) {
-								var x = ring[i].x - x0;
-								var y1 = ring[i + 1].y;
-								var y2 = ring[i - 1].y;
-								sum += x * (y2 - y1);
-							}
-							return sum / 2.0;
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [ring] = args;
-							var n = ring.size();
-							if (n < 3) return 0.0;
-							var p0 = new Coordinate();
-							var p1 = new Coordinate();
-							var p2 = new Coordinate();
-							ring.getCoordinate(0, p1);
-							ring.getCoordinate(1, p2);
-							var x0 = p1.x;
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Array) {
+					return ((...args) => {
+						let [ring] = args;
+						if (ring.length < 3) return 0.0;
+						var sum = 0.0;
+						var x0 = ring[0].x;
+						for (var i = 1; i < ring.length - 1; i++) {
+							var x = ring[i].x - x0;
+							var y1 = ring[i + 1].y;
+							var y2 = ring[i - 1].y;
+							sum += x * (y2 - y1);
+						}
+						return sum / 2.0;
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [ring] = args;
+						var n = ring.size();
+						if (n < 3) return 0.0;
+						var p0 = new Coordinate();
+						var p1 = new Coordinate();
+						var p2 = new Coordinate();
+						ring.getCoordinate(0, p1);
+						ring.getCoordinate(1, p2);
+						var x0 = p1.x;
+						p2.x -= x0;
+						var sum = 0.0;
+						for (var i = 1; i < n - 1; i++) {
+							p0.y = p1.y;
+							p1.x = p2.x;
+							p1.y = p2.y;
+							ring.getCoordinate(i + 1, p2);
 							p2.x -= x0;
-							var sum = 0.0;
-							for (var i = 1; i < n - 1; i++) {
-								p0.y = p1.y;
-								p1.x = p2.x;
-								p1.y = p2.y;
-								ring.getCoordinate(i + 1, p2);
-								p2.x -= x0;
-								sum += p1.x * (p0.y - p2.y);
-							}
-							return sum / 2.0;
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+							sum += p1.x * (p0.y - p2.y);
+						}
+						return sum / 2.0;
+					})(...args);
+				}
+		}
 	}
 	static distanceLineLine(A, B, C, D) {
 		if (A.equals(B)) return CGAlgorithms.distancePointLine(A, C, D);
@@ -164,35 +158,32 @@ export default class CGAlgorithms {
 		return len;
 	}
 	static distancePointLine(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [p, line] = args;
-						if (line.length === 0) throw new IllegalArgumentException("Line array must contain at least one vertex");
-						var minDistance = p.distance(line[0]);
-						for (var i = 0; i < line.length - 1; i++) {
-							var dist = CGAlgorithms.distancePointLine(p, line[i], line[i + 1]);
-							if (dist < minDistance) {
-								minDistance = dist;
-							}
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [p, line] = args;
+					if (line.length === 0) throw new IllegalArgumentException("Line array must contain at least one vertex");
+					var minDistance = p.distance(line[0]);
+					for (var i = 0; i < line.length - 1; i++) {
+						var dist = CGAlgorithms.distancePointLine(p, line[i], line[i + 1]);
+						if (dist < minDistance) {
+							minDistance = dist;
 						}
-						return minDistance;
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [p, A, B] = args;
-						if (A.x === B.x && A.y === B.y) return p.distance(A);
-						var len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y);
-						var r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y)) / len2;
-						if (r <= 0.0) return p.distance(A);
-						if (r >= 1.0) return p.distance(B);
-						var s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2;
-						return Math.abs(s) * Math.sqrt(len2);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+					}
+					return minDistance;
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [p, A, B] = args;
+					if (A.x === B.x && A.y === B.y) return p.distance(A);
+					var len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y);
+					var r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y)) / len2;
+					if (r <= 0.0) return p.distance(A);
+					if (r >= 1.0) return p.distance(B);
+					var s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2;
+					return Math.abs(s) * Math.sqrt(len2);
+				})(...args);
+		}
 	}
 	static isOnLine(p, pt) {
 		var lineIntersector = new RobustLineIntersector();

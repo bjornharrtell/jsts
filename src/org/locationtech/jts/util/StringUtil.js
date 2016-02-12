@@ -19,36 +19,33 @@ export default class StringUtil {
 		return new String(ch);
 	}
 	static getStackTrace(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [t] = args;
-						var os = new ByteArrayOutputStream();
-						var ps = new PrintStream(os);
-						t.printStackTrace(ps);
-						return os.toString();
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [t, depth] = args;
-						var stackTrace = "";
-						var stringReader = new StringReader(StringUtil.getStackTrace(t));
-						var lineNumberReader = new LineNumberReader(stringReader);
-						for (var i = 0; i < depth; i++) {
-							try {
-								stackTrace += lineNumberReader.readLine() + StringUtil.NEWLINE;
-							} catch (e) {
-								if (e instanceof IOException) {
-									Assert.shouldNeverReachHere();
-								} else throw e;
-							} finally {}
-						}
-						return stackTrace;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [t] = args;
+					var os = new ByteArrayOutputStream();
+					var ps = new PrintStream(os);
+					t.printStackTrace(ps);
+					return os.toString();
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [t, depth] = args;
+					var stackTrace = "";
+					var stringReader = new StringReader(StringUtil.getStackTrace(t));
+					var lineNumberReader = new LineNumberReader(stringReader);
+					for (var i = 0; i < depth; i++) {
+						try {
+							stackTrace += lineNumberReader.readLine() + StringUtil.NEWLINE;
+						} catch (e) {
+							if (e instanceof IOException) {
+								Assert.shouldNeverReachHere();
+							} else throw e;
+						} finally {}
+					}
+					return stackTrace;
+				})(...args);
+		}
 	}
 	static split(s, separator) {
 		var separatorlen = separator.length;

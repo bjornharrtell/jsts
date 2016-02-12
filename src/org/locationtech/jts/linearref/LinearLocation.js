@@ -6,7 +6,7 @@ export default class LinearLocation {
 		this.componentIndex = 0;
 		this.segmentIndex = 0;
 		this.segmentFraction = 0.0;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -22,7 +22,7 @@ export default class LinearLocation {
 				case 2:
 					return ((...args) => {
 						let [segmentIndex, segmentFraction] = args;
-						overloads.call(this, 0, segmentIndex, segmentFraction);
+						overloaded.call(this, 0, segmentIndex, segmentFraction);
 					})(...args);
 				case 3:
 					return ((...args) => {
@@ -42,7 +42,7 @@ export default class LinearLocation {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparable];

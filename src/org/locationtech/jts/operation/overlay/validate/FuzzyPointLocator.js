@@ -12,18 +12,15 @@ export default class FuzzyPointLocator {
 		this.linework = null;
 		this.ptLocator = new PointLocator();
 		this.seg = new LineSegment();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [g, boundaryDistanceTolerance] = args;
-						this.g = g;
-						this.boundaryDistanceTolerance = boundaryDistanceTolerance;
-						this.linework = this.extractLinework(g);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [g, boundaryDistanceTolerance] = args;
+					this.g = g;
+					this.boundaryDistanceTolerance = boundaryDistanceTolerance;
+					this.linework = this.extractLinework(g);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -59,16 +56,13 @@ export default class FuzzyPointLocator {
 class PolygonalLineworkExtracter {
 	constructor(...args) {
 		this.linework = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.linework = new ArrayList();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					this.linework = new ArrayList();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [GeometryFilter];

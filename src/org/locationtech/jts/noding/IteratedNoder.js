@@ -9,18 +9,15 @@ export default class IteratedNoder {
 		this.li = null;
 		this.nodedSegStrings = null;
 		this.maxIter = IteratedNoder.MAX_ITER;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pm] = args;
-						this.li = new RobustLineIntersector();
-						this.pm = pm;
-						this.li.setPrecisionModel(pm);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pm] = args;
+					this.li = new RobustLineIntersector();
+					this.pm = pm;
+					this.li.setPrecisionModel(pm);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Noder];

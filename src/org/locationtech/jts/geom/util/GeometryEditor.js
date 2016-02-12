@@ -12,7 +12,7 @@ export default class GeometryEditor {
 	constructor(...args) {
 		this.factory = null;
 		this.isUserDataCopied = false;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -25,7 +25,7 @@ export default class GeometryEditor {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

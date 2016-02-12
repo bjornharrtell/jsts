@@ -6,16 +6,13 @@ export default class GeometricShapeBuilder {
 		this.extent = new Envelope(0, 1, 0, 1);
 		this.numPts = 0;
 		this.geomFactory = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geomFactory] = args;
-						this.geomFactory = geomFactory;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geomFactory] = args;
+					this.geomFactory = geomFactory;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

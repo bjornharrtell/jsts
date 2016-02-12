@@ -14,7 +14,7 @@ export default class FacetSequence {
 		this.p1 = new Coordinate();
 		this.q0 = new Coordinate();
 		this.q1 = new Coordinate();
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
@@ -32,7 +32,7 @@ export default class FacetSequence {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

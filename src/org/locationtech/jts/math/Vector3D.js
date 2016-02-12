@@ -4,7 +4,7 @@ export default class Vector3D {
 		this.x = null;
 		this.y = null;
 		this.z = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
@@ -29,7 +29,7 @@ export default class Vector3D {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -38,48 +38,42 @@ export default class Vector3D {
 		return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	}
 	static dot(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [v1, v2] = args;
-						return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [A, B, C, D] = args;
-						var ABx = B.x - A.x;
-						var ABy = B.y - A.y;
-						var ABz = B.z - A.z;
-						var CDx = D.x - C.x;
-						var CDy = D.y - C.y;
-						var CDz = D.z - C.z;
-						return ABx * CDx + ABy * CDy + ABz * CDz;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [v1, v2] = args;
+					return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+				})(...args);
+			case 4:
+				return ((...args) => {
+					let [A, B, C, D] = args;
+					var ABx = B.x - A.x;
+					var ABy = B.y - A.y;
+					var ABz = B.z - A.z;
+					var CDx = D.x - C.x;
+					var CDy = D.y - C.y;
+					var CDz = D.z - C.z;
+					return ABx * CDx + ABy * CDy + ABz * CDz;
+				})(...args);
+		}
 	}
 	static normalize(v) {
 		var len = Vector3D.length(v);
 		return new Coordinate(v.x / len, v.y / len, v.z / len);
 	}
 	static create(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [coord] = args;
-						return new Vector3D(coord);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [x, y, z] = args;
-						return new Vector3D(x, y, z);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [coord] = args;
+					return new Vector3D(coord);
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [x, y, z] = args;
+					return new Vector3D(x, y, z);
+				})(...args);
+		}
 	}
 	dot(v) {
 		return this.x * v.x + this.y * v.y + this.z * v.z;

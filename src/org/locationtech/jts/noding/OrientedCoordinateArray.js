@@ -4,17 +4,14 @@ export default class OrientedCoordinateArray {
 	constructor(...args) {
 		this.pts = null;
 		this._orientation = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pts] = args;
-						this.pts = pts;
-						this._orientation = OrientedCoordinateArray.orientation(pts);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pts] = args;
+					this.pts = pts;
+					this._orientation = OrientedCoordinateArray.orientation(pts);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

@@ -9,19 +9,16 @@ export default class Node extends NodeBase {
 		this.centrex = null;
 		this.centrey = null;
 		this.level = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [env, level] = args;
-						this.env = env;
-						this.level = level;
-						this.centrex = (env.getMinX() + env.getMaxX()) / 2;
-						this.centrey = (env.getMinY() + env.getMaxY()) / 2;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [env, level] = args;
+					this.env = env;
+					this.level = level;
+					this.centrex = (env.getMinX() + env.getMaxX()) / 2;
+					this.centrey = (env.getMinY() + env.getMaxY()) / 2;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -13,16 +13,13 @@ export default class ConnectedInteriorTester {
 		this.geometryFactory = new GeometryFactory();
 		this.geomGraph = null;
 		this.disconnectedRingcoord = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geomGraph] = args;
-						this.geomGraph = geomGraph;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geomGraph] = args;
+					this.geomGraph = geomGraph;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

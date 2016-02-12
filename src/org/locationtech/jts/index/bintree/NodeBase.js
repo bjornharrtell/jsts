@@ -3,15 +3,12 @@ export default class NodeBase {
 	constructor(...args) {
 		this.items = new ArrayList();
 		this.subnode = [null, null];
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

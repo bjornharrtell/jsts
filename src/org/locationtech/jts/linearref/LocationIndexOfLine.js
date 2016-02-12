@@ -2,16 +2,13 @@ import LocationIndexOfPoint from './LocationIndexOfPoint';
 export default class LocationIndexOfLine {
 	constructor(...args) {
 		this.linearGeom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [linearGeom] = args;
-						this.linearGeom = linearGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [linearGeom] = args;
+					this.linearGeom = linearGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

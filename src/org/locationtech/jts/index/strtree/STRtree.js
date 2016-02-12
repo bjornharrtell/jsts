@@ -17,12 +17,12 @@ import ItemDistance from './ItemDistance';
 export default class STRtree extends AbstractSTRtree {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, STRtree.DEFAULT_NODE_CAPACITY);
+						overloaded.call(this, STRtree.DEFAULT_NODE_CAPACITY);
 					})(...args);
 				case 1:
 					return ((...args) => {
@@ -31,7 +31,7 @@ export default class STRtree extends AbstractSTRtree {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [SpatialIndex, Serializable];
@@ -93,33 +93,30 @@ export default class STRtree extends AbstractSTRtree {
 		return slices;
 	}
 	query(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [searchEnv] = args;
+					return super.query(searchEnv);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [searchEnv, visitor] = args;
+					super.query(searchEnv, visitor);
+				})(...args);
+			case 3:
+				if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
 					return ((...args) => {
-						let [searchEnv] = args;
-						return super.query(searchEnv);
+						let [searchBounds, node, visitor] = args;
+						super.query(searchBounds, node, visitor);
 					})(...args);
-				case 2:
+				} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
 					return ((...args) => {
-						let [searchEnv, visitor] = args;
-						super.query(searchEnv, visitor);
+						let [searchBounds, node, matches] = args;
+						super.query(searchBounds, node, matches);
 					})(...args);
-				case 3:
-					if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-						return ((...args) => {
-							let [searchBounds, node, visitor] = args;
-							super.query(searchBounds, node, visitor);
-						})(...args);
-					} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-						return ((...args) => {
-							let [searchBounds, node, matches] = args;
-							super.query(searchBounds, node, matches);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+				}
+		}
 	}
 	getComparator() {
 		return STRtree.yComparator;
@@ -148,59 +145,56 @@ export default class STRtree extends AbstractSTRtree {
 		return this.createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
 	}
 	nearestNeighbour(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(ItemDistance) > -1) {
-						return ((...args) => {
-							let [itemDist] = args;
-							var bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist);
-							return this.nearestNeighbour(bp);
-						})(...args);
-					} else if (args[0] instanceof BoundablePair) {
-						return ((...args) => {
-							let [initBndPair] = args;
-							return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY);
-						})(...args);
-					}
-				case 2:
-					if (args[0] instanceof STRtree && (args[1].interfaces_ && args[1].interfaces_.indexOf(ItemDistance) > -1)) {
-						return ((...args) => {
-							let [tree, itemDist] = args;
-							var bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
-							return this.nearestNeighbour(bp);
-						})(...args);
-					} else if (args[0] instanceof BoundablePair && typeof args[1] === "number") {
-						return ((...args) => {
-							let [initBndPair, maxDistance] = args;
-							var distanceLowerBound = maxDistance;
-							var minPair = null;
-							var priQ = new PriorityQueue();
-							priQ.add(initBndPair);
-							while (!priQ.isEmpty() && distanceLowerBound > 0.0) {
-								var bndPair = priQ.poll();
-								var currentDistance = bndPair.getDistance();
-								if (currentDistance >= distanceLowerBound) break;
-								if (bndPair.isLeaves()) {
-									distanceLowerBound = currentDistance;
-									minPair = bndPair;
-								} else {
-									bndPair.expandToQueue(priQ, distanceLowerBound);
-								}
-							}
-							return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
-						})(...args);
-					}
-				case 3:
+		switch (args.length) {
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(ItemDistance) > -1) {
 					return ((...args) => {
-						let [env, item, itemDist] = args;
-						var bnd = new ItemBoundable(env, item);
-						var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
-						return this.nearestNeighbour(bp)[0];
+						let [itemDist] = args;
+						var bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist);
+						return this.nearestNeighbour(bp);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof BoundablePair) {
+					return ((...args) => {
+						let [initBndPair] = args;
+						return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY);
+					})(...args);
+				}
+			case 2:
+				if (args[0] instanceof STRtree && (args[1].interfaces_ && args[1].interfaces_.indexOf(ItemDistance) > -1)) {
+					return ((...args) => {
+						let [tree, itemDist] = args;
+						var bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
+						return this.nearestNeighbour(bp);
+					})(...args);
+				} else if (args[0] instanceof BoundablePair && typeof args[1] === "number") {
+					return ((...args) => {
+						let [initBndPair, maxDistance] = args;
+						var distanceLowerBound = maxDistance;
+						var minPair = null;
+						var priQ = new PriorityQueue();
+						priQ.add(initBndPair);
+						while (!priQ.isEmpty() && distanceLowerBound > 0.0) {
+							var bndPair = priQ.poll();
+							var currentDistance = bndPair.getDistance();
+							if (currentDistance >= distanceLowerBound) break;
+							if (bndPair.isLeaves()) {
+								distanceLowerBound = currentDistance;
+								minPair = bndPair;
+							} else {
+								bndPair.expandToQueue(priQ, distanceLowerBound);
+							}
+						}
+						return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
+					})(...args);
+				}
+			case 3:
+				return ((...args) => {
+					let [env, item, itemDist] = args;
+					var bnd = new ItemBoundable(env, item);
+					var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
+					return this.nearestNeighbour(bp)[0];
+				})(...args);
+		}
 	}
 	getClass() {
 		return STRtree;
@@ -209,16 +203,13 @@ export default class STRtree extends AbstractSTRtree {
 class STRtreeNode extends AbstractNode {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [level] = args;
-						super(level);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [level] = args;
+					super(level);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

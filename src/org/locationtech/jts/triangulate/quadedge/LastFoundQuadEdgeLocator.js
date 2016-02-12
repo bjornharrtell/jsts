@@ -3,17 +3,14 @@ export default class LastFoundQuadEdgeLocator {
 	constructor(...args) {
 		this.subdiv = null;
 		this.lastEdge = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [subdiv] = args;
-						this.subdiv = subdiv;
-						this.init();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [subdiv] = args;
+					this.subdiv = subdiv;
+					this.init();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [QuadEdgeLocator];

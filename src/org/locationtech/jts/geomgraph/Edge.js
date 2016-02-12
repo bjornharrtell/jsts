@@ -18,12 +18,12 @@ export default class Edge extends GraphComponent {
 		this._isIsolated = true;
 		this.depth = new Depth();
 		this.depthDelta = 0;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [pts] = args;
-						overloads.call(this, pts, null);
+						overloaded.call(this, pts, null);
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -33,7 +33,7 @@ export default class Edge extends GraphComponent {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -89,22 +89,19 @@ export default class Edge extends GraphComponent {
 		return true;
 	}
 	getCoordinate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						if (this.pts.length > 0) return this.pts[0];
-						return null;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [i] = args;
-						return this.pts[i];
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					if (this.pts.length > 0) return this.pts[0];
+					return null;
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [i] = args;
+					return this.pts[i];
+				})(...args);
+		}
 	}
 	print(out) {
 		out.print("edge " + this.name + ": ");

@@ -4,16 +4,13 @@ export default class ConstraintVertex extends Vertex {
 		super();
 		this._isOnConstraint = null;
 		this.constraint = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [p] = args;
-						super(p);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [p] = args;
+					super(p);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

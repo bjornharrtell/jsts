@@ -13,15 +13,12 @@ export default class LineMerger {
 		this.mergedLineStrings = null;
 		this.factory = null;
 		this.edgeStrings = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -87,44 +84,41 @@ export default class LineMerger {
 		return edgeString;
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geometry] = args;
-							geometry.apply(new (class {
-								filter(component) {
-									if (component instanceof LineString) {
-										this.add(component);
-									}
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [geometry] = args;
+						geometry.apply(new (class {
+							filter(component) {
+								if (component instanceof LineString) {
+									this.add(component);
 								}
-								get interfaces_() {
-									return [GeometryComponentFilter];
-								}
-							})());
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [geometries] = args;
-							this.mergedLineStrings = null;
-							for (var i = geometries.iterator(); i.hasNext(); ) {
-								var geometry = i.next();
-								this.add(geometry);
 							}
-						})(...args);
-					} else if (args[0] instanceof LineString) {
-						return ((...args) => {
-							let [lineString] = args;
-							if (this.factory === null) {
-								this.factory = lineString.getFactory();
+							get interfaces_() {
+								return [GeometryComponentFilter];
 							}
-							this.graph.addEdge(lineString);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+						})());
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					return ((...args) => {
+						let [geometries] = args;
+						this.mergedLineStrings = null;
+						for (var i = geometries.iterator(); i.hasNext(); ) {
+							var geometry = i.next();
+							this.add(geometry);
+						}
+					})(...args);
+				} else if (args[0] instanceof LineString) {
+					return ((...args) => {
+						let [lineString] = args;
+						if (this.factory === null) {
+							this.factory = lineString.getFactory();
+						}
+						this.graph.addEdge(lineString);
+					})(...args);
+				}
+		}
 	}
 	buildEdgeStringsForIsolatedLoops() {
 		this.buildEdgeStringsForUnprocessedNodes();

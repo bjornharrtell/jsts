@@ -7,12 +7,12 @@ export default class Node extends GraphComponent {
 		super();
 		this.pt = null;
 		this.deStar = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [pt] = args;
-						overloads.call(this, pt, new DirectedEdgeStar());
+						overloaded.call(this, pt, new DirectedEdgeStar());
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -22,7 +22,7 @@ export default class Node extends GraphComponent {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -47,21 +47,18 @@ export default class Node extends GraphComponent {
 		return this.deStar;
 	}
 	remove(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.pt = null;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [de] = args;
-						this.deStar.remove(de);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					this.pt = null;
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [de] = args;
+					this.deStar.remove(de);
+				})(...args);
+		}
 	}
 	getIndex(edge) {
 		return this.deStar.getIndex(edge);

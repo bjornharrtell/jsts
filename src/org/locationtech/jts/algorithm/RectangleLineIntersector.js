@@ -9,20 +9,17 @@ export default class RectangleLineIntersector {
 		this.diagUp1 = null;
 		this.diagDown0 = null;
 		this.diagDown1 = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [rectEnv] = args;
-						this.rectEnv = rectEnv;
-						this.diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
-						this.diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
-						this.diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
-						this.diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [rectEnv] = args;
+					this.rectEnv = rectEnv;
+					this.diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
+					this.diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
+					this.diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
+					this.diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

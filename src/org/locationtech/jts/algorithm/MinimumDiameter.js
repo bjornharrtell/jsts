@@ -12,12 +12,12 @@ export default class MinimumDiameter {
 		this.minWidthPt = null;
 		this.minPtIndex = null;
 		this.minWidth = 0.0;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [inputGeom] = args;
-						overloads.call(this, inputGeom, false);
+						overloaded.call(this, inputGeom, false);
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -27,7 +27,7 @@ export default class MinimumDiameter {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

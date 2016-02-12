@@ -13,18 +13,15 @@ export default class SegmentIntersector {
 		this.bdyNodes = null;
 		this._isDone = false;
 		this.isDoneWhenProperInt = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [li, includeProper, recordIsolated] = args;
-						this.li = li;
-						this.includeProper = includeProper;
-						this.recordIsolated = recordIsolated;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [li, includeProper, recordIsolated] = args;
+					this.li = li;
+					this.includeProper = includeProper;
+					this.recordIsolated = recordIsolated;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

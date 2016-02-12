@@ -8,16 +8,13 @@ export default class PolygonBuilder {
 	constructor(...args) {
 		this.geometryFactory = null;
 		this.shellList = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geometryFactory] = args;
-						this.geometryFactory = geometryFactory;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geometryFactory] = args;
+					this.geometryFactory = geometryFactory;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -139,26 +136,23 @@ export default class PolygonBuilder {
 		return shell;
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [graph] = args;
-						this.add(graph.getEdgeEnds(), graph.getNodes());
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [dirEdges, nodes] = args;
-						PlanarGraph.linkResultDirectedEdges(nodes);
-						var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
-						var freeHoleList = new ArrayList();
-						var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList, freeHoleList);
-						this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
-						this.placeFreeHoles(this.shellList, freeHoleList);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [graph] = args;
+					this.add(graph.getEdgeEnds(), graph.getNodes());
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [dirEdges, nodes] = args;
+					PlanarGraph.linkResultDirectedEdges(nodes);
+					var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
+					var freeHoleList = new ArrayList();
+					var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList, freeHoleList);
+					this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
+					this.placeFreeHoles(this.shellList, freeHoleList);
+				})(...args);
+		}
 	}
 	getClass() {
 		return PolygonBuilder;

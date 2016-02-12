@@ -6,16 +6,13 @@ import Dimension from './Dimension';
 export default class MultiLineString extends GeometryCollection {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [lineStrings, factory] = args;
-						super(lineStrings, factory);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [lineStrings, factory] = args;
+					super(lineStrings, factory);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Lineal];

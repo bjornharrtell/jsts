@@ -4,7 +4,7 @@ import Position from './Position';
 export default class TopologyLocation {
 	constructor(...args) {
 		this.location = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					if (args[0] instanceof Array) {
@@ -39,7 +39,7 @@ export default class TopologyLocation {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -110,21 +110,18 @@ export default class TopologyLocation {
 		return false;
 	}
 	setLocation(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [locValue] = args;
-						this.setLocation(Position.ON, locValue);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [locIndex, locValue] = args;
-						this.location[locIndex] = locValue;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [locValue] = args;
+					this.setLocation(Position.ON, locValue);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [locIndex, locValue] = args;
+					this.location[locIndex] = locValue;
+				})(...args);
+		}
 	}
 	init(size) {
 		this.location = new Array(size);

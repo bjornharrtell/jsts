@@ -7,19 +7,16 @@ export default class MonotoneChain {
 		this.env = null;
 		this.context = null;
 		this.id = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 4:
-					return ((...args) => {
-						let [pts, start, end, context] = args;
-						this.pts = pts;
-						this.start = start;
-						this.end = end;
-						this.context = context;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 4:
+				return ((...args) => {
+					let [pts, start, end, context] = args;
+					this.pts = pts;
+					this.start = start;
+					this.end = end;
+					this.context = context;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -53,8 +50,39 @@ export default class MonotoneChain {
 		}
 		return coord;
 	}
-	computeOverlaps(mc, mco) {
-		this.computeOverlapsInternal(this.start, this.end, mc, mc.start, mc.end, mco);
+	computeOverlaps(...args) {
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [mc, mco] = args;
+					this.computeOverlaps(this.start, this.end, mc, mc.start, mc.end, mco);
+				})(...args);
+			case 6:
+				return ((...args) => {
+					let [start0, end0, mc, start1, end1, mco] = args;
+					var p00 = this.pts[start0];
+					var p01 = this.pts[end0];
+					var p10 = mc.pts[start1];
+					var p11 = mc.pts[end1];
+					if (end0 - start0 === 1 && end1 - start1 === 1) {
+						mco.overlap(this, start0, mc, start1);
+						return null;
+					}
+					mco.tempEnv1.init(p00, p01);
+					mco.tempEnv2.init(p10, p11);
+					if (!mco.tempEnv1.intersects(mco.tempEnv2)) return null;
+					var mid0 = Math.trunc((start0 + end0) / 2);
+					var mid1 = Math.trunc((start1 + end1) / 2);
+					if (start0 < mid0) {
+						if (start1 < mid1) this.computeOverlaps(start0, mid0, mc, start1, mid1, mco);
+						if (mid1 < end1) this.computeOverlaps(start0, mid0, mc, mid1, end1, mco);
+					}
+					if (mid0 < end0) {
+						if (start1 < mid1) this.computeOverlaps(mid0, end0, mc, start1, mid1, mco);
+						if (mid1 < end1) this.computeOverlaps(mid0, end0, mc, mid1, end1, mco);
+					}
+				})(...args);
+		}
 	}
 	setId(id) {
 		this.id = id;
@@ -81,29 +109,6 @@ export default class MonotoneChain {
 	}
 	getId() {
 		return this.id;
-	}
-	computeOverlapsInternal(start0, end0, mc, start1, end1, mco) {
-		var p00 = this.pts[start0];
-		var p01 = this.pts[end0];
-		var p10 = mc.pts[start1];
-		var p11 = mc.pts[end1];
-		if (end0 - start0 === 1 && end1 - start1 === 1) {
-			mco.overlap(this, start0, mc, start1);
-			return null;
-		}
-		mco.tempEnv1.init(p00, p01);
-		mco.tempEnv2.init(p10, p11);
-		if (!mco.tempEnv1.intersects(mco.tempEnv2)) return null;
-		var mid0 = Math.trunc((start0 + end0) / 2);
-		var mid1 = Math.trunc((start1 + end1) / 2);
-		if (start0 < mid0) {
-			if (start1 < mid1) this.computeOverlapsInternal(start0, mid0, mc, start1, mid1, mco);
-			if (mid1 < end1) this.computeOverlapsInternal(start0, mid0, mc, mid1, end1, mco);
-		}
-		if (mid0 < end0) {
-			if (start1 < mid1) this.computeOverlapsInternal(mid0, end0, mc, start1, mid1, mco);
-			if (mid1 < end1) this.computeOverlapsInternal(mid0, end0, mc, mid1, end1, mco);
-		}
 	}
 	getClass() {
 		return MonotoneChain;

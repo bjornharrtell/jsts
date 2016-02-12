@@ -14,16 +14,13 @@ export default class BufferSubgraph {
 		this.nodes = new ArrayList();
 		this.rightMostCoord = null;
 		this.env = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.finder = new RightmostEdgeFinder();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					this.finder = new RightmostEdgeFinder();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

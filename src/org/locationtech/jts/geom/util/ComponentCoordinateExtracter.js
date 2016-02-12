@@ -5,16 +5,13 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default class ComponentCoordinateExtracter {
 	constructor(...args) {
 		this.coords = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [coords] = args;
-						this.coords = coords;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [coords] = args;
+					this.coords = coords;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [GeometryComponentFilter];

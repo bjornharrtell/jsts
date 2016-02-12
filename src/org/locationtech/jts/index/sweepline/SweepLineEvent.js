@@ -6,20 +6,17 @@ export default class SweepLineEvent {
 		this.insertEvent = null;
 		this.deleteEventIndex = null;
 		this.sweepInt = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [x, insertEvent, sweepInt] = args;
-						this.xValue = x;
-						this.insertEvent = insertEvent;
-						this.eventType = SweepLineEvent.INSERT;
-						if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
-						this.sweepInt = sweepInt;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [x, insertEvent, sweepInt] = args;
+					this.xValue = x;
+					this.insertEvent = insertEvent;
+					this.eventType = SweepLineEvent.INSERT;
+					if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
+					this.sweepInt = sweepInt;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

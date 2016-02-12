@@ -11,16 +11,13 @@ export default class QuadtreeNestedRingTester {
 		this.totalEnv = new Envelope();
 		this.quadtree = null;
 		this.nestedPt = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [graph] = args;
-						this.graph = graph;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [graph] = args;
+					this.graph = graph;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

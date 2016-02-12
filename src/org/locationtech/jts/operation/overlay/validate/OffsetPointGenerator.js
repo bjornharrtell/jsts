@@ -6,16 +6,13 @@ export default class OffsetPointGenerator {
 		this.g = null;
 		this.doLeft = true;
 		this.doRight = true;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [g] = args;
-						this.g = g;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [g] = args;
+					this.g = g;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

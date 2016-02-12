@@ -10,17 +10,14 @@ import RayCrossingCounter from '../RayCrossingCounter';
 export default class IndexedPointInAreaLocator {
 	constructor(...args) {
 		this.index = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [g] = args;
-						if (!(g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Argument must be Polygonal");
-						this.index = new IntervalIndexedGeometry(g);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [g] = args;
+					if (!(g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Argument must be Polygonal");
+					this.index = new IntervalIndexedGeometry(g);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [PointOnGeometryLocator];
@@ -44,16 +41,13 @@ export default class IndexedPointInAreaLocator {
 class SegmentVisitor {
 	constructor(...args) {
 		this.counter = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [counter] = args;
-						this.counter = counter;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [counter] = args;
+					this.counter = counter;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [ItemVisitor];
@@ -69,16 +63,13 @@ class SegmentVisitor {
 class IntervalIndexedGeometry {
 	constructor(...args) {
 		this.index = new SortedPackedIntervalRTree();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.init(geom);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom] = args;
+					this.init(geom);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -100,23 +91,20 @@ class IntervalIndexedGeometry {
 		}
 	}
 	query(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [min, max] = args;
-						var visitor = new ArrayListVisitor();
-						this.index.query(min, max, visitor);
-						return visitor.getItems();
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [min, max, visitor] = args;
-						this.index.query(min, max, visitor);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [min, max] = args;
+					var visitor = new ArrayListVisitor();
+					this.index.query(min, max, visitor);
+					return visitor.getItems();
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [min, max, visitor] = args;
+					this.index.query(min, max, visitor);
+				})(...args);
+		}
 	}
 	getClass() {
 		return IntervalIndexedGeometry;

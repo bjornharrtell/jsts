@@ -13,7 +13,7 @@ export default class PlanarGraph {
 		this.edges = new ArrayList();
 		this.nodes = null;
 		this.edgeEndList = new ArrayList();
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -27,7 +27,7 @@ export default class PlanarGraph {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -51,23 +51,20 @@ export default class PlanarGraph {
 		return this.nodes.find(coord);
 	}
 	addNode(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Node) {
-						return ((...args) => {
-							let [node] = args;
-							return this.nodes.addNode(node);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							return this.nodes.addNode(coord);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Node) {
+					return ((...args) => {
+						let [node] = args;
+						return this.nodes.addNode(node);
+					})(...args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [coord] = args;
+						return this.nodes.addNode(coord);
+					})(...args);
+				}
+		}
 	}
 	getNodeIterator() {
 		return this.nodes.iterator();

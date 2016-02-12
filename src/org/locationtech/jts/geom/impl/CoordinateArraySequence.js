@@ -8,13 +8,13 @@ export default class CoordinateArraySequence {
 	constructor(...args) {
 		this.dimension = 3;
 		this.coordinates = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					if (args[0] instanceof Array) {
 						return ((...args) => {
 							let [coordinates] = args;
-							overloads.call(this, coordinates, 3);
+							overloaded.call(this, coordinates, 3);
 						})(...args);
 					} else if (Number.isInteger(args[0])) {
 						return ((...args) => {
@@ -58,7 +58,7 @@ export default class CoordinateArraySequence {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [CoordinateSequence, Serializable];
@@ -93,23 +93,20 @@ export default class CoordinateArraySequence {
 		return Double.NaN;
 	}
 	getCoordinate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [i] = args;
-						return this.coordinates[i];
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [index, coord] = args;
-						coord.x = this.coordinates[index].x;
-						coord.y = this.coordinates[index].y;
-						coord.z = this.coordinates[index].z;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [i] = args;
+					return this.coordinates[i];
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [index, coord] = args;
+					coord.x = this.coordinates[index].x;
+					coord.y = this.coordinates[index].y;
+					coord.z = this.coordinates[index].z;
+				})(...args);
+		}
 	}
 	getCoordinateCopy(i) {
 		return new Coordinate(this.coordinates[i]);

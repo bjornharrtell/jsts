@@ -6,16 +6,13 @@ export default class Key {
 		this.pt = new Coordinate();
 		this.level = 0;
 		this.env = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [itemEnv] = args;
-						this.computeKey(itemEnv);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [itemEnv] = args;
+					this.computeKey(itemEnv);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -31,30 +28,27 @@ export default class Key {
 		return this.level;
 	}
 	computeKey(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [itemEnv] = args;
-						this.level = Key.computeQuadLevel(itemEnv);
-						this.env = new Envelope();
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [itemEnv] = args;
+					this.level = Key.computeQuadLevel(itemEnv);
+					this.env = new Envelope();
+					this.computeKey(this.level, itemEnv);
+					while (!this.env.contains(itemEnv)) {
+						this.level += 1;
 						this.computeKey(this.level, itemEnv);
-						while (!this.env.contains(itemEnv)) {
-							this.level += 1;
-							this.computeKey(this.level, itemEnv);
-						}
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [level, itemEnv] = args;
-						var quadSize = DoubleBits.powerOf2(level);
-						this.pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
-						this.pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
-						this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y + quadSize);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+					}
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [level, itemEnv] = args;
+					var quadSize = DoubleBits.powerOf2(level);
+					this.pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
+					this.pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
+					this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y + quadSize);
+				})(...args);
+		}
 	}
 	getEnvelope() {
 		return this.env;

@@ -20,18 +20,15 @@ export default class OffsetCurveSetBuilder {
 		this.distance = null;
 		this.curveBuilder = null;
 		this.curveList = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [inputGeom, distance, curveBuilder] = args;
-						this.inputGeom = inputGeom;
-						this.distance = distance;
-						this.curveBuilder = curveBuilder;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [inputGeom, distance, curveBuilder] = args;
+					this.inputGeom = inputGeom;
+					this.distance = distance;
+					this.curveBuilder = curveBuilder;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -14,21 +14,18 @@ export default class AffineTransformationBuilder {
 		this.m10 = null;
 		this.m11 = null;
 		this.m12 = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 6:
-					return ((...args) => {
-						let [src0, src1, src2, dest0, dest1, dest2] = args;
-						this.src0 = src0;
-						this.src1 = src1;
-						this.src2 = src2;
-						this.dest0 = dest0;
-						this.dest1 = dest1;
-						this.dest2 = dest2;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 6:
+				return ((...args) => {
+					let [src0, src1, src2, dest0, dest1, dest2] = args;
+					this.src0 = src0;
+					this.src1 = src1;
+					this.src2 = src2;
+					this.dest0 = dest0;
+					this.dest1 = dest1;
+					this.dest2 = dest2;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

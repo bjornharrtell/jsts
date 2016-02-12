@@ -7,16 +7,13 @@ import MultiLineString from '../geom/MultiLineString';
 export default class ExtractLineByLocation {
 	constructor(...args) {
 		this.line = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [line] = args;
-						this.line = line;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [line] = args;
+					this.line = line;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

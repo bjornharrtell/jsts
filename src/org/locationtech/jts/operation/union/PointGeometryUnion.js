@@ -8,18 +8,15 @@ export default class PointGeometryUnion {
 		this.pointGeom = null;
 		this.otherGeom = null;
 		this.geomFact = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [pointGeom, otherGeom] = args;
-						this.pointGeom = pointGeom;
-						this.otherGeom = otherGeom;
-						this.geomFact = otherGeom.getFactory();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [pointGeom, otherGeom] = args;
+					this.pointGeom = pointGeom;
+					this.otherGeom = otherGeom;
+					this.geomFact = otherGeom.getFactory();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

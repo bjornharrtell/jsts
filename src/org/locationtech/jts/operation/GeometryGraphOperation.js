@@ -6,7 +6,7 @@ export default class GeometryGraphOperation {
 		this.li = new RobustLineIntersector();
 		this.resultPrecisionModel = null;
 		this.arg = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
@@ -19,7 +19,7 @@ export default class GeometryGraphOperation {
 				case 2:
 					return ((...args) => {
 						let [g0, g1] = args;
-						overloads.call(this, g0, g1, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE);
+						overloaded.call(this, g0, g1, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE);
 					})(...args);
 				case 3:
 					return ((...args) => {
@@ -31,7 +31,7 @@ export default class GeometryGraphOperation {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

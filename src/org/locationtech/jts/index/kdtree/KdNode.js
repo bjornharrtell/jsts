@@ -6,7 +6,7 @@ export default class KdNode {
 		this.left = null;
 		this.right = null;
 		this.count = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
@@ -28,7 +28,7 @@ export default class KdNode {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

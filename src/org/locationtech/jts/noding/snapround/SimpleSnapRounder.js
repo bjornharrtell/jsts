@@ -13,19 +13,16 @@ export default class SimpleSnapRounder {
 		this.li = null;
 		this.scaleFactor = null;
 		this.nodedSegStrings = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pm] = args;
-						this.pm = pm;
-						this.li = new RobustLineIntersector();
-						this.li.setPrecisionModel(pm);
-						this.scaleFactor = pm.getScale();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pm] = args;
+					this.pm = pm;
+					this.li = new RobustLineIntersector();
+					this.li.setPrecisionModel(pm);
+					this.scaleFactor = pm.getScale();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Noder];
@@ -57,72 +54,66 @@ export default class SimpleSnapRounder {
 		return intFinderAdder.getInteriorIntersections();
 	}
 	computeVertexSnaps(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [edges] = args;
-						for (var i0 = edges.iterator(); i0.hasNext(); ) {
-							var edge0 = i0.next();
-							for (var i1 = edges.iterator(); i1.hasNext(); ) {
-								var edge1 = i1.next();
-								this.computeVertexSnaps(edge0, edge1);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [edges] = args;
+					for (var i0 = edges.iterator(); i0.hasNext(); ) {
+						var edge0 = i0.next();
+						for (var i1 = edges.iterator(); i1.hasNext(); ) {
+							var edge1 = i1.next();
+							this.computeVertexSnaps(edge0, edge1);
+						}
+					}
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [e0, e1] = args;
+					var pts0 = e0.getCoordinates();
+					var pts1 = e1.getCoordinates();
+					for (var i0 = 0; i0 < pts0.length - 1; i0++) {
+						var hotPixel = new HotPixel(pts0[i0], this.scaleFactor, this.li);
+						for (var i1 = 0; i1 < pts1.length - 1; i1++) {
+							if (e0 === e1) {
+								if (i0 === i1) continue;
+							}
+							var isNodeAdded = hotPixel.addSnappedNode(e1, i1);
+							if (isNodeAdded) {
+								e0.addIntersection(pts0[i0], i0);
 							}
 						}
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [e0, e1] = args;
-						var pts0 = e0.getCoordinates();
-						var pts1 = e1.getCoordinates();
-						for (var i0 = 0; i0 < pts0.length - 1; i0++) {
-							var hotPixel = new HotPixel(pts0[i0], this.scaleFactor, this.li);
-							for (var i1 = 0; i1 < pts1.length - 1; i1++) {
-								if (e0 === e1) {
-									if (i0 === i1) continue;
-								}
-								var isNodeAdded = hotPixel.addSnappedNode(e1, i1);
-								if (isNodeAdded) {
-									e0.addIntersection(pts0[i0], i0);
-								}
-							}
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+					}
+				})(...args);
+		}
 	}
 	computeNodes(inputSegmentStrings) {
 		this.nodedSegStrings = inputSegmentStrings;
 		this.snapRound(inputSegmentStrings, this.li);
 	}
 	computeSnaps(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
-						return ((...args) => {
-							let [segStrings, snapPts] = args;
-							for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
-								var ss = i0.next();
-								this.computeSnaps(ss, snapPts);
+		switch (args.length) {
+			case 2:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
+					return ((...args) => {
+						let [segStrings, snapPts] = args;
+						for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
+							var ss = i0.next();
+							this.computeSnaps(ss, snapPts);
+						}
+					})(...args);
+				} else if (args[0] instanceof NodedSegmentString && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
+					return ((...args) => {
+						let [ss, snapPts] = args;
+						for (var it = snapPts.iterator(); it.hasNext(); ) {
+							var snapPt = it.next();
+							var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
+							for (var i = 0; i < ss.size() - 1; i++) {
+								hotPixel.addSnappedNode(ss, i);
 							}
-						})(...args);
-					} else if (args[0] instanceof NodedSegmentString && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
-						return ((...args) => {
-							let [ss, snapPts] = args;
-							for (var it = snapPts.iterator(); it.hasNext(); ) {
-								var snapPt = it.next();
-								var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
-								for (var i = 0; i < ss.size() - 1; i++) {
-									hotPixel.addSnappedNode(ss, i);
-								}
-							}
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+						}
+					})(...args);
+				}
+		}
 	}
 	getClass() {
 		return SimpleSnapRounder;

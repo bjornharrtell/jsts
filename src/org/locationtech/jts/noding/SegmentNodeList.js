@@ -12,16 +12,13 @@ export default class SegmentNodeList {
 	constructor(...args) {
 		this.nodeMap = new TreeMap();
 		this.edge = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [edge] = args;
-						this.edge = edge;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [edge] = args;
+					this.edge = edge;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -174,19 +171,16 @@ class NodeVertexIterator {
 		this.currNode = null;
 		this.nextNode = null;
 		this.currSegIndex = 0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [nodeList] = args;
-						this.nodeList = nodeList;
-						this.edge = nodeList.getEdge();
-						this.nodeIt = nodeList.iterator();
-						this.readNextNode();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [nodeList] = args;
+					this.nodeList = nodeList;
+					this.edge = nodeList.getEdge();
+					this.nodeIt = nodeList.iterator();
+					this.readNextNode();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Iterator];

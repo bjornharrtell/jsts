@@ -3,12 +3,12 @@ export default class CommonBitsOp {
 	constructor(...args) {
 		this.returnToOriginalPrecision = true;
 		this.cbr = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, true);
+						overloaded.call(this, true);
 					})(...args);
 				case 1:
 					return ((...args) => {
@@ -17,7 +17,7 @@ export default class CommonBitsOp {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -35,30 +35,27 @@ export default class CommonBitsOp {
 		return this.computeResultPrecision(geom[0].intersection(geom[1]));
 	}
 	removeCommonBits(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom0] = args;
-						this.cbr = new CommonBitsRemover();
-						this.cbr.add(geom0);
-						var geom = this.cbr.removeCommonBits(geom0.copy());
-						return geom;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [geom0, geom1] = args;
-						this.cbr = new CommonBitsRemover();
-						this.cbr.add(geom0);
-						this.cbr.add(geom1);
-						var geom = new Array(2);
-						geom[0] = this.cbr.removeCommonBits(geom0.copy());
-						geom[1] = this.cbr.removeCommonBits(geom1.copy());
-						return geom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom0] = args;
+					this.cbr = new CommonBitsRemover();
+					this.cbr.add(geom0);
+					var geom = this.cbr.removeCommonBits(geom0.copy());
+					return geom;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [geom0, geom1] = args;
+					this.cbr = new CommonBitsRemover();
+					this.cbr.add(geom0);
+					this.cbr.add(geom1);
+					var geom = new Array(2);
+					geom[0] = this.cbr.removeCommonBits(geom0.copy());
+					geom[1] = this.cbr.removeCommonBits(geom1.copy());
+					return geom;
+				})(...args);
+		}
 	}
 	buffer(geom0, distance) {
 		var geom = this.removeCommonBits(geom0);

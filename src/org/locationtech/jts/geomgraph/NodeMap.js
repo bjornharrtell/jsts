@@ -7,16 +7,13 @@ export default class NodeMap {
 	constructor(...args) {
 		this.nodeMap = new TreeMap();
 		this.nodeFact = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [nodeFact] = args;
-						this.nodeFact = nodeFact;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [nodeFact] = args;
+					this.nodeFact = nodeFact;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -25,34 +22,31 @@ export default class NodeMap {
 		return this.nodeMap.get(coord);
 	}
 	addNode(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coord] = args;
-							var node = this.nodeMap.get(coord);
-							if (node === null) {
-								node = this.nodeFact.createNode(coord);
-								this.nodeMap.put(coord, node);
-							}
-							return node;
-						})(...args);
-					} else if (args[0] instanceof Node) {
-						return ((...args) => {
-							let [n] = args;
-							var node = this.nodeMap.get(n.getCoordinate());
-							if (node === null) {
-								this.nodeMap.put(n.getCoordinate(), n);
-								return n;
-							}
-							node.mergeLabel(n);
-							return node;
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [coord] = args;
+						var node = this.nodeMap.get(coord);
+						if (node === null) {
+							node = this.nodeFact.createNode(coord);
+							this.nodeMap.put(coord, node);
+						}
+						return node;
+					})(...args);
+				} else if (args[0] instanceof Node) {
+					return ((...args) => {
+						let [n] = args;
+						var node = this.nodeMap.get(n.getCoordinate());
+						if (node === null) {
+							this.nodeMap.put(n.getCoordinate(), n);
+							return n;
+						}
+						node.mergeLabel(n);
+						return node;
+					})(...args);
+				}
+		}
 	}
 	print(out) {
 		for (var it = this.iterator(); it.hasNext(); ) {

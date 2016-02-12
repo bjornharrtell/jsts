@@ -8,12 +8,12 @@ export default class GeometricShapeFactory {
 		this.dim = new Dimensions();
 		this.nPts = 100;
 		this.rotationAngle = 0.0;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, new GeometryFactory());
+						overloaded.call(this, new GeometryFactory());
 					})(...args);
 				case 1:
 					return ((...args) => {
@@ -23,7 +23,7 @@ export default class GeometricShapeFactory {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

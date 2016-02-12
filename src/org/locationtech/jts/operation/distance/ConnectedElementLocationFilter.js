@@ -7,16 +7,13 @@ import GeometryFilter from '../../geom/GeometryFilter';
 export default class ConnectedElementLocationFilter {
 	constructor(...args) {
 		this.locations = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [locations] = args;
-						this.locations = locations;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [locations] = args;
+					this.locations = locations;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [GeometryFilter];

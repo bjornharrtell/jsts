@@ -16,7 +16,7 @@ export default class PointLocator {
 		this.boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
 		this.isIn = null;
 		this.numBoundaries = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -30,7 +30,7 @@ export default class PointLocator {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -75,65 +75,62 @@ export default class PointLocator {
 		}
 	}
 	locate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof Polygon) {
-						return ((...args) => {
-							let [p, poly] = args;
-							if (poly.isEmpty()) return Location.EXTERIOR;
-							var shell = poly.getExteriorRing();
-							var shellLoc = this.locateInPolygonRing(p, shell);
-							if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR;
-							if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY;
-							for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-								var hole = poly.getInteriorRingN(i);
-								var holeLoc = this.locateInPolygonRing(p, hole);
-								if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
-								if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
+		switch (args.length) {
+			case 2:
+				if (args[0] instanceof Coordinate && args[1] instanceof Polygon) {
+					return ((...args) => {
+						let [p, poly] = args;
+						if (poly.isEmpty()) return Location.EXTERIOR;
+						var shell = poly.getExteriorRing();
+						var shellLoc = this.locateInPolygonRing(p, shell);
+						if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR;
+						if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY;
+						for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+							var hole = poly.getInteriorRingN(i);
+							var holeLoc = this.locateInPolygonRing(p, hole);
+							if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
+							if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
+						}
+						return Location.INTERIOR;
+					})(...args);
+				} else if (args[0] instanceof Coordinate && args[1] instanceof LineString) {
+					return ((...args) => {
+						let [p, l] = args;
+						if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
+						var pt = l.getCoordinates();
+						if (!l.isClosed()) {
+							if (p.equals(pt[0]) || p.equals(pt[pt.length - 1])) {
+								return Location.BOUNDARY;
 							}
-							return Location.INTERIOR;
-						})(...args);
-					} else if (args[0] instanceof Coordinate && args[1] instanceof LineString) {
-						return ((...args) => {
-							let [p, l] = args;
-							if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
-							var pt = l.getCoordinates();
-							if (!l.isClosed()) {
-								if (p.equals(pt[0]) || p.equals(pt[pt.length - 1])) {
-									return Location.BOUNDARY;
-								}
-							}
-							if (CGAlgorithms.isOnLine(p, pt)) return Location.INTERIOR;
-							return Location.EXTERIOR;
-						})(...args);
-					} else if (args[0] instanceof Coordinate && args[1] instanceof Point) {
-						return ((...args) => {
-							let [p, pt] = args;
-							var ptCoord = pt.getCoordinate();
-							if (ptCoord.equals2D(p)) return Location.INTERIOR;
-							return Location.EXTERIOR;
-						})(...args);
-					} else if (args[0] instanceof Coordinate && args[1] instanceof Geometry) {
-						return ((...args) => {
-							let [p, geom] = args;
-							if (geom.isEmpty()) return Location.EXTERIOR;
-							if (geom instanceof LineString) {
-								return this.locate(p, geom);
-							} else if (geom instanceof Polygon) {
-								return this.locate(p, geom);
-							}
-							this.isIn = false;
-							this.numBoundaries = 0;
-							this.computeLocation(p, geom);
-							if (this.boundaryRule.isInBoundary(this.numBoundaries)) return Location.BOUNDARY;
-							if (this.numBoundaries > 0 || this.isIn) return Location.INTERIOR;
-							return Location.EXTERIOR;
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+						}
+						if (CGAlgorithms.isOnLine(p, pt)) return Location.INTERIOR;
+						return Location.EXTERIOR;
+					})(...args);
+				} else if (args[0] instanceof Coordinate && args[1] instanceof Point) {
+					return ((...args) => {
+						let [p, pt] = args;
+						var ptCoord = pt.getCoordinate();
+						if (ptCoord.equals2D(p)) return Location.INTERIOR;
+						return Location.EXTERIOR;
+					})(...args);
+				} else if (args[0] instanceof Coordinate && args[1] instanceof Geometry) {
+					return ((...args) => {
+						let [p, geom] = args;
+						if (geom.isEmpty()) return Location.EXTERIOR;
+						if (geom instanceof LineString) {
+							return this.locate(p, geom);
+						} else if (geom instanceof Polygon) {
+							return this.locate(p, geom);
+						}
+						this.isIn = false;
+						this.numBoundaries = 0;
+						this.computeLocation(p, geom);
+						if (this.boundaryRule.isInBoundary(this.numBoundaries)) return Location.BOUNDARY;
+						if (this.numBoundaries > 0 || this.isIn) return Location.INTERIOR;
+						return Location.EXTERIOR;
+					})(...args);
+				}
+		}
 	}
 	getClass() {
 		return PointLocator;

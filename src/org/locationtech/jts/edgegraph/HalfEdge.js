@@ -6,16 +6,13 @@ export default class HalfEdge {
 		this._orig = null;
 		this._sym = null;
 		this._next = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [orig] = args;
-						this._orig = orig;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [orig] = args;
+					this._orig = orig;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

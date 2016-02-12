@@ -14,15 +14,12 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		this.label = null;
 		this.SCANNING_FOR_INCOMING = 1;
 		this.LINKING_TO_OUTGOING = 2;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -119,34 +116,31 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		firstIn.setNext(prevOut);
 	}
 	computeDepths(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [de] = args;
-						var edgeIndex = this.findIndex(de);
-						var label = de.getLabel();
-						var startDepth = de.getDepth(Position.LEFT);
-						var targetLastDepth = de.getDepth(Position.RIGHT);
-						var nextDepth = this.computeDepths(edgeIndex + 1, this.edgeList.size(), startDepth);
-						var lastDepth = this.computeDepths(0, edgeIndex, nextDepth);
-						if (lastDepth !== targetLastDepth) throw new TopologyException("depth mismatch at " + de.getCoordinate());
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [startIndex, endIndex, startDepth] = args;
-						var currDepth = startDepth;
-						for (var i = startIndex; i < endIndex; i++) {
-							var nextDe = this.edgeList.get(i);
-							var label = nextDe.getLabel();
-							nextDe.setEdgeDepths(Position.RIGHT, currDepth);
-							currDepth = nextDe.getDepth(Position.LEFT);
-						}
-						return currDepth;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [de] = args;
+					var edgeIndex = this.findIndex(de);
+					var label = de.getLabel();
+					var startDepth = de.getDepth(Position.LEFT);
+					var targetLastDepth = de.getDepth(Position.RIGHT);
+					var nextDepth = this.computeDepths(edgeIndex + 1, this.edgeList.size(), startDepth);
+					var lastDepth = this.computeDepths(0, edgeIndex, nextDepth);
+					if (lastDepth !== targetLastDepth) throw new TopologyException("depth mismatch at " + de.getCoordinate());
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [startIndex, endIndex, startDepth] = args;
+					var currDepth = startDepth;
+					for (var i = startIndex; i < endIndex; i++) {
+						var nextDe = this.edgeList.get(i);
+						var label = nextDe.getLabel();
+						nextDe.setEdgeDepths(Position.RIGHT, currDepth);
+						currDepth = nextDe.getDepth(Position.LEFT);
+					}
+					return currDepth;
+				})(...args);
+		}
 	}
 	mergeSymLabels() {
 		for (var it = this.iterator(); it.hasNext(); ) {
@@ -183,31 +177,28 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		}
 	}
 	getOutgoingDegree(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						var degree = 0;
-						for (var it = this.iterator(); it.hasNext(); ) {
-							var de = it.next();
-							if (de.isInResult()) degree++;
-						}
-						return degree;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [er] = args;
-						var degree = 0;
-						for (var it = this.iterator(); it.hasNext(); ) {
-							var de = it.next();
-							if (de.getEdgeRing() === er) degree++;
-						}
-						return degree;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					var degree = 0;
+					for (var it = this.iterator(); it.hasNext(); ) {
+						var de = it.next();
+						if (de.isInResult()) degree++;
+					}
+					return degree;
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [er] = args;
+					var degree = 0;
+					for (var it = this.iterator(); it.hasNext(); ) {
+						var de = it.next();
+						if (de.getEdgeRing() === er) degree++;
+					}
+					return degree;
+				})(...args);
+		}
 	}
 	getLabel() {
 		return this.label;

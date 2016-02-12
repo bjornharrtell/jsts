@@ -3,12 +3,12 @@ export default class SweepLineInterval {
 		this.min = null;
 		this.max = null;
 		this.item = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
 						let [min, max] = args;
-						overloads.call(this, min, max, null);
+						overloaded.call(this, min, max, null);
 					})(...args);
 				case 3:
 					return ((...args) => {
@@ -19,7 +19,7 @@ export default class SweepLineInterval {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

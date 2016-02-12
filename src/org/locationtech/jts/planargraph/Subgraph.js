@@ -7,16 +7,13 @@ export default class Subgraph {
 		this.edges = new HashSet();
 		this.dirEdges = new ArrayList();
 		this.nodeMap = new NodeMap();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [parentGraph] = args;
-						this.parentGraph = parentGraph;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [parentGraph] = args;
+					this.parentGraph = parentGraph;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

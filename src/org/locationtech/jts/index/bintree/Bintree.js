@@ -5,16 +5,13 @@ export default class Bintree {
 	constructor(...args) {
 		this.root = null;
 		this.minExtent = 1.0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.root = new Root();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					this.root = new Root();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -39,30 +36,27 @@ export default class Bintree {
 		this.root.insert(insertInterval, item);
 	}
 	query(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (typeof args[0] === "number") {
-						return ((...args) => {
-							let [x] = args;
-							return this.query(new Interval(x, x));
-						})(...args);
-					} else if (args[0] instanceof Interval) {
-						return ((...args) => {
-							let [interval] = args;
-							var foundItems = new ArrayList();
-							this.query(interval, foundItems);
-							return foundItems;
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (typeof args[0] === "number") {
 					return ((...args) => {
-						let [interval, foundItems] = args;
-						this.root.addAllItemsFromOverlapping(interval, foundItems);
+						let [x] = args;
+						return this.query(new Interval(x, x));
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof Interval) {
+					return ((...args) => {
+						let [interval] = args;
+						var foundItems = new ArrayList();
+						this.query(interval, foundItems);
+						return foundItems;
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [interval, foundItems] = args;
+					this.root.addAllItemsFromOverlapping(interval, foundItems);
+				})(...args);
+		}
 	}
 	iterator() {
 		var foundItems = new ArrayList();

@@ -4,37 +4,31 @@ import LinkedList from '../../../../../java/util/LinkedList';
 export default class EdgeConnectedTriangleTraversal {
 	constructor(...args) {
 		this.triQueue = new LinkedList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
 	}
 	init(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof QuadEdgeTriangle) {
-						return ((...args) => {
-							let [tri] = args;
-							this.triQueue.addLast(tri);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [tris] = args;
-							this.triQueue.addAll(tris);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof QuadEdgeTriangle) {
+					return ((...args) => {
+						let [tri] = args;
+						this.triQueue.addLast(tri);
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					return ((...args) => {
+						let [tris] = args;
+						this.triQueue.addAll(tris);
+					})(...args);
+				}
+		}
 	}
 	process(currTri, visitor) {
 		currTri.getNeighbours();

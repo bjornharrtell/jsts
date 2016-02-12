@@ -7,7 +7,7 @@ export default class Envelope {
 		this.maxx = null;
 		this.miny = null;
 		this.maxy = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -38,42 +38,39 @@ export default class Envelope {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparable, Serializable];
 	}
 	static intersects(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [p1, p2, q] = args;
-						if (q.x >= (p1.x < p2.x ? p1.x : p2.x) && q.x <= (p1.x > p2.x ? p1.x : p2.x) && (q.y >= (p1.y < p2.y ? p1.y : p2.y) && q.y <= (p1.y > p2.y ? p1.y : p2.y))) {
-							return true;
-						}
-						return false;
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [p1, p2, q1, q2] = args;
-						var minq = Math.min(q1.x, q2.x);
-						var maxq = Math.max(q1.x, q2.x);
-						var minp = Math.min(p1.x, p2.x);
-						var maxp = Math.max(p1.x, p2.x);
-						if (minp > maxq) return false;
-						if (maxp < minq) return false;
-						minq = Math.min(q1.y, q2.y);
-						maxq = Math.max(q1.y, q2.y);
-						minp = Math.min(p1.y, p2.y);
-						maxp = Math.max(p1.y, p2.y);
-						if (minp > maxq) return false;
-						if (maxp < minq) return false;
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [p1, p2, q] = args;
+					if (q.x >= (p1.x < p2.x ? p1.x : p2.x) && q.x <= (p1.x > p2.x ? p1.x : p2.x) && (q.y >= (p1.y < p2.y ? p1.y : p2.y) && q.y <= (p1.y > p2.y ? p1.y : p2.y))) {
 						return true;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+					}
+					return false;
+				})(...args);
+			case 4:
+				return ((...args) => {
+					let [p1, p2, q1, q2] = args;
+					var minq = Math.min(q1.x, q2.x);
+					var maxq = Math.max(q1.x, q2.x);
+					var minp = Math.min(p1.x, p2.x);
+					var maxp = Math.max(p1.x, p2.x);
+					if (minp > maxq) return false;
+					if (maxp < minq) return false;
+					minq = Math.min(q1.y, q2.y);
+					maxq = Math.max(q1.y, q2.y);
+					minp = Math.min(p1.y, p2.y);
+					maxp = Math.max(p1.y, p2.y);
+					if (minp > maxq) return false;
+					if (maxp < minq) return false;
+					return true;
+				})(...args);
+		}
 	}
 	getArea() {
 		return this.getWidth() * this.getHeight();
@@ -103,60 +100,54 @@ export default class Envelope {
 		return this.maxx;
 	}
 	covers(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.covers(p.x, p.y);
-						})(...args);
-					} else if (args[0] instanceof Envelope) {
-						return ((...args) => {
-							let [other] = args;
-							if (this.isNull() || other.isNull()) {
-								return false;
-							}
-							return other.getMinX() >= this.minx && other.getMaxX() <= this.maxx && other.getMinY() >= this.miny && other.getMaxY() <= this.maxy;
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Coordinate) {
 					return ((...args) => {
-						let [x, y] = args;
-						if (this.isNull()) return false;
-						return x >= this.minx && x <= this.maxx && y >= this.miny && y <= this.maxy;
+						let [p] = args;
+						return this.covers(p.x, p.y);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof Envelope) {
+					return ((...args) => {
+						let [other] = args;
+						if (this.isNull() || other.isNull()) {
+							return false;
+						}
+						return other.getMinX() >= this.minx && other.getMaxX() <= this.maxx && other.getMinY() >= this.miny && other.getMaxY() <= this.maxy;
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [x, y] = args;
+					if (this.isNull()) return false;
+					return x >= this.minx && x <= this.maxx && y >= this.miny && y <= this.maxy;
+				})(...args);
+		}
 	}
 	intersects(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Envelope) {
-						return ((...args) => {
-							let [other] = args;
-							if (this.isNull() || other.isNull()) {
-								return false;
-							}
-							return !(other.minx > this.maxx || other.maxx < this.minx || other.miny > this.maxy || other.maxy < this.miny);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.intersects(p.x, p.y);
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Envelope) {
 					return ((...args) => {
-						let [x, y] = args;
-						if (this.isNull()) return false;
-						return !(x > this.maxx || x < this.minx || y > this.maxy || y < this.miny);
+						let [other] = args;
+						if (this.isNull() || other.isNull()) {
+							return false;
+						}
+						return !(other.minx > this.maxx || other.maxx < this.minx || other.miny > this.maxy || other.maxy < this.miny);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [p] = args;
+						return this.intersects(p.x, p.y);
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [x, y] = args;
+					if (this.isNull()) return false;
+					return !(x > this.maxx || x < this.minx || y > this.maxy || y < this.miny);
+				})(...args);
+		}
 	}
 	getMinY() {
 		return this.miny;
@@ -165,67 +156,64 @@ export default class Envelope {
 		return this.minx;
 	}
 	expandToInclude(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							this.expandToInclude(p.x, p.y);
-						})(...args);
-					} else if (args[0] instanceof Envelope) {
-						return ((...args) => {
-							let [other] = args;
-							if (other.isNull()) {
-								return null;
-							}
-							if (this.isNull()) {
-								this.minx = other.getMinX();
-								this.maxx = other.getMaxX();
-								this.miny = other.getMinY();
-								this.maxy = other.getMaxY();
-							} else {
-								if (other.minx < this.minx) {
-									this.minx = other.minx;
-								}
-								if (other.maxx > this.maxx) {
-									this.maxx = other.maxx;
-								}
-								if (other.miny < this.miny) {
-									this.miny = other.miny;
-								}
-								if (other.maxy > this.maxy) {
-									this.maxy = other.maxy;
-								}
-							}
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Coordinate) {
 					return ((...args) => {
-						let [x, y] = args;
+						let [p] = args;
+						this.expandToInclude(p.x, p.y);
+					})(...args);
+				} else if (args[0] instanceof Envelope) {
+					return ((...args) => {
+						let [other] = args;
+						if (other.isNull()) {
+							return null;
+						}
 						if (this.isNull()) {
-							this.minx = x;
-							this.maxx = x;
-							this.miny = y;
-							this.maxy = y;
+							this.minx = other.getMinX();
+							this.maxx = other.getMaxX();
+							this.miny = other.getMinY();
+							this.maxy = other.getMaxY();
 						} else {
-							if (x < this.minx) {
-								this.minx = x;
+							if (other.minx < this.minx) {
+								this.minx = other.minx;
 							}
-							if (x > this.maxx) {
-								this.maxx = x;
+							if (other.maxx > this.maxx) {
+								this.maxx = other.maxx;
 							}
-							if (y < this.miny) {
-								this.miny = y;
+							if (other.miny < this.miny) {
+								this.miny = other.miny;
 							}
-							if (y > this.maxy) {
-								this.maxy = y;
+							if (other.maxy > this.maxy) {
+								this.maxy = other.maxy;
 							}
 						}
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				}
+			case 2:
+				return ((...args) => {
+					let [x, y] = args;
+					if (this.isNull()) {
+						this.minx = x;
+						this.maxx = x;
+						this.miny = y;
+						this.maxy = y;
+					} else {
+						if (x < this.minx) {
+							this.minx = x;
+						}
+						if (x > this.maxx) {
+							this.maxx = x;
+						}
+						if (y < this.miny) {
+							this.miny = y;
+						}
+						if (y > this.maxy) {
+							this.maxy = y;
+						}
+					}
+				})(...args);
+		}
 	}
 	minExtent() {
 		if (this.isNull()) return 0.0;
@@ -287,50 +275,44 @@ export default class Envelope {
 		return h;
 	}
 	expandBy(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [distance] = args;
-						this.expandBy(distance, distance);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [deltaX, deltaY] = args;
-						if (this.isNull()) return null;
-						this.minx -= deltaX;
-						this.maxx += deltaX;
-						this.miny -= deltaY;
-						this.maxy += deltaY;
-						if (this.minx > this.maxx || this.miny > this.maxy) this.setToNull();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [distance] = args;
+					this.expandBy(distance, distance);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [deltaX, deltaY] = args;
+					if (this.isNull()) return null;
+					this.minx -= deltaX;
+					this.maxx += deltaX;
+					this.miny -= deltaY;
+					this.maxy += deltaY;
+					if (this.minx > this.maxx || this.miny > this.maxy) this.setToNull();
+				})(...args);
+		}
 	}
 	contains(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Envelope) {
-						return ((...args) => {
-							let [other] = args;
-							return this.covers(other);
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							return this.covers(p);
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Envelope) {
 					return ((...args) => {
-						let [x, y] = args;
-						return this.covers(x, y);
+						let [other] = args;
+						return this.covers(other);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [p] = args;
+						return this.covers(p);
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [x, y] = args;
+					return this.covers(x, y);
+				})(...args);
+		}
 	}
 	centre() {
 		if (this.isNull()) return null;

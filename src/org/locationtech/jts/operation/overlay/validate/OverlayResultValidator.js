@@ -13,18 +13,15 @@ export default class OverlayResultValidator {
 		this.invalidLocation = null;
 		this.boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE;
 		this.testCoords = new ArrayList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [a, b, result] = args;
-						this.boundaryDistanceTolerance = OverlayResultValidator.computeBoundaryDistanceTolerance(a, b);
-						this.geom = [a, b, result];
-						this.locFinder = [new FuzzyPointLocator(this.geom[0], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[1], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[2], this.boundaryDistanceTolerance)];
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [a, b, result] = args;
+					this.boundaryDistanceTolerance = OverlayResultValidator.computeBoundaryDistanceTolerance(a, b);
+					this.geom = [a, b, result];
+					this.locFinder = [new FuzzyPointLocator(this.geom[0], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[1], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[2], this.boundaryDistanceTolerance)];
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -52,32 +49,29 @@ export default class OverlayResultValidator {
 		return isValid;
 	}
 	checkValid(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [overlayOp] = args;
-						for (var i = 0; i < this.testCoords.size(); i++) {
-							var pt = this.testCoords.get(i);
-							if (!this.checkValid(overlayOp, pt)) {
-								this.invalidLocation = pt;
-								return false;
-							}
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [overlayOp] = args;
+					for (var i = 0; i < this.testCoords.size(); i++) {
+						var pt = this.testCoords.get(i);
+						if (!this.checkValid(overlayOp, pt)) {
+							this.invalidLocation = pt;
+							return false;
 						}
-						return true;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [overlayOp, pt] = args;
-						this.location[0] = this.locFinder[0].getLocation(pt);
-						this.location[1] = this.locFinder[1].getLocation(pt);
-						this.location[2] = this.locFinder[2].getLocation(pt);
-						if (OverlayResultValidator.hasLocation(this.location, Location.BOUNDARY)) return true;
-						return this.isValidResult(overlayOp, this.location);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+					}
+					return true;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [overlayOp, pt] = args;
+					this.location[0] = this.locFinder[0].getLocation(pt);
+					this.location[1] = this.locFinder[1].getLocation(pt);
+					this.location[2] = this.locFinder[2].getLocation(pt);
+					if (OverlayResultValidator.hasLocation(this.location, Location.BOUNDARY)) return true;
+					return this.isValidResult(overlayOp, this.location);
+				})(...args);
+		}
 	}
 	addTestPts(g) {
 		var ptGen = new OffsetPointGenerator(g);

@@ -7,7 +7,7 @@ export default class AbstractNode {
 		this.childBoundables = new ArrayList();
 		this.bounds = null;
 		this.level = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -20,7 +20,7 @@ export default class AbstractNode {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Boundable, Serializable];

@@ -6,15 +6,12 @@ export default class DirectedEdgeStar {
 	constructor(...args) {
 		this.outEdges = new ArrayList();
 		this.sorted = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -51,40 +48,37 @@ export default class DirectedEdgeStar {
 		return this.outEdges.get(this.getIndex(i - 1));
 	}
 	getIndex(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Edge) {
-						return ((...args) => {
-							let [edge] = args;
-							this.sortEdges();
-							for (var i = 0; i < this.outEdges.size(); i++) {
-								var de = this.outEdges.get(i);
-								if (de.getEdge() === edge) return i;
-							}
-							return -1;
-						})(...args);
-					} else if (args[0] instanceof DirectedEdge) {
-						return ((...args) => {
-							let [dirEdge] = args;
-							this.sortEdges();
-							for (var i = 0; i < this.outEdges.size(); i++) {
-								var de = this.outEdges.get(i);
-								if (de === dirEdge) return i;
-							}
-							return -1;
-						})(...args);
-					} else if (Number.isInteger(args[0])) {
-						return ((...args) => {
-							let [i] = args;
-							var modi = i % this.outEdges.size();
-							if (modi < 0) modi += this.outEdges.size();
-							return modi;
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Edge) {
+					return ((...args) => {
+						let [edge] = args;
+						this.sortEdges();
+						for (var i = 0; i < this.outEdges.size(); i++) {
+							var de = this.outEdges.get(i);
+							if (de.getEdge() === edge) return i;
+						}
+						return -1;
+					})(...args);
+				} else if (args[0] instanceof DirectedEdge) {
+					return ((...args) => {
+						let [dirEdge] = args;
+						this.sortEdges();
+						for (var i = 0; i < this.outEdges.size(); i++) {
+							var de = this.outEdges.get(i);
+							if (de === dirEdge) return i;
+						}
+						return -1;
+					})(...args);
+				} else if (Number.isInteger(args[0])) {
+					return ((...args) => {
+						let [i] = args;
+						var modi = i % this.outEdges.size();
+						if (modi < 0) modi += this.outEdges.size();
+						return modi;
+					})(...args);
+				}
+		}
 	}
 	add(de) {
 		this.outEdges.add(de);

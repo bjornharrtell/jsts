@@ -24,16 +24,13 @@ export default class BufferBuilder {
 		this.geomFact = null;
 		this.graph = null;
 		this.edgeList = new EdgeList();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [bufParams] = args;
-						this.bufParams = bufParams;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [bufParams] = args;
+					this.bufParams = bufParams;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

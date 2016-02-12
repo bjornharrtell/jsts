@@ -7,16 +7,13 @@ export default class ConsistentPolygonRingChecker {
 		this.graph = null;
 		this.SCANNING_FOR_INCOMING = 1;
 		this.LINKING_TO_OUTGOING = 2;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [graph] = args;
-						this.graph = graph;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [graph] = args;
+					this.graph = graph;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -9,16 +9,13 @@ export default class LinearGeometryBuilder {
 		this.ignoreInvalidLines = false;
 		this.fixInvalidLines = false;
 		this.lastPt = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geomFact] = args;
-						this.geomFact = geomFact;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geomFact] = args;
+					this.geomFact = geomFact;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -56,23 +53,20 @@ export default class LinearGeometryBuilder {
 		this.fixInvalidLines = fixInvalidLines;
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pt] = args;
-						this.add(pt, true);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [pt, allowRepeatedPoints] = args;
-						if (this.coordList === null) this.coordList = new CoordinateList();
-						this.coordList.add(pt, allowRepeatedPoints);
-						this.lastPt = pt;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pt] = args;
+					this.add(pt, true);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [pt, allowRepeatedPoints] = args;
+					if (this.coordList === null) this.coordList = new CoordinateList();
+					this.coordList.add(pt, allowRepeatedPoints);
+					this.lastPt = pt;
+				})(...args);
+		}
 	}
 	setIgnoreInvalidLines(ignoreInvalidLines) {
 		this.ignoreInvalidLines = ignoreInvalidLines;

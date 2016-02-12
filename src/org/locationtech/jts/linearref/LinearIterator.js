@@ -7,17 +7,17 @@ export default class LinearIterator {
 		this.currentLine = null;
 		this.componentIndex = 0;
 		this.vertexIndex = 0;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [linear] = args;
-						overloads.call(this, linear, 0, 0);
+						overloaded.call(this, linear, 0, 0);
 					})(...args);
 				case 2:
 					return ((...args) => {
 						let [linear, start] = args;
-						overloads.call(this, linear, start.getComponentIndex(), LinearIterator.segmentEndVertexIndex(start));
+						overloaded.call(this, linear, start.getComponentIndex(), LinearIterator.segmentEndVertexIndex(start));
 					})(...args);
 				case 3:
 					return ((...args) => {
@@ -31,7 +31,7 @@ export default class LinearIterator {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

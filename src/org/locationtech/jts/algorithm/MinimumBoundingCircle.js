@@ -10,16 +10,13 @@ export default class MinimumBoundingCircle {
 		this.extremalPts = null;
 		this.centre = null;
 		this.radius = 0.0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.input = geom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom] = args;
+					this.input = geom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

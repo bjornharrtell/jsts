@@ -7,7 +7,7 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
 		super();
 		this.isConstrainedToCircle = false;
 		this.gutterFraction = 0;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -21,7 +21,7 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

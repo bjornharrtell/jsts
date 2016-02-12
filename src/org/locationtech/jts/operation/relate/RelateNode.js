@@ -2,16 +2,13 @@ import Node from '../../geomgraph/Node';
 export default class RelateNode extends Node {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [coord, edges] = args;
-						super(coord, edges);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [coord, edges] = args;
+					super(coord, edges);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

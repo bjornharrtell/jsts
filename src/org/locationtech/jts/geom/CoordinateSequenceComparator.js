@@ -4,7 +4,7 @@ import Comparator from '../../../../java/util/Comparator';
 export default class CoordinateSequenceComparator {
 	constructor(...args) {
 		this.dimensionLimit = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -18,7 +18,7 @@ export default class CoordinateSequenceComparator {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparator];

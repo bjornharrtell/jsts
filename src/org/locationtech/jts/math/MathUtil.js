@@ -17,27 +17,24 @@ export default class MathUtil {
 		return min;
 	}
 	static clamp(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					if (typeof args[2] === "number" && (typeof args[0] === "number" && typeof args[1] === "number")) {
-						return ((...args) => {
-							let [x, min, max] = args;
-							if (x < min) return min;
-							if (x > max) return max;
-							return x;
-						})(...args);
-					} else if (Number.isInteger(args[2]) && (Number.isInteger(args[0]) && Number.isInteger(args[1]))) {
-						return ((...args) => {
-							let [x, min, max] = args;
-							if (x < min) return min;
-							if (x > max) return max;
-							return x;
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				if (typeof args[2] === "number" && (typeof args[0] === "number" && typeof args[1] === "number")) {
+					return ((...args) => {
+						let [x, min, max] = args;
+						if (x < min) return min;
+						if (x > max) return max;
+						return x;
+					})(...args);
+				} else if (Number.isInteger(args[2]) && (Number.isInteger(args[0]) && Number.isInteger(args[1]))) {
+					return ((...args) => {
+						let [x, min, max] = args;
+						if (x < min) return min;
+						if (x > max) return max;
+						return x;
+					})(...args);
+				}
+		}
 	}
 	static wrap(index, max) {
 		if (index < 0) {
@@ -46,28 +43,25 @@ export default class MathUtil {
 		return index % max;
 	}
 	static max(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [v1, v2, v3] = args;
-						var max = v1;
-						if (v2 > max) max = v2;
-						if (v3 > max) max = v3;
-						return max;
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [v1, v2, v3, v4] = args;
-						var max = v1;
-						if (v2 > max) max = v2;
-						if (v3 > max) max = v3;
-						if (v4 > max) max = v4;
-						return max;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [v1, v2, v3] = args;
+					var max = v1;
+					if (v2 > max) max = v2;
+					if (v3 > max) max = v3;
+					return max;
+				})(...args);
+			case 4:
+				return ((...args) => {
+					let [v1, v2, v3, v4] = args;
+					var max = v1;
+					if (v2 > max) max = v2;
+					if (v3 > max) max = v3;
+					if (v4 > max) max = v4;
+					return max;
+				})(...args);
+		}
 	}
 	static average(x1, x2) {
 		return (x1 + x2) / 2.0;

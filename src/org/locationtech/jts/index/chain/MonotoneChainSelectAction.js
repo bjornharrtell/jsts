@@ -9,21 +9,18 @@ export default class MonotoneChainSelectAction {
 		return [];
 	}
 	select(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [seg] = args;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [mc, startIndex] = args;
-						mc.getLineSegment(startIndex, this.selectedSegment);
-						this.select(this.selectedSegment);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [seg] = args;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [mc, startIndex] = args;
+					mc.getLineSegment(startIndex, this.selectedSegment);
+					this.select(this.selectedSegment);
+				})(...args);
+		}
 	}
 	getClass() {
 		return MonotoneChainSelectAction;

@@ -8,20 +8,17 @@ export default class SegmentNode {
 		this.segmentIndex = null;
 		this.segmentOctant = null;
 		this._isInterior = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 4:
-					return ((...args) => {
-						let [segString, coord, segmentIndex, segmentOctant] = args;
-						this.segString = segString;
-						this.coord = new Coordinate(coord);
-						this.segmentIndex = segmentIndex;
-						this.segmentOctant = segmentOctant;
-						this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 4:
+				return ((...args) => {
+					let [segString, coord, segmentIndex, segmentOctant] = args;
+					this.segString = segString;
+					this.coord = new Coordinate(coord);
+					this.segmentIndex = segmentIndex;
+					this.segmentOctant = segmentOctant;
+					this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparable];

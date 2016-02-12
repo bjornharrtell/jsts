@@ -7,16 +7,13 @@ export default class EdgeIntersectionList {
 	constructor(...args) {
 		this.nodeMap = new TreeMap();
 		this.edge = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [edge] = args;
-						this.edge = edge;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [edge] = args;
+					this.edge = edge;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

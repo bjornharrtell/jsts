@@ -11,17 +11,14 @@ export default class Point extends Geometry {
 	constructor(...args) {
 		super();
 		this.coordinates = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [coordinates, factory] = args;
-						super(factory);
-						this.init(coordinates);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [coordinates, factory] = args;
+					super(factory);
+					this.init(coordinates);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Puntal];
@@ -78,57 +75,51 @@ export default class Point extends Geometry {
 		return this.getCoordinate().x;
 	}
 	compareToSameClass(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [other] = args;
-						var point = other;
-						return this.getCoordinate().compareTo(point.getCoordinate());
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [other, comp] = args;
-						var point = other;
-						return comp.compare(this.coordinates, point.coordinates);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [other] = args;
+					var point = other;
+					return this.getCoordinate().compareTo(point.getCoordinate());
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [other, comp] = args;
+					var point = other;
+					return comp.compare(this.coordinates, point.coordinates);
+				})(...args);
+		}
 	}
 	apply(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							if (this.isEmpty()) {
-								return null;
-							}
-							filter.filter(this.getCoordinate());
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							if (this.isEmpty()) return null;
-							filter.filter(this.coordinates, 0);
-							if (filter.isGeometryChanged()) this.geometryChanged();
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							filter.filter(this);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-						return ((...args) => {
-							let [filter] = args;
-							filter.filter(this);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						if (this.isEmpty()) {
+							return null;
+						}
+						filter.filter(this.getCoordinate());
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						if (this.isEmpty()) return null;
+						filter.filter(this.coordinates, 0);
+						if (filter.isGeometryChanged()) this.geometryChanged();
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						filter.filter(this);
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
+					return ((...args) => {
+						let [filter] = args;
+						filter.filter(this);
+					})(...args);
+				}
+		}
 	}
 	getBoundary() {
 		return this.getFactory().createGeometryCollection(null);

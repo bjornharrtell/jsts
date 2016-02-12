@@ -5,16 +5,13 @@ import Polygon from '../../geom/Polygon';
 export default class RectangleContains {
 	constructor(...args) {
 		this.rectEnv = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [rectangle] = args;
-						this.rectEnv = rectangle.getEnvelopeInternal();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [rectangle] = args;
+					this.rectEnv = rectangle.getEnvelopeInternal();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -54,23 +51,20 @@ export default class RectangleContains {
 		return true;
 	}
 	isPointContainedInBoundary(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Point) {
-						return ((...args) => {
-							let [point] = args;
-							return this.isPointContainedInBoundary(point.getCoordinate());
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [pt] = args;
-							return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Point) {
+					return ((...args) => {
+						let [point] = args;
+						return this.isPointContainedInBoundary(point.getCoordinate());
+					})(...args);
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [pt] = args;
+						return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
+					})(...args);
+				}
+		}
 	}
 	contains(geom) {
 		if (!this.rectEnv.contains(geom.getEnvelopeInternal())) return false;

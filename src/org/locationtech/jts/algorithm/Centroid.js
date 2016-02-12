@@ -15,17 +15,14 @@ export default class Centroid {
 		this.totalLength = 0.0;
 		this.ptCount = 0;
 		this.ptCentSum = new Coordinate();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.areaBasePt = null;
-						this.add(geom);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom] = args;
+					this.areaBasePt = null;
+					this.add(geom);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -104,39 +101,36 @@ export default class Centroid {
 		this.areasum2 += sign * area2;
 	}
 	add(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Polygon) {
-						return ((...args) => {
-							let [poly] = args;
-							this.addShell(poly.getExteriorRing().getCoordinates());
-							for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-								this.addHole(poly.getInteriorRingN(i).getCoordinates());
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Polygon) {
+					return ((...args) => {
+						let [poly] = args;
+						this.addShell(poly.getExteriorRing().getCoordinates());
+						for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+							this.addHole(poly.getInteriorRingN(i).getCoordinates());
+						}
+					})(...args);
+				} else if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [geom] = args;
+						if (geom.isEmpty()) return null;
+						if (geom instanceof Point) {
+							this.addPoint(geom.getCoordinate());
+						} else if (geom instanceof LineString) {
+							this.addLineSegments(geom.getCoordinates());
+						} else if (geom instanceof Polygon) {
+							var poly = geom;
+							this.add(poly);
+						} else if (geom instanceof GeometryCollection) {
+							var gc = geom;
+							for (var i = 0; i < gc.getNumGeometries(); i++) {
+								this.add(gc.getGeometryN(i));
 							}
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							if (geom.isEmpty()) return null;
-							if (geom instanceof Point) {
-								this.addPoint(geom.getCoordinate());
-							} else if (geom instanceof LineString) {
-								this.addLineSegments(geom.getCoordinates());
-							} else if (geom instanceof Polygon) {
-								var poly = geom;
-								this.add(poly);
-							} else if (geom instanceof GeometryCollection) {
-								var gc = geom;
-								for (var i = 0; i < gc.getNumGeometries(); i++) {
-									this.add(gc.getGeometryN(i));
-								}
-							}
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+						}
+					})(...args);
+				}
+		}
 	}
 	getClass() {
 		return Centroid;

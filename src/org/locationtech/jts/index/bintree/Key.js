@@ -5,16 +5,13 @@ export default class Key {
 		this.pt = 0.0;
 		this.level = 0;
 		this.interval = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [interval] = args;
-						this.computeKey(interval);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [interval] = args;
+					this.computeKey(interval);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -3,12 +3,12 @@ export default class GeometryLocation {
 		this.component = null;
 		this.segIndex = null;
 		this.pt = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
 						let [component, pt] = args;
-						overloads.call(this, component, GeometryLocation.INSIDE_AREA, pt);
+						overloaded.call(this, component, GeometryLocation.INSIDE_AREA, pt);
 					})(...args);
 				case 3:
 					return ((...args) => {
@@ -19,7 +19,7 @@ export default class GeometryLocation {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

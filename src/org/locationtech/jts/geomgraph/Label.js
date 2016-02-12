@@ -5,7 +5,7 @@ import TopologyLocation from './TopologyLocation';
 export default class Label {
 	constructor(...args) {
 		this.elt = new Array(2);
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					if (Number.isInteger(args[0])) {
@@ -43,7 +43,7 @@ export default class Label {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -68,22 +68,19 @@ export default class Label {
 		return this.elt[geomIndex].isNull();
 	}
 	setAllLocationsIfNull(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [location] = args;
-						this.setAllLocationsIfNull(0, location);
-						this.setAllLocationsIfNull(1, location);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [geomIndex, location] = args;
-						this.elt[geomIndex].setAllLocationsIfNull(location);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [location] = args;
+					this.setAllLocationsIfNull(0, location);
+					this.setAllLocationsIfNull(1, location);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [geomIndex, location] = args;
+					this.elt[geomIndex].setAllLocationsIfNull(location);
+				})(...args);
+		}
 	}
 	isLine(geomIndex) {
 		return this.elt[geomIndex].isLine();
@@ -102,21 +99,18 @@ export default class Label {
 		this.elt[1].flip();
 	}
 	getLocation(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geomIndex] = args;
-						return this.elt[geomIndex].get(Position.ON);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [geomIndex, posIndex] = args;
-						return this.elt[geomIndex].get(posIndex);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geomIndex] = args;
+					return this.elt[geomIndex].get(Position.ON);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [geomIndex, posIndex] = args;
+					return this.elt[geomIndex].get(posIndex);
+				})(...args);
+		}
 	}
 	toString() {
 		var buf = new StringBuffer();
@@ -131,41 +125,35 @@ export default class Label {
 		return buf.toString();
 	}
 	isArea(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return this.elt[0].isArea() || this.elt[1].isArea();
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [geomIndex] = args;
-						return this.elt[geomIndex].isArea();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return this.elt[0].isArea() || this.elt[1].isArea();
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [geomIndex] = args;
+					return this.elt[geomIndex].isArea();
+				})(...args);
+		}
 	}
 	isAnyNull(geomIndex) {
 		return this.elt[geomIndex].isAnyNull();
 	}
 	setLocation(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [geomIndex, location] = args;
-						this.elt[geomIndex].setLocation(Position.ON, location);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [geomIndex, posIndex, location] = args;
-						this.elt[geomIndex].setLocation(posIndex, location);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [geomIndex, location] = args;
+					this.elt[geomIndex].setLocation(Position.ON, location);
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [geomIndex, posIndex, location] = args;
+					this.elt[geomIndex].setLocation(posIndex, location);
+				})(...args);
+		}
 	}
 	isEqualOnSide(lbl, side) {
 		return this.elt[0].isEqualOnSide(lbl.elt[0], side) && this.elt[1].isEqualOnSide(lbl.elt[1], side);

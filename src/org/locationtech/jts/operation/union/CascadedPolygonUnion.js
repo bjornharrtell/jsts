@@ -10,17 +10,14 @@ export default class CascadedPolygonUnion {
 	constructor(...args) {
 		this.inputPolys = null;
 		this.geomFactory = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [polys] = args;
-						this.inputPolys = polys;
-						if (this.inputPolys === null) this.inputPolys = new ArrayList();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [polys] = args;
+					this.inputPolys = polys;
+					if (this.inputPolys === null) this.inputPolys = new ArrayList();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -89,31 +86,28 @@ export default class CascadedPolygonUnion {
 		return unionAll;
 	}
 	binaryUnion(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geoms] = args;
-						return this.binaryUnion(geoms, 0, geoms.size());
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [geoms, start, end] = args;
-						if (end - start <= 1) {
-							var g0 = CascadedPolygonUnion.getGeometry(geoms, start);
-							return this.unionSafe(g0, null);
-						} else if (end - start === 2) {
-							return this.unionSafe(CascadedPolygonUnion.getGeometry(geoms, start), CascadedPolygonUnion.getGeometry(geoms, start + 1));
-						} else {
-							var mid = Math.trunc((end + start) / 2);
-							var g0 = this.binaryUnion(geoms, start, mid);
-							var g1 = this.binaryUnion(geoms, mid, end);
-							return this.unionSafe(g0, g1);
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geoms] = args;
+					return this.binaryUnion(geoms, 0, geoms.size());
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [geoms, start, end] = args;
+					if (end - start <= 1) {
+						var g0 = CascadedPolygonUnion.getGeometry(geoms, start);
+						return this.unionSafe(g0, null);
+					} else if (end - start === 2) {
+						return this.unionSafe(CascadedPolygonUnion.getGeometry(geoms, start), CascadedPolygonUnion.getGeometry(geoms, start + 1));
+					} else {
+						var mid = Math.trunc((end + start) / 2);
+						var g0 = this.binaryUnion(geoms, start, mid);
+						var g1 = this.binaryUnion(geoms, mid, end);
+						return this.unionSafe(g0, g1);
+					}
+				})(...args);
+		}
 	}
 	repeatedUnion(geoms) {
 		var union = null;
@@ -147,27 +141,24 @@ export default class CascadedPolygonUnion {
 		return overallUnion;
 	}
 	bufferUnion(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geoms] = args;
-						var factory = geoms.get(0).getFactory();
-						var gColl = factory.buildGeometry(geoms);
-						var unionAll = gColl.buffer(0.0);
-						return unionAll;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [g0, g1] = args;
-						var factory = g0.getFactory();
-						var gColl = factory.createGeometryCollection([g0, g1]);
-						var unionAll = gColl.buffer(0.0);
-						return unionAll;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geoms] = args;
+					var factory = geoms.get(0).getFactory();
+					var gColl = factory.buildGeometry(geoms);
+					var unionAll = gColl.buffer(0.0);
+					return unionAll;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [g0, g1] = args;
+					var factory = g0.getFactory();
+					var gColl = factory.createGeometryCollection([g0, g1]);
+					var unionAll = gColl.buffer(0.0);
+					return unionAll;
+				})(...args);
+		}
 	}
 	getClass() {
 		return CascadedPolygonUnion;

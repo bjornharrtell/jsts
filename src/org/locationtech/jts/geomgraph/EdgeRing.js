@@ -17,18 +17,15 @@ export default class EdgeRing {
 		this.shell = null;
 		this.holes = new ArrayList();
 		this.geometryFactory = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [start, geometryFactory] = args;
-						this.geometryFactory = geometryFactory;
-						this.computePoints(start);
-						this.computeRing();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [start, geometryFactory] = args;
+					this.geometryFactory = geometryFactory;
+					this.computePoints(start);
+					this.computeRing();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -136,27 +133,24 @@ export default class EdgeRing {
 		return this.shell;
 	}
 	mergeLabel(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [deLabel] = args;
-						this.mergeLabel(deLabel, 0);
-						this.mergeLabel(deLabel, 1);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [deLabel, geomIndex] = args;
-						var loc = deLabel.getLocation(geomIndex, Position.RIGHT);
-						if (loc === Location.NONE) return null;
-						if (this.label.getLocation(geomIndex) === Location.NONE) {
-							this.label.setLocation(geomIndex, loc);
-							return null;
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [deLabel] = args;
+					this.mergeLabel(deLabel, 0);
+					this.mergeLabel(deLabel, 1);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [deLabel, geomIndex] = args;
+					var loc = deLabel.getLocation(geomIndex, Position.RIGHT);
+					if (loc === Location.NONE) return null;
+					if (this.label.getLocation(geomIndex) === Location.NONE) {
+						this.label.setLocation(geomIndex, loc);
+						return null;
+					}
+				})(...args);
+		}
 	}
 	setShell(shell) {
 		this.shell = shell;

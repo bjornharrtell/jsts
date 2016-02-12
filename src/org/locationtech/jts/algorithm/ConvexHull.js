@@ -12,12 +12,12 @@ export default class ConvexHull {
 	constructor(...args) {
 		this.geomFactory = null;
 		this.inputPts = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [geometry] = args;
-						overloads.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
+						overloaded.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -27,7 +27,7 @@ export default class ConvexHull {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -221,16 +221,13 @@ export default class ConvexHull {
 class RadialComparator {
 	constructor(...args) {
 		this.origin = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [origin] = args;
-						this.origin = origin;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [origin] = args;
+					this.origin = origin;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [Comparator];

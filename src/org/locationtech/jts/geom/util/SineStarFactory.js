@@ -5,7 +5,7 @@ export default class SineStarFactory extends GeometricShapeFactory {
 		super();
 		this.numArms = 8;
 		this.armLengthRatio = 0.5;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -19,7 +19,7 @@ export default class SineStarFactory extends GeometricShapeFactory {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

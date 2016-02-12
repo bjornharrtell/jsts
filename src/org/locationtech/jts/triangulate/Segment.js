@@ -4,7 +4,7 @@ export default class Segment {
 	constructor(...args) {
 		this.ls = null;
 		this.data = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
@@ -20,16 +20,16 @@ export default class Segment {
 				case 6:
 					return ((...args) => {
 						let [x1, y1, z1, x2, y2, z2] = args;
-						overloads.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
+						overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
 					})(...args);
 				case 7:
 					return ((...args) => {
 						let [x1, y1, z1, x2, y2, z2, data] = args;
-						overloads.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
+						overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

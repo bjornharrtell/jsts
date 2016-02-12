@@ -6,16 +6,13 @@ export default class EdgeString {
 		this.factory = null;
 		this.directedEdges = new ArrayList();
 		this.coordinates = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [factory] = args;
-						this.factory = factory;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [factory] = args;
+					this.factory = factory;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

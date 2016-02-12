@@ -8,17 +8,14 @@ export default class RectangleIntersects {
 	constructor(...args) {
 		this.rectangle = null;
 		this.rectEnv = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [rectangle] = args;
-						this.rectangle = rectangle;
-						this.rectEnv = rectangle.getEnvelopeInternal();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [rectangle] = args;
+					this.rectangle = rectangle;
+					this.rectEnv = rectangle.getEnvelopeInternal();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -49,16 +46,13 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 		super();
 		this.rectEnv = null;
 		this._intersects = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [rectEnv] = args;
-						this.rectEnv = rectEnv;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [rectEnv] = args;
+					this.rectEnv = rectEnv;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -97,17 +91,14 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 		this.rectSeq = null;
 		this.rectEnv = null;
 		this._containsPoint = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [rectangle] = args;
-						this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
-						this.rectEnv = rectangle.getEnvelopeInternal();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [rectangle] = args;
+					this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
+					this.rectEnv = rectangle.getEnvelopeInternal();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -144,17 +135,14 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
 		this.hasIntersection = false;
 		this.p0 = new Coordinate();
 		this.p1 = new Coordinate();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [rectangle] = args;
-						this.rectEnv = rectangle.getEnvelopeInternal();
-						this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [rectangle] = args;
+					this.rectEnv = rectangle.getEnvelopeInternal();
+					this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

@@ -5,17 +5,14 @@ export default class SplitSegment {
 		this.segLen = null;
 		this.splitPt = null;
 		this.minimumLen = 0.0;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [seg] = args;
-						this.seg = seg;
-						this.segLen = seg.getLength();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [seg] = args;
+					this.seg = seg;
+					this.segLen = seg.getLength();
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -27,32 +24,29 @@ export default class SplitSegment {
 		return coord;
 	}
 	splitAt(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pt] = args;
-						var minFrac = this.minimumLen / this.segLen;
-						if (pt.distance(this.seg.p0) < this.minimumLen) {
-							this.splitPt = this.seg.pointAlong(minFrac);
-							return null;
-						}
-						if (pt.distance(this.seg.p1) < this.minimumLen) {
-							this.splitPt = SplitSegment.pointAlongReverse(this.seg, minFrac);
-							return null;
-						}
-						this.splitPt = pt;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [length, endPt] = args;
-						var actualLen = this.getConstrainedLength(length);
-						var frac = actualLen / this.segLen;
-						if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pt] = args;
+					var minFrac = this.minimumLen / this.segLen;
+					if (pt.distance(this.seg.p0) < this.minimumLen) {
+						this.splitPt = this.seg.pointAlong(minFrac);
+						return null;
+					}
+					if (pt.distance(this.seg.p1) < this.minimumLen) {
+						this.splitPt = SplitSegment.pointAlongReverse(this.seg, minFrac);
+						return null;
+					}
+					this.splitPt = pt;
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [length, endPt] = args;
+					var actualLen = this.getConstrainedLength(length);
+					var frac = actualLen / this.segLen;
+					if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
+				})(...args);
+		}
 	}
 	setMinimumLength(minLen) {
 		this.minimumLen = minLen;

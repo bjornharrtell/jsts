@@ -8,18 +8,15 @@ export default class Node extends NodeBase {
 		this.interval = null;
 		this.centre = null;
 		this.level = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [interval, level] = args;
-						this.interval = interval;
-						this.level = level;
-						this.centre = (interval.getMin() + interval.getMax()) / 2;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [interval, level] = args;
+					this.interval = interval;
+					this.level = level;
+					this.centre = (interval.getMin() + interval.getMax()) / 2;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

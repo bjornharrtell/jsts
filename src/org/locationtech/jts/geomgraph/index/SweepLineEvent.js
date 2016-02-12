@@ -7,7 +7,7 @@ export default class SweepLineEvent {
 		this.insertEvent = null;
 		this.deleteEventIndex = null;
 		this.obj = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					return ((...args) => {
@@ -26,7 +26,7 @@ export default class SweepLineEvent {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparable];

@@ -9,13 +9,13 @@ import Dimension from './Dimension';
 export default class LinearRing extends LineString {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 2:
 					if (args[0] instanceof Coordinate && args[1] instanceof GeometryFactory) {
 						return ((...args) => {
 							let [points, factory] = args;
-							overloads.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
+							overloaded.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
 						})(...args);
 					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && args[1] instanceof GeometryFactory) {
 						return ((...args) => {
@@ -26,7 +26,7 @@ export default class LinearRing extends LineString {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

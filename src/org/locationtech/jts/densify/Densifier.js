@@ -8,16 +8,13 @@ export default class Densifier {
 	constructor(...args) {
 		this.inputGeom = null;
 		this.distanceTolerance = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [inputGeom] = args;
-						this.inputGeom = inputGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [inputGeom] = args;
+					this.inputGeom = inputGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -67,16 +64,13 @@ class DensifyTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
 		this.distanceTolerance = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [distanceTolerance] = args;
-						this.distanceTolerance = distanceTolerance;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [distanceTolerance] = args;
+					this.distanceTolerance = distanceTolerance;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

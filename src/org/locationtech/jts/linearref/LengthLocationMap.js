@@ -3,16 +3,13 @@ import LinearLocation from './LinearLocation';
 export default class LengthLocationMap {
 	constructor(...args) {
 		this.linearGeom = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [linearGeom] = args;
-						this.linearGeom = linearGeom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [linearGeom] = args;
+					this.linearGeom = linearGeom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -22,23 +19,20 @@ export default class LengthLocationMap {
 		return locater.getLength(loc);
 	}
 	static getLocation(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [linearGeom, length] = args;
-						var locater = new LengthLocationMap(linearGeom);
-						return locater.getLocation(length);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [linearGeom, length, resolveLower] = args;
-						var locater = new LengthLocationMap(linearGeom);
-						return locater.getLocation(length, resolveLower);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [linearGeom, length] = args;
+					var locater = new LengthLocationMap(linearGeom);
+					return locater.getLocation(length);
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [linearGeom, length, resolveLower] = args;
+					var locater = new LengthLocationMap(linearGeom);
+					return locater.getLocation(length, resolveLower);
+				})(...args);
+		}
 	}
 	getLength(loc) {
 		var totalLength = 0.0;
@@ -67,30 +61,27 @@ export default class LengthLocationMap {
 		return new LinearLocation(compIndex, 0, 0.0);
 	}
 	getLocation(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [length] = args;
-						return this.getLocation(length, true);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [length, resolveLower] = args;
-						var forwardLength = length;
-						if (length < 0.0) {
-							var lineLen = this.linearGeom.getLength();
-							forwardLength = lineLen + length;
-						}
-						var loc = this.getLocationForward(forwardLength);
-						if (resolveLower) {
-							return loc;
-						}
-						return this.resolveHigher(loc);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [length] = args;
+					return this.getLocation(length, true);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [length, resolveLower] = args;
+					var forwardLength = length;
+					if (length < 0.0) {
+						var lineLen = this.linearGeom.getLength();
+						forwardLength = lineLen + length;
+					}
+					var loc = this.getLocationForward(forwardLength);
+					if (resolveLower) {
+						return loc;
+					}
+					return this.resolveHigher(loc);
+				})(...args);
+		}
 	}
 	getLocationForward(length) {
 		if (length <= 0.0) return new LinearLocation();

@@ -6,7 +6,7 @@ export default class HCoordinate {
 		this.x = null;
 		this.y = null;
 		this.w = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -67,7 +67,7 @@ export default class HCoordinate {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

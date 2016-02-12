@@ -10,12 +10,12 @@ export default class SegmentIntersectionDetector {
 		this._hasNonProperIntersection = false;
 		this.intPt = null;
 		this.intSegments = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, new RobustLineIntersector());
+						overloaded.call(this, new RobustLineIntersector());
 					})(...args);
 				case 1:
 					return ((...args) => {
@@ -24,7 +24,7 @@ export default class SegmentIntersectionDetector {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [SegmentIntersector];

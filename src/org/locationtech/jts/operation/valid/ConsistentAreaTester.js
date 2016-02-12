@@ -6,16 +6,13 @@ export default class ConsistentAreaTester {
 		this.geomGraph = null;
 		this.nodeGraph = new RelateNodeGraph();
 		this.invalidPoint = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geomGraph] = args;
-						this.geomGraph = geomGraph;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geomGraph] = args;
+					this.geomGraph = geomGraph;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

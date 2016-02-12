@@ -9,17 +9,14 @@ export default class OffsetCurveBuilder {
 		this.distance = 0.0;
 		this.precisionModel = null;
 		this.bufParams = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [precisionModel, bufParams] = args;
-						this.precisionModel = precisionModel;
-						this.bufParams = bufParams;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [precisionModel, bufParams] = args;
+					this.precisionModel = precisionModel;
+					this.bufParams = bufParams;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

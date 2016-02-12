@@ -13,15 +13,12 @@ export default class VoronoiDiagramBuilder {
 		this.subdiv = null;
 		this.clipEnv = null;
 		this.diagramEnv = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -63,23 +60,20 @@ export default class VoronoiDiagramBuilder {
 		this.tolerance = tolerance;
 	}
 	setSites(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [coords] = args;
-							this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [geom] = args;
+						this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+					return ((...args) => {
+						let [coords] = args;
+						this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
+					})(...args);
+				}
+		}
 	}
 	setClipEnvelope(clipEnv) {
 		this.clipEnv = clipEnv;

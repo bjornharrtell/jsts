@@ -7,17 +7,14 @@ export default class PrecisionReducerCoordinateOperation extends CoordinateOpera
 		super();
 		this.targetPM = null;
 		this.removeCollapsed = true;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [targetPM, removeCollapsed] = args;
-						this.targetPM = targetPM;
-						this.removeCollapsed = removeCollapsed;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [targetPM, removeCollapsed] = args;
+					this.targetPM = targetPM;
+					this.removeCollapsed = removeCollapsed;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

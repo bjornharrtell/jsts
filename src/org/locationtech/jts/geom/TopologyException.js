@@ -4,7 +4,7 @@ export default class TopologyException extends RuntimeException {
 	constructor(...args) {
 		super();
 		this.pt = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
@@ -19,7 +19,7 @@ export default class TopologyException extends RuntimeException {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

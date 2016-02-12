@@ -12,16 +12,13 @@ export default class PolygonizeGraph extends PlanarGraph {
 	constructor(...args) {
 		super();
 		this.factory = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [factory] = args;
-						this.factory = factory;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [factory] = args;
+					this.factory = factory;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -142,24 +139,21 @@ export default class PolygonizeGraph extends PlanarGraph {
 		return er;
 	}
 	computeDepthParity(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						while (true) {
-							var de = null;
-							if (de === null) return null;
-							this.computeDepthParity(de);
-						}
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [de] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					while (true) {
+						var de = null;
+						if (de === null) return null;
+						this.computeDepthParity(de);
+					}
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [de] = args;
+				})(...args);
+		}
 	}
 	computeNextCWEdges() {
 		for (var iNode = this.nodeIterator(); iNode.hasNext(); ) {

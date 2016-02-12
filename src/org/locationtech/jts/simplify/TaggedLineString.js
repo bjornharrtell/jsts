@@ -6,12 +6,12 @@ export default class TaggedLineString {
 		this.segs = null;
 		this.resultSegs = new ArrayList();
 		this.minimumSize = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [parentLine] = args;
-						overloads.call(this, parentLine, 2);
+						overloaded.call(this, parentLine, 2);
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -22,7 +22,7 @@ export default class TaggedLineString {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

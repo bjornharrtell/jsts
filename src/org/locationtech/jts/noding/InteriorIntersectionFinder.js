@@ -10,17 +10,14 @@ export default class InteriorIntersectionFinder {
 		this.intersections = new ArrayList();
 		this.intersectionCount = 0;
 		this.keepIntersections = true;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [li] = args;
-						this.li = li;
-						this.interiorIntersection = null;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [li] = args;
+					this.li = li;
+					this.interiorIntersection = null;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [SegmentIntersector];

@@ -3,18 +3,15 @@ export default class PriorityQueue {
 	constructor(...args) {
 		this._size = null;
 		this.items = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this._size = 0;
-						this.items = new ArrayList();
-						this.items.add(null);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					this._size = 0;
+					this.items = new ArrayList();
+					this.items.add(null);
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

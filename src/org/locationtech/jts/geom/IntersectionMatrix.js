@@ -6,7 +6,7 @@ import Cloneable from '../../../../java/lang/Cloneable';
 export default class IntersectionMatrix {
 	constructor(...args) {
 		this.matrix = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -18,13 +18,13 @@ export default class IntersectionMatrix {
 					if (typeof args[0] === "string") {
 						return ((...args) => {
 							let [elements] = args;
-							overloads.call(this);
+							overloaded.call(this);
 							this.set(elements);
 						})(...args);
 					} else if (args[0] instanceof IntersectionMatrix) {
 						return ((...args) => {
 							let [other] = args;
-							overloads.call(this);
+							overloaded.call(this);
 							this.matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
 							this.matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
 							this.matrix[Location.INTERIOR][Location.EXTERIOR] = other.matrix[Location.INTERIOR][Location.EXTERIOR];
@@ -38,48 +38,45 @@ export default class IntersectionMatrix {
 					}
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Cloneable];
 	}
 	static matches(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					if (Number.isInteger(args[0]) && typeof args[1] === "string") {
-						return ((...args) => {
-							let [actualDimensionValue, requiredDimensionSymbol] = args;
-							if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
-								return true;
-							}
-							if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
-								return true;
-							}
-							if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
-								return true;
-							}
-							if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
-								return true;
-							}
-							if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
-								return true;
-							}
-							if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
-								return true;
-							}
-							return false;
-						})(...args);
-					} else if (typeof args[0] === "string" && typeof args[1] === "string") {
-						return ((...args) => {
-							let [actualDimensionSymbols, requiredDimensionSymbols] = args;
-							var m = new IntersectionMatrix(actualDimensionSymbols);
-							return m.matches(requiredDimensionSymbols);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				if (Number.isInteger(args[0]) && typeof args[1] === "string") {
+					return ((...args) => {
+						let [actualDimensionValue, requiredDimensionSymbol] = args;
+						if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
+							return true;
+						}
+						if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
+							return true;
+						}
+						if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
+							return true;
+						}
+						if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
+							return true;
+						}
+						if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
+							return true;
+						}
+						if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
+							return true;
+						}
+						return false;
+					})(...args);
+				} else if (typeof args[0] === "string" && typeof args[1] === "string") {
+					return ((...args) => {
+						let [actualDimensionSymbols, requiredDimensionSymbols] = args;
+						var m = new IntersectionMatrix(actualDimensionSymbols);
+						return m.matches(requiredDimensionSymbols);
+					})(...args);
+				}
+		}
 	}
 	static isTrue(actualDimensionValue) {
 		if (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE) {
@@ -99,51 +96,45 @@ export default class IntersectionMatrix {
 		return hasPointInCommon && this.matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this.matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE;
 	}
 	set(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [dimensionSymbols] = args;
-						for (var i = 0; i < dimensionSymbols.length; i++) {
-							var row = Math.trunc(i / 3);
-							var col = i % 3;
-							this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
-						}
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [row, column, dimensionValue] = args;
-						this.matrix[row][column] = dimensionValue;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [dimensionSymbols] = args;
+					for (var i = 0; i < dimensionSymbols.length; i++) {
+						var row = Math.trunc(i / 3);
+						var col = i % 3;
+						this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
+					}
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [row, column, dimensionValue] = args;
+					this.matrix[row][column] = dimensionValue;
+				})(...args);
+		}
 	}
 	isContains() {
 		return IntersectionMatrix.isTrue(this.matrix[Location.INTERIOR][Location.INTERIOR]) && this.matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this.matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE;
 	}
 	setAtLeast(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [minimumDimensionSymbols] = args;
-						for (var i = 0; i < minimumDimensionSymbols.length; i++) {
-							var row = Math.trunc(i / 3);
-							var col = i % 3;
-							this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
-						}
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [row, column, minimumDimensionValue] = args;
-						if (this.matrix[row][column] < minimumDimensionValue) {
-							this.matrix[row][column] = minimumDimensionValue;
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [minimumDimensionSymbols] = args;
+					for (var i = 0; i < minimumDimensionSymbols.length; i++) {
+						var row = Math.trunc(i / 3);
+						var col = i % 3;
+						this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
+					}
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [row, column, minimumDimensionValue] = args;
+					if (this.matrix[row][column] < minimumDimensionValue) {
+						this.matrix[row][column] = minimumDimensionValue;
+					}
+				})(...args);
+		}
 	}
 	setAtLeastIfValid(row, column, minimumDimensionValue) {
 		if (row >= 0 && column >= 0) {

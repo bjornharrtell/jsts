@@ -12,7 +12,7 @@ export default class EdgeEnd {
 		this.dx = null;
 		this.dy = null;
 		this.quadrant = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
@@ -22,18 +22,18 @@ export default class EdgeEnd {
 				case 3:
 					return ((...args) => {
 						let [edge, p0, p1] = args;
-						overloads.call(this, edge, p0, p1, null);
+						overloaded.call(this, edge, p0, p1, null);
 					})(...args);
 				case 4:
 					return ((...args) => {
 						let [edge, p0, p1, label] = args;
-						overloads.call(this, edge);
+						overloaded.call(this, edge);
 						this.init(p0, p1);
 						this.label = label;
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparable];

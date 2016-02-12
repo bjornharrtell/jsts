@@ -9,12 +9,12 @@ export default class EdgeEndBundle extends EdgeEnd {
 	constructor(...args) {
 		super();
 		this.edgeEnds = new ArrayList();
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 1:
 					return ((...args) => {
 						let [e] = args;
-						overloads.call(this, null, e);
+						overloaded.call(this, null, e);
 					})(...args);
 				case 2:
 					return ((...args) => {
@@ -24,7 +24,7 @@ export default class EdgeEndBundle extends EdgeEnd {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

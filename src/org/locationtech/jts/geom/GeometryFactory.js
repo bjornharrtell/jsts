@@ -20,29 +20,29 @@ export default class GeometryFactory {
 		this.precisionModel = null;
 		this.coordinateSequenceFactory = null;
 		this.SRID = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
 						let [] = args;
-						overloads.call(this, new PrecisionModel(), 0);
+						overloaded.call(this, new PrecisionModel(), 0);
 					})(...args);
 				case 1:
 					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFactory) > -1) {
 						return ((...args) => {
 							let [coordinateSequenceFactory] = args;
-							overloads.call(this, new PrecisionModel(), 0, coordinateSequenceFactory);
+							overloaded.call(this, new PrecisionModel(), 0, coordinateSequenceFactory);
 						})(...args);
 					} else if (args[0] instanceof PrecisionModel) {
 						return ((...args) => {
 							let [precisionModel] = args;
-							overloads.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
+							overloaded.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
 						})(...args);
 					}
 				case 2:
 					return ((...args) => {
 						let [precisionModel, SRID] = args;
-						overloads.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory());
+						overloaded.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory());
 					})(...args);
 				case 3:
 					return ((...args) => {
@@ -53,7 +53,7 @@ export default class GeometryFactory {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Serializable];
@@ -111,45 +111,39 @@ export default class GeometryFactory {
 		return this.createPolygon(this.createLinearRing([new Coordinate(envelope.getMinX(), envelope.getMinY()), new Coordinate(envelope.getMinX(), envelope.getMaxY()), new Coordinate(envelope.getMaxX(), envelope.getMaxY()), new Coordinate(envelope.getMaxX(), envelope.getMinY()), new Coordinate(envelope.getMinX(), envelope.getMinY())]), null);
 	}
 	createLineString(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return this.createLineString(this.getCoordinateSequenceFactory().create([]));
+				})(...args);
+			case 1:
+				if (args[0] instanceof Array) {
 					return ((...args) => {
-						let [] = args;
-						return this.createLineString(this.getCoordinateSequenceFactory().create([]));
+						let [coordinates] = args;
+						return this.createLineString(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 					})(...args);
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return this.createLineString(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return new LineString(coordinates, this);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [coordinates] = args;
+						return new LineString(coordinates, this);
+					})(...args);
+				}
+		}
 	}
 	createMultiLineString(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return new MultiLineString(null, this);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [lineStrings] = args;
-						return new MultiLineString(lineStrings, this);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return new MultiLineString(null, this);
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [lineStrings] = args;
+					return new MultiLineString(lineStrings, this);
+				})(...args);
+		}
 	}
 	buildGeometry(geomList) {
 		var geomClass = null;
@@ -190,85 +184,76 @@ export default class GeometryFactory {
 		return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 	}
 	createPoint(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return this.createPoint(this.getCoordinateSequenceFactory().create([]));
+				})(...args);
+			case 1:
+				if (args[0] instanceof Coordinate) {
 					return ((...args) => {
-						let [] = args;
-						return this.createPoint(this.getCoordinateSequenceFactory().create([]));
+						let [coordinate] = args;
+						return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null);
 					})(...args);
-				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [coordinate] = args;
-							return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return new Point(coordinates, this);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [coordinates] = args;
+						return new Point(coordinates, this);
+					})(...args);
+				}
+		}
 	}
 	getCoordinateSequenceFactory() {
 		return this.coordinateSequenceFactory;
 	}
 	createPolygon(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return new Polygon(null, null, this);
+				})(...args);
+			case 1:
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
 					return ((...args) => {
-						let [] = args;
-						return new Polygon(null, null, this);
+						let [coordinates] = args;
+						return this.createPolygon(this.createLinearRing(coordinates));
 					})(...args);
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return this.createPolygon(this.createLinearRing(coordinates));
-						})(...args);
-					} else if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return this.createPolygon(this.createLinearRing(coordinates));
-						})(...args);
-					} else if (args[0] instanceof LinearRing) {
-						return ((...args) => {
-							let [shell] = args;
-							return this.createPolygon(shell, null);
-						})(...args);
-					}
-				case 2:
+				} else if (args[0] instanceof Array) {
 					return ((...args) => {
-						let [shell, holes] = args;
-						return new Polygon(shell, holes, this);
+						let [coordinates] = args;
+						return this.createPolygon(this.createLinearRing(coordinates));
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof LinearRing) {
+					return ((...args) => {
+						let [shell] = args;
+						return this.createPolygon(shell, null);
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [shell, holes] = args;
+					return new Polygon(shell, holes, this);
+				})(...args);
+		}
 	}
 	getSRID() {
 		return this.SRID;
 	}
 	createGeometryCollection(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return new GeometryCollection(null, this);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [geometries] = args;
-						return new GeometryCollection(geometries, this);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return new GeometryCollection(null, this);
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [geometries] = args;
+					return new GeometryCollection(geometries, this);
+				})(...args);
+		}
 	}
 	createGeometry(g) {
 		var editor = new GeometryEditor(this);
@@ -285,83 +270,74 @@ export default class GeometryFactory {
 		return this.precisionModel;
 	}
 	createLinearRing(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return this.createLinearRing(this.getCoordinateSequenceFactory().create([]));
+				})(...args);
+			case 1:
+				if (args[0] instanceof Array) {
 					return ((...args) => {
-						let [] = args;
-						return this.createLinearRing(this.getCoordinateSequenceFactory().create([]));
+						let [coordinates] = args;
+						return this.createLinearRing(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 					})(...args);
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return this.createLinearRing(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return new LinearRing(coordinates, this);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [coordinates] = args;
+						return new LinearRing(coordinates, this);
+					})(...args);
+				}
+		}
 	}
 	createMultiPolygon(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return new MultiPolygon(null, this);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [polygons] = args;
-						return new MultiPolygon(polygons, this);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return new MultiPolygon(null, this);
+				})(...args);
+			case 1:
+				return ((...args) => {
+					let [polygons] = args;
+					return new MultiPolygon(polygons, this);
+				})(...args);
+		}
 	}
 	createMultiPoint(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+					return new MultiPoint(null, this);
+				})(...args);
+			case 1:
+				if (args[0] instanceof Array) {
 					return ((...args) => {
-						let [] = args;
-						return new MultiPoint(null, this);
+						let [point] = args;
+						return new MultiPoint(point, this);
 					})(...args);
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [point] = args;
-							return new MultiPoint(point, this);
-						})(...args);
-					} else if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [coordinates] = args;
-							return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordinates] = args;
-							if (coordinates === null) {
-								return this.createMultiPoint(new Array(0));
-							}
-							var points = new Array(coordinates.size());
-							for (var i = 0; i < coordinates.size(); i++) {
-								var ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension());
-								CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1);
-								points[i] = this.createPoint(ptSeq);
-							}
-							return this.createMultiPoint(points);
-						})(...args);
-					}
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (args[0] instanceof Array) {
+					return ((...args) => {
+						let [coordinates] = args;
+						return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [coordinates] = args;
+						if (coordinates === null) {
+							return this.createMultiPoint(new Array(0));
+						}
+						var points = new Array(coordinates.size());
+						for (var i = 0; i < coordinates.size(); i++) {
+							var ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension());
+							CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1);
+							points[i] = this.createPoint(ptSeq);
+						}
+						return this.createMultiPoint(points);
+					})(...args);
+				}
+		}
 	}
 	getClass() {
 		return GeometryFactory;

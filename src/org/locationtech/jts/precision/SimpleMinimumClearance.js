@@ -9,16 +9,13 @@ export default class SimpleMinimumClearance {
 		this.inputGeom = null;
 		this.minClearance = null;
 		this.minClearancePts = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.inputGeom = geom;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [geom] = args;
+					this.inputGeom = geom;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -42,30 +39,27 @@ export default class SimpleMinimumClearance {
 		return this.inputGeom.getFactory().createLineString(this.minClearancePts);
 	}
 	updateClearance(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [candidateValue, p0, p1] = args;
-						if (candidateValue < this.minClearance) {
-							this.minClearance = candidateValue;
-							this.minClearancePts[0] = new Coordinate(p0);
-							this.minClearancePts[1] = new Coordinate(p1);
-						}
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [candidateValue, p, seg0, seg1] = args;
-						if (candidateValue < this.minClearance) {
-							this.minClearance = candidateValue;
-							this.minClearancePts[0] = new Coordinate(p);
-							var seg = new LineSegment(seg0, seg1);
-							this.minClearancePts[1] = new Coordinate(seg.closestPoint(p));
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [candidateValue, p0, p1] = args;
+					if (candidateValue < this.minClearance) {
+						this.minClearance = candidateValue;
+						this.minClearancePts[0] = new Coordinate(p0);
+						this.minClearancePts[1] = new Coordinate(p1);
+					}
+				})(...args);
+			case 4:
+				return ((...args) => {
+					let [candidateValue, p, seg0, seg1] = args;
+					if (candidateValue < this.minClearance) {
+						this.minClearance = candidateValue;
+						this.minClearancePts[0] = new Coordinate(p);
+						var seg = new LineSegment(seg0, seg1);
+						this.minClearancePts[1] = new Coordinate(seg.closestPoint(p));
+					}
+				})(...args);
+		}
 	}
 	compute() {
 		if (this.minClearancePts !== null) return null;
@@ -84,16 +78,13 @@ export default class SimpleMinimumClearance {
 class VertexCoordinateFilter {
 	constructor(...args) {
 		this.smc = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [smc] = args;
-						this.smc = smc;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [smc] = args;
+					this.smc = smc;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [CoordinateFilter];
@@ -109,17 +100,14 @@ class ComputeMCCoordinateSequenceFilter {
 	constructor(...args) {
 		this.smc = null;
 		this.queryPt = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [smc, queryPt] = args;
-						this.smc = smc;
-						this.queryPt = queryPt;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 2:
+				return ((...args) => {
+					let [smc, queryPt] = args;
+					this.smc = smc;
+					this.queryPt = queryPt;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [CoordinateSequenceFilter];

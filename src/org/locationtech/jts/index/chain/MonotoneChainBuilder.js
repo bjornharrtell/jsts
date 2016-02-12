@@ -4,15 +4,12 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Quadrant from '../../geomgraph/Quadrant';
 export default class MonotoneChainBuilder {
 	constructor(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -49,27 +46,24 @@ export default class MonotoneChainBuilder {
 		return last - 1;
 	}
 	static getChains(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pts] = args;
-						return MonotoneChainBuilder.getChains(pts, null);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [pts, context] = args;
-						var mcList = new ArrayList();
-						var startIndex = MonotoneChainBuilder.getChainStartIndices(pts);
-						for (var i = 0; i < startIndex.length - 1; i++) {
-							var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
-							mcList.add(mc);
-						}
-						return mcList;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [pts] = args;
+					return MonotoneChainBuilder.getChains(pts, null);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [pts, context] = args;
+					var mcList = new ArrayList();
+					var startIndex = MonotoneChainBuilder.getChainStartIndices(pts);
+					for (var i = 0; i < startIndex.length - 1; i++) {
+						var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
+						mcList.add(mc);
+					}
+					return mcList;
+				})(...args);
+		}
 	}
 	static toIntArray(list) {
 		var array = new Array(list.size());

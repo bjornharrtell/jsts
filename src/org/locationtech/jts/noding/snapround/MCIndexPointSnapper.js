@@ -3,16 +3,13 @@ import ItemVisitor from '../../index/ItemVisitor';
 export default class MCIndexPointSnapper {
 	constructor(...args) {
 		this.index = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [index] = args;
-						this.index = index;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [index] = args;
+					this.index = index;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -21,32 +18,29 @@ export default class MCIndexPointSnapper {
 		return HotPixelSnapAction;
 	}
 	snap(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [hotPixel] = args;
-						return this.snap(hotPixel, null, -1);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
-						var pixelEnv = hotPixel.getSafeEnvelope();
-						var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
-						this.index.query(pixelEnv, new (class {
-							visitItem(item) {
-								var testChain = item;
-								testChain.select(pixelEnv, hotPixelSnapAction);
-							}
-							get interfaces_() {
-								return [ItemVisitor];
-							}
-						})());
-						return hotPixelSnapAction.isNodeAdded();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [hotPixel] = args;
+					return this.snap(hotPixel, null, -1);
+				})(...args);
+			case 3:
+				return ((...args) => {
+					let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
+					var pixelEnv = hotPixel.getSafeEnvelope();
+					var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
+					this.index.query(pixelEnv, new (class {
+						visitItem(item) {
+							var testChain = item;
+							testChain.select(pixelEnv, hotPixelSnapAction);
+						}
+						get interfaces_() {
+							return [ItemVisitor];
+						}
+					})());
+					return hotPixelSnapAction.isNodeAdded();
+				})(...args);
+		}
 	}
 	getClass() {
 		return MCIndexPointSnapper;
@@ -59,18 +53,15 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
 		this.parentEdge = null;
 		this.hotPixelVertexIndex = null;
 		this._isNodeAdded = false;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 3:
-					return ((...args) => {
-						let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
-						this.hotPixel = hotPixel;
-						this.parentEdge = parentEdge;
-						this.hotPixelVertexIndex = hotPixelVertexIndex;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 3:
+				return ((...args) => {
+					let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
+					this.hotPixel = hotPixel;
+					this.parentEdge = parentEdge;
+					this.hotPixelVertexIndex = hotPixelVertexIndex;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

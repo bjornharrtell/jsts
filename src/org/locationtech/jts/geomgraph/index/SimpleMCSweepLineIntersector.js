@@ -10,15 +10,12 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 		super();
 		this.events = new ArrayList();
 		this.nOverlaps = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];
@@ -33,41 +30,38 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 		}
 	}
 	computeIntersections(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [si] = args;
-						this.nOverlaps = 0;
-						this.prepareEvents();
-						for (var i = 0; i < this.events.size(); i++) {
-							var ev = this.events.get(i);
-							if (ev.isInsert()) {
-								this.processOverlaps(i, ev.getDeleteEventIndex(), ev, si);
-							}
-							if (si.isDone()) {
-								break;
-							}
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [si] = args;
+					this.nOverlaps = 0;
+					this.prepareEvents();
+					for (var i = 0; i < this.events.size(); i++) {
+						var ev = this.events.get(i);
+						if (ev.isInsert()) {
+							this.processOverlaps(i, ev.getDeleteEventIndex(), ev, si);
 						}
-					})(...args);
-				case 3:
-					if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-						return ((...args) => {
-							let [edges0, edges1, si] = args;
-							this.addEdges(edges0, edges0);
-							this.addEdges(edges1, edges1);
-							this.computeIntersections(si);
-						})(...args);
-					} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
-						return ((...args) => {
-							let [edges, si, testAllSegments] = args;
-							if (testAllSegments) this.addEdges(edges, null); else this.addEdges(edges);
-							this.computeIntersections(si);
-						})(...args);
+						if (si.isDone()) {
+							break;
+						}
 					}
-			}
-		};
-		return overloads.apply(this, args);
+				})(...args);
+			case 3:
+				if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
+					return ((...args) => {
+						let [edges0, edges1, si] = args;
+						this.addEdges(edges0, edges0);
+						this.addEdges(edges1, edges1);
+						this.computeIntersections(si);
+					})(...args);
+				} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
+					return ((...args) => {
+						let [edges, si, testAllSegments] = args;
+						if (testAllSegments) this.addEdges(edges, null); else this.addEdges(edges);
+						this.computeIntersections(si);
+					})(...args);
+				}
+		}
 	}
 	addEdge(edge, edgeSet) {
 		var mce = edge.getMonotoneChainEdge();
@@ -93,27 +87,24 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 		}
 	}
 	addEdges(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [edges] = args;
-						for (var i = edges.iterator(); i.hasNext(); ) {
-							var edge = i.next();
-							this.addEdge(edge, edge);
-						}
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [edges, edgeSet] = args;
-						for (var i = edges.iterator(); i.hasNext(); ) {
-							var edge = i.next();
-							this.addEdge(edge, edgeSet);
-						}
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [edges] = args;
+					for (var i = edges.iterator(); i.hasNext(); ) {
+						var edge = i.next();
+						this.addEdge(edge, edge);
+					}
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [edges, edgeSet] = args;
+					for (var i = edges.iterator(); i.hasNext(); ) {
+						var edge = i.next();
+						this.addEdge(edge, edgeSet);
+					}
+				})(...args);
+		}
 	}
 	getClass() {
 		return SimpleMCSweepLineIntersector;

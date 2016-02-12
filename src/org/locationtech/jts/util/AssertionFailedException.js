@@ -2,7 +2,7 @@ import RuntimeException from '../../../../java/lang/RuntimeException';
 export default class AssertionFailedException extends RuntimeException {
 	constructor(...args) {
 		super();
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -16,7 +16,7 @@ export default class AssertionFailedException extends RuntimeException {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];

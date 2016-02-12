@@ -3,15 +3,12 @@ import HalfEdge from './HalfEdge';
 export default class EdgeGraph {
 	constructor(...args) {
 		this.vertexMap = new HashMap();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 0:
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+		}
 	}
 	get interfaces_() {
 		return [];

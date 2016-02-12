@@ -2,7 +2,7 @@ export default class Interval {
 	constructor(...args) {
 		this.min = null;
 		this.max = null;
-		const overloads = (...args) => {
+		const overloaded = (...args) => {
 			switch (args.length) {
 				case 0:
 					return ((...args) => {
@@ -22,7 +22,7 @@ export default class Interval {
 					})(...args);
 			}
 		};
-		return overloads.apply(this, args);
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [];
@@ -35,22 +35,19 @@ export default class Interval {
 		return this.max - this.min;
 	}
 	overlaps(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [interval] = args;
-						return this.overlaps(interval.min, interval.max);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [min, max] = args;
-						if (this.min > max || this.max < min) return false;
-						return true;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		switch (args.length) {
+			case 1:
+				return ((...args) => {
+					let [interval] = args;
+					return this.overlaps(interval.min, interval.max);
+				})(...args);
+			case 2:
+				return ((...args) => {
+					let [min, max] = args;
+					if (this.min > max || this.max < min) return false;
+					return true;
+				})(...args);
+		}
 	}
 	getMin() {
 		return this.min;
@@ -59,28 +56,25 @@ export default class Interval {
 		return "[" + this.min + ", " + this.max + "]";
 	}
 	contains(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Interval) {
-						return ((...args) => {
-							let [interval] = args;
-							return this.contains(interval.min, interval.max);
-						})(...args);
-					} else if (typeof args[0] === "number") {
-						return ((...args) => {
-							let [p] = args;
-							return p >= this.min && p <= this.max;
-						})(...args);
-					}
-				case 2:
+		switch (args.length) {
+			case 1:
+				if (args[0] instanceof Interval) {
 					return ((...args) => {
-						let [min, max] = args;
-						return min >= this.min && max <= this.max;
+						let [interval] = args;
+						return this.contains(interval.min, interval.max);
 					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+				} else if (typeof args[0] === "number") {
+					return ((...args) => {
+						let [p] = args;
+						return p >= this.min && p <= this.max;
+					})(...args);
+				}
+			case 2:
+				return ((...args) => {
+					let [min, max] = args;
+					return min >= this.min && max <= this.max;
+				})(...args);
+		}
 	}
 	init(min, max) {
 		this.min = min;
