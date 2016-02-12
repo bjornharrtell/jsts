@@ -1,6 +1,6 @@
 import testCaseResultsPanel from './testCaseResultsPanel'
 
-const parser = new jsts.io.olParser()
+const parser = new jsts.io.OL3Parser()
 
 const features = new ol.Collection()
 const source = new ol.source.Vector({ features })
