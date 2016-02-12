@@ -10,38 +10,27 @@ export default class NodedSegmentString {
 		this.nodeList = new SegmentNodeList(this);
 		this.pts = null;
 		this.data = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [pts, data] = args;
-					this.pts = pts;
-					this.data = data;
-					break;
-				}
+		if (args.length === 2) {
+			let [pts, data] = args;
+			this.pts = pts;
+			this.data = data;
 		}
 	}
 	get interfaces_() {
 		return [NodableSegmentString];
 	}
 	static getNodedSubstrings(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [segStrings] = args;
-					var resultEdgelist = new ArrayList();
-					NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
-					return resultEdgelist;
-					break;
-				}
-			case 2:
-				{
-					let [segStrings, resultEdgelist] = args;
-					for (var i = segStrings.iterator(); i.hasNext(); ) {
-						var ss = i.next();
-						ss.getNodeList().addSplitEdges(resultEdgelist);
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [segStrings] = args;
+			var resultEdgelist = new ArrayList();
+			NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
+			return resultEdgelist;
+		} else if (args.length === 2) {
+			let [segStrings, resultEdgelist] = args;
+			for (var i = segStrings.iterator(); i.hasNext(); ) {
+				var ss = i.next();
+				ss.getNodeList().addSplitEdges(resultEdgelist);
+			}
 		}
 	}
 	getCoordinates() {
@@ -71,20 +60,13 @@ export default class NodedSegmentString {
 		return this.data;
 	}
 	addIntersection(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [intPt, segmentIndex] = args;
-					this.addIntersectionNode(intPt, segmentIndex);
-					break;
-				}
-			case 4:
-				{
-					let [li, segmentIndex, geomIndex, intIndex] = args;
-					var intPt = new Coordinate(li.getIntersection(intIndex));
-					this.addIntersection(intPt, segmentIndex);
-					break;
-				}
+		if (args.length === 2) {
+			let [intPt, segmentIndex] = args;
+			this.addIntersectionNode(intPt, segmentIndex);
+		} else if (args.length === 4) {
+			let [li, segmentIndex, geomIndex, intIndex] = args;
+			var intPt = new Coordinate(li.getIntersection(intIndex));
+			this.addIntersection(intPt, segmentIndex);
 		}
 	}
 	toString() {

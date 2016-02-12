@@ -7,39 +7,38 @@ export default class LinearLocation {
 		this.segmentIndex = 0;
 		this.segmentFraction = 0.0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [loc] = args;
-						this.componentIndex = loc.componentIndex;
-						this.segmentIndex = loc.segmentIndex;
-						this.segmentFraction = loc.segmentFraction;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [segmentIndex, segmentFraction] = args;
-						overloaded.call(this, 0, segmentIndex, segmentFraction);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [componentIndex, segmentIndex, segmentFraction] = args;
-						this.componentIndex = componentIndex;
-						this.segmentIndex = segmentIndex;
-						this.segmentFraction = segmentFraction;
-						this.normalize();
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [componentIndex, segmentIndex, segmentFraction, doNormalize] = args;
-						this.componentIndex = componentIndex;
-						this.segmentIndex = segmentIndex;
-						this.segmentFraction = segmentFraction;
-						if (doNormalize) this.normalize();
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [loc] = args;
+					this.componentIndex = loc.componentIndex;
+					this.segmentIndex = loc.segmentIndex;
+					this.segmentFraction = loc.segmentFraction;
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [segmentIndex, segmentFraction] = args;
+					overloaded.call(this, 0, segmentIndex, segmentFraction);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [componentIndex, segmentIndex, segmentFraction] = args;
+					this.componentIndex = componentIndex;
+					this.segmentIndex = segmentIndex;
+					this.segmentFraction = segmentFraction;
+					this.normalize();
+				})(...args);
+			} else if (args.length === 4) {
+				return ((...args) => {
+					let [componentIndex, segmentIndex, segmentFraction, doNormalize] = args;
+					this.componentIndex = componentIndex;
+					this.segmentIndex = segmentIndex;
+					this.segmentFraction = segmentFraction;
+					if (doNormalize) this.normalize();
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

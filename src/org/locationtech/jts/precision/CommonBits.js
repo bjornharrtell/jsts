@@ -5,12 +5,8 @@ export default class CommonBits {
 		this.commonMantissaBitsCount = 53;
 		this.commonBits = 0;
 		this.commonSignExp = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

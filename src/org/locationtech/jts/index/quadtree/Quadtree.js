@@ -8,13 +8,9 @@ export default class Quadtree {
 	constructor(...args) {
 		this.root = null;
 		this.minExtent = 1.0;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.root = new Root();
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.root = new Root();
 		}
 	}
 	get interfaces_() {
@@ -46,21 +42,14 @@ export default class Quadtree {
 		this.root.insert(insertEnv, item);
 	}
 	query(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [searchEnv] = args;
-					var visitor = new ArrayListVisitor();
-					this.query(searchEnv, visitor);
-					return visitor.getItems();
-					break;
-				}
-			case 2:
-				{
-					let [searchEnv, visitor] = args;
-					this.root.visit(searchEnv, visitor);
-					break;
-				}
+		if (args.length === 1) {
+			let [searchEnv] = args;
+			var visitor = new ArrayListVisitor();
+			this.query(searchEnv, visitor);
+			return visitor.getItems();
+		} else if (args.length === 2) {
+			let [searchEnv, visitor] = args;
+			this.root.visit(searchEnv, visitor);
 		}
 	}
 	queryAll() {

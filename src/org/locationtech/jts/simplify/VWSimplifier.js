@@ -9,13 +9,9 @@ export default class VWSimplifier {
 		this.inputGeom = null;
 		this.distanceTolerance = null;
 		this.isEnsureValidTopology = true;
-		switch (args.length) {
-			case 1:
-				{
-					let [inputGeom] = args;
-					this.inputGeom = inputGeom;
-					break;
-				}
+		if (args.length === 1) {
+			let [inputGeom] = args;
+			this.inputGeom = inputGeom;
 		}
 	}
 	get interfaces_() {
@@ -49,14 +45,10 @@ class VWTransformer extends GeometryTransformer {
 		super();
 		this.isEnsureValidTopology = true;
 		this.distanceTolerance = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [isEnsureValidTopology, distanceTolerance] = args;
-					this.isEnsureValidTopology = isEnsureValidTopology;
-					this.distanceTolerance = distanceTolerance;
-					break;
-				}
+		if (args.length === 2) {
+			let [isEnsureValidTopology, distanceTolerance] = args;
+			this.isEnsureValidTopology = isEnsureValidTopology;
+			this.distanceTolerance = distanceTolerance;
 		}
 	}
 	get interfaces_() {

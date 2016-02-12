@@ -4,14 +4,10 @@ export default class InteriorIntersectionFinderAdder {
 	constructor(...args) {
 		this.li = null;
 		this.interiorIntersections = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [li] = args;
-					this.li = li;
-					this.interiorIntersections = new ArrayList();
-					break;
-				}
+		if (args.length === 1) {
+			let [li] = args;
+			this.li = li;
+			this.interiorIntersections = new ArrayList();
 		}
 	}
 	get interfaces_() {

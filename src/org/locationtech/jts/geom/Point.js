@@ -11,14 +11,10 @@ export default class Point extends Geometry {
 	constructor(...args) {
 		super();
 		this.coordinates = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [coordinates, factory] = args;
-					super(factory);
-					this.init(coordinates);
-					break;
-				}
+		if (args.length === 2) {
+			let [coordinates, factory] = args;
+			super(factory);
+			this.init(coordinates);
 		}
 	}
 	get interfaces_() {
@@ -76,45 +72,36 @@ export default class Point extends Geometry {
 		return this.getCoordinate().x;
 	}
 	compareToSameClass(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [other] = args;
-					var point = other;
-					return this.getCoordinate().compareTo(point.getCoordinate());
-					break;
-				}
-			case 2:
-				{
-					let [other, comp] = args;
-					var point = other;
-					return comp.compare(this.coordinates, point.coordinates);
-					break;
-				}
+		if (args.length === 1) {
+			let [other] = args;
+			var point = other;
+			return this.getCoordinate().compareTo(point.getCoordinate());
+		} else if (args.length === 2) {
+			let [other, comp] = args;
+			var point = other;
+			return comp.compare(this.coordinates, point.coordinates);
 		}
 	}
 	apply(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-					let [filter] = args;
-					if (this.isEmpty()) {
-						return null;
-					}
-					filter.filter(this.getCoordinate());
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-					let [filter] = args;
-					if (this.isEmpty()) return null;
-					filter.filter(this.coordinates, 0);
-					if (filter.isGeometryChanged()) this.geometryChanged();
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-					let [filter] = args;
-					filter.filter(this);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-					let [filter] = args;
-					filter.filter(this);
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
+				let [filter] = args;
+				if (this.isEmpty()) {
+					return null;
 				}
-				break;
+				filter.filter(this.getCoordinate());
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
+				let [filter] = args;
+				if (this.isEmpty()) return null;
+				filter.filter(this.coordinates, 0);
+				if (filter.isGeometryChanged()) this.geometryChanged();
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
+				let [filter] = args;
+				filter.filter(this);
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
+				let [filter] = args;
+				filter.filter(this);
+			}
 		}
 	}
 	getBoundary() {

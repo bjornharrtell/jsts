@@ -8,13 +8,9 @@ export default class GeometryPrecisionReducer {
 		this.removeCollapsed = true;
 		this.changePrecisionModel = false;
 		this.isPointwise = false;
-		switch (args.length) {
-			case 1:
-				{
-					let [pm] = args;
-					this.targetPM = pm;
-					break;
-				}
+		if (args.length === 1) {
+			let [pm] = args;
+			this.targetPM = pm;
 		}
 	}
 	get interfaces_() {

@@ -12,21 +12,14 @@ export default class Angle {
 		return angle;
 	}
 	static angle(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [p] = args;
-					return Math.atan2(p.y, p.x);
-					break;
-				}
-			case 2:
-				{
-					let [p0, p1] = args;
-					var dx = p1.x - p0.x;
-					var dy = p1.y - p0.y;
-					return Math.atan2(dy, dx);
-					break;
-				}
+		if (args.length === 1) {
+			let [p] = args;
+			return Math.atan2(p.y, p.x);
+		} else if (args.length === 2) {
+			let [p0, p1] = args;
+			var dx = p1.x - p0.x;
+			var dy = p1.y - p0.y;
+			return Math.atan2(dy, dx);
 		}
 	}
 	static isAcute(p0, p1, p2) {

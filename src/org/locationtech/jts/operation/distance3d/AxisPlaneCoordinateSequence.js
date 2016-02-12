@@ -4,14 +4,10 @@ export default class AxisPlaneCoordinateSequence {
 	constructor(...args) {
 		this.seq = null;
 		this.indexMap = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [seq, indexMap] = args;
-					this.seq = seq;
-					this.indexMap = indexMap;
-					break;
-				}
+		if (args.length === 2) {
+			let [seq, indexMap] = args;
+			this.seq = seq;
+			this.indexMap = indexMap;
 		}
 	}
 	get interfaces_() {
@@ -40,21 +36,14 @@ export default class AxisPlaneCoordinateSequence {
 		return this.seq.getOrdinate(index, this.indexMap[ordinateIndex]);
 	}
 	getCoordinate(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [i] = args;
-					return this.getCoordinateCopy(i);
-					break;
-				}
-			case 2:
-				{
-					let [index, coord] = args;
-					coord.x = this.getOrdinate(index, CoordinateSequence.X);
-					coord.y = this.getOrdinate(index, CoordinateSequence.Y);
-					coord.z = this.getOrdinate(index, CoordinateSequence.Z);
-					break;
-				}
+		if (args.length === 1) {
+			let [i] = args;
+			return this.getCoordinateCopy(i);
+		} else if (args.length === 2) {
+			let [index, coord] = args;
+			coord.x = this.getOrdinate(index, CoordinateSequence.X);
+			coord.y = this.getOrdinate(index, CoordinateSequence.Y);
+			coord.z = this.getOrdinate(index, CoordinateSequence.Z);
 		}
 	}
 	getCoordinateCopy(i) {

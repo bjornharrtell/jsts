@@ -8,14 +8,10 @@ import MultiLineString from '../geom/MultiLineString';
 export default class LocationIndexedLine {
 	constructor(...args) {
 		this.linearGeom = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [linearGeom] = args;
-					this.linearGeom = linearGeom;
-					this.checkGeometryType();
-					break;
-				}
+		if (args.length === 1) {
+			let [linearGeom] = args;
+			this.linearGeom = linearGeom;
+			this.checkGeometryType();
 		}
 	}
 	get interfaces_() {
@@ -33,20 +29,13 @@ export default class LocationIndexedLine {
 		if (!(this.linearGeom instanceof LineString || this.linearGeom instanceof MultiLineString)) throw new IllegalArgumentException("Input geometry must be linear");
 	}
 	extractPoint(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [index] = args;
-					return index.getCoordinate(this.linearGeom);
-					break;
-				}
-			case 2:
-				{
-					let [index, offsetDistance] = args;
-					var indexLow = index.toLowest(this.linearGeom);
-					return indexLow.getSegment(this.linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
-					break;
-				}
+		if (args.length === 1) {
+			let [index] = args;
+			return index.getCoordinate(this.linearGeom);
+		} else if (args.length === 2) {
+			let [index, offsetDistance] = args;
+			var indexLow = index.toLowest(this.linearGeom);
+			return indexLow.getSegment(this.linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
 		}
 	}
 	isValidIndex(index) {

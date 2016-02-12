@@ -6,14 +6,10 @@ export default class BasicSegmentString {
 	constructor(...args) {
 		this.pts = null;
 		this.data = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [pts, data] = args;
-					this.pts = pts;
-					this.data = data;
-					break;
-				}
+		if (args.length === 2) {
+			let [pts, data] = args;
+			this.pts = pts;
+			this.data = data;
 		}
 	}
 	get interfaces_() {

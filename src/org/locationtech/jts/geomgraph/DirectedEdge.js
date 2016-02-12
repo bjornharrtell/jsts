@@ -15,21 +15,17 @@ export default class DirectedEdge extends EdgeEnd {
 		this.edgeRing = null;
 		this.minEdgeRing = null;
 		this.depth = [0, -999, -999];
-		switch (args.length) {
-			case 2:
-				{
-					let [edge, isForward] = args;
-					super(edge);
-					this._isForward = isForward;
-					if (isForward) {
-						this.init(edge.getCoordinate(0), edge.getCoordinate(1));
-					} else {
-						var n = edge.getNumPoints() - 1;
-						this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1));
-					}
-					this.computeDirectedLabel();
-					break;
-				}
+		if (args.length === 2) {
+			let [edge, isForward] = args;
+			super(edge);
+			this._isForward = isForward;
+			if (isForward) {
+				this.init(edge.getCoordinate(0), edge.getCoordinate(1));
+			} else {
+				var n = edge.getNumPoints() - 1;
+				this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1));
+			}
+			this.computeDirectedLabel();
 		}
 	}
 	get interfaces_() {

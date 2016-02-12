@@ -7,17 +7,10 @@ export default class CoordinateSequence {
 	size() {}
 	getOrdinate(index, ordinateIndex) {}
 	getCoordinate(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [i] = args;
-					break;
-				}
-			case 2:
-				{
-					let [index, coord] = args;
-					break;
-				}
+		if (args.length === 1) {
+			let [i] = args;
+		} else if (args.length === 2) {
+			let [index, coord] = args;
 		}
 	}
 	getCoordinateCopy(i) {}

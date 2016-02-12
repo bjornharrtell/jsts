@@ -4,19 +4,18 @@ export default class Interval {
 		this.min = null;
 		this.max = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [other] = args;
-						overloaded.call(this, other.min, other.max);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [min, max] = args;
-						Assert.isTrue(min <= max);
-						this.min = min;
-						this.max = max;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [other] = args;
+					overloaded.call(this, other.min, other.max);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [min, max] = args;
+					Assert.isTrue(min <= max);
+					this.min = min;
+					this.max = max;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

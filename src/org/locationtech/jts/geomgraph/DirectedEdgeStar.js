@@ -14,12 +14,8 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		this.label = null;
 		this.SCANNING_FOR_INCOMING = 1;
 		this.LINKING_TO_OUTGOING = 2;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -117,32 +113,25 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		firstIn.setNext(prevOut);
 	}
 	computeDepths(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [de] = args;
-					var edgeIndex = this.findIndex(de);
-					var label = de.getLabel();
-					var startDepth = de.getDepth(Position.LEFT);
-					var targetLastDepth = de.getDepth(Position.RIGHT);
-					var nextDepth = this.computeDepths(edgeIndex + 1, this.edgeList.size(), startDepth);
-					var lastDepth = this.computeDepths(0, edgeIndex, nextDepth);
-					if (lastDepth !== targetLastDepth) throw new TopologyException("depth mismatch at " + de.getCoordinate());
-					break;
-				}
-			case 3:
-				{
-					let [startIndex, endIndex, startDepth] = args;
-					var currDepth = startDepth;
-					for (var i = startIndex; i < endIndex; i++) {
-						var nextDe = this.edgeList.get(i);
-						var label = nextDe.getLabel();
-						nextDe.setEdgeDepths(Position.RIGHT, currDepth);
-						currDepth = nextDe.getDepth(Position.LEFT);
-					}
-					return currDepth;
-					break;
-				}
+		if (args.length === 1) {
+			let [de] = args;
+			var edgeIndex = this.findIndex(de);
+			var label = de.getLabel();
+			var startDepth = de.getDepth(Position.LEFT);
+			var targetLastDepth = de.getDepth(Position.RIGHT);
+			var nextDepth = this.computeDepths(edgeIndex + 1, this.edgeList.size(), startDepth);
+			var lastDepth = this.computeDepths(0, edgeIndex, nextDepth);
+			if (lastDepth !== targetLastDepth) throw new TopologyException("depth mismatch at " + de.getCoordinate());
+		} else if (args.length === 3) {
+			let [startIndex, endIndex, startDepth] = args;
+			var currDepth = startDepth;
+			for (var i = startIndex; i < endIndex; i++) {
+				var nextDe = this.edgeList.get(i);
+				var label = nextDe.getLabel();
+				nextDe.setEdgeDepths(Position.RIGHT, currDepth);
+				currDepth = nextDe.getDepth(Position.LEFT);
+			}
+			return currDepth;
 		}
 	}
 	mergeSymLabels() {
@@ -180,29 +169,22 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		}
 	}
 	getOutgoingDegree(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					var degree = 0;
-					for (var it = this.iterator(); it.hasNext(); ) {
-						var de = it.next();
-						if (de.isInResult()) degree++;
-					}
-					return degree;
-					break;
-				}
-			case 1:
-				{
-					let [er] = args;
-					var degree = 0;
-					for (var it = this.iterator(); it.hasNext(); ) {
-						var de = it.next();
-						if (de.getEdgeRing() === er) degree++;
-					}
-					return degree;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			var degree = 0;
+			for (var it = this.iterator(); it.hasNext(); ) {
+				var de = it.next();
+				if (de.isInResult()) degree++;
+			}
+			return degree;
+		} else if (args.length === 1) {
+			let [er] = args;
+			var degree = 0;
+			for (var it = this.iterator(); it.hasNext(); ) {
+				var de = it.next();
+				if (de.getEdgeRing() === er) degree++;
+			}
+			return degree;
 		}
 	}
 	getLabel() {

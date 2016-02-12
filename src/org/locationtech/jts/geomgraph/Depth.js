@@ -3,17 +3,13 @@ import Position from './Position';
 export default class Depth {
 	constructor(...args) {
 		this.depth = Array(2).fill().map(() => Array(3));
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					for (var i = 0; i < 2; i++) {
-						for (var j = 0; j < 3; j++) {
-							this.depth[i][j] = Depth.NULL_VALUE;
-						}
-					}
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			for (var i = 0; i < 2; i++) {
+				for (var j = 0; j < 3; j++) {
+					this.depth[i][j] = Depth.NULL_VALUE;
 				}
+			}
 		}
 	}
 	get interfaces_() {
@@ -31,30 +27,20 @@ export default class Depth {
 		this.depth[geomIndex][posIndex] = depthValue;
 	}
 	isNull(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					for (var i = 0; i < 2; i++) {
-						for (var j = 0; j < 3; j++) {
-							if (this.depth[i][j] !== Depth.NULL_VALUE) return false;
-						}
-					}
-					return true;
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			for (var i = 0; i < 2; i++) {
+				for (var j = 0; j < 3; j++) {
+					if (this.depth[i][j] !== Depth.NULL_VALUE) return false;
 				}
-			case 1:
-				{
-					let [geomIndex] = args;
-					return this.depth[geomIndex][1] === Depth.NULL_VALUE;
-					break;
-				}
-			case 2:
-				{
-					let [geomIndex, posIndex] = args;
-					return this.depth[geomIndex][posIndex] === Depth.NULL_VALUE;
-					break;
-				}
+			}
+			return true;
+		} else if (args.length === 1) {
+			let [geomIndex] = args;
+			return this.depth[geomIndex][1] === Depth.NULL_VALUE;
+		} else if (args.length === 2) {
+			let [geomIndex, posIndex] = args;
+			return this.depth[geomIndex][posIndex] === Depth.NULL_VALUE;
 		}
 	}
 	normalize() {
@@ -82,28 +68,21 @@ export default class Depth {
 		return "A: " + this.depth[0][1] + "," + this.depth[0][2] + " B: " + this.depth[1][1] + "," + this.depth[1][2];
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [lbl] = args;
-					for (var i = 0; i < 2; i++) {
-						for (var j = 1; j < 3; j++) {
-							var loc = lbl.getLocation(i, j);
-							if (loc === Location.EXTERIOR || loc === Location.INTERIOR) {
-								if (this.isNull(i, j)) {
-									this.depth[i][j] = Depth.depthAtLocation(loc);
-								} else this.depth[i][j] += Depth.depthAtLocation(loc);
-							}
-						}
+		if (args.length === 1) {
+			let [lbl] = args;
+			for (var i = 0; i < 2; i++) {
+				for (var j = 1; j < 3; j++) {
+					var loc = lbl.getLocation(i, j);
+					if (loc === Location.EXTERIOR || loc === Location.INTERIOR) {
+						if (this.isNull(i, j)) {
+							this.depth[i][j] = Depth.depthAtLocation(loc);
+						} else this.depth[i][j] += Depth.depthAtLocation(loc);
 					}
-					break;
 				}
-			case 3:
-				{
-					let [geomIndex, posIndex, location] = args;
-					if (location === Location.INTERIOR) this.depth[geomIndex][posIndex]++;
-					break;
-				}
+			}
+		} else if (args.length === 3) {
+			let [geomIndex, posIndex, location] = args;
+			if (location === Location.INTERIOR) this.depth[geomIndex][posIndex]++;
 		}
 	}
 	getClass() {

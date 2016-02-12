@@ -36,22 +36,21 @@ export default class GeometryGraph extends PlanarGraph {
 		this.areaPtLocator = null;
 		this.ptLocator = new PointLocator();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [argIndex, parentGeom] = args;
-						overloaded.call(this, argIndex, parentGeom, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [argIndex, parentGeom, boundaryNodeRule] = args;
-						this.argIndex = argIndex;
-						this.parentGeom = parentGeom;
-						this.boundaryNodeRule = boundaryNodeRule;
-						if (parentGeom !== null) {
-							this.add(parentGeom);
-						}
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [argIndex, parentGeom] = args;
+					overloaded.call(this, argIndex, parentGeom, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [argIndex, parentGeom, boundaryNodeRule] = args;
+					this.argIndex = argIndex;
+					this.parentGeom = parentGeom;
+					this.boundaryNodeRule = boundaryNodeRule;
+					if (parentGeom !== null) {
+						this.add(parentGeom);
+					}
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -73,26 +72,19 @@ export default class GeometryGraph extends PlanarGraph {
 		lbl.setLocation(argIndex, newLoc);
 	}
 	computeSelfNodes(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [li, computeRingSelfNodes] = args;
-					return this.computeSelfNodes(li, computeRingSelfNodes, false);
-					break;
-				}
-			case 3:
-				{
-					let [li, computeRingSelfNodes, isDoneIfProperInt] = args;
-					var si = new SegmentIntersector(li, true, false);
-					si.setIsDoneIfProperInt(isDoneIfProperInt);
-					var esi = this.createEdgeSetIntersector();
-					var isRings = this.parentGeom instanceof LinearRing || this.parentGeom instanceof Polygon || this.parentGeom instanceof MultiPolygon;
-					var computeAllSegments = computeRingSelfNodes || !isRings;
-					esi.computeIntersections(this.edges, si, computeAllSegments);
-					this.addSelfIntersectionNodes(this.argIndex);
-					return si;
-					break;
-				}
+		if (args.length === 2) {
+			let [li, computeRingSelfNodes] = args;
+			return this.computeSelfNodes(li, computeRingSelfNodes, false);
+		} else if (args.length === 3) {
+			let [li, computeRingSelfNodes, isDoneIfProperInt] = args;
+			var si = new SegmentIntersector(li, true, false);
+			si.setIsDoneIfProperInt(isDoneIfProperInt);
+			var esi = this.createEdgeSetIntersector();
+			var isRings = this.parentGeom instanceof LinearRing || this.parentGeom instanceof Polygon || this.parentGeom instanceof MultiPolygon;
+			var computeAllSegments = computeRingSelfNodes || !isRings;
+			esi.computeIntersections(this.edges, si, computeAllSegments);
+			this.addSelfIntersectionNodes(this.argIndex);
+			return si;
 		}
 	}
 	computeSplitEdges(edgelist) {
@@ -118,17 +110,15 @@ export default class GeometryGraph extends PlanarGraph {
 		return this._hasTooFewPoints;
 	}
 	addPoint(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Point) {
-					let [p] = args;
-					var coord = p.getCoordinate();
-					this.insertPoint(this.argIndex, coord, Location.INTERIOR);
-				} else if (args[0] instanceof Coordinate) {
-					let [pt] = args;
-					this.insertPoint(this.argIndex, pt, Location.INTERIOR);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof Point) {
+				let [p] = args;
+				var coord = p.getCoordinate();
+				this.insertPoint(this.argIndex, coord, Location.INTERIOR);
+			} else if (args[0] instanceof Coordinate) {
+				let [pt] = args;
+				this.insertPoint(this.argIndex, pt, Location.INTERIOR);
+			}
 		}
 	}
 	addPolygon(p) {

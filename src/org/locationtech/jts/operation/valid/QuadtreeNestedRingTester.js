@@ -11,13 +11,9 @@ export default class QuadtreeNestedRingTester {
 		this.totalEnv = new Envelope();
 		this.quadtree = null;
 		this.nestedPt = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [graph] = args;
-					this.graph = graph;
-					break;
-				}
+		if (args.length === 1) {
+			let [graph] = args;
+			this.graph = graph;
 		}
 	}
 	get interfaces_() {

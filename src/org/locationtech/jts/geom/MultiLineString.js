@@ -6,13 +6,9 @@ import Dimension from './Dimension';
 export default class MultiLineString extends GeometryCollection {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 2:
-				{
-					let [lineStrings, factory] = args;
-					super(lineStrings, factory);
-					break;
-				}
+		if (args.length === 2) {
+			let [lineStrings, factory] = args;
+			super(lineStrings, factory);
 		}
 	}
 	get interfaces_() {

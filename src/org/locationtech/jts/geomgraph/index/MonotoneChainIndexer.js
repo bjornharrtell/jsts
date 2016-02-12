@@ -3,12 +3,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Quadrant from '../Quadrant';
 export default class MonotoneChainIndexer {
 	constructor(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

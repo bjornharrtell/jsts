@@ -5,14 +5,10 @@ export default class PointBuilder {
 		this.op = null;
 		this.geometryFactory = null;
 		this.resultPointList = new ArrayList();
-		switch (args.length) {
-			case 3:
-				{
-					let [op, geometryFactory, ptLocator] = args;
-					this.op = op;
-					this.geometryFactory = geometryFactory;
-					break;
-				}
+		if (args.length === 3) {
+			let [op, geometryFactory, ptLocator] = args;
+			this.op = op;
+			this.geometryFactory = geometryFactory;
 		}
 	}
 	get interfaces_() {

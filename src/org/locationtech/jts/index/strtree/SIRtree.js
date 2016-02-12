@@ -24,17 +24,16 @@ export default class SIRtree extends AbstractSTRtree {
 			}
 		})();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, 10);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [nodeCapacity] = args;
-						super(nodeCapacity);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, 10);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [nodeCapacity] = args;
+					super(nodeCapacity);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -68,28 +67,20 @@ export default class SIRtree extends AbstractSTRtree {
 		return this.intersectsOp;
 	}
 	query(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [x] = args;
-					return this.query(x, x);
-					break;
-				}
-			case 2:
-				{
-					let [x1, x2] = args;
-					return super.query(new Interval(Math.min(x1, x2), Math.max(x1, x2)));
-					break;
-				}
-			case 3:
-				if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					let [searchBounds, node, visitor] = args;
-					super.query(searchBounds, node, visitor);
-				} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					let [searchBounds, node, matches] = args;
-					super.query(searchBounds, node, matches);
-				}
-				break;
+		if (args.length === 1) {
+			let [x] = args;
+			return this.query(x, x);
+		} else if (args.length === 2) {
+			let [x1, x2] = args;
+			return super.query(new Interval(Math.min(x1, x2), Math.max(x1, x2)));
+		} else if (args.length === 3) {
+			if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+				let [searchBounds, node, visitor] = args;
+				super.query(searchBounds, node, visitor);
+			} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+				let [searchBounds, node, matches] = args;
+				super.query(searchBounds, node, matches);
+			}
 		}
 	}
 	getComparator() {

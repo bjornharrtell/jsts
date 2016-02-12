@@ -5,17 +5,10 @@ export default class SpatialIndex {
 	insert(itemEnv, item) {}
 	remove(itemEnv, item) {}
 	query(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [searchEnv] = args;
-					break;
-				}
-			case 2:
-				{
-					let [searchEnv, visitor] = args;
-					break;
-				}
+		if (args.length === 1) {
+			let [searchEnv] = args;
+		} else if (args.length === 2) {
+			let [searchEnv, visitor] = args;
 		}
 	}
 	getClass() {

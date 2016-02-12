@@ -8,26 +8,35 @@ import Serializable from '../../../../java/io/Serializable';
 import Assert from '../util/Assert';
 export default class Coordinate {
 	constructor(...args) {
-		if (args.length === 0) {
-			this.x = 0;
-			this.y = 0;
-			this.z = Coordinate.NULL_ORDINATE;
-		} else if (args.length === 1) {
-			let [c] = args;
-			this.x = c.x;
-			this.y = c.y;
-			this.z = c.z;
-		} else if (args.length === 2) {
-			let [x, y] = args;
-			this.x = x;
-			this.y = y;
-			this.z = Coordinate.NULL_ORDINATE;
-		} else if (args.length === 3) {
-			let [x, y, z] = args;
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
+		this.x = null;
+		this.y = null;
+		this.z = null;
+		const overloaded = (...args) => {
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, 0.0, 0.0);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [c] = args;
+					overloaded.call(this, c.x, c.y, c.z);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [x, y] = args;
+					overloaded.call(this, x, y, Coordinate.NULL_ORDINATE);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [x, y, z] = args;
+					this.x = x;
+					this.y = y;
+					this.z = z;
+				})(...args);
+			}
+		};
+		return overloaded.apply(this, args);
 	}
 	get interfaces_() {
 		return [Comparable, Cloneable, Serializable];
@@ -58,31 +67,24 @@ export default class Coordinate {
 		}
 	}
 	equals2D(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [other] = args;
-					if (this.x !== other.x) {
-						return false;
-					}
-					if (this.y !== other.y) {
-						return false;
-					}
-					return true;
-					break;
-				}
-			case 2:
-				{
-					let [c, tolerance] = args;
-					if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
-						return false;
-					}
-					if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
-						return false;
-					}
-					return true;
-					break;
-				}
+		if (args.length === 1) {
+			let [other] = args;
+			if (this.x !== other.x) {
+				return false;
+			}
+			if (this.y !== other.y) {
+				return false;
+			}
+			return true;
+		} else if (args.length === 2) {
+			let [c, tolerance] = args;
+			if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
+				return false;
+			}
+			if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
+				return false;
+			}
+			return true;
 		}
 	}
 	getOrdinate(ordinateIndex) {
@@ -163,18 +165,17 @@ class DimensionalComparator {
 	constructor(...args) {
 		this.dimensionsToTest = 2;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, 2);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [dimensionsToTest] = args;
-						if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
-						this.dimensionsToTest = dimensionsToTest;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, 2);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [dimensionsToTest] = args;
+					if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
+					this.dimensionsToTest = dimensionsToTest;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -212,3 +213,4 @@ Coordinate.NULL_ORDINATE = Double.NaN;
 Coordinate.X = 0;
 Coordinate.Y = 1;
 Coordinate.Z = 2;
+

@@ -4,14 +4,10 @@ export default class DoubleBits {
 	constructor(...args) {
 		this.x = null;
 		this.xBits = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [x] = args;
-					this.x = x;
-					this.xBits = Double.doubleToLongBits(x);
-					break;
-				}
+		if (args.length === 1) {
+			let [x] = args;
+			this.x = x;
+			this.xBits = Double.doubleToLongBits(x);
 		}
 	}
 	get interfaces_() {

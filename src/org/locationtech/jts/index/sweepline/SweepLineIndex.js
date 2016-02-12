@@ -6,12 +6,8 @@ export default class SweepLineIndex {
 		this.events = new ArrayList();
 		this.indexBuilt = null;
 		this.nOverlaps = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

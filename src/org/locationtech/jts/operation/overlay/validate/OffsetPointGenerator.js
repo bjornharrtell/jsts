@@ -6,13 +6,9 @@ export default class OffsetPointGenerator {
 		this.g = null;
 		this.doLeft = true;
 		this.doRight = true;
-		switch (args.length) {
-			case 1:
-				{
-					let [g] = args;
-					this.g = g;
-					break;
-				}
+		if (args.length === 1) {
+			let [g] = args;
+			this.g = g;
 		}
 	}
 	get interfaces_() {

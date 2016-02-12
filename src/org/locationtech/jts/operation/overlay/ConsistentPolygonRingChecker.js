@@ -7,13 +7,9 @@ export default class ConsistentPolygonRingChecker {
 		this.graph = null;
 		this.SCANNING_FOR_INCOMING = 1;
 		this.LINKING_TO_OUTGOING = 2;
-		switch (args.length) {
-			case 1:
-				{
-					let [graph] = args;
-					this.graph = graph;
-					break;
-				}
+		if (args.length === 1) {
+			let [graph] = args;
+			this.graph = graph;
 		}
 	}
 	get interfaces_() {

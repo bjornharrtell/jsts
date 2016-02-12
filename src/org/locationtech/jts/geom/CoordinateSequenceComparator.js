@@ -5,17 +5,16 @@ export default class CoordinateSequenceComparator {
 	constructor(...args) {
 		this.dimensionLimit = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.dimensionLimit = Integer.MAX_VALUE;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [dimensionLimit] = args;
-						this.dimensionLimit = dimensionLimit;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					this.dimensionLimit = Integer.MAX_VALUE;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [dimensionLimit] = args;
+					this.dimensionLimit = dimensionLimit;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

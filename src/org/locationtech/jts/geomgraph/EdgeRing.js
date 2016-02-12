@@ -17,15 +17,11 @@ export default class EdgeRing {
 		this.shell = null;
 		this.holes = new ArrayList();
 		this.geometryFactory = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [start, geometryFactory] = args;
-					this.geometryFactory = geometryFactory;
-					this.computePoints(start);
-					this.computeRing();
-					break;
-				}
+		if (args.length === 2) {
+			let [start, geometryFactory] = args;
+			this.geometryFactory = geometryFactory;
+			this.computePoints(start);
+			this.computeRing();
 		}
 	}
 	get interfaces_() {
@@ -134,25 +130,18 @@ export default class EdgeRing {
 		return this.shell;
 	}
 	mergeLabel(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [deLabel] = args;
-					this.mergeLabel(deLabel, 0);
-					this.mergeLabel(deLabel, 1);
-					break;
-				}
-			case 2:
-				{
-					let [deLabel, geomIndex] = args;
-					var loc = deLabel.getLocation(geomIndex, Position.RIGHT);
-					if (loc === Location.NONE) return null;
-					if (this.label.getLocation(geomIndex) === Location.NONE) {
-						this.label.setLocation(geomIndex, loc);
-						return null;
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [deLabel] = args;
+			this.mergeLabel(deLabel, 0);
+			this.mergeLabel(deLabel, 1);
+		} else if (args.length === 2) {
+			let [deLabel, geomIndex] = args;
+			var loc = deLabel.getLocation(geomIndex, Position.RIGHT);
+			if (loc === Location.NONE) return null;
+			if (this.label.getLocation(geomIndex) === Location.NONE) {
+				this.label.setLocation(geomIndex, loc);
+				return null;
+			}
 		}
 	}
 	setShell(shell) {

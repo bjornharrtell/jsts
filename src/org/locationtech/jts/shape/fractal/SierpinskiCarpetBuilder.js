@@ -7,13 +7,9 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
 	constructor(...args) {
 		super();
 		this.coordList = new CoordinateList();
-		switch (args.length) {
-			case 1:
-				{
-					let [geomFactory] = args;
-					super(geomFactory);
-					break;
-				}
+		if (args.length === 1) {
+			let [geomFactory] = args;
+			super(geomFactory);
 		}
 	}
 	get interfaces_() {

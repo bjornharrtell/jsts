@@ -6,23 +6,22 @@ export default class PackedCoordinateSequenceFactory {
 		this.type = PackedCoordinateSequenceFactory.DOUBLE;
 		this.dimension = 3;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, PackedCoordinateSequenceFactory.DOUBLE);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [type] = args;
-						overloaded.call(this, type, 3);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [type, dimension] = args;
-						this.setType(type);
-						this.setDimension(dimension);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, PackedCoordinateSequenceFactory.DOUBLE);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [type] = args;
+					overloaded.call(this, type, 3);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [type, dimension] = args;
+					this.setType(type);
+					this.setDimension(dimension);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -31,48 +30,45 @@ export default class PackedCoordinateSequenceFactory {
 		return [CoordinateSequenceFactory];
 	}
 	create(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Array) {
-					let [coordinates] = args;
-					if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
-						return new PackedCoordinateSequence.Double(coordinates, this.dimension);
-					} else {
-						return new PackedCoordinateSequence.Float(coordinates, this.dimension);
-					}
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					let [coordSeq] = args;
-					if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
-						return new PackedCoordinateSequence.Double(coordSeq.toCoordinateArray(), this.dimension);
-					} else {
-						return new PackedCoordinateSequence.Float(coordSeq.toCoordinateArray(), this.dimension);
-					}
+		if (args.length === 1) {
+			if (args[0] instanceof Array) {
+				let [coordinates] = args;
+				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
+					return new PackedCoordinateSequence.Double(coordinates, this.dimension);
+				} else {
+					return new PackedCoordinateSequence.Float(coordinates, this.dimension);
 				}
-				break;
-			case 2:
-				if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					let [packedCoordinates, dimension] = args;
-					if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
-						return new PackedCoordinateSequence.Double(packedCoordinates, dimension);
-					} else {
-						return new PackedCoordinateSequence.Float(packedCoordinates, dimension);
-					}
-				} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					let [packedCoordinates, dimension] = args;
-					if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
-						return new PackedCoordinateSequence.Double(packedCoordinates, dimension);
-					} else {
-						return new PackedCoordinateSequence.Float(packedCoordinates, dimension);
-					}
-				} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-					let [size, dimension] = args;
-					if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
-						return new PackedCoordinateSequence.Double(size, dimension);
-					} else {
-						return new PackedCoordinateSequence.Float(size, dimension);
-					}
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+				let [coordSeq] = args;
+				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
+					return new PackedCoordinateSequence.Double(coordSeq.toCoordinateArray(), this.dimension);
+				} else {
+					return new PackedCoordinateSequence.Float(coordSeq.toCoordinateArray(), this.dimension);
 				}
-				break;
+			}
+		} else if (args.length === 2) {
+			if (args[0] instanceof Array && Number.isInteger(args[1])) {
+				let [packedCoordinates, dimension] = args;
+				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
+					return new PackedCoordinateSequence.Double(packedCoordinates, dimension);
+				} else {
+					return new PackedCoordinateSequence.Float(packedCoordinates, dimension);
+				}
+			} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
+				let [packedCoordinates, dimension] = args;
+				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
+					return new PackedCoordinateSequence.Double(packedCoordinates, dimension);
+				} else {
+					return new PackedCoordinateSequence.Float(packedCoordinates, dimension);
+				}
+			} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
+				let [size, dimension] = args;
+				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
+					return new PackedCoordinateSequence.Double(size, dimension);
+				} else {
+					return new PackedCoordinateSequence.Float(size, dimension);
+				}
+			}
 		}
 	}
 	setType(type) {

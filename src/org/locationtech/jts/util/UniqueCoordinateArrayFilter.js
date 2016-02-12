@@ -5,12 +5,8 @@ export default class UniqueCoordinateArrayFilter {
 	constructor(...args) {
 		this.treeSet = new TreeSet();
 		this.list = new ArrayList();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

@@ -8,16 +8,15 @@ export default class AbstractNode {
 		this.bounds = null;
 		this.level = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [level] = args;
-						this.level = level;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [level] = args;
+					this.level = level;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

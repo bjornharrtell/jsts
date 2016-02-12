@@ -6,13 +6,9 @@ export default class EdgeString {
 		this.factory = null;
 		this.directedEdges = new ArrayList();
 		this.coordinates = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [factory] = args;
-					this.factory = factory;
-					break;
-				}
+		if (args.length === 1) {
+			let [factory] = args;
+			this.factory = factory;
 		}
 	}
 	get interfaces_() {

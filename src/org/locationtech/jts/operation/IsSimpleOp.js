@@ -14,18 +14,17 @@ export default class IsSimpleOp {
 		this.isClosedEndpointsInInterior = true;
 		this.nonSimpleLocation = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						this.inputGeom = geom;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [geom, boundaryNodeRule] = args;
-						this.inputGeom = geom;
-						this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [geom] = args;
+					this.inputGeom = geom;
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [geom, boundaryNodeRule] = args;
+					this.inputGeom = geom;
+					this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -149,15 +148,11 @@ class EndpointInfo {
 		this.pt = null;
 		this.isClosed = null;
 		this.degree = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [pt] = args;
-					this.pt = pt;
-					this.isClosed = false;
-					this.degree = 0;
-					break;
-				}
+		if (args.length === 1) {
+			let [pt] = args;
+			this.pt = pt;
+			this.isClosed = false;
+			this.degree = 0;
 		}
 	}
 	get interfaces_() {

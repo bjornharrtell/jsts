@@ -8,17 +8,13 @@ export default class UnionInteracting {
 		this.g1 = null;
 		this.interacts0 = null;
 		this.interacts1 = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [g0, g1] = args;
-					this.g0 = g0;
-					this.g1 = g1;
-					this.geomFactory = g0.getFactory();
-					this.interacts0 = new Array(g0.getNumGeometries());
-					this.interacts1 = new Array(g1.getNumGeometries());
-					break;
-				}
+		if (args.length === 2) {
+			let [g0, g1] = args;
+			this.g0 = g0;
+			this.g1 = g1;
+			this.geomFactory = g0.getFactory();
+			this.interacts0 = new Array(g0.getNumGeometries());
+			this.interacts1 = new Array(g1.getNumGeometries());
 		}
 	}
 	get interfaces_() {
@@ -37,29 +33,22 @@ export default class UnionInteracting {
 		return this.geomFactory.buildGeometry(extractedGeoms);
 	}
 	computeInteracting(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					for (var i = 0; i < this.g0.getNumGeometries(); i++) {
-						var elem = this.g0.getGeometryN(i);
-						this.interacts0[i] = this.computeInteracting(elem);
-					}
-					break;
-				}
-			case 1:
-				{
-					let [elem0] = args;
-					var interactsWithAny = false;
-					for (var i = 0; i < this.g1.getNumGeometries(); i++) {
-						var elem1 = this.g1.getGeometryN(i);
-						var interacts = elem1.getEnvelopeInternal().intersects(elem0.getEnvelopeInternal());
-						if (interacts) this.interacts1[i] = true;
-						if (interacts) interactsWithAny = true;
-					}
-					return interactsWithAny;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			for (var i = 0; i < this.g0.getNumGeometries(); i++) {
+				var elem = this.g0.getGeometryN(i);
+				this.interacts0[i] = this.computeInteracting(elem);
+			}
+		} else if (args.length === 1) {
+			let [elem0] = args;
+			var interactsWithAny = false;
+			for (var i = 0; i < this.g1.getNumGeometries(); i++) {
+				var elem1 = this.g1.getGeometryN(i);
+				var interacts = elem1.getEnvelopeInternal().intersects(elem0.getEnvelopeInternal());
+				if (interacts) this.interacts1[i] = true;
+				if (interacts) interactsWithAny = true;
+			}
+			return interactsWithAny;
 		}
 	}
 	union() {

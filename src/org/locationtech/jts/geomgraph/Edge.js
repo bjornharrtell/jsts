@@ -19,18 +19,17 @@ export default class Edge extends GraphComponent {
 		this.depth = new Depth();
 		this.depthDelta = 0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pts] = args;
-						overloaded.call(this, pts, null);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [pts, label] = args;
-						this.pts = pts;
-						this.label = label;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [pts] = args;
+					overloaded.call(this, pts, null);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [pts, label] = args;
+					this.pts = pts;
+					this.label = label;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -89,20 +88,13 @@ export default class Edge extends GraphComponent {
 		return true;
 	}
 	getCoordinate(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					if (this.pts.length > 0) return this.pts[0];
-					return null;
-					break;
-				}
-			case 1:
-				{
-					let [i] = args;
-					return this.pts[i];
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			if (this.pts.length > 0) return this.pts[0];
+			return null;
+		} else if (args.length === 1) {
+			let [i] = args;
+			return this.pts[i];
 		}
 	}
 	print(out) {

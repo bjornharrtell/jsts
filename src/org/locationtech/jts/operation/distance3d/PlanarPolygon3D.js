@@ -10,68 +10,55 @@ export default class PlanarPolygon3D {
 		this.plane = null;
 		this.poly = null;
 		this.facingPlane = -1;
-		switch (args.length) {
-			case 1:
-				{
-					let [poly] = args;
-					this.poly = poly;
-					this.plane = this.findBestFitPlane(poly);
-					this.facingPlane = this.plane.closestAxisPlane();
-					break;
-				}
+		if (args.length === 1) {
+			let [poly] = args;
+			this.poly = poly;
+			this.plane = this.findBestFitPlane(poly);
+			this.facingPlane = this.plane.closestAxisPlane();
 		}
 	}
 	get interfaces_() {
 		return [];
 	}
 	static project(...args) {
-		switch (args.length) {
-			case 2:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && Number.isInteger(args[1])) {
-					let [seq, facingPlane] = args;
-					switch (facingPlane) {
-						case Plane3D.XY_PLANE:
-							return AxisPlaneCoordinateSequence.projectToXY(seq);
-						case Plane3D.XZ_PLANE:
-							return AxisPlaneCoordinateSequence.projectToXZ(seq);
-						default:
-							return AxisPlaneCoordinateSequence.projectToYZ(seq);
-					}
-				} else if (args[0] instanceof Coordinate && Number.isInteger(args[1])) {
-					let [p, facingPlane] = args;
-					switch (facingPlane) {
-						case Plane3D.XY_PLANE:
-							return new Coordinate(p.x, p.y);
-						case Plane3D.XZ_PLANE:
-							return new Coordinate(p.x, p.z);
-						default:
-							return new Coordinate(p.y, p.z);
-					}
+		if (args.length === 2) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && Number.isInteger(args[1])) {
+				let [seq, facingPlane] = args;
+				switch (facingPlane) {
+					case Plane3D.XY_PLANE:
+						return AxisPlaneCoordinateSequence.projectToXY(seq);
+					case Plane3D.XZ_PLANE:
+						return AxisPlaneCoordinateSequence.projectToXZ(seq);
+					default:
+						return AxisPlaneCoordinateSequence.projectToYZ(seq);
 				}
-				break;
+			} else if (args[0] instanceof Coordinate && Number.isInteger(args[1])) {
+				let [p, facingPlane] = args;
+				switch (facingPlane) {
+					case Plane3D.XY_PLANE:
+						return new Coordinate(p.x, p.y);
+					case Plane3D.XZ_PLANE:
+						return new Coordinate(p.x, p.z);
+					default:
+						return new Coordinate(p.y, p.z);
+				}
+			}
 		}
 	}
 	intersects(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [intPt] = args;
-					if (Location.EXTERIOR === this.locate(intPt, this.poly.getExteriorRing())) return false;
-					for (var i = 0; i < this.poly.getNumInteriorRing(); i++) {
-						if (Location.INTERIOR === this.locate(intPt, this.poly.getInteriorRingN(i))) return false;
-					}
-					return true;
-					break;
-				}
-			case 2:
-				{
-					let [pt, ring] = args;
-					var seq = ring.getCoordinateSequence();
-					var seqProj = PlanarPolygon3D.project(seq, this.facingPlane);
-					var ptProj = PlanarPolygon3D.project(pt, this.facingPlane);
-					return Location.EXTERIOR !== RayCrossingCounter.locatePointInRing(ptProj, seqProj);
-					break;
-				}
+		if (args.length === 1) {
+			let [intPt] = args;
+			if (Location.EXTERIOR === this.locate(intPt, this.poly.getExteriorRing())) return false;
+			for (var i = 0; i < this.poly.getNumInteriorRing(); i++) {
+				if (Location.INTERIOR === this.locate(intPt, this.poly.getInteriorRingN(i))) return false;
+			}
+			return true;
+		} else if (args.length === 2) {
+			let [pt, ring] = args;
+			var seq = ring.getCoordinateSequence();
+			var seqProj = PlanarPolygon3D.project(seq, this.facingPlane);
+			var ptProj = PlanarPolygon3D.project(pt, this.facingPlane);
+			return Location.EXTERIOR !== RayCrossingCounter.locatePointInRing(ptProj, seqProj);
 		}
 	}
 	averagePoint(seq) {

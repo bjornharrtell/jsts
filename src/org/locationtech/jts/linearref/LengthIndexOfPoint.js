@@ -5,13 +5,9 @@ import Assert from '../util/Assert';
 export default class LengthIndexOfPoint {
 	constructor(...args) {
 		this.linearGeom = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [linearGeom] = args;
-					this.linearGeom = linearGeom;
-					break;
-				}
+		if (args.length === 1) {
+			let [linearGeom] = args;
+			this.linearGeom = linearGeom;
 		}
 	}
 	get interfaces_() {

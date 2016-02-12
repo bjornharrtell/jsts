@@ -8,27 +8,26 @@ export default class LinearIterator {
 		this.componentIndex = 0;
 		this.vertexIndex = 0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [linear] = args;
-						overloaded.call(this, linear, 0, 0);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [linear, start] = args;
-						overloaded.call(this, linear, start.getComponentIndex(), LinearIterator.segmentEndVertexIndex(start));
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [linearGeom, componentIndex, vertexIndex] = args;
-						if (!(linearGeom.interfaces_ && linearGeom.interfaces_.indexOf(Lineal) > -1)) throw new IllegalArgumentException("Lineal geometry is required");
-						this.linearGeom = linearGeom;
-						this.numLines = linearGeom.getNumGeometries();
-						this.componentIndex = componentIndex;
-						this.vertexIndex = vertexIndex;
-						this.loadCurrentLine();
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [linear] = args;
+					overloaded.call(this, linear, 0, 0);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [linear, start] = args;
+					overloaded.call(this, linear, start.getComponentIndex(), LinearIterator.segmentEndVertexIndex(start));
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [linearGeom, componentIndex, vertexIndex] = args;
+					if (!(linearGeom.interfaces_ && linearGeom.interfaces_.indexOf(Lineal) > -1)) throw new IllegalArgumentException("Lineal geometry is required");
+					this.linearGeom = linearGeom;
+					this.numLines = linearGeom.getNumGeometries();
+					this.componentIndex = componentIndex;
+					this.vertexIndex = vertexIndex;
+					this.loadCurrentLine();
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

@@ -2,13 +2,9 @@ import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default class CoordinatePrecisionReducerFilter {
 	constructor(...args) {
 		this.precModel = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [precModel] = args;
-					this.precModel = precModel;
-					break;
-				}
+		if (args.length === 1) {
+			let [precModel] = args;
+			this.precModel = precModel;
 		}
 	}
 	get interfaces_() {

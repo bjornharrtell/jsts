@@ -7,30 +7,29 @@ export default class BufferParameters {
 		this._isSingleSided = false;
 		this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [quadrantSegments] = args;
-						this.setQuadrantSegments(quadrantSegments);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [quadrantSegments, endCapStyle] = args;
-						this.setQuadrantSegments(quadrantSegments);
-						this.setEndCapStyle(endCapStyle);
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [quadrantSegments, endCapStyle, joinStyle, mitreLimit] = args;
-						this.setQuadrantSegments(quadrantSegments);
-						this.setEndCapStyle(endCapStyle);
-						this.setJoinStyle(joinStyle);
-						this.setMitreLimit(mitreLimit);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [quadrantSegments] = args;
+					this.setQuadrantSegments(quadrantSegments);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [quadrantSegments, endCapStyle] = args;
+					this.setQuadrantSegments(quadrantSegments);
+					this.setEndCapStyle(endCapStyle);
+				})(...args);
+			} else if (args.length === 4) {
+				return ((...args) => {
+					let [quadrantSegments, endCapStyle, joinStyle, mitreLimit] = args;
+					this.setQuadrantSegments(quadrantSegments);
+					this.setEndCapStyle(endCapStyle);
+					this.setJoinStyle(joinStyle);
+					this.setMitreLimit(mitreLimit);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

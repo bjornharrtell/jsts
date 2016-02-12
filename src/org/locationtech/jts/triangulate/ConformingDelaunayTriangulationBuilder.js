@@ -12,40 +12,29 @@ export default class ConformingDelaunayTriangulationBuilder {
 		this.tolerance = 0.0;
 		this.subdiv = null;
 		this.constraintVertexMap = new TreeMap();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
 		return [];
 	}
 	static createConstraintSegments(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [geom] = args;
-					var lines = LinearComponentExtracter.getLines(geom);
-					var constraintSegs = new ArrayList();
-					for (var i = lines.iterator(); i.hasNext(); ) {
-						var line = i.next();
-						ConformingDelaunayTriangulationBuilder.createConstraintSegments(line, constraintSegs);
-					}
-					return constraintSegs;
-					break;
-				}
-			case 2:
-				{
-					let [line, constraintSegs] = args;
-					var coords = line.getCoordinates();
-					for (var i = 1; i < coords.length; i++) {
-						constraintSegs.add(new Segment(coords[i - 1], coords[i]));
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [geom] = args;
+			var lines = LinearComponentExtracter.getLines(geom);
+			var constraintSegs = new ArrayList();
+			for (var i = lines.iterator(); i.hasNext(); ) {
+				var line = i.next();
+				ConformingDelaunayTriangulationBuilder.createConstraintSegments(line, constraintSegs);
+			}
+			return constraintSegs;
+		} else if (args.length === 2) {
+			let [line, constraintSegs] = args;
+			var coords = line.getCoordinates();
+			for (var i = 1; i < coords.length; i++) {
+				constraintSegs.add(new Segment(coords[i - 1], coords[i]));
+			}
 		}
 	}
 	createSiteVertices(coords) {

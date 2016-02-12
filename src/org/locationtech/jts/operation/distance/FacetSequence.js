@@ -15,21 +15,20 @@ export default class FacetSequence {
 		this.q0 = new Coordinate();
 		this.q1 = new Coordinate();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [pts, start] = args;
-						this.pts = pts;
-						this.start = start;
-						this.end = start + 1;
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [pts, start, end] = args;
-						this.pts = pts;
-						this.start = start;
-						this.end = end;
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [pts, start] = args;
+					this.pts = pts;
+					this.start = start;
+					this.end = start + 1;
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [pts, start, end] = args;
+					this.pts = pts;
+					this.start = start;
+					this.end = end;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

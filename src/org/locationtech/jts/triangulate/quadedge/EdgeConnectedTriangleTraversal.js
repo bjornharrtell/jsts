@@ -4,28 +4,22 @@ import LinkedList from '../../../../../java/util/LinkedList';
 export default class EdgeConnectedTriangleTraversal {
 	constructor(...args) {
 		this.triQueue = new LinkedList();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
 		return [];
 	}
 	init(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof QuadEdgeTriangle) {
-					let [tri] = args;
-					this.triQueue.addLast(tri);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [tris] = args;
-					this.triQueue.addAll(tris);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof QuadEdgeTriangle) {
+				let [tri] = args;
+				this.triQueue.addLast(tri);
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [tris] = args;
+				this.triQueue.addAll(tris);
+			}
 		}
 	}
 	process(currTri, visitor) {

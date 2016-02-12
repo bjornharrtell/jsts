@@ -8,13 +8,9 @@ export default class Densifier {
 	constructor(...args) {
 		this.inputGeom = null;
 		this.distanceTolerance = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [inputGeom] = args;
-					this.inputGeom = inputGeom;
-					break;
-				}
+		if (args.length === 1) {
+			let [inputGeom] = args;
+			this.inputGeom = inputGeom;
 		}
 	}
 	get interfaces_() {
@@ -65,13 +61,9 @@ class DensifyTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
 		this.distanceTolerance = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [distanceTolerance] = args;
-					this.distanceTolerance = distanceTolerance;
-					break;
-				}
+		if (args.length === 1) {
+			let [distanceTolerance] = args;
+			this.distanceTolerance = distanceTolerance;
 		}
 	}
 	get interfaces_() {

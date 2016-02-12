@@ -6,17 +6,16 @@ export default class SineStarFactory extends GeometricShapeFactory {
 		this.numArms = 8;
 		this.armLengthRatio = 0.5;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						super();
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [geomFact] = args;
-						super(geomFact);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					super();
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [geomFact] = args;
+					super(geomFact);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

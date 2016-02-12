@@ -9,14 +9,10 @@ export default class TaggedLineStringSimplifier {
 		this.line = null;
 		this.linePts = null;
 		this.distanceTolerance = 0.0;
-		switch (args.length) {
-			case 2:
-				{
-					let [inputIndex, outputIndex] = args;
-					this.inputIndex = inputIndex;
-					this.outputIndex = outputIndex;
-					break;
-				}
+		if (args.length === 2) {
+			let [inputIndex, outputIndex] = args;
+			this.inputIndex = inputIndex;
+			this.outputIndex = outputIndex;
 		}
 	}
 	get interfaces_() {

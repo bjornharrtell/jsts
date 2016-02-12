@@ -2,13 +2,9 @@ import SegmentSetMutualIntersector from './SegmentSetMutualIntersector';
 export default class SimpleSegmentSetMutualIntersector {
 	constructor(...args) {
 		this.baseSegStrings = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [segStrings] = args;
-					this.baseSegStrings = segStrings;
-					break;
-				}
+		if (args.length === 1) {
+			let [segStrings] = args;
+			this.baseSegStrings = segStrings;
 		}
 	}
 	get interfaces_() {

@@ -5,28 +5,27 @@ export default class Segment {
 		this.ls = null;
 		this.data = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [p0, p1] = args;
-						this.ls = new LineSegment(p0, p1);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [p0, p1, data] = args;
-						this.ls = new LineSegment(p0, p1);
-						this.data = data;
-					})(...args);
-				case 6:
-					return ((...args) => {
-						let [x1, y1, z1, x2, y2, z2] = args;
-						overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
-					})(...args);
-				case 7:
-					return ((...args) => {
-						let [x1, y1, z1, x2, y2, z2, data] = args;
-						overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [p0, p1] = args;
+					this.ls = new LineSegment(p0, p1);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [p0, p1, data] = args;
+					this.ls = new LineSegment(p0, p1);
+					this.data = data;
+				})(...args);
+			} else if (args.length === 6) {
+				return ((...args) => {
+					let [x1, y1, z1, x2, y2, z2] = args;
+					overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
+				})(...args);
+			} else if (args.length === 7) {
+				return ((...args) => {
+					let [x1, y1, z1, x2, y2, z2, data] = args;
+					overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

@@ -7,25 +7,24 @@ export default class KdNode {
 		this.right = null;
 		this.count = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [p, data] = args;
-						this.p = new Coordinate(p);
-						this.left = null;
-						this.right = null;
-						this.count = 1;
-						this.data = data;
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [_x, _y, data] = args;
-						this.p = new Coordinate(_x, _y);
-						this.left = null;
-						this.right = null;
-						this.count = 1;
-						this.data = data;
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [p, data] = args;
+					this.p = new Coordinate(p);
+					this.left = null;
+					this.right = null;
+					this.count = 1;
+					this.data = data;
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [_x, _y, data] = args;
+					this.p = new Coordinate(_x, _y);
+					this.left = null;
+					this.right = null;
+					this.count = 1;
+					this.data = data;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

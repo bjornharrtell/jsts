@@ -8,17 +8,13 @@ export default class SegmentNode {
 		this.segmentIndex = null;
 		this.segmentOctant = null;
 		this._isInterior = null;
-		switch (args.length) {
-			case 4:
-				{
-					let [segString, coord, segmentIndex, segmentOctant] = args;
-					this.segString = segString;
-					this.coord = new Coordinate(coord);
-					this.segmentIndex = segmentIndex;
-					this.segmentOctant = segmentOctant;
-					this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
-					break;
-				}
+		if (args.length === 4) {
+			let [segString, coord, segmentIndex, segmentOctant] = args;
+			this.segString = segString;
+			this.coord = new Coordinate(coord);
+			this.segmentIndex = segmentIndex;
+			this.segmentOctant = segmentOctant;
+			this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
 		}
 	}
 	get interfaces_() {

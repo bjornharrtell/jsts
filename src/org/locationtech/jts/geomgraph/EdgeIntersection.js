@@ -5,15 +5,11 @@ export default class EdgeIntersection {
 		this.coord = null;
 		this.segmentIndex = null;
 		this.dist = null;
-		switch (args.length) {
-			case 3:
-				{
-					let [coord, segmentIndex, dist] = args;
-					this.coord = new Coordinate(coord);
-					this.segmentIndex = segmentIndex;
-					this.dist = dist;
-					break;
-				}
+		if (args.length === 3) {
+			let [coord, segmentIndex, dist] = args;
+			this.coord = new Coordinate(coord);
+			this.segmentIndex = segmentIndex;
+			this.dist = dist;
 		}
 	}
 	get interfaces_() {

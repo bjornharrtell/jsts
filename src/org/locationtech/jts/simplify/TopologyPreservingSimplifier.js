@@ -10,13 +10,9 @@ export default class TopologyPreservingSimplifier {
 		this.inputGeom = null;
 		this.lineSimplifier = new TaggedLinesSimplifier();
 		this.linestringMap = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [inputGeom] = args;
-					this.inputGeom = inputGeom;
-					break;
-				}
+		if (args.length === 1) {
+			let [inputGeom] = args;
+			this.inputGeom = inputGeom;
 		}
 	}
 	get interfaces_() {
@@ -53,13 +49,9 @@ class LineStringTransformer extends GeometryTransformer {
 	constructor(...args) {
 		super();
 		this.linestringMap = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [linestringMap] = args;
-					this.linestringMap = linestringMap;
-					break;
-				}
+		if (args.length === 1) {
+			let [linestringMap] = args;
+			this.linestringMap = linestringMap;
 		}
 	}
 	get interfaces_() {
@@ -80,13 +72,9 @@ class LineStringTransformer extends GeometryTransformer {
 class LineStringMapBuilderFilter {
 	constructor(...args) {
 		this.tps = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [tps] = args;
-					this.tps = tps;
-					break;
-				}
+		if (args.length === 1) {
+			let [tps] = args;
+			this.tps = tps;
 		}
 	}
 	get interfaces_() {

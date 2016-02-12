@@ -11,22 +11,20 @@ export default class LineStringSnapper {
 		this.allowSnappingToSourceVertices = false;
 		this._isClosed = false;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					if (args[0] instanceof LineString && typeof args[1] === "number") {
-						return ((...args) => {
-							let [srcLine, snapTolerance] = args;
-							overloaded.call(this, srcLine.getCoordinates(), snapTolerance);
-						})(...args);
-					} else if (args[0] instanceof Array && typeof args[1] === "number") {
-						return ((...args) => {
-							let [srcPts, snapTolerance] = args;
-							this.srcPts = srcPts;
-							this._isClosed = LineStringSnapper.isClosed(srcPts);
-							this.snapTolerance = snapTolerance;
-						})(...args);
-					}
-					break;
+			if (args.length === 2) {
+				if (args[0] instanceof LineString && typeof args[1] === "number") {
+					return ((...args) => {
+						let [srcLine, snapTolerance] = args;
+						overloaded.call(this, srcLine.getCoordinates(), snapTolerance);
+					})(...args);
+				} else if (args[0] instanceof Array && typeof args[1] === "number") {
+					return ((...args) => {
+						let [srcPts, snapTolerance] = args;
+						this.srcPts = srcPts;
+						this._isClosed = LineStringSnapper.isClosed(srcPts);
+						this.snapTolerance = snapTolerance;
+					})(...args);
+				}
 			}
 		};
 		return overloaded.apply(this, args);

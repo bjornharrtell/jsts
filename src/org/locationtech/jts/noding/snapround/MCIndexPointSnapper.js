@@ -3,13 +3,9 @@ import ItemVisitor from '../../index/ItemVisitor';
 export default class MCIndexPointSnapper {
 	constructor(...args) {
 		this.index = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [index] = args;
-					this.index = index;
-					break;
-				}
+		if (args.length === 1) {
+			let [index] = args;
+			this.index = index;
 		}
 	}
 	get interfaces_() {
@@ -19,30 +15,23 @@ export default class MCIndexPointSnapper {
 		return HotPixelSnapAction;
 	}
 	snap(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [hotPixel] = args;
-					return this.snap(hotPixel, null, -1);
-					break;
+		if (args.length === 1) {
+			let [hotPixel] = args;
+			return this.snap(hotPixel, null, -1);
+		} else if (args.length === 3) {
+			let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
+			var pixelEnv = hotPixel.getSafeEnvelope();
+			var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
+			this.index.query(pixelEnv, new (class {
+				visitItem(item) {
+					var testChain = item;
+					testChain.select(pixelEnv, hotPixelSnapAction);
 				}
-			case 3:
-				{
-					let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
-					var pixelEnv = hotPixel.getSafeEnvelope();
-					var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
-					this.index.query(pixelEnv, new (class {
-						visitItem(item) {
-							var testChain = item;
-							testChain.select(pixelEnv, hotPixelSnapAction);
-						}
-						get interfaces_() {
-							return [ItemVisitor];
-						}
-					})());
-					return hotPixelSnapAction.isNodeAdded();
-					break;
+				get interfaces_() {
+					return [ItemVisitor];
 				}
+			})());
+			return hotPixelSnapAction.isNodeAdded();
 		}
 	}
 	getClass() {
@@ -56,15 +45,11 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
 		this.parentEdge = null;
 		this.hotPixelVertexIndex = null;
 		this._isNodeAdded = false;
-		switch (args.length) {
-			case 3:
-				{
-					let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
-					this.hotPixel = hotPixel;
-					this.parentEdge = parentEdge;
-					this.hotPixelVertexIndex = hotPixelVertexIndex;
-					break;
-				}
+		if (args.length === 3) {
+			let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
+			this.hotPixel = hotPixel;
+			this.parentEdge = parentEdge;
+			this.hotPixelVertexIndex = hotPixelVertexIndex;
 		}
 	}
 	get interfaces_() {

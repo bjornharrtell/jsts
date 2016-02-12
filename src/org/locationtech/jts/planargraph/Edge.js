@@ -5,16 +5,15 @@ export default class Edge extends GraphComponent {
 		super();
 		this.dirEdge = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [de0, de1] = args;
-						this.setDirectedEdges(de0, de1);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [de0, de1] = args;
+					this.setDirectedEdges(de0, de1);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -35,18 +34,16 @@ export default class Edge extends GraphComponent {
 		de1.getFromNode().addOutEdge(de1);
 	}
 	getDirEdge(...args) {
-		switch (args.length) {
-			case 1:
-				if (Number.isInteger(args[0])) {
-					let [i] = args;
-					return this.dirEdge[i];
-				} else if (args[0] instanceof Node) {
-					let [fromNode] = args;
-					if (this.dirEdge[0].getFromNode() === fromNode) return this.dirEdge[0];
-					if (this.dirEdge[1].getFromNode() === fromNode) return this.dirEdge[1];
-					return null;
-				}
-				break;
+		if (args.length === 1) {
+			if (Number.isInteger(args[0])) {
+				let [i] = args;
+				return this.dirEdge[i];
+			} else if (args[0] instanceof Node) {
+				let [fromNode] = args;
+				if (this.dirEdge[0].getFromNode() === fromNode) return this.dirEdge[0];
+				if (this.dirEdge[1].getFromNode() === fromNode) return this.dirEdge[1];
+				return null;
+			}
 		}
 	}
 	remove() {

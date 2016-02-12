@@ -5,19 +5,18 @@ export default class TaggedLineSegment extends LineSegment {
 		this.parent = null;
 		this.index = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [p0, p1] = args;
-						overloaded.call(this, p0, p1, null, -1);
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [p0, p1, parent, index] = args;
-						super(p0, p1);
-						this.parent = parent;
-						this.index = index;
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [p0, p1] = args;
+					overloaded.call(this, p0, p1, null, -1);
+				})(...args);
+			} else if (args.length === 4) {
+				return ((...args) => {
+					let [p0, p1, parent, index] = args;
+					super(p0, p1);
+					this.parent = parent;
+					this.index = index;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

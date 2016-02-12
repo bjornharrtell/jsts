@@ -12,15 +12,11 @@ export default class FuzzyPointLocator {
 		this.linework = null;
 		this.ptLocator = new PointLocator();
 		this.seg = new LineSegment();
-		switch (args.length) {
-			case 2:
-				{
-					let [g, boundaryDistanceTolerance] = args;
-					this.g = g;
-					this.boundaryDistanceTolerance = boundaryDistanceTolerance;
-					this.linework = this.extractLinework(g);
-					break;
-				}
+		if (args.length === 2) {
+			let [g, boundaryDistanceTolerance] = args;
+			this.g = g;
+			this.boundaryDistanceTolerance = boundaryDistanceTolerance;
+			this.linework = this.extractLinework(g);
 		}
 	}
 	get interfaces_() {
@@ -57,13 +53,9 @@ export default class FuzzyPointLocator {
 class PolygonalLineworkExtracter {
 	constructor(...args) {
 		this.linework = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.linework = new ArrayList();
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.linework = new ArrayList();
 		}
 	}
 	get interfaces_() {

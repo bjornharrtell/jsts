@@ -14,13 +14,9 @@ export default class BufferSubgraph {
 		this.nodes = new ArrayList();
 		this.rightMostCoord = null;
 		this.env = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.finder = new RightmostEdgeFinder();
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.finder = new RightmostEdgeFinder();
 		}
 	}
 	get interfaces_() {

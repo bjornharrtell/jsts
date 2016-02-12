@@ -3,12 +3,8 @@ import Envelope from '../../geom/Envelope';
 import DiscreteHausdorffDistance from '../distance/DiscreteHausdorffDistance';
 export default class HausdorffSimilarityMeasure {
 	constructor(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

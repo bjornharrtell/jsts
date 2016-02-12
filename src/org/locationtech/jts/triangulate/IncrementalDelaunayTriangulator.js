@@ -3,14 +3,10 @@ export default class IncrementalDelaunayTriangulator {
 	constructor(...args) {
 		this.subdiv = null;
 		this.isUsingTolerance = false;
-		switch (args.length) {
-			case 1:
-				{
-					let [subdiv] = args;
-					this.subdiv = subdiv;
-					this.isUsingTolerance = subdiv.getTolerance() > 0.0;
-					break;
-				}
+		if (args.length === 1) {
+			let [subdiv] = args;
+			this.subdiv = subdiv;
+			this.isUsingTolerance = subdiv.getTolerance() > 0.0;
 		}
 	}
 	get interfaces_() {

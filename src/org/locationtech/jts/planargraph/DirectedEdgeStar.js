@@ -6,12 +6,8 @@ export default class DirectedEdgeStar {
 	constructor(...args) {
 		this.outEdges = new ArrayList();
 		this.sorted = false;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -49,31 +45,29 @@ export default class DirectedEdgeStar {
 		return this.outEdges.get(this.getIndex(i - 1));
 	}
 	getIndex(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Edge) {
-					let [edge] = args;
-					this.sortEdges();
-					for (var i = 0; i < this.outEdges.size(); i++) {
-						var de = this.outEdges.get(i);
-						if (de.getEdge() === edge) return i;
-					}
-					return -1;
-				} else if (args[0] instanceof DirectedEdge) {
-					let [dirEdge] = args;
-					this.sortEdges();
-					for (var i = 0; i < this.outEdges.size(); i++) {
-						var de = this.outEdges.get(i);
-						if (de === dirEdge) return i;
-					}
-					return -1;
-				} else if (Number.isInteger(args[0])) {
-					let [i] = args;
-					var modi = i % this.outEdges.size();
-					if (modi < 0) modi += this.outEdges.size();
-					return modi;
+		if (args.length === 1) {
+			if (args[0] instanceof Edge) {
+				let [edge] = args;
+				this.sortEdges();
+				for (var i = 0; i < this.outEdges.size(); i++) {
+					var de = this.outEdges.get(i);
+					if (de.getEdge() === edge) return i;
 				}
-				break;
+				return -1;
+			} else if (args[0] instanceof DirectedEdge) {
+				let [dirEdge] = args;
+				this.sortEdges();
+				for (var i = 0; i < this.outEdges.size(); i++) {
+					var de = this.outEdges.get(i);
+					if (de === dirEdge) return i;
+				}
+				return -1;
+			} else if (Number.isInteger(args[0])) {
+				let [i] = args;
+				var modi = i % this.outEdges.size();
+				if (modi < 0) modi += this.outEdges.size();
+				return modi;
+			}
 		}
 	}
 	add(de) {

@@ -6,13 +6,9 @@ import ExtractLineByLocation from './ExtractLineByLocation';
 export default class LengthIndexedLine {
 	constructor(...args) {
 		this.linearGeom = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [linearGeom] = args;
-					this.linearGeom = linearGeom;
-					break;
-				}
+		if (args.length === 1) {
+			let [linearGeom] = args;
+			this.linearGeom = linearGeom;
 		}
 	}
 	get interfaces_() {
@@ -27,19 +23,12 @@ export default class LengthIndexedLine {
 		return posIndex;
 	}
 	locationOf(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [index] = args;
-					return LengthLocationMap.getLocation(this.linearGeom, index);
-					break;
-				}
-			case 2:
-				{
-					let [index, resolveLower] = args;
-					return LengthLocationMap.getLocation(this.linearGeom, index, resolveLower);
-					break;
-				}
+		if (args.length === 1) {
+			let [index] = args;
+			return LengthLocationMap.getLocation(this.linearGeom, index);
+		} else if (args.length === 2) {
+			let [index, resolveLower] = args;
+			return LengthLocationMap.getLocation(this.linearGeom, index, resolveLower);
 		}
 	}
 	project(pt) {
@@ -50,22 +39,15 @@ export default class LengthIndexedLine {
 		return this.linearGeom.getLength() + index;
 	}
 	extractPoint(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [index] = args;
-					var loc = LengthLocationMap.getLocation(this.linearGeom, index);
-					return loc.getCoordinate(this.linearGeom);
-					break;
-				}
-			case 2:
-				{
-					let [index, offsetDistance] = args;
-					var loc = LengthLocationMap.getLocation(this.linearGeom, index);
-					var locLow = loc.toLowest(this.linearGeom);
-					return locLow.getSegment(this.linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance);
-					break;
-				}
+		if (args.length === 1) {
+			let [index] = args;
+			var loc = LengthLocationMap.getLocation(this.linearGeom, index);
+			return loc.getCoordinate(this.linearGeom);
+		} else if (args.length === 2) {
+			let [index, offsetDistance] = args;
+			var loc = LengthLocationMap.getLocation(this.linearGeom, index);
+			var locLow = loc.toLowest(this.linearGeom);
+			return locLow.getSegment(this.linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance);
 		}
 	}
 	isValidIndex(index) {

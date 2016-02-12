@@ -3,15 +3,11 @@ export default class PriorityQueue {
 	constructor(...args) {
 		this._size = null;
 		this.items = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this._size = 0;
-					this.items = new ArrayList();
-					this.items.add(null);
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this._size = 0;
+			this.items = new ArrayList();
+			this.items.add(null);
 		}
 	}
 	get interfaces_() {

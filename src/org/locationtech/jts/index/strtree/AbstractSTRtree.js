@@ -13,18 +13,17 @@ export default class AbstractSTRtree {
 		this.itemBoundables = new ArrayList();
 		this.nodeCapacity = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [nodeCapacity] = args;
-						Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-						this.nodeCapacity = nodeCapacity;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [nodeCapacity] = args;
+					Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
+					this.nodeCapacity = nodeCapacity;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -45,32 +44,25 @@ export default class AbstractSTRtree {
 		return nodes.get(nodes.size() - 1);
 	}
 	size(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					if (this.isEmpty()) {
-						return 0;
-					}
-					this.build();
-					return this.size(this.root);
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			if (this.isEmpty()) {
+				return 0;
+			}
+			this.build();
+			return this.size(this.root);
+		} else if (args.length === 1) {
+			let [node] = args;
+			var size = 0;
+			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
+				var childBoundable = i.next();
+				if (childBoundable instanceof AbstractNode) {
+					size += this.size(childBoundable);
+				} else if (childBoundable instanceof ItemBoundable) {
+					size += 1;
 				}
-			case 1:
-				{
-					let [node] = args;
-					var size = 0;
-					for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
-						var childBoundable = i.next();
-						if (childBoundable instanceof AbstractNode) {
-							size += this.size(childBoundable);
-						} else if (childBoundable instanceof ItemBoundable) {
-							size += 1;
-						}
-					}
-					return size;
-					break;
-				}
+			}
+			return size;
 		}
 	}
 	removeItem(node, item) {
@@ -88,35 +80,28 @@ export default class AbstractSTRtree {
 		return false;
 	}
 	itemsTree(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.build();
-					var valuesTree = this.itemsTree(this.root);
-					if (valuesTree === null) return new ArrayList();
-					return valuesTree;
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			this.build();
+			var valuesTree = this.itemsTree(this.root);
+			if (valuesTree === null) return new ArrayList();
+			return valuesTree;
+		} else if (args.length === 1) {
+			let [node] = args;
+			var valuesTreeForNode = new ArrayList();
+			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
+				var childBoundable = i.next();
+				if (childBoundable instanceof AbstractNode) {
+					var valuesTreeForChild = this.itemsTree(childBoundable);
+					if (valuesTreeForChild !== null) valuesTreeForNode.add(valuesTreeForChild);
+				} else if (childBoundable instanceof ItemBoundable) {
+					valuesTreeForNode.add(childBoundable.getItem());
+				} else {
+					Assert.shouldNeverReachHere();
 				}
-			case 1:
-				{
-					let [node] = args;
-					var valuesTreeForNode = new ArrayList();
-					for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
-						var childBoundable = i.next();
-						if (childBoundable instanceof AbstractNode) {
-							var valuesTreeForChild = this.itemsTree(childBoundable);
-							if (valuesTreeForChild !== null) valuesTreeForNode.add(valuesTreeForChild);
-						} else if (childBoundable instanceof ItemBoundable) {
-							valuesTreeForNode.add(childBoundable.getItem());
-						} else {
-							Assert.shouldNeverReachHere();
-						}
-					}
-					if (valuesTreeForNode.size() <= 0) return null;
-					return valuesTreeForNode;
-					break;
-				}
+			}
+			if (valuesTreeForNode.size() <= 0) return null;
+			return valuesTreeForNode;
 		}
 	}
 	insert(bounds, item) {
@@ -124,102 +109,87 @@ export default class AbstractSTRtree {
 		this.itemBoundables.add(new ItemBoundable(bounds, item));
 	}
 	boundablesAtLevel(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [level] = args;
-					var boundables = new ArrayList();
-					this.boundablesAtLevel(level, this.root, boundables);
-					return boundables;
-					break;
-				}
-			case 3:
-				{
-					let [level, top, boundables] = args;
-					Assert.isTrue(level > -2);
-					if (top.getLevel() === level) {
-						boundables.add(top);
-						return null;
+		if (args.length === 1) {
+			let [level] = args;
+			var boundables = new ArrayList();
+			this.boundablesAtLevel(level, this.root, boundables);
+			return boundables;
+		} else if (args.length === 3) {
+			let [level, top, boundables] = args;
+			Assert.isTrue(level > -2);
+			if (top.getLevel() === level) {
+				boundables.add(top);
+				return null;
+			}
+			for (var i = top.getChildBoundables().iterator(); i.hasNext(); ) {
+				var boundable = i.next();
+				if (boundable instanceof AbstractNode) {
+					this.boundablesAtLevel(level, boundable, boundables);
+				} else {
+					Assert.isTrue(boundable instanceof ItemBoundable);
+					if (level === -1) {
+						boundables.add(boundable);
 					}
-					for (var i = top.getChildBoundables().iterator(); i.hasNext(); ) {
-						var boundable = i.next();
-						if (boundable instanceof AbstractNode) {
-							this.boundablesAtLevel(level, boundable, boundables);
-						} else {
-							Assert.isTrue(boundable instanceof ItemBoundable);
-							if (level === -1) {
-								boundables.add(boundable);
-							}
-						}
-					}
-					return null;
-					break;
 				}
+			}
+			return null;
 		}
 	}
 	query(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [searchBounds] = args;
-					this.build();
-					var matches = new ArrayList();
-					if (this.isEmpty()) {
-						return matches;
+		if (args.length === 1) {
+			let [searchBounds] = args;
+			this.build();
+			var matches = new ArrayList();
+			if (this.isEmpty()) {
+				return matches;
+			}
+			if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
+				this.query(searchBounds, this.root, matches);
+			}
+			return matches;
+		} else if (args.length === 2) {
+			let [searchBounds, visitor] = args;
+			this.build();
+			if (this.isEmpty()) {
+				return null;
+			}
+			if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
+				this.query(searchBounds, this.root, visitor);
+			}
+		} else if (args.length === 3) {
+			if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+				let [searchBounds, node, visitor] = args;
+				var childBoundables = node.getChildBoundables();
+				for (var i = 0; i < childBoundables.size(); i++) {
+					var childBoundable = childBoundables.get(i);
+					if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
+						continue;
 					}
-					if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
-						this.query(searchBounds, this.root, matches);
-					}
-					return matches;
-					break;
-				}
-			case 2:
-				{
-					let [searchBounds, visitor] = args;
-					this.build();
-					if (this.isEmpty()) {
-						return null;
-					}
-					if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
-						this.query(searchBounds, this.root, visitor);
-					}
-					break;
-				}
-			case 3:
-				if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					let [searchBounds, node, visitor] = args;
-					var childBoundables = node.getChildBoundables();
-					for (var i = 0; i < childBoundables.size(); i++) {
-						var childBoundable = childBoundables.get(i);
-						if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
-							continue;
-						}
-						if (childBoundable instanceof AbstractNode) {
-							this.query(searchBounds, childBoundable, visitor);
-						} else if (childBoundable instanceof ItemBoundable) {
-							visitor.visitItem(childBoundable.getItem());
-						} else {
-							Assert.shouldNeverReachHere();
-						}
-					}
-				} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					let [searchBounds, node, matches] = args;
-					var childBoundables = node.getChildBoundables();
-					for (var i = 0; i < childBoundables.size(); i++) {
-						var childBoundable = childBoundables.get(i);
-						if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
-							continue;
-						}
-						if (childBoundable instanceof AbstractNode) {
-							this.query(searchBounds, childBoundable, matches);
-						} else if (childBoundable instanceof ItemBoundable) {
-							matches.add(childBoundable.getItem());
-						} else {
-							Assert.shouldNeverReachHere();
-						}
+					if (childBoundable instanceof AbstractNode) {
+						this.query(searchBounds, childBoundable, visitor);
+					} else if (childBoundable instanceof ItemBoundable) {
+						visitor.visitItem(childBoundable.getItem());
+					} else {
+						Assert.shouldNeverReachHere();
 					}
 				}
-				break;
+			} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+				let [searchBounds, node, matches] = args;
+				var childBoundables = node.getChildBoundables();
+				for (var i = 0; i < childBoundables.size(); i++) {
+					var childBoundable = childBoundables.get(i);
+					if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
+						continue;
+					}
+					if (childBoundable instanceof AbstractNode) {
+						this.query(searchBounds, childBoundable, matches);
+					} else if (childBoundable instanceof ItemBoundable) {
+						matches.add(childBoundable.getItem());
+					} else {
+						Assert.shouldNeverReachHere();
+					}
+				}
+			}
 		}
 	}
 	build() {
@@ -233,44 +203,37 @@ export default class AbstractSTRtree {
 		return this.root;
 	}
 	remove(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [searchBounds, item] = args;
-					this.build();
-					if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
-						return this.remove(searchBounds, this.root, item);
-					}
-					return false;
-					break;
+		if (args.length === 2) {
+			let [searchBounds, item] = args;
+			this.build();
+			if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
+				return this.remove(searchBounds, this.root, item);
+			}
+			return false;
+		} else if (args.length === 3) {
+			let [searchBounds, node, item] = args;
+			var found = this.removeItem(node, item);
+			if (found) return true;
+			var childToPrune = null;
+			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
+				var childBoundable = i.next();
+				if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
+					continue;
 				}
-			case 3:
-				{
-					let [searchBounds, node, item] = args;
-					var found = this.removeItem(node, item);
-					if (found) return true;
-					var childToPrune = null;
-					for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
-						var childBoundable = i.next();
-						if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
-							continue;
-						}
-						if (childBoundable instanceof AbstractNode) {
-							found = this.remove(searchBounds, childBoundable, item);
-							if (found) {
-								childToPrune = childBoundable;
-								break;
-							}
-						}
+				if (childBoundable instanceof AbstractNode) {
+					found = this.remove(searchBounds, childBoundable, item);
+					if (found) {
+						childToPrune = childBoundable;
+						break;
 					}
-					if (childToPrune !== null) {
-						if (childToPrune.getChildBoundables().isEmpty()) {
-							node.getChildBoundables().remove(childToPrune);
-						}
-					}
-					return found;
-					break;
 				}
+			}
+			if (childToPrune !== null) {
+				if (childToPrune.getChildBoundables().isEmpty()) {
+					node.getChildBoundables().remove(childToPrune);
+				}
+			}
+			return found;
 		}
 	}
 	createHigherLevels(boundablesOfALevel, level) {
@@ -282,31 +245,24 @@ export default class AbstractSTRtree {
 		return this.createHigherLevels(parentBoundables, level + 1);
 	}
 	depth(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					if (this.isEmpty()) {
-						return 0;
-					}
-					this.build();
-					return this.depth(this.root);
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			if (this.isEmpty()) {
+				return 0;
+			}
+			this.build();
+			return this.depth(this.root);
+		} else if (args.length === 1) {
+			let [node] = args;
+			var maxChildDepth = 0;
+			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
+				var childBoundable = i.next();
+				if (childBoundable instanceof AbstractNode) {
+					var childDepth = this.depth(childBoundable);
+					if (childDepth > maxChildDepth) maxChildDepth = childDepth;
 				}
-			case 1:
-				{
-					let [node] = args;
-					var maxChildDepth = 0;
-					for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
-						var childBoundable = i.next();
-						if (childBoundable instanceof AbstractNode) {
-							var childDepth = this.depth(childBoundable);
-							if (childDepth > maxChildDepth) maxChildDepth = childDepth;
-						}
-					}
-					return maxChildDepth + 1;
-					break;
-				}
+			}
+			return maxChildDepth + 1;
 		}
 	}
 	createParentBoundables(childBoundables, newLevel) {

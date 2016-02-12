@@ -9,55 +9,52 @@ export default class CoordinateArraySequence {
 		this.dimension = 3;
 		this.coordinates = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [coordinates] = args;
-							overloaded.call(this, coordinates, 3);
-						})(...args);
-					} else if (Number.isInteger(args[0])) {
-						return ((...args) => {
-							let [size] = args;
-							this.coordinates = new Array(size);
-							for (var i = 0; i < size; i++) {
-								this.coordinates[i] = new Coordinate();
-							}
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-						return ((...args) => {
-							let [coordSeq] = args;
-							if (coordSeq === null) {
-								this.coordinates = new Array(0);
-								return null;
-							}
-							this.dimension = coordSeq.getDimension();
-							this.coordinates = new Array(coordSeq.size());
-							for (var i = 0; i < this.coordinates.length; i++) {
-								this.coordinates[i] = coordSeq.getCoordinateCopy(i);
-							}
-						})(...args);
-					}
-					break;
-				case 2:
-					if (args[0] instanceof Array && Number.isInteger(args[1])) {
-						return ((...args) => {
-							let [coordinates, dimension] = args;
-							this.coordinates = coordinates;
-							this.dimension = dimension;
-							if (coordinates === null) this.coordinates = new Array(0);
-						})(...args);
-					} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-						return ((...args) => {
-							let [size, dimension] = args;
-							this.coordinates = new Array(size);
-							this.dimension = dimension;
-							for (var i = 0; i < size; i++) {
-								this.coordinates[i] = new Coordinate();
-							}
-						})(...args);
-					}
-					break;
+			if (args.length === 1) {
+				if (args[0] instanceof Array) {
+					return ((...args) => {
+						let [coordinates] = args;
+						overloaded.call(this, coordinates, 3);
+					})(...args);
+				} else if (Number.isInteger(args[0])) {
+					return ((...args) => {
+						let [size] = args;
+						this.coordinates = new Array(size);
+						for (var i = 0; i < size; i++) {
+							this.coordinates[i] = new Coordinate();
+						}
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+					return ((...args) => {
+						let [coordSeq] = args;
+						if (coordSeq === null) {
+							this.coordinates = new Array(0);
+							return null;
+						}
+						this.dimension = coordSeq.getDimension();
+						this.coordinates = new Array(coordSeq.size());
+						for (var i = 0; i < this.coordinates.length; i++) {
+							this.coordinates[i] = coordSeq.getCoordinateCopy(i);
+						}
+					})(...args);
+				}
+			} else if (args.length === 2) {
+				if (args[0] instanceof Array && Number.isInteger(args[1])) {
+					return ((...args) => {
+						let [coordinates, dimension] = args;
+						this.coordinates = coordinates;
+						this.dimension = dimension;
+						if (coordinates === null) this.coordinates = new Array(0);
+					})(...args);
+				} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
+					return ((...args) => {
+						let [size, dimension] = args;
+						this.coordinates = new Array(size);
+						this.dimension = dimension;
+						for (var i = 0; i < size; i++) {
+							this.coordinates[i] = new Coordinate();
+						}
+					})(...args);
+				}
 			}
 		};
 		return overloaded.apply(this, args);
@@ -95,21 +92,14 @@ export default class CoordinateArraySequence {
 		return Double.NaN;
 	}
 	getCoordinate(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [i] = args;
-					return this.coordinates[i];
-					break;
-				}
-			case 2:
-				{
-					let [index, coord] = args;
-					coord.x = this.coordinates[index].x;
-					coord.y = this.coordinates[index].y;
-					coord.z = this.coordinates[index].z;
-					break;
-				}
+		if (args.length === 1) {
+			let [i] = args;
+			return this.coordinates[i];
+		} else if (args.length === 2) {
+			let [index, coord] = args;
+			coord.x = this.coordinates[index].x;
+			coord.y = this.coordinates[index].y;
+			coord.z = this.coordinates[index].z;
 		}
 	}
 	getCoordinateCopy(i) {

@@ -4,14 +4,10 @@ export default class ItemBoundable {
 	constructor(...args) {
 		this.bounds = null;
 		this.item = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [bounds, item] = args;
-					this.bounds = bounds;
-					this.item = item;
-					break;
-				}
+		if (args.length === 2) {
+			let [bounds, item] = args;
+			this.bounds = bounds;
+			this.item = item;
 		}
 	}
 	get interfaces_() {

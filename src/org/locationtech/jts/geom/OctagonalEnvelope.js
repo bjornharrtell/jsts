@@ -18,40 +18,38 @@ export default class OctagonalEnvelope {
 		this.minB = null;
 		this.maxB = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				if (args[0] instanceof Coordinate) {
 					return ((...args) => {
-						let [] = args;
+						let [p] = args;
+						this.expandToInclude(p);
 					})(...args);
-				case 1:
-					if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [p] = args;
-							this.expandToInclude(p);
-						})(...args);
-					} else if (args[0] instanceof Envelope) {
-						return ((...args) => {
-							let [env] = args;
-							this.expandToInclude(env);
-						})(...args);
-					} else if (args[0] instanceof OctagonalEnvelope) {
-						return ((...args) => {
-							let [oct] = args;
-							this.expandToInclude(oct);
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							this.expandToInclude(geom);
-						})(...args);
-					}
-					break;
-				case 2:
+				} else if (args[0] instanceof Envelope) {
 					return ((...args) => {
-						let [p0, p1] = args;
-						this.expandToInclude(p0);
-						this.expandToInclude(p1);
+						let [env] = args;
+						this.expandToInclude(env);
 					})(...args);
+				} else if (args[0] instanceof OctagonalEnvelope) {
+					return ((...args) => {
+						let [oct] = args;
+						this.expandToInclude(oct);
+					})(...args);
+				} else if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [geom] = args;
+						this.expandToInclude(geom);
+					})(...args);
+				}
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [p0, p1] = args;
+					this.expandToInclude(p0);
+					this.expandToInclude(p1);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -129,37 +127,35 @@ export default class OctagonalEnvelope {
 		return this.maxX;
 	}
 	intersects(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof OctagonalEnvelope) {
-					let [other] = args;
-					if (this.isNull() || other.isNull()) {
-						return false;
-					}
-					if (this.minX > other.maxX) return false;
-					if (this.maxX < other.minX) return false;
-					if (this.minY > other.maxY) return false;
-					if (this.maxY < other.minY) return false;
-					if (this.minA > other.maxA) return false;
-					if (this.maxA < other.minA) return false;
-					if (this.minB > other.maxB) return false;
-					if (this.maxB < other.minB) return false;
-					return true;
-				} else if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					if (this.minX > p.x) return false;
-					if (this.maxX < p.x) return false;
-					if (this.minY > p.y) return false;
-					if (this.maxY < p.y) return false;
-					var A = OctagonalEnvelope.computeA(p.x, p.y);
-					var B = OctagonalEnvelope.computeB(p.x, p.y);
-					if (this.minA > A) return false;
-					if (this.maxA < A) return false;
-					if (this.minB > B) return false;
-					if (this.maxB < B) return false;
-					return true;
+		if (args.length === 1) {
+			if (args[0] instanceof OctagonalEnvelope) {
+				let [other] = args;
+				if (this.isNull() || other.isNull()) {
+					return false;
 				}
-				break;
+				if (this.minX > other.maxX) return false;
+				if (this.maxX < other.minX) return false;
+				if (this.minY > other.maxY) return false;
+				if (this.maxY < other.minY) return false;
+				if (this.minA > other.maxA) return false;
+				if (this.maxA < other.minA) return false;
+				if (this.minB > other.maxB) return false;
+				if (this.maxB < other.minB) return false;
+				return true;
+			} else if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				if (this.minX > p.x) return false;
+				if (this.maxX < p.x) return false;
+				if (this.minY > p.y) return false;
+				if (this.maxY < p.y) return false;
+				var A = OctagonalEnvelope.computeA(p.x, p.y);
+				var B = OctagonalEnvelope.computeB(p.x, p.y);
+				if (this.minA > A) return false;
+				if (this.maxA < A) return false;
+				if (this.minB > B) return false;
+				if (this.maxB < B) return false;
+				return true;
+			}
 		}
 	}
 	getMinY() {
@@ -169,82 +165,77 @@ export default class OctagonalEnvelope {
 		return this.minX;
 	}
 	expandToInclude(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Geometry) {
-					let [g] = args;
-					g.apply(new BoundingOctagonComponentFilter(this));
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					let [seq] = args;
-					for (var i = 0; i < seq.size(); i++) {
-						var x = seq.getX(i);
-						var y = seq.getY(i);
-						this.expandToInclude(x, y);
-					}
-					return this;
-				} else if (args[0] instanceof OctagonalEnvelope) {
-					let [oct] = args;
-					if (oct.isNull()) return this;
-					if (this.isNull()) {
-						this.minX = oct.minX;
-						this.maxX = oct.maxX;
-						this.minY = oct.minY;
-						this.maxY = oct.maxY;
-						this.minA = oct.minA;
-						this.maxA = oct.maxA;
-						this.minB = oct.minB;
-						this.maxB = oct.maxB;
-						return this;
-					}
-					if (oct.minX < this.minX) this.minX = oct.minX;
-					if (oct.maxX > this.maxX) this.maxX = oct.maxX;
-					if (oct.minY < this.minY) this.minY = oct.minY;
-					if (oct.maxY > this.maxY) this.maxY = oct.maxY;
-					if (oct.minA < this.minA) this.minA = oct.minA;
-					if (oct.maxA > this.maxA) this.maxA = oct.maxA;
-					if (oct.minB < this.minB) this.minB = oct.minB;
-					if (oct.maxB > this.maxB) this.maxB = oct.maxB;
-					return this;
-				} else if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					this.expandToInclude(p.x, p.y);
-					return this;
-				} else if (args[0] instanceof Envelope) {
-					let [env] = args;
-					this.expandToInclude(env.getMinX(), env.getMinY());
-					this.expandToInclude(env.getMinX(), env.getMaxY());
-					this.expandToInclude(env.getMaxX(), env.getMinY());
-					this.expandToInclude(env.getMaxX(), env.getMaxY());
+		if (args.length === 1) {
+			if (args[0] instanceof Geometry) {
+				let [g] = args;
+				g.apply(new BoundingOctagonComponentFilter(this));
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+				let [seq] = args;
+				for (var i = 0; i < seq.size(); i++) {
+					var x = seq.getX(i);
+					var y = seq.getY(i);
+					this.expandToInclude(x, y);
+				}
+				return this;
+			} else if (args[0] instanceof OctagonalEnvelope) {
+				let [oct] = args;
+				if (oct.isNull()) return this;
+				if (this.isNull()) {
+					this.minX = oct.minX;
+					this.maxX = oct.maxX;
+					this.minY = oct.minY;
+					this.maxY = oct.maxY;
+					this.minA = oct.minA;
+					this.maxA = oct.maxA;
+					this.minB = oct.minB;
+					this.maxB = oct.maxB;
 					return this;
 				}
-				break;
-			case 2:
-				{
-					let [x, y] = args;
-					var A = OctagonalEnvelope.computeA(x, y);
-					var B = OctagonalEnvelope.computeB(x, y);
-					if (this.isNull()) {
-						this.minX = x;
-						this.maxX = x;
-						this.minY = y;
-						this.maxY = y;
-						this.minA = A;
-						this.maxA = A;
-						this.minB = B;
-						this.maxB = B;
-					} else {
-						if (x < this.minX) this.minX = x;
-						if (x > this.maxX) this.maxX = x;
-						if (y < this.minY) this.minY = y;
-						if (y > this.maxY) this.maxY = y;
-						if (A < this.minA) this.minA = A;
-						if (A > this.maxA) this.maxA = A;
-						if (B < this.minB) this.minB = B;
-						if (B > this.maxB) this.maxB = B;
-					}
-					return this;
-					break;
-				}
+				if (oct.minX < this.minX) this.minX = oct.minX;
+				if (oct.maxX > this.maxX) this.maxX = oct.maxX;
+				if (oct.minY < this.minY) this.minY = oct.minY;
+				if (oct.maxY > this.maxY) this.maxY = oct.maxY;
+				if (oct.minA < this.minA) this.minA = oct.minA;
+				if (oct.maxA > this.maxA) this.maxA = oct.maxA;
+				if (oct.minB < this.minB) this.minB = oct.minB;
+				if (oct.maxB > this.maxB) this.maxB = oct.maxB;
+				return this;
+			} else if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				this.expandToInclude(p.x, p.y);
+				return this;
+			} else if (args[0] instanceof Envelope) {
+				let [env] = args;
+				this.expandToInclude(env.getMinX(), env.getMinY());
+				this.expandToInclude(env.getMinX(), env.getMaxY());
+				this.expandToInclude(env.getMaxX(), env.getMinY());
+				this.expandToInclude(env.getMaxX(), env.getMaxY());
+				return this;
+			}
+		} else if (args.length === 2) {
+			let [x, y] = args;
+			var A = OctagonalEnvelope.computeA(x, y);
+			var B = OctagonalEnvelope.computeB(x, y);
+			if (this.isNull()) {
+				this.minX = x;
+				this.maxX = x;
+				this.minY = y;
+				this.maxY = y;
+				this.minA = A;
+				this.maxA = A;
+				this.minB = B;
+				this.maxB = B;
+			} else {
+				if (x < this.minX) this.minX = x;
+				if (x > this.maxX) this.maxX = x;
+				if (y < this.minY) this.minY = y;
+				if (y > this.maxY) this.maxY = y;
+				if (A < this.minA) this.minA = A;
+				if (A > this.maxA) this.maxA = A;
+				if (B < this.minB) this.minB = B;
+				if (B > this.maxB) this.maxB = B;
+			}
+			return this;
 		}
 	}
 	getMinB() {
@@ -285,13 +276,9 @@ export default class OctagonalEnvelope {
 class BoundingOctagonComponentFilter {
 	constructor(...args) {
 		this.oe = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [oe] = args;
-					this.oe = oe;
-					break;
-				}
+		if (args.length === 1) {
+			let [oe] = args;
+			this.oe = oe;
 		}
 	}
 	get interfaces_() {

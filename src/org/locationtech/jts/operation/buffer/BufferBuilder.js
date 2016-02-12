@@ -24,13 +24,9 @@ export default class BufferBuilder {
 		this.geomFact = null;
 		this.graph = null;
 		this.edgeList = new EdgeList();
-		switch (args.length) {
-			case 1:
-				{
-					let [bufParams] = args;
-					this.bufParams = bufParams;
-					break;
-				}
+		if (args.length === 1) {
+			let [bufParams] = args;
+			this.bufParams = bufParams;
 		}
 	}
 	get interfaces_() {

@@ -3,13 +3,9 @@ import MCIndexSegmentSetMutualIntersector from './MCIndexSegmentSetMutualInterse
 export default class FastSegmentSetIntersectionFinder {
 	constructor(...args) {
 		this.segSetMutInt = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [baseSegStrings] = args;
-					this.segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
-					break;
-				}
+		if (args.length === 1) {
+			let [baseSegStrings] = args;
+			this.segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
 		}
 	}
 	get interfaces_() {
@@ -19,21 +15,14 @@ export default class FastSegmentSetIntersectionFinder {
 		return this.segSetMutInt;
 	}
 	intersects(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [segStrings] = args;
-					var intFinder = new SegmentIntersectionDetector();
-					return this.intersects(segStrings, intFinder);
-					break;
-				}
-			case 2:
-				{
-					let [segStrings, intDetector] = args;
-					this.segSetMutInt.process(segStrings, intDetector);
-					return intDetector.hasIntersection();
-					break;
-				}
+		if (args.length === 1) {
+			let [segStrings] = args;
+			var intFinder = new SegmentIntersectionDetector();
+			return this.intersects(segStrings, intFinder);
+		} else if (args.length === 2) {
+			let [segStrings, intDetector] = args;
+			this.segSetMutInt.process(segStrings, intDetector);
+			return intDetector.hasIntersection();
 		}
 	}
 	getClass() {

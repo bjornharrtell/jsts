@@ -6,12 +6,8 @@ export default class CommonBitsRemover {
 	constructor(...args) {
 		this.commonCoord = null;
 		this.ccFilter = new CommonCoordinateFilter();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -71,13 +67,9 @@ class CommonCoordinateFilter {
 class Translater {
 	constructor(...args) {
 		this.trans = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [trans] = args;
-					this.trans = trans;
-					break;
-				}
+		if (args.length === 1) {
+			let [trans] = args;
+			this.trans = trans;
 		}
 	}
 	get interfaces_() {

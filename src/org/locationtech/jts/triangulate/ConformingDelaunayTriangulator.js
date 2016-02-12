@@ -27,15 +27,11 @@ export default class ConformingDelaunayTriangulator {
 		this.computeAreaEnv = null;
 		this.splitPt = null;
 		this.tolerance = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [initialVertices, tolerance] = args;
-					this.initialVertices = new ArrayList(initialVertices);
-					this.tolerance = tolerance;
-					this.kdt = new KdTree(tolerance);
-					break;
-				}
+		if (args.length === 2) {
+			let [initialVertices, tolerance] = args;
+			this.initialVertices = new ArrayList(initialVertices);
+			this.tolerance = tolerance;
+			this.kdt = new KdTree(tolerance);
 		}
 	}
 	get interfaces_() {
@@ -169,24 +165,17 @@ export default class ConformingDelaunayTriangulator {
 		return splits;
 	}
 	createVertex(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [p] = args;
-					var v = null;
-					if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p);
-					return v;
-					break;
-				}
-			case 2:
-				{
-					let [p, seg] = args;
-					var v = null;
-					if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p);
-					v.setOnConstraint(true);
-					return v;
-					break;
-				}
+		if (args.length === 1) {
+			let [p] = args;
+			var v = null;
+			if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p);
+			return v;
+		} else if (args.length === 2) {
+			let [p, seg] = args;
+			var v = null;
+			if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p);
+			v.setOnConstraint(true);
+			return v;
 		}
 	}
 	getSubdivision() {
@@ -214,24 +203,22 @@ export default class ConformingDelaunayTriangulator {
 		this.insertSites(this.initialVertices);
 	}
 	insertSite(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof ConstraintVertex) {
-					let [v] = args;
-					var kdnode = this.kdt.insert(v.getCoordinate(), v);
-					if (!kdnode.isRepeated()) {
-						this.incDel.insertSite(v);
-					} else {
-						var snappedV = kdnode.getData();
-						snappedV.merge(v);
-						return snappedV;
-					}
-					return v;
-				} else if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					this.insertSite(this.createVertex(p));
+		if (args.length === 1) {
+			if (args[0] instanceof ConstraintVertex) {
+				let [v] = args;
+				var kdnode = this.kdt.insert(v.getCoordinate(), v);
+				if (!kdnode.isRepeated()) {
+					this.incDel.insertSite(v);
+				} else {
+					var snappedV = kdnode.getData();
+					snappedV.merge(v);
+					return snappedV;
 				}
-				break;
+				return v;
+			} else if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				this.insertSite(this.createVertex(p));
+			}
 		}
 	}
 	getClass() {

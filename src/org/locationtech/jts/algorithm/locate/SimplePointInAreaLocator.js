@@ -7,13 +7,9 @@ import GeometryCollection from '../../geom/GeometryCollection';
 export default class SimplePointInAreaLocator {
 	constructor(...args) {
 		this.geom = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [geom] = args;
-					this.geom = geom;
-					break;
-				}
+		if (args.length === 1) {
+			let [geom] = args;
+			this.geom = geom;
 		}
 	}
 	get interfaces_() {

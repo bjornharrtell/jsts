@@ -3,13 +3,9 @@ export default class MarkHalfEdge extends HalfEdge {
 	constructor(...args) {
 		super();
 		this._isMarked = false;
-		switch (args.length) {
-			case 1:
-				{
-					let [orig] = args;
-					super(orig);
-					break;
-				}
+		if (args.length === 1) {
+			let [orig] = args;
+			super(orig);
 		}
 	}
 	get interfaces_() {

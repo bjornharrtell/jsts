@@ -10,18 +10,17 @@ export default class EdgeEndBundle extends EdgeEnd {
 		super();
 		this.edgeEnds = new ArrayList();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [e] = args;
-						overloaded.call(this, null, e);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [boundaryNodeRule, e] = args;
-						super(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()));
-						this.insert(e);
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [e] = args;
+					overloaded.call(this, null, e);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [boundaryNodeRule, e] = args;
+					super(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()));
+					this.insert(e);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

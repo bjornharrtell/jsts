@@ -8,14 +8,10 @@ export default class RectangleIntersects {
 	constructor(...args) {
 		this.rectangle = null;
 		this.rectEnv = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [rectangle] = args;
-					this.rectangle = rectangle;
-					this.rectEnv = rectangle.getEnvelopeInternal();
-					break;
-				}
+		if (args.length === 1) {
+			let [rectangle] = args;
+			this.rectangle = rectangle;
+			this.rectEnv = rectangle.getEnvelopeInternal();
 		}
 	}
 	get interfaces_() {
@@ -47,13 +43,9 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 		super();
 		this.rectEnv = null;
 		this._intersects = false;
-		switch (args.length) {
-			case 1:
-				{
-					let [rectEnv] = args;
-					this.rectEnv = rectEnv;
-					break;
-				}
+		if (args.length === 1) {
+			let [rectEnv] = args;
+			this.rectEnv = rectEnv;
 		}
 	}
 	get interfaces_() {
@@ -93,14 +85,10 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 		this.rectSeq = null;
 		this.rectEnv = null;
 		this._containsPoint = false;
-		switch (args.length) {
-			case 1:
-				{
-					let [rectangle] = args;
-					this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
-					this.rectEnv = rectangle.getEnvelopeInternal();
-					break;
-				}
+		if (args.length === 1) {
+			let [rectangle] = args;
+			this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
+			this.rectEnv = rectangle.getEnvelopeInternal();
 		}
 	}
 	get interfaces_() {
@@ -138,14 +126,10 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
 		this.hasIntersection = false;
 		this.p0 = new Coordinate();
 		this.p1 = new Coordinate();
-		switch (args.length) {
-			case 1:
-				{
-					let [rectangle] = args;
-					this.rectEnv = rectangle.getEnvelopeInternal();
-					this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
-					break;
-				}
+		if (args.length === 1) {
+			let [rectangle] = args;
+			this.rectEnv = rectangle.getEnvelopeInternal();
+			this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
 		}
 	}
 	get interfaces_() {

@@ -6,14 +6,10 @@ export default class VWLineSimplifier {
 	constructor(...args) {
 		this.pts = null;
 		this.tolerance = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [pts, distanceTolerance] = args;
-					this.pts = pts;
-					this.tolerance = distanceTolerance * distanceTolerance;
-					break;
-				}
+		if (args.length === 2) {
+			let [pts, distanceTolerance] = args;
+			this.pts = pts;
+			this.tolerance = distanceTolerance * distanceTolerance;
 		}
 	}
 	get interfaces_() {
@@ -67,13 +63,9 @@ class VWVertex {
 		this.next = null;
 		this.area = VWVertex.MAX_AREA;
 		this._isLive = true;
-		switch (args.length) {
-			case 1:
-				{
-					let [pt] = args;
-					this.pt = pt;
-					break;
-				}
+		if (args.length === 1) {
+			let [pt] = args;
+			this.pt = pt;
 		}
 	}
 	get interfaces_() {

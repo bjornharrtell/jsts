@@ -16,16 +16,12 @@ export default class MCIndexSnapRounder {
 		this.noder = null;
 		this.pointSnapper = null;
 		this.nodedSegStrings = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [pm] = args;
-					this.pm = pm;
-					this.li = new RobustLineIntersector();
-					this.li.setPrecisionModel(pm);
-					this.scaleFactor = pm.getScale();
-					break;
-				}
+		if (args.length === 1) {
+			let [pm] = args;
+			this.pm = pm;
+			this.li = new RobustLineIntersector();
+			this.li.setPrecisionModel(pm);
+			this.scaleFactor = pm.getScale();
 		}
 	}
 	get interfaces_() {
@@ -57,26 +53,24 @@ export default class MCIndexSnapRounder {
 		return intFinderAdder.getInteriorIntersections();
 	}
 	computeVertexSnaps(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [edges] = args;
-					for (var i0 = edges.iterator(); i0.hasNext(); ) {
-						var edge0 = i0.next();
-						this.computeVertexSnaps(edge0);
-					}
-				} else if (args[0] instanceof NodedSegmentString) {
-					let [e] = args;
-					var pts0 = e.getCoordinates();
-					for (var i = 0; i < pts0.length; i++) {
-						var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
-						var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
-						if (isNodeAdded) {
-							e.addIntersection(pts0[i], i);
-						}
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [edges] = args;
+				for (var i0 = edges.iterator(); i0.hasNext(); ) {
+					var edge0 = i0.next();
+					this.computeVertexSnaps(edge0);
+				}
+			} else if (args[0] instanceof NodedSegmentString) {
+				let [e] = args;
+				var pts0 = e.getCoordinates();
+				for (var i = 0; i < pts0.length; i++) {
+					var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
+					var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
+					if (isNodeAdded) {
+						e.addIntersection(pts0[i], i);
 					}
 				}
-				break;
+			}
 		}
 	}
 	computeNodes(inputSegmentStrings) {

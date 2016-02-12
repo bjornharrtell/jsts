@@ -15,18 +15,17 @@ export default class BufferOp {
 		this.resultGeometry = null;
 		this.saveException = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [g] = args;
-						this.argGeom = g;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [g, bufParams] = args;
-						this.argGeom = g;
-						this.bufParams = bufParams;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [g] = args;
+					this.argGeom = g;
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [g, bufParams] = args;
+					this.argGeom = g;
+					this.bufParams = bufParams;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -35,39 +34,31 @@ export default class BufferOp {
 		return [];
 	}
 	static bufferOp(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [g, distance] = args;
-					var gBuf = new BufferOp(g);
-					var geomBuf = gBuf.getResultGeometry(distance);
-					return geomBuf;
-					break;
-				}
-			case 3:
-				if (Number.isInteger(args[2]) && (args[0] instanceof Geometry && typeof args[1] === "number")) {
-					let [g, distance, quadrantSegments] = args;
-					var bufOp = new BufferOp(g);
-					bufOp.setQuadrantSegments(quadrantSegments);
-					var geomBuf = bufOp.getResultGeometry(distance);
-					return geomBuf;
-				} else if (args[2] instanceof BufferParameters && (args[0] instanceof Geometry && typeof args[1] === "number")) {
-					let [g, distance, params] = args;
-					var bufOp = new BufferOp(g, params);
-					var geomBuf = bufOp.getResultGeometry(distance);
-					return geomBuf;
-				}
-				break;
-			case 4:
-				{
-					let [g, distance, quadrantSegments, endCapStyle] = args;
-					var bufOp = new BufferOp(g);
-					bufOp.setQuadrantSegments(quadrantSegments);
-					bufOp.setEndCapStyle(endCapStyle);
-					var geomBuf = bufOp.getResultGeometry(distance);
-					return geomBuf;
-					break;
-				}
+		if (args.length === 2) {
+			let [g, distance] = args;
+			var gBuf = new BufferOp(g);
+			var geomBuf = gBuf.getResultGeometry(distance);
+			return geomBuf;
+		} else if (args.length === 3) {
+			if (Number.isInteger(args[2]) && (args[0] instanceof Geometry && typeof args[1] === "number")) {
+				let [g, distance, quadrantSegments] = args;
+				var bufOp = new BufferOp(g);
+				bufOp.setQuadrantSegments(quadrantSegments);
+				var geomBuf = bufOp.getResultGeometry(distance);
+				return geomBuf;
+			} else if (args[2] instanceof BufferParameters && (args[0] instanceof Geometry && typeof args[1] === "number")) {
+				let [g, distance, params] = args;
+				var bufOp = new BufferOp(g, params);
+				var geomBuf = bufOp.getResultGeometry(distance);
+				return geomBuf;
+			}
+		} else if (args.length === 4) {
+			let [g, distance, quadrantSegments, endCapStyle] = args;
+			var bufOp = new BufferOp(g);
+			bufOp.setQuadrantSegments(quadrantSegments);
+			bufOp.setEndCapStyle(endCapStyle);
+			var geomBuf = bufOp.getResultGeometry(distance);
+			return geomBuf;
 		}
 	}
 	static precisionScaleFactor(g, distance, maxPrecisionDigits) {
@@ -88,31 +79,24 @@ export default class BufferOp {
 		this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
 	}
 	bufferReducedPrecision(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					for (var precDigits = BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
-						try {
-							this.bufferReducedPrecision(precDigits);
-						} catch (ex) {
-							if (ex instanceof TopologyException) {
-								this.saveException = ex;
-							} else throw ex;
-						} finally {}
-						if (this.resultGeometry !== null) return null;
-					}
-					throw this.saveException;
-					break;
-				}
-			case 1:
-				{
-					let [precisionDigits] = args;
-					var sizeBasedScaleFactor = BufferOp.precisionScaleFactor(this.argGeom, this.distance, precisionDigits);
-					var fixedPM = new PrecisionModel(sizeBasedScaleFactor);
-					this.bufferFixedPrecision(fixedPM);
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			for (var precDigits = BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
+				try {
+					this.bufferReducedPrecision(precDigits);
+				} catch (ex) {
+					if (ex instanceof TopologyException) {
+						this.saveException = ex;
+					} else throw ex;
+				} finally {}
+				if (this.resultGeometry !== null) return null;
+			}
+			throw this.saveException;
+		} else if (args.length === 1) {
+			let [precisionDigits] = args;
+			var sizeBasedScaleFactor = BufferOp.precisionScaleFactor(this.argGeom, this.distance, precisionDigits);
+			var fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+			this.bufferFixedPrecision(fixedPM);
 		}
 	}
 	computeGeometry() {

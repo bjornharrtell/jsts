@@ -5,12 +5,8 @@ import RelateNodeFactory from './RelateNodeFactory';
 export default class RelateNodeGraph {
 	constructor(...args) {
 		this.nodes = new NodeMap(new RelateNodeFactory());
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

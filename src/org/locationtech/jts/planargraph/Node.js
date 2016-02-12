@@ -8,18 +8,17 @@ export default class Node extends GraphComponent {
 		this.pt = null;
 		this.deStar = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [pt] = args;
-						overloaded.call(this, pt, new DirectedEdgeStar());
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [pt, deStar] = args;
-						this.pt = pt;
-						this.deStar = deStar;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [pt] = args;
+					overloaded.call(this, pt, new DirectedEdgeStar());
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [pt, deStar] = args;
+					this.pt = pt;
+					this.deStar = deStar;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -47,19 +46,12 @@ export default class Node extends GraphComponent {
 		return this.deStar;
 	}
 	remove(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.pt = null;
-					break;
-				}
-			case 1:
-				{
-					let [de] = args;
-					this.deStar.remove(de);
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.pt = null;
+		} else if (args.length === 1) {
+			let [de] = args;
+			this.deStar.remove(de);
 		}
 	}
 	getIndex(edge) {

@@ -7,15 +7,11 @@ export default class SnapOverlayOp {
 		this.geom = new Array(2);
 		this.snapTolerance = null;
 		this.cbr = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [g1, g2] = args;
-					this.geom[0] = g1;
-					this.geom[1] = g2;
-					this.computeSnapTolerance();
-					break;
-				}
+		if (args.length === 2) {
+			let [g1, g2] = args;
+			this.geom[0] = g1;
+			this.geom[1] = g2;
+			this.computeSnapTolerance();
 		}
 	}
 	get interfaces_() {

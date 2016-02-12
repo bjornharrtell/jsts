@@ -12,12 +12,8 @@ export default class EdgeEndStar {
 		this.edgeMap = new TreeMap();
 		this.edgeList = null;
 		this.ptInAreaLocation = [Location.NONE, Location.NONE];
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

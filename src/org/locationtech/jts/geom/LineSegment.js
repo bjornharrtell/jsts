@@ -11,28 +11,27 @@ export default class LineSegment {
 		this.p0 = null;
 		this.p1 = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, new Coordinate(), new Coordinate());
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [ls] = args;
-						overloaded.call(this, ls.p0, ls.p1);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [p0, p1] = args;
-						this.p0 = p0;
-						this.p1 = p1;
-					})(...args);
-				case 4:
-					return ((...args) => {
-						let [x0, y0, x1, y1] = args;
-						overloaded.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, new Coordinate(), new Coordinate());
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [ls] = args;
+					overloaded.call(this, ls.p0, ls.p1);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [p0, p1] = args;
+					this.p0 = p0;
+					this.p1 = p1;
+				})(...args);
+			} else if (args.length === 4) {
+				return ((...args) => {
+					let [x0, y0, x1, y1] = args;
+					overloaded.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -47,20 +46,18 @@ export default class LineSegment {
 		return Math.min(this.p0.x, this.p1.x);
 	}
 	orientationIndex(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof LineSegment) {
-					let [seg] = args;
-					var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
-					var orient1 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p1);
-					if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
-					if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
-					return 0;
-				} else if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof LineSegment) {
+				let [seg] = args;
+				var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
+				var orient1 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p1);
+				if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
+				if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
+				return 0;
+			} else if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
+			}
 		}
 	}
 	toGeometry(geomFactory) {
@@ -83,31 +80,29 @@ export default class LineSegment {
 		return null;
 	}
 	project(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
-					var r = this.projectionFactor(p);
-					var coord = new Coordinate();
-					coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
-					coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
-					return coord;
-				} else if (args[0] instanceof LineSegment) {
-					let [seg] = args;
-					var pf0 = this.projectionFactor(seg.p0);
-					var pf1 = this.projectionFactor(seg.p1);
-					if (pf0 >= 1.0 && pf1 >= 1.0) return null;
-					if (pf0 <= 0.0 && pf1 <= 0.0) return null;
-					var newp0 = this.project(seg.p0);
-					if (pf0 < 0.0) newp0 = this.p0;
-					if (pf0 > 1.0) newp0 = this.p1;
-					var newp1 = this.project(seg.p1);
-					if (pf1 < 0.0) newp1 = this.p0;
-					if (pf1 > 1.0) newp1 = this.p1;
-					return new LineSegment(newp0, newp1);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
+				var r = this.projectionFactor(p);
+				var coord = new Coordinate();
+				coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
+				coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
+				return coord;
+			} else if (args[0] instanceof LineSegment) {
+				let [seg] = args;
+				var pf0 = this.projectionFactor(seg.p0);
+				var pf1 = this.projectionFactor(seg.p1);
+				if (pf0 >= 1.0 && pf1 >= 1.0) return null;
+				if (pf0 <= 0.0 && pf1 <= 0.0) return null;
+				var newp0 = this.project(seg.p0);
+				if (pf0 < 0.0) newp0 = this.p0;
+				if (pf0 > 1.0) newp0 = this.p1;
+				var newp1 = this.project(seg.p1);
+				if (pf1 < 0.0) newp1 = this.p0;
+				if (pf1 > 1.0) newp1 = this.p1;
+				return new LineSegment(newp0, newp1);
+			}
 		}
 	}
 	normalize() {
@@ -235,22 +230,15 @@ export default class LineSegment {
 		return coord;
 	}
 	setCoordinates(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [ls] = args;
-					this.setCoordinates(ls.p0, ls.p1);
-					break;
-				}
-			case 2:
-				{
-					let [p0, p1] = args;
-					this.p0.x = p0.x;
-					this.p0.y = p0.y;
-					this.p1.x = p1.x;
-					this.p1.y = p1.y;
-					break;
-				}
+		if (args.length === 1) {
+			let [ls] = args;
+			this.setCoordinates(ls.p0, ls.p1);
+		} else if (args.length === 2) {
+			let [p0, p1] = args;
+			this.p0.x = p0.x;
+			this.p0.y = p0.y;
+			this.p1.x = p1.x;
+			this.p1.y = p1.y;
 		}
 	}
 	segmentFraction(inputPt) {
@@ -265,16 +253,14 @@ export default class LineSegment {
 		return this.p0.y === this.p1.y;
 	}
 	distance(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof LineSegment) {
-					let [ls] = args;
-					return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
-				} else if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof LineSegment) {
+				let [ls] = args;
+				return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
+			} else if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
+			}
 		}
 	}
 	pointAlong(segmentLengthFraction) {

@@ -7,12 +7,8 @@ export default class RightmostEdgeFinder {
 		this.minCoord = null;
 		this.minDe = null;
 		this.orientedDe = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

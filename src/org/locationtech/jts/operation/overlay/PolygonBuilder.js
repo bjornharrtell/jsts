@@ -8,13 +8,9 @@ export default class PolygonBuilder {
 	constructor(...args) {
 		this.geometryFactory = null;
 		this.shellList = new ArrayList();
-		switch (args.length) {
-			case 1:
-				{
-					let [geometryFactory] = args;
-					this.geometryFactory = geometryFactory;
-					break;
-				}
+		if (args.length === 1) {
+			let [geometryFactory] = args;
+			this.geometryFactory = geometryFactory;
 		}
 	}
 	get interfaces_() {
@@ -137,24 +133,17 @@ export default class PolygonBuilder {
 		return shell;
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [graph] = args;
-					this.add(graph.getEdgeEnds(), graph.getNodes());
-					break;
-				}
-			case 2:
-				{
-					let [dirEdges, nodes] = args;
-					PlanarGraph.linkResultDirectedEdges(nodes);
-					var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
-					var freeHoleList = new ArrayList();
-					var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList, freeHoleList);
-					this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
-					this.placeFreeHoles(this.shellList, freeHoleList);
-					break;
-				}
+		if (args.length === 1) {
+			let [graph] = args;
+			this.add(graph.getEdgeEnds(), graph.getNodes());
+		} else if (args.length === 2) {
+			let [dirEdges, nodes] = args;
+			PlanarGraph.linkResultDirectedEdges(nodes);
+			var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
+			var freeHoleList = new ArrayList();
+			var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList, freeHoleList);
+			this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
+			this.placeFreeHoles(this.shellList, freeHoleList);
 		}
 	}
 	getClass() {

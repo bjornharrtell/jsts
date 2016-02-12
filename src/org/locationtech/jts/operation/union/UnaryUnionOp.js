@@ -16,26 +16,24 @@ export default class UnaryUnionOp {
 		this.points = new ArrayList();
 		this.geomFact = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-						return ((...args) => {
-							let [geoms] = args;
-							this.extract(geoms);
-						})(...args);
-					} else if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [geom] = args;
-							this.extract(geom);
-						})(...args);
-					}
-					break;
-				case 2:
+			if (args.length === 1) {
+				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
 					return ((...args) => {
-						let [geoms, geomFact] = args;
-						this.geomFact = geomFact;
+						let [geoms] = args;
 						this.extract(geoms);
 					})(...args);
+				} else if (args[0] instanceof Geometry) {
+					return ((...args) => {
+						let [geom] = args;
+						this.extract(geom);
+					})(...args);
+				}
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [geoms, geomFact] = args;
+					this.geomFact = geomFact;
+					this.extract(geoms);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -44,25 +42,20 @@ export default class UnaryUnionOp {
 		return [];
 	}
 	static union(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [geoms] = args;
-					var op = new UnaryUnionOp(geoms);
-					return op.union();
-				} else if (args[0] instanceof Geometry) {
-					let [geom] = args;
-					var op = new UnaryUnionOp(geom);
-					return op.union();
-				}
-				break;
-			case 2:
-				{
-					let [geoms, geomFact] = args;
-					var op = new UnaryUnionOp(geoms, geomFact);
-					return op.union();
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [geoms] = args;
+				var op = new UnaryUnionOp(geoms);
+				return op.union();
+			} else if (args[0] instanceof Geometry) {
+				let [geom] = args;
+				var op = new UnaryUnionOp(geom);
+				return op.union();
+			}
+		} else if (args.length === 2) {
+			let [geoms, geomFact] = args;
+			var op = new UnaryUnionOp(geoms, geomFact);
+			return op.union();
 		}
 	}
 	unionNoOpt(g0) {
@@ -76,22 +69,20 @@ export default class UnaryUnionOp {
 		return g0.union(g1);
 	}
 	extract(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [geoms] = args;
-					for (var i = geoms.iterator(); i.hasNext(); ) {
-						var geom = i.next();
-						this.extract(geom);
-					}
-				} else if (args[0] instanceof Geometry) {
-					let [geom] = args;
-					if (this.geomFact === null) this.geomFact = geom.getFactory();
-					GeometryExtracter.extract(geom, Polygon, this.polygons);
-					GeometryExtracter.extract(geom, LineString, this.lines);
-					GeometryExtracter.extract(geom, Point, this.points);
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [geoms] = args;
+				for (var i = geoms.iterator(); i.hasNext(); ) {
+					var geom = i.next();
+					this.extract(geom);
 				}
-				break;
+			} else if (args[0] instanceof Geometry) {
+				let [geom] = args;
+				if (this.geomFact === null) this.geomFact = geom.getFactory();
+				GeometryExtracter.extract(geom, Polygon, this.polygons);
+				GeometryExtracter.extract(geom, LineString, this.lines);
+				GeometryExtracter.extract(geom, Point, this.points);
+			}
 		}
 	}
 	union() {

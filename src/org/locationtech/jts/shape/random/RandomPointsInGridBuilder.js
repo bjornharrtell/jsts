@@ -8,17 +8,16 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
 		this.isConstrainedToCircle = false;
 		this.gutterFraction = 0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						super(new GeometryFactory());
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [geomFact] = args;
-						super(geomFact);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					super(new GeometryFactory());
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [geomFact] = args;
+					super(geomFact);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

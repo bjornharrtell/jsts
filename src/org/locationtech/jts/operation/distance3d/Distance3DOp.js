@@ -18,20 +18,19 @@ export default class Distance3DOp {
 		this.minDistance = Double.MAX_VALUE;
 		this.isDone = false;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [g0, g1] = args;
-						overloaded.call(this, g0, g1, 0.0);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [g0, g1, terminateDistance] = args;
-						this.geom = new Array(2);
-						this.geom[0] = g0;
-						this.geom[1] = g1;
-						this.terminateDistance = terminateDistance;
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [g0, g1] = args;
+					overloaded.call(this, g0, g1, 0.0);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [g0, g1, terminateDistance] = args;
+					this.geom = new Array(2);
+					this.geom[0] = g0;
+					this.geom[1] = g1;
+					this.terminateDistance = terminateDistance;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -128,45 +127,43 @@ export default class Distance3DOp {
 		}
 	}
 	computeMinDistanceOneMulti(...args) {
-		switch (args.length) {
-			case 3:
-				if (typeof args[2] === "boolean" && (args[0] instanceof Geometry && args[1] instanceof Geometry)) {
-					let [g0, g1, flip] = args;
-					if (g1 instanceof GeometryCollection) {
-						var n = g1.getNumGeometries();
-						for (var i = 0; i < n; i++) {
-							var g = g1.getGeometryN(i);
-							this.computeMinDistanceOneMulti(g0, g, flip);
-							if (this.isDone) return null;
-						}
-					} else {
-						this.computeMinDistance(g0, g1, flip);
+		if (args.length === 3) {
+			if (typeof args[2] === "boolean" && (args[0] instanceof Geometry && args[1] instanceof Geometry)) {
+				let [g0, g1, flip] = args;
+				if (g1 instanceof GeometryCollection) {
+					var n = g1.getNumGeometries();
+					for (var i = 0; i < n; i++) {
+						var g = g1.getGeometryN(i);
+						this.computeMinDistanceOneMulti(g0, g, flip);
+						if (this.isDone) return null;
 					}
-				} else if (typeof args[2] === "boolean" && (args[0] instanceof PlanarPolygon3D && args[1] instanceof Geometry)) {
-					let [poly, geom, flip] = args;
-					if (geom instanceof GeometryCollection) {
-						var n = geom.getNumGeometries();
-						for (var i = 0; i < n; i++) {
-							var g = geom.getGeometryN(i);
-							this.computeMinDistanceOneMulti(poly, g, flip);
-							if (this.isDone) return null;
-						}
-					} else {
-						if (geom instanceof Point) {
-							this.computeMinDistancePolygonPoint(poly, geom, flip);
-							return null;
-						}
-						if (geom instanceof LineString) {
-							this.computeMinDistancePolygonLine(poly, geom, flip);
-							return null;
-						}
-						if (geom instanceof Polygon) {
-							this.computeMinDistancePolygonPolygon(poly, geom, flip);
-							return null;
-						}
+				} else {
+					this.computeMinDistance(g0, g1, flip);
+				}
+			} else if (typeof args[2] === "boolean" && (args[0] instanceof PlanarPolygon3D && args[1] instanceof Geometry)) {
+				let [poly, geom, flip] = args;
+				if (geom instanceof GeometryCollection) {
+					var n = geom.getNumGeometries();
+					for (var i = 0; i < n; i++) {
+						var g = geom.getGeometryN(i);
+						this.computeMinDistanceOneMulti(poly, g, flip);
+						if (this.isDone) return null;
+					}
+				} else {
+					if (geom instanceof Point) {
+						this.computeMinDistancePolygonPoint(poly, geom, flip);
+						return null;
+					}
+					if (geom instanceof LineString) {
+						this.computeMinDistancePolygonLine(poly, geom, flip);
+						return null;
+					}
+					if (geom instanceof Polygon) {
+						this.computeMinDistancePolygonPolygon(poly, geom, flip);
+						return null;
 					}
 				}
-				break;
+			}
 		}
 	}
 	computeMinDistanceLinePoint(line, point, flip) {
@@ -192,64 +189,57 @@ export default class Distance3DOp {
 		return nearestPts;
 	}
 	computeMinDistance(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					if (this.minDistanceLocation !== null) return null;
-					this.minDistanceLocation = new Array(2);
-					var geomIndex = this.mostPolygonalIndex();
-					var flip = geomIndex === 0;
-					this.computeMinDistanceMultiMulti(this.geom[geomIndex], this.geom[1 - geomIndex], flip);
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			if (this.minDistanceLocation !== null) return null;
+			this.minDistanceLocation = new Array(2);
+			var geomIndex = this.mostPolygonalIndex();
+			var flip = geomIndex === 0;
+			this.computeMinDistanceMultiMulti(this.geom[geomIndex], this.geom[1 - geomIndex], flip);
+		} else if (args.length === 3) {
+			let [g0, g1, flip] = args;
+			if (g0 instanceof Point) {
+				if (g1 instanceof Point) {
+					this.computeMinDistancePointPoint(g0, g1, flip);
+					return null;
 				}
-			case 3:
-				{
-					let [g0, g1, flip] = args;
-					if (g0 instanceof Point) {
-						if (g1 instanceof Point) {
-							this.computeMinDistancePointPoint(g0, g1, flip);
-							return null;
-						}
-						if (g1 instanceof LineString) {
-							this.computeMinDistanceLinePoint(g1, g0, !flip);
-							return null;
-						}
-						if (g1 instanceof Polygon) {
-							this.computeMinDistancePolygonPoint(Distance3DOp.polyPlane(g1), g0, !flip);
-							return null;
-						}
-					}
-					if (g0 instanceof LineString) {
-						if (g1 instanceof Point) {
-							this.computeMinDistanceLinePoint(g0, g1, flip);
-							return null;
-						}
-						if (g1 instanceof LineString) {
-							this.computeMinDistanceLineLine(g0, g1, flip);
-							return null;
-						}
-						if (g1 instanceof Polygon) {
-							this.computeMinDistancePolygonLine(Distance3DOp.polyPlane(g1), g0, !flip);
-							return null;
-						}
-					}
-					if (g0 instanceof Polygon) {
-						if (g1 instanceof Point) {
-							this.computeMinDistancePolygonPoint(Distance3DOp.polyPlane(g0), g1, flip);
-							return null;
-						}
-						if (g1 instanceof LineString) {
-							this.computeMinDistancePolygonLine(Distance3DOp.polyPlane(g0), g1, flip);
-							return null;
-						}
-						if (g1 instanceof Polygon) {
-							this.computeMinDistancePolygonPolygon(Distance3DOp.polyPlane(g0), g1, flip);
-							return null;
-						}
-					}
-					break;
+				if (g1 instanceof LineString) {
+					this.computeMinDistanceLinePoint(g1, g0, !flip);
+					return null;
 				}
+				if (g1 instanceof Polygon) {
+					this.computeMinDistancePolygonPoint(Distance3DOp.polyPlane(g1), g0, !flip);
+					return null;
+				}
+			}
+			if (g0 instanceof LineString) {
+				if (g1 instanceof Point) {
+					this.computeMinDistanceLinePoint(g0, g1, flip);
+					return null;
+				}
+				if (g1 instanceof LineString) {
+					this.computeMinDistanceLineLine(g0, g1, flip);
+					return null;
+				}
+				if (g1 instanceof Polygon) {
+					this.computeMinDistancePolygonLine(Distance3DOp.polyPlane(g1), g0, !flip);
+					return null;
+				}
+			}
+			if (g0 instanceof Polygon) {
+				if (g1 instanceof Point) {
+					this.computeMinDistancePolygonPoint(Distance3DOp.polyPlane(g0), g1, flip);
+					return null;
+				}
+				if (g1 instanceof LineString) {
+					this.computeMinDistancePolygonLine(Distance3DOp.polyPlane(g0), g1, flip);
+					return null;
+				}
+				if (g1 instanceof Polygon) {
+					this.computeMinDistancePolygonPolygon(Distance3DOp.polyPlane(g0), g1, flip);
+					return null;
+				}
+			}
 		}
 	}
 	computeMinDistanceLineLine(line0, line1, flip) {

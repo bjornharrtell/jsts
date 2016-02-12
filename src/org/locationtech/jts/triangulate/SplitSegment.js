@@ -5,14 +5,10 @@ export default class SplitSegment {
 		this.segLen = null;
 		this.splitPt = null;
 		this.minimumLen = 0.0;
-		switch (args.length) {
-			case 1:
-				{
-					let [seg] = args;
-					this.seg = seg;
-					this.segLen = seg.getLength();
-					break;
-				}
+		if (args.length === 1) {
+			let [seg] = args;
+			this.seg = seg;
+			this.segLen = seg.getLength();
 		}
 	}
 	get interfaces_() {
@@ -25,30 +21,23 @@ export default class SplitSegment {
 		return coord;
 	}
 	splitAt(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [pt] = args;
-					var minFrac = this.minimumLen / this.segLen;
-					if (pt.distance(this.seg.p0) < this.minimumLen) {
-						this.splitPt = this.seg.pointAlong(minFrac);
-						return null;
-					}
-					if (pt.distance(this.seg.p1) < this.minimumLen) {
-						this.splitPt = SplitSegment.pointAlongReverse(this.seg, minFrac);
-						return null;
-					}
-					this.splitPt = pt;
-					break;
-				}
-			case 2:
-				{
-					let [length, endPt] = args;
-					var actualLen = this.getConstrainedLength(length);
-					var frac = actualLen / this.segLen;
-					if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
-					break;
-				}
+		if (args.length === 1) {
+			let [pt] = args;
+			var minFrac = this.minimumLen / this.segLen;
+			if (pt.distance(this.seg.p0) < this.minimumLen) {
+				this.splitPt = this.seg.pointAlong(minFrac);
+				return null;
+			}
+			if (pt.distance(this.seg.p1) < this.minimumLen) {
+				this.splitPt = SplitSegment.pointAlongReverse(this.seg, minFrac);
+				return null;
+			}
+			this.splitPt = pt;
+		} else if (args.length === 2) {
+			let [length, endPt] = args;
+			var actualLen = this.getConstrainedLength(length);
+			var frac = actualLen / this.segLen;
+			if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
 		}
 	}
 	setMinimumLength(minLen) {

@@ -5,13 +5,9 @@ import Puntal from './Puntal';
 export default class MultiPoint extends GeometryCollection {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 2:
-				{
-					let [points, factory] = args;
-					super(points, factory);
-					break;
-				}
+		if (args.length === 2) {
+			let [points, factory] = args;
+			super(points, factory);
 		}
 	}
 	get interfaces_() {

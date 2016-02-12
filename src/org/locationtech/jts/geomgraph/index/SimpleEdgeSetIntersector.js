@@ -5,12 +5,8 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
 	constructor(...args) {
 		super();
 		this.nOverlaps = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -26,30 +22,28 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
 		}
 	}
 	computeIntersections(...args) {
-		switch (args.length) {
-			case 3:
-				if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-					let [edges0, edges1, si] = args;
-					this.nOverlaps = 0;
-					for (var i0 = edges0.iterator(); i0.hasNext(); ) {
-						var edge0 = i0.next();
-						for (var i1 = edges1.iterator(); i1.hasNext(); ) {
-							var edge1 = i1.next();
-							this.computeIntersects(edge0, edge1, si);
-						}
-					}
-				} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
-					let [edges, si, testAllSegments] = args;
-					this.nOverlaps = 0;
-					for (var i0 = edges.iterator(); i0.hasNext(); ) {
-						var edge0 = i0.next();
-						for (var i1 = edges.iterator(); i1.hasNext(); ) {
-							var edge1 = i1.next();
-							if (testAllSegments || edge0 !== edge1) this.computeIntersects(edge0, edge1, si);
-						}
+		if (args.length === 3) {
+			if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
+				let [edges0, edges1, si] = args;
+				this.nOverlaps = 0;
+				for (var i0 = edges0.iterator(); i0.hasNext(); ) {
+					var edge0 = i0.next();
+					for (var i1 = edges1.iterator(); i1.hasNext(); ) {
+						var edge1 = i1.next();
+						this.computeIntersects(edge0, edge1, si);
 					}
 				}
-				break;
+			} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
+				let [edges, si, testAllSegments] = args;
+				this.nOverlaps = 0;
+				for (var i0 = edges.iterator(); i0.hasNext(); ) {
+					var edge0 = i0.next();
+					for (var i1 = edges.iterator(); i1.hasNext(); ) {
+						var edge1 = i1.next();
+						if (testAllSegments || edge0 !== edge1) this.computeIntersects(edge0, edge1, si);
+					}
+				}
+			}
 		}
 	}
 	getClass() {

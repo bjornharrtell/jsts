@@ -13,16 +13,15 @@ export default class MCIndexNoder extends SinglePassNoder {
 		this.nodedSegStrings = null;
 		this.nOverlaps = 0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [si] = args;
-						super(si);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [si] = args;
+					super(si);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -81,13 +80,9 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
 	constructor(...args) {
 		super();
 		this.si = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [si] = args;
-					this.si = si;
-					break;
-				}
+		if (args.length === 1) {
+			let [si] = args;
+			this.si = si;
 		}
 	}
 	get interfaces_() {

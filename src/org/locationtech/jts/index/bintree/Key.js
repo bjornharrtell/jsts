@@ -5,13 +5,9 @@ export default class Key {
 		this.pt = 0.0;
 		this.level = 0;
 		this.interval = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [interval] = args;
-					this.computeKey(interval);
-					break;
-				}
+		if (args.length === 1) {
+			let [interval] = args;
+			this.computeKey(interval);
 		}
 	}
 	get interfaces_() {

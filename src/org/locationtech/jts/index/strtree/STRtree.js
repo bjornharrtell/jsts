@@ -18,17 +18,16 @@ export default class STRtree extends AbstractSTRtree {
 	constructor(...args) {
 		super();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, STRtree.DEFAULT_NODE_CAPACITY);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [nodeCapacity] = args;
-						super(nodeCapacity);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, STRtree.DEFAULT_NODE_CAPACITY);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [nodeCapacity] = args;
+					super(nodeCapacity);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -93,28 +92,20 @@ export default class STRtree extends AbstractSTRtree {
 		return slices;
 	}
 	query(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [searchEnv] = args;
-					return super.query(searchEnv);
-					break;
-				}
-			case 2:
-				{
-					let [searchEnv, visitor] = args;
-					super.query(searchEnv, visitor);
-					break;
-				}
-			case 3:
-				if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					let [searchBounds, node, visitor] = args;
-					super.query(searchBounds, node, visitor);
-				} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					let [searchBounds, node, matches] = args;
-					super.query(searchBounds, node, matches);
-				}
-				break;
+		if (args.length === 1) {
+			let [searchEnv] = args;
+			return super.query(searchEnv);
+		} else if (args.length === 2) {
+			let [searchEnv, visitor] = args;
+			super.query(searchEnv, visitor);
+		} else if (args.length === 3) {
+			if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+				let [searchBounds, node, visitor] = args;
+				super.query(searchBounds, node, visitor);
+			} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
+				let [searchBounds, node, matches] = args;
+				super.query(searchBounds, node, matches);
+			}
 		}
 	}
 	getComparator() {
@@ -144,50 +135,44 @@ export default class STRtree extends AbstractSTRtree {
 		return this.createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
 	}
 	nearestNeighbour(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(ItemDistance) > -1) {
-					let [itemDist] = args;
-					var bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist);
-					return this.nearestNeighbour(bp);
-				} else if (args[0] instanceof BoundablePair) {
-					let [initBndPair] = args;
-					return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY);
-				}
-				break;
-			case 2:
-				if (args[0] instanceof STRtree && (args[1].interfaces_ && args[1].interfaces_.indexOf(ItemDistance) > -1)) {
-					let [tree, itemDist] = args;
-					var bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
-					return this.nearestNeighbour(bp);
-				} else if (args[0] instanceof BoundablePair && typeof args[1] === "number") {
-					let [initBndPair, maxDistance] = args;
-					var distanceLowerBound = maxDistance;
-					var minPair = null;
-					var priQ = new PriorityQueue();
-					priQ.add(initBndPair);
-					while (!priQ.isEmpty() && distanceLowerBound > 0.0) {
-						var bndPair = priQ.poll();
-						var currentDistance = bndPair.getDistance();
-						if (currentDistance >= distanceLowerBound) break;
-						if (bndPair.isLeaves()) {
-							distanceLowerBound = currentDistance;
-							minPair = bndPair;
-						} else {
-							bndPair.expandToQueue(priQ, distanceLowerBound);
-						}
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(ItemDistance) > -1) {
+				let [itemDist] = args;
+				var bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist);
+				return this.nearestNeighbour(bp);
+			} else if (args[0] instanceof BoundablePair) {
+				let [initBndPair] = args;
+				return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY);
+			}
+		} else if (args.length === 2) {
+			if (args[0] instanceof STRtree && (args[1].interfaces_ && args[1].interfaces_.indexOf(ItemDistance) > -1)) {
+				let [tree, itemDist] = args;
+				var bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
+				return this.nearestNeighbour(bp);
+			} else if (args[0] instanceof BoundablePair && typeof args[1] === "number") {
+				let [initBndPair, maxDistance] = args;
+				var distanceLowerBound = maxDistance;
+				var minPair = null;
+				var priQ = new PriorityQueue();
+				priQ.add(initBndPair);
+				while (!priQ.isEmpty() && distanceLowerBound > 0.0) {
+					var bndPair = priQ.poll();
+					var currentDistance = bndPair.getDistance();
+					if (currentDistance >= distanceLowerBound) break;
+					if (bndPair.isLeaves()) {
+						distanceLowerBound = currentDistance;
+						minPair = bndPair;
+					} else {
+						bndPair.expandToQueue(priQ, distanceLowerBound);
 					}
-					return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
 				}
-				break;
-			case 3:
-				{
-					let [env, item, itemDist] = args;
-					var bnd = new ItemBoundable(env, item);
-					var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
-					return this.nearestNeighbour(bp)[0];
-					break;
-				}
+				return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
+			}
+		} else if (args.length === 3) {
+			let [env, item, itemDist] = args;
+			var bnd = new ItemBoundable(env, item);
+			var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
+			return this.nearestNeighbour(bp)[0];
 		}
 	}
 	getClass() {
@@ -197,13 +182,9 @@ export default class STRtree extends AbstractSTRtree {
 class STRtreeNode extends AbstractNode {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 1:
-				{
-					let [level] = args;
-					super(level);
-					break;
-				}
+		if (args.length === 1) {
+			let [level] = args;
+			super(level);
 		}
 	}
 	get interfaces_() {

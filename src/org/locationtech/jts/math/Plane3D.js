@@ -5,14 +5,10 @@ export default class Plane3D {
 	constructor(...args) {
 		this.normal = null;
 		this.basePt = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [normal, basePt] = args;
-					this.normal = normal;
-					this.basePt = basePt;
-					break;
-				}
+		if (args.length === 2) {
+			let [normal, basePt] = args;
+			this.normal = normal;
+			this.basePt = basePt;
 		}
 	}
 	get interfaces_() {

@@ -19,34 +19,27 @@ export default class StringUtil {
 		return new String(ch);
 	}
 	static getStackTrace(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [t] = args;
-					var os = new ByteArrayOutputStream();
-					var ps = new PrintStream(os);
-					t.printStackTrace(ps);
-					return os.toString();
-					break;
-				}
-			case 2:
-				{
-					let [t, depth] = args;
-					var stackTrace = "";
-					var stringReader = new StringReader(StringUtil.getStackTrace(t));
-					var lineNumberReader = new LineNumberReader(stringReader);
-					for (var i = 0; i < depth; i++) {
-						try {
-							stackTrace += lineNumberReader.readLine() + StringUtil.NEWLINE;
-						} catch (e) {
-							if (e instanceof IOException) {
-								Assert.shouldNeverReachHere();
-							} else throw e;
-						} finally {}
-					}
-					return stackTrace;
-					break;
-				}
+		if (args.length === 1) {
+			let [t] = args;
+			var os = new ByteArrayOutputStream();
+			var ps = new PrintStream(os);
+			t.printStackTrace(ps);
+			return os.toString();
+		} else if (args.length === 2) {
+			let [t, depth] = args;
+			var stackTrace = "";
+			var stringReader = new StringReader(StringUtil.getStackTrace(t));
+			var lineNumberReader = new LineNumberReader(stringReader);
+			for (var i = 0; i < depth; i++) {
+				try {
+					stackTrace += lineNumberReader.readLine() + StringUtil.NEWLINE;
+				} catch (e) {
+					if (e instanceof IOException) {
+						Assert.shouldNeverReachHere();
+					} else throw e;
+				} finally {}
+			}
+			return stackTrace;
 		}
 	}
 	static split(s, separator) {

@@ -5,13 +5,9 @@ import GraphComponent from '../GraphComponent';
 export default class ConnectedSubgraphFinder {
 	constructor(...args) {
 		this.graph = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [graph] = args;
-					this.graph = graph;
-					break;
-				}
+		if (args.length === 1) {
+			let [graph] = args;
+			this.graph = graph;
 		}
 	}
 	get interfaces_() {

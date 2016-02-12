@@ -35,31 +35,24 @@ export default class CoordinateArrays {
 		System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length);
 	}
 	static equals(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [coord1, coord2] = args;
-					if (coord1 === coord2) return true;
-					if (coord1 === null || coord2 === null) return false;
-					if (coord1.length !== coord2.length) return false;
-					for (var i = 0; i < coord1.length; i++) {
-						if (!coord1[i].equals(coord2[i])) return false;
-					}
-					return true;
-					break;
-				}
-			case 3:
-				{
-					let [coord1, coord2, coordinateComparator] = args;
-					if (coord1 === coord2) return true;
-					if (coord1 === null || coord2 === null) return false;
-					if (coord1.length !== coord2.length) return false;
-					for (var i = 0; i < coord1.length; i++) {
-						if (coordinateComparator.compare(coord1[i], coord2[i]) !== 0) return false;
-					}
-					return true;
-					break;
-				}
+		if (args.length === 2) {
+			let [coord1, coord2] = args;
+			if (coord1 === coord2) return true;
+			if (coord1 === null || coord2 === null) return false;
+			if (coord1.length !== coord2.length) return false;
+			for (var i = 0; i < coord1.length; i++) {
+				if (!coord1[i].equals(coord2[i])) return false;
+			}
+			return true;
+		} else if (args.length === 3) {
+			let [coord1, coord2, coordinateComparator] = args;
+			if (coord1 === coord2) return true;
+			if (coord1 === null || coord2 === null) return false;
+			if (coord1.length !== coord2.length) return false;
+			for (var i = 0; i < coord1.length; i++) {
+				if (coordinateComparator.compare(coord1[i], coord2[i]) !== 0) return false;
+			}
+			return true;
 		}
 	}
 	static intersection(coordinates, env) {
@@ -105,25 +98,18 @@ export default class CoordinateArrays {
 		return newCoord;
 	}
 	static copyDeep(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [coordinates] = args;
-					var copy = new Array(coordinates.length);
-					for (var i = 0; i < coordinates.length; i++) {
-						copy[i] = new Coordinate(coordinates[i]);
-					}
-					return copy;
-					break;
-				}
-			case 5:
-				{
-					let [src, srcStart, dest, destStart, length] = args;
-					for (var i = 0; i < length; i++) {
-						dest[destStart + i] = new Coordinate(src[srcStart + i]);
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [coordinates] = args;
+			var copy = new Array(coordinates.length);
+			for (var i = 0; i < coordinates.length; i++) {
+				copy[i] = new Coordinate(coordinates[i]);
+			}
+			return copy;
+		} else if (args.length === 5) {
+			let [src, srcStart, dest, destStart, length] = args;
+			for (var i = 0; i < length; i++) {
+				dest[destStart + i] = new Coordinate(src[srcStart + i]);
+			}
 		}
 	}
 	static isEqualReversed(pts1, pts2) {

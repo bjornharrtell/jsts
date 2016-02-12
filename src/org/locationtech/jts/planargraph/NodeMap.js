@@ -2,12 +2,8 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default class NodeMap {
 	constructor(...args) {
 		this.nodeMap = new TreeMap();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

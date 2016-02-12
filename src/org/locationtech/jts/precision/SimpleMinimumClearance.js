@@ -9,13 +9,9 @@ export default class SimpleMinimumClearance {
 		this.inputGeom = null;
 		this.minClearance = null;
 		this.minClearancePts = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [geom] = args;
-					this.inputGeom = geom;
-					break;
-				}
+		if (args.length === 1) {
+			let [geom] = args;
+			this.inputGeom = geom;
 		}
 	}
 	get interfaces_() {
@@ -40,28 +36,21 @@ export default class SimpleMinimumClearance {
 		return this.inputGeom.getFactory().createLineString(this.minClearancePts);
 	}
 	updateClearance(...args) {
-		switch (args.length) {
-			case 3:
-				{
-					let [candidateValue, p0, p1] = args;
-					if (candidateValue < this.minClearance) {
-						this.minClearance = candidateValue;
-						this.minClearancePts[0] = new Coordinate(p0);
-						this.minClearancePts[1] = new Coordinate(p1);
-					}
-					break;
-				}
-			case 4:
-				{
-					let [candidateValue, p, seg0, seg1] = args;
-					if (candidateValue < this.minClearance) {
-						this.minClearance = candidateValue;
-						this.minClearancePts[0] = new Coordinate(p);
-						var seg = new LineSegment(seg0, seg1);
-						this.minClearancePts[1] = new Coordinate(seg.closestPoint(p));
-					}
-					break;
-				}
+		if (args.length === 3) {
+			let [candidateValue, p0, p1] = args;
+			if (candidateValue < this.minClearance) {
+				this.minClearance = candidateValue;
+				this.minClearancePts[0] = new Coordinate(p0);
+				this.minClearancePts[1] = new Coordinate(p1);
+			}
+		} else if (args.length === 4) {
+			let [candidateValue, p, seg0, seg1] = args;
+			if (candidateValue < this.minClearance) {
+				this.minClearance = candidateValue;
+				this.minClearancePts[0] = new Coordinate(p);
+				var seg = new LineSegment(seg0, seg1);
+				this.minClearancePts[1] = new Coordinate(seg.closestPoint(p));
+			}
 		}
 	}
 	compute() {
@@ -81,13 +70,9 @@ export default class SimpleMinimumClearance {
 class VertexCoordinateFilter {
 	constructor(...args) {
 		this.smc = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [smc] = args;
-					this.smc = smc;
-					break;
-				}
+		if (args.length === 1) {
+			let [smc] = args;
+			this.smc = smc;
 		}
 	}
 	get interfaces_() {
@@ -104,14 +89,10 @@ class ComputeMCCoordinateSequenceFilter {
 	constructor(...args) {
 		this.smc = null;
 		this.queryPt = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [smc, queryPt] = args;
-					this.smc = smc;
-					this.queryPt = queryPt;
-					break;
-				}
+		if (args.length === 2) {
+			let [smc, queryPt] = args;
+			this.smc = smc;
+			this.queryPt = queryPt;
 		}
 	}
 	get interfaces_() {

@@ -13,18 +13,17 @@ export default class MinimumDiameter {
 		this.minPtIndex = null;
 		this.minWidth = 0.0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [inputGeom] = args;
-						overloaded.call(this, inputGeom, false);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [inputGeom, isConvex] = args;
-						this.inputGeom = inputGeom;
-						this.isConvex = isConvex;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [inputGeom] = args;
+					overloaded.call(this, inputGeom, false);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [inputGeom, isConvex] = args;
+					this.inputGeom = inputGeom;
+					this.isConvex = isConvex;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

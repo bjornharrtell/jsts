@@ -23,15 +23,11 @@ export default class OverlayOp extends GeometryGraphOperation {
 		this.resultPolyList = new ArrayList();
 		this.resultLineList = new ArrayList();
 		this.resultPointList = new ArrayList();
-		switch (args.length) {
-			case 2:
-				{
-					let [g0, g1] = args;
-					super(g0, g1);
-					this.graph = new PlanarGraph(new OverlayNodeFactory());
-					this.geomFact = g0.getFactory();
-					break;
-				}
+		if (args.length === 2) {
+			let [g0, g1] = args;
+			super(g0, g1);
+			this.graph = new PlanarGraph(new OverlayNodeFactory());
+			this.geomFact = g0.getFactory();
 		}
 	}
 	get interfaces_() {
@@ -43,33 +39,26 @@ export default class OverlayOp extends GeometryGraphOperation {
 		return geomOv;
 	}
 	static isResultOfOp(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [label, opCode] = args;
-					var loc0 = label.getLocation(0);
-					var loc1 = label.getLocation(1);
-					return OverlayOp.isResultOfOp(loc0, loc1, opCode);
-					break;
-				}
-			case 3:
-				{
-					let [loc0, loc1, overlayOpCode] = args;
-					if (loc0 === Location.BOUNDARY) loc0 = Location.INTERIOR;
-					if (loc1 === Location.BOUNDARY) loc1 = Location.INTERIOR;
-					switch (overlayOpCode) {
-						case OverlayOp.INTERSECTION:
-							return loc0 === Location.INTERIOR && loc1 === Location.INTERIOR;
-						case OverlayOp.UNION:
-							return loc0 === Location.INTERIOR || loc1 === Location.INTERIOR;
-						case OverlayOp.DIFFERENCE:
-							return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR;
-						case OverlayOp.SYMDIFFERENCE:
-							return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR || loc0 !== Location.INTERIOR && loc1 === Location.INTERIOR;
-					}
-					return false;
-					break;
-				}
+		if (args.length === 2) {
+			let [label, opCode] = args;
+			var loc0 = label.getLocation(0);
+			var loc1 = label.getLocation(1);
+			return OverlayOp.isResultOfOp(loc0, loc1, opCode);
+		} else if (args.length === 3) {
+			let [loc0, loc1, overlayOpCode] = args;
+			if (loc0 === Location.BOUNDARY) loc0 = Location.INTERIOR;
+			if (loc1 === Location.BOUNDARY) loc1 = Location.INTERIOR;
+			switch (overlayOpCode) {
+				case OverlayOp.INTERSECTION:
+					return loc0 === Location.INTERIOR && loc1 === Location.INTERIOR;
+				case OverlayOp.UNION:
+					return loc0 === Location.INTERIOR || loc1 === Location.INTERIOR;
+				case OverlayOp.DIFFERENCE:
+					return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR;
+				case OverlayOp.SYMDIFFERENCE:
+					return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR || loc0 !== Location.INTERIOR && loc1 === Location.INTERIOR;
+			}
+			return false;
 		}
 	}
 	static createEmptyResult(overlayOpCode, a, b, geomFact) {

@@ -12,13 +12,9 @@ export default class IntersectionAdder {
 		this.numInteriorIntersections = 0;
 		this.numProperIntersections = 0;
 		this.numTests = 0;
-		switch (args.length) {
-			case 1:
-				{
-					let [li] = args;
-					this.li = li;
-					break;
-				}
+		if (args.length === 1) {
+			let [li] = args;
+			this.li = li;
 		}
 	}
 	get interfaces_() {

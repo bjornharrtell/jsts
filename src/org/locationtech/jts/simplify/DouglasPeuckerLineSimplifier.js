@@ -7,13 +7,9 @@ export default class DouglasPeuckerLineSimplifier {
 		this.usePt = null;
 		this.distanceTolerance = null;
 		this.seg = new LineSegment();
-		switch (args.length) {
-			case 1:
-				{
-					let [pts] = args;
-					this.pts = pts;
-					break;
-				}
+		if (args.length === 1) {
+			let [pts] = args;
+			this.pts = pts;
 		}
 	}
 	get interfaces_() {

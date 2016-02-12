@@ -5,39 +5,37 @@ export default class TopologyLocation {
 	constructor(...args) {
 		this.location = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Array) {
-						return ((...args) => {
-							let [location] = args;
-							this.init(location.length);
-						})(...args);
-					} else if (Number.isInteger(args[0])) {
-						return ((...args) => {
-							let [on] = args;
-							this.init(1);
-							this.location[Position.ON] = on;
-						})(...args);
-					} else if (args[0] instanceof TopologyLocation) {
-						return ((...args) => {
-							let [gl] = args;
-							this.init(gl.location.length);
-							if (gl !== null) {
-								for (var i = 0; i < this.location.length; i++) {
-									this.location[i] = gl.location[i];
-								}
-							}
-						})(...args);
-					}
-					break;
-				case 3:
+			if (args.length === 1) {
+				if (args[0] instanceof Array) {
 					return ((...args) => {
-						let [on, left, right] = args;
-						this.init(3);
-						this.location[Position.ON] = on;
-						this.location[Position.LEFT] = left;
-						this.location[Position.RIGHT] = right;
+						let [location] = args;
+						this.init(location.length);
 					})(...args);
+				} else if (Number.isInteger(args[0])) {
+					return ((...args) => {
+						let [on] = args;
+						this.init(1);
+						this.location[Position.ON] = on;
+					})(...args);
+				} else if (args[0] instanceof TopologyLocation) {
+					return ((...args) => {
+						let [gl] = args;
+						this.init(gl.location.length);
+						if (gl !== null) {
+							for (var i = 0; i < this.location.length; i++) {
+								this.location[i] = gl.location[i];
+							}
+						}
+					})(...args);
+				}
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [on, left, right] = args;
+					this.init(3);
+					this.location[Position.ON] = on;
+					this.location[Position.LEFT] = left;
+					this.location[Position.RIGHT] = right;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -111,19 +109,12 @@ export default class TopologyLocation {
 		return false;
 	}
 	setLocation(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [locValue] = args;
-					this.setLocation(Position.ON, locValue);
-					break;
-				}
-			case 2:
-				{
-					let [locIndex, locValue] = args;
-					this.location[locIndex] = locValue;
-					break;
-				}
+		if (args.length === 1) {
+			let [locValue] = args;
+			this.setLocation(Position.ON, locValue);
+		} else if (args.length === 2) {
+			let [locIndex, locValue] = args;
+			this.location[locIndex] = locValue;
 		}
 	}
 	init(size) {

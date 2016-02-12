@@ -8,17 +8,16 @@ export default class SegmentStringDissolver {
 		this.merger = null;
 		this.ocaMap = new TreeMap();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, null);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [merger] = args;
-						this.merger = merger;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, null);
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [merger] = args;
+					this.merger = merger;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -34,27 +33,25 @@ export default class SegmentStringDissolver {
 		return this.ocaMap.values();
 	}
 	dissolve(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [segStrings] = args;
-					for (var i = segStrings.iterator(); i.hasNext(); ) {
-						this.dissolve(i.next());
-					}
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(SegmentString) > -1) {
-					let [segString] = args;
-					var oca = new OrientedCoordinateArray(segString.getCoordinates());
-					var existing = this.findMatching(oca, segString);
-					if (existing === null) {
-						this.add(oca, segString);
-					} else {
-						if (this.merger !== null) {
-							var isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
-							this.merger.merge(existing, segString, isSameOrientation);
-						}
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [segStrings] = args;
+				for (var i = segStrings.iterator(); i.hasNext(); ) {
+					this.dissolve(i.next());
+				}
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(SegmentString) > -1) {
+				let [segString] = args;
+				var oca = new OrientedCoordinateArray(segString.getCoordinates());
+				var existing = this.findMatching(oca, segString);
+				if (existing === null) {
+					this.add(oca, segString);
+				} else {
+					if (this.merger !== null) {
+						var isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
+						this.merger.merge(existing, segString, isSameOrientation);
 					}
 				}
-				break;
+			}
 		}
 	}
 	add(oca, segString) {

@@ -17,12 +17,8 @@ export default class GeometryTransformer {
 		this.preserveGeometryCollectionType = true;
 		this.preserveCollections = false;
 		this.preserveType = false;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

@@ -10,14 +10,10 @@ import RayCrossingCounter from '../RayCrossingCounter';
 export default class IndexedPointInAreaLocator {
 	constructor(...args) {
 		this.index = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [g] = args;
-					if (!(g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Argument must be Polygonal");
-					this.index = new IntervalIndexedGeometry(g);
-					break;
-				}
+		if (args.length === 1) {
+			let [g] = args;
+			if (!(g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Argument must be Polygonal");
+			this.index = new IntervalIndexedGeometry(g);
 		}
 	}
 	get interfaces_() {
@@ -42,13 +38,9 @@ export default class IndexedPointInAreaLocator {
 class SegmentVisitor {
 	constructor(...args) {
 		this.counter = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [counter] = args;
-					this.counter = counter;
-					break;
-				}
+		if (args.length === 1) {
+			let [counter] = args;
+			this.counter = counter;
 		}
 	}
 	get interfaces_() {
@@ -65,13 +57,9 @@ class SegmentVisitor {
 class IntervalIndexedGeometry {
 	constructor(...args) {
 		this.index = new SortedPackedIntervalRTree();
-		switch (args.length) {
-			case 1:
-				{
-					let [geom] = args;
-					this.init(geom);
-					break;
-				}
+		if (args.length === 1) {
+			let [geom] = args;
+			this.init(geom);
 		}
 	}
 	get interfaces_() {
@@ -94,21 +82,14 @@ class IntervalIndexedGeometry {
 		}
 	}
 	query(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [min, max] = args;
-					var visitor = new ArrayListVisitor();
-					this.index.query(min, max, visitor);
-					return visitor.getItems();
-					break;
-				}
-			case 3:
-				{
-					let [min, max, visitor] = args;
-					this.index.query(min, max, visitor);
-					break;
-				}
+		if (args.length === 2) {
+			let [min, max] = args;
+			var visitor = new ArrayListVisitor();
+			this.index.query(min, max, visitor);
+			return visitor.getItems();
+		} else if (args.length === 3) {
+			let [min, max, visitor] = args;
+			this.index.query(min, max, visitor);
 		}
 	}
 	getClass() {

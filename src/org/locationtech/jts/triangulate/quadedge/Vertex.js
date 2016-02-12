@@ -7,22 +7,21 @@ export default class Vertex {
 	constructor(...args) {
 		this.p = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [_p] = args;
-						this.p = new Coordinate(_p);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [_x, _y] = args;
-						this.p = new Coordinate(_x, _y);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [_x, _y, _z] = args;
-						this.p = new Coordinate(_x, _y, _z);
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [_p] = args;
+					this.p = new Coordinate(_p);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [_x, _y] = args;
+					this.p = new Coordinate(_x, _y);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [_x, _y, _z] = args;
+					this.p = new Coordinate(_x, _y, _z);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -31,35 +30,28 @@ export default class Vertex {
 		return [];
 	}
 	static interpolateZ(...args) {
-		switch (args.length) {
-			case 3:
-				{
-					let [p, p0, p1] = args;
-					var segLen = p0.distance(p1);
-					var ptLen = p.distance(p0);
-					var dz = p1.z - p0.z;
-					var pz = p0.z + dz * (ptLen / segLen);
-					return pz;
-					break;
-				}
-			case 4:
-				{
-					let [p, v0, v1, v2] = args;
-					var x0 = v0.x;
-					var y0 = v0.y;
-					var a = v1.x - x0;
-					var b = v2.x - x0;
-					var c = v1.y - y0;
-					var d = v2.y - y0;
-					var det = a * d - b * c;
-					var dx = p.x - x0;
-					var dy = p.y - y0;
-					var t = (d * dx - b * dy) / det;
-					var u = (-c * dx + a * dy) / det;
-					var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z);
-					return z;
-					break;
-				}
+		if (args.length === 3) {
+			let [p, p0, p1] = args;
+			var segLen = p0.distance(p1);
+			var ptLen = p.distance(p0);
+			var dz = p1.z - p0.z;
+			var pz = p0.z + dz * (ptLen / segLen);
+			return pz;
+		} else if (args.length === 4) {
+			let [p, v0, v1, v2] = args;
+			var x0 = v0.x;
+			var y0 = v0.y;
+			var a = v1.x - x0;
+			var b = v2.x - x0;
+			var c = v1.y - y0;
+			var d = v2.y - y0;
+			var det = a * d - b * c;
+			var dx = p.x - x0;
+			var dy = p.y - y0;
+			var t = (d * dx - b * dy) / det;
+			var u = (-c * dx + a * dy) / det;
+			var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z);
+			return z;
 		}
 	}
 	circleCenter(b, c) {
@@ -95,27 +87,20 @@ export default class Vertex {
 		return new HCoordinate(l1, l2);
 	}
 	equals(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [_x] = args;
-					if (this.p.x === _x.getX() && this.p.y === _x.getY()) {
-						return true;
-					} else {
-						return false;
-					}
-					break;
-				}
-			case 2:
-				{
-					let [_x, tolerance] = args;
-					if (this.p.distance(_x.getCoordinate()) < tolerance) {
-						return true;
-					} else {
-						return false;
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [_x] = args;
+			if (this.p.x === _x.getX() && this.p.y === _x.getY()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (args.length === 2) {
+			let [_x, tolerance] = args;
+			if (this.p.distance(_x.getCoordinate()) < tolerance) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 	getCoordinate() {

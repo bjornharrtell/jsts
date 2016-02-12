@@ -10,14 +10,10 @@ export default class DiscreteHausdorffDistance {
 		this.g1 = null;
 		this.ptDist = new PointPairDistance();
 		this.densifyFrac = 0.0;
-		switch (args.length) {
-			case 2:
-				{
-					let [g0, g1] = args;
-					this.g0 = g0;
-					this.g1 = g1;
-					break;
-				}
+		if (args.length === 2) {
+			let [g0, g1] = args;
+			this.g0 = g0;
+			this.g1 = g1;
 		}
 	}
 	get interfaces_() {
@@ -30,22 +26,15 @@ export default class DiscreteHausdorffDistance {
 		return MaxDensifiedByFractionDistanceFilter;
 	}
 	static distance(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [g0, g1] = args;
-					var dist = new DiscreteHausdorffDistance(g0, g1);
-					return dist.distance();
-					break;
-				}
-			case 3:
-				{
-					let [g0, g1, densifyFrac] = args;
-					var dist = new DiscreteHausdorffDistance(g0, g1);
-					dist.setDensifyFraction(densifyFrac);
-					return dist.distance();
-					break;
-				}
+		if (args.length === 2) {
+			let [g0, g1] = args;
+			var dist = new DiscreteHausdorffDistance(g0, g1);
+			return dist.distance();
+		} else if (args.length === 3) {
+			let [g0, g1, densifyFrac] = args;
+			var dist = new DiscreteHausdorffDistance(g0, g1);
+			dist.setDensifyFraction(densifyFrac);
+			return dist.distance();
 		}
 	}
 	getCoordinates() {
@@ -87,13 +76,9 @@ class MaxPointDistanceFilter {
 		this.minPtDist = new PointPairDistance();
 		this.euclideanDist = new DistanceToPoint();
 		this.geom = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [geom] = args;
-					this.geom = geom;
-					break;
-				}
+		if (args.length === 1) {
+			let [geom] = args;
+			this.geom = geom;
 		}
 	}
 	get interfaces_() {
@@ -117,14 +102,10 @@ class MaxDensifiedByFractionDistanceFilter {
 		this.minPtDist = new PointPairDistance();
 		this.geom = null;
 		this.numSubSegs = 0;
-		switch (args.length) {
-			case 2:
-				{
-					let [geom, fraction] = args;
-					this.geom = geom;
-					this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
-					break;
-				}
+		if (args.length === 2) {
+			let [geom, fraction] = args;
+			this.geom = geom;
+			this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
 		}
 	}
 	get interfaces_() {

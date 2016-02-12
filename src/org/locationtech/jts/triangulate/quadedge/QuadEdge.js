@@ -6,12 +6,8 @@ export default class QuadEdge {
 		this.vertex = null;
 		this.next = null;
 		this.data = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

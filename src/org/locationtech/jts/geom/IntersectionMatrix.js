@@ -7,36 +7,34 @@ export default class IntersectionMatrix {
 	constructor(...args) {
 		this.matrix = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					this.matrix = Array(3).fill().map(() => Array(3));
+					this.setAll(Dimension.FALSE);
+				})(...args);
+			} else if (args.length === 1) {
+				if (typeof args[0] === "string") {
 					return ((...args) => {
-						let [] = args;
-						this.matrix = Array(3).fill().map(() => Array(3));
-						this.setAll(Dimension.FALSE);
+						let [elements] = args;
+						overloaded.call(this);
+						this.set(elements);
 					})(...args);
-				case 1:
-					if (typeof args[0] === "string") {
-						return ((...args) => {
-							let [elements] = args;
-							overloaded.call(this);
-							this.set(elements);
-						})(...args);
-					} else if (args[0] instanceof IntersectionMatrix) {
-						return ((...args) => {
-							let [other] = args;
-							overloaded.call(this);
-							this.matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
-							this.matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
-							this.matrix[Location.INTERIOR][Location.EXTERIOR] = other.matrix[Location.INTERIOR][Location.EXTERIOR];
-							this.matrix[Location.BOUNDARY][Location.INTERIOR] = other.matrix[Location.BOUNDARY][Location.INTERIOR];
-							this.matrix[Location.BOUNDARY][Location.BOUNDARY] = other.matrix[Location.BOUNDARY][Location.BOUNDARY];
-							this.matrix[Location.BOUNDARY][Location.EXTERIOR] = other.matrix[Location.BOUNDARY][Location.EXTERIOR];
-							this.matrix[Location.EXTERIOR][Location.INTERIOR] = other.matrix[Location.EXTERIOR][Location.INTERIOR];
-							this.matrix[Location.EXTERIOR][Location.BOUNDARY] = other.matrix[Location.EXTERIOR][Location.BOUNDARY];
-							this.matrix[Location.EXTERIOR][Location.EXTERIOR] = other.matrix[Location.EXTERIOR][Location.EXTERIOR];
-						})(...args);
-					}
-					break;
+				} else if (args[0] instanceof IntersectionMatrix) {
+					return ((...args) => {
+						let [other] = args;
+						overloaded.call(this);
+						this.matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
+						this.matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
+						this.matrix[Location.INTERIOR][Location.EXTERIOR] = other.matrix[Location.INTERIOR][Location.EXTERIOR];
+						this.matrix[Location.BOUNDARY][Location.INTERIOR] = other.matrix[Location.BOUNDARY][Location.INTERIOR];
+						this.matrix[Location.BOUNDARY][Location.BOUNDARY] = other.matrix[Location.BOUNDARY][Location.BOUNDARY];
+						this.matrix[Location.BOUNDARY][Location.EXTERIOR] = other.matrix[Location.BOUNDARY][Location.EXTERIOR];
+						this.matrix[Location.EXTERIOR][Location.INTERIOR] = other.matrix[Location.EXTERIOR][Location.INTERIOR];
+						this.matrix[Location.EXTERIOR][Location.BOUNDARY] = other.matrix[Location.EXTERIOR][Location.BOUNDARY];
+						this.matrix[Location.EXTERIOR][Location.EXTERIOR] = other.matrix[Location.EXTERIOR][Location.EXTERIOR];
+					})(...args);
+				}
 			}
 		};
 		return overloaded.apply(this, args);
@@ -45,35 +43,33 @@ export default class IntersectionMatrix {
 		return [Cloneable];
 	}
 	static matches(...args) {
-		switch (args.length) {
-			case 2:
-				if (Number.isInteger(args[0]) && typeof args[1] === "string") {
-					let [actualDimensionValue, requiredDimensionSymbol] = args;
-					if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
-						return true;
-					}
-					if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
-						return true;
-					}
-					if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
-						return true;
-					}
-					if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
-						return true;
-					}
-					if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
-						return true;
-					}
-					if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
-						return true;
-					}
-					return false;
-				} else if (typeof args[0] === "string" && typeof args[1] === "string") {
-					let [actualDimensionSymbols, requiredDimensionSymbols] = args;
-					var m = new IntersectionMatrix(actualDimensionSymbols);
-					return m.matches(requiredDimensionSymbols);
+		if (args.length === 2) {
+			if (Number.isInteger(args[0]) && typeof args[1] === "string") {
+				let [actualDimensionValue, requiredDimensionSymbol] = args;
+				if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
+					return true;
 				}
-				break;
+				if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
+					return true;
+				}
+				if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
+					return true;
+				}
+				if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
+					return true;
+				}
+				if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
+					return true;
+				}
+				if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
+					return true;
+				}
+				return false;
+			} else if (typeof args[0] === "string" && typeof args[1] === "string") {
+				let [actualDimensionSymbols, requiredDimensionSymbols] = args;
+				var m = new IntersectionMatrix(actualDimensionSymbols);
+				return m.matches(requiredDimensionSymbols);
+			}
 		}
 	}
 	static isTrue(actualDimensionValue) {
@@ -94,48 +90,34 @@ export default class IntersectionMatrix {
 		return hasPointInCommon && this.matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this.matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE;
 	}
 	set(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [dimensionSymbols] = args;
-					for (var i = 0; i < dimensionSymbols.length; i++) {
-						var row = Math.trunc(i / 3);
-						var col = i % 3;
-						this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
-					}
-					break;
-				}
-			case 3:
-				{
-					let [row, column, dimensionValue] = args;
-					this.matrix[row][column] = dimensionValue;
-					break;
-				}
+		if (args.length === 1) {
+			let [dimensionSymbols] = args;
+			for (var i = 0; i < dimensionSymbols.length; i++) {
+				var row = Math.trunc(i / 3);
+				var col = i % 3;
+				this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
+			}
+		} else if (args.length === 3) {
+			let [row, column, dimensionValue] = args;
+			this.matrix[row][column] = dimensionValue;
 		}
 	}
 	isContains() {
 		return IntersectionMatrix.isTrue(this.matrix[Location.INTERIOR][Location.INTERIOR]) && this.matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this.matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE;
 	}
 	setAtLeast(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [minimumDimensionSymbols] = args;
-					for (var i = 0; i < minimumDimensionSymbols.length; i++) {
-						var row = Math.trunc(i / 3);
-						var col = i % 3;
-						this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
-					}
-					break;
-				}
-			case 3:
-				{
-					let [row, column, minimumDimensionValue] = args;
-					if (this.matrix[row][column] < minimumDimensionValue) {
-						this.matrix[row][column] = minimumDimensionValue;
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [minimumDimensionSymbols] = args;
+			for (var i = 0; i < minimumDimensionSymbols.length; i++) {
+				var row = Math.trunc(i / 3);
+				var col = i % 3;
+				this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
+			}
+		} else if (args.length === 3) {
+			let [row, column, minimumDimensionValue] = args;
+			if (this.matrix[row][column] < minimumDimensionValue) {
+				this.matrix[row][column] = minimumDimensionValue;
+			}
 		}
 	}
 	setAtLeastIfValid(row, column, minimumDimensionValue) {

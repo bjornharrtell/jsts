@@ -14,17 +14,16 @@ export default class PlanarGraph {
 		this.nodes = null;
 		this.edgeEndList = new ArrayList();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.nodes = new NodeMap(new NodeFactory());
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [nodeFact] = args;
-						this.nodes = new NodeMap(nodeFact);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					this.nodes = new NodeMap(new NodeFactory());
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [nodeFact] = args;
+					this.nodes = new NodeMap(nodeFact);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -51,16 +50,14 @@ export default class PlanarGraph {
 		return this.nodes.find(coord);
 	}
 	addNode(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Node) {
-					let [node] = args;
-					return this.nodes.addNode(node);
-				} else if (args[0] instanceof Coordinate) {
-					let [coord] = args;
-					return this.nodes.addNode(coord);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof Node) {
+				let [node] = args;
+				return this.nodes.addNode(node);
+			} else if (args[0] instanceof Coordinate) {
+				let [coord] = args;
+				return this.nodes.addNode(coord);
+			}
 		}
 	}
 	getNodeIterator() {

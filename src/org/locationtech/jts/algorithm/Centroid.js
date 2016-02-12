@@ -15,14 +15,10 @@ export default class Centroid {
 		this.totalLength = 0.0;
 		this.ptCount = 0;
 		this.ptCentSum = new Coordinate();
-		switch (args.length) {
-			case 1:
-				{
-					let [geom] = args;
-					this.areaBasePt = null;
-					this.add(geom);
-					break;
-				}
+		if (args.length === 1) {
+			let [geom] = args;
+			this.areaBasePt = null;
+			this.add(geom);
 		}
 	}
 	get interfaces_() {
@@ -102,32 +98,30 @@ export default class Centroid {
 		this.areasum2 += sign * area2;
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Polygon) {
-					let [poly] = args;
-					this.addShell(poly.getExteriorRing().getCoordinates());
-					for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-						this.addHole(poly.getInteriorRingN(i).getCoordinates());
-					}
-				} else if (args[0] instanceof Geometry) {
-					let [geom] = args;
-					if (geom.isEmpty()) return null;
-					if (geom instanceof Point) {
-						this.addPoint(geom.getCoordinate());
-					} else if (geom instanceof LineString) {
-						this.addLineSegments(geom.getCoordinates());
-					} else if (geom instanceof Polygon) {
-						var poly = geom;
-						this.add(poly);
-					} else if (geom instanceof GeometryCollection) {
-						var gc = geom;
-						for (var i = 0; i < gc.getNumGeometries(); i++) {
-							this.add(gc.getGeometryN(i));
-						}
+		if (args.length === 1) {
+			if (args[0] instanceof Polygon) {
+				let [poly] = args;
+				this.addShell(poly.getExteriorRing().getCoordinates());
+				for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+					this.addHole(poly.getInteriorRingN(i).getCoordinates());
+				}
+			} else if (args[0] instanceof Geometry) {
+				let [geom] = args;
+				if (geom.isEmpty()) return null;
+				if (geom instanceof Point) {
+					this.addPoint(geom.getCoordinate());
+				} else if (geom instanceof LineString) {
+					this.addLineSegments(geom.getCoordinates());
+				} else if (geom instanceof Polygon) {
+					var poly = geom;
+					this.add(poly);
+				} else if (geom instanceof GeometryCollection) {
+					var gc = geom;
+					for (var i = 0; i < gc.getNumGeometries(); i++) {
+						this.add(gc.getGeometryN(i));
 					}
 				}
-				break;
+			}
 		}
 	}
 	getClass() {

@@ -7,15 +7,11 @@ export default class Triangle {
 		this.p0 = null;
 		this.p1 = null;
 		this.p2 = null;
-		switch (args.length) {
-			case 3:
-				{
-					let [p0, p1, p2] = args;
-					this.p0 = p0;
-					this.p1 = p1;
-					this.p2 = p2;
-					break;
-				}
+		if (args.length === 3) {
+			let [p0, p1, p2] = args;
+			this.p0 = p0;
+			this.p1 = p1;
+			this.p2 = p2;
 		}
 	}
 	get interfaces_() {

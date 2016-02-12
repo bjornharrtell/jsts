@@ -7,12 +7,8 @@ import TaggedLineString from './TaggedLineString';
 export default class LineSegmentIndex {
 	constructor(...args) {
 		this.index = new Quadtree();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -22,20 +18,18 @@ export default class LineSegmentIndex {
 		this.index.remove(new Envelope(seg.p0, seg.p1), seg);
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof TaggedLineString) {
-					let [line] = args;
-					var segs = line.getSegments();
-					for (var i = 0; i < segs.length; i++) {
-						var seg = segs[i];
-						this.add(seg);
-					}
-				} else if (args[0] instanceof LineSegment) {
-					let [seg] = args;
-					this.index.insert(new Envelope(seg.p0, seg.p1), seg);
+		if (args.length === 1) {
+			if (args[0] instanceof TaggedLineString) {
+				let [line] = args;
+				var segs = line.getSegments();
+				for (var i = 0; i < segs.length; i++) {
+					var seg = segs[i];
+					this.add(seg);
 				}
-				break;
+			} else if (args[0] instanceof LineSegment) {
+				let [seg] = args;
+				this.index.insert(new Envelope(seg.p0, seg.p1), seg);
+			}
 		}
 	}
 	query(querySeg) {
@@ -53,13 +47,9 @@ class LineSegmentVisitor {
 	constructor(...args) {
 		this.querySeg = null;
 		this.items = new ArrayList();
-		switch (args.length) {
-			case 1:
-				{
-					let [querySeg] = args;
-					this.querySeg = querySeg;
-					break;
-				}
+		if (args.length === 1) {
+			let [querySeg] = args;
+			this.querySeg = querySeg;
 		}
 	}
 	get interfaces_() {

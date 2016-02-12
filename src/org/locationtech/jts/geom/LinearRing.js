@@ -10,21 +10,19 @@ export default class LinearRing extends LineString {
 	constructor(...args) {
 		super();
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					if (args[0] instanceof Coordinate && args[1] instanceof GeometryFactory) {
-						return ((...args) => {
-							let [points, factory] = args;
-							overloaded.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
-						})(...args);
-					} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && args[1] instanceof GeometryFactory) {
-						return ((...args) => {
-							let [points, factory] = args;
-							super(points, factory);
-							this.validateConstruction();
-						})(...args);
-					}
-					break;
+			if (args.length === 2) {
+				if (args[0] instanceof Coordinate && args[1] instanceof GeometryFactory) {
+					return ((...args) => {
+						let [points, factory] = args;
+						overloaded.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
+					})(...args);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && args[1] instanceof GeometryFactory) {
+					return ((...args) => {
+						let [points, factory] = args;
+						super(points, factory);
+						this.validateConstruction();
+					})(...args);
+				}
 			}
 		};
 		return overloaded.apply(this, args);

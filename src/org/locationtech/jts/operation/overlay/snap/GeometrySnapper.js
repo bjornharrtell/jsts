@@ -7,13 +7,9 @@ import Polygonal from '../../../geom/Polygonal';
 export default class GeometrySnapper {
 	constructor(...args) {
 		this.srcGeom = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [srcGeom] = args;
-					this.srcGeom = srcGeom;
-					break;
-				}
+		if (args.length === 1) {
+			let [srcGeom] = args;
+			this.srcGeom = srcGeom;
 		}
 	}
 	get interfaces_() {
@@ -28,25 +24,18 @@ export default class GeometrySnapper {
 		return snapGeom;
 	}
 	static computeOverlaySnapTolerance(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [g] = args;
-					var snapTolerance = GeometrySnapper.computeSizeBasedSnapTolerance(g);
-					var pm = g.getPrecisionModel();
-					if (pm.getType() === PrecisionModel.FIXED) {
-						var fixedSnapTol = 1 / pm.getScale() * 2 / 1.415;
-						if (fixedSnapTol > snapTolerance) snapTolerance = fixedSnapTol;
-					}
-					return snapTolerance;
-					break;
-				}
-			case 2:
-				{
-					let [g0, g1] = args;
-					return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1));
-					break;
-				}
+		if (args.length === 1) {
+			let [g] = args;
+			var snapTolerance = GeometrySnapper.computeSizeBasedSnapTolerance(g);
+			var pm = g.getPrecisionModel();
+			if (pm.getType() === PrecisionModel.FIXED) {
+				var fixedSnapTol = 1 / pm.getScale() * 2 / 1.415;
+				if (fixedSnapTol > snapTolerance) snapTolerance = fixedSnapTol;
+			}
+			return snapTolerance;
+		} else if (args.length === 2) {
+			let [g0, g1] = args;
+			return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1));
 		}
 	}
 	static computeSizeBasedSnapTolerance(g) {
@@ -107,20 +96,19 @@ class SnapTransformer extends GeometryTransformer {
 		this.snapPts = null;
 		this.isSelfSnap = false;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 2:
-					return ((...args) => {
-						let [snapTolerance, snapPts] = args;
-						this.snapTolerance = snapTolerance;
-						this.snapPts = snapPts;
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [snapTolerance, snapPts, isSelfSnap] = args;
-						this.snapTolerance = snapTolerance;
-						this.snapPts = snapPts;
-						this.isSelfSnap = isSelfSnap;
-					})(...args);
+			if (args.length === 2) {
+				return ((...args) => {
+					let [snapTolerance, snapPts] = args;
+					this.snapTolerance = snapTolerance;
+					this.snapPts = snapPts;
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [snapTolerance, snapPts, isSelfSnap] = args;
+					this.snapTolerance = snapTolerance;
+					this.snapPts = snapPts;
+					this.isSelfSnap = isSelfSnap;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

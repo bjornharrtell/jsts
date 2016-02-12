@@ -3,12 +3,8 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 export default class NonRobustCGAlgorithms extends CGAlgorithms {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

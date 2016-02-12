@@ -12,13 +12,9 @@ export default class SegmentNodeList {
 	constructor(...args) {
 		this.nodeMap = new TreeMap();
 		this.edge = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [edge] = args;
-					this.edge = edge;
-					break;
-				}
+		if (args.length === 1) {
+			let [edge] = args;
+			this.edge = edge;
 		}
 	}
 	get interfaces_() {
@@ -172,16 +168,12 @@ class NodeVertexIterator {
 		this.currNode = null;
 		this.nextNode = null;
 		this.currSegIndex = 0;
-		switch (args.length) {
-			case 1:
-				{
-					let [nodeList] = args;
-					this.nodeList = nodeList;
-					this.edge = nodeList.getEdge();
-					this.nodeIt = nodeList.iterator();
-					this.readNextNode();
-					break;
-				}
+		if (args.length === 1) {
+			let [nodeList] = args;
+			this.nodeList = nodeList;
+			this.edge = nodeList.getEdge();
+			this.nodeIt = nodeList.iterator();
+			this.readNextNode();
 		}
 	}
 	get interfaces_() {

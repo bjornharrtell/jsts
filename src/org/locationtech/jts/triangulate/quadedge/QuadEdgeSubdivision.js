@@ -27,17 +27,13 @@ export default class QuadEdgeSubdivision {
 		this.locator = null;
 		this.seg = new LineSegment();
 		this.triEdges = new Array(3);
-		switch (args.length) {
-			case 2:
-				{
-					let [env, tolerance] = args;
-					this.tolerance = tolerance;
-					this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
-					this.createFrame(env);
-					this.startingEdge = this.initSubdiv();
-					this.locator = new LastFoundQuadEdgeLocator(this);
-					break;
-				}
+		if (args.length === 2) {
+			let [env, tolerance] = args;
+			this.tolerance = tolerance;
+			this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
+			this.createFrame(env);
+			this.startingEdge = this.initSubdiv();
+			this.locator = new LastFoundQuadEdgeLocator(this);
 		}
 	}
 	get interfaces_() {
@@ -205,26 +201,19 @@ export default class QuadEdgeSubdivision {
 		return this.triEdges;
 	}
 	getEdges(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					return this.quadEdges;
-					break;
-				}
-			case 1:
-				{
-					let [geomFact] = args;
-					var quadEdges = this.getPrimaryEdges(false);
-					var edges = new Array(quadEdges.size());
-					var i = 0;
-					for (var it = quadEdges.iterator(); it.hasNext(); ) {
-						var qe = it.next();
-						edges[i++] = geomFact.createLineString([qe.orig().getCoordinate(), qe.dest().getCoordinate()]);
-					}
-					return geomFact.createMultiLineString(edges);
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			return this.quadEdges;
+		} else if (args.length === 1) {
+			let [geomFact] = args;
+			var quadEdges = this.getPrimaryEdges(false);
+			var edges = new Array(quadEdges.size());
+			var i = 0;
+			for (var it = quadEdges.iterator(); it.hasNext(); ) {
+				var qe = it.next();
+				edges[i++] = geomFact.createLineString([qe.orig().getCoordinate(), qe.dest().getCoordinate()]);
+			}
+			return geomFact.createMultiLineString(edges);
 		}
 	}
 	getVertexUniqueEdges(includeFrame) {
@@ -354,31 +343,26 @@ export default class QuadEdgeSubdivision {
 		return startEdge;
 	}
 	locate(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Vertex) {
-					let [v] = args;
-					return this.locator.locate(v);
-				} else if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					return this.locator.locate(new Vertex(p));
-				}
-				break;
-			case 2:
-				{
-					let [p0, p1] = args;
-					var e = this.locator.locate(new Vertex(p0));
-					if (e === null) return null;
-					var base = e;
-					if (e.dest().getCoordinate().equals2D(p0)) base = e.sym();
-					var locEdge = base;
-					do {
-						if (locEdge.dest().getCoordinate().equals2D(p1)) return locEdge;
-						locEdge = locEdge.oNext();
-					} while (locEdge !== base);
-					return null;
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0] instanceof Vertex) {
+				let [v] = args;
+				return this.locator.locate(v);
+			} else if (args[0] instanceof Coordinate) {
+				let [p] = args;
+				return this.locator.locate(new Vertex(p));
+			}
+		} else if (args.length === 2) {
+			let [p0, p1] = args;
+			var e = this.locator.locate(new Vertex(p0));
+			if (e === null) return null;
+			var base = e;
+			if (e.dest().getCoordinate().equals2D(p0)) base = e.sym();
+			var locEdge = base;
+			do {
+				if (locEdge.dest().getCoordinate().equals2D(p1)) return locEdge;
+				locEdge = locEdge.oNext();
+			} while (locEdge !== base);
+			return null;
 		}
 	}
 	getClass() {
@@ -387,12 +371,8 @@ export default class QuadEdgeSubdivision {
 }
 class TriangleCircumcentreVisitor {
 	constructor(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -450,12 +430,8 @@ class TriangleCoordinatesVisitor {
 	constructor(...args) {
 		this.coordList = new CoordinateList();
 		this.triCoords = new ArrayList();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

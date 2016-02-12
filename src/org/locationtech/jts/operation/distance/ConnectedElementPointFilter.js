@@ -6,13 +6,9 @@ import GeometryFilter from '../../geom/GeometryFilter';
 export default class ConnectedElementPointFilter {
 	constructor(...args) {
 		this.pts = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [pts] = args;
-					this.pts = pts;
-					break;
-				}
+		if (args.length === 1) {
+			let [pts] = args;
+			this.pts = pts;
 		}
 	}
 	get interfaces_() {

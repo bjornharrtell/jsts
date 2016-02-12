@@ -10,13 +10,9 @@ export default class SweeplineNestedRingTester {
 		this.rings = new ArrayList();
 		this.sweepLine = null;
 		this.nestedPt = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [graph] = args;
-					this.graph = graph;
-					break;
-				}
+		if (args.length === 1) {
+			let [graph] = args;
+			this.graph = graph;
 		}
 	}
 	get interfaces_() {

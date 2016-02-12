@@ -10,13 +10,9 @@ export default class FastNodingValidator {
 		this.findAllIntersections = false;
 		this.segInt = null;
 		this._isValid = true;
-		switch (args.length) {
-			case 1:
-				{
-					let [segStrings] = args;
-					this.segStrings = segStrings;
-					break;
-				}
+		if (args.length === 1) {
+			let [segStrings] = args;
+			this.segStrings = segStrings;
 		}
 	}
 	get interfaces_() {

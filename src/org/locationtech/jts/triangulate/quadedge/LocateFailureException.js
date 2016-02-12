@@ -5,27 +5,25 @@ export default class LocateFailureException extends RuntimeException {
 		super();
 		this.seg = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (typeof args[0] === "string") {
-						return ((...args) => {
-							let [msg] = args;
-							super(msg);
-						})(...args);
-					} else if (args[0] instanceof LineSegment) {
-						return ((...args) => {
-							let [seg] = args;
-							super("Locate failed to converge (at edge: " + seg + ").  Possible causes include invalid Subdivision topology or very close sites");
-							this.seg = new LineSegment(seg);
-						})(...args);
-					}
-					break;
-				case 2:
+			if (args.length === 1) {
+				if (typeof args[0] === "string") {
 					return ((...args) => {
-						let [msg, seg] = args;
-						super(LocateFailureException.msgWithSpatial(msg, seg));
+						let [msg] = args;
+						super(msg);
+					})(...args);
+				} else if (args[0] instanceof LineSegment) {
+					return ((...args) => {
+						let [seg] = args;
+						super("Locate failed to converge (at edge: " + seg + ").  Possible causes include invalid Subdivision topology or very close sites");
 						this.seg = new LineSegment(seg);
 					})(...args);
+				}
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [msg, seg] = args;
+					super(LocateFailureException.msgWithSpatial(msg, seg));
+					this.seg = new LineSegment(seg);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

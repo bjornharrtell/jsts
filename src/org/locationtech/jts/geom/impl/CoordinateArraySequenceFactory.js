@@ -4,12 +4,8 @@ import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
 export default class CoordinateArraySequenceFactory {
 	constructor(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -22,24 +18,19 @@ export default class CoordinateArraySequenceFactory {
 		return CoordinateArraySequenceFactory.instance();
 	}
 	create(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Array) {
-					let [coordinates] = args;
-					return new CoordinateArraySequence(coordinates);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					let [coordSeq] = args;
-					return new CoordinateArraySequence(coordSeq);
-				}
-				break;
-			case 2:
-				{
-					let [size, dimension] = args;
-					if (dimension > 3) dimension = 3;
-					if (dimension < 2) return new CoordinateArraySequence(size);
-					return new CoordinateArraySequence(size, dimension);
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0] instanceof Array) {
+				let [coordinates] = args;
+				return new CoordinateArraySequence(coordinates);
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
+				let [coordSeq] = args;
+				return new CoordinateArraySequence(coordSeq);
+			}
+		} else if (args.length === 2) {
+			let [size, dimension] = args;
+			if (dimension > 3) dimension = 3;
+			if (dimension < 2) return new CoordinateArraySequence(size);
+			return new CoordinateArraySequence(size, dimension);
 		}
 	}
 	getClass() {

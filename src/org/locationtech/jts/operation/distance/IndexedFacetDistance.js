@@ -3,13 +3,9 @@ import ItemDistance from '../../index/strtree/ItemDistance';
 export default class IndexedFacetDistance {
 	constructor(...args) {
 		this.cachedTree = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [g1] = args;
-					this.cachedTree = FacetSequenceTreeBuilder.build(g1);
-					break;
-				}
+		if (args.length === 1) {
+			let [g1] = args;
+			this.cachedTree = FacetSequenceTreeBuilder.build(g1);
 		}
 	}
 	get interfaces_() {

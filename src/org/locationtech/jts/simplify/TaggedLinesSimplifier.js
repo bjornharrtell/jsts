@@ -5,12 +5,8 @@ export default class TaggedLinesSimplifier {
 		this.inputIndex = new LineSegmentIndex();
 		this.outputIndex = new LineSegmentIndex();
 		this.distanceTolerance = 0.0;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

@@ -4,12 +4,8 @@ export default class NodeBase {
 	constructor(...args) {
 		this.items = new ArrayList();
 		this.subnode = new Array(4);
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

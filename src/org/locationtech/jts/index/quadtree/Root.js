@@ -6,12 +6,8 @@ import Assert from '../../util/Assert';
 export default class Root extends NodeBase {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

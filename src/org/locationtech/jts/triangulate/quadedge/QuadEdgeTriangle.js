@@ -9,16 +9,12 @@ export default class QuadEdgeTriangle {
 	constructor(...args) {
 		this.edge = null;
 		this.data = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [edge] = args;
-					this.edge = edge.clone();
-					for (var i = 0; i < 3; i++) {
-						edge[i].setData(this);
-					}
-					break;
-				}
+		if (args.length === 1) {
+			let [edge] = args;
+			this.edge = edge.clone();
+			for (var i = 0; i < 3; i++) {
+				edge[i].setData(this);
+			}
 		}
 	}
 	get interfaces_() {
@@ -28,42 +24,38 @@ export default class QuadEdgeTriangle {
 		return QuadEdgeTriangleBuilderVisitor;
 	}
 	static toPolygon(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Array) {
-					let [v] = args;
-					var ringPts = [v[0].getCoordinate(), v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate()];
-					var fact = new GeometryFactory();
-					var ring = fact.createLinearRing(ringPts);
-					var tri = fact.createPolygon(ring, null);
-					return tri;
-				} else if (args[0] instanceof Array) {
-					let [e] = args;
-					var ringPts = [e[0].orig().getCoordinate(), e[1].orig().getCoordinate(), e[2].orig().getCoordinate(), e[0].orig().getCoordinate()];
-					var fact = new GeometryFactory();
-					var ring = fact.createLinearRing(ringPts);
-					var tri = fact.createPolygon(ring, null);
-					return tri;
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof Array) {
+				let [v] = args;
+				var ringPts = [v[0].getCoordinate(), v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate()];
+				var fact = new GeometryFactory();
+				var ring = fact.createLinearRing(ringPts);
+				var tri = fact.createPolygon(ring, null);
+				return tri;
+			} else if (args[0] instanceof Array) {
+				let [e] = args;
+				var ringPts = [e[0].orig().getCoordinate(), e[1].orig().getCoordinate(), e[2].orig().getCoordinate(), e[0].orig().getCoordinate()];
+				var fact = new GeometryFactory();
+				var ring = fact.createLinearRing(ringPts);
+				var tri = fact.createPolygon(ring, null);
+				return tri;
+			}
 		}
 	}
 	static nextIndex(index) {
 		return index = (index + 1) % 3;
 	}
 	static contains(...args) {
-		switch (args.length) {
-			case 2:
-				if (args[0] instanceof Array && args[1] instanceof Coordinate) {
-					let [tri, pt] = args;
-					var ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()];
-					return CGAlgorithms.isPointInRing(pt, ring);
-				} else if (args[0] instanceof Array && args[1] instanceof Coordinate) {
-					let [tri, pt] = args;
-					var ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()];
-					return CGAlgorithms.isPointInRing(pt, ring);
-				}
-				break;
+		if (args.length === 2) {
+			if (args[0] instanceof Array && args[1] instanceof Coordinate) {
+				let [tri, pt] = args;
+				var ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()];
+				return CGAlgorithms.isPointInRing(pt, ring);
+			} else if (args[0] instanceof Array && args[1] instanceof Coordinate) {
+				let [tri, pt] = args;
+				var ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()];
+				return CGAlgorithms.isPointInRing(pt, ring);
+			}
 		}
 	}
 	static createOn(subdiv) {
@@ -83,41 +75,32 @@ export default class QuadEdgeTriangle {
 		return this.edge[i].orig();
 	}
 	isBorder(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					for (var i = 0; i < 3; i++) {
-						if (this.getAdjacentTriangleAcrossEdge(i) === null) return true;
-					}
-					return false;
-					break;
-				}
-			case 1:
-				{
-					let [i] = args;
-					return this.getAdjacentTriangleAcrossEdge(i) === null;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			for (var i = 0; i < 3; i++) {
+				if (this.getAdjacentTriangleAcrossEdge(i) === null) return true;
+			}
+			return false;
+		} else if (args.length === 1) {
+			let [i] = args;
+			return this.getAdjacentTriangleAcrossEdge(i) === null;
 		}
 	}
 	getEdgeIndex(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof QuadEdge) {
-					let [e] = args;
-					for (var i = 0; i < 3; i++) {
-						if (this.edge[i] === e) return i;
-					}
-					return -1;
-				} else if (args[0] instanceof Vertex) {
-					let [v] = args;
-					for (var i = 0; i < 3; i++) {
-						if (this.edge[i].orig() === v) return i;
-					}
-					return -1;
+		if (args.length === 1) {
+			if (args[0] instanceof QuadEdge) {
+				let [e] = args;
+				for (var i = 0; i < 3; i++) {
+					if (this.edge[i] === e) return i;
 				}
-				break;
+				return -1;
+			} else if (args[0] instanceof Vertex) {
+				let [v] = args;
+				for (var i = 0; i < 3; i++) {
+					if (this.edge[i].orig() === v) return i;
+				}
+				return -1;
+			}
 		}
 	}
 	getGeometry(fact) {
@@ -198,12 +181,8 @@ export default class QuadEdgeTriangle {
 class QuadEdgeTriangleBuilderVisitor {
 	constructor(...args) {
 		this.triangles = new ArrayList();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

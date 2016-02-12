@@ -7,13 +7,9 @@ export default class NodeMap {
 	constructor(...args) {
 		this.nodeMap = new TreeMap();
 		this.nodeFact = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [nodeFact] = args;
-					this.nodeFact = nodeFact;
-					break;
-				}
+		if (args.length === 1) {
+			let [nodeFact] = args;
+			this.nodeFact = nodeFact;
 		}
 	}
 	get interfaces_() {
@@ -23,27 +19,25 @@ export default class NodeMap {
 		return this.nodeMap.get(coord);
 	}
 	addNode(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Coordinate) {
-					let [coord] = args;
-					var node = this.nodeMap.get(coord);
-					if (node === null) {
-						node = this.nodeFact.createNode(coord);
-						this.nodeMap.put(coord, node);
-					}
-					return node;
-				} else if (args[0] instanceof Node) {
-					let [n] = args;
-					var node = this.nodeMap.get(n.getCoordinate());
-					if (node === null) {
-						this.nodeMap.put(n.getCoordinate(), n);
-						return n;
-					}
-					node.mergeLabel(n);
-					return node;
+		if (args.length === 1) {
+			if (args[0] instanceof Coordinate) {
+				let [coord] = args;
+				var node = this.nodeMap.get(coord);
+				if (node === null) {
+					node = this.nodeFact.createNode(coord);
+					this.nodeMap.put(coord, node);
 				}
-				break;
+				return node;
+			} else if (args[0] instanceof Node) {
+				let [n] = args;
+				var node = this.nodeMap.get(n.getCoordinate());
+				if (node === null) {
+					this.nodeMap.put(n.getCoordinate(), n);
+					return n;
+				}
+				node.mergeLabel(n);
+				return node;
+			}
 		}
 	}
 	print(out) {

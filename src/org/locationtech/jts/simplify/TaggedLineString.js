@@ -7,19 +7,18 @@ export default class TaggedLineString {
 		this.resultSegs = new ArrayList();
 		this.minimumSize = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [parentLine] = args;
-						overloaded.call(this, parentLine, 2);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [parentLine, minimumSize] = args;
-						this.parentLine = parentLine;
-						this.minimumSize = minimumSize;
-						this.init();
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [parentLine] = args;
+					overloaded.call(this, parentLine, 2);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [parentLine, minimumSize] = args;
+					this.parentLine = parentLine;
+					this.minimumSize = minimumSize;
+					this.init();
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

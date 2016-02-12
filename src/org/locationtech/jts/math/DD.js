@@ -10,35 +10,33 @@ export default class DD {
 		this.hi = 0.0;
 		this.lo = 0.0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					this.init(0.0);
+				})(...args);
+			} else if (args.length === 1) {
+				if (typeof args[0] === "number") {
 					return ((...args) => {
-						let [] = args;
-						this.init(0.0);
+						let [x] = args;
+						this.init(x);
 					})(...args);
-				case 1:
-					if (typeof args[0] === "number") {
-						return ((...args) => {
-							let [x] = args;
-							this.init(x);
-						})(...args);
-					} else if (args[0] instanceof DD) {
-						return ((...args) => {
-							let [dd] = args;
-							this.init(dd);
-						})(...args);
-					} else if (typeof args[0] === "string") {
-						return ((...args) => {
-							let [str] = args;
-							overloaded.call(this, DD.parse(str));
-						})(...args);
-					}
-					break;
-				case 2:
+				} else if (args[0] instanceof DD) {
 					return ((...args) => {
-						let [hi, lo] = args;
-						this.init(hi, lo);
+						let [dd] = args;
+						this.init(dd);
 					})(...args);
+				} else if (typeof args[0] === "string") {
+					return ((...args) => {
+						let [str] = args;
+						overloaded.call(this, DD.parse(str));
+					})(...args);
+				}
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [hi, lo] = args;
+					this.init(hi, lo);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -50,16 +48,14 @@ export default class DD {
 		return DD.valueOf(x).selfMultiply(x);
 	}
 	static valueOf(...args) {
-		switch (args.length) {
-			case 1:
-				if (typeof args[0] === "string") {
-					let [str] = args;
-					return DD.parse(str);
-				} else if (typeof args[0] === "number") {
-					let [x] = args;
-					return new DD(x);
-				}
-				break;
+		if (args.length === 1) {
+			if (typeof args[0] === "string") {
+				let [str] = args;
+				return DD.parse(str);
+			} else if (typeof args[0] === "number") {
+				let [x] = args;
+				return new DD(x);
+			}
 		}
 	}
 	static sqrt(x) {
@@ -199,16 +195,14 @@ export default class DD {
 		return this.hi + this.lo;
 	}
 	subtract(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					return this.add(y.negate());
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					return this.add(-y);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				return this.add(y.negate());
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				return this.add(-y);
+			}
 		}
 	}
 	equals(...args) {
@@ -221,18 +215,16 @@ export default class DD {
 		return this.hi === 0.0 && this.lo === 0.0;
 	}
 	selfSubtract(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					if (this.isNaN()) return this;
-					return this.selfAdd(-y.hi, -y.lo);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					if (this.isNaN()) return this;
-					return this.selfAdd(-y, 0.0);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				if (this.isNaN()) return this;
+				return this.selfAdd(-y.hi, -y.lo);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				if (this.isNaN()) return this;
+				return this.selfAdd(-y, 0.0);
+			}
 		}
 	}
 	getSpecialNumberString() {
@@ -248,71 +240,64 @@ export default class DD {
 		}
 	}
 	selfDivide(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					return this.selfDivide(y.hi, y.lo);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					return this.selfDivide(y, 0.0);
-				}
-				break;
-			case 2:
-				{
-					let [yhi, ylo] = args;
-					var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
-					C = this.hi / yhi;
-					c = DD.SPLIT * C;
-					hc = c - C;
-					u = DD.SPLIT * yhi;
-					hc = c - hc;
-					tc = C - hc;
-					hy = u - yhi;
-					U = C * yhi;
-					hy = u - hy;
-					ty = yhi - hy;
-					u = hc * hy - U + hc * ty + tc * hy + tc * ty;
-					c = (this.hi - U - u + this.lo - C * ylo) / yhi;
-					u = C + c;
-					this.hi = u;
-					this.lo = C - u + c;
-					return this;
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				return this.selfDivide(y.hi, y.lo);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				return this.selfDivide(y, 0.0);
+			}
+		} else if (args.length === 2) {
+			let [yhi, ylo] = args;
+			var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
+			C = this.hi / yhi;
+			c = DD.SPLIT * C;
+			hc = c - C;
+			u = DD.SPLIT * yhi;
+			hc = c - hc;
+			tc = C - hc;
+			hy = u - yhi;
+			U = C * yhi;
+			hy = u - hy;
+			ty = yhi - hy;
+			u = hc * hy - U + hc * ty + tc * hy + tc * ty;
+			c = (this.hi - U - u + this.lo - C * ylo) / yhi;
+			u = C + c;
+			this.hi = u;
+			this.lo = C - u + c;
+			return this;
 		}
 	}
 	dump() {
 		return "DD<" + this.hi + ", " + this.lo + ">";
 	}
 	divide(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
-					C = this.hi / y.hi;
-					c = DD.SPLIT * C;
-					hc = c - C;
-					u = DD.SPLIT * y.hi;
-					hc = c - hc;
-					tc = C - hc;
-					hy = u - y.hi;
-					U = C * y.hi;
-					hy = u - hy;
-					ty = y.hi - hy;
-					u = hc * hy - U + hc * ty + tc * hy + tc * ty;
-					c = (this.hi - U - u + this.lo - C * y.lo) / y.hi;
-					u = C + c;
-					var zhi = u;
-					var zlo = C - u + c;
-					return new DD(zhi, zlo);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					if (Double.isNaN(y)) return DD.createNaN();
-					return DD.copy(this).selfDivide(y, 0.0);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
+				C = this.hi / y.hi;
+				c = DD.SPLIT * C;
+				hc = c - C;
+				u = DD.SPLIT * y.hi;
+				hc = c - hc;
+				tc = C - hc;
+				hy = u - y.hi;
+				U = C * y.hi;
+				hy = u - hy;
+				ty = y.hi - hy;
+				u = hc * hy - U + hc * ty + tc * hy + tc * ty;
+				c = (this.hi - U - u + this.lo - C * y.lo) / y.hi;
+				u = C + c;
+				var zhi = u;
+				var zlo = C - u + c;
+				return new DD(zhi, zlo);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				if (Double.isNaN(y)) return DD.createNaN();
+				return DD.copy(this).selfDivide(y, 0.0);
+			}
 		}
 	}
 	ge(y) {
@@ -360,18 +345,16 @@ export default class DD {
 		return plus5.floor();
 	}
 	setValue(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [value] = args;
-					this.init(value);
-					return this;
-				} else if (typeof args[0] === "number") {
-					let [value] = args;
-					this.init(value);
-					return this;
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [value] = args;
+				this.init(value);
+				return this;
+			} else if (typeof args[0] === "number") {
+				let [value] = args;
+				this.init(value);
+				return this;
+			}
 		}
 	}
 	max(x) {
@@ -394,84 +377,74 @@ export default class DD {
 		return axdd.add(d2);
 	}
 	selfAdd(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					return this.selfAdd(y.hi, y.lo);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					var H = null, h = null, S = null, s = null, e = null, f = null;
-					S = this.hi + y;
-					e = S - this.hi;
-					s = S - e;
-					s = y - e + (this.hi - s);
-					f = s + this.lo;
-					H = S + f;
-					h = f + (S - H);
-					this.hi = H + h;
-					this.lo = h + (H - this.hi);
-					return this;
-				}
-				break;
-			case 2:
-				{
-					let [yhi, ylo] = args;
-					var H = null, h = null, T = null, t = null, S = null, s = null, e = null, f = null;
-					S = this.hi + yhi;
-					T = this.lo + ylo;
-					e = S - this.hi;
-					f = T - this.lo;
-					s = S - e;
-					t = T - f;
-					s = yhi - e + (this.hi - s);
-					t = ylo - f + (this.lo - t);
-					e = s + T;
-					H = S + e;
-					h = e + (S - H);
-					e = t + h;
-					var zhi = H + e;
-					var zlo = e + (H - zhi);
-					this.hi = zhi;
-					this.lo = zlo;
-					return this;
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				return this.selfAdd(y.hi, y.lo);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				var H = null, h = null, S = null, s = null, e = null, f = null;
+				S = this.hi + y;
+				e = S - this.hi;
+				s = S - e;
+				s = y - e + (this.hi - s);
+				f = s + this.lo;
+				H = S + f;
+				h = f + (S - H);
+				this.hi = H + h;
+				this.lo = h + (H - this.hi);
+				return this;
+			}
+		} else if (args.length === 2) {
+			let [yhi, ylo] = args;
+			var H = null, h = null, T = null, t = null, S = null, s = null, e = null, f = null;
+			S = this.hi + yhi;
+			T = this.lo + ylo;
+			e = S - this.hi;
+			f = T - this.lo;
+			s = S - e;
+			t = T - f;
+			s = yhi - e + (this.hi - s);
+			t = ylo - f + (this.lo - t);
+			e = s + T;
+			H = S + e;
+			h = e + (S - H);
+			e = t + h;
+			var zhi = H + e;
+			var zlo = e + (H - zhi);
+			this.hi = zhi;
+			this.lo = zlo;
+			return this;
 		}
 	}
 	selfMultiply(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					return this.selfMultiply(y.hi, y.lo);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					return this.selfMultiply(y, 0.0);
-				}
-				break;
-			case 2:
-				{
-					let [yhi, ylo] = args;
-					var hx = null, tx = null, hy = null, ty = null, C = null, c = null;
-					C = DD.SPLIT * this.hi;
-					hx = C - this.hi;
-					c = DD.SPLIT * yhi;
-					hx = C - hx;
-					tx = this.hi - hx;
-					hy = c - yhi;
-					C = this.hi * yhi;
-					hy = c - hy;
-					ty = yhi - hy;
-					c = hx * hy - C + hx * ty + tx * hy + tx * ty + (this.hi * ylo + this.lo * yhi);
-					var zhi = C + c;
-					hx = C - zhi;
-					var zlo = c + hx;
-					this.hi = zhi;
-					this.lo = zlo;
-					return this;
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				return this.selfMultiply(y.hi, y.lo);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				return this.selfMultiply(y, 0.0);
+			}
+		} else if (args.length === 2) {
+			let [yhi, ylo] = args;
+			var hx = null, tx = null, hy = null, ty = null, C = null, c = null;
+			C = DD.SPLIT * this.hi;
+			hx = C - this.hi;
+			c = DD.SPLIT * yhi;
+			hx = C - hx;
+			tx = this.hi - hx;
+			hy = c - yhi;
+			C = this.hi * yhi;
+			hy = c - hy;
+			ty = yhi - hy;
+			c = hx * hy - C + hx * ty + tx * hy + tx * ty + (this.hi * ylo + this.lo * yhi);
+			var zhi = C + c;
+			hx = C - zhi;
+			var zlo = c + hx;
+			this.hi = zhi;
+			this.lo = zlo;
+			return this;
 		}
 	}
 	selfSqr() {
@@ -500,18 +473,16 @@ export default class DD {
 		} finally {}
 	}
 	multiply(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					if (y.isNaN()) return DD.createNaN();
-					return DD.copy(this).selfMultiply(y);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					if (Double.isNaN(y)) return DD.createNaN();
-					return DD.copy(this).selfMultiply(y, 0.0);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				if (y.isNaN()) return DD.createNaN();
+				return DD.copy(this).selfMultiply(y);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				if (Double.isNaN(y)) return DD.createNaN();
+				return DD.copy(this).selfMultiply(y, 0.0);
+			}
 		}
 	}
 	isNaN() {
@@ -590,38 +561,31 @@ export default class DD {
 		return this.hi < y.hi || this.hi === y.hi && this.lo < y.lo;
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof DD) {
-					let [y] = args;
-					return DD.copy(this).selfAdd(y);
-				} else if (typeof args[0] === "number") {
-					let [y] = args;
-					return DD.copy(this).selfAdd(y);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof DD) {
+				let [y] = args;
+				return DD.copy(this).selfAdd(y);
+			} else if (typeof args[0] === "number") {
+				let [y] = args;
+				return DD.copy(this).selfAdd(y);
+			}
 		}
 	}
 	init(...args) {
-		switch (args.length) {
-			case 1:
-				if (typeof args[0] === "number") {
-					let [x] = args;
-					this.hi = x;
-					this.lo = 0.0;
-				} else if (args[0] instanceof DD) {
-					let [dd] = args;
-					this.hi = dd.hi;
-					this.lo = dd.lo;
-				}
-				break;
-			case 2:
-				{
-					let [hi, lo] = args;
-					this.hi = hi;
-					this.lo = lo;
-					break;
-				}
+		if (args.length === 1) {
+			if (typeof args[0] === "number") {
+				let [x] = args;
+				this.hi = x;
+				this.lo = 0.0;
+			} else if (args[0] instanceof DD) {
+				let [dd] = args;
+				this.hi = dd.hi;
+				this.lo = dd.lo;
+			}
+		} else if (args.length === 2) {
+			let [hi, lo] = args;
+			this.hi = hi;
+			this.lo = lo;
 		}
 	}
 	gt(y) {

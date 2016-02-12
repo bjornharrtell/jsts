@@ -3,13 +3,9 @@ export default class LineMergeEdge extends Edge {
 	constructor(...args) {
 		super();
 		this.line = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [line] = args;
-					this.line = line;
-					break;
-				}
+		if (args.length === 1) {
+			let [line] = args;
+			this.line = line;
 		}
 	}
 	get interfaces_() {

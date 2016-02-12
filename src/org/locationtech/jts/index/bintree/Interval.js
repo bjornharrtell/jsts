@@ -3,23 +3,22 @@ export default class Interval {
 		this.min = null;
 		this.max = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						this.min = 0.0;
-						this.max = 0.0;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [interval] = args;
-						this.init(interval.min, interval.max);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [min, max] = args;
-						this.init(min, max);
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					this.min = 0.0;
+					this.max = 0.0;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [interval] = args;
+					this.init(interval.min, interval.max);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [min, max] = args;
+					this.init(min, max);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -35,20 +34,13 @@ export default class Interval {
 		return this.max - this.min;
 	}
 	overlaps(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [interval] = args;
-					return this.overlaps(interval.min, interval.max);
-					break;
-				}
-			case 2:
-				{
-					let [min, max] = args;
-					if (this.min > max || this.max < min) return false;
-					return true;
-					break;
-				}
+		if (args.length === 1) {
+			let [interval] = args;
+			return this.overlaps(interval.min, interval.max);
+		} else if (args.length === 2) {
+			let [min, max] = args;
+			if (this.min > max || this.max < min) return false;
+			return true;
 		}
 	}
 	getMin() {
@@ -58,22 +50,17 @@ export default class Interval {
 		return "[" + this.min + ", " + this.max + "]";
 	}
 	contains(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Interval) {
-					let [interval] = args;
-					return this.contains(interval.min, interval.max);
-				} else if (typeof args[0] === "number") {
-					let [p] = args;
-					return p >= this.min && p <= this.max;
-				}
-				break;
-			case 2:
-				{
-					let [min, max] = args;
-					return min >= this.min && max <= this.max;
-					break;
-				}
+		if (args.length === 1) {
+			if (args[0] instanceof Interval) {
+				let [interval] = args;
+				return this.contains(interval.min, interval.max);
+			} else if (typeof args[0] === "number") {
+				let [p] = args;
+				return p >= this.min && p <= this.max;
+			}
+		} else if (args.length === 2) {
+			let [min, max] = args;
+			return min >= this.min && max <= this.max;
 		}
 	}
 	init(min, max) {

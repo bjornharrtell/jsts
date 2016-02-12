@@ -27,24 +27,22 @@ export default class Matrix {
 		return solution;
 	}
 	static swapRows(...args) {
-		switch (args.length) {
-			case 3:
-				if (Number.isInteger(args[2]) && (args[0] instanceof Array && Number.isInteger(args[1]))) {
-					let [m, i, j] = args;
-					if (i === j) return null;
-					for (var col = 0; col < m[0].length; col++) {
-						var temp = m[i][col];
-						m[i][col] = m[j][col];
-						m[j][col] = temp;
-					}
-				} else if (Number.isInteger(args[2]) && (args[0] instanceof Array && Number.isInteger(args[1]))) {
-					let [m, i, j] = args;
-					if (i === j) return null;
-					var temp = m[i];
-					m[i] = m[j];
-					m[j] = temp;
+		if (args.length === 3) {
+			if (Number.isInteger(args[2]) && (args[0] instanceof Array && Number.isInteger(args[1]))) {
+				let [m, i, j] = args;
+				if (i === j) return null;
+				for (var col = 0; col < m[0].length; col++) {
+					var temp = m[i][col];
+					m[i][col] = m[j][col];
+					m[j][col] = temp;
 				}
-				break;
+			} else if (Number.isInteger(args[2]) && (args[0] instanceof Array && Number.isInteger(args[1]))) {
+				let [m, i, j] = args;
+				if (i === j) return null;
+				var temp = m[i];
+				m[i] = m[j];
+				m[j] = temp;
+			}
 		}
 	}
 	getClass() {

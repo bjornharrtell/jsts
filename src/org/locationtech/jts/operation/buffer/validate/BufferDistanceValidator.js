@@ -21,15 +21,11 @@ export default class BufferDistanceValidator {
 		this.errMsg = null;
 		this.errorLocation = null;
 		this.errorIndicator = null;
-		switch (args.length) {
-			case 3:
-				{
-					let [input, bufDistance, result] = args;
-					this.input = input;
-					this.bufDistance = bufDistance;
-					this.result = result;
-					break;
-				}
+		if (args.length === 3) {
+			let [input, bufDistance, result] = args;
+			this.input = input;
+			this.bufDistance = bufDistance;
+			this.result = result;
 		}
 	}
 	get interfaces_() {

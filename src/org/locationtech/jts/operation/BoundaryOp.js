@@ -11,19 +11,18 @@ export default class BoundaryOp {
 		this.bnRule = null;
 		this.endpointMap = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geom] = args;
-						overloaded.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [geom, bnRule] = args;
-						this.geom = geom;
-						this.geomFact = geom.getFactory();
-						this.bnRule = bnRule;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [geom] = args;
+					overloaded.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [geom, bnRule] = args;
+					this.geom = geom;
+					this.geomFact = geom.getFactory();
+					this.bnRule = bnRule;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -32,21 +31,14 @@ export default class BoundaryOp {
 		return [];
 	}
 	static getBoundary(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [g] = args;
-					var bop = new BoundaryOp(g);
-					return bop.getBoundary();
-					break;
-				}
-			case 2:
-				{
-					let [g, bnRule] = args;
-					var bop = new BoundaryOp(g, bnRule);
-					return bop.getBoundary();
-					break;
-				}
+		if (args.length === 1) {
+			let [g] = args;
+			var bop = new BoundaryOp(g);
+			return bop.getBoundary();
+		} else if (args.length === 2) {
+			let [g, bnRule] = args;
+			var bop = new BoundaryOp(g, bnRule);
+			return bop.getBoundary();
 		}
 	}
 	boundaryMultiLineString(mLine) {

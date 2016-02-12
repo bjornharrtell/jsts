@@ -2,13 +2,9 @@ import EdgeRing from '../../geomgraph/EdgeRing';
 export default class MinimalEdgeRing extends EdgeRing {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 2:
-				{
-					let [start, geometryFactory] = args;
-					super(start, geometryFactory);
-					break;
-				}
+		if (args.length === 2) {
+			let [start, geometryFactory] = args;
+			super(start, geometryFactory);
 		}
 	}
 	get interfaces_() {

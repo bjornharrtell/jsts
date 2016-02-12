@@ -3,12 +3,8 @@ import EdgeEndBundle from './EdgeEndBundle';
 export default class EdgeEndBundleStar extends EdgeEndStar {
 	constructor(...args) {
 		super();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

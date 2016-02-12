@@ -13,12 +13,8 @@ export default class LineMerger {
 		this.mergedLineStrings = null;
 		this.factory = null;
 		this.edgeStrings = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -85,35 +81,33 @@ export default class LineMerger {
 		return edgeString;
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Geometry) {
-					let [geometry] = args;
-					geometry.apply(new (class {
-						filter(component) {
-							if (component instanceof LineString) {
-								this.add(component);
-							}
+		if (args.length === 1) {
+			if (args[0] instanceof Geometry) {
+				let [geometry] = args;
+				geometry.apply(new (class {
+					filter(component) {
+						if (component instanceof LineString) {
+							this.add(component);
 						}
-						get interfaces_() {
-							return [GeometryComponentFilter];
-						}
-					})());
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [geometries] = args;
-					this.mergedLineStrings = null;
-					for (var i = geometries.iterator(); i.hasNext(); ) {
-						var geometry = i.next();
-						this.add(geometry);
 					}
-				} else if (args[0] instanceof LineString) {
-					let [lineString] = args;
-					if (this.factory === null) {
-						this.factory = lineString.getFactory();
+					get interfaces_() {
+						return [GeometryComponentFilter];
 					}
-					this.graph.addEdge(lineString);
+				})());
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [geometries] = args;
+				this.mergedLineStrings = null;
+				for (var i = geometries.iterator(); i.hasNext(); ) {
+					var geometry = i.next();
+					this.add(geometry);
 				}
-				break;
+			} else if (args[0] instanceof LineString) {
+				let [lineString] = args;
+				if (this.factory === null) {
+					this.factory = lineString.getFactory();
+				}
+				this.graph.addEdge(lineString);
+			}
 		}
 	}
 	buildEdgeStringsForIsolatedLoops() {

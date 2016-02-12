@@ -6,13 +6,9 @@ export default class Key {
 		this.pt = new Coordinate();
 		this.level = 0;
 		this.env = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [itemEnv] = args;
-					this.computeKey(itemEnv);
-					break;
-				}
+		if (args.length === 1) {
+			let [itemEnv] = args;
+			this.computeKey(itemEnv);
 		}
 	}
 	get interfaces_() {
@@ -29,28 +25,21 @@ export default class Key {
 		return this.level;
 	}
 	computeKey(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [itemEnv] = args;
-					this.level = Key.computeQuadLevel(itemEnv);
-					this.env = new Envelope();
-					this.computeKey(this.level, itemEnv);
-					while (!this.env.contains(itemEnv)) {
-						this.level += 1;
-						this.computeKey(this.level, itemEnv);
-					}
-					break;
-				}
-			case 2:
-				{
-					let [level, itemEnv] = args;
-					var quadSize = DoubleBits.powerOf2(level);
-					this.pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
-					this.pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
-					this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y + quadSize);
-					break;
-				}
+		if (args.length === 1) {
+			let [itemEnv] = args;
+			this.level = Key.computeQuadLevel(itemEnv);
+			this.env = new Envelope();
+			this.computeKey(this.level, itemEnv);
+			while (!this.env.contains(itemEnv)) {
+				this.level += 1;
+				this.computeKey(this.level, itemEnv);
+			}
+		} else if (args.length === 2) {
+			let [level, itemEnv] = args;
+			var quadSize = DoubleBits.powerOf2(level);
+			this.pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
+			this.pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
+			this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y + quadSize);
 		}
 	}
 	getEnvelope() {

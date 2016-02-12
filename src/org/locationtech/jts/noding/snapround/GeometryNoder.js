@@ -8,13 +8,9 @@ export default class GeometryNoder {
 		this.geomFact = null;
 		this.pm = null;
 		this.isValidityChecked = false;
-		switch (args.length) {
-			case 1:
-				{
-					let [pm] = args;
-					this.pm = pm;
-					break;
-				}
+		if (args.length === 1) {
+			let [pm] = args;
+			this.pm = pm;
 		}
 	}
 	get interfaces_() {

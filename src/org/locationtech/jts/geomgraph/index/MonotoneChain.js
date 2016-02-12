@@ -2,14 +2,10 @@ export default class MonotoneChain {
 	constructor(...args) {
 		this.mce = null;
 		this.chainIndex = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [mce, chainIndex] = args;
-					this.mce = mce;
-					this.chainIndex = chainIndex;
-					break;
-				}
+		if (args.length === 2) {
+			let [mce, chainIndex] = args;
+			this.mce = mce;
+			this.chainIndex = chainIndex;
 		}
 	}
 	get interfaces_() {

@@ -4,42 +4,28 @@ export default class GeometryCombiner {
 		this.geomFactory = null;
 		this.skipEmpty = false;
 		this.inputGeoms = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [geoms] = args;
-					this.geomFactory = GeometryCombiner.extractFactory(geoms);
-					this.inputGeoms = geoms;
-					break;
-				}
+		if (args.length === 1) {
+			let [geoms] = args;
+			this.geomFactory = GeometryCombiner.extractFactory(geoms);
+			this.inputGeoms = geoms;
 		}
 	}
 	get interfaces_() {
 		return [];
 	}
 	static combine(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [geoms] = args;
-					var combiner = new GeometryCombiner(geoms);
-					return combiner.combine();
-					break;
-				}
-			case 2:
-				{
-					let [g0, g1] = args;
-					var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1));
-					return combiner.combine();
-					break;
-				}
-			case 3:
-				{
-					let [g0, g1, g2] = args;
-					var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1, g2));
-					return combiner.combine();
-					break;
-				}
+		if (args.length === 1) {
+			let [geoms] = args;
+			var combiner = new GeometryCombiner(geoms);
+			return combiner.combine();
+		} else if (args.length === 2) {
+			let [g0, g1] = args;
+			var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1));
+			return combiner.combine();
+		} else if (args.length === 3) {
+			let [g0, g1, g2] = args;
+			var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1, g2));
+			return combiner.combine();
 		}
 	}
 	static extractFactory(geoms) {
@@ -47,26 +33,19 @@ export default class GeometryCombiner {
 		return geoms.iterator().next().getFactory();
 	}
 	static createList(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [obj0, obj1] = args;
-					var list = new ArrayList();
-					list.add(obj0);
-					list.add(obj1);
-					return list;
-					break;
-				}
-			case 3:
-				{
-					let [obj0, obj1, obj2] = args;
-					var list = new ArrayList();
-					list.add(obj0);
-					list.add(obj1);
-					list.add(obj2);
-					return list;
-					break;
-				}
+		if (args.length === 2) {
+			let [obj0, obj1] = args;
+			var list = new ArrayList();
+			list.add(obj0);
+			list.add(obj1);
+			return list;
+		} else if (args.length === 3) {
+			let [obj0, obj1, obj2] = args;
+			var list = new ArrayList();
+			list.add(obj0);
+			list.add(obj1);
+			list.add(obj2);
+			return list;
 		}
 	}
 	extractElements(geom, elems) {

@@ -4,12 +4,8 @@ export default class SimpleNoder extends SinglePassNoder {
 	constructor(...args) {
 		super();
 		this.nodedSegStrings = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

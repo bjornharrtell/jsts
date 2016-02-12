@@ -6,42 +6,40 @@ export default class Label {
 	constructor(...args) {
 		this.elt = new Array(2);
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (Number.isInteger(args[0])) {
-						return ((...args) => {
-							let [onLoc] = args;
-							this.elt[0] = new TopologyLocation(onLoc);
-							this.elt[1] = new TopologyLocation(onLoc);
-						})(...args);
-					} else if (args[0] instanceof Label) {
-						return ((...args) => {
-							let [lbl] = args;
-							this.elt[0] = new TopologyLocation(lbl.elt[0]);
-							this.elt[1] = new TopologyLocation(lbl.elt[1]);
-						})(...args);
-					}
-					break;
-				case 2:
+			if (args.length === 1) {
+				if (Number.isInteger(args[0])) {
 					return ((...args) => {
-						let [geomIndex, onLoc] = args;
-						this.elt[0] = new TopologyLocation(Location.NONE);
-						this.elt[1] = new TopologyLocation(Location.NONE);
-						this.elt[geomIndex].setLocation(onLoc);
+						let [onLoc] = args;
+						this.elt[0] = new TopologyLocation(onLoc);
+						this.elt[1] = new TopologyLocation(onLoc);
 					})(...args);
-				case 3:
+				} else if (args[0] instanceof Label) {
 					return ((...args) => {
-						let [onLoc, leftLoc, rightLoc] = args;
-						this.elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
-						this.elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc);
+						let [lbl] = args;
+						this.elt[0] = new TopologyLocation(lbl.elt[0]);
+						this.elt[1] = new TopologyLocation(lbl.elt[1]);
 					})(...args);
-				case 4:
-					return ((...args) => {
-						let [geomIndex, onLoc, leftLoc, rightLoc] = args;
-						this.elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
-						this.elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
-						this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
-					})(...args);
+				}
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [geomIndex, onLoc] = args;
+					this.elt[0] = new TopologyLocation(Location.NONE);
+					this.elt[1] = new TopologyLocation(Location.NONE);
+					this.elt[geomIndex].setLocation(onLoc);
+				})(...args);
+			} else if (args.length === 3) {
+				return ((...args) => {
+					let [onLoc, leftLoc, rightLoc] = args;
+					this.elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
+					this.elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc);
+				})(...args);
+			} else if (args.length === 4) {
+				return ((...args) => {
+					let [geomIndex, onLoc, leftLoc, rightLoc] = args;
+					this.elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
+					this.elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
+					this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -69,20 +67,13 @@ export default class Label {
 		return this.elt[geomIndex].isNull();
 	}
 	setAllLocationsIfNull(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [location] = args;
-					this.setAllLocationsIfNull(0, location);
-					this.setAllLocationsIfNull(1, location);
-					break;
-				}
-			case 2:
-				{
-					let [geomIndex, location] = args;
-					this.elt[geomIndex].setAllLocationsIfNull(location);
-					break;
-				}
+		if (args.length === 1) {
+			let [location] = args;
+			this.setAllLocationsIfNull(0, location);
+			this.setAllLocationsIfNull(1, location);
+		} else if (args.length === 2) {
+			let [geomIndex, location] = args;
+			this.elt[geomIndex].setAllLocationsIfNull(location);
 		}
 	}
 	isLine(geomIndex) {
@@ -102,19 +93,12 @@ export default class Label {
 		this.elt[1].flip();
 	}
 	getLocation(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [geomIndex] = args;
-					return this.elt[geomIndex].get(Position.ON);
-					break;
-				}
-			case 2:
-				{
-					let [geomIndex, posIndex] = args;
-					return this.elt[geomIndex].get(posIndex);
-					break;
-				}
+		if (args.length === 1) {
+			let [geomIndex] = args;
+			return this.elt[geomIndex].get(Position.ON);
+		} else if (args.length === 2) {
+			let [geomIndex, posIndex] = args;
+			return this.elt[geomIndex].get(posIndex);
 		}
 	}
 	toString() {
@@ -130,38 +114,24 @@ export default class Label {
 		return buf.toString();
 	}
 	isArea(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					return this.elt[0].isArea() || this.elt[1].isArea();
-					break;
-				}
-			case 1:
-				{
-					let [geomIndex] = args;
-					return this.elt[geomIndex].isArea();
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			return this.elt[0].isArea() || this.elt[1].isArea();
+		} else if (args.length === 1) {
+			let [geomIndex] = args;
+			return this.elt[geomIndex].isArea();
 		}
 	}
 	isAnyNull(geomIndex) {
 		return this.elt[geomIndex].isAnyNull();
 	}
 	setLocation(...args) {
-		switch (args.length) {
-			case 2:
-				{
-					let [geomIndex, location] = args;
-					this.elt[geomIndex].setLocation(Position.ON, location);
-					break;
-				}
-			case 3:
-				{
-					let [geomIndex, posIndex, location] = args;
-					this.elt[geomIndex].setLocation(posIndex, location);
-					break;
-				}
+		if (args.length === 2) {
+			let [geomIndex, location] = args;
+			this.elt[geomIndex].setLocation(Position.ON, location);
+		} else if (args.length === 3) {
+			let [geomIndex, posIndex, location] = args;
+			this.elt[geomIndex].setLocation(posIndex, location);
 		}
 	}
 	isEqualOnSide(lbl, side) {

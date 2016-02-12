@@ -13,13 +13,9 @@ export default class ConnectedInteriorTester {
 		this.geometryFactory = new GeometryFactory();
 		this.geomGraph = null;
 		this.disconnectedRingcoord = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [geomGraph] = args;
-					this.geomGraph = geomGraph;
-					break;
-				}
+		if (args.length === 1) {
+			let [geomGraph] = args;
+			this.geomGraph = geomGraph;
 		}
 	}
 	get interfaces_() {

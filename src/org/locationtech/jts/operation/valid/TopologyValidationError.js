@@ -3,18 +3,17 @@ export default class TopologyValidationError {
 		this.errorType = null;
 		this.pt = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [errorType] = args;
-						overloaded.call(this, errorType, null);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [errorType, pt] = args;
-						this.errorType = errorType;
-						if (pt !== null) this.pt = pt.copy();
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [errorType] = args;
+					overloaded.call(this, errorType, null);
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [errorType, pt] = args;
+					this.errorType = errorType;
+					if (pt !== null) this.pt = pt.copy();
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

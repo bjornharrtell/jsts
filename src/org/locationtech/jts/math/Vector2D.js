@@ -7,42 +7,39 @@ export default class Vector2D {
 		this.x = null;
 		this.y = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, 0.0, 0.0);
+				})(...args);
+			} else if (args.length === 1) {
+				if (args[0] instanceof Vector2D) {
 					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, 0.0, 0.0);
+						let [v] = args;
+						this.x = v.x;
+						this.y = v.y;
 					})(...args);
-				case 1:
-					if (args[0] instanceof Vector2D) {
-						return ((...args) => {
-							let [v] = args;
-							this.x = v.x;
-							this.y = v.y;
-						})(...args);
-					} else if (args[0] instanceof Coordinate) {
-						return ((...args) => {
-							let [v] = args;
-							this.x = v.x;
-							this.y = v.y;
-						})(...args);
-					}
-					break;
-				case 2:
-					if (typeof args[0] === "number" && typeof args[1] === "number") {
-						return ((...args) => {
-							let [x, y] = args;
-							this.x = x;
-							this.y = y;
-						})(...args);
-					} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-						return ((...args) => {
-							let [from, to] = args;
-							this.x = to.x - from.x;
-							this.y = to.y - from.y;
-						})(...args);
-					}
-					break;
+				} else if (args[0] instanceof Coordinate) {
+					return ((...args) => {
+						let [v] = args;
+						this.x = v.x;
+						this.y = v.y;
+					})(...args);
+				}
+			} else if (args.length === 2) {
+				if (typeof args[0] === "number" && typeof args[1] === "number") {
+					return ((...args) => {
+						let [x, y] = args;
+						this.x = x;
+						this.y = y;
+					})(...args);
+				} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+					return ((...args) => {
+						let [from, to] = args;
+						this.x = to.x - from.x;
+						this.y = to.y - from.y;
+					})(...args);
+				}
 			}
 		};
 		return overloaded.apply(this, args);
@@ -51,25 +48,22 @@ export default class Vector2D {
 		return [];
 	}
 	static create(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Vector2D) {
-					let [v] = args;
-					return new Vector2D(v);
-				} else if (args[0] instanceof Coordinate) {
-					let [coord] = args;
-					return new Vector2D(coord);
-				}
-				break;
-			case 2:
-				if (typeof args[0] === "number" && typeof args[1] === "number") {
-					let [x, y] = args;
-					return new Vector2D(x, y);
-				} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-					let [from, to] = args;
-					return new Vector2D(from, to);
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof Vector2D) {
+				let [v] = args;
+				return new Vector2D(v);
+			} else if (args[0] instanceof Coordinate) {
+				let [coord] = args;
+				return new Vector2D(coord);
+			}
+		} else if (args.length === 2) {
+			if (typeof args[0] === "number" && typeof args[1] === "number") {
+				let [x, y] = args;
+				return new Vector2D(x, y);
+			} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
+				let [from, to] = args;
+				return new Vector2D(from, to);
+			}
 		}
 	}
 	dot(v) {
@@ -98,19 +92,12 @@ export default class Vector2D {
 		return Vector2D.create(0.0, 0.0);
 	}
 	angle(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					return Math.atan2(this.y, this.x);
-					break;
-				}
-			case 1:
-				{
-					let [v] = args;
-					return Angle.diff(v.angle(), this.angle());
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			return Math.atan2(this.y, this.x);
+		} else if (args.length === 1) {
+			let [v] = args;
+			return Angle.diff(v.angle(), this.angle());
 		}
 	}
 	weightedSum(v, frac) {

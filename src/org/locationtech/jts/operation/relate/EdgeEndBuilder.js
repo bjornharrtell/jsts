@@ -3,12 +3,8 @@ import Label from '../../geomgraph/Label';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default class EdgeEndBuilder {
 	constructor(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -36,40 +32,33 @@ export default class EdgeEndBuilder {
 		l.add(e);
 	}
 	computeEdgeEnds(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [edges] = args;
-					var l = new ArrayList();
-					for (var i = edges; i.hasNext(); ) {
-						var e = i.next();
-						this.computeEdgeEnds(e, l);
-					}
-					return l;
-					break;
+		if (args.length === 1) {
+			let [edges] = args;
+			var l = new ArrayList();
+			for (var i = edges; i.hasNext(); ) {
+				var e = i.next();
+				this.computeEdgeEnds(e, l);
+			}
+			return l;
+		} else if (args.length === 2) {
+			let [edge, l] = args;
+			var eiList = edge.getEdgeIntersectionList();
+			eiList.addEndpoints();
+			var it = eiList.iterator();
+			var eiPrev = null;
+			var eiCurr = null;
+			if (!it.hasNext()) return null;
+			var eiNext = it.next();
+			do {
+				eiPrev = eiCurr;
+				eiCurr = eiNext;
+				eiNext = null;
+				if (it.hasNext()) eiNext = it.next();
+				if (eiCurr !== null) {
+					this.createEdgeEndForPrev(edge, l, eiCurr, eiPrev);
+					this.createEdgeEndForNext(edge, l, eiCurr, eiNext);
 				}
-			case 2:
-				{
-					let [edge, l] = args;
-					var eiList = edge.getEdgeIntersectionList();
-					eiList.addEndpoints();
-					var it = eiList.iterator();
-					var eiPrev = null;
-					var eiCurr = null;
-					if (!it.hasNext()) return null;
-					var eiNext = it.next();
-					do {
-						eiPrev = eiCurr;
-						eiCurr = eiNext;
-						eiNext = null;
-						if (it.hasNext()) eiNext = it.next();
-						if (eiCurr !== null) {
-							this.createEdgeEndForPrev(edge, l, eiCurr, eiPrev);
-							this.createEdgeEndForNext(edge, l, eiCurr, eiNext);
-						}
-					} while (eiCurr !== null);
-					break;
-				}
+			} while (eiCurr !== null);
 		}
 	}
 	getClass() {

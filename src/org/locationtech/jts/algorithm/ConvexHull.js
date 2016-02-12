@@ -13,18 +13,17 @@ export default class ConvexHull {
 		this.geomFactory = null;
 		this.inputPts = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [geometry] = args;
-						overloaded.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [pts, geomFactory] = args;
-						this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
-						this.geomFactory = geomFactory;
-					})(...args);
+			if (args.length === 1) {
+				return ((...args) => {
+					let [geometry] = args;
+					overloaded.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
+				})(...args);
+			} else if (args.length === 2) {
+				return ((...args) => {
+					let [pts, geomFactory] = args;
+					this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
+					this.geomFactory = geomFactory;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);
@@ -221,13 +220,9 @@ export default class ConvexHull {
 class RadialComparator {
 	constructor(...args) {
 		this.origin = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [origin] = args;
-					this.origin = origin;
-					break;
-				}
+		if (args.length === 1) {
+			let [origin] = args;
+			this.origin = origin;
 		}
 	}
 	get interfaces_() {

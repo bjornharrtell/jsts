@@ -7,13 +7,9 @@ export default class SimpleNestedRingTester {
 		this.graph = null;
 		this.rings = new ArrayList();
 		this.nestedPt = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [graph] = args;
-					this.graph = graph;
-					break;
-				}
+		if (args.length === 1) {
+			let [graph] = args;
+			this.graph = graph;
 		}
 	}
 	get interfaces_() {

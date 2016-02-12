@@ -16,13 +16,9 @@ export default class RelateComputer {
 		this.im = null;
 		this.isolatedEdges = new ArrayList();
 		this.invalidPoint = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [arg] = args;
-					this.arg = arg;
-					break;
-				}
+		if (args.length === 1) {
+			let [arg] = args;
+			this.arg = arg;
 		}
 	}
 	get interfaces_() {

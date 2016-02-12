@@ -4,13 +4,9 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default class EdgeNodingValidator {
 	constructor(...args) {
 		this.nv = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [edges] = args;
-					this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
-					break;
-				}
+		if (args.length === 1) {
+			let [edges] = args;
+			this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
 		}
 	}
 	get interfaces_() {

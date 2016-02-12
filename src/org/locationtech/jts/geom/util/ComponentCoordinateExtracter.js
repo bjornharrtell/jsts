@@ -5,13 +5,9 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default class ComponentCoordinateExtracter {
 	constructor(...args) {
 		this.coords = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [coords] = args;
-					this.coords = coords;
-					break;
-				}
+		if (args.length === 1) {
+			let [coords] = args;
+			this.coords = coords;
 		}
 	}
 	get interfaces_() {

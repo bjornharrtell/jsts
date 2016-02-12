@@ -10,14 +10,10 @@ export default class InteriorIntersectionFinder {
 		this.intersections = new ArrayList();
 		this.intersectionCount = 0;
 		this.keepIntersections = true;
-		switch (args.length) {
-			case 1:
-				{
-					let [li] = args;
-					this.li = li;
-					this.interiorIntersection = null;
-					break;
-				}
+		if (args.length === 1) {
+			let [li] = args;
+			this.li = li;
+			this.interiorIntersection = null;
 		}
 	}
 	get interfaces_() {

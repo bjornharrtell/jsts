@@ -3,12 +3,8 @@ export default class GraphComponent {
 		this._isMarked = false;
 		this._isVisited = false;
 		this.data = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

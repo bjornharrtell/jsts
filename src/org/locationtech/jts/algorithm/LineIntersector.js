@@ -12,17 +12,13 @@ export default class LineIntersector {
 		this.pa = null;
 		this.pb = null;
 		this.precisionModel = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.intPt[0] = new Coordinate();
-					this.intPt[1] = new Coordinate();
-					this.pa = this.intPt[0];
-					this.pb = this.intPt[1];
-					this.result = 0;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.intPt[0] = new Coordinate();
+			this.intPt[1] = new Coordinate();
+			this.pa = this.intPt[0];
+			this.pb = this.intPt[1];
+			this.result = 0;
 		}
 	}
 	get interfaces_() {
@@ -76,31 +72,24 @@ export default class LineIntersector {
 		return this.result;
 	}
 	computeIntLineIndex(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					if (this.intLineIndex === null) {
-						this.intLineIndex = Array(2).fill().map(() => Array(2));
-						this.computeIntLineIndex(0);
-						this.computeIntLineIndex(1);
-					}
-					break;
-				}
-			case 1:
-				{
-					let [segmentIndex] = args;
-					var dist0 = this.getEdgeDistance(segmentIndex, 0);
-					var dist1 = this.getEdgeDistance(segmentIndex, 1);
-					if (dist0 > dist1) {
-						this.intLineIndex[segmentIndex][0] = 0;
-						this.intLineIndex[segmentIndex][1] = 1;
-					} else {
-						this.intLineIndex[segmentIndex][0] = 1;
-						this.intLineIndex[segmentIndex][1] = 0;
-					}
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			if (this.intLineIndex === null) {
+				this.intLineIndex = Array(2).fill().map(() => Array(2));
+				this.computeIntLineIndex(0);
+				this.computeIntLineIndex(1);
+			}
+		} else if (args.length === 1) {
+			let [segmentIndex] = args;
+			var dist0 = this.getEdgeDistance(segmentIndex, 0);
+			var dist1 = this.getEdgeDistance(segmentIndex, 1);
+			if (dist0 > dist1) {
+				this.intLineIndex[segmentIndex][0] = 0;
+				this.intLineIndex[segmentIndex][1] = 1;
+			} else {
+				this.intLineIndex[segmentIndex][0] = 1;
+				this.intLineIndex[segmentIndex][1] = 0;
+			}
 		}
 	}
 	isProper() {
@@ -110,26 +99,19 @@ export default class LineIntersector {
 		this.precisionModel = precisionModel;
 	}
 	isInteriorIntersection(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					if (this.isInteriorIntersection(0)) return true;
-					if (this.isInteriorIntersection(1)) return true;
-					return false;
-					break;
+		if (args.length === 0) {
+			let [] = args;
+			if (this.isInteriorIntersection(0)) return true;
+			if (this.isInteriorIntersection(1)) return true;
+			return false;
+		} else if (args.length === 1) {
+			let [inputLineIndex] = args;
+			for (var i = 0; i < this.result; i++) {
+				if (!(this.intPt[i].equals2D(this.inputLines[inputLineIndex][0]) || this.intPt[i].equals2D(this.inputLines[inputLineIndex][1]))) {
+					return true;
 				}
-			case 1:
-				{
-					let [inputLineIndex] = args;
-					for (var i = 0; i < this.result; i++) {
-						if (!(this.intPt[i].equals2D(this.inputLines[inputLineIndex][0]) || this.intPt[i].equals2D(this.inputLines[inputLineIndex][1]))) {
-							return true;
-						}
-					}
-					return false;
-					break;
-				}
+			}
+			return false;
 		}
 	}
 	getIntersection(intIndex) {

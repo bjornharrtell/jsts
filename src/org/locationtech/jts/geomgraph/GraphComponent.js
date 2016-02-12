@@ -7,16 +7,15 @@ export default class GraphComponent {
 		this._isCoveredSet = false;
 		this._isVisited = false;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [label] = args;
-						this.label = label;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [label] = args;
+					this.label = label;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

@@ -7,13 +7,9 @@ import GeometryFilter from '../../geom/GeometryFilter';
 export default class ConnectedElementLocationFilter {
 	constructor(...args) {
 		this.locations = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [locations] = args;
-					this.locations = locations;
-					break;
-				}
+		if (args.length === 1) {
+			let [locations] = args;
+			this.locations = locations;
 		}
 	}
 	get interfaces_() {

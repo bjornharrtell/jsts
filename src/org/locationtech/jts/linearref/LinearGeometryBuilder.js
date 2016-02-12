@@ -9,13 +9,9 @@ export default class LinearGeometryBuilder {
 		this.ignoreInvalidLines = false;
 		this.fixInvalidLines = false;
 		this.lastPt = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [geomFact] = args;
-					this.geomFact = geomFact;
-					break;
-				}
+		if (args.length === 1) {
+			let [geomFact] = args;
+			this.geomFact = geomFact;
 		}
 	}
 	get interfaces_() {
@@ -54,21 +50,14 @@ export default class LinearGeometryBuilder {
 		this.fixInvalidLines = fixInvalidLines;
 	}
 	add(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [pt] = args;
-					this.add(pt, true);
-					break;
-				}
-			case 2:
-				{
-					let [pt, allowRepeatedPoints] = args;
-					if (this.coordList === null) this.coordList = new CoordinateList();
-					this.coordList.add(pt, allowRepeatedPoints);
-					this.lastPt = pt;
-					break;
-				}
+		if (args.length === 1) {
+			let [pt] = args;
+			this.add(pt, true);
+		} else if (args.length === 2) {
+			let [pt, allowRepeatedPoints] = args;
+			if (this.coordList === null) this.coordList = new CoordinateList();
+			this.coordList.add(pt, allowRepeatedPoints);
+			this.lastPt = pt;
 		}
 	}
 	setIgnoreInvalidLines(ignoreInvalidLines) {

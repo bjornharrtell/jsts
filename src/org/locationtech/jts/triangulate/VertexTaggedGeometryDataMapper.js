@@ -5,34 +5,28 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default class VertexTaggedGeometryDataMapper {
 	constructor(...args) {
 		this.coordDataMap = new TreeMap();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
 		return [];
 	}
 	loadSourceGeometries(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [geoms] = args;
-					for (var i = geoms.iterator(); i.hasNext(); ) {
-						var geom = i.next();
-						this.loadVertices(geom.getCoordinates(), geom.getUserData());
-					}
-				} else if (args[0] instanceof Geometry) {
-					let [geomColl] = args;
-					for (var i = 0; i < geomColl.getNumGeometries(); i++) {
-						var geom = geomColl.getGeometryN(i);
-						this.loadVertices(geom.getCoordinates(), geom.getUserData());
-					}
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [geoms] = args;
+				for (var i = geoms.iterator(); i.hasNext(); ) {
+					var geom = i.next();
+					this.loadVertices(geom.getCoordinates(), geom.getUserData());
 				}
-				break;
+			} else if (args[0] instanceof Geometry) {
+				let [geomColl] = args;
+				for (var i = 0; i < geomColl.getNumGeometries(); i++) {
+					var geom = geomColl.getGeometryN(i);
+					this.loadVertices(geom.getCoordinates(), geom.getUserData());
+				}
+			}
 		}
 	}
 	getCoordinates() {

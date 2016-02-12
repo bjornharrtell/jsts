@@ -14,27 +14,23 @@ export default class Polygon extends Geometry {
 		super();
 		this.shell = null;
 		this.holes = null;
-		switch (args.length) {
-			case 3:
-				{
-					let [shell, holes, factory] = args;
-					super(factory);
-					if (shell === null) {
-						shell = this.getFactory().createLinearRing();
-					}
-					if (holes === null) {
-						holes = [];
-					}
-					if (Polygon.hasNullElements(holes)) {
-						throw new IllegalArgumentException("holes must not contain null elements");
-					}
-					if (shell.isEmpty() && Polygon.hasNonEmptyElements(holes)) {
-						throw new IllegalArgumentException("shell is empty but holes are not");
-					}
-					this.shell = shell;
-					this.holes = holes;
-					break;
-				}
+		if (args.length === 3) {
+			let [shell, holes, factory] = args;
+			super(factory);
+			if (shell === null) {
+				shell = this.getFactory().createLinearRing();
+			}
+			if (holes === null) {
+				holes = [];
+			}
+			if (Polygon.hasNullElements(holes)) {
+				throw new IllegalArgumentException("holes must not contain null elements");
+			}
+			if (shell.isEmpty() && Polygon.hasNonEmptyElements(holes)) {
+				throw new IllegalArgumentException("shell is empty but holes are not");
+			}
+			this.shell = shell;
+			this.holes = holes;
 		}
 	}
 	get interfaces_() {
@@ -123,34 +119,27 @@ export default class Polygon extends Geometry {
 		} else return super.equalsExact(...args);
 	}
 	normalize(...args) {
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.normalize(this.shell, true);
-					for (var i = 0; i < this.holes.length; i++) {
-						this.normalize(this.holes[i], false);
-					}
-					Arrays.sort(this.holes);
-					break;
-				}
-			case 2:
-				{
-					let [ring, clockwise] = args;
-					if (ring.isEmpty()) {
-						return null;
-					}
-					var uniqueCoordinates = new Array(ring.getCoordinates().length - 1);
-					System.arraycopy(ring.getCoordinates(), 0, uniqueCoordinates, 0, uniqueCoordinates.length);
-					var minCoordinate = CoordinateArrays.minCoordinate(ring.getCoordinates());
-					CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
-					System.arraycopy(uniqueCoordinates, 0, ring.getCoordinates(), 0, uniqueCoordinates.length);
-					ring.getCoordinates()[uniqueCoordinates.length] = uniqueCoordinates[0];
-					if (CGAlgorithms.isCCW(ring.getCoordinates()) === clockwise) {
-						CoordinateArrays.reverse(ring.getCoordinates());
-					}
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.normalize(this.shell, true);
+			for (var i = 0; i < this.holes.length; i++) {
+				this.normalize(this.holes[i], false);
+			}
+			Arrays.sort(this.holes);
+		} else if (args.length === 2) {
+			let [ring, clockwise] = args;
+			if (ring.isEmpty()) {
+				return null;
+			}
+			var uniqueCoordinates = new Array(ring.getCoordinates().length - 1);
+			System.arraycopy(ring.getCoordinates(), 0, uniqueCoordinates, 0, uniqueCoordinates.length);
+			var minCoordinate = CoordinateArrays.minCoordinate(ring.getCoordinates());
+			CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
+			System.arraycopy(uniqueCoordinates, 0, ring.getCoordinates(), 0, uniqueCoordinates.length);
+			ring.getCoordinates()[uniqueCoordinates.length] = uniqueCoordinates[0];
+			if (CGAlgorithms.isCCW(ring.getCoordinates()) === clockwise) {
+				CoordinateArrays.reverse(ring.getCoordinates());
+			}
 		}
 	}
 	getCoordinate() {
@@ -193,71 +182,62 @@ export default class Polygon extends Geometry {
 		return this.getExteriorRing().convexHull();
 	}
 	compareToSameClass(...args) {
-		switch (args.length) {
-			case 1:
-				{
-					let [o] = args;
-					var thisShell = this.shell;
-					var otherShell = o.shell;
-					return thisShell.compareToSameClass(otherShell);
-					break;
-				}
-			case 2:
-				{
-					let [o, comp] = args;
-					var poly = o;
-					var thisShell = this.shell;
-					var otherShell = poly.shell;
-					var shellComp = thisShell.compareToSameClass(otherShell, comp);
-					if (shellComp !== 0) return shellComp;
-					var nHole1 = this.getNumInteriorRing();
-					var nHole2 = poly.getNumInteriorRing();
-					var i = 0;
-					while (i < nHole1 && i < nHole2) {
-						var thisHole = this.getInteriorRingN(i);
-						var otherHole = poly.getInteriorRingN(i);
-						var holeComp = thisHole.compareToSameClass(otherHole, comp);
-						if (holeComp !== 0) return holeComp;
-						i++;
-					}
-					if (i < nHole1) return 1;
-					if (i < nHole2) return -1;
-					return 0;
-					break;
-				}
+		if (args.length === 1) {
+			let [o] = args;
+			var thisShell = this.shell;
+			var otherShell = o.shell;
+			return thisShell.compareToSameClass(otherShell);
+		} else if (args.length === 2) {
+			let [o, comp] = args;
+			var poly = o;
+			var thisShell = this.shell;
+			var otherShell = poly.shell;
+			var shellComp = thisShell.compareToSameClass(otherShell, comp);
+			if (shellComp !== 0) return shellComp;
+			var nHole1 = this.getNumInteriorRing();
+			var nHole2 = poly.getNumInteriorRing();
+			var i = 0;
+			while (i < nHole1 && i < nHole2) {
+				var thisHole = this.getInteriorRingN(i);
+				var otherHole = poly.getInteriorRingN(i);
+				var holeComp = thisHole.compareToSameClass(otherHole, comp);
+				if (holeComp !== 0) return holeComp;
+				i++;
+			}
+			if (i < nHole1) return 1;
+			if (i < nHole2) return -1;
+			return 0;
 		}
 	}
 	apply(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-					let [filter] = args;
-					this.shell.apply(filter);
+		if (args.length === 1) {
+			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
+				let [filter] = args;
+				this.shell.apply(filter);
+				for (var i = 0; i < this.holes.length; i++) {
+					this.holes[i].apply(filter);
+				}
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
+				let [filter] = args;
+				this.shell.apply(filter);
+				if (!filter.isDone()) {
 					for (var i = 0; i < this.holes.length; i++) {
 						this.holes[i].apply(filter);
-					}
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-					let [filter] = args;
-					this.shell.apply(filter);
-					if (!filter.isDone()) {
-						for (var i = 0; i < this.holes.length; i++) {
-							this.holes[i].apply(filter);
-							if (filter.isDone()) break;
-						}
-					}
-					if (filter.isGeometryChanged()) this.geometryChanged();
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-					let [filter] = args;
-					filter.filter(this);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-					let [filter] = args;
-					filter.filter(this);
-					this.shell.apply(filter);
-					for (var i = 0; i < this.holes.length; i++) {
-						this.holes[i].apply(filter);
+						if (filter.isDone()) break;
 					}
 				}
-				break;
+				if (filter.isGeometryChanged()) this.geometryChanged();
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
+				let [filter] = args;
+				filter.filter(this);
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
+				let [filter] = args;
+				filter.filter(this);
+				this.shell.apply(filter);
+				for (var i = 0; i < this.holes.length; i++) {
+					this.holes[i].apply(filter);
+				}
+			}
 		}
 	}
 	getBoundary() {

@@ -13,12 +13,8 @@ export default class DelaunayTriangulationBuilder {
 		this.siteCoords = null;
 		this.tolerance = 0.0;
 		this.subdiv = null;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -63,16 +59,14 @@ export default class DelaunayTriangulationBuilder {
 		this.tolerance = tolerance;
 	}
 	setSites(...args) {
-		switch (args.length) {
-			case 1:
-				if (args[0] instanceof Geometry) {
-					let [geom] = args;
-					this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					let [coords] = args;
-					this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
-				}
-				break;
+		if (args.length === 1) {
+			if (args[0] instanceof Geometry) {
+				let [geom] = args;
+				this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
+				let [coords] = args;
+				this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
+			}
 		}
 	}
 	getEdges(geomFact) {

@@ -4,13 +4,9 @@ export default class ConstraintVertex extends Vertex {
 		super();
 		this._isOnConstraint = null;
 		this.constraint = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [p] = args;
-					super(p);
-					break;
-				}
+		if (args.length === 1) {
+			let [p] = args;
+			super(p);
 		}
 	}
 	get interfaces_() {

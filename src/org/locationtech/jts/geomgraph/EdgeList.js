@@ -5,12 +5,8 @@ export default class EdgeList {
 	constructor(...args) {
 		this.edges = new ArrayList();
 		this.ocaMap = new TreeMap();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {

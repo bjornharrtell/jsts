@@ -2,12 +2,8 @@ import HashMap from '../../../../java/util/HashMap';
 export default class ObjectCounter {
 	constructor(...args) {
 		this.counts = new HashMap();
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
 		}
 	}
 	get interfaces_() {
@@ -32,16 +28,15 @@ class Counter {
 	constructor(...args) {
 		this._count = 0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [count] = args;
-						this._count = count;
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [count] = args;
+					this._count = count;
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

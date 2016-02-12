@@ -9,35 +9,33 @@ export default class PrecisionModel {
 		this.modelType = null;
 		this.scale = null;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					this.modelType = PrecisionModel.FLOATING;
+				})(...args);
+			} else if (args.length === 1) {
+				if (args[0] instanceof Type) {
 					return ((...args) => {
-						let [] = args;
-						this.modelType = PrecisionModel.FLOATING;
+						let [modelType] = args;
+						this.modelType = modelType;
+						if (modelType === PrecisionModel.FIXED) {
+							this.setScale(1.0);
+						}
 					})(...args);
-				case 1:
-					if (args[0] instanceof Type) {
-						return ((...args) => {
-							let [modelType] = args;
-							this.modelType = modelType;
-							if (modelType === PrecisionModel.FIXED) {
-								this.setScale(1.0);
-							}
-						})(...args);
-					} else if (typeof args[0] === "number") {
-						return ((...args) => {
-							let [scale] = args;
-							this.modelType = PrecisionModel.FIXED;
-							this.setScale(scale);
-						})(...args);
-					} else if (args[0] instanceof PrecisionModel) {
-						return ((...args) => {
-							let [pm] = args;
-							this.modelType = pm.modelType;
-							this.scale = pm.scale;
-						})(...args);
-					}
-					break;
+				} else if (typeof args[0] === "number") {
+					return ((...args) => {
+						let [scale] = args;
+						this.modelType = PrecisionModel.FIXED;
+						this.setScale(scale);
+					})(...args);
+				} else if (args[0] instanceof PrecisionModel) {
+					return ((...args) => {
+						let [pm] = args;
+						this.modelType = pm.modelType;
+						this.scale = pm.scale;
+					})(...args);
+				}
 			}
 		};
 		return overloaded.apply(this, args);
@@ -86,26 +84,24 @@ export default class PrecisionModel {
 		return description;
 	}
 	makePrecise(...args) {
-		switch (args.length) {
-			case 1:
-				if (typeof args[0] === "number") {
-					let [val] = args;
-					if (Double.isNaN(val)) return val;
-					if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
-						var floatSingleVal = val;
-						return floatSingleVal;
-					}
-					if (this.modelType === PrecisionModel.FIXED) {
-						return Math.round(val * this.scale) / this.scale;
-					}
-					return val;
-				} else if (args[0] instanceof Coordinate) {
-					let [coord] = args;
-					if (this.modelType === PrecisionModel.FLOATING) return null;
-					coord.x = this.makePrecise(coord.x);
-					coord.y = this.makePrecise(coord.y);
+		if (args.length === 1) {
+			if (typeof args[0] === "number") {
+				let [val] = args;
+				if (Double.isNaN(val)) return val;
+				if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
+					var floatSingleVal = val;
+					return floatSingleVal;
 				}
-				break;
+				if (this.modelType === PrecisionModel.FIXED) {
+					return Math.round(val * this.scale) / this.scale;
+				}
+				return val;
+			} else if (args[0] instanceof Coordinate) {
+				let [coord] = args;
+				if (this.modelType === PrecisionModel.FLOATING) return null;
+				coord.x = this.makePrecise(coord.x);
+				coord.y = this.makePrecise(coord.y);
+			}
 		}
 	}
 	getMaximumSignificantDigits() {
@@ -129,14 +125,10 @@ export default class PrecisionModel {
 class Type {
 	constructor(...args) {
 		this.name = null;
-		switch (args.length) {
-			case 1:
-				{
-					let [name] = args;
-					this.name = name;
-					Type.nameToTypeMap.put(name, this);
-					break;
-				}
+		if (args.length === 1) {
+			let [name] = args;
+			this.name = name;
+			Type.nameToTypeMap.put(name, this);
 		}
 	}
 	get interfaces_() {

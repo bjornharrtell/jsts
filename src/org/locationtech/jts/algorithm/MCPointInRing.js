@@ -13,14 +13,10 @@ export default class MCPointInRing {
 		this.tree = null;
 		this.crossings = 0;
 		this.interval = new Interval();
-		switch (args.length) {
-			case 1:
-				{
-					let [ring] = args;
-					this.ring = ring;
-					this.buildIndex();
-					break;
-				}
+		if (args.length === 1) {
+			let [ring] = args;
+			this.ring = ring;
+			this.buildIndex();
 		}
 	}
 	get interfaces_() {
@@ -88,14 +84,10 @@ class MCSelecter extends MonotoneChainSelectAction {
 		super();
 		this.mcp = null;
 		this.p = null;
-		switch (args.length) {
-			case 2:
-				{
-					let [mcp, p] = args;
-					this.mcp = mcp;
-					this.p = p;
-					break;
-				}
+		if (args.length === 2) {
+			let [mcp, p] = args;
+			this.mcp = mcp;
+			this.p = p;
 		}
 	}
 	get interfaces_() {

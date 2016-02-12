@@ -9,18 +9,17 @@ export default class GeometricShapeFactory {
 		this.nPts = 100;
 		this.rotationAngle = 0.0;
 		const overloaded = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloaded.call(this, new GeometryFactory());
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [geomFact] = args;
-						this.geomFact = geomFact;
-						this.precModel = geomFact.getPrecisionModel();
-					})(...args);
+			if (args.length === 0) {
+				return ((...args) => {
+					let [] = args;
+					overloaded.call(this, new GeometryFactory());
+				})(...args);
+			} else if (args.length === 1) {
+				return ((...args) => {
+					let [geomFact] = args;
+					this.geomFact = geomFact;
+					this.precModel = geomFact.getPrecisionModel();
+				})(...args);
 			}
 		};
 		return overloaded.apply(this, args);

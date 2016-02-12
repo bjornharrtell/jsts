@@ -4,14 +4,10 @@ import OverlayOp from '../OverlayOp';
 export default class SnapIfNeededOverlayOp {
 	constructor(...args) {
 		this.geom = new Array(2);
-		switch (args.length) {
-			case 2:
-				{
-					let [g1, g2] = args;
-					this.geom[0] = g1;
-					this.geom[1] = g2;
-					break;
-				}
+		if (args.length === 2) {
+			let [g1, g2] = args;
+			this.geom[0] = g1;
+			this.geom[1] = g2;
 		}
 	}
 	get interfaces_() {

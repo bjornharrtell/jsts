@@ -6,13 +6,9 @@ export default class OffsetSegmentString {
 		this.ptList = null;
 		this.precisionModel = null;
 		this.minimimVertexDistance = 0.0;
-		switch (args.length) {
-			case 0:
-				{
-					let [] = args;
-					this.ptList = new ArrayList();
-					break;
-				}
+		if (args.length === 0) {
+			let [] = args;
+			this.ptList = new ArrayList();
 		}
 	}
 	get interfaces_() {
