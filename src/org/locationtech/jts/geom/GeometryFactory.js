@@ -22,34 +22,24 @@ export default class GeometryFactory {
 		this.SRID = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, new PrecisionModel(), 0);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, new PrecisionModel(), 0);
 			} else if (args.length === 1) {
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFactory) > -1) {
-					return ((...args) => {
-						let [coordinateSequenceFactory] = args;
-						overloaded.call(this, new PrecisionModel(), 0, coordinateSequenceFactory);
-					})(...args);
+					let [coordinateSequenceFactory] = args;
+					overloaded.call(this, new PrecisionModel(), 0, coordinateSequenceFactory);
 				} else if (args[0] instanceof PrecisionModel) {
-					return ((...args) => {
-						let [precisionModel] = args;
-						overloaded.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
-					})(...args);
+					let [precisionModel] = args;
+					overloaded.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
 				}
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [precisionModel, SRID] = args;
-					overloaded.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory());
-				})(...args);
+				let [precisionModel, SRID] = args;
+				overloaded.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory());
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [precisionModel, SRID, coordinateSequenceFactory] = args;
-					this.precisionModel = precisionModel;
-					this.coordinateSequenceFactory = coordinateSequenceFactory;
-					this.SRID = SRID;
-				})(...args);
+				let [precisionModel, SRID, coordinateSequenceFactory] = args;
+				this.precisionModel = precisionModel;
+				this.coordinateSequenceFactory = coordinateSequenceFactory;
+				this.SRID = SRID;
 			}
 		};
 		return overloaded.apply(this, args);

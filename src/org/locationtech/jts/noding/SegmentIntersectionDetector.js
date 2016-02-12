@@ -12,15 +12,11 @@ export default class SegmentIntersectionDetector {
 		this.intSegments = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, new RobustLineIntersector());
-				})(...args);
+				let [] = args;
+				overloaded.call(this, new RobustLineIntersector());
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [li] = args;
-					this.li = li;
-				})(...args);
+				let [li] = args;
+				this.li = li;
 			}
 		};
 		return overloaded.apply(this, args);

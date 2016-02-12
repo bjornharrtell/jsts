@@ -11,49 +11,39 @@ export default class CoordinateArraySequence {
 		const overloaded = (...args) => {
 			if (args.length === 1) {
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [coordinates] = args;
-						overloaded.call(this, coordinates, 3);
-					})(...args);
+					let [coordinates] = args;
+					overloaded.call(this, coordinates, 3);
 				} else if (Number.isInteger(args[0])) {
-					return ((...args) => {
-						let [size] = args;
-						this.coordinates = new Array(size);
-						for (var i = 0; i < size; i++) {
-							this.coordinates[i] = new Coordinate();
-						}
-					})(...args);
+					let [size] = args;
+					this.coordinates = new Array(size);
+					for (var i = 0; i < size; i++) {
+						this.coordinates[i] = new Coordinate();
+					}
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordSeq] = args;
-						if (coordSeq === null) {
-							this.coordinates = new Array(0);
-							return null;
-						}
-						this.dimension = coordSeq.getDimension();
-						this.coordinates = new Array(coordSeq.size());
-						for (var i = 0; i < this.coordinates.length; i++) {
-							this.coordinates[i] = coordSeq.getCoordinateCopy(i);
-						}
-					})(...args);
+					let [coordSeq] = args;
+					if (coordSeq === null) {
+						this.coordinates = new Array(0);
+						return null;
+					}
+					this.dimension = coordSeq.getDimension();
+					this.coordinates = new Array(coordSeq.size());
+					for (var i = 0; i < this.coordinates.length; i++) {
+						this.coordinates[i] = coordSeq.getCoordinateCopy(i);
+					}
 				}
 			} else if (args.length === 2) {
 				if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coordinates, dimension] = args;
-						this.coordinates = coordinates;
-						this.dimension = dimension;
-						if (coordinates === null) this.coordinates = new Array(0);
-					})(...args);
+					let [coordinates, dimension] = args;
+					this.coordinates = coordinates;
+					this.dimension = dimension;
+					if (coordinates === null) this.coordinates = new Array(0);
 				} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [size, dimension] = args;
-						this.coordinates = new Array(size);
-						this.dimension = dimension;
-						for (var i = 0; i < size; i++) {
-							this.coordinates[i] = new Coordinate();
-						}
-					})(...args);
+					let [size, dimension] = args;
+					this.coordinates = new Array(size);
+					this.dimension = dimension;
+					for (var i = 0; i < size; i++) {
+						this.coordinates[i] = new Coordinate();
+					}
 				}
 			}
 		};

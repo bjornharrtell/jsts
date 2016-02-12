@@ -13,17 +13,13 @@ export default class LineStringSnapper {
 		const overloaded = (...args) => {
 			if (args.length === 2) {
 				if (args[0] instanceof LineString && typeof args[1] === "number") {
-					return ((...args) => {
-						let [srcLine, snapTolerance] = args;
-						overloaded.call(this, srcLine.getCoordinates(), snapTolerance);
-					})(...args);
+					let [srcLine, snapTolerance] = args;
+					overloaded.call(this, srcLine.getCoordinates(), snapTolerance);
 				} else if (args[0] instanceof Array && typeof args[1] === "number") {
-					return ((...args) => {
-						let [srcPts, snapTolerance] = args;
-						this.srcPts = srcPts;
-						this._isClosed = LineStringSnapper.isClosed(srcPts);
-						this.snapTolerance = snapTolerance;
-					})(...args);
+					let [srcPts, snapTolerance] = args;
+					this.srcPts = srcPts;
+					this._isClosed = LineStringSnapper.isClosed(srcPts);
+					this.snapTolerance = snapTolerance;
 				}
 			}
 		};

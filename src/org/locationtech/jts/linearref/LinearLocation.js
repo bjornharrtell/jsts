@@ -8,37 +8,27 @@ export default class LinearLocation {
 		this.segmentFraction = 0.0;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [loc] = args;
-					this.componentIndex = loc.componentIndex;
-					this.segmentIndex = loc.segmentIndex;
-					this.segmentFraction = loc.segmentFraction;
-				})(...args);
+				let [loc] = args;
+				this.componentIndex = loc.componentIndex;
+				this.segmentIndex = loc.segmentIndex;
+				this.segmentFraction = loc.segmentFraction;
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [segmentIndex, segmentFraction] = args;
-					overloaded.call(this, 0, segmentIndex, segmentFraction);
-				})(...args);
+				let [segmentIndex, segmentFraction] = args;
+				overloaded.call(this, 0, segmentIndex, segmentFraction);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [componentIndex, segmentIndex, segmentFraction] = args;
-					this.componentIndex = componentIndex;
-					this.segmentIndex = segmentIndex;
-					this.segmentFraction = segmentFraction;
-					this.normalize();
-				})(...args);
+				let [componentIndex, segmentIndex, segmentFraction] = args;
+				this.componentIndex = componentIndex;
+				this.segmentIndex = segmentIndex;
+				this.segmentFraction = segmentFraction;
+				this.normalize();
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [componentIndex, segmentIndex, segmentFraction, doNormalize] = args;
-					this.componentIndex = componentIndex;
-					this.segmentIndex = segmentIndex;
-					this.segmentFraction = segmentFraction;
-					if (doNormalize) this.normalize();
-				})(...args);
+				let [componentIndex, segmentIndex, segmentFraction, doNormalize] = args;
+				this.componentIndex = componentIndex;
+				this.segmentIndex = segmentIndex;
+				this.segmentFraction = segmentFraction;
+				if (doNormalize) this.normalize();
 			}
 		};
 		return overloaded.apply(this, args);

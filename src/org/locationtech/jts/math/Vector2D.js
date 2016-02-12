@@ -8,37 +8,27 @@ export default class Vector2D {
 		this.y = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, 0.0, 0.0);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, 0.0, 0.0);
 			} else if (args.length === 1) {
 				if (args[0] instanceof Vector2D) {
-					return ((...args) => {
-						let [v] = args;
-						this.x = v.x;
-						this.y = v.y;
-					})(...args);
+					let [v] = args;
+					this.x = v.x;
+					this.y = v.y;
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [v] = args;
-						this.x = v.x;
-						this.y = v.y;
-					})(...args);
+					let [v] = args;
+					this.x = v.x;
+					this.y = v.y;
 				}
 			} else if (args.length === 2) {
 				if (typeof args[0] === "number" && typeof args[1] === "number") {
-					return ((...args) => {
-						let [x, y] = args;
-						this.x = x;
-						this.y = y;
-					})(...args);
+					let [x, y] = args;
+					this.x = x;
+					this.y = y;
 				} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-					return ((...args) => {
-						let [from, to] = args;
-						this.x = to.x - from.x;
-						this.y = to.y - from.y;
-					})(...args);
+					let [from, to] = args;
+					this.x = to.x - from.x;
+					this.y = to.y - from.y;
 				}
 			}
 		};

@@ -8,38 +8,28 @@ export default class Label {
 		const overloaded = (...args) => {
 			if (args.length === 1) {
 				if (Number.isInteger(args[0])) {
-					return ((...args) => {
-						let [onLoc] = args;
-						this.elt[0] = new TopologyLocation(onLoc);
-						this.elt[1] = new TopologyLocation(onLoc);
-					})(...args);
+					let [onLoc] = args;
+					this.elt[0] = new TopologyLocation(onLoc);
+					this.elt[1] = new TopologyLocation(onLoc);
 				} else if (args[0] instanceof Label) {
-					return ((...args) => {
-						let [lbl] = args;
-						this.elt[0] = new TopologyLocation(lbl.elt[0]);
-						this.elt[1] = new TopologyLocation(lbl.elt[1]);
-					})(...args);
+					let [lbl] = args;
+					this.elt[0] = new TopologyLocation(lbl.elt[0]);
+					this.elt[1] = new TopologyLocation(lbl.elt[1]);
 				}
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [geomIndex, onLoc] = args;
-					this.elt[0] = new TopologyLocation(Location.NONE);
-					this.elt[1] = new TopologyLocation(Location.NONE);
-					this.elt[geomIndex].setLocation(onLoc);
-				})(...args);
+				let [geomIndex, onLoc] = args;
+				this.elt[0] = new TopologyLocation(Location.NONE);
+				this.elt[1] = new TopologyLocation(Location.NONE);
+				this.elt[geomIndex].setLocation(onLoc);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [onLoc, leftLoc, rightLoc] = args;
-					this.elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
-					this.elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc);
-				})(...args);
+				let [onLoc, leftLoc, rightLoc] = args;
+				this.elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
+				this.elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc);
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [geomIndex, onLoc, leftLoc, rightLoc] = args;
-					this.elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
-					this.elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
-					this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
-				})(...args);
+				let [geomIndex, onLoc, leftLoc, rightLoc] = args;
+				this.elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
+				this.elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
+				this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
 			}
 		};
 		return overloaded.apply(this, args);

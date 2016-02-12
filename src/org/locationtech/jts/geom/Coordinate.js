@@ -13,27 +13,19 @@ export default class Coordinate {
 		this.z = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, 0.0, 0.0);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, 0.0, 0.0);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [c] = args;
-					overloaded.call(this, c.x, c.y, c.z);
-				})(...args);
+				let [c] = args;
+				overloaded.call(this, c.x, c.y, c.z);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [x, y] = args;
-					overloaded.call(this, x, y, Coordinate.NULL_ORDINATE);
-				})(...args);
+				let [x, y] = args;
+				overloaded.call(this, x, y, Coordinate.NULL_ORDINATE);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [x, y, z] = args;
-					this.x = x;
-					this.y = y;
-					this.z = z;
-				})(...args);
+				let [x, y, z] = args;
+				this.x = x;
+				this.y = y;
+				this.z = z;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -166,16 +158,12 @@ class DimensionalComparator {
 		this.dimensionsToTest = 2;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, 2);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, 2);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [dimensionsToTest] = args;
-					if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
-					this.dimensionsToTest = dimensionsToTest;
-				})(...args);
+				let [dimensionsToTest] = args;
+				if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
+				this.dimensionsToTest = dimensionsToTest;
 			}
 		};
 		return overloaded.apply(this, args);

@@ -5,17 +5,13 @@ export default class Interval {
 		this.max = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [other] = args;
-					overloaded.call(this, other.min, other.max);
-				})(...args);
+				let [other] = args;
+				overloaded.call(this, other.min, other.max);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [min, max] = args;
-					Assert.isTrue(min <= max);
-					this.min = min;
-					this.max = max;
-				})(...args);
+				let [min, max] = args;
+				Assert.isTrue(min <= max);
+				this.min = min;
+				this.max = max;
 			}
 		};
 		return overloaded.apply(this, args);

@@ -8,17 +8,13 @@ export default class TaggedLineString {
 		this.minimumSize = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [parentLine] = args;
-					overloaded.call(this, parentLine, 2);
-				})(...args);
+				let [parentLine] = args;
+				overloaded.call(this, parentLine, 2);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [parentLine, minimumSize] = args;
-					this.parentLine = parentLine;
-					this.minimumSize = minimumSize;
-					this.init();
-				})(...args);
+				let [parentLine, minimumSize] = args;
+				this.parentLine = parentLine;
+				this.minimumSize = minimumSize;
+				this.init();
 			}
 		};
 		return overloaded.apply(this, args);

@@ -29,14 +29,10 @@ class Counter {
 		this._count = 0;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [count] = args;
-					this._count = count;
-				})(...args);
+				let [count] = args;
+				this._count = count;
 			}
 		};
 		return overloaded.apply(this, args);

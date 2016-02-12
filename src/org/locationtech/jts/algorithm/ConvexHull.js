@@ -14,16 +14,12 @@ export default class ConvexHull {
 		this.inputPts = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [geometry] = args;
-					overloaded.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
-				})(...args);
+				let [geometry] = args;
+				overloaded.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [pts, geomFactory] = args;
-					this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
-					this.geomFactory = geomFactory;
-				})(...args);
+				let [pts, geomFactory] = args;
+				this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
+				this.geomFactory = geomFactory;
 			}
 		};
 		return overloaded.apply(this, args);

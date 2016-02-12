@@ -16,16 +16,12 @@ export default class BufferOp {
 		this.saveException = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [g] = args;
-					this.argGeom = g;
-				})(...args);
+				let [g] = args;
+				this.argGeom = g;
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [g, bufParams] = args;
-					this.argGeom = g;
-					this.bufParams = bufParams;
-				})(...args);
+				let [g, bufParams] = args;
+				this.argGeom = g;
+				this.bufParams = bufParams;
 			}
 		};
 		return overloaded.apply(this, args);

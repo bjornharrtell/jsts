@@ -7,35 +7,27 @@ export default class TopologyLocation {
 		const overloaded = (...args) => {
 			if (args.length === 1) {
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [location] = args;
-						this.init(location.length);
-					})(...args);
+					let [location] = args;
+					this.init(location.length);
 				} else if (Number.isInteger(args[0])) {
-					return ((...args) => {
-						let [on] = args;
-						this.init(1);
-						this.location[Position.ON] = on;
-					})(...args);
+					let [on] = args;
+					this.init(1);
+					this.location[Position.ON] = on;
 				} else if (args[0] instanceof TopologyLocation) {
-					return ((...args) => {
-						let [gl] = args;
-						this.init(gl.location.length);
-						if (gl !== null) {
-							for (var i = 0; i < this.location.length; i++) {
-								this.location[i] = gl.location[i];
-							}
+					let [gl] = args;
+					this.init(gl.location.length);
+					if (gl !== null) {
+						for (var i = 0; i < this.location.length; i++) {
+							this.location[i] = gl.location[i];
 						}
-					})(...args);
+					}
 				}
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [on, left, right] = args;
-					this.init(3);
-					this.location[Position.ON] = on;
-					this.location[Position.LEFT] = left;
-					this.location[Position.RIGHT] = right;
-				})(...args);
+				let [on, left, right] = args;
+				this.init(3);
+				this.location[Position.ON] = on;
+				this.location[Position.LEFT] = left;
+				this.location[Position.RIGHT] = right;
 			}
 		};
 		return overloaded.apply(this, args);

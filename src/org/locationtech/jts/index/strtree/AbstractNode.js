@@ -9,14 +9,10 @@ export default class AbstractNode {
 		this.level = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [level] = args;
-					this.level = level;
-				})(...args);
+				let [level] = args;
+				this.level = level;
 			}
 		};
 		return overloaded.apply(this, args);

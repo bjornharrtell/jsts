@@ -10,31 +10,23 @@ export default class PrecisionModel {
 		this.scale = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					this.modelType = PrecisionModel.FLOATING;
-				})(...args);
+				let [] = args;
+				this.modelType = PrecisionModel.FLOATING;
 			} else if (args.length === 1) {
 				if (args[0] instanceof Type) {
-					return ((...args) => {
-						let [modelType] = args;
-						this.modelType = modelType;
-						if (modelType === PrecisionModel.FIXED) {
-							this.setScale(1.0);
-						}
-					})(...args);
+					let [modelType] = args;
+					this.modelType = modelType;
+					if (modelType === PrecisionModel.FIXED) {
+						this.setScale(1.0);
+					}
 				} else if (typeof args[0] === "number") {
-					return ((...args) => {
-						let [scale] = args;
-						this.modelType = PrecisionModel.FIXED;
-						this.setScale(scale);
-					})(...args);
+					let [scale] = args;
+					this.modelType = PrecisionModel.FIXED;
+					this.setScale(scale);
 				} else if (args[0] instanceof PrecisionModel) {
-					return ((...args) => {
-						let [pm] = args;
-						this.modelType = pm.modelType;
-						this.scale = pm.scale;
-					})(...args);
+					let [pm] = args;
+					this.modelType = pm.modelType;
+					this.scale = pm.scale;
 				}
 			}
 		};

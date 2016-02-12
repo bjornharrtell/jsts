@@ -6,26 +6,20 @@ export default class Vector3D {
 		this.z = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [v] = args;
-					this.x = v.x;
-					this.y = v.y;
-					this.z = v.z;
-				})(...args);
+				let [v] = args;
+				this.x = v.x;
+				this.y = v.y;
+				this.z = v.z;
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [from, to] = args;
-					this.x = to.x - from.x;
-					this.y = to.y - from.y;
-					this.z = to.z - from.z;
-				})(...args);
+				let [from, to] = args;
+				this.x = to.x - from.x;
+				this.y = to.y - from.y;
+				this.z = to.z - from.z;
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [x, y, z] = args;
-					this.x = x;
-					this.y = y;
-					this.z = z;
-				})(...args);
+				let [x, y, z] = args;
+				this.x = x;
+				this.y = y;
+				this.z = z;
 			}
 		};
 		return overloaded.apply(this, args);

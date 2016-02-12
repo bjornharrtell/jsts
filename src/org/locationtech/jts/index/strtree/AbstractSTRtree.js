@@ -14,16 +14,12 @@ export default class AbstractSTRtree {
 		this.nodeCapacity = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [nodeCapacity] = args;
-					Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-					this.nodeCapacity = nodeCapacity;
-				})(...args);
+				let [nodeCapacity] = args;
+				Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
+				this.nodeCapacity = nodeCapacity;
 			}
 		};
 		return overloaded.apply(this, args);

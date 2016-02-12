@@ -9,32 +9,22 @@ export default class Envelope {
 		this.maxy = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					this.init();
-				})(...args);
+				let [] = args;
+				this.init();
 			} else if (args.length === 1) {
 				if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						this.init(p.x, p.x, p.y, p.y);
-					})(...args);
+					let [p] = args;
+					this.init(p.x, p.x, p.y, p.y);
 				} else if (args[0] instanceof Envelope) {
-					return ((...args) => {
-						let [env] = args;
-						this.init(env);
-					})(...args);
+					let [env] = args;
+					this.init(env);
 				}
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [p1, p2] = args;
-					this.init(p1.x, p2.x, p1.y, p2.y);
-				})(...args);
+				let [p1, p2] = args;
+				this.init(p1.x, p2.x, p1.y, p2.y);
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [x1, x2, y1, y2] = args;
-					this.init(x1, x2, y1, y2);
-				})(...args);
+				let [x1, x2, y1, y2] = args;
+				this.init(x1, x2, y1, y2);
 			}
 		};
 		return overloaded.apply(this, args);

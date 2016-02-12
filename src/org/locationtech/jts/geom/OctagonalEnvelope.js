@@ -19,37 +19,25 @@ export default class OctagonalEnvelope {
 		this.maxB = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
 				if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						this.expandToInclude(p);
-					})(...args);
+					let [p] = args;
+					this.expandToInclude(p);
 				} else if (args[0] instanceof Envelope) {
-					return ((...args) => {
-						let [env] = args;
-						this.expandToInclude(env);
-					})(...args);
+					let [env] = args;
+					this.expandToInclude(env);
 				} else if (args[0] instanceof OctagonalEnvelope) {
-					return ((...args) => {
-						let [oct] = args;
-						this.expandToInclude(oct);
-					})(...args);
+					let [oct] = args;
+					this.expandToInclude(oct);
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						this.expandToInclude(geom);
-					})(...args);
+					let [geom] = args;
+					this.expandToInclude(geom);
 				}
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [p0, p1] = args;
-					this.expandToInclude(p0);
-					this.expandToInclude(p1);
-				})(...args);
+				let [p0, p1] = args;
+				this.expandToInclude(p0);
+				this.expandToInclude(p1);
 			}
 		};
 		return overloaded.apply(this, args);

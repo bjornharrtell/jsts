@@ -5,15 +5,11 @@ export default class CommonBitsOp {
 		this.cbr = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, true);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, true);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [returnToOriginalPrecision] = args;
-					this.returnToOriginalPrecision = returnToOriginalPrecision;
-				})(...args);
+				let [returnToOriginalPrecision] = args;
+				this.returnToOriginalPrecision = returnToOriginalPrecision;
 			}
 		};
 		return overloaded.apply(this, args);

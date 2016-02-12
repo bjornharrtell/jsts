@@ -11,32 +11,22 @@ export default class DD {
 		this.lo = 0.0;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					this.init(0.0);
-				})(...args);
+				let [] = args;
+				this.init(0.0);
 			} else if (args.length === 1) {
 				if (typeof args[0] === "number") {
-					return ((...args) => {
-						let [x] = args;
-						this.init(x);
-					})(...args);
+					let [x] = args;
+					this.init(x);
 				} else if (args[0] instanceof DD) {
-					return ((...args) => {
-						let [dd] = args;
-						this.init(dd);
-					})(...args);
+					let [dd] = args;
+					this.init(dd);
 				} else if (typeof args[0] === "string") {
-					return ((...args) => {
-						let [str] = args;
-						overloaded.call(this, DD.parse(str));
-					})(...args);
+					let [str] = args;
+					overloaded.call(this, DD.parse(str));
 				}
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [hi, lo] = args;
-					this.init(hi, lo);
-				})(...args);
+				let [hi, lo] = args;
+				this.init(hi, lo);
 			}
 		};
 		return overloaded.apply(this, args);

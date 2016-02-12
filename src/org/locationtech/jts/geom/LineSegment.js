@@ -12,26 +12,18 @@ export default class LineSegment {
 		this.p1 = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, new Coordinate(), new Coordinate());
-				})(...args);
+				let [] = args;
+				overloaded.call(this, new Coordinate(), new Coordinate());
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [ls] = args;
-					overloaded.call(this, ls.p0, ls.p1);
-				})(...args);
+				let [ls] = args;
+				overloaded.call(this, ls.p0, ls.p1);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [p0, p1] = args;
-					this.p0 = p0;
-					this.p1 = p1;
-				})(...args);
+				let [p0, p1] = args;
+				this.p0 = p0;
+				this.p1 = p1;
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [x0, y0, x1, y1] = args;
-					overloaded.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
-				})(...args);
+				let [x0, y0, x1, y1] = args;
+				overloaded.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
 			}
 		};
 		return overloaded.apply(this, args);

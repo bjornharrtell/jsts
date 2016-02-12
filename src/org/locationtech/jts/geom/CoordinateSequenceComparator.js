@@ -6,15 +6,11 @@ export default class CoordinateSequenceComparator {
 		this.dimensionLimit = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					this.dimensionLimit = Integer.MAX_VALUE;
-				})(...args);
+				let [] = args;
+				this.dimensionLimit = Integer.MAX_VALUE;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [dimensionLimit] = args;
-					this.dimensionLimit = dimensionLimit;
-				})(...args);
+				let [dimensionLimit] = args;
+				this.dimensionLimit = dimensionLimit;
 			}
 		};
 		return overloaded.apply(this, args);

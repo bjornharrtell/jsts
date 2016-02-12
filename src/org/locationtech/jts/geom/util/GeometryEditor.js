@@ -14,14 +14,10 @@ export default class GeometryEditor {
 		this.isUserDataCopied = false;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [factory] = args;
-					this.factory = factory;
-				})(...args);
+				let [factory] = args;
+				this.factory = factory;
 			}
 		};
 		return overloaded.apply(this, args);

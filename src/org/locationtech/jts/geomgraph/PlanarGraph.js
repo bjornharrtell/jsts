@@ -15,15 +15,11 @@ export default class PlanarGraph {
 		this.edgeEndList = new ArrayList();
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					this.nodes = new NodeMap(new NodeFactory());
-				})(...args);
+				let [] = args;
+				this.nodes = new NodeMap(new NodeFactory());
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [nodeFact] = args;
-					this.nodes = new NodeMap(nodeFact);
-				})(...args);
+				let [nodeFact] = args;
+				this.nodes = new NodeMap(nodeFact);
 			}
 		};
 		return overloaded.apply(this, args);

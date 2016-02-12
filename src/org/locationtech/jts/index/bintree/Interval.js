@@ -4,21 +4,15 @@ export default class Interval {
 		this.max = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					this.min = 0.0;
-					this.max = 0.0;
-				})(...args);
+				let [] = args;
+				this.min = 0.0;
+				this.max = 0.0;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [interval] = args;
-					this.init(interval.min, interval.max);
-				})(...args);
+				let [interval] = args;
+				this.init(interval.min, interval.max);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [min, max] = args;
-					this.init(min, max);
-				})(...args);
+				let [min, max] = args;
+				this.init(min, max);
 			}
 		};
 		return overloaded.apply(this, args);

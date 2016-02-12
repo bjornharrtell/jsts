@@ -7,21 +7,15 @@ export default class PackedCoordinateSequenceFactory {
 		this.dimension = 3;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, PackedCoordinateSequenceFactory.DOUBLE);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, PackedCoordinateSequenceFactory.DOUBLE);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [type] = args;
-					overloaded.call(this, type, 3);
-				})(...args);
+				let [type] = args;
+				overloaded.call(this, type, 3);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [type, dimension] = args;
-					this.setType(type);
-					this.setDimension(dimension);
-				})(...args);
+				let [type, dimension] = args;
+				this.setType(type);
+				this.setDimension(dimension);
 			}
 		};
 		return overloaded.apply(this, args);

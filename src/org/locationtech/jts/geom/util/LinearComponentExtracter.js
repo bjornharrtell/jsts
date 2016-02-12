@@ -10,16 +10,12 @@ export default class LinearComponentExtracter {
 		this.isForcedToLineString = false;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [lines] = args;
-					this.lines = lines;
-				})(...args);
+				let [lines] = args;
+				this.lines = lines;
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [lines, isForcedToLineString] = args;
-					this.lines = lines;
-					this.isForcedToLineString = isForcedToLineString;
-				})(...args);
+				let [lines, isForcedToLineString] = args;
+				this.lines = lines;
+				this.isForcedToLineString = isForcedToLineString;
 			}
 		};
 		return overloaded.apply(this, args);

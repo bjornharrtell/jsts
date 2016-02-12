@@ -5,17 +5,13 @@ export default class SweepLineInterval {
 		this.item = null;
 		const overloaded = (...args) => {
 			if (args.length === 2) {
-				return ((...args) => {
-					let [min, max] = args;
-					overloaded.call(this, min, max, null);
-				})(...args);
+				let [min, max] = args;
+				overloaded.call(this, min, max, null);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [min, max, item] = args;
-					this.min = min < max ? min : max;
-					this.max = max > min ? max : min;
-					this.item = item;
-				})(...args);
+				let [min, max, item] = args;
+				this.min = min < max ? min : max;
+				this.max = max > min ? max : min;
+				this.item = item;
 			}
 		};
 		return overloaded.apply(this, args);

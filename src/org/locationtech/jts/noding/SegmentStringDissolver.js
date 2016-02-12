@@ -9,15 +9,11 @@ export default class SegmentStringDissolver {
 		this.ocaMap = new TreeMap();
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, null);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, null);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [merger] = args;
-					this.merger = merger;
-				})(...args);
+				let [merger] = args;
+				this.merger = merger;
 			}
 		};
 		return overloaded.apply(this, args);

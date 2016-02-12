@@ -8,20 +8,14 @@ export default class Vertex {
 		this.p = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [_p] = args;
-					this.p = new Coordinate(_p);
-				})(...args);
+				let [_p] = args;
+				this.p = new Coordinate(_p);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [_x, _y] = args;
-					this.p = new Coordinate(_x, _y);
-				})(...args);
+				let [_x, _y] = args;
+				this.p = new Coordinate(_x, _y);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [_x, _y, _z] = args;
-					this.p = new Coordinate(_x, _y, _z);
-				})(...args);
+				let [_x, _y, _z] = args;
+				this.p = new Coordinate(_x, _y, _z);
 			}
 		};
 		return overloaded.apply(this, args);

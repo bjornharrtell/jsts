@@ -8,28 +8,20 @@ export default class BufferParameters {
 		this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [quadrantSegments] = args;
-					this.setQuadrantSegments(quadrantSegments);
-				})(...args);
+				let [quadrantSegments] = args;
+				this.setQuadrantSegments(quadrantSegments);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [quadrantSegments, endCapStyle] = args;
-					this.setQuadrantSegments(quadrantSegments);
-					this.setEndCapStyle(endCapStyle);
-				})(...args);
+				let [quadrantSegments, endCapStyle] = args;
+				this.setQuadrantSegments(quadrantSegments);
+				this.setEndCapStyle(endCapStyle);
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [quadrantSegments, endCapStyle, joinStyle, mitreLimit] = args;
-					this.setQuadrantSegments(quadrantSegments);
-					this.setEndCapStyle(endCapStyle);
-					this.setJoinStyle(joinStyle);
-					this.setMitreLimit(mitreLimit);
-				})(...args);
+				let [quadrantSegments, endCapStyle, joinStyle, mitreLimit] = args;
+				this.setQuadrantSegments(quadrantSegments);
+				this.setEndCapStyle(endCapStyle);
+				this.setJoinStyle(joinStyle);
+				this.setMitreLimit(mitreLimit);
 			}
 		};
 		return overloaded.apply(this, args);

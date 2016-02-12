@@ -5,23 +5,15 @@ import Envelope from './Envelope';
 import Assert from '../util/Assert';
 export default class Geometry {
 	constructor(...args) {
-		(() => {
-			this.envelope = null;
-			this.factory = null;
-			this.SRID = null;
-			this.userData = null;
-		})();
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [factory] = args;
-						this.factory = factory;
-						this.SRID = factory.getSRID();
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		this.envelope = null;
+		this.factory = null;
+		this.SRID = null;
+		this.userData = null;
+		if (args.length === 1) {
+			let [factory] = args;
+			this.factory = factory;
+			this.SRID = factory.getSRID();
+		}
 	}
 	get interfaces_() {
 		return [Cloneable, Comparable, Serializable];
@@ -55,28 +47,20 @@ export default class Geometry {
 		return 0.0;
 	}
 	union(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						return UnaryUnionOp.union(this);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [other] = args;
-						if (this.isEmpty() || other.isEmpty()) {
-							if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, this, other, this.factory);
-							if (this.isEmpty()) return other.copy();
-							if (other.isEmpty()) return this.copy();
-						}
-						this.checkNotGeometryCollection(this);
-						this.checkNotGeometryCollection(other);
-						return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
-					})(...args);
+		if (args.length === 0) {
+			let [] = args;
+			return UnaryUnionOp.union(this);
+		} else if (args.length === 1) {
+			let [other] = args;
+			if (this.isEmpty() || other.isEmpty()) {
+				if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, this, other, this.factory);
+				if (this.isEmpty()) return other.copy();
+				if (other.isEmpty()) return this.copy();
 			}
-		};
-		return overloads.apply(this, args);
+			this.checkNotGeometryCollection(this);
+			this.checkNotGeometryCollection(other);
+			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
+		}
 	}
 	isValid() {
 		return IsValidOp.isValid(this);
@@ -85,26 +69,18 @@ export default class Geometry {
 		return false;
 	}
 	equals(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					if (args[0] instanceof Geometry) {
-						return ((...args) => {
-							let [g] = args;
-							if (g === null) return false;
-							return this.equalsTopo(g);
-						})(...args);
-					} else if (args[0] instanceof Object) {
-						return ((...args) => {
-							let [o] = args;
-							if (!(o instanceof Geometry)) return false;
-							var g = o;
-							return this.equalsExact(g);
-						})(...args);
-					}
+		if (args.length === 1) {
+			if (args[0] instanceof Geometry) {
+				let [g] = args;
+				if (g === null) return false;
+				return this.equalsTopo(g);
+			} else if (args[0] instanceof Object) {
+				let [o] = args;
+				if (!(o instanceof Geometry)) return false;
+				var g = o;
+				return this.equalsExact(g);
 			}
-		};
-		return overloads.apply(this, args);
+		}
 	}
 	equalsExact(other) {
 		return this === other || this.equalsExact(other, 0);
@@ -116,6 +92,9 @@ export default class Geometry {
 			return GeometryCollectionMapper.map(this, new (class {
 				map(g) {
 					return g.intersection(g2);
+				}
+				get interfaces_() {
+					return [MapOp];
 				}
 			})());
 		}
@@ -154,26 +133,16 @@ export default class Geometry {
 		this.envelope = null;
 	}
 	buffer(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [distance] = args;
-						return BufferOp.bufferOp(this, distance);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [distance, quadrantSegments] = args;
-						return BufferOp.bufferOp(this, distance, quadrantSegments);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [distance, quadrantSegments, endCapStyle] = args;
-						return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		if (args.length === 1) {
+			let [distance] = args;
+			return BufferOp.bufferOp(this, distance);
+		} else if (args.length === 2) {
+			let [distance, quadrantSegments] = args;
+			return BufferOp.bufferOp(this, distance, quadrantSegments);
+		} else if (args.length === 3) {
+			let [distance, quadrantSegments, endCapStyle] = args;
+			return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
+		}
 	}
 	equalsNorm(g) {
 		if (g === null) return false;
@@ -186,47 +155,39 @@ export default class Geometry {
 		return 1;
 	}
 	compareTo(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [o] = args;
-						var other = o;
-						if (this.getSortIndex() !== other.getSortIndex()) {
-							return this.getSortIndex() - other.getSortIndex();
-						}
-						if (this.isEmpty() && other.isEmpty()) {
-							return 0;
-						}
-						if (this.isEmpty()) {
-							return -1;
-						}
-						if (other.isEmpty()) {
-							return 1;
-						}
-						return this.compareToSameClass(o);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [o, comp] = args;
-						var other = o;
-						if (this.getSortIndex() !== other.getSortIndex()) {
-							return this.getSortIndex() - other.getSortIndex();
-						}
-						if (this.isEmpty() && other.isEmpty()) {
-							return 0;
-						}
-						if (this.isEmpty()) {
-							return -1;
-						}
-						if (other.isEmpty()) {
-							return 1;
-						}
-						return this.compareToSameClass(o, comp);
-					})(...args);
+		if (args.length === 1) {
+			let [o] = args;
+			var other = o;
+			if (this.getSortIndex() !== other.getSortIndex()) {
+				return this.getSortIndex() - other.getSortIndex();
 			}
-		};
-		return overloads.apply(this, args);
+			if (this.isEmpty() && other.isEmpty()) {
+				return 0;
+			}
+			if (this.isEmpty()) {
+				return -1;
+			}
+			if (other.isEmpty()) {
+				return 1;
+			}
+			return this.compareToSameClass(o);
+		} else if (args.length === 2) {
+			let [o, comp] = args;
+			var other = o;
+			if (this.getSortIndex() !== other.getSortIndex()) {
+				return this.getSortIndex() - other.getSortIndex();
+			}
+			if (this.isEmpty() && other.isEmpty()) {
+				return 0;
+			}
+			if (this.isEmpty()) {
+				return -1;
+			}
+			if (other.isEmpty()) {
+				return 1;
+			}
+			return this.compareToSameClass(o, comp);
+		}
 	}
 	convexHull() {
 		return new ConvexHull(this).getConvexHull();
@@ -259,23 +220,15 @@ export default class Geometry {
 		return a.distance(b) <= tolerance;
 	}
 	relate(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [g] = args;
-						this.checkNotGeometryCollection(this);
-						this.checkNotGeometryCollection(g);
-						return RelateOp.relate(this, g);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [g, intersectionPattern] = args;
-						return this.relate(g).matches(intersectionPattern);
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		if (args.length === 1) {
+			let [g] = args;
+			this.checkNotGeometryCollection(this);
+			this.checkNotGeometryCollection(g);
+			return RelateOp.relate(this, g);
+		} else if (args.length === 2) {
+			let [g, intersectionPattern] = args;
+			return this.relate(g).matches(intersectionPattern);
+		}
 	}
 	overlaps(g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
@@ -437,5 +390,8 @@ Geometry.SORTINDEX_GEOMETRYCOLLECTION = 7;
 Geometry.geometryChangedFilter = new (class {
 	filter(geom) {
 		geom.geometryChangedAction();
+	}
+	get interfaces_() {
+		return [GeometryComponentFilter];
 	}
 })();

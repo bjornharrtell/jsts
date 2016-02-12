@@ -53,28 +53,20 @@ export default function patch () {
 			return 0.0;
 		},
 		union(...args) {
-			const overloads = (...args) => {
-				switch (args.length) {
-					case 0:
-						return ((...args) => {
-							let [] = args;
-							return UnaryUnionOp.union(this);
-						})(...args);
-					case 1:
-						return ((...args) => {
-							let [other] = args;
-							if (this.isEmpty() || other.isEmpty()) {
-								if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, this, other, this.factory);
-								if (this.isEmpty()) return other.copy();
-								if (other.isEmpty()) return this.copy();
-							}
-							this.checkNotGeometryCollection(this);
-							this.checkNotGeometryCollection(other);
-							return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
-						})(...args);
+			if (args.length === 0) {
+				let [] = args;
+				return UnaryUnionOp.union(this);
+			} else if (args.length === 1) {
+				let [other] = args;
+				if (this.isEmpty() || other.isEmpty()) {
+					if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, this, other, this.factory);
+					if (this.isEmpty()) return other.copy();
+					if (other.isEmpty()) return this.copy();
 				}
-			};
-			return overloads.apply(this, args);
+				this.checkNotGeometryCollection(this);
+				this.checkNotGeometryCollection(other);
+				return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
+			}
 		},
 		isValid() {
 			return IsValidOp.isValid(this);
@@ -104,48 +96,30 @@ export default function patch () {
 			return this.relate(g).isIntersects();
 		},
 		buffer(...args) {
-			const overloads = (...args) => {
-				switch (args.length) {
-					case 1:
-						return ((...args) => {
-							let [distance] = args;
-							return BufferOp.bufferOp(this, distance);
-						})(...args);
-					case 2:
-						return ((...args) => {
-							let [distance, quadrantSegments] = args;
-							return BufferOp.bufferOp(this, distance, quadrantSegments);
-						})(...args);
-					case 3:
-						return ((...args) => {
-							let [distance, quadrantSegments, endCapStyle] = args;
-							return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
-						})(...args);
-				}
-			};
-			return overloads.apply(this, args);
+			if (args.length === 1) {
+				let [distance] = args;
+				return BufferOp.bufferOp(this, distance);
+			} else if (args.length === 2) {
+				let [distance, quadrantSegments] = args;
+				return BufferOp.bufferOp(this, distance, quadrantSegments);
+			} else if (args.length === 3) {
+				let [distance, quadrantSegments, endCapStyle] = args;
+				return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
+			}
 		},
 		convexHull() {
 			return new ConvexHull(this).getConvexHull();
 		},
 		relate(...args) {
-			const overloads = (...args) => {
-				switch (args.length) {
-					case 1:
-						return ((...args) => {
-							let [g] = args;
-							this.checkNotGeometryCollection(this);
-							this.checkNotGeometryCollection(g);
-							return RelateOp.relate(this, g);
-						})(...args);
-					case 2:
-						return ((...args) => {
-							let [g, intersectionPattern] = args;
-							return this.relate(g).matches(intersectionPattern);
-						})(...args);
-				}
-			};
-			return overloads.apply(this, args);
+			if (args.length === 1) {
+				let [g] = args;
+				this.checkNotGeometryCollection(this);
+				this.checkNotGeometryCollection(g);
+				return RelateOp.relate(this, g);
+			} else if (args.length === 2) {
+				let [g, intersectionPattern] = args;
+				return this.relate(g).matches(intersectionPattern);
+			}
 		},
 		getCentroid() {
 			if (this.isEmpty()) return this.factory.createPoint();

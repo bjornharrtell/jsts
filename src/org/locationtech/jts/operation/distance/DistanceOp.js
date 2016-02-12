@@ -22,18 +22,14 @@ export default class DistanceOp {
 		this.minDistance = Double.MAX_VALUE;
 		const overloaded = (...args) => {
 			if (args.length === 2) {
-				return ((...args) => {
-					let [g0, g1] = args;
-					overloaded.call(this, g0, g1, 0.0);
-				})(...args);
+				let [g0, g1] = args;
+				overloaded.call(this, g0, g1, 0.0);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [g0, g1, terminateDistance] = args;
-					this.geom = new Array(2);
-					this.geom[0] = g0;
-					this.geom[1] = g1;
-					this.terminateDistance = terminateDistance;
-				})(...args);
+				let [g0, g1, terminateDistance] = args;
+				this.geom = new Array(2);
+				this.geom[0] = g0;
+				this.geom[1] = g1;
+				this.terminateDistance = terminateDistance;
 			}
 		};
 		return overloaded.apply(this, args);

@@ -9,20 +9,16 @@ export default class SweepLineEvent {
 		this.obj = null;
 		const overloaded = (...args) => {
 			if (args.length === 2) {
-				return ((...args) => {
-					let [x, insertEvent] = args;
-					this.eventType = SweepLineEvent.DELETE;
-					this.xValue = x;
-					this.insertEvent = insertEvent;
-				})(...args);
+				let [x, insertEvent] = args;
+				this.eventType = SweepLineEvent.DELETE;
+				this.xValue = x;
+				this.insertEvent = insertEvent;
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [label, x, obj] = args;
-					this.eventType = SweepLineEvent.INSERT;
-					this.label = label;
-					this.xValue = x;
-					this.obj = obj;
-				})(...args);
+				let [label, x, obj] = args;
+				this.eventType = SweepLineEvent.INSERT;
+				this.label = label;
+				this.xValue = x;
+				this.obj = obj;
 			}
 		};
 		return overloaded.apply(this, args);

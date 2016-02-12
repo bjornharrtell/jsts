@@ -22,15 +22,11 @@ export default class Polygonizer {
 		this.geomFactory = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, false);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, false);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [extractOnlyPolygonal] = args;
-					this.extractOnlyPolygonal = extractOnlyPolygonal;
-				})(...args);
+				let [extractOnlyPolygonal] = args;
+				this.extractOnlyPolygonal = extractOnlyPolygonal;
 			}
 		};
 		return overloaded.apply(this, args);

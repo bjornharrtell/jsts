@@ -14,22 +14,16 @@ export default class EdgeEnd {
 		this.quadrant = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [edge] = args;
-					this.edge = edge;
-				})(...args);
+				let [edge] = args;
+				this.edge = edge;
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [edge, p0, p1] = args;
-					overloaded.call(this, edge, p0, p1, null);
-				})(...args);
+				let [edge, p0, p1] = args;
+				overloaded.call(this, edge, p0, p1, null);
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [edge, p0, p1, label] = args;
-					overloaded.call(this, edge);
-					this.init(p0, p1);
-					this.label = label;
-				})(...args);
+				let [edge, p0, p1, label] = args;
+				overloaded.call(this, edge);
+				this.init(p0, p1);
+				this.label = label;
 			}
 		};
 		return overloaded.apply(this, args);

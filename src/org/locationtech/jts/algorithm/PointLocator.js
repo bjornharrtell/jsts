@@ -18,15 +18,11 @@ export default class PointLocator {
 		this.numBoundaries = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [boundaryRule] = args;
-					if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
-					this.boundaryRule = boundaryRule;
-				})(...args);
+				let [boundaryRule] = args;
+				if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
+				this.boundaryRule = boundaryRule;
 			}
 		};
 		return overloaded.apply(this, args);

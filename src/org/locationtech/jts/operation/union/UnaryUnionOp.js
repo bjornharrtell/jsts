@@ -18,22 +18,16 @@ export default class UnaryUnionOp {
 		const overloaded = (...args) => {
 			if (args.length === 1) {
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geoms] = args;
-						this.extract(geoms);
-					})(...args);
+					let [geoms] = args;
+					this.extract(geoms);
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						this.extract(geom);
-					})(...args);
+					let [geom] = args;
+					this.extract(geom);
 				}
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [geoms, geomFact] = args;
-					this.geomFact = geomFact;
-					this.extract(geoms);
-				})(...args);
+				let [geoms, geomFact] = args;
+				this.geomFact = geomFact;
+				this.extract(geoms);
 			}
 		};
 		return overloaded.apply(this, args);

@@ -11,15 +11,11 @@ export default class KdTree {
 		this.tolerance = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, 0.0);
-				})(...args);
+				let [] = args;
+				overloaded.call(this, 0.0);
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [tolerance] = args;
-					this.tolerance = tolerance;
-				})(...args);
+				let [tolerance] = args;
+				this.tolerance = tolerance;
 			}
 		};
 		return overloaded.apply(this, args);

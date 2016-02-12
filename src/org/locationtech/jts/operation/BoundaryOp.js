@@ -12,17 +12,13 @@ export default class BoundaryOp {
 		this.endpointMap = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [geom] = args;
-					overloaded.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
-				})(...args);
+				let [geom] = args;
+				overloaded.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [geom, bnRule] = args;
-					this.geom = geom;
-					this.geomFact = geom.getFactory();
-					this.bnRule = bnRule;
-				})(...args);
+				let [geom, bnRule] = args;
+				this.geom = geom;
+				this.geomFact = geom.getFactory();
+				this.bnRule = bnRule;
 			}
 		};
 		return overloaded.apply(this, args);

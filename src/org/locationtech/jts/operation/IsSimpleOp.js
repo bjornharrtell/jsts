@@ -15,16 +15,12 @@ export default class IsSimpleOp {
 		this.nonSimpleLocation = null;
 		const overloaded = (...args) => {
 			if (args.length === 1) {
-				return ((...args) => {
-					let [geom] = args;
-					this.inputGeom = geom;
-				})(...args);
+				let [geom] = args;
+				this.inputGeom = geom;
 			} else if (args.length === 2) {
-				return ((...args) => {
-					let [geom, boundaryNodeRule] = args;
-					this.inputGeom = geom;
-					this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
-				})(...args);
+				let [geom, boundaryNodeRule] = args;
+				this.inputGeom = geom;
+				this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
 			}
 		};
 		return overloaded.apply(this, args);

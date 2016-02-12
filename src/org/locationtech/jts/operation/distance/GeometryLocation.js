@@ -5,17 +5,13 @@ export default class GeometryLocation {
 		this.pt = null;
 		const overloaded = (...args) => {
 			if (args.length === 2) {
-				return ((...args) => {
-					let [component, pt] = args;
-					overloaded.call(this, component, GeometryLocation.INSIDE_AREA, pt);
-				})(...args);
+				let [component, pt] = args;
+				overloaded.call(this, component, GeometryLocation.INSIDE_AREA, pt);
 			} else if (args.length === 3) {
-				return ((...args) => {
-					let [component, segIndex, pt] = args;
-					this.component = component;
-					this.segIndex = segIndex;
-					this.pt = pt;
-				})(...args);
+				let [component, segIndex, pt] = args;
+				this.component = component;
+				this.segIndex = segIndex;
+				this.pt = pt;
 			}
 		};
 		return overloaded.apply(this, args);

@@ -4,14 +4,10 @@ export default class SinglePassNoder {
 		this.segInt = null;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [segInt] = args;
-					this.setSegmentIntersector(segInt);
-				})(...args);
+				let [segInt] = args;
+				this.setSegmentIntersector(segInt);
 			}
 		};
 		return overloaded.apply(this, args);

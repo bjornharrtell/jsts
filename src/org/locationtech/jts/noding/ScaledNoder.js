@@ -14,17 +14,13 @@ export default class ScaledNoder {
 		this.isScaled = false;
 		const overloaded = (...args) => {
 			if (args.length === 2) {
-				return ((...args) => {
-					let [noder, scaleFactor] = args;
-					overloaded.call(this, noder, scaleFactor, 0, 0);
-				})(...args);
+				let [noder, scaleFactor] = args;
+				overloaded.call(this, noder, scaleFactor, 0, 0);
 			} else if (args.length === 4) {
-				return ((...args) => {
-					let [noder, scaleFactor, offsetX, offsetY] = args;
-					this.noder = noder;
-					this.scaleFactor = scaleFactor;
-					this.isScaled = !this.isIntegerPrecision();
-				})(...args);
+				let [noder, scaleFactor, offsetX, offsetY] = args;
+				this.noder = noder;
+				this.scaleFactor = scaleFactor;
+				this.isScaled = !this.isIntegerPrecision();
 			}
 		};
 		return overloaded.apply(this, args);

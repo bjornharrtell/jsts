@@ -8,14 +8,10 @@ export default class GraphComponent {
 		this._isVisited = false;
 		const overloaded = (...args) => {
 			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
+				let [] = args;
 			} else if (args.length === 1) {
-				return ((...args) => {
-					let [label] = args;
-					this.label = label;
-				})(...args);
+				let [label] = args;
+				this.label = label;
 			}
 		};
 		return overloaded.apply(this, args);
