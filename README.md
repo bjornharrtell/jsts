@@ -12,9 +12,9 @@ OpenLayers 3.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
 
-A [port](http://bjornharrtell.github.com/jsts/1.0.0-beta4/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
+A [port](http://bjornharrtell.github.com/jsts/1.0.0-beta2/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
 
-Basic functionality togheter with OpenLayers 3 is demonstrated[here](http://bjornharrtell.github.io/jsts).
+Basic functionality togheter with OpenLayers 3 is demonstrated [here](http://bjornharrtell.github.io/jsts).
 
 ## Usage
 
