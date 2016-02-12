@@ -40,20 +40,9 @@
       "ol"
     ]
   },
-  "babel": {
-    "presets": ["es2015"],
-    "plugins": ["babel-plugin-transform-inline-environment-variables"]
-  },
   "scripts": {
     "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
     "build node": "rollup -c rollup.config.node.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
     "build browser": "rollup -c rollup.config.browser.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js"
-  },
-  "jspm": {
-    "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
-    }
   }
 }
