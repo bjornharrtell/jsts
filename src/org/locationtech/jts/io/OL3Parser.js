@@ -11,7 +11,7 @@ import GeometryFactory from '../geom/GeometryFactory'
 
 function p2c (p) { return [p.x, p.y] }
 
-export default class olParser {
+export default class OL3Parser {
   constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
   }

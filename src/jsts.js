@@ -16,7 +16,7 @@ import GeoJSONReader from './org/locationtech/jts/io/GeoJSONReader'
 import GeoJSONWriter from './org/locationtech/jts/io/GeoJSONWriter'
 import WKTReader from './org/locationtech/jts/io/WKTReader'
 import WKTWriter from './org/locationtech/jts/io/WKTWriter'
-import olParser from './org/locationtech/jts/io/olParser'
+import OL3Parser from './org/locationtech/jts/io/OL3Parser'
 
 import BoundaryOp from './org/locationtech/jts/operation/BoundaryOp'
 import IsSimpleOp from './org/locationtech/jts/operation/IsSimpleOp'
@@ -66,7 +66,7 @@ export default {
     GeoJSONWriter,
     WKTReader,
     WKTWriter,
-    olParser
+    OL3Parser
   },
   operation: {
     BoundaryOp,
