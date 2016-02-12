@@ -8,36 +8,26 @@ import Serializable from '../../../../java/io/Serializable';
 import Assert from '../util/Assert';
 export default class Coordinate {
 	constructor(...args) {
-		this.x = null;
-		this.y = null;
-		this.z = null;
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 0:
-					return ((...args) => {
-						let [] = args;
-						overloads.call(this, 0.0, 0.0);
-					})(...args);
-				case 1:
-					return ((...args) => {
-						let [c] = args;
-						overloads.call(this, c.x, c.y, c.z);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [x, y] = args;
-						overloads.call(this, x, y, Coordinate.NULL_ORDINATE);
-					})(...args);
-				case 3:
-					return ((...args) => {
-						let [x, y, z] = args;
-						this.x = x;
-						this.y = y;
-						this.z = z;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		if (args.length === 0) {
+			this.x = 0;
+			this.y = 0;
+			this.z = Coordinate.NULL_ORDINATE;
+		} else if (args.length === 1) {
+			let [c] = args;
+			this.x = c.x;
+			this.y = c.y;
+			this.z = c.z;
+		} else if (args.length === 2) {
+			let [x, y] = args;
+			this.x = x;
+			this.y = y;
+			this.z = Coordinate.NULL_ORDINATE;
+		} else if (args.length === 3) {
+			let [x, y, z] = args;
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
 	}
 	get interfaces_() {
 		return [Comparable, Cloneable, Serializable];
@@ -68,33 +58,25 @@ export default class Coordinate {
 		}
 	}
 	equals2D(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [other] = args;
-						if (this.x !== other.x) {
-							return false;
-						}
-						if (this.y !== other.y) {
-							return false;
-						}
-						return true;
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [c, tolerance] = args;
-						if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
-							return false;
-						}
-						if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
-							return false;
-						}
-						return true;
-					})(...args);
+		if (args.length === 1) {
+			let [other] = args;
+			if (this.x !== other.x) {
+				return false;
 			}
-		};
-		return overloads.apply(this, args);
+			if (this.y !== other.y) {
+				return false;
+			}
+			return true;
+		} else {
+			let [c, tolerance] = args;
+			if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
+				return false;
+			}
+			if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
+				return false;
+			}
+			return true;
+		}
 	}
 	getOrdinate(ordinateIndex) {
 		switch (ordinateIndex) {
@@ -223,4 +205,3 @@ Coordinate.NULL_ORDINATE = Double.NaN;
 Coordinate.X = 0;
 Coordinate.Y = 1;
 Coordinate.Z = 2;
-

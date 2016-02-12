@@ -247,24 +247,16 @@ export default class LineSegment {
 		return coord;
 	}
 	setCoordinates(...args) {
-		const overloads = (...args) => {
-			switch (args.length) {
-				case 1:
-					return ((...args) => {
-						let [ls] = args;
-						this.setCoordinates(ls.p0, ls.p1);
-					})(...args);
-				case 2:
-					return ((...args) => {
-						let [p0, p1] = args;
-						this.p0.x = p0.x;
-						this.p0.y = p0.y;
-						this.p1.x = p1.x;
-						this.p1.y = p1.y;
-					})(...args);
-			}
-		};
-		return overloads.apply(this, args);
+		if (args.length === 1) {
+			let [ls] = args;
+			this.setCoordinates(ls.p0, ls.p1);
+		} else {
+			let [p0, p1] = args;
+			this.p0.x = p0.x;
+			this.p0.y = p0.y;
+			this.p1.x = p1.x;
+			this.p1.y = p1.y;
+		}
 	}
 	segmentFraction(inputPt) {
 		var segFrac = this.projectionFactor(inputPt);
@@ -316,4 +308,3 @@ export default class LineSegment {
 	}
 }
 LineSegment.serialVersionUID = 3252005833466256227;
-
