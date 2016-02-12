@@ -139,5 +139,3 @@ Stack.prototype.toArray = function() {
 
   return array;
 };
-
-module.exports = Stack;

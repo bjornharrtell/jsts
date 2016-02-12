@@ -1,3 +1,3 @@
 import jsts from './jsts'
 
-global.jsts = jsts
+window.jsts = jsts

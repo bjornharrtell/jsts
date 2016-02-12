@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-beta4",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -12,8 +12,9 @@
     "Geometry"
   ],
   "devDependencies": {
-    "babel-preset-es2015": "6.3.13",
-    "babel-register": "6.4.3",
+    "babel-cli": "6.5.1",
+    "babel-preset-es2015": "6.5.0",
+    "babel-register": "6.5.1",
     "browserify": "13.0.0",
     "cheerio": "0.20.0",
     "expect.js": "0.3.1",
@@ -40,7 +41,7 @@
   "scripts": {
     "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
     "build node": "rollup -c rollup.config.node.js | babel --presets es2015 | uglifyjs -c -m > dist/jsts.min.js",
-    "build browser": "rollup -c rollup.config.browser.js | browserify -t babelify - | uglifyjs -c -m > dist/jsts.min.js"
+    "build browser": "rollup -c rollup.config.browser.js | babel --presets es2015 | uglifyjs -c -m > dist/jsts.min.js"
   },
   "jspm": {
     "devDependencies": {
