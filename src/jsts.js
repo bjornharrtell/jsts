@@ -1,4 +1,3 @@
-
 import Coordinate from './org/locationtech/jts/geom/Coordinate'
 import GeometryFactory from './org/locationtech/jts/geom/GeometryFactory'
 import Geometry from './org/locationtech/jts/geom/Geometry'
@@ -43,6 +42,7 @@ import patch from './org/locationtech/jts/monkey'
 })()
 
 export default {
+  version: `${process.env.npm_package_version} (${process.env.GITHASH})`,
   densify: {
     Densifier
   },

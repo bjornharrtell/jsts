@@ -1,0 +1,6 @@
+// JSTS. See https://github.com/bjornharrtell/jsts
+// Licenses:
+// https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+// https://github.com/bjornharrtell/jsts/blob/master/LICENSE_EPLv1.txt
+// https://github.com/bjornharrtell/jsts/blob/master/LICENSE_MDAVIS_BSD3.txt
+// https://github.com/bjornharrtell/jsts/blob/master/LICENSE_VSI_BSD3.txt
