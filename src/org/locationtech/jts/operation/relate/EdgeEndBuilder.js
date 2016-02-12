@@ -5,9 +5,10 @@ export default class EdgeEndBuilder {
 	constructor(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -37,7 +38,7 @@ export default class EdgeEndBuilder {
 	computeEdgeEnds(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [edges] = args;
 					var l = new ArrayList();
 					for (var i = edges; i.hasNext(); ) {
@@ -45,9 +46,10 @@ export default class EdgeEndBuilder {
 						this.computeEdgeEnds(e, l);
 					}
 					return l;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [edge, l] = args;
 					var eiList = edge.getEdgeIntersectionList();
 					eiList.addEndpoints();
@@ -66,7 +68,8 @@ export default class EdgeEndBuilder {
 							this.createEdgeEndForNext(edge, l, eiCurr, eiNext);
 						}
 					} while (eiCurr !== null);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

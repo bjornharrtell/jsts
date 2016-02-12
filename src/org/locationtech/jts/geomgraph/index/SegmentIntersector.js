@@ -15,12 +15,13 @@ export default class SegmentIntersector {
 		this.isDoneWhenProperInt = false;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [li, includeProper, recordIsolated] = args;
 					this.li = li;
 					this.includeProper = includeProper;
 					this.recordIsolated = recordIsolated;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

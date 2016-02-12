@@ -6,11 +6,12 @@ export default class OrientedCoordinateArray {
 		this._orientation = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pts] = args;
 					this.pts = pts;
 					this._orientation = OrientedCoordinateArray.orientation(pts);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

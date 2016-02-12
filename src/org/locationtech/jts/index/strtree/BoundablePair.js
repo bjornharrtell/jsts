@@ -9,13 +9,14 @@ export default class BoundablePair {
 		this.itemDistance = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [boundable1, boundable2, itemDistance] = args;
 					this.boundable1 = boundable1;
 					this.boundable2 = boundable2;
 					this.itemDistance = itemDistance;
 					this._distance = this.distance();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

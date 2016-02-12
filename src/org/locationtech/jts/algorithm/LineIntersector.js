@@ -14,14 +14,15 @@ export default class LineIntersector {
 		this.precisionModel = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.intPt[0] = new Coordinate();
 					this.intPt[1] = new Coordinate();
 					this.pa = this.intPt[0];
 					this.pb = this.intPt[1];
 					this.result = 0;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -77,16 +78,17 @@ export default class LineIntersector {
 	computeIntLineIndex(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					if (this.intLineIndex === null) {
 						this.intLineIndex = Array(2).fill().map(() => Array(2));
 						this.computeIntLineIndex(0);
 						this.computeIntLineIndex(1);
 					}
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [segmentIndex] = args;
 					var dist0 = this.getEdgeDistance(segmentIndex, 0);
 					var dist1 = this.getEdgeDistance(segmentIndex, 1);
@@ -97,7 +99,8 @@ export default class LineIntersector {
 						this.intLineIndex[segmentIndex][0] = 1;
 						this.intLineIndex[segmentIndex][1] = 0;
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	isProper() {
@@ -109,14 +112,15 @@ export default class LineIntersector {
 	isInteriorIntersection(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					if (this.isInteriorIntersection(0)) return true;
 					if (this.isInteriorIntersection(1)) return true;
 					return false;
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [inputLineIndex] = args;
 					for (var i = 0; i < this.result; i++) {
 						if (!(this.intPt[i].equals2D(this.inputLines[inputLineIndex][0]) || this.intPt[i].equals2D(this.inputLines[inputLineIndex][1]))) {
@@ -124,7 +128,8 @@ export default class LineIntersector {
 						}
 					}
 					return false;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getIntersection(intIndex) {

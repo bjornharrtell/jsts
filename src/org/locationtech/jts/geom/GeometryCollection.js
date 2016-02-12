@@ -15,7 +15,7 @@ export default class GeometryCollection extends Geometry {
 		this.geometries = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [geometries, factory] = args;
 					super(factory);
 					if (geometries === null) {
@@ -25,7 +25,8 @@ export default class GeometryCollection extends Geometry {
 						throw new IllegalArgumentException("geometries must not contain null elements");
 					}
 					this.geometries = geometries;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -133,14 +134,15 @@ export default class GeometryCollection extends Geometry {
 	compareToSameClass(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [o] = args;
 					var theseElements = new TreeSet(Arrays.asList(this.geometries));
 					var otherElements = new TreeSet(Arrays.asList(o.geometries));
 					return this.compare(theseElements, otherElements);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [o, comp] = args;
 					var gc = o;
 					var n1 = this.getNumGeometries();
@@ -156,48 +158,42 @@ export default class GeometryCollection extends Geometry {
 					if (i < n1) return 1;
 					if (i < n2) return -1;
 					return 0;
-				})(...args);
+					break;
+				}
 		}
 	}
 	apply(...args) {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						for (var i = 0; i < this.geometries.length; i++) {
-							this.geometries[i].apply(filter);
-						}
-					})(...args);
+					let [filter] = args;
+					for (var i = 0; i < this.geometries.length; i++) {
+						this.geometries[i].apply(filter);
+					}
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						if (this.geometries.length === 0) return null;
-						for (var i = 0; i < this.geometries.length; i++) {
-							this.geometries[i].apply(filter);
-							if (filter.isDone()) {
-								break;
-							}
+					let [filter] = args;
+					if (this.geometries.length === 0) return null;
+					for (var i = 0; i < this.geometries.length; i++) {
+						this.geometries[i].apply(filter);
+						if (filter.isDone()) {
+							break;
 						}
-						if (filter.isGeometryChanged()) this.geometryChanged();
-					})(...args);
+					}
+					if (filter.isGeometryChanged()) this.geometryChanged();
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						filter.filter(this);
-						for (var i = 0; i < this.geometries.length; i++) {
-							this.geometries[i].apply(filter);
-						}
-					})(...args);
+					let [filter] = args;
+					filter.filter(this);
+					for (var i = 0; i < this.geometries.length; i++) {
+						this.geometries[i].apply(filter);
+					}
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						filter.filter(this);
-						for (var i = 0; i < this.geometries.length; i++) {
-							this.geometries[i].apply(filter);
-						}
-					})(...args);
+					let [filter] = args;
+					filter.filter(this);
+					for (var i = 0; i < this.geometries.length; i++) {
+						this.geometries[i].apply(filter);
+					}
 				}
+				break;
 		}
 	}
 	getBoundary() {

@@ -16,7 +16,7 @@ export default class AffineTransformationBuilder {
 		this.m12 = null;
 		switch (args.length) {
 			case 6:
-				return ((...args) => {
+				{
 					let [src0, src1, src2, dest0, dest1, dest2] = args;
 					this.src0 = src0;
 					this.src1 = src1;
@@ -24,7 +24,8 @@ export default class AffineTransformationBuilder {
 					this.dest0 = dest0;
 					this.dest1 = dest1;
 					this.dest2 = dest2;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

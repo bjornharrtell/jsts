@@ -11,9 +11,10 @@ export default class CGAlgorithms {
 	constructor(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -26,43 +27,40 @@ export default class CGAlgorithms {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [ring] = args;
-						if (ring.length < 3) return 0.0;
-						var sum = 0.0;
-						var x0 = ring[0].x;
-						for (var i = 1; i < ring.length - 1; i++) {
-							var x = ring[i].x - x0;
-							var y1 = ring[i + 1].y;
-							var y2 = ring[i - 1].y;
-							sum += x * (y2 - y1);
-						}
-						return sum / 2.0;
-					})(...args);
+					let [ring] = args;
+					if (ring.length < 3) return 0.0;
+					var sum = 0.0;
+					var x0 = ring[0].x;
+					for (var i = 1; i < ring.length - 1; i++) {
+						var x = ring[i].x - x0;
+						var y1 = ring[i + 1].y;
+						var y2 = ring[i - 1].y;
+						sum += x * (y2 - y1);
+					}
+					return sum / 2.0;
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [ring] = args;
-						var n = ring.size();
-						if (n < 3) return 0.0;
-						var p0 = new Coordinate();
-						var p1 = new Coordinate();
-						var p2 = new Coordinate();
-						ring.getCoordinate(0, p1);
-						ring.getCoordinate(1, p2);
-						var x0 = p1.x;
+					let [ring] = args;
+					var n = ring.size();
+					if (n < 3) return 0.0;
+					var p0 = new Coordinate();
+					var p1 = new Coordinate();
+					var p2 = new Coordinate();
+					ring.getCoordinate(0, p1);
+					ring.getCoordinate(1, p2);
+					var x0 = p1.x;
+					p2.x -= x0;
+					var sum = 0.0;
+					for (var i = 1; i < n - 1; i++) {
+						p0.y = p1.y;
+						p1.x = p2.x;
+						p1.y = p2.y;
+						ring.getCoordinate(i + 1, p2);
 						p2.x -= x0;
-						var sum = 0.0;
-						for (var i = 1; i < n - 1; i++) {
-							p0.y = p1.y;
-							p1.x = p2.x;
-							p1.y = p2.y;
-							ring.getCoordinate(i + 1, p2);
-							p2.x -= x0;
-							sum += p1.x * (p0.y - p2.y);
-						}
-						return sum / 2.0;
-					})(...args);
+						sum += p1.x * (p0.y - p2.y);
+					}
+					return sum / 2.0;
 				}
+				break;
 		}
 	}
 	static distanceLineLine(A, B, C, D) {
@@ -160,7 +158,7 @@ export default class CGAlgorithms {
 	static distancePointLine(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [p, line] = args;
 					if (line.length === 0) throw new IllegalArgumentException("Line array must contain at least one vertex");
 					var minDistance = p.distance(line[0]);
@@ -171,9 +169,10 @@ export default class CGAlgorithms {
 						}
 					}
 					return minDistance;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [p, A, B] = args;
 					if (A.x === B.x && A.y === B.y) return p.distance(A);
 					var len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y);
@@ -182,7 +181,8 @@ export default class CGAlgorithms {
 					if (r >= 1.0) return p.distance(B);
 					var s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2;
 					return Math.abs(s) * Math.sqrt(len2);
-				})(...args);
+					break;
+				}
 		}
 	}
 	static isOnLine(p, pt) {

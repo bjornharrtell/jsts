@@ -19,6 +19,7 @@ export default class LocateFailureException extends RuntimeException {
 							this.seg = new LineSegment(seg);
 						})(...args);
 					}
+					break;
 				case 2:
 					return ((...args) => {
 						let [msg, seg] = args;

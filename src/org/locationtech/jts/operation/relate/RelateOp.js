@@ -28,19 +28,21 @@ export default class RelateOp extends GeometryGraphOperation {
 	static relate(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [a, b] = args;
 					var relOp = new RelateOp(a, b);
 					var im = relOp.getIntersectionMatrix();
 					return im;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [a, b, boundaryNodeRule] = args;
 					var relOp = new RelateOp(a, b, boundaryNodeRule);
 					var im = relOp.getIntersectionMatrix();
 					return im;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getIntersectionMatrix() {

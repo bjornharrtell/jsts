@@ -17,7 +17,7 @@ export default class DirectedEdge extends GraphComponent {
 		this.angle = null;
 		switch (args.length) {
 			case 4:
-				return ((...args) => {
+				{
 					let [from, to, directionPt, edgeDirection] = args;
 					this.from = from;
 					this.to = to;
@@ -28,7 +28,8 @@ export default class DirectedEdge extends GraphComponent {
 					var dy = this.p1.y - this.p0.y;
 					this.quadrant = Quadrant.quadrant(dx, dy);
 					this.angle = Math.atan2(dy, dx);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

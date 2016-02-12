@@ -45,6 +45,7 @@ export default class HCoordinate {
 							this.w = p1.x * p2.y - p2.x * p1.y;
 						})(...args);
 					}
+					break;
 				case 3:
 					return ((...args) => {
 						let [_x, _y, _w] = args;

@@ -8,10 +8,11 @@ export default class BufferInputLineSimplifier {
 		this.angleOrientation = CGAlgorithms.COUNTERCLOCKWISE;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [inputLine] = args;
 					this.inputLine = inputLine;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

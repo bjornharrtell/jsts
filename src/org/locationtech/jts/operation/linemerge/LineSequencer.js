@@ -224,28 +224,25 @@ export default class LineSequencer {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geometries] = args;
-						for (var i = geometries.iterator(); i.hasNext(); ) {
-							var geometry = i.next();
-							this.add(geometry);
-						}
-					})(...args);
+					let [geometries] = args;
+					for (var i = geometries.iterator(); i.hasNext(); ) {
+						var geometry = i.next();
+						this.add(geometry);
+					}
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geometry] = args;
-						geometry.apply(new (class {
-							filter(component) {
-								if (component instanceof LineString) {
-									this.addLine(component);
-								}
+					let [geometry] = args;
+					geometry.apply(new (class {
+						filter(component) {
+							if (component instanceof LineString) {
+								this.addLine(component);
 							}
-							get interfaces_() {
-								return [GeometryComponentFilter];
-							}
-						})());
-					})(...args);
+						}
+						get interfaces_() {
+							return [GeometryComponentFilter];
+						}
+					})());
 				}
+				break;
 		}
 	}
 	getClass() {

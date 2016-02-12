@@ -11,10 +11,11 @@ export default class DouglasPeuckerSimplifier {
 		this.isEnsureValidTopology = true;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [inputGeom] = args;
 					this.inputGeom = inputGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -50,11 +51,12 @@ class DPTransformer extends GeometryTransformer {
 		this.distanceTolerance = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [isEnsureValidTopology, distanceTolerance] = args;
 					this.isEnsureValidTopology = isEnsureValidTopology;
 					this.distanceTolerance = distanceTolerance;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

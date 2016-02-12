@@ -29,7 +29,7 @@ export default class OffsetSegmentGenerator {
 		this._hasNarrowConcaveAngle = false;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [precisionModel, bufParams, distance] = args;
 					this.precisionModel = precisionModel;
 					this.bufParams = bufParams;
@@ -37,7 +37,8 @@ export default class OffsetSegmentGenerator {
 					this.filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments();
 					if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this.closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
 					this.init(distance);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

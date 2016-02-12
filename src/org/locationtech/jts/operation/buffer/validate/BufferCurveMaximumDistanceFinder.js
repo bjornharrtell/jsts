@@ -9,10 +9,11 @@ export default class BufferCurveMaximumDistanceFinder {
 		this.maxPtDist = new PointPairDistance();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [inputGeom] = args;
 					this.inputGeom = inputGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -53,10 +54,11 @@ class MaxPointDistanceFilter {
 		this.geom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.geom = geom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -81,10 +83,11 @@ class MaxMidpointDistanceFilter {
 		this.geom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.geom = geom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

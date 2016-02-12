@@ -8,10 +8,11 @@ export default class MCIndexSegmentSetMutualIntersector {
 		this.index = new STRtree();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [baseSegStrings] = args;
 					this.initBaseSegments(baseSegStrings);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -72,10 +73,11 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
 		this.si = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [si] = args;
 					this.si = si;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

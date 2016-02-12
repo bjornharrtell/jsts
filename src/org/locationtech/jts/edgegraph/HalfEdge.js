@@ -8,10 +8,11 @@ export default class HalfEdge {
 		this._next = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [orig] = args;
 					this._orig = orig;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

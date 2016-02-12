@@ -8,10 +8,11 @@ export default class PointExtracter {
 		this.pts = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pts] = args;
 					this.pts = pts;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -20,15 +21,16 @@ export default class PointExtracter {
 	static getPoints(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					if (geom instanceof Point) {
 						return Collections.singletonList(geom);
 					}
 					return PointExtracter.getPoints(geom, new ArrayList());
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [geom, list] = args;
 					if (geom instanceof Point) {
 						list.add(geom);
@@ -36,7 +38,8 @@ export default class PointExtracter {
 						geom.apply(new PointExtracter(list));
 					}
 					return list;
-				})(...args);
+					break;
+				}
 		}
 	}
 	filter(geom) {

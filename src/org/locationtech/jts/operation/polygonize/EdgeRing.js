@@ -24,10 +24,11 @@ export default class EdgeRing {
 		this._isIncluded = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [factory] = args;
 					this.factory = factory;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -141,20 +142,17 @@ export default class EdgeRing {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof LinearRing) {
-					return ((...args) => {
-						let [hole] = args;
-						if (this.holes === null) this.holes = new ArrayList();
-						this.holes.add(hole);
-					})(...args);
+					let [hole] = args;
+					if (this.holes === null) this.holes = new ArrayList();
+					this.holes.add(hole);
 				} else if (args[0] instanceof EdgeRing) {
-					return ((...args) => {
-						let [holeER] = args;
-						holeER.setShell(this);
-						var hole = holeER.getRing();
-						if (this.holes === null) this.holes = new ArrayList();
-						this.holes.add(hole);
-					})(...args);
+					let [holeER] = args;
+					holeER.setShell(this);
+					var hole = holeER.getRing();
+					if (this.holes === null) this.holes = new ArrayList();
+					this.holes.add(hole);
 				}
+				break;
 		}
 	}
 	setIncluded(isIncluded) {

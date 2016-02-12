@@ -10,10 +10,11 @@ export default class PolygonBuilder {
 		this.shellList = new ArrayList();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geometryFactory] = args;
 					this.geometryFactory = geometryFactory;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -138,12 +139,13 @@ export default class PolygonBuilder {
 	add(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [graph] = args;
 					this.add(graph.getEdgeEnds(), graph.getNodes());
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [dirEdges, nodes] = args;
 					PlanarGraph.linkResultDirectedEdges(nodes);
 					var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
@@ -151,7 +153,8 @@ export default class PolygonBuilder {
 					var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList, freeHoleList);
 					this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
 					this.placeFreeHoles(this.shellList, freeHoleList);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

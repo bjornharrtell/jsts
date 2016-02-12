@@ -12,10 +12,11 @@ export default class TopologyPreservingSimplifier {
 		this.linestringMap = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [inputGeom] = args;
 					this.inputGeom = inputGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -54,10 +55,11 @@ class LineStringTransformer extends GeometryTransformer {
 		this.linestringMap = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [linestringMap] = args;
 					this.linestringMap = linestringMap;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -80,10 +82,11 @@ class LineStringMapBuilderFilter {
 		this.tps = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [tps] = args;
 					this.tps = tps;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

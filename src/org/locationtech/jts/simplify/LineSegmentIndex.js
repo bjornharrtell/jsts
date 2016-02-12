@@ -9,9 +9,10 @@ export default class LineSegmentIndex {
 		this.index = new Quadtree();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -24,20 +25,17 @@ export default class LineSegmentIndex {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof TaggedLineString) {
-					return ((...args) => {
-						let [line] = args;
-						var segs = line.getSegments();
-						for (var i = 0; i < segs.length; i++) {
-							var seg = segs[i];
-							this.add(seg);
-						}
-					})(...args);
+					let [line] = args;
+					var segs = line.getSegments();
+					for (var i = 0; i < segs.length; i++) {
+						var seg = segs[i];
+						this.add(seg);
+					}
 				} else if (args[0] instanceof LineSegment) {
-					return ((...args) => {
-						let [seg] = args;
-						this.index.insert(new Envelope(seg.p0, seg.p1), seg);
-					})(...args);
+					let [seg] = args;
+					this.index.insert(new Envelope(seg.p0, seg.p1), seg);
 				}
+				break;
 		}
 	}
 	query(querySeg) {
@@ -57,10 +55,11 @@ class LineSegmentVisitor {
 		this.items = new ArrayList();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [querySeg] = args;
 					this.querySeg = querySeg;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

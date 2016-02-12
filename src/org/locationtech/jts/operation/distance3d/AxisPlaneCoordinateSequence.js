@@ -6,11 +6,12 @@ export default class AxisPlaneCoordinateSequence {
 		this.indexMap = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [seq, indexMap] = args;
 					this.seq = seq;
 					this.indexMap = indexMap;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -41,17 +42,19 @@ export default class AxisPlaneCoordinateSequence {
 	getCoordinate(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [i] = args;
 					return this.getCoordinateCopy(i);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [index, coord] = args;
 					coord.x = this.getOrdinate(index, CoordinateSequence.X);
 					coord.y = this.getOrdinate(index, CoordinateSequence.Y);
 					coord.z = this.getOrdinate(index, CoordinateSequence.Z);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinateCopy(i) {

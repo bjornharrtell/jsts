@@ -6,10 +6,11 @@ export default class ConstraintVertex extends Vertex {
 		this.constraint = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [p] = args;
 					super(p);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

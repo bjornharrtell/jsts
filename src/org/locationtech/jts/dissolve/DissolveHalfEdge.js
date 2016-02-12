@@ -5,10 +5,11 @@ export default class DissolveHalfEdge extends MarkHalfEdge {
 		this._isStart = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [orig] = args;
 					super(orig);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

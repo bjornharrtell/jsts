@@ -11,13 +11,14 @@ export default class Node extends NodeBase {
 		this.level = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [env, level] = args;
 					this.env = env;
 					this.level = level;
 					this.centrex = (env.getMinX() + env.getMaxX()) / 2;
 					this.centrey = (env.getMinY() + env.getMaxY()) / 2;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -21,6 +21,7 @@ export default class Label {
 							this.elt[1] = new TopologyLocation(lbl.elt[1]);
 						})(...args);
 					}
+					break;
 				case 2:
 					return ((...args) => {
 						let [geomIndex, onLoc] = args;
@@ -70,16 +71,18 @@ export default class Label {
 	setAllLocationsIfNull(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [location] = args;
 					this.setAllLocationsIfNull(0, location);
 					this.setAllLocationsIfNull(1, location);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [geomIndex, location] = args;
 					this.elt[geomIndex].setAllLocationsIfNull(location);
-				})(...args);
+					break;
+				}
 		}
 	}
 	isLine(geomIndex) {
@@ -101,15 +104,17 @@ export default class Label {
 	getLocation(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geomIndex] = args;
 					return this.elt[geomIndex].get(Position.ON);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [geomIndex, posIndex] = args;
 					return this.elt[geomIndex].get(posIndex);
-				})(...args);
+					break;
+				}
 		}
 	}
 	toString() {
@@ -127,15 +132,17 @@ export default class Label {
 	isArea(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return this.elt[0].isArea() || this.elt[1].isArea();
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [geomIndex] = args;
 					return this.elt[geomIndex].isArea();
-				})(...args);
+					break;
+				}
 		}
 	}
 	isAnyNull(geomIndex) {
@@ -144,15 +151,17 @@ export default class Label {
 	setLocation(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [geomIndex, location] = args;
 					this.elt[geomIndex].setLocation(Position.ON, location);
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [geomIndex, posIndex, location] = args;
 					this.elt[geomIndex].setLocation(posIndex, location);
-				})(...args);
+					break;
+				}
 		}
 	}
 	isEqualOnSide(lbl, side) {

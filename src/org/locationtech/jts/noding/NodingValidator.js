@@ -7,10 +7,11 @@ export default class NodingValidator {
 		this.segStrings = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [segStrings] = args;
 					this.segStrings = segStrings;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -19,7 +20,7 @@ export default class NodingValidator {
 	checkEndPtVertexIntersections(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					for (var i = this.segStrings.iterator(); i.hasNext(); ) {
 						var ss = i.next();
@@ -27,9 +28,10 @@ export default class NodingValidator {
 						this.checkEndPtVertexIntersections(pts[0], this.segStrings);
 						this.checkEndPtVertexIntersections(pts[pts.length - 1], this.segStrings);
 					}
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [testPt, segStrings] = args;
 					for (var i = segStrings.iterator(); i.hasNext(); ) {
 						var ss = i.next();
@@ -38,13 +40,14 @@ export default class NodingValidator {
 							if (pts[j].equals(testPt)) throw new RuntimeException("found endpt/interior pt intersection at index " + j + " :pt " + testPt);
 						}
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	checkInteriorIntersections(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					for (var i = this.segStrings.iterator(); i.hasNext(); ) {
 						var ss0 = i.next();
@@ -53,9 +56,10 @@ export default class NodingValidator {
 							this.checkInteriorIntersections(ss0, ss1);
 						}
 					}
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [ss0, ss1] = args;
 					var pts0 = ss0.getCoordinates();
 					var pts1 = ss1.getCoordinates();
@@ -64,9 +68,10 @@ export default class NodingValidator {
 							this.checkInteriorIntersections(ss0, i0, ss1, i1);
 						}
 					}
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [e0, segIndex0, e1, segIndex1] = args;
 					if (e0 === e1 && segIndex0 === segIndex1) return null;
 					var p00 = e0.getCoordinates()[segIndex0];
@@ -79,7 +84,8 @@ export default class NodingValidator {
 							throw new RuntimeException("found non-noded intersection at " + p00 + "-" + p01 + " and " + p10 + "-" + p11);
 						}
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	checkValid() {
@@ -90,21 +96,23 @@ export default class NodingValidator {
 	checkCollapses(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					for (var i = this.segStrings.iterator(); i.hasNext(); ) {
 						var ss = i.next();
 						this.checkCollapses(ss);
 					}
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [ss] = args;
 					var pts = ss.getCoordinates();
 					for (var i = 0; i < pts.length - 2; i++) {
 						this.checkCollapse(pts[i], pts[i + 1], pts[i + 2]);
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	hasInteriorIntersection(li, p0, p1) {

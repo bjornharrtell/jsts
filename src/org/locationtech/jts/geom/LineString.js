@@ -16,11 +16,12 @@ export default class LineString extends Geometry {
 		this.points = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [points, factory] = args;
 					super(factory);
 					this.init(points);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -110,7 +111,7 @@ export default class LineString extends Geometry {
 	compareToSameClass(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [o] = args;
 					var line = o;
 					var i = 0;
@@ -130,46 +131,41 @@ export default class LineString extends Geometry {
 						return -1;
 					}
 					return 0;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [o, comp] = args;
 					var line = o;
 					return comp.compare(this.points, line.points);
-				})(...args);
+					break;
+				}
 		}
 	}
 	apply(...args) {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						for (var i = 0; i < this.points.size(); i++) {
-							filter.filter(this.points.getCoordinate(i));
-						}
-					})(...args);
+					let [filter] = args;
+					for (var i = 0; i < this.points.size(); i++) {
+						filter.filter(this.points.getCoordinate(i));
+					}
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						if (this.points.size() === 0) return null;
-						for (var i = 0; i < this.points.size(); i++) {
-							filter.filter(this.points, i);
-							if (filter.isDone()) break;
-						}
-						if (filter.isGeometryChanged()) this.geometryChanged();
-					})(...args);
+					let [filter] = args;
+					if (this.points.size() === 0) return null;
+					for (var i = 0; i < this.points.size(); i++) {
+						filter.filter(this.points, i);
+						if (filter.isDone()) break;
+					}
+					if (filter.isGeometryChanged()) this.geometryChanged();
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						filter.filter(this);
-					})(...args);
+					let [filter] = args;
+					filter.filter(this);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						filter.filter(this);
-					})(...args);
+					let [filter] = args;
+					filter.filter(this);
 				}
+				break;
 		}
 	}
 	getBoundary() {

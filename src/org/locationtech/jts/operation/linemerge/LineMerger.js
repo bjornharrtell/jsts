@@ -15,9 +15,10 @@ export default class LineMerger {
 		this.edgeStrings = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -87,37 +88,32 @@ export default class LineMerger {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geometry] = args;
-						geometry.apply(new (class {
-							filter(component) {
-								if (component instanceof LineString) {
-									this.add(component);
-								}
+					let [geometry] = args;
+					geometry.apply(new (class {
+						filter(component) {
+							if (component instanceof LineString) {
+								this.add(component);
 							}
-							get interfaces_() {
-								return [GeometryComponentFilter];
-							}
-						})());
-					})(...args);
+						}
+						get interfaces_() {
+							return [GeometryComponentFilter];
+						}
+					})());
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geometries] = args;
-						this.mergedLineStrings = null;
-						for (var i = geometries.iterator(); i.hasNext(); ) {
-							var geometry = i.next();
-							this.add(geometry);
-						}
-					})(...args);
+					let [geometries] = args;
+					this.mergedLineStrings = null;
+					for (var i = geometries.iterator(); i.hasNext(); ) {
+						var geometry = i.next();
+						this.add(geometry);
+					}
 				} else if (args[0] instanceof LineString) {
-					return ((...args) => {
-						let [lineString] = args;
-						if (this.factory === null) {
-							this.factory = lineString.getFactory();
-						}
-						this.graph.addEdge(lineString);
-					})(...args);
+					let [lineString] = args;
+					if (this.factory === null) {
+						this.factory = lineString.getFactory();
+					}
+					this.graph.addEdge(lineString);
 				}
+				break;
 		}
 	}
 	buildEdgeStringsForIsolatedLoops() {

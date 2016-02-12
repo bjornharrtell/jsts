@@ -11,11 +11,12 @@ export default class TaggedLineStringSimplifier {
 		this.distanceTolerance = 0.0;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [inputIndex, outputIndex] = args;
 					this.inputIndex = inputIndex;
 					this.outputIndex = outputIndex;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

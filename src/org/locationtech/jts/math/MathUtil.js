@@ -20,20 +20,17 @@ export default class MathUtil {
 		switch (args.length) {
 			case 3:
 				if (typeof args[2] === "number" && (typeof args[0] === "number" && typeof args[1] === "number")) {
-					return ((...args) => {
-						let [x, min, max] = args;
-						if (x < min) return min;
-						if (x > max) return max;
-						return x;
-					})(...args);
+					let [x, min, max] = args;
+					if (x < min) return min;
+					if (x > max) return max;
+					return x;
 				} else if (Number.isInteger(args[2]) && (Number.isInteger(args[0]) && Number.isInteger(args[1]))) {
-					return ((...args) => {
-						let [x, min, max] = args;
-						if (x < min) return min;
-						if (x > max) return max;
-						return x;
-					})(...args);
+					let [x, min, max] = args;
+					if (x < min) return min;
+					if (x > max) return max;
+					return x;
 				}
+				break;
 		}
 	}
 	static wrap(index, max) {
@@ -45,22 +42,24 @@ export default class MathUtil {
 	static max(...args) {
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [v1, v2, v3] = args;
 					var max = v1;
 					if (v2 > max) max = v2;
 					if (v3 > max) max = v3;
 					return max;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [v1, v2, v3, v4] = args;
 					var max = v1;
 					if (v2 > max) max = v2;
 					if (v3 > max) max = v3;
 					if (v4 > max) max = v4;
 					return max;
-				})(...args);
+					break;
+				}
 		}
 	}
 	static average(x1, x2) {

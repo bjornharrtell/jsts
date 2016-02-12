@@ -18,10 +18,11 @@ export default class RelateComputer {
 		this.invalidPoint = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [arg] = args;
 					this.arg = arg;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

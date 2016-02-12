@@ -37,27 +37,24 @@ export default class SegmentStringDissolver {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [segStrings] = args;
-						for (var i = segStrings.iterator(); i.hasNext(); ) {
-							this.dissolve(i.next());
-						}
-					})(...args);
+					let [segStrings] = args;
+					for (var i = segStrings.iterator(); i.hasNext(); ) {
+						this.dissolve(i.next());
+					}
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(SegmentString) > -1) {
-					return ((...args) => {
-						let [segString] = args;
-						var oca = new OrientedCoordinateArray(segString.getCoordinates());
-						var existing = this.findMatching(oca, segString);
-						if (existing === null) {
-							this.add(oca, segString);
-						} else {
-							if (this.merger !== null) {
-								var isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
-								this.merger.merge(existing, segString, isSameOrientation);
-							}
+					let [segString] = args;
+					var oca = new OrientedCoordinateArray(segString.getCoordinates());
+					var existing = this.findMatching(oca, segString);
+					if (existing === null) {
+						this.add(oca, segString);
+					} else {
+						if (this.merger !== null) {
+							var isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
+							this.merger.merge(existing, segString, isSameOrientation);
 						}
-					})(...args);
+					}
 				}
+				break;
 		}
 	}
 	add(oca, segString) {

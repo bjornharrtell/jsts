@@ -8,9 +8,10 @@ export default class SweepLineIndex {
 		this.nOverlaps = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

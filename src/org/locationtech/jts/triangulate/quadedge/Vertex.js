@@ -33,16 +33,17 @@ export default class Vertex {
 	static interpolateZ(...args) {
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [p, p0, p1] = args;
 					var segLen = p0.distance(p1);
 					var ptLen = p.distance(p0);
 					var dz = p1.z - p0.z;
 					var pz = p0.z + dz * (ptLen / segLen);
 					return pz;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [p, v0, v1, v2] = args;
 					var x0 = v0.x;
 					var y0 = v0.y;
@@ -57,7 +58,8 @@ export default class Vertex {
 					var u = (-c * dx + a * dy) / det;
 					var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z);
 					return z;
-				})(...args);
+					break;
+				}
 		}
 	}
 	circleCenter(b, c) {
@@ -95,23 +97,25 @@ export default class Vertex {
 	equals(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [_x] = args;
 					if (this.p.x === _x.getX() && this.p.y === _x.getY()) {
 						return true;
 					} else {
 						return false;
 					}
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [_x, tolerance] = args;
 					if (this.p.distance(_x.getCoordinate()) < tolerance) {
 						return true;
 					} else {
 						return false;
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinate() {

@@ -6,11 +6,12 @@ export default class ItemBoundable {
 		this.item = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [bounds, item] = args;
 					this.bounds = bounds;
 					this.item = item;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

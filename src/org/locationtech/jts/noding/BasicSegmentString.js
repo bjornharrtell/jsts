@@ -8,11 +8,12 @@ export default class BasicSegmentString {
 		this.data = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [pts, data] = args;
 					this.pts = pts;
 					this.data = data;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

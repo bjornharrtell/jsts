@@ -7,10 +7,11 @@ export default class LineStringExtracter {
 		this.comps = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [comps] = args;
 					this.comps = comps;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -22,12 +23,13 @@ export default class LineStringExtracter {
 	static getLines(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					return LineStringExtracter.getLines(geom, new ArrayList());
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [geom, lines] = args;
 					if (geom instanceof LineString) {
 						lines.add(geom);
@@ -35,7 +37,8 @@ export default class LineStringExtracter {
 						geom.apply(new LineStringExtracter(lines));
 					}
 					return lines;
-				})(...args);
+					break;
+				}
 		}
 	}
 	filter(geom) {

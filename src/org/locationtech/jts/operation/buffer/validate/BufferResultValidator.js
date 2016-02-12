@@ -14,12 +14,13 @@ export default class BufferResultValidator {
 		this.errorIndicator = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [input, distance, result] = args;
 					this.input = input;
 					this.distance = distance;
 					this.result = result;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

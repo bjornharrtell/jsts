@@ -15,11 +15,12 @@ export default class MCPointInRing {
 		this.interval = new Interval();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [ring] = args;
 					this.ring = ring;
 					this.buildIndex();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -89,11 +90,12 @@ class MCSelecter extends MonotoneChainSelectAction {
 		this.p = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [mcp, p] = args;
 					this.mcp = mcp;
 					this.p = p;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

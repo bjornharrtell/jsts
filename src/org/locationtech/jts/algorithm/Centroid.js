@@ -17,11 +17,12 @@ export default class Centroid {
 		this.ptCentSum = new Coordinate();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.areaBasePt = null;
 					this.add(geom);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -104,32 +105,29 @@ export default class Centroid {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Polygon) {
-					return ((...args) => {
-						let [poly] = args;
-						this.addShell(poly.getExteriorRing().getCoordinates());
-						for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-							this.addHole(poly.getInteriorRingN(i).getCoordinates());
-						}
-					})(...args);
+					let [poly] = args;
+					this.addShell(poly.getExteriorRing().getCoordinates());
+					for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+						this.addHole(poly.getInteriorRingN(i).getCoordinates());
+					}
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						if (geom.isEmpty()) return null;
-						if (geom instanceof Point) {
-							this.addPoint(geom.getCoordinate());
-						} else if (geom instanceof LineString) {
-							this.addLineSegments(geom.getCoordinates());
-						} else if (geom instanceof Polygon) {
-							var poly = geom;
-							this.add(poly);
-						} else if (geom instanceof GeometryCollection) {
-							var gc = geom;
-							for (var i = 0; i < gc.getNumGeometries(); i++) {
-								this.add(gc.getGeometryN(i));
-							}
+					let [geom] = args;
+					if (geom.isEmpty()) return null;
+					if (geom instanceof Point) {
+						this.addPoint(geom.getCoordinate());
+					} else if (geom instanceof LineString) {
+						this.addLineSegments(geom.getCoordinates());
+					} else if (geom instanceof Polygon) {
+						var poly = geom;
+						this.add(poly);
+					} else if (geom instanceof GeometryCollection) {
+						var gc = geom;
+						for (var i = 0; i < gc.getNumGeometries(); i++) {
+							this.add(gc.getGeometryN(i));
 						}
-					})(...args);
+					}
 				}
+				break;
 		}
 	}
 	getClass() {

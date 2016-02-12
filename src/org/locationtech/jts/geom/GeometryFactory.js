@@ -39,6 +39,7 @@ export default class GeometryFactory {
 							overloaded.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory());
 						})(...args);
 					}
+					break;
 				case 2:
 					return ((...args) => {
 						let [precisionModel, SRID] = args;
@@ -113,36 +114,36 @@ export default class GeometryFactory {
 	createLineString(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return this.createLineString(this.getCoordinateSequenceFactory().create([]));
-				})(...args);
+					break;
+				}
 			case 1:
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return this.createLineString(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
-					})(...args);
+					let [coordinates] = args;
+					return this.createLineString(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return new LineString(coordinates, this);
-					})(...args);
+					let [coordinates] = args;
+					return new LineString(coordinates, this);
 				}
+				break;
 		}
 	}
 	createMultiLineString(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return new MultiLineString(null, this);
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [lineStrings] = args;
 					return new MultiLineString(lineStrings, this);
-				})(...args);
+					break;
+				}
 		}
 	}
 	buildGeometry(geomList) {
@@ -186,22 +187,20 @@ export default class GeometryFactory {
 	createPoint(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return this.createPoint(this.getCoordinateSequenceFactory().create([]));
-				})(...args);
+					break;
+				}
 			case 1:
 				if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [coordinate] = args;
-						return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null);
-					})(...args);
+					let [coordinate] = args;
+					return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return new Point(coordinates, this);
-					})(...args);
+					let [coordinates] = args;
+					return new Point(coordinates, this);
 				}
+				break;
 		}
 	}
 	getCoordinateSequenceFactory() {
@@ -210,32 +209,29 @@ export default class GeometryFactory {
 	createPolygon(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return new Polygon(null, null, this);
-				})(...args);
+					break;
+				}
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return this.createPolygon(this.createLinearRing(coordinates));
-					})(...args);
+					let [coordinates] = args;
+					return this.createPolygon(this.createLinearRing(coordinates));
 				} else if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return this.createPolygon(this.createLinearRing(coordinates));
-					})(...args);
+					let [coordinates] = args;
+					return this.createPolygon(this.createLinearRing(coordinates));
 				} else if (args[0] instanceof LinearRing) {
-					return ((...args) => {
-						let [shell] = args;
-						return this.createPolygon(shell, null);
-					})(...args);
+					let [shell] = args;
+					return this.createPolygon(shell, null);
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [shell, holes] = args;
 					return new Polygon(shell, holes, this);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getSRID() {
@@ -244,15 +240,17 @@ export default class GeometryFactory {
 	createGeometryCollection(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return new GeometryCollection(null, this);
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [geometries] = args;
 					return new GeometryCollection(geometries, this);
-				})(...args);
+					break;
+				}
 		}
 	}
 	createGeometry(g) {
@@ -272,71 +270,67 @@ export default class GeometryFactory {
 	createLinearRing(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return this.createLinearRing(this.getCoordinateSequenceFactory().create([]));
-				})(...args);
+					break;
+				}
 			case 1:
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return this.createLinearRing(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
-					})(...args);
+					let [coordinates] = args;
+					return this.createLinearRing(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return new LinearRing(coordinates, this);
-					})(...args);
+					let [coordinates] = args;
+					return new LinearRing(coordinates, this);
 				}
+				break;
 		}
 	}
 	createMultiPolygon(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return new MultiPolygon(null, this);
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [polygons] = args;
 					return new MultiPolygon(polygons, this);
-				})(...args);
+					break;
+				}
 		}
 	}
 	createMultiPoint(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return new MultiPoint(null, this);
-				})(...args);
+					break;
+				}
 			case 1:
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [point] = args;
-						return new MultiPoint(point, this);
-					})(...args);
+					let [point] = args;
+					return new MultiPoint(point, this);
 				} else if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
-					})(...args);
+					let [coordinates] = args;
+					return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordinates] = args;
-						if (coordinates === null) {
-							return this.createMultiPoint(new Array(0));
-						}
-						var points = new Array(coordinates.size());
-						for (var i = 0; i < coordinates.size(); i++) {
-							var ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension());
-							CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1);
-							points[i] = this.createPoint(ptSeq);
-						}
-						return this.createMultiPoint(points);
-					})(...args);
+					let [coordinates] = args;
+					if (coordinates === null) {
+						return this.createMultiPoint(new Array(0));
+					}
+					var points = new Array(coordinates.size());
+					for (var i = 0; i < coordinates.size(); i++) {
+						var ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension());
+						CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1);
+						points[i] = this.createPoint(ptSeq);
+					}
+					return this.createMultiPoint(points);
 				}
+				break;
 		}
 	}
 	getClass() {

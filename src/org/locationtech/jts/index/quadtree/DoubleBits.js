@@ -6,11 +6,12 @@ export default class DoubleBits {
 		this.xBits = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [x] = args;
 					this.x = x;
 					this.xBits = Double.doubleToLongBits(x);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

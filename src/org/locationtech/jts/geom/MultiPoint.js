@@ -7,10 +7,11 @@ export default class MultiPoint extends GeometryCollection {
 		super();
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [points, factory] = args;
 					super(points, factory);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

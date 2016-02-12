@@ -7,10 +7,11 @@ export default class Bintree {
 		this.minExtent = 1.0;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.root = new Root();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -39,23 +40,21 @@ export default class Bintree {
 		switch (args.length) {
 			case 1:
 				if (typeof args[0] === "number") {
-					return ((...args) => {
-						let [x] = args;
-						return this.query(new Interval(x, x));
-					})(...args);
+					let [x] = args;
+					return this.query(new Interval(x, x));
 				} else if (args[0] instanceof Interval) {
-					return ((...args) => {
-						let [interval] = args;
-						var foundItems = new ArrayList();
-						this.query(interval, foundItems);
-						return foundItems;
-					})(...args);
+					let [interval] = args;
+					var foundItems = new ArrayList();
+					this.query(interval, foundItems);
+					return foundItems;
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [interval, foundItems] = args;
 					this.root.addAllItemsFromOverlapping(interval, foundItems);
-				})(...args);
+					break;
+				}
 		}
 	}
 	iterator() {

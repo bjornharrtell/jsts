@@ -10,11 +10,12 @@ export default class RectangleIntersects {
 		this.rectEnv = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [rectangle] = args;
 					this.rectangle = rectangle;
 					this.rectEnv = rectangle.getEnvelopeInternal();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -48,10 +49,11 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 		this._intersects = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [rectEnv] = args;
 					this.rectEnv = rectEnv;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -93,11 +95,12 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 		this._containsPoint = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [rectangle] = args;
 					this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
 					this.rectEnv = rectangle.getEnvelopeInternal();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -137,11 +140,12 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
 		this.p1 = new Coordinate();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [rectangle] = args;
 					this.rectEnv = rectangle.getEnvelopeInternal();
 					this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -12,10 +12,11 @@ export default class FastNodingValidator {
 		this._isValid = true;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [segStrings] = args;
 					this.segStrings = segStrings;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

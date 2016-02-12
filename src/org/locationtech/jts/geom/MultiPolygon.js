@@ -7,10 +7,11 @@ export default class MultiPolygon extends GeometryCollection {
 		super();
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [polygons, factory] = args;
 					super(polygons, factory);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

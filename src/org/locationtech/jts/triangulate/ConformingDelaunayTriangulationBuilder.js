@@ -14,9 +14,10 @@ export default class ConformingDelaunayTriangulationBuilder {
 		this.constraintVertexMap = new TreeMap();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -25,7 +26,7 @@ export default class ConformingDelaunayTriangulationBuilder {
 	static createConstraintSegments(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					var lines = LinearComponentExtracter.getLines(geom);
 					var constraintSegs = new ArrayList();
@@ -34,15 +35,17 @@ export default class ConformingDelaunayTriangulationBuilder {
 						ConformingDelaunayTriangulationBuilder.createConstraintSegments(line, constraintSegs);
 					}
 					return constraintSegs;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [line, constraintSegs] = args;
 					var coords = line.getCoordinates();
 					for (var i = 1; i < coords.length; i++) {
 						constraintSegs.add(new Segment(coords[i - 1], coords[i]));
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	createSiteVertices(coords) {

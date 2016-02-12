@@ -10,11 +10,12 @@ export default class InteriorPointPoint {
 		this.interiorPoint = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g] = args;
 					this.centroid = g.getCentroid().getCoordinate();
 					this.add(g);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -27,27 +28,24 @@ export default class InteriorPointPoint {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						if (geom instanceof Point) {
-							this.add(geom.getCoordinate());
-						} else if (geom instanceof GeometryCollection) {
-							var gc = geom;
-							for (var i = 0; i < gc.getNumGeometries(); i++) {
-								this.add(gc.getGeometryN(i));
-							}
+					let [geom] = args;
+					if (geom instanceof Point) {
+						this.add(geom.getCoordinate());
+					} else if (geom instanceof GeometryCollection) {
+						var gc = geom;
+						for (var i = 0; i < gc.getNumGeometries(); i++) {
+							this.add(gc.getGeometryN(i));
 						}
-					})(...args);
+					}
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [point] = args;
-						var dist = point.distance(this.centroid);
-						if (dist < this.minDistance) {
-							this.interiorPoint = new Coordinate(point);
-							this.minDistance = dist;
-						}
-					})(...args);
+					let [point] = args;
+					var dist = point.distance(this.centroid);
+					if (dist < this.minDistance) {
+						this.interiorPoint = new Coordinate(point);
+						this.minDistance = dist;
+					}
 				}
+				break;
 		}
 	}
 	getClass() {

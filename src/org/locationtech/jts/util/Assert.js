@@ -6,26 +6,29 @@ export default class Assert {
 	static shouldNeverReachHere(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					Assert.shouldNeverReachHere(null);
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [message] = args;
 					throw new AssertionFailedException("Should never reach here" + (message !== null ? ": " + message : ""));
-				})(...args);
+					break;
+				}
 		}
 	}
 	static isTrue(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [assertion] = args;
 					Assert.isTrue(assertion, null);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [assertion, message] = args;
 					if (!assertion) {
 						if (message === null) {
@@ -34,23 +37,26 @@ export default class Assert {
 							throw new AssertionFailedException(message);
 						}
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	static equals(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [expectedValue, actualValue] = args;
 					Assert.equals(expectedValue, actualValue, null);
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [expectedValue, actualValue, message] = args;
 					if (!actualValue.equals(expectedValue)) {
 						throw new AssertionFailedException("Expected " + expectedValue + " but encountered " + actualValue + (message !== null ? ": " + message : ""));
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

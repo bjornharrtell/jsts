@@ -9,10 +9,11 @@ export default class RayCrossingCounter {
 		this.isPointOnSegment = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [p] = args;
 					this.p = p;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -22,32 +23,29 @@ export default class RayCrossingCounter {
 		switch (args.length) {
 			case 2:
 				if (args[0] instanceof Coordinate && (args[1].interfaces_ && args[1].interfaces_.indexOf(CoordinateSequence) > -1)) {
-					return ((...args) => {
-						let [p, ring] = args;
-						var counter = new RayCrossingCounter(p);
-						var p1 = new Coordinate();
-						var p2 = new Coordinate();
-						for (var i = 1; i < ring.size(); i++) {
-							ring.getCoordinate(i, p1);
-							ring.getCoordinate(i - 1, p2);
-							counter.countSegment(p1, p2);
-							if (counter.isOnSegment()) return counter.getLocation();
-						}
-						return counter.getLocation();
-					})(...args);
+					let [p, ring] = args;
+					var counter = new RayCrossingCounter(p);
+					var p1 = new Coordinate();
+					var p2 = new Coordinate();
+					for (var i = 1; i < ring.size(); i++) {
+						ring.getCoordinate(i, p1);
+						ring.getCoordinate(i - 1, p2);
+						counter.countSegment(p1, p2);
+						if (counter.isOnSegment()) return counter.getLocation();
+					}
+					return counter.getLocation();
 				} else if (args[0] instanceof Coordinate && args[1] instanceof Array) {
-					return ((...args) => {
-						let [p, ring] = args;
-						var counter = new RayCrossingCounter(p);
-						for (var i = 1; i < ring.length; i++) {
-							var p1 = ring[i];
-							var p2 = ring[i - 1];
-							counter.countSegment(p1, p2);
-							if (counter.isOnSegment()) return counter.getLocation();
-						}
-						return counter.getLocation();
-					})(...args);
+					let [p, ring] = args;
+					var counter = new RayCrossingCounter(p);
+					for (var i = 1; i < ring.length; i++) {
+						var p1 = ring[i];
+						var p2 = ring[i - 1];
+						counter.countSegment(p1, p2);
+						if (counter.isOnSegment()) return counter.getLocation();
+					}
+					return counter.getLocation();
 				}
+				break;
 		}
 	}
 	countSegment(p1, p2) {

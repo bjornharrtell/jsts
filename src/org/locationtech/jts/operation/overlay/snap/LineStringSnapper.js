@@ -26,6 +26,7 @@ export default class LineStringSnapper {
 							this.snapTolerance = snapTolerance;
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);

@@ -38,6 +38,7 @@ export default class AffineTransformation {
 							this.setTransformation(trans);
 						})(...args);
 					}
+					break;
 				case 6:
 					if (typeof args[0] === "number") {
 						return ((...args) => {
@@ -49,6 +50,7 @@ export default class AffineTransformation {
 							let [src0, src1, src2, dest0, dest1, dest2] = args;
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -69,67 +71,75 @@ export default class AffineTransformation {
 	static reflectionInstance(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					var trans = new AffineTransformation();
 					trans.setToReflection(x, y);
 					return trans;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [x0, y0, x1, y1] = args;
 					var trans = new AffineTransformation();
 					trans.setToReflection(x0, y0, x1, y1);
 					return trans;
-				})(...args);
+					break;
+				}
 		}
 	}
 	static rotationInstance(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [theta] = args;
 					return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta));
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [sinTheta, cosTheta] = args;
 					var trans = new AffineTransformation();
 					trans.setToRotation(sinTheta, cosTheta);
 					return trans;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [theta, x, y] = args;
 					return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta), x, y);
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [sinTheta, cosTheta, x, y] = args;
 					var trans = new AffineTransformation();
 					trans.setToRotation(sinTheta, cosTheta, x, y);
 					return trans;
-				})(...args);
+					break;
+				}
 		}
 	}
 	static scaleInstance(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [xScale, yScale] = args;
 					var trans = new AffineTransformation();
 					trans.setToScale(xScale, yScale);
 					return trans;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [xScale, yScale, x, y] = args;
 					var trans = new AffineTransformation();
 					trans.translate(-x, -y);
 					trans.scale(xScale, yScale);
 					trans.translate(x, y);
 					return trans;
-				})(...args);
+					break;
+				}
 		}
 	}
 	setToReflectionBasic(x0, y0, x1, y1) {
@@ -214,7 +224,7 @@ export default class AffineTransformation {
 	setTransformation(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [trans] = args;
 					this.m00 = trans.m00;
 					this.m01 = trans.m01;
@@ -223,9 +233,10 @@ export default class AffineTransformation {
 					this.m11 = trans.m11;
 					this.m12 = trans.m12;
 					return this;
-				})(...args);
+					break;
+				}
 			case 6:
-				return ((...args) => {
+				{
 					let [m00, m01, m02, m10, m11, m12] = args;
 					this.m00 = m00;
 					this.m01 = m01;
@@ -234,19 +245,21 @@ export default class AffineTransformation {
 					this.m11 = m11;
 					this.m12 = m12;
 					return this;
-				})(...args);
+					break;
+				}
 		}
 	}
 	setToRotation(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [theta] = args;
 					this.setToRotation(Math.sin(theta), Math.cos(theta));
 					return this;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [sinTheta, cosTheta] = args;
 					this.m00 = cosTheta;
 					this.m01 = -sinTheta;
@@ -255,15 +268,17 @@ export default class AffineTransformation {
 					this.m11 = cosTheta;
 					this.m12 = 0.0;
 					return this;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [theta, x, y] = args;
 					this.setToRotation(Math.sin(theta), Math.cos(theta), x, y);
 					return this;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [sinTheta, cosTheta, x, y] = args;
 					this.m00 = cosTheta;
 					this.m01 = -sinTheta;
@@ -272,7 +287,8 @@ export default class AffineTransformation {
 					this.m11 = cosTheta;
 					this.m12 = y - x * sinTheta - y * cosTheta;
 					return this;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getMatrixEntries() {
@@ -284,29 +300,33 @@ export default class AffineTransformation {
 	rotate(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [theta] = args;
 					this.compose(AffineTransformation.rotationInstance(theta));
 					return this;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [sinTheta, cosTheta] = args;
 					this.compose(AffineTransformation.rotationInstance(sinTheta, cosTheta));
 					return this;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [theta, x, y] = args;
 					this.compose(AffineTransformation.rotationInstance(theta, x, y));
 					return this;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [sinTheta, cosTheta, x, y] = args;
 					this.compose(AffineTransformation.rotationInstance(sinTheta, cosTheta));
 					return this;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getDeterminant() {
@@ -356,7 +376,7 @@ export default class AffineTransformation {
 	setToReflection(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					if (x === 0.0 && y === 0.0) {
 						throw new IllegalArgumentException("Reflection vector must be non-zero");
@@ -377,9 +397,10 @@ export default class AffineTransformation {
 					this.scale(1, -1);
 					this.rotate(sin, cos);
 					return this;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [x0, y0, x1, y1] = args;
 					if (x0 === x1 && y0 === y1) {
 						throw new IllegalArgumentException("Reflection line points must be distinct");
@@ -395,7 +416,8 @@ export default class AffineTransformation {
 					this.rotate(sin, cos);
 					this.translate(x0, y0);
 					return this;
-				})(...args);
+					break;
+				}
 		}
 	}
 	toString() {
@@ -417,47 +439,47 @@ export default class AffineTransformation {
 	transform(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g] = args;
 					var g2 = g.copy();
 					g2.apply(this);
 					return g2;
-				})(...args);
+					break;
+				}
 			case 2:
 				if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-					return ((...args) => {
-						let [src, dest] = args;
-						var xp = this.m00 * src.x + this.m01 * src.y + this.m02;
-						var yp = this.m10 * src.x + this.m11 * src.y + this.m12;
-						dest.x = xp;
-						dest.y = yp;
-						return dest;
-					})(...args);
+					let [src, dest] = args;
+					var xp = this.m00 * src.x + this.m01 * src.y + this.m02;
+					var yp = this.m10 * src.x + this.m11 * src.y + this.m12;
+					dest.x = xp;
+					dest.y = yp;
+					return dest;
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [seq, i] = args;
-						var xp = this.m00 * seq.getOrdinate(i, 0) + this.m01 * seq.getOrdinate(i, 1) + this.m02;
-						var yp = this.m10 * seq.getOrdinate(i, 0) + this.m11 * seq.getOrdinate(i, 1) + this.m12;
-						seq.setOrdinate(i, 0, xp);
-						seq.setOrdinate(i, 1, yp);
-					})(...args);
+					let [seq, i] = args;
+					var xp = this.m00 * seq.getOrdinate(i, 0) + this.m01 * seq.getOrdinate(i, 1) + this.m02;
+					var yp = this.m10 * seq.getOrdinate(i, 0) + this.m11 * seq.getOrdinate(i, 1) + this.m12;
+					seq.setOrdinate(i, 0, xp);
+					seq.setOrdinate(i, 1, yp);
 				}
+				break;
 		}
 	}
 	reflect(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					this.compose(AffineTransformation.reflectionInstance(x, y));
 					return this;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [x0, y0, x1, y1] = args;
 					this.compose(AffineTransformation.reflectionInstance(x0, y0, x1, y1));
 					return this;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

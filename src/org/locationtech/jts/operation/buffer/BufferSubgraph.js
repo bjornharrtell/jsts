@@ -16,10 +16,11 @@ export default class BufferSubgraph {
 		this.env = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.finder = new RightmostEdgeFinder();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

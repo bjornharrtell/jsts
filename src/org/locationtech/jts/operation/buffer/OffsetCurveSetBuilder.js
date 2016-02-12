@@ -22,12 +22,13 @@ export default class OffsetCurveSetBuilder {
 		this.curveList = new ArrayList();
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [inputGeom, distance, curveBuilder] = args;
 					this.inputGeom = inputGeom;
 					this.distance = distance;
 					this.curveBuilder = curveBuilder;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

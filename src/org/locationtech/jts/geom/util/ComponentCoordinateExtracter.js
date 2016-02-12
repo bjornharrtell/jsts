@@ -7,10 +7,11 @@ export default class ComponentCoordinateExtracter {
 		this.coords = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [coords] = args;
 					this.coords = coords;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

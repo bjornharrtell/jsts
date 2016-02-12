@@ -8,9 +8,10 @@ export default class CommonBitsRemover {
 		this.ccFilter = new CommonCoordinateFilter();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -72,10 +73,11 @@ class Translater {
 		this.trans = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [trans] = args;
 					this.trans = trans;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

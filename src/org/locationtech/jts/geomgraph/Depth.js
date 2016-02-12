@@ -5,14 +5,15 @@ export default class Depth {
 		this.depth = Array(2).fill().map(() => Array(3));
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					for (var i = 0; i < 2; i++) {
 						for (var j = 0; j < 3; j++) {
 							this.depth[i][j] = Depth.NULL_VALUE;
 						}
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -32,7 +33,7 @@ export default class Depth {
 	isNull(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					for (var i = 0; i < 2; i++) {
 						for (var j = 0; j < 3; j++) {
@@ -40,17 +41,20 @@ export default class Depth {
 						}
 					}
 					return true;
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [geomIndex] = args;
 					return this.depth[geomIndex][1] === Depth.NULL_VALUE;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [geomIndex, posIndex] = args;
 					return this.depth[geomIndex][posIndex] === Depth.NULL_VALUE;
-				})(...args);
+					break;
+				}
 		}
 	}
 	normalize() {
@@ -80,7 +84,7 @@ export default class Depth {
 	add(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [lbl] = args;
 					for (var i = 0; i < 2; i++) {
 						for (var j = 1; j < 3; j++) {
@@ -92,12 +96,14 @@ export default class Depth {
 							}
 						}
 					}
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [geomIndex, posIndex, location] = args;
 					if (location === Location.INTERIOR) this.depth[geomIndex][posIndex]++;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

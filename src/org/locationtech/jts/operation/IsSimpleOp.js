@@ -151,12 +151,13 @@ class EndpointInfo {
 		this.degree = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pt] = args;
 					this.pt = pt;
 					this.isClosed = false;
 					this.degree = 0;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -7,13 +7,15 @@ export default class SpatialIndex {
 	query(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [searchEnv] = args;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [searchEnv, visitor] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

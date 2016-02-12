@@ -9,10 +9,11 @@ export default class GeometrySnapper {
 		this.srcGeom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [srcGeom] = args;
 					this.srcGeom = srcGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -29,7 +30,7 @@ export default class GeometrySnapper {
 	static computeOverlaySnapTolerance(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g] = args;
 					var snapTolerance = GeometrySnapper.computeSizeBasedSnapTolerance(g);
 					var pm = g.getPrecisionModel();
@@ -38,12 +39,14 @@ export default class GeometrySnapper {
 						if (fixedSnapTol > snapTolerance) snapTolerance = fixedSnapTol;
 					}
 					return snapTolerance;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [g0, g1] = args;
 					return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1));
-				})(...args);
+					break;
+				}
 		}
 	}
 	static computeSizeBasedSnapTolerance(g) {

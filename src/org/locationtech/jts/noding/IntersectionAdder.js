@@ -14,10 +14,11 @@ export default class IntersectionAdder {
 		this.numTests = 0;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [li] = args;
 					this.li = li;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -5,10 +5,11 @@ export default class GeometryCollectionMapper {
 		this.mapOp = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [mapOp] = args;
 					this.mapOp = mapOp;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

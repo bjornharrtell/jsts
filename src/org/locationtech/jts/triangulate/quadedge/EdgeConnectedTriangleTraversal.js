@@ -6,9 +6,10 @@ export default class EdgeConnectedTriangleTraversal {
 		this.triQueue = new LinkedList();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -18,16 +19,13 @@ export default class EdgeConnectedTriangleTraversal {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof QuadEdgeTriangle) {
-					return ((...args) => {
-						let [tri] = args;
-						this.triQueue.addLast(tri);
-					})(...args);
+					let [tri] = args;
+					this.triQueue.addLast(tri);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [tris] = args;
-						this.triQueue.addAll(tris);
-					})(...args);
+					let [tris] = args;
+					this.triQueue.addAll(tris);
 				}
+				break;
 		}
 	}
 	process(currTri, visitor) {

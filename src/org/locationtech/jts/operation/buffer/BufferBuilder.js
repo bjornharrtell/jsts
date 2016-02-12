@@ -26,10 +26,11 @@ export default class BufferBuilder {
 		this.edgeList = new EdgeList();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [bufParams] = args;
 					this.bufParams = bufParams;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

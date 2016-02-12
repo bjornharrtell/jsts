@@ -6,11 +6,12 @@ export default class GeometryCombiner {
 		this.inputGeoms = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geoms] = args;
 					this.geomFactory = GeometryCombiner.extractFactory(geoms);
 					this.inputGeoms = geoms;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -19,23 +20,26 @@ export default class GeometryCombiner {
 	static combine(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geoms] = args;
 					var combiner = new GeometryCombiner(geoms);
 					return combiner.combine();
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [g0, g1] = args;
 					var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1));
 					return combiner.combine();
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [g0, g1, g2] = args;
 					var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1, g2));
 					return combiner.combine();
-				})(...args);
+					break;
+				}
 		}
 	}
 	static extractFactory(geoms) {
@@ -45,22 +49,24 @@ export default class GeometryCombiner {
 	static createList(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [obj0, obj1] = args;
 					var list = new ArrayList();
 					list.add(obj0);
 					list.add(obj1);
 					return list;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [obj0, obj1, obj2] = args;
 					var list = new ArrayList();
 					list.add(obj0);
 					list.add(obj1);
 					list.add(obj2);
 					return list;
-				})(...args);
+					break;
+				}
 		}
 	}
 	extractElements(geom, elems) {

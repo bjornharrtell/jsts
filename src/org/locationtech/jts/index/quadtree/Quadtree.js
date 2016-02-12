@@ -10,10 +10,11 @@ export default class Quadtree {
 		this.minExtent = 1.0;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.root = new Root();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -47,17 +48,19 @@ export default class Quadtree {
 	query(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [searchEnv] = args;
 					var visitor = new ArrayListVisitor();
 					this.query(searchEnv, visitor);
 					return visitor.getItems();
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [searchEnv, visitor] = args;
 					this.root.visit(searchEnv, visitor);
-				})(...args);
+					break;
+				}
 		}
 	}
 	queryAll() {

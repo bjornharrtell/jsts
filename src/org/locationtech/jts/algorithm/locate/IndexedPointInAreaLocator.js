@@ -12,11 +12,12 @@ export default class IndexedPointInAreaLocator {
 		this.index = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g] = args;
 					if (!(g.interfaces_ && g.interfaces_.indexOf(Polygonal) > -1)) throw new IllegalArgumentException("Argument must be Polygonal");
 					this.index = new IntervalIndexedGeometry(g);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -43,10 +44,11 @@ class SegmentVisitor {
 		this.counter = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [counter] = args;
 					this.counter = counter;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -65,10 +67,11 @@ class IntervalIndexedGeometry {
 		this.index = new SortedPackedIntervalRTree();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.init(geom);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -93,17 +96,19 @@ class IntervalIndexedGeometry {
 	query(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [min, max] = args;
 					var visitor = new ArrayListVisitor();
 					this.index.query(min, max, visitor);
 					return visitor.getItems();
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [min, max, visitor] = args;
 					this.index.query(min, max, visitor);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

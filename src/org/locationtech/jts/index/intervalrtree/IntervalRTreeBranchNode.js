@@ -6,12 +6,13 @@ export default class IntervalRTreeBranchNode extends IntervalRTreeNode {
 		this.node2 = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [n1, n2] = args;
 					this.node1 = n1;
 					this.node2 = n2;
 					this.buildExtent(this.node1, this.node2);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

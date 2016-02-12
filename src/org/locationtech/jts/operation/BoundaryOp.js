@@ -34,17 +34,19 @@ export default class BoundaryOp {
 	static getBoundary(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g] = args;
 					var bop = new BoundaryOp(g);
 					return bop.getBoundary();
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [g, bnRule] = args;
 					var bop = new BoundaryOp(g, bnRule);
 					return bop.getBoundary();
-				})(...args);
+					break;
+				}
 		}
 	}
 	boundaryMultiLineString(mLine) {

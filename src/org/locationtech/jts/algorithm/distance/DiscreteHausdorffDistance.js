@@ -12,11 +12,12 @@ export default class DiscreteHausdorffDistance {
 		this.densifyFrac = 0.0;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [g0, g1] = args;
 					this.g0 = g0;
 					this.g1 = g1;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -31,18 +32,20 @@ export default class DiscreteHausdorffDistance {
 	static distance(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [g0, g1] = args;
 					var dist = new DiscreteHausdorffDistance(g0, g1);
 					return dist.distance();
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [g0, g1, densifyFrac] = args;
 					var dist = new DiscreteHausdorffDistance(g0, g1);
 					dist.setDensifyFraction(densifyFrac);
 					return dist.distance();
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinates() {
@@ -86,10 +89,11 @@ class MaxPointDistanceFilter {
 		this.geom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.geom = geom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -115,11 +119,12 @@ class MaxDensifiedByFractionDistanceFilter {
 		this.numSubSegs = 0;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [geom, fraction] = args;
 					this.geom = geom;
 					this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

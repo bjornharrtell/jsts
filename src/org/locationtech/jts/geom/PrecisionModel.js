@@ -37,6 +37,7 @@ export default class PrecisionModel {
 							this.scale = pm.scale;
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -88,26 +89,23 @@ export default class PrecisionModel {
 		switch (args.length) {
 			case 1:
 				if (typeof args[0] === "number") {
-					return ((...args) => {
-						let [val] = args;
-						if (Double.isNaN(val)) return val;
-						if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
-							var floatSingleVal = val;
-							return floatSingleVal;
-						}
-						if (this.modelType === PrecisionModel.FIXED) {
-							return Math.round(val * this.scale) / this.scale;
-						}
-						return val;
-					})(...args);
+					let [val] = args;
+					if (Double.isNaN(val)) return val;
+					if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
+						var floatSingleVal = val;
+						return floatSingleVal;
+					}
+					if (this.modelType === PrecisionModel.FIXED) {
+						return Math.round(val * this.scale) / this.scale;
+					}
+					return val;
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [coord] = args;
-						if (this.modelType === PrecisionModel.FLOATING) return null;
-						coord.x = this.makePrecise(coord.x);
-						coord.y = this.makePrecise(coord.y);
-					})(...args);
+					let [coord] = args;
+					if (this.modelType === PrecisionModel.FLOATING) return null;
+					coord.x = this.makePrecise(coord.x);
+					coord.y = this.makePrecise(coord.y);
 				}
+				break;
 		}
 	}
 	getMaximumSignificantDigits() {
@@ -133,11 +131,12 @@ class Type {
 		this.name = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [name] = args;
 					this.name = name;
 					Type.nameToTypeMap.put(name, this);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

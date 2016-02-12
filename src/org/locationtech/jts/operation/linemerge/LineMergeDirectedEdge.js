@@ -5,10 +5,11 @@ export default class LineMergeDirectedEdge extends DirectedEdge {
 		super();
 		switch (args.length) {
 			case 4:
-				return ((...args) => {
+				{
 					let [from, to, directionPt, edgeDirection] = args;
 					super(from, to, directionPt, edgeDirection);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

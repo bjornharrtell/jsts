@@ -7,11 +7,12 @@ export default class Plane3D {
 		this.basePt = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [normal, basePt] = args;
 					this.normal = normal;
 					this.basePt = basePt;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

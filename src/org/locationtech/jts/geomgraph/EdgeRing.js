@@ -19,12 +19,13 @@ export default class EdgeRing {
 		this.geometryFactory = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [start, geometryFactory] = args;
 					this.geometryFactory = geometryFactory;
 					this.computePoints(start);
 					this.computeRing();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -135,13 +136,14 @@ export default class EdgeRing {
 	mergeLabel(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [deLabel] = args;
 					this.mergeLabel(deLabel, 0);
 					this.mergeLabel(deLabel, 1);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [deLabel, geomIndex] = args;
 					var loc = deLabel.getLocation(geomIndex, Position.RIGHT);
 					if (loc === Location.NONE) return null;
@@ -149,7 +151,8 @@ export default class EdgeRing {
 						this.label.setLocation(geomIndex, loc);
 						return null;
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	setShell(shell) {

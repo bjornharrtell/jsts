@@ -9,10 +9,11 @@ export default class ConnectedElementLocationFilter {
 		this.locations = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [locations] = args;
 					this.locations = locations;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

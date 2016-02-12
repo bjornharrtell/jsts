@@ -6,11 +6,12 @@ export default class SnapIfNeededOverlayOp {
 		this.geom = new Array(2);
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [g1, g2] = args;
 					this.geom[0] = g1;
 					this.geom[1] = g2;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

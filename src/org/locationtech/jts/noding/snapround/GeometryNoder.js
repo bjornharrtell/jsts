@@ -10,10 +10,11 @@ export default class GeometryNoder {
 		this.isValidityChecked = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pm] = args;
 					this.pm = pm;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

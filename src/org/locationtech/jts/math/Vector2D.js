@@ -27,6 +27,7 @@ export default class Vector2D {
 							this.y = v.y;
 						})(...args);
 					}
+					break;
 				case 2:
 					if (typeof args[0] === "number" && typeof args[1] === "number") {
 						return ((...args) => {
@@ -41,6 +42,7 @@ export default class Vector2D {
 							this.y = to.y - from.y;
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -52,28 +54,22 @@ export default class Vector2D {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Vector2D) {
-					return ((...args) => {
-						let [v] = args;
-						return new Vector2D(v);
-					})(...args);
+					let [v] = args;
+					return new Vector2D(v);
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [coord] = args;
-						return new Vector2D(coord);
-					})(...args);
+					let [coord] = args;
+					return new Vector2D(coord);
 				}
+				break;
 			case 2:
 				if (typeof args[0] === "number" && typeof args[1] === "number") {
-					return ((...args) => {
-						let [x, y] = args;
-						return new Vector2D(x, y);
-					})(...args);
+					let [x, y] = args;
+					return new Vector2D(x, y);
 				} else if (args[0] instanceof Coordinate && args[1] instanceof Coordinate) {
-					return ((...args) => {
-						let [from, to] = args;
-						return new Vector2D(from, to);
-					})(...args);
+					let [from, to] = args;
+					return new Vector2D(from, to);
 				}
+				break;
 		}
 	}
 	dot(v) {
@@ -104,15 +100,17 @@ export default class Vector2D {
 	angle(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return Math.atan2(this.y, this.x);
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [v] = args;
 					return Angle.diff(v.angle(), this.angle());
-				})(...args);
+					break;
+				}
 		}
 	}
 	weightedSum(v, frac) {

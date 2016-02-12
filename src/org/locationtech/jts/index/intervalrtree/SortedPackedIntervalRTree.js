@@ -12,9 +12,10 @@ export default class SortedPackedIntervalRTree {
 		this.level = 0;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -4,10 +4,11 @@ export default class CoordinatePrecisionReducerFilter {
 		this.precModel = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [precModel] = args;
 					this.precModel = precModel;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

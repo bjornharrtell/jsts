@@ -15,9 +15,10 @@ export default class VoronoiDiagramBuilder {
 		this.diagramEnv = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -63,16 +64,13 @@ export default class VoronoiDiagramBuilder {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-					})(...args);
+					let [geom] = args;
+					this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [coords] = args;
-						this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
-					})(...args);
+					let [coords] = args;
+					this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
 				}
+				break;
 		}
 	}
 	setClipEnvelope(clipEnv) {

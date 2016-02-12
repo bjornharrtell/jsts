@@ -7,10 +7,11 @@ export default class PolygonExtracter {
 		this.comps = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [comps] = args;
 					this.comps = comps;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -19,12 +20,13 @@ export default class PolygonExtracter {
 	static getPolygons(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					return PolygonExtracter.getPolygons(geom, new ArrayList());
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [geom, list] = args;
 					if (geom instanceof Polygon) {
 						list.add(geom);
@@ -32,7 +34,8 @@ export default class PolygonExtracter {
 						geom.apply(new PolygonExtracter(list));
 					}
 					return list;
-				})(...args);
+					break;
+				}
 		}
 	}
 	filter(geom) {

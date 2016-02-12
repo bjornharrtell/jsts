@@ -11,15 +11,17 @@ export default class MonotoneChainSelectAction {
 	select(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [seg] = args;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [mc, startIndex] = args;
 					mc.getLineSegment(startIndex, this.selectedSegment);
 					this.select(this.selectedSegment);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

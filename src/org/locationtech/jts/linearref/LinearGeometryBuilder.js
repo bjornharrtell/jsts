@@ -11,10 +11,11 @@ export default class LinearGeometryBuilder {
 		this.lastPt = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geomFact] = args;
 					this.geomFact = geomFact;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -55,17 +56,19 @@ export default class LinearGeometryBuilder {
 	add(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pt] = args;
 					this.add(pt, true);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [pt, allowRepeatedPoints] = args;
 					if (this.coordList === null) this.coordList = new CoordinateList();
 					this.coordList.add(pt, allowRepeatedPoints);
 					this.lastPt = pt;
-				})(...args);
+					break;
+				}
 		}
 	}
 	setIgnoreInvalidLines(ignoreInvalidLines) {

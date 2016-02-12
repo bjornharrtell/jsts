@@ -7,11 +7,12 @@ export default class GeometryExtracter {
 		this.comps = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [clz, comps] = args;
 					this.clz = clz;
 					this.comps = comps;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -23,12 +24,13 @@ export default class GeometryExtracter {
 	static extract(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [geom, clz] = args;
 					return GeometryExtracter.extract(geom, clz, new ArrayList());
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [geom, clz, list] = args;
 					if (GeometryExtracter.isOfClass(geom, clz)) {
 						list.add(geom);
@@ -36,7 +38,8 @@ export default class GeometryExtracter {
 						geom.apply(new GeometryExtracter(clz, list));
 					}
 					return list;
-				})(...args);
+					break;
+				}
 		}
 	}
 	filter(geom) {

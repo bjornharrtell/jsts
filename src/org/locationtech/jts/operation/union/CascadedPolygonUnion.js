@@ -12,11 +12,12 @@ export default class CascadedPolygonUnion {
 		this.geomFactory = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [polys] = args;
 					this.inputPolys = polys;
 					if (this.inputPolys === null) this.inputPolys = new ArrayList();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -88,12 +89,13 @@ export default class CascadedPolygonUnion {
 	binaryUnion(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geoms] = args;
 					return this.binaryUnion(geoms, 0, geoms.size());
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [geoms, start, end] = args;
 					if (end - start <= 1) {
 						var g0 = CascadedPolygonUnion.getGeometry(geoms, start);
@@ -106,7 +108,8 @@ export default class CascadedPolygonUnion {
 						var g1 = this.binaryUnion(geoms, mid, end);
 						return this.unionSafe(g0, g1);
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	repeatedUnion(geoms) {
@@ -143,21 +146,23 @@ export default class CascadedPolygonUnion {
 	bufferUnion(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geoms] = args;
 					var factory = geoms.get(0).getFactory();
 					var gColl = factory.buildGeometry(geoms);
 					var unionAll = gColl.buffer(0.0);
 					return unionAll;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [g0, g1] = args;
 					var factory = g0.getFactory();
 					var gColl = factory.createGeometryCollection([g0, g1]);
 					var unionAll = gColl.buffer(0.0);
 					return unionAll;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

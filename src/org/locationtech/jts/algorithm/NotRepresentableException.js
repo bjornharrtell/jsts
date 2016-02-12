@@ -4,10 +4,11 @@ export default class NotRepresentableException extends Exception {
 		super();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					super("Projective point not representable on the Cartesian plane.");
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

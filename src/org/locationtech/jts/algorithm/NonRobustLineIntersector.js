@@ -4,9 +4,10 @@ export default class NonRobustLineIntersector extends LineIntersector {
 		super();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -37,16 +37,18 @@ export default class Interval {
 	overlaps(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [interval] = args;
 					return this.overlaps(interval.min, interval.max);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [min, max] = args;
 					if (this.min > max || this.max < min) return false;
 					return true;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getMin() {
@@ -59,21 +61,19 @@ export default class Interval {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Interval) {
-					return ((...args) => {
-						let [interval] = args;
-						return this.contains(interval.min, interval.max);
-					})(...args);
+					let [interval] = args;
+					return this.contains(interval.min, interval.max);
 				} else if (typeof args[0] === "number") {
-					return ((...args) => {
-						let [p] = args;
-						return p >= this.min && p <= this.max;
-					})(...args);
+					let [p] = args;
+					return p >= this.min && p <= this.max;
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [min, max] = args;
 					return min >= this.min && max <= this.max;
-				})(...args);
+					break;
+				}
 		}
 	}
 	init(min, max) {

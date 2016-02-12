@@ -26,6 +26,7 @@ export default class Envelope {
 							this.init(env);
 						})(...args);
 					}
+					break;
 				case 2:
 					return ((...args) => {
 						let [p1, p2] = args;
@@ -46,15 +47,16 @@ export default class Envelope {
 	static intersects(...args) {
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [p1, p2, q] = args;
 					if (q.x >= (p1.x < p2.x ? p1.x : p2.x) && q.x <= (p1.x > p2.x ? p1.x : p2.x) && (q.y >= (p1.y < p2.y ? p1.y : p2.y) && q.y <= (p1.y > p2.y ? p1.y : p2.y))) {
 						return true;
 					}
 					return false;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [p1, p2, q1, q2] = args;
 					var minq = Math.min(q1.x, q2.x);
 					var maxq = Math.max(q1.x, q2.x);
@@ -69,7 +71,8 @@ export default class Envelope {
 					if (minp > maxq) return false;
 					if (maxp < minq) return false;
 					return true;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getArea() {
@@ -103,50 +106,46 @@ export default class Envelope {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						return this.covers(p.x, p.y);
-					})(...args);
+					let [p] = args;
+					return this.covers(p.x, p.y);
 				} else if (args[0] instanceof Envelope) {
-					return ((...args) => {
-						let [other] = args;
-						if (this.isNull() || other.isNull()) {
-							return false;
-						}
-						return other.getMinX() >= this.minx && other.getMaxX() <= this.maxx && other.getMinY() >= this.miny && other.getMaxY() <= this.maxy;
-					})(...args);
+					let [other] = args;
+					if (this.isNull() || other.isNull()) {
+						return false;
+					}
+					return other.getMinX() >= this.minx && other.getMaxX() <= this.maxx && other.getMinY() >= this.miny && other.getMaxY() <= this.maxy;
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					if (this.isNull()) return false;
 					return x >= this.minx && x <= this.maxx && y >= this.miny && y <= this.maxy;
-				})(...args);
+					break;
+				}
 		}
 	}
 	intersects(...args) {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Envelope) {
-					return ((...args) => {
-						let [other] = args;
-						if (this.isNull() || other.isNull()) {
-							return false;
-						}
-						return !(other.minx > this.maxx || other.maxx < this.minx || other.miny > this.maxy || other.maxy < this.miny);
-					})(...args);
+					let [other] = args;
+					if (this.isNull() || other.isNull()) {
+						return false;
+					}
+					return !(other.minx > this.maxx || other.maxx < this.minx || other.miny > this.maxy || other.maxy < this.miny);
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						return this.intersects(p.x, p.y);
-					})(...args);
+					let [p] = args;
+					return this.intersects(p.x, p.y);
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					if (this.isNull()) return false;
 					return !(x > this.maxx || x < this.minx || y > this.maxy || y < this.miny);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getMinY() {
@@ -159,39 +158,36 @@ export default class Envelope {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						this.expandToInclude(p.x, p.y);
-					})(...args);
+					let [p] = args;
+					this.expandToInclude(p.x, p.y);
 				} else if (args[0] instanceof Envelope) {
-					return ((...args) => {
-						let [other] = args;
-						if (other.isNull()) {
-							return null;
+					let [other] = args;
+					if (other.isNull()) {
+						return null;
+					}
+					if (this.isNull()) {
+						this.minx = other.getMinX();
+						this.maxx = other.getMaxX();
+						this.miny = other.getMinY();
+						this.maxy = other.getMaxY();
+					} else {
+						if (other.minx < this.minx) {
+							this.minx = other.minx;
 						}
-						if (this.isNull()) {
-							this.minx = other.getMinX();
-							this.maxx = other.getMaxX();
-							this.miny = other.getMinY();
-							this.maxy = other.getMaxY();
-						} else {
-							if (other.minx < this.minx) {
-								this.minx = other.minx;
-							}
-							if (other.maxx > this.maxx) {
-								this.maxx = other.maxx;
-							}
-							if (other.miny < this.miny) {
-								this.miny = other.miny;
-							}
-							if (other.maxy > this.maxy) {
-								this.maxy = other.maxy;
-							}
+						if (other.maxx > this.maxx) {
+							this.maxx = other.maxx;
 						}
-					})(...args);
+						if (other.miny < this.miny) {
+							this.miny = other.miny;
+						}
+						if (other.maxy > this.maxy) {
+							this.maxy = other.maxy;
+						}
+					}
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					if (this.isNull()) {
 						this.minx = x;
@@ -212,7 +208,8 @@ export default class Envelope {
 							this.maxy = y;
 						}
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	minExtent() {
@@ -277,12 +274,13 @@ export default class Envelope {
 	expandBy(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [distance] = args;
 					this.expandBy(distance, distance);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [deltaX, deltaY] = args;
 					if (this.isNull()) return null;
 					this.minx -= deltaX;
@@ -290,28 +288,27 @@ export default class Envelope {
 					this.miny -= deltaY;
 					this.maxy += deltaY;
 					if (this.minx > this.maxx || this.miny > this.maxy) this.setToNull();
-				})(...args);
+					break;
+				}
 		}
 	}
 	contains(...args) {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Envelope) {
-					return ((...args) => {
-						let [other] = args;
-						return this.covers(other);
-					})(...args);
+					let [other] = args;
+					return this.covers(other);
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						return this.covers(p);
-					})(...args);
+					let [p] = args;
+					return this.covers(p);
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [x, y] = args;
 					return this.covers(x, y);
-				})(...args);
+					break;
+				}
 		}
 	}
 	centre() {
@@ -319,45 +316,51 @@ export default class Envelope {
 		return new Coordinate((this.getMinX() + this.getMaxX()) / 2.0, (this.getMinY() + this.getMaxY()) / 2.0);
 	}
 	init(...args) {
-		if (args.length === 0) {
-			this.setToNull();
-			return;
-		} else if (args.length === 1) {
-			if (args[0] instanceof Coordinate) {
-				return ((...args) => {
+		switch (args.length) {
+			case 0:
+				{
+					let [] = args;
+					this.setToNull();
+					break;
+				}
+			case 1:
+				if (args[0] instanceof Coordinate) {
 					let [p] = args;
 					this.init(p.x, p.x, p.y, p.y);
-				})(...args);
-			} else if (args[0] instanceof Envelope) {
-				return ((...args) => {
+				} else if (args[0] instanceof Envelope) {
 					let [env] = args;
 					this.minx = env.minx;
 					this.maxx = env.maxx;
 					this.miny = env.miny;
 					this.maxy = env.maxy;
-				})(...args);
-			}
-		} else if (args.length === 2) {
-			let [p1, p2] = args;
-			this.init(p1.x, p2.x, p1.y, p2.y);
-			return;
-		} else if (args.length === 4) {
-			let [x1, x2, y1, y2] = args;
-			if (x1 < x2) {
-				this.minx = x1;
-				this.maxx = x2;
-			} else {
-				this.minx = x2;
-				this.maxx = x1;
-			}
-			if (y1 < y2) {
-				this.miny = y1;
-				this.maxy = y2;
-			} else {
-				this.miny = y2;
-				this.maxy = y1;
-			}
-	  }
+				}
+				break;
+			case 2:
+				{
+					let [p1, p2] = args;
+					this.init(p1.x, p2.x, p1.y, p2.y);
+					break;
+				}
+			case 4:
+				{
+					let [x1, x2, y1, y2] = args;
+					if (x1 < x2) {
+						this.minx = x1;
+						this.maxx = x2;
+					} else {
+						this.minx = x2;
+						this.maxx = x1;
+					}
+					if (y1 < y2) {
+						this.miny = y1;
+						this.maxy = y2;
+					} else {
+						this.miny = y2;
+						this.maxy = y1;
+					}
+					break;
+				}
+		}
 	}
 	getMaxY() {
 		return this.maxy;
@@ -385,3 +388,4 @@ export default class Envelope {
 	}
 }
 Envelope.serialVersionUID = 5873921885273102420;
+

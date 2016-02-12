@@ -56,71 +56,64 @@ export default class CoordinateList extends ArrayList {
 	add(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [coord] = args;
 					super.add(coord);
-				})(...args);
+					break;
+				}
 			case 2:
 				if (args[0] instanceof Array && typeof args[1] === "boolean") {
-					return ((...args) => {
-						let [coord, allowRepeated] = args;
-						this.add(coord, allowRepeated, true);
-						return true;
-					})(...args);
+					let [coord, allowRepeated] = args;
+					this.add(coord, allowRepeated, true);
+					return true;
 				} else if (args[0] instanceof Coordinate && typeof args[1] === "boolean") {
-					return ((...args) => {
-						let [coord, allowRepeated] = args;
-						if (!allowRepeated) {
-							if (this.size() >= 1) {
-								var last = this.get(this.size() - 1);
-								if (last.equals2D(coord)) return null;
-							}
+					let [coord, allowRepeated] = args;
+					if (!allowRepeated) {
+						if (this.size() >= 1) {
+							var last = this.get(this.size() - 1);
+							if (last.equals2D(coord)) return null;
 						}
-						super.add(coord);
-					})(...args);
+					}
+					super.add(coord);
 				} else if (args[0] instanceof Object && typeof args[1] === "boolean") {
-					return ((...args) => {
-						let [obj, allowRepeated] = args;
-						this.add(obj, allowRepeated);
-						return true;
-					})(...args);
+					let [obj, allowRepeated] = args;
+					this.add(obj, allowRepeated);
+					return true;
 				}
+				break;
 			case 3:
 				if (typeof args[2] === "boolean" && (args[0] instanceof Array && typeof args[1] === "boolean")) {
-					return ((...args) => {
-						let [coord, allowRepeated, direction] = args;
-						if (direction) {
-							for (var i = 0; i < coord.length; i++) {
-								this.add(coord[i], allowRepeated);
-							}
-						} else {
-							for (var i = coord.length - 1; i >= 0; i--) {
-								this.add(coord[i], allowRepeated);
-							}
+					let [coord, allowRepeated, direction] = args;
+					if (direction) {
+						for (var i = 0; i < coord.length; i++) {
+							this.add(coord[i], allowRepeated);
 						}
-						return true;
-					})(...args);
+					} else {
+						for (var i = coord.length - 1; i >= 0; i--) {
+							this.add(coord[i], allowRepeated);
+						}
+					}
+					return true;
 				} else if (typeof args[2] === "boolean" && (Number.isInteger(args[0]) && args[1] instanceof Coordinate)) {
-					return ((...args) => {
-						let [i, coord, allowRepeated] = args;
-						if (!allowRepeated) {
-							var size = this.size();
-							if (size > 0) {
-								if (i > 0) {
-									var prev = this.get(i - 1);
-									if (prev.equals2D(coord)) return null;
-								}
-								if (i < size) {
-									var next = this.get(i);
-									if (next.equals2D(coord)) return null;
-								}
+					let [i, coord, allowRepeated] = args;
+					if (!allowRepeated) {
+						var size = this.size();
+						if (size > 0) {
+							if (i > 0) {
+								var prev = this.get(i - 1);
+								if (prev.equals2D(coord)) return null;
+							}
+							if (i < size) {
+								var next = this.get(i);
+								if (next.equals2D(coord)) return null;
 							}
 						}
-						super.add(i, coord);
-					})(...args);
+					}
+					super.add(i, coord);
 				}
+				break;
 			case 4:
-				return ((...args) => {
+				{
 					let [coord, allowRepeated, start, end] = args;
 					var inc = 1;
 					if (start > end) inc = -1;
@@ -128,7 +121,8 @@ export default class CoordinateList extends ArrayList {
 						this.add(coord[i], allowRepeated);
 					}
 					return true;
-				})(...args);
+					break;
+				}
 		}
 	}
 	closeRing() {

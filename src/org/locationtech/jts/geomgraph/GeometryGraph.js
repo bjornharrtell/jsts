@@ -75,12 +75,13 @@ export default class GeometryGraph extends PlanarGraph {
 	computeSelfNodes(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [li, computeRingSelfNodes] = args;
 					return this.computeSelfNodes(li, computeRingSelfNodes, false);
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [li, computeRingSelfNodes, isDoneIfProperInt] = args;
 					var si = new SegmentIntersector(li, true, false);
 					si.setIsDoneIfProperInt(isDoneIfProperInt);
@@ -90,7 +91,8 @@ export default class GeometryGraph extends PlanarGraph {
 					esi.computeIntersections(this.edges, si, computeAllSegments);
 					this.addSelfIntersectionNodes(this.argIndex);
 					return si;
-				})(...args);
+					break;
+				}
 		}
 	}
 	computeSplitEdges(edgelist) {
@@ -119,17 +121,14 @@ export default class GeometryGraph extends PlanarGraph {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Point) {
-					return ((...args) => {
-						let [p] = args;
-						var coord = p.getCoordinate();
-						this.insertPoint(this.argIndex, coord, Location.INTERIOR);
-					})(...args);
+					let [p] = args;
+					var coord = p.getCoordinate();
+					this.insertPoint(this.argIndex, coord, Location.INTERIOR);
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [pt] = args;
-						this.insertPoint(this.argIndex, pt, Location.INTERIOR);
-					})(...args);
+					let [pt] = args;
+					this.insertPoint(this.argIndex, pt, Location.INTERIOR);
 				}
+				break;
 		}
 	}
 	addPolygon(p) {

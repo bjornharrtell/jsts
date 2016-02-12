@@ -223,10 +223,11 @@ class RadialComparator {
 		this.origin = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [origin] = args;
 					this.origin = origin;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

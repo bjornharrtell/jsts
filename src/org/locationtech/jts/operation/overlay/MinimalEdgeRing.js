@@ -4,10 +4,11 @@ export default class MinimalEdgeRing extends EdgeRing {
 		super();
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [start, geometryFactory] = args;
 					super(start, geometryFactory);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -29,14 +29,15 @@ export default class QuadEdgeSubdivision {
 		this.triEdges = new Array(3);
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [env, tolerance] = args;
 					this.tolerance = tolerance;
 					this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
 					this.createFrame(env);
 					this.startingEdge = this.initSubdiv();
 					this.locator = new LastFoundQuadEdgeLocator(this);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -206,12 +207,13 @@ export default class QuadEdgeSubdivision {
 	getEdges(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					return this.quadEdges;
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [geomFact] = args;
 					var quadEdges = this.getPrimaryEdges(false);
 					var edges = new Array(quadEdges.size());
@@ -221,7 +223,8 @@ export default class QuadEdgeSubdivision {
 						edges[i++] = geomFact.createLineString([qe.orig().getCoordinate(), qe.dest().getCoordinate()]);
 					}
 					return geomFact.createMultiLineString(edges);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getVertexUniqueEdges(includeFrame) {
@@ -354,18 +357,15 @@ export default class QuadEdgeSubdivision {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Vertex) {
-					return ((...args) => {
-						let [v] = args;
-						return this.locator.locate(v);
-					})(...args);
+					let [v] = args;
+					return this.locator.locate(v);
 				} else if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [p] = args;
-						return this.locator.locate(new Vertex(p));
-					})(...args);
+					let [p] = args;
+					return this.locator.locate(new Vertex(p));
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [p0, p1] = args;
 					var e = this.locator.locate(new Vertex(p0));
 					if (e === null) return null;
@@ -377,7 +377,8 @@ export default class QuadEdgeSubdivision {
 						locEdge = locEdge.oNext();
 					} while (locEdge !== base);
 					return null;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {
@@ -388,9 +389,10 @@ class TriangleCircumcentreVisitor {
 	constructor(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -450,9 +452,10 @@ class TriangleCoordinatesVisitor {
 		this.triCoords = new ArrayList();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

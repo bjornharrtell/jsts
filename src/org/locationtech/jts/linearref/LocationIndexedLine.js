@@ -10,11 +10,12 @@ export default class LocationIndexedLine {
 		this.linearGeom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [linearGeom] = args;
 					this.linearGeom = linearGeom;
 					this.checkGeometryType();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -34,16 +35,18 @@ export default class LocationIndexedLine {
 	extractPoint(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [index] = args;
 					return index.getCoordinate(this.linearGeom);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [index, offsetDistance] = args;
 					var indexLow = index.toLowest(this.linearGeom);
 					return indexLow.getSegment(this.linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
-				})(...args);
+					break;
+				}
 		}
 	}
 	isValidIndex(index) {

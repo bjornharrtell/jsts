@@ -16,9 +16,10 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		this.LINKING_TO_OUTGOING = 2;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -118,7 +119,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 	computeDepths(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [de] = args;
 					var edgeIndex = this.findIndex(de);
 					var label = de.getLabel();
@@ -127,9 +128,10 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 					var nextDepth = this.computeDepths(edgeIndex + 1, this.edgeList.size(), startDepth);
 					var lastDepth = this.computeDepths(0, edgeIndex, nextDepth);
 					if (lastDepth !== targetLastDepth) throw new TopologyException("depth mismatch at " + de.getCoordinate());
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [startIndex, endIndex, startDepth] = args;
 					var currDepth = startDepth;
 					for (var i = startIndex; i < endIndex; i++) {
@@ -139,7 +141,8 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 						currDepth = nextDe.getDepth(Position.LEFT);
 					}
 					return currDepth;
-				})(...args);
+					break;
+				}
 		}
 	}
 	mergeSymLabels() {
@@ -179,7 +182,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 	getOutgoingDegree(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					var degree = 0;
 					for (var it = this.iterator(); it.hasNext(); ) {
@@ -187,9 +190,10 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 						if (de.isInResult()) degree++;
 					}
 					return degree;
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [er] = args;
 					var degree = 0;
 					for (var it = this.iterator(); it.hasNext(); ) {
@@ -197,7 +201,8 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 						if (de.getEdgeRing() === er) degree++;
 					}
 					return degree;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getLabel() {

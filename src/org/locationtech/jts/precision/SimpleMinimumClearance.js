@@ -11,10 +11,11 @@ export default class SimpleMinimumClearance {
 		this.minClearancePts = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.inputGeom = geom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -41,16 +42,17 @@ export default class SimpleMinimumClearance {
 	updateClearance(...args) {
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [candidateValue, p0, p1] = args;
 					if (candidateValue < this.minClearance) {
 						this.minClearance = candidateValue;
 						this.minClearancePts[0] = new Coordinate(p0);
 						this.minClearancePts[1] = new Coordinate(p1);
 					}
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [candidateValue, p, seg0, seg1] = args;
 					if (candidateValue < this.minClearance) {
 						this.minClearance = candidateValue;
@@ -58,7 +60,8 @@ export default class SimpleMinimumClearance {
 						var seg = new LineSegment(seg0, seg1);
 						this.minClearancePts[1] = new Coordinate(seg.closestPoint(p));
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	compute() {
@@ -80,10 +83,11 @@ class VertexCoordinateFilter {
 		this.smc = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [smc] = args;
 					this.smc = smc;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -102,11 +106,12 @@ class ComputeMCCoordinateSequenceFilter {
 		this.queryPt = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [smc, queryPt] = args;
 					this.smc = smc;
 					this.queryPt = queryPt;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -21,15 +21,16 @@ export default class StringUtil {
 	static getStackTrace(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [t] = args;
 					var os = new ByteArrayOutputStream();
 					var ps = new PrintStream(os);
 					t.printStackTrace(ps);
 					return os.toString();
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [t, depth] = args;
 					var stackTrace = "";
 					var stringReader = new StringReader(StringUtil.getStackTrace(t));
@@ -44,7 +45,8 @@ export default class StringUtil {
 						} finally {}
 					}
 					return stackTrace;
-				})(...args);
+					break;
+				}
 		}
 	}
 	static split(s, separator) {

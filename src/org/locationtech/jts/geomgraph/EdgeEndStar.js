@@ -14,9 +14,10 @@ export default class EdgeEndStar {
 		this.ptInAreaLocation = [Location.NONE, Location.NONE];
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

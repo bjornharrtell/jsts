@@ -40,12 +40,13 @@ export default class Vector3D {
 	static dot(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [v1, v2] = args;
 					return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [A, B, C, D] = args;
 					var ABx = B.x - A.x;
 					var ABy = B.y - A.y;
@@ -54,7 +55,8 @@ export default class Vector3D {
 					var CDy = D.y - C.y;
 					var CDz = D.z - C.z;
 					return ABx * CDx + ABy * CDy + ABz * CDz;
-				})(...args);
+					break;
+				}
 		}
 	}
 	static normalize(v) {
@@ -64,15 +66,17 @@ export default class Vector3D {
 	static create(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [coord] = args;
 					return new Vector3D(coord);
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [x, y, z] = args;
 					return new Vector3D(x, y, z);
-				})(...args);
+					break;
+				}
 		}
 	}
 	dot(v) {

@@ -22,18 +22,20 @@ export default class PackedCoordinateSequence {
 	getCoordinate(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [i] = args;
 					var coords = this.getCachedCoords();
 					if (coords !== null) return coords[i]; else return this.getCoordinateInternal(i);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [i, coord] = args;
 					coord.x = this.getOrdinate(i, 0);
 					coord.y = this.getOrdinate(i, 1);
 					if (this.dimension > 2) coord.z = this.getOrdinate(i, 2);
-				})(...args);
+					break;
+				}
 		}
 	}
 	setX(index, value) {
@@ -138,6 +140,7 @@ class Double extends PackedCoordinateSequence {
 							this.coords = new Array(size * this.dimension);
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -231,6 +234,7 @@ class Float extends PackedCoordinateSequence {
 							this.coords = new Array(size * this.dimension);
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);

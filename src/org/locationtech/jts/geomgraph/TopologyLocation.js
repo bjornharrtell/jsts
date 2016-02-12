@@ -29,6 +29,7 @@ export default class TopologyLocation {
 							}
 						})(...args);
 					}
+					break;
 				case 3:
 					return ((...args) => {
 						let [on, left, right] = args;
@@ -112,15 +113,17 @@ export default class TopologyLocation {
 	setLocation(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [locValue] = args;
 					this.setLocation(Position.ON, locValue);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [locIndex, locValue] = args;
 					this.location[locIndex] = locValue;
-				})(...args);
+					break;
+				}
 		}
 	}
 	init(size) {

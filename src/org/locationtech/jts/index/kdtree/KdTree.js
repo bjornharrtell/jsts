@@ -34,12 +34,13 @@ export default class KdTree {
 	static toCoordinates(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [kdnodes] = args;
 					return KdTree.toCoordinates(kdnodes, false);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [kdnodes, includeRepeated] = args;
 					var coord = new CoordinateList();
 					for (var it = kdnodes.iterator(); it.hasNext(); ) {
@@ -50,18 +51,20 @@ export default class KdTree {
 						}
 					}
 					return coord.toCoordinateArray();
-				})(...args);
+					break;
+				}
 		}
 	}
 	insert(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [p] = args;
 					return this.insert(p, null);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [p, data] = args;
 					if (this.root === null) {
 						this.root = new KdNode(p, data);
@@ -75,37 +78,36 @@ export default class KdTree {
 						}
 					}
 					return this.insertExact(p, data);
-				})(...args);
+					break;
+				}
 		}
 	}
 	query(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [queryEnv] = args;
 					var result = new ArrayList();
 					this.query(queryEnv, result);
 					return result;
-				})(...args);
+					break;
+				}
 			case 2:
 				if (args[0] instanceof Envelope && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1)) {
-					return ((...args) => {
-						let [queryEnv, result] = args;
-						this.queryNode(this.root, queryEnv, true, new (class {
-							visit(node) {
-								result.add(node);
-							}
-							get interfaces_() {
-								return [KdNodeVisitor];
-							}
-						})());
-					})(...args);
+					let [queryEnv, result] = args;
+					this.queryNode(this.root, queryEnv, true, new (class {
+						visit(node) {
+							result.add(node);
+						}
+						get interfaces_() {
+							return [KdNodeVisitor];
+						}
+					})());
 				} else if (args[0] instanceof Envelope && (args[1].interfaces_ && args[1].interfaces_.indexOf(KdNodeVisitor) > -1)) {
-					return ((...args) => {
-						let [queryEnv, visitor] = args;
-						this.queryNode(this.root, queryEnv, true, visitor);
-					})(...args);
+					let [queryEnv, visitor] = args;
+					this.queryNode(this.root, queryEnv, true, visitor);
 				}
+				break;
 		}
 	}
 	queryNode(currentNode, queryEnv, odd, visitor) {
@@ -190,11 +192,12 @@ class BestMatchVisitor {
 		this.p = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [p, tolerance] = args;
 					this.p = p;
 					this.tolerance = tolerance;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

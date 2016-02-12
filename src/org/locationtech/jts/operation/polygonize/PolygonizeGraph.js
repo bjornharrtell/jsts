@@ -14,10 +14,11 @@ export default class PolygonizeGraph extends PlanarGraph {
 		this.factory = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [factory] = args;
 					this.factory = factory;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -141,18 +142,20 @@ export default class PolygonizeGraph extends PlanarGraph {
 	computeDepthParity(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					while (true) {
 						var de = null;
 						if (de === null) return null;
 						this.computeDepthParity(de);
 					}
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [de] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	computeNextCWEdges() {

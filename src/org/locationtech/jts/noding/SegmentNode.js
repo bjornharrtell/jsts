@@ -10,14 +10,15 @@ export default class SegmentNode {
 		this._isInterior = null;
 		switch (args.length) {
 			case 4:
-				return ((...args) => {
+				{
 					let [segString, coord, segmentIndex, segmentOctant] = args;
 					this.segString = segString;
 					this.coord = new Coordinate(coord);
 					this.segmentIndex = segmentIndex;
 					this.segmentOctant = segmentOctant;
 					this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

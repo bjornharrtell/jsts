@@ -8,10 +8,11 @@ export default class EdgeString {
 		this.coordinates = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [factory] = args;
 					this.factory = factory;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

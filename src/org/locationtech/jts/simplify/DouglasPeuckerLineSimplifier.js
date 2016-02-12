@@ -9,10 +9,11 @@ export default class DouglasPeuckerLineSimplifier {
 		this.seg = new LineSegment();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pts] = args;
 					this.pts = pts;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -14,10 +14,11 @@ export default class SegmentNodeList {
 		this.edge = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [edge] = args;
 					this.edge = edge;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -173,13 +174,14 @@ class NodeVertexIterator {
 		this.currSegIndex = 0;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [nodeList] = args;
 					this.nodeList = nodeList;
 					this.edge = nodeList.getEdge();
 					this.nodeIt = nodeList.iterator();
 					this.readNextNode();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

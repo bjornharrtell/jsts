@@ -5,10 +5,11 @@ export default class MarkHalfEdge extends HalfEdge {
 		this._isMarked = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [orig] = args;
 					super(orig);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

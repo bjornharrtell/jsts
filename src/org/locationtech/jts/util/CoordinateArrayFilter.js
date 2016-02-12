@@ -5,10 +5,11 @@ export default class CoordinateArrayFilter {
 		this.n = 0;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [size] = args;
 					this.pts = new Array(size);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -5,12 +5,13 @@ export default class IntervalRTreeLeafNode extends IntervalRTreeNode {
 		this.item = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [min, max, item] = args;
 					this.min = min;
 					this.max = max;
 					this.item = item;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

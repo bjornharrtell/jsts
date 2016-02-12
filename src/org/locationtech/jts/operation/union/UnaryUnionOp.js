@@ -29,6 +29,7 @@ export default class UnaryUnionOp {
 							this.extract(geom);
 						})(...args);
 					}
+					break;
 				case 2:
 					return ((...args) => {
 						let [geoms, geomFact] = args;
@@ -46,24 +47,22 @@ export default class UnaryUnionOp {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geoms] = args;
-						var op = new UnaryUnionOp(geoms);
-						return op.union();
-					})(...args);
+					let [geoms] = args;
+					var op = new UnaryUnionOp(geoms);
+					return op.union();
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						var op = new UnaryUnionOp(geom);
-						return op.union();
-					})(...args);
+					let [geom] = args;
+					var op = new UnaryUnionOp(geom);
+					return op.union();
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [geoms, geomFact] = args;
 					var op = new UnaryUnionOp(geoms, geomFact);
 					return op.union();
-				})(...args);
+					break;
+				}
 		}
 	}
 	unionNoOpt(g0) {
@@ -80,22 +79,19 @@ export default class UnaryUnionOp {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geoms] = args;
-						for (var i = geoms.iterator(); i.hasNext(); ) {
-							var geom = i.next();
-							this.extract(geom);
-						}
-					})(...args);
+					let [geoms] = args;
+					for (var i = geoms.iterator(); i.hasNext(); ) {
+						var geom = i.next();
+						this.extract(geom);
+					}
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geom] = args;
-						if (this.geomFact === null) this.geomFact = geom.getFactory();
-						GeometryExtracter.extract(geom, Polygon, this.polygons);
-						GeometryExtracter.extract(geom, LineString, this.lines);
-						GeometryExtracter.extract(geom, Point, this.points);
-					})(...args);
+					let [geom] = args;
+					if (this.geomFact === null) this.geomFact = geom.getFactory();
+					GeometryExtracter.extract(geom, Polygon, this.polygons);
+					GeometryExtracter.extract(geom, LineString, this.lines);
+					GeometryExtracter.extract(geom, Point, this.points);
 				}
+				break;
 		}
 	}
 	union() {

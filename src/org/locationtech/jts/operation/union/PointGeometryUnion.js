@@ -10,12 +10,13 @@ export default class PointGeometryUnion {
 		this.geomFact = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [pointGeom, otherGeom] = args;
 					this.pointGeom = pointGeom;
 					this.otherGeom = otherGeom;
 					this.geomFact = otherGeom.getFactory();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -9,13 +9,14 @@ export default class MonotoneChainEdge {
 		this.env2 = new Envelope();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [e] = args;
 					this.e = e;
 					this.pts = e.getCoordinates();
 					var mcb = new MonotoneChainIndexer();
 					this.startIndex = mcb.getChainStartIndices(this.pts);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -37,12 +38,13 @@ export default class MonotoneChainEdge {
 	computeIntersectsForChain(...args) {
 		switch (args.length) {
 			case 4:
-				return ((...args) => {
+				{
 					let [chainIndex0, mce, chainIndex1, si] = args;
 					this.computeIntersectsForChain(this.startIndex[chainIndex0], this.startIndex[chainIndex0 + 1], mce, mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si);
-				})(...args);
+					break;
+				}
 			case 6:
-				return ((...args) => {
+				{
 					let [start0, end0, mce, start1, end1, ei] = args;
 					var p00 = this.pts[start0];
 					var p01 = this.pts[end0];
@@ -65,7 +67,8 @@ export default class MonotoneChainEdge {
 						if (start1 < mid1) this.computeIntersectsForChain(mid0, end0, mce, start1, mid1, ei);
 						if (mid1 < end1) this.computeIntersectsForChain(mid0, end0, mce, mid1, end1, ei);
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	getStartIndexes() {

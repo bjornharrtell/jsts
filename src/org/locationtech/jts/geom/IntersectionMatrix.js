@@ -36,6 +36,7 @@ export default class IntersectionMatrix {
 							this.matrix[Location.EXTERIOR][Location.EXTERIOR] = other.matrix[Location.EXTERIOR][Location.EXTERIOR];
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -47,35 +48,32 @@ export default class IntersectionMatrix {
 		switch (args.length) {
 			case 2:
 				if (Number.isInteger(args[0]) && typeof args[1] === "string") {
-					return ((...args) => {
-						let [actualDimensionValue, requiredDimensionSymbol] = args;
-						if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
-							return true;
-						}
-						if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
-							return true;
-						}
-						if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
-							return true;
-						}
-						if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
-							return true;
-						}
-						if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
-							return true;
-						}
-						if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
-							return true;
-						}
-						return false;
-					})(...args);
+					let [actualDimensionValue, requiredDimensionSymbol] = args;
+					if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
+						return true;
+					}
+					if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
+						return true;
+					}
+					if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
+						return true;
+					}
+					if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
+						return true;
+					}
+					if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
+						return true;
+					}
+					if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
+						return true;
+					}
+					return false;
 				} else if (typeof args[0] === "string" && typeof args[1] === "string") {
-					return ((...args) => {
-						let [actualDimensionSymbols, requiredDimensionSymbols] = args;
-						var m = new IntersectionMatrix(actualDimensionSymbols);
-						return m.matches(requiredDimensionSymbols);
-					})(...args);
+					let [actualDimensionSymbols, requiredDimensionSymbols] = args;
+					var m = new IntersectionMatrix(actualDimensionSymbols);
+					return m.matches(requiredDimensionSymbols);
 				}
+				break;
 		}
 	}
 	static isTrue(actualDimensionValue) {
@@ -98,19 +96,21 @@ export default class IntersectionMatrix {
 	set(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [dimensionSymbols] = args;
 					for (var i = 0; i < dimensionSymbols.length; i++) {
 						var row = Math.trunc(i / 3);
 						var col = i % 3;
 						this.matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
 					}
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [row, column, dimensionValue] = args;
 					this.matrix[row][column] = dimensionValue;
-				})(...args);
+					break;
+				}
 		}
 	}
 	isContains() {
@@ -119,21 +119,23 @@ export default class IntersectionMatrix {
 	setAtLeast(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [minimumDimensionSymbols] = args;
 					for (var i = 0; i < minimumDimensionSymbols.length; i++) {
 						var row = Math.trunc(i / 3);
 						var col = i % 3;
 						this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
 					}
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [row, column, minimumDimensionValue] = args;
 					if (this.matrix[row][column] < minimumDimensionValue) {
 						this.matrix[row][column] = minimumDimensionValue;
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	setAtLeastIfValid(row, column, minimumDimensionValue) {

@@ -8,10 +8,11 @@ export default class MultiLineString extends GeometryCollection {
 		super();
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [lineStrings, factory] = args;
 					super(lineStrings, factory);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

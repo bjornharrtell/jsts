@@ -7,11 +7,12 @@ export default class SplitSegment {
 		this.minimumLen = 0.0;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [seg] = args;
 					this.seg = seg;
 					this.segLen = seg.getLength();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -26,7 +27,7 @@ export default class SplitSegment {
 	splitAt(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pt] = args;
 					var minFrac = this.minimumLen / this.segLen;
 					if (pt.distance(this.seg.p0) < this.minimumLen) {
@@ -38,14 +39,16 @@ export default class SplitSegment {
 						return null;
 					}
 					this.splitPt = pt;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [length, endPt] = args;
 					var actualLen = this.getConstrainedLength(length);
 					var frac = actualLen / this.segLen;
 					if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
-				})(...args);
+					break;
+				}
 		}
 	}
 	setMinimumLength(minLen) {

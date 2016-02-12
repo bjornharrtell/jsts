@@ -7,9 +7,10 @@ export default class RelateNodeGraph {
 		this.nodes = new NodeMap(new RelateNodeFactory());
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

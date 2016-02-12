@@ -9,10 +9,11 @@ export default class SimplePointInAreaLocator {
 		this.geom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.geom = geom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

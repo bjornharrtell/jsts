@@ -8,14 +8,15 @@ export default class SweepLineEvent {
 		this.sweepInt = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [x, insertEvent, sweepInt] = args;
 					this.xValue = x;
 					this.insertEvent = insertEvent;
 					this.eventType = SweepLineEvent.INSERT;
 					if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
 					this.sweepInt = sweepInt;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

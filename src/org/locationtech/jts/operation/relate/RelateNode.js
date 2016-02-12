@@ -4,10 +4,11 @@ export default class RelateNode extends Node {
 		super();
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [coord, edges] = args;
 					super(coord, edges);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -5,10 +5,11 @@ export default class MCIndexPointSnapper {
 		this.index = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [index] = args;
 					this.index = index;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -20,12 +21,13 @@ export default class MCIndexPointSnapper {
 	snap(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [hotPixel] = args;
 					return this.snap(hotPixel, null, -1);
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
 					var pixelEnv = hotPixel.getSafeEnvelope();
 					var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
@@ -39,7 +41,8 @@ export default class MCIndexPointSnapper {
 						}
 					})());
 					return hotPixelSnapAction.isNodeAdded();
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {
@@ -55,12 +58,13 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
 		this._isNodeAdded = false;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [hotPixel, parentEdge, hotPixelVertexIndex] = args;
 					this.hotPixel = hotPixel;
 					this.parentEdge = parentEdge;
 					this.hotPixelVertexIndex = hotPixelVertexIndex;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

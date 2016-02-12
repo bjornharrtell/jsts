@@ -70,27 +70,26 @@ export default class SIRtree extends AbstractSTRtree {
 	query(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [x] = args;
 					return this.query(x, x);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [x1, x2] = args;
 					return super.query(new Interval(Math.min(x1, x2), Math.max(x1, x2)));
-				})(...args);
+					break;
+				}
 			case 3:
 				if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					return ((...args) => {
-						let [searchBounds, node, visitor] = args;
-						super.query(searchBounds, node, visitor);
-					})(...args);
+					let [searchBounds, node, visitor] = args;
+					super.query(searchBounds, node, visitor);
 				} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-					return ((...args) => {
-						let [searchBounds, node, matches] = args;
-						super.query(searchBounds, node, matches);
-					})(...args);
+					let [searchBounds, node, matches] = args;
+					super.query(searchBounds, node, matches);
 				}
+				break;
 		}
 	}
 	getComparator() {

@@ -10,12 +10,13 @@ export default class LineBuilder {
 		this.resultLineList = new ArrayList();
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [op, geometryFactory, ptLocator] = args;
 					this.op = op;
 					this.geometryFactory = geometryFactory;
 					this.ptLocator = ptLocator;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

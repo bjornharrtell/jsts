@@ -8,10 +8,11 @@ export default class ConsistentAreaTester {
 		this.invalidPoint = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geomGraph] = args;
 					this.geomGraph = geomGraph;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

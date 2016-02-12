@@ -24,6 +24,7 @@ export default class LinearRing extends LineString {
 							this.validateConstruction();
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);

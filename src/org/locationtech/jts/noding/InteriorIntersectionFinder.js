@@ -12,11 +12,12 @@ export default class InteriorIntersectionFinder {
 		this.keepIntersections = true;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [li] = args;
 					this.li = li;
 					this.interiorIntersection = null;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

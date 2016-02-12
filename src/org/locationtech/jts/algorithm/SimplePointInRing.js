@@ -5,10 +5,11 @@ export default class SimplePointInRing {
 		this.pts = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [ring] = args;
 					this.pts = ring.getCoordinates();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

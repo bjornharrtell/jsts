@@ -12,9 +12,10 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 		this.nOverlaps = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -32,7 +33,7 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 	computeIntersections(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [si] = args;
 					this.nOverlaps = 0;
 					this.prepareEvents();
@@ -45,22 +46,20 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 							break;
 						}
 					}
-				})(...args);
+					break;
+				}
 			case 3:
 				if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-					return ((...args) => {
-						let [edges0, edges1, si] = args;
-						this.addEdges(edges0, edges0);
-						this.addEdges(edges1, edges1);
-						this.computeIntersections(si);
-					})(...args);
+					let [edges0, edges1, si] = args;
+					this.addEdges(edges0, edges0);
+					this.addEdges(edges1, edges1);
+					this.computeIntersections(si);
 				} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
-					return ((...args) => {
-						let [edges, si, testAllSegments] = args;
-						if (testAllSegments) this.addEdges(edges, null); else this.addEdges(edges);
-						this.computeIntersections(si);
-					})(...args);
+					let [edges, si, testAllSegments] = args;
+					if (testAllSegments) this.addEdges(edges, null); else this.addEdges(edges);
+					this.computeIntersections(si);
 				}
+				break;
 		}
 	}
 	addEdge(edge, edgeSet) {
@@ -89,21 +88,23 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
 	addEdges(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [edges] = args;
 					for (var i = edges.iterator(); i.hasNext(); ) {
 						var edge = i.next();
 						this.addEdge(edge, edge);
 					}
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [edges, edgeSet] = args;
 					for (var i = edges.iterator(); i.hasNext(); ) {
 						var edge = i.next();
 						this.addEdge(edge, edgeSet);
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

@@ -10,13 +10,14 @@ export default class GeometryCollectionIterator {
 		this.subcollectionIterator = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [parent] = args;
 					this.parent = parent;
 					this.atStart = true;
 					this.index = 0;
 					this.max = parent.getNumGeometries();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

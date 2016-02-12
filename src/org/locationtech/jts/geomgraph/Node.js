@@ -8,12 +8,13 @@ export default class Node extends GraphComponent {
 		this.edges = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [coord, edges] = args;
 					this.coord = coord;
 					this.edges = edges;
 					this.label = new Label(0, Location.NONE);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -60,20 +61,17 @@ export default class Node extends GraphComponent {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Node) {
-					return ((...args) => {
-						let [n] = args;
-						this.mergeLabel(n.label);
-					})(...args);
+					let [n] = args;
+					this.mergeLabel(n.label);
 				} else if (args[0] instanceof Label) {
-					return ((...args) => {
-						let [label2] = args;
-						for (var i = 0; i < 2; i++) {
-							var loc = this.computeMergedLocation(label2, i);
-							var thisLoc = this.label.getLocation(i);
-							if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
-						}
-					})(...args);
+					let [label2] = args;
+					for (var i = 0; i < 2; i++) {
+						var loc = this.computeMergedLocation(label2, i);
+						var thisLoc = this.label.getLocation(i);
+						if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
+					}
 				}
+				break;
 		}
 	}
 	add(e) {

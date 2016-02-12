@@ -8,11 +8,12 @@ export default class VWLineSimplifier {
 		this.tolerance = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [pts, distanceTolerance] = args;
 					this.pts = pts;
 					this.tolerance = distanceTolerance * distanceTolerance;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -68,10 +69,11 @@ class VWVertex {
 		this._isLive = true;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pt] = args;
 					this.pt = pt;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

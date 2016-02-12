@@ -17,7 +17,7 @@ export default class DirectedEdge extends EdgeEnd {
 		this.depth = [0, -999, -999];
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [edge, isForward] = args;
 					super(edge);
 					this._isForward = isForward;
@@ -28,7 +28,8 @@ export default class DirectedEdge extends EdgeEnd {
 						this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1));
 					}
 					this.computeDirectedLabel();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

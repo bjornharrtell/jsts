@@ -10,10 +10,11 @@ export default class GeometryPrecisionReducer {
 		this.isPointwise = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pm] = args;
 					this.targetPM = pm;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

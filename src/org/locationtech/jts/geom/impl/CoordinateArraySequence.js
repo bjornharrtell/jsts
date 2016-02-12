@@ -38,6 +38,7 @@ export default class CoordinateArraySequence {
 							}
 						})(...args);
 					}
+					break;
 				case 2:
 					if (args[0] instanceof Array && Number.isInteger(args[1])) {
 						return ((...args) => {
@@ -56,6 +57,7 @@ export default class CoordinateArraySequence {
 							}
 						})(...args);
 					}
+					break;
 			}
 		};
 		return overloaded.apply(this, args);
@@ -95,17 +97,19 @@ export default class CoordinateArraySequence {
 	getCoordinate(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [i] = args;
 					return this.coordinates[i];
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [index, coord] = args;
 					coord.x = this.coordinates[index].x;
 					coord.y = this.coordinates[index].y;
 					coord.z = this.coordinates[index].z;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinateCopy(i) {

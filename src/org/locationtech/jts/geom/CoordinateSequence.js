@@ -9,13 +9,15 @@ export default class CoordinateSequence {
 	getCoordinate(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [i] = args;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [index, coord] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinateCopy(i) {}

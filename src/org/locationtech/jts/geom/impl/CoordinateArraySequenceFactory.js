@@ -6,9 +6,10 @@ export default class CoordinateArraySequenceFactory {
 	constructor(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -24,23 +25,21 @@ export default class CoordinateArraySequenceFactory {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Array) {
-					return ((...args) => {
-						let [coordinates] = args;
-						return new CoordinateArraySequence(coordinates);
-					})(...args);
+					let [coordinates] = args;
+					return new CoordinateArraySequence(coordinates);
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					return ((...args) => {
-						let [coordSeq] = args;
-						return new CoordinateArraySequence(coordSeq);
-					})(...args);
+					let [coordSeq] = args;
+					return new CoordinateArraySequence(coordSeq);
 				}
+				break;
 			case 2:
-				return ((...args) => {
+				{
 					let [size, dimension] = args;
 					if (dimension > 3) dimension = 3;
 					if (dimension < 2) return new CoordinateArraySequence(size);
 					return new CoordinateArraySequence(size, dimension);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

@@ -12,11 +12,12 @@ export default class NodedSegmentString {
 		this.data = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [pts, data] = args;
 					this.pts = pts;
 					this.data = data;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -25,20 +26,22 @@ export default class NodedSegmentString {
 	static getNodedSubstrings(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [segStrings] = args;
 					var resultEdgelist = new ArrayList();
 					NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
 					return resultEdgelist;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [segStrings, resultEdgelist] = args;
 					for (var i = segStrings.iterator(); i.hasNext(); ) {
 						var ss = i.next();
 						ss.getNodeList().addSplitEdges(resultEdgelist);
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinates() {
@@ -70,16 +73,18 @@ export default class NodedSegmentString {
 	addIntersection(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [intPt, segmentIndex] = args;
 					this.addIntersectionNode(intPt, segmentIndex);
-				})(...args);
+					break;
+				}
 			case 4:
-				return ((...args) => {
+				{
 					let [li, segmentIndex, geomIndex, intIndex] = args;
 					var intPt = new Coordinate(li.getIntersection(intIndex));
 					this.addIntersection(intPt, segmentIndex);
-				})(...args);
+					break;
+				}
 		}
 	}
 	toString() {

@@ -11,12 +11,13 @@ export default class IteratedNoder {
 		this.maxIter = IteratedNoder.MAX_ITER;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pm] = args;
 					this.li = new RobustLineIntersector();
 					this.pm = pm;
 					this.li.setPrecisionModel(pm);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

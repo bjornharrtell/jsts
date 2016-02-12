@@ -7,12 +7,13 @@ export default class EdgeIntersection {
 		this.dist = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [coord, segmentIndex, dist] = args;
 					this.coord = new Coordinate(coord);
 					this.segmentIndex = segmentIndex;
 					this.dist = dist;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

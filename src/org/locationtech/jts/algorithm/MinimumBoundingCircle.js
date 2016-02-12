@@ -12,10 +12,11 @@ export default class MinimumBoundingCircle {
 		this.radius = 0.0;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geom] = args;
 					this.input = geom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -10,14 +10,15 @@ export default class UnionInteracting {
 		this.interacts1 = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [g0, g1] = args;
 					this.g0 = g0;
 					this.g1 = g1;
 					this.geomFactory = g0.getFactory();
 					this.interacts0 = new Array(g0.getNumGeometries());
 					this.interacts1 = new Array(g1.getNumGeometries());
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -38,15 +39,16 @@ export default class UnionInteracting {
 	computeInteracting(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					for (var i = 0; i < this.g0.getNumGeometries(); i++) {
 						var elem = this.g0.getGeometryN(i);
 						this.interacts0[i] = this.computeInteracting(elem);
 					}
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [elem0] = args;
 					var interactsWithAny = false;
 					for (var i = 0; i < this.g1.getNumGeometries(); i++) {
@@ -56,7 +58,8 @@ export default class UnionInteracting {
 						if (interacts) interactsWithAny = true;
 					}
 					return interactsWithAny;
-				})(...args);
+					break;
+				}
 		}
 	}
 	union() {

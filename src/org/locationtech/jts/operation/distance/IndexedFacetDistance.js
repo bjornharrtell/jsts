@@ -5,10 +5,11 @@ export default class IndexedFacetDistance {
 		this.cachedTree = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g1] = args;
 					this.cachedTree = FacetSequenceTreeBuilder.build(g1);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

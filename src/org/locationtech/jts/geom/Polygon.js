@@ -16,7 +16,7 @@ export default class Polygon extends Geometry {
 		this.holes = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [shell, holes, factory] = args;
 					super(factory);
 					if (shell === null) {
@@ -33,7 +33,8 @@ export default class Polygon extends Geometry {
 					}
 					this.shell = shell;
 					this.holes = holes;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -124,16 +125,17 @@ export default class Polygon extends Geometry {
 	normalize(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.normalize(this.shell, true);
 					for (var i = 0; i < this.holes.length; i++) {
 						this.normalize(this.holes[i], false);
 					}
 					Arrays.sort(this.holes);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [ring, clockwise] = args;
 					if (ring.isEmpty()) {
 						return null;
@@ -147,7 +149,8 @@ export default class Polygon extends Geometry {
 					if (CGAlgorithms.isCCW(ring.getCoordinates()) === clockwise) {
 						CoordinateArrays.reverse(ring.getCoordinates());
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	getCoordinate() {
@@ -192,14 +195,15 @@ export default class Polygon extends Geometry {
 	compareToSameClass(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [o] = args;
 					var thisShell = this.shell;
 					var otherShell = o.shell;
 					return thisShell.compareToSameClass(otherShell);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [o, comp] = args;
 					var poly = o;
 					var thisShell = this.shell;
@@ -219,47 +223,41 @@ export default class Polygon extends Geometry {
 					if (i < nHole1) return 1;
 					if (i < nHole2) return -1;
 					return 0;
-				})(...args);
+					break;
+				}
 		}
 	}
 	apply(...args) {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						this.shell.apply(filter);
-						for (var i = 0; i < this.holes.length; i++) {
-							this.holes[i].apply(filter);
-						}
-					})(...args);
+					let [filter] = args;
+					this.shell.apply(filter);
+					for (var i = 0; i < this.holes.length; i++) {
+						this.holes[i].apply(filter);
+					}
 				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						this.shell.apply(filter);
-						if (!filter.isDone()) {
-							for (var i = 0; i < this.holes.length; i++) {
-								this.holes[i].apply(filter);
-								if (filter.isDone()) break;
-							}
-						}
-						if (filter.isGeometryChanged()) this.geometryChanged();
-					})(...args);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						filter.filter(this);
-					})(...args);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-					return ((...args) => {
-						let [filter] = args;
-						filter.filter(this);
-						this.shell.apply(filter);
+					let [filter] = args;
+					this.shell.apply(filter);
+					if (!filter.isDone()) {
 						for (var i = 0; i < this.holes.length; i++) {
 							this.holes[i].apply(filter);
+							if (filter.isDone()) break;
 						}
-					})(...args);
+					}
+					if (filter.isGeometryChanged()) this.geometryChanged();
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
+					let [filter] = args;
+					filter.filter(this);
+				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
+					let [filter] = args;
+					filter.filter(this);
+					this.shell.apply(filter);
+					for (var i = 0; i < this.holes.length; i++) {
+						this.holes[i].apply(filter);
+					}
 				}
+				break;
 		}
 	}
 	getBoundary() {

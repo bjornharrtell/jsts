@@ -8,10 +8,11 @@ export default class GeometricShapeBuilder {
 		this.geomFactory = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geomFactory] = args;
 					this.geomFactory = geomFactory;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

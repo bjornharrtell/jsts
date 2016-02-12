@@ -91,16 +91,18 @@ export default class Edge extends GraphComponent {
 	getCoordinate(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					if (this.pts.length > 0) return this.pts[0];
 					return null;
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [i] = args;
 					return this.pts[i];
-				})(...args);
+					break;
+				}
 		}
 	}
 	print(out) {

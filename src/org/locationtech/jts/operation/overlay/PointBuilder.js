@@ -7,11 +7,12 @@ export default class PointBuilder {
 		this.resultPointList = new ArrayList();
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [op, geometryFactory, ptLocator] = args;
 					this.op = op;
 					this.geometryFactory = geometryFactory;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

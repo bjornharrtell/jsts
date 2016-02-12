@@ -10,10 +10,11 @@ export default class Densifier {
 		this.distanceTolerance = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [inputGeom] = args;
 					this.inputGeom = inputGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -66,10 +67,11 @@ class DensifyTransformer extends GeometryTransformer {
 		this.distanceTolerance = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [distanceTolerance] = args;
 					this.distanceTolerance = distanceTolerance;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

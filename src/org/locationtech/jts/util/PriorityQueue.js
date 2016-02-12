@@ -5,12 +5,13 @@ export default class PriorityQueue {
 		this.items = null;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this._size = 0;
 					this.items = new ArrayList();
 					this.items.add(null);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

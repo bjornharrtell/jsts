@@ -8,10 +8,11 @@ export default class LengthIndexedLine {
 		this.linearGeom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [linearGeom] = args;
 					this.linearGeom = linearGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -28,15 +29,17 @@ export default class LengthIndexedLine {
 	locationOf(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [index] = args;
 					return LengthLocationMap.getLocation(this.linearGeom, index);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [index, resolveLower] = args;
 					return LengthLocationMap.getLocation(this.linearGeom, index, resolveLower);
-				})(...args);
+					break;
+				}
 		}
 	}
 	project(pt) {
@@ -49,18 +52,20 @@ export default class LengthIndexedLine {
 	extractPoint(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [index] = args;
 					var loc = LengthLocationMap.getLocation(this.linearGeom, index);
 					return loc.getCoordinate(this.linearGeom);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [index, offsetDistance] = args;
 					var loc = LengthLocationMap.getLocation(this.linearGeom, index);
 					var locLow = loc.toLowest(this.linearGeom);
 					return locLow.getSegment(this.linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance);
-				})(...args);
+					break;
+				}
 		}
 	}
 	isValidIndex(index) {

@@ -7,10 +7,11 @@ export default class Key {
 		this.interval = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [interval] = args;
 					this.computeKey(interval);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

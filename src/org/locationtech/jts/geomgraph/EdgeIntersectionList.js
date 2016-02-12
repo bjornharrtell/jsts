@@ -9,10 +9,11 @@ export default class EdgeIntersectionList {
 		this.edge = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [edge] = args;
 					this.edge = edge;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

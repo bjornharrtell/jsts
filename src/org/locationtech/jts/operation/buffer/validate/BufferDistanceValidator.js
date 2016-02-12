@@ -23,12 +23,13 @@ export default class BufferDistanceValidator {
 		this.errorIndicator = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [input, bufDistance, result] = args;
 					this.input = input;
 					this.bufDistance = bufDistance;
 					this.result = result;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

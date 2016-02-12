@@ -9,10 +9,11 @@ export default class Subgraph {
 		this.nodeMap = new NodeMap();
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [parentGraph] = args;
 					this.parentGraph = parentGraph;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

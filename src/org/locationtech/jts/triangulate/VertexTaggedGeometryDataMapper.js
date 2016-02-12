@@ -7,9 +7,10 @@ export default class VertexTaggedGeometryDataMapper {
 		this.coordDataMap = new TreeMap();
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -19,22 +20,19 @@ export default class VertexTaggedGeometryDataMapper {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geoms] = args;
-						for (var i = geoms.iterator(); i.hasNext(); ) {
-							var geom = i.next();
-							this.loadVertices(geom.getCoordinates(), geom.getUserData());
-						}
-					})(...args);
+					let [geoms] = args;
+					for (var i = geoms.iterator(); i.hasNext(); ) {
+						var geom = i.next();
+						this.loadVertices(geom.getCoordinates(), geom.getUserData());
+					}
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [geomColl] = args;
-						for (var i = 0; i < geomColl.getNumGeometries(); i++) {
-							var geom = geomColl.getGeometryN(i);
-							this.loadVertices(geom.getCoordinates(), geom.getUserData());
-						}
-					})(...args);
+					let [geomColl] = args;
+					for (var i = 0; i < geomColl.getNumGeometries(); i++) {
+						var geom = geomColl.getGeometryN(i);
+						this.loadVertices(geom.getCoordinates(), geom.getUserData());
+					}
 				}
+				break;
 		}
 	}
 	getCoordinates() {

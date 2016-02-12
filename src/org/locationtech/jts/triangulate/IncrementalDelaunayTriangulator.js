@@ -5,11 +5,12 @@ export default class IncrementalDelaunayTriangulator {
 		this.isUsingTolerance = false;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [subdiv] = args;
 					this.subdiv = subdiv;
 					this.isUsingTolerance = subdiv.getTolerance() > 0.0;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

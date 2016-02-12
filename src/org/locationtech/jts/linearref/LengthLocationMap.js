@@ -5,10 +5,11 @@ export default class LengthLocationMap {
 		this.linearGeom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [linearGeom] = args;
 					this.linearGeom = linearGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -21,17 +22,19 @@ export default class LengthLocationMap {
 	static getLocation(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [linearGeom, length] = args;
 					var locater = new LengthLocationMap(linearGeom);
 					return locater.getLocation(length);
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [linearGeom, length, resolveLower] = args;
 					var locater = new LengthLocationMap(linearGeom);
 					return locater.getLocation(length, resolveLower);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getLength(loc) {
@@ -63,12 +66,13 @@ export default class LengthLocationMap {
 	getLocation(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [length] = args;
 					return this.getLocation(length, true);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [length, resolveLower] = args;
 					var forwardLength = length;
 					if (length < 0.0) {
@@ -80,7 +84,8 @@ export default class LengthLocationMap {
 						return loc;
 					}
 					return this.resolveHigher(loc);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getLocationForward(length) {

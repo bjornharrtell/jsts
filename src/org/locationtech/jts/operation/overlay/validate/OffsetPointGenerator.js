@@ -8,10 +8,11 @@ export default class OffsetPointGenerator {
 		this.doRight = true;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [g] = args;
 					this.g = g;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

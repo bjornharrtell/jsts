@@ -4,10 +4,11 @@ export default class LocationIndexOfLine {
 		this.linearGeom = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [linearGeom] = args;
 					this.linearGeom = linearGeom;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

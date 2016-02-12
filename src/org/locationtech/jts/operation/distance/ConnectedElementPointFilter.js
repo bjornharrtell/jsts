@@ -8,10 +8,11 @@ export default class ConnectedElementPointFilter {
 		this.pts = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pts] = args;
 					this.pts = pts;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -15,10 +15,11 @@ export default class ConnectedInteriorTester {
 		this.disconnectedRingcoord = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [geomGraph] = args;
 					this.geomGraph = geomGraph;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

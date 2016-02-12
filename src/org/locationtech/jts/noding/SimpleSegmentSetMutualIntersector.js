@@ -4,10 +4,11 @@ export default class SimpleSegmentSetMutualIntersector {
 		this.baseSegStrings = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [segStrings] = args;
 					this.baseSegStrings = segStrings;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -9,12 +9,13 @@ export default class SnapOverlayOp {
 		this.cbr = null;
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [g1, g2] = args;
 					this.geom[0] = g1;
 					this.geom[1] = g2;
 					this.computeSnapTolerance();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

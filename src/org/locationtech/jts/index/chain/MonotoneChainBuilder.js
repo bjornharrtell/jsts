@@ -6,9 +6,10 @@ export default class MonotoneChainBuilder {
 	constructor(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -48,12 +49,13 @@ export default class MonotoneChainBuilder {
 	static getChains(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [pts] = args;
 					return MonotoneChainBuilder.getChains(pts, null);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [pts, context] = args;
 					var mcList = new ArrayList();
 					var startIndex = MonotoneChainBuilder.getChainStartIndices(pts);
@@ -62,7 +64,8 @@ export default class MonotoneChainBuilder {
 						mcList.add(mc);
 					}
 					return mcList;
-				})(...args);
+					break;
+				}
 		}
 	}
 	static toIntArray(list) {

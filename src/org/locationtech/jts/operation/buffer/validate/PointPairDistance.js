@@ -7,9 +7,10 @@ export default class PointPairDistance {
 		this.isNull = true;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -24,12 +25,13 @@ export default class PointPairDistance {
 	setMinimum(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [ptDist] = args;
 					this.setMinimum(ptDist.pt[0], ptDist.pt[1]);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [p0, p1] = args;
 					if (this.isNull) {
 						this.initialize(p0, p1);
@@ -37,32 +39,36 @@ export default class PointPairDistance {
 					}
 					var dist = p0.distance(p1);
 					if (dist < this.distance) this.initialize(p0, p1, dist);
-				})(...args);
+					break;
+				}
 		}
 	}
 	initialize(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.isNull = true;
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [p0, p1] = args;
 					this.pt[0].setCoordinate(p0);
 					this.pt[1].setCoordinate(p1);
 					this.distance = p0.distance(p1);
 					this.isNull = false;
-				})(...args);
+					break;
+				}
 			case 3:
-				return ((...args) => {
+				{
 					let [p0, p1, distance] = args;
 					this.pt[0].setCoordinate(p0);
 					this.pt[1].setCoordinate(p1);
 					this.distance = distance;
 					this.isNull = false;
-				})(...args);
+					break;
+				}
 		}
 	}
 	getDistance() {
@@ -71,12 +77,13 @@ export default class PointPairDistance {
 	setMaximum(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [ptDist] = args;
 					this.setMaximum(ptDist.pt[0], ptDist.pt[1]);
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [p0, p1] = args;
 					if (this.isNull) {
 						this.initialize(p0, p1);
@@ -84,7 +91,8 @@ export default class PointPairDistance {
 					}
 					var dist = p0.distance(p1);
 					if (dist > this.distance) this.initialize(p0, p1, dist);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getClass() {

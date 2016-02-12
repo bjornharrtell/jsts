@@ -19,7 +19,7 @@ export default class HotPixel {
 		this.safeEnv = null;
 		switch (args.length) {
 			case 3:
-				return ((...args) => {
+				{
 					let [pt, scaleFactor, li] = args;
 					this.originalPt = pt;
 					this.pt = pt;
@@ -32,7 +32,8 @@ export default class HotPixel {
 						this.p1Scaled = new Coordinate();
 					}
 					this.initCorners(this.pt);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

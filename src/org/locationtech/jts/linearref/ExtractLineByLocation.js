@@ -9,10 +9,11 @@ export default class ExtractLineByLocation {
 		this.line = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [line] = args;
 					this.line = line;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

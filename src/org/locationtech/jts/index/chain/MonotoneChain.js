@@ -9,13 +9,14 @@ export default class MonotoneChain {
 		this.id = null;
 		switch (args.length) {
 			case 4:
-				return ((...args) => {
+				{
 					let [pts, start, end, context] = args;
 					this.pts = pts;
 					this.start = start;
 					this.end = end;
 					this.context = context;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -53,12 +54,13 @@ export default class MonotoneChain {
 	computeOverlaps(...args) {
 		switch (args.length) {
 			case 2:
-				return ((...args) => {
+				{
 					let [mc, mco] = args;
 					this.computeOverlaps(this.start, this.end, mc, mc.start, mc.end, mco);
-				})(...args);
+					break;
+				}
 			case 6:
-				return ((...args) => {
+				{
 					let [start0, end0, mc, start1, end1, mco] = args;
 					var p00 = this.pts[start0];
 					var p01 = this.pts[end0];
@@ -81,7 +83,8 @@ export default class MonotoneChain {
 						if (start1 < mid1) this.computeOverlaps(mid0, end0, mc, start1, mid1, mco);
 						if (mid1 < end1) this.computeOverlaps(mid0, end0, mc, mid1, end1, mco);
 					}
-				})(...args);
+					break;
+				}
 		}
 	}
 	setId(id) {

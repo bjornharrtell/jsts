@@ -6,11 +6,12 @@ export default class InteriorIntersectionFinderAdder {
 		this.interiorIntersections = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [li] = args;
 					this.li = li;
 					this.interiorIntersections = new ArrayList();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

@@ -8,10 +8,11 @@ export default class OffsetSegmentString {
 		this.minimimVertexDistance = 0.0;
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.ptList = new ArrayList();
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

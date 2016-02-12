@@ -49,15 +49,17 @@ export default class Node extends GraphComponent {
 	remove(...args) {
 		switch (args.length) {
 			case 0:
-				return ((...args) => {
+				{
 					let [] = args;
 					this.pt = null;
-				})(...args);
+					break;
+				}
 			case 1:
-				return ((...args) => {
+				{
 					let [de] = args;
 					this.deStar.remove(de);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getIndex(edge) {

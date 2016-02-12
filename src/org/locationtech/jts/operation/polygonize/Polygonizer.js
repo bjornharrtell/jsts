@@ -147,26 +147,21 @@ export default class Polygonizer {
 		switch (args.length) {
 			case 1:
 				if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-					return ((...args) => {
-						let [geomList] = args;
-						for (var i = geomList.iterator(); i.hasNext(); ) {
-							var geometry = i.next();
-							this.add(geometry);
-						}
-					})(...args);
+					let [geomList] = args;
+					for (var i = geomList.iterator(); i.hasNext(); ) {
+						var geometry = i.next();
+						this.add(geometry);
+					}
 				} else if (args[0] instanceof LineString) {
-					return ((...args) => {
-						let [line] = args;
-						this.geomFactory = line.getFactory();
-						if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
-						this.graph.addEdge(line);
-					})(...args);
+					let [line] = args;
+					this.geomFactory = line.getFactory();
+					if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
+					this.graph.addEdge(line);
 				} else if (args[0] instanceof Geometry) {
-					return ((...args) => {
-						let [g] = args;
-						g.apply(this.lineStringAdder);
-					})(...args);
+					let [g] = args;
+					g.apply(this.lineStringAdder);
 				}
+				break;
 		}
 	}
 	setCheckRingsValid(isCheckingRingsValid) {
@@ -190,10 +185,11 @@ class LineStringAdder {
 		this.p = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [p] = args;
 					this.p = p;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {

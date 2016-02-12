@@ -8,10 +8,11 @@ export default class Key {
 		this.env = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [itemEnv] = args;
 					this.computeKey(itemEnv);
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -30,7 +31,7 @@ export default class Key {
 	computeKey(...args) {
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [itemEnv] = args;
 					this.level = Key.computeQuadLevel(itemEnv);
 					this.env = new Envelope();
@@ -39,15 +40,17 @@ export default class Key {
 						this.level += 1;
 						this.computeKey(this.level, itemEnv);
 					}
-				})(...args);
+					break;
+				}
 			case 2:
-				return ((...args) => {
+				{
 					let [level, itemEnv] = args;
 					var quadSize = DoubleBits.powerOf2(level);
 					this.pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
 					this.pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
 					this.env.init(this.pt.x, this.pt.x + quadSize, this.pt.y, this.pt.y + quadSize);
-				})(...args);
+					break;
+				}
 		}
 	}
 	getEnvelope() {

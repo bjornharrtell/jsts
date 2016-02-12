@@ -9,10 +9,11 @@ export default class NodeMap {
 		this.nodeFact = null;
 		switch (args.length) {
 			case 1:
-				return ((...args) => {
+				{
 					let [nodeFact] = args;
 					this.nodeFact = nodeFact;
-				})(...args);
+					break;
+				}
 		}
 	}
 	get interfaces_() {
@@ -25,27 +26,24 @@ export default class NodeMap {
 		switch (args.length) {
 			case 1:
 				if (args[0] instanceof Coordinate) {
-					return ((...args) => {
-						let [coord] = args;
-						var node = this.nodeMap.get(coord);
-						if (node === null) {
-							node = this.nodeFact.createNode(coord);
-							this.nodeMap.put(coord, node);
-						}
-						return node;
-					})(...args);
+					let [coord] = args;
+					var node = this.nodeMap.get(coord);
+					if (node === null) {
+						node = this.nodeFact.createNode(coord);
+						this.nodeMap.put(coord, node);
+					}
+					return node;
 				} else if (args[0] instanceof Node) {
-					return ((...args) => {
-						let [n] = args;
-						var node = this.nodeMap.get(n.getCoordinate());
-						if (node === null) {
-							this.nodeMap.put(n.getCoordinate(), n);
-							return n;
-						}
-						node.mergeLabel(n);
-						return node;
-					})(...args);
+					let [n] = args;
+					var node = this.nodeMap.get(n.getCoordinate());
+					if (node === null) {
+						this.nodeMap.put(n.getCoordinate(), n);
+						return n;
+					}
+					node.mergeLabel(n);
+					return node;
 				}
+				break;
 		}
 	}
 	print(out) {
