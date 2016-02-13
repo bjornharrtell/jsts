@@ -3,6 +3,9 @@ export default class CollectionUtil {
 	get interfaces_() {
 		return [];
 	}
+	static get Function() {
+		return Function;
+	}
 	static transform(coll, func) {
 		var result = new ArrayList();
 		for (var i = coll.iterator(); i.hasNext(); ) {
@@ -29,4 +32,5 @@ export default class CollectionUtil {
 		return CollectionUtil;
 	}
 }
+class Function {}
 

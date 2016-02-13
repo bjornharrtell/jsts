@@ -25,6 +25,9 @@ export default class GeometryEditor {
 	get interfaces_() {
 		return [];
 	}
+	static get GeometryEditorOperation() {
+		return GeometryEditorOperation;
+	}
 	static get NoOpGeometryOperation() {
 		return NoOpGeometryOperation;
 	}
@@ -107,6 +110,7 @@ export default class GeometryEditor {
 		return GeometryEditor;
 	}
 }
+class GeometryEditorOperation {}
 class NoOpGeometryOperation {
 	get interfaces_() {
 		return [GeometryEditorOperation];
@@ -124,13 +128,13 @@ class CoordinateOperation {
 	}
 	edit(geometry, factory) {
 		if (geometry instanceof LinearRing) {
-			return factory.createLinearRing(this.edit(geometry.getCoordinates(), geometry));
+			return factory.createLinearRing(this.editCoordinates(geometry.getCoordinates(), geometry));
 		}
 		if (geometry instanceof LineString) {
-			return factory.createLineString(this.edit(geometry.getCoordinates(), geometry));
+			return factory.createLineString(this.editCoordinates(geometry.getCoordinates(), geometry));
 		}
 		if (geometry instanceof Point) {
-			var newCoordinates = this.edit(geometry.getCoordinates(), geometry);
+			var newCoordinates = this.editCoordinates(geometry.getCoordinates(), geometry);
 			if (newCoordinates.length > 0) {
 				return factory.createPoint(newCoordinates[0]);
 			} else {

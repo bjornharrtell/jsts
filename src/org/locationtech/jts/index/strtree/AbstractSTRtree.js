@@ -30,6 +30,9 @@ export default class AbstractSTRtree {
 	static get IntersectsOp() {
 		return IntersectsOp;
 	}
+	static get IntersectsOp() {
+		return IntersectsOp;
+	}
 	static compareDoubles(a, b) {
 		return a > b ? 1 : a < b ? -1 : 0;
 	}
@@ -284,15 +287,7 @@ export default class AbstractSTRtree {
 		return AbstractSTRtree;
 	}
 }
-class IntersectsOp {
-	get interfaces_() {
-		return [];
-	}
-	intersects(aBounds, bBounds) {}
-	getClass() {
-		return IntersectsOp;
-	}
-}
+class IntersectsOp {}
 AbstractSTRtree.serialVersionUID = -3886435814360241337;
 AbstractSTRtree.DEFAULT_NODE_CAPACITY = 10;
 

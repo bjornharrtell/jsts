@@ -21,6 +21,9 @@ export default class SegmentStringDissolver {
 	get interfaces_() {
 		return [];
 	}
+	static get SegmentStringMerger() {
+		return SegmentStringMerger;
+	}
 	findMatching(oca, segString) {
 		var matchSS = this.ocaMap.get(oca);
 		return matchSS;
@@ -57,4 +60,5 @@ export default class SegmentStringDissolver {
 		return SegmentStringDissolver;
 	}
 }
+class SegmentStringMerger {}
 

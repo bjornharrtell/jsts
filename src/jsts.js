@@ -30,7 +30,7 @@ import CascadedPolygonUnion from './org/locationtech/jts/operation/union/Cascade
 import UnaryUnionOp from './org/locationtech/jts/operation/union/UnaryUnionOp'
 import IsValidOp from './org/locationtech/jts/operation/valid/IsValidOp'
 
-// import GeometryPrecisionReducer from './org/locationtech/jts/precision/GeometryPrecisionReducer'
+import GeometryPrecisionReducer from './org/locationtech/jts/precision/GeometryPrecisionReducer'
 
 import DouglasPeuckerSimplifier from './org/locationtech/jts/simplify/DouglasPeuckerSimplifier'
 import TopologyPreservingSimplifier from './org/locationtech/jts/simplify/TopologyPreservingSimplifier'
@@ -97,11 +97,9 @@ export default {
       IsValidOp
     }
   },
-/*
   precision: {
     GeometryPrecisionReducer
   },
-*/
   simplify: {
     DouglasPeuckerSimplifier,
     TopologyPreservingSimplifier

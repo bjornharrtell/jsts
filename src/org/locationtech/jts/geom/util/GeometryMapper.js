@@ -5,6 +5,9 @@ export default class GeometryMapper {
 	get interfaces_() {
 		return [];
 	}
+	static get MapOp() {
+		return MapOp;
+	}
 	static map(...args) {
 		if (args.length === 2) {
 			if (args[0] instanceof Geometry && (args[1].interfaces_ && args[1].interfaces_.indexOf(MapOp) > -1)) {
@@ -31,4 +34,5 @@ export default class GeometryMapper {
 		return GeometryMapper;
 	}
 }
+class MapOp {}
 
