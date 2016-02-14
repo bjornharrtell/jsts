@@ -43,6 +43,27 @@ function onCaseSelect (combo, record, index) {
   testCaseDetailsPanel.showTestCase(record)
 }
 
+const combo = Ext.create('Ext.form.ComboBox', {
+  width: 450,
+  xtype: 'combo',
+  fieldLabel: 'Case',
+  name: 'case',
+  ref: '../case',
+  store: cases,
+  triggerAction: 'all',
+  lazyRender: true,
+  displayField: 'desc',
+  listeners: {
+    'select': onCaseSelect
+  }
+})
+
+cases.on('load', (store, records) => {
+  const record = records[0]
+  combo.select(record)
+  testCaseDetailsPanel.showTestCase(record)
+})
+
 export default Ext.create('Ext.panel.Panel', {
   layout: 'form',
   items: [{
@@ -61,19 +82,6 @@ export default Ext.create('Ext.panel.Panel', {
     listeners: {
       'select': onGroupSelect
     }
-  }, {
-    width: 450,
-    xtype: 'combo',
-    fieldLabel: 'Case',
-    name: 'case',
-    ref: '../case',
-    store: cases,
-    triggerAction: 'all',
-    lazyRender: true,
-    displayField: 'desc',
-    listeners: {
-      'select': onCaseSelect
-    }
-  }]
+  }, combo]
 
 })
