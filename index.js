@@ -1,6 +1,6 @@
 function demo () {
   var reader = new jsts.io.WKTReader()
-  var parser = new jsts.io.olParser()
+  var parser = new jsts.io.OL3Parser()
 
   function visualize (geometries, override, i) {
     var colors = [[255, 0, 0, 0.5], [0, 0, 255, 0.5], [0, 150, 0, 0.5]]
