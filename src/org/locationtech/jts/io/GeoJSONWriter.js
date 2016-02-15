@@ -1,7 +1,7 @@
-/* Copyright (c) 2011, 2012 by The Authors.
- * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
- * See /license.txt for the full text of the license.
+/**
+ * Copyright (c) 2016 by Björn Harrtell.
+ * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+ * @module GeoJSONWriter
  */
 
 import GeoJSONParser from './GeoJSONParser'
@@ -16,9 +16,6 @@ export default class GeoJSONWriter {
    * model. Only the maximum number of decimal places necessary to represent the
    * ordinates to the required precision will be output.
    * <p>
-   *
-   * @see WKTReader
-   * @constructor
    */
   constructor () {
     this.parser = new GeoJSONParser(this.geometryFactory)
@@ -27,7 +24,7 @@ export default class GeoJSONWriter {
   /**
    * Converts a <code>Geometry</code> to its GeoJSON representation.
    *
-   * @param {jsts.geom.Geometry}
+   * @param {Geometry}
    *          geometry a <code>Geometry</code> to process.
    * @return {Object} The GeoJSON representation of the Geometry.
    */

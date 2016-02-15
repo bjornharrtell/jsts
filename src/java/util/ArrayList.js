@@ -9,7 +9,7 @@ import OperationNotSupported from './OperationNotSupported'
  * @see http://download.oracle.com/javase/6/docs/api/java/util/ArrayList.html
  *
  * @extends List
- * @constructor
+ * @private
  */
 export default class ArrayList extends List {
   constructor() {

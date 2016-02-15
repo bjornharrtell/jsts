@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2016 by Björn Harrtell.
+ * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+ * @module jsts
+ */
+
 import Coordinate from './org/locationtech/jts/geom/Coordinate'
 import GeometryFactory from './org/locationtech/jts/geom/GeometryFactory'
 import Geometry from './org/locationtech/jts/geom/Geometry'
@@ -41,6 +47,9 @@ import patch from './org/locationtech/jts/monkey'
   patch()
 })()
 
+/**
+ * @module
+ */
 export default {
   version: `${process.env.npm_package_version} (${process.env.GITHASH})`,
   densify: {
@@ -61,11 +70,32 @@ export default {
     MultiLineString,
     MultiPolygon
   },
+  /** @memberof module:jsts */
   io: {
+    /**
+     * @type {GeoJSONReader}
+     * @memberof jsts.io
+     */
     GeoJSONReader,
+    /**
+     * @type {GeoJSONWriter}
+     * @memberof jsts.io
+     */
     GeoJSONWriter,
+    /**
+     * @type {WKTReader}
+     * @memberof jsts.io
+     */
     WKTReader,
+    /**
+     * @type {WKTWriter}
+     * @memberof jsts.io
+     */
     WKTWriter,
+    /**
+     * @type {OL3Parser}
+     * @memberof jsts.io
+     */
     OL3Parser
   },
   operation: {

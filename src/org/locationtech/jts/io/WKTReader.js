@@ -1,7 +1,7 @@
-/* Copyright (c) 2011 by The Authors.
- * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
- * See /license.txt for the full text of the license.
+/**
+ * Copyright (c) 2016 by Björn Harrtell.
+ * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+ * @module WKTReader
  */
 
 import GeometryFactory from '../geom/GeometryFactory'
@@ -17,21 +17,19 @@ import WKTParser from './WKTParser'
  * in other data formats (e.g. XML).
  */
 export default class WKTReader {
-  /*
+  /**
    * A <code>WKTReader</code> is parameterized by a <code>GeometryFactory</code>,
    * to allow it to create <code>Geometry</code> objects of the appropriate
    * implementation. In particular, the <code>GeometryFactory</code> determines
    * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
    * <P>
-   *
-   * @constructor
    */
-  constructor(geometryFactory) {
-    this.geometryFactory = geometryFactory || new GeometryFactory();
-    this.precisionModel = this.geometryFactory.getPrecisionModel();
-    this.parser = new WKTParser(this.geometryFactory);
-  };
-  
+  constructor (geometryFactory) {
+    this.geometryFactory = geometryFactory || new GeometryFactory()
+    this.precisionModel = this.geometryFactory.getPrecisionModel()
+    this.parser = new WKTParser(this.geometryFactory)
+  }
+
   /**
    * Reads a Well-Known Text representation of a {@link Geometry}
    *
@@ -41,30 +39,28 @@ export default class WKTReader {
    * @return {jsts.geom.Geometry} a <code>Geometry</code> read from
    *         <code>string.</code>
    */
-  read(wkt) {
-    var geometry = this.parser.read(wkt);
+  read (wkt) {
+    var geometry = this.parser.read(wkt)
 
     // TODO: port and use GeometryPrecisionReducer, this is a hack
     if (this.precisionModel.getType() === PrecisionModel.FIXED) {
-      this.reducePrecision(geometry);
+      this.reducePrecision(geometry)
     }
 
-    return geometry;
-  };
+    return geometry
+  }
 
-  reducePrecision(geometry) {
-    var i, len;
-
+  reducePrecision (geometry) {
     if (geometry.coordinate) {
-      this.precisionModel.makePrecise(geometry.coordinate);
+      this.precisionModel.makePrecise(geometry.coordinate)
     } else if (geometry.points) {
-      for (i = 0, len = geometry.points.coordinates.length; i < len; i++) {
-        this.precisionModel.makePrecise(geometry.points.coordinates[i]);
+      for (let i = 0, len = geometry.points.coordinates.length; i < len; i++) {
+        this.precisionModel.makePrecise(geometry.points.coordinates[i])
       }
     } else if (geometry.geometries) {
-      for (i = 0, len = geometry.geometries.length; i < len; i++) {
-        this.reducePrecision(geometry.geometries[i]);
+      for (let i = 0, len = geometry.geometries.length; i < len; i++) {
+        this.reducePrecision(geometry.geometries[i])
       }
     }
-  };
+  }
 }

@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc2",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -22,7 +22,8 @@
     "expect.js": "0.3.1",
     "mocha": "2.4.5",
     "rollup": "0.25.3",
-    "uglify-js": "2.6.1"
+    "uglify-js": "2.6.1",
+    "jsdoc": "jsdoc3/jsdoc"
   },
   "main": "dist/jsts.min.js",
   "engines": {
@@ -42,6 +43,8 @@
   },
   "scripts": {
     "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
+    "build jsdoc browser": "rollup -c rollup.config.browser.js > doc/jsts.js && jsdoc -c doc/browser.json",
+    "build jsdoc node": "rollup -c rollup.config.node.js > doc/jsts.js && jsdoc -c doc/node.json",
     "build node": "rollup -c rollup.config.node.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
     "build browser": "rollup -c rollup.config.browser.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js"
   }

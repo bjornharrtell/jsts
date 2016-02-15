@@ -2,30 +2,18 @@ import ArrayList from './ArrayList'
 import SortedMap from './SortedMap'
 import HashSet from './HashSet'
 
-
-/**
- * @const @type {number}
- */
-var BLACK = 0;
-
-
-/**
- * @const @type {number}
- */
-var RED = 1;
-
-var colorOf = function(p) { return (p == null ? BLACK : p.color); };
-var parentOf = function(p) { return (p == null ? null : p.parent); };
-var setColor = function(p, c) { if (p !== null) p.color = c; };
-var leftOf = function(p) { return (p == null ? null : p.left); };
-var rightOf = function(p) { return (p == null ? null : p.right); };
-
-
+const BLACK = 0
+const RED = 1
+function colorOf (p) { return (p == null ? BLACK : p.color) }
+function parentOf (p) { return (p == null ? null : p.parent) }
+function setColor (p, c) { if (p !== null) p.color = c }
+function leftOf (p) { return (p == null ? null : p.left) }
+function rightOf (p) { return (p == null ? null : p.right) }
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/TreeMap.html
  *
- * @extends {javascript.util.SortedMap}
+ * @extends {SortedMap}
  * @constructor
  */
 export default function TreeMap() {

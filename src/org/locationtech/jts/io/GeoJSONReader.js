@@ -1,7 +1,7 @@
-/* Copyright (c) 2011, 2012 by The Authors.
- * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
- * See /license.txt for the full text of the license.
+/**
+ * Copyright (c) 2016 by Björn Harrtell.
+ * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+ * @module GeoJSONReader
  */
 
 import GeometryFactory from '../geom/GeometryFactory'
@@ -17,8 +17,6 @@ export default class GeoJSONReader {
    * implementation. In particular, the <code>GeometryFactory</code> determines
    * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
    * <P>
-   *
-   * @constructor
    */
   constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -31,7 +29,7 @@ export default class GeoJSONReader {
    *
    * @param {object}
    *          geoJson a GeoJSON Object or String.
-   * @return {jsts.geom.Geometry} a <code>Geometry.</code>
+   * @return {Geometry} a <code>Geometry.</code>
    */
   read (geoJson) {
     var geometry = this.parser.read(geoJson)

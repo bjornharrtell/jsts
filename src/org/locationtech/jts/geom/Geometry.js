@@ -312,10 +312,6 @@ export default class Geometry {
 	disjoint(g) {
 		return !this.intersects(g);
 	}
-	toText() {
-		var writer = new WKTWriter();
-		return writer.write(this);
-	}
 	crosses(g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isCrosses(this.getDimension(), g.getDimension());

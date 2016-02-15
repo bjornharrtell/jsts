@@ -1,7 +1,7 @@
-/* Copyright (c) 2015 by Björn Harrtell.
- * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
- * See /license.txt for the full text of the license.
+/**
+ * Copyright (c) 2016 by Björn Harrtell.
+ * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+ * @module WKTWriter
  */
 
 import WKTParser from './WKTParser'
@@ -18,24 +18,21 @@ import WKTParser from './WKTParser'
  * <p>
  * The SFS WKT spec does not define a special tag for {@link LinearRing}s.
  * Under the spec, rings are output as <code>LINESTRING</code>s.
- *
- * @see WKTReader
- * @constructor
  */
 export default class WKTWriter {
-  constructor(geometryFactory) {
+  constructor (geometryFactory) {
     this.parser = new WKTParser(geometryFactory)
   }
-  
+
   /**
    * Converts a <code>Geometry</code> to its Well-known Text representation.
    *
-   * @param {jsts.geom.Geometry}
+   * @param {Geometry}
    *          geometry a <code>Geometry</code> to process.
    * @return {string} a <Geometry Tagged Text> string (see the OpenGIS Simple
    *         Features Specification).
    */
-  write(geometry) {
+  write (geometry) {
     return this.parser.write(geometry)
   }
 
@@ -50,7 +47,7 @@ export default class WKTWriter {
    *
    * @return the WKT.
    */
-  toLineString(p0, p1) {
+  toLineString (p0, p1) {
     if (arguments.length !== 2) {
       throw new Error('Not implemented')
     }

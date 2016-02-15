@@ -1,7 +1,7 @@
-/* Copyright (c) 2011 by The Authors.
- * Published under the LGPL 2.1 license.
- * See /license-notice.txt for the full text of the license notice.
- * See /license.txt for the full text of the license.
+/**
+ * Copyright (c) 2016 by Björn Harrtell.
+ * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
+ * @module OL3Parser
  */
 
 /*eslint-disable no-undef */
@@ -11,6 +11,9 @@ import GeometryFactory from '../geom/GeometryFactory'
 
 function p2c (p) { return [p.x, p.y] }
 
+/**
+ * OpenLayers 3 Geometry parser and writer
+ */
 export default class OL3Parser {
   constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
