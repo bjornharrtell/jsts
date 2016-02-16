@@ -1,7 +1,6 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module WKTReader
  */
 
 import GeometryFactory from '../geom/GeometryFactory'
@@ -22,7 +21,7 @@ export default class WKTReader {
    * to allow it to create <code>Geometry</code> objects of the appropriate
    * implementation. In particular, the <code>GeometryFactory</code> determines
    * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
-   * <P>
+   * @param {GeometryFactory} geometryFactory
    */
   constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -36,7 +35,7 @@ export default class WKTReader {
    * @param {string}
    *          wkt a <Geometry Tagged Text> string (see the OpenGIS Simple Features
    *          Specification).
-   * @return {jsts.geom.Geometry} a <code>Geometry</code> read from
+   * @return {Geometry} a <code>Geometry</code> read from
    *         <code>string.</code>
    */
   read (wkt) {

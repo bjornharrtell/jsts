@@ -5,6 +5,7 @@ import Map from './Map'
  *
  * @extends {Map}
  * @constructor
+ * @private
  */
 export default function SortedMap() {};
 SortedMap.prototype = new Map();

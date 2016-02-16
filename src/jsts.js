@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module jsts
+ * @module
  */
 
 import Coordinate from './org/locationtech/jts/geom/Coordinate'
@@ -18,11 +18,7 @@ import MultiPolygon from './org/locationtech/jts/geom/MultiPolygon'
 import Densifier from './org/locationtech/jts/densify/Densifier'
 import LineDissolver from './org/locationtech/jts/dissolve/LineDissolver'
 
-import GeoJSONReader from './org/locationtech/jts/io/GeoJSONReader'
-import GeoJSONWriter from './org/locationtech/jts/io/GeoJSONWriter'
-import WKTReader from './org/locationtech/jts/io/WKTReader'
-import WKTWriter from './org/locationtech/jts/io/WKTWriter'
-import OL3Parser from './org/locationtech/jts/io/OL3Parser'
+import io from './org/locationtech/jts/io'
 
 import BoundaryOp from './org/locationtech/jts/operation/BoundaryOp'
 import IsSimpleOp from './org/locationtech/jts/operation/IsSimpleOp'
@@ -47,9 +43,7 @@ import patch from './org/locationtech/jts/monkey'
   patch()
 })()
 
-/**
- * @module
- */
+/** @module */
 export default {
   version: `${process.env.npm_package_version} (${process.env.GITHASH})`,
   densify: {
@@ -70,34 +64,10 @@ export default {
     MultiLineString,
     MultiPolygon
   },
-  /** @memberof module:jsts */
-  io: {
-    /**
-     * @type {GeoJSONReader}
-     * @memberof jsts.io
-     */
-    GeoJSONReader,
-    /**
-     * @type {GeoJSONWriter}
-     * @memberof jsts.io
-     */
-    GeoJSONWriter,
-    /**
-     * @type {WKTReader}
-     * @memberof jsts.io
-     */
-    WKTReader,
-    /**
-     * @type {WKTWriter}
-     * @memberof jsts.io
-     */
-    WKTWriter,
-    /**
-     * @type {OL3Parser}
-     * @memberof jsts.io
-     */
-    OL3Parser
-  },
+  /**
+   * @memberof module:jsts
+   */
+  io: io,
   operation: {
     BoundaryOp,
     IsSimpleOp,

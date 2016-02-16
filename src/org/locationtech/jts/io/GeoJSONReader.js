@@ -1,22 +1,23 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module GeoJSONReader
  */
 
 import GeometryFactory from '../geom/GeometryFactory'
 import PrecisionModel from '../geom/PrecisionModel'
 import GeoJSONParser from './GeoJSONParser'
 
+/**
+ * Converts a geometry in GeoJSON to a {@link Geometry}.
+ */
 export default class GeoJSONReader {
   /**
-   * Converts a geometry in GeoJSON to a {@link Geometry}.
-   * <p>
    * A <code>GeoJSONReader</code> is parameterized by a <code>GeometryFactory</code>,
    * to allow it to create <code>Geometry</code> objects of the appropriate
    * implementation. In particular, the <code>GeometryFactory</code> determines
    * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
-   * <P>
+   *
+   * @param {GeometryFactory} geometryFactory
    */
   constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -27,8 +28,7 @@ export default class GeoJSONReader {
   /**
    * Reads a GeoJSON representation of a {@link Geometry}
    *
-   * @param {object}
-   *          geoJson a GeoJSON Object or String.
+   * @param {Object|String} geoJson a GeoJSON Object or String.
    * @return {Geometry} a <code>Geometry.</code>
    */
   read (geoJson) {

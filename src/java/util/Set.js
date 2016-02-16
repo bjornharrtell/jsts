@@ -5,6 +5,7 @@ import Collection from './Collection'
  *
  * @extends {Collection}
  * @constructor
+ * @private
  */
 export default function Set() {};
 Set.prototype = new Collection();

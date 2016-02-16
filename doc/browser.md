@@ -1,3 +1,0 @@
-[JSTS](https://github.com/bjornharrtell/jsts) is a JavaScript (ES6 aka. ECMAScript 2015) library of spatial predicates and functions for processing geometry conforming to the Simple Features Specification for SQL published by the Open Geospatial Consortium. JSTS is also a JavaScript port of the well established Java library [JTS](https://github.com/locationtech/jts).
-
-This API docs is for the ES5 browser build and describes the manually ported IO-classes. The global object `jsts` also exposes the same public API as `org.locationtech.jts` in the [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-rc1/apidocs/).

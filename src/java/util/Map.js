@@ -2,6 +2,7 @@
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Map.html
  *
  * @constructor
+ * @private
  */
 export default function Map() {};
 

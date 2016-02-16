@@ -9,7 +9,7 @@ import Set from './Set'
  *
  * @extends {javascript.util.Set}
  * @constructor
- * @export
+ * @private
  */
 export default function HashSet() {
   /**

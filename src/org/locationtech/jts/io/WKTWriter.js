@@ -1,7 +1,6 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module WKTWriter
  */
 
 import WKTParser from './WKTParser'
@@ -20,6 +19,10 @@ import WKTParser from './WKTParser'
  * Under the spec, rings are output as <code>LINESTRING</code>s.
  */
 export default class WKTWriter {
+
+  /**
+   * @param {GeometryFactory} geometryFactory
+   */
   constructor (geometryFactory) {
     this.parser = new WKTParser(geometryFactory)
   }
@@ -27,8 +30,7 @@ export default class WKTWriter {
   /**
    * Converts a <code>Geometry</code> to its Well-known Text representation.
    *
-   * @param {Geometry}
-   *          geometry a <code>Geometry</code> to process.
+   * @param {Geometry} geometry a <code>Geometry</code> to process.
    * @return {string} a <Geometry Tagged Text> string (see the OpenGIS Simple
    *         Features Specification).
    */
@@ -40,10 +42,8 @@ export default class WKTWriter {
    * Generates the WKT for a <tt>LINESTRING</tt> specified by two
    * {@link Coordinate}s.
    *
-   * @param p0
-   *          the first coordinate.
-   * @param p1
-   *          the second coordinate.
+   * @param p0 the first coordinate.
+   * @param p1 the second coordinate.
    *
    * @return the WKT.
    */

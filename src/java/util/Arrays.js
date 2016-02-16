@@ -4,6 +4,7 @@ import ArrayList from './ArrayList'
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Arrays.html
  *
  * @constructor
+ * @private
  */
 export default function Arrays() {};
 

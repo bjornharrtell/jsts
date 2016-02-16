@@ -1,6 +1,6 @@
 {
     "opts": {
-        "recurse": false,
+        "recurse": true,
         "destination": "dist/doc"
     },
     "tags": {
@@ -12,7 +12,7 @@
         "exclude": [
         ],
         "include": [
-          "doc/jsts.js", "doc/node.md"
+          "src", "doc/es6.md"
         ]
     },
     "plugins": [
@@ -24,8 +24,8 @@
         "copyright": "Björn Harrtell",
         "monospaceLinks": true,
         "default": {
-            "outputSourceFiles": false,
-            "useLongnameInNav": false
+            "outputSourceFiles": true,
+            "useLongnameInNav": true
         },
         "applicationName": "JSTS"
     }

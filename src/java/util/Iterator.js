@@ -1,6 +1,7 @@
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Iterator.html
  * @constructor
+ * @private
  */
 export default function Iterator() {};
 

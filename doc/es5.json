@@ -12,7 +12,7 @@
         "exclude": [
         ],
         "include": [
-          "doc/jsts.js", "doc/browser.md"
+          "doc/jsts.js", "doc/es5.md"
         ]
     },
     "plugins": [

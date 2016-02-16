@@ -5,6 +5,7 @@ import Set from './Set'
  *
  * @extends {Set}
  * @constructor
+ * @private
  */
 export default function SortedSet() {};
 SortedSet.prototype = new Set();

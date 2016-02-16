@@ -1,8 +1,6 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module GeoJSONParser
- * @private
  */
 
 import Coordinate from '../geom/Coordinate'
@@ -19,8 +17,7 @@ export default class GeoJSONParser {
   /**
    * Create a new parser for GeoJSON
    *
-   * @param {GeometryFactory}
-   *          geometryFactory
+   * @param {GeometryFactory} geometryFactory
    * @return An instance of GeoJsonParser.
    */
   constructor (geometryFactory) {

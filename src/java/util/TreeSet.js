@@ -9,6 +9,7 @@ import SortedSet from './SortedSet'
  *
  * @extends {SortedSet}
  * @constructor
+ * @private
  */
 export default function TreeSet() {
   /**

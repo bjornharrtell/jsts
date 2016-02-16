@@ -6,6 +6,7 @@ import List from './List'
  *
  * @extends {List}
  * @constructor
+ * @private
  */
 export default function Stack() {
   /**

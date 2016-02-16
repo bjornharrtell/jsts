@@ -5,6 +5,7 @@ import Collection from './Collection'
  *
  * @extends {javascript.util.Collection}
  * @constructor
+ * @private
  */
 export default function List() { };
 List.prototype = new Collection();

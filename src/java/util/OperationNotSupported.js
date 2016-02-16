@@ -2,6 +2,7 @@
  * @param {string=} message Optional message
  * @extends {Error}
  * @constructor
+ * @private
  */
 export default function OperationNotSupported(message) {
   this.message = message || '';

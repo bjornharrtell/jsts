@@ -1,8 +1,6 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module WKTParser
- * @private
  */
 
 import Coordinate from '../geom/Coordinate'
@@ -27,8 +25,7 @@ export default class WKTParser {
   /**
    * Create a new parser for WKT
    *
-   * @param {GeometryFactory}
-   *          geometryFactory
+   * @param {GeometryFactory} geometryFactory
    * @return An instance of WKTParser.
    */
   constructor (geometryFactory) {
@@ -99,6 +96,7 @@ export default class WKTParser {
 /**
  * Object with properties corresponding to the geometry types. Property values
  * are functions that do the actual data extraction.
+ * @private
  */
 const extract = {
   coordinate (coordinate) {
@@ -219,6 +217,7 @@ const extract = {
 /**
  * Object with properties corresponding to the geometry types. Property values
  * are functions that do the actual parsing.
+ * @private
  */
 const parse = {
   /**

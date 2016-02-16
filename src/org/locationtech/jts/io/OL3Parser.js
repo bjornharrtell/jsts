@@ -1,7 +1,6 @@
 /**
  * Copyright (c) 2016 by Björn Harrtell.
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- * @module OL3Parser
  */
 
 /*eslint-disable no-undef */
@@ -15,13 +14,15 @@ function p2c (p) { return [p.x, p.y] }
  * OpenLayers 3 Geometry parser and writer
  */
 export default class OL3Parser {
+  /**
+   * @param {GeometryFactory} geometryFactory
+   */
   constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
   }
 
   /**
-   * @param geometry
-   *          {ol.geom.Geometry}
+   * @param geometry {ol.geom.Geometry}
    * @return {Geometry}
    */
   read (geometry) {

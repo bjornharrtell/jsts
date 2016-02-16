@@ -43,8 +43,8 @@
   },
   "scripts": {
     "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
-    "build jsdoc browser": "rollup -c rollup.config.browser.js > doc/jsts.js && jsdoc -c doc/browser.json",
-    "build jsdoc node": "rollup -c rollup.config.node.js > doc/jsts.js && jsdoc -c doc/node.json",
+    "build jsdoc es6": "jsdoc -c doc/es6.json",
+    "build jsdoc es5": "rollup -c rollup.config.node.js > doc/jsts.js && jsdoc -c doc/es5.json",
     "build node": "rollup -c rollup.config.node.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
     "build browser": "rollup -c rollup.config.browser.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js"
   }

@@ -15,6 +15,7 @@ function rightOf (p) { return (p == null ? null : p.right) }
  *
  * @extends {SortedMap}
  * @constructor
+ * @private
  */
 export default function TreeMap() {
   /**

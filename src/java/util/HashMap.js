@@ -7,7 +7,7 @@ import HashSet from './HashSet'
  *
  * @extends {javascript.util.Map}
  * @constructor
- * @export
+ * @private
  */
 export default function HashMap () {
   /**
