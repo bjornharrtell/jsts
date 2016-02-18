@@ -44,11 +44,9 @@ import GeometryPrecisionReducer from './org/locationtech/jts/precision/GeometryP
 import DouglasPeuckerSimplifier from './org/locationtech/jts/simplify/DouglasPeuckerSimplifier'
 import TopologyPreservingSimplifier from './org/locationtech/jts/simplify/TopologyPreservingSimplifier'
 
-/*
 import ConformingDelaunayTriangulationBuilder from './org/locationtech/jts/triangulate/ConformingDelaunayTriangulationBuilder'
 import DelaunayTriangulationBuilder from './org/locationtech/jts/triangulate/DelaunayTriangulationBuilder'
 import VoronoiDiagramBuilder from './org/locationtech/jts/triangulate/VoronoiDiagramBuilder'
-*/
 
 import patch from './org/locationtech/jts/monkey'
 
@@ -129,10 +127,10 @@ export default {
   simplify: {
     DouglasPeuckerSimplifier,
     TopologyPreservingSimplifier
-  }/*,
+  },
   triangulate: {
     ConformingDelaunayTriangulationBuilder,
     DelaunayTriangulationBuilder,
     VoronoiDiagramBuilder
-  }*/
+  }
 }

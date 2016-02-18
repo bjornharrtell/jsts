@@ -1,4 +1,3 @@
-import Debug from '../util/Debug';
 import GeometryFactory from '../geom/GeometryFactory';
 import NonEncroachingSplitPointFinder from './NonEncroachingSplitPointFinder';
 import ConstraintVertex from './ConstraintVertex';
@@ -11,7 +10,6 @@ import Segment from './Segment';
 import ConvexHull from '../algorithm/ConvexHull';
 import KdTree from '../index/kdtree/KdTree';
 import ArrayList from '../../../../java/util/ArrayList';
-import ConstraintEnforcementException from './ConstraintEnforcementException';
 import Envelope from '../geom/Envelope';
 export default class ConformingDelaunayTriangulator {
 	constructor(...args) {
@@ -58,15 +56,9 @@ export default class ConformingDelaunayTriangulator {
 		do {
 			splits = this.enforceGabriel(this.segments);
 			count++;
-			Debug.println("Iter: " + count + "   Splits: " + splits + "   Current # segments = " + this.segments.size());
 		} while (splits > 0 && count < ConformingDelaunayTriangulator.MAX_SPLIT_ITER);
-		if (count === ConformingDelaunayTriangulator.MAX_SPLIT_ITER) {
-			Debug.println("ABORTED! Too many iterations while enforcing constraints");
-			if (!Debug.isDebugging()) throw new ConstraintEnforcementException("Too many splitting iterations while enforcing constraints.  Last split point was at: ", this.splitPt);
-		}
 	}
 	insertSites(vertices) {
-		Debug.println("Adding sites: " + vertices.size());
 		for (var i = vertices.iterator(); i.hasNext(); ) {
 			var v = i.next();
 			this.insertSite(v);
@@ -150,9 +142,6 @@ export default class ConformingDelaunayTriangulator {
 			this.splitPt = this.splitFinder.findSplitPoint(seg, encroachPt);
 			var splitVertex = this.createVertex(this.splitPt, seg);
 			var insertedVertex = this.insertSite(splitVertex);
-			if (!insertedVertex.getCoordinate().equals2D(this.splitPt)) {
-				Debug.println("Split pt snapped to: " + insertedVertex);
-			}
 			var s1 = new Segment(seg.getStartX(), seg.getStartY(), seg.getStartZ(), splitVertex.getX(), splitVertex.getY(), splitVertex.getZ(), seg.getData());
 			var s2 = new Segment(splitVertex.getX(), splitVertex.getY(), splitVertex.getZ(), seg.getEndX(), seg.getEndY(), seg.getEndZ(), seg.getData());
 			newSegments.add(s1);
