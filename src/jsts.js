@@ -18,7 +18,14 @@ import MultiPolygon from './org/locationtech/jts/geom/MultiPolygon'
 import Densifier from './org/locationtech/jts/densify/Densifier'
 import LineDissolver from './org/locationtech/jts/dissolve/LineDissolver'
 
+import Quadtree from './org/locationtech/jts/index/quadtree/Quadtree'
+import STRtree from './org/locationtech/jts/index/strtree/STRtree'
+
 import io from './org/locationtech/jts/io'
+
+import MCIndexNoder from './org/locationtech/jts/noding/MCIndexNoder'
+import ScaledNoder from './org/locationtech/jts/noding/ScaledNoder'
+import SegmentString from './org/locationtech/jts/noding/SegmentString'
 
 import BoundaryOp from './org/locationtech/jts/operation/BoundaryOp'
 import IsSimpleOp from './org/locationtech/jts/operation/IsSimpleOp'
@@ -36,6 +43,12 @@ import GeometryPrecisionReducer from './org/locationtech/jts/precision/GeometryP
 
 import DouglasPeuckerSimplifier from './org/locationtech/jts/simplify/DouglasPeuckerSimplifier'
 import TopologyPreservingSimplifier from './org/locationtech/jts/simplify/TopologyPreservingSimplifier'
+
+/*
+import ConformingDelaunayTriangulationBuilder from './org/locationtech/jts/triangulate/ConformingDelaunayTriangulationBuilder'
+import DelaunayTriangulationBuilder from './org/locationtech/jts/triangulate/DelaunayTriangulationBuilder'
+import VoronoiDiagramBuilder from './org/locationtech/jts/triangulate/VoronoiDiagramBuilder'
+*/
 
 import patch from './org/locationtech/jts/monkey'
 
@@ -64,10 +77,23 @@ export default {
     MultiLineString,
     MultiPolygon
   },
+  index: {
+    quadtree: {
+      Quadtree
+    },
+    strtree: {
+      STRtree
+    }
+  },
   /**
    * @memberof module:jsts
    */
   io: io,
+  noding: {
+    MCIndexNoder,
+    ScaledNoder,
+    SegmentString
+  },
   operation: {
     BoundaryOp,
     IsSimpleOp,
@@ -103,5 +129,10 @@ export default {
   simplify: {
     DouglasPeuckerSimplifier,
     TopologyPreservingSimplifier
-  }
+  }/*,
+  triangulate: {
+    ConformingDelaunayTriangulationBuilder,
+    DelaunayTriangulationBuilder,
+    VoronoiDiagramBuilder
+  }*/
 }
