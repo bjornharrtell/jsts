@@ -1,29 +1,23 @@
 import GeometryFactory from '../geom/GeometryFactory';
 import Coordinate from '../geom/Coordinate';
 import AffineTransformation from '../geom/util/AffineTransformation';
-export default class GeometricShapeFactory {
-	constructor(...args) {
-		this.geomFact = null;
-		this.precModel = null;
-		this.dim = new Dimensions();
-		this.nPts = 100;
-		this.rotationAngle = 0.0;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, new GeometryFactory());
-			} else if (args.length === 1) {
-				let [geomFact] = args;
-				this.geomFact = geomFact;
-				this.precModel = geomFact.getPrecisionModel();
-			}
-		};
-		return overloaded.apply(this, args);
+import extend from '../../../../extend';
+export default function GeometricShapeFactory() {
+	this.geomFact = null;
+	this.precModel = null;
+	this.dim = new Dimensions();
+	this.nPts = 100;
+	this.rotationAngle = 0.0;
+	if (arguments.length === 0) {
+		GeometricShapeFactory.call(this, new GeometryFactory());
+	} else if (arguments.length === 1) {
+		let geomFact = arguments[0];
+		this.geomFact = geomFact;
+		this.precModel = geomFact.getPrecisionModel();
 	}
-	get interfaces_() {
-		return [];
-	}
-	createSupercircle(power) {
+}
+extend(GeometricShapeFactory.prototype, {
+	createSupercircle: function (power) {
 		var recipPow = 1.0 / power;
 		var radius = this.dim.getMinSize() / 2;
 		var centre = this.dim.getCentre();
@@ -55,20 +49,20 @@ export default class GeometricShapeFactory {
 		var ring = this.geomFact.createLinearRing(pts);
 		var poly = this.geomFact.createPolygon(ring, null);
 		return this.rotate(poly);
-	}
-	setNumPoints(nPts) {
+	},
+	setNumPoints: function (nPts) {
 		this.nPts = nPts;
-	}
-	setBase(base) {
+	},
+	setBase: function (base) {
 		this.dim.setBase(base);
-	}
-	setRotation(radians) {
+	},
+	setRotation: function (radians) {
 		this.rotationAngle = radians;
-	}
-	setWidth(width) {
+	},
+	setWidth: function (width) {
 		this.dim.setWidth(width);
-	}
-	createEllipse() {
+	},
+	createEllipse: function () {
 		var env = this.dim.getEnvelope();
 		var xRadius = env.getWidth() / 2.0;
 		var yRadius = env.getHeight() / 2.0;
@@ -86,20 +80,20 @@ export default class GeometricShapeFactory {
 		var ring = this.geomFact.createLinearRing(pts);
 		var poly = this.geomFact.createPolygon(ring, null);
 		return this.rotate(poly);
-	}
-	coordTrans(x, y, trans) {
+	},
+	coordTrans: function (x, y, trans) {
 		return this.coord(x + trans.x, y + trans.y);
-	}
-	createSquircle() {
+	},
+	createSquircle: function () {
 		return this.createSupercircle(4);
-	}
-	setEnvelope(env) {
+	},
+	setEnvelope: function (env) {
 		this.dim.setEnvelope(env);
-	}
-	setCentre(centre) {
+	},
+	setCentre: function (centre) {
 		this.dim.setCentre(centre);
-	}
-	createArc(startAng, angExtent) {
+	},
+	createArc: function (startAng, angExtent) {
 		var env = this.dim.getEnvelope();
 		var xRadius = env.getWidth() / 2.0;
 		var yRadius = env.getHeight() / 2.0;
@@ -118,20 +112,20 @@ export default class GeometricShapeFactory {
 		}
 		var line = this.geomFact.createLineString(pts);
 		return this.rotate(line);
-	}
-	rotate(geom) {
+	},
+	rotate: function (geom) {
 		if (this.rotationAngle !== 0.0) {
 			var trans = AffineTransformation.rotationInstance(this.rotationAngle, this.dim.getCentre().x, this.dim.getCentre().y);
 			geom.apply(trans);
 		}
 		return geom;
-	}
-	coord(x, y) {
+	},
+	coord: function (x, y) {
 		var pt = new Coordinate(x, y);
 		this.precModel.makePrecise(pt);
 		return pt;
-	}
-	createArcPolygon(startAng, angExtent) {
+	},
+	createArcPolygon: function (startAng, angExtent) {
 		var env = this.dim.getEnvelope();
 		var xRadius = env.getWidth() / 2.0;
 		var yRadius = env.getHeight() / 2.0;
@@ -153,8 +147,8 @@ export default class GeometricShapeFactory {
 		var ring = this.geomFact.createLinearRing(pts);
 		var poly = this.geomFact.createPolygon(ring, null);
 		return this.rotate(poly);
-	}
-	createRectangle() {
+	},
+	createRectangle: function () {
 		var i = null;
 		var ipt = 0;
 		var nSide = Math.trunc(this.nPts / 4);
@@ -187,18 +181,21 @@ export default class GeometricShapeFactory {
 		var ring = this.geomFact.createLinearRing(pts);
 		var poly = this.geomFact.createPolygon(ring, null);
 		return this.rotate(poly);
-	}
-	createCircle() {
+	},
+	createCircle: function () {
 		return this.createEllipse();
-	}
-	setHeight(height) {
+	},
+	setHeight: function (height) {
 		this.dim.setHeight(height);
-	}
-	setSize(size) {
+	},
+	setSize: function (size) {
 		this.dim.setSize(size);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometricShapeFactory;
 	}
-}
+});
 

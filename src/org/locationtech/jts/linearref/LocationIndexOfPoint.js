@@ -1,31 +1,21 @@
 import LinearIterator from './LinearIterator';
 import LinearLocation from './LinearLocation';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import Assert from '../util/Assert';
-export default class LocationIndexOfPoint {
-	constructor(...args) {
-		this.linearGeom = null;
-		if (args.length === 1) {
-			let [linearGeom] = args;
-			this.linearGeom = linearGeom;
-		}
+export default function LocationIndexOfPoint() {
+	this.linearGeom = null;
+	if (arguments.length === 1) {
+		let linearGeom = arguments[0];
+		this.linearGeom = linearGeom;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static indexOf(linearGeom, inputPt) {
-		var locater = new LocationIndexOfPoint(linearGeom);
-		return locater.indexOf(inputPt);
-	}
-	static indexOfAfter(linearGeom, inputPt, minIndex) {
-		var locater = new LocationIndexOfPoint(linearGeom);
-		return locater.indexOfAfter(inputPt, minIndex);
-	}
-	indexOf(inputPt) {
+}
+extend(LocationIndexOfPoint.prototype, {
+	indexOf: function (inputPt) {
 		return this.indexOfFromStart(inputPt, null);
-	}
-	indexOfFromStart(inputPt, minIndex) {
+	},
+	indexOfFromStart: function (inputPt, minIndex) {
 		var minDistance = Double.MAX_VALUE;
 		var minComponentIndex = 0;
 		var minSegmentIndex = 0;
@@ -54,17 +44,28 @@ export default class LocationIndexOfPoint {
 		}
 		var loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac);
 		return loc;
-	}
-	indexOfAfter(inputPt, minIndex) {
+	},
+	indexOfAfter: function (inputPt, minIndex) {
 		if (minIndex === null) return this.indexOf(inputPt);
 		var endLoc = LinearLocation.getEndLocation(this.linearGeom);
 		if (endLoc.compareTo(minIndex) <= 0) return endLoc;
 		var closestAfter = this.indexOfFromStart(inputPt, minIndex);
 		Assert.isTrue(closestAfter.compareTo(minIndex) >= 0, "computed location is before specified minimum location");
 		return closestAfter;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LocationIndexOfPoint;
 	}
-}
+});
+LocationIndexOfPoint.indexOf = function (linearGeom, inputPt) {
+	var locater = new LocationIndexOfPoint(linearGeom);
+	return locater.indexOf(inputPt);
+};
+LocationIndexOfPoint.indexOfAfter = function (linearGeom, inputPt, minIndex) {
+	var locater = new LocationIndexOfPoint(linearGeom);
+	return locater.indexOfAfter(inputPt, minIndex);
+};
 

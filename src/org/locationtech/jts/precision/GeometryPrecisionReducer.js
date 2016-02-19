@@ -1,31 +1,21 @@
+import hasInterface from '../../../../hasInterface';
 import GeometryFactory from '../geom/GeometryFactory';
 import GeometryEditor from '../geom/util/GeometryEditor';
+import extend from '../../../../extend';
 import Polygonal from '../geom/Polygonal';
 import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation';
-export default class GeometryPrecisionReducer {
-	constructor(...args) {
-		this.targetPM = null;
-		this.removeCollapsed = true;
-		this.changePrecisionModel = false;
-		this.isPointwise = false;
-		if (args.length === 1) {
-			let [pm] = args;
-			this.targetPM = pm;
-		}
+export default function GeometryPrecisionReducer() {
+	this.targetPM = null;
+	this.removeCollapsed = true;
+	this.changePrecisionModel = false;
+	this.isPointwise = false;
+	if (arguments.length === 1) {
+		let pm = arguments[0];
+		this.targetPM = pm;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static reduce(g, precModel) {
-		var reducer = new GeometryPrecisionReducer(precModel);
-		return reducer.reduce(g);
-	}
-	static reducePointwise(g, precModel) {
-		var reducer = new GeometryPrecisionReducer(precModel);
-		reducer.setPointwise(true);
-		return reducer.reduce(g);
-	}
-	fixPolygonalTopology(geom) {
+}
+extend(GeometryPrecisionReducer.prototype, {
+	fixPolygonalTopology: function (geom) {
 		var geomToBuffer = geom;
 		if (!this.changePrecisionModel) {
 			geomToBuffer = this.changePM(geom, this.targetPM);
@@ -36,8 +26,8 @@ export default class GeometryPrecisionReducer {
 			finalGeom = geom.getFactory().createGeometry(bufGeom);
 		}
 		return finalGeom;
-	}
-	reducePointwise(geom) {
+	},
+	reducePointwise: function (geom) {
 		var geomEdit = null;
 		if (this.changePrecisionModel) {
 			var newFactory = this.createFactory(geom.getFactory(), this.targetPM);
@@ -47,39 +37,51 @@ export default class GeometryPrecisionReducer {
 		if (geom.getDimension() >= 2) finalRemoveCollapsed = true;
 		var reduceGeom = geomEdit.edit(geom, new PrecisionReducerCoordinateOperation(this.targetPM, finalRemoveCollapsed));
 		return reduceGeom;
-	}
-	changePM(geom, newPM) {
+	},
+	changePM: function (geom, newPM) {
 		var geomEditor = this.createEditor(geom.getFactory(), newPM);
 		return geomEditor.edit(geom, new GeometryEditor.NoOpGeometryOperation());
-	}
-	setRemoveCollapsedComponents(removeCollapsed) {
+	},
+	setRemoveCollapsedComponents: function (removeCollapsed) {
 		this.removeCollapsed = removeCollapsed;
-	}
-	createFactory(inputFactory, pm) {
+	},
+	createFactory: function (inputFactory, pm) {
 		var newFactory = new GeometryFactory(pm, inputFactory.getSRID(), inputFactory.getCoordinateSequenceFactory());
 		return newFactory;
-	}
-	setChangePrecisionModel(changePrecisionModel) {
+	},
+	setChangePrecisionModel: function (changePrecisionModel) {
 		this.changePrecisionModel = changePrecisionModel;
-	}
-	reduce(geom) {
+	},
+	reduce: function (geom) {
 		var reducePW = this.reducePointwise(geom);
 		if (this.isPointwise) return reducePW;
-		if (!(reducePW.interfaces_ && reducePW.interfaces_.indexOf(Polygonal) > -1)) return reducePW;
+		if (!hasInterface(reducePW, Polygonal)) return reducePW;
 		if (reducePW.isValid()) return reducePW;
 		return this.fixPolygonalTopology(reducePW);
-	}
-	setPointwise(isPointwise) {
+	},
+	setPointwise: function (isPointwise) {
 		this.isPointwise = isPointwise;
-	}
-	createEditor(geomFactory, newPM) {
+	},
+	createEditor: function (geomFactory, newPM) {
 		if (geomFactory.getPrecisionModel() === newPM) return new GeometryEditor();
 		var newFactory = this.createFactory(geomFactory, newPM);
 		var geomEdit = new GeometryEditor(newFactory);
 		return geomEdit;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometryPrecisionReducer;
 	}
-}
+});
+GeometryPrecisionReducer.reduce = function (g, precModel) {
+	var reducer = new GeometryPrecisionReducer(precModel);
+	return reducer.reduce(g);
+};
+GeometryPrecisionReducer.reducePointwise = function (g, precModel) {
+	var reducer = new GeometryPrecisionReducer(precModel);
+	reducer.setPointwise(true);
+	return reducer.reduce(g);
+};
 

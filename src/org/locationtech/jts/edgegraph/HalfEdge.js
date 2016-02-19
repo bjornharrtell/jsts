@@ -1,31 +1,18 @@
 import CGAlgorithms from '../algorithm/CGAlgorithms';
+import extend from '../../../../extend';
 import Quadrant from '../geomgraph/Quadrant';
 import Assert from '../util/Assert';
-export default class HalfEdge {
-	constructor(...args) {
-		this._orig = null;
-		this._sym = null;
-		this._next = null;
-		if (args.length === 1) {
-			let [orig] = args;
-			this._orig = orig;
-		}
+export default function HalfEdge() {
+	this._orig = null;
+	this._sym = null;
+	this._next = null;
+	if (arguments.length === 1) {
+		let orig = arguments[0];
+		this._orig = orig;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static init(e0, e1) {
-		if (e0._sym !== null || e1._sym !== null || e0._next !== null || e1._next !== null) throw new IllegalStateException("Edges are already initialized");
-		e0.init(e1);
-		return e0;
-	}
-	static create(p0, p1) {
-		var e0 = new HalfEdge(p0);
-		var e1 = new HalfEdge(p1);
-		e0.init(e1);
-		return e0;
-	}
-	find(dest) {
+}
+extend(HalfEdge.prototype, {
+	find: function (dest) {
 		var oNext = this;
 		do {
 			if (oNext === null) return null;
@@ -33,14 +20,14 @@ export default class HalfEdge {
 			oNext = oNext.oNext();
 		} while (oNext !== this);
 		return null;
-	}
-	dest() {
+	},
+	dest: function () {
 		return this._sym._orig;
-	}
-	oNext() {
+	},
+	oNext: function () {
 		return this._sym._next;
-	}
-	insert(e) {
+	},
+	insert: function (e) {
 		if (this.oNext() === this) {
 			this.insertAfter(e);
 			return null;
@@ -57,14 +44,14 @@ export default class HalfEdge {
 			ePrev = oNext;
 		} while (ePrev !== this);
 		Assert.shouldNeverReachHere();
-	}
-	insertAfter(e) {
+	},
+	insertAfter: function (e) {
 		Assert.equals(this._orig, e.orig());
 		var save = this.oNext();
 		this._sym.setNext(e);
 		e.sym().setNext(save);
-	}
-	degree() {
+	},
+	degree: function () {
 		var degree = 0;
 		var e = this;
 		do {
@@ -72,23 +59,23 @@ export default class HalfEdge {
 			e = e.oNext();
 		} while (e !== this);
 		return degree;
-	}
-	equals(...args) {
-		if (args.length === 2) {
-			let [p0, p1] = args;
+	},
+	equals: function () {
+		if (arguments.length === 2) {
+			let p0 = arguments[0], p1 = arguments[1];
 			return this._orig.equals2D(p0) && this._sym._orig.equals(p1);
-		} else return super.equals(...args);
-	}
-	deltaY() {
+		}
+	},
+	deltaY: function () {
 		return this._sym._orig.y - this._orig.y;
-	}
-	sym() {
+	},
+	sym: function () {
 		return this._sym;
-	}
-	prev() {
+	},
+	prev: function () {
 		return this._sym.next()._sym;
-	}
-	compareAngularDirection(e) {
+	},
+	compareAngularDirection: function (e) {
 		var dx = this.deltaX();
 		var dy = this.deltaY();
 		var dx2 = e.deltaX();
@@ -99,46 +86,60 @@ export default class HalfEdge {
 		if (quadrant > quadrant2) return 1;
 		if (quadrant < quadrant2) return -1;
 		return CGAlgorithms.computeOrientation(e._orig, e.dest(), this.dest());
-	}
-	prevNode() {
+	},
+	prevNode: function () {
 		var e = this;
 		while (e.degree() === 2) {
 			e = e.prev();
 			if (e === this) return null;
 		}
 		return e;
-	}
-	compareTo(obj) {
+	},
+	compareTo: function (obj) {
 		var e = obj;
 		var comp = this.compareAngularDirection(e);
 		return comp;
-	}
-	next() {
+	},
+	next: function () {
 		return this._next;
-	}
-	setSym(e) {
+	},
+	setSym: function (e) {
 		this._sym = e;
-	}
-	orig() {
+	},
+	orig: function () {
 		return this._orig;
-	}
-	toString() {
+	},
+	toString: function () {
 		return "HE(" + this._orig.x + " " + this._orig.y + ", " + this._sym._orig.x + " " + this._sym._orig.y + ")";
-	}
-	setNext(e) {
+	},
+	setNext: function (e) {
 		this._next = e;
-	}
-	init(e) {
+	},
+	init: function (e) {
 		this.setSym(e);
 		e.setSym(this);
 		this.setNext(e);
 		e.setNext(this);
-	}
-	deltaX() {
+	},
+	deltaX: function () {
 		return this._sym._orig.x - this._orig.x;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return HalfEdge;
 	}
-}
+});
+HalfEdge.init = function (e0, e1) {
+	if (e0._sym !== null || e1._sym !== null || e0._next !== null || e1._next !== null) throw new IllegalStateException("Edges are already initialized");
+	e0.init(e1);
+	return e0;
+};
+HalfEdge.create = function (p0, p1) {
+	var e0 = new HalfEdge(p0);
+	var e1 = new HalfEdge(p1);
+	e0.init(e1);
+	return e0;
+};
 

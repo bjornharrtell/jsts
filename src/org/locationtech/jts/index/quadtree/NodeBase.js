@@ -1,38 +1,22 @@
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
-export default class NodeBase {
-	constructor(...args) {
-		this.items = new ArrayList();
-		this.subnode = new Array(4);
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [Serializable];
-	}
-	static getSubnodeIndex(env, centrex, centrey) {
-		var subnodeIndex = -1;
-		if (env.getMinX() >= centrex) {
-			if (env.getMinY() >= centrey) subnodeIndex = 3;
-			if (env.getMaxY() <= centrey) subnodeIndex = 1;
-		}
-		if (env.getMaxX() <= centrex) {
-			if (env.getMinY() >= centrey) subnodeIndex = 2;
-			if (env.getMaxY() <= centrey) subnodeIndex = 0;
-		}
-		return subnodeIndex;
-	}
-	hasChildren() {
+export default function NodeBase() {
+	this.items = new ArrayList();
+	this.subnode = new Array(4);
+	if (arguments.length === 0) {}
+}
+extend(NodeBase.prototype, {
+	hasChildren: function () {
 		for (var i = 0; i < 4; i++) {
 			if (this.subnode[i] !== null) return true;
 		}
 		return false;
-	}
-	isPrunable() {
+	},
+	isPrunable: function () {
 		return !(this.hasChildren() || this.hasItems());
-	}
-	addAllItems(resultItems) {
+	},
+	addAllItems: function (resultItems) {
 		resultItems.addAll(this.items);
 		for (var i = 0; i < 4; i++) {
 			if (this.subnode[i] !== null) {
@@ -40,8 +24,8 @@ export default class NodeBase {
 			}
 		}
 		return resultItems;
-	}
-	getNodeCount() {
+	},
+	getNodeCount: function () {
 		var subSize = 0;
 		for (var i = 0; i < 4; i++) {
 			if (this.subnode[i] !== null) {
@@ -49,8 +33,8 @@ export default class NodeBase {
 			}
 		}
 		return subSize + 1;
-	}
-	size() {
+	},
+	size: function () {
 		var subSize = 0;
 		for (var i = 0; i < 4; i++) {
 			if (this.subnode[i] !== null) {
@@ -58,8 +42,8 @@ export default class NodeBase {
 			}
 		}
 		return subSize + this.items.size();
-	}
-	addAllItemsFromOverlapping(searchEnv, resultItems) {
+	},
+	addAllItemsFromOverlapping: function (searchEnv, resultItems) {
 		if (!this.isSearchMatch(searchEnv)) return null;
 		resultItems.addAll(this.items);
 		for (var i = 0; i < 4; i++) {
@@ -67,16 +51,16 @@ export default class NodeBase {
 				this.subnode[i].addAllItemsFromOverlapping(searchEnv, resultItems);
 			}
 		}
-	}
-	visitItems(searchEnv, visitor) {
+	},
+	visitItems: function (searchEnv, visitor) {
 		for (var i = this.items.iterator(); i.hasNext(); ) {
 			visitor.visitItem(i.next());
 		}
-	}
-	hasItems() {
+	},
+	hasItems: function () {
 		return !this.items.isEmpty();
-	}
-	remove(itemEnv, item) {
+	},
+	remove: function (itemEnv, item) {
 		if (!this.isSearchMatch(itemEnv)) return false;
 		var found = false;
 		for (var i = 0; i < 4; i++) {
@@ -91,8 +75,8 @@ export default class NodeBase {
 		if (found) return found;
 		found = this.items.remove(item);
 		return found;
-	}
-	visit(searchEnv, visitor) {
+	},
+	visit: function (searchEnv, visitor) {
 		if (!this.isSearchMatch(searchEnv)) return null;
 		this.visitItems(searchEnv, visitor);
 		for (var i = 0; i < 4; i++) {
@@ -100,11 +84,11 @@ export default class NodeBase {
 				this.subnode[i].visit(searchEnv, visitor);
 			}
 		}
-	}
-	getItems() {
+	},
+	getItems: function () {
 		return this.items;
-	}
-	depth() {
+	},
+	depth: function () {
 		var maxSubDepth = 0;
 		for (var i = 0; i < 4; i++) {
 			if (this.subnode[i] !== null) {
@@ -113,8 +97,8 @@ export default class NodeBase {
 			}
 		}
 		return maxSubDepth + 1;
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		var isEmpty = true;
 		if (!this.items.isEmpty()) isEmpty = false;
 		for (var i = 0; i < 4; i++) {
@@ -123,12 +107,27 @@ export default class NodeBase {
 			}
 		}
 		return isEmpty;
-	}
-	add(item) {
+	},
+	add: function (item) {
 		this.items.add(item);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Serializable];
+	},
+	getClass: function () {
 		return NodeBase;
 	}
-}
+});
+NodeBase.getSubnodeIndex = function (env, centrex, centrey) {
+	var subnodeIndex = -1;
+	if (env.getMinX() >= centrex) {
+		if (env.getMinY() >= centrey) subnodeIndex = 3;
+		if (env.getMaxY() <= centrey) subnodeIndex = 1;
+	}
+	if (env.getMaxX() <= centrex) {
+		if (env.getMinY() >= centrey) subnodeIndex = 2;
+		if (env.getMaxY() <= centrey) subnodeIndex = 0;
+	}
+	return subnodeIndex;
+};
 

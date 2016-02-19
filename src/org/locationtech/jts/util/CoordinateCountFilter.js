@@ -1,22 +1,21 @@
 import CoordinateFilter from '../geom/CoordinateFilter';
-export default class CoordinateCountFilter {
-	constructor(...args) {
-		this.n = 0;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateFilter];
-	}
-	filter(coord) {
+import extend from '../../../../extend';
+export default function CoordinateCountFilter() {
+	this.n = 0;
+	if (arguments.length === 0) {}
+}
+extend(CoordinateCountFilter.prototype, {
+	filter: function (coord) {
 		this.n++;
-	}
-	getCount() {
+	},
+	getCount: function () {
 		return this.n;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateFilter];
+	},
+	getClass: function () {
 		return CoordinateCountFilter;
 	}
-}
+});
 

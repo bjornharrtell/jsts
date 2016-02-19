@@ -1,11 +1,13 @@
-export default class SegmentIntersector {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function SegmentIntersector() {}
+extend(SegmentIntersector.prototype, {
+	processIntersections: function (e0, segIndex0, e1, segIndex1) {},
+	isDone: function () {},
+	interfaces_: function () {
 		return [];
-	}
-	processIntersections(e0, segIndex0, e1, segIndex1) {}
-	isDone() {}
-	getClass() {
+	},
+	getClass: function () {
 		return SegmentIntersector;
 	}
-}
+});
 

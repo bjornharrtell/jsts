@@ -1,20 +1,12 @@
 import HashMap from '../../../../java/util/HashMap';
+import extend from '../../../../extend';
 import HalfEdge from './HalfEdge';
-export default class EdgeGraph {
-	constructor(...args) {
-		this.vertexMap = new HashMap();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static isValidEdge(orig, dest) {
-		var cmp = dest.compareTo(orig);
-		return cmp !== 0;
-	}
-	insert(orig, dest, eAdj) {
+export default function EdgeGraph() {
+	this.vertexMap = new HashMap();
+	if (arguments.length === 0) {}
+}
+extend(EdgeGraph.prototype, {
+	insert: function (orig, dest, eAdj) {
 		var e = this.create(orig, dest);
 		if (eAdj !== null) {
 			eAdj.insert(e);
@@ -28,17 +20,17 @@ export default class EdgeGraph {
 			this.vertexMap.put(dest, e.sym());
 		}
 		return e;
-	}
-	create(p0, p1) {
+	},
+	create: function (p0, p1) {
 		var e0 = this.createEdge(p0);
 		var e1 = this.createEdge(p1);
 		HalfEdge.init(e0, e1);
 		return e0;
-	}
-	createEdge(orig) {
+	},
+	createEdge: function (orig) {
 		return new HalfEdge(orig);
-	}
-	addEdge(orig, dest) {
+	},
+	addEdge: function (orig, dest) {
 		if (!EdgeGraph.isValidEdge(orig, dest)) return null;
 		var eAdj = this.vertexMap.get(orig);
 		var eSame = null;
@@ -50,17 +42,24 @@ export default class EdgeGraph {
 		}
 		var e = this.insert(orig, dest, eAdj);
 		return e;
-	}
-	getVertexEdges() {
+	},
+	getVertexEdges: function () {
 		return this.vertexMap.values();
-	}
-	findEdge(orig, dest) {
+	},
+	findEdge: function (orig, dest) {
 		var e = this.vertexMap.get(orig);
 		if (e === null) return null;
 		return e.find(dest);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeGraph;
 	}
-}
+});
+EdgeGraph.isValidEdge = function (orig, dest) {
+	var cmp = dest.compareTo(orig);
+	return cmp !== 0;
+};
 

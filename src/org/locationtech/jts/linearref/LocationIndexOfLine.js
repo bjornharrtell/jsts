@@ -1,20 +1,14 @@
+import extend from '../../../../extend';
 import LocationIndexOfPoint from './LocationIndexOfPoint';
-export default class LocationIndexOfLine {
-	constructor(...args) {
-		this.linearGeom = null;
-		if (args.length === 1) {
-			let [linearGeom] = args;
-			this.linearGeom = linearGeom;
-		}
+export default function LocationIndexOfLine() {
+	this.linearGeom = null;
+	if (arguments.length === 1) {
+		let linearGeom = arguments[0];
+		this.linearGeom = linearGeom;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static indicesOf(linearGeom, subLine) {
-		var locater = new LocationIndexOfLine(linearGeom);
-		return locater.indicesOf(subLine);
-	}
-	indicesOf(subLine) {
+}
+extend(LocationIndexOfLine.prototype, {
+	indicesOf: function (subLine) {
 		var startPt = subLine.getGeometryN(0).getCoordinateN(0);
 		var lastLine = subLine.getGeometryN(subLine.getNumGeometries() - 1);
 		var endPt = lastLine.getCoordinateN(lastLine.getNumPoints() - 1);
@@ -27,9 +21,16 @@ export default class LocationIndexOfLine {
 			subLineLoc[1] = locPt.indexOfAfter(endPt, subLineLoc[0]);
 		}
 		return subLineLoc;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LocationIndexOfLine;
 	}
-}
+});
+LocationIndexOfLine.indicesOf = function (linearGeom, subLine) {
+	var locater = new LocationIndexOfLine(linearGeom);
+	return locater.indicesOf(subLine);
+};
 

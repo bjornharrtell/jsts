@@ -1,20 +1,18 @@
 import CoordinateList from '../../geom/CoordinateList';
+import extend from '../../../../../extend';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default class EdgeString {
-	constructor(...args) {
-		this.factory = null;
-		this.directedEdges = new ArrayList();
-		this.coordinates = null;
-		if (args.length === 1) {
-			let [factory] = args;
-			this.factory = factory;
-		}
+export default function EdgeString() {
+	this.factory = null;
+	this.directedEdges = new ArrayList();
+	this.coordinates = null;
+	if (arguments.length === 1) {
+		let factory = arguments[0];
+		this.factory = factory;
 	}
-	get interfaces_() {
-		return [];
-	}
-	getCoordinates() {
+}
+extend(EdgeString.prototype, {
+	getCoordinates: function () {
 		if (this.coordinates === null) {
 			var forwardDirectedEdges = 0;
 			var reverseDirectedEdges = 0;
@@ -34,15 +32,18 @@ export default class EdgeString {
 			}
 		}
 		return this.coordinates;
-	}
-	toLineString() {
+	},
+	toLineString: function () {
 		return this.factory.createLineString(this.getCoordinates());
-	}
-	add(directedEdge) {
+	},
+	add: function (directedEdge) {
 		this.directedEdges.add(directedEdge);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeString;
 	}
-}
+});
 

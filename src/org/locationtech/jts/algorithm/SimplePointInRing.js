@@ -1,21 +1,22 @@
 import CGAlgorithms from './CGAlgorithms';
+import extend from '../../../../extend';
 import PointInRing from './PointInRing';
-export default class SimplePointInRing {
-	constructor(...args) {
-		this.pts = null;
-		if (args.length === 1) {
-			let [ring] = args;
-			this.pts = ring.getCoordinates();
-		}
-	}
-	get interfaces_() {
-		return [PointInRing];
-	}
-	isInside(pt) {
-		return CGAlgorithms.isPointInRing(pt, this.pts);
-	}
-	getClass() {
-		return SimplePointInRing;
+export default function SimplePointInRing() {
+	this.pts = null;
+	if (arguments.length === 1) {
+		let ring = arguments[0];
+		this.pts = ring.getCoordinates();
 	}
 }
+extend(SimplePointInRing.prototype, {
+	isInside: function (pt) {
+		return CGAlgorithms.isPointInRing(pt, this.pts);
+	},
+	interfaces_: function () {
+		return [PointInRing];
+	},
+	getClass: function () {
+		return SimplePointInRing;
+	}
+});
 

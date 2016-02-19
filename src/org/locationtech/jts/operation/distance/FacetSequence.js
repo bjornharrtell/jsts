@@ -2,40 +2,35 @@ import StringBuffer from '../../../../../java/lang/StringBuffer';
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Coordinate from '../../geom/Coordinate';
 import Double from '../../../../../java/lang/Double';
+import extend from '../../../../../extend';
 import Envelope from '../../geom/Envelope';
-export default class FacetSequence {
-	constructor(...args) {
-		this.pts = null;
-		this.start = null;
-		this.end = null;
-		this.pt = new Coordinate();
-		this.seqPt = new Coordinate();
-		this.p0 = new Coordinate();
-		this.p1 = new Coordinate();
-		this.q0 = new Coordinate();
-		this.q1 = new Coordinate();
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				let [pts, start] = args;
-				this.pts = pts;
-				this.start = start;
-				this.end = start + 1;
-			} else if (args.length === 3) {
-				let [pts, start, end] = args;
-				this.pts = pts;
-				this.start = start;
-				this.end = end;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function FacetSequence() {
+	this.pts = null;
+	this.start = null;
+	this.end = null;
+	this.pt = new Coordinate();
+	this.seqPt = new Coordinate();
+	this.p0 = new Coordinate();
+	this.p1 = new Coordinate();
+	this.q0 = new Coordinate();
+	this.q1 = new Coordinate();
+	if (arguments.length === 2) {
+		let pts = arguments[0], start = arguments[1];
+		this.pts = pts;
+		this.start = start;
+		this.end = start + 1;
+	} else if (arguments.length === 3) {
+		let pts = arguments[0], start = arguments[1], end = arguments[2];
+		this.pts = pts;
+		this.start = start;
+		this.end = end;
 	}
-	get interfaces_() {
-		return [];
-	}
-	size() {
+}
+extend(FacetSequence.prototype, {
+	size: function () {
 		return this.end - this.start;
-	}
-	computeLineLineDistance(facetSeq) {
+	},
+	computeLineLineDistance: function (facetSeq) {
 		var minDistance = Double.MAX_VALUE;
 		for (var i = this.start; i < this.end - 1; i++) {
 			for (var j = facetSeq.start; j < facetSeq.end - 1; j++) {
@@ -51,18 +46,18 @@ export default class FacetSequence {
 			}
 		}
 		return minDistance;
-	}
-	getCoordinate(index) {
+	},
+	getCoordinate: function (index) {
 		return this.pts.getCoordinate(this.start + index);
-	}
-	getEnvelope() {
+	},
+	getEnvelope: function () {
 		var env = new Envelope();
 		for (var i = this.start; i < this.end; i++) {
 			env.expandToInclude(this.pts.getX(i), this.pts.getY(i));
 		}
 		return env;
-	}
-	computePointLineDistance(pt, facetSeq) {
+	},
+	computePointLineDistance: function (pt, facetSeq) {
 		var minDistance = Double.MAX_VALUE;
 		for (var i = facetSeq.start; i < facetSeq.end - 1; i++) {
 			facetSeq.pts.getCoordinate(i, this.q0);
@@ -74,8 +69,8 @@ export default class FacetSequence {
 			}
 		}
 		return minDistance;
-	}
-	toString() {
+	},
+	toString: function () {
 		var buf = new StringBuffer();
 		buf.append("LINESTRING ( ");
 		var p = new Coordinate();
@@ -86,11 +81,11 @@ export default class FacetSequence {
 		}
 		buf.append(" )");
 		return buf.toString();
-	}
-	isPoint() {
+	},
+	isPoint: function () {
 		return this.end - this.start === 1;
-	}
-	distance(facetSeq) {
+	},
+	distance: function (facetSeq) {
 		var isPoint = this.isPoint();
 		var isPointOther = facetSeq.isPoint();
 		if (isPoint && isPointOther) {
@@ -105,9 +100,12 @@ export default class FacetSequence {
 			return this.computePointLineDistance(this.seqPt, this);
 		}
 		return this.computeLineLineDistance(facetSeq);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return FacetSequence;
 	}
-}
+});
 

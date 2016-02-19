@@ -1,24 +1,27 @@
 import IntervalRTreeNode from './IntervalRTreeNode';
-export default class IntervalRTreeLeafNode extends IntervalRTreeNode {
-	constructor(...args) {
-		super();
-		this.item = null;
-		if (args.length === 3) {
-			let [min, max, item] = args;
-			this.min = min;
-			this.max = max;
-			this.item = item;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	query(queryMin, queryMax, visitor) {
-		if (!this.intersects(queryMin, queryMax)) return null;
-		visitor.visitItem(this.item);
-	}
-	getClass() {
-		return IntervalRTreeLeafNode;
+import extend from '../../../../../extend';
+import inherits from '../../../../../inherits';
+export default function IntervalRTreeLeafNode() {
+	IntervalRTreeNode.apply(this);
+	this.item = null;
+	if (arguments.length === 3) {
+		let min = arguments[0], max = arguments[1], item = arguments[2];
+		this.min = min;
+		this.max = max;
+		this.item = item;
 	}
 }
+inherits(IntervalRTreeLeafNode, IntervalRTreeNode);
+extend(IntervalRTreeLeafNode.prototype, {
+	query: function (queryMin, queryMax, visitor) {
+		if (!this.intersects(queryMin, queryMax)) return null;
+		visitor.visitItem(this.item);
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return IntervalRTreeLeafNode;
+	}
+});
 

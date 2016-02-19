@@ -1,28 +1,23 @@
 import Iterator from '../../../../java/util/Iterator';
 import NoSuchElementException from '../../../../java/util/NoSuchElementException';
+import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
-export default class GeometryCollectionIterator {
-	constructor(...args) {
-		this.parent = null;
-		this.atStart = null;
-		this.max = null;
-		this.index = null;
-		this.subcollectionIterator = null;
-		if (args.length === 1) {
-			let [parent] = args;
-			this.parent = parent;
-			this.atStart = true;
-			this.index = 0;
-			this.max = parent.getNumGeometries();
-		}
+export default function GeometryCollectionIterator() {
+	this.parent = null;
+	this.atStart = null;
+	this.max = null;
+	this.index = null;
+	this.subcollectionIterator = null;
+	if (arguments.length === 1) {
+		let parent = arguments[0];
+		this.parent = parent;
+		this.atStart = true;
+		this.index = 0;
+		this.max = parent.getNumGeometries();
 	}
-	get interfaces_() {
-		return [Iterator];
-	}
-	static isAtomic(geom) {
-		return !(geom instanceof GeometryCollection);
-	}
-	next() {
+}
+extend(GeometryCollectionIterator.prototype, {
+	next: function () {
 		if (this.atStart) {
 			this.atStart = false;
 			if (GeometryCollectionIterator.isAtomic(this.parent)) this.index++;
@@ -44,11 +39,11 @@ export default class GeometryCollectionIterator {
 			return this.subcollectionIterator.next();
 		}
 		return obj;
-	}
-	remove() {
+	},
+	remove: function () {
 		throw new UnsupportedOperationException(this.getClass().getName());
-	}
-	hasNext() {
+	},
+	hasNext: function () {
 		if (this.atStart) {
 			return true;
 		}
@@ -62,9 +57,15 @@ export default class GeometryCollectionIterator {
 			return false;
 		}
 		return true;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Iterator];
+	},
+	getClass: function () {
 		return GeometryCollectionIterator;
 	}
-}
+});
+GeometryCollectionIterator.isAtomic = function (geom) {
+	return !(geom instanceof GeometryCollection);
+};
 

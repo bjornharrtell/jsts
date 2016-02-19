@@ -1,9 +1,11 @@
-export default class Puntal {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function Puntal() {}
+extend(Puntal.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return Puntal;
 	}
-}
+});
 

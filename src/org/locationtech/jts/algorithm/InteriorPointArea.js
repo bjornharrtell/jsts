@@ -2,31 +2,20 @@ import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import Polygon from '../geom/Polygon';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
-export default class InteriorPointArea {
-	constructor(...args) {
-		this.factory = null;
-		this.interiorPoint = null;
-		this.maxWidth = 0.0;
-		if (args.length === 1) {
-			let [g] = args;
-			this.factory = g.getFactory();
-			this.add(g);
-		}
+export default function InteriorPointArea() {
+	this.factory = null;
+	this.interiorPoint = null;
+	this.maxWidth = 0.0;
+	if (arguments.length === 1) {
+		let g = arguments[0];
+		this.factory = g.getFactory();
+		this.add(g);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get SafeBisectorFinder() {
-		return SafeBisectorFinder;
-	}
-	static centre(envelope) {
-		return new Coordinate(InteriorPointArea.avg(envelope.getMinX(), envelope.getMaxX()), InteriorPointArea.avg(envelope.getMinY(), envelope.getMaxY()));
-	}
-	static avg(a, b) {
-		return (a + b) / 2.0;
-	}
-	addPolygon(geometry) {
+}
+extend(InteriorPointArea.prototype, {
+	addPolygon: function (geometry) {
 		if (geometry.isEmpty()) return null;
 		var intPt = null;
 		var width = 0;
@@ -44,14 +33,14 @@ export default class InteriorPointArea {
 			this.interiorPoint = intPt;
 			this.maxWidth = width;
 		}
-	}
-	getInteriorPoint() {
+	},
+	getInteriorPoint: function () {
 		return this.interiorPoint;
-	}
-	widestGeometry(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof GeometryCollection) {
-				let [gc] = args;
+	},
+	widestGeometry: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof GeometryCollection) {
+				let gc = arguments[0];
 				if (gc.isEmpty()) {
 					return gc;
 				}
@@ -62,21 +51,21 @@ export default class InteriorPointArea {
 					}
 				}
 				return widestGeometry;
-			} else if (args[0] instanceof Geometry) {
-				let [geometry] = args;
+			} else if (arguments[0] instanceof Geometry) {
+				let geometry = arguments[0];
 				if (!(geometry instanceof GeometryCollection)) {
 					return geometry;
 				}
 				return this.widestGeometry(geometry);
 			}
 		}
-	}
-	horizontalBisector(geometry) {
+	},
+	horizontalBisector: function (geometry) {
 		var envelope = geometry.getEnvelopeInternal();
 		var bisectY = SafeBisectorFinder.getBisectorY(geometry);
 		return this.factory.createLineString([new Coordinate(envelope.getMinX(), bisectY), new Coordinate(envelope.getMaxX(), bisectY)]);
-	}
-	add(geom) {
+	},
+	add: function (geom) {
 		if (geom instanceof Polygon) {
 			this.addPolygon(geom);
 		} else if (geom instanceof GeometryCollection) {
@@ -85,33 +74,35 @@ export default class InteriorPointArea {
 				this.add(gc.getGeometryN(i));
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return InteriorPointArea;
 	}
+});
+InteriorPointArea.centre = function (envelope) {
+	return new Coordinate(InteriorPointArea.avg(envelope.getMinX(), envelope.getMaxX()), InteriorPointArea.avg(envelope.getMinY(), envelope.getMaxY()));
+};
+InteriorPointArea.avg = function (a, b) {
+	return (a + b) / 2.0;
+};
+function SafeBisectorFinder() {
+	this.poly = null;
+	this.centreY = null;
+	this.hiY = Double.MAX_VALUE;
+	this.loY = -Double.MAX_VALUE;
+	if (arguments.length === 1) {
+		let poly = arguments[0];
+		this.poly = poly;
+		this.hiY = poly.getEnvelopeInternal().getMaxY();
+		this.loY = poly.getEnvelopeInternal().getMinY();
+		this.centreY = InteriorPointArea.avg(this.loY, this.hiY);
+	}
 }
-class SafeBisectorFinder {
-	constructor(...args) {
-		this.poly = null;
-		this.centreY = null;
-		this.hiY = Double.MAX_VALUE;
-		this.loY = -Double.MAX_VALUE;
-		if (args.length === 1) {
-			let [poly] = args;
-			this.poly = poly;
-			this.hiY = poly.getEnvelopeInternal().getMaxY();
-			this.loY = poly.getEnvelopeInternal().getMinY();
-			this.centreY = SafeBisectorFinder.avg(this.loY, this.hiY);
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static getBisectorY(poly) {
-		var finder = new SafeBisectorFinder(poly);
-		return finder.getBisectorY();
-	}
-	updateInterval(y) {
+extend(SafeBisectorFinder.prototype, {
+	updateInterval: function (y) {
 		if (y <= this.centreY) {
 			if (y > this.loY) this.loY = y;
 		} else if (y > this.centreY) {
@@ -119,24 +110,32 @@ class SafeBisectorFinder {
 				this.hiY = y;
 			}
 		}
-	}
-	getBisectorY() {
+	},
+	getBisectorY: function () {
 		this.process(this.poly.getExteriorRing());
 		for (var i = 0; i < this.poly.getNumInteriorRing(); i++) {
 			this.process(this.poly.getInteriorRingN(i));
 		}
-		var bisectY = SafeBisectorFinder.avg(this.hiY, this.loY);
+		var bisectY = InteriorPointArea.avg(this.hiY, this.loY);
 		return bisectY;
-	}
-	process(line) {
+	},
+	process: function (line) {
 		var seq = line.getCoordinateSequence();
 		for (var i = 0; i < seq.size(); i++) {
 			var y = seq.getY(i);
 			this.updateInterval(y);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SafeBisectorFinder;
 	}
-}
+});
+SafeBisectorFinder.getBisectorY = function (poly) {
+	var finder = new SafeBisectorFinder(poly);
+	return finder.getBisectorY();
+};
+InteriorPointArea.SafeBisectorFinder = SafeBisectorFinder;
 

@@ -1,58 +1,54 @@
 import StringBuffer from '../../../../../java/lang/StringBuffer';
+import hasInterface from '../../../../../hasInterface';
 import Coordinate from '../Coordinate';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import Double from '../../../../../java/lang/Double';
+import extend from '../../../../../extend';
 import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
-export default class CoordinateArraySequence {
-	constructor(...args) {
-		this.dimension = 3;
-		this.coordinates = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				if (args[0] instanceof Array) {
-					let [coordinates] = args;
-					overloaded.call(this, coordinates, 3);
-				} else if (Number.isInteger(args[0])) {
-					let [size] = args;
-					this.coordinates = new Array(size);
-					for (var i = 0; i < size; i++) {
-						this.coordinates[i] = new Coordinate();
-					}
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-					let [coordSeq] = args;
-					if (coordSeq === null) {
-						this.coordinates = new Array(0);
-						return null;
-					}
-					this.dimension = coordSeq.getDimension();
-					this.coordinates = new Array(coordSeq.size());
-					for (var i = 0; i < this.coordinates.length; i++) {
-						this.coordinates[i] = coordSeq.getCoordinateCopy(i);
-					}
-				}
-			} else if (args.length === 2) {
-				if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					let [coordinates, dimension] = args;
-					this.coordinates = coordinates;
-					this.dimension = dimension;
-					if (coordinates === null) this.coordinates = new Array(0);
-				} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-					let [size, dimension] = args;
-					this.coordinates = new Array(size);
-					this.dimension = dimension;
-					for (var i = 0; i < size; i++) {
-						this.coordinates[i] = new Coordinate();
-					}
-				}
+export default function CoordinateArraySequence() {
+	this.dimension = 3;
+	this.coordinates = null;
+	if (arguments.length === 1) {
+		if (arguments[0] instanceof Array) {
+			let coordinates = arguments[0];
+			CoordinateArraySequence.call(this, coordinates, 3);
+		} else if (Number.isInteger(arguments[0])) {
+			let size = arguments[0];
+			this.coordinates = new Array(size);
+			for (var i = 0; i < size; i++) {
+				this.coordinates[i] = new Coordinate();
 			}
-		};
-		return overloaded.apply(this, args);
+		} else if (hasInterface(arguments[0], CoordinateSequence)) {
+			let coordSeq = arguments[0];
+			if (coordSeq === null) {
+				this.coordinates = new Array(0);
+				return null;
+			}
+			this.dimension = coordSeq.getDimension();
+			this.coordinates = new Array(coordSeq.size());
+			for (var i = 0; i < this.coordinates.length; i++) {
+				this.coordinates[i] = coordSeq.getCoordinateCopy(i);
+			}
+		}
+	} else if (arguments.length === 2) {
+		if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			let coordinates = arguments[0], dimension = arguments[1];
+			this.coordinates = coordinates;
+			this.dimension = dimension;
+			if (coordinates === null) this.coordinates = new Array(0);
+		} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
+			let size = arguments[0], dimension = arguments[1];
+			this.coordinates = new Array(size);
+			this.dimension = dimension;
+			for (var i = 0; i < size; i++) {
+				this.coordinates[i] = new Coordinate();
+			}
+		}
 	}
-	get interfaces_() {
-		return [CoordinateSequence, Serializable];
-	}
-	setOrdinate(index, ordinateIndex, value) {
+}
+extend(CoordinateArraySequence.prototype, {
+	setOrdinate: function (index, ordinateIndex, value) {
 		switch (ordinateIndex) {
 			case CoordinateSequence.X:
 				this.coordinates[index].x = value;
@@ -66,11 +62,11 @@ export default class CoordinateArraySequence {
 			default:
 				throw new IllegalArgumentException("invalid ordinateIndex");
 		}
-	}
-	size() {
+	},
+	size: function () {
 		return this.coordinates.length;
-	}
-	getOrdinate(index, ordinateIndex) {
+	},
+	getOrdinate: function (index, ordinateIndex) {
 		switch (ordinateIndex) {
 			case CoordinateSequence.X:
 				return this.coordinates[index].x;
@@ -80,48 +76,48 @@ export default class CoordinateArraySequence {
 				return this.coordinates[index].z;
 		}
 		return Double.NaN;
-	}
-	getCoordinate(...args) {
-		if (args.length === 1) {
-			let [i] = args;
+	},
+	getCoordinate: function () {
+		if (arguments.length === 1) {
+			let i = arguments[0];
 			return this.coordinates[i];
-		} else if (args.length === 2) {
-			let [index, coord] = args;
+		} else if (arguments.length === 2) {
+			let index = arguments[0], coord = arguments[1];
 			coord.x = this.coordinates[index].x;
 			coord.y = this.coordinates[index].y;
 			coord.z = this.coordinates[index].z;
 		}
-	}
-	getCoordinateCopy(i) {
+	},
+	getCoordinateCopy: function (i) {
 		return new Coordinate(this.coordinates[i]);
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return this.dimension;
-	}
-	getX(index) {
+	},
+	getX: function (index) {
 		return this.coordinates[index].x;
-	}
-	clone() {
+	},
+	clone: function () {
 		var cloneCoordinates = new Array(this.size());
 		for (var i = 0; i < this.coordinates.length; i++) {
 			cloneCoordinates[i] = this.coordinates[i].clone();
 		}
 		return new CoordinateArraySequence(cloneCoordinates, this.dimension);
-	}
-	expandEnvelope(env) {
+	},
+	expandEnvelope: function (env) {
 		for (var i = 0; i < this.coordinates.length; i++) {
 			env.expandToInclude(this.coordinates[i]);
 		}
 		return env;
-	}
-	copy() {
+	},
+	copy: function () {
 		var cloneCoordinates = new Array(this.size());
 		for (var i = 0; i < this.coordinates.length; i++) {
 			cloneCoordinates[i] = this.coordinates[i].copy();
 		}
 		return new CoordinateArraySequence(cloneCoordinates, this.dimension);
-	}
-	toString() {
+	},
+	toString: function () {
 		if (this.coordinates.length > 0) {
 			var strBuf = new StringBuffer(17 * this.coordinates.length);
 			strBuf.append('(');
@@ -135,16 +131,19 @@ export default class CoordinateArraySequence {
 		} else {
 			return "()";
 		}
-	}
-	getY(index) {
+	},
+	getY: function (index) {
 		return this.coordinates[index].y;
-	}
-	toCoordinateArray() {
+	},
+	toCoordinateArray: function () {
 		return this.coordinates;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequence, Serializable];
+	},
+	getClass: function () {
 		return CoordinateArraySequence;
 	}
-}
+});
 CoordinateArraySequence.serialVersionUID = -915438501601840650;
 

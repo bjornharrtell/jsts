@@ -1,37 +1,33 @@
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
-export default class TaggedLineSegment extends LineSegment {
-	constructor(...args) {
-		super();
-		this.parent = null;
-		this.index = null;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				return ((...args) => {
-					let [p0, p1] = args;
-					overloaded.call(this, p0, p1, null, -1);
-				})(...args);
-			} else if (args.length === 4) {
-				return ((...args) => {
-					let [p0, p1, parent, index] = args;
-					super(p0, p1);
-					this.parent = parent;
-					this.index = index;
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	getIndex() {
-		return this.index;
-	}
-	getParent() {
-		return this.parent;
-	}
-	getClass() {
-		return TaggedLineSegment;
+import inherits from '../../../../inherits';
+export default function TaggedLineSegment() {
+	LineSegment.apply(this);
+	this.parent = null;
+	this.index = null;
+	if (arguments.length === 2) {
+		let p0 = arguments[0], p1 = arguments[1];
+		TaggedLineSegment.call(this, p0, p1, null, -1);
+	} else if (arguments.length === 4) {
+		let p0 = arguments[0], p1 = arguments[1], parent = arguments[2], index = arguments[3];
+		LineSegment.call(this, p0, p1);
+		this.parent = parent;
+		this.index = index;
 	}
 }
+inherits(TaggedLineSegment, LineSegment);
+extend(TaggedLineSegment.prototype, {
+	getIndex: function () {
+		return this.index;
+	},
+	getParent: function () {
+		return this.parent;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return TaggedLineSegment;
+	}
+});
 

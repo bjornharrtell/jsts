@@ -1,87 +1,79 @@
 import DistanceToPointFinder from './DistanceToPointFinder';
 import CoordinateFilter from '../../../geom/CoordinateFilter';
 import Coordinate from '../../../geom/Coordinate';
+import extend from '../../../../../../extend';
 import PointPairDistance from './PointPairDistance';
 import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter';
-export default class BufferCurveMaximumDistanceFinder {
-	constructor(...args) {
-		this.inputGeom = null;
-		this.maxPtDist = new PointPairDistance();
-		if (args.length === 1) {
-			let [inputGeom] = args;
-			this.inputGeom = inputGeom;
-		}
+export default function BufferCurveMaximumDistanceFinder() {
+	this.inputGeom = null;
+	this.maxPtDist = new PointPairDistance();
+	if (arguments.length === 1) {
+		let inputGeom = arguments[0];
+		this.inputGeom = inputGeom;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get MaxPointDistanceFilter() {
-		return MaxPointDistanceFilter;
-	}
-	static get MaxMidpointDistanceFilter() {
-		return MaxMidpointDistanceFilter;
-	}
-	computeMaxMidpointDistance(curve) {
+}
+extend(BufferCurveMaximumDistanceFinder.prototype, {
+	computeMaxMidpointDistance: function (curve) {
 		var distFilter = new MaxMidpointDistanceFilter(this.inputGeom);
 		curve.apply(distFilter);
 		this.maxPtDist.setMaximum(distFilter.getMaxPointDistance());
-	}
-	computeMaxVertexDistance(curve) {
+	},
+	computeMaxVertexDistance: function (curve) {
 		var distFilter = new MaxPointDistanceFilter(this.inputGeom);
 		curve.apply(distFilter);
 		this.maxPtDist.setMaximum(distFilter.getMaxPointDistance());
-	}
-	findDistance(bufferCurve) {
+	},
+	findDistance: function (bufferCurve) {
 		this.computeMaxVertexDistance(bufferCurve);
 		this.computeMaxMidpointDistance(bufferCurve);
 		return this.maxPtDist.getDistance();
-	}
-	getDistancePoints() {
+	},
+	getDistancePoints: function () {
 		return this.maxPtDist;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return BufferCurveMaximumDistanceFinder;
 	}
+});
+function MaxPointDistanceFilter() {
+	this.maxPtDist = new PointPairDistance();
+	this.minPtDist = new PointPairDistance();
+	this.geom = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this.geom = geom;
+	}
 }
-class MaxPointDistanceFilter {
-	constructor(...args) {
-		this.maxPtDist = new PointPairDistance();
-		this.minPtDist = new PointPairDistance();
-		this.geom = null;
-		if (args.length === 1) {
-			let [geom] = args;
-			this.geom = geom;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateFilter];
-	}
-	filter(pt) {
+extend(MaxPointDistanceFilter.prototype, {
+	filter: function (pt) {
 		this.minPtDist.initialize();
 		DistanceToPointFinder.computeDistance(this.geom, pt, this.minPtDist);
 		this.maxPtDist.setMaximum(this.minPtDist);
-	}
-	getMaxPointDistance() {
+	},
+	getMaxPointDistance: function () {
 		return this.maxPtDist;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateFilter];
+	},
+	getClass: function () {
 		return MaxPointDistanceFilter;
 	}
+});
+function MaxMidpointDistanceFilter() {
+	this.maxPtDist = new PointPairDistance();
+	this.minPtDist = new PointPairDistance();
+	this.geom = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this.geom = geom;
+	}
 }
-class MaxMidpointDistanceFilter {
-	constructor(...args) {
-		this.maxPtDist = new PointPairDistance();
-		this.minPtDist = new PointPairDistance();
-		this.geom = null;
-		if (args.length === 1) {
-			let [geom] = args;
-			this.geom = geom;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateSequenceFilter];
-	}
-	filter(seq, index) {
+extend(MaxMidpointDistanceFilter.prototype, {
+	filter: function (seq, index) {
 		if (index === 0) return null;
 		var p0 = seq.getCoordinate(index - 1);
 		var p1 = seq.getCoordinate(index);
@@ -89,18 +81,23 @@ class MaxMidpointDistanceFilter {
 		this.minPtDist.initialize();
 		DistanceToPointFinder.computeDistance(this.geom, midPt, this.minPtDist);
 		this.maxPtDist.setMaximum(this.minPtDist);
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return false;
-	}
-	isGeometryChanged() {
+	},
+	isGeometryChanged: function () {
 		return false;
-	}
-	getMaxPointDistance() {
+	},
+	getMaxPointDistance: function () {
 		return this.maxPtDist;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequenceFilter];
+	},
+	getClass: function () {
 		return MaxMidpointDistanceFilter;
 	}
-}
+});
+BufferCurveMaximumDistanceFinder.MaxPointDistanceFilter = MaxPointDistanceFilter;
+BufferCurveMaximumDistanceFinder.MaxMidpointDistanceFilter = MaxMidpointDistanceFilter;
 

@@ -1,17 +1,17 @@
+import extend from '../../../../../extend';
 import DirectedEdge from '../../planargraph/DirectedEdge';
 import Assert from '../../util/Assert';
-export default class LineMergeDirectedEdge extends DirectedEdge {
-	constructor(...args) {
-		super();
-		if (args.length === 4) {
-			let [from, to, directionPt, edgeDirection] = args;
-			super(from, to, directionPt, edgeDirection);
-		}
+import inherits from '../../../../../inherits';
+export default function LineMergeDirectedEdge() {
+	DirectedEdge.apply(this);
+	if (arguments.length === 4) {
+		let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
+		DirectedEdge.call(this, from, to, directionPt, edgeDirection);
 	}
-	get interfaces_() {
-		return [];
-	}
-	getNext() {
+}
+inherits(LineMergeDirectedEdge, DirectedEdge);
+extend(LineMergeDirectedEdge.prototype, {
+	getNext: function () {
 		if (this.getToNode().getDegree() !== 2) {
 			return null;
 		}
@@ -20,9 +20,12 @@ export default class LineMergeDirectedEdge extends DirectedEdge {
 		}
 		Assert.isTrue(this.getToNode().getOutEdges().getEdges().get(1) === this.getSym());
 		return this.getToNode().getOutEdges().getEdges().get(0);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LineMergeDirectedEdge;
 	}
-}
+});
 

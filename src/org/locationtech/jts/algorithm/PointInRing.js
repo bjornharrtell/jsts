@@ -1,10 +1,12 @@
-export default class PointInRing {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function PointInRing() {}
+extend(PointInRing.prototype, {
+	isInside: function (pt) {},
+	interfaces_: function () {
 		return [];
-	}
-	isInside(pt) {}
-	getClass() {
+	},
+	getClass: function () {
 		return PointInRing;
 	}
-}
+});
 

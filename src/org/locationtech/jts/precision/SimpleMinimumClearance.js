@@ -2,49 +2,33 @@ import CGAlgorithms from '../algorithm/CGAlgorithms';
 import CoordinateFilter from '../geom/CoordinateFilter';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
-export default class SimpleMinimumClearance {
-	constructor(...args) {
-		this.inputGeom = null;
-		this.minClearance = null;
-		this.minClearancePts = null;
-		if (args.length === 1) {
-			let [geom] = args;
-			this.inputGeom = geom;
-		}
+export default function SimpleMinimumClearance() {
+	this.inputGeom = null;
+	this.minClearance = null;
+	this.minClearancePts = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this.inputGeom = geom;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get VertexCoordinateFilter() {
-		return VertexCoordinateFilter;
-	}
-	static get ComputeMCCoordinateSequenceFilter() {
-		return ComputeMCCoordinateSequenceFilter;
-	}
-	static getLine(g) {
-		var rp = new SimpleMinimumClearance(g);
-		return rp.getLine();
-	}
-	static getDistance(g) {
-		var rp = new SimpleMinimumClearance(g);
-		return rp.getDistance();
-	}
-	getLine() {
+}
+extend(SimpleMinimumClearance.prototype, {
+	getLine: function () {
 		this.compute();
 		return this.inputGeom.getFactory().createLineString(this.minClearancePts);
-	}
-	updateClearance(...args) {
-		if (args.length === 3) {
-			let [candidateValue, p0, p1] = args;
+	},
+	updateClearance: function () {
+		if (arguments.length === 3) {
+			let candidateValue = arguments[0], p0 = arguments[1], p1 = arguments[2];
 			if (candidateValue < this.minClearance) {
 				this.minClearance = candidateValue;
 				this.minClearancePts[0] = new Coordinate(p0);
 				this.minClearancePts[1] = new Coordinate(p1);
 			}
-		} else if (args.length === 4) {
-			let [candidateValue, p, seg0, seg1] = args;
+		} else if (arguments.length === 4) {
+			let candidateValue = arguments[0], p = arguments[1], seg0 = arguments[2], seg1 = arguments[3];
 			if (candidateValue < this.minClearance) {
 				this.minClearance = candidateValue;
 				this.minClearancePts[0] = new Coordinate(p);
@@ -52,77 +36,90 @@ export default class SimpleMinimumClearance {
 				this.minClearancePts[1] = new Coordinate(seg.closestPoint(p));
 			}
 		}
-	}
-	compute() {
+	},
+	compute: function () {
 		if (this.minClearancePts !== null) return null;
 		this.minClearancePts = new Array(2);
 		this.minClearance = Double.MAX_VALUE;
 		this.inputGeom.apply(new VertexCoordinateFilter(this));
-	}
-	getDistance() {
+	},
+	getDistance: function () {
 		this.compute();
 		return this.minClearance;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SimpleMinimumClearance;
 	}
+});
+SimpleMinimumClearance.getLine = function (g) {
+	var rp = new SimpleMinimumClearance(g);
+	return rp.getLine();
+};
+SimpleMinimumClearance.getDistance = function (g) {
+	var rp = new SimpleMinimumClearance(g);
+	return rp.getDistance();
+};
+function VertexCoordinateFilter() {
+	this.smc = null;
+	if (arguments.length === 1) {
+		let smc = arguments[0];
+		this.smc = smc;
+	}
 }
-class VertexCoordinateFilter {
-	constructor(...args) {
-		this.smc = null;
-		if (args.length === 1) {
-			let [smc] = args;
-			this.smc = smc;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateFilter];
-	}
-	filter(coord) {
+extend(VertexCoordinateFilter.prototype, {
+	filter: function (coord) {
 		this.smc.inputGeom.apply(new ComputeMCCoordinateSequenceFilter(this.smc, coord));
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateFilter];
+	},
+	getClass: function () {
 		return VertexCoordinateFilter;
 	}
+});
+function ComputeMCCoordinateSequenceFilter() {
+	this.smc = null;
+	this.queryPt = null;
+	if (arguments.length === 2) {
+		let smc = arguments[0], queryPt = arguments[1];
+		this.smc = smc;
+		this.queryPt = queryPt;
+	}
 }
-class ComputeMCCoordinateSequenceFilter {
-	constructor(...args) {
-		this.smc = null;
-		this.queryPt = null;
-		if (args.length === 2) {
-			let [smc, queryPt] = args;
-			this.smc = smc;
-			this.queryPt = queryPt;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateSequenceFilter];
-	}
-	isGeometryChanged() {
+extend(ComputeMCCoordinateSequenceFilter.prototype, {
+	isGeometryChanged: function () {
 		return false;
-	}
-	checkVertexDistance(vertex) {
+	},
+	checkVertexDistance: function (vertex) {
 		var vertexDist = vertex.distance(this.queryPt);
 		if (vertexDist > 0) {
 			this.smc.updateClearance(vertexDist, this.queryPt, vertex);
 		}
-	}
-	filter(seq, i) {
+	},
+	filter: function (seq, i) {
 		this.checkVertexDistance(seq.getCoordinate(i));
 		if (i > 0) {
 			this.checkSegmentDistance(seq.getCoordinate(i - 1), seq.getCoordinate(i));
 		}
-	}
-	checkSegmentDistance(seg0, seg1) {
+	},
+	checkSegmentDistance: function (seg0, seg1) {
 		if (this.queryPt.equals2D(seg0) || this.queryPt.equals2D(seg1)) return null;
 		var segDist = CGAlgorithms.distancePointLine(this.queryPt, seg1, seg0);
 		if (segDist > 0) this.smc.updateClearance(segDist, this.queryPt, seg1, seg0);
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequenceFilter];
+	},
+	getClass: function () {
 		return ComputeMCCoordinateSequenceFilter;
 	}
-}
+});
+SimpleMinimumClearance.VertexCoordinateFilter = VertexCoordinateFilter;
+SimpleMinimumClearance.ComputeMCCoordinateSequenceFilter = ComputeMCCoordinateSequenceFilter;
 

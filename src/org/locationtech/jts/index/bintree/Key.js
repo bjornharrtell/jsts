@@ -1,30 +1,23 @@
 import Interval from './Interval';
+import extend from '../../../../../extend';
 import DoubleBits from '../quadtree/DoubleBits';
-export default class Key {
-	constructor(...args) {
-		this.pt = 0.0;
-		this.level = 0;
-		this.interval = null;
-		if (args.length === 1) {
-			let [interval] = args;
-			this.computeKey(interval);
-		}
+export default function Key() {
+	this.pt = 0.0;
+	this.level = 0;
+	this.interval = null;
+	if (arguments.length === 1) {
+		let interval = arguments[0];
+		this.computeKey(interval);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static computeLevel(interval) {
-		var dx = interval.getWidth();
-		var level = DoubleBits.exponent(dx) + 1;
-		return level;
-	}
-	getInterval() {
+}
+extend(Key.prototype, {
+	getInterval: function () {
 		return this.interval;
-	}
-	getLevel() {
+	},
+	getLevel: function () {
 		return this.level;
-	}
-	computeKey(itemInterval) {
+	},
+	computeKey: function (itemInterval) {
 		this.level = Key.computeLevel(itemInterval);
 		this.interval = new Interval();
 		this.computeInterval(this.level, itemInterval);
@@ -32,17 +25,25 @@ export default class Key {
 			this.level += 1;
 			this.computeInterval(this.level, itemInterval);
 		}
-	}
-	computeInterval(level, itemInterval) {
+	},
+	computeInterval: function (level, itemInterval) {
 		var size = DoubleBits.powerOf2(level);
 		this.pt = Math.floor(itemInterval.getMin() / size) * size;
 		this.interval.init(this.pt, this.pt + size);
-	}
-	getPoint() {
+	},
+	getPoint: function () {
 		return this.pt;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Key;
 	}
-}
+});
+Key.computeLevel = function (interval) {
+	var dx = interval.getWidth();
+	var level = DoubleBits.exponent(dx) + 1;
+	return level;
+};
 

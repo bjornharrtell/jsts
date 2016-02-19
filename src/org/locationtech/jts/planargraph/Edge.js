@@ -1,30 +1,21 @@
 import Node from './Node';
+import extend from '../../../../extend';
+import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
-export default class Edge extends GraphComponent {
-	constructor(...args) {
-		super();
-		this.dirEdge = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [de0, de1] = args;
-					this.setDirectedEdges(de0, de1);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function Edge() {
+	GraphComponent.apply(this);
+	this.dirEdge = null;
+	if (arguments.length === 0) {} else if (arguments.length === 2) {
+		let de0 = arguments[0], de1 = arguments[1];
+		this.setDirectedEdges(de0, de1);
 	}
-	get interfaces_() {
-		return [];
-	}
-	isRemoved() {
+}
+inherits(Edge, GraphComponent);
+extend(Edge.prototype, {
+	isRemoved: function () {
 		return this.dirEdge === null;
-	}
-	setDirectedEdges(de0, de1) {
+	},
+	setDirectedEdges: function (de0, de1) {
 		this.dirEdge = [de0, de1];
 		de0.setEdge(this);
 		de1.setEdge(this);
@@ -32,30 +23,33 @@ export default class Edge extends GraphComponent {
 		de1.setSym(de0);
 		de0.getFromNode().addOutEdge(de0);
 		de1.getFromNode().addOutEdge(de1);
-	}
-	getDirEdge(...args) {
-		if (args.length === 1) {
-			if (Number.isInteger(args[0])) {
-				let [i] = args;
+	},
+	getDirEdge: function () {
+		if (arguments.length === 1) {
+			if (Number.isInteger(arguments[0])) {
+				let i = arguments[0];
 				return this.dirEdge[i];
-			} else if (args[0] instanceof Node) {
-				let [fromNode] = args;
+			} else if (arguments[0] instanceof Node) {
+				let fromNode = arguments[0];
 				if (this.dirEdge[0].getFromNode() === fromNode) return this.dirEdge[0];
 				if (this.dirEdge[1].getFromNode() === fromNode) return this.dirEdge[1];
 				return null;
 			}
 		}
-	}
-	remove() {
+	},
+	remove: function () {
 		this.dirEdge = null;
-	}
-	getOppositeNode(node) {
+	},
+	getOppositeNode: function (node) {
 		if (this.dirEdge[0].getFromNode() === node) return this.dirEdge[0].getToNode();
 		if (this.dirEdge[1].getFromNode() === node) return this.dirEdge[1].getToNode();
 		return null;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Edge;
 	}
-}
+});
 

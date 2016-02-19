@@ -1,61 +1,64 @@
 import Geometry from './Geometry';
+import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
 import Dimension from './Dimension';
 import Puntal from './Puntal';
-export default class MultiPoint extends GeometryCollection {
-	constructor(...args) {
-		super();
-		if (args.length === 2) {
-			let [points, factory] = args;
-			super(points, factory);
-		}
+import inherits from '../../../../inherits';
+export default function MultiPoint() {
+	GeometryCollection.apply(this);
+	if (arguments.length === 2) {
+		let points = arguments[0], factory = arguments[1];
+		GeometryCollection.call(this, points, factory);
 	}
-	get interfaces_() {
-		return [Puntal];
-	}
-	getSortIndex() {
+}
+inherits(MultiPoint, GeometryCollection);
+extend(MultiPoint.prototype, {
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_MULTIPOINT;
-	}
-	isValid() {
+	},
+	isValid: function () {
 		return true;
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
-			return super.equalsExact(other, tolerance);
-		} else return super.equalsExact(...args);
-	}
-	getCoordinate(...args) {
-		if (args.length === 1) {
-			let [n] = args;
+			return GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
+		} else return GeometryCollection.prototype.equalsExact.apply(this, arguments);
+	},
+	getCoordinate: function () {
+		if (arguments.length === 1) {
+			let n = arguments[0];
 			return this.geometries[n].getCoordinate();
-		} else return super.getCoordinate(...args);
-	}
-	getBoundaryDimension() {
+		} else return GeometryCollection.prototype.getCoordinate.apply(this, arguments);
+	},
+	getBoundaryDimension: function () {
 		return Dimension.FALSE;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return 0;
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		return this.getFactory().createGeometryCollection(null);
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "MultiPoint";
-	}
-	copy() {
+	},
+	copy: function () {
 		var points = new Array(this.geometries.length);
 		for (var i = 0; i < points.length; i++) {
 			points[i] = this.geometries[i].copy();
 		}
 		return new MultiPoint(points, this.factory);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Puntal];
+	},
+	getClass: function () {
 		return MultiPoint;
 	}
-}
+});
 MultiPoint.serialVersionUID = -8048474874175355449;
 

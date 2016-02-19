@@ -1,24 +1,20 @@
 import EdgeEnd from '../../geomgraph/EdgeEnd';
+import extend from '../../../../../extend';
 import Label from '../../geomgraph/Label';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default class EdgeEndBuilder {
-	constructor(...args) {
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	createEdgeEndForNext(edge, l, eiCurr, eiNext) {
+export default function EdgeEndBuilder() {
+	if (arguments.length === 0) {}
+}
+extend(EdgeEndBuilder.prototype, {
+	createEdgeEndForNext: function (edge, l, eiCurr, eiNext) {
 		var iNext = eiCurr.segmentIndex + 1;
 		if (iNext >= edge.getNumPoints() && eiNext === null) return null;
 		var pNext = edge.getCoordinate(iNext);
 		if (eiNext !== null && eiNext.segmentIndex === eiCurr.segmentIndex) pNext = eiNext.coord;
 		var e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()));
 		l.add(e);
-	}
-	createEdgeEndForPrev(edge, l, eiCurr, eiPrev) {
+	},
+	createEdgeEndForPrev: function (edge, l, eiCurr, eiPrev) {
 		var iPrev = eiCurr.segmentIndex;
 		if (eiCurr.dist === 0.0) {
 			if (iPrev === 0) return null;
@@ -30,18 +26,18 @@ export default class EdgeEndBuilder {
 		label.flip();
 		var e = new EdgeEnd(edge, eiCurr.coord, pPrev, label);
 		l.add(e);
-	}
-	computeEdgeEnds(...args) {
-		if (args.length === 1) {
-			let [edges] = args;
+	},
+	computeEdgeEnds: function () {
+		if (arguments.length === 1) {
+			let edges = arguments[0];
 			var l = new ArrayList();
 			for (var i = edges; i.hasNext(); ) {
 				var e = i.next();
 				this.computeEdgeEnds(e, l);
 			}
 			return l;
-		} else if (args.length === 2) {
-			let [edge, l] = args;
+		} else if (arguments.length === 2) {
+			let edge = arguments[0], l = arguments[1];
 			var eiList = edge.getEdgeIntersectionList();
 			eiList.addEndpoints();
 			var it = eiList.iterator();
@@ -60,9 +56,12 @@ export default class EdgeEndBuilder {
 				}
 			} while (eiCurr !== null);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeEndBuilder;
 	}
-}
+});
 

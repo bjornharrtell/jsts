@@ -1,38 +1,26 @@
 import BufferDistanceValidator from './BufferDistanceValidator';
 import Polygon from '../../../geom/Polygon';
+import extend from '../../../../../../extend';
 import MultiPolygon from '../../../geom/MultiPolygon';
 import System from '../../../../../../java/lang/System';
 import Envelope from '../../../geom/Envelope';
-export default class BufferResultValidator {
-	constructor(...args) {
-		this.input = null;
-		this.distance = null;
-		this.result = null;
-		this._isValid = true;
-		this.errorMsg = null;
-		this.errorLocation = null;
-		this.errorIndicator = null;
-		if (args.length === 3) {
-			let [input, distance, result] = args;
-			this.input = input;
-			this.distance = distance;
-			this.result = result;
-		}
+export default function BufferResultValidator() {
+	this.input = null;
+	this.distance = null;
+	this.result = null;
+	this._isValid = true;
+	this.errorMsg = null;
+	this.errorLocation = null;
+	this.errorIndicator = null;
+	if (arguments.length === 3) {
+		let input = arguments[0], distance = arguments[1], result = arguments[2];
+		this.input = input;
+		this.distance = distance;
+		this.result = result;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static isValidMsg(g, distance, result) {
-		var validator = new BufferResultValidator(g, distance, result);
-		if (!validator.isValid()) return validator.getErrorMessage();
-		return null;
-	}
-	static isValid(g, distance, result) {
-		var validator = new BufferResultValidator(g, distance, result);
-		if (validator.isValid()) return true;
-		return false;
-	}
-	isValid() {
+}
+extend(BufferResultValidator.prototype, {
+	isValid: function () {
 		this.checkPolygonal();
 		if (!this._isValid) return this._isValid;
 		this.checkExpectedEmpty();
@@ -43,8 +31,8 @@ export default class BufferResultValidator {
 		if (!this._isValid) return this._isValid;
 		this.checkDistance();
 		return this._isValid;
-	}
-	checkEnvelope() {
+	},
+	checkEnvelope: function () {
 		if (this.distance < 0.0) return null;
 		var padding = this.distance * BufferResultValidator.MAX_ENV_DIFF_FRAC;
 		if (padding === 0.0) padding = 0.001;
@@ -58,8 +46,8 @@ export default class BufferResultValidator {
 			this.errorIndicator = this.input.getFactory().toGeometry(bufEnv);
 		}
 		this.report("Envelope");
-	}
-	checkDistance() {
+	},
+	checkDistance: function () {
 		var distValid = new BufferDistanceValidator(this.input, this.distance, this.result);
 		if (!distValid.isValid()) {
 			this._isValid = false;
@@ -68,8 +56,8 @@ export default class BufferResultValidator {
 			this.errorIndicator = distValid.getErrorIndicator();
 		}
 		this.report("Distance");
-	}
-	checkArea() {
+	},
+	checkArea: function () {
 		var inputArea = this.input.getArea();
 		var resultArea = this.result.getArea();
 		if (this.distance > 0.0 && inputArea > resultArea) {
@@ -83,20 +71,20 @@ export default class BufferResultValidator {
 			this.errorIndicator = this.result;
 		}
 		this.report("Area");
-	}
-	checkPolygonal() {
+	},
+	checkPolygonal: function () {
 		if (!(this.result instanceof Polygon || this.result instanceof MultiPolygon)) this._isValid = false;
 		this.errorMsg = "Result is not polygonal";
 		this.errorIndicator = this.result;
 		this.report("Polygonal");
-	}
-	getErrorIndicator() {
+	},
+	getErrorIndicator: function () {
 		return this.errorIndicator;
-	}
-	getErrorLocation() {
+	},
+	getErrorLocation: function () {
 		return this.errorLocation;
-	}
-	checkExpectedEmpty() {
+	},
+	checkExpectedEmpty: function () {
 		if (this.input.getDimension() >= 2) return null;
 		if (this.distance > 0.0) return null;
 		if (!this.result.isEmpty()) {
@@ -105,18 +93,31 @@ export default class BufferResultValidator {
 			this.errorIndicator = this.result;
 		}
 		this.report("ExpectedEmpty");
-	}
-	report(checkName) {
+	},
+	report: function (checkName) {
 		if (!BufferResultValidator.VERBOSE) return null;
 		System.out.println("Check " + checkName + ": " + (this._isValid ? "passed" : "FAILED"));
-	}
-	getErrorMessage() {
+	},
+	getErrorMessage: function () {
 		return this.errorMsg;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return BufferResultValidator;
 	}
-}
+});
+BufferResultValidator.isValidMsg = function (g, distance, result) {
+	var validator = new BufferResultValidator(g, distance, result);
+	if (!validator.isValid()) return validator.getErrorMessage();
+	return null;
+};
+BufferResultValidator.isValid = function (g, distance, result) {
+	var validator = new BufferResultValidator(g, distance, result);
+	if (validator.isValid()) return true;
+	return false;
+};
 BufferResultValidator.VERBOSE = false;
 BufferResultValidator.MAX_ENV_DIFF_FRAC = .012;
 

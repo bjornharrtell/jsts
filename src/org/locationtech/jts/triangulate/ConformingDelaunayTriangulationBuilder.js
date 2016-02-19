@@ -1,43 +1,21 @@
 import ConformingDelaunayTriangulator from './ConformingDelaunayTriangulator';
 import ConstraintVertex from './ConstraintVertex';
+import extend from '../../../../extend';
 import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder';
 import Segment from './Segment';
 import ArrayList from '../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
 import TreeMap from '../../../../java/util/TreeMap';
-export default class ConformingDelaunayTriangulationBuilder {
-	constructor(...args) {
-		this.siteCoords = null;
-		this.constraintLines = null;
-		this.tolerance = 0.0;
-		this.subdiv = null;
-		this.constraintVertexMap = new TreeMap();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static createConstraintSegments(...args) {
-		if (args.length === 1) {
-			let [geom] = args;
-			var lines = LinearComponentExtracter.getLines(geom);
-			var constraintSegs = new ArrayList();
-			for (var i = lines.iterator(); i.hasNext(); ) {
-				var line = i.next();
-				ConformingDelaunayTriangulationBuilder.createConstraintSegments(line, constraintSegs);
-			}
-			return constraintSegs;
-		} else if (args.length === 2) {
-			let [line, constraintSegs] = args;
-			var coords = line.getCoordinates();
-			for (var i = 1; i < coords.length; i++) {
-				constraintSegs.add(new Segment(coords[i - 1], coords[i]));
-			}
-		}
-	}
-	createSiteVertices(coords) {
+export default function ConformingDelaunayTriangulationBuilder() {
+	this.siteCoords = null;
+	this.constraintLines = null;
+	this.tolerance = 0.0;
+	this.subdiv = null;
+	this.constraintVertexMap = new TreeMap();
+	if (arguments.length === 0) {}
+}
+extend(ConformingDelaunayTriangulationBuilder.prototype, {
+	createSiteVertices: function (coords) {
 		var verts = new ArrayList();
 		for (var i = coords.iterator(); i.hasNext(); ) {
 			var coord = i.next();
@@ -45,8 +23,8 @@ export default class ConformingDelaunayTriangulationBuilder {
 			verts.add(new ConstraintVertex(coord));
 		}
 		return verts;
-	}
-	create() {
+	},
+	create: function () {
 		if (this.subdiv !== null) return null;
 		var siteEnv = DelaunayTriangulationBuilder.envelope(this.siteCoords);
 		var segments = new ArrayList();
@@ -61,37 +39,58 @@ export default class ConformingDelaunayTriangulationBuilder {
 		cdt.formInitialDelaunay();
 		cdt.enforceConstraints();
 		this.subdiv = cdt.getSubdivision();
-	}
-	setTolerance(tolerance) {
+	},
+	setTolerance: function (tolerance) {
 		this.tolerance = tolerance;
-	}
-	setConstraints(constraintLines) {
+	},
+	setConstraints: function (constraintLines) {
 		this.constraintLines = constraintLines;
-	}
-	setSites(geom) {
+	},
+	setSites: function (geom) {
 		this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-	}
-	getEdges(geomFact) {
+	},
+	getEdges: function (geomFact) {
 		this.create();
 		return this.subdiv.getEdges(geomFact);
-	}
-	getSubdivision() {
+	},
+	getSubdivision: function () {
 		this.create();
 		return this.subdiv;
-	}
-	getTriangles(geomFact) {
+	},
+	getTriangles: function (geomFact) {
 		this.create();
 		return this.subdiv.getTriangles(geomFact);
-	}
-	createVertices(geom) {
+	},
+	createVertices: function (geom) {
 		var coords = geom.getCoordinates();
 		for (var i = 0; i < coords.length; i++) {
 			var v = new ConstraintVertex(coords[i]);
 			this.constraintVertexMap.put(coords[i], v);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return ConformingDelaunayTriangulationBuilder;
 	}
-}
+});
+ConformingDelaunayTriangulationBuilder.createConstraintSegments = function () {
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		var lines = LinearComponentExtracter.getLines(geom);
+		var constraintSegs = new ArrayList();
+		for (var i = lines.iterator(); i.hasNext(); ) {
+			var line = i.next();
+			ConformingDelaunayTriangulationBuilder.createConstraintSegments(line, constraintSegs);
+		}
+		return constraintSegs;
+	} else if (arguments.length === 2) {
+		let line = arguments[0], constraintSegs = arguments[1];
+		var coords = line.getCoordinates();
+		for (var i = 1; i < coords.length; i++) {
+			constraintSegs.add(new Segment(coords[i - 1], coords[i]));
+		}
+	}
+};
 

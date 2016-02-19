@@ -1,51 +1,44 @@
 import Location from '../../geom/Location';
 import EdgeEnd from '../../geomgraph/EdgeEnd';
 import Position from '../../geomgraph/Position';
+import extend from '../../../../../extend';
 import GeometryGraph from '../../geomgraph/GeometryGraph';
 import Label from '../../geomgraph/Label';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Edge from '../../geomgraph/Edge';
-export default class EdgeEndBundle extends EdgeEnd {
-	constructor(...args) {
-		super();
-		this.edgeEnds = new ArrayList();
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				return ((...args) => {
-					let [e] = args;
-					overloaded.call(this, null, e);
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [boundaryNodeRule, e] = args;
-					super(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()));
-					this.insert(e);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+import inherits from '../../../../../inherits';
+export default function EdgeEndBundle() {
+	EdgeEnd.apply(this);
+	this.edgeEnds = new ArrayList();
+	if (arguments.length === 1) {
+		let e = arguments[0];
+		EdgeEndBundle.call(this, null, e);
+	} else if (arguments.length === 2) {
+		let boundaryNodeRule = arguments[0], e = arguments[1];
+		EdgeEnd.call(this, e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()));
+		this.insert(e);
 	}
-	get interfaces_() {
-		return [];
-	}
-	insert(e) {
+}
+inherits(EdgeEndBundle, EdgeEnd);
+extend(EdgeEndBundle.prototype, {
+	insert: function (e) {
 		this.edgeEnds.add(e);
-	}
-	print(out) {
+	},
+	print: function (out) {
 		out.println("EdgeEndBundle--> Label: " + this.label);
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ee = it.next();
 			ee.print(out);
 			out.println();
 		}
-	}
-	iterator() {
+	},
+	iterator: function () {
 		return this.edgeEnds.iterator();
-	}
-	getEdgeEnds() {
+	},
+	getEdgeEnds: function () {
 		return this.edgeEnds;
-	}
-	computeLabelOn(geomIndex, boundaryNodeRule) {
+	},
+	computeLabelOn: function (geomIndex, boundaryNodeRule) {
 		var boundaryCount = 0;
 		var foundInterior = false;
 		for (var it = this.iterator(); it.hasNext(); ) {
@@ -60,8 +53,8 @@ export default class EdgeEndBundle extends EdgeEnd {
 			loc = GeometryGraph.determineBoundary(boundaryNodeRule, boundaryCount);
 		}
 		this.label.setLocation(geomIndex, loc);
-	}
-	computeLabelSide(geomIndex, side) {
+	},
+	computeLabelSide: function (geomIndex, side) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var e = it.next();
 			if (e.getLabel().isArea()) {
@@ -72,18 +65,18 @@ export default class EdgeEndBundle extends EdgeEnd {
 				} else if (loc === Location.EXTERIOR) this.label.setLocation(geomIndex, side, Location.EXTERIOR);
 			}
 		}
-	}
-	getLabel() {
+	},
+	getLabel: function () {
 		return this.label;
-	}
-	computeLabelSides(geomIndex) {
+	},
+	computeLabelSides: function (geomIndex) {
 		this.computeLabelSide(geomIndex, Position.LEFT);
 		this.computeLabelSide(geomIndex, Position.RIGHT);
-	}
-	updateIM(im) {
+	},
+	updateIM: function (im) {
 		Edge.updateIM(this.label, im);
-	}
-	computeLabel(boundaryNodeRule) {
+	},
+	computeLabel: function (boundaryNodeRule) {
 		var isArea = false;
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var e = it.next();
@@ -94,9 +87,12 @@ export default class EdgeEndBundle extends EdgeEnd {
 			this.computeLabelOn(i, boundaryNodeRule);
 			if (isArea) this.computeLabelSides(i);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeEndBundle;
 	}
-}
+});
 

@@ -1,37 +1,30 @@
 import LineString from '../geom/LineString';
 import CoordinateList from '../geom/CoordinateList';
 import Geometry from '../geom/Geometry';
+import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import Stack from '../../../../java/util/Stack';
+import extend from '../../../../extend';
 import MarkHalfEdge from '../edgegraph/MarkHalfEdge';
 import DissolveEdgeGraph from './DissolveEdgeGraph';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class LineDissolver {
-	constructor(...args) {
-		this.result = null;
-		this.factory = null;
-		this.graph = null;
-		this.lines = new ArrayList();
-		this.nodeEdgeStack = new Stack();
-		this.ringStartEdge = null;
-		if (args.length === 0) {
-			let [] = args;
-			this.graph = new DissolveEdgeGraph();
-		}
+export default function LineDissolver() {
+	this.result = null;
+	this.factory = null;
+	this.graph = null;
+	this.lines = new ArrayList();
+	this.nodeEdgeStack = new Stack();
+	this.ringStartEdge = null;
+	if (arguments.length === 0) {
+		this.graph = new DissolveEdgeGraph();
 	}
-	get interfaces_() {
-		return [];
-	}
-	static dissolve(g) {
-		var d = new LineDissolver();
-		d.add(g);
-		return d.getResult();
-	}
-	addLine(line) {
+}
+extend(LineDissolver.prototype, {
+	addLine: function (line) {
 		this.lines.add(this.factory.createLineString(line.toCoordinateArray()));
-	}
-	updateRingStartEdge(e) {
+	},
+	updateRingStartEdge: function (e) {
 		if (!e.isStart()) {
 			e = e.sym();
 			if (!e.isStart()) return null;
@@ -43,18 +36,18 @@ export default class LineDissolver {
 		if (e.orig().compareTo(this.ringStartEdge.orig()) < 0) {
 			this.ringStartEdge = e;
 		}
-	}
-	getResult() {
+	},
+	getResult: function () {
 		if (this.result === null) this.computeResult();
 		return this.result;
-	}
-	process(e) {
+	},
+	process: function (e) {
 		var eNode = e.prevNode();
 		if (eNode === null) eNode = e;
 		this.stackEdges(eNode);
 		this.buildLines();
-	}
-	buildRing(eStartRing) {
+	},
+	buildRing: function (eStartRing) {
 		var line = new CoordinateList();
 		var e = eStartRing;
 		line.add(e.orig().copy(), false);
@@ -66,8 +59,8 @@ export default class LineDissolver {
 		}
 		line.add(e.dest().copy(), false);
 		this.addLine(line);
-	}
-	buildLine(eStart) {
+	},
+	buildLine: function (eStart) {
 		var line = new CoordinateList();
 		var e = eStart;
 		this.ringStartEdge = null;
@@ -87,15 +80,15 @@ export default class LineDissolver {
 		line.add(e.dest().copy(), false);
 		this.stackEdges(e.sym());
 		this.addLine(line);
-	}
-	stackEdges(node) {
+	},
+	stackEdges: function (node) {
 		var e = node;
 		do {
 			if (!MarkHalfEdge.isMarked(e)) this.nodeEdgeStack.add(e);
 			e = e.oNext();
 		} while (e !== node);
-	}
-	computeResult() {
+	},
+	computeResult: function () {
 		var edges = this.graph.getVertexEdges();
 		for (var i = edges.iterator(); i.hasNext(); ) {
 			var e = i.next();
@@ -103,36 +96,36 @@ export default class LineDissolver {
 			this.process(e);
 		}
 		this.result = this.factory.buildGeometry(this.lines);
-	}
-	buildLines() {
+	},
+	buildLines: function () {
 		while (!this.nodeEdgeStack.empty()) {
 			var e = this.nodeEdgeStack.pop();
 			if (MarkHalfEdge.isMarked(e)) continue;
 			this.buildLine(e);
 		}
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Geometry) {
-				let [geometry] = args;
-				geometry.apply(new (class {
-					filter(component) {
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Geometry) {
+				let geometry = arguments[0];
+				geometry.apply({
+					interfaces_: function () {
+						return [GeometryComponentFilter];
+					},
+					filter: function (component) {
 						if (component instanceof LineString) {
 							this.add(component);
 						}
 					}
-					get interfaces_() {
-						return [GeometryComponentFilter];
-					}
-				})());
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [geometries] = args;
+				});
+			} else if (hasInterface(arguments[0], Collection)) {
+				let geometries = arguments[0];
 				for (var i = geometries.iterator(); i.hasNext(); ) {
 					var geometry = i.next();
 					this.add(geometry);
 				}
-			} else if (args[0] instanceof LineString) {
-				let [lineString] = args;
+			} else if (arguments[0] instanceof LineString) {
+				let lineString = arguments[0];
 				if (this.factory === null) {
 					this.factory = lineString.getFactory();
 				}
@@ -148,9 +141,17 @@ export default class LineDissolver {
 				}
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LineDissolver;
 	}
-}
+});
+LineDissolver.dissolve = function (g) {
+	var d = new LineDissolver();
+	d.add(g);
+	return d.getResult();
+};
 

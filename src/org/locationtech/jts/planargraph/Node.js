@@ -1,67 +1,62 @@
 import DirectedEdgeStar from './DirectedEdgeStar';
 import HashSet from '../../../../java/util/HashSet';
+import extend from '../../../../extend';
 import DirectedEdge from './DirectedEdge';
+import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
-export default class Node extends GraphComponent {
-	constructor(...args) {
-		super();
-		this.pt = null;
-		this.deStar = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				return ((...args) => {
-					let [pt] = args;
-					overloaded.call(this, pt, new DirectedEdgeStar());
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [pt, deStar] = args;
-					this.pt = pt;
-					this.deStar = deStar;
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	static getEdgesBetween(node0, node1) {
-		var edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges());
-		var commonEdges = new HashSet(edges0);
-		var edges1 = DirectedEdge.toEdges(node1.getOutEdges().getEdges());
-		commonEdges.retainAll(edges1);
-		return commonEdges;
-	}
-	isRemoved() {
-		return this.pt === null;
-	}
-	addOutEdge(de) {
-		this.deStar.add(de);
-	}
-	getCoordinate() {
-		return this.pt;
-	}
-	getOutEdges() {
-		return this.deStar;
-	}
-	remove(...args) {
-		if (args.length === 0) {
-			let [] = args;
-			this.pt = null;
-		} else if (args.length === 1) {
-			let [de] = args;
-			this.deStar.remove(de);
-		}
-	}
-	getIndex(edge) {
-		return this.deStar.getIndex(edge);
-	}
-	getDegree() {
-		return this.deStar.getDegree();
-	}
-	getClass() {
-		return Node;
+export default function Node() {
+	GraphComponent.apply(this);
+	this.pt = null;
+	this.deStar = null;
+	if (arguments.length === 1) {
+		let pt = arguments[0];
+		Node.call(this, pt, new DirectedEdgeStar());
+	} else if (arguments.length === 2) {
+		let pt = arguments[0], deStar = arguments[1];
+		this.pt = pt;
+		this.deStar = deStar;
 	}
 }
+inherits(Node, GraphComponent);
+extend(Node.prototype, {
+	isRemoved: function () {
+		return this.pt === null;
+	},
+	addOutEdge: function (de) {
+		this.deStar.add(de);
+	},
+	getCoordinate: function () {
+		return this.pt;
+	},
+	getOutEdges: function () {
+		return this.deStar;
+	},
+	remove: function () {
+		if (arguments.length === 0) {
+			this.pt = null;
+		} else if (arguments.length === 1) {
+			let de = arguments[0];
+			this.deStar.remove(de);
+		}
+	},
+	getIndex: function (edge) {
+		return this.deStar.getIndex(edge);
+	},
+	getDegree: function () {
+		return this.deStar.getDegree();
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return Node;
+	}
+});
+Node.getEdgesBetween = function (node0, node1) {
+	var edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges());
+	var commonEdges = new HashSet(edges0);
+	var edges1 = DirectedEdge.toEdges(node1.getOutEdges().getEdges());
+	commonEdges.retainAll(edges1);
+	return commonEdges;
+};
 

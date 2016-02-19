@@ -1,84 +1,83 @@
+import extend from '../../../../extend';
 import Collections from '../../../../java/util/Collections';
 import DirectedEdge from './DirectedEdge';
 import ArrayList from '../../../../java/util/ArrayList';
 import Edge from './Edge';
-export default class DirectedEdgeStar {
-	constructor(...args) {
-		this.outEdges = new ArrayList();
-		this.sorted = false;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getNextEdge(dirEdge) {
+export default function DirectedEdgeStar() {
+	this.outEdges = new ArrayList();
+	this.sorted = false;
+	if (arguments.length === 0) {}
+}
+extend(DirectedEdgeStar.prototype, {
+	getNextEdge: function (dirEdge) {
 		var i = this.getIndex(dirEdge);
 		return this.outEdges.get(this.getIndex(i + 1));
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		var it = this.iterator();
 		if (!it.hasNext()) return null;
 		var e = it.next();
 		return e.getCoordinate();
-	}
-	iterator() {
+	},
+	iterator: function () {
 		this.sortEdges();
 		return this.outEdges.iterator();
-	}
-	sortEdges() {
+	},
+	sortEdges: function () {
 		if (!this.sorted) {
 			Collections.sort(this.outEdges);
 			this.sorted = true;
 		}
-	}
-	remove(de) {
+	},
+	remove: function (de) {
 		this.outEdges.remove(de);
-	}
-	getEdges() {
+	},
+	getEdges: function () {
 		this.sortEdges();
 		return this.outEdges;
-	}
-	getNextCWEdge(dirEdge) {
+	},
+	getNextCWEdge: function (dirEdge) {
 		var i = this.getIndex(dirEdge);
 		return this.outEdges.get(this.getIndex(i - 1));
-	}
-	getIndex(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Edge) {
-				let [edge] = args;
+	},
+	getIndex: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Edge) {
+				let edge = arguments[0];
 				this.sortEdges();
 				for (var i = 0; i < this.outEdges.size(); i++) {
 					var de = this.outEdges.get(i);
 					if (de.getEdge() === edge) return i;
 				}
 				return -1;
-			} else if (args[0] instanceof DirectedEdge) {
-				let [dirEdge] = args;
+			} else if (arguments[0] instanceof DirectedEdge) {
+				let dirEdge = arguments[0];
 				this.sortEdges();
 				for (var i = 0; i < this.outEdges.size(); i++) {
 					var de = this.outEdges.get(i);
 					if (de === dirEdge) return i;
 				}
 				return -1;
-			} else if (Number.isInteger(args[0])) {
-				let [i] = args;
+			} else if (Number.isInteger(arguments[0])) {
+				let i = arguments[0];
 				var modi = i % this.outEdges.size();
 				if (modi < 0) modi += this.outEdges.size();
 				return modi;
 			}
 		}
-	}
-	add(de) {
+	},
+	add: function (de) {
 		this.outEdges.add(de);
 		this.sorted = false;
-	}
-	getDegree() {
+	},
+	getDegree: function () {
 		return this.outEdges.size();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return DirectedEdgeStar;
 	}
-}
+});
 

@@ -2,32 +2,24 @@ import Location from '../../geom/Location';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Position from '../../geomgraph/Position';
 import Polygon from '../../geom/Polygon';
+import extend from '../../../../../extend';
 import MultiPolygon from '../../geom/MultiPolygon';
 import MaximalEdgeRing from '../overlay/MaximalEdgeRing';
 import OverlayNodeFactory from '../overlay/OverlayNodeFactory';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
-export default class ConnectedInteriorTester {
-	constructor(...args) {
-		this.geometryFactory = new GeometryFactory();
-		this.geomGraph = null;
-		this.disconnectedRingcoord = null;
-		if (args.length === 1) {
-			let [geomGraph] = args;
-			this.geomGraph = geomGraph;
-		}
+export default function ConnectedInteriorTester() {
+	this.geometryFactory = new GeometryFactory();
+	this.geomGraph = null;
+	this.disconnectedRingcoord = null;
+	if (arguments.length === 1) {
+		let geomGraph = arguments[0];
+		this.geomGraph = geomGraph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static findDifferentPoint(coord, pt) {
-		for (var i = 0; i < coord.length; i++) {
-			if (!coord[i].equals(pt)) return coord[i];
-		}
-		return null;
-	}
-	visitInteriorRing(ring, graph) {
+}
+extend(ConnectedInteriorTester.prototype, {
+	visitInteriorRing: function (ring, graph) {
 		var pts = ring.getCoordinates();
 		var pt0 = pts[0];
 		var pt1 = ConnectedInteriorTester.findDifferentPoint(pts, pt0);
@@ -41,8 +33,8 @@ export default class ConnectedInteriorTester {
 		}
 		Assert.isTrue(intDe !== null, "unable to find dirEdge with Interior on RHS");
 		this.visitLinkedDirectedEdges(intDe);
-	}
-	visitShellInteriors(g, graph) {
+	},
+	visitShellInteriors: function (g, graph) {
 		if (g instanceof Polygon) {
 			var p = g;
 			this.visitInteriorRing(p.getExteriorRing(), graph);
@@ -54,19 +46,19 @@ export default class ConnectedInteriorTester {
 				this.visitInteriorRing(p.getExteriorRing(), graph);
 			}
 		}
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		return this.disconnectedRingcoord;
-	}
-	setInteriorEdgesInResult(graph) {
+	},
+	setInteriorEdgesInResult: function (graph) {
 		for (var it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
 				de.setInResult(true);
 			}
 		}
-	}
-	visitLinkedDirectedEdges(start) {
+	},
+	visitLinkedDirectedEdges: function (start) {
 		var startDe = start;
 		var de = start;
 		do {
@@ -74,8 +66,8 @@ export default class ConnectedInteriorTester {
 			de.setVisited(true);
 			de = de.getNext();
 		} while (de !== startDe);
-	}
-	buildEdgeRings(dirEdges) {
+	},
+	buildEdgeRings: function (dirEdges) {
 		var edgeRings = new ArrayList();
 		for (var it = dirEdges.iterator(); it.hasNext(); ) {
 			var de = it.next();
@@ -87,8 +79,8 @@ export default class ConnectedInteriorTester {
 			}
 		}
 		return edgeRings;
-	}
-	hasUnvisitedShellEdge(edgeRings) {
+	},
+	hasUnvisitedShellEdge: function (edgeRings) {
 		for (var i = 0; i < edgeRings.size(); i++) {
 			var er = edgeRings.get(i);
 			if (er.isHole()) continue;
@@ -104,8 +96,8 @@ export default class ConnectedInteriorTester {
 			}
 		}
 		return false;
-	}
-	isInteriorsConnected() {
+	},
+	isInteriorsConnected: function () {
 		var splitEdges = new ArrayList();
 		this.geomGraph.computeSplitEdges(splitEdges);
 		var graph = new PlanarGraph(new OverlayNodeFactory());
@@ -115,9 +107,18 @@ export default class ConnectedInteriorTester {
 		var edgeRings = this.buildEdgeRings(graph.getEdgeEnds());
 		this.visitShellInteriors(this.geomGraph.getGeometry(), graph);
 		return !this.hasUnvisitedShellEdge(edgeRings);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return ConnectedInteriorTester;
 	}
-}
+});
+ConnectedInteriorTester.findDifferentPoint = function (coord, pt) {
+	for (var i = 0; i < coord.length; i++) {
+		if (!coord[i].equals(pt)) return coord[i];
+	}
+	return null;
+};
 

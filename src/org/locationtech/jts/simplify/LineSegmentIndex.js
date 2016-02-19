@@ -1,69 +1,68 @@
 import Quadtree from '../index/quadtree/Quadtree';
 import ItemVisitor from '../index/ItemVisitor';
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import ArrayList from '../../../../java/util/ArrayList';
 import Envelope from '../geom/Envelope';
 import TaggedLineString from './TaggedLineString';
-export default class LineSegmentIndex {
-	constructor(...args) {
-		this.index = new Quadtree();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	remove(seg) {
+export default function LineSegmentIndex() {
+	this.index = new Quadtree();
+	if (arguments.length === 0) {}
+}
+extend(LineSegmentIndex.prototype, {
+	remove: function (seg) {
 		this.index.remove(new Envelope(seg.p0, seg.p1), seg);
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof TaggedLineString) {
-				let [line] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof TaggedLineString) {
+				let line = arguments[0];
 				var segs = line.getSegments();
 				for (var i = 0; i < segs.length; i++) {
 					var seg = segs[i];
 					this.add(seg);
 				}
-			} else if (args[0] instanceof LineSegment) {
-				let [seg] = args;
+			} else if (arguments[0] instanceof LineSegment) {
+				let seg = arguments[0];
 				this.index.insert(new Envelope(seg.p0, seg.p1), seg);
 			}
 		}
-	}
-	query(querySeg) {
+	},
+	query: function (querySeg) {
 		var env = new Envelope(querySeg.p0, querySeg.p1);
 		var visitor = new LineSegmentVisitor(querySeg);
 		this.index.query(env, visitor);
 		var itemsFound = visitor.getItems();
 		return itemsFound;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LineSegmentIndex;
 	}
+});
+function LineSegmentVisitor() {
+	this.querySeg = null;
+	this.items = new ArrayList();
+	if (arguments.length === 1) {
+		let querySeg = arguments[0];
+		this.querySeg = querySeg;
+	}
 }
-class LineSegmentVisitor {
-	constructor(...args) {
-		this.querySeg = null;
-		this.items = new ArrayList();
-		if (args.length === 1) {
-			let [querySeg] = args;
-			this.querySeg = querySeg;
-		}
-	}
-	get interfaces_() {
-		return [ItemVisitor];
-	}
-	visitItem(item) {
+extend(LineSegmentVisitor.prototype, {
+	visitItem: function (item) {
 		var seg = item;
 		if (Envelope.intersects(seg.p0, seg.p1, this.querySeg.p0, this.querySeg.p1)) this.items.add(item);
-	}
-	getItems() {
+	},
+	getItems: function () {
 		return this.items;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [ItemVisitor];
+	},
+	getClass: function () {
 		return LineSegmentVisitor;
 	}
-}
+});
 

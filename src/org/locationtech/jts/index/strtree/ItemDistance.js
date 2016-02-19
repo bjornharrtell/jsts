@@ -1,10 +1,12 @@
-export default class ItemDistance {
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function ItemDistance() {}
+extend(ItemDistance.prototype, {
+	distance: function (item1, item2) {},
+	interfaces_: function () {
 		return [];
-	}
-	distance(item1, item2) {}
-	getClass() {
+	},
+	getClass: function () {
 		return ItemDistance;
 	}
-}
+});
 

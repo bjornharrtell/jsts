@@ -1,19 +1,15 @@
 import SweepLineEvent from './SweepLineEvent';
+import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default class SweepLineIndex {
-	constructor(...args) {
-		this.events = new ArrayList();
-		this.indexBuilt = null;
-		this.nOverlaps = null;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	computeOverlaps(action) {
+export default function SweepLineIndex() {
+	this.events = new ArrayList();
+	this.indexBuilt = null;
+	this.nOverlaps = null;
+	if (arguments.length === 0) {}
+}
+extend(SweepLineIndex.prototype, {
+	computeOverlaps: function (action) {
 		this.nOverlaps = 0;
 		this.buildIndex();
 		for (var i = 0; i < this.events.size(); i++) {
@@ -22,8 +18,8 @@ export default class SweepLineIndex {
 				this.processOverlaps(i, ev.getDeleteEventIndex(), ev.getInterval(), action);
 			}
 		}
-	}
-	processOverlaps(start, end, s0, action) {
+	},
+	processOverlaps: function (start, end, s0, action) {
 		for (var i = start; i < end; i++) {
 			var ev = this.events.get(i);
 			if (ev.isInsert()) {
@@ -32,8 +28,8 @@ export default class SweepLineIndex {
 				this.nOverlaps++;
 			}
 		}
-	}
-	buildIndex() {
+	},
+	buildIndex: function () {
 		if (this.indexBuilt) return null;
 		Collections.sort(this.events);
 		for (var i = 0; i < this.events.size(); i++) {
@@ -43,14 +39,17 @@ export default class SweepLineIndex {
 			}
 		}
 		this.indexBuilt = true;
-	}
-	add(sweepInt) {
+	},
+	add: function (sweepInt) {
 		var insertEvent = new SweepLineEvent(sweepInt.getMin(), null, sweepInt);
 		this.events.add(insertEvent);
 		this.events.add(new SweepLineEvent(sweepInt.getMax(), insertEvent, sweepInt));
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SweepLineIndex;
 	}
-}
+});
 

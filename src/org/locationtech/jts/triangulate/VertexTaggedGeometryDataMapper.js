@@ -1,52 +1,52 @@
 import Geometry from '../geom/Geometry';
+import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
+import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
-export default class VertexTaggedGeometryDataMapper {
-	constructor(...args) {
-		this.coordDataMap = new TreeMap();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	loadSourceGeometries(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [geoms] = args;
+export default function VertexTaggedGeometryDataMapper() {
+	this.coordDataMap = new TreeMap();
+	if (arguments.length === 0) {}
+}
+extend(VertexTaggedGeometryDataMapper.prototype, {
+	loadSourceGeometries: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], Collection)) {
+				let geoms = arguments[0];
 				for (var i = geoms.iterator(); i.hasNext(); ) {
 					var geom = i.next();
 					this.loadVertices(geom.getCoordinates(), geom.getUserData());
 				}
-			} else if (args[0] instanceof Geometry) {
-				let [geomColl] = args;
+			} else if (arguments[0] instanceof Geometry) {
+				let geomColl = arguments[0];
 				for (var i = 0; i < geomColl.getNumGeometries(); i++) {
 					var geom = geomColl.getGeometryN(i);
 					this.loadVertices(geom.getCoordinates(), geom.getUserData());
 				}
 			}
 		}
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		return new ArrayList(this.coordDataMap.keySet());
-	}
-	transferData(targetGeom) {
+	},
+	transferData: function (targetGeom) {
 		for (var i = 0; i < targetGeom.getNumGeometries(); i++) {
 			var geom = targetGeom.getGeometryN(i);
 			var vertexKey = geom.getUserData();
 			if (vertexKey === null) continue;
 			geom.setUserData(this.coordDataMap.get(vertexKey));
 		}
-	}
-	loadVertices(pts, data) {
+	},
+	loadVertices: function (pts, data) {
 		for (var i = 0; i < pts.length; i++) {
 			this.coordDataMap.put(pts[i], data);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return VertexTaggedGeometryDataMapper;
 	}
-}
+});
 

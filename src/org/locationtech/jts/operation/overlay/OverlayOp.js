@@ -5,101 +5,35 @@ import PolygonBuilder from './PolygonBuilder';
 import Position from '../../geomgraph/Position';
 import LineBuilder from './LineBuilder';
 import PointBuilder from './PointBuilder';
+import extend from '../../../../../extend';
 import Label from '../../geomgraph/Label';
 import OverlayNodeFactory from './OverlayNodeFactory';
 import GeometryGraphOperation from '../GeometryGraphOperation';
 import EdgeList from '../../geomgraph/EdgeList';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
+import inherits from '../../../../../inherits';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
-export default class OverlayOp extends GeometryGraphOperation {
-	constructor(...args) {
-		super();
-		this.ptLocator = new PointLocator();
-		this.geomFact = null;
-		this.resultGeom = null;
-		this.graph = null;
-		this.edgeList = new EdgeList();
-		this.resultPolyList = new ArrayList();
-		this.resultLineList = new ArrayList();
-		this.resultPointList = new ArrayList();
-		if (args.length === 2) {
-			let [g0, g1] = args;
-			super(g0, g1);
-			this.graph = new PlanarGraph(new OverlayNodeFactory());
-			this.geomFact = g0.getFactory();
-		}
+export default function OverlayOp() {
+	GeometryGraphOperation.apply(this);
+	this.ptLocator = new PointLocator();
+	this.geomFact = null;
+	this.resultGeom = null;
+	this.graph = null;
+	this.edgeList = new EdgeList();
+	this.resultPolyList = new ArrayList();
+	this.resultLineList = new ArrayList();
+	this.resultPointList = new ArrayList();
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		GeometryGraphOperation.call(this, g0, g1);
+		this.graph = new PlanarGraph(new OverlayNodeFactory());
+		this.geomFact = g0.getFactory();
 	}
-	get interfaces_() {
-		return [];
-	}
-	static overlayOp(geom0, geom1, opCode) {
-		var gov = new OverlayOp(geom0, geom1);
-		var geomOv = gov.getResultGeometry(opCode);
-		return geomOv;
-	}
-	static isResultOfOp(...args) {
-		if (args.length === 2) {
-			let [label, opCode] = args;
-			var loc0 = label.getLocation(0);
-			var loc1 = label.getLocation(1);
-			return OverlayOp.isResultOfOp(loc0, loc1, opCode);
-		} else if (args.length === 3) {
-			let [loc0, loc1, overlayOpCode] = args;
-			if (loc0 === Location.BOUNDARY) loc0 = Location.INTERIOR;
-			if (loc1 === Location.BOUNDARY) loc1 = Location.INTERIOR;
-			switch (overlayOpCode) {
-				case OverlayOp.INTERSECTION:
-					return loc0 === Location.INTERIOR && loc1 === Location.INTERIOR;
-				case OverlayOp.UNION:
-					return loc0 === Location.INTERIOR || loc1 === Location.INTERIOR;
-				case OverlayOp.DIFFERENCE:
-					return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR;
-				case OverlayOp.SYMDIFFERENCE:
-					return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR || loc0 !== Location.INTERIOR && loc1 === Location.INTERIOR;
-			}
-			return false;
-		}
-	}
-	static createEmptyResult(overlayOpCode, a, b, geomFact) {
-		var result = null;
-		switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
-			case -1:
-				result = geomFact.createGeometryCollection(new Array(0));
-				break;
-			case 0:
-				result = geomFact.createPoint();
-				break;
-			case 1:
-				result = geomFact.createLineString();
-				break;
-			case 2:
-				result = geomFact.createPolygon();
-				break;
-		}
-		return result;
-	}
-	static resultDimension(opCode, g0, g1) {
-		var dim0 = g0.getDimension();
-		var dim1 = g1.getDimension();
-		var resultDimension = -1;
-		switch (opCode) {
-			case OverlayOp.INTERSECTION:
-				resultDimension = Math.min(dim0, dim1);
-				break;
-			case OverlayOp.UNION:
-				resultDimension = Math.max(dim0, dim1);
-				break;
-			case OverlayOp.DIFFERENCE:
-				resultDimension = dim0;
-				break;
-			case OverlayOp.SYMDIFFERENCE:
-				resultDimension = Math.max(dim0, dim1);
-				break;
-		}
-		return resultDimension;
-	}
-	insertUniqueEdge(e) {
+}
+inherits(OverlayOp, GeometryGraphOperation);
+extend(OverlayOp.prototype, {
+	insertUniqueEdge: function (e) {
 		var existingEdge = this.edgeList.findEqualEdge(e);
 		if (existingEdge !== null) {
 			var existingLabel = existingEdge.getLabel();
@@ -117,11 +51,11 @@ export default class OverlayOp extends GeometryGraphOperation {
 		} else {
 			this.edgeList.add(e);
 		}
-	}
-	getGraph() {
+	},
+	getGraph: function () {
 		return this.graph;
-	}
-	cancelDuplicateResultEdges() {
+	},
+	cancelDuplicateResultEdges: function () {
 		for (var it = this.graph.getEdgeEnds().iterator(); it.hasNext(); ) {
 			var de = it.next();
 			var sym = de.getSym();
@@ -130,35 +64,35 @@ export default class OverlayOp extends GeometryGraphOperation {
 				sym.setInResult(false);
 			}
 		}
-	}
-	isCoveredByLA(coord) {
+	},
+	isCoveredByLA: function (coord) {
 		if (this.isCovered(coord, this.resultLineList)) return true;
 		if (this.isCovered(coord, this.resultPolyList)) return true;
 		return false;
-	}
-	computeGeometry(resultPointList, resultLineList, resultPolyList, opcode) {
+	},
+	computeGeometry: function (resultPointList, resultLineList, resultPolyList, opcode) {
 		var geomList = new ArrayList();
 		geomList.addAll(resultPointList);
 		geomList.addAll(resultLineList);
 		geomList.addAll(resultPolyList);
 		if (geomList.isEmpty()) return OverlayOp.createEmptyResult(opcode, this.arg[0].getGeometry(), this.arg[1].getGeometry(), this.geomFact);
 		return this.geomFact.buildGeometry(geomList);
-	}
-	mergeSymLabels() {
+	},
+	mergeSymLabels: function () {
 		for (var nodeit = this.graph.getNodes().iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			node.getEdges().mergeSymLabels();
 		}
-	}
-	isCovered(coord, geomList) {
+	},
+	isCovered: function (coord, geomList) {
 		for (var it = geomList.iterator(); it.hasNext(); ) {
 			var geom = it.next();
 			var loc = this.ptLocator.locate(coord, geom);
 			if (loc !== Location.EXTERIOR) return true;
 		}
 		return false;
-	}
-	replaceCollapsedEdges() {
+	},
+	replaceCollapsedEdges: function () {
 		var newEdges = new ArrayList();
 		for (var it = this.edgeList.iterator(); it.hasNext(); ) {
 			var e = it.next();
@@ -168,25 +102,25 @@ export default class OverlayOp extends GeometryGraphOperation {
 			}
 		}
 		this.edgeList.addAll(newEdges);
-	}
-	updateNodeLabelling() {
+	},
+	updateNodeLabelling: function () {
 		for (var nodeit = this.graph.getNodes().iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			var lbl = node.getEdges().getLabel();
 			node.getLabel().merge(lbl);
 		}
-	}
-	getResultGeometry(overlayOpCode) {
+	},
+	getResultGeometry: function (overlayOpCode) {
 		this.computeOverlay(overlayOpCode);
 		return this.resultGeom;
-	}
-	insertUniqueEdges(edges) {
+	},
+	insertUniqueEdges: function (edges) {
 		for (var i = edges.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			this.insertUniqueEdge(e);
 		}
-	}
-	computeOverlay(opCode) {
+	},
+	computeOverlay: function (opCode) {
 		this.copyPoints(0);
 		this.copyPoints(1);
 		this.arg[0].computeSelfNodes(this.li, false);
@@ -213,19 +147,19 @@ export default class OverlayOp extends GeometryGraphOperation {
 		var pointBuilder = new PointBuilder(this, this.geomFact, this.ptLocator);
 		this.resultPointList = pointBuilder.build(opCode);
 		this.resultGeom = this.computeGeometry(this.resultPointList, this.resultLineList, this.resultPolyList, opCode);
-	}
-	labelIncompleteNode(n, targetIndex) {
+	},
+	labelIncompleteNode: function (n, targetIndex) {
 		var loc = this.ptLocator.locate(n.getCoordinate(), this.arg[targetIndex].getGeometry());
 		n.getLabel().setLocation(targetIndex, loc);
-	}
-	copyPoints(argIndex) {
+	},
+	copyPoints: function (argIndex) {
 		for (var i = this.arg[argIndex].getNodeIterator(); i.hasNext(); ) {
 			var graphNode = i.next();
 			var newNode = this.graph.addNode(graphNode.getCoordinate());
 			newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 		}
-	}
-	findResultAreaEdges(opCode) {
+	},
+	findResultAreaEdges: function (opCode) {
 		for (var it = this.graph.getEdgeEnds().iterator(); it.hasNext(); ) {
 			var de = it.next();
 			var label = de.getLabel();
@@ -233,8 +167,8 @@ export default class OverlayOp extends GeometryGraphOperation {
 				de.setInResult(true);
 			}
 		}
-	}
-	computeLabelsFromDepths() {
+	},
+	computeLabelsFromDepths: function () {
 		for (var it = this.edgeList.iterator(); it.hasNext(); ) {
 			var e = it.next();
 			var lbl = e.getLabel();
@@ -255,16 +189,16 @@ export default class OverlayOp extends GeometryGraphOperation {
 				}
 			}
 		}
-	}
-	computeLabelling() {
+	},
+	computeLabelling: function () {
 		for (var nodeit = this.graph.getNodes().iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			node.getEdges().computeLabelling(this.arg);
 		}
 		this.mergeSymLabels();
 		this.updateNodeLabelling();
-	}
-	labelIncompleteNodes() {
+	},
+	labelIncompleteNodes: function () {
 		var nodeCount = 0;
 		for (var ni = this.graph.getNodes().iterator(); ni.hasNext(); ) {
 			var n = ni.next();
@@ -275,15 +209,84 @@ export default class OverlayOp extends GeometryGraphOperation {
 			}
 			n.getEdges().updateLabelling(label);
 		}
-	}
-	isCoveredByA(coord) {
+	},
+	isCoveredByA: function (coord) {
 		if (this.isCovered(coord, this.resultPolyList)) return true;
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return OverlayOp;
 	}
-}
+});
+OverlayOp.overlayOp = function (geom0, geom1, opCode) {
+	var gov = new OverlayOp(geom0, geom1);
+	var geomOv = gov.getResultGeometry(opCode);
+	return geomOv;
+};
+OverlayOp.isResultOfOp = function () {
+	if (arguments.length === 2) {
+		let label = arguments[0], opCode = arguments[1];
+		var loc0 = label.getLocation(0);
+		var loc1 = label.getLocation(1);
+		return OverlayOp.isResultOfOp(loc0, loc1, opCode);
+	} else if (arguments.length === 3) {
+		let loc0 = arguments[0], loc1 = arguments[1], overlayOpCode = arguments[2];
+		if (loc0 === Location.BOUNDARY) loc0 = Location.INTERIOR;
+		if (loc1 === Location.BOUNDARY) loc1 = Location.INTERIOR;
+		switch (overlayOpCode) {
+			case OverlayOp.INTERSECTION:
+				return loc0 === Location.INTERIOR && loc1 === Location.INTERIOR;
+			case OverlayOp.UNION:
+				return loc0 === Location.INTERIOR || loc1 === Location.INTERIOR;
+			case OverlayOp.DIFFERENCE:
+				return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR;
+			case OverlayOp.SYMDIFFERENCE:
+				return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR || loc0 !== Location.INTERIOR && loc1 === Location.INTERIOR;
+		}
+		return false;
+	}
+};
+OverlayOp.createEmptyResult = function (overlayOpCode, a, b, geomFact) {
+	var result = null;
+	switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
+		case -1:
+			result = geomFact.createGeometryCollection(new Array(0));
+			break;
+		case 0:
+			result = geomFact.createPoint();
+			break;
+		case 1:
+			result = geomFact.createLineString();
+			break;
+		case 2:
+			result = geomFact.createPolygon();
+			break;
+	}
+	return result;
+};
+OverlayOp.resultDimension = function (opCode, g0, g1) {
+	var dim0 = g0.getDimension();
+	var dim1 = g1.getDimension();
+	var resultDimension = -1;
+	switch (opCode) {
+		case OverlayOp.INTERSECTION:
+			resultDimension = Math.min(dim0, dim1);
+			break;
+		case OverlayOp.UNION:
+			resultDimension = Math.max(dim0, dim1);
+			break;
+		case OverlayOp.DIFFERENCE:
+			resultDimension = dim0;
+			break;
+		case OverlayOp.SYMDIFFERENCE:
+			resultDimension = Math.max(dim0, dim1);
+			break;
+	}
+	return resultDimension;
+};
 OverlayOp.INTERSECTION = 1;
 OverlayOp.UNION = 2;
 OverlayOp.DIFFERENCE = 3;

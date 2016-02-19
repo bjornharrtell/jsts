@@ -1,1 +1,1 @@
-export default class StringWriter {}
+export default function StringWriter () {}

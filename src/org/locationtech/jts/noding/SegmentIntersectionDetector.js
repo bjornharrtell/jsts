@@ -1,42 +1,36 @@
+import extend from '../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
-export default class SegmentIntersectionDetector {
-	constructor(...args) {
-		this.li = null;
-		this.findProper = false;
-		this.findAllTypes = false;
-		this._hasIntersection = false;
-		this._hasProperIntersection = false;
-		this._hasNonProperIntersection = false;
-		this.intPt = null;
-		this.intSegments = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, new RobustLineIntersector());
-			} else if (args.length === 1) {
-				let [li] = args;
-				this.li = li;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function SegmentIntersectionDetector() {
+	this.li = null;
+	this.findProper = false;
+	this.findAllTypes = false;
+	this._hasIntersection = false;
+	this._hasProperIntersection = false;
+	this._hasNonProperIntersection = false;
+	this.intPt = null;
+	this.intSegments = null;
+	if (arguments.length === 0) {
+		SegmentIntersectionDetector.call(this, new RobustLineIntersector());
+	} else if (arguments.length === 1) {
+		let li = arguments[0];
+		this.li = li;
 	}
-	get interfaces_() {
-		return [SegmentIntersector];
-	}
-	getIntersectionSegments() {
+}
+extend(SegmentIntersectionDetector.prototype, {
+	getIntersectionSegments: function () {
 		return this.intSegments;
-	}
-	setFindAllIntersectionTypes(findAllTypes) {
+	},
+	setFindAllIntersectionTypes: function (findAllTypes) {
 		this.findAllTypes = findAllTypes;
-	}
-	hasProperIntersection() {
+	},
+	hasProperIntersection: function () {
 		return this._hasProperIntersection;
-	}
-	getIntersection() {
+	},
+	getIntersection: function () {
 		return this.intPt;
-	}
-	processIntersections(e0, segIndex0, e1, segIndex1) {
+	},
+	processIntersections: function (e0, segIndex0, e1, segIndex1) {
 		if (e0 === e1 && segIndex0 === segIndex1) return null;
 		var p00 = e0.getCoordinates()[segIndex0];
 		var p01 = e0.getCoordinates()[segIndex0 + 1];
@@ -59,11 +53,11 @@ export default class SegmentIntersectionDetector {
 				this.intSegments[3] = p11;
 			}
 		}
-	}
-	hasIntersection() {
+	},
+	hasIntersection: function () {
 		return this._hasIntersection;
-	}
-	isDone() {
+	},
+	isDone: function () {
 		if (this.findAllTypes) {
 			return this._hasProperIntersection && this._hasNonProperIntersection;
 		}
@@ -71,15 +65,18 @@ export default class SegmentIntersectionDetector {
 			return this._hasProperIntersection;
 		}
 		return this._hasIntersection;
-	}
-	hasNonProperIntersection() {
+	},
+	hasNonProperIntersection: function () {
 		return this._hasNonProperIntersection;
-	}
-	setFindProper(findProper) {
+	},
+	setFindProper: function (findProper) {
 		this.findProper = findProper;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [SegmentIntersector];
+	},
+	getClass: function () {
 		return SegmentIntersectionDetector;
 	}
-}
+});
 

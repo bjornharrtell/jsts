@@ -1,27 +1,25 @@
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import RobustLineIntersector from './RobustLineIntersector';
 import Envelope from '../geom/Envelope';
-export default class RectangleLineIntersector {
-	constructor(...args) {
-		this.li = new RobustLineIntersector();
-		this.rectEnv = null;
-		this.diagUp0 = null;
-		this.diagUp1 = null;
-		this.diagDown0 = null;
-		this.diagDown1 = null;
-		if (args.length === 1) {
-			let [rectEnv] = args;
-			this.rectEnv = rectEnv;
-			this.diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
-			this.diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
-			this.diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
-			this.diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
-		}
+export default function RectangleLineIntersector() {
+	this.li = new RobustLineIntersector();
+	this.rectEnv = null;
+	this.diagUp0 = null;
+	this.diagUp1 = null;
+	this.diagDown0 = null;
+	this.diagDown1 = null;
+	if (arguments.length === 1) {
+		let rectEnv = arguments[0];
+		this.rectEnv = rectEnv;
+		this.diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
+		this.diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
+		this.diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
+		this.diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
 	}
-	get interfaces_() {
-		return [];
-	}
-	intersects(p0, p1) {
+}
+extend(RectangleLineIntersector.prototype, {
+	intersects: function (p0, p1) {
 		var segEnv = new Envelope(p0, p1);
 		if (!this.rectEnv.intersects(segEnv)) return false;
 		if (this.rectEnv.intersects(p0)) return true;
@@ -40,9 +38,12 @@ export default class RectangleLineIntersector {
 		}
 		if (this.li.hasIntersection()) return true;
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RectangleLineIntersector;
 	}
-}
+});
 

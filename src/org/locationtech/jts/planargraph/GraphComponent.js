@@ -1,60 +1,59 @@
-export default class GraphComponent {
-	constructor(...args) {
-		this._isMarked = false;
-		this._isVisited = false;
-		this.data = null;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static getComponentWithVisitedState(i, visitedState) {
-		while (i.hasNext()) {
-			var comp = i.next();
-			if (comp.isVisited() === visitedState) return comp;
-		}
-		return null;
-	}
-	static setVisited(i, visited) {
-		while (i.hasNext()) {
-			var comp = i.next();
-			comp.setVisited(visited);
-		}
-	}
-	static setMarked(i, marked) {
-		while (i.hasNext()) {
-			var comp = i.next();
-			comp.setMarked(marked);
-		}
-	}
-	setVisited(isVisited) {
+import extend from '../../../../extend';
+export default function GraphComponent() {
+	this._isMarked = false;
+	this._isVisited = false;
+	this.data = null;
+	if (arguments.length === 0) {}
+}
+extend(GraphComponent.prototype, {
+	setVisited: function (isVisited) {
 		this._isVisited = isVisited;
-	}
-	isMarked() {
+	},
+	isMarked: function () {
 		return this._isMarked;
-	}
-	setData(data) {
+	},
+	setData: function (data) {
 		this.data = data;
-	}
-	getData() {
+	},
+	getData: function () {
 		return this.data;
-	}
-	setMarked(isMarked) {
+	},
+	setMarked: function (isMarked) {
 		this._isMarked = isMarked;
-	}
-	getContext() {
+	},
+	getContext: function () {
 		return this.data;
-	}
-	isVisited() {
+	},
+	isVisited: function () {
 		return this._isVisited;
-	}
-	setContext(data) {
+	},
+	setContext: function (data) {
 		this.data = data;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GraphComponent;
 	}
-}
+});
+GraphComponent.getComponentWithVisitedState = function (i, visitedState) {
+	while (i.hasNext()) {
+		var comp = i.next();
+		if (comp.isVisited() === visitedState) return comp;
+	}
+	return null;
+};
+GraphComponent.setVisited = function (i, visited) {
+	while (i.hasNext()) {
+		var comp = i.next();
+		comp.setVisited(visited);
+	}
+};
+GraphComponent.setMarked = function (i, marked) {
+	while (i.hasNext()) {
+		var comp = i.next();
+		comp.setMarked(marked);
+	}
+};
 

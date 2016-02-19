@@ -1,52 +1,48 @@
 import HashSet from '../../../../java/util/HashSet';
 import Node from './Node';
+import extend from '../../../../extend';
 import NodeMap from './NodeMap';
 import DirectedEdge from './DirectedEdge';
 import ArrayList from '../../../../java/util/ArrayList';
 import Edge from './Edge';
-export default class PlanarGraph {
-	constructor(...args) {
-		this.edges = new HashSet();
-		this.dirEdges = new HashSet();
-		this.nodeMap = new NodeMap();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	findNodesOfDegree(degree) {
+export default function PlanarGraph() {
+	this.edges = new HashSet();
+	this.dirEdges = new HashSet();
+	this.nodeMap = new NodeMap();
+	if (arguments.length === 0) {}
+}
+extend(PlanarGraph.prototype, {
+	findNodesOfDegree: function (degree) {
 		var nodesFound = new ArrayList();
 		for (var i = this.nodeIterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (node.getDegree() === degree) nodesFound.add(node);
 		}
 		return nodesFound;
-	}
-	dirEdgeIterator() {
+	},
+	dirEdgeIterator: function () {
 		return this.dirEdges.iterator();
-	}
-	edgeIterator() {
+	},
+	edgeIterator: function () {
 		return this.edges.iterator();
-	}
-	remove(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Edge) {
-				let [edge] = args;
+	},
+	remove: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Edge) {
+				let edge = arguments[0];
 				this.remove(edge.getDirEdge(0));
 				this.remove(edge.getDirEdge(1));
 				this.edges.remove(edge);
 				edge.remove();
-			} else if (args[0] instanceof DirectedEdge) {
-				let [de] = args;
+			} else if (arguments[0] instanceof DirectedEdge) {
+				let de = arguments[0];
 				var sym = de.getSym();
 				if (sym !== null) sym.setSym(null);
 				de.getFromNode().remove(de);
 				de.remove();
 				this.dirEdges.remove(de);
-			} else if (args[0] instanceof Node) {
-				let [node] = args;
+			} else if (arguments[0] instanceof Node) {
+				let node = arguments[0];
 				var outEdges = node.getOutEdges().getEdges();
 				for (var i = outEdges.iterator(); i.hasNext(); ) {
 					var de = i.next();
@@ -62,48 +58,51 @@ export default class PlanarGraph {
 				node.remove();
 			}
 		}
-	}
-	findNode(pt) {
+	},
+	findNode: function (pt) {
 		return this.nodeMap.find(pt);
-	}
-	getEdges() {
+	},
+	getEdges: function () {
 		return this.edges;
-	}
-	nodeIterator() {
+	},
+	nodeIterator: function () {
 		return this.nodeMap.iterator();
-	}
-	contains(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Edge) {
-				let [e] = args;
+	},
+	contains: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Edge) {
+				let e = arguments[0];
 				return this.edges.contains(e);
-			} else if (args[0] instanceof DirectedEdge) {
-				let [de] = args;
+			} else if (arguments[0] instanceof DirectedEdge) {
+				let de = arguments[0];
 				return this.dirEdges.contains(de);
 			}
 		}
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Node) {
-				let [node] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Node) {
+				let node = arguments[0];
 				this.nodeMap.add(node);
-			} else if (args[0] instanceof Edge) {
-				let [edge] = args;
+			} else if (arguments[0] instanceof Edge) {
+				let edge = arguments[0];
 				this.edges.add(edge);
 				this.add(edge.getDirEdge(0));
 				this.add(edge.getDirEdge(1));
-			} else if (args[0] instanceof DirectedEdge) {
-				let [dirEdge] = args;
+			} else if (arguments[0] instanceof DirectedEdge) {
+				let dirEdge = arguments[0];
 				this.dirEdges.add(dirEdge);
 			}
 		}
-	}
-	getNodes() {
+	},
+	getNodes: function () {
 		return this.nodeMap.values();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PlanarGraph;
 	}
-}
+});
 

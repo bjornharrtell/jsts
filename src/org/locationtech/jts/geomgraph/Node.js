@@ -1,39 +1,39 @@
 import Location from '../geom/Location';
+import extend from '../../../../extend';
 import Label from './Label';
+import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
-export default class Node extends GraphComponent {
-	constructor(...args) {
-		super();
-		this.coord = null;
-		this.edges = null;
-		if (args.length === 2) {
-			let [coord, edges] = args;
-			this.coord = coord;
-			this.edges = edges;
-			this.label = new Label(0, Location.NONE);
-		}
+export default function Node() {
+	GraphComponent.apply(this);
+	this.coord = null;
+	this.edges = null;
+	if (arguments.length === 2) {
+		let coord = arguments[0], edges = arguments[1];
+		this.coord = coord;
+		this.edges = edges;
+		this.label = new Label(0, Location.NONE);
 	}
-	get interfaces_() {
-		return [];
-	}
-	isIncidentEdgeInResult() {
+}
+inherits(Node, GraphComponent);
+extend(Node.prototype, {
+	isIncidentEdgeInResult: function () {
 		for (var it = this.getEdges().getEdges().iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (de.getEdge().isInResult()) return true;
 		}
 		return false;
-	}
-	isIsolated() {
+	},
+	isIsolated: function () {
 		return this.label.getGeometryCount() === 1;
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		return this.coord;
-	}
-	print(out) {
+	},
+	print: function (out) {
 		out.println("node " + this.coord + " lbl: " + this.label);
-	}
-	computeIM(im) {}
-	computeMergedLocation(label2, eltIndex) {
+	},
+	computeIM: function (im) {},
+	computeMergedLocation: function (label2, eltIndex) {
 		var loc = Location.NONE;
 		loc = this.label.getLocation(eltIndex);
 		if (!label2.isNull(eltIndex)) {
@@ -41,25 +41,25 @@ export default class Node extends GraphComponent {
 			if (loc !== Location.BOUNDARY) loc = nLoc;
 		}
 		return loc;
-	}
-	setLabel(...args) {
-		if (args.length === 2) {
-			let [argIndex, onLocation] = args;
+	},
+	setLabel: function () {
+		if (arguments.length === 2) {
+			let argIndex = arguments[0], onLocation = arguments[1];
 			if (this.label === null) {
 				this.label = new Label(argIndex, onLocation);
 			} else this.label.setLocation(argIndex, onLocation);
-		} else return super.setLabel(...args);
-	}
-	getEdges() {
+		} else return GraphComponent.prototype.setLabel.apply(this, arguments);
+	},
+	getEdges: function () {
 		return this.edges;
-	}
-	mergeLabel(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Node) {
-				let [n] = args;
+	},
+	mergeLabel: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Node) {
+				let n = arguments[0];
 				this.mergeLabel(n.label);
-			} else if (args[0] instanceof Label) {
-				let [label2] = args;
+			} else if (arguments[0] instanceof Label) {
+				let label2 = arguments[0];
 				for (var i = 0; i < 2; i++) {
 					var loc = this.computeMergedLocation(label2, i);
 					var thisLoc = this.label.getLocation(i);
@@ -67,12 +67,12 @@ export default class Node extends GraphComponent {
 				}
 			}
 		}
-	}
-	add(e) {
+	},
+	add: function (e) {
 		this.edges.insert(e);
 		e.setNode(this);
-	}
-	setLabelBoundary(argIndex) {
+	},
+	setLabelBoundary: function (argIndex) {
 		if (this.label === null) return null;
 		var loc = Location.NONE;
 		if (this.label !== null) loc = this.label.getLocation(argIndex);
@@ -89,9 +89,12 @@ export default class Node extends GraphComponent {
 				break;
 		}
 		this.label.setLocation(argIndex, newLoc);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Node;
 	}
-}
+});
 

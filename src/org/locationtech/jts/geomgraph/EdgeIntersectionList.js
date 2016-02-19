@@ -1,31 +1,29 @@
 import EdgeIntersection from './EdgeIntersection';
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import Label from './Label';
 import Edge from './Edge';
 import TreeMap from '../../../../java/util/TreeMap';
-export default class EdgeIntersectionList {
-	constructor(...args) {
-		this.nodeMap = new TreeMap();
-		this.edge = null;
-		if (args.length === 1) {
-			let [edge] = args;
-			this.edge = edge;
-		}
+export default function EdgeIntersectionList() {
+	this.nodeMap = new TreeMap();
+	this.edge = null;
+	if (arguments.length === 1) {
+		let edge = arguments[0];
+		this.edge = edge;
 	}
-	get interfaces_() {
-		return [];
-	}
-	print(out) {
+}
+extend(EdgeIntersectionList.prototype, {
+	print: function (out) {
 		out.println("Intersections:");
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ei = it.next();
 			ei.print(out);
 		}
-	}
-	iterator() {
+	},
+	iterator: function () {
 		return this.nodeMap.values().iterator();
-	}
-	addSplitEdges(edgeList) {
+	},
+	addSplitEdges: function (edgeList) {
 		this.addEndpoints();
 		var it = this.iterator();
 		var eiPrev = it.next();
@@ -35,13 +33,13 @@ export default class EdgeIntersectionList {
 			edgeList.add(newEdge);
 			eiPrev = ei;
 		}
-	}
-	addEndpoints() {
+	},
+	addEndpoints: function () {
 		var maxSegIndex = this.edge.pts.length - 1;
 		this.add(this.edge.pts[0], 0, 0.0);
 		this.add(this.edge.pts[maxSegIndex], maxSegIndex, 0.0);
-	}
-	createSplitEdge(ei0, ei1) {
+	},
+	createSplitEdge: function (ei0, ei1) {
 		var npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 		var lastSegStartPt = this.edge.pts[ei1.segmentIndex];
 		var useIntPt1 = ei1.dist > 0.0 || !ei1.coord.equals2D(lastSegStartPt);
@@ -56,8 +54,8 @@ export default class EdgeIntersectionList {
 		}
 		if (useIntPt1) pts[ipt] = ei1.coord;
 		return new Edge(pts, new Label(this.edge.label));
-	}
-	add(intPt, segmentIndex, dist) {
+	},
+	add: function (intPt, segmentIndex, dist) {
 		var eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
 		var ei = this.nodeMap.get(eiNew);
 		if (ei !== null) {
@@ -65,16 +63,19 @@ export default class EdgeIntersectionList {
 		}
 		this.nodeMap.put(eiNew, eiNew);
 		return eiNew;
-	}
-	isIntersection(pt) {
+	},
+	isIntersection: function (pt) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ei = it.next();
 			if (ei.coord.equals(pt)) return true;
 		}
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeIntersectionList;
 	}
-}
+});
 

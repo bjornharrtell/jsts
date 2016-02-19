@@ -7,20 +7,19 @@
 
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
+import extend from '../../../../extend'
 
 function p2c (p) { return [p.x, p.y] }
 
 /**
  * OpenLayers 3 Geometry parser and writer
+ * @param {GeometryFactory} geometryFactory
  */
-export default class OL3Parser {
-  /**
-   * @param {GeometryFactory} geometryFactory
-   */
-  constructor (geometryFactory) {
-    this.geometryFactory = geometryFactory || new GeometryFactory()
-  }
+export default function OL3Parser (geometryFactory) {
+  this.geometryFactory = geometryFactory || new GeometryFactory()
+}
 
+extend(OL3Parser.prototype, {
   /**
    * @param geometry {ol.geom.Geometry}
    * @return {Geometry}
@@ -43,24 +42,24 @@ export default class OL3Parser {
     } else if (geometry instanceof ol.geom.GeometryCollection) {
       return this.convertFromCollection(geometry)
     }
-  }
+  },
 
   convertFromPoint (point) {
     var coordinates = point.getCoordinates()
     return this.geometryFactory.createPoint(new Coordinate(coordinates[0], coordinates[1]))
-  }
+  },
 
   convertFromLineString (lineString) {
     return this.geometryFactory.createLineString(lineString.getCoordinates().map(function (coordinates) {
       return new Coordinate(coordinates[0], coordinates[1])
     }))
-  }
+  },
 
   convertFromLinearRing (linearRing) {
     return this.geometryFactory.createLinearRing(linearRing.getCoordinates().map(function (coordinates) {
       return new Coordinate(coordinates[0], coordinates[1])
     }))
-  }
+  },
 
   convertFromPolygon (polygon) {
     const linearRings = polygon.getLinearRings()
@@ -75,35 +74,35 @@ export default class OL3Parser {
       }
     }
     return this.geometryFactory.createPolygon(shell, holes)
-  }
+  },
 
   convertFromMultiPoint (multiPoint) {
     const points = multiPoint.getPoints().map(function (point) {
       return this.convertFromPoint(point)
     }, this)
     return this.geometryFactory.createMultiPoint(points)
-  }
+  },
 
   convertFromMultiLineString (multiLineString) {
     const lineStrings = multiLineString.getLineStrings().map(function (lineString) {
       return this.convertFromLineString(lineString)
     }, this)
     return this.geometryFactory.createMultiLineString(lineStrings)
-  }
+  },
 
   convertFromMultiPolygon (multiPolygon) {
     const polygons = multiPolygon.getPolygons().map(function (polygon) {
       return this.convertFromPolygon(polygon)
     }, this)
     return this.geometryFactory.createMultiPolygon(polygons)
-  }
+  },
 
   convertFromCollection (collection) {
     const geometries = collection.getGeometries().map(function (geometry) {
       return this.read(geometry)
     }, this)
     return this.geometryFactory.createGeometryCollection(geometries)
-  }
+  },
 
   /**
    * @param geometry
@@ -128,21 +127,21 @@ export default class OL3Parser {
     } else if (geometry.getGeometryType() === 'GeometryCollection') {
       return this.convertToCollection(geometry)
     }
-  }
+  },
 
   convertToPoint (coordinate) {
     return new ol.geom.Point([coordinate.x, coordinate.y])
-  }
+  },
 
   convertToLineString (lineString) {
     var points = lineString.points.coordinates.map(p2c)
     return new ol.geom.LineString(points)
-  }
+  },
 
   convertToLinearRing (linearRing) {
     var points = linearRing.points.coordinates.map(p2c)
     return new ol.geom.LinearRing(points)
-  }
+  },
 
   convertToPolygon (polygon) {
     var rings = [polygon.shell.points.coordinates.map(p2c)]
@@ -150,11 +149,11 @@ export default class OL3Parser {
       rings.push(polygon.holes[i].points.coordinates.map(p2c))
     }
     return new ol.geom.Polygon(rings)
-  }
+  },
 
   convertToMultiPoint (multiPoint) {
     return new ol.geom.MultiPoint(multiPoint.getCoordinates().map(p2c))
-  }
+  },
 
   convertToMultiLineString (multiLineString) {
     var lineStrings = []
@@ -162,7 +161,7 @@ export default class OL3Parser {
       lineStrings.push(this.convertToLineString(multiLineString.geometries[i]).getCoordinates())
     }
     return new ol.geom.MultiLineString(lineStrings)
-  }
+  },
 
   convertToMultiPolygon (multiPolygon) {
     var polygons = []
@@ -170,7 +169,7 @@ export default class OL3Parser {
       polygons.push(this.convertToPolygon(multiPolygon.geometries[i]).getCoordinates())
     }
     return new ol.geom.MultiPolygon(polygons)
-  }
+  },
 
   convertToCollection (geometryCollection) {
     var geometries = []
@@ -180,5 +179,4 @@ export default class OL3Parser {
     }
     return new ol.geom.GeometryCollection(geometries)
   }
-
-}
+})

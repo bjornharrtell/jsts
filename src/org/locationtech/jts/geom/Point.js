@@ -1,5 +1,7 @@
 import Geometry from './Geometry';
 import CoordinateFilter from './CoordinateFilter';
+import hasInterface from '../../../../hasInterface';
+import extend from '../../../../extend';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import Dimension from './Dimension';
 import GeometryFilter from './GeometryFilter';
@@ -7,36 +9,35 @@ import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import Puntal from './Puntal';
 import Envelope from './Envelope';
 import Assert from '../util/Assert';
-export default class Point extends Geometry {
-	constructor(...args) {
-		super();
-		this.coordinates = null;
-		if (args.length === 2) {
-			let [coordinates, factory] = args;
-			super(factory);
-			this.init(coordinates);
-		}
+import inherits from '../../../../inherits';
+export default function Point() {
+	Geometry.apply(this);
+	this.coordinates = null;
+	if (arguments.length === 2) {
+		let coordinates = arguments[0], factory = arguments[1];
+		Geometry.call(this, factory);
+		this.init(coordinates);
 	}
-	get interfaces_() {
-		return [Puntal];
-	}
-	computeEnvelopeInternal() {
+}
+inherits(Point, Geometry);
+extend(Point.prototype, {
+	computeEnvelopeInternal: function () {
 		if (this.isEmpty()) {
 			return new Envelope();
 		}
 		var env = new Envelope();
 		env.expandToInclude(this.coordinates.getX(0), this.coordinates.getY(0));
 		return env;
-	}
-	getSortIndex() {
+	},
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_POINT;
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		return this.isEmpty() ? [] : [this.getCoordinate()];
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
@@ -47,102 +48,105 @@ export default class Point extends Geometry {
 				return false;
 			}
 			return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance);
-		} else return super.equalsExact(...args);
-	}
-	normalize() {}
-	getCoordinate() {
+		} else return Geometry.prototype.equalsExact.apply(this, arguments);
+	},
+	normalize: function () {},
+	getCoordinate: function () {
 		return this.coordinates.size() !== 0 ? this.coordinates.getCoordinate(0) : null;
-	}
-	getBoundaryDimension() {
+	},
+	getBoundaryDimension: function () {
 		return Dimension.FALSE;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return 0;
-	}
-	getNumPoints() {
+	},
+	getNumPoints: function () {
 		return this.isEmpty() ? 0 : 1;
-	}
-	reverse() {
+	},
+	reverse: function () {
 		return this.copy();
-	}
-	getX() {
+	},
+	getX: function () {
 		if (this.getCoordinate() === null) {
 			throw new IllegalStateException("getX called on empty Point");
 		}
 		return this.getCoordinate().x;
-	}
-	compareToSameClass(...args) {
-		if (args.length === 1) {
-			let [other] = args;
+	},
+	compareToSameClass: function () {
+		if (arguments.length === 1) {
+			let other = arguments[0];
 			var point = other;
 			return this.getCoordinate().compareTo(point.getCoordinate());
-		} else if (args.length === 2) {
-			let [other, comp] = args;
+		} else if (arguments.length === 2) {
+			let other = arguments[0], comp = arguments[1];
 			var point = other;
 			return comp.compare(this.coordinates, point.coordinates);
 		}
-	}
-	apply(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-				let [filter] = args;
+	},
+	apply: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], CoordinateFilter)) {
+				let filter = arguments[0];
 				if (this.isEmpty()) {
 					return null;
 				}
 				filter.filter(this.getCoordinate());
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+				let filter = arguments[0];
 				if (this.isEmpty()) return null;
 				filter.filter(this.coordinates, 0);
 				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
 			}
 		}
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		return this.getFactory().createGeometryCollection(null);
-	}
-	clone() {
-		var p = super.clone();
+	},
+	clone: function () {
+		var p = Geometry.prototype.clone.call(this);
 		p.coordinates = this.coordinates.clone();
 		return p;
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "Point";
-	}
-	copy() {
+	},
+	copy: function () {
 		return new Point(this.coordinates.copy(), this.factory);
-	}
-	getCoordinateSequence() {
+	},
+	getCoordinateSequence: function () {
 		return this.coordinates;
-	}
-	getY() {
+	},
+	getY: function () {
 		if (this.getCoordinate() === null) {
 			throw new IllegalStateException("getY called on empty Point");
 		}
 		return this.getCoordinate().y;
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		return this.coordinates.size() === 0;
-	}
-	init(coordinates) {
+	},
+	init: function (coordinates) {
 		if (coordinates === null) {
 			coordinates = this.getFactory().getCoordinateSequenceFactory().create([]);
 		}
 		Assert.isTrue(coordinates.size() <= 1);
 		this.coordinates = coordinates;
-	}
-	isSimple() {
+	},
+	isSimple: function () {
 		return true;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Puntal];
+	},
+	getClass: function () {
 		return Point;
 	}
-}
+});
 Point.serialVersionUID = 4902022702746614570;
 

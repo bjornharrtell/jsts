@@ -1,28 +1,20 @@
 import Coordinate from '../geom/Coordinate';
-export default class SplitSegment {
-	constructor(...args) {
-		this.seg = null;
-		this.segLen = null;
-		this.splitPt = null;
-		this.minimumLen = 0.0;
-		if (args.length === 1) {
-			let [seg] = args;
-			this.seg = seg;
-			this.segLen = seg.getLength();
-		}
+import extend from '../../../../extend';
+export default function SplitSegment() {
+	this.seg = null;
+	this.segLen = null;
+	this.splitPt = null;
+	this.minimumLen = 0.0;
+	if (arguments.length === 1) {
+		let seg = arguments[0];
+		this.seg = seg;
+		this.segLen = seg.getLength();
 	}
-	get interfaces_() {
-		return [];
-	}
-	static pointAlongReverse(seg, segmentLengthFraction) {
-		var coord = new Coordinate();
-		coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x);
-		coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y);
-		return coord;
-	}
-	splitAt(...args) {
-		if (args.length === 1) {
-			let [pt] = args;
+}
+extend(SplitSegment.prototype, {
+	splitAt: function () {
+		if (arguments.length === 1) {
+			let pt = arguments[0];
 			var minFrac = this.minimumLen / this.segLen;
 			if (pt.distance(this.seg.p0) < this.minimumLen) {
 				this.splitPt = this.seg.pointAlong(minFrac);
@@ -33,25 +25,34 @@ export default class SplitSegment {
 				return null;
 			}
 			this.splitPt = pt;
-		} else if (args.length === 2) {
-			let [length, endPt] = args;
+		} else if (arguments.length === 2) {
+			let length = arguments[0], endPt = arguments[1];
 			var actualLen = this.getConstrainedLength(length);
 			var frac = actualLen / this.segLen;
 			if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
 		}
-	}
-	setMinimumLength(minLen) {
+	},
+	setMinimumLength: function (minLen) {
 		this.minimumLen = minLen;
-	}
-	getConstrainedLength(len) {
+	},
+	getConstrainedLength: function (len) {
 		if (len < this.minimumLen) return this.minimumLen;
 		return len;
-	}
-	getSplitPoint() {
+	},
+	getSplitPoint: function () {
 		return this.splitPt;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SplitSegment;
 	}
-}
+});
+SplitSegment.pointAlongReverse = function (seg, segmentLengthFraction) {
+	var coord = new Coordinate();
+	coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x);
+	coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y);
+	return coord;
+};
 

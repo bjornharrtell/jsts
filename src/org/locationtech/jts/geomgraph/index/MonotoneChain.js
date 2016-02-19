@@ -1,21 +1,22 @@
-export default class MonotoneChain {
-	constructor(...args) {
-		this.mce = null;
-		this.chainIndex = null;
-		if (args.length === 2) {
-			let [mce, chainIndex] = args;
-			this.mce = mce;
-			this.chainIndex = chainIndex;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	computeIntersections(mc, si) {
-		this.mce.computeIntersectsForChain(this.chainIndex, mc.mce, mc.chainIndex, si);
-	}
-	getClass() {
-		return MonotoneChain;
+import extend from '../../../../../extend';
+export default function MonotoneChain() {
+	this.mce = null;
+	this.chainIndex = null;
+	if (arguments.length === 2) {
+		let mce = arguments[0], chainIndex = arguments[1];
+		this.mce = mce;
+		this.chainIndex = chainIndex;
 	}
 }
+extend(MonotoneChain.prototype, {
+	computeIntersections: function (mc, si) {
+		this.mce.computeIntersectsForChain(this.chainIndex, mc.mce, mc.chainIndex, si);
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return MonotoneChain;
+	}
+});
 

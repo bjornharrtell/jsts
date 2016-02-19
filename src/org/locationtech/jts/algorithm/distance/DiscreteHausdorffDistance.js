@@ -2,57 +2,37 @@ import DistanceToPoint from './DistanceToPoint';
 import CoordinateFilter from '../../geom/CoordinateFilter';
 import Coordinate from '../../geom/Coordinate';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../../extend';
 import PointPairDistance from './PointPairDistance';
 import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter';
-export default class DiscreteHausdorffDistance {
-	constructor(...args) {
-		this.g0 = null;
-		this.g1 = null;
-		this.ptDist = new PointPairDistance();
-		this.densifyFrac = 0.0;
-		if (args.length === 2) {
-			let [g0, g1] = args;
-			this.g0 = g0;
-			this.g1 = g1;
-		}
+export default function DiscreteHausdorffDistance() {
+	this.g0 = null;
+	this.g1 = null;
+	this.ptDist = new PointPairDistance();
+	this.densifyFrac = 0.0;
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		this.g0 = g0;
+		this.g1 = g1;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get MaxPointDistanceFilter() {
-		return MaxPointDistanceFilter;
-	}
-	static get MaxDensifiedByFractionDistanceFilter() {
-		return MaxDensifiedByFractionDistanceFilter;
-	}
-	static distance(...args) {
-		if (args.length === 2) {
-			let [g0, g1] = args;
-			var dist = new DiscreteHausdorffDistance(g0, g1);
-			return dist.distance();
-		} else if (args.length === 3) {
-			let [g0, g1, densifyFrac] = args;
-			var dist = new DiscreteHausdorffDistance(g0, g1);
-			dist.setDensifyFraction(densifyFrac);
-			return dist.distance();
-		}
-	}
-	getCoordinates() {
+}
+extend(DiscreteHausdorffDistance.prototype, {
+	getCoordinates: function () {
 		return this.ptDist.getCoordinates();
-	}
-	setDensifyFraction(densifyFrac) {
+	},
+	setDensifyFraction: function (densifyFrac) {
 		if (densifyFrac > 1.0 || densifyFrac <= 0.0) throw new IllegalArgumentException("Fraction is not in range (0.0 - 1.0]");
 		this.densifyFrac = densifyFrac;
-	}
-	compute(g0, g1) {
+	},
+	compute: function (g0, g1) {
 		this.computeOrientedDistance(g0, g1, this.ptDist);
 		this.computeOrientedDistance(g1, g0, this.ptDist);
-	}
-	distance() {
+	},
+	distance: function () {
 		this.compute(this.g0, this.g1);
 		return this.ptDist.getDistance();
-	}
-	computeOrientedDistance(discreteGeom, geom, ptDist) {
+	},
+	computeOrientedDistance: function (discreteGeom, geom, ptDist) {
 		var distFilter = new MaxPointDistanceFilter(geom);
 		discreteGeom.apply(distFilter);
 		ptDist.setMaximum(distFilter.getMaxPointDistance());
@@ -61,57 +41,69 @@ export default class DiscreteHausdorffDistance {
 			discreteGeom.apply(fracFilter);
 			ptDist.setMaximum(fracFilter.getMaxPointDistance());
 		}
-	}
-	orientedDistance() {
+	},
+	orientedDistance: function () {
 		this.computeOrientedDistance(this.g0, this.g1, this.ptDist);
 		return this.ptDist.getDistance();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return DiscreteHausdorffDistance;
 	}
+});
+DiscreteHausdorffDistance.distance = function () {
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		var dist = new DiscreteHausdorffDistance(g0, g1);
+		return dist.distance();
+	} else if (arguments.length === 3) {
+		let g0 = arguments[0], g1 = arguments[1], densifyFrac = arguments[2];
+		var dist = new DiscreteHausdorffDistance(g0, g1);
+		dist.setDensifyFraction(densifyFrac);
+		return dist.distance();
+	}
+};
+function MaxPointDistanceFilter() {
+	this.maxPtDist = new PointPairDistance();
+	this.minPtDist = new PointPairDistance();
+	this.euclideanDist = new DistanceToPoint();
+	this.geom = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this.geom = geom;
+	}
 }
-class MaxPointDistanceFilter {
-	constructor(...args) {
-		this.maxPtDist = new PointPairDistance();
-		this.minPtDist = new PointPairDistance();
-		this.euclideanDist = new DistanceToPoint();
-		this.geom = null;
-		if (args.length === 1) {
-			let [geom] = args;
-			this.geom = geom;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateFilter];
-	}
-	filter(pt) {
+extend(MaxPointDistanceFilter.prototype, {
+	filter: function (pt) {
 		this.minPtDist.initialize();
 		DistanceToPoint.computeDistance(this.geom, pt, this.minPtDist);
 		this.maxPtDist.setMaximum(this.minPtDist);
-	}
-	getMaxPointDistance() {
+	},
+	getMaxPointDistance: function () {
 		return this.maxPtDist;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateFilter];
+	},
+	getClass: function () {
 		return MaxPointDistanceFilter;
 	}
+});
+function MaxDensifiedByFractionDistanceFilter() {
+	this.maxPtDist = new PointPairDistance();
+	this.minPtDist = new PointPairDistance();
+	this.geom = null;
+	this.numSubSegs = 0;
+	if (arguments.length === 2) {
+		let geom = arguments[0], fraction = arguments[1];
+		this.geom = geom;
+		this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
+	}
 }
-class MaxDensifiedByFractionDistanceFilter {
-	constructor(...args) {
-		this.maxPtDist = new PointPairDistance();
-		this.minPtDist = new PointPairDistance();
-		this.geom = null;
-		this.numSubSegs = 0;
-		if (args.length === 2) {
-			let [geom, fraction] = args;
-			this.geom = geom;
-			this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
-		}
-	}
-	get interfaces_() {
-		return [CoordinateSequenceFilter];
-	}
-	filter(seq, index) {
+extend(MaxDensifiedByFractionDistanceFilter.prototype, {
+	filter: function (seq, index) {
 		if (index === 0) return null;
 		var p0 = seq.getCoordinate(index - 1);
 		var p1 = seq.getCoordinate(index);
@@ -125,18 +117,23 @@ class MaxDensifiedByFractionDistanceFilter {
 			DistanceToPoint.computeDistance(this.geom, pt, this.minPtDist);
 			this.maxPtDist.setMaximum(this.minPtDist);
 		}
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return false;
-	}
-	isGeometryChanged() {
+	},
+	isGeometryChanged: function () {
 		return false;
-	}
-	getMaxPointDistance() {
+	},
+	getMaxPointDistance: function () {
 		return this.maxPtDist;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequenceFilter];
+	},
+	getClass: function () {
 		return MaxDensifiedByFractionDistanceFilter;
 	}
-}
+});
+DiscreteHausdorffDistance.MaxPointDistanceFilter = MaxPointDistanceFilter;
+DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter = MaxDensifiedByFractionDistanceFilter;
 

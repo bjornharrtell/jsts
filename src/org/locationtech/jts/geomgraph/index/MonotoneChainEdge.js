@@ -1,42 +1,40 @@
+import extend from '../../../../../extend';
 import MonotoneChainIndexer from './MonotoneChainIndexer';
 import Envelope from '../../geom/Envelope';
-export default class MonotoneChainEdge {
-	constructor(...args) {
-		this.e = null;
-		this.pts = null;
-		this.startIndex = null;
-		this.env1 = new Envelope();
-		this.env2 = new Envelope();
-		if (args.length === 1) {
-			let [e] = args;
-			this.e = e;
-			this.pts = e.getCoordinates();
-			var mcb = new MonotoneChainIndexer();
-			this.startIndex = mcb.getChainStartIndices(this.pts);
-		}
+export default function MonotoneChainEdge() {
+	this.e = null;
+	this.pts = null;
+	this.startIndex = null;
+	this.env1 = new Envelope();
+	this.env2 = new Envelope();
+	if (arguments.length === 1) {
+		let e = arguments[0];
+		this.e = e;
+		this.pts = e.getCoordinates();
+		var mcb = new MonotoneChainIndexer();
+		this.startIndex = mcb.getChainStartIndices(this.pts);
 	}
-	get interfaces_() {
-		return [];
-	}
-	getCoordinates() {
+}
+extend(MonotoneChainEdge.prototype, {
+	getCoordinates: function () {
 		return this.pts;
-	}
-	getMaxX(chainIndex) {
+	},
+	getMaxX: function (chainIndex) {
 		var x1 = this.pts[this.startIndex[chainIndex]].x;
 		var x2 = this.pts[this.startIndex[chainIndex + 1]].x;
 		return x1 > x2 ? x1 : x2;
-	}
-	getMinX(chainIndex) {
+	},
+	getMinX: function (chainIndex) {
 		var x1 = this.pts[this.startIndex[chainIndex]].x;
 		var x2 = this.pts[this.startIndex[chainIndex + 1]].x;
 		return x1 < x2 ? x1 : x2;
-	}
-	computeIntersectsForChain(...args) {
-		if (args.length === 4) {
-			let [chainIndex0, mce, chainIndex1, si] = args;
+	},
+	computeIntersectsForChain: function () {
+		if (arguments.length === 4) {
+			let chainIndex0 = arguments[0], mce = arguments[1], chainIndex1 = arguments[2], si = arguments[3];
 			this.computeIntersectsForChain(this.startIndex[chainIndex0], this.startIndex[chainIndex0 + 1], mce, mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si);
-		} else if (args.length === 6) {
-			let [start0, end0, mce, start1, end1, ei] = args;
+		} else if (arguments.length === 6) {
+			let start0 = arguments[0], end0 = arguments[1], mce = arguments[2], start1 = arguments[3], end1 = arguments[4], ei = arguments[5];
 			var p00 = this.pts[start0];
 			var p01 = this.pts[end0];
 			var p10 = mce.pts[start1];
@@ -59,19 +57,22 @@ export default class MonotoneChainEdge {
 				if (mid1 < end1) this.computeIntersectsForChain(mid0, end0, mce, mid1, end1, ei);
 			}
 		}
-	}
-	getStartIndexes() {
+	},
+	getStartIndexes: function () {
 		return this.startIndex;
-	}
-	computeIntersects(mce, si) {
+	},
+	computeIntersects: function (mce, si) {
 		for (var i = 0; i < this.startIndex.length - 1; i++) {
 			for (var j = 0; j < mce.startIndex.length - 1; j++) {
 				this.computeIntersectsForChain(i, mce, j, si);
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return MonotoneChainEdge;
 	}
-}
+});
 

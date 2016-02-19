@@ -1,38 +1,38 @@
 import Geometry from './Geometry';
 import BoundaryOp from '../operation/BoundaryOp';
+import extend from '../../../../extend';
 import Lineal from './Lineal';
 import GeometryCollection from './GeometryCollection';
 import Dimension from './Dimension';
-export default class MultiLineString extends GeometryCollection {
-	constructor(...args) {
-		super();
-		if (args.length === 2) {
-			let [lineStrings, factory] = args;
-			super(lineStrings, factory);
-		}
+import inherits from '../../../../inherits';
+export default function MultiLineString() {
+	GeometryCollection.apply(this);
+	if (arguments.length === 2) {
+		let lineStrings = arguments[0], factory = arguments[1];
+		GeometryCollection.call(this, lineStrings, factory);
 	}
-	get interfaces_() {
-		return [Lineal];
-	}
-	getSortIndex() {
+}
+inherits(MultiLineString, GeometryCollection);
+extend(MultiLineString.prototype, {
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_MULTILINESTRING;
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
-			return super.equalsExact(other, tolerance);
-		} else return super.equalsExact(...args);
-	}
-	getBoundaryDimension() {
+			return GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
+		} else return GeometryCollection.prototype.equalsExact.apply(this, arguments);
+	},
+	getBoundaryDimension: function () {
 		if (this.isClosed()) {
 			return Dimension.FALSE;
 		}
 		return 0;
-	}
-	isClosed() {
+	},
+	isClosed: function () {
 		if (this.isEmpty()) {
 			return false;
 		}
@@ -42,34 +42,37 @@ export default class MultiLineString extends GeometryCollection {
 			}
 		}
 		return true;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return 1;
-	}
-	reverse() {
+	},
+	reverse: function () {
 		var nLines = this.geometries.length;
 		var revLines = new Array(nLines);
 		for (var i = 0; i < this.geometries.length; i++) {
 			revLines[nLines - 1 - i] = this.geometries[i].reverse();
 		}
 		return this.getFactory().createMultiLineString(revLines);
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		return new BoundaryOp(this).getBoundary();
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "MultiLineString";
-	}
-	copy() {
+	},
+	copy: function () {
 		var lineStrings = new Array(this.geometries.length);
 		for (var i = 0; i < lineStrings.length; i++) {
 			lineStrings[i] = this.geometries[i].copy();
 		}
 		return new MultiLineString(lineStrings, this.factory);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Lineal];
+	},
+	getClass: function () {
 		return MultiLineString;
 	}
-}
+});
 MultiLineString.serialVersionUID = 8166665132445433741;
 

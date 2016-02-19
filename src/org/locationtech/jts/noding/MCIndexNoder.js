@@ -1,47 +1,35 @@
 import STRtree from '../index/strtree/STRtree';
 import NodedSegmentString from './NodedSegmentString';
 import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction';
+import extend from '../../../../extend';
 import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder';
 import ArrayList from '../../../../java/util/ArrayList';
+import inherits from '../../../../inherits';
 import SinglePassNoder from './SinglePassNoder';
-export default class MCIndexNoder extends SinglePassNoder {
-	constructor(...args) {
-		super();
-		this.monoChains = new ArrayList();
-		this.index = new STRtree();
-		this.idCounter = 0;
-		this.nodedSegStrings = null;
-		this.nOverlaps = 0;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-				})(...args);
-			} else if (args.length === 1) {
-				return ((...args) => {
-					let [si] = args;
-					super(si);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function MCIndexNoder() {
+	SinglePassNoder.apply(this);
+	this.monoChains = new ArrayList();
+	this.index = new STRtree();
+	this.idCounter = 0;
+	this.nodedSegStrings = null;
+	this.nOverlaps = 0;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let si = arguments[0];
+		SinglePassNoder.call(this, si);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get SegmentOverlapAction() {
-		return SegmentOverlapAction;
-	}
-	getMonotoneChains() {
+}
+inherits(MCIndexNoder, SinglePassNoder);
+extend(MCIndexNoder.prototype, {
+	getMonotoneChains: function () {
 		return this.monoChains;
-	}
-	getNodedSubstrings() {
+	},
+	getNodedSubstrings: function () {
 		return NodedSegmentString.getNodedSubstrings(this.nodedSegStrings);
-	}
-	getIndex() {
+	},
+	getIndex: function () {
 		return this.index;
-	}
-	add(segStr) {
+	},
+	add: function (segStr) {
 		var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
 		for (var i = segChains.iterator(); i.hasNext(); ) {
 			var mc = i.next();
@@ -49,15 +37,15 @@ export default class MCIndexNoder extends SinglePassNoder {
 			this.index.insert(mc.getEnvelope(), mc);
 			this.monoChains.add(mc);
 		}
-	}
-	computeNodes(inputSegStrings) {
+	},
+	computeNodes: function (inputSegStrings) {
 		this.nodedSegStrings = inputSegStrings;
 		for (var i = inputSegStrings.iterator(); i.hasNext(); ) {
 			this.add(i.next());
 		}
 		this.intersectChains();
-	}
-	intersectChains() {
+	},
+	intersectChains: function () {
 		var overlapAction = new SegmentOverlapAction(this.segInt);
 		for (var i = this.monoChains.iterator(); i.hasNext(); ) {
 			var queryChain = i.next();
@@ -71,33 +59,38 @@ export default class MCIndexNoder extends SinglePassNoder {
 				if (this.segInt.isDone()) return null;
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return MCIndexNoder;
 	}
+});
+function SegmentOverlapAction() {
+	MonotoneChainOverlapAction.apply(this);
+	this.si = null;
+	if (arguments.length === 1) {
+		let si = arguments[0];
+		this.si = si;
+	}
 }
-class SegmentOverlapAction extends MonotoneChainOverlapAction {
-	constructor(...args) {
-		super();
-		this.si = null;
-		if (args.length === 1) {
-			let [si] = args;
-			this.si = si;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	overlap(...args) {
-		if (args.length === 4) {
-			let [mc1, start1, mc2, start2] = args;
+inherits(SegmentOverlapAction, MonotoneChainOverlapAction);
+extend(SegmentOverlapAction.prototype, {
+	overlap: function () {
+		if (arguments.length === 4) {
+			let mc1 = arguments[0], start1 = arguments[1], mc2 = arguments[2], start2 = arguments[3];
 			var ss1 = mc1.getContext();
 			var ss2 = mc2.getContext();
 			this.si.processIntersections(ss1, start1, ss2, start2);
-		} else return super.overlap(...args);
-	}
-	getClass() {
+		} else return MonotoneChainOverlapAction.prototype.overlap.apply(this, arguments);
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SegmentOverlapAction;
 	}
-}
+});
+MCIndexNoder.SegmentOverlapAction = SegmentOverlapAction;
 

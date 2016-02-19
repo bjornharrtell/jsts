@@ -1,10 +1,12 @@
-export default class TraversalVisitor {
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function TraversalVisitor() {}
+extend(TraversalVisitor.prototype, {
+	visit: function (currTri, edgeIndex, neighbTri) {},
+	interfaces_: function () {
 		return [];
-	}
-	visit(currTri, edgeIndex, neighbTri) {}
-	getClass() {
+	},
+	getClass: function () {
 		return TraversalVisitor;
 	}
-}
+});
 

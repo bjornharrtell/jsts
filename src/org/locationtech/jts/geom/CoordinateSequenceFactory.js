@@ -1,21 +1,24 @@
+import hasInterface from '../../../../hasInterface';
+import extend from '../../../../extend';
 import CoordinateSequence from './CoordinateSequence';
-export default class CoordinateSequenceFactory {
-	get interfaces_() {
-		return [];
-	}
-	create(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Array) {
-				let [coordinates] = args;
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-				let [coordSeq] = args;
+export default function CoordinateSequenceFactory() {}
+extend(CoordinateSequenceFactory.prototype, {
+	create: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Array) {
+				let coordinates = arguments[0];
+			} else if (hasInterface(arguments[0], CoordinateSequence)) {
+				let coordSeq = arguments[0];
 			}
-		} else if (args.length === 2) {
-			let [size, dimension] = args;
+		} else if (arguments.length === 2) {
+			let size = arguments[0], dimension = arguments[1];
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return CoordinateSequenceFactory;
 	}
-}
+});
 

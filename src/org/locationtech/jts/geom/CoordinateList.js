@@ -1,83 +1,73 @@
 import Coordinate from './Coordinate';
+import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class CoordinateList extends ArrayList {
-	constructor(...args) {
-		super();
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					super();
-				})(...args);
-			} else if (args.length === 1) {
-				return ((...args) => {
-					let [coord] = args;
-					this.ensureCapacity(coord.length);
-					this.add(coord, true);
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [coord, allowRepeated] = args;
-					this.ensureCapacity(coord.length);
-					this.add(coord, allowRepeated);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+import inherits from '../../../../inherits';
+export default function CoordinateList() {
+	ArrayList.apply(this);
+	if (arguments.length === 0) {
+		ArrayList.call(this);
+	} else if (arguments.length === 1) {
+		let coord = arguments[0];
+		this.ensureCapacity(coord.length);
+		this.add(coord, true);
+	} else if (arguments.length === 2) {
+		let coord = arguments[0], allowRepeated = arguments[1];
+		this.ensureCapacity(coord.length);
+		this.add(coord, allowRepeated);
 	}
-	get interfaces_() {
-		return [];
-	}
-	getCoordinate(i) {
+}
+inherits(CoordinateList, ArrayList);
+extend(CoordinateList.prototype, {
+	getCoordinate: function (i) {
 		return this.get(i);
-	}
-	addAll(...args) {
-		if (args.length === 2) {
-			let [coll, allowRepeated] = args;
+	},
+	addAll: function () {
+		if (arguments.length === 2) {
+			let coll = arguments[0], allowRepeated = arguments[1];
 			var isChanged = false;
 			for (var i = coll.iterator(); i.hasNext(); ) {
 				this.add(i.next(), allowRepeated);
 				isChanged = true;
 			}
 			return isChanged;
-		} else return super.addAll(...args);
-	}
-	clone() {
-		var clone = super.clone();
+		} else return ArrayList.prototype.addAll.apply(this, arguments);
+	},
+	clone: function () {
+		var clone = ArrayList.prototype.clone.call(this);
 		for (var i = 0; i < this.size(); i++) {
 			clone.add(i, this.get(i).copy());
 		}
 		return clone;
-	}
-	toCoordinateArray() {
+	},
+	toCoordinateArray: function () {
 		return this.toArray(CoordinateList.coordArrayType);
-	}
-	add(...args) {
-		if (args.length === 1) {
-			let [coord] = args;
-			super.add(coord);
-		} else if (args.length === 2) {
-			if (args[0] instanceof Array && typeof args[1] === "boolean") {
-				let [coord, allowRepeated] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			let coord = arguments[0];
+			ArrayList.prototype.add.call(this, coord);
+		} else if (arguments.length === 2) {
+			if (arguments[0] instanceof Array && typeof arguments[1] === "boolean") {
+				let coord = arguments[0], allowRepeated = arguments[1];
 				this.add(coord, allowRepeated, true);
 				return true;
-			} else if (args[0] instanceof Coordinate && typeof args[1] === "boolean") {
-				let [coord, allowRepeated] = args;
+			} else if (arguments[0] instanceof Coordinate && typeof arguments[1] === "boolean") {
+				let coord = arguments[0], allowRepeated = arguments[1];
 				if (!allowRepeated) {
 					if (this.size() >= 1) {
 						var last = this.get(this.size() - 1);
 						if (last.equals2D(coord)) return null;
 					}
 				}
-				super.add(coord);
-			} else if (args[0] instanceof Object && typeof args[1] === "boolean") {
-				let [obj, allowRepeated] = args;
+				ArrayList.prototype.add.call(this, coord);
+			} else if (arguments[0] instanceof Object && typeof arguments[1] === "boolean") {
+				let obj = arguments[0], allowRepeated = arguments[1];
 				this.add(obj, allowRepeated);
 				return true;
 			}
-		} else if (args.length === 3) {
-			if (typeof args[2] === "boolean" && (args[0] instanceof Array && typeof args[1] === "boolean")) {
-				let [coord, allowRepeated, direction] = args;
+		} else if (arguments.length === 3) {
+			if (typeof arguments[2] === "boolean" && (arguments[0] instanceof Array && typeof arguments[1] === "boolean")) {
+				let coord = arguments[0], allowRepeated = arguments[1], direction = arguments[2];
 				if (direction) {
 					for (var i = 0; i < coord.length; i++) {
 						this.add(coord[i], allowRepeated);
@@ -88,8 +78,8 @@ export default class CoordinateList extends ArrayList {
 					}
 				}
 				return true;
-			} else if (typeof args[2] === "boolean" && (Number.isInteger(args[0]) && args[1] instanceof Coordinate)) {
-				let [i, coord, allowRepeated] = args;
+			} else if (typeof arguments[2] === "boolean" && (Number.isInteger(arguments[0]) && arguments[1] instanceof Coordinate)) {
+				let i = arguments[0], coord = arguments[1], allowRepeated = arguments[2];
 				if (!allowRepeated) {
 					var size = this.size();
 					if (size > 0) {
@@ -103,10 +93,10 @@ export default class CoordinateList extends ArrayList {
 						}
 					}
 				}
-				super.add(i, coord);
+				ArrayList.prototype.add.call(this, i, coord);
 			}
-		} else if (args.length === 4) {
-			let [coord, allowRepeated, start, end] = args;
+		} else if (arguments.length === 4) {
+			let coord = arguments[0], allowRepeated = arguments[1], start = arguments[2], end = arguments[3];
 			var inc = 1;
 			if (start > end) inc = -1;
 			for (var i = start; i !== end; i += inc) {
@@ -114,13 +104,16 @@ export default class CoordinateList extends ArrayList {
 			}
 			return true;
 		}
-	}
-	closeRing() {
+	},
+	closeRing: function () {
 		if (this.size() > 0) this.add(new Coordinate(this.get(0)), false);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return CoordinateList;
 	}
-}
+});
 CoordinateList.coordArrayType = new Array(0);
 

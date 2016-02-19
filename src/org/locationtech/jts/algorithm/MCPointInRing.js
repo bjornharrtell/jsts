@@ -2,30 +2,26 @@ import MonotoneChainSelectAction from '../index/chain/MonotoneChainSelectAction'
 import Bintree from '../index/bintree/Bintree';
 import Interval from '../index/bintree/Interval';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import RobustDeterminant from './RobustDeterminant';
 import Envelope from '../geom/Envelope';
+import inherits from '../../../../inherits';
 import PointInRing from './PointInRing';
-export default class MCPointInRing {
-	constructor(...args) {
-		this.ring = null;
-		this.tree = null;
-		this.crossings = 0;
-		this.interval = new Interval();
-		if (args.length === 1) {
-			let [ring] = args;
-			this.ring = ring;
-			this.buildIndex();
-		}
+export default function MCPointInRing() {
+	this.ring = null;
+	this.tree = null;
+	this.crossings = 0;
+	this.interval = new Interval();
+	if (arguments.length === 1) {
+		let ring = arguments[0];
+		this.ring = ring;
+		this.buildIndex();
 	}
-	get interfaces_() {
-		return [PointInRing];
-	}
-	static get MCSelecter() {
-		return MCSelecter;
-	}
-	testLineSegment(p, seg) {
+}
+extend(MCPointInRing.prototype, {
+	testLineSegment: function (p, seg) {
 		var xInt = null;
 		var x1 = null;
 		var y1 = null;
@@ -43,8 +39,8 @@ export default class MCPointInRing {
 				this.crossings++;
 			}
 		}
-	}
-	buildIndex() {
+	},
+	buildIndex: function () {
 		this.tree = new Bintree();
 		var pts = CoordinateArrays.removeRepeatedPoints(this.ring.getCoordinates());
 		var mcList = MonotoneChainBuilder.getChains(pts);
@@ -55,11 +51,11 @@ export default class MCPointInRing {
 			this.interval.max = mcEnv.getMaxY();
 			this.tree.insert(this.interval, mc);
 		}
-	}
-	testMonotoneChain(rayEnv, mcSelecter, mc) {
+	},
+	testMonotoneChain: function (rayEnv, mcSelecter, mc) {
 		mc.select(rayEnv, mcSelecter);
-	}
-	isInside(pt) {
+	},
+	isInside: function (pt) {
 		this.crossings = 0;
 		var rayEnv = new Envelope(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, pt.y, pt.y);
 		this.interval.min = pt.y;
@@ -74,33 +70,38 @@ export default class MCPointInRing {
 			return true;
 		}
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [PointInRing];
+	},
+	getClass: function () {
 		return MCPointInRing;
 	}
+});
+function MCSelecter() {
+	MonotoneChainSelectAction.apply(this);
+	this.mcp = null;
+	this.p = null;
+	if (arguments.length === 2) {
+		let mcp = arguments[0], p = arguments[1];
+		this.mcp = mcp;
+		this.p = p;
+	}
 }
-class MCSelecter extends MonotoneChainSelectAction {
-	constructor(...args) {
-		super();
-		this.mcp = null;
-		this.p = null;
-		if (args.length === 2) {
-			let [mcp, p] = args;
-			this.mcp = mcp;
-			this.p = p;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	select(...args) {
-		if (args.length === 1) {
-			let [ls] = args;
+inherits(MCSelecter, MonotoneChainSelectAction);
+extend(MCSelecter.prototype, {
+	select: function () {
+		if (arguments.length === 1) {
+			let ls = arguments[0];
 			this.mcp.testLineSegment(this.p, ls);
-		} else return super.select(...args);
-	}
-	getClass() {
+		} else return MonotoneChainSelectAction.prototype.select.apply(this, arguments);
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return MCSelecter;
 	}
-}
+});
+MCPointInRing.MCSelecter = MCSelecter;
 

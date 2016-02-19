@@ -1,6 +1,8 @@
 import TreeSet from '../../../../java/util/TreeSet';
 import LineString from '../geom/LineString';
+import hasInterface from '../../../../hasInterface';
 import MultiPoint from '../geom/MultiPoint';
+import extend from '../../../../extend';
 import GeometryGraph from '../geomgraph/GeometryGraph';
 import GeometryCollection from '../geom/GeometryCollection';
 import Polygonal from '../geom/Polygonal';
@@ -8,30 +10,21 @@ import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
 import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
-export default class IsSimpleOp {
-	constructor(...args) {
-		this.inputGeom = null;
-		this.isClosedEndpointsInInterior = true;
-		this.nonSimpleLocation = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				let [geom] = args;
-				this.inputGeom = geom;
-			} else if (args.length === 2) {
-				let [geom, boundaryNodeRule] = args;
-				this.inputGeom = geom;
-				this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function IsSimpleOp() {
+	this.inputGeom = null;
+	this.isClosedEndpointsInInterior = true;
+	this.nonSimpleLocation = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this.inputGeom = geom;
+	} else if (arguments.length === 2) {
+		let geom = arguments[0], boundaryNodeRule = arguments[1];
+		this.inputGeom = geom;
+		this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get EndpointInfo() {
-		return EndpointInfo;
-	}
-	isSimpleMultiPoint(mp) {
+}
+extend(IsSimpleOp.prototype, {
+	isSimpleMultiPoint: function (mp) {
 		if (mp.isEmpty()) return true;
 		var points = new TreeSet();
 		for (var i = 0; i < mp.getNumGeometries(); i++) {
@@ -44,16 +37,16 @@ export default class IsSimpleOp {
 			points.add(p);
 		}
 		return true;
-	}
-	isSimplePolygonal(geom) {
+	},
+	isSimplePolygonal: function (geom) {
 		var rings = LinearComponentExtracter.getLines(geom);
 		for (var i = rings.iterator(); i.hasNext(); ) {
 			var ring = i.next();
 			if (!this.isSimpleLinearGeometry(ring)) return false;
 		}
 		return true;
-	}
-	hasClosedEndpointIntersection(graph) {
+	},
+	hasClosedEndpointIntersection: function (graph) {
 		var endPoints = new TreeMap();
 		for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
@@ -72,11 +65,11 @@ export default class IsSimpleOp {
 			}
 		}
 		return false;
-	}
-	getNonSimpleLocation() {
+	},
+	getNonSimpleLocation: function () {
 		return this.nonSimpleLocation;
-	}
-	isSimpleLinearGeometry(geom) {
+	},
+	isSimpleLinearGeometry: function (geom) {
 		if (geom.isEmpty()) return true;
 		var graph = new GeometryGraph(0, geom);
 		var li = new RobustLineIntersector();
@@ -91,8 +84,8 @@ export default class IsSimpleOp {
 			if (this.hasClosedEndpointIntersection(graph)) return false;
 		}
 		return true;
-	}
-	hasNonEndpointIntersection(graph) {
+	},
+	hasNonEndpointIntersection: function (graph) {
 		for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var maxSegmentIndex = e.getMaximumSegmentIndex();
@@ -105,64 +98,68 @@ export default class IsSimpleOp {
 			}
 		}
 		return false;
-	}
-	addEndpoint(endPoints, p, isClosed) {
+	},
+	addEndpoint: function (endPoints, p, isClosed) {
 		var eiInfo = endPoints.get(p);
 		if (eiInfo === null) {
 			eiInfo = new EndpointInfo(p);
 			endPoints.put(p, eiInfo);
 		}
 		eiInfo.addEndpoint(isClosed);
-	}
-	computeSimple(geom) {
+	},
+	computeSimple: function (geom) {
 		this.nonSimpleLocation = null;
 		if (geom.isEmpty()) return true;
 		if (geom instanceof LineString) return this.isSimpleLinearGeometry(geom);
 		if (geom instanceof MultiLineString) return this.isSimpleLinearGeometry(geom);
 		if (geom instanceof MultiPoint) return this.isSimpleMultiPoint(geom);
-		if (geom.interfaces_ && geom.interfaces_.indexOf(Polygonal) > -1) return this.isSimplePolygonal(geom);
+		if (hasInterface(geom, Polygonal)) return this.isSimplePolygonal(geom);
 		if (geom instanceof GeometryCollection) return this.isSimpleGeometryCollection(geom);
 		return true;
-	}
-	isSimple() {
+	},
+	isSimple: function () {
 		this.nonSimpleLocation = null;
 		return this.computeSimple(this.inputGeom);
-	}
-	isSimpleGeometryCollection(geom) {
+	},
+	isSimpleGeometryCollection: function (geom) {
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var comp = geom.getGeometryN(i);
 			if (!this.computeSimple(comp)) return false;
 		}
 		return true;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return IsSimpleOp;
 	}
+});
+function EndpointInfo() {
+	this.pt = null;
+	this.isClosed = null;
+	this.degree = null;
+	if (arguments.length === 1) {
+		let pt = arguments[0];
+		this.pt = pt;
+		this.isClosed = false;
+		this.degree = 0;
+	}
 }
-class EndpointInfo {
-	constructor(...args) {
-		this.pt = null;
-		this.isClosed = null;
-		this.degree = null;
-		if (args.length === 1) {
-			let [pt] = args;
-			this.pt = pt;
-			this.isClosed = false;
-			this.degree = 0;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	addEndpoint(isClosed) {
+extend(EndpointInfo.prototype, {
+	addEndpoint: function (isClosed) {
 		this.degree++;
 		this.isClosed |= isClosed;
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		return this.pt;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EndpointInfo;
 	}
-}
+});
+IsSimpleOp.EndpointInfo = EndpointInfo;
 

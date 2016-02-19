@@ -1,41 +1,37 @@
 import Location from '../../geom/Location';
 import EdgeEndBuilder from './EdgeEndBuilder';
+import extend from '../../../../../extend';
 import NodeMap from '../../geomgraph/NodeMap';
 import RelateNodeFactory from './RelateNodeFactory';
-export default class RelateNodeGraph {
-	constructor(...args) {
-		this.nodes = new NodeMap(new RelateNodeFactory());
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	insertEdgeEnds(ee) {
+export default function RelateNodeGraph() {
+	this.nodes = new NodeMap(new RelateNodeFactory());
+	if (arguments.length === 0) {}
+}
+extend(RelateNodeGraph.prototype, {
+	insertEdgeEnds: function (ee) {
 		for (var i = ee.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			this.nodes.add(e);
 		}
-	}
-	getNodeIterator() {
+	},
+	getNodeIterator: function () {
 		return this.nodes.iterator();
-	}
-	copyNodesAndLabels(geomGraph, argIndex) {
+	},
+	copyNodesAndLabels: function (geomGraph, argIndex) {
 		for (var nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext(); ) {
 			var graphNode = nodeIt.next();
 			var newNode = this.nodes.addNode(graphNode.getCoordinate());
 			newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 		}
-	}
-	build(geomGraph) {
+	},
+	build: function (geomGraph) {
 		this.computeIntersectionNodes(geomGraph, 0);
 		this.copyNodesAndLabels(geomGraph, 0);
 		var eeBuilder = new EdgeEndBuilder();
 		var eeList = eeBuilder.computeEdgeEnds(geomGraph.getEdgeIterator());
 		this.insertEdgeEnds(eeList);
-	}
-	computeIntersectionNodes(geomGraph, argIndex) {
+	},
+	computeIntersectionNodes: function (geomGraph, argIndex) {
 		for (var edgeIt = geomGraph.getEdgeIterator(); edgeIt.hasNext(); ) {
 			var e = edgeIt.next();
 			var eLoc = e.getLabel().getLocation(argIndex);
@@ -47,9 +43,12 @@ export default class RelateNodeGraph {
 				}
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RelateNodeGraph;
 	}
-}
+});
 

@@ -1,36 +1,34 @@
 import Noder from './Noder';
 import MCIndexNoder from './MCIndexNoder';
 import TopologyException from '../geom/TopologyException';
+import extend from '../../../../extend';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import IntersectionAdder from './IntersectionAdder';
-export default class IteratedNoder {
-	constructor(...args) {
-		this.pm = null;
-		this.li = null;
-		this.nodedSegStrings = null;
-		this.maxIter = IteratedNoder.MAX_ITER;
-		if (args.length === 1) {
-			let [pm] = args;
-			this.li = new RobustLineIntersector();
-			this.pm = pm;
-			this.li.setPrecisionModel(pm);
-		}
+export default function IteratedNoder() {
+	this.pm = null;
+	this.li = null;
+	this.nodedSegStrings = null;
+	this.maxIter = IteratedNoder.MAX_ITER;
+	if (arguments.length === 1) {
+		let pm = arguments[0];
+		this.li = new RobustLineIntersector();
+		this.pm = pm;
+		this.li.setPrecisionModel(pm);
 	}
-	get interfaces_() {
-		return [Noder];
-	}
-	setMaximumIterations(maxIter) {
+}
+extend(IteratedNoder.prototype, {
+	setMaximumIterations: function (maxIter) {
 		this.maxIter = maxIter;
-	}
-	node(segStrings, numInteriorIntersections) {
+	},
+	node: function (segStrings, numInteriorIntersections) {
 		var si = new IntersectionAdder(this.li);
 		var noder = new MCIndexNoder();
 		noder.setSegmentIntersector(si);
 		noder.computeNodes(segStrings);
 		this.nodedSegStrings = noder.getNodedSubstrings();
 		numInteriorIntersections[0] = si.numInteriorIntersections;
-	}
-	computeNodes(segStrings) {
+	},
+	computeNodes: function (segStrings) {
 		var numInteriorIntersections = new Array(1);
 		this.nodedSegStrings = segStrings;
 		var nodingIterationCount = 0;
@@ -44,13 +42,16 @@ export default class IteratedNoder {
 			}
 			lastNodesCreated = nodesCreated;
 		} while (lastNodesCreated > 0);
-	}
-	getNodedSubstrings() {
+	},
+	getNodedSubstrings: function () {
 		return this.nodedSegStrings;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Noder];
+	},
+	getClass: function () {
 		return IteratedNoder;
 	}
-}
+});
 IteratedNoder.MAX_ITER = 5;
 

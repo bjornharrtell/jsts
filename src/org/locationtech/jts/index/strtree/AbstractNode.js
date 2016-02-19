@@ -1,50 +1,46 @@
 import Boundable from './Boundable';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 import Assert from '../../util/Assert';
-export default class AbstractNode {
-	constructor(...args) {
-		this.childBoundables = new ArrayList();
-		this.bounds = null;
-		this.level = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-			} else if (args.length === 1) {
-				let [level] = args;
-				this.level = level;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function AbstractNode() {
+	this.childBoundables = new ArrayList();
+	this.bounds = null;
+	this.level = null;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let level = arguments[0];
+		this.level = level;
 	}
-	get interfaces_() {
-		return [Boundable, Serializable];
-	}
-	getLevel() {
+}
+extend(AbstractNode.prototype, {
+	getLevel: function () {
 		return this.level;
-	}
-	size() {
+	},
+	size: function () {
 		return this.childBoundables.size();
-	}
-	getChildBoundables() {
+	},
+	getChildBoundables: function () {
 		return this.childBoundables;
-	}
-	addChildBoundable(childBoundable) {
+	},
+	addChildBoundable: function (childBoundable) {
 		Assert.isTrue(this.bounds === null);
 		this.childBoundables.add(childBoundable);
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		return this.childBoundables.isEmpty();
-	}
-	getBounds() {
+	},
+	getBounds: function () {
 		if (this.bounds === null) {
 			this.bounds = this.computeBounds();
 		}
 		return this.bounds;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Boundable, Serializable];
+	},
+	getClass: function () {
 		return AbstractNode;
 	}
-}
+});
 AbstractNode.serialVersionUID = 6493722185909573708;
 

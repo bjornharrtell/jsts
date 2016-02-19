@@ -1,20 +1,19 @@
 import SimilarityMeasure from './SimilarityMeasure';
-export default class AreaSimilarityMeasure {
-	constructor(...args) {
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [SimilarityMeasure];
-	}
-	measure(g1, g2) {
+import extend from '../../../../../extend';
+export default function AreaSimilarityMeasure() {
+	if (arguments.length === 0) {}
+}
+extend(AreaSimilarityMeasure.prototype, {
+	measure: function (g1, g2) {
 		var areaInt = g1.intersection(g2).getArea();
 		var areaUnion = g1.union(g2).getArea();
 		return areaInt / areaUnion;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [SimilarityMeasure];
+	},
+	getClass: function () {
 		return AreaSimilarityMeasure;
 	}
-}
+});
 

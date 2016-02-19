@@ -1,31 +1,22 @@
 import BufferParameters from './BufferParameters';
 import Position from '../../geomgraph/Position';
 import Coordinate from '../../geom/Coordinate';
+import extend from '../../../../../extend';
 import BufferInputLineSimplifier from './BufferInputLineSimplifier';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import OffsetSegmentGenerator from './OffsetSegmentGenerator';
-export default class OffsetCurveBuilder {
-	constructor(...args) {
-		this.distance = 0.0;
-		this.precisionModel = null;
-		this.bufParams = null;
-		if (args.length === 2) {
-			let [precisionModel, bufParams] = args;
-			this.precisionModel = precisionModel;
-			this.bufParams = bufParams;
-		}
+export default function OffsetCurveBuilder() {
+	this.distance = 0.0;
+	this.precisionModel = null;
+	this.bufParams = null;
+	if (arguments.length === 2) {
+		let precisionModel = arguments[0], bufParams = arguments[1];
+		this.precisionModel = precisionModel;
+		this.bufParams = bufParams;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static copyCoordinates(pts) {
-		var copy = new Array(pts.length);
-		for (var i = 0; i < copy.length; i++) {
-			copy[i] = new Coordinate(pts[i]);
-		}
-		return copy;
-	}
-	getOffsetCurve(inputPts, distance) {
+}
+extend(OffsetCurveBuilder.prototype, {
+	getOffsetCurve: function (inputPts, distance) {
 		this.distance = distance;
 		if (distance === 0.0) return null;
 		var isRightSide = distance < 0.0;
@@ -39,8 +30,8 @@ export default class OffsetCurveBuilder {
 		var curvePts = segGen.getCoordinates();
 		if (isRightSide) CoordinateArrays.reverse(curvePts);
 		return curvePts;
-	}
-	computeSingleSidedBufferCurve(inputPts, isRightSide, segGen) {
+	},
+	computeSingleSidedBufferCurve: function (inputPts, isRightSide, segGen) {
 		var distTol = this.simplifyTolerance(this.distance);
 		if (isRightSide) {
 			segGen.addSegments(inputPts, true);
@@ -63,8 +54,8 @@ export default class OffsetCurveBuilder {
 		}
 		segGen.addLastSegment();
 		segGen.closeRing();
-	}
-	computeRingBufferCurve(inputPts, side, segGen) {
+	},
+	computeRingBufferCurve: function (inputPts, side, segGen) {
 		var distTol = this.simplifyTolerance(this.distance);
 		if (side === Position.RIGHT) distTol = -distTol;
 		var simp = BufferInputLineSimplifier.simplify(inputPts, distTol);
@@ -75,8 +66,8 @@ export default class OffsetCurveBuilder {
 			segGen.addNextSegment(simp[i], addStartPoint);
 		}
 		segGen.closeRing();
-	}
-	computeLineBufferCurve(inputPts, segGen) {
+	},
+	computeLineBufferCurve: function (inputPts, segGen) {
 		var distTol = this.simplifyTolerance(this.distance);
 		var simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol);
 		var n1 = simp1.length - 1;
@@ -95,8 +86,8 @@ export default class OffsetCurveBuilder {
 		segGen.addLastSegment();
 		segGen.addLineEndCap(simp2[1], simp2[0]);
 		segGen.closeRing();
-	}
-	computePointCurve(pt, segGen) {
+	},
+	computePointCurve: function (pt, segGen) {
 		switch (this.bufParams.getEndCapStyle()) {
 			case BufferParameters.CAP_ROUND:
 				segGen.createCircle(pt);
@@ -105,8 +96,8 @@ export default class OffsetCurveBuilder {
 				segGen.createSquare(pt);
 				break;
 		}
-	}
-	getLineCurve(inputPts, distance) {
+	},
+	getLineCurve: function (inputPts, distance) {
 		this.distance = distance;
 		if (distance < 0.0 && !this.bufParams.isSingleSided()) return null;
 		if (distance === 0.0) return null;
@@ -122,14 +113,14 @@ export default class OffsetCurveBuilder {
 		}
 		var lineCoord = segGen.getCoordinates();
 		return lineCoord;
-	}
-	getBufferParameters() {
+	},
+	getBufferParameters: function () {
 		return this.bufParams;
-	}
-	simplifyTolerance(bufDistance) {
+	},
+	simplifyTolerance: function (bufDistance) {
 		return bufDistance * this.bufParams.getSimplifyFactor();
-	}
-	getRingCurve(inputPts, side, distance) {
+	},
+	getRingCurve: function (inputPts, side, distance) {
 		this.distance = distance;
 		if (inputPts.length <= 2) return this.getLineCurve(inputPts, distance);
 		if (distance === 0.0) {
@@ -138,8 +129,8 @@ export default class OffsetCurveBuilder {
 		var segGen = this.getSegGen(distance);
 		this.computeRingBufferCurve(inputPts, side, segGen);
 		return segGen.getCoordinates();
-	}
-	computeOffsetCurve(inputPts, isRightSide, segGen) {
+	},
+	computeOffsetCurve: function (inputPts, isRightSide, segGen) {
 		var distTol = this.simplifyTolerance(this.distance);
 		if (isRightSide) {
 			var simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol);
@@ -159,12 +150,22 @@ export default class OffsetCurveBuilder {
 			}
 		}
 		segGen.addLastSegment();
-	}
-	getSegGen(distance) {
+	},
+	getSegGen: function (distance) {
 		return new OffsetSegmentGenerator(this.precisionModel, this.bufParams, distance);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return OffsetCurveBuilder;
 	}
-}
+});
+OffsetCurveBuilder.copyCoordinates = function (pts) {
+	var copy = new Array(pts.length);
+	for (var i = 0; i < copy.length; i++) {
+		copy[i] = new Coordinate(pts[i]);
+	}
+	return copy;
+};
 

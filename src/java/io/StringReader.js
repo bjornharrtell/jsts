@@ -1,1 +1,1 @@
-export default class StringReader {}
+export default function StringReader () {}

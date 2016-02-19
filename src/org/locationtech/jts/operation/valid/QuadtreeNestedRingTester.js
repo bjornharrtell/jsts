@@ -1,28 +1,26 @@
 import Quadtree from '../../index/quadtree/Quadtree';
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import IsValidOp from './IsValidOp';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
-export default class QuadtreeNestedRingTester {
-	constructor(...args) {
-		this.graph = null;
-		this.rings = new ArrayList();
-		this.totalEnv = new Envelope();
-		this.quadtree = null;
-		this.nestedPt = null;
-		if (args.length === 1) {
-			let [graph] = args;
-			this.graph = graph;
-		}
+export default function QuadtreeNestedRingTester() {
+	this.graph = null;
+	this.rings = new ArrayList();
+	this.totalEnv = new Envelope();
+	this.quadtree = null;
+	this.nestedPt = null;
+	if (arguments.length === 1) {
+		let graph = arguments[0];
+		this.graph = graph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	getNestedPoint() {
+}
+extend(QuadtreeNestedRingTester.prototype, {
+	getNestedPoint: function () {
 		return this.nestedPt;
-	}
-	isNonNested() {
+	},
+	isNonNested: function () {
 		this.buildQuadtree();
 		for (var i = 0; i < this.rings.size(); i++) {
 			var innerRing = this.rings.get(i);
@@ -43,21 +41,24 @@ export default class QuadtreeNestedRingTester {
 			}
 		}
 		return true;
-	}
-	add(ring) {
+	},
+	add: function (ring) {
 		this.rings.add(ring);
 		this.totalEnv.expandToInclude(ring.getEnvelopeInternal());
-	}
-	buildQuadtree() {
+	},
+	buildQuadtree: function () {
 		this.quadtree = new Quadtree();
 		for (var i = 0; i < this.rings.size(); i++) {
 			var ring = this.rings.get(i);
 			var env = ring.getEnvelopeInternal();
 			this.quadtree.insert(env, ring);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return QuadtreeNestedRingTester;
 	}
-}
+});
 

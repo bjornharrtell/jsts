@@ -1,57 +1,42 @@
 import ItemBoundable from './ItemBoundable';
+import hasInterface from '../../../../../hasInterface';
 import ItemVisitor from '../ItemVisitor';
 import AbstractNode from './AbstractNode';
+import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 import Assert from '../../util/Assert';
 import List from '../../../../../java/util/List';
-export default class AbstractSTRtree {
-	constructor(...args) {
-		this.root = null;
-		this.built = false;
-		this.itemBoundables = new ArrayList();
-		this.nodeCapacity = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
-			} else if (args.length === 1) {
-				let [nodeCapacity] = args;
-				Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-				this.nodeCapacity = nodeCapacity;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function AbstractSTRtree() {
+	this.root = null;
+	this.built = false;
+	this.itemBoundables = new ArrayList();
+	this.nodeCapacity = null;
+	if (arguments.length === 0) {
+		AbstractSTRtree.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
+	} else if (arguments.length === 1) {
+		let nodeCapacity = arguments[0];
+		Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
+		this.nodeCapacity = nodeCapacity;
 	}
-	get interfaces_() {
-		return [Serializable];
-	}
-	static get IntersectsOp() {
-		return IntersectsOp;
-	}
-	static get IntersectsOp() {
-		return IntersectsOp;
-	}
-	static compareDoubles(a, b) {
-		return a > b ? 1 : a < b ? -1 : 0;
-	}
-	getNodeCapacity() {
+}
+extend(AbstractSTRtree.prototype, {
+	getNodeCapacity: function () {
 		return this.nodeCapacity;
-	}
-	lastNode(nodes) {
+	},
+	lastNode: function (nodes) {
 		return nodes.get(nodes.size() - 1);
-	}
-	size(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	size: function () {
+		if (arguments.length === 0) {
 			if (this.isEmpty()) {
 				return 0;
 			}
 			this.build();
 			return this.size(this.root);
-		} else if (args.length === 1) {
-			let [node] = args;
+		} else if (arguments.length === 1) {
+			let node = arguments[0];
 			var size = 0;
 			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
 				var childBoundable = i.next();
@@ -63,8 +48,8 @@ export default class AbstractSTRtree {
 			}
 			return size;
 		}
-	}
-	removeItem(node, item) {
+	},
+	removeItem: function (node, item) {
 		var childToRemove = null;
 		for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
 			var childBoundable = i.next();
@@ -77,16 +62,15 @@ export default class AbstractSTRtree {
 			return true;
 		}
 		return false;
-	}
-	itemsTree(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	itemsTree: function () {
+		if (arguments.length === 0) {
 			this.build();
 			var valuesTree = this.itemsTree(this.root);
 			if (valuesTree === null) return new ArrayList();
 			return valuesTree;
-		} else if (args.length === 1) {
-			let [node] = args;
+		} else if (arguments.length === 1) {
+			let node = arguments[0];
 			var valuesTreeForNode = new ArrayList();
 			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
 				var childBoundable = i.next();
@@ -102,19 +86,19 @@ export default class AbstractSTRtree {
 			if (valuesTreeForNode.size() <= 0) return null;
 			return valuesTreeForNode;
 		}
-	}
-	insert(bounds, item) {
+	},
+	insert: function (bounds, item) {
 		Assert.isTrue(!this.built, "Cannot insert items into an STR packed R-tree after it has been built.");
 		this.itemBoundables.add(new ItemBoundable(bounds, item));
-	}
-	boundablesAtLevel(...args) {
-		if (args.length === 1) {
-			let [level] = args;
+	},
+	boundablesAtLevel: function () {
+		if (arguments.length === 1) {
+			let level = arguments[0];
 			var boundables = new ArrayList();
 			this.boundablesAtLevel(level, this.root, boundables);
 			return boundables;
-		} else if (args.length === 3) {
-			let [level, top, boundables] = args;
+		} else if (arguments.length === 3) {
+			let level = arguments[0], top = arguments[1], boundables = arguments[2];
 			Assert.isTrue(level > -2);
 			if (top.getLevel() === level) {
 				boundables.add(top);
@@ -133,10 +117,10 @@ export default class AbstractSTRtree {
 			}
 			return null;
 		}
-	}
-	query(...args) {
-		if (args.length === 1) {
-			let [searchBounds] = args;
+	},
+	query: function () {
+		if (arguments.length === 1) {
+			let searchBounds = arguments[0];
 			this.build();
 			var matches = new ArrayList();
 			if (this.isEmpty()) {
@@ -146,8 +130,8 @@ export default class AbstractSTRtree {
 				this.query(searchBounds, this.root, matches);
 			}
 			return matches;
-		} else if (args.length === 2) {
-			let [searchBounds, visitor] = args;
+		} else if (arguments.length === 2) {
+			let searchBounds = arguments[0], visitor = arguments[1];
 			this.build();
 			if (this.isEmpty()) {
 				return null;
@@ -155,9 +139,9 @@ export default class AbstractSTRtree {
 			if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
 				this.query(searchBounds, this.root, visitor);
 			}
-		} else if (args.length === 3) {
-			if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-				let [searchBounds, node, visitor] = args;
+		} else if (arguments.length === 3) {
+			if (hasInterface(arguments[2], ItemVisitor) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
+				let searchBounds = arguments[0], node = arguments[1], visitor = arguments[2];
 				var childBoundables = node.getChildBoundables();
 				for (var i = 0; i < childBoundables.size(); i++) {
 					var childBoundable = childBoundables.get(i);
@@ -172,8 +156,8 @@ export default class AbstractSTRtree {
 						Assert.shouldNeverReachHere();
 					}
 				}
-			} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-				let [searchBounds, node, matches] = args;
+			} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
+				let searchBounds = arguments[0], node = arguments[1], matches = arguments[2];
 				var childBoundables = node.getChildBoundables();
 				for (var i = 0; i < childBoundables.size(); i++) {
 					var childBoundable = childBoundables.get(i);
@@ -190,27 +174,27 @@ export default class AbstractSTRtree {
 				}
 			}
 		}
-	}
-	build() {
+	},
+	build: function () {
 		if (this.built) return null;
 		this.root = this.itemBoundables.isEmpty() ? this.createNode(0) : this.createHigherLevels(this.itemBoundables, -1);
 		this.itemBoundables = null;
 		this.built = true;
-	}
-	getRoot() {
+	},
+	getRoot: function () {
 		this.build();
 		return this.root;
-	}
-	remove(...args) {
-		if (args.length === 2) {
-			let [searchBounds, item] = args;
+	},
+	remove: function () {
+		if (arguments.length === 2) {
+			let searchBounds = arguments[0], item = arguments[1];
 			this.build();
 			if (this.getIntersectsOp().intersects(this.root.getBounds(), searchBounds)) {
 				return this.remove(searchBounds, this.root, item);
 			}
 			return false;
-		} else if (args.length === 3) {
-			let [searchBounds, node, item] = args;
+		} else if (arguments.length === 3) {
+			let searchBounds = arguments[0], node = arguments[1], item = arguments[2];
 			var found = this.removeItem(node, item);
 			if (found) return true;
 			var childToPrune = null;
@@ -234,25 +218,24 @@ export default class AbstractSTRtree {
 			}
 			return found;
 		}
-	}
-	createHigherLevels(boundablesOfALevel, level) {
+	},
+	createHigherLevels: function (boundablesOfALevel, level) {
 		Assert.isTrue(!boundablesOfALevel.isEmpty());
 		var parentBoundables = this.createParentBoundables(boundablesOfALevel, level + 1);
 		if (parentBoundables.size() === 1) {
 			return parentBoundables.get(0);
 		}
 		return this.createHigherLevels(parentBoundables, level + 1);
-	}
-	depth(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	depth: function () {
+		if (arguments.length === 0) {
 			if (this.isEmpty()) {
 				return 0;
 			}
 			this.build();
 			return this.depth(this.root);
-		} else if (args.length === 1) {
-			let [node] = args;
+		} else if (arguments.length === 1) {
+			let node = arguments[0];
 			var maxChildDepth = 0;
 			for (var i = node.getChildBoundables().iterator(); i.hasNext(); ) {
 				var childBoundable = i.next();
@@ -263,8 +246,8 @@ export default class AbstractSTRtree {
 			}
 			return maxChildDepth + 1;
 		}
-	}
-	createParentBoundables(childBoundables, newLevel) {
+	},
+	createParentBoundables: function (childBoundables, newLevel) {
 		Assert.isTrue(!childBoundables.isEmpty());
 		var parentBoundables = new ArrayList();
 		parentBoundables.add(this.createNode(newLevel));
@@ -278,16 +261,23 @@ export default class AbstractSTRtree {
 			this.lastNode(parentBoundables).addChildBoundable(childBoundable);
 		}
 		return parentBoundables;
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		if (!this.built) return this.itemBoundables.isEmpty();
 		return this.root.isEmpty();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Serializable];
+	},
+	getClass: function () {
 		return AbstractSTRtree;
 	}
-}
-class IntersectsOp {}
+});
+AbstractSTRtree.compareDoubles = function (a, b) {
+	return a > b ? 1 : a < b ? -1 : 0;
+};
+function IntersectsOp() {}
+AbstractSTRtree.IntersectsOp = IntersectsOp;
 AbstractSTRtree.serialVersionUID = -3886435814360241337;
 AbstractSTRtree.DEFAULT_NODE_CAPACITY = 10;
 

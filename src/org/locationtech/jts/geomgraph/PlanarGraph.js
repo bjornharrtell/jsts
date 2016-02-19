@@ -2,38 +2,26 @@ import Location from '../geom/Location';
 import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Coordinate from '../geom/Coordinate';
 import Node from './Node';
+import extend from '../../../../extend';
 import NodeMap from './NodeMap';
 import DirectedEdge from './DirectedEdge';
 import System from '../../../../java/lang/System';
 import ArrayList from '../../../../java/util/ArrayList';
 import Quadrant from './Quadrant';
 import NodeFactory from './NodeFactory';
-export default class PlanarGraph {
-	constructor(...args) {
-		this.edges = new ArrayList();
-		this.nodes = null;
-		this.edgeEndList = new ArrayList();
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				this.nodes = new NodeMap(new NodeFactory());
-			} else if (args.length === 1) {
-				let [nodeFact] = args;
-				this.nodes = new NodeMap(nodeFact);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function PlanarGraph() {
+	this.edges = new ArrayList();
+	this.nodes = null;
+	this.edgeEndList = new ArrayList();
+	if (arguments.length === 0) {
+		this.nodes = new NodeMap(new NodeFactory());
+	} else if (arguments.length === 1) {
+		let nodeFact = arguments[0];
+		this.nodes = new NodeMap(nodeFact);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static linkResultDirectedEdges(nodes) {
-		for (var nodeit = nodes.iterator(); nodeit.hasNext(); ) {
-			var node = nodeit.next();
-			node.getEdges().linkResultDirectedEdges();
-		}
-	}
-	printEdges(out) {
+}
+extend(PlanarGraph.prototype, {
+	printEdges: function (out) {
 		out.println("Edges:");
 		for (var i = 0; i < this.edges.size(); i++) {
 			out.println("edge " + i + ":");
@@ -41,61 +29,61 @@ export default class PlanarGraph {
 			e.print(out);
 			e.eiList.print(out);
 		}
-	}
-	find(coord) {
+	},
+	find: function (coord) {
 		return this.nodes.find(coord);
-	}
-	addNode(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Node) {
-				let [node] = args;
+	},
+	addNode: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Node) {
+				let node = arguments[0];
 				return this.nodes.addNode(node);
-			} else if (args[0] instanceof Coordinate) {
-				let [coord] = args;
+			} else if (arguments[0] instanceof Coordinate) {
+				let coord = arguments[0];
 				return this.nodes.addNode(coord);
 			}
 		}
-	}
-	getNodeIterator() {
+	},
+	getNodeIterator: function () {
 		return this.nodes.iterator();
-	}
-	linkResultDirectedEdges() {
+	},
+	linkResultDirectedEdges: function () {
 		for (var nodeit = this.nodes.iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			node.getEdges().linkResultDirectedEdges();
 		}
-	}
-	debugPrintln(o) {
+	},
+	debugPrintln: function (o) {
 		System.out.println(o);
-	}
-	isBoundaryNode(geomIndex, coord) {
+	},
+	isBoundaryNode: function (geomIndex, coord) {
 		var node = this.nodes.find(coord);
 		if (node === null) return false;
 		var label = node.getLabel();
 		if (label !== null && label.getLocation(geomIndex) === Location.BOUNDARY) return true;
 		return false;
-	}
-	linkAllDirectedEdges() {
+	},
+	linkAllDirectedEdges: function () {
 		for (var nodeit = this.nodes.iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			node.getEdges().linkAllDirectedEdges();
 		}
-	}
-	matchInSameDirection(p0, p1, ep0, ep1) {
+	},
+	matchInSameDirection: function (p0, p1, ep0, ep1) {
 		if (!p0.equals(ep0)) return false;
 		if (CGAlgorithms.computeOrientation(p0, p1, ep1) === CGAlgorithms.COLLINEAR && Quadrant.quadrant(p0, p1) === Quadrant.quadrant(ep0, ep1)) return true;
 		return false;
-	}
-	getEdgeEnds() {
+	},
+	getEdgeEnds: function () {
 		return this.edgeEndList;
-	}
-	debugPrint(o) {
+	},
+	debugPrint: function (o) {
 		System.out.print(o);
-	}
-	getEdgeIterator() {
+	},
+	getEdgeIterator: function () {
 		return this.edges.iterator();
-	}
-	findEdgeInSameDirection(p0, p1) {
+	},
+	findEdgeInSameDirection: function (p0, p1) {
 		for (var i = 0; i < this.edges.size(); i++) {
 			var e = this.edges.get(i);
 			var eCoord = e.getCoordinates();
@@ -103,18 +91,18 @@ export default class PlanarGraph {
 			if (this.matchInSameDirection(p0, p1, eCoord[eCoord.length - 1], eCoord[eCoord.length - 2])) return e;
 		}
 		return null;
-	}
-	insertEdge(e) {
+	},
+	insertEdge: function (e) {
 		this.edges.add(e);
-	}
-	findEdgeEnd(e) {
+	},
+	findEdgeEnd: function (e) {
 		for (var i = this.getEdgeEnds().iterator(); i.hasNext(); ) {
 			var ee = i.next();
 			if (ee.getEdge() === e) return ee;
 		}
 		return null;
-	}
-	addEdges(edgesToAdd) {
+	},
+	addEdges: function (edgesToAdd) {
 		for (var it = edgesToAdd.iterator(); it.hasNext(); ) {
 			var e = it.next();
 			this.edges.add(e);
@@ -125,24 +113,33 @@ export default class PlanarGraph {
 			this.add(de1);
 			this.add(de2);
 		}
-	}
-	add(e) {
+	},
+	add: function (e) {
 		this.nodes.add(e);
 		this.edgeEndList.add(e);
-	}
-	getNodes() {
+	},
+	getNodes: function () {
 		return this.nodes.values();
-	}
-	findEdge(p0, p1) {
+	},
+	findEdge: function (p0, p1) {
 		for (var i = 0; i < this.edges.size(); i++) {
 			var e = this.edges.get(i);
 			var eCoord = e.getCoordinates();
 			if (p0.equals(eCoord[0]) && p1.equals(eCoord[1])) return e;
 		}
 		return null;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PlanarGraph;
 	}
-}
+});
+PlanarGraph.linkResultDirectedEdges = function (nodes) {
+	for (var nodeit = nodes.iterator(); nodeit.hasNext(); ) {
+		var node = nodeit.next();
+		node.getEdges().linkResultDirectedEdges();
+	}
+};
 

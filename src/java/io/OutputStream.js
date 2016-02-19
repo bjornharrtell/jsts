@@ -1,1 +1,1 @@
-export default class OutputStream {}
+export default function OutputStream () {}

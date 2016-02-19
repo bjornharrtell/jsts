@@ -1,62 +1,57 @@
 import CoordinateSequenceFactory from '../CoordinateSequenceFactory';
+import hasInterface from '../../../../../hasInterface';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../../extend';
 import CoordinateSequence from '../CoordinateSequence';
-export default class PackedCoordinateSequenceFactory {
-	constructor(...args) {
-		this.type = PackedCoordinateSequenceFactory.DOUBLE;
-		this.dimension = 3;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, PackedCoordinateSequenceFactory.DOUBLE);
-			} else if (args.length === 1) {
-				let [type] = args;
-				overloaded.call(this, type, 3);
-			} else if (args.length === 2) {
-				let [type, dimension] = args;
-				this.setType(type);
-				this.setDimension(dimension);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function PackedCoordinateSequenceFactory() {
+	this.type = PackedCoordinateSequenceFactory.DOUBLE;
+	this.dimension = 3;
+	if (arguments.length === 0) {
+		PackedCoordinateSequenceFactory.call(this, PackedCoordinateSequenceFactory.DOUBLE);
+	} else if (arguments.length === 1) {
+		let type = arguments[0];
+		PackedCoordinateSequenceFactory.call(this, type, 3);
+	} else if (arguments.length === 2) {
+		let type = arguments[0], dimension = arguments[1];
+		this.setType(type);
+		this.setDimension(dimension);
 	}
-	get interfaces_() {
-		return [CoordinateSequenceFactory];
-	}
-	create(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Array) {
-				let [coordinates] = args;
+}
+extend(PackedCoordinateSequenceFactory.prototype, {
+	create: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Array) {
+				let coordinates = arguments[0];
 				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
 					return new PackedCoordinateSequence.Double(coordinates, this.dimension);
 				} else {
 					return new PackedCoordinateSequence.Float(coordinates, this.dimension);
 				}
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-				let [coordSeq] = args;
+			} else if (hasInterface(arguments[0], CoordinateSequence)) {
+				let coordSeq = arguments[0];
 				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
 					return new PackedCoordinateSequence.Double(coordSeq.toCoordinateArray(), this.dimension);
 				} else {
 					return new PackedCoordinateSequence.Float(coordSeq.toCoordinateArray(), this.dimension);
 				}
 			}
-		} else if (args.length === 2) {
-			if (args[0] instanceof Array && Number.isInteger(args[1])) {
-				let [packedCoordinates, dimension] = args;
+		} else if (arguments.length === 2) {
+			if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+				let packedCoordinates = arguments[0], dimension = arguments[1];
 				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
 					return new PackedCoordinateSequence.Double(packedCoordinates, dimension);
 				} else {
 					return new PackedCoordinateSequence.Float(packedCoordinates, dimension);
 				}
-			} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
-				let [packedCoordinates, dimension] = args;
+			} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+				let packedCoordinates = arguments[0], dimension = arguments[1];
 				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
 					return new PackedCoordinateSequence.Double(packedCoordinates, dimension);
 				} else {
 					return new PackedCoordinateSequence.Float(packedCoordinates, dimension);
 				}
-			} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-				let [size, dimension] = args;
+			} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
+				let size = arguments[0], dimension = arguments[1];
 				if (this.type === PackedCoordinateSequenceFactory.DOUBLE) {
 					return new PackedCoordinateSequence.Double(size, dimension);
 				} else {
@@ -64,24 +59,27 @@ export default class PackedCoordinateSequenceFactory {
 				}
 			}
 		}
-	}
-	setType(type) {
+	},
+	setType: function (type) {
 		if (type !== PackedCoordinateSequenceFactory.DOUBLE && type !== PackedCoordinateSequenceFactory.FLOAT) throw new IllegalArgumentException("Unknown type " + type);
 		this.type = type;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return this.dimension;
-	}
-	getType() {
+	},
+	getType: function () {
 		return this.type;
-	}
-	setDimension(dimension) {
+	},
+	setDimension: function (dimension) {
 		this.dimension = dimension;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequenceFactory];
+	},
+	getClass: function () {
 		return PackedCoordinateSequenceFactory;
 	}
-}
+});
 PackedCoordinateSequenceFactory.DOUBLE = 0;
 PackedCoordinateSequenceFactory.FLOAT = 1;
 PackedCoordinateSequenceFactory.DOUBLE_FACTORY = new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.DOUBLE);

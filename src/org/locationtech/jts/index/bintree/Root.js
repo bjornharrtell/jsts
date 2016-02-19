@@ -1,19 +1,17 @@
 import NodeBase from './NodeBase';
 import Node from './Node';
+import extend from '../../../../../extend';
 import IntervalSize from '../quadtree/IntervalSize';
 import Assert from '../../util/Assert';
-export default class Root extends NodeBase {
-	constructor(...args) {
-		super();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	insert(itemInterval, item) {
-		var index = Root.getSubnodeIndex(itemInterval, Root.origin);
+import inherits from '../../../../../inherits';
+export default function Root() {
+	NodeBase.apply(this);
+	if (arguments.length === 0) {}
+}
+inherits(Root, NodeBase);
+extend(Root.prototype, {
+	insert: function (itemInterval, item) {
+		var index = NodeBase.getSubnodeIndex(itemInterval, Root.origin);
 		if (index === -1) {
 			this.add(item);
 			return null;
@@ -24,20 +22,23 @@ export default class Root extends NodeBase {
 			this.subnode[index] = largerNode;
 		}
 		this.insertContained(this.subnode[index], itemInterval, item);
-	}
-	isSearchMatch(interval) {
+	},
+	isSearchMatch: function (interval) {
 		return true;
-	}
-	insertContained(tree, itemInterval, item) {
+	},
+	insertContained: function (tree, itemInterval, item) {
 		Assert.isTrue(tree.getInterval().contains(itemInterval));
 		var isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax());
 		var node = null;
 		if (isZeroArea) node = tree.find(itemInterval); else node = tree.getNode(itemInterval);
 		node.add(item);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Root;
 	}
-}
+});
 Root.origin = 0.0;
 

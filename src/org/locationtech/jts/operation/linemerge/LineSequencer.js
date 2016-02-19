@@ -1,9 +1,11 @@
 import TreeSet from '../../../../../java/util/TreeSet';
 import LineString from '../../geom/LineString';
 import Geometry from '../../geom/Geometry';
+import hasInterface from '../../../../../hasInterface';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Collection from '../../../../../java/util/Collection';
 import Coordinate from '../../geom/Coordinate';
+import extend from '../../../../../extend';
 import Integer from '../../../../../java/lang/Integer';
 import LineMergeGraph from './LineMergeGraph';
 import LinkedList from '../../../../../java/util/LinkedList';
@@ -13,99 +15,31 @@ import ConnectedSubgraphFinder from '../../planargraph/algorithm/ConnectedSubgra
 import Assert from '../../util/Assert';
 import MultiLineString from '../../geom/MultiLineString';
 import GraphComponent from '../../planargraph/GraphComponent';
-export default class LineSequencer {
-	constructor(...args) {
-		this.graph = new LineMergeGraph();
-		this.factory = new GeometryFactory();
-		this.lineCount = 0;
-		this.isRun = false;
-		this.sequencedGeometry = null;
-		this._isSequenceable = false;
-	}
-	get interfaces_() {
-		return [];
-	}
-	static findUnvisitedBestOrientedDE(node) {
-		var wellOrientedDE = null;
-		var unvisitedDE = null;
-		for (var i = node.getOutEdges().iterator(); i.hasNext(); ) {
-			var de = i.next();
-			if (!de.getEdge().isVisited()) {
-				unvisitedDE = de;
-				if (de.getEdgeDirection()) wellOrientedDE = de;
-			}
-		}
-		if (wellOrientedDE !== null) return wellOrientedDE;
-		return unvisitedDE;
-	}
-	static findLowestDegreeNode(graph) {
-		var minDegree = Integer.MAX_VALUE;
-		var minDegreeNode = null;
-		for (var i = graph.nodeIterator(); i.hasNext(); ) {
-			var node = i.next();
-			if (minDegreeNode === null || node.getDegree() < minDegree) {
-				minDegree = node.getDegree();
-				minDegreeNode = node;
-			}
-		}
-		return minDegreeNode;
-	}
-	static isSequenced(geom) {
-		if (!(geom instanceof MultiLineString)) {
-			return true;
-		}
-		var mls = geom;
-		var prevSubgraphNodes = new TreeSet();
-		var lastNode = null;
-		var currNodes = new ArrayList();
-		for (var i = 0; i < mls.getNumGeometries(); i++) {
-			var line = mls.getGeometryN(i);
-			var startNode = line.getCoordinateN(0);
-			var endNode = line.getCoordinateN(line.getNumPoints() - 1);
-			if (prevSubgraphNodes.contains(startNode)) return false;
-			if (prevSubgraphNodes.contains(endNode)) return false;
-			if (lastNode !== null) {
-				if (!startNode.equals(lastNode)) {
-					prevSubgraphNodes.addAll(currNodes);
-					currNodes.clear();
-				}
-			}
-			currNodes.add(startNode);
-			currNodes.add(endNode);
-			lastNode = endNode;
-		}
-		return true;
-	}
-	static reverse(line) {
-		var pts = line.getCoordinates();
-		var revPts = new Array(pts.length);
-		var len = pts.length;
-		for (var i = 0; i < len; i++) {
-			revPts[len - 1 - i] = new Coordinate(pts[i]);
-		}
-		return line.getFactory().createLineString(revPts);
-	}
-	static sequence(geom) {
-		var sequencer = new LineSequencer();
-		sequencer.add(geom);
-		return sequencer.getSequencedLineStrings();
-	}
-	addLine(lineString) {
+export default function LineSequencer() {
+	this.graph = new LineMergeGraph();
+	this.factory = new GeometryFactory();
+	this.lineCount = 0;
+	this.isRun = false;
+	this.sequencedGeometry = null;
+	this._isSequenceable = false;
+}
+extend(LineSequencer.prototype, {
+	addLine: function (lineString) {
 		if (this.factory === null) {
 			this.factory = lineString.getFactory();
 		}
 		this.graph.addEdge(lineString);
 		this.lineCount++;
-	}
-	hasSequence(graph) {
+	},
+	hasSequence: function (graph) {
 		var oddDegreeCount = 0;
 		for (var i = graph.nodeIterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (node.getDegree() % 2 === 1) oddDegreeCount++;
 		}
 		return oddDegreeCount <= 2;
-	}
-	computeSequence() {
+	},
+	computeSequence: function () {
 		if (this.isRun) {
 			return null;
 		}
@@ -117,8 +51,8 @@ export default class LineSequencer {
 		var finalLineCount = this.sequencedGeometry.getNumGeometries();
 		Assert.isTrue(this.lineCount === finalLineCount, "Lines were missing from result");
 		Assert.isTrue(this.sequencedGeometry instanceof LineString || this.sequencedGeometry instanceof MultiLineString, "Result is not lineal");
-	}
-	findSequences() {
+	},
+	findSequences: function () {
 		var sequences = new ArrayList();
 		var csFinder = new ConnectedSubgraphFinder(this.graph);
 		var subgraphs = csFinder.getConnectedSubgraphs();
@@ -132,8 +66,8 @@ export default class LineSequencer {
 			}
 		}
 		return sequences;
-	}
-	addReverseSubpath(de, lit, expectedClosed) {
+	},
+	addReverseSubpath: function (de, lit, expectedClosed) {
 		var endNode = de.getToNode();
 		var fromNode = null;
 		while (true) {
@@ -147,8 +81,8 @@ export default class LineSequencer {
 		if (expectedClosed) {
 			Assert.isTrue(fromNode === endNode, "path not contiguous");
 		}
-	}
-	findSequence(graph) {
+	},
+	findSequence: function (graph) {
 		GraphComponent.setVisited(graph.edgeIterator(), false);
 		var startNode = LineSequencer.findLowestDegreeNode(graph);
 		var startDE = startNode.getOutEdges().iterator().next();
@@ -163,16 +97,16 @@ export default class LineSequencer {
 		}
 		var orientedSeq = this.orient(seq);
 		return orientedSeq;
-	}
-	reverse(seq) {
+	},
+	reverse: function (seq) {
 		var newSeq = new LinkedList();
 		for (var i = seq.iterator(); i.hasNext(); ) {
 			var de = i.next();
 			newSeq.addFirst(de.getSym());
 		}
 		return newSeq;
-	}
-	orient(seq) {
+	},
+	orient: function (seq) {
 		var startEdge = seq.get(0);
 		var endEdge = seq.get(seq.size() - 1);
 		var startNode = startEdge.getFromNode();
@@ -195,8 +129,8 @@ export default class LineSequencer {
 		}
 		if (flipSeq) return this.reverse(seq);
 		return seq;
-	}
-	buildSequencedGeometry(sequences) {
+	},
+	buildSequencedGeometry: function (sequences) {
 		var lines = new ArrayList();
 		for (var i1 = sequences.iterator(); i1.hasNext(); ) {
 			var seq = i1.next();
@@ -211,40 +145,108 @@ export default class LineSequencer {
 		}
 		if (lines.size() === 0) return this.factory.createMultiLineString(new Array(0));
 		return this.factory.buildGeometry(lines);
-	}
-	getSequencedLineStrings() {
+	},
+	getSequencedLineStrings: function () {
 		this.computeSequence();
 		return this.sequencedGeometry;
-	}
-	isSequenceable() {
+	},
+	isSequenceable: function () {
 		this.computeSequence();
 		return this._isSequenceable;
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [geometries] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], Collection)) {
+				let geometries = arguments[0];
 				for (var i = geometries.iterator(); i.hasNext(); ) {
 					var geometry = i.next();
 					this.add(geometry);
 				}
-			} else if (args[0] instanceof Geometry) {
-				let [geometry] = args;
-				geometry.apply(new (class {
-					filter(component) {
+			} else if (arguments[0] instanceof Geometry) {
+				let geometry = arguments[0];
+				geometry.apply({
+					interfaces_: function () {
+						return [GeometryComponentFilter];
+					},
+					filter: function (component) {
 						if (component instanceof LineString) {
 							this.addLine(component);
 						}
 					}
-					get interfaces_() {
-						return [GeometryComponentFilter];
-					}
-				})());
+				});
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LineSequencer;
 	}
-}
+});
+LineSequencer.findUnvisitedBestOrientedDE = function (node) {
+	var wellOrientedDE = null;
+	var unvisitedDE = null;
+	for (var i = node.getOutEdges().iterator(); i.hasNext(); ) {
+		var de = i.next();
+		if (!de.getEdge().isVisited()) {
+			unvisitedDE = de;
+			if (de.getEdgeDirection()) wellOrientedDE = de;
+		}
+	}
+	if (wellOrientedDE !== null) return wellOrientedDE;
+	return unvisitedDE;
+};
+LineSequencer.findLowestDegreeNode = function (graph) {
+	var minDegree = Integer.MAX_VALUE;
+	var minDegreeNode = null;
+	for (var i = graph.nodeIterator(); i.hasNext(); ) {
+		var node = i.next();
+		if (minDegreeNode === null || node.getDegree() < minDegree) {
+			minDegree = node.getDegree();
+			minDegreeNode = node;
+		}
+	}
+	return minDegreeNode;
+};
+LineSequencer.isSequenced = function (geom) {
+	if (!(geom instanceof MultiLineString)) {
+		return true;
+	}
+	var mls = geom;
+	var prevSubgraphNodes = new TreeSet();
+	var lastNode = null;
+	var currNodes = new ArrayList();
+	for (var i = 0; i < mls.getNumGeometries(); i++) {
+		var line = mls.getGeometryN(i);
+		var startNode = line.getCoordinateN(0);
+		var endNode = line.getCoordinateN(line.getNumPoints() - 1);
+		if (prevSubgraphNodes.contains(startNode)) return false;
+		if (prevSubgraphNodes.contains(endNode)) return false;
+		if (lastNode !== null) {
+			if (!startNode.equals(lastNode)) {
+				prevSubgraphNodes.addAll(currNodes);
+				currNodes.clear();
+			}
+		}
+		currNodes.add(startNode);
+		currNodes.add(endNode);
+		lastNode = endNode;
+	}
+	return true;
+};
+LineSequencer.reverse = function (line) {
+	var pts = line.getCoordinates();
+	var revPts = new Array(pts.length);
+	var len = pts.length;
+	for (var i = 0; i < len; i++) {
+		revPts[len - 1 - i] = new Coordinate(pts[i]);
+	}
+	return line.getFactory().createLineString(revPts);
+};
+LineSequencer.sequence = function (geom) {
+	var sequencer = new LineSequencer();
+	sequencer.add(geom);
+	return sequencer.getSequencedLineStrings();
+};
 

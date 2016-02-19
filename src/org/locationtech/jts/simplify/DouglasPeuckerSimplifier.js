@@ -3,70 +3,67 @@ import GeometryTransformer from '../geom/util/GeometryTransformer';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import Polygon from '../geom/Polygon';
 import LinearRing from '../geom/LinearRing';
+import extend from '../../../../extend';
 import MultiPolygon from '../geom/MultiPolygon';
-export default class DouglasPeuckerSimplifier {
-	constructor(...args) {
-		this.inputGeom = null;
-		this.distanceTolerance = null;
-		this.isEnsureValidTopology = true;
-		if (args.length === 1) {
-			let [inputGeom] = args;
-			this.inputGeom = inputGeom;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static get DPTransformer() {
-		return DPTransformer;
-	}
-	static simplify(geom, distanceTolerance) {
-		var tss = new DouglasPeuckerSimplifier(geom);
-		tss.setDistanceTolerance(distanceTolerance);
-		return tss.getResultGeometry();
-	}
-	setEnsureValid(isEnsureValidTopology) {
-		this.isEnsureValidTopology = isEnsureValidTopology;
-	}
-	getResultGeometry() {
-		if (this.inputGeom.isEmpty()) return this.inputGeom.copy();
-		return new DPTransformer(this.isEnsureValidTopology, this.distanceTolerance).transform(this.inputGeom);
-	}
-	setDistanceTolerance(distanceTolerance) {
-		if (distanceTolerance < 0.0) throw new IllegalArgumentException("Tolerance must be non-negative");
-		this.distanceTolerance = distanceTolerance;
-	}
-	getClass() {
-		return DouglasPeuckerSimplifier;
+import inherits from '../../../../inherits';
+export default function DouglasPeuckerSimplifier() {
+	this.inputGeom = null;
+	this.distanceTolerance = null;
+	this.isEnsureValidTopology = true;
+	if (arguments.length === 1) {
+		let inputGeom = arguments[0];
+		this.inputGeom = inputGeom;
 	}
 }
-class DPTransformer extends GeometryTransformer {
-	constructor(...args) {
-		super();
-		this.isEnsureValidTopology = true;
-		this.distanceTolerance = null;
-		if (args.length === 2) {
-			let [isEnsureValidTopology, distanceTolerance] = args;
-			this.isEnsureValidTopology = isEnsureValidTopology;
-			this.distanceTolerance = distanceTolerance;
-		}
-	}
-	get interfaces_() {
+extend(DouglasPeuckerSimplifier.prototype, {
+	setEnsureValid: function (isEnsureValidTopology) {
+		this.isEnsureValidTopology = isEnsureValidTopology;
+	},
+	getResultGeometry: function () {
+		if (this.inputGeom.isEmpty()) return this.inputGeom.copy();
+		return new DPTransformer(this.isEnsureValidTopology, this.distanceTolerance).transform(this.inputGeom);
+	},
+	setDistanceTolerance: function (distanceTolerance) {
+		if (distanceTolerance < 0.0) throw new IllegalArgumentException("Tolerance must be non-negative");
+		this.distanceTolerance = distanceTolerance;
+	},
+	interfaces_: function () {
 		return [];
+	},
+	getClass: function () {
+		return DouglasPeuckerSimplifier;
 	}
-	transformPolygon(geom, parent) {
+});
+DouglasPeuckerSimplifier.simplify = function (geom, distanceTolerance) {
+	var tss = new DouglasPeuckerSimplifier(geom);
+	tss.setDistanceTolerance(distanceTolerance);
+	return tss.getResultGeometry();
+};
+function DPTransformer() {
+	GeometryTransformer.apply(this);
+	this.isEnsureValidTopology = true;
+	this.distanceTolerance = null;
+	if (arguments.length === 2) {
+		let isEnsureValidTopology = arguments[0], distanceTolerance = arguments[1];
+		this.isEnsureValidTopology = isEnsureValidTopology;
+		this.distanceTolerance = distanceTolerance;
+	}
+}
+inherits(DPTransformer, GeometryTransformer);
+extend(DPTransformer.prototype, {
+	transformPolygon: function (geom, parent) {
 		if (geom.isEmpty()) return null;
-		var rawGeom = super.transformPolygon(geom, parent);
+		var rawGeom = GeometryTransformer.prototype.transformPolygon.call(this, geom, parent);
 		if (parent instanceof MultiPolygon) {
 			return rawGeom;
 		}
 		return this.createValidArea(rawGeom);
-	}
-	createValidArea(rawAreaGeom) {
+	},
+	createValidArea: function (rawAreaGeom) {
 		if (this.isEnsureValidTopology) return rawAreaGeom.buffer(0.0);
 		return rawAreaGeom;
-	}
-	transformCoordinates(coords, parent) {
+	},
+	transformCoordinates: function (coords, parent) {
 		var inputPts = coords.toCoordinateArray();
 		var newPts = null;
 		if (inputPts.length === 0) {
@@ -75,20 +72,24 @@ class DPTransformer extends GeometryTransformer {
 			newPts = DouglasPeuckerLineSimplifier.simplify(inputPts, this.distanceTolerance);
 		}
 		return this.factory.getCoordinateSequenceFactory().create(newPts);
-	}
-	transformMultiPolygon(geom, parent) {
-		var rawGeom = super.transformMultiPolygon(geom, parent);
+	},
+	transformMultiPolygon: function (geom, parent) {
+		var rawGeom = GeometryTransformer.prototype.transformMultiPolygon.call(this, geom, parent);
 		return this.createValidArea(rawGeom);
-	}
-	transformLinearRing(geom, parent) {
+	},
+	transformLinearRing: function (geom, parent) {
 		var removeDegenerateRings = parent instanceof Polygon;
-		var simpResult = super.transformLinearRing(geom, parent);
+		var simpResult = GeometryTransformer.prototype.transformLinearRing.call(this, geom, parent);
 		if (removeDegenerateRings && !(simpResult instanceof LinearRing)) return null;
 		;
 		return simpResult;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return DPTransformer;
 	}
-}
+});
+DouglasPeuckerSimplifier.DPTransformer = DPTransformer;
 

@@ -1,14 +1,20 @@
 import EdgeGraph from '../edgegraph/EdgeGraph';
+import extend from '../../../../extend';
 import DissolveHalfEdge from './DissolveHalfEdge';
-export default class DissolveEdgeGraph extends EdgeGraph {
-	get interfaces_() {
-		return [];
-	}
-	createEdge(p0) {
+import inherits from '../../../../inherits';
+export default function DissolveEdgeGraph() {
+	EdgeGraph.apply(this);
+}
+inherits(DissolveEdgeGraph, EdgeGraph);
+extend(DissolveEdgeGraph.prototype, {
+	createEdge: function (p0) {
 		return new DissolveHalfEdge(p0);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return DissolveEdgeGraph;
 	}
-}
+});
 

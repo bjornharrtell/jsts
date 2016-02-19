@@ -1,53 +1,54 @@
+import extend from '../../../../../extend';
 import Comparable from '../../../../../java/lang/Comparable';
-export default class SweepLineEvent {
-	constructor(...args) {
-		this.xValue = null;
-		this.eventType = null;
-		this.insertEvent = null;
-		this.deleteEventIndex = null;
-		this.sweepInt = null;
-		if (args.length === 3) {
-			let [x, insertEvent, sweepInt] = args;
-			this.xValue = x;
-			this.insertEvent = insertEvent;
-			this.eventType = SweepLineEvent.INSERT;
-			if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
-			this.sweepInt = sweepInt;
-		}
+export default function SweepLineEvent() {
+	this.xValue = null;
+	this.eventType = null;
+	this.insertEvent = null;
+	this.deleteEventIndex = null;
+	this.sweepInt = null;
+	if (arguments.length === 3) {
+		let x = arguments[0], insertEvent = arguments[1], sweepInt = arguments[2];
+		this.xValue = x;
+		this.insertEvent = insertEvent;
+		this.eventType = SweepLineEvent.INSERT;
+		if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
+		this.sweepInt = sweepInt;
 	}
-	get interfaces_() {
-		return [Comparable];
-	}
-	getInterval() {
+}
+extend(SweepLineEvent.prototype, {
+	getInterval: function () {
 		return this.sweepInt;
-	}
-	isDelete() {
+	},
+	isDelete: function () {
 		return this.insertEvent !== null;
-	}
-	setDeleteEventIndex(deleteEventIndex) {
+	},
+	setDeleteEventIndex: function (deleteEventIndex) {
 		this.deleteEventIndex = deleteEventIndex;
-	}
-	compareTo(o) {
+	},
+	compareTo: function (o) {
 		var pe = o;
 		if (this.xValue < pe.xValue) return -1;
 		if (this.xValue > pe.xValue) return 1;
 		if (this.eventType < pe.eventType) return -1;
 		if (this.eventType > pe.eventType) return 1;
 		return 0;
-	}
-	getInsertEvent() {
+	},
+	getInsertEvent: function () {
 		return this.insertEvent;
-	}
-	isInsert() {
+	},
+	isInsert: function () {
 		return this.insertEvent === null;
-	}
-	getDeleteEventIndex() {
+	},
+	getDeleteEventIndex: function () {
 		return this.deleteEventIndex;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Comparable];
+	},
+	getClass: function () {
 		return SweepLineEvent;
 	}
-}
+});
 SweepLineEvent.INSERT = 1;
 SweepLineEvent.DELETE = 2;
 

@@ -1,17 +1,19 @@
+import extend from '../../../../extend';
 import Exception from '../../../../java/lang/Exception';
-export default class NotRepresentableException extends Exception {
-	constructor(...args) {
-		super();
-		if (args.length === 0) {
-			let [] = args;
-			super("Projective point not representable on the Cartesian plane.");
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getClass() {
-		return NotRepresentableException;
+import inherits from '../../../../inherits';
+export default function NotRepresentableException() {
+	Exception.apply(this);
+	if (arguments.length === 0) {
+		Exception.call(this, "Projective point not representable on the Cartesian plane.");
 	}
 }
+inherits(NotRepresentableException, Exception);
+extend(NotRepresentableException.prototype, {
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return NotRepresentableException;
+	}
+});
 

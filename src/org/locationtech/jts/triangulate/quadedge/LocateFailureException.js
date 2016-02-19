@@ -1,45 +1,43 @@
+import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
 import RuntimeException from '../../../../../java/lang/RuntimeException';
-export default class LocateFailureException extends RuntimeException {
-	constructor(...args) {
-		super();
-		this.seg = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				if (typeof args[0] === "string") {
-					return ((...args) => {
-						let [msg] = args;
-						super(msg);
-					})(...args);
-				} else if (args[0] instanceof LineSegment) {
-					return ((...args) => {
-						let [seg] = args;
-						super("Locate failed to converge (at edge: " + seg + ").  Possible causes include invalid Subdivision topology or very close sites");
-						this.seg = new LineSegment(seg);
-					})(...args);
-				}
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [msg, seg] = args;
-					super(LocateFailureException.msgWithSpatial(msg, seg));
-					this.seg = new LineSegment(seg);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	static msgWithSpatial(msg, seg) {
-		if (seg !== null) return msg + " [ " + seg + " ]";
-		return msg;
-	}
-	getSegment() {
-		return this.seg;
-	}
-	getClass() {
-		return LocateFailureException;
+import inherits from '../../../../../inherits';
+export default function LocateFailureException() {
+	RuntimeException.apply(this);
+	this.seg = null;
+	if (arguments.length === 1) {
+		if (typeof arguments[0] === "string") {
+			return (() => {
+				let msg = arguments[0];
+				RuntimeException.call(this, msg);
+			})(arguments);
+		} else if (arguments[0] instanceof LineSegment) {
+			return (() => {
+				let seg = arguments[0];
+				RuntimeException.call(this, "Locate failed to converge (at edge: " + seg + ").  Possible causes include invalid Subdivision topology or very close sites");
+				this.seg = new LineSegment(seg);
+			})(arguments);
+		}
+	} else if (arguments.length === 2) {
+		let msg = arguments[0], seg = arguments[1];
+		RuntimeException.call(this, LocateFailureException.msgWithSpatial(msg, seg));
+		this.seg = new LineSegment(seg);
 	}
 }
+inherits(LocateFailureException, RuntimeException);
+extend(LocateFailureException.prototype, {
+	getSegment: function () {
+		return this.seg;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return LocateFailureException;
+	}
+});
+LocateFailureException.msgWithSpatial = function (msg, seg) {
+	if (seg !== null) return msg + " [ " + seg + " ]";
+	return msg;
+};
 

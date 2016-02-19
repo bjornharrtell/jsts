@@ -1,9 +1,11 @@
 import ItemBoundable from './ItemBoundable';
 import PriorityQueue from '../../util/PriorityQueue';
+import hasInterface from '../../../../../hasInterface';
 import ItemVisitor from '../ItemVisitor';
 import SpatialIndex from '../SpatialIndex';
 import AbstractNode from './AbstractNode';
 import Double from '../../../../../java/lang/Double';
+import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import BoundablePair from './BoundablePair';
 import ArrayList from '../../../../../java/util/ArrayList';
@@ -11,72 +13,50 @@ import Comparator from '../../../../../java/util/Comparator';
 import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
+import inherits from '../../../../../inherits';
 import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 import ItemDistance from './ItemDistance';
-export default class STRtree extends AbstractSTRtree {
-	constructor(...args) {
-		super();
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					overloaded.call(this, STRtree.DEFAULT_NODE_CAPACITY);
-				})(...args);
-			} else if (args.length === 1) {
-				return ((...args) => {
-					let [nodeCapacity] = args;
-					super(nodeCapacity);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function STRtree() {
+	AbstractSTRtree.apply(this);
+	if (arguments.length === 0) {
+		STRtree.call(this, STRtree.DEFAULT_NODE_CAPACITY);
+	} else if (arguments.length === 1) {
+		let nodeCapacity = arguments[0];
+		AbstractSTRtree.call(this, nodeCapacity);
 	}
-	get interfaces_() {
-		return [SpatialIndex, Serializable];
-	}
-	static get STRtreeNode() {
-		return STRtreeNode;
-	}
-	static centreX(e) {
-		return STRtree.avg(e.getMinX(), e.getMaxX());
-	}
-	static avg(a, b) {
-		return (a + b) / 2;
-	}
-	static centreY(e) {
-		return STRtree.avg(e.getMinY(), e.getMaxY());
-	}
-	createParentBoundablesFromVerticalSlices(verticalSlices, newLevel) {
+}
+inherits(STRtree, AbstractSTRtree);
+extend(STRtree.prototype, {
+	createParentBoundablesFromVerticalSlices: function (verticalSlices, newLevel) {
 		Assert.isTrue(verticalSlices.length > 0);
 		var parentBoundables = new ArrayList();
 		for (var i = 0; i < verticalSlices.length; i++) {
 			parentBoundables.addAll(this.createParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel));
 		}
 		return parentBoundables;
-	}
-	createNode(level) {
+	},
+	createNode: function (level) {
 		return new STRtreeNode(level);
-	}
-	size(...args) {
-		if (args.length === 0) {
-			let [] = args;
-			return super.size();
-		} else return super.size(...args);
-	}
-	insert(...args) {
-		if (args.length === 2) {
-			let [itemEnv, item] = args;
+	},
+	size: function () {
+		if (arguments.length === 0) {
+			return AbstractSTRtree.prototype.size.call(this);
+		} else return AbstractSTRtree.prototype.size.apply(this, arguments);
+	},
+	insert: function () {
+		if (arguments.length === 2) {
+			let itemEnv = arguments[0], item = arguments[1];
 			if (itemEnv.isNull()) {
 				return null;
 			}
-			super.insert(itemEnv, item);
-		} else return super.insert(...args);
-	}
-	getIntersectsOp() {
+			AbstractSTRtree.prototype.insert.call(this, itemEnv, item);
+		} else return AbstractSTRtree.prototype.insert.apply(this, arguments);
+	},
+	getIntersectsOp: function () {
 		return STRtree.intersectsOp;
-	}
-	verticalSlices(childBoundables, sliceCount) {
+	},
+	verticalSlices: function (childBoundables, sliceCount) {
 		var sliceCapacity = Math.trunc(Math.ceil(childBoundables.size() / sliceCount));
 		var slices = new Array(sliceCount);
 		var i = childBoundables.iterator();
@@ -90,67 +70,66 @@ export default class STRtree extends AbstractSTRtree {
 			}
 		}
 		return slices;
-	}
-	query(...args) {
-		if (args.length === 1) {
-			let [searchEnv] = args;
-			return super.query(searchEnv);
-		} else if (args.length === 2) {
-			let [searchEnv, visitor] = args;
-			super.query(searchEnv, visitor);
-		} else if (args.length === 3) {
-			if (args[2].interfaces_ && args[2].interfaces_.indexOf(ItemVisitor) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-				let [searchBounds, node, visitor] = args;
-				super.query(searchBounds, node, visitor);
-			} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Object && args[1] instanceof AbstractNode)) {
-				let [searchBounds, node, matches] = args;
-				super.query(searchBounds, node, matches);
+	},
+	query: function () {
+		if (arguments.length === 1) {
+			let searchEnv = arguments[0];
+			return AbstractSTRtree.prototype.query.call(this, searchEnv);
+		} else if (arguments.length === 2) {
+			let searchEnv = arguments[0], visitor = arguments[1];
+			AbstractSTRtree.prototype.query.call(this, searchEnv, visitor);
+		} else if (arguments.length === 3) {
+			if (hasInterface(arguments[2], ItemVisitor) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
+				let searchBounds = arguments[0], node = arguments[1], visitor = arguments[2];
+				AbstractSTRtree.prototype.query.call(this, searchBounds, node, visitor);
+			} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
+				let searchBounds = arguments[0], node = arguments[1], matches = arguments[2];
+				AbstractSTRtree.prototype.query.call(this, searchBounds, node, matches);
 			}
 		}
-	}
-	getComparator() {
+	},
+	getComparator: function () {
 		return STRtree.yComparator;
-	}
-	createParentBoundablesFromVerticalSlice(childBoundables, newLevel) {
-		return super.createParentBoundables(childBoundables, newLevel);
-	}
-	remove(...args) {
-		if (args.length === 2) {
-			let [itemEnv, item] = args;
-			return super.remove(itemEnv, item);
-		} else return super.remove(...args);
-	}
-	depth(...args) {
-		if (args.length === 0) {
-			let [] = args;
-			return super.depth();
-		} else return super.depth(...args);
-	}
-	createParentBoundables(childBoundables, newLevel) {
+	},
+	createParentBoundablesFromVerticalSlice: function (childBoundables, newLevel) {
+		return AbstractSTRtree.prototype.createParentBoundables.call(this, childBoundables, newLevel);
+	},
+	remove: function () {
+		if (arguments.length === 2) {
+			let itemEnv = arguments[0], item = arguments[1];
+			return AbstractSTRtree.prototype.remove.call(this, itemEnv, item);
+		} else return AbstractSTRtree.prototype.remove.apply(this, arguments);
+	},
+	depth: function () {
+		if (arguments.length === 0) {
+			return AbstractSTRtree.prototype.depth.call(this);
+		} else return AbstractSTRtree.prototype.depth.apply(this, arguments);
+	},
+	createParentBoundables: function (childBoundables, newLevel) {
 		Assert.isTrue(!childBoundables.isEmpty());
 		var minLeafCount = Math.trunc(Math.ceil(childBoundables.size() / this.getNodeCapacity()));
 		var sortedChildBoundables = new ArrayList(childBoundables);
 		Collections.sort(sortedChildBoundables, STRtree.xComparator);
 		var verticalSlices = this.verticalSlices(sortedChildBoundables, Math.trunc(Math.ceil(Math.sqrt(minLeafCount))));
 		return this.createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
-	}
-	nearestNeighbour(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(ItemDistance) > -1) {
-				let [itemDist] = args;
+	},
+	nearestNeighbour: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], ItemDistance)) {
+				let itemDist = arguments[0];
 				var bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist);
 				return this.nearestNeighbour(bp);
-			} else if (args[0] instanceof BoundablePair) {
-				let [initBndPair] = args;
+			} else if (arguments[0] instanceof BoundablePair) {
+				let initBndPair = arguments[0];
 				return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY);
 			}
-		} else if (args.length === 2) {
-			if (args[0] instanceof STRtree && (args[1].interfaces_ && args[1].interfaces_.indexOf(ItemDistance) > -1)) {
-				let [tree, itemDist] = args;
+		} else if (arguments.length === 2) {
+			if (arguments[0] instanceof STRtree && hasInterface(arguments[1], ItemDistance)) {
+				let tree = arguments[0], itemDist = arguments[1];
 				var bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
 				return this.nearestNeighbour(bp);
-			} else if (args[0] instanceof BoundablePair && typeof args[1] === "number") {
-				let [initBndPair, maxDistance] = args;
+			} else if (arguments[0] instanceof BoundablePair && typeof arguments[1] === "number") {
+				let initBndPair = arguments[0], maxDistance = arguments[1];
 				var distanceLowerBound = maxDistance;
 				var minPair = null;
 				var priQ = new PriorityQueue();
@@ -168,29 +147,39 @@ export default class STRtree extends AbstractSTRtree {
 				}
 				return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
 			}
-		} else if (args.length === 3) {
-			let [env, item, itemDist] = args;
+		} else if (arguments.length === 3) {
+			let env = arguments[0], item = arguments[1], itemDist = arguments[2];
 			var bnd = new ItemBoundable(env, item);
 			var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
 			return this.nearestNeighbour(bp)[0];
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [SpatialIndex, Serializable];
+	},
+	getClass: function () {
 		return STRtree;
 	}
+});
+STRtree.centreX = function (e) {
+	return STRtree.avg(e.getMinX(), e.getMaxX());
+};
+STRtree.avg = function (a, b) {
+	return (a + b) / 2;
+};
+STRtree.centreY = function (e) {
+	return STRtree.avg(e.getMinY(), e.getMaxY());
+};
+function STRtreeNode() {
+	AbstractNode.apply(this);
+	if (arguments.length === 1) {
+		let level = arguments[0];
+		AbstractNode.call(this, level);
+	}
 }
-class STRtreeNode extends AbstractNode {
-	constructor(...args) {
-		super();
-		if (args.length === 1) {
-			let [level] = args;
-			super(level);
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	computeBounds() {
+inherits(STRtreeNode, AbstractNode);
+extend(STRtreeNode.prototype, {
+	computeBounds: function () {
 		var bounds = null;
 		for (var i = this.getChildBoundables().iterator(); i.hasNext(); ) {
 			var childBoundable = i.next();
@@ -201,35 +190,39 @@ class STRtreeNode extends AbstractNode {
 			}
 		}
 		return bounds;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return STRtreeNode;
 	}
-}
+});
+STRtree.STRtreeNode = STRtreeNode;
 STRtree.serialVersionUID = 259274702368956900;
-STRtree.xComparator = new (class {
-	compare(o1, o2) {
-		return STRtree.compareDoubles(STRtree.centreX(o1.getBounds()), STRtree.centreX(o2.getBounds()));
-	}
-	get interfaces_() {
+STRtree.xComparator = {
+	interfaces_: function () {
 		return [Comparator];
+	},
+	compare: function (o1, o2) {
+		return AbstractSTRtree.compareDoubles(STRtree.centreX(o1.getBounds()), STRtree.centreX(o2.getBounds()));
 	}
-})();
-STRtree.yComparator = new (class {
-	compare(o1, o2) {
-		return STRtree.compareDoubles(STRtree.centreY(o1.getBounds()), STRtree.centreY(o2.getBounds()));
-	}
-	get interfaces_() {
+};
+STRtree.yComparator = {
+	interfaces_: function () {
 		return [Comparator];
+	},
+	compare: function (o1, o2) {
+		return AbstractSTRtree.compareDoubles(STRtree.centreY(o1.getBounds()), STRtree.centreY(o2.getBounds()));
 	}
-})();
-STRtree.intersectsOp = new (class {
-	intersects(aBounds, bBounds) {
+};
+STRtree.intersectsOp = {
+	interfaces_: function () {
+		return [IntersectsOp];
+	},
+	intersects: function (aBounds, bBounds) {
 		return aBounds.intersects(bBounds);
 	}
-	get interfaces_() {
-		return [IntersectsOp];
-	}
-})();
+};
 STRtree.DEFAULT_NODE_CAPACITY = 10;
 

@@ -1,30 +1,31 @@
 import GeometryFactory from '../GeometryFactory';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default class GeometryCollectionMapper {
-	constructor(...args) {
-		this.mapOp = null;
-		if (args.length === 1) {
-			let [mapOp] = args;
-			this.mapOp = mapOp;
-		}
+export default function GeometryCollectionMapper() {
+	this.mapOp = null;
+	if (arguments.length === 1) {
+		let mapOp = arguments[0];
+		this.mapOp = mapOp;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static map(gc, op) {
-		var mapper = new GeometryCollectionMapper(op);
-		return mapper.map(gc);
-	}
-	map(gc) {
+}
+extend(GeometryCollectionMapper.prototype, {
+	map: function (gc) {
 		var mapped = new ArrayList();
 		for (var i = 0; i < gc.getNumGeometries(); i++) {
 			var g = this.mapOp.map(gc.getGeometryN(i));
 			if (!g.isEmpty()) mapped.add(g);
 		}
 		return gc.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(mapped));
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometryCollectionMapper;
 	}
-}
+});
+GeometryCollectionMapper.map = function (gc, op) {
+	var mapper = new GeometryCollectionMapper(op);
+	return mapper.map(gc);
+};
 

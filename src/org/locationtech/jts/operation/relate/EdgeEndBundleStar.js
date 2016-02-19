@@ -1,22 +1,20 @@
+import extend from '../../../../../extend';
 import EdgeEndStar from '../../geomgraph/EdgeEndStar';
+import inherits from '../../../../../inherits';
 import EdgeEndBundle from './EdgeEndBundle';
-export default class EdgeEndBundleStar extends EdgeEndStar {
-	constructor(...args) {
-		super();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	updateIM(im) {
+export default function EdgeEndBundleStar() {
+	EdgeEndStar.apply(this);
+	if (arguments.length === 0) {}
+}
+inherits(EdgeEndBundleStar, EdgeEndStar);
+extend(EdgeEndBundleStar.prototype, {
+	updateIM: function (im) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var esb = it.next();
 			esb.updateIM(im);
 		}
-	}
-	insert(e) {
+	},
+	insert: function (e) {
 		var eb = this.edgeMap.get(e);
 		if (eb === null) {
 			eb = new EdgeEndBundle(e);
@@ -24,9 +22,12 @@ export default class EdgeEndBundleStar extends EdgeEndStar {
 		} else {
 			eb.insert(e);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeEndBundleStar;
 	}
-}
+});
 

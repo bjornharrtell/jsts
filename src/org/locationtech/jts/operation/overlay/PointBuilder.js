@@ -1,27 +1,25 @@
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import OverlayOp from './OverlayOp';
-export default class PointBuilder {
-	constructor(...args) {
-		this.op = null;
-		this.geometryFactory = null;
-		this.resultPointList = new ArrayList();
-		if (args.length === 3) {
-			let [op, geometryFactory, ptLocator] = args;
-			this.op = op;
-			this.geometryFactory = geometryFactory;
-		}
+export default function PointBuilder() {
+	this.op = null;
+	this.geometryFactory = null;
+	this.resultPointList = new ArrayList();
+	if (arguments.length === 3) {
+		let op = arguments[0], geometryFactory = arguments[1], ptLocator = arguments[2];
+		this.op = op;
+		this.geometryFactory = geometryFactory;
 	}
-	get interfaces_() {
-		return [];
-	}
-	filterCoveredNodeToPoint(n) {
+}
+extend(PointBuilder.prototype, {
+	filterCoveredNodeToPoint: function (n) {
 		var coord = n.getCoordinate();
 		if (!this.op.isCoveredByLA(coord)) {
 			var pt = this.geometryFactory.createPoint(coord);
 			this.resultPointList.add(pt);
 		}
-	}
-	extractNonCoveredResultNodes(opCode) {
+	},
+	extractNonCoveredResultNodes: function (opCode) {
 		for (var nodeit = this.op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
 			var n = nodeit.next();
 			if (n.isInResult()) continue;
@@ -33,13 +31,16 @@ export default class PointBuilder {
 				}
 			}
 		}
-	}
-	build(opCode) {
+	},
+	build: function (opCode) {
 		this.extractNonCoveredResultNodes(opCode);
 		return this.resultPointList;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PointBuilder;
 	}
-}
+});
 

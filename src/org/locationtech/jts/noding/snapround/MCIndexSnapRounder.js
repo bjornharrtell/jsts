@@ -1,33 +1,32 @@
 import NodingValidator from '../NodingValidator';
+import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
 import Noder from '../Noder';
 import MCIndexNoder from '../MCIndexNoder';
 import NodedSegmentString from '../NodedSegmentString';
 import HotPixel from './HotPixel';
+import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
 import MCIndexPointSnapper from './MCIndexPointSnapper';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder';
-export default class MCIndexSnapRounder {
-	constructor(...args) {
-		this.pm = null;
-		this.li = null;
-		this.scaleFactor = null;
-		this.noder = null;
-		this.pointSnapper = null;
-		this.nodedSegStrings = null;
-		if (args.length === 1) {
-			let [pm] = args;
-			this.pm = pm;
-			this.li = new RobustLineIntersector();
-			this.li.setPrecisionModel(pm);
-			this.scaleFactor = pm.getScale();
-		}
+export default function MCIndexSnapRounder() {
+	this.pm = null;
+	this.li = null;
+	this.scaleFactor = null;
+	this.noder = null;
+	this.pointSnapper = null;
+	this.nodedSegStrings = null;
+	if (arguments.length === 1) {
+		let pm = arguments[0];
+		this.pm = pm;
+		this.li = new RobustLineIntersector();
+		this.li.setPrecisionModel(pm);
+		this.scaleFactor = pm.getScale();
 	}
-	get interfaces_() {
-		return [Noder];
-	}
-	checkCorrectness(inputSegmentStrings) {
+}
+extend(MCIndexSnapRounder.prototype, {
+	checkCorrectness: function (inputSegmentStrings) {
 		var resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings);
 		var nv = new NodingValidator(resultSegStrings);
 		try {
@@ -37,31 +36,31 @@ export default class MCIndexSnapRounder {
 				ex.printStackTrace();
 			} else throw ex;
 		} finally {}
-	}
-	getNodedSubstrings() {
+	},
+	getNodedSubstrings: function () {
 		return NodedSegmentString.getNodedSubstrings(this.nodedSegStrings);
-	}
-	snapRound(segStrings, li) {
+	},
+	snapRound: function (segStrings, li) {
 		var intersections = this.findInteriorIntersections(segStrings, li);
 		this.computeIntersectionSnaps(intersections);
 		this.computeVertexSnaps(segStrings);
-	}
-	findInteriorIntersections(segStrings, li) {
+	},
+	findInteriorIntersections: function (segStrings, li) {
 		var intFinderAdder = new InteriorIntersectionFinderAdder(li);
 		this.noder.setSegmentIntersector(intFinderAdder);
 		this.noder.computeNodes(segStrings);
 		return intFinderAdder.getInteriorIntersections();
-	}
-	computeVertexSnaps(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [edges] = args;
+	},
+	computeVertexSnaps: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], Collection)) {
+				let edges = arguments[0];
 				for (var i0 = edges.iterator(); i0.hasNext(); ) {
 					var edge0 = i0.next();
 					this.computeVertexSnaps(edge0);
 				}
-			} else if (args[0] instanceof NodedSegmentString) {
-				let [e] = args;
+			} else if (arguments[0] instanceof NodedSegmentString) {
+				let e = arguments[0];
 				var pts0 = e.getCoordinates();
 				for (var i = 0; i < pts0.length; i++) {
 					var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
@@ -72,22 +71,25 @@ export default class MCIndexSnapRounder {
 				}
 			}
 		}
-	}
-	computeNodes(inputSegmentStrings) {
+	},
+	computeNodes: function (inputSegmentStrings) {
 		this.nodedSegStrings = inputSegmentStrings;
 		this.noder = new MCIndexNoder();
 		this.pointSnapper = new MCIndexPointSnapper(this.noder.getIndex());
 		this.snapRound(inputSegmentStrings, this.li);
-	}
-	computeIntersectionSnaps(snapPts) {
+	},
+	computeIntersectionSnaps: function (snapPts) {
 		for (var it = snapPts.iterator(); it.hasNext(); ) {
 			var snapPt = it.next();
 			var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
 			this.pointSnapper.snap(hotPixel);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Noder];
+	},
+	getClass: function () {
 		return MCIndexSnapRounder;
 	}
-}
+});
 

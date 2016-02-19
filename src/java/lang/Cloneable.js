@@ -1,1 +1,1 @@
-export default class Clonable {}
+export default function Clonable () {}

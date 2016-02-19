@@ -1,28 +1,19 @@
 import CoordinateList from '../geom/CoordinateList';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import Triangle from '../geom/Triangle';
-export default class VWLineSimplifier {
-	constructor(...args) {
-		this.pts = null;
-		this.tolerance = null;
-		if (args.length === 2) {
-			let [pts, distanceTolerance] = args;
-			this.pts = pts;
-			this.tolerance = distanceTolerance * distanceTolerance;
-		}
+export default function VWLineSimplifier() {
+	this.pts = null;
+	this.tolerance = null;
+	if (arguments.length === 2) {
+		let pts = arguments[0], distanceTolerance = arguments[1];
+		this.pts = pts;
+		this.tolerance = distanceTolerance * distanceTolerance;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get VWVertex() {
-		return VWVertex;
-	}
-	static simplify(pts, distanceTolerance) {
-		var simp = new VWLineSimplifier(pts, distanceTolerance);
-		return simp.simplify();
-	}
-	simplifyVertex(vwLine) {
+}
+extend(VWLineSimplifier.prototype, {
+	simplifyVertex: function (vwLine) {
 		var curr = vwLine;
 		var minArea = curr.getArea();
 		var minVertex = null;
@@ -39,8 +30,8 @@ export default class VWLineSimplifier {
 		}
 		if (!vwLine.isLive()) return -1;
 		return minArea;
-	}
-	simplify() {
+	},
+	simplify: function () {
 		var vwLine = VWVertex.buildLine(this.pts);
 		var minArea = this.tolerance;
 		do {
@@ -51,42 +42,31 @@ export default class VWLineSimplifier {
 			return [simp[0], new Coordinate(simp[0])];
 		}
 		return simp;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return VWLineSimplifier;
 	}
+});
+VWLineSimplifier.simplify = function (pts, distanceTolerance) {
+	var simp = new VWLineSimplifier(pts, distanceTolerance);
+	return simp.simplify();
+};
+function VWVertex() {
+	this.pt = null;
+	this.prev = null;
+	this.next = null;
+	this.area = VWVertex.MAX_AREA;
+	this._isLive = true;
+	if (arguments.length === 1) {
+		let pt = arguments[0];
+		this.pt = pt;
+	}
 }
-class VWVertex {
-	constructor(...args) {
-		this.pt = null;
-		this.prev = null;
-		this.next = null;
-		this.area = VWVertex.MAX_AREA;
-		this._isLive = true;
-		if (args.length === 1) {
-			let [pt] = args;
-			this.pt = pt;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static buildLine(pts) {
-		var first = null;
-		var prev = null;
-		for (var i = 0; i < pts.length; i++) {
-			var v = new VWVertex(pts[i]);
-			if (first === null) first = v;
-			v.setPrev(prev);
-			if (prev !== null) {
-				prev.setNext(v);
-				prev.updateArea();
-			}
-			prev = v;
-		}
-		return first;
-	}
-	getCoordinates() {
+extend(VWVertex.prototype, {
+	getCoordinates: function () {
 		var coords = new CoordinateList();
 		var curr = this;
 		do {
@@ -94,18 +74,18 @@ class VWVertex {
 			curr = curr.next;
 		} while (curr !== null);
 		return coords.toCoordinateArray();
-	}
-	getArea() {
+	},
+	getArea: function () {
 		return this.area;
-	}
-	updateArea() {
+	},
+	updateArea: function () {
 		if (this.prev === null || this.next === null) {
 			this.area = VWVertex.MAX_AREA;
 			return null;
 		}
 		this.area = Math.abs(Triangle.area(this.prev.pt, this.pt, this.next.pt));
-	}
-	remove() {
+	},
+	remove: function () {
 		var tmpPrev = this.prev;
 		var tmpNext = this.next;
 		var result = null;
@@ -121,19 +101,38 @@ class VWVertex {
 		}
 		this._isLive = false;
 		return result;
-	}
-	isLive() {
+	},
+	isLive: function () {
 		return this._isLive;
-	}
-	setPrev(prev) {
+	},
+	setPrev: function (prev) {
 		this.prev = prev;
-	}
-	setNext(next) {
+	},
+	setNext: function (next) {
 		this.next = next;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return VWVertex;
 	}
-}
+});
+VWVertex.buildLine = function (pts) {
+	var first = null;
+	var prev = null;
+	for (var i = 0; i < pts.length; i++) {
+		var v = new VWVertex(pts[i]);
+		if (first === null) first = v;
+		v.setPrev(prev);
+		if (prev !== null) {
+			prev.setNext(v);
+			prev.updateArea();
+		}
+		prev = v;
+	}
+	return first;
+};
 VWVertex.MAX_AREA = Double.MAX_VALUE;
+VWLineSimplifier.VWVertex = VWVertex;
 

@@ -7,58 +7,29 @@ import PlanarPolygon3D from './PlanarPolygon3D';
 import Polygon from '../../geom/Polygon';
 import GeometryLocation from '../distance/GeometryLocation';
 import Double from '../../../../../java/lang/Double';
+import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
 import GeometryCollection from '../../geom/GeometryCollection';
 import CGAlgorithms3D from '../../algorithm/CGAlgorithms3D';
-export default class Distance3DOp {
-	constructor(...args) {
-		this.geom = null;
-		this.terminateDistance = 0.0;
-		this.minDistanceLocation = null;
-		this.minDistance = Double.MAX_VALUE;
-		this.isDone = false;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				let [g0, g1] = args;
-				overloaded.call(this, g0, g1, 0.0);
-			} else if (args.length === 3) {
-				let [g0, g1, terminateDistance] = args;
-				this.geom = new Array(2);
-				this.geom[0] = g0;
-				this.geom[1] = g1;
-				this.terminateDistance = terminateDistance;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function Distance3DOp() {
+	this.geom = null;
+	this.terminateDistance = 0.0;
+	this.minDistanceLocation = null;
+	this.minDistance = Double.MAX_VALUE;
+	this.isDone = false;
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		Distance3DOp.call(this, g0, g1, 0.0);
+	} else if (arguments.length === 3) {
+		let g0 = arguments[0], g1 = arguments[1], terminateDistance = arguments[2];
+		this.geom = new Array(2);
+		this.geom[0] = g0;
+		this.geom[1] = g1;
+		this.terminateDistance = terminateDistance;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static segmentPoint(p0, p1, d0, d1) {
-		if (d0 <= 0) return new Coordinate(p0);
-		if (d1 <= 0) return new Coordinate(p1);
-		var f = Math.abs(d0) / (Math.abs(d0) + Math.abs(d1));
-		var intx = p0.x + f * (p1.x - p0.x);
-		var inty = p0.y + f * (p1.y - p0.y);
-		var intz = p0.z + f * (p1.z - p0.z);
-		return new Coordinate(intx, inty, intz);
-	}
-	static nearestPoints(g0, g1) {
-		var distOp = new Distance3DOp(g0, g1);
-		return distOp.nearestPoints();
-	}
-	static polyPlane(poly) {
-		return new PlanarPolygon3D(poly);
-	}
-	static isWithinDistance(g0, g1, distance) {
-		var distOp = new Distance3DOp(g0, g1, distance);
-		return distOp.distance() <= distance;
-	}
-	static distance(g0, g1) {
-		var distOp = new Distance3DOp(g0, g1);
-		return distOp.distance();
-	}
-	computeMinDistancePolygonPoint(polyPlane, point, flip) {
+}
+extend(Distance3DOp.prototype, {
+	computeMinDistancePolygonPoint: function (polyPlane, point, flip) {
 		var pt = point.getCoordinate();
 		var shell = polyPlane.getPolygon().getExteriorRing();
 		if (polyPlane.intersects(pt, shell)) {
@@ -74,8 +45,8 @@ export default class Distance3DOp {
 			this.updateDistance(dist, new GeometryLocation(polyPlane.getPolygon(), 0, pt), new GeometryLocation(point, 0, pt), flip);
 		}
 		this.computeMinDistanceLinePoint(shell, point, flip);
-	}
-	intersection(poly, line) {
+	},
+	intersection: function (poly, line) {
 		var seq = line.getCoordinateSequence();
 		if (seq.size() === 0) return null;
 		var p0 = new Coordinate();
@@ -94,20 +65,20 @@ export default class Distance3DOp {
 			d0 = d1;
 		}
 		return null;
-	}
-	computeMinDistancePolygonPolygon(poly0, poly1, flip) {
+	},
+	computeMinDistancePolygonPolygon: function (poly0, poly1, flip) {
 		this.computeMinDistancePolygonRings(poly0, poly1, flip);
 		if (this.isDone) return null;
 		var polyPlane1 = new PlanarPolygon3D(poly1);
 		this.computeMinDistancePolygonRings(polyPlane1, poly0.getPolygon(), flip);
-	}
-	computeMinDistancePointPoint(point0, point1, flip) {
+	},
+	computeMinDistancePointPoint: function (point0, point1, flip) {
 		var dist = CGAlgorithms3D.distance(point0.getCoordinate(), point1.getCoordinate());
 		if (dist < this.minDistance) {
 			this.updateDistance(dist, new GeometryLocation(point0, 0, point0.getCoordinate()), new GeometryLocation(point1, 0, point1.getCoordinate()), flip);
 		}
-	}
-	computeMinDistanceMultiMulti(g0, g1, flip) {
+	},
+	computeMinDistanceMultiMulti: function (g0, g1, flip) {
 		if (g0 instanceof GeometryCollection) {
 			var n = g0.getNumGeometries();
 			for (var i = 0; i < n; i++) {
@@ -121,11 +92,11 @@ export default class Distance3DOp {
 				this.computeMinDistanceOneMulti(Distance3DOp.polyPlane(g0), g1, flip);
 			} else this.computeMinDistanceOneMulti(g0, g1, flip);
 		}
-	}
-	computeMinDistanceOneMulti(...args) {
-		if (args.length === 3) {
-			if (typeof args[2] === "boolean" && (args[0] instanceof Geometry && args[1] instanceof Geometry)) {
-				let [g0, g1, flip] = args;
+	},
+	computeMinDistanceOneMulti: function () {
+		if (arguments.length === 3) {
+			if (typeof arguments[2] === "boolean" && (arguments[0] instanceof Geometry && arguments[1] instanceof Geometry)) {
+				let g0 = arguments[0], g1 = arguments[1], flip = arguments[2];
 				if (g1 instanceof GeometryCollection) {
 					var n = g1.getNumGeometries();
 					for (var i = 0; i < n; i++) {
@@ -136,8 +107,8 @@ export default class Distance3DOp {
 				} else {
 					this.computeMinDistance(g0, g1, flip);
 				}
-			} else if (typeof args[2] === "boolean" && (args[0] instanceof PlanarPolygon3D && args[1] instanceof Geometry)) {
-				let [poly, geom, flip] = args;
+			} else if (typeof arguments[2] === "boolean" && (arguments[0] instanceof PlanarPolygon3D && arguments[1] instanceof Geometry)) {
+				let poly = arguments[0], geom = arguments[1], flip = arguments[2];
 				if (geom instanceof GeometryCollection) {
 					var n = geom.getNumGeometries();
 					for (var i = 0; i < n; i++) {
@@ -161,8 +132,8 @@ export default class Distance3DOp {
 				}
 			}
 		}
-	}
-	computeMinDistanceLinePoint(line, point, flip) {
+	},
+	computeMinDistanceLinePoint: function (line, point, flip) {
 		var lineCoord = line.getCoordinates();
 		var coord = point.getCoordinate();
 		for (var i = 0; i < lineCoord.length - 1; i++) {
@@ -174,26 +145,25 @@ export default class Distance3DOp {
 			}
 			if (this.isDone) return null;
 		}
-	}
-	nearestLocations() {
+	},
+	nearestLocations: function () {
 		this.computeMinDistance();
 		return this.minDistanceLocation;
-	}
-	nearestPoints() {
+	},
+	nearestPoints: function () {
 		this.computeMinDistance();
 		var nearestPts = [this.minDistanceLocation[0].getCoordinate(), this.minDistanceLocation[1].getCoordinate()];
 		return nearestPts;
-	}
-	computeMinDistance(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	computeMinDistance: function () {
+		if (arguments.length === 0) {
 			if (this.minDistanceLocation !== null) return null;
 			this.minDistanceLocation = new Array(2);
 			var geomIndex = this.mostPolygonalIndex();
 			var flip = geomIndex === 0;
 			this.computeMinDistanceMultiMulti(this.geom[geomIndex], this.geom[1 - geomIndex], flip);
-		} else if (args.length === 3) {
-			let [g0, g1, flip] = args;
+		} else if (arguments.length === 3) {
+			let g0 = arguments[0], g1 = arguments[1], flip = arguments[2];
 			if (g0 instanceof Point) {
 				if (g1 instanceof Point) {
 					this.computeMinDistancePointPoint(g0, g1, flip);
@@ -237,8 +207,8 @@ export default class Distance3DOp {
 				}
 			}
 		}
-	}
-	computeMinDistanceLineLine(line0, line1, flip) {
+	},
+	computeMinDistanceLineLine: function (line0, line1, flip) {
 		var coord0 = line0.getCoordinates();
 		var coord1 = line1.getCoordinates();
 		for (var i = 0; i < coord0.length - 1; i++) {
@@ -254,8 +224,8 @@ export default class Distance3DOp {
 				if (this.isDone) return null;
 			}
 		}
-	}
-	computeMinDistancePolygonLine(poly, line, flip) {
+	},
+	computeMinDistancePolygonLine: function (poly, line, flip) {
 		var intPt = this.intersection(poly, line);
 		if (intPt !== null) {
 			this.updateDistance(0, new GeometryLocation(poly.getPolygon(), 0, intPt), new GeometryLocation(line, 0, intPt), flip);
@@ -268,14 +238,14 @@ export default class Distance3DOp {
 			this.computeMinDistanceLineLine(poly.getPolygon().getInteriorRingN(i), line, flip);
 			if (this.isDone) return null;
 		}
-	}
-	distance() {
+	},
+	distance: function () {
 		if (this.geom[0] === null || this.geom[1] === null) throw new IllegalArgumentException("null geometries are not supported");
 		if (this.geom[0].isEmpty() || this.geom[1].isEmpty()) return 0.0;
 		this.computeMinDistance();
 		return this.minDistance;
-	}
-	mostPolygonalIndex() {
+	},
+	mostPolygonalIndex: function () {
 		var dim0 = this.geom[0].getDimension();
 		var dim1 = this.geom[1].getDimension();
 		if (dim0 >= 2 && dim1 >= 2) {
@@ -285,8 +255,8 @@ export default class Distance3DOp {
 		if (dim0 >= 2) return 0;
 		if (dim1 >= 2) return 1;
 		return 0;
-	}
-	computeMinDistancePolygonRings(poly, ringPoly, flip) {
+	},
+	computeMinDistancePolygonRings: function (poly, ringPoly, flip) {
 		this.computeMinDistancePolygonLine(poly, ringPoly.getExteriorRing(), flip);
 		if (this.isDone) return null;
 		var nHole = ringPoly.getNumInteriorRing();
@@ -294,16 +264,43 @@ export default class Distance3DOp {
 			this.computeMinDistancePolygonLine(poly, ringPoly.getInteriorRingN(i), flip);
 			if (this.isDone) return null;
 		}
-	}
-	updateDistance(dist, loc0, loc1, flip) {
+	},
+	updateDistance: function (dist, loc0, loc1, flip) {
 		this.minDistance = dist;
 		var index = flip ? 1 : 0;
 		this.minDistanceLocation[index] = loc0;
 		this.minDistanceLocation[1 - index] = loc1;
 		if (this.minDistance < this.terminateDistance) this.isDone = true;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Distance3DOp;
 	}
-}
+});
+Distance3DOp.segmentPoint = function (p0, p1, d0, d1) {
+	if (d0 <= 0) return new Coordinate(p0);
+	if (d1 <= 0) return new Coordinate(p1);
+	var f = Math.abs(d0) / (Math.abs(d0) + Math.abs(d1));
+	var intx = p0.x + f * (p1.x - p0.x);
+	var inty = p0.y + f * (p1.y - p0.y);
+	var intz = p0.z + f * (p1.z - p0.z);
+	return new Coordinate(intx, inty, intz);
+};
+Distance3DOp.nearestPoints = function (g0, g1) {
+	var distOp = new Distance3DOp(g0, g1);
+	return distOp.nearestPoints();
+};
+Distance3DOp.polyPlane = function (poly) {
+	return new PlanarPolygon3D(poly);
+};
+Distance3DOp.isWithinDistance = function (g0, g1, distance) {
+	var distOp = new Distance3DOp(g0, g1, distance);
+	return distOp.distance() <= distance;
+};
+Distance3DOp.distance = function (g0, g1) {
+	var distOp = new Distance3DOp(g0, g1);
+	return distOp.distance();
+};
 

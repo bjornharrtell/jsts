@@ -1,47 +1,48 @@
 import WKTWriter from '../io/WKTWriter';
 import CoordinateArraySequence from '../geom/impl/CoordinateArraySequence';
 import Octant from './Octant';
+import extend from '../../../../extend';
 import SegmentString from './SegmentString';
-export default class BasicSegmentString {
-	constructor(...args) {
-		this.pts = null;
-		this.data = null;
-		if (args.length === 2) {
-			let [pts, data] = args;
-			this.pts = pts;
-			this.data = data;
-		}
-	}
-	get interfaces_() {
-		return [SegmentString];
-	}
-	getCoordinates() {
-		return this.pts;
-	}
-	size() {
-		return this.pts.length;
-	}
-	getCoordinate(i) {
-		return this.pts[i];
-	}
-	isClosed() {
-		return this.pts[0].equals(this.pts[this.pts.length - 1]);
-	}
-	getSegmentOctant(index) {
-		if (index === this.pts.length - 1) return -1;
-		return Octant.octant(this.getCoordinate(index), this.getCoordinate(index + 1));
-	}
-	setData(data) {
+export default function BasicSegmentString() {
+	this.pts = null;
+	this.data = null;
+	if (arguments.length === 2) {
+		let pts = arguments[0], data = arguments[1];
+		this.pts = pts;
 		this.data = data;
 	}
-	getData() {
+}
+extend(BasicSegmentString.prototype, {
+	getCoordinates: function () {
+		return this.pts;
+	},
+	size: function () {
+		return this.pts.length;
+	},
+	getCoordinate: function (i) {
+		return this.pts[i];
+	},
+	isClosed: function () {
+		return this.pts[0].equals(this.pts[this.pts.length - 1]);
+	},
+	getSegmentOctant: function (index) {
+		if (index === this.pts.length - 1) return -1;
+		return Octant.octant(this.getCoordinate(index), this.getCoordinate(index + 1));
+	},
+	setData: function (data) {
+		this.data = data;
+	},
+	getData: function () {
 		return this.data;
-	}
-	toString() {
+	},
+	toString: function () {
 		return WKTWriter.toLineString(new CoordinateArraySequence(this.pts));
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [SegmentString];
+	},
+	getClass: function () {
 		return BasicSegmentString;
 	}
-}
+});
 

@@ -1,55 +1,56 @@
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import Comparable from '../../../../java/lang/Comparable';
-export default class EdgeIntersection {
-	constructor(...args) {
-		this.coord = null;
-		this.segmentIndex = null;
-		this.dist = null;
-		if (args.length === 3) {
-			let [coord, segmentIndex, dist] = args;
-			this.coord = new Coordinate(coord);
-			this.segmentIndex = segmentIndex;
-			this.dist = dist;
-		}
+export default function EdgeIntersection() {
+	this.coord = null;
+	this.segmentIndex = null;
+	this.dist = null;
+	if (arguments.length === 3) {
+		let coord = arguments[0], segmentIndex = arguments[1], dist = arguments[2];
+		this.coord = new Coordinate(coord);
+		this.segmentIndex = segmentIndex;
+		this.dist = dist;
 	}
-	get interfaces_() {
-		return [Comparable];
-	}
-	getSegmentIndex() {
+}
+extend(EdgeIntersection.prototype, {
+	getSegmentIndex: function () {
 		return this.segmentIndex;
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		return this.coord;
-	}
-	print(out) {
+	},
+	print: function (out) {
 		out.print(this.coord);
 		out.print(" seg # = " + this.segmentIndex);
 		out.println(" dist = " + this.dist);
-	}
-	compareTo(obj) {
+	},
+	compareTo: function (obj) {
 		var other = obj;
 		return this.compare(other.segmentIndex, other.dist);
-	}
-	isEndPoint(maxSegmentIndex) {
+	},
+	isEndPoint: function (maxSegmentIndex) {
 		if (this.segmentIndex === 0 && this.dist === 0.0) return true;
 		if (this.segmentIndex === maxSegmentIndex) return true;
 		return false;
-	}
-	toString() {
+	},
+	toString: function () {
 		return this.coord + " seg # = " + this.segmentIndex + " dist = " + this.dist;
-	}
-	getDistance() {
+	},
+	getDistance: function () {
 		return this.dist;
-	}
-	compare(segmentIndex, dist) {
+	},
+	compare: function (segmentIndex, dist) {
 		if (this.segmentIndex < segmentIndex) return -1;
 		if (this.segmentIndex > segmentIndex) return 1;
 		if (this.dist < dist) return -1;
 		if (this.dist > dist) return 1;
 		return 0;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Comparable];
+	},
+	getClass: function () {
 		return EdgeIntersection;
 	}
-}
+});
 

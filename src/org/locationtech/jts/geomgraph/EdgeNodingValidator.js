@@ -1,34 +1,35 @@
 import BasicSegmentString from '../noding/BasicSegmentString';
+import extend from '../../../../extend';
 import FastNodingValidator from '../noding/FastNodingValidator';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class EdgeNodingValidator {
-	constructor(...args) {
-		this.nv = null;
-		if (args.length === 1) {
-			let [edges] = args;
-			this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static toSegmentStrings(edges) {
-		var segStrings = new ArrayList();
-		for (var i = edges.iterator(); i.hasNext(); ) {
-			var e = i.next();
-			segStrings.add(new BasicSegmentString(e.getCoordinates(), e));
-		}
-		return segStrings;
-	}
-	static checkValid(edges) {
-		var validator = new EdgeNodingValidator(edges);
-		validator.checkValid();
-	}
-	checkValid() {
-		this.nv.checkValid();
-	}
-	getClass() {
-		return EdgeNodingValidator;
+export default function EdgeNodingValidator() {
+	this.nv = null;
+	if (arguments.length === 1) {
+		let edges = arguments[0];
+		this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
 	}
 }
+extend(EdgeNodingValidator.prototype, {
+	checkValid: function () {
+		this.nv.checkValid();
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return EdgeNodingValidator;
+	}
+});
+EdgeNodingValidator.toSegmentStrings = function (edges) {
+	var segStrings = new ArrayList();
+	for (var i = edges.iterator(); i.hasNext(); ) {
+		var e = i.next();
+		segStrings.add(new BasicSegmentString(e.getCoordinates(), e));
+	}
+	return segStrings;
+};
+EdgeNodingValidator.checkValid = function (edges) {
+	var validator = new EdgeNodingValidator(edges);
+	validator.checkValid();
+};
 

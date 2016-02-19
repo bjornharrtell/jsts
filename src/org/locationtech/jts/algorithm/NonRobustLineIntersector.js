@@ -1,23 +1,15 @@
+import extend from '../../../../extend';
+import inherits from '../../../../inherits';
 import LineIntersector from './LineIntersector';
-export default class NonRobustLineIntersector extends LineIntersector {
-	constructor(...args) {
-		super();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static isSameSignAndNonZero(a, b) {
-		if (a === 0 || b === 0) {
-			return false;
-		}
-		return a < 0 && b < 0 || a > 0 && b > 0;
-	}
-	computeIntersection(...args) {
-		if (args.length === 3) {
-			let [p, p1, p2] = args;
+export default function NonRobustLineIntersector() {
+	LineIntersector.apply(this);
+	if (arguments.length === 0) {}
+}
+inherits(NonRobustLineIntersector, LineIntersector);
+extend(NonRobustLineIntersector.prototype, {
+	computeIntersection: function () {
+		if (arguments.length === 3) {
+			let p = arguments[0], p1 = arguments[1], p2 = arguments[2];
 			var a1 = null;
 			var b1 = null;
 			var c1 = null;
@@ -41,9 +33,9 @@ export default class NonRobustLineIntersector extends LineIntersector {
 				this._isProper = false;
 			}
 			this.result = LineIntersector.POINT_INTERSECTION;
-		} else return super.computeIntersection(...args);
-	}
-	computeCollinearIntersection(p1, p2, p3, p4) {
+		} else return LineIntersector.prototype.computeIntersection.apply(this, arguments);
+	},
+	computeCollinearIntersection: function (p1, p2, p3, p4) {
 		var r1 = null;
 		var r2 = null;
 		var r3 = null;
@@ -87,8 +79,8 @@ export default class NonRobustLineIntersector extends LineIntersector {
 			this.pb.setCoordinate(q4);
 		}
 		return LineIntersector.COLLINEAR_INTERSECTION;
-	}
-	rParameter(p1, p2, p) {
+	},
+	rParameter: function (p1, p2, p) {
 		var r = null;
 		var dx = Math.abs(p2.x - p1.x);
 		var dy = Math.abs(p2.y - p1.y);
@@ -98,8 +90,8 @@ export default class NonRobustLineIntersector extends LineIntersector {
 			r = (p.y - p1.y) / (p2.y - p1.y);
 		}
 		return r;
-	}
-	computeIntersect(p1, p2, p3, p4) {
+	},
+	computeIntersect: function (p1, p2, p3, p4) {
 		var a1 = null;
 		var b1 = null;
 		var c1 = null;
@@ -143,9 +135,18 @@ export default class NonRobustLineIntersector extends LineIntersector {
 			this.precisionModel.makePrecise(this.pa);
 		}
 		return LineIntersector.POINT_INTERSECTION;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return NonRobustLineIntersector;
 	}
-}
+});
+NonRobustLineIntersector.isSameSignAndNonZero = function (a, b) {
+	if (a === 0 || b === 0) {
+		return false;
+	}
+	return a < 0 && b < 0 || a > 0 && b > 0;
+};
 

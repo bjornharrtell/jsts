@@ -4,6 +4,7 @@
  */
 
 import WKTParser from './WKTParser'
+import extend from '../../../../extend'
 
 /**
  * Writes the Well-Known Text representation of a {@link Geometry}. The
@@ -18,15 +19,15 @@ import WKTParser from './WKTParser'
  * The SFS WKT spec does not define a special tag for {@link LinearRing}s.
  * Under the spec, rings are output as <code>LINESTRING</code>s.
  */
-export default class WKTWriter {
 
-  /**
-   * @param {GeometryFactory} geometryFactory
-   */
-  constructor (geometryFactory) {
-    this.parser = new WKTParser(geometryFactory)
-  }
+/**
+ * @param {GeometryFactory} geometryFactory
+ */
+export default function WKTWriter (geometryFactory) {
+  this.parser = new WKTParser(geometryFactory)
+}
 
+extend(WKTWriter.prototype, {
   /**
    * Converts a <code>Geometry</code> to its Well-known Text representation.
    *
@@ -36,7 +37,7 @@ export default class WKTWriter {
    */
   write (geometry) {
     return this.parser.write(geometry)
-  }
+  },
 
   /**
    * Generates the WKT for a <tt>LINESTRING</tt> specified by two
@@ -54,4 +55,4 @@ export default class WKTWriter {
 
     return 'LINESTRING ( ' + p0.x + ' ' + p0.y + ', ' + p1.x + ' ' + p1.y + ' )'
   }
-}
+})

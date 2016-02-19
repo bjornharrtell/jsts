@@ -1,1 +1,1 @@
-export default class IOException {}
+export default function IOException () {}

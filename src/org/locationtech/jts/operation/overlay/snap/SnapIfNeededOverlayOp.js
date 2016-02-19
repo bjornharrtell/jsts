@@ -1,35 +1,17 @@
 import SnapOverlayOp from './SnapOverlayOp';
+import extend from '../../../../../../extend';
 import RuntimeException from '../../../../../../java/lang/RuntimeException';
 import OverlayOp from '../OverlayOp';
-export default class SnapIfNeededOverlayOp {
-	constructor(...args) {
-		this.geom = new Array(2);
-		if (args.length === 2) {
-			let [g1, g2] = args;
-			this.geom[0] = g1;
-			this.geom[1] = g2;
-		}
+export default function SnapIfNeededOverlayOp() {
+	this.geom = new Array(2);
+	if (arguments.length === 2) {
+		let g1 = arguments[0], g2 = arguments[1];
+		this.geom[0] = g1;
+		this.geom[1] = g2;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static overlayOp(g0, g1, opCode) {
-		var op = new SnapIfNeededOverlayOp(g0, g1);
-		return op.getResultGeometry(opCode);
-	}
-	static union(g0, g1) {
-		return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.UNION);
-	}
-	static intersection(g0, g1) {
-		return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.INTERSECTION);
-	}
-	static symDifference(g0, g1) {
-		return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.SYMDIFFERENCE);
-	}
-	static difference(g0, g1) {
-		return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.DIFFERENCE);
-	}
-	getResultGeometry(opCode) {
+}
+extend(SnapIfNeededOverlayOp.prototype, {
+	getResultGeometry: function (opCode) {
 		var result = null;
 		var isSuccess = false;
 		var savedException = null;
@@ -52,9 +34,28 @@ export default class SnapIfNeededOverlayOp {
 			} finally {}
 		}
 		return result;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SnapIfNeededOverlayOp;
 	}
-}
+});
+SnapIfNeededOverlayOp.overlayOp = function (g0, g1, opCode) {
+	var op = new SnapIfNeededOverlayOp(g0, g1);
+	return op.getResultGeometry(opCode);
+};
+SnapIfNeededOverlayOp.union = function (g0, g1) {
+	return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.UNION);
+};
+SnapIfNeededOverlayOp.intersection = function (g0, g1) {
+	return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.INTERSECTION);
+};
+SnapIfNeededOverlayOp.symDifference = function (g0, g1) {
+	return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.SYMDIFFERENCE);
+};
+SnapIfNeededOverlayOp.difference = function (g0, g1) {
+	return SnapIfNeededOverlayOp.overlayOp(g0, g1, OverlayOp.DIFFERENCE);
+};
 

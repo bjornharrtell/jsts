@@ -5,6 +5,7 @@
 
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
+import extend from '../../../../extend'
 
 const regExes = {
   'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
@@ -19,19 +20,19 @@ const regExes = {
  * Class for reading and writing Well-Known Text.
  *
  * NOTE: Adapted from OpenLayers 2.11 implementation.
+ */
+
+/** Create a new parser for WKT
+ *
+ * @param {GeometryFactory} geometryFactory
+ * @return An instance of WKTParser.
  * @private
  */
-export default class WKTParser {
-  /**
-   * Create a new parser for WKT
-   *
-   * @param {GeometryFactory} geometryFactory
-   * @return An instance of WKTParser.
-   */
-  constructor (geometryFactory) {
-    this.geometryFactory = geometryFactory || new GeometryFactory()
-  }
+export default function WKTParser (geometryFactory) {
+  this.geometryFactory = geometryFactory || new GeometryFactory()
+}
 
+extend(WKTParser.prototype, {
   /**
    * Deserialize a WKT string and return a geometry. Supports WKT for POINT,
    * MULTIPOINT, LINESTRING, LINEARRING, MULTILINESTRING, POLYGON, MULTIPOLYGON,
@@ -59,7 +60,7 @@ export default class WKTParser {
     if (geometry === undefined) throw new Error('Could not parse WKT ' + wkt)
 
     return geometry
-  }
+  },
 
   /**
    * Serialize a geometry into a WKT string.
@@ -69,7 +70,7 @@ export default class WKTParser {
    */
   write (geometry) {
     return this.extractGeometry(geometry)
-  }
+  },
 
   /**
    * Entry point to construct the WKT for a single Geometry object.
@@ -91,7 +92,7 @@ export default class WKTParser {
     }
     return data
   }
-}
+})
 
 /**
  * Object with properties corresponding to the geometry types. Property values

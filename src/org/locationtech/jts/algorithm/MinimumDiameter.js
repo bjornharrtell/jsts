@@ -1,73 +1,42 @@
 import Coordinate from '../geom/Coordinate';
 import Polygon from '../geom/Polygon';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import ConvexHull from './ConvexHull';
-export default class MinimumDiameter {
-	constructor(...args) {
-		this.inputGeom = null;
-		this.isConvex = null;
-		this.convexHullPts = null;
-		this.minBaseSeg = new LineSegment();
-		this.minWidthPt = null;
-		this.minPtIndex = null;
-		this.minWidth = 0.0;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				let [inputGeom] = args;
-				overloaded.call(this, inputGeom, false);
-			} else if (args.length === 2) {
-				let [inputGeom, isConvex] = args;
-				this.inputGeom = inputGeom;
-				this.isConvex = isConvex;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function MinimumDiameter() {
+	this.inputGeom = null;
+	this.isConvex = null;
+	this.convexHullPts = null;
+	this.minBaseSeg = new LineSegment();
+	this.minWidthPt = null;
+	this.minPtIndex = null;
+	this.minWidth = 0.0;
+	if (arguments.length === 1) {
+		let inputGeom = arguments[0];
+		MinimumDiameter.call(this, inputGeom, false);
+	} else if (arguments.length === 2) {
+		let inputGeom = arguments[0], isConvex = arguments[1];
+		this.inputGeom = inputGeom;
+		this.isConvex = isConvex;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static nextIndex(pts, index) {
-		index++;
-		if (index >= pts.length) index = 0;
-		return index;
-	}
-	static computeC(a, b, p) {
-		return a * p.y - b * p.x;
-	}
-	static getMinimumDiameter(geom) {
-		return new MinimumDiameter(geom).getDiameter();
-	}
-	static getMinimumRectangle(geom) {
-		return new MinimumDiameter(geom).getMinimumRectangle();
-	}
-	static computeSegmentForLine(a, b, c) {
-		var p0 = null;
-		var p1 = null;
-		if (Math.abs(b) > Math.abs(a)) {
-			p0 = new Coordinate(0.0, c / b);
-			p1 = new Coordinate(1.0, c / b - a / b);
-		} else {
-			p0 = new Coordinate(c / a, 0.0);
-			p1 = new Coordinate(c / a - b / a, 1.0);
-		}
-		return new LineSegment(p0, p1);
-	}
-	getWidthCoordinate() {
+}
+extend(MinimumDiameter.prototype, {
+	getWidthCoordinate: function () {
 		this.computeMinimumDiameter();
 		return this.minWidthPt;
-	}
-	getSupportingSegment() {
+	},
+	getSupportingSegment: function () {
 		this.computeMinimumDiameter();
 		return this.inputGeom.getFactory().createLineString([this.minBaseSeg.p0, this.minBaseSeg.p1]);
-	}
-	getDiameter() {
+	},
+	getDiameter: function () {
 		this.computeMinimumDiameter();
 		if (this.minWidthPt === null) return this.inputGeom.getFactory().createLineString(null);
 		var basePt = this.minBaseSeg.project(this.minWidthPt);
 		return this.inputGeom.getFactory().createLineString([basePt, this.minWidthPt]);
-	}
-	computeWidthConvex(convexGeom) {
+	},
+	computeWidthConvex: function (convexGeom) {
 		if (convexGeom instanceof Polygon) this.convexHullPts = convexGeom.getExteriorRing().getCoordinates(); else this.convexHullPts = convexGeom.getCoordinates();
 		if (this.convexHullPts.length === 0) {
 			this.minWidth = 0.0;
@@ -84,8 +53,8 @@ export default class MinimumDiameter {
 			this.minBaseSeg.p0 = this.convexHullPts[0];
 			this.minBaseSeg.p1 = this.convexHullPts[1];
 		} else this.computeConvexRingMinDiameter(this.convexHullPts);
-	}
-	computeConvexRingMinDiameter(pts) {
+	},
+	computeConvexRingMinDiameter: function (pts) {
 		this.minWidth = Double.MAX_VALUE;
 		var currMaxIndex = 1;
 		var seg = new LineSegment();
@@ -94,19 +63,19 @@ export default class MinimumDiameter {
 			seg.p1 = pts[i + 1];
 			currMaxIndex = this.findMaxPerpDistance(pts, seg, currMaxIndex);
 		}
-	}
-	computeMinimumDiameter() {
+	},
+	computeMinimumDiameter: function () {
 		if (this.minWidthPt !== null) return null;
 		if (this.isConvex) this.computeWidthConvex(this.inputGeom); else {
 			var convexGeom = new ConvexHull(this.inputGeom).getConvexHull();
 			this.computeWidthConvex(convexGeom);
 		}
-	}
-	getLength() {
+	},
+	getLength: function () {
 		this.computeMinimumDiameter();
 		return this.minWidth;
-	}
-	findMaxPerpDistance(pts, seg, startIndex) {
+	},
+	findMaxPerpDistance: function (pts, seg, startIndex) {
 		var maxPerpDistance = seg.distancePerpendicular(pts[startIndex]);
 		var nextPerpDistance = maxPerpDistance;
 		var maxIndex = startIndex;
@@ -124,8 +93,8 @@ export default class MinimumDiameter {
 			this.minBaseSeg = new LineSegment(seg);
 		}
 		return maxIndex;
-	}
-	getMinimumRectangle() {
+	},
+	getMinimumRectangle: function () {
 		this.computeMinimumDiameter();
 		if (this.minWidth === 0.0) {
 			if (this.minBaseSeg.p0.equals2D(this.minBaseSeg.p1)) {
@@ -157,9 +126,38 @@ export default class MinimumDiameter {
 		var p3 = maxParaLine.lineIntersection(minPerpLine);
 		var shell = this.inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0]);
 		return this.inputGeom.getFactory().createPolygon(shell, null);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return MinimumDiameter;
 	}
-}
+});
+MinimumDiameter.nextIndex = function (pts, index) {
+	index++;
+	if (index >= pts.length) index = 0;
+	return index;
+};
+MinimumDiameter.computeC = function (a, b, p) {
+	return a * p.y - b * p.x;
+};
+MinimumDiameter.getMinimumDiameter = function (geom) {
+	return new MinimumDiameter(geom).getDiameter();
+};
+MinimumDiameter.getMinimumRectangle = function (geom) {
+	return new MinimumDiameter(geom).getMinimumRectangle();
+};
+MinimumDiameter.computeSegmentForLine = function (a, b, c) {
+	var p0 = null;
+	var p1 = null;
+	if (Math.abs(b) > Math.abs(a)) {
+		p0 = new Coordinate(0.0, c / b);
+		p1 = new Coordinate(1.0, c / b - a / b);
+	} else {
+		p0 = new Coordinate(c / a, 0.0);
+		p1 = new Coordinate(c / a - b / a, 1.0);
+	}
+	return new LineSegment(p0, p1);
+};
 

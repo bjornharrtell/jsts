@@ -1,14 +1,13 @@
-export default class EdgeSetIntersector {
-	constructor(...args) {
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function EdgeSetIntersector() {
+	if (arguments.length === 0) {}
+}
+extend(EdgeSetIntersector.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return EdgeSetIntersector;
 	}
-}
+});
 

@@ -1,35 +1,33 @@
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import STRtree from '../../index/strtree/STRtree';
 import IsValidOp from './IsValidOp';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
-export default class IndexedNestedRingTester {
-	constructor(...args) {
-		this.graph = null;
-		this.rings = new ArrayList();
-		this.totalEnv = new Envelope();
-		this.index = null;
-		this.nestedPt = null;
-		if (args.length === 1) {
-			let [graph] = args;
-			this.graph = graph;
-		}
+export default function IndexedNestedRingTester() {
+	this.graph = null;
+	this.rings = new ArrayList();
+	this.totalEnv = new Envelope();
+	this.index = null;
+	this.nestedPt = null;
+	if (arguments.length === 1) {
+		let graph = arguments[0];
+		this.graph = graph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	buildIndex() {
+}
+extend(IndexedNestedRingTester.prototype, {
+	buildIndex: function () {
 		this.index = new STRtree();
 		for (var i = 0; i < this.rings.size(); i++) {
 			var ring = this.rings.get(i);
 			var env = ring.getEnvelopeInternal();
 			this.index.insert(env, ring);
 		}
-	}
-	getNestedPoint() {
+	},
+	getNestedPoint: function () {
 		return this.nestedPt;
-	}
-	isNonNested() {
+	},
+	isNonNested: function () {
 		this.buildIndex();
 		for (var i = 0; i < this.rings.size(); i++) {
 			var innerRing = this.rings.get(i);
@@ -50,13 +48,16 @@ export default class IndexedNestedRingTester {
 			}
 		}
 		return true;
-	}
-	add(ring) {
+	},
+	add: function (ring) {
 		this.rings.add(ring);
 		this.totalEnv.expandToInclude(ring.getEnvelopeInternal());
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return IndexedNestedRingTester;
 	}
-}
+});
 

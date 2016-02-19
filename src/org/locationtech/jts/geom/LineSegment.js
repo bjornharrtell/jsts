@@ -2,87 +2,78 @@ import NotRepresentableException from '../algorithm/NotRepresentableException';
 import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Coordinate from './Coordinate';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import Comparable from '../../../../java/lang/Comparable';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import HCoordinate from '../algorithm/HCoordinate';
 import Serializable from '../../../../java/io/Serializable';
-export default class LineSegment {
-	constructor(...args) {
-		this.p0 = null;
-		this.p1 = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, new Coordinate(), new Coordinate());
-			} else if (args.length === 1) {
-				let [ls] = args;
-				overloaded.call(this, ls.p0, ls.p1);
-			} else if (args.length === 2) {
-				let [p0, p1] = args;
-				this.p0 = p0;
-				this.p1 = p1;
-			} else if (args.length === 4) {
-				let [x0, y0, x1, y1] = args;
-				overloaded.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
-			}
-		};
-		return overloaded.apply(this, args);
+export default function LineSegment() {
+	this.p0 = null;
+	this.p1 = null;
+	if (arguments.length === 0) {
+		LineSegment.call(this, new Coordinate(), new Coordinate());
+	} else if (arguments.length === 1) {
+		let ls = arguments[0];
+		LineSegment.call(this, ls.p0, ls.p1);
+	} else if (arguments.length === 2) {
+		let p0 = arguments[0], p1 = arguments[1];
+		this.p0 = p0;
+		this.p1 = p1;
+	} else if (arguments.length === 4) {
+		let x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3];
+		LineSegment.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
 	}
-	get interfaces_() {
-		return [Comparable, Serializable];
-	}
-	static midPoint(p0, p1) {
-		return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
-	}
-	minX() {
+}
+extend(LineSegment.prototype, {
+	minX: function () {
 		return Math.min(this.p0.x, this.p1.x);
-	}
-	orientationIndex(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof LineSegment) {
-				let [seg] = args;
+	},
+	orientationIndex: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof LineSegment) {
+				let seg = arguments[0];
 				var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
 				var orient1 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p1);
 				if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
 				if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
 				return 0;
-			} else if (args[0] instanceof Coordinate) {
-				let [p] = args;
+			} else if (arguments[0] instanceof Coordinate) {
+				let p = arguments[0];
 				return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
 			}
 		}
-	}
-	toGeometry(geomFactory) {
+	},
+	toGeometry: function (geomFactory) {
 		return geomFactory.createLineString([this.p0, this.p1]);
-	}
-	isVertical() {
+	},
+	isVertical: function () {
 		return this.p0.x === this.p1.x;
-	}
-	equals(o) {
+	},
+	equals: function (o) {
 		if (!(o instanceof LineSegment)) {
 			return false;
 		}
 		var other = o;
 		return this.p0.equals(other.p0) && this.p1.equals(other.p1);
-	}
-	intersection(line) {
+	},
+	intersection: function (line) {
 		var li = new RobustLineIntersector();
 		li.computeIntersection(this.p0, this.p1, line.p0, line.p1);
 		if (li.hasIntersection()) return li.getIntersection(0);
 		return null;
-	}
-	project(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Coordinate) {
-				let [p] = args;
+	},
+	project: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Coordinate) {
+				let p = arguments[0];
 				if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
 				var r = this.projectionFactor(p);
 				var coord = new Coordinate();
 				coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
 				coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
 				return coord;
-			} else if (args[0] instanceof LineSegment) {
-				let [seg] = args;
+			} else if (arguments[0] instanceof LineSegment) {
+				let seg = arguments[0];
 				var pf0 = this.projectionFactor(seg.p0);
 				var pf1 = this.projectionFactor(seg.p1);
 				if (pf0 >= 1.0 && pf1 >= 1.0) return null;
@@ -96,27 +87,27 @@ export default class LineSegment {
 				return new LineSegment(newp0, newp1);
 			}
 		}
-	}
-	normalize() {
+	},
+	normalize: function () {
 		if (this.p1.compareTo(this.p0) < 0) this.reverse();
-	}
-	angle() {
+	},
+	angle: function () {
 		return Math.atan2(this.p1.y - this.p0.y, this.p1.x - this.p0.x);
-	}
-	getCoordinate(i) {
+	},
+	getCoordinate: function (i) {
 		if (i === 0) return this.p0;
 		return this.p1;
-	}
-	distancePerpendicular(p) {
+	},
+	distancePerpendicular: function (p) {
 		return CGAlgorithms.distancePointLinePerpendicular(p, this.p0, this.p1);
-	}
-	minY() {
+	},
+	minY: function () {
 		return Math.min(this.p0.y, this.p1.y);
-	}
-	midPoint() {
+	},
+	midPoint: function () {
 		return LineSegment.midPoint(this.p0, this.p1);
-	}
-	projectionFactor(p) {
+	},
+	projectionFactor: function (p) {
 		if (p.equals(this.p0)) return 0.0;
 		if (p.equals(this.p1)) return 1.0;
 		var dx = this.p1.x - this.p0.x;
@@ -125,8 +116,8 @@ export default class LineSegment {
 		if (len <= 0.0) return Double.NaN;
 		var r = ((p.x - this.p0.x) * dx + (p.y - this.p0.y) * dy) / len;
 		return r;
-	}
-	closestPoints(line) {
+	},
+	closestPoints: function (line) {
 		var intPt = this.intersection(line);
 		if (intPt !== null) {
 			return [intPt, intPt];
@@ -160,8 +151,8 @@ export default class LineSegment {
 			closestPt[1] = close11;
 		}
 		return closestPt;
-	}
-	closestPoint(p) {
+	},
+	closestPoint: function (p) {
 		var factor = this.projectionFactor(p);
 		if (factor > 0 && factor < 1) {
 			return this.project(p);
@@ -170,28 +161,28 @@ export default class LineSegment {
 		var dist1 = this.p1.distance(p);
 		if (dist0 < dist1) return this.p0;
 		return this.p1;
-	}
-	maxX() {
+	},
+	maxX: function () {
 		return Math.max(this.p0.x, this.p1.x);
-	}
-	getLength() {
+	},
+	getLength: function () {
 		return this.p0.distance(this.p1);
-	}
-	compareTo(o) {
+	},
+	compareTo: function (o) {
 		var other = o;
 		var comp0 = this.p0.compareTo(other.p0);
 		if (comp0 !== 0) return comp0;
 		return this.p1.compareTo(other.p1);
-	}
-	reverse() {
+	},
+	reverse: function () {
 		var temp = this.p0;
 		this.p0 = this.p1;
 		this.p1 = temp;
-	}
-	equalsTopo(other) {
+	},
+	equalsTopo: function (other) {
 		return this.p0.equals(other.p0) && this.p1.equals(other.p1) || this.p0.equals(other.p1) && this.p1.equals(other.p0);
-	}
-	lineIntersection(line) {
+	},
+	lineIntersection: function (line) {
 		try {
 			var intPt = HCoordinate.intersection(this.p0, this.p1, line.p0, line.p1);
 			return intPt;
@@ -199,11 +190,11 @@ export default class LineSegment {
 			if (ex instanceof NotRepresentableException) {} else throw ex;
 		} finally {}
 		return null;
-	}
-	maxY() {
+	},
+	maxY: function () {
 		return Math.max(this.p0.y, this.p1.y);
-	}
-	pointAlongOffset(segmentLengthFraction, offsetDistance) {
+	},
+	pointAlongOffset: function (segmentLengthFraction, offsetDistance) {
 		var segx = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x);
 		var segy = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y);
 		var dx = this.p1.x - this.p0.x;
@@ -220,48 +211,48 @@ export default class LineSegment {
 		var offsety = segy + ux;
 		var coord = new Coordinate(offsetx, offsety);
 		return coord;
-	}
-	setCoordinates(...args) {
-		if (args.length === 1) {
-			let [ls] = args;
+	},
+	setCoordinates: function () {
+		if (arguments.length === 1) {
+			let ls = arguments[0];
 			this.setCoordinates(ls.p0, ls.p1);
-		} else if (args.length === 2) {
-			let [p0, p1] = args;
+		} else if (arguments.length === 2) {
+			let p0 = arguments[0], p1 = arguments[1];
 			this.p0.x = p0.x;
 			this.p0.y = p0.y;
 			this.p1.x = p1.x;
 			this.p1.y = p1.y;
 		}
-	}
-	segmentFraction(inputPt) {
+	},
+	segmentFraction: function (inputPt) {
 		var segFrac = this.projectionFactor(inputPt);
 		if (segFrac < 0.0) segFrac = 0.0; else if (segFrac > 1.0 || Double.isNaN(segFrac)) segFrac = 1.0;
 		return segFrac;
-	}
-	toString() {
+	},
+	toString: function () {
 		return "LINESTRING( " + this.p0.x + " " + this.p0.y + ", " + this.p1.x + " " + this.p1.y + ")";
-	}
-	isHorizontal() {
+	},
+	isHorizontal: function () {
 		return this.p0.y === this.p1.y;
-	}
-	distance(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof LineSegment) {
-				let [ls] = args;
+	},
+	distance: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof LineSegment) {
+				let ls = arguments[0];
 				return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
-			} else if (args[0] instanceof Coordinate) {
-				let [p] = args;
+			} else if (arguments[0] instanceof Coordinate) {
+				let p = arguments[0];
 				return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
 			}
 		}
-	}
-	pointAlong(segmentLengthFraction) {
+	},
+	pointAlong: function (segmentLengthFraction) {
 		var coord = new Coordinate();
 		coord.x = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x);
 		coord.y = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y);
 		return coord;
-	}
-	hashCode() {
+	},
+	hashCode: function () {
 		var bits0 = java.lang.Double.doubleToLongBits(this.p0.x);
 		bits0 ^= java.lang.Double.doubleToLongBits(this.p0.y) * 31;
 		var hash0 = Math.trunc(bits0) ^ Math.trunc(bits0 >> 32);
@@ -269,10 +260,16 @@ export default class LineSegment {
 		bits1 ^= java.lang.Double.doubleToLongBits(this.p1.y) * 31;
 		var hash1 = Math.trunc(bits1) ^ Math.trunc(bits1 >> 32);
 		return hash0 ^ hash1;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Comparable, Serializable];
+	},
+	getClass: function () {
 		return LineSegment;
 	}
-}
+});
+LineSegment.midPoint = function (p0, p1) {
+	return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
+};
 LineSegment.serialVersionUID = 3252005833466256227;
 

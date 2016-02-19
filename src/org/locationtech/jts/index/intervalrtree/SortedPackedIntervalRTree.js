@@ -1,23 +1,19 @@
 import WKTWriter from '../../io/WKTWriter';
 import Coordinate from '../../geom/Coordinate';
 import IntervalRTreeLeafNode from './IntervalRTreeLeafNode';
+import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import System from '../../../../../java/lang/System';
 import ArrayList from '../../../../../java/util/ArrayList';
 import IntervalRTreeBranchNode from './IntervalRTreeBranchNode';
-export default class SortedPackedIntervalRTree {
-	constructor(...args) {
-		this.leaves = new ArrayList();
-		this.root = null;
-		this.level = 0;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	buildTree() {
+export default function SortedPackedIntervalRTree() {
+	this.leaves = new ArrayList();
+	this.root = null;
+	this.level = 0;
+	if (arguments.length === 0) {}
+}
+extend(SortedPackedIntervalRTree.prototype, {
+	buildTree: function () {
 		Collections.sort(this.leaves, new IntervalRTreeNode.NodeComparator());
 		var src = this.leaves;
 		var temp = null;
@@ -29,27 +25,27 @@ export default class SortedPackedIntervalRTree {
 			src = dest;
 			dest = temp;
 		}
-	}
-	insert(min, max, item) {
+	},
+	insert: function (min, max, item) {
 		if (this.root !== null) throw new IllegalStateException("Index cannot be added to once it has been queried");
 		this.leaves.add(new IntervalRTreeLeafNode(min, max, item));
-	}
-	query(min, max, visitor) {
+	},
+	query: function (min, max, visitor) {
 		this.init();
 		this.root.query(min, max, visitor);
-	}
-	buildRoot() {
+	},
+	buildRoot: function () {
 		if (this.root !== null) return null;
 		this.root = this.buildTree();
-	}
-	printNode(node) {
+	},
+	printNode: function (node) {
 		System.out.println(WKTWriter.toLineString(new Coordinate(node.min, this.level), new Coordinate(node.max, this.level)));
-	}
-	init() {
+	},
+	init: function () {
 		if (this.root !== null) return null;
 		this.buildRoot();
-	}
-	buildLevel(src, dest) {
+	},
+	buildLevel: function (src, dest) {
 		this.level++;
 		dest.clear();
 		for (var i = 0; i < src.size(); i += 2) {
@@ -62,9 +58,12 @@ export default class SortedPackedIntervalRTree {
 				dest.add(node);
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SortedPackedIntervalRTree;
 	}
-}
+});
 

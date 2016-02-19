@@ -1,22 +1,20 @@
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import TopologyException from '../../geom/TopologyException';
+import extend from '../../../../../extend';
 import MaximalEdgeRing from './MaximalEdgeRing';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
-export default class PolygonBuilder {
-	constructor(...args) {
-		this.geometryFactory = null;
-		this.shellList = new ArrayList();
-		if (args.length === 1) {
-			let [geometryFactory] = args;
-			this.geometryFactory = geometryFactory;
-		}
+export default function PolygonBuilder() {
+	this.geometryFactory = null;
+	this.shellList = new ArrayList();
+	if (arguments.length === 1) {
+		let geometryFactory = arguments[0];
+		this.geometryFactory = geometryFactory;
 	}
-	get interfaces_() {
-		return [];
-	}
-	sortShellsAndHoles(edgeRings, shellList, freeHoleList) {
+}
+extend(PolygonBuilder.prototype, {
+	sortShellsAndHoles: function (edgeRings, shellList, freeHoleList) {
 		for (var it = edgeRings.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.isHole()) {
@@ -25,8 +23,8 @@ export default class PolygonBuilder {
 				shellList.add(er);
 			}
 		}
-	}
-	computePolygons(shellList) {
+	},
+	computePolygons: function (shellList) {
 		var resultPolyList = new ArrayList();
 		for (var it = shellList.iterator(); it.hasNext(); ) {
 			var er = it.next();
@@ -34,8 +32,8 @@ export default class PolygonBuilder {
 			resultPolyList.add(poly);
 		}
 		return resultPolyList;
-	}
-	placeFreeHoles(shellList, freeHoleList) {
+	},
+	placeFreeHoles: function (shellList, freeHoleList) {
 		for (var it = freeHoleList.iterator(); it.hasNext(); ) {
 			var hole = it.next();
 			if (hole.getShell() === null) {
@@ -44,8 +42,8 @@ export default class PolygonBuilder {
 				hole.setShell(shell);
 			}
 		}
-	}
-	buildMinimalEdgeRings(maxEdgeRings, shellList, freeHoleList) {
+	},
+	buildMinimalEdgeRings: function (maxEdgeRings, shellList, freeHoleList) {
 		var edgeRings = new ArrayList();
 		for (var it = maxEdgeRings.iterator(); it.hasNext(); ) {
 			var er = it.next();
@@ -64,15 +62,15 @@ export default class PolygonBuilder {
 			}
 		}
 		return edgeRings;
-	}
-	containsPoint(p) {
+	},
+	containsPoint: function (p) {
 		for (var it = this.shellList.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.containsPoint(p)) return true;
 		}
 		return false;
-	}
-	buildMaximalEdgeRings(dirEdges) {
+	},
+	buildMaximalEdgeRings: function (dirEdges) {
 		var maxEdgeRings = new ArrayList();
 		for (var it = dirEdges.iterator(); it.hasNext(); ) {
 			var de = it.next();
@@ -85,20 +83,20 @@ export default class PolygonBuilder {
 			}
 		}
 		return maxEdgeRings;
-	}
-	placePolygonHoles(shell, minEdgeRings) {
+	},
+	placePolygonHoles: function (shell, minEdgeRings) {
 		for (var it = minEdgeRings.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.isHole()) {
 				er.setShell(shell);
 			}
 		}
-	}
-	getPolygons() {
+	},
+	getPolygons: function () {
 		var resultPolyList = this.computePolygons(this.shellList);
 		return resultPolyList;
-	}
-	findEdgeRingContaining(testEr, shellList) {
+	},
+	findEdgeRingContaining: function (testEr, shellList) {
 		var testRing = testEr.getLinearRing();
 		var testEnv = testRing.getEnvelopeInternal();
 		var testPt = testRing.getCoordinateN(0);
@@ -118,8 +116,8 @@ export default class PolygonBuilder {
 			}
 		}
 		return minShell;
-	}
-	findShell(minEdgeRings) {
+	},
+	findShell: function (minEdgeRings) {
 		var shellCount = 0;
 		var shell = null;
 		for (var it = minEdgeRings.iterator(); it.hasNext(); ) {
@@ -131,13 +129,13 @@ export default class PolygonBuilder {
 		}
 		Assert.isTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
 		return shell;
-	}
-	add(...args) {
-		if (args.length === 1) {
-			let [graph] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			let graph = arguments[0];
 			this.add(graph.getEdgeEnds(), graph.getNodes());
-		} else if (args.length === 2) {
-			let [dirEdges, nodes] = args;
+		} else if (arguments.length === 2) {
+			let dirEdges = arguments[0], nodes = arguments[1];
 			PlanarGraph.linkResultDirectedEdges(nodes);
 			var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
 			var freeHoleList = new ArrayList();
@@ -145,9 +143,12 @@ export default class PolygonBuilder {
 			this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
 			this.placeFreeHoles(this.shellList, freeHoleList);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PolygonBuilder;
 	}
-}
+});
 

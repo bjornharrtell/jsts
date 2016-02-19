@@ -3,35 +3,32 @@ import Position from '../../geomgraph/Position';
 import Stack from '../../../../../java/util/Stack';
 import RightmostEdgeFinder from './RightmostEdgeFinder';
 import TopologyException from '../../geom/TopologyException';
+import extend from '../../../../../extend';
 import LinkedList from '../../../../../java/util/LinkedList';
 import Comparable from '../../../../../java/lang/Comparable';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
-export default class BufferSubgraph {
-	constructor(...args) {
-		this.finder = null;
-		this.dirEdgeList = new ArrayList();
-		this.nodes = new ArrayList();
-		this.rightMostCoord = null;
-		this.env = null;
-		if (args.length === 0) {
-			let [] = args;
-			this.finder = new RightmostEdgeFinder();
-		}
+export default function BufferSubgraph() {
+	this.finder = null;
+	this.dirEdgeList = new ArrayList();
+	this.nodes = new ArrayList();
+	this.rightMostCoord = null;
+	this.env = null;
+	if (arguments.length === 0) {
+		this.finder = new RightmostEdgeFinder();
 	}
-	get interfaces_() {
-		return [Comparable];
-	}
-	clearVisitedEdges() {
+}
+extend(BufferSubgraph.prototype, {
+	clearVisitedEdges: function () {
 		for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			de.setVisited(false);
 		}
-	}
-	getRightmostCoordinate() {
+	},
+	getRightmostCoordinate: function () {
 		return this.rightMostCoord;
-	}
-	computeNodeDepth(n) {
+	},
+	computeNodeDepth: function (n) {
 		var startEdge = null;
 		for (var i = n.getEdges().iterator(); i.hasNext(); ) {
 			var de = i.next();
@@ -47,8 +44,8 @@ export default class BufferSubgraph {
 			de.setVisited(true);
 			this.copySymDepths(de);
 		}
-	}
-	computeDepth(outsideDepth) {
+	},
+	computeDepth: function (outsideDepth) {
 		this.clearVisitedEdges();
 		var de = this.finder.getEdge();
 		var n = de.getNode();
@@ -56,21 +53,21 @@ export default class BufferSubgraph {
 		de.setEdgeDepths(Position.RIGHT, outsideDepth);
 		this.copySymDepths(de);
 		this.computeDepths(de);
-	}
-	create(node) {
+	},
+	create: function (node) {
 		this.addReachable(node);
 		this.finder.findEdge(this.dirEdgeList);
 		this.rightMostCoord = this.finder.getCoordinate();
-	}
-	findResultEdges() {
+	},
+	findResultEdges: function () {
 		for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (de.getDepth(Position.RIGHT) >= 1 && de.getDepth(Position.LEFT) <= 0 && !de.isInteriorAreaEdge()) {
 				de.setInResult(true);
 			}
 		}
-	}
-	computeDepths(startEdge) {
+	},
+	computeDepths: function (startEdge) {
 		var nodesVisited = new HashSet();
 		var nodeQueue = new LinkedList();
 		var startNode = startEdge.getNode();
@@ -92,8 +89,8 @@ export default class BufferSubgraph {
 				}
 			}
 		}
-	}
-	compareTo(o) {
+	},
+	compareTo: function (o) {
 		var graph = o;
 		if (this.rightMostCoord.x < graph.rightMostCoord.x) {
 			return -1;
@@ -102,8 +99,8 @@ export default class BufferSubgraph {
 			return 1;
 		}
 		return 0;
-	}
-	getEnvelope() {
+	},
+	getEnvelope: function () {
 		if (this.env === null) {
 			var edgeEnv = new Envelope();
 			for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
@@ -116,21 +113,21 @@ export default class BufferSubgraph {
 			this.env = edgeEnv;
 		}
 		return this.env;
-	}
-	addReachable(startNode) {
+	},
+	addReachable: function (startNode) {
 		var nodeStack = new Stack();
 		nodeStack.add(startNode);
 		while (!nodeStack.empty()) {
 			var node = nodeStack.pop();
 			this.add(node, nodeStack);
 		}
-	}
-	copySymDepths(de) {
+	},
+	copySymDepths: function (de) {
 		var sym = de.getSym();
 		sym.setDepth(Position.LEFT, de.getDepth(Position.RIGHT));
 		sym.setDepth(Position.RIGHT, de.getDepth(Position.LEFT));
-	}
-	add(node, nodeStack) {
+	},
+	add: function (node, nodeStack) {
 		node.setVisited(true);
 		this.nodes.add(node);
 		for (var i = node.getEdges().iterator(); i.hasNext(); ) {
@@ -140,15 +137,18 @@ export default class BufferSubgraph {
 			var symNode = sym.getNode();
 			if (!symNode.isVisited()) nodeStack.push(symNode);
 		}
-	}
-	getNodes() {
+	},
+	getNodes: function () {
 		return this.nodes;
-	}
-	getDirectedEdges() {
+	},
+	getDirectedEdges: function () {
 		return this.dirEdgeList;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Comparable];
+	},
+	getClass: function () {
 		return BufferSubgraph;
 	}
-}
+});
 

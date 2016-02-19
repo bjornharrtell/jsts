@@ -1,26 +1,27 @@
 import Boundable from './Boundable';
+import extend from '../../../../../extend';
 import Serializable from '../../../../../java/io/Serializable';
-export default class ItemBoundable {
-	constructor(...args) {
-		this.bounds = null;
-		this.item = null;
-		if (args.length === 2) {
-			let [bounds, item] = args;
-			this.bounds = bounds;
-			this.item = item;
-		}
-	}
-	get interfaces_() {
-		return [Boundable, Serializable];
-	}
-	getItem() {
-		return this.item;
-	}
-	getBounds() {
-		return this.bounds;
-	}
-	getClass() {
-		return ItemBoundable;
+export default function ItemBoundable() {
+	this.bounds = null;
+	this.item = null;
+	if (arguments.length === 2) {
+		let bounds = arguments[0], item = arguments[1];
+		this.bounds = bounds;
+		this.item = item;
 	}
 }
+extend(ItemBoundable.prototype, {
+	getItem: function () {
+		return this.item;
+	},
+	getBounds: function () {
+		return this.bounds;
+	},
+	interfaces_: function () {
+		return [Boundable, Serializable];
+	},
+	getClass: function () {
+		return ItemBoundable;
+	}
+});
 

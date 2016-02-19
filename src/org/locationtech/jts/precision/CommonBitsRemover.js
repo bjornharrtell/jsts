@@ -1,30 +1,20 @@
 import CommonBits from './CommonBits';
 import CoordinateFilter from '../geom/CoordinateFilter';
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
-export default class CommonBitsRemover {
-	constructor(...args) {
-		this.commonCoord = null;
-		this.ccFilter = new CommonCoordinateFilter();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static get CommonCoordinateFilter() {
-		return CommonCoordinateFilter;
-	}
-	static get Translater() {
-		return Translater;
-	}
-	addCommonBits(geom) {
+export default function CommonBitsRemover() {
+	this.commonCoord = null;
+	this.ccFilter = new CommonCoordinateFilter();
+	if (arguments.length === 0) {}
+}
+extend(CommonBitsRemover.prototype, {
+	addCommonBits: function (geom) {
 		var trans = new Translater(this.commonCoord);
 		geom.apply(trans);
 		geom.geometryChanged();
-	}
-	removeCommonBits(geom) {
+	},
+	removeCommonBits: function (geom) {
 		if (this.commonCoord.x === 0.0 && this.commonCoord.y === 0.0) return geom;
 		var invCoord = new Coordinate(this.commonCoord);
 		invCoord.x = -invCoord.x;
@@ -33,62 +23,67 @@ export default class CommonBitsRemover {
 		geom.apply(trans);
 		geom.geometryChanged();
 		return geom;
-	}
-	getCommonCoordinate() {
+	},
+	getCommonCoordinate: function () {
 		return this.commonCoord;
-	}
-	add(geom) {
+	},
+	add: function (geom) {
 		geom.apply(this.ccFilter);
 		this.commonCoord = this.ccFilter.getCommonCoordinate();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return CommonBitsRemover;
 	}
+});
+function CommonCoordinateFilter() {
+	this.commonBitsX = new CommonBits();
+	this.commonBitsY = new CommonBits();
 }
-class CommonCoordinateFilter {
-	constructor(...args) {
-		this.commonBitsX = new CommonBits();
-		this.commonBitsY = new CommonBits();
-	}
-	get interfaces_() {
-		return [CoordinateFilter];
-	}
-	filter(coord) {
+extend(CommonCoordinateFilter.prototype, {
+	filter: function (coord) {
 		this.commonBitsX.add(coord.x);
 		this.commonBitsY.add(coord.y);
-	}
-	getCommonCoordinate() {
+	},
+	getCommonCoordinate: function () {
 		return new Coordinate(this.commonBitsX.getCommon(), this.commonBitsY.getCommon());
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateFilter];
+	},
+	getClass: function () {
 		return CommonCoordinateFilter;
 	}
+});
+function Translater() {
+	this.trans = null;
+	if (arguments.length === 1) {
+		let trans = arguments[0];
+		this.trans = trans;
+	}
 }
-class Translater {
-	constructor(...args) {
-		this.trans = null;
-		if (args.length === 1) {
-			let [trans] = args;
-			this.trans = trans;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateSequenceFilter];
-	}
-	filter(seq, i) {
+extend(Translater.prototype, {
+	filter: function (seq, i) {
 		var xp = seq.getOrdinate(i, 0) + this.trans.x;
 		var yp = seq.getOrdinate(i, 1) + this.trans.y;
 		seq.setOrdinate(i, 0, xp);
 		seq.setOrdinate(i, 1, yp);
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return false;
-	}
-	isGeometryChanged() {
+	},
+	isGeometryChanged: function () {
 		return true;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequenceFilter];
+	},
+	getClass: function () {
 		return Translater;
 	}
-}
+});
+CommonBitsRemover.CommonCoordinateFilter = CommonCoordinateFilter;
+CommonBitsRemover.Translater = Translater;
 

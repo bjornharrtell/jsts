@@ -1,40 +1,38 @@
-export default class TopologyValidationError {
-	constructor(...args) {
-		this.errorType = null;
-		this.pt = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				let [errorType] = args;
-				overloaded.call(this, errorType, null);
-			} else if (args.length === 2) {
-				let [errorType, pt] = args;
-				this.errorType = errorType;
-				if (pt !== null) this.pt = pt.copy();
-			}
-		};
-		return overloaded.apply(this, args);
+import extend from '../../../../../extend';
+export default function TopologyValidationError() {
+	this.errorType = null;
+	this.pt = null;
+	if (arguments.length === 1) {
+		let errorType = arguments[0];
+		TopologyValidationError.call(this, errorType, null);
+	} else if (arguments.length === 2) {
+		let errorType = arguments[0], pt = arguments[1];
+		this.errorType = errorType;
+		if (pt !== null) this.pt = pt.copy();
 	}
-	get interfaces_() {
-		return [];
-	}
-	getErrorType() {
+}
+extend(TopologyValidationError.prototype, {
+	getErrorType: function () {
 		return this.errorType;
-	}
-	getMessage() {
+	},
+	getMessage: function () {
 		return TopologyValidationError.errMsg[this.errorType];
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		return this.pt;
-	}
-	toString() {
+	},
+	toString: function () {
 		var locStr = "";
 		if (this.pt !== null) locStr = " at or near point " + this.pt;
 		return this.getMessage() + locStr;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return TopologyValidationError;
 	}
-}
+});
 TopologyValidationError.ERROR = 0;
 TopologyValidationError.REPEATED_POINT = 1;
 TopologyValidationError.HOLE_OUTSIDE_SHELL = 2;

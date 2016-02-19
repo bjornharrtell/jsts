@@ -1,1 +1,1 @@
-export default class Comparable {}
+export default function Comparable () {}

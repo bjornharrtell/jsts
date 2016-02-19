@@ -1,10 +1,12 @@
-export default class SweepLineOverlapAction {
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function SweepLineOverlapAction() {}
+extend(SweepLineOverlapAction.prototype, {
+	overlap: function (s0, s1) {},
+	interfaces_: function () {
 		return [];
-	}
-	overlap(s0, s1) {}
-	getClass() {
+	},
+	getClass: function () {
 		return SweepLineOverlapAction;
 	}
-}
+});
 

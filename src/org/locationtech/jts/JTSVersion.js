@@ -1,34 +1,33 @@
+import extend from '../../../extend';
 import System from '../../../java/lang/System';
-export default class JTSVersion {
-	constructor(...args) {
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static main(args) {
-		System.out.println(JTSVersion.CURRENT_VERSION);
-	}
-	getMajor() {
+export default function JTSVersion() {
+	if (arguments.length === 0) {}
+}
+extend(JTSVersion.prototype, {
+	getMajor: function () {
 		return JTSVersion.MAJOR;
-	}
-	getPatch() {
+	},
+	getPatch: function () {
 		return JTSVersion.PATCH;
-	}
-	getMinor() {
+	},
+	getMinor: function () {
 		return JTSVersion.MINOR;
-	}
-	toString() {
+	},
+	toString: function () {
 		var ver = JTSVersion.MAJOR + "." + JTSVersion.MINOR + "." + JTSVersion.PATCH;
 		if (JTSVersion.releaseInfo !== null && JTSVersion.releaseInfo.length > 0) return ver + " " + JTSVersion.releaseInfo;
 		return ver;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return JTSVersion;
 	}
-}
+});
+JTSVersion.main = function (args) {
+	System.out.println(JTSVersion.CURRENT_VERSION);
+};
 JTSVersion.CURRENT_VERSION = new JTSVersion();
 JTSVersion.MAJOR = 1;
 JTSVersion.MINOR = 14;

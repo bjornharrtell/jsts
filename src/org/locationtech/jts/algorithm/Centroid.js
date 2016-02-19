@@ -4,47 +4,33 @@ import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import Point from '../geom/Point';
 import Polygon from '../geom/Polygon';
+import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
-export default class Centroid {
-	constructor(...args) {
+export default function Centroid() {
+	this.areaBasePt = null;
+	this.triangleCent3 = new Coordinate();
+	this.areasum2 = 0;
+	this.cg3 = new Coordinate();
+	this.lineCentSum = new Coordinate();
+	this.totalLength = 0.0;
+	this.ptCount = 0;
+	this.ptCentSum = new Coordinate();
+	if (arguments.length === 1) {
+		let geom = arguments[0];
 		this.areaBasePt = null;
-		this.triangleCent3 = new Coordinate();
-		this.areasum2 = 0;
-		this.cg3 = new Coordinate();
-		this.lineCentSum = new Coordinate();
-		this.totalLength = 0.0;
-		this.ptCount = 0;
-		this.ptCentSum = new Coordinate();
-		if (args.length === 1) {
-			let [geom] = args;
-			this.areaBasePt = null;
-			this.add(geom);
-		}
+		this.add(geom);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static area2(p1, p2, p3) {
-		return (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y);
-	}
-	static centroid3(p1, p2, p3, c) {
-		c.x = p1.x + p2.x + p3.x;
-		c.y = p1.y + p2.y + p3.y;
-		return null;
-	}
-	static getCentroid(geom) {
-		var cent = new Centroid(geom);
-		return cent.getCentroid();
-	}
-	addPoint(pt) {
+}
+extend(Centroid.prototype, {
+	addPoint: function (pt) {
 		this.ptCount += 1;
 		this.ptCentSum.x += pt.x;
 		this.ptCentSum.y += pt.y;
-	}
-	setBasePoint(basePt) {
+	},
+	setBasePoint: function (basePt) {
 		if (this.areaBasePt === null) this.areaBasePt = basePt;
-	}
-	addLineSegments(pts) {
+	},
+	addLineSegments: function (pts) {
 		var lineLen = 0.0;
 		for (var i = 0; i < pts.length - 1; i++) {
 			var segmentLen = pts[i].distance(pts[i + 1]);
@@ -57,15 +43,15 @@ export default class Centroid {
 		}
 		this.totalLength += lineLen;
 		if (lineLen === 0.0 && pts.length > 0) this.addPoint(pts[0]);
-	}
-	addHole(pts) {
+	},
+	addHole: function (pts) {
 		var isPositiveArea = CGAlgorithms.isCCW(pts);
 		for (var i = 0; i < pts.length - 1; i++) {
 			this.addTriangle(this.areaBasePt, pts[i], pts[i + 1], isPositiveArea);
 		}
 		this.addLineSegments(pts);
-	}
-	getCentroid() {
+	},
+	getCentroid: function () {
 		var cent = new Coordinate();
 		if (Math.abs(this.areasum2) > 0.0) {
 			cent.x = this.cg3.x / 3 / this.areasum2;
@@ -80,33 +66,33 @@ export default class Centroid {
 			return null;
 		}
 		return cent;
-	}
-	addShell(pts) {
+	},
+	addShell: function (pts) {
 		if (pts.length > 0) this.setBasePoint(pts[0]);
 		var isPositiveArea = !CGAlgorithms.isCCW(pts);
 		for (var i = 0; i < pts.length - 1; i++) {
 			this.addTriangle(this.areaBasePt, pts[i], pts[i + 1], isPositiveArea);
 		}
 		this.addLineSegments(pts);
-	}
-	addTriangle(p0, p1, p2, isPositiveArea) {
+	},
+	addTriangle: function (p0, p1, p2, isPositiveArea) {
 		var sign = isPositiveArea ? 1.0 : -1.0;
 		Centroid.centroid3(p0, p1, p2, this.triangleCent3);
 		var area2 = Centroid.area2(p0, p1, p2);
 		this.cg3.x += sign * area2 * this.triangleCent3.x;
 		this.cg3.y += sign * area2 * this.triangleCent3.y;
 		this.areasum2 += sign * area2;
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Polygon) {
-				let [poly] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Polygon) {
+				let poly = arguments[0];
 				this.addShell(poly.getExteriorRing().getCoordinates());
 				for (var i = 0; i < poly.getNumInteriorRing(); i++) {
 					this.addHole(poly.getInteriorRingN(i).getCoordinates());
 				}
-			} else if (args[0] instanceof Geometry) {
-				let [geom] = args;
+			} else if (arguments[0] instanceof Geometry) {
+				let geom = arguments[0];
 				if (geom.isEmpty()) return null;
 				if (geom instanceof Point) {
 					this.addPoint(geom.getCoordinate());
@@ -123,9 +109,24 @@ export default class Centroid {
 				}
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Centroid;
 	}
-}
+});
+Centroid.area2 = function (p1, p2, p3) {
+	return (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y);
+};
+Centroid.centroid3 = function (p1, p2, p3, c) {
+	c.x = p1.x + p2.x + p3.x;
+	c.y = p1.y + p2.y + p3.y;
+	return null;
+};
+Centroid.getCentroid = function (geom) {
+	var cent = new Centroid(geom);
+	return cent.getCentroid();
+};
 

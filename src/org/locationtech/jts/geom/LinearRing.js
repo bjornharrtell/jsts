@@ -1,71 +1,72 @@
 import LineString from './LineString';
 import Geometry from './Geometry';
+import hasInterface from '../../../../hasInterface';
 import GeometryFactory from './GeometryFactory';
 import Coordinate from './Coordinate';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../extend';
 import CoordinateSequences from './CoordinateSequences';
 import CoordinateSequence from './CoordinateSequence';
 import Dimension from './Dimension';
-export default class LinearRing extends LineString {
-	constructor(...args) {
-		super();
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				if (args[0] instanceof Coordinate && args[1] instanceof GeometryFactory) {
-					return ((...args) => {
-						let [points, factory] = args;
-						overloaded.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
-					})(...args);
-				} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1 && args[1] instanceof GeometryFactory) {
-					return ((...args) => {
-						let [points, factory] = args;
-						super(points, factory);
-						this.validateConstruction();
-					})(...args);
-				}
-			}
-		};
-		return overloaded.apply(this, args);
+import inherits from '../../../../inherits';
+export default function LinearRing() {
+	LineString.apply(this);
+	if (arguments.length === 2) {
+		if (arguments[0] instanceof Coordinate && arguments[1] instanceof GeometryFactory) {
+			return (() => {
+				let points = arguments[0], factory = arguments[1];
+				LinearRing.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
+			})(arguments);
+		} else if (hasInterface(arguments[0], CoordinateSequence) && arguments[1] instanceof GeometryFactory) {
+			return (() => {
+				let points = arguments[0], factory = arguments[1];
+				LineString.call(this, points, factory);
+				this.validateConstruction();
+			})(arguments);
+		}
 	}
-	get interfaces_() {
-		return [];
-	}
-	getSortIndex() {
+}
+inherits(LinearRing, LineString);
+extend(LinearRing.prototype, {
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_LINEARRING;
-	}
-	getBoundaryDimension() {
+	},
+	getBoundaryDimension: function () {
 		return Dimension.FALSE;
-	}
-	isClosed() {
+	},
+	isClosed: function () {
 		if (this.isEmpty()) {
 			return true;
 		}
-		return super.isClosed();
-	}
-	reverse() {
+		return LineString.prototype.isClosed.call(this);
+	},
+	reverse: function () {
 		var seq = this.points.clone();
 		CoordinateSequences.reverse(seq);
 		var rev = this.getFactory().createLinearRing(seq);
 		return rev;
-	}
-	validateConstruction() {
-		if (!this.isEmpty() && !super.isClosed()) {
+	},
+	validateConstruction: function () {
+		if (!this.isEmpty() && !LineString.prototype.isClosed.call(this)) {
 			throw new IllegalArgumentException("Points of LinearRing do not form a closed linestring");
 		}
 		if (this.getCoordinateSequence().size() >= 1 && this.getCoordinateSequence().size() < LinearRing.MINIMUM_VALID_SIZE) {
 			throw new IllegalArgumentException("Invalid number of points in LinearRing (found " + this.getCoordinateSequence().size() + " - must be 0 or >= 4)");
 		}
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "LinearRing";
-	}
-	copy() {
+	},
+	copy: function () {
 		return new LinearRing(this.points.copy(), this.factory);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LinearRing;
 	}
-}
+});
 LinearRing.MINIMUM_VALID_SIZE = 4;
 LinearRing.serialVersionUID = -4261142084085851829;
 

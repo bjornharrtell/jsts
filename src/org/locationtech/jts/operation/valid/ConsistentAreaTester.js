@@ -1,20 +1,18 @@
 import RelateNodeGraph from '../relate/RelateNodeGraph';
+import extend from '../../../../../extend';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
-export default class ConsistentAreaTester {
-	constructor(...args) {
-		this.li = new RobustLineIntersector();
-		this.geomGraph = null;
-		this.nodeGraph = new RelateNodeGraph();
-		this.invalidPoint = null;
-		if (args.length === 1) {
-			let [geomGraph] = args;
-			this.geomGraph = geomGraph;
-		}
+export default function ConsistentAreaTester() {
+	this.li = new RobustLineIntersector();
+	this.geomGraph = null;
+	this.nodeGraph = new RelateNodeGraph();
+	this.invalidPoint = null;
+	if (arguments.length === 1) {
+		let geomGraph = arguments[0];
+		this.geomGraph = geomGraph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	isNodeEdgeAreaLabelsConsistent() {
+}
+extend(ConsistentAreaTester.prototype, {
+	isNodeEdgeAreaLabelsConsistent: function () {
 		for (var nodeIt = this.nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
 			var node = nodeIt.next();
 			if (!node.getEdges().isAreaLabelsConsistent(this.geomGraph)) {
@@ -23,11 +21,11 @@ export default class ConsistentAreaTester {
 			}
 		}
 		return true;
-	}
-	getInvalidPoint() {
+	},
+	getInvalidPoint: function () {
 		return this.invalidPoint;
-	}
-	hasDuplicateRings() {
+	},
+	hasDuplicateRings: function () {
 		for (var nodeIt = this.nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
 			var node = nodeIt.next();
 			for (var i = node.getEdges().iterator(); i.hasNext(); ) {
@@ -39,8 +37,8 @@ export default class ConsistentAreaTester {
 			}
 		}
 		return false;
-	}
-	isNodeConsistentArea() {
+	},
+	isNodeConsistentArea: function () {
 		var intersector = this.geomGraph.computeSelfNodes(this.li, true, true);
 		if (intersector.hasProperIntersection()) {
 			this.invalidPoint = intersector.getProperIntersectionPoint();
@@ -48,9 +46,12 @@ export default class ConsistentAreaTester {
 		}
 		this.nodeGraph.build(this.geomGraph);
 		return this.isNodeEdgeAreaLabelsConsistent();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return ConsistentAreaTester;
 	}
-}
+});
 

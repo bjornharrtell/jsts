@@ -1,1 +1,1 @@
-export default class RuntimeException {}
+export default function RuntimeException () {}

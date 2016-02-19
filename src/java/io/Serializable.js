@@ -1,1 +1,1 @@
-export default class Serializable {}
+export default function Serializable () {}

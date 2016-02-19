@@ -1,9 +1,11 @@
-export default class Lineal {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function Lineal() {}
+extend(Lineal.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return Lineal;
 	}
-}
+});
 

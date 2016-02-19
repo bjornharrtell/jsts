@@ -1,45 +1,46 @@
 import HashSet from '../../../../java/util/HashSet';
+import extend from '../../../../extend';
 import NodeMap from './NodeMap';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class Subgraph {
-	constructor(...args) {
-		this.parentGraph = null;
-		this.edges = new HashSet();
-		this.dirEdges = new ArrayList();
-		this.nodeMap = new NodeMap();
-		if (args.length === 1) {
-			let [parentGraph] = args;
-			this.parentGraph = parentGraph;
-		}
+export default function Subgraph() {
+	this.parentGraph = null;
+	this.edges = new HashSet();
+	this.dirEdges = new ArrayList();
+	this.nodeMap = new NodeMap();
+	if (arguments.length === 1) {
+		let parentGraph = arguments[0];
+		this.parentGraph = parentGraph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	dirEdgeIterator() {
+}
+extend(Subgraph.prototype, {
+	dirEdgeIterator: function () {
 		return this.dirEdges.iterator();
-	}
-	edgeIterator() {
+	},
+	edgeIterator: function () {
 		return this.edges.iterator();
-	}
-	getParent() {
+	},
+	getParent: function () {
 		return this.parentGraph;
-	}
-	nodeIterator() {
+	},
+	nodeIterator: function () {
 		return this.nodeMap.iterator();
-	}
-	contains(e) {
+	},
+	contains: function (e) {
 		return this.edges.contains(e);
-	}
-	add(e) {
+	},
+	add: function (e) {
 		if (this.edges.contains(e)) return null;
 		this.edges.add(e);
 		this.dirEdges.add(e.getDirEdge(0));
 		this.dirEdges.add(e.getDirEdge(1));
 		this.nodeMap.add(e.getDirEdge(0).getFromNode());
 		this.nodeMap.add(e.getDirEdge(1).getFromNode());
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Subgraph;
 	}
-}
+});
 

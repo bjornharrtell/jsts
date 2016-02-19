@@ -1,68 +1,26 @@
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import Angle from './Angle';
 import Assert from '../util/Assert';
 import Triangle from '../geom/Triangle';
-export default class MinimumBoundingCircle {
-	constructor(...args) {
-		this.input = null;
-		this.extremalPts = null;
-		this.centre = null;
-		this.radius = 0.0;
-		if (args.length === 1) {
-			let [geom] = args;
-			this.input = geom;
-		}
+export default function MinimumBoundingCircle() {
+	this.input = null;
+	this.extremalPts = null;
+	this.centre = null;
+	this.radius = 0.0;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this.input = geom;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static pointWitMinAngleWithX(pts, P) {
-		var minSin = Double.MAX_VALUE;
-		var minAngPt = null;
-		for (var i = 0; i < pts.length; i++) {
-			var p = pts[i];
-			if (p === P) continue;
-			var dx = p.x - P.x;
-			var dy = p.y - P.y;
-			if (dy < 0) dy = -dy;
-			var len = Math.sqrt(dx * dx + dy * dy);
-			var sin = dy / len;
-			if (sin < minSin) {
-				minSin = sin;
-				minAngPt = p;
-			}
-		}
-		return minAngPt;
-	}
-	static lowestPoint(pts) {
-		var min = pts[0];
-		for (var i = 1; i < pts.length; i++) {
-			if (pts[i].y < min.y) min = pts[i];
-		}
-		return min;
-	}
-	static pointWithMinAngleWithSegment(pts, P, Q) {
-		var minAng = Double.MAX_VALUE;
-		var minAngPt = null;
-		for (var i = 0; i < pts.length; i++) {
-			var p = pts[i];
-			if (p === P) continue;
-			if (p === Q) continue;
-			var ang = Angle.angleBetween(P, p, Q);
-			if (ang < minAng) {
-				minAng = ang;
-				minAngPt = p;
-			}
-		}
-		return minAngPt;
-	}
-	getRadius() {
+}
+extend(MinimumBoundingCircle.prototype, {
+	getRadius: function () {
 		this.compute();
 		return this.radius;
-	}
-	getDiameter() {
+	},
+	getDiameter: function () {
 		this.compute();
 		switch (this.extremalPts.length) {
 			case 0:
@@ -73,12 +31,12 @@ export default class MinimumBoundingCircle {
 		var p0 = this.extremalPts[0];
 		var p1 = this.extremalPts[1];
 		return this.input.getFactory().createLineString([p0, p1]);
-	}
-	getExtremalPoints() {
+	},
+	getExtremalPoints: function () {
 		this.compute();
 		return this.extremalPts;
-	}
-	computeCirclePoints() {
+	},
+	computeCirclePoints: function () {
 		if (this.input.isEmpty()) {
 			this.extremalPts = new Array(0);
 			return null;
@@ -119,14 +77,14 @@ export default class MinimumBoundingCircle {
 			return null;
 		}
 		Assert.shouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");
-	}
-	compute() {
+	},
+	compute: function () {
 		if (this.extremalPts !== null) return null;
 		this.computeCirclePoints();
 		this.computeCentre();
 		if (this.centre !== null) this.radius = this.centre.distance(this.extremalPts[0]);
-	}
-	getFarthestPoints() {
+	},
+	getFarthestPoints: function () {
 		this.compute();
 		switch (this.extremalPts.length) {
 			case 0:
@@ -137,19 +95,19 @@ export default class MinimumBoundingCircle {
 		var p0 = this.extremalPts[0];
 		var p1 = this.extremalPts[this.extremalPts.length - 1];
 		return this.input.getFactory().createLineString([p0, p1]);
-	}
-	getCircle() {
+	},
+	getCircle: function () {
 		this.compute();
 		if (this.centre === null) return this.input.getFactory().createPolygon();
 		var centrePoint = this.input.getFactory().createPoint(this.centre);
 		if (this.radius === 0.0) return centrePoint;
 		return centrePoint.buffer(this.radius);
-	}
-	getCentre() {
+	},
+	getCentre: function () {
 		this.compute();
 		return this.centre;
-	}
-	computeCentre() {
+	},
+	computeCentre: function () {
 		switch (this.extremalPts.length) {
 			case 0:
 				this.centre = null;
@@ -164,9 +122,52 @@ export default class MinimumBoundingCircle {
 				this.centre = Triangle.circumcentre(this.extremalPts[0], this.extremalPts[1], this.extremalPts[2]);
 				break;
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return MinimumBoundingCircle;
 	}
-}
+});
+MinimumBoundingCircle.pointWitMinAngleWithX = function (pts, P) {
+	var minSin = Double.MAX_VALUE;
+	var minAngPt = null;
+	for (var i = 0; i < pts.length; i++) {
+		var p = pts[i];
+		if (p === P) continue;
+		var dx = p.x - P.x;
+		var dy = p.y - P.y;
+		if (dy < 0) dy = -dy;
+		var len = Math.sqrt(dx * dx + dy * dy);
+		var sin = dy / len;
+		if (sin < minSin) {
+			minSin = sin;
+			minAngPt = p;
+		}
+	}
+	return minAngPt;
+};
+MinimumBoundingCircle.lowestPoint = function (pts) {
+	var min = pts[0];
+	for (var i = 1; i < pts.length; i++) {
+		if (pts[i].y < min.y) min = pts[i];
+	}
+	return min;
+};
+MinimumBoundingCircle.pointWithMinAngleWithSegment = function (pts, P, Q) {
+	var minAng = Double.MAX_VALUE;
+	var minAngPt = null;
+	for (var i = 0; i < pts.length; i++) {
+		var p = pts[i];
+		if (p === P) continue;
+		if (p === Q) continue;
+		var ang = Angle.angleBetween(P, p, Q);
+		if (ang < minAng) {
+			minAng = ang;
+			minAngPt = p;
+		}
+	}
+	return minAngPt;
+};
 

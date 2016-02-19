@@ -1,6 +1,7 @@
 import PolygonExtracter from '../../../geom/util/PolygonExtracter';
 import WKTWriter from '../../../io/WKTWriter';
 import Polygon from '../../../geom/Polygon';
+import extend from '../../../../../../extend';
 import MultiPolygon from '../../../geom/MultiPolygon';
 import System from '../../../../../../java/lang/System';
 import GeometryCollection from '../../../geom/GeometryCollection';
@@ -8,30 +9,27 @@ import ArrayList from '../../../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter';
 import DistanceOp from '../../distance/DistanceOp';
 import DiscreteHausdorffDistance from '../../../algorithm/distance/DiscreteHausdorffDistance';
-export default class BufferDistanceValidator {
-	constructor(...args) {
-		this.input = null;
-		this.bufDistance = null;
-		this.result = null;
-		this.minValidDistance = null;
-		this.maxValidDistance = null;
-		this.minDistanceFound = null;
-		this.maxDistanceFound = null;
-		this._isValid = true;
-		this.errMsg = null;
-		this.errorLocation = null;
-		this.errorIndicator = null;
-		if (args.length === 3) {
-			let [input, bufDistance, result] = args;
-			this.input = input;
-			this.bufDistance = bufDistance;
-			this.result = result;
-		}
+export default function BufferDistanceValidator() {
+	this.input = null;
+	this.bufDistance = null;
+	this.result = null;
+	this.minValidDistance = null;
+	this.maxValidDistance = null;
+	this.minDistanceFound = null;
+	this.maxDistanceFound = null;
+	this._isValid = true;
+	this.errMsg = null;
+	this.errorLocation = null;
+	this.errorIndicator = null;
+	if (arguments.length === 3) {
+		let input = arguments[0], bufDistance = arguments[1], result = arguments[2];
+		this.input = input;
+		this.bufDistance = bufDistance;
+		this.result = result;
 	}
-	get interfaces_() {
-		return [];
-	}
-	checkMaximumDistance(input, bufCurve, maxDist) {
+}
+extend(BufferDistanceValidator.prototype, {
+	checkMaximumDistance: function (input, bufCurve, maxDist) {
 		var haus = new DiscreteHausdorffDistance(bufCurve, input);
 		haus.setDensifyFraction(0.25);
 		this.maxDistanceFound = haus.orientedDistance();
@@ -42,8 +40,8 @@ export default class BufferDistanceValidator {
 			this.errorIndicator = input.getFactory().createLineString(pts);
 			this.errMsg = "Distance between buffer curve and input is too large " + "(" + this.maxDistanceFound + " at " + WKTWriter.toLineString(pts[0], pts[1]) + ")";
 		}
-	}
-	isValid() {
+	},
+	isValid: function () {
 		var posDistance = Math.abs(this.bufDistance);
 		var distDelta = BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC * posDistance;
 		this.minValidDistance = posDistance - distDelta;
@@ -58,8 +56,8 @@ export default class BufferDistanceValidator {
 			System.out.println("Min Dist= " + this.minDistanceFound + "  err= " + (1.0 - this.minDistanceFound / this.bufDistance) + "  Max Dist= " + this.maxDistanceFound + "  err= " + (this.maxDistanceFound / this.bufDistance - 1.0));
 		}
 		return this._isValid;
-	}
-	checkNegativeValid() {
+	},
+	checkNegativeValid: function () {
 		if (!(this.input instanceof Polygon || this.input instanceof MultiPolygon || this.input instanceof GeometryCollection)) {
 			return null;
 		}
@@ -67,11 +65,11 @@ export default class BufferDistanceValidator {
 		this.checkMinimumDistance(inputCurve, this.result, this.minValidDistance);
 		if (!this._isValid) return null;
 		this.checkMaximumDistance(inputCurve, this.result, this.maxValidDistance);
-	}
-	getErrorIndicator() {
+	},
+	getErrorIndicator: function () {
 		return this.errorIndicator;
-	}
-	checkMinimumDistance(g1, g2, minDist) {
+	},
+	checkMinimumDistance: function (g1, g2, minDist) {
 		var distOp = new DistanceOp(g1, g2, minDist);
 		this.minDistanceFound = distOp.distance();
 		if (this.minDistanceFound < minDist) {
@@ -81,17 +79,17 @@ export default class BufferDistanceValidator {
 			this.errorIndicator = g1.getFactory().createLineString(pts);
 			this.errMsg = "Distance between buffer curve and input is too small " + "(" + this.minDistanceFound + " at " + WKTWriter.toLineString(pts[0], pts[1]) + " )";
 		}
-	}
-	checkPositiveValid() {
+	},
+	checkPositiveValid: function () {
 		var bufCurve = this.result.getBoundary();
 		this.checkMinimumDistance(this.input, bufCurve, this.minValidDistance);
 		if (!this._isValid) return null;
 		this.checkMaximumDistance(this.input, bufCurve, this.maxValidDistance);
-	}
-	getErrorLocation() {
+	},
+	getErrorLocation: function () {
 		return this.errorLocation;
-	}
-	getPolygonLines(g) {
+	},
+	getPolygonLines: function (g) {
 		var lines = new ArrayList();
 		var lineExtracter = new LinearComponentExtracter(lines);
 		var polys = PolygonExtracter.getPolygons(g);
@@ -100,14 +98,17 @@ export default class BufferDistanceValidator {
 			poly.apply(lineExtracter);
 		}
 		return g.getFactory().buildGeometry(lines);
-	}
-	getErrorMessage() {
+	},
+	getErrorMessage: function () {
 		return this.errMsg;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return BufferDistanceValidator;
 	}
-}
+});
 BufferDistanceValidator.VERBOSE = false;
 BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC = .012;
 

@@ -1,43 +1,39 @@
+import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import Noder from './Noder';
 import Coordinate from '../geom/Coordinate';
 import NodedSegmentString from './NodedSegmentString';
+import extend from '../../../../extend';
 import System from '../../../../java/lang/System';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class ScaledNoder {
-	constructor(...args) {
-		this.noder = null;
-		this.scaleFactor = null;
-		this.offsetX = null;
-		this.offsetY = null;
-		this.isScaled = false;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				let [noder, scaleFactor] = args;
-				overloaded.call(this, noder, scaleFactor, 0, 0);
-			} else if (args.length === 4) {
-				let [noder, scaleFactor, offsetX, offsetY] = args;
-				this.noder = noder;
-				this.scaleFactor = scaleFactor;
-				this.isScaled = !this.isIntegerPrecision();
-			}
-		};
-		return overloaded.apply(this, args);
+export default function ScaledNoder() {
+	this.noder = null;
+	this.scaleFactor = null;
+	this.offsetX = null;
+	this.offsetY = null;
+	this.isScaled = false;
+	if (arguments.length === 2) {
+		let noder = arguments[0], scaleFactor = arguments[1];
+		ScaledNoder.call(this, noder, scaleFactor, 0, 0);
+	} else if (arguments.length === 4) {
+		let noder = arguments[0], scaleFactor = arguments[1], offsetX = arguments[2], offsetY = arguments[3];
+		this.noder = noder;
+		this.scaleFactor = scaleFactor;
+		this.isScaled = !this.isIntegerPrecision();
 	}
-	get interfaces_() {
-		return [Noder];
-	}
-	rescale(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [segStrings] = args;
+}
+extend(ScaledNoder.prototype, {
+	rescale: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], Collection)) {
+				let segStrings = arguments[0];
 				for (var i = segStrings.iterator(); i.hasNext(); ) {
 					var ss = i.next();
 					this.rescale(ss.getCoordinates());
 				}
-			} else if (args[0] instanceof Array) {
-				let [pts] = args;
+			} else if (arguments[0] instanceof Array) {
+				let pts = arguments[0];
 				var p0 = null;
 				var p1 = null;
 				if (pts.length === 2) {
@@ -53,19 +49,19 @@ export default class ScaledNoder {
 				}
 			}
 		}
-	}
-	scale(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [segStrings] = args;
+	},
+	scale: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], Collection)) {
+				let segStrings = arguments[0];
 				var nodedSegmentStrings = new ArrayList();
 				for (var i = segStrings.iterator(); i.hasNext(); ) {
 					var ss = i.next();
 					nodedSegmentStrings.add(new NodedSegmentString(this.scale(ss.getCoordinates()), ss.getData()));
 				}
 				return nodedSegmentStrings;
-			} else if (args[0] instanceof Array) {
-				let [pts] = args;
+			} else if (arguments[0] instanceof Array) {
+				let pts = arguments[0];
 				var roundPts = new Array(pts.length);
 				for (var i = 0; i < pts.length; i++) {
 					roundPts[i] = new Coordinate(Math.round((pts[i].x - this.offsetX) * this.scaleFactor), Math.round((pts[i].y - this.offsetY) * this.scaleFactor), pts[i].z);
@@ -74,22 +70,25 @@ export default class ScaledNoder {
 				return roundPtsNoDup;
 			}
 		}
-	}
-	isIntegerPrecision() {
+	},
+	isIntegerPrecision: function () {
 		return this.scaleFactor === 1.0;
-	}
-	getNodedSubstrings() {
+	},
+	getNodedSubstrings: function () {
 		var splitSS = this.noder.getNodedSubstrings();
 		if (this.isScaled) this.rescale(splitSS);
 		return splitSS;
-	}
-	computeNodes(inputSegStrings) {
+	},
+	computeNodes: function (inputSegStrings) {
 		var intSegStrings = inputSegStrings;
 		if (this.isScaled) intSegStrings = this.scale(inputSegStrings);
 		this.noder.computeNodes(intSegStrings);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Noder];
+	},
+	getClass: function () {
 		return ScaledNoder;
 	}
-}
+});
 

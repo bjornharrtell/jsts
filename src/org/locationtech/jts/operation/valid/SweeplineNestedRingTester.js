@@ -2,23 +2,21 @@ import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import SweepLineIndex from '../../index/sweepline/SweepLineIndex';
 import IsValidOp from './IsValidOp';
 import SweepLineInterval from '../../index/sweepline/SweepLineInterval';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
-export default class SweeplineNestedRingTester {
-	constructor(...args) {
-		this.graph = null;
-		this.rings = new ArrayList();
-		this.sweepLine = null;
-		this.nestedPt = null;
-		if (args.length === 1) {
-			let [graph] = args;
-			this.graph = graph;
-		}
+export default function SweeplineNestedRingTester() {
+	this.graph = null;
+	this.rings = new ArrayList();
+	this.sweepLine = null;
+	this.nestedPt = null;
+	if (arguments.length === 1) {
+		let graph = arguments[0];
+		this.graph = graph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	buildIndex() {
+}
+extend(SweeplineNestedRingTester.prototype, {
+	buildIndex: function () {
 		this.sweepLine = new SweepLineIndex();
 		for (var i = 0; i < this.rings.size(); i++) {
 			var ring = this.rings.get(i);
@@ -26,20 +24,20 @@ export default class SweeplineNestedRingTester {
 			var sweepInt = new SweepLineInterval(env.getMinX(), env.getMaxX(), ring);
 			this.sweepLine.add(sweepInt);
 		}
-	}
-	getNestedPoint() {
+	},
+	getNestedPoint: function () {
 		return this.nestedPt;
-	}
-	isNonNested() {
+	},
+	isNonNested: function () {
 		this.buildIndex();
 		var action = new OverlapAction();
 		this.sweepLine.computeOverlaps(action);
 		return action.isNonNested;
-	}
-	add(ring) {
+	},
+	add: function (ring) {
 		this.rings.add(ring);
-	}
-	isInside(innerRing, searchRing) {
+	},
+	isInside: function (innerRing, searchRing) {
 		var innerRingPts = innerRing.getCoordinates();
 		var searchRingPts = searchRing.getCoordinates();
 		if (!innerRing.getEnvelopeInternal().intersects(searchRing.getEnvelopeInternal())) return false;
@@ -51,9 +49,12 @@ export default class SweeplineNestedRingTester {
 			return true;
 		}
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SweeplineNestedRingTester;
 	}
-}
+});
 

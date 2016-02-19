@@ -1,78 +1,76 @@
+import extend from '../../../../extend';
 import TaggedLineSegment from './TaggedLineSegment';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class TaggedLineString {
-	constructor(...args) {
-		this.parentLine = null;
-		this.segs = null;
-		this.resultSegs = new ArrayList();
-		this.minimumSize = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				let [parentLine] = args;
-				overloaded.call(this, parentLine, 2);
-			} else if (args.length === 2) {
-				let [parentLine, minimumSize] = args;
-				this.parentLine = parentLine;
-				this.minimumSize = minimumSize;
-				this.init();
-			}
-		};
-		return overloaded.apply(this, args);
+export default function TaggedLineString() {
+	this.parentLine = null;
+	this.segs = null;
+	this.resultSegs = new ArrayList();
+	this.minimumSize = null;
+	if (arguments.length === 1) {
+		let parentLine = arguments[0];
+		TaggedLineString.call(this, parentLine, 2);
+	} else if (arguments.length === 2) {
+		let parentLine = arguments[0], minimumSize = arguments[1];
+		this.parentLine = parentLine;
+		this.minimumSize = minimumSize;
+		this.init();
 	}
-	get interfaces_() {
-		return [];
-	}
-	static extractCoordinates(segs) {
-		var pts = new Array(segs.size() + 1);
-		var seg = null;
-		for (var i = 0; i < segs.size(); i++) {
-			seg = segs.get(i);
-			pts[i] = seg.p0;
-		}
-		pts[pts.length - 1] = seg.p1;
-		return pts;
-	}
-	addToResult(seg) {
+}
+extend(TaggedLineString.prototype, {
+	addToResult: function (seg) {
 		this.resultSegs.add(seg);
-	}
-	asLineString() {
+	},
+	asLineString: function () {
 		return this.parentLine.getFactory().createLineString(TaggedLineString.extractCoordinates(this.resultSegs));
-	}
-	getResultSize() {
+	},
+	getResultSize: function () {
 		var resultSegsSize = this.resultSegs.size();
 		return resultSegsSize === 0 ? 0 : resultSegsSize + 1;
-	}
-	getParent() {
+	},
+	getParent: function () {
 		return this.parentLine;
-	}
-	getSegment(i) {
+	},
+	getSegment: function (i) {
 		return this.segs[i];
-	}
-	getParentCoordinates() {
+	},
+	getParentCoordinates: function () {
 		return this.parentLine.getCoordinates();
-	}
-	getMinimumSize() {
+	},
+	getMinimumSize: function () {
 		return this.minimumSize;
-	}
-	asLinearRing() {
+	},
+	asLinearRing: function () {
 		return this.parentLine.getFactory().createLinearRing(TaggedLineString.extractCoordinates(this.resultSegs));
-	}
-	getSegments() {
+	},
+	getSegments: function () {
 		return this.segs;
-	}
-	init() {
+	},
+	init: function () {
 		var pts = this.parentLine.getCoordinates();
 		this.segs = new Array(pts.length - 1);
 		for (var i = 0; i < pts.length - 1; i++) {
 			var seg = new TaggedLineSegment(pts[i], pts[i + 1], this.parentLine, i);
 			this.segs[i] = seg;
 		}
-	}
-	getResultCoordinates() {
+	},
+	getResultCoordinates: function () {
 		return TaggedLineString.extractCoordinates(this.resultSegs);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return TaggedLineString;
 	}
-}
+});
+TaggedLineString.extractCoordinates = function (segs) {
+	var pts = new Array(segs.size() + 1);
+	var seg = null;
+	for (var i = 0; i < segs.size(); i++) {
+		seg = segs.get(i);
+		pts[i] = seg.p0;
+	}
+	pts[pts.length - 1] = seg.p1;
+	return pts;
+};
 

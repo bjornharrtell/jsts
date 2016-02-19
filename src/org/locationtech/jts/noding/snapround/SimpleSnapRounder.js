@@ -1,30 +1,29 @@
 import NodingValidator from '../NodingValidator';
+import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
 import Noder from '../Noder';
 import MCIndexNoder from '../MCIndexNoder';
 import NodedSegmentString from '../NodedSegmentString';
 import HotPixel from './HotPixel';
+import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder';
-export default class SimpleSnapRounder {
-	constructor(...args) {
-		this.pm = null;
-		this.li = null;
-		this.scaleFactor = null;
-		this.nodedSegStrings = null;
-		if (args.length === 1) {
-			let [pm] = args;
-			this.pm = pm;
-			this.li = new RobustLineIntersector();
-			this.li.setPrecisionModel(pm);
-			this.scaleFactor = pm.getScale();
-		}
+export default function SimpleSnapRounder() {
+	this.pm = null;
+	this.li = null;
+	this.scaleFactor = null;
+	this.nodedSegStrings = null;
+	if (arguments.length === 1) {
+		let pm = arguments[0];
+		this.pm = pm;
+		this.li = new RobustLineIntersector();
+		this.li.setPrecisionModel(pm);
+		this.scaleFactor = pm.getScale();
 	}
-	get interfaces_() {
-		return [Noder];
-	}
-	checkCorrectness(inputSegmentStrings) {
+}
+extend(SimpleSnapRounder.prototype, {
+	checkCorrectness: function (inputSegmentStrings) {
 		var resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings);
 		var nv = new NodingValidator(resultSegStrings);
 		try {
@@ -34,25 +33,25 @@ export default class SimpleSnapRounder {
 				ex.printStackTrace();
 			} else throw ex;
 		} finally {}
-	}
-	getNodedSubstrings() {
+	},
+	getNodedSubstrings: function () {
 		return NodedSegmentString.getNodedSubstrings(this.nodedSegStrings);
-	}
-	snapRound(segStrings, li) {
+	},
+	snapRound: function (segStrings, li) {
 		var intersections = this.findInteriorIntersections(segStrings, li);
 		this.computeSnaps(segStrings, intersections);
 		this.computeVertexSnaps(segStrings);
-	}
-	findInteriorIntersections(segStrings, li) {
+	},
+	findInteriorIntersections: function (segStrings, li) {
 		var intFinderAdder = new InteriorIntersectionFinderAdder(li);
 		var noder = new MCIndexNoder();
 		noder.setSegmentIntersector(intFinderAdder);
 		noder.computeNodes(segStrings);
 		return intFinderAdder.getInteriorIntersections();
-	}
-	computeVertexSnaps(...args) {
-		if (args.length === 1) {
-			let [edges] = args;
+	},
+	computeVertexSnaps: function () {
+		if (arguments.length === 1) {
+			let edges = arguments[0];
 			for (var i0 = edges.iterator(); i0.hasNext(); ) {
 				var edge0 = i0.next();
 				for (var i1 = edges.iterator(); i1.hasNext(); ) {
@@ -60,8 +59,8 @@ export default class SimpleSnapRounder {
 					this.computeVertexSnaps(edge0, edge1);
 				}
 			}
-		} else if (args.length === 2) {
-			let [e0, e1] = args;
+		} else if (arguments.length === 2) {
+			let e0 = arguments[0], e1 = arguments[1];
 			var pts0 = e0.getCoordinates();
 			var pts1 = e1.getCoordinates();
 			for (var i0 = 0; i0 < pts0.length - 1; i0++) {
@@ -77,21 +76,21 @@ export default class SimpleSnapRounder {
 				}
 			}
 		}
-	}
-	computeNodes(inputSegmentStrings) {
+	},
+	computeNodes: function (inputSegmentStrings) {
 		this.nodedSegStrings = inputSegmentStrings;
 		this.snapRound(inputSegmentStrings, this.li);
-	}
-	computeSnaps(...args) {
-		if (args.length === 2) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
-				let [segStrings, snapPts] = args;
+	},
+	computeSnaps: function () {
+		if (arguments.length === 2) {
+			if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection)) {
+				let segStrings = arguments[0], snapPts = arguments[1];
 				for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
 					var ss = i0.next();
 					this.computeSnaps(ss, snapPts);
 				}
-			} else if (args[0] instanceof NodedSegmentString && (args[1].interfaces_ && args[1].interfaces_.indexOf(Collection) > -1)) {
-				let [ss, snapPts] = args;
+			} else if (arguments[0] instanceof NodedSegmentString && hasInterface(arguments[1], Collection)) {
+				let ss = arguments[0], snapPts = arguments[1];
 				for (var it = snapPts.iterator(); it.hasNext(); ) {
 					var snapPt = it.next();
 					var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
@@ -101,9 +100,12 @@ export default class SimpleSnapRounder {
 				}
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Noder];
+	},
+	getClass: function () {
 		return SimpleSnapRounder;
 	}
-}
+});
 

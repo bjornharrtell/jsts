@@ -1,22 +1,20 @@
 import SimpleMCSweepLineIntersector from '../../geomgraph/index/SimpleMCSweepLineIntersector';
+import extend from '../../../../../extend';
 import SegmentIntersector from '../../geomgraph/index/SegmentIntersector';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default class EdgeSetNoder {
-	constructor(...args) {
-		this.li = null;
-		this.inputEdges = new ArrayList();
-		if (args.length === 1) {
-			let [li] = args;
-			this.li = li;
-		}
+export default function EdgeSetNoder() {
+	this.li = null;
+	this.inputEdges = new ArrayList();
+	if (arguments.length === 1) {
+		let li = arguments[0];
+		this.li = li;
 	}
-	get interfaces_() {
-		return [];
-	}
-	addEdges(edges) {
+}
+extend(EdgeSetNoder.prototype, {
+	addEdges: function (edges) {
 		this.inputEdges.addAll(edges);
-	}
-	getNodedEdges() {
+	},
+	getNodedEdges: function () {
 		var esi = new SimpleMCSweepLineIntersector();
 		var si = new SegmentIntersector(this.li, true, false);
 		esi.computeIntersections(this.inputEdges, si, true);
@@ -26,9 +24,12 @@ export default class EdgeSetNoder {
 			e.getEdgeIntersectionList().addSplitEdges(splitEdges);
 		}
 		return splitEdges;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeSetNoder;
 	}
-}
+});
 

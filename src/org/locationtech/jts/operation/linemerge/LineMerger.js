@@ -1,26 +1,23 @@
 import LineString from '../../geom/LineString';
 import Geometry from '../../geom/Geometry';
+import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
 import EdgeString from './EdgeString';
+import extend from '../../../../../extend';
 import LineMergeGraph from './LineMergeGraph';
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import GraphComponent from '../../planargraph/GraphComponent';
-export default class LineMerger {
-	constructor(...args) {
-		this.graph = new LineMergeGraph();
-		this.mergedLineStrings = null;
-		this.factory = null;
-		this.edgeStrings = null;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	buildEdgeStringsForUnprocessedNodes() {
+export default function LineMerger() {
+	this.graph = new LineMergeGraph();
+	this.mergedLineStrings = null;
+	this.factory = null;
+	this.edgeStrings = null;
+	if (arguments.length === 0) {}
+}
+extend(LineMerger.prototype, {
+	buildEdgeStringsForUnprocessedNodes: function () {
 		for (var i = this.graph.getNodes().iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (!node.isMarked()) {
@@ -29,8 +26,8 @@ export default class LineMerger {
 				node.setMarked(true);
 			}
 		}
-	}
-	buildEdgeStringsForNonDegree2Nodes() {
+	},
+	buildEdgeStringsForNonDegree2Nodes: function () {
 		for (var i = this.graph.getNodes().iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (node.getDegree() !== 2) {
@@ -38,15 +35,15 @@ export default class LineMerger {
 				node.setMarked(true);
 			}
 		}
-	}
-	buildEdgeStringsForObviousStartNodes() {
+	},
+	buildEdgeStringsForObviousStartNodes: function () {
 		this.buildEdgeStringsForNonDegree2Nodes();
-	}
-	getMergedLineStrings() {
+	},
+	getMergedLineStrings: function () {
 		this.merge();
 		return this.mergedLineStrings;
-	}
-	buildEdgeStringsStartingAt(node) {
+	},
+	buildEdgeStringsStartingAt: function (node) {
 		for (var i = node.getOutEdges().iterator(); i.hasNext(); ) {
 			var directedEdge = i.next();
 			if (directedEdge.getEdge().isMarked()) {
@@ -54,8 +51,8 @@ export default class LineMerger {
 			}
 			this.edgeStrings.add(this.buildEdgeStringStartingWith(directedEdge));
 		}
-	}
-	merge() {
+	},
+	merge: function () {
 		if (this.mergedLineStrings !== null) {
 			return null;
 		}
@@ -69,8 +66,8 @@ export default class LineMerger {
 			var edgeString = i.next();
 			this.mergedLineStrings.add(edgeString.toLineString());
 		}
-	}
-	buildEdgeStringStartingWith(start) {
+	},
+	buildEdgeStringStartingWith: function (start) {
 		var edgeString = new EdgeString(this.factory);
 		var current = start;
 		do {
@@ -79,42 +76,45 @@ export default class LineMerger {
 			current = current.getNext();
 		} while (current !== null && current !== start);
 		return edgeString;
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Geometry) {
-				let [geometry] = args;
-				geometry.apply(new (class {
-					filter(component) {
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Geometry) {
+				let geometry = arguments[0];
+				geometry.apply({
+					interfaces_: function () {
+						return [GeometryComponentFilter];
+					},
+					filter: function (component) {
 						if (component instanceof LineString) {
 							this.add(component);
 						}
 					}
-					get interfaces_() {
-						return [GeometryComponentFilter];
-					}
-				})());
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [geometries] = args;
+				});
+			} else if (hasInterface(arguments[0], Collection)) {
+				let geometries = arguments[0];
 				this.mergedLineStrings = null;
 				for (var i = geometries.iterator(); i.hasNext(); ) {
 					var geometry = i.next();
 					this.add(geometry);
 				}
-			} else if (args[0] instanceof LineString) {
-				let [lineString] = args;
+			} else if (arguments[0] instanceof LineString) {
+				let lineString = arguments[0];
 				if (this.factory === null) {
 					this.factory = lineString.getFactory();
 				}
 				this.graph.addEdge(lineString);
 			}
 		}
-	}
-	buildEdgeStringsForIsolatedLoops() {
+	},
+	buildEdgeStringsForIsolatedLoops: function () {
 		this.buildEdgeStringsForUnprocessedNodes();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LineMerger;
 	}
-}
+});
 

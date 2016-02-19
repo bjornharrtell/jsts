@@ -8,8 +8,8 @@ import Collection from './Collection'
  * @private
  */
 export default function List() { };
-List.prototype = new Collection();
-
+List.prototype = Object.create(Collection.prototype);
+List.prototype.constructor = List
 
 /**
  * Returns the element at the specified position in this list.

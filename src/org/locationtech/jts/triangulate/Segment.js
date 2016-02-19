@@ -1,80 +1,78 @@
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
-export default class Segment {
-	constructor(...args) {
-		this.ls = null;
-		this.data = null;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				let [p0, p1] = args;
-				this.ls = new LineSegment(p0, p1);
-			} else if (args.length === 3) {
-				let [p0, p1, data] = args;
-				this.ls = new LineSegment(p0, p1);
-				this.data = data;
-			} else if (args.length === 6) {
-				let [x1, y1, z1, x2, y2, z2] = args;
-				overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
-			} else if (args.length === 7) {
-				let [x1, y1, z1, x2, y2, z2, data] = args;
-				overloaded.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	getLineSegment() {
-		return this.ls;
-	}
-	getEndZ() {
-		var p = this.ls.getCoordinate(1);
-		return p.z;
-	}
-	getStartZ() {
-		var p = this.ls.getCoordinate(0);
-		return p.z;
-	}
-	intersection(s) {
-		return this.ls.intersection(s.getLineSegment());
-	}
-	getStart() {
-		return this.ls.getCoordinate(0);
-	}
-	getEnd() {
-		return this.ls.getCoordinate(1);
-	}
-	getEndY() {
-		var p = this.ls.getCoordinate(1);
-		return p.y;
-	}
-	getStartX() {
-		var p = this.ls.getCoordinate(0);
-		return p.x;
-	}
-	equalsTopo(s) {
-		return this.ls.equalsTopo(s.getLineSegment());
-	}
-	getStartY() {
-		var p = this.ls.getCoordinate(0);
-		return p.y;
-	}
-	setData(data) {
+export default function Segment() {
+	this.ls = null;
+	this.data = null;
+	if (arguments.length === 2) {
+		let p0 = arguments[0], p1 = arguments[1];
+		this.ls = new LineSegment(p0, p1);
+	} else if (arguments.length === 3) {
+		let p0 = arguments[0], p1 = arguments[1], data = arguments[2];
+		this.ls = new LineSegment(p0, p1);
 		this.data = data;
-	}
-	getData() {
-		return this.data;
-	}
-	getEndX() {
-		var p = this.ls.getCoordinate(1);
-		return p.x;
-	}
-	toString() {
-		return this.ls.toString();
-	}
-	getClass() {
-		return Segment;
+	} else if (arguments.length === 6) {
+		let x1 = arguments[0], y1 = arguments[1], z1 = arguments[2], x2 = arguments[3], y2 = arguments[4], z2 = arguments[5];
+		Segment.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
+	} else if (arguments.length === 7) {
+		let x1 = arguments[0], y1 = arguments[1], z1 = arguments[2], x2 = arguments[3], y2 = arguments[4], z2 = arguments[5], data = arguments[6];
+		Segment.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
 	}
 }
+extend(Segment.prototype, {
+	getLineSegment: function () {
+		return this.ls;
+	},
+	getEndZ: function () {
+		var p = this.ls.getCoordinate(1);
+		return p.z;
+	},
+	getStartZ: function () {
+		var p = this.ls.getCoordinate(0);
+		return p.z;
+	},
+	intersection: function (s) {
+		return this.ls.intersection(s.getLineSegment());
+	},
+	getStart: function () {
+		return this.ls.getCoordinate(0);
+	},
+	getEnd: function () {
+		return this.ls.getCoordinate(1);
+	},
+	getEndY: function () {
+		var p = this.ls.getCoordinate(1);
+		return p.y;
+	},
+	getStartX: function () {
+		var p = this.ls.getCoordinate(0);
+		return p.x;
+	},
+	equalsTopo: function (s) {
+		return this.ls.equalsTopo(s.getLineSegment());
+	},
+	getStartY: function () {
+		var p = this.ls.getCoordinate(0);
+		return p.y;
+	},
+	setData: function (data) {
+		this.data = data;
+	},
+	getData: function () {
+		return this.data;
+	},
+	getEndX: function () {
+		var p = this.ls.getCoordinate(1);
+		return p.x;
+	},
+	toString: function () {
+		return this.ls.toString();
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return Segment;
+	}
+});
 

@@ -1,23 +1,19 @@
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Position from '../../geomgraph/Position';
+import extend from '../../../../../extend';
 import Assert from '../../util/Assert';
-export default class RightmostEdgeFinder {
-	constructor(...args) {
-		this.minIndex = -1;
-		this.minCoord = null;
-		this.minDe = null;
-		this.orientedDe = null;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getCoordinate() {
+export default function RightmostEdgeFinder() {
+	this.minIndex = -1;
+	this.minCoord = null;
+	this.minDe = null;
+	this.orientedDe = null;
+	if (arguments.length === 0) {}
+}
+extend(RightmostEdgeFinder.prototype, {
+	getCoordinate: function () {
 		return this.minCoord;
-	}
-	getRightmostSide(de, index) {
+	},
+	getRightmostSide: function (de, index) {
 		var side = this.getRightmostSideOfSegment(de, index);
 		if (side < 0) side = this.getRightmostSideOfSegment(de, index - 1);
 		if (side < 0) {
@@ -25,8 +21,8 @@ export default class RightmostEdgeFinder {
 			this.checkForRightmostCoordinate(de);
 		}
 		return side;
-	}
-	findRightmostEdgeAtVertex() {
+	},
+	findRightmostEdgeAtVertex: function () {
 		var pts = this.minDe.getEdge().getCoordinates();
 		Assert.isTrue(this.minIndex > 0 && this.minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
 		var pPrev = pts[this.minIndex - 1];
@@ -41,8 +37,8 @@ export default class RightmostEdgeFinder {
 		if (usePrev) {
 			this.minIndex = this.minIndex - 1;
 		}
-	}
-	getRightmostSideOfSegment(de, i) {
+	},
+	getRightmostSideOfSegment: function (de, i) {
 		var e = de.getEdge();
 		var coord = e.getCoordinates();
 		if (i < 0 || i + 1 >= coord.length) return -1;
@@ -50,11 +46,11 @@ export default class RightmostEdgeFinder {
 		var pos = Position.LEFT;
 		if (coord[i].y < coord[i + 1].y) pos = Position.RIGHT;
 		return pos;
-	}
-	getEdge() {
+	},
+	getEdge: function () {
 		return this.orientedDe;
-	}
-	checkForRightmostCoordinate(de) {
+	},
+	checkForRightmostCoordinate: function (de) {
 		var coord = de.getEdge().getCoordinates();
 		for (var i = 0; i < coord.length - 1; i++) {
 			if (this.minCoord === null || coord[i].x > this.minCoord.x) {
@@ -63,8 +59,8 @@ export default class RightmostEdgeFinder {
 				this.minCoord = coord[i];
 			}
 		}
-	}
-	findRightmostEdgeAtNode() {
+	},
+	findRightmostEdgeAtNode: function () {
 		var node = this.minDe.getNode();
 		var star = node.getEdges();
 		this.minDe = star.getRightmostEdge();
@@ -72,8 +68,8 @@ export default class RightmostEdgeFinder {
 			this.minDe = this.minDe.getSym();
 			this.minIndex = this.minDe.getEdge().getCoordinates().length - 1;
 		}
-	}
-	findEdge(dirEdgeList) {
+	},
+	findEdge: function (dirEdgeList) {
 		for (var i = dirEdgeList.iterator(); i.hasNext(); ) {
 			var de = i.next();
 			if (!de.isForward()) continue;
@@ -90,9 +86,12 @@ export default class RightmostEdgeFinder {
 		if (rightmostSide === Position.LEFT) {
 			this.orientedDe = this.minDe.getSym();
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RightmostEdgeFinder;
 	}
-}
+});
 

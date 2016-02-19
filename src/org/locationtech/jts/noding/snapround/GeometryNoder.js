@@ -1,22 +1,20 @@
 import NodingValidator from '../NodingValidator';
 import NodedSegmentString from '../NodedSegmentString';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import MCIndexSnapRounder from './MCIndexSnapRounder';
-export default class GeometryNoder {
-	constructor(...args) {
-		this.geomFact = null;
-		this.pm = null;
-		this.isValidityChecked = false;
-		if (args.length === 1) {
-			let [pm] = args;
-			this.pm = pm;
-		}
+export default function GeometryNoder() {
+	this.geomFact = null;
+	this.pm = null;
+	this.isValidityChecked = false;
+	if (arguments.length === 1) {
+		let pm = arguments[0];
+		this.pm = pm;
 	}
-	get interfaces_() {
-		return [];
-	}
-	extractLines(geoms) {
+}
+extend(GeometryNoder.prototype, {
+	extractLines: function (geoms) {
 		var lines = new ArrayList();
 		var lce = new LinearComponentExtracter(lines);
 		for (var it = geoms.iterator(); it.hasNext(); ) {
@@ -24,11 +22,11 @@ export default class GeometryNoder {
 			geom.apply(lce);
 		}
 		return lines;
-	}
-	setValidate(isValidityChecked) {
+	},
+	setValidate: function (isValidityChecked) {
 		this.isValidityChecked = isValidityChecked;
-	}
-	node(geoms) {
+	},
+	node: function (geoms) {
 		var geom0 = geoms.iterator().next();
 		this.geomFact = geom0.getFactory();
 		var segStrings = this.toSegmentStrings(this.extractLines(geoms));
@@ -40,16 +38,16 @@ export default class GeometryNoder {
 			nv.checkValid();
 		}
 		return this.toLineStrings(nodedLines);
-	}
-	toSegmentStrings(lines) {
+	},
+	toSegmentStrings: function (lines) {
 		var segStrings = new ArrayList();
 		for (var it = lines.iterator(); it.hasNext(); ) {
 			var line = it.next();
 			segStrings.add(new NodedSegmentString(line.getCoordinates(), null));
 		}
 		return segStrings;
-	}
-	toLineStrings(segStrings) {
+	},
+	toLineStrings: function (segStrings) {
 		var lines = new ArrayList();
 		for (var it = segStrings.iterator(); it.hasNext(); ) {
 			var ss = it.next();
@@ -57,9 +55,12 @@ export default class GeometryNoder {
 			lines.add(this.geomFact.createLineString(ss.getCoordinates()));
 		}
 		return lines;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometryNoder;
 	}
-}
+});
 

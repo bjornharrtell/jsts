@@ -1,141 +1,37 @@
 import StringBuffer from '../../../../java/lang/StringBuffer';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import Integer from '../../../../java/lang/Integer';
 import Character from '../../../../java/lang/Character';
 import Comparable from '../../../../java/lang/Comparable';
 import Cloneable from '../../../../java/lang/Cloneable';
 import Serializable from '../../../../java/io/Serializable';
-export default class DD {
-	constructor(...args) {
-		this.hi = 0.0;
-		this.lo = 0.0;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				this.init(0.0);
-			} else if (args.length === 1) {
-				if (typeof args[0] === "number") {
-					let [x] = args;
-					this.init(x);
-				} else if (args[0] instanceof DD) {
-					let [dd] = args;
-					this.init(dd);
-				} else if (typeof args[0] === "string") {
-					let [str] = args;
-					overloaded.call(this, DD.parse(str));
-				}
-			} else if (args.length === 2) {
-				let [hi, lo] = args;
-				this.init(hi, lo);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [Serializable, Comparable, Cloneable];
-	}
-	static sqr(x) {
-		return DD.valueOf(x).selfMultiply(x);
-	}
-	static valueOf(...args) {
-		if (args.length === 1) {
-			if (typeof args[0] === "string") {
-				let [str] = args;
-				return DD.parse(str);
-			} else if (typeof args[0] === "number") {
-				let [x] = args;
-				return new DD(x);
-			}
+export default function DD() {
+	this.hi = 0.0;
+	this.lo = 0.0;
+	if (arguments.length === 0) {
+		this.init(0.0);
+	} else if (arguments.length === 1) {
+		if (typeof arguments[0] === "number") {
+			let x = arguments[0];
+			this.init(x);
+		} else if (arguments[0] instanceof DD) {
+			let dd = arguments[0];
+			this.init(dd);
+		} else if (typeof arguments[0] === "string") {
+			let str = arguments[0];
+			DD.call(this, DD.parse(str));
 		}
+	} else if (arguments.length === 2) {
+		let hi = arguments[0], lo = arguments[1];
+		this.init(hi, lo);
 	}
-	static sqrt(x) {
-		return DD.valueOf(x).sqrt();
-	}
-	static parse(str) {
-		var i = 0;
-		var strlen = str.length;
-		while (Character.isWhitespace(str.charAt(i))) i++;
-		var isNegative = false;
-		if (i < strlen) {
-			var signCh = str.charAt(i);
-			if (signCh === '-' || signCh === '+') {
-				i++;
-				if (signCh === '-') isNegative = true;
-			}
-		}
-		var val = new DD();
-		var numDigits = 0;
-		var numBeforeDec = 0;
-		var exp = 0;
-		while (true) {
-			if (i >= strlen) break;
-			var ch = str.charAt(i);
-			i++;
-			if (Character.isDigit(ch)) {
-				var d = ch - '0';
-				val.selfMultiply(DD.TEN);
-				val.selfAdd(d);
-				numDigits++;
-				continue;
-			}
-			if (ch === '.') {
-				numBeforeDec = numDigits;
-				continue;
-			}
-			if (ch === 'e' || ch === 'E') {
-				var expStr = str.substring(i);
-				try {
-					exp = Integer.parseInt(expStr);
-				} catch (ex) {
-					if (ex instanceof NumberFormatException) {
-						throw new NumberFormatException("Invalid exponent " + expStr + " in string " + str);
-					} else throw ex;
-				} finally {}
-				break;
-			}
-			throw new NumberFormatException("Unexpected character '" + ch + "' at position " + i + " in string " + str);
-		}
-		var val2 = val;
-		var numDecPlaces = numDigits - numBeforeDec - exp;
-		if (numDecPlaces === 0) {
-			val2 = val;
-		} else if (numDecPlaces > 0) {
-			var scale = DD.TEN.pow(numDecPlaces);
-			val2 = val.divide(scale);
-		} else if (numDecPlaces < 0) {
-			var scale = DD.TEN.pow(-numDecPlaces);
-			val2 = val.multiply(scale);
-		}
-		if (isNegative) {
-			return val2.negate();
-		}
-		return val2;
-	}
-	static createNaN() {
-		return new DD(Double.NaN, Double.NaN);
-	}
-	static copy(dd) {
-		return new DD(dd);
-	}
-	static magnitude(x) {
-		var xAbs = Math.abs(x);
-		var xLog10 = Math.log(xAbs) / Math.log(10);
-		var xMag = Math.trunc(Math.floor(xLog10));
-		var xApprox = Math.pow(10, xMag);
-		if (xApprox * 10 <= xAbs) xMag += 1;
-		return xMag;
-	}
-	static stringOfChar(ch, len) {
-		var buf = new StringBuffer();
-		for (var i = 0; i < len; i++) {
-			buf.append(ch);
-		}
-		return buf.toString();
-	}
-	le(y) {
+}
+extend(DD.prototype, {
+	le: function (y) {
 		return this.hi < y.hi || this.hi === y.hi && this.lo <= y.lo;
-	}
-	extractSignificantDigits(insertDecimalPoint, magnitude) {
+	},
+	extractSignificantDigits: function (insertDecimalPoint, magnitude) {
 		var y = this.abs();
 		var mag = DD.magnitude(y.hi);
 		var scale = DD.TEN.pow(mag);
@@ -177,69 +73,69 @@ export default class DD {
 		}
 		magnitude[0] = mag;
 		return buf.toString();
-	}
-	sqr() {
+	},
+	sqr: function () {
 		return this.multiply(this);
-	}
-	doubleValue() {
+	},
+	doubleValue: function () {
 		return this.hi + this.lo;
-	}
-	subtract(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	subtract: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				return this.add(y.negate());
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				return this.add(-y);
 			}
 		}
-	}
-	equals(...args) {
-		if (args.length === 1) {
-			let [y] = args;
+	},
+	equals: function () {
+		if (arguments.length === 1) {
+			let y = arguments[0];
 			return this.hi === y.hi && this.lo === y.lo;
-		} else return super.equals(...args);
-	}
-	isZero() {
+		}
+	},
+	isZero: function () {
 		return this.hi === 0.0 && this.lo === 0.0;
-	}
-	selfSubtract(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	selfSubtract: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				if (this.isNaN()) return this;
 				return this.selfAdd(-y.hi, -y.lo);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				if (this.isNaN()) return this;
 				return this.selfAdd(-y, 0.0);
 			}
 		}
-	}
-	getSpecialNumberString() {
+	},
+	getSpecialNumberString: function () {
 		if (this.isZero()) return "0.0";
 		if (this.isNaN()) return "NaN ";
 		return null;
-	}
-	min(x) {
+	},
+	min: function (x) {
 		if (this.le(x)) {
 			return this;
 		} else {
 			return x;
 		}
-	}
-	selfDivide(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	selfDivide: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				return this.selfDivide(y.hi, y.lo);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				return this.selfDivide(y, 0.0);
 			}
-		} else if (args.length === 2) {
-			let [yhi, ylo] = args;
+		} else if (arguments.length === 2) {
+			let yhi = arguments[0], ylo = arguments[1];
 			var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
 			C = this.hi / yhi;
 			c = DD.SPLIT * C;
@@ -258,14 +154,14 @@ export default class DD {
 			this.lo = C - u + c;
 			return this;
 		}
-	}
-	dump() {
+	},
+	dump: function () {
 		return "DD<" + this.hi + ", " + this.lo + ">";
-	}
-	divide(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	divide: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
 				C = this.hi / y.hi;
 				c = DD.SPLIT * C;
@@ -283,17 +179,17 @@ export default class DD {
 				var zhi = u;
 				var zlo = C - u + c;
 				return new DD(zhi, zlo);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				if (Double.isNaN(y)) return DD.createNaN();
 				return DD.copy(this).selfDivide(y, 0.0);
 			}
 		}
-	}
-	ge(y) {
+	},
+	ge: function (y) {
 		return this.hi > y.hi || this.hi === y.hi && this.lo >= y.lo;
-	}
-	pow(exp) {
+	},
+	pow: function (exp) {
 		if (exp === 0.0) return DD.valueOf(1.0);
 		var r = new DD(this);
 		var s = DD.valueOf(1.0);
@@ -311,8 +207,8 @@ export default class DD {
 		}
 		if (exp < 0) return s.reciprocal();
 		return s;
-	}
-	ceil() {
+	},
+	ceil: function () {
 		if (this.isNaN()) return DD.NaN;
 		var fhi = Math.ceil(this.hi);
 		var flo = 0.0;
@@ -320,41 +216,41 @@ export default class DD {
 			flo = Math.ceil(this.lo);
 		}
 		return new DD(fhi, flo);
-	}
-	compareTo(o) {
+	},
+	compareTo: function (o) {
 		var other = o;
 		if (this.hi < other.hi) return -1;
 		if (this.hi > other.hi) return 1;
 		if (this.lo < other.lo) return -1;
 		if (this.lo > other.lo) return 1;
 		return 0;
-	}
-	rint() {
+	},
+	rint: function () {
 		if (this.isNaN()) return this;
 		var plus5 = this.add(0.5);
 		return plus5.floor();
-	}
-	setValue(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [value] = args;
+	},
+	setValue: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let value = arguments[0];
 				this.init(value);
 				return this;
-			} else if (typeof args[0] === "number") {
-				let [value] = args;
+			} else if (typeof arguments[0] === "number") {
+				let value = arguments[0];
 				this.init(value);
 				return this;
 			}
 		}
-	}
-	max(x) {
+	},
+	max: function (x) {
 		if (this.ge(x)) {
 			return this;
 		} else {
 			return x;
 		}
-	}
-	sqrt() {
+	},
+	sqrt: function () {
 		if (this.isZero()) return DD.valueOf(0.0);
 		if (this.isNegative()) {
 			return DD.NaN;
@@ -365,14 +261,14 @@ export default class DD {
 		var diffSq = this.subtract(axdd.sqr());
 		var d2 = diffSq.hi * (x * 0.5);
 		return axdd.add(d2);
-	}
-	selfAdd(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	selfAdd: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				return this.selfAdd(y.hi, y.lo);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				var H = null, h = null, S = null, s = null, e = null, f = null;
 				S = this.hi + y;
 				e = S - this.hi;
@@ -385,8 +281,8 @@ export default class DD {
 				this.lo = h + (H - this.hi);
 				return this;
 			}
-		} else if (args.length === 2) {
-			let [yhi, ylo] = args;
+		} else if (arguments.length === 2) {
+			let yhi = arguments[0], ylo = arguments[1];
 			var H = null, h = null, T = null, t = null, S = null, s = null, e = null, f = null;
 			S = this.hi + yhi;
 			T = this.lo + ylo;
@@ -406,18 +302,18 @@ export default class DD {
 			this.lo = zlo;
 			return this;
 		}
-	}
-	selfMultiply(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	selfMultiply: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				return this.selfMultiply(y.hi, y.lo);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				return this.selfMultiply(y, 0.0);
 			}
-		} else if (args.length === 2) {
-			let [yhi, ylo] = args;
+		} else if (arguments.length === 2) {
+			let yhi = arguments[0], ylo = arguments[1];
 			var hx = null, tx = null, hy = null, ty = null, C = null, c = null;
 			C = DD.SPLIT * this.hi;
 			hx = C - this.hi;
@@ -436,11 +332,11 @@ export default class DD {
 			this.lo = zlo;
 			return this;
 		}
-	}
-	selfSqr() {
+	},
+	selfSqr: function () {
 		return this.selfMultiply(this);
-	}
-	floor() {
+	},
+	floor: function () {
 		if (this.isNaN()) return DD.NaN;
 		var fhi = Math.floor(this.hi);
 		var flo = 0.0;
@@ -448,45 +344,45 @@ export default class DD {
 			flo = Math.floor(this.lo);
 		}
 		return new DD(fhi, flo);
-	}
-	negate() {
+	},
+	negate: function () {
 		if (this.isNaN()) return this;
 		return new DD(-this.hi, -this.lo);
-	}
-	clone() {
+	},
+	clone: function () {
 		try {
-			return super.clone();
+			return null;
 		} catch (ex) {
 			if (ex instanceof CloneNotSupportedException) {
 				return null;
 			} else throw ex;
 		} finally {}
-	}
-	multiply(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	multiply: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				if (y.isNaN()) return DD.createNaN();
 				return DD.copy(this).selfMultiply(y);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				if (Double.isNaN(y)) return DD.createNaN();
 				return DD.copy(this).selfMultiply(y, 0.0);
 			}
 		}
-	}
-	isNaN() {
+	},
+	isNaN: function () {
 		return Double.isNaN(this.hi);
-	}
-	intValue() {
+	},
+	intValue: function () {
 		return Math.trunc(this.hi);
-	}
-	toString() {
+	},
+	toString: function () {
 		var mag = DD.magnitude(this.hi);
 		if (mag >= -3 && mag <= 20) return this.toStandardNotation();
 		return this.toSciNotation();
-	}
-	toStandardNotation() {
+	},
+	toStandardNotation: function () {
 		var specialStr = this.getSpecialNumberString();
 		if (specialStr !== null) return specialStr;
 		var magnitude = new Array(1);
@@ -504,8 +400,8 @@ export default class DD {
 		}
 		if (this.isNegative()) return "-" + num;
 		return num;
-	}
-	reciprocal() {
+	},
+	reciprocal: function () {
 		var hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null;
 		C = 1.0 / this.hi;
 		c = DD.SPLIT * C;
@@ -522,8 +418,8 @@ export default class DD {
 		var zhi = C + c;
 		var zlo = C - zhi + c;
 		return new DD(zhi, zlo);
-	}
-	toSciNotation() {
+	},
+	toSciNotation: function () {
 		if (this.isZero()) return DD.SCI_NOT_ZERO;
 		var specialStr = this.getSpecialNumberString();
 		if (specialStr !== null) return specialStr;
@@ -538,67 +434,168 @@ export default class DD {
 		var digitsWithDecimal = digits.charAt(0) + "." + trailingDigits;
 		if (this.isNegative()) return "-" + digitsWithDecimal + expStr;
 		return digitsWithDecimal + expStr;
-	}
-	abs() {
+	},
+	abs: function () {
 		if (this.isNaN()) return DD.NaN;
 		if (this.isNegative()) return this.negate();
 		return new DD(this);
-	}
-	isPositive() {
+	},
+	isPositive: function () {
 		return this.hi > 0.0 || this.hi === 0.0 && this.lo > 0.0;
-	}
-	lt(y) {
+	},
+	lt: function (y) {
 		return this.hi < y.hi || this.hi === y.hi && this.lo < y.lo;
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof DD) {
-				let [y] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof DD) {
+				let y = arguments[0];
 				return DD.copy(this).selfAdd(y);
-			} else if (typeof args[0] === "number") {
-				let [y] = args;
+			} else if (typeof arguments[0] === "number") {
+				let y = arguments[0];
 				return DD.copy(this).selfAdd(y);
 			}
 		}
-	}
-	init(...args) {
-		if (args.length === 1) {
-			if (typeof args[0] === "number") {
-				let [x] = args;
+	},
+	init: function () {
+		if (arguments.length === 1) {
+			if (typeof arguments[0] === "number") {
+				let x = arguments[0];
 				this.hi = x;
 				this.lo = 0.0;
-			} else if (args[0] instanceof DD) {
-				let [dd] = args;
+			} else if (arguments[0] instanceof DD) {
+				let dd = arguments[0];
 				this.hi = dd.hi;
 				this.lo = dd.lo;
 			}
-		} else if (args.length === 2) {
-			let [hi, lo] = args;
+		} else if (arguments.length === 2) {
+			let hi = arguments[0], lo = arguments[1];
 			this.hi = hi;
 			this.lo = lo;
 		}
-	}
-	gt(y) {
+	},
+	gt: function (y) {
 		return this.hi > y.hi || this.hi === y.hi && this.lo > y.lo;
-	}
-	isNegative() {
+	},
+	isNegative: function () {
 		return this.hi < 0.0 || this.hi === 0.0 && this.lo < 0.0;
-	}
-	trunc() {
+	},
+	trunc: function () {
 		if (this.isNaN()) return DD.NaN;
 		if (this.isPositive()) return this.floor(); else return this.ceil();
-	}
-	signum() {
+	},
+	signum: function () {
 		if (this.hi > 0) return 1;
 		if (this.hi < 0) return -1;
 		if (this.lo > 0) return 1;
 		if (this.lo < 0) return -1;
 		return 0;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Serializable, Comparable, Cloneable];
+	},
+	getClass: function () {
 		return DD;
 	}
-}
+});
+DD.sqr = function (x) {
+	return DD.valueOf(x).selfMultiply(x);
+};
+DD.valueOf = function () {
+	if (arguments.length === 1) {
+		if (typeof arguments[0] === "string") {
+			let str = arguments[0];
+			return DD.parse(str);
+		} else if (typeof arguments[0] === "number") {
+			let x = arguments[0];
+			return new DD(x);
+		}
+	}
+};
+DD.sqrt = function (x) {
+	return DD.valueOf(x).sqrt();
+};
+DD.parse = function (str) {
+	var i = 0;
+	var strlen = str.length;
+	while (Character.isWhitespace(str.charAt(i))) i++;
+	var isNegative = false;
+	if (i < strlen) {
+		var signCh = str.charAt(i);
+		if (signCh === '-' || signCh === '+') {
+			i++;
+			if (signCh === '-') isNegative = true;
+		}
+	}
+	var val = new DD();
+	var numDigits = 0;
+	var numBeforeDec = 0;
+	var exp = 0;
+	while (true) {
+		if (i >= strlen) break;
+		var ch = str.charAt(i);
+		i++;
+		if (Character.isDigit(ch)) {
+			var d = ch - '0';
+			val.selfMultiply(DD.TEN);
+			val.selfAdd(d);
+			numDigits++;
+			continue;
+		}
+		if (ch === '.') {
+			numBeforeDec = numDigits;
+			continue;
+		}
+		if (ch === 'e' || ch === 'E') {
+			var expStr = str.substring(i);
+			try {
+				exp = Integer.parseInt(expStr);
+			} catch (ex) {
+				if (ex instanceof NumberFormatException) {
+					throw new NumberFormatException("Invalid exponent " + expStr + " in string " + str);
+				} else throw ex;
+			} finally {}
+			break;
+		}
+		throw new NumberFormatException("Unexpected character '" + ch + "' at position " + i + " in string " + str);
+	}
+	var val2 = val;
+	var numDecPlaces = numDigits - numBeforeDec - exp;
+	if (numDecPlaces === 0) {
+		val2 = val;
+	} else if (numDecPlaces > 0) {
+		var scale = DD.TEN.pow(numDecPlaces);
+		val2 = val.divide(scale);
+	} else if (numDecPlaces < 0) {
+		var scale = DD.TEN.pow(-numDecPlaces);
+		val2 = val.multiply(scale);
+	}
+	if (isNegative) {
+		return val2.negate();
+	}
+	return val2;
+};
+DD.createNaN = function () {
+	return new DD(Double.NaN, Double.NaN);
+};
+DD.copy = function (dd) {
+	return new DD(dd);
+};
+DD.magnitude = function (x) {
+	var xAbs = Math.abs(x);
+	var xLog10 = Math.log(xAbs) / Math.log(10);
+	var xMag = Math.trunc(Math.floor(xLog10));
+	var xApprox = Math.pow(10, xMag);
+	if (xApprox * 10 <= xAbs) xMag += 1;
+	return xMag;
+};
+DD.stringOfChar = function (ch, len) {
+	var buf = new StringBuffer();
+	for (var i = 0; i < len; i++) {
+		buf.append(ch);
+	}
+	return buf.toString();
+};
 DD.PI = new DD(3.141592653589793116e+00, 1.224646799147353207e-16);
 DD.TWO_PI = new DD(6.283185307179586232e+00, 2.449293598294706414e-16);
 DD.PI_2 = new DD(1.570796326794896558e+00, 6.123233995736766036e-17);

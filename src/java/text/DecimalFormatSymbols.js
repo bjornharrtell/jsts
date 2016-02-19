@@ -1,1 +1,1 @@
-export default class DecimalFormatSymbols {}
+export default function DecimalFormatSymbols () {}

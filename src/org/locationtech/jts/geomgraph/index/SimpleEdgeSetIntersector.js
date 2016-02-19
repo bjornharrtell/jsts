@@ -1,18 +1,17 @@
+import hasInterface from '../../../../../hasInterface';
 import EdgeSetIntersector from './EdgeSetIntersector';
+import extend from '../../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
+import inherits from '../../../../../inherits';
 import List from '../../../../../java/util/List';
-export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
-	constructor(...args) {
-		super();
-		this.nOverlaps = null;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	computeIntersects(e0, e1, si) {
+export default function SimpleEdgeSetIntersector() {
+	EdgeSetIntersector.apply(this);
+	this.nOverlaps = null;
+	if (arguments.length === 0) {}
+}
+inherits(SimpleEdgeSetIntersector, EdgeSetIntersector);
+extend(SimpleEdgeSetIntersector.prototype, {
+	computeIntersects: function (e0, e1, si) {
 		var pts0 = e0.getCoordinates();
 		var pts1 = e1.getCoordinates();
 		for (var i0 = 0; i0 < pts0.length - 1; i0++) {
@@ -20,11 +19,11 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
 				si.addIntersections(e0, i0, e1, i1);
 			}
 		}
-	}
-	computeIntersections(...args) {
-		if (args.length === 3) {
-			if (args[2] instanceof SegmentIntersector && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-				let [edges0, edges1, si] = args;
+	},
+	computeIntersections: function () {
+		if (arguments.length === 3) {
+			if (arguments[2] instanceof SegmentIntersector && (hasInterface(arguments[0], List) && hasInterface(arguments[1], List))) {
+				let edges0 = arguments[0], edges1 = arguments[1], si = arguments[2];
 				this.nOverlaps = 0;
 				for (var i0 = edges0.iterator(); i0.hasNext(); ) {
 					var edge0 = i0.next();
@@ -33,8 +32,8 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
 						this.computeIntersects(edge0, edge1, si);
 					}
 				}
-			} else if (typeof args[2] === "boolean" && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && args[1] instanceof SegmentIntersector)) {
-				let [edges, si, testAllSegments] = args;
+			} else if (typeof arguments[2] === "boolean" && (hasInterface(arguments[0], List) && arguments[1] instanceof SegmentIntersector)) {
+				let edges = arguments[0], si = arguments[1], testAllSegments = arguments[2];
 				this.nOverlaps = 0;
 				for (var i0 = edges.iterator(); i0.hasNext(); ) {
 					var edge0 = i0.next();
@@ -45,9 +44,12 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
 				}
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SimpleEdgeSetIntersector;
 	}
-}
+});
 

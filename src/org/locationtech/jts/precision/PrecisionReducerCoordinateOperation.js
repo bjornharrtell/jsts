@@ -3,21 +3,21 @@ import CoordinateList from '../geom/CoordinateList';
 import Coordinate from '../geom/Coordinate';
 import GeometryEditor from '../geom/util/GeometryEditor';
 import LinearRing from '../geom/LinearRing';
-export default class PrecisionReducerCoordinateOperation extends GeometryEditor.CoordinateOperation {
-	constructor(...args) {
-		super();
-		this.targetPM = null;
-		this.removeCollapsed = true;
-		if (args.length === 2) {
-			let [targetPM, removeCollapsed] = args;
-			this.targetPM = targetPM;
-			this.removeCollapsed = removeCollapsed;
-		}
+import extend from '../../../../extend';
+import inherits from '../../../../inherits';
+export default function PrecisionReducerCoordinateOperation() {
+	GeometryEditor.CoordinateOperation.apply(this);
+	this.targetPM = null;
+	this.removeCollapsed = true;
+	if (arguments.length === 2) {
+		let targetPM = arguments[0], removeCollapsed = arguments[1];
+		this.targetPM = targetPM;
+		this.removeCollapsed = removeCollapsed;
 	}
-	get interfaces_() {
-		return [];
-	}
-	editCoordinates(coordinates, geom) {
+}
+inherits(PrecisionReducerCoordinateOperation, GeometryEditor.CoordinateOperation);
+extend(PrecisionReducerCoordinateOperation.prototype, {
+	editCoordinates: function (coordinates, geom) {
 		if (coordinates.length === 0) return null;
 		var reducedCoords = new Array(coordinates.length);
 		for (var i = 0; i < coordinates.length; i++) {
@@ -36,9 +36,12 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
 			return collapsedCoords;
 		}
 		return noRepeatedCoords;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PrecisionReducerCoordinateOperation;
 	}
-}
+});
 

@@ -3,61 +3,44 @@ import PolygonExtracter from '../../geom/util/PolygonExtracter';
 import Location from '../../geom/Location';
 import LineString from '../../geom/LineString';
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
+import hasInterface from '../../../../../hasInterface';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
 import GeometryLocation from './GeometryLocation';
 import Double from '../../../../../java/lang/Double';
 import PointExtracter from '../../geom/util/PointExtracter';
+import extend from '../../../../../extend';
 import ConnectedElementLocationFilter from './ConnectedElementLocationFilter';
 import LineSegment from '../../geom/LineSegment';
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import List from '../../../../../java/util/List';
-export default class DistanceOp {
-	constructor(...args) {
-		this.geom = null;
-		this.terminateDistance = 0.0;
-		this.ptLocator = new PointLocator();
-		this.minDistanceLocation = null;
-		this.minDistance = Double.MAX_VALUE;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				let [g0, g1] = args;
-				overloaded.call(this, g0, g1, 0.0);
-			} else if (args.length === 3) {
-				let [g0, g1, terminateDistance] = args;
-				this.geom = new Array(2);
-				this.geom[0] = g0;
-				this.geom[1] = g1;
-				this.terminateDistance = terminateDistance;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function DistanceOp() {
+	this.geom = null;
+	this.terminateDistance = 0.0;
+	this.ptLocator = new PointLocator();
+	this.minDistanceLocation = null;
+	this.minDistance = Double.MAX_VALUE;
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		DistanceOp.call(this, g0, g1, 0.0);
+	} else if (arguments.length === 3) {
+		let g0 = arguments[0], g1 = arguments[1], terminateDistance = arguments[2];
+		this.geom = new Array(2);
+		this.geom[0] = g0;
+		this.geom[1] = g1;
+		this.terminateDistance = terminateDistance;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static distance(g0, g1) {
-		var distOp = new DistanceOp(g0, g1);
-		return distOp.distance();
-	}
-	static isWithinDistance(g0, g1, distance) {
-		var distOp = new DistanceOp(g0, g1, distance);
-		return distOp.distance() <= distance;
-	}
-	static nearestPoints(g0, g1) {
-		var distOp = new DistanceOp(g0, g1);
-		return distOp.nearestPoints();
-	}
-	computeContainmentDistance(...args) {
-		if (args.length === 0) {
-			let [] = args;
+}
+extend(DistanceOp.prototype, {
+	computeContainmentDistance: function () {
+		if (arguments.length === 0) {
 			var locPtPoly = new Array(2);
 			this.computeContainmentDistance(0, locPtPoly);
 			if (this.minDistance <= this.terminateDistance) return null;
 			this.computeContainmentDistance(1, locPtPoly);
-		} else if (args.length === 2) {
-			let [polyGeomIndex, locPtPoly] = args;
+		} else if (arguments.length === 2) {
+			let polyGeomIndex = arguments[0], locPtPoly = arguments[1];
 			var locationsIndex = 1 - polyGeomIndex;
 			var polys = PolygonExtracter.getPolygons(this.geom[polyGeomIndex]);
 			if (polys.size() > 0) {
@@ -69,9 +52,9 @@ export default class DistanceOp {
 					return null;
 				}
 			}
-		} else if (args.length === 3) {
-			if (args[2] instanceof Array && (args[0].interfaces_ && args[0].interfaces_.indexOf(List) > -1 && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-				let [locs, polys, locPtPoly] = args;
+		} else if (arguments.length === 3) {
+			if (arguments[2] instanceof Array && (hasInterface(arguments[0], List) && hasInterface(arguments[1], List))) {
+				let locs = arguments[0], polys = arguments[1], locPtPoly = arguments[2];
 				for (var i = 0; i < locs.size(); i++) {
 					var loc = locs.get(i);
 					for (var j = 0; j < polys.size(); j++) {
@@ -79,8 +62,8 @@ export default class DistanceOp {
 						if (this.minDistance <= this.terminateDistance) return null;
 					}
 				}
-			} else if (args[2] instanceof Array && (args[0] instanceof GeometryLocation && args[1] instanceof Polygon)) {
-				let [ptLoc, poly, locPtPoly] = args;
+			} else if (arguments[2] instanceof Array && (arguments[0] instanceof GeometryLocation && arguments[1] instanceof Polygon)) {
+				let ptLoc = arguments[0], poly = arguments[1], locPtPoly = arguments[2];
 				var pt = ptLoc.getCoordinate();
 				if (Location.EXTERIOR !== this.ptLocator.locate(pt, poly)) {
 					this.minDistance = 0.0;
@@ -91,8 +74,8 @@ export default class DistanceOp {
 				}
 			}
 		}
-	}
-	computeMinDistanceLinesPoints(lines, points, locGeom) {
+	},
+	computeMinDistanceLinesPoints: function (lines, points, locGeom) {
 		for (var i = 0; i < lines.size(); i++) {
 			var line = lines.get(i);
 			for (var j = 0; j < points.size(); j++) {
@@ -101,8 +84,8 @@ export default class DistanceOp {
 				if (this.minDistance <= this.terminateDistance) return null;
 			}
 		}
-	}
-	computeFacetDistance() {
+	},
+	computeFacetDistance: function () {
 		var locGeom = new Array(2);
 		var lines0 = LinearComponentExtracter.getLines(this.geom[0]);
 		var lines1 = LinearComponentExtracter.getLines(this.geom[1]);
@@ -125,12 +108,12 @@ export default class DistanceOp {
 		locGeom[1] = null;
 		this.computeMinDistancePoints(pts0, pts1, locGeom);
 		this.updateMinDistance(locGeom, false);
-	}
-	nearestLocations() {
+	},
+	nearestLocations: function () {
 		this.computeMinDistance();
 		return this.minDistanceLocation;
-	}
-	updateMinDistance(locGeom, flip) {
+	},
+	updateMinDistance: function (locGeom, flip) {
 		if (locGeom[0] === null) return null;
 		if (flip) {
 			this.minDistanceLocation[0] = locGeom[1];
@@ -139,23 +122,22 @@ export default class DistanceOp {
 			this.minDistanceLocation[0] = locGeom[0];
 			this.minDistanceLocation[1] = locGeom[1];
 		}
-	}
-	nearestPoints() {
+	},
+	nearestPoints: function () {
 		this.computeMinDistance();
 		var nearestPts = [this.minDistanceLocation[0].getCoordinate(), this.minDistanceLocation[1].getCoordinate()];
 		return nearestPts;
-	}
-	computeMinDistance(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	computeMinDistance: function () {
+		if (arguments.length === 0) {
 			if (this.minDistanceLocation !== null) return null;
 			this.minDistanceLocation = new Array(2);
 			this.computeContainmentDistance();
 			if (this.minDistance <= this.terminateDistance) return null;
 			this.computeFacetDistance();
-		} else if (args.length === 3) {
-			if (args[2] instanceof Array && (args[0] instanceof LineString && args[1] instanceof Point)) {
-				let [line, pt, locGeom] = args;
+		} else if (arguments.length === 3) {
+			if (arguments[2] instanceof Array && (arguments[0] instanceof LineString && arguments[1] instanceof Point)) {
+				let line = arguments[0], pt = arguments[1], locGeom = arguments[2];
 				if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal()) > this.minDistance) return null;
 				var coord0 = line.getCoordinates();
 				var coord = pt.getCoordinate();
@@ -170,8 +152,8 @@ export default class DistanceOp {
 					}
 					if (this.minDistance <= this.terminateDistance) return null;
 				}
-			} else if (args[2] instanceof Array && (args[0] instanceof LineString && args[1] instanceof LineString)) {
-				let [line0, line1, locGeom] = args;
+			} else if (arguments[2] instanceof Array && (arguments[0] instanceof LineString && arguments[1] instanceof LineString)) {
+				let line0 = arguments[0], line1 = arguments[1], locGeom = arguments[2];
 				if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal()) > this.minDistance) return null;
 				var coord0 = line0.getCoordinates();
 				var coord1 = line1.getCoordinates();
@@ -191,8 +173,8 @@ export default class DistanceOp {
 				}
 			}
 		}
-	}
-	computeMinDistancePoints(points0, points1, locGeom) {
+	},
+	computeMinDistancePoints: function (points0, points1, locGeom) {
 		for (var i = 0; i < points0.size(); i++) {
 			var pt0 = points0.get(i);
 			for (var j = 0; j < points1.size(); j++) {
@@ -206,14 +188,14 @@ export default class DistanceOp {
 				if (this.minDistance <= this.terminateDistance) return null;
 			}
 		}
-	}
-	distance() {
+	},
+	distance: function () {
 		if (this.geom[0] === null || this.geom[1] === null) throw new IllegalArgumentException("null geometries are not supported");
 		if (this.geom[0].isEmpty() || this.geom[1].isEmpty()) return 0.0;
 		this.computeMinDistance();
 		return this.minDistance;
-	}
-	computeMinDistanceLines(lines0, lines1, locGeom) {
+	},
+	computeMinDistanceLines: function (lines0, lines1, locGeom) {
 		for (var i = 0; i < lines0.size(); i++) {
 			var line0 = lines0.get(i);
 			for (var j = 0; j < lines1.size(); j++) {
@@ -222,9 +204,24 @@ export default class DistanceOp {
 				if (this.minDistance <= this.terminateDistance) return null;
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return DistanceOp;
 	}
-}
+});
+DistanceOp.distance = function (g0, g1) {
+	var distOp = new DistanceOp(g0, g1);
+	return distOp.distance();
+};
+DistanceOp.isWithinDistance = function (g0, g1, distance) {
+	var distOp = new DistanceOp(g0, g1, distance);
+	return distOp.distance() <= distance;
+};
+DistanceOp.nearestPoints = function (g0, g1) {
+	var distOp = new DistanceOp(g0, g1);
+	return distOp.nearestPoints();
+};
 

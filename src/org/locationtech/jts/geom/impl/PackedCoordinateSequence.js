@@ -1,53 +1,46 @@
 import Coordinate from '../Coordinate';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import Double from '../../../../../java/lang/Double';
+import extend from '../../../../../extend';
 import SoftReference from '../../../../../java/lang/ref/SoftReference';
 import CoordinateSequences from '../CoordinateSequences';
 import System from '../../../../../java/lang/System';
 import CoordinateSequence from '../CoordinateSequence';
-export default class PackedCoordinateSequence {
-	constructor(...args) {
-		this.dimension = null;
-		this.coordRef = null;
-	}
-	get interfaces_() {
-		return [CoordinateSequence];
-	}
-	static get Double() {
-		return Double;
-	}
-	static get Float() {
-		return Float;
-	}
-	getCoordinate(...args) {
-		if (args.length === 1) {
-			let [i] = args;
+import inherits from '../../../../../inherits';
+export default function PackedCoordinateSequence() {
+	this.dimension = null;
+	this.coordRef = null;
+}
+extend(PackedCoordinateSequence.prototype, {
+	getCoordinate: function () {
+		if (arguments.length === 1) {
+			let i = arguments[0];
 			var coords = this.getCachedCoords();
 			if (coords !== null) return coords[i]; else return this.getCoordinateInternal(i);
-		} else if (args.length === 2) {
-			let [i, coord] = args;
+		} else if (arguments.length === 2) {
+			let i = arguments[0], coord = arguments[1];
 			coord.x = this.getOrdinate(i, 0);
 			coord.y = this.getOrdinate(i, 1);
 			if (this.dimension > 2) coord.z = this.getOrdinate(i, 2);
 		}
-	}
-	setX(index, value) {
+	},
+	setX: function (index, value) {
 		this.coordRef = null;
 		this.setOrdinate(index, 0, value);
-	}
-	getCoordinateCopy(i) {
+	},
+	getCoordinateCopy: function (i) {
 		return this.getCoordinateInternal(i);
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return this.dimension;
-	}
-	getX(index) {
+	},
+	getX: function (index) {
 		return this.getOrdinate(index, 0);
-	}
-	toString() {
+	},
+	toString: function () {
 		return CoordinateSequences.toString(this);
-	}
-	getCachedCoords() {
+	},
+	getCachedCoords: function () {
 		if (this.coordRef !== null) {
 			var coords = this.coordRef.get();
 			if (coords !== null) {
@@ -59,11 +52,11 @@ export default class PackedCoordinateSequence {
 		} else {
 			return null;
 		}
-	}
-	getY(index) {
+	},
+	getY: function (index) {
 		return this.getOrdinate(index, 1);
-	}
-	toCoordinateArray() {
+	},
+	toCoordinateArray: function () {
 		var coords = this.getCachedCoords();
 		if (coords !== null) return coords;
 		coords = new Array(this.size());
@@ -72,202 +65,201 @@ export default class PackedCoordinateSequence {
 		}
 		this.coordRef = new SoftReference(coords);
 		return coords;
-	}
-	setY(index, value) {
+	},
+	setY: function (index, value) {
 		this.coordRef = null;
 		this.setOrdinate(index, 1, value);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateSequence];
+	},
+	getClass: function () {
 		return PackedCoordinateSequence;
 	}
-}
-class Double extends PackedCoordinateSequence {
-	constructor(...args) {
-		super();
-		this.coords = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				return ((...args) => {
-					let [coordinates] = args;
-					overloaded.call(this, coordinates, 3);
-				})(...args);
-			} else if (args.length === 2) {
-				if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coords, dimensions] = args;
-						if (dimensions < 2) {
-							throw new IllegalArgumentException("Must have at least 2 dimensions");
-						}
-						if (coords.length % dimensions !== 0) {
-							throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
-						}
-						this.dimension = dimensions;
-						this.coords = coords;
-					})(...args);
-				} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coordinates, dimensions] = args;
-						this.coords = new Array(coordinates.length);
-						this.dimension = dimensions;
-						for (var i = 0; i < coordinates.length; i++) {
-							this.coords[i] = coordinates[i];
-						}
-					})(...args);
-				} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coordinates, dimension] = args;
-						if (coordinates === null) coordinates = new Array(0);
-						this.dimension = dimension;
-						this.coords = new Array(coordinates.length * this.dimension);
-						for (var i = 0; i < coordinates.length; i++) {
-							this.coords[i * this.dimension] = coordinates[i].x;
-							if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
-							if (this.dimension >= 3) this.coords[i * this.dimension + 2] = coordinates[i].z;
-						}
-					})(...args);
-				} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [size, dimension] = args;
-						this.dimension = dimension;
-						this.coords = new Array(size * this.dimension);
-					})(...args);
+});
+function Double() {
+	PackedCoordinateSequence.apply(this);
+	this.coords = null;
+	if (arguments.length === 1) {
+		let coordinates = arguments[0];
+		Double.call(this, coordinates, 3);
+	} else if (arguments.length === 2) {
+		if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			return (() => {
+				let coords = arguments[0], dimensions = arguments[1];
+				if (dimensions < 2) {
+					throw new IllegalArgumentException("Must have at least 2 dimensions");
 				}
-			}
-		};
-		return overloaded.apply(this, args);
+				if (coords.length % dimensions !== 0) {
+					throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
+				}
+				this.dimension = dimensions;
+				this.coords = coords;
+			})(arguments);
+		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			return (() => {
+				let coordinates = arguments[0], dimensions = arguments[1];
+				this.coords = new Array(coordinates.length);
+				this.dimension = dimensions;
+				for (var i = 0; i < coordinates.length; i++) {
+					this.coords[i] = coordinates[i];
+				}
+			})(arguments);
+		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			return (() => {
+				let coordinates = arguments[0], dimension = arguments[1];
+				if (coordinates === null) coordinates = new Array(0);
+				this.dimension = dimension;
+				this.coords = new Array(coordinates.length * this.dimension);
+				for (var i = 0; i < coordinates.length; i++) {
+					this.coords[i * this.dimension] = coordinates[i].x;
+					if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
+					if (this.dimension >= 3) this.coords[i * this.dimension + 2] = coordinates[i].z;
+				}
+			})(arguments);
+		} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
+			return (() => {
+				let size = arguments[0], dimension = arguments[1];
+				this.dimension = dimension;
+				this.coords = new Array(size * this.dimension);
+			})(arguments);
+		}
 	}
-	get interfaces_() {
-		return [];
-	}
-	setOrdinate(index, ordinate, value) {
+}
+inherits(Double, PackedCoordinateSequence);
+extend(Double.prototype, {
+	setOrdinate: function (index, ordinate, value) {
 		this.coordRef = null;
 		this.coords[index * this.dimension + ordinate] = value;
-	}
-	size() {
+	},
+	size: function () {
 		return Math.trunc(this.coords.length / this.dimension);
-	}
-	getOrdinate(index, ordinate) {
+	},
+	getOrdinate: function (index, ordinate) {
 		return this.coords[index * this.dimension + ordinate];
-	}
-	getCoordinateInternal(i) {
+	},
+	getCoordinateInternal: function (i) {
 		var x = this.coords[i * this.dimension];
 		var y = this.coords[i * this.dimension + 1];
 		var z = this.dimension === 2 ? Coordinate.NULL_ORDINATE : this.coords[i * this.dimension + 2];
 		return new Coordinate(x, y, z);
-	}
-	getRawCoordinates() {
+	},
+	getRawCoordinates: function () {
 		return this.coords;
-	}
-	clone() {
+	},
+	clone: function () {
 		var clone = new Array(this.coords.length);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Double(clone, this.dimension);
-	}
-	expandEnvelope(env) {
+	},
+	expandEnvelope: function (env) {
 		for (var i = 0; i < this.coords.length; i += this.dimension) {
 			env.expandToInclude(this.coords[i], this.coords[i + 1]);
 		}
 		return env;
-	}
-	copy() {
+	},
+	copy: function () {
 		var clone = new Array(this.coords.length);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Double(clone, this.dimension);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Double;
 	}
-}
-class Float extends PackedCoordinateSequence {
-	constructor(...args) {
-		super();
-		this.coords = null;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coords, dimensions] = args;
-						if (dimensions < 2) {
-							throw new IllegalArgumentException("Must have at least 2 dimensions");
-						}
-						if (coords.length % dimensions !== 0) {
-							throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
-						}
-						this.dimension = dimensions;
-						this.coords = coords;
-					})(...args);
-				} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coordinates, dimensions] = args;
-						this.coords = new Array(coordinates.length);
-						this.dimension = dimensions;
-						for (var i = 0; i < coordinates.length; i++) {
-							this.coords[i] = coordinates[i];
-						}
-					})(...args);
-				} else if (args[0] instanceof Array && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [coordinates, dimension] = args;
-						if (coordinates === null) coordinates = new Array(0);
-						this.dimension = dimension;
-						this.coords = new Array(coordinates.length * this.dimension);
-						for (var i = 0; i < coordinates.length; i++) {
-							this.coords[i * this.dimension] = coordinates[i].x;
-							if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
-							if (this.dimension >= 3) this.coords[i * this.dimension + 2] = coordinates[i].z;
-						}
-					})(...args);
-				} else if (Number.isInteger(args[0]) && Number.isInteger(args[1])) {
-					return ((...args) => {
-						let [size, dimension] = args;
-						this.dimension = dimension;
-						this.coords = new Array(size * this.dimension);
-					})(...args);
+});
+function Float() {
+	PackedCoordinateSequence.apply(this);
+	this.coords = null;
+	if (arguments.length === 2) {
+		if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			return (() => {
+				let coords = arguments[0], dimensions = arguments[1];
+				if (dimensions < 2) {
+					throw new IllegalArgumentException("Must have at least 2 dimensions");
 				}
-			}
-		};
-		return overloaded.apply(this, args);
+				if (coords.length % dimensions !== 0) {
+					throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
+				}
+				this.dimension = dimensions;
+				this.coords = coords;
+			})(arguments);
+		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			return (() => {
+				let coordinates = arguments[0], dimensions = arguments[1];
+				this.coords = new Array(coordinates.length);
+				this.dimension = dimensions;
+				for (var i = 0; i < coordinates.length; i++) {
+					this.coords[i] = coordinates[i];
+				}
+			})(arguments);
+		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+			return (() => {
+				let coordinates = arguments[0], dimension = arguments[1];
+				if (coordinates === null) coordinates = new Array(0);
+				this.dimension = dimension;
+				this.coords = new Array(coordinates.length * this.dimension);
+				for (var i = 0; i < coordinates.length; i++) {
+					this.coords[i * this.dimension] = coordinates[i].x;
+					if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
+					if (this.dimension >= 3) this.coords[i * this.dimension + 2] = coordinates[i].z;
+				}
+			})(arguments);
+		} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
+			return (() => {
+				let size = arguments[0], dimension = arguments[1];
+				this.dimension = dimension;
+				this.coords = new Array(size * this.dimension);
+			})(arguments);
+		}
 	}
-	get interfaces_() {
-		return [];
-	}
-	setOrdinate(index, ordinate, value) {
+}
+inherits(Float, PackedCoordinateSequence);
+extend(Float.prototype, {
+	setOrdinate: function (index, ordinate, value) {
 		this.coordRef = null;
 		this.coords[index * this.dimension + ordinate] = value;
-	}
-	size() {
+	},
+	size: function () {
 		return Math.trunc(this.coords.length / this.dimension);
-	}
-	getOrdinate(index, ordinate) {
+	},
+	getOrdinate: function (index, ordinate) {
 		return this.coords[index * this.dimension + ordinate];
-	}
-	getCoordinateInternal(i) {
+	},
+	getCoordinateInternal: function (i) {
 		var x = this.coords[i * this.dimension];
 		var y = this.coords[i * this.dimension + 1];
 		var z = this.dimension === 2 ? Coordinate.NULL_ORDINATE : this.coords[i * this.dimension + 2];
 		return new Coordinate(x, y, z);
-	}
-	getRawCoordinates() {
+	},
+	getRawCoordinates: function () {
 		return this.coords;
-	}
-	clone() {
+	},
+	clone: function () {
 		var clone = new Array(this.coords.length);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Float(clone, this.dimension);
-	}
-	expandEnvelope(env) {
+	},
+	expandEnvelope: function (env) {
 		for (var i = 0; i < this.coords.length; i += this.dimension) {
 			env.expandToInclude(this.coords[i], this.coords[i + 1]);
 		}
 		return env;
-	}
-	copy() {
+	},
+	copy: function () {
 		var clone = new Array(this.coords.length);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Float(clone, this.dimension);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Float;
 	}
-}
+});
+PackedCoordinateSequence.Double = Double;
+PackedCoordinateSequence.Float = Float;
 

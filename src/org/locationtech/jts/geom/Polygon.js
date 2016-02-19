@@ -2,47 +2,48 @@ import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Geometry from './Geometry';
 import Arrays from '../../../../java/util/Arrays';
 import CoordinateFilter from './CoordinateFilter';
+import hasInterface from '../../../../hasInterface';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../extend';
 import System from '../../../../java/lang/System';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import CoordinateArrays from './CoordinateArrays';
 import Polygonal from './Polygonal';
 import GeometryFilter from './GeometryFilter';
 import CoordinateSequenceFilter from './CoordinateSequenceFilter';
-export default class Polygon extends Geometry {
-	constructor(...args) {
-		super();
-		this.shell = null;
-		this.holes = null;
-		if (args.length === 3) {
-			let [shell, holes, factory] = args;
-			super(factory);
-			if (shell === null) {
-				shell = this.getFactory().createLinearRing();
-			}
-			if (holes === null) {
-				holes = [];
-			}
-			if (Polygon.hasNullElements(holes)) {
-				throw new IllegalArgumentException("holes must not contain null elements");
-			}
-			if (shell.isEmpty() && Polygon.hasNonEmptyElements(holes)) {
-				throw new IllegalArgumentException("shell is empty but holes are not");
-			}
-			this.shell = shell;
-			this.holes = holes;
+import inherits from '../../../../inherits';
+export default function Polygon() {
+	Geometry.apply(this);
+	this.shell = null;
+	this.holes = null;
+	if (arguments.length === 3) {
+		let shell = arguments[0], holes = arguments[1], factory = arguments[2];
+		Geometry.call(this, factory);
+		if (shell === null) {
+			shell = this.getFactory().createLinearRing();
 		}
+		if (holes === null) {
+			holes = [];
+		}
+		if (Geometry.hasNullElements(holes)) {
+			throw new IllegalArgumentException("holes must not contain null elements");
+		}
+		if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes)) {
+			throw new IllegalArgumentException("shell is empty but holes are not");
+		}
+		this.shell = shell;
+		this.holes = holes;
 	}
-	get interfaces_() {
-		return [Polygonal];
-	}
-	computeEnvelopeInternal() {
+}
+inherits(Polygon, Geometry);
+extend(Polygon.prototype, {
+	computeEnvelopeInternal: function () {
 		return this.shell.getEnvelopeInternal();
-	}
-	getSortIndex() {
+	},
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_POLYGON;
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		if (this.isEmpty()) {
 			return [];
 		}
@@ -61,16 +62,16 @@ export default class Polygon extends Geometry {
 			}
 		}
 		return coordinates;
-	}
-	getArea() {
+	},
+	getArea: function () {
 		var area = 0.0;
 		area += Math.abs(CGAlgorithms.signedArea(this.shell.getCoordinateSequence()));
 		for (var i = 0; i < this.holes.length; i++) {
 			area -= Math.abs(CGAlgorithms.signedArea(this.holes[i].getCoordinateSequence()));
 		}
 		return area;
-	}
-	isRectangle() {
+	},
+	isRectangle: function () {
 		if (this.getNumInteriorRing() !== 0) return false;
 		if (this.shell === null) return false;
 		if (this.shell.getNumPoints() !== 5) return false;
@@ -94,10 +95,10 @@ export default class Polygon extends Geometry {
 			prevY = y;
 		}
 		return true;
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
@@ -116,18 +117,17 @@ export default class Polygon extends Geometry {
 				}
 			}
 			return true;
-		} else return super.equalsExact(...args);
-	}
-	normalize(...args) {
-		if (args.length === 0) {
-			let [] = args;
+		} else return Geometry.prototype.equalsExact.apply(this, arguments);
+	},
+	normalize: function () {
+		if (arguments.length === 0) {
 			this.normalize(this.shell, true);
 			for (var i = 0; i < this.holes.length; i++) {
 				this.normalize(this.holes[i], false);
 			}
 			Arrays.sort(this.holes);
-		} else if (args.length === 2) {
-			let [ring, clockwise] = args;
+		} else if (arguments.length === 2) {
+			let ring = arguments[0], clockwise = arguments[1];
 			if (ring.isEmpty()) {
 				return null;
 			}
@@ -141,35 +141,35 @@ export default class Polygon extends Geometry {
 				CoordinateArrays.reverse(ring.getCoordinates());
 			}
 		}
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		return this.shell.getCoordinate();
-	}
-	getNumInteriorRing() {
+	},
+	getNumInteriorRing: function () {
 		return this.holes.length;
-	}
-	getBoundaryDimension() {
+	},
+	getBoundaryDimension: function () {
 		return 1;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return 2;
-	}
-	getLength() {
+	},
+	getLength: function () {
 		var len = 0.0;
 		len += this.shell.getLength();
 		for (var i = 0; i < this.holes.length; i++) {
 			len += this.holes[i].getLength();
 		}
 		return len;
-	}
-	getNumPoints() {
+	},
+	getNumPoints: function () {
 		var numPoints = this.shell.getNumPoints();
 		for (var i = 0; i < this.holes.length; i++) {
 			numPoints += this.holes[i].getNumPoints();
 		}
 		return numPoints;
-	}
-	reverse() {
+	},
+	reverse: function () {
 		var poly = this.copy();
 		poly.shell = this.shell.clone().reverse();
 		poly.holes = new Array(this.holes.length);
@@ -177,18 +177,18 @@ export default class Polygon extends Geometry {
 			poly.holes[i] = this.holes[i].clone().reverse();
 		}
 		return poly;
-	}
-	convexHull() {
+	},
+	convexHull: function () {
 		return this.getExteriorRing().convexHull();
-	}
-	compareToSameClass(...args) {
-		if (args.length === 1) {
-			let [o] = args;
+	},
+	compareToSameClass: function () {
+		if (arguments.length === 1) {
+			let o = arguments[0];
 			var thisShell = this.shell;
 			var otherShell = o.shell;
 			return thisShell.compareToSameClass(otherShell);
-		} else if (args.length === 2) {
-			let [o, comp] = args;
+		} else if (arguments.length === 2) {
+			let o = arguments[0], comp = arguments[1];
 			var poly = o;
 			var thisShell = this.shell;
 			var otherShell = poly.shell;
@@ -208,17 +208,17 @@ export default class Polygon extends Geometry {
 			if (i < nHole2) return -1;
 			return 0;
 		}
-	}
-	apply(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-				let [filter] = args;
+	},
+	apply: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], CoordinateFilter)) {
+				let filter = arguments[0];
 				this.shell.apply(filter);
 				for (var i = 0; i < this.holes.length; i++) {
 					this.holes[i].apply(filter);
 				}
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+				let filter = arguments[0];
 				this.shell.apply(filter);
 				if (!filter.isDone()) {
 					for (var i = 0; i < this.holes.length; i++) {
@@ -227,11 +227,11 @@ export default class Polygon extends Geometry {
 					}
 				}
 				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
 				this.shell.apply(filter);
 				for (var i = 0; i < this.holes.length; i++) {
@@ -239,8 +239,8 @@ export default class Polygon extends Geometry {
 				}
 			}
 		}
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		if (this.isEmpty()) {
 			return this.getFactory().createMultiLineString();
 		}
@@ -251,39 +251,42 @@ export default class Polygon extends Geometry {
 		}
 		if (rings.length <= 1) return this.getFactory().createLinearRing(rings[0].getCoordinateSequence());
 		return this.getFactory().createMultiLineString(rings);
-	}
-	clone() {
-		var poly = super.clone();
+	},
+	clone: function () {
+		var poly = Geometry.prototype.clone.call(this);
 		poly.shell = this.shell.clone();
 		poly.holes = new Array(this.holes.length);
 		for (var i = 0; i < this.holes.length; i++) {
 			poly.holes[i] = this.holes[i].clone();
 		}
 		return poly;
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "Polygon";
-	}
-	copy() {
+	},
+	copy: function () {
 		var shell = this.shell.copy();
 		var holes = new Array(this.holes.length);
 		for (var i = 0; i < holes.length; i++) {
 			holes[i] = this.holes[i].copy();
 		}
 		return new Polygon(shell, holes, this.factory);
-	}
-	getExteriorRing() {
+	},
+	getExteriorRing: function () {
 		return this.shell;
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		return this.shell.isEmpty();
-	}
-	getInteriorRingN(n) {
+	},
+	getInteriorRingN: function (n) {
 		return this.holes[n];
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Polygonal];
+	},
+	getClass: function () {
 		return Polygon;
 	}
-}
+});
 Polygon.serialVersionUID = -3494792200821764533;
 

@@ -1,44 +1,36 @@
 import WKTWriter from '../io/WKTWriter';
 import MCIndexNoder from './MCIndexNoder';
 import TopologyException from '../geom/TopologyException';
+import extend from '../../../../extend';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinder from './InteriorIntersectionFinder';
-export default class FastNodingValidator {
-	constructor(...args) {
-		this.li = new RobustLineIntersector();
-		this.segStrings = null;
-		this.findAllIntersections = false;
-		this.segInt = null;
-		this._isValid = true;
-		if (args.length === 1) {
-			let [segStrings] = args;
-			this.segStrings = segStrings;
-		}
+export default function FastNodingValidator() {
+	this.li = new RobustLineIntersector();
+	this.segStrings = null;
+	this.findAllIntersections = false;
+	this.segInt = null;
+	this._isValid = true;
+	if (arguments.length === 1) {
+		let segStrings = arguments[0];
+		this.segStrings = segStrings;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static computeIntersections(segStrings) {
-		var nv = new FastNodingValidator(segStrings);
-		nv.setFindAllIntersections(true);
-		nv.isValid();
-		return nv.getIntersections();
-	}
-	execute() {
+}
+extend(FastNodingValidator.prototype, {
+	execute: function () {
 		if (this.segInt !== null) return null;
 		this.checkInteriorIntersections();
-	}
-	getIntersections() {
+	},
+	getIntersections: function () {
 		return this.segInt.getIntersections();
-	}
-	isValid() {
+	},
+	isValid: function () {
 		this.execute();
 		return this._isValid;
-	}
-	setFindAllIntersections(findAllIntersections) {
+	},
+	setFindAllIntersections: function (findAllIntersections) {
 		this.findAllIntersections = findAllIntersections;
-	}
-	checkInteriorIntersections() {
+	},
+	checkInteriorIntersections: function () {
 		this._isValid = true;
 		this.segInt = new InteriorIntersectionFinder(this.li);
 		this.segInt.setFindAllIntersections(this.findAllIntersections);
@@ -49,18 +41,27 @@ export default class FastNodingValidator {
 			this._isValid = false;
 			return null;
 		}
-	}
-	checkValid() {
+	},
+	checkValid: function () {
 		this.execute();
 		if (!this._isValid) throw new TopologyException(this.getErrorMessage(), this.segInt.getInteriorIntersection());
-	}
-	getErrorMessage() {
+	},
+	getErrorMessage: function () {
 		if (this._isValid) return "no intersections found";
 		var intSegs = this.segInt.getIntersectionSegments();
 		return "found non-noded intersection between " + WKTWriter.toLineString(intSegs[0], intSegs[1]) + " and " + WKTWriter.toLineString(intSegs[2], intSegs[3]);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return FastNodingValidator;
 	}
-}
+});
+FastNodingValidator.computeIntersections = function (segStrings) {
+	var nv = new FastNodingValidator(segStrings);
+	nv.setFindAllIntersections(true);
+	nv.isValid();
+	return nv.getIntersections();
+};
 

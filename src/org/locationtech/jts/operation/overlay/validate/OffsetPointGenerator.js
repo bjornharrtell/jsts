@@ -1,30 +1,28 @@
 import Coordinate from '../../../geom/Coordinate';
+import extend from '../../../../../../extend';
 import ArrayList from '../../../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter';
-export default class OffsetPointGenerator {
-	constructor(...args) {
-		this.g = null;
-		this.doLeft = true;
-		this.doRight = true;
-		if (args.length === 1) {
-			let [g] = args;
-			this.g = g;
-		}
+export default function OffsetPointGenerator() {
+	this.g = null;
+	this.doLeft = true;
+	this.doRight = true;
+	if (arguments.length === 1) {
+		let g = arguments[0];
+		this.g = g;
 	}
-	get interfaces_() {
-		return [];
-	}
-	extractPoints(line, offsetDistance, offsetPts) {
+}
+extend(OffsetPointGenerator.prototype, {
+	extractPoints: function (line, offsetDistance, offsetPts) {
 		var pts = line.getCoordinates();
 		for (var i = 0; i < pts.length - 1; i++) {
 			this.computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts);
 		}
-	}
-	setSidesToGenerate(doLeft, doRight) {
+	},
+	setSidesToGenerate: function (doLeft, doRight) {
 		this.doLeft = doLeft;
 		this.doRight = doRight;
-	}
-	getPoints(offsetDistance) {
+	},
+	getPoints: function (offsetDistance) {
 		var offsetPts = new ArrayList();
 		var lines = LinearComponentExtracter.getLines(this.g);
 		for (var i = lines.iterator(); i.hasNext(); ) {
@@ -32,8 +30,8 @@ export default class OffsetPointGenerator {
 			this.extractPoints(line, offsetDistance, offsetPts);
 		}
 		return offsetPts;
-	}
-	computeOffsetPoints(p0, p1, offsetDistance, offsetPts) {
+	},
+	computeOffsetPoints: function (p0, p1, offsetDistance, offsetPts) {
 		var dx = p1.x - p0.x;
 		var dy = p1.y - p0.y;
 		var len = Math.sqrt(dx * dx + dy * dy);
@@ -49,9 +47,12 @@ export default class OffsetPointGenerator {
 			var offsetRight = new Coordinate(midX + uy, midY - ux);
 			offsetPts.add(offsetRight);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return OffsetPointGenerator;
 	}
-}
+});
 

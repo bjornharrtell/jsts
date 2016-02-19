@@ -1,21 +1,19 @@
 import Position from '../../geomgraph/Position';
 import TopologyException from '../../geom/TopologyException';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import OverlayOp from './OverlayOp';
-export default class ConsistentPolygonRingChecker {
-	constructor(...args) {
-		this.graph = null;
-		this.SCANNING_FOR_INCOMING = 1;
-		this.LINKING_TO_OUTGOING = 2;
-		if (args.length === 1) {
-			let [graph] = args;
-			this.graph = graph;
-		}
+export default function ConsistentPolygonRingChecker() {
+	this.graph = null;
+	this.SCANNING_FOR_INCOMING = 1;
+	this.LINKING_TO_OUTGOING = 2;
+	if (arguments.length === 1) {
+		let graph = arguments[0];
+		this.graph = graph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	testLinkResultDirectedEdges(deStar, opCode) {
+}
+extend(ConsistentPolygonRingChecker.prototype, {
+	testLinkResultDirectedEdges: function (deStar, opCode) {
 		var ringEdges = this.getPotentialResultAreaEdges(deStar, opCode);
 		var firstOut = null;
 		var incoming = null;
@@ -40,36 +38,39 @@ export default class ConsistentPolygonRingChecker {
 		if (state === this.LINKING_TO_OUTGOING) {
 			if (firstOut === null) throw new TopologyException("no outgoing dirEdge found", deStar.getCoordinate());
 		}
-	}
-	getPotentialResultAreaEdges(deStar, opCode) {
+	},
+	getPotentialResultAreaEdges: function (deStar, opCode) {
 		var resultAreaEdgeList = new ArrayList();
 		for (var it = deStar.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (this.isPotentialResultAreaEdge(de, opCode) || this.isPotentialResultAreaEdge(de.getSym(), opCode)) resultAreaEdgeList.add(de);
 		}
 		return resultAreaEdgeList;
-	}
-	checkAll() {
+	},
+	checkAll: function () {
 		this.check(OverlayOp.INTERSECTION);
 		this.check(OverlayOp.DIFFERENCE);
 		this.check(OverlayOp.UNION);
 		this.check(OverlayOp.SYMDIFFERENCE);
-	}
-	check(opCode) {
+	},
+	check: function (opCode) {
 		for (var nodeit = this.graph.getNodeIterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			this.testLinkResultDirectedEdges(node.getEdges(), opCode);
 		}
-	}
-	isPotentialResultAreaEdge(de, opCode) {
+	},
+	isPotentialResultAreaEdge: function (de, opCode) {
 		var label = de.getLabel();
 		if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
 			return true;
 		}
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return ConsistentPolygonRingChecker;
 	}
-}
+});
 

@@ -1,10 +1,12 @@
-export default class ConstraintSplitPointFinder {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function ConstraintSplitPointFinder() {}
+extend(ConstraintSplitPointFinder.prototype, {
+	findSplitPoint: function (seg, encroachPt) {},
+	interfaces_: function () {
 		return [];
-	}
-	findSplitPoint(seg, encroachPt) {}
-	getClass() {
+	},
+	getClass: function () {
 		return ConstraintSplitPointFinder;
 	}
-}
+});
 

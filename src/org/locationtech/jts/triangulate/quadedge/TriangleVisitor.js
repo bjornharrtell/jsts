@@ -1,10 +1,12 @@
-export default class TriangleVisitor {
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function TriangleVisitor() {}
+extend(TriangleVisitor.prototype, {
+	visit: function (triEdges) {},
+	interfaces_: function () {
 		return [];
-	}
-	visit(triEdges) {}
-	getClass() {
+	},
+	getClass: function () {
 		return TriangleVisitor;
 	}
-}
+});
 

@@ -1,30 +1,28 @@
 import CoordinateList from '../geom/CoordinateList';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class LinearGeometryBuilder {
-	constructor(...args) {
-		this.geomFact = null;
-		this.lines = new ArrayList();
-		this.coordList = null;
-		this.ignoreInvalidLines = false;
-		this.fixInvalidLines = false;
-		this.lastPt = null;
-		if (args.length === 1) {
-			let [geomFact] = args;
-			this.geomFact = geomFact;
-		}
+export default function LinearGeometryBuilder() {
+	this.geomFact = null;
+	this.lines = new ArrayList();
+	this.coordList = null;
+	this.ignoreInvalidLines = false;
+	this.fixInvalidLines = false;
+	this.lastPt = null;
+	if (arguments.length === 1) {
+		let geomFact = arguments[0];
+		this.geomFact = geomFact;
 	}
-	get interfaces_() {
-		return [];
-	}
-	getGeometry() {
+}
+extend(LinearGeometryBuilder.prototype, {
+	getGeometry: function () {
 		this.endLine();
 		return this.geomFact.buildGeometry(this.lines);
-	}
-	getLastCoordinate() {
+	},
+	getLastCoordinate: function () {
 		return this.lastPt;
-	}
-	endLine() {
+	},
+	endLine: function () {
 		if (this.coordList === null) {
 			return null;
 		}
@@ -45,31 +43,34 @@ export default class LinearGeometryBuilder {
 			} else throw ex;
 		} finally {}
 		if (line !== null) this.lines.add(line);
-	}
-	setFixInvalidLines(fixInvalidLines) {
+	},
+	setFixInvalidLines: function (fixInvalidLines) {
 		this.fixInvalidLines = fixInvalidLines;
-	}
-	add(...args) {
-		if (args.length === 1) {
-			let [pt] = args;
+	},
+	add: function () {
+		if (arguments.length === 1) {
+			let pt = arguments[0];
 			this.add(pt, true);
-		} else if (args.length === 2) {
-			let [pt, allowRepeatedPoints] = args;
+		} else if (arguments.length === 2) {
+			let pt = arguments[0], allowRepeatedPoints = arguments[1];
 			if (this.coordList === null) this.coordList = new CoordinateList();
 			this.coordList.add(pt, allowRepeatedPoints);
 			this.lastPt = pt;
 		}
-	}
-	setIgnoreInvalidLines(ignoreInvalidLines) {
+	},
+	setIgnoreInvalidLines: function (ignoreInvalidLines) {
 		this.ignoreInvalidLines = ignoreInvalidLines;
-	}
-	validCoordinateSequence(pts) {
+	},
+	validCoordinateSequence: function (pts) {
 		if (pts.length >= 2) return pts;
 		var validPts = [pts[0], pts[0]];
 		return validPts;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return LinearGeometryBuilder;
 	}
-}
+});
 

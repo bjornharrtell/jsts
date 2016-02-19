@@ -7,41 +7,34 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import Point from '../geom/Point';
 import Polygon from '../geom/Polygon';
 import BoundaryNodeRule from './BoundaryNodeRule';
+import extend from '../../../../extend';
 import MultiPolygon from '../geom/MultiPolygon';
 import GeometryCollectionIterator from '../geom/GeometryCollectionIterator';
 import GeometryCollection from '../geom/GeometryCollection';
 import MultiLineString from '../geom/MultiLineString';
-export default class PointLocator {
-	constructor(...args) {
-		this.boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
-		this.isIn = null;
-		this.numBoundaries = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-			} else if (args.length === 1) {
-				let [boundaryRule] = args;
-				if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
-				this.boundaryRule = boundaryRule;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function PointLocator() {
+	this.boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+	this.isIn = null;
+	this.numBoundaries = null;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let boundaryRule = arguments[0];
+		if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
+		this.boundaryRule = boundaryRule;
 	}
-	get interfaces_() {
-		return [];
-	}
-	locateInPolygonRing(p, ring) {
+}
+extend(PointLocator.prototype, {
+	locateInPolygonRing: function (p, ring) {
 		if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
 		return CGAlgorithms.locatePointInRing(p, ring.getCoordinates());
-	}
-	intersects(p, geom) {
+	},
+	intersects: function (p, geom) {
 		return this.locate(p, geom) !== Location.EXTERIOR;
-	}
-	updateLocationInfo(loc) {
+	},
+	updateLocationInfo: function (loc) {
 		if (loc === Location.INTERIOR) this.isIn = true;
 		if (loc === Location.BOUNDARY) this.numBoundaries++;
-	}
-	computeLocation(p, geom) {
+	},
+	computeLocation: function (p, geom) {
 		if (geom instanceof Point) {
 			this.updateLocationInfo(this.locate(p, geom));
 		}
@@ -68,11 +61,11 @@ export default class PointLocator {
 				if (g2 !== geom) this.computeLocation(p, g2);
 			}
 		}
-	}
-	locate(...args) {
-		if (args.length === 2) {
-			if (args[0] instanceof Coordinate && args[1] instanceof Polygon) {
-				let [p, poly] = args;
+	},
+	locate: function () {
+		if (arguments.length === 2) {
+			if (arguments[0] instanceof Coordinate && arguments[1] instanceof Polygon) {
+				let p = arguments[0], poly = arguments[1];
 				if (poly.isEmpty()) return Location.EXTERIOR;
 				var shell = poly.getExteriorRing();
 				var shellLoc = this.locateInPolygonRing(p, shell);
@@ -85,8 +78,8 @@ export default class PointLocator {
 					if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
 				}
 				return Location.INTERIOR;
-			} else if (args[0] instanceof Coordinate && args[1] instanceof LineString) {
-				let [p, l] = args;
+			} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof LineString) {
+				let p = arguments[0], l = arguments[1];
 				if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
 				var pt = l.getCoordinates();
 				if (!l.isClosed()) {
@@ -96,13 +89,13 @@ export default class PointLocator {
 				}
 				if (CGAlgorithms.isOnLine(p, pt)) return Location.INTERIOR;
 				return Location.EXTERIOR;
-			} else if (args[0] instanceof Coordinate && args[1] instanceof Point) {
-				let [p, pt] = args;
+			} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Point) {
+				let p = arguments[0], pt = arguments[1];
 				var ptCoord = pt.getCoordinate();
 				if (ptCoord.equals2D(p)) return Location.INTERIOR;
 				return Location.EXTERIOR;
-			} else if (args[0] instanceof Coordinate && args[1] instanceof Geometry) {
-				let [p, geom] = args;
+			} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Geometry) {
+				let p = arguments[0], geom = arguments[1];
 				if (geom.isEmpty()) return Location.EXTERIOR;
 				if (geom instanceof LineString) {
 					return this.locate(p, geom);
@@ -117,9 +110,12 @@ export default class PointLocator {
 				return Location.EXTERIOR;
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PointLocator;
 	}
-}
+});
 

@@ -1,39 +1,37 @@
-export default class GeometryLocation {
-	constructor(...args) {
-		this.component = null;
-		this.segIndex = null;
-		this.pt = null;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				let [component, pt] = args;
-				overloaded.call(this, component, GeometryLocation.INSIDE_AREA, pt);
-			} else if (args.length === 3) {
-				let [component, segIndex, pt] = args;
-				this.component = component;
-				this.segIndex = segIndex;
-				this.pt = pt;
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	isInsideArea() {
-		return this.segIndex === GeometryLocation.INSIDE_AREA;
-	}
-	getCoordinate() {
-		return this.pt;
-	}
-	getGeometryComponent() {
-		return this.component;
-	}
-	getSegmentIndex() {
-		return this.segIndex;
-	}
-	getClass() {
-		return GeometryLocation;
+import extend from '../../../../../extend';
+export default function GeometryLocation() {
+	this.component = null;
+	this.segIndex = null;
+	this.pt = null;
+	if (arguments.length === 2) {
+		let component = arguments[0], pt = arguments[1];
+		GeometryLocation.call(this, component, GeometryLocation.INSIDE_AREA, pt);
+	} else if (arguments.length === 3) {
+		let component = arguments[0], segIndex = arguments[1], pt = arguments[2];
+		this.component = component;
+		this.segIndex = segIndex;
+		this.pt = pt;
 	}
 }
+extend(GeometryLocation.prototype, {
+	isInsideArea: function () {
+		return this.segIndex === GeometryLocation.INSIDE_AREA;
+	},
+	getCoordinate: function () {
+		return this.pt;
+	},
+	getGeometryComponent: function () {
+		return this.component;
+	},
+	getSegmentIndex: function () {
+		return this.segIndex;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return GeometryLocation;
+	}
+});
 GeometryLocation.INSIDE_AREA = -1;
 

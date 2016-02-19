@@ -2,35 +2,33 @@ import PointLocator from '../../algorithm/PointLocator';
 import Location from '../../geom/Location';
 import IntersectionMatrix from '../../geom/IntersectionMatrix';
 import EdgeEndBuilder from './EdgeEndBuilder';
+import extend from '../../../../../extend';
 import NodeMap from '../../geomgraph/NodeMap';
 import RelateNodeFactory from './RelateNodeFactory';
 import ArrayList from '../../../../../java/util/ArrayList';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import Assert from '../../util/Assert';
-export default class RelateComputer {
-	constructor(...args) {
-		this.li = new RobustLineIntersector();
-		this.ptLocator = new PointLocator();
-		this.arg = null;
-		this.nodes = new NodeMap(new RelateNodeFactory());
-		this.im = null;
-		this.isolatedEdges = new ArrayList();
-		this.invalidPoint = null;
-		if (args.length === 1) {
-			let [arg] = args;
-			this.arg = arg;
-		}
+export default function RelateComputer() {
+	this.li = new RobustLineIntersector();
+	this.ptLocator = new PointLocator();
+	this.arg = null;
+	this.nodes = new NodeMap(new RelateNodeFactory());
+	this.im = null;
+	this.isolatedEdges = new ArrayList();
+	this.invalidPoint = null;
+	if (arguments.length === 1) {
+		let arg = arguments[0];
+		this.arg = arg;
 	}
-	get interfaces_() {
-		return [];
-	}
-	insertEdgeEnds(ee) {
+}
+extend(RelateComputer.prototype, {
+	insertEdgeEnds: function (ee) {
 		for (var i = ee.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			this.nodes.add(e);
 		}
-	}
-	computeProperIntersectionIM(intersector, im) {
+	},
+	computeProperIntersectionIM: function (intersector, im) {
 		var dimA = this.arg[0].getGeometry().getDimension();
 		var dimB = this.arg[1].getGeometry().getDimension();
 		var hasProper = intersector.hasProperIntersection();
@@ -46,8 +44,8 @@ export default class RelateComputer {
 		} else if (dimA === 1 && dimB === 1) {
 			if (hasProperInterior) im.setAtLeast("0FFFFFFFF");
 		}
-	}
-	labelIsolatedEdges(thisIndex, targetIndex) {
+	},
+	labelIsolatedEdges: function (thisIndex, targetIndex) {
 		for (var ei = this.arg[thisIndex].getEdgeIterator(); ei.hasNext(); ) {
 			var e = ei.next();
 			if (e.isIsolated()) {
@@ -55,16 +53,16 @@ export default class RelateComputer {
 				this.isolatedEdges.add(e);
 			}
 		}
-	}
-	labelIsolatedEdge(e, targetIndex, target) {
+	},
+	labelIsolatedEdge: function (e, targetIndex, target) {
 		if (target.getDimension() > 0) {
 			var loc = this.ptLocator.locate(e.getCoordinate(), target);
 			e.getLabel().setAllLocations(targetIndex, loc);
 		} else {
 			e.getLabel().setAllLocations(targetIndex, Location.EXTERIOR);
 		}
-	}
-	computeIM() {
+	},
+	computeIM: function () {
 		var im = new IntersectionMatrix();
 		im.set(Location.EXTERIOR, Location.EXTERIOR, 2);
 		if (!this.arg[0].getGeometry().getEnvelopeInternal().intersects(this.arg[1].getGeometry().getEnvelopeInternal())) {
@@ -90,21 +88,21 @@ export default class RelateComputer {
 		this.labelIsolatedEdges(1, 0);
 		this.updateIM(im);
 		return im;
-	}
-	labelNodeEdges() {
+	},
+	labelNodeEdges: function () {
 		for (var ni = this.nodes.iterator(); ni.hasNext(); ) {
 			var node = ni.next();
 			node.getEdges().computeLabelling(this.arg);
 		}
-	}
-	copyNodesAndLabels(argIndex) {
+	},
+	copyNodesAndLabels: function (argIndex) {
 		for (var i = this.arg[argIndex].getNodeIterator(); i.hasNext(); ) {
 			var graphNode = i.next();
 			var newNode = this.nodes.addNode(graphNode.getCoordinate());
 			newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 		}
-	}
-	labelIntersectionNodes(argIndex) {
+	},
+	labelIntersectionNodes: function (argIndex) {
 		for (var i = this.arg[argIndex].getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var eLoc = e.getLabel().getLocation(argIndex);
@@ -116,12 +114,12 @@ export default class RelateComputer {
 				}
 			}
 		}
-	}
-	labelIsolatedNode(n, targetIndex) {
+	},
+	labelIsolatedNode: function (n, targetIndex) {
 		var loc = this.ptLocator.locate(n.getCoordinate(), this.arg[targetIndex].getGeometry());
 		n.getLabel().setAllLocations(targetIndex, loc);
-	}
-	computeIntersectionNodes(argIndex) {
+	},
+	computeIntersectionNodes: function (argIndex) {
 		for (var i = this.arg[argIndex].getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var eLoc = e.getLabel().getLocation(argIndex);
@@ -133,8 +131,8 @@ export default class RelateComputer {
 				}
 			}
 		}
-	}
-	labelIsolatedNodes() {
+	},
+	labelIsolatedNodes: function () {
 		for (var ni = this.nodes.iterator(); ni.hasNext(); ) {
 			var n = ni.next();
 			var label = n.getLabel();
@@ -143,8 +141,8 @@ export default class RelateComputer {
 				if (label.isNull(0)) this.labelIsolatedNode(n, 0); else this.labelIsolatedNode(n, 1);
 			}
 		}
-	}
-	updateIM(im) {
+	},
+	updateIM: function (im) {
 		for (var ei = this.isolatedEdges.iterator(); ei.hasNext(); ) {
 			var e = ei.next();
 			e.updateIM(im);
@@ -154,8 +152,8 @@ export default class RelateComputer {
 			node.updateIM(im);
 			node.updateIMFromEdges(im);
 		}
-	}
-	computeDisjointIM(im) {
+	},
+	computeDisjointIM: function (im) {
 		var ga = this.arg[0].getGeometry();
 		if (!ga.isEmpty()) {
 			im.set(Location.INTERIOR, Location.EXTERIOR, ga.getDimension());
@@ -166,9 +164,12 @@ export default class RelateComputer {
 			im.set(Location.EXTERIOR, Location.INTERIOR, gb.getDimension());
 			im.set(Location.EXTERIOR, Location.BOUNDARY, gb.getBoundaryDimension());
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RelateComputer;
 	}
-}
+});
 

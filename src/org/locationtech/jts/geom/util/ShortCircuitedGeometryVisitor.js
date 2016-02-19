@@ -1,15 +1,11 @@
+import extend from '../../../../../extend';
 import GeometryCollection from '../GeometryCollection';
-export default class ShortCircuitedGeometryVisitor {
-	constructor(...args) {
-		this._isDone = false;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	applyTo(geom) {
+export default function ShortCircuitedGeometryVisitor() {
+	this._isDone = false;
+	if (arguments.length === 0) {}
+}
+extend(ShortCircuitedGeometryVisitor.prototype, {
+	applyTo: function (geom) {
 		for (var i = 0; i < geom.getNumGeometries() && !this._isDone; i++) {
 			var element = geom.getGeometryN(i);
 			if (!(element instanceof GeometryCollection)) {
@@ -20,9 +16,12 @@ export default class ShortCircuitedGeometryVisitor {
 				}
 			} else this.applyTo(element);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return ShortCircuitedGeometryVisitor;
 	}
-}
+});
 

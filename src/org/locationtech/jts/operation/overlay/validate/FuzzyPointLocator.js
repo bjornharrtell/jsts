@@ -2,27 +2,25 @@ import PointLocator from '../../../algorithm/PointLocator';
 import Location from '../../../geom/Location';
 import GeometryFactory from '../../../geom/GeometryFactory';
 import Polygon from '../../../geom/Polygon';
+import extend from '../../../../../../extend';
 import LineSegment from '../../../geom/LineSegment';
 import ArrayList from '../../../../../../java/util/ArrayList';
 import GeometryFilter from '../../../geom/GeometryFilter';
-export default class FuzzyPointLocator {
-	constructor(...args) {
-		this.g = null;
-		this.boundaryDistanceTolerance = null;
-		this.linework = null;
-		this.ptLocator = new PointLocator();
-		this.seg = new LineSegment();
-		if (args.length === 2) {
-			let [g, boundaryDistanceTolerance] = args;
-			this.g = g;
-			this.boundaryDistanceTolerance = boundaryDistanceTolerance;
-			this.linework = this.extractLinework(g);
-		}
+export default function FuzzyPointLocator() {
+	this.g = null;
+	this.boundaryDistanceTolerance = null;
+	this.linework = null;
+	this.ptLocator = new PointLocator();
+	this.seg = new LineSegment();
+	if (arguments.length === 2) {
+		let g = arguments[0], boundaryDistanceTolerance = arguments[1];
+		this.g = g;
+		this.boundaryDistanceTolerance = boundaryDistanceTolerance;
+		this.linework = this.extractLinework(g);
 	}
-	get interfaces_() {
-		return [];
-	}
-	isWithinToleranceOfBoundary(pt) {
+}
+extend(FuzzyPointLocator.prototype, {
+	isWithinToleranceOfBoundary: function (pt) {
 		for (var i = 0; i < this.linework.getNumGeometries(); i++) {
 			var line = this.linework.getGeometryN(i);
 			var seq = line.getCoordinateSequence();
@@ -34,37 +32,36 @@ export default class FuzzyPointLocator {
 			}
 		}
 		return false;
-	}
-	getLocation(pt) {
+	},
+	getLocation: function (pt) {
 		if (this.isWithinToleranceOfBoundary(pt)) return Location.BOUNDARY;
 		return this.ptLocator.locate(pt, this.g);
-	}
-	extractLinework(g) {
+	},
+	extractLinework: function (g) {
 		var extracter = new PolygonalLineworkExtracter();
 		g.apply(extracter);
 		var linework = extracter.getLinework();
 		var lines = GeometryFactory.toLineStringArray(linework);
 		return g.getFactory().createMultiLineString(lines);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return FuzzyPointLocator;
 	}
+});
+function PolygonalLineworkExtracter() {
+	this.linework = null;
+	if (arguments.length === 0) {
+		this.linework = new ArrayList();
+	}
 }
-class PolygonalLineworkExtracter {
-	constructor(...args) {
-		this.linework = null;
-		if (args.length === 0) {
-			let [] = args;
-			this.linework = new ArrayList();
-		}
-	}
-	get interfaces_() {
-		return [GeometryFilter];
-	}
-	getLinework() {
+extend(PolygonalLineworkExtracter.prototype, {
+	getLinework: function () {
 		return this.linework;
-	}
-	filter(g) {
+	},
+	filter: function (g) {
 		if (g instanceof Polygon) {
 			var poly = g;
 			this.linework.add(poly.getExteriorRing());
@@ -72,9 +69,12 @@ class PolygonalLineworkExtracter {
 				this.linework.add(poly.getInteriorRingN(i));
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [GeometryFilter];
+	},
+	getClass: function () {
 		return PolygonalLineworkExtracter;
 	}
-}
+});
 

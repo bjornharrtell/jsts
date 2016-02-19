@@ -6,6 +6,7 @@
 import GeometryFactory from '../geom/GeometryFactory'
 import PrecisionModel from '../geom/PrecisionModel'
 import WKTParser from './WKTParser'
+import extend from '../../../../extend'
 
 /**
  * Converts a geometry in Well-Known Text format to a {@link Geometry}.
@@ -15,20 +16,21 @@ import WKTParser from './WKTParser'
  * as a parser to read <code>Geometry</code> objects from text blocks embedded
  * in other data formats (e.g. XML).
  */
-export default class WKTReader {
-  /**
-   * A <code>WKTReader</code> is parameterized by a <code>GeometryFactory</code>,
-   * to allow it to create <code>Geometry</code> objects of the appropriate
-   * implementation. In particular, the <code>GeometryFactory</code> determines
-   * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
-   * @param {GeometryFactory} geometryFactory
-   */
-  constructor (geometryFactory) {
-    this.geometryFactory = geometryFactory || new GeometryFactory()
-    this.precisionModel = this.geometryFactory.getPrecisionModel()
-    this.parser = new WKTParser(this.geometryFactory)
-  }
 
+/**
+ * A <code>WKTReader</code> is parameterized by a <code>GeometryFactory</code>,
+ * to allow it to create <code>Geometry</code> objects of the appropriate
+ * implementation. In particular, the <code>GeometryFactory</code> determines
+ * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
+ * @param {GeometryFactory} geometryFactory
+ */
+export default function WKTReader (geometryFactory) {
+  this.geometryFactory = geometryFactory || new GeometryFactory()
+  this.precisionModel = this.geometryFactory.getPrecisionModel()
+  this.parser = new WKTParser(this.geometryFactory)
+}
+
+extend(WKTReader.prototype, {
   /**
    * Reads a Well-Known Text representation of a {@link Geometry}
    *
@@ -47,7 +49,7 @@ export default class WKTReader {
     }
 
     return geometry
-  }
+  },
 
   reducePrecision (geometry) {
     if (geometry.coordinate) {
@@ -62,4 +64,4 @@ export default class WKTReader {
       }
     }
   }
-}
+})

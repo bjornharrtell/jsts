@@ -1,30 +1,26 @@
 import WKTWriter from '../../io/WKTWriter';
 import Coordinate from '../../geom/Coordinate';
 import Double from '../../../../../java/lang/Double';
-export default class PointPairDistance {
-	constructor(...args) {
-		this.pt = [new Coordinate(), new Coordinate()];
-		this.distance = Double.NaN;
-		this.isNull = true;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getCoordinates() {
+import extend from '../../../../../extend';
+export default function PointPairDistance() {
+	this.pt = [new Coordinate(), new Coordinate()];
+	this.distance = Double.NaN;
+	this.isNull = true;
+	if (arguments.length === 0) {}
+}
+extend(PointPairDistance.prototype, {
+	getCoordinates: function () {
 		return this.pt;
-	}
-	getCoordinate(i) {
+	},
+	getCoordinate: function (i) {
 		return this.pt[i];
-	}
-	setMinimum(...args) {
-		if (args.length === 1) {
-			let [ptDist] = args;
+	},
+	setMinimum: function () {
+		if (arguments.length === 1) {
+			let ptDist = arguments[0];
 			this.setMinimum(ptDist.pt[0], ptDist.pt[1]);
-		} else if (args.length === 2) {
-			let [p0, p1] = args;
+		} else if (arguments.length === 2) {
+			let p0 = arguments[0], p1 = arguments[1];
 			if (this.isNull) {
 				this.initialize(p0, p1);
 				return null;
@@ -32,37 +28,36 @@ export default class PointPairDistance {
 			var dist = p0.distance(p1);
 			if (dist < this.distance) this.initialize(p0, p1, dist);
 		}
-	}
-	initialize(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	initialize: function () {
+		if (arguments.length === 0) {
 			this.isNull = true;
-		} else if (args.length === 2) {
-			let [p0, p1] = args;
+		} else if (arguments.length === 2) {
+			let p0 = arguments[0], p1 = arguments[1];
 			this.pt[0].setCoordinate(p0);
 			this.pt[1].setCoordinate(p1);
 			this.distance = p0.distance(p1);
 			this.isNull = false;
-		} else if (args.length === 3) {
-			let [p0, p1, distance] = args;
+		} else if (arguments.length === 3) {
+			let p0 = arguments[0], p1 = arguments[1], distance = arguments[2];
 			this.pt[0].setCoordinate(p0);
 			this.pt[1].setCoordinate(p1);
 			this.distance = distance;
 			this.isNull = false;
 		}
-	}
-	toString() {
+	},
+	toString: function () {
 		return WKTWriter.toLineString(this.pt[0], this.pt[1]);
-	}
-	getDistance() {
+	},
+	getDistance: function () {
 		return this.distance;
-	}
-	setMaximum(...args) {
-		if (args.length === 1) {
-			let [ptDist] = args;
+	},
+	setMaximum: function () {
+		if (arguments.length === 1) {
+			let ptDist = arguments[0];
 			this.setMaximum(ptDist.pt[0], ptDist.pt[1]);
-		} else if (args.length === 2) {
-			let [p0, p1] = args;
+		} else if (arguments.length === 2) {
+			let p0 = arguments[0], p1 = arguments[1];
 			if (this.isNull) {
 				this.initialize(p0, p1);
 				return null;
@@ -70,9 +65,12 @@ export default class PointPairDistance {
 			var dist = p0.distance(p1);
 			if (dist > this.distance) this.initialize(p0, p1, dist);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return PointPairDistance;
 	}
-}
+});
 

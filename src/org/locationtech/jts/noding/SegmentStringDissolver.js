@@ -1,45 +1,37 @@
+import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import OrientedCoordinateArray from './OrientedCoordinateArray';
+import extend from '../../../../extend';
 import SegmentString from './SegmentString';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import TreeMap from '../../../../java/util/TreeMap';
-export default class SegmentStringDissolver {
-	constructor(...args) {
-		this.merger = null;
-		this.ocaMap = new TreeMap();
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, null);
-			} else if (args.length === 1) {
-				let [merger] = args;
-				this.merger = merger;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function SegmentStringDissolver() {
+	this.merger = null;
+	this.ocaMap = new TreeMap();
+	if (arguments.length === 0) {
+		SegmentStringDissolver.call(this, null);
+	} else if (arguments.length === 1) {
+		let merger = arguments[0];
+		this.merger = merger;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get SegmentStringMerger() {
-		return SegmentStringMerger;
-	}
-	findMatching(oca, segString) {
+}
+extend(SegmentStringDissolver.prototype, {
+	findMatching: function (oca, segString) {
 		var matchSS = this.ocaMap.get(oca);
 		return matchSS;
-	}
-	getDissolved() {
+	},
+	getDissolved: function () {
 		return this.ocaMap.values();
-	}
-	dissolve(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [segStrings] = args;
+	},
+	dissolve: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], Collection)) {
+				let segStrings = arguments[0];
 				for (var i = segStrings.iterator(); i.hasNext(); ) {
 					this.dissolve(i.next());
 				}
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(SegmentString) > -1) {
-				let [segString] = args;
+			} else if (hasInterface(arguments[0], SegmentString)) {
+				let segString = arguments[0];
 				var oca = new OrientedCoordinateArray(segString.getCoordinates());
 				var existing = this.findMatching(oca, segString);
 				if (existing === null) {
@@ -52,13 +44,17 @@ export default class SegmentStringDissolver {
 				}
 			}
 		}
-	}
-	add(oca, segString) {
+	},
+	add: function (oca, segString) {
 		this.ocaMap.put(oca, segString);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SegmentStringDissolver;
 	}
-}
-class SegmentStringMerger {}
+});
+function SegmentStringMerger() {}
+SegmentStringDissolver.SegmentStringMerger = SegmentStringMerger;
 

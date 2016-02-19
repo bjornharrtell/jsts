@@ -1,21 +1,24 @@
+import extend from '../../../../../extend';
 import Edge from '../../planargraph/Edge';
-export default class LineMergeEdge extends Edge {
-	constructor(...args) {
-		super();
-		this.line = null;
-		if (args.length === 1) {
-			let [line] = args;
-			this.line = line;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getLine() {
-		return this.line;
-	}
-	getClass() {
-		return LineMergeEdge;
+import inherits from '../../../../../inherits';
+export default function LineMergeEdge() {
+	Edge.apply(this);
+	this.line = null;
+	if (arguments.length === 1) {
+		let line = arguments[0];
+		this.line = line;
 	}
 }
+inherits(LineMergeEdge, Edge);
+extend(LineMergeEdge.prototype, {
+	getLine: function () {
+		return this.line;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return LineMergeEdge;
+	}
+});
 

@@ -1,8 +1,10 @@
 import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Geometry from './Geometry';
 import CoordinateFilter from './CoordinateFilter';
+import hasInterface from '../../../../hasInterface';
 import BoundaryOp from '../operation/BoundaryOp';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../extend';
 import Lineal from './Lineal';
 import CoordinateSequences from './CoordinateSequences';
 import GeometryComponentFilter from './GeometryComponentFilter';
@@ -10,37 +12,36 @@ import Dimension from './Dimension';
 import GeometryFilter from './GeometryFilter';
 import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import Envelope from './Envelope';
-export default class LineString extends Geometry {
-	constructor(...args) {
-		super();
-		this.points = null;
-		if (args.length === 2) {
-			let [points, factory] = args;
-			super(factory);
-			this.init(points);
-		}
+import inherits from '../../../../inherits';
+export default function LineString() {
+	Geometry.apply(this);
+	this.points = null;
+	if (arguments.length === 2) {
+		let points = arguments[0], factory = arguments[1];
+		Geometry.call(this, factory);
+		this.init(points);
 	}
-	get interfaces_() {
-		return [Lineal];
-	}
-	computeEnvelopeInternal() {
+}
+inherits(LineString, Geometry);
+extend(LineString.prototype, {
+	computeEnvelopeInternal: function () {
 		if (this.isEmpty()) {
 			return new Envelope();
 		}
 		return this.points.expandEnvelope(new Envelope());
-	}
-	isRing() {
+	},
+	isRing: function () {
 		return this.isClosed() && this.isSimple();
-	}
-	getSortIndex() {
+	},
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_LINESTRING;
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		return this.points.toCoordinateArray();
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
@@ -54,9 +55,9 @@ export default class LineString extends Geometry {
 				}
 			}
 			return true;
-		} else return super.equalsExact(...args);
-	}
-	normalize() {
+		} else return Geometry.prototype.equalsExact.apply(this, arguments);
+	},
+	normalize: function () {
 		for (var i = 0; i < Math.trunc(this.points.size() / 2); i++) {
 			var j = this.points.size() - 1 - i;
 			if (!this.points.getCoordinate(i).equals(this.points.getCoordinate(j))) {
@@ -66,47 +67,47 @@ export default class LineString extends Geometry {
 				return null;
 			}
 		}
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		if (this.isEmpty()) return null;
 		return this.points.getCoordinate(0);
-	}
-	getBoundaryDimension() {
+	},
+	getBoundaryDimension: function () {
 		if (this.isClosed()) {
 			return Dimension.FALSE;
 		}
 		return 0;
-	}
-	isClosed() {
+	},
+	isClosed: function () {
 		if (this.isEmpty()) {
 			return false;
 		}
 		return this.getCoordinateN(0).equals2D(this.getCoordinateN(this.getNumPoints() - 1));
-	}
-	getEndPoint() {
+	},
+	getEndPoint: function () {
 		if (this.isEmpty()) {
 			return null;
 		}
 		return this.getPointN(this.getNumPoints() - 1);
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return 1;
-	}
-	getLength() {
-		return CGAlgorithms.length(this.points);
-	}
-	getNumPoints() {
+	},
+	getLength: function () {
+		return CGAlgorithms.computeLength(this.points);
+	},
+	getNumPoints: function () {
 		return this.points.size();
-	}
-	reverse() {
+	},
+	reverse: function () {
 		var seq = this.points.clone();
 		CoordinateSequences.reverse(seq);
 		var revLine = this.getFactory().createLineString(seq);
 		return revLine;
-	}
-	compareToSameClass(...args) {
-		if (args.length === 1) {
-			let [o] = args;
+	},
+	compareToSameClass: function () {
+		if (arguments.length === 1) {
+			let o = arguments[0];
 			var line = o;
 			var i = 0;
 			var j = 0;
@@ -125,63 +126,63 @@ export default class LineString extends Geometry {
 				return -1;
 			}
 			return 0;
-		} else if (args.length === 2) {
-			let [o, comp] = args;
+		} else if (arguments.length === 2) {
+			let o = arguments[0], comp = arguments[1];
 			var line = o;
 			return comp.compare(this.points, line.points);
 		}
-	}
-	apply(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-				let [filter] = args;
+	},
+	apply: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], CoordinateFilter)) {
+				let filter = arguments[0];
 				for (var i = 0; i < this.points.size(); i++) {
 					filter.filter(this.points.getCoordinate(i));
 				}
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+				let filter = arguments[0];
 				if (this.points.size() === 0) return null;
 				for (var i = 0; i < this.points.size(); i++) {
 					filter.filter(this.points, i);
 					if (filter.isDone()) break;
 				}
 				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
 			}
 		}
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		return new BoundaryOp(this).getBoundary();
-	}
-	isEquivalentClass(other) {
+	},
+	isEquivalentClass: function (other) {
 		return other instanceof LineString;
-	}
-	clone() {
-		var ls = super.clone();
+	},
+	clone: function () {
+		var ls = Geometry.prototype.clone.call(this);
 		ls.points = this.points.clone();
 		return ls;
-	}
-	getCoordinateN(n) {
+	},
+	getCoordinateN: function (n) {
 		return this.points.getCoordinate(n);
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "LineString";
-	}
-	copy() {
+	},
+	copy: function () {
 		return new LineString(this.points.copy(), this.factory);
-	}
-	getCoordinateSequence() {
+	},
+	getCoordinateSequence: function () {
 		return this.points;
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		return this.points.size() === 0;
-	}
-	init(points) {
+	},
+	init: function (points) {
 		if (points === null) {
 			points = this.getFactory().getCoordinateSequenceFactory().create([]);
 		}
@@ -189,27 +190,30 @@ export default class LineString extends Geometry {
 			throw new IllegalArgumentException("Invalid number of points in LineString (found " + points.size() + " - must be 0 or >= 2)");
 		}
 		this.points = points;
-	}
-	isCoordinate(pt) {
+	},
+	isCoordinate: function (pt) {
 		for (var i = 0; i < this.points.size(); i++) {
 			if (this.points.getCoordinate(i).equals(pt)) {
 				return true;
 			}
 		}
 		return false;
-	}
-	getStartPoint() {
+	},
+	getStartPoint: function () {
 		if (this.isEmpty()) {
 			return null;
 		}
 		return this.getPointN(0);
-	}
-	getPointN(n) {
+	},
+	getPointN: function (n) {
 		return this.getFactory().createPoint(this.points.getCoordinate(n));
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Lineal];
+	},
+	getClass: function () {
 		return LineString;
 	}
-}
+});
 LineString.serialVersionUID = 3110669828065365560;
 

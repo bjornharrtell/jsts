@@ -11,25 +11,22 @@ import OperationNotSupported from './OperationNotSupported'
  * @extends List
  * @private
  */
-export default class ArrayList extends List {
-  constructor() {
-    super();
+export default function ArrayList () {
+  /**
+   * @type {Array}
+   * @private
+  */
+  this.array_ = [];
 
-    /**
-     * @type {Array}
-     * @private
-    */
-    this.array_ = [];
-
-    if (arguments[0] instanceof Collection) {
-      this.addAll(arguments[0]);
-    }
+  if (arguments[0] instanceof Collection) {
+    this.addAll(arguments[0]);
   }
-
-  ensureCapacity () {}
-  get interfaces_() { return [List, Collection] }
 };
+ArrayList.prototype = Object.create(List.prototype)
+ArrayList.prototype.constructor = ArrayList;
 
+ArrayList.prototype.ensureCapacity = function () {}
+ArrayList.prototype.interfaces_ = function () { return [List, Collection] }
 
 /**
  * @override

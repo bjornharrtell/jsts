@@ -3,73 +3,56 @@ import EdgeIntersectionList from './EdgeIntersectionList';
 import MonotoneChainEdge from './index/MonotoneChainEdge';
 import Position from './Position';
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import Label from './Label';
 import Envelope from '../geom/Envelope';
+import inherits from '../../../../inherits';
 import Depth from './Depth';
 import GraphComponent from './GraphComponent';
-export default class Edge extends GraphComponent {
-	constructor(...args) {
-		super();
-		this.pts = null;
-		this.env = null;
-		this.eiList = new EdgeIntersectionList(this);
-		this.name = null;
-		this.mce = null;
-		this._isIsolated = true;
-		this.depth = new Depth();
-		this.depthDelta = 0;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				return ((...args) => {
-					let [pts] = args;
-					overloaded.call(this, pts, null);
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [pts, label] = args;
-					this.pts = pts;
-					this.label = label;
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function Edge() {
+	GraphComponent.apply(this);
+	this.pts = null;
+	this.env = null;
+	this.eiList = new EdgeIntersectionList(this);
+	this.name = null;
+	this.mce = null;
+	this._isIsolated = true;
+	this.depth = new Depth();
+	this.depthDelta = 0;
+	if (arguments.length === 1) {
+		let pts = arguments[0];
+		Edge.call(this, pts, null);
+	} else if (arguments.length === 2) {
+		let pts = arguments[0], label = arguments[1];
+		this.pts = pts;
+		this.label = label;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static updateIM(...args) {
-		if (args.length === 2) {
-			let [label, im] = args;
-			im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
-			if (label.isArea()) {
-				im.setAtLeastIfValid(label.getLocation(0, Position.LEFT), label.getLocation(1, Position.LEFT), 2);
-				im.setAtLeastIfValid(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), 2);
-			}
-		} else return super.updateIM(...args);
-	}
-	getDepth() {
+}
+inherits(Edge, GraphComponent);
+extend(Edge.prototype, {
+	getDepth: function () {
 		return this.depth;
-	}
-	getCollapsedEdge() {
+	},
+	getCollapsedEdge: function () {
 		var newPts = new Array(2);
 		newPts[0] = this.pts[0];
 		newPts[1] = this.pts[1];
 		var newe = new Edge(newPts, Label.toLineLabel(this.label));
 		return newe;
-	}
-	isIsolated() {
+	},
+	isIsolated: function () {
 		return this._isIsolated;
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		return this.pts;
-	}
-	setIsolated(isIsolated) {
+	},
+	setIsolated: function (isIsolated) {
 		this._isIsolated = isIsolated;
-	}
-	setName(name) {
+	},
+	setName: function (name) {
 		this.name = name;
-	}
-	equals(o) {
+	},
+	equals: function (o) {
 		if (!(o instanceof Edge)) return false;
 		var e = o;
 		if (this.pts.length !== e.pts.length) return false;
@@ -86,18 +69,17 @@ export default class Edge extends GraphComponent {
 			if (!isEqualForward && !isEqualReverse) return false;
 		}
 		return true;
-	}
-	getCoordinate(...args) {
-		if (args.length === 0) {
-			let [] = args;
+	},
+	getCoordinate: function () {
+		if (arguments.length === 0) {
 			if (this.pts.length > 0) return this.pts[0];
 			return null;
-		} else if (args.length === 1) {
-			let [i] = args;
+		} else if (arguments.length === 1) {
+			let i = arguments[0];
 			return this.pts[i];
 		}
-	}
-	print(out) {
+	},
+	print: function (out) {
 		out.print("edge " + this.name + ": ");
 		out.print("LINESTRING (");
 		for (var i = 0; i < this.pts.length; i++) {
@@ -105,40 +87,40 @@ export default class Edge extends GraphComponent {
 			out.print(this.pts[i].x + " " + this.pts[i].y);
 		}
 		out.print(")  " + this.label + " " + this.depthDelta);
-	}
-	computeIM(im) {
+	},
+	computeIM: function (im) {
 		Edge.updateIM(this.label, im);
-	}
-	isCollapsed() {
+	},
+	isCollapsed: function () {
 		if (!this.label.isArea()) return false;
 		if (this.pts.length !== 3) return false;
 		if (this.pts[0].equals(this.pts[2])) return true;
 		return false;
-	}
-	isClosed() {
+	},
+	isClosed: function () {
 		return this.pts[0].equals(this.pts[this.pts.length - 1]);
-	}
-	getMaximumSegmentIndex() {
+	},
+	getMaximumSegmentIndex: function () {
 		return this.pts.length - 1;
-	}
-	getDepthDelta() {
+	},
+	getDepthDelta: function () {
 		return this.depthDelta;
-	}
-	getNumPoints() {
+	},
+	getNumPoints: function () {
 		return this.pts.length;
-	}
-	printReverse(out) {
+	},
+	printReverse: function (out) {
 		out.print("edge " + this.name + ": ");
 		for (var i = this.pts.length - 1; i >= 0; i--) {
 			out.print(this.pts[i] + " ");
 		}
 		out.println("");
-	}
-	getMonotoneChainEdge() {
+	},
+	getMonotoneChainEdge: function () {
 		if (this.mce === null) this.mce = new MonotoneChainEdge(this);
 		return this.mce;
-	}
-	getEnvelope() {
+	},
+	getEnvelope: function () {
 		if (this.env === null) {
 			this.env = new Envelope();
 			for (var i = 0; i < this.pts.length; i++) {
@@ -146,8 +128,8 @@ export default class Edge extends GraphComponent {
 			}
 		}
 		return this.env;
-	}
-	addIntersection(li, segmentIndex, geomIndex, intIndex) {
+	},
+	addIntersection: function (li, segmentIndex, geomIndex, intIndex) {
 		var intPt = new Coordinate(li.getIntersection(intIndex));
 		var normalizedSegmentIndex = segmentIndex;
 		var dist = li.getEdgeDistance(geomIndex, intIndex);
@@ -160,8 +142,8 @@ export default class Edge extends GraphComponent {
 			}
 		}
 		var ei = this.eiList.add(intPt, normalizedSegmentIndex, dist);
-	}
-	toString() {
+	},
+	toString: function () {
 		var buf = new StringBuffer();
 		buf.append("edge " + this.name + ": ");
 		buf.append("LINESTRING (");
@@ -171,8 +153,8 @@ export default class Edge extends GraphComponent {
 		}
 		buf.append(")  " + this.label + " " + this.depthDelta);
 		return buf.toString();
-	}
-	isPointwiseEqual(e) {
+	},
+	isPointwiseEqual: function (e) {
 		if (this.pts.length !== e.pts.length) return false;
 		for (var i = 0; i < this.pts.length; i++) {
 			if (!this.pts[i].equals2D(e.pts[i])) {
@@ -180,20 +162,33 @@ export default class Edge extends GraphComponent {
 			}
 		}
 		return true;
-	}
-	setDepthDelta(depthDelta) {
+	},
+	setDepthDelta: function (depthDelta) {
 		this.depthDelta = depthDelta;
-	}
-	getEdgeIntersectionList() {
+	},
+	getEdgeIntersectionList: function () {
 		return this.eiList;
-	}
-	addIntersections(li, segmentIndex, geomIndex) {
+	},
+	addIntersections: function (li, segmentIndex, geomIndex) {
 		for (var i = 0; i < li.getIntersectionNum(); i++) {
 			this.addIntersection(li, segmentIndex, geomIndex, i);
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return Edge;
 	}
-}
+});
+Edge.updateIM = function () {
+	if (arguments.length === 2) {
+		let label = arguments[0], im = arguments[1];
+		im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
+		if (label.isArea()) {
+			im.setAtLeastIfValid(label.getLocation(0, Position.LEFT), label.getLocation(1, Position.LEFT), 2);
+			im.setAtLeastIfValid(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), 2);
+		}
+	} else return GraphComponent.prototype.updateIM.apply(this, arguments);
+};
 

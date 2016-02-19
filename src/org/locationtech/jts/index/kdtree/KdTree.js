@@ -1,54 +1,29 @@
 import CoordinateList from '../../geom/CoordinateList';
+import hasInterface from '../../../../../hasInterface';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import KdNodeVisitor from './KdNodeVisitor';
 import Envelope from '../../geom/Envelope';
 import List from '../../../../../java/util/List';
 import KdNode from './KdNode';
-export default class KdTree {
-	constructor(...args) {
-		this.root = null;
-		this.numberOfNodes = null;
-		this.tolerance = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, 0.0);
-			} else if (args.length === 1) {
-				let [tolerance] = args;
-				this.tolerance = tolerance;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function KdTree() {
+	this.root = null;
+	this.numberOfNodes = null;
+	this.tolerance = null;
+	if (arguments.length === 0) {
+		KdTree.call(this, 0.0);
+	} else if (arguments.length === 1) {
+		let tolerance = arguments[0];
+		this.tolerance = tolerance;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get BestMatchVisitor() {
-		return BestMatchVisitor;
-	}
-	static toCoordinates(...args) {
-		if (args.length === 1) {
-			let [kdnodes] = args;
-			return KdTree.toCoordinates(kdnodes, false);
-		} else if (args.length === 2) {
-			let [kdnodes, includeRepeated] = args;
-			var coord = new CoordinateList();
-			for (var it = kdnodes.iterator(); it.hasNext(); ) {
-				var node = it.next();
-				var count = includeRepeated ? node.getCount() : 1;
-				for (var i = 0; i < count; i++) {
-					coord.add(node.getCoordinate(), true);
-				}
-			}
-			return coord.toCoordinateArray();
-		}
-	}
-	insert(...args) {
-		if (args.length === 1) {
-			let [p] = args;
+}
+extend(KdTree.prototype, {
+	insert: function () {
+		if (arguments.length === 1) {
+			let p = arguments[0];
 			return this.insert(p, null);
-		} else if (args.length === 2) {
-			let [p, data] = args;
+		} else if (arguments.length === 2) {
+			let p = arguments[0], data = arguments[1];
 			if (this.root === null) {
 				this.root = new KdNode(p, data);
 				return this.root;
@@ -62,31 +37,31 @@ export default class KdTree {
 			}
 			return this.insertExact(p, data);
 		}
-	}
-	query(...args) {
-		if (args.length === 1) {
-			let [queryEnv] = args;
+	},
+	query: function () {
+		if (arguments.length === 1) {
+			let queryEnv = arguments[0];
 			var result = new ArrayList();
 			this.query(queryEnv, result);
 			return result;
-		} else if (args.length === 2) {
-			if (args[0] instanceof Envelope && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1)) {
-				let [queryEnv, result] = args;
-				this.queryNode(this.root, queryEnv, true, new (class {
-					visit(node) {
+		} else if (arguments.length === 2) {
+			if (arguments[0] instanceof Envelope && hasInterface(arguments[1], List)) {
+				let queryEnv = arguments[0], result = arguments[1];
+				this.queryNode(this.root, queryEnv, true, {
+					interfaces_: function () {
+						return [KdNodeVisitor];
+					},
+					visit: function (node) {
 						result.add(node);
 					}
-					get interfaces_() {
-						return [KdNodeVisitor];
-					}
-				})());
-			} else if (args[0] instanceof Envelope && (args[1].interfaces_ && args[1].interfaces_.indexOf(KdNodeVisitor) > -1)) {
-				let [queryEnv, visitor] = args;
+				});
+			} else if (arguments[0] instanceof Envelope && hasInterface(arguments[1], KdNodeVisitor)) {
+				let queryEnv = arguments[0], visitor = arguments[1];
 				this.queryNode(this.root, queryEnv, true, visitor);
 			}
 		}
-	}
-	queryNode(currentNode, queryEnv, odd, visitor) {
+	},
+	queryNode: function (currentNode, queryEnv, odd, visitor) {
 		if (currentNode === null) return null;
 		var min = null;
 		var max = null;
@@ -111,17 +86,17 @@ export default class KdTree {
 		if (searchRight) {
 			this.queryNode(currentNode.getRight(), queryEnv, !odd, visitor);
 		}
-	}
-	findBestMatchNode(p) {
+	},
+	findBestMatchNode: function (p) {
 		var visitor = new BestMatchVisitor(p, this.tolerance);
 		this.query(visitor.queryEnvelope(), visitor);
 		return visitor.getNode();
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		if (this.root === null) return true;
 		return false;
-	}
-	insertExact(p, data) {
+	},
+	insertExact: function (p, data) {
 		var currentNode = this.root;
 		var leafNode = this.root;
 		var isOddLevel = true;
@@ -155,27 +130,44 @@ export default class KdTree {
 			leafNode.setRight(node);
 		}
 		return node;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return KdTree;
 	}
-}
-class BestMatchVisitor {
-	constructor(...args) {
-		this.tolerance = null;
-		this.matchNode = null;
-		this.matchDist = 0.0;
-		this.p = null;
-		if (args.length === 2) {
-			let [p, tolerance] = args;
-			this.p = p;
-			this.tolerance = tolerance;
+});
+KdTree.toCoordinates = function () {
+	if (arguments.length === 1) {
+		let kdnodes = arguments[0];
+		return KdTree.toCoordinates(kdnodes, false);
+	} else if (arguments.length === 2) {
+		let kdnodes = arguments[0], includeRepeated = arguments[1];
+		var coord = new CoordinateList();
+		for (var it = kdnodes.iterator(); it.hasNext(); ) {
+			var node = it.next();
+			var count = includeRepeated ? node.getCount() : 1;
+			for (var i = 0; i < count; i++) {
+				coord.add(node.getCoordinate(), true);
+			}
 		}
+		return coord.toCoordinateArray();
 	}
-	get interfaces_() {
-		return [KdNodeVisitor];
+};
+function BestMatchVisitor() {
+	this.tolerance = null;
+	this.matchNode = null;
+	this.matchDist = 0.0;
+	this.p = null;
+	if (arguments.length === 2) {
+		let p = arguments[0], tolerance = arguments[1];
+		this.p = p;
+		this.tolerance = tolerance;
 	}
-	visit(node) {
+}
+extend(BestMatchVisitor.prototype, {
+	visit: function (node) {
 		var dist = this.p.distance(node.getCoordinate());
 		var isInTolerance = dist <= this.tolerance;
 		if (!isInTolerance) return null;
@@ -185,17 +177,21 @@ class BestMatchVisitor {
 			this.matchNode = node;
 			this.matchDist = dist;
 		}
-	}
-	queryEnvelope() {
+	},
+	queryEnvelope: function () {
 		var queryEnv = new Envelope(this.p);
 		queryEnv.expandBy(this.tolerance);
 		return queryEnv;
-	}
-	getNode() {
+	},
+	getNode: function () {
 		return this.matchNode;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [KdNodeVisitor];
+	},
+	getClass: function () {
 		return BestMatchVisitor;
 	}
-}
+});
+KdTree.BestMatchVisitor = BestMatchVisitor;
 

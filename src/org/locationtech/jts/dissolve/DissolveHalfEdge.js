@@ -1,24 +1,27 @@
+import extend from '../../../../extend';
 import MarkHalfEdge from '../edgegraph/MarkHalfEdge';
-export default class DissolveHalfEdge extends MarkHalfEdge {
-	constructor(...args) {
-		super();
-		this._isStart = false;
-		if (args.length === 1) {
-			let [orig] = args;
-			super(orig);
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	setStart() {
-		this._isStart = true;
-	}
-	isStart() {
-		return this._isStart;
-	}
-	getClass() {
-		return DissolveHalfEdge;
+import inherits from '../../../../inherits';
+export default function DissolveHalfEdge() {
+	MarkHalfEdge.apply(this);
+	this._isStart = false;
+	if (arguments.length === 1) {
+		let orig = arguments[0];
+		MarkHalfEdge.call(this, orig);
 	}
 }
+inherits(DissolveHalfEdge, MarkHalfEdge);
+extend(DissolveHalfEdge.prototype, {
+	setStart: function () {
+		this._isStart = true;
+	},
+	isStart: function () {
+		return this._isStart;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return DissolveHalfEdge;
+	}
+});
 

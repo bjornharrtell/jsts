@@ -1,39 +1,35 @@
 import WKTWriter from '../io/WKTWriter';
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import RuntimeException from '../../../../java/lang/RuntimeException';
-export default class ConstraintEnforcementException extends RuntimeException {
-	constructor(...args) {
-		super();
-		this.pt = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				return ((...args) => {
-					let [msg] = args;
-					super(msg);
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [msg, pt] = args;
-					super(ConstraintEnforcementException.msgWithCoord(msg, pt));
-					this.pt = new Coordinate(pt);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	static msgWithCoord(msg, pt) {
-		if (pt !== null) return msg + " [ " + WKTWriter.toPoint(pt) + " ]";
-		return msg;
-	}
-	getCoordinate() {
-		return this.pt;
-	}
-	getClass() {
-		return ConstraintEnforcementException;
+import inherits from '../../../../inherits';
+export default function ConstraintEnforcementException() {
+	RuntimeException.apply(this);
+	this.pt = null;
+	if (arguments.length === 1) {
+		let msg = arguments[0];
+		RuntimeException.call(this, msg);
+	} else if (arguments.length === 2) {
+		let msg = arguments[0], pt = arguments[1];
+		RuntimeException.call(this, ConstraintEnforcementException.msgWithCoord(msg, pt));
+		this.pt = new Coordinate(pt);
 	}
 }
+inherits(ConstraintEnforcementException, RuntimeException);
+extend(ConstraintEnforcementException.prototype, {
+	getCoordinate: function () {
+		return this.pt;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return ConstraintEnforcementException;
+	}
+});
+ConstraintEnforcementException.msgWithCoord = function (msg, pt) {
+	if (pt !== null) return msg + " [ " + WKTWriter.toPoint(pt) + " ]";
+	return msg;
+};
 ConstraintEnforcementException.serialVersionUID = 386496846550080140;
 

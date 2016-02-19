@@ -1,10 +1,12 @@
-export default class GeometryFilter {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function GeometryFilter() {}
+extend(GeometryFilter.prototype, {
+	filter: function (geom) {},
+	interfaces_: function () {
 		return [];
-	}
-	filter(geom) {}
-	getClass() {
+	},
+	getClass: function () {
 		return GeometryFilter;
 	}
-}
+});
 

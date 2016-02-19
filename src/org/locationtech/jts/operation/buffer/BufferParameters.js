@@ -1,45 +1,34 @@
-export default class BufferParameters {
-	constructor(...args) {
-		this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
-		this.endCapStyle = BufferParameters.CAP_ROUND;
-		this.joinStyle = BufferParameters.JOIN_ROUND;
-		this.mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
-		this._isSingleSided = false;
-		this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-			} else if (args.length === 1) {
-				let [quadrantSegments] = args;
-				this.setQuadrantSegments(quadrantSegments);
-			} else if (args.length === 2) {
-				let [quadrantSegments, endCapStyle] = args;
-				this.setQuadrantSegments(quadrantSegments);
-				this.setEndCapStyle(endCapStyle);
-			} else if (args.length === 4) {
-				let [quadrantSegments, endCapStyle, joinStyle, mitreLimit] = args;
-				this.setQuadrantSegments(quadrantSegments);
-				this.setEndCapStyle(endCapStyle);
-				this.setJoinStyle(joinStyle);
-				this.setMitreLimit(mitreLimit);
-			}
-		};
-		return overloaded.apply(this, args);
+import extend from '../../../../../extend';
+export default function BufferParameters() {
+	this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
+	this.endCapStyle = BufferParameters.CAP_ROUND;
+	this.joinStyle = BufferParameters.JOIN_ROUND;
+	this.mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
+	this._isSingleSided = false;
+	this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let quadrantSegments = arguments[0];
+		this.setQuadrantSegments(quadrantSegments);
+	} else if (arguments.length === 2) {
+		let quadrantSegments = arguments[0], endCapStyle = arguments[1];
+		this.setQuadrantSegments(quadrantSegments);
+		this.setEndCapStyle(endCapStyle);
+	} else if (arguments.length === 4) {
+		let quadrantSegments = arguments[0], endCapStyle = arguments[1], joinStyle = arguments[2], mitreLimit = arguments[3];
+		this.setQuadrantSegments(quadrantSegments);
+		this.setEndCapStyle(endCapStyle);
+		this.setJoinStyle(joinStyle);
+		this.setMitreLimit(mitreLimit);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static bufferDistanceError(quadSegs) {
-		var alpha = Math.PI / 2.0 / quadSegs;
-		return 1 - Math.cos(alpha / 2.0);
-	}
-	getEndCapStyle() {
+}
+extend(BufferParameters.prototype, {
+	getEndCapStyle: function () {
 		return this.endCapStyle;
-	}
-	isSingleSided() {
+	},
+	isSingleSided: function () {
 		return this._isSingleSided;
-	}
-	setQuadrantSegments(quadSegs) {
+	},
+	setQuadrantSegments: function (quadSegs) {
 		this.quadrantSegments = quadSegs;
 		if (this.quadrantSegments === 0) this.joinStyle = BufferParameters.JOIN_BEVEL;
 		if (this.quadrantSegments < 0) {
@@ -52,38 +41,45 @@ export default class BufferParameters {
 		if (this.joinStyle !== BufferParameters.JOIN_ROUND) {
 			this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
 		}
-	}
-	getJoinStyle() {
+	},
+	getJoinStyle: function () {
 		return this.joinStyle;
-	}
-	setJoinStyle(joinStyle) {
+	},
+	setJoinStyle: function (joinStyle) {
 		this.joinStyle = joinStyle;
-	}
-	setSimplifyFactor(simplifyFactor) {
+	},
+	setSimplifyFactor: function (simplifyFactor) {
 		this.simplifyFactor = simplifyFactor < 0 ? 0 : simplifyFactor;
-	}
-	getSimplifyFactor() {
+	},
+	getSimplifyFactor: function () {
 		return this.simplifyFactor;
-	}
-	getQuadrantSegments() {
+	},
+	getQuadrantSegments: function () {
 		return this.quadrantSegments;
-	}
-	setEndCapStyle(endCapStyle) {
+	},
+	setEndCapStyle: function (endCapStyle) {
 		this.endCapStyle = endCapStyle;
-	}
-	getMitreLimit() {
+	},
+	getMitreLimit: function () {
 		return this.mitreLimit;
-	}
-	setMitreLimit(mitreLimit) {
+	},
+	setMitreLimit: function (mitreLimit) {
 		this.mitreLimit = mitreLimit;
-	}
-	setSingleSided(isSingleSided) {
+	},
+	setSingleSided: function (isSingleSided) {
 		this._isSingleSided = isSingleSided;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return BufferParameters;
 	}
-}
+});
+BufferParameters.bufferDistanceError = function (quadSegs) {
+	var alpha = Math.PI / 2.0 / quadSegs;
+	return 1 - Math.cos(alpha / 2.0);
+};
 BufferParameters.CAP_ROUND = 1;
 BufferParameters.CAP_FLAT = 2;
 BufferParameters.CAP_SQUARE = 3;

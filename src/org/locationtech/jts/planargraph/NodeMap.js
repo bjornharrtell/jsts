@@ -1,32 +1,31 @@
+import extend from '../../../../extend';
 import TreeMap from '../../../../java/util/TreeMap';
-export default class NodeMap {
-	constructor(...args) {
-		this.nodeMap = new TreeMap();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	find(coord) {
+export default function NodeMap() {
+	this.nodeMap = new TreeMap();
+	if (arguments.length === 0) {}
+}
+extend(NodeMap.prototype, {
+	find: function (coord) {
 		return this.nodeMap.get(coord);
-	}
-	iterator() {
+	},
+	iterator: function () {
 		return this.nodeMap.values().iterator();
-	}
-	remove(pt) {
+	},
+	remove: function (pt) {
 		return this.nodeMap.remove(pt);
-	}
-	values() {
+	},
+	values: function () {
 		return this.nodeMap.values();
-	}
-	add(n) {
+	},
+	add: function (n) {
 		this.nodeMap.put(n.getCoordinate(), n);
 		return n;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return NodeMap;
 	}
-}
+});
 

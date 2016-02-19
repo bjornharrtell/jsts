@@ -3,50 +3,36 @@ import Cloneable from '../../../../java/lang/Cloneable';
 import Serializable from '../../../../java/io/Serializable';
 import Envelope from './Envelope';
 import Assert from '../util/Assert';
-export default class Geometry {
-	constructor(...args) {
-		this.envelope = null;
-		this.factory = null;
-		this.SRID = null;
-		this.userData = null;
-		if (args.length === 1) {
-			let [factory] = args;
-			this.factory = factory;
-			this.SRID = factory.getSRID();
-		}
+import extend from '../../../../extend';
+import inherits from '../../../../inherits';
+export default function Geometry(...args) {
+	this.envelope = null;
+	this.factory = null;
+	this.SRID = null;
+	this.userData = null;
+	if (args.length === 1) {
+		let [factory] = args;
+		this.factory = factory;
+		this.SRID = factory.getSRID();
 	}
-	get interfaces_() {
-		return [Cloneable, Comparable, Serializable];
-	}
-	static hasNonEmptyElements(geometries) {
-		for (var i = 0; i < geometries.length; i++) {
-			if (!geometries[i].isEmpty()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	static hasNullElements(array) {
-		for (var i = 0; i < array.length; i++) {
-			if (array[i] === null) {
-				return true;
-			}
-		}
-		return false;
-	}
-	isGeometryCollection() {
+}
+inherits(Geometry, Serializable);
+inherits(Geometry, Comparable);
+inherits(Geometry, Cloneable);
+extend(Geometry.prototype, {
+	isGeometryCollection: function () {
 		return this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION;
-	}
-	getFactory() {
+	},
+	getFactory: function () {
 		return this.factory;
-	}
-	getGeometryN(n) {
+	},
+	getGeometryN: function (n) {
 		return this;
-	}
-	getArea() {
+	},
+	getArea: function () {
 		return 0.0;
-	}
-	union(...args) {
+	},
+	union: function (...args) {
 		if (args.length === 0) {
 			let [] = args;
 			return UnaryUnionOp.union(this);
@@ -61,14 +47,14 @@ export default class Geometry {
 			this.checkNotGeometryCollection(other);
 			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
 		}
-	}
-	isValid() {
+	},
+	isValid: function () {
 		return IsValidOp.isValid(this);
-	}
-	isRectangle() {
+	},
+	isRectangle: function () {
 		return false;
-	}
-	equals(...args) {
+	},
+	equals: function (...args) {
 		if (args.length === 1) {
 			if (args[0] instanceof Geometry) {
 				let [g] = args;
@@ -81,35 +67,35 @@ export default class Geometry {
 				return this.equalsExact(g);
 			}
 		}
-	}
-	equalsExact(other) {
+	},
+	equalsExact: function (other) {
 		return this === other || this.equalsExact(other, 0);
-	}
-	intersection(other) {
+	},
+	intersection: function (other) {
 		if (this.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, this, other, this.factory);
 		if (this.isGeometryCollection()) {
 			var g2 = other;
-			return GeometryCollectionMapper.map(this, new (class {
-				map(g) {
+			return GeometryCollectionMapper.map(this, {
+				interfaces_: function () {
+					return [MapOp];
+				},
+				map: function (g) {
 					return g.intersection(g2);
 				}
-				get interfaces_() {
-					return [MapOp];
-				}
-			})());
+			});
 		}
 		this.checkNotGeometryCollection(this);
 		this.checkNotGeometryCollection(other);
 		return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
-	}
-	covers(g) {
+	},
+	covers: function (g) {
 		if (!this.getEnvelopeInternal().covers(g.getEnvelopeInternal())) return false;
 		if (this.isRectangle()) {
 			return true;
 		}
 		return this.relate(g).isCovers();
-	}
-	intersects(g) {
+	},
+	intersects: function (g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 		if (this.isRectangle()) {
 			return RectangleIntersects.intersects(this, g);
@@ -118,21 +104,21 @@ export default class Geometry {
 			return RectangleIntersects.intersects(g, this);
 		}
 		return this.relate(g).isIntersects();
-	}
-	touches(g) {
+	},
+	touches: function (g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isTouches(this.getDimension(), g.getDimension());
-	}
-	geometryChanged() {
+	},
+	geometryChanged: function () {
 		this.apply(Geometry.geometryChangedFilter);
-	}
-	within(g) {
+	},
+	within: function (g) {
 		return g.contains(this);
-	}
-	geometryChangedAction() {
+	},
+	geometryChangedAction: function () {
 		this.envelope = null;
-	}
-	buffer(...args) {
+	},
+	buffer: function (...args) {
 		if (args.length === 1) {
 			let [distance] = args;
 			return BufferOp.bufferOp(this, distance);
@@ -143,18 +129,18 @@ export default class Geometry {
 			let [distance, quadrantSegments, endCapStyle] = args;
 			return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
 		}
-	}
-	equalsNorm(g) {
+	},
+	equalsNorm: function (g) {
 		if (g === null) return false;
 		return this.norm().equalsExact(g.norm());
-	}
-	getLength() {
+	},
+	getLength: function () {
 		return 0.0;
-	}
-	getNumGeometries() {
+	},
+	getNumGeometries: function () {
 		return 1;
-	}
-	compareTo(...args) {
+	},
+	compareTo: function (...args) {
 		if (args.length === 1) {
 			let [o] = args;
 			var other = o;
@@ -188,38 +174,38 @@ export default class Geometry {
 			}
 			return this.compareToSameClass(o, comp);
 		}
-	}
-	convexHull() {
+	},
+	convexHull: function () {
 		return new ConvexHull(this).getConvexHull();
-	}
-	equalsTopo(g) {
+	},
+	equalsTopo: function (g) {
 		if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isEquals(this.getDimension(), g.getDimension());
-	}
-	coveredBy(g) {
+	},
+	coveredBy: function (g) {
 		return g.covers(this);
-	}
-	getUserData() {
+	},
+	getUserData: function () {
 		return this.userData;
-	}
-	getSRID() {
+	},
+	getSRID: function () {
 		return this.SRID;
-	}
-	getEnvelope() {
+	},
+	getEnvelope: function () {
 		return this.getFactory().toGeometry(this.getEnvelopeInternal());
-	}
-	checkNotGeometryCollection(g) {
+	},
+	checkNotGeometryCollection: function (g) {
 		if (this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION) {
 			throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
 		}
-	}
-	equal(a, b, tolerance) {
+	},
+	equal: function (a, b, tolerance) {
 		if (tolerance === 0) {
 			return a.equals(b);
 		}
 		return a.distance(b) <= tolerance;
-	}
-	relate(...args) {
+	},
+	relate: function (...args) {
 		if (args.length === 1) {
 			let [g] = args;
 			this.checkNotGeometryCollection(this);
@@ -229,36 +215,36 @@ export default class Geometry {
 			let [g, intersectionPattern] = args;
 			return this.relate(g).matches(intersectionPattern);
 		}
-	}
-	overlaps(g) {
+	},
+	overlaps: function (g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isOverlaps(this.getDimension(), g.getDimension());
-	}
-	norm() {
+	},
+	norm: function () {
 		var copy = this.copy();
 		copy.normalize();
 		return copy;
-	}
-	getPrecisionModel() {
+	},
+	getPrecisionModel: function () {
 		return this.factory.getPrecisionModel();
-	}
-	getCentroid() {
+	},
+	getCentroid: function () {
 		if (this.isEmpty()) return this.factory.createPoint();
 		var centPt = Centroid.getCentroid(this);
 		return this.createPointFromInternalCoord(centPt, this);
-	}
-	getEnvelopeInternal() {
+	},
+	getEnvelopeInternal: function () {
 		if (this.envelope === null) {
 			this.envelope = this.computeEnvelopeInternal();
 		}
 		return new Envelope(this.envelope);
-	}
-	isEquivalentClass(other) {
+	},
+	isEquivalentClass: function (other) {
 		return this.name === other.getClass().getName();
-	}
-	clone() {
+	},
+	clone: function () {
 		try {
-			var clone = super.clone();
+			var clone = null;
 			if (clone.envelope !== null) {
 				clone.envelope = new Envelope(clone.envelope);
 			}
@@ -269,11 +255,11 @@ export default class Geometry {
 				return null;
 			} else throw e;
 		} finally {}
-	}
-	setSRID(SRID) {
+	},
+	setSRID: function (SRID) {
 		this.SRID = SRID;
-	}
-	getInteriorPoint() {
+	},
+	getInteriorPoint: function () {
 		if (this.isEmpty()) return this.factory.createPoint();
 		var interiorPt = null;
 		var dim = this.getDimension();
@@ -288,8 +274,8 @@ export default class Geometry {
 			interiorPt = intPt.getInteriorPoint();
 		}
 		return this.createPointFromInternalCoord(interiorPt, this);
-	}
-	symDifference(other) {
+	},
+	symDifference: function (other) {
 		if (this.isEmpty() || other.isEmpty()) {
 			if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, this, other, this.factory);
 			if (this.isEmpty()) return other.copy();
@@ -298,43 +284,47 @@ export default class Geometry {
 		this.checkNotGeometryCollection(this);
 		this.checkNotGeometryCollection(other);
 		return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.SYMDIFFERENCE);
-	}
-	setUserData(userData) {
+	},
+	setUserData: function (userData) {
 		this.userData = userData;
-	}
-	toString() {
+	},
+	toString: function () {
 		return this.toText();
-	}
-	createPointFromInternalCoord(coord, exemplar) {
+	},
+	createPointFromInternalCoord: function (coord, exemplar) {
 		exemplar.getPrecisionModel().makePrecise(coord);
 		return exemplar.getFactory().createPoint(coord);
-	}
-	disjoint(g) {
+	},
+	disjoint: function (g) {
 		return !this.intersects(g);
-	}
-	crosses(g) {
+	},
+	toText: function () {
+		var writer = new WKTWriter();
+		return writer.write(this);
+	},
+	crosses: function (g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isCrosses(this.getDimension(), g.getDimension());
-	}
-	contains(g) {
+	},
+	contains: function (g) {
 		if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal())) return false;
 		if (this.isRectangle()) {
 			return RectangleContains.contains(this, g);
 		}
 		return this.relate(g).isContains();
-	}
-	difference(other) {
+	},
+	difference: function (other) {
 		if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this.factory);
 		if (other.isEmpty()) return this.copy();
 		this.checkNotGeometryCollection(this);
 		this.checkNotGeometryCollection(other);
 		return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.DIFFERENCE);
-	}
-	isSimple() {
+	},
+	isSimple: function () {
 		var op = new IsSimpleOp(this);
 		return op.isSimple();
-	}
-	compare(a, b) {
+	},
+	compare: function (a, b) {
 		var i = a.iterator();
 		var j = b.iterator();
 		while (i.hasNext() && j.hasNext()) {
@@ -352,28 +342,44 @@ export default class Geometry {
 			return -1;
 		}
 		return 0;
-	}
-	isWithinDistance(geom, distance) {
+	},
+	isWithinDistance: function (geom, distance) {
 		var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal());
 		if (envDist > distance) return false;
 		return DistanceOp.isWithinDistance(this, geom, distance);
-	}
-	distance(g) {
+	},
+	distance: function (g) {
 		return DistanceOp.distance(this, g);
-	}
-	hashCode() {
+	},
+	hashCode: function () {
 		return this.getEnvelopeInternal().hashCode();
-	}
-	isGeometryCollectionOrDerived() {
+	},
+	isGeometryCollectionOrDerived: function () {
 		if (this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION || this.getSortIndex() === Geometry.SORTINDEX_MULTIPOINT || this.getSortIndex() === Geometry.SORTINDEX_MULTILINESTRING || this.getSortIndex() === Geometry.SORTINDEX_MULTIPOLYGON) {
 			return true;
 		}
 		return false;
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return Geometry;
 	}
-}
+});
+Geometry.hasNonEmptyElements = function (geometries) {
+	for (var i = 0; i < geometries.length; i++) {
+		if (!geometries[i].isEmpty()) {
+			return true;
+		}
+	}
+	return false;
+};
+Geometry.hasNullElements = function (array) {
+	for (var i = 0; i < array.length; i++) {
+		if (array[i] === null) {
+			return true;
+		}
+	}
+	return false;
+};
 Geometry.serialVersionUID = 8763622679187376702;
 Geometry.SORTINDEX_POINT = 0;
 Geometry.SORTINDEX_MULTIPOINT = 1;
@@ -383,11 +389,11 @@ Geometry.SORTINDEX_MULTILINESTRING = 4;
 Geometry.SORTINDEX_POLYGON = 5;
 Geometry.SORTINDEX_MULTIPOLYGON = 6;
 Geometry.SORTINDEX_GEOMETRYCOLLECTION = 7;
-Geometry.geometryChangedFilter = new (class {
-	filter(geom) {
+Geometry.geometryChangedFilter = {
+	interfaces_: function () {
+		return [GeometryComponentFilter];
+	},
+	filter: function (geom) {
 		geom.geometryChangedAction();
 	}
-	get interfaces_() {
-		return [GeometryComponentFilter];
-	}
-})();
+};

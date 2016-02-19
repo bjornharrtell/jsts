@@ -2,46 +2,47 @@ import TreeSet from '../../../../java/util/TreeSet';
 import Geometry from './Geometry';
 import Arrays from '../../../../java/util/Arrays';
 import CoordinateFilter from './CoordinateFilter';
+import hasInterface from '../../../../hasInterface';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../extend';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import Dimension from './Dimension';
 import GeometryFilter from './GeometryFilter';
 import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import Envelope from './Envelope';
 import Assert from '../util/Assert';
-export default class GeometryCollection extends Geometry {
-	constructor(...args) {
-		super();
-		this.geometries = null;
-		if (args.length === 2) {
-			let [geometries, factory] = args;
-			super(factory);
-			if (geometries === null) {
-				geometries = [];
-			}
-			if (GeometryCollection.hasNullElements(geometries)) {
-				throw new IllegalArgumentException("geometries must not contain null elements");
-			}
-			this.geometries = geometries;
+import inherits from '../../../../inherits';
+export default function GeometryCollection() {
+	Geometry.apply(this);
+	this.geometries = null;
+	if (arguments.length === 2) {
+		let geometries = arguments[0], factory = arguments[1];
+		Geometry.call(this, factory);
+		if (geometries === null) {
+			geometries = [];
 		}
+		if (Geometry.hasNullElements(geometries)) {
+			throw new IllegalArgumentException("geometries must not contain null elements");
+		}
+		this.geometries = geometries;
 	}
-	get interfaces_() {
-		return [];
-	}
-	computeEnvelopeInternal() {
+}
+inherits(GeometryCollection, Geometry);
+extend(GeometryCollection.prototype, {
+	computeEnvelopeInternal: function () {
 		var envelope = new Envelope();
 		for (var i = 0; i < this.geometries.length; i++) {
 			envelope.expandToInclude(this.geometries[i].getEnvelopeInternal());
 		}
 		return envelope;
-	}
-	getGeometryN(n) {
+	},
+	getGeometryN: function (n) {
 		return this.geometries[n];
-	}
-	getSortIndex() {
+	},
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_GEOMETRYCOLLECTION;
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		var coordinates = new Array(this.getNumPoints());
 		var k = -1;
 		for (var i = 0; i < this.geometries.length; i++) {
@@ -52,17 +53,17 @@ export default class GeometryCollection extends Geometry {
 			}
 		}
 		return coordinates;
-	}
-	getArea() {
+	},
+	getArea: function () {
 		var area = 0.0;
 		for (var i = 0; i < this.geometries.length; i++) {
 			area += this.geometries[i].getArea();
 		}
 		return area;
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
@@ -76,65 +77,65 @@ export default class GeometryCollection extends Geometry {
 				}
 			}
 			return true;
-		} else return super.equalsExact(...args);
-	}
-	normalize() {
+		} else return Geometry.prototype.equalsExact.apply(this, arguments);
+	},
+	normalize: function () {
 		for (var i = 0; i < this.geometries.length; i++) {
 			this.geometries[i].normalize();
 		}
 		Arrays.sort(this.geometries);
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		if (this.isEmpty()) return null;
 		return this.geometries[0].getCoordinate();
-	}
-	getBoundaryDimension() {
+	},
+	getBoundaryDimension: function () {
 		var dimension = Dimension.FALSE;
 		for (var i = 0; i < this.geometries.length; i++) {
 			dimension = Math.max(dimension, this.geometries[i].getBoundaryDimension());
 		}
 		return dimension;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		var dimension = Dimension.FALSE;
 		for (var i = 0; i < this.geometries.length; i++) {
 			dimension = Math.max(dimension, this.geometries[i].getDimension());
 		}
 		return dimension;
-	}
-	getLength() {
+	},
+	getLength: function () {
 		var sum = 0.0;
 		for (var i = 0; i < this.geometries.length; i++) {
 			sum += this.geometries[i].getLength();
 		}
 		return sum;
-	}
-	getNumPoints() {
+	},
+	getNumPoints: function () {
 		var numPoints = 0;
 		for (var i = 0; i < this.geometries.length; i++) {
 			numPoints += this.geometries[i].getNumPoints();
 		}
 		return numPoints;
-	}
-	getNumGeometries() {
+	},
+	getNumGeometries: function () {
 		return this.geometries.length;
-	}
-	reverse() {
+	},
+	reverse: function () {
 		var n = this.geometries.length;
 		var revGeoms = new Array(n);
 		for (var i = 0; i < this.geometries.length; i++) {
 			revGeoms[i] = this.geometries[i].reverse();
 		}
 		return this.getFactory().createGeometryCollection(revGeoms);
-	}
-	compareToSameClass(...args) {
-		if (args.length === 1) {
-			let [o] = args;
+	},
+	compareToSameClass: function () {
+		if (arguments.length === 1) {
+			let o = arguments[0];
 			var theseElements = new TreeSet(Arrays.asList(this.geometries));
 			var otherElements = new TreeSet(Arrays.asList(o.geometries));
 			return this.compare(theseElements, otherElements);
-		} else if (args.length === 2) {
-			let [o, comp] = args;
+		} else if (arguments.length === 2) {
+			let o = arguments[0], comp = arguments[1];
 			var gc = o;
 			var n1 = this.getNumGeometries();
 			var n2 = gc.getNumGeometries();
@@ -150,16 +151,16 @@ export default class GeometryCollection extends Geometry {
 			if (i < n2) return -1;
 			return 0;
 		}
-	}
-	apply(...args) {
-		if (args.length === 1) {
-			if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateFilter) > -1) {
-				let [filter] = args;
+	},
+	apply: function () {
+		if (arguments.length === 1) {
+			if (hasInterface(arguments[0], CoordinateFilter)) {
+				let filter = arguments[0];
 				for (var i = 0; i < this.geometries.length; i++) {
 					this.geometries[i].apply(filter);
 				}
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequenceFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+				let filter = arguments[0];
 				if (this.geometries.length === 0) return null;
 				for (var i = 0; i < this.geometries.length; i++) {
 					this.geometries[i].apply(filter);
@@ -168,55 +169,58 @@ export default class GeometryCollection extends Geometry {
 					}
 				}
 				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
 				for (var i = 0; i < this.geometries.length; i++) {
 					this.geometries[i].apply(filter);
 				}
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(GeometryComponentFilter) > -1) {
-				let [filter] = args;
+			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+				let filter = arguments[0];
 				filter.filter(this);
 				for (var i = 0; i < this.geometries.length; i++) {
 					this.geometries[i].apply(filter);
 				}
 			}
 		}
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		this.checkNotGeometryCollection(this);
 		Assert.shouldNeverReachHere();
 		return null;
-	}
-	clone() {
-		var gc = super.clone();
+	},
+	clone: function () {
+		var gc = Geometry.prototype.clone.call(this);
 		gc.geometries = new Array(this.geometries.length);
 		for (var i = 0; i < this.geometries.length; i++) {
 			gc.geometries[i] = this.geometries[i].clone();
 		}
 		return gc;
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "GeometryCollection";
-	}
-	copy() {
+	},
+	copy: function () {
 		var geometries = new Array(this.geometries.length);
 		for (var i = 0; i < geometries.length; i++) {
 			geometries[i] = this.geometries[i].copy();
 		}
 		return new GeometryCollection(geometries, this.factory);
-	}
-	isEmpty() {
+	},
+	isEmpty: function () {
 		for (var i = 0; i < this.geometries.length; i++) {
 			if (!this.geometries[i].isEmpty()) {
 				return false;
 			}
 		}
 		return true;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometryCollection;
 	}
-}
+});
 GeometryCollection.serialVersionUID = -5694727726395021467;
 

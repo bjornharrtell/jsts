@@ -1,26 +1,19 @@
 import CoordinateList from '../geom/CoordinateList';
 import Coordinate from '../geom/Coordinate';
+import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
-export default class DouglasPeuckerLineSimplifier {
-	constructor(...args) {
-		this.pts = null;
-		this.usePt = null;
-		this.distanceTolerance = null;
-		this.seg = new LineSegment();
-		if (args.length === 1) {
-			let [pts] = args;
-			this.pts = pts;
-		}
+export default function DouglasPeuckerLineSimplifier() {
+	this.pts = null;
+	this.usePt = null;
+	this.distanceTolerance = null;
+	this.seg = new LineSegment();
+	if (arguments.length === 1) {
+		let pts = arguments[0];
+		this.pts = pts;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static simplify(pts, distanceTolerance) {
-		var simp = new DouglasPeuckerLineSimplifier(pts);
-		simp.setDistanceTolerance(distanceTolerance);
-		return simp.simplify();
-	}
-	simplifySection(i, j) {
+}
+extend(DouglasPeuckerLineSimplifier.prototype, {
+	simplifySection: function (i, j) {
 		if (i + 1 === j) {
 			return null;
 		}
@@ -43,11 +36,11 @@ export default class DouglasPeuckerLineSimplifier {
 			this.simplifySection(i, maxIndex);
 			this.simplifySection(maxIndex, j);
 		}
-	}
-	setDistanceTolerance(distanceTolerance) {
+	},
+	setDistanceTolerance: function (distanceTolerance) {
 		this.distanceTolerance = distanceTolerance;
-	}
-	simplify() {
+	},
+	simplify: function () {
 		this.usePt = new Array(this.pts.length);
 		for (var i = 0; i < this.pts.length; i++) {
 			this.usePt[i] = true;
@@ -58,9 +51,17 @@ export default class DouglasPeuckerLineSimplifier {
 			if (this.usePt[i]) coordList.add(new Coordinate(this.pts[i]));
 		}
 		return coordList.toCoordinateArray();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return DouglasPeuckerLineSimplifier;
 	}
-}
+});
+DouglasPeuckerLineSimplifier.simplify = function (pts, distanceTolerance) {
+	var simp = new DouglasPeuckerLineSimplifier(pts);
+	simp.setDistanceTolerance(distanceTolerance);
+	return simp.simplify();
+};
 

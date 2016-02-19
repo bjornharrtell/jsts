@@ -1,12 +1,14 @@
-export default class CoordinateSequenceFilter {
-	get interfaces_() {
+import extend from '../../../../extend';
+export default function CoordinateSequenceFilter() {}
+extend(CoordinateSequenceFilter.prototype, {
+	filter: function (seq, i) {},
+	isDone: function () {},
+	isGeometryChanged: function () {},
+	interfaces_: function () {
 		return [];
-	}
-	filter(seq, i) {}
-	isDone() {}
-	isGeometryChanged() {}
-	getClass() {
+	},
+	getClass: function () {
 		return CoordinateSequenceFilter;
 	}
-}
+});
 

@@ -1,27 +1,22 @@
 import Coordinate from '../../geom/Coordinate';
 import Polygon from '../../geom/Polygon';
 import RectangleLineIntersector from '../../algorithm/RectangleLineIntersector';
+import extend from '../../../../../extend';
 import ShortCircuitedGeometryVisitor from '../../geom/util/ShortCircuitedGeometryVisitor';
 import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator';
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
-export default class RectangleIntersects {
-	constructor(...args) {
-		this.rectangle = null;
-		this.rectEnv = null;
-		if (args.length === 1) {
-			let [rectangle] = args;
-			this.rectangle = rectangle;
-			this.rectEnv = rectangle.getEnvelopeInternal();
-		}
+import inherits from '../../../../../inherits';
+export default function RectangleIntersects() {
+	this.rectangle = null;
+	this.rectEnv = null;
+	if (arguments.length === 1) {
+		let rectangle = arguments[0];
+		this.rectangle = rectangle;
+		this.rectEnv = rectangle.getEnvelopeInternal();
 	}
-	get interfaces_() {
-		return [];
-	}
-	static intersects(rectangle, b) {
-		var rp = new RectangleIntersects(rectangle);
-		return rp.intersects(b);
-	}
-	intersects(geom) {
+}
+extend(RectangleIntersects.prototype, {
+	intersects: function (geom) {
 		if (!this.rectEnv.intersects(geom.getEnvelopeInternal())) return false;
 		var visitor = new EnvelopeIntersectsVisitor(this.rectEnv);
 		visitor.applyTo(geom);
@@ -33,28 +28,33 @@ export default class RectangleIntersects {
 		riVisitor.applyTo(geom);
 		if (riVisitor.intersects()) return true;
 		return false;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RectangleIntersects;
 	}
+});
+RectangleIntersects.intersects = function (rectangle, b) {
+	var rp = new RectangleIntersects(rectangle);
+	return rp.intersects(b);
+};
+function EnvelopeIntersectsVisitor() {
+	ShortCircuitedGeometryVisitor.apply(this);
+	this.rectEnv = null;
+	this._intersects = false;
+	if (arguments.length === 1) {
+		let rectEnv = arguments[0];
+		this.rectEnv = rectEnv;
+	}
 }
-class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
-	constructor(...args) {
-		super();
-		this.rectEnv = null;
-		this._intersects = false;
-		if (args.length === 1) {
-			let [rectEnv] = args;
-			this.rectEnv = rectEnv;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	isDone() {
+inherits(EnvelopeIntersectsVisitor, ShortCircuitedGeometryVisitor);
+extend(EnvelopeIntersectsVisitor.prototype, {
+	isDone: function () {
 		return this._intersects === true;
-	}
-	visit(element) {
+	},
+	visit: function (element) {
 		var elementEnv = element.getEnvelopeInternal();
 		if (!this.rectEnv.intersects(elementEnv)) {
 			return null;
@@ -71,33 +71,34 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 			this._intersects = true;
 			return null;
 		}
-	}
-	intersects() {
+	},
+	intersects: function () {
 		return this._intersects;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EnvelopeIntersectsVisitor;
 	}
+});
+function GeometryContainsPointVisitor() {
+	ShortCircuitedGeometryVisitor.apply(this);
+	this.rectSeq = null;
+	this.rectEnv = null;
+	this._containsPoint = false;
+	if (arguments.length === 1) {
+		let rectangle = arguments[0];
+		this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
+		this.rectEnv = rectangle.getEnvelopeInternal();
+	}
 }
-class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
-	constructor(...args) {
-		super();
-		this.rectSeq = null;
-		this.rectEnv = null;
-		this._containsPoint = false;
-		if (args.length === 1) {
-			let [rectangle] = args;
-			this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
-			this.rectEnv = rectangle.getEnvelopeInternal();
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	isDone() {
+inherits(GeometryContainsPointVisitor, ShortCircuitedGeometryVisitor);
+extend(GeometryContainsPointVisitor.prototype, {
+	isDone: function () {
 		return this._containsPoint === true;
-	}
-	visit(geom) {
+	},
+	visit: function (geom) {
 		if (!(geom instanceof Polygon)) return null;
 		var elementEnv = geom.getEnvelopeInternal();
 		if (!this.rectEnv.intersects(elementEnv)) return null;
@@ -110,51 +111,52 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 				return null;
 			}
 		}
-	}
-	containsPoint() {
+	},
+	containsPoint: function () {
 		return this._containsPoint;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometryContainsPointVisitor;
 	}
+});
+function RectangleIntersectsSegmentVisitor() {
+	ShortCircuitedGeometryVisitor.apply(this);
+	this.rectEnv = null;
+	this.rectIntersector = null;
+	this.hasIntersection = false;
+	this.p0 = new Coordinate();
+	this.p1 = new Coordinate();
+	if (arguments.length === 1) {
+		let rectangle = arguments[0];
+		this.rectEnv = rectangle.getEnvelopeInternal();
+		this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
+	}
 }
-class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
-	constructor(...args) {
-		super();
-		this.rectEnv = null;
-		this.rectIntersector = null;
-		this.hasIntersection = false;
-		this.p0 = new Coordinate();
-		this.p1 = new Coordinate();
-		if (args.length === 1) {
-			let [rectangle] = args;
-			this.rectEnv = rectangle.getEnvelopeInternal();
-			this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	intersects() {
+inherits(RectangleIntersectsSegmentVisitor, ShortCircuitedGeometryVisitor);
+extend(RectangleIntersectsSegmentVisitor.prototype, {
+	intersects: function () {
 		return this.hasIntersection;
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return this.hasIntersection === true;
-	}
-	visit(geom) {
+	},
+	visit: function (geom) {
 		var elementEnv = geom.getEnvelopeInternal();
 		if (!this.rectEnv.intersects(elementEnv)) return null;
 		var lines = LinearComponentExtracter.getLines(geom);
 		this.checkIntersectionWithLineStrings(lines);
-	}
-	checkIntersectionWithLineStrings(lines) {
+	},
+	checkIntersectionWithLineStrings: function (lines) {
 		for (var i = lines.iterator(); i.hasNext(); ) {
 			var testLine = i.next();
 			this.checkIntersectionWithSegments(testLine);
 			if (this.hasIntersection) return null;
 		}
-	}
-	checkIntersectionWithSegments(testLine) {
+	},
+	checkIntersectionWithSegments: function (testLine) {
 		var seq1 = testLine.getCoordinateSequence();
 		for (var j = 1; j < seq1.size(); j++) {
 			seq1.getCoordinate(j - 1, this.p0);
@@ -164,9 +166,12 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
 				return null;
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RectangleIntersectsSegmentVisitor;
 	}
-}
+});
 

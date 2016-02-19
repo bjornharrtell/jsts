@@ -1,57 +1,57 @@
 import LineString from '../geom/LineString';
 import Geometry from '../geom/Geometry';
+import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import EdgeGraph from './EdgeGraph';
+import extend from '../../../../extend';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
-export default class EdgeGraphBuilder {
-	constructor(...args) {
-		this.graph = new EdgeGraph();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	static build(geoms) {
-		var builder = new EdgeGraphBuilder();
-		builder.add(geoms);
-		return builder.getGraph();
-	}
-	add(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Geometry) {
-				let [geometry] = args;
-				geometry.apply(new (class {
-					filter(component) {
+export default function EdgeGraphBuilder() {
+	this.graph = new EdgeGraph();
+	if (arguments.length === 0) {}
+}
+extend(EdgeGraphBuilder.prototype, {
+	add: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Geometry) {
+				let geometry = arguments[0];
+				geometry.apply({
+					interfaces_: function () {
+						return [GeometryComponentFilter];
+					},
+					filter: function (component) {
 						if (component instanceof LineString) {
 							this.add(component);
 						}
 					}
-					get interfaces_() {
-						return [GeometryComponentFilter];
-					}
-				})());
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(Collection) > -1) {
-				let [geometries] = args;
+				});
+			} else if (hasInterface(arguments[0], Collection)) {
+				let geometries = arguments[0];
 				for (var i = geometries.iterator(); i.hasNext(); ) {
 					var geometry = i.next();
 					this.add(geometry);
 				}
-			} else if (args[0] instanceof LineString) {
-				let [lineString] = args;
+			} else if (arguments[0] instanceof LineString) {
+				let lineString = arguments[0];
 				var seq = lineString.getCoordinateSequence();
 				for (var i = 1; i < seq.size(); i++) {
 					this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
 				}
 			}
 		}
-	}
-	getGraph() {
+	},
+	getGraph: function () {
 		return this.graph;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeGraphBuilder;
 	}
-}
+});
+EdgeGraphBuilder.build = function (geoms) {
+	var builder = new EdgeGraphBuilder();
+	builder.add(geoms);
+	return builder.getGraph();
+};
 

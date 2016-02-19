@@ -1,35 +1,27 @@
 import Coordinate from '../Coordinate';
+import extend from '../../../../../extend';
+import inherits from '../../../../../inherits';
 import GeometricShapeFactory from '../../util/GeometricShapeFactory';
-export default class SineStarFactory extends GeometricShapeFactory {
-	constructor(...args) {
-		super();
-		this.numArms = 8;
-		this.armLengthRatio = 0.5;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				return ((...args) => {
-					let [] = args;
-					super();
-				})(...args);
-			} else if (args.length === 1) {
-				return ((...args) => {
-					let [geomFact] = args;
-					super(geomFact);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function SineStarFactory() {
+	GeometricShapeFactory.apply(this);
+	this.numArms = 8;
+	this.armLengthRatio = 0.5;
+	if (arguments.length === 0) {
+		GeometricShapeFactory.call(this);
+	} else if (arguments.length === 1) {
+		let geomFact = arguments[0];
+		GeometricShapeFactory.call(this, geomFact);
 	}
-	get interfaces_() {
-		return [];
-	}
-	setNumArms(numArms) {
+}
+inherits(SineStarFactory, GeometricShapeFactory);
+extend(SineStarFactory.prototype, {
+	setNumArms: function (numArms) {
 		this.numArms = numArms;
-	}
-	setArmLengthRatio(armLengthRatio) {
+	},
+	setArmLengthRatio: function (armLengthRatio) {
 		this.armLengthRatio = armLengthRatio;
-	}
-	createSineStar() {
+	},
+	createSineStar: function () {
 		var env = this.dim.getEnvelope();
 		var radius = env.getWidth() / 2.0;
 		var armRatio = this.armLengthRatio;
@@ -56,9 +48,12 @@ export default class SineStarFactory extends GeometricShapeFactory {
 		var ring = this.geomFact.createLinearRing(pts);
 		var poly = this.geomFact.createPolygon(ring, null);
 		return poly;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SineStarFactory;
 	}
-}
+});
 

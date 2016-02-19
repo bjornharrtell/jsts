@@ -5,6 +5,7 @@
 
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
+import extend from '../../../../extend'
 
 const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
 
@@ -13,17 +14,18 @@ const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', '
  * NOTE: Adapted from OpenLayers 2.11 implementation.
  * @private
  */
-export default class GeoJSONParser {
-  /**
-   * Create a new parser for GeoJSON
-   *
-   * @param {GeometryFactory} geometryFactory
-   * @return An instance of GeoJsonParser.
-   */
-  constructor (geometryFactory) {
-    this.geometryFactory = geometryFactory || new GeometryFactory()
-  }
 
+/**
+ * Create a new parser for GeoJSON
+ *
+ * @param {GeometryFactory} geometryFactory
+ * @return An instance of GeoJsonParser.
+ */
+export default function GeoJSONParser (geometryFactory) {
+  this.geometryFactory = geometryFactory || new GeometryFactory()
+}
+
+extend(GeoJSONParser.prototype, {
   /**
    * Deserialize a GeoJSON object and return the Geometry or Feature(Collection) with JSTS Geometries
    *
@@ -53,7 +55,7 @@ export default class GeoJSONParser {
 
     // feature or feature collection
     return this.parse[type].apply(this, [obj])
-  }
+  },
 
   /**
    * Serialize a Geometry object into GeoJSON
@@ -71,7 +73,7 @@ export default class GeoJSONParser {
 
     return extract[type].apply(this, [geometry])
   }
-}
+})
 
 const parse = {
   /**
@@ -342,8 +344,9 @@ const extract = {
    */
   LineString: function (linestring) {
     const array = []
-    for (let i = 0; i < linestring.points.length; ++i) {
-      const coordinate = linestring.points[i]
+    const coordinates = linestring.getCoordinates()
+    for (let i = 0; i < coordinates.length; ++i) {
+      const coordinate = coordinates[i]
       array.push(extract.coordinate.apply(this, [coordinate]))
     }
     return {

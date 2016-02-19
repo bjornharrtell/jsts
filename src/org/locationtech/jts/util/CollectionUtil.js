@@ -1,36 +1,36 @@
+import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class CollectionUtil {
-	get interfaces_() {
+export default function CollectionUtil() {}
+extend(CollectionUtil.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	static get Function() {
-		return Function;
-	}
-	static transform(coll, func) {
-		var result = new ArrayList();
-		for (var i = coll.iterator(); i.hasNext(); ) {
-			result.add(func.execute(i.next()));
-		}
-		return result;
-	}
-	static select(collection, func) {
-		var result = new ArrayList();
-		for (var i = collection.iterator(); i.hasNext(); ) {
-			var item = i.next();
-			if (Boolean.TRUE.equals(func.execute(item))) {
-				result.add(item);
-			}
-		}
-		return result;
-	}
-	static apply(coll, func) {
-		for (var i = coll.iterator(); i.hasNext(); ) {
-			func.execute(i.next());
-		}
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return CollectionUtil;
 	}
-}
-class Function {}
+});
+CollectionUtil.transform = function (coll, func) {
+	var result = new ArrayList();
+	for (var i = coll.iterator(); i.hasNext(); ) {
+		result.add(func.execute(i.next()));
+	}
+	return result;
+};
+CollectionUtil.select = function (collection, func) {
+	var result = new ArrayList();
+	for (var i = collection.iterator(); i.hasNext(); ) {
+		var item = i.next();
+		if (Boolean.TRUE.equals(func.execute(item))) {
+			result.add(item);
+		}
+	}
+	return result;
+};
+CollectionUtil.apply = function (coll, func) {
+	for (var i = coll.iterator(); i.hasNext(); ) {
+		func.execute(i.next());
+	}
+};
+function Function() {}
+CollectionUtil.Function = Function;
 

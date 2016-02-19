@@ -1,63 +1,45 @@
 import LineString from './LineString';
 import CoordinateList from './CoordinateList';
 import Geometry from './Geometry';
+import hasInterface from '../../../../hasInterface';
 import Coordinate from './Coordinate';
 import Point from './Point';
 import Double from '../../../../java/lang/Double';
+import extend from '../../../../extend';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import CoordinateSequence from './CoordinateSequence';
 import Envelope from './Envelope';
-export default class OctagonalEnvelope {
-	constructor(...args) {
-		this.minX = Double.NaN;
-		this.maxX = null;
-		this.minY = null;
-		this.maxY = null;
-		this.minA = null;
-		this.maxA = null;
-		this.minB = null;
-		this.maxB = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-			} else if (args.length === 1) {
-				if (args[0] instanceof Coordinate) {
-					let [p] = args;
-					this.expandToInclude(p);
-				} else if (args[0] instanceof Envelope) {
-					let [env] = args;
-					this.expandToInclude(env);
-				} else if (args[0] instanceof OctagonalEnvelope) {
-					let [oct] = args;
-					this.expandToInclude(oct);
-				} else if (args[0] instanceof Geometry) {
-					let [geom] = args;
-					this.expandToInclude(geom);
-				}
-			} else if (args.length === 2) {
-				let [p0, p1] = args;
-				this.expandToInclude(p0);
-				this.expandToInclude(p1);
-			}
-		};
-		return overloaded.apply(this, args);
+export default function OctagonalEnvelope() {
+	this.minX = Double.NaN;
+	this.maxX = null;
+	this.minY = null;
+	this.maxY = null;
+	this.minA = null;
+	this.maxA = null;
+	this.minB = null;
+	this.maxB = null;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			this.expandToInclude(p);
+		} else if (arguments[0] instanceof Envelope) {
+			let env = arguments[0];
+			this.expandToInclude(env);
+		} else if (arguments[0] instanceof OctagonalEnvelope) {
+			let oct = arguments[0];
+			this.expandToInclude(oct);
+		} else if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			this.expandToInclude(geom);
+		}
+	} else if (arguments.length === 2) {
+		let p0 = arguments[0], p1 = arguments[1];
+		this.expandToInclude(p0);
+		this.expandToInclude(p1);
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get BoundingOctagonComponentFilter() {
-		return BoundingOctagonComponentFilter;
-	}
-	static octagonalEnvelope(geom) {
-		return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
-	}
-	static computeB(x, y) {
-		return x - y;
-	}
-	static computeA(x, y) {
-		return x + y;
-	}
-	toGeometry(geomFactory) {
+}
+extend(OctagonalEnvelope.prototype, {
+	toGeometry: function (geomFactory) {
 		if (this.isNull()) {
 			return geomFactory.createPoint(null);
 		}
@@ -97,27 +79,27 @@ export default class OctagonalEnvelope {
 		coordList.add(px00, false);
 		var pts = coordList.toCoordinateArray();
 		return geomFactory.createPolygon(geomFactory.createLinearRing(pts), null);
-	}
-	getMinA() {
+	},
+	getMinA: function () {
 		return this.minA;
-	}
-	getMaxB() {
+	},
+	getMaxB: function () {
 		return this.maxB;
-	}
-	isValid() {
+	},
+	isValid: function () {
 		if (this.isNull()) return true;
 		return this.minX <= this.maxX && this.minY <= this.maxY && this.minA <= this.maxA && this.minB <= this.maxB;
-	}
-	isNull() {
+	},
+	isNull: function () {
 		return Double.isNaN(this.minX);
-	}
-	getMaxX() {
+	},
+	getMaxX: function () {
 		return this.maxX;
-	}
-	intersects(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof OctagonalEnvelope) {
-				let [other] = args;
+	},
+	intersects: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof OctagonalEnvelope) {
+				let other = arguments[0];
 				if (this.isNull() || other.isNull()) {
 					return false;
 				}
@@ -130,8 +112,8 @@ export default class OctagonalEnvelope {
 				if (this.minB > other.maxB) return false;
 				if (this.maxB < other.minB) return false;
 				return true;
-			} else if (args[0] instanceof Coordinate) {
-				let [p] = args;
+			} else if (arguments[0] instanceof Coordinate) {
+				let p = arguments[0];
 				if (this.minX > p.x) return false;
 				if (this.maxX < p.x) return false;
 				if (this.minY > p.y) return false;
@@ -145,28 +127,28 @@ export default class OctagonalEnvelope {
 				return true;
 			}
 		}
-	}
-	getMinY() {
+	},
+	getMinY: function () {
 		return this.minY;
-	}
-	getMinX() {
+	},
+	getMinX: function () {
 		return this.minX;
-	}
-	expandToInclude(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Geometry) {
-				let [g] = args;
+	},
+	expandToInclude: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Geometry) {
+				let g = arguments[0];
 				g.apply(new BoundingOctagonComponentFilter(this));
-			} else if (args[0].interfaces_ && args[0].interfaces_.indexOf(CoordinateSequence) > -1) {
-				let [seq] = args;
+			} else if (hasInterface(arguments[0], CoordinateSequence)) {
+				let seq = arguments[0];
 				for (var i = 0; i < seq.size(); i++) {
 					var x = seq.getX(i);
 					var y = seq.getY(i);
 					this.expandToInclude(x, y);
 				}
 				return this;
-			} else if (args[0] instanceof OctagonalEnvelope) {
-				let [oct] = args;
+			} else if (arguments[0] instanceof OctagonalEnvelope) {
+				let oct = arguments[0];
 				if (oct.isNull()) return this;
 				if (this.isNull()) {
 					this.minX = oct.minX;
@@ -188,20 +170,20 @@ export default class OctagonalEnvelope {
 				if (oct.minB < this.minB) this.minB = oct.minB;
 				if (oct.maxB > this.maxB) this.maxB = oct.maxB;
 				return this;
-			} else if (args[0] instanceof Coordinate) {
-				let [p] = args;
+			} else if (arguments[0] instanceof Coordinate) {
+				let p = arguments[0];
 				this.expandToInclude(p.x, p.y);
 				return this;
-			} else if (args[0] instanceof Envelope) {
-				let [env] = args;
+			} else if (arguments[0] instanceof Envelope) {
+				let env = arguments[0];
 				this.expandToInclude(env.getMinX(), env.getMinY());
 				this.expandToInclude(env.getMinX(), env.getMaxY());
 				this.expandToInclude(env.getMaxX(), env.getMinY());
 				this.expandToInclude(env.getMaxX(), env.getMaxY());
 				return this;
 			}
-		} else if (args.length === 2) {
-			let [x, y] = args;
+		} else if (arguments.length === 2) {
+			let x = arguments[0], y = arguments[1];
 			var A = OctagonalEnvelope.computeA(x, y);
 			var B = OctagonalEnvelope.computeB(x, y);
 			if (this.isNull()) {
@@ -225,14 +207,14 @@ export default class OctagonalEnvelope {
 			}
 			return this;
 		}
-	}
-	getMinB() {
+	},
+	getMinB: function () {
 		return this.minB;
-	}
-	setToNull() {
+	},
+	setToNull: function () {
 		this.minX = Double.NaN;
-	}
-	expandBy(distance) {
+	},
+	expandBy: function (distance) {
 		if (this.isNull()) return null;
 		var diagonalDistance = OctagonalEnvelope.SQRT2 * distance;
 		this.minX -= distance;
@@ -244,44 +226,57 @@ export default class OctagonalEnvelope {
 		this.minB -= diagonalDistance;
 		this.maxB += diagonalDistance;
 		if (!this.isValid()) this.setToNull();
-	}
-	getMaxA() {
+	},
+	getMaxA: function () {
 		return this.maxA;
-	}
-	contains(other) {
+	},
+	contains: function (other) {
 		if (this.isNull() || other.isNull()) {
 			return false;
 		}
 		return other.minX >= this.minX && other.maxX <= this.maxX && other.minY >= this.minY && other.maxY <= this.maxY && other.minA >= this.minA && other.maxA <= this.maxA && other.minB >= this.minB && other.maxB <= this.maxB;
-	}
-	getMaxY() {
+	},
+	getMaxY: function () {
 		return this.maxY;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return OctagonalEnvelope;
 	}
+});
+OctagonalEnvelope.octagonalEnvelope = function (geom) {
+	return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
+};
+OctagonalEnvelope.computeB = function (x, y) {
+	return x - y;
+};
+OctagonalEnvelope.computeA = function (x, y) {
+	return x + y;
+};
+function BoundingOctagonComponentFilter() {
+	this.oe = null;
+	if (arguments.length === 1) {
+		let oe = arguments[0];
+		this.oe = oe;
+	}
 }
-class BoundingOctagonComponentFilter {
-	constructor(...args) {
-		this.oe = null;
-		if (args.length === 1) {
-			let [oe] = args;
-			this.oe = oe;
-		}
-	}
-	get interfaces_() {
-		return [GeometryComponentFilter];
-	}
-	filter(geom) {
+extend(BoundingOctagonComponentFilter.prototype, {
+	filter: function (geom) {
 		if (geom instanceof LineString) {
 			this.oe.expandToInclude(geom.getCoordinateSequence());
 		} else if (geom instanceof Point) {
 			this.oe.expandToInclude(geom.getCoordinateSequence());
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [GeometryComponentFilter];
+	},
+	getClass: function () {
 		return BoundingOctagonComponentFilter;
 	}
-}
+});
+OctagonalEnvelope.BoundingOctagonComponentFilter = BoundingOctagonComponentFilter;
 OctagonalEnvelope.SQRT2 = Math.sqrt(2.0);
 

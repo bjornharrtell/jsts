@@ -1,1 +1,1 @@
-export default class Comparator {}
+export default function Comparator () {}

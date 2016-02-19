@@ -5,29 +5,25 @@ import Point from '../Point';
 import Polygon from '../Polygon';
 import MultiPoint from '../MultiPoint';
 import LinearRing from '../LinearRing';
+import extend from '../../../../../extend';
 import MultiPolygon from '../MultiPolygon';
 import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import MultiLineString from '../MultiLineString';
-export default class GeometryTransformer {
-	constructor(...args) {
-		this.inputGeom = null;
-		this.factory = null;
-		this.pruneEmptyGeometry = true;
-		this.preserveGeometryCollectionType = true;
-		this.preserveCollections = false;
-		this.preserveType = false;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	transformPoint(geom, parent) {
+export default function GeometryTransformer() {
+	this.inputGeom = null;
+	this.factory = null;
+	this.pruneEmptyGeometry = true;
+	this.preserveGeometryCollectionType = true;
+	this.preserveCollections = false;
+	this.preserveType = false;
+	if (arguments.length === 0) {}
+}
+extend(GeometryTransformer.prototype, {
+	transformPoint: function (geom, parent) {
 		return this.factory.createPoint(this.transformCoordinates(geom.getCoordinateSequence(), geom));
-	}
-	transformPolygon(geom, parent) {
+	},
+	transformPolygon: function (geom, parent) {
 		var isAllValidLinearRings = true;
 		var shell = this.transformLinearRing(geom.getExteriorRing(), geom);
 		if (shell === null || !(shell instanceof LinearRing) || shell.isEmpty()) isAllValidLinearRings = false;
@@ -46,14 +42,14 @@ export default class GeometryTransformer {
 			components.addAll(holes);
 			return this.factory.buildGeometry(components);
 		}
-	}
-	createCoordinateSequence(coords) {
+	},
+	createCoordinateSequence: function (coords) {
 		return this.factory.getCoordinateSequenceFactory().create(coords);
-	}
-	getInputGeometry() {
+	},
+	getInputGeometry: function () {
 		return this.inputGeom;
-	}
-	transformMultiLineString(geom, parent) {
+	},
+	transformMultiLineString: function (geom, parent) {
 		var transGeomList = new ArrayList();
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var transformGeom = this.transformLineString(geom.getGeometryN(i), geom);
@@ -62,14 +58,14 @@ export default class GeometryTransformer {
 			transGeomList.add(transformGeom);
 		}
 		return this.factory.buildGeometry(transGeomList);
-	}
-	transformCoordinates(coords, parent) {
+	},
+	transformCoordinates: function (coords, parent) {
 		return this.copy(coords);
-	}
-	transformLineString(geom, parent) {
+	},
+	transformLineString: function (geom, parent) {
 		return this.factory.createLineString(this.transformCoordinates(geom.getCoordinateSequence(), geom));
-	}
-	transformMultiPoint(geom, parent) {
+	},
+	transformMultiPoint: function (geom, parent) {
 		var transGeomList = new ArrayList();
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var transformGeom = this.transformPoint(geom.getGeometryN(i), geom);
@@ -78,8 +74,8 @@ export default class GeometryTransformer {
 			transGeomList.add(transformGeom);
 		}
 		return this.factory.buildGeometry(transGeomList);
-	}
-	transformMultiPolygon(geom, parent) {
+	},
+	transformMultiPolygon: function (geom, parent) {
 		var transGeomList = new ArrayList();
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var transformGeom = this.transformPolygon(geom.getGeometryN(i), geom);
@@ -88,11 +84,11 @@ export default class GeometryTransformer {
 			transGeomList.add(transformGeom);
 		}
 		return this.factory.buildGeometry(transGeomList);
-	}
-	copy(seq) {
+	},
+	copy: function (seq) {
 		return seq.clone();
-	}
-	transformGeometryCollection(geom, parent) {
+	},
+	transformGeometryCollection: function (geom, parent) {
 		var transGeomList = new ArrayList();
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var transformGeom = this.transform(geom.getGeometryN(i));
@@ -102,8 +98,8 @@ export default class GeometryTransformer {
 		}
 		if (this.preserveGeometryCollectionType) return this.factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList));
 		return this.factory.buildGeometry(transGeomList);
-	}
-	transform(inputGeom) {
+	},
+	transform: function (inputGeom) {
 		this.inputGeom = inputGeom;
 		this.factory = inputGeom.getFactory();
 		if (inputGeom instanceof Point) return this.transformPoint(inputGeom, null);
@@ -115,16 +111,19 @@ export default class GeometryTransformer {
 		if (inputGeom instanceof MultiPolygon) return this.transformMultiPolygon(inputGeom, null);
 		if (inputGeom instanceof GeometryCollection) return this.transformGeometryCollection(inputGeom, null);
 		throw new IllegalArgumentException("Unknown Geometry subtype: " + inputGeom.getClass().getName());
-	}
-	transformLinearRing(geom, parent) {
+	},
+	transformLinearRing: function (geom, parent) {
 		var seq = this.transformCoordinates(geom.getCoordinateSequence(), geom);
 		if (seq === null) return this.factory.createLinearRing(null);
 		var seqSize = seq.size();
 		if (seqSize > 0 && seqSize < 4 && !this.preserveType) return this.factory.createLineString(seq);
 		return this.factory.createLinearRing(seq);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return GeometryTransformer;
 	}
-}
+});
 

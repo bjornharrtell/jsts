@@ -1,36 +1,35 @@
 import TreeSet from '../../../../java/util/TreeSet';
 import CoordinateFilter from '../geom/CoordinateFilter';
+import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class UniqueCoordinateArrayFilter {
-	constructor(...args) {
-		this.treeSet = new TreeSet();
-		this.list = new ArrayList();
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [CoordinateFilter];
-	}
-	static filterCoordinates(coords) {
-		var filter = new UniqueCoordinateArrayFilter();
-		for (var i = 0; i < coords.length; i++) {
-			filter.filter(coords[i]);
-		}
-		return filter.getCoordinates();
-	}
-	filter(coord) {
+export default function UniqueCoordinateArrayFilter() {
+	this.treeSet = new TreeSet();
+	this.list = new ArrayList();
+	if (arguments.length === 0) {}
+}
+extend(UniqueCoordinateArrayFilter.prototype, {
+	filter: function (coord) {
 		if (!this.treeSet.contains(coord)) {
 			this.list.add(coord);
 			this.treeSet.add(coord);
 		}
-	}
-	getCoordinates() {
+	},
+	getCoordinates: function () {
 		var coordinates = new Array(this.list.size());
 		return this.list.toArray(coordinates);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [CoordinateFilter];
+	},
+	getClass: function () {
 		return UniqueCoordinateArrayFilter;
 	}
-}
+});
+UniqueCoordinateArrayFilter.filterCoordinates = function (coords) {
+	var filter = new UniqueCoordinateArrayFilter();
+	for (var i = 0; i < coords.length; i++) {
+		filter.filter(coords[i]);
+	}
+	return filter.getCoordinates();
+};
 

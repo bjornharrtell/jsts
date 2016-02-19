@@ -1,1 +1,1 @@
-export default class Exception {}
+export default function Exception () {}

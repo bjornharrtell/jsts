@@ -1,1 +1,1 @@
-export default class PrintStream {}
+export default function PrintStream () {}

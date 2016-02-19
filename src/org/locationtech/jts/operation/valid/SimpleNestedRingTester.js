@@ -1,24 +1,22 @@
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import IsValidOp from './IsValidOp';
+import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
-export default class SimpleNestedRingTester {
-	constructor(...args) {
-		this.graph = null;
-		this.rings = new ArrayList();
-		this.nestedPt = null;
-		if (args.length === 1) {
-			let [graph] = args;
-			this.graph = graph;
-		}
+export default function SimpleNestedRingTester() {
+	this.graph = null;
+	this.rings = new ArrayList();
+	this.nestedPt = null;
+	if (arguments.length === 1) {
+		let graph = arguments[0];
+		this.graph = graph;
 	}
-	get interfaces_() {
-		return [];
-	}
-	getNestedPoint() {
+}
+extend(SimpleNestedRingTester.prototype, {
+	getNestedPoint: function () {
 		return this.nestedPt;
-	}
-	isNonNested() {
+	},
+	isNonNested: function () {
 		for (var i = 0; i < this.rings.size(); i++) {
 			var innerRing = this.rings.get(i);
 			var innerRingPts = innerRing.getCoordinates();
@@ -37,12 +35,15 @@ export default class SimpleNestedRingTester {
 			}
 		}
 		return true;
-	}
-	add(ring) {
+	},
+	add: function (ring) {
 		this.rings.add(ring);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SimpleNestedRingTester;
 	}
-}
+});
 

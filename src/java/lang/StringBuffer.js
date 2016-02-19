@@ -1,17 +1,15 @@
-export default class StringBuffer {
-  constructor(str) {
-    this.str = str
-  }
-  
-  append(e) {
-    this.str += e
-  }
-  
-  setCharAt(i, c) {
-    return this.str.substr(0, i) + c + this.str.substr(i+1)
-  }
-  
-  toString() {
-    return this.str
-  }
+export default function StringBuffer (str) {
+  this.str = str
+}
+
+StringBuffer.prototype.append = function (e) {
+  this.str += e
+}
+
+StringBuffer.prototype.setCharAt = function (i, c) {
+  return this.str.substr(0, i) + c + this.str.substr(i + 1)
+}
+
+StringBuffer.prototype.toString = function (e) {
+  return this.str
 }

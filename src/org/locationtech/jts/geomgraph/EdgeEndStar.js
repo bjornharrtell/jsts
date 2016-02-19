@@ -2,31 +2,27 @@ import StringBuffer from '../../../../java/lang/StringBuffer';
 import Location from '../geom/Location';
 import Position from './Position';
 import TopologyException from '../geom/TopologyException';
+import extend from '../../../../extend';
 import System from '../../../../java/lang/System';
 import SimplePointInAreaLocator from '../algorithm/locate/SimplePointInAreaLocator';
 import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
 import TreeMap from '../../../../java/util/TreeMap';
-export default class EdgeEndStar {
-	constructor(...args) {
-		this.edgeMap = new TreeMap();
-		this.edgeList = null;
-		this.ptInAreaLocation = [Location.NONE, Location.NONE];
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getNextCW(ee) {
+export default function EdgeEndStar() {
+	this.edgeMap = new TreeMap();
+	this.edgeList = null;
+	this.ptInAreaLocation = [Location.NONE, Location.NONE];
+	if (arguments.length === 0) {}
+}
+extend(EdgeEndStar.prototype, {
+	getNextCW: function (ee) {
 		this.getEdges();
 		var i = this.edgeList.indexOf(ee);
 		var iNextCW = i - 1;
 		if (i === 0) iNextCW = this.edgeList.size() - 1;
 		return this.edgeList.get(iNextCW);
-	}
-	propagateSideLabels(geomIndex) {
+	},
+	propagateSideLabels: function (geomIndex) {
 		var startLoc = Location.NONE;
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var e = it.next();
@@ -55,25 +51,25 @@ export default class EdgeEndStar {
 				}
 			}
 		}
-	}
-	getCoordinate() {
+	},
+	getCoordinate: function () {
 		var it = this.iterator();
 		if (!it.hasNext()) return null;
 		var e = it.next();
 		return e.getCoordinate();
-	}
-	print(out) {
+	},
+	print: function (out) {
 		System.out.println("EdgeEndStar:   " + this.getCoordinate());
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var e = it.next();
 			e.print(out);
 		}
-	}
-	isAreaLabelsConsistent(geomGraph) {
+	},
+	isAreaLabelsConsistent: function (geomGraph) {
 		this.computeEdgeEndLabels(geomGraph.getBoundaryNodeRule());
 		return this.checkAreaLabelsConsistent(0);
-	}
-	checkAreaLabelsConsistent(geomIndex) {
+	},
+	checkAreaLabelsConsistent: function (geomIndex) {
 		var edges = this.getEdges();
 		if (edges.size() <= 0) return true;
 		var lastEdgeIndex = edges.size() - 1;
@@ -96,31 +92,31 @@ export default class EdgeEndStar {
 			currLoc = leftLoc;
 		}
 		return true;
-	}
-	findIndex(eSearch) {
+	},
+	findIndex: function (eSearch) {
 		this.iterator();
 		for (var i = 0; i < this.edgeList.size(); i++) {
 			var e = this.edgeList.get(i);
 			if (e === eSearch) return i;
 		}
 		return -1;
-	}
-	iterator() {
+	},
+	iterator: function () {
 		return this.getEdges().iterator();
-	}
-	getEdges() {
+	},
+	getEdges: function () {
 		if (this.edgeList === null) {
 			this.edgeList = new ArrayList(this.edgeMap.values());
 		}
 		return this.edgeList;
-	}
-	getLocation(geomIndex, p, geom) {
+	},
+	getLocation: function (geomIndex, p, geom) {
 		if (this.ptInAreaLocation[geomIndex] === Location.NONE) {
 			this.ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p, geom[geomIndex].getGeometry());
 		}
 		return this.ptInAreaLocation[geomIndex];
-	}
-	toString() {
+	},
+	toString: function () {
 		var buf = new StringBuffer();
 		buf.append("EdgeEndStar:   " + this.getCoordinate());
 		buf.append("\n");
@@ -130,14 +126,14 @@ export default class EdgeEndStar {
 			buf.append("\n");
 		}
 		return buf.toString();
-	}
-	computeEdgeEndLabels(boundaryNodeRule) {
+	},
+	computeEdgeEndLabels: function (boundaryNodeRule) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ee = it.next();
 			ee.computeLabel(boundaryNodeRule);
 		}
-	}
-	computeLabelling(geomGraph) {
+	},
+	computeLabelling: function (geomGraph) {
 		this.computeEdgeEndLabels(geomGraph[0].getBoundaryNodeRule());
 		this.propagateSideLabels(0);
 		this.propagateSideLabels(1);
@@ -165,16 +161,19 @@ export default class EdgeEndStar {
 				}
 			}
 		}
-	}
-	getDegree() {
+	},
+	getDegree: function () {
 		return this.edgeMap.size();
-	}
-	insertEdgeEnd(e, obj) {
+	},
+	insertEdgeEnd: function (e, obj) {
 		this.edgeMap.put(e, obj);
 		this.edgeList = null;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return EdgeEndStar;
 	}
-}
+});
 

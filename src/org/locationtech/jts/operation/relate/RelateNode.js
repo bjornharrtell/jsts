@@ -1,23 +1,26 @@
 import Node from '../../geomgraph/Node';
-export default class RelateNode extends Node {
-	constructor(...args) {
-		super();
-		if (args.length === 2) {
-			let [coord, edges] = args;
-			super(coord, edges);
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	updateIMFromEdges(im) {
-		this.edges.updateIM(im);
-	}
-	computeIM(im) {
-		im.setAtLeastIfValid(this.label.getLocation(0), this.label.getLocation(1), 0);
-	}
-	getClass() {
-		return RelateNode;
+import extend from '../../../../../extend';
+import inherits from '../../../../../inherits';
+export default function RelateNode() {
+	Node.apply(this);
+	if (arguments.length === 2) {
+		let coord = arguments[0], edges = arguments[1];
+		Node.call(this, coord, edges);
 	}
 }
+inherits(RelateNode, Node);
+extend(RelateNode.prototype, {
+	updateIMFromEdges: function (im) {
+		this.edges.updateIM(im);
+	},
+	computeIM: function (im) {
+		im.setAtLeastIfValid(this.label.getLocation(0), this.label.getLocation(1), 0);
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return RelateNode;
+	}
+});
 

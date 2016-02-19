@@ -1,45 +1,46 @@
+import extend from '../../../../extend';
 import AssertionFailedException from './AssertionFailedException';
-export default class Assert {
-	get interfaces_() {
+export default function Assert() {}
+extend(Assert.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	static shouldNeverReachHere(...args) {
-		if (args.length === 0) {
-			let [] = args;
-			Assert.shouldNeverReachHere(null);
-		} else if (args.length === 1) {
-			let [message] = args;
-			throw new AssertionFailedException("Should never reach here" + (message !== null ? ": " + message : ""));
-		}
-	}
-	static isTrue(...args) {
-		if (args.length === 1) {
-			let [assertion] = args;
-			Assert.isTrue(assertion, null);
-		} else if (args.length === 2) {
-			let [assertion, message] = args;
-			if (!assertion) {
-				if (message === null) {
-					throw new AssertionFailedException();
-				} else {
-					throw new AssertionFailedException(message);
-				}
-			}
-		}
-	}
-	static equals(...args) {
-		if (args.length === 2) {
-			let [expectedValue, actualValue] = args;
-			Assert.equals(expectedValue, actualValue, null);
-		} else if (args.length === 3) {
-			let [expectedValue, actualValue, message] = args;
-			if (!actualValue.equals(expectedValue)) {
-				throw new AssertionFailedException("Expected " + expectedValue + " but encountered " + actualValue + (message !== null ? ": " + message : ""));
-			}
-		}
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return Assert;
 	}
-}
+});
+Assert.shouldNeverReachHere = function () {
+	if (arguments.length === 0) {
+		Assert.shouldNeverReachHere(null);
+	} else if (arguments.length === 1) {
+		let message = arguments[0];
+		throw new AssertionFailedException("Should never reach here" + (message !== null ? ": " + message : ""));
+	}
+};
+Assert.isTrue = function () {
+	if (arguments.length === 1) {
+		let assertion = arguments[0];
+		Assert.isTrue(assertion, null);
+	} else if (arguments.length === 2) {
+		let assertion = arguments[0], message = arguments[1];
+		if (!assertion) {
+			if (message === null) {
+				throw new AssertionFailedException();
+			} else {
+				throw new AssertionFailedException(message);
+			}
+		}
+	}
+};
+Assert.equals = function () {
+	if (arguments.length === 2) {
+		let expectedValue = arguments[0], actualValue = arguments[1];
+		Assert.equals(expectedValue, actualValue, null);
+	} else if (arguments.length === 3) {
+		let expectedValue = arguments[0], actualValue = arguments[1], message = arguments[2];
+		if (!actualValue.equals(expectedValue)) {
+			throw new AssertionFailedException("Expected " + expectedValue + " but encountered " + actualValue + (message !== null ? ": " + message : ""));
+		}
+	}
+};
 

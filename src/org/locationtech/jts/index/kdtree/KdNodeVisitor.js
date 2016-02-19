@@ -1,10 +1,12 @@
-export default class KdNodeVisitor {
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function KdNodeVisitor() {}
+extend(KdNodeVisitor.prototype, {
+	visit: function (node) {},
+	interfaces_: function () {
 		return [];
-	}
-	visit(node) {}
-	getClass() {
+	},
+	getClass: function () {
 		return KdNodeVisitor;
 	}
-}
+});
 

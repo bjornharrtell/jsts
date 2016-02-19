@@ -1,47 +1,43 @@
 import RelateComputer from './RelateComputer';
+import extend from '../../../../../extend';
 import GeometryGraphOperation from '../GeometryGraphOperation';
-export default class RelateOp extends GeometryGraphOperation {
-	constructor(...args) {
-		super();
-		this._relate = null;
-		const overloaded = (...args) => {
-			if (args.length === 2) {
-				return ((...args) => {
-					let [g0, g1] = args;
-					super(g0, g1);
-					this._relate = new RelateComputer(this.arg);
-				})(...args);
-			} else if (args.length === 3) {
-				return ((...args) => {
-					let [g0, g1, boundaryNodeRule] = args;
-					super(g0, g1, boundaryNodeRule);
-					this._relate = new RelateComputer(this.arg);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	static relate(...args) {
-		if (args.length === 2) {
-			let [a, b] = args;
-			var relOp = new RelateOp(a, b);
-			var im = relOp.getIntersectionMatrix();
-			return im;
-		} else if (args.length === 3) {
-			let [a, b, boundaryNodeRule] = args;
-			var relOp = new RelateOp(a, b, boundaryNodeRule);
-			var im = relOp.getIntersectionMatrix();
-			return im;
-		}
-	}
-	getIntersectionMatrix() {
-		return this._relate.computeIM();
-	}
-	getClass() {
-		return RelateOp;
+import inherits from '../../../../../inherits';
+export default function RelateOp() {
+	GeometryGraphOperation.apply(this);
+	this._relate = null;
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		GeometryGraphOperation.call(this, g0, g1);
+		this._relate = new RelateComputer(this.arg);
+	} else if (arguments.length === 3) {
+		let g0 = arguments[0], g1 = arguments[1], boundaryNodeRule = arguments[2];
+		GeometryGraphOperation.call(this, g0, g1, boundaryNodeRule);
+		this._relate = new RelateComputer(this.arg);
 	}
 }
+inherits(RelateOp, GeometryGraphOperation);
+extend(RelateOp.prototype, {
+	getIntersectionMatrix: function () {
+		return this._relate.computeIM();
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return RelateOp;
+	}
+});
+RelateOp.relate = function () {
+	if (arguments.length === 2) {
+		let a = arguments[0], b = arguments[1];
+		var relOp = new RelateOp(a, b);
+		var im = relOp.getIntersectionMatrix();
+		return im;
+	} else if (arguments.length === 3) {
+		let a = arguments[0], b = arguments[1], boundaryNodeRule = arguments[2];
+		var relOp = new RelateOp(a, b, boundaryNodeRule);
+		var im = relOp.getIntersectionMatrix();
+		return im;
+	}
+};
 

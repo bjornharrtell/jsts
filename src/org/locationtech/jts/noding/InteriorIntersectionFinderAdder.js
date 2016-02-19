@@ -1,19 +1,17 @@
+import extend from '../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class InteriorIntersectionFinderAdder {
-	constructor(...args) {
-		this.li = null;
-		this.interiorIntersections = null;
-		if (args.length === 1) {
-			let [li] = args;
-			this.li = li;
-			this.interiorIntersections = new ArrayList();
-		}
+export default function InteriorIntersectionFinderAdder() {
+	this.li = null;
+	this.interiorIntersections = null;
+	if (arguments.length === 1) {
+		let li = arguments[0];
+		this.li = li;
+		this.interiorIntersections = new ArrayList();
 	}
-	get interfaces_() {
-		return [SegmentIntersector];
-	}
-	processIntersections(e0, segIndex0, e1, segIndex1) {
+}
+extend(InteriorIntersectionFinderAdder.prototype, {
+	processIntersections: function (e0, segIndex0, e1, segIndex1) {
 		if (e0 === e1 && segIndex0 === segIndex1) return null;
 		var p00 = e0.getCoordinates()[segIndex0];
 		var p01 = e0.getCoordinates()[segIndex0 + 1];
@@ -29,15 +27,18 @@ export default class InteriorIntersectionFinderAdder {
 				e1.addIntersections(this.li, segIndex1, 1);
 			}
 		}
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return false;
-	}
-	getInteriorIntersections() {
+	},
+	getInteriorIntersections: function () {
 		return this.interiorIntersections;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [SegmentIntersector];
+	},
+	getClass: function () {
 		return InteriorIntersectionFinderAdder;
 	}
-}
+});
 

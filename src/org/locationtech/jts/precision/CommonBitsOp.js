@@ -1,43 +1,37 @@
+import extend from '../../../../extend';
 import CommonBitsRemover from './CommonBitsRemover';
-export default class CommonBitsOp {
-	constructor(...args) {
-		this.returnToOriginalPrecision = true;
-		this.cbr = null;
-		const overloaded = (...args) => {
-			if (args.length === 0) {
-				let [] = args;
-				overloaded.call(this, true);
-			} else if (args.length === 1) {
-				let [returnToOriginalPrecision] = args;
-				this.returnToOriginalPrecision = returnToOriginalPrecision;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function CommonBitsOp() {
+	this.returnToOriginalPrecision = true;
+	this.cbr = null;
+	if (arguments.length === 0) {
+		CommonBitsOp.call(this, true);
+	} else if (arguments.length === 1) {
+		let returnToOriginalPrecision = arguments[0];
+		this.returnToOriginalPrecision = returnToOriginalPrecision;
 	}
-	get interfaces_() {
-		return [];
-	}
-	computeResultPrecision(result) {
+}
+extend(CommonBitsOp.prototype, {
+	computeResultPrecision: function (result) {
 		if (this.returnToOriginalPrecision) this.cbr.addCommonBits(result);
 		return result;
-	}
-	union(geom0, geom1) {
+	},
+	union: function (geom0, geom1) {
 		var geom = this.removeCommonBits(geom0, geom1);
 		return this.computeResultPrecision(geom[0].union(geom[1]));
-	}
-	intersection(geom0, geom1) {
+	},
+	intersection: function (geom0, geom1) {
 		var geom = this.removeCommonBits(geom0, geom1);
 		return this.computeResultPrecision(geom[0].intersection(geom[1]));
-	}
-	removeCommonBits(...args) {
-		if (args.length === 1) {
-			let [geom0] = args;
+	},
+	removeCommonBits: function () {
+		if (arguments.length === 1) {
+			let geom0 = arguments[0];
 			this.cbr = new CommonBitsRemover();
 			this.cbr.add(geom0);
 			var geom = this.cbr.removeCommonBits(geom0.copy());
 			return geom;
-		} else if (args.length === 2) {
-			let [geom0, geom1] = args;
+		} else if (arguments.length === 2) {
+			let geom0 = arguments[0], geom1 = arguments[1];
 			this.cbr = new CommonBitsRemover();
 			this.cbr.add(geom0);
 			this.cbr.add(geom1);
@@ -46,21 +40,24 @@ export default class CommonBitsOp {
 			geom[1] = this.cbr.removeCommonBits(geom1.copy());
 			return geom;
 		}
-	}
-	buffer(geom0, distance) {
+	},
+	buffer: function (geom0, distance) {
 		var geom = this.removeCommonBits(geom0);
 		return this.computeResultPrecision(geom.buffer(distance));
-	}
-	symDifference(geom0, geom1) {
+	},
+	symDifference: function (geom0, geom1) {
 		var geom = this.removeCommonBits(geom0, geom1);
 		return this.computeResultPrecision(geom[0].symDifference(geom[1]));
-	}
-	difference(geom0, geom1) {
+	},
+	difference: function (geom0, geom1) {
 		var geom = this.removeCommonBits(geom0, geom1);
 		return this.computeResultPrecision(geom[0].difference(geom[1]));
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return CommonBitsOp;
 	}
-}
+});
 

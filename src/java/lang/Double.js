@@ -1,14 +1,6 @@
-export default class Double {
-  static isNaN(n) {
-    return Number.isNaN(n)
-  }
-  static doubleToLongBits(n) {
-    return n
-  }
-  static longBitsToDouble(n) {
-    return n
-  }
-  static isInfinite(n) {
-    return !Number.isFinite(n)
-  }
-}
+export default function Double () {}
+Double.isNaN = n => Number.isNaN(n)
+Double.doubleToLongBits = n => n
+Double.longBitsToDouble = n => n
+Double.isInfinite = n => !Number.isFinite(n)
+Double.MAX_VALUE = Number.MAX_VALUE

@@ -3,39 +3,26 @@ import CGAlgorithms from './CGAlgorithms';
 import CoordinateList from '../geom/CoordinateList';
 import Arrays from '../../../../java/util/Arrays';
 import Stack from '../../../../java/util/Stack';
+import extend from '../../../../extend';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 import Comparator from '../../../../java/util/Comparator';
 import UniqueCoordinateArrayFilter from '../util/UniqueCoordinateArrayFilter';
 import Assert from '../util/Assert';
-export default class ConvexHull {
-	constructor(...args) {
-		this.geomFactory = null;
-		this.inputPts = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				let [geometry] = args;
-				overloaded.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
-			} else if (args.length === 2) {
-				let [pts, geomFactory] = args;
-				this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
-				this.geomFactory = geomFactory;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function ConvexHull() {
+	this.geomFactory = null;
+	this.inputPts = null;
+	if (arguments.length === 1) {
+		let geometry = arguments[0];
+		ConvexHull.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
+	} else if (arguments.length === 2) {
+		let pts = arguments[0], geomFactory = arguments[1];
+		this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
+		this.geomFactory = geomFactory;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get RadialComparator() {
-		return RadialComparator;
-	}
-	static extractCoordinates(geom) {
-		var filter = new UniqueCoordinateArrayFilter();
-		geom.apply(filter);
-		return filter.getCoordinates();
-	}
-	preSort(pts) {
+}
+extend(ConvexHull.prototype, {
+	preSort: function (pts) {
 		var t = null;
 		for (var i = 1; i < pts.length; i++) {
 			if (pts[i].y < pts[0].y || pts[i].y === pts[0].y && pts[i].x < pts[0].x) {
@@ -46,8 +33,8 @@ export default class ConvexHull {
 		}
 		Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]));
 		return pts;
-	}
-	computeOctRing(inputPts) {
+	},
+	computeOctRing: function (inputPts) {
 		var octPts = this.computeOctPts(inputPts);
 		var coordList = new CoordinateList();
 		coordList.add(octPts, false);
@@ -56,16 +43,16 @@ export default class ConvexHull {
 		}
 		coordList.closeRing();
 		return coordList.toCoordinateArray();
-	}
-	lineOrPolygon(coordinates) {
+	},
+	lineOrPolygon: function (coordinates) {
 		coordinates = this.cleanRing(coordinates);
 		if (coordinates.length === 3) {
 			return this.geomFactory.createLineString([coordinates[0], coordinates[1]]);
 		}
 		var linearRing = this.geomFactory.createLinearRing(coordinates);
 		return this.geomFactory.createPolygon(linearRing, null);
-	}
-	cleanRing(original) {
+	},
+	cleanRing: function (original) {
 		Assert.equals(original[0], original[original.length - 1]);
 		var cleanedRing = new ArrayList();
 		var previousDistinctCoordinate = null;
@@ -84,8 +71,8 @@ export default class ConvexHull {
 		cleanedRing.add(original[original.length - 1]);
 		var cleanedRingCoordinates = new Array(cleanedRing.size());
 		return cleanedRing.toArray(cleanedRingCoordinates);
-	}
-	isBetween(c1, c2, c3) {
+	},
+	isBetween: function (c1, c2, c3) {
 		if (CGAlgorithms.computeOrientation(c1, c2, c3) !== 0) {
 			return false;
 		}
@@ -106,8 +93,8 @@ export default class ConvexHull {
 			}
 		}
 		return false;
-	}
-	reduce(inputPts) {
+	},
+	reduce: function (inputPts) {
 		var polyPts = this.computeOctRing(inputPts);
 		if (polyPts === null) return inputPts;
 		var reducedSet = new TreeSet();
@@ -122,8 +109,8 @@ export default class ConvexHull {
 		var reducedPts = CoordinateArrays.toCoordinateArray(reducedSet);
 		if (reducedPts.length < 3) return this.padArray3(reducedPts);
 		return reducedPts;
-	}
-	getConvexHull() {
+	},
+	getConvexHull: function () {
 		if (this.inputPts.length === 0) {
 			return this.geomFactory.createGeometryCollection(null);
 		}
@@ -141,8 +128,8 @@ export default class ConvexHull {
 		var cHS = this.grahamScan(sortedPts);
 		var cH = this.toCoordinateArray(cHS);
 		return this.lineOrPolygon(cH);
-	}
-	padArray3(pts) {
+	},
+	padArray3: function (pts) {
 		var pad = new Array(3);
 		for (var i = 0; i < pad.length; i++) {
 			if (i < pts.length) {
@@ -150,8 +137,8 @@ export default class ConvexHull {
 			} else pad[i] = pts[0];
 		}
 		return pad;
-	}
-	computeOctPts(inputPts) {
+	},
+	computeOctPts: function (inputPts) {
 		var pts = new Array(8);
 		for (var j = 0; j < pts.length; j++) {
 			pts[j] = inputPts[0];
@@ -183,16 +170,16 @@ export default class ConvexHull {
 			}
 		}
 		return pts;
-	}
-	toCoordinateArray(stack) {
+	},
+	toCoordinateArray: function (stack) {
 		var coordinates = new Array(stack.size());
 		for (var i = 0; i < stack.size(); i++) {
 			var coordinate = stack.get(i);
 			coordinates[i] = coordinate;
 		}
 		return coordinates;
-	}
-	grahamScan(c) {
+	},
+	grahamScan: function (c) {
 		var p = null;
 		var ps = new Stack();
 		p = ps.push(c[0]);
@@ -208,47 +195,56 @@ export default class ConvexHull {
 		}
 		p = ps.push(c[0]);
 		return ps;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return ConvexHull;
 	}
+});
+ConvexHull.extractCoordinates = function (geom) {
+	var filter = new UniqueCoordinateArrayFilter();
+	geom.apply(filter);
+	return filter.getCoordinates();
+};
+function RadialComparator() {
+	this.origin = null;
+	if (arguments.length === 1) {
+		let origin = arguments[0];
+		this.origin = origin;
+	}
 }
-class RadialComparator {
-	constructor(...args) {
-		this.origin = null;
-		if (args.length === 1) {
-			let [origin] = args;
-			this.origin = origin;
-		}
-	}
-	get interfaces_() {
-		return [Comparator];
-	}
-	static polarCompare(o, p, q) {
-		var dxp = p.x - o.x;
-		var dyp = p.y - o.y;
-		var dxq = q.x - o.x;
-		var dyq = q.y - o.y;
-		var orient = CGAlgorithms.computeOrientation(o, p, q);
-		if (orient === CGAlgorithms.COUNTERCLOCKWISE) return 1;
-		if (orient === CGAlgorithms.CLOCKWISE) return -1;
-		var op = dxp * dxp + dyp * dyp;
-		var oq = dxq * dxq + dyq * dyq;
-		if (op < oq) {
-			return -1;
-		}
-		if (op > oq) {
-			return 1;
-		}
-		return 0;
-	}
-	compare(o1, o2) {
+extend(RadialComparator.prototype, {
+	compare: function (o1, o2) {
 		var p1 = o1;
 		var p2 = o2;
 		return RadialComparator.polarCompare(this.origin, p1, p2);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Comparator];
+	},
+	getClass: function () {
 		return RadialComparator;
 	}
-}
+});
+RadialComparator.polarCompare = function (o, p, q) {
+	var dxp = p.x - o.x;
+	var dyp = p.y - o.y;
+	var dxq = q.x - o.x;
+	var dyq = q.y - o.y;
+	var orient = CGAlgorithms.computeOrientation(o, p, q);
+	if (orient === CGAlgorithms.COUNTERCLOCKWISE) return 1;
+	if (orient === CGAlgorithms.CLOCKWISE) return -1;
+	var op = dxp * dxp + dyp * dyp;
+	var oq = dxq * dxq + dyq * dyq;
+	if (op < oq) {
+		return -1;
+	}
+	if (op > oq) {
+		return 1;
+	}
+	return 0;
+};
+ConvexHull.RadialComparator = RadialComparator;
 

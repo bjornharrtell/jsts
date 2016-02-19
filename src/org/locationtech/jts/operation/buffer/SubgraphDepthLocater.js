@@ -1,31 +1,27 @@
 import CGAlgorithms from '../../algorithm/CGAlgorithms';
+import hasInterface from '../../../../../hasInterface';
 import Position from '../../geomgraph/Position';
 import Coordinate from '../../geom/Coordinate';
+import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import DirectedEdge from '../../geomgraph/DirectedEdge';
 import LineSegment from '../../geom/LineSegment';
 import Comparable from '../../../../../java/lang/Comparable';
 import ArrayList from '../../../../../java/util/ArrayList';
 import List from '../../../../../java/util/List';
-export default class SubgraphDepthLocater {
-	constructor(...args) {
-		this.subgraphs = null;
-		this.seg = new LineSegment();
-		this.cga = new CGAlgorithms();
-		if (args.length === 1) {
-			let [subgraphs] = args;
-			this.subgraphs = subgraphs;
-		}
+export default function SubgraphDepthLocater() {
+	this.subgraphs = null;
+	this.seg = new LineSegment();
+	this.cga = new CGAlgorithms();
+	if (arguments.length === 1) {
+		let subgraphs = arguments[0];
+		this.subgraphs = subgraphs;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static get DepthSegment() {
-		return DepthSegment;
-	}
-	findStabbedSegments(...args) {
-		if (args.length === 1) {
-			let [stabbingRayLeftPt] = args;
+}
+extend(SubgraphDepthLocater.prototype, {
+	findStabbedSegments: function () {
+		if (arguments.length === 1) {
+			let stabbingRayLeftPt = arguments[0];
 			var stabbedSegments = new ArrayList();
 			for (var i = this.subgraphs.iterator(); i.hasNext(); ) {
 				var bsg = i.next();
@@ -34,9 +30,9 @@ export default class SubgraphDepthLocater {
 				this.findStabbedSegments(stabbingRayLeftPt, bsg.getDirectedEdges(), stabbedSegments);
 			}
 			return stabbedSegments;
-		} else if (args.length === 3) {
-			if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Coordinate && args[1] instanceof DirectedEdge)) {
-				let [stabbingRayLeftPt, dirEdge, stabbedSegments] = args;
+		} else if (arguments.length === 3) {
+			if (hasInterface(arguments[2], List) && (arguments[0] instanceof Coordinate && arguments[1] instanceof DirectedEdge)) {
+				let stabbingRayLeftPt = arguments[0], dirEdge = arguments[1], stabbedSegments = arguments[2];
 				var pts = dirEdge.getEdge().getCoordinates();
 				for (var i = 0; i < pts.length - 1; i++) {
 					this.seg.p0 = pts[i];
@@ -52,8 +48,8 @@ export default class SubgraphDepthLocater {
 					var ds = new DepthSegment(this.seg, depth);
 					stabbedSegments.add(ds);
 				}
-			} else if (args[2].interfaces_ && args[2].interfaces_.indexOf(List) > -1 && (args[0] instanceof Coordinate && (args[1].interfaces_ && args[1].interfaces_.indexOf(List) > -1))) {
-				let [stabbingRayLeftPt, dirEdges, stabbedSegments] = args;
+			} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Coordinate && hasInterface(arguments[1], List))) {
+				let stabbingRayLeftPt = arguments[0], dirEdges = arguments[1], stabbedSegments = arguments[2];
 				for (var i = dirEdges.iterator(); i.hasNext(); ) {
 					var de = i.next();
 					if (!de.isForward()) continue;
@@ -61,31 +57,31 @@ export default class SubgraphDepthLocater {
 				}
 			}
 		}
-	}
-	getDepth(p) {
+	},
+	getDepth: function (p) {
 		var stabbedSegments = this.findStabbedSegments(p);
 		if (stabbedSegments.size() === 0) return 0;
 		var ds = Collections.min(stabbedSegments);
 		return ds.leftDepth;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SubgraphDepthLocater;
 	}
+});
+function DepthSegment() {
+	this.upwardSeg = null;
+	this.leftDepth = null;
+	if (arguments.length === 2) {
+		let seg = arguments[0], depth = arguments[1];
+		this.upwardSeg = new LineSegment(seg);
+		this.leftDepth = depth;
+	}
 }
-class DepthSegment {
-	constructor(...args) {
-		this.upwardSeg = null;
-		this.leftDepth = null;
-		if (args.length === 2) {
-			let [seg, depth] = args;
-			this.upwardSeg = new LineSegment(seg);
-			this.leftDepth = depth;
-		}
-	}
-	get interfaces_() {
-		return [Comparable];
-	}
-	compareTo(obj) {
+extend(DepthSegment.prototype, {
+	compareTo: function (obj) {
 		var other = obj;
 		if (this.upwardSeg.minX() >= other.upwardSeg.maxX()) return 1;
 		if (this.upwardSeg.maxX() <= other.upwardSeg.minX()) return -1;
@@ -94,17 +90,21 @@ class DepthSegment {
 		orientIndex = -1 * other.upwardSeg.orientationIndex(this.upwardSeg);
 		if (orientIndex !== 0) return orientIndex;
 		return this.upwardSeg.compareTo(other.upwardSeg);
-	}
-	compareX(seg0, seg1) {
+	},
+	compareX: function (seg0, seg1) {
 		var compare0 = seg0.p0.compareTo(seg1.p0);
 		if (compare0 !== 0) return compare0;
 		return seg0.p1.compareTo(seg1.p1);
-	}
-	toString() {
+	},
+	toString: function () {
 		return this.upwardSeg.toString();
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Comparable];
+	},
+	getClass: function () {
 		return DepthSegment;
 	}
-}
+});
+SubgraphDepthLocater.DepthSegment = DepthSegment;
 

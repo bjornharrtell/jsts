@@ -1,23 +1,26 @@
+import extend from '../../../../../extend';
 import EdgeRing from '../../geomgraph/EdgeRing';
-export default class MinimalEdgeRing extends EdgeRing {
-	constructor(...args) {
-		super();
-		if (args.length === 2) {
-			let [start, geometryFactory] = args;
-			super(start, geometryFactory);
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	setEdgeRing(de, er) {
-		de.setMinEdgeRing(er);
-	}
-	getNext(de) {
-		return de.getNextMin();
-	}
-	getClass() {
-		return MinimalEdgeRing;
+import inherits from '../../../../../inherits';
+export default function MinimalEdgeRing() {
+	EdgeRing.apply(this);
+	if (arguments.length === 2) {
+		let start = arguments[0], geometryFactory = arguments[1];
+		EdgeRing.call(this, start, geometryFactory);
 	}
 }
+inherits(MinimalEdgeRing, EdgeRing);
+extend(MinimalEdgeRing.prototype, {
+	setEdgeRing: function (de, er) {
+		de.setMinEdgeRing(er);
+	},
+	getNext: function (de) {
+		return de.getNextMin();
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return MinimalEdgeRing;
+	}
+});
 

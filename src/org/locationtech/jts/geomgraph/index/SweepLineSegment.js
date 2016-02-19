@@ -1,33 +1,34 @@
-export default class SweepLineSegment {
-	constructor(...args) {
-		this.edge = null;
-		this.pts = null;
-		this.ptIndex = null;
-		if (args.length === 2) {
-			let [edge, ptIndex] = args;
-			this.edge = edge;
-			this.ptIndex = ptIndex;
-			this.pts = edge.getCoordinates();
-		}
+import extend from '../../../../../extend';
+export default function SweepLineSegment() {
+	this.edge = null;
+	this.pts = null;
+	this.ptIndex = null;
+	if (arguments.length === 2) {
+		let edge = arguments[0], ptIndex = arguments[1];
+		this.edge = edge;
+		this.ptIndex = ptIndex;
+		this.pts = edge.getCoordinates();
 	}
-	get interfaces_() {
-		return [];
-	}
-	getMaxX() {
+}
+extend(SweepLineSegment.prototype, {
+	getMaxX: function () {
 		var x1 = this.pts[this.ptIndex].x;
 		var x2 = this.pts[this.ptIndex + 1].x;
 		return x1 > x2 ? x1 : x2;
-	}
-	getMinX() {
+	},
+	getMinX: function () {
 		var x1 = this.pts[this.ptIndex].x;
 		var x2 = this.pts[this.ptIndex + 1].x;
 		return x1 < x2 ? x1 : x2;
-	}
-	computeIntersections(ss, si) {
+	},
+	computeIntersections: function (ss, si) {
 		si.addIntersections(this.edge, this.ptIndex, ss.edge, ss.ptIndex);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return SweepLineSegment;
 	}
-}
+});
 

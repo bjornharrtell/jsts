@@ -1,37 +1,33 @@
 import Coordinate from './Coordinate';
+import extend from '../../../../extend';
 import RuntimeException from '../../../../java/lang/RuntimeException';
-export default class TopologyException extends RuntimeException {
-	constructor(...args) {
-		super();
-		this.pt = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				return ((...args) => {
-					let [msg] = args;
-					super(msg);
-				})(...args);
-			} else if (args.length === 2) {
-				return ((...args) => {
-					let [msg, pt] = args;
-					super(TopologyException.msgWithCoord(msg, pt));
-					this.pt = new Coordinate(pt);
-				})(...args);
-			}
-		};
-		return overloaded.apply(this, args);
-	}
-	get interfaces_() {
-		return [];
-	}
-	static msgWithCoord(msg, pt) {
-		if (pt !== null) return msg + " [ " + pt + " ]";
-		return msg;
-	}
-	getCoordinate() {
-		return this.pt;
-	}
-	getClass() {
-		return TopologyException;
+import inherits from '../../../../inherits';
+export default function TopologyException() {
+	RuntimeException.apply(this);
+	this.pt = null;
+	if (arguments.length === 1) {
+		let msg = arguments[0];
+		RuntimeException.call(this, msg);
+	} else if (arguments.length === 2) {
+		let msg = arguments[0], pt = arguments[1];
+		RuntimeException.call(this, TopologyException.msgWithCoord(msg, pt));
+		this.pt = new Coordinate(pt);
 	}
 }
+inherits(TopologyException, RuntimeException);
+extend(TopologyException.prototype, {
+	getCoordinate: function () {
+		return this.pt;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return TopologyException;
+	}
+});
+TopologyException.msgWithCoord = function (msg, pt) {
+	if (pt !== null) return msg + " [ " + pt + " ]";
+	return msg;
+};
 

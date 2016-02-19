@@ -3,28 +3,24 @@ import Geometry from '../../geom/Geometry';
 import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
 import MultiPoint from '../../geom/MultiPoint';
+import extend from '../../../../../extend';
 import GeometryCollection from '../../geom/GeometryCollection';
-export default class RepeatedPointTester {
-	constructor(...args) {
-		this.repeatedCoord = null;
-		if (args.length === 0) {
-			let [] = args;
-		}
-	}
-	get interfaces_() {
-		return [];
-	}
-	getCoordinate() {
+export default function RepeatedPointTester() {
+	this.repeatedCoord = null;
+	if (arguments.length === 0) {}
+}
+extend(RepeatedPointTester.prototype, {
+	getCoordinate: function () {
 		return this.repeatedCoord;
-	}
-	hasRepeatedPoint(...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Geometry) {
-				let [g] = args;
+	},
+	hasRepeatedPoint: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Geometry) {
+				let g = arguments[0];
 				if (g.isEmpty()) return false;
 				if (g instanceof Point) return false; else if (g instanceof MultiPoint) return false; else if (g instanceof LineString) return this.hasRepeatedPoint(g.getCoordinates()); else if (g instanceof Polygon) return this.hasRepeatedPoint(g); else if (g instanceof GeometryCollection) return this.hasRepeatedPoint(g); else throw new UnsupportedOperationException(g.getClass().getName());
-			} else if (args[0] instanceof Array) {
-				let [coord] = args;
+			} else if (arguments[0] instanceof Array) {
+				let coord = arguments[0];
 				for (var i = 1; i < coord.length; i++) {
 					if (coord[i - 1].equals(coord[i])) {
 						this.repeatedCoord = coord[i];
@@ -32,15 +28,15 @@ export default class RepeatedPointTester {
 					}
 				}
 				return false;
-			} else if (args[0] instanceof Polygon) {
-				let [p] = args;
+			} else if (arguments[0] instanceof Polygon) {
+				let p = arguments[0];
 				if (this.hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true;
 				for (var i = 0; i < p.getNumInteriorRing(); i++) {
 					if (this.hasRepeatedPoint(p.getInteriorRingN(i).getCoordinates())) return true;
 				}
 				return false;
-			} else if (args[0] instanceof GeometryCollection) {
-				let [gc] = args;
+			} else if (arguments[0] instanceof GeometryCollection) {
+				let gc = arguments[0];
 				for (var i = 0; i < gc.getNumGeometries(); i++) {
 					var g = gc.getGeometryN(i);
 					if (this.hasRepeatedPoint(g)) return true;
@@ -48,9 +44,12 @@ export default class RepeatedPointTester {
 				return false;
 			}
 		}
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return RepeatedPointTester;
 	}
-}
+});
 

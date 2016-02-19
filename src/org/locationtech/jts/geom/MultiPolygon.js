@@ -1,45 +1,45 @@
 import Geometry from './Geometry';
+import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
 import Polygonal from './Polygonal';
 import ArrayList from '../../../../java/util/ArrayList';
-export default class MultiPolygon extends GeometryCollection {
-	constructor(...args) {
-		super();
-		if (args.length === 2) {
-			let [polygons, factory] = args;
-			super(polygons, factory);
-		}
+import inherits from '../../../../inherits';
+export default function MultiPolygon() {
+	GeometryCollection.apply(this);
+	if (arguments.length === 2) {
+		let polygons = arguments[0], factory = arguments[1];
+		GeometryCollection.call(this, polygons, factory);
 	}
-	get interfaces_() {
-		return [Polygonal];
-	}
-	getSortIndex() {
+}
+inherits(MultiPolygon, GeometryCollection);
+extend(MultiPolygon.prototype, {
+	getSortIndex: function () {
 		return Geometry.SORTINDEX_MULTIPOLYGON;
-	}
-	equalsExact(...args) {
-		if (args.length === 2) {
-			let [other, tolerance] = args;
+	},
+	equalsExact: function () {
+		if (arguments.length === 2) {
+			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
-			return super.equalsExact(other, tolerance);
-		} else return super.equalsExact(...args);
-	}
-	getBoundaryDimension() {
+			return GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
+		} else return GeometryCollection.prototype.equalsExact.apply(this, arguments);
+	},
+	getBoundaryDimension: function () {
 		return 1;
-	}
-	getDimension() {
+	},
+	getDimension: function () {
 		return 2;
-	}
-	reverse() {
+	},
+	reverse: function () {
 		var n = this.geometries.length;
 		var revGeoms = new Array(n);
 		for (var i = 0; i < this.geometries.length; i++) {
 			revGeoms[i] = this.geometries[i].reverse();
 		}
 		return this.getFactory().createMultiPolygon(revGeoms);
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		if (this.isEmpty()) {
 			return this.getFactory().createMultiLineString();
 		}
@@ -53,20 +53,23 @@ export default class MultiPolygon extends GeometryCollection {
 		}
 		var allRingsArray = new Array(allRings.size());
 		return this.getFactory().createMultiLineString(allRings.toArray(allRingsArray));
-	}
-	getGeometryType() {
+	},
+	getGeometryType: function () {
 		return "MultiPolygon";
-	}
-	copy() {
+	},
+	copy: function () {
 		var polygons = new Array(this.geometries.length);
 		for (var i = 0; i < polygons.length; i++) {
 			polygons[i] = this.geometries[i].copy();
 		}
 		return new MultiPolygon(polygons, this.factory);
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [Polygonal];
+	},
+	getClass: function () {
 		return MultiPolygon;
 	}
-}
+});
 MultiPolygon.serialVersionUID = -551033529766975875;
 

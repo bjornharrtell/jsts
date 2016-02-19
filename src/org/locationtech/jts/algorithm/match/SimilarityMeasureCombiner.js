@@ -1,12 +1,14 @@
-export default class SimilarityMeasureCombiner {
-	get interfaces_() {
+import extend from '../../../../../extend';
+export default function SimilarityMeasureCombiner() {}
+extend(SimilarityMeasureCombiner.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	static combine(measure1, measure2) {
-		return Math.min(measure1, measure2);
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return SimilarityMeasureCombiner;
 	}
-}
+});
+SimilarityMeasureCombiner.combine = function (measure1, measure2) {
+	return Math.min(measure1, measure2);
+};
 

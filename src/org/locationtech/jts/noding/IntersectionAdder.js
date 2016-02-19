@@ -1,29 +1,24 @@
+import extend from '../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
-export default class IntersectionAdder {
-	constructor(...args) {
-		this._hasIntersection = false;
-		this.hasProper = false;
-		this.hasProperInterior = false;
-		this.hasInterior = false;
-		this.properIntersectionPoint = null;
-		this.li = null;
-		this.isSelfIntersection = null;
-		this.numIntersections = 0;
-		this.numInteriorIntersections = 0;
-		this.numProperIntersections = 0;
-		this.numTests = 0;
-		if (args.length === 1) {
-			let [li] = args;
-			this.li = li;
-		}
+export default function IntersectionAdder() {
+	this._hasIntersection = false;
+	this.hasProper = false;
+	this.hasProperInterior = false;
+	this.hasInterior = false;
+	this.properIntersectionPoint = null;
+	this.li = null;
+	this.isSelfIntersection = null;
+	this.numIntersections = 0;
+	this.numInteriorIntersections = 0;
+	this.numProperIntersections = 0;
+	this.numTests = 0;
+	if (arguments.length === 1) {
+		let li = arguments[0];
+		this.li = li;
 	}
-	get interfaces_() {
-		return [SegmentIntersector];
-	}
-	static isAdjacentSegments(i1, i2) {
-		return Math.abs(i1 - i2) === 1;
-	}
-	isTrivialIntersection(e0, segIndex0, e1, segIndex1) {
+}
+extend(IntersectionAdder.prototype, {
+	isTrivialIntersection: function (e0, segIndex0, e1, segIndex1) {
 		if (e0 === e1) {
 			if (this.li.getIntersectionNum() === 1) {
 				if (IntersectionAdder.isAdjacentSegments(segIndex0, segIndex1)) return true;
@@ -36,20 +31,20 @@ export default class IntersectionAdder {
 			}
 		}
 		return false;
-	}
-	getProperIntersectionPoint() {
+	},
+	getProperIntersectionPoint: function () {
 		return this.properIntersectionPoint;
-	}
-	hasProperInteriorIntersection() {
+	},
+	hasProperInteriorIntersection: function () {
 		return this.hasProperInterior;
-	}
-	getLineIntersector() {
+	},
+	getLineIntersector: function () {
 		return this.li;
-	}
-	hasProperIntersection() {
+	},
+	hasProperIntersection: function () {
 		return this.hasProper;
-	}
-	processIntersections(e0, segIndex0, e1, segIndex1) {
+	},
+	processIntersections: function (e0, segIndex0, e1, segIndex1) {
 		if (e0 === e1 && segIndex0 === segIndex1) return null;
 		this.numTests++;
 		var p00 = e0.getCoordinates()[segIndex0];
@@ -74,18 +69,24 @@ export default class IntersectionAdder {
 				}
 			}
 		}
-	}
-	hasIntersection() {
+	},
+	hasIntersection: function () {
 		return this._hasIntersection;
-	}
-	isDone() {
+	},
+	isDone: function () {
 		return false;
-	}
-	hasInteriorIntersection() {
+	},
+	hasInteriorIntersection: function () {
 		return this.hasInterior;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [SegmentIntersector];
+	},
+	getClass: function () {
 		return IntersectionAdder;
 	}
-}
+});
+IntersectionAdder.isAdjacentSegments = function (i1, i2) {
+	return Math.abs(i1 - i2) === 1;
+};
 

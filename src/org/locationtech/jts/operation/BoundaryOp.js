@@ -1,43 +1,27 @@
 import LineString from '../geom/LineString';
 import BoundaryNodeRule from '../algorithm/BoundaryNodeRule';
+import extend from '../../../../extend';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
-export default class BoundaryOp {
-	constructor(...args) {
-		this.geom = null;
-		this.geomFact = null;
-		this.bnRule = null;
-		this.endpointMap = null;
-		const overloaded = (...args) => {
-			if (args.length === 1) {
-				let [geom] = args;
-				overloaded.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
-			} else if (args.length === 2) {
-				let [geom, bnRule] = args;
-				this.geom = geom;
-				this.geomFact = geom.getFactory();
-				this.bnRule = bnRule;
-			}
-		};
-		return overloaded.apply(this, args);
+export default function BoundaryOp() {
+	this.geom = null;
+	this.geomFact = null;
+	this.bnRule = null;
+	this.endpointMap = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		BoundaryOp.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
+	} else if (arguments.length === 2) {
+		let geom = arguments[0], bnRule = arguments[1];
+		this.geom = geom;
+		this.geomFact = geom.getFactory();
+		this.bnRule = bnRule;
 	}
-	get interfaces_() {
-		return [];
-	}
-	static getBoundary(...args) {
-		if (args.length === 1) {
-			let [g] = args;
-			var bop = new BoundaryOp(g);
-			return bop.getBoundary();
-		} else if (args.length === 2) {
-			let [g, bnRule] = args;
-			var bop = new BoundaryOp(g, bnRule);
-			return bop.getBoundary();
-		}
-	}
-	boundaryMultiLineString(mLine) {
+}
+extend(BoundaryOp.prototype, {
+	boundaryMultiLineString: function (mLine) {
 		if (this.geom.isEmpty()) {
 			return this.getEmptyMultiPoint();
 		}
@@ -46,13 +30,13 @@ export default class BoundaryOp {
 			return this.geomFact.createPoint(bdyPts[0]);
 		}
 		return this.geomFact.createMultiPointFromCoords(bdyPts);
-	}
-	getBoundary() {
+	},
+	getBoundary: function () {
 		if (this.geom instanceof LineString) return this.boundaryLineString(this.geom);
 		if (this.geom instanceof MultiLineString) return this.boundaryMultiLineString(this.geom);
 		return this.geom.getBoundary();
-	}
-	boundaryLineString(line) {
+	},
+	boundaryLineString: function (line) {
 		if (this.geom.isEmpty()) {
 			return this.getEmptyMultiPoint();
 		}
@@ -65,11 +49,11 @@ export default class BoundaryOp {
 			}
 		}
 		return this.geomFact.createMultiPoint([line.getStartPoint(), line.getEndPoint()]);
-	}
-	getEmptyMultiPoint() {
+	},
+	getEmptyMultiPoint: function () {
 		return this.geomFact.createMultiPoint();
-	}
-	computeBoundaryCoordinates(mLine) {
+	},
+	computeBoundaryCoordinates: function (mLine) {
 		var bdyPts = new ArrayList();
 		this.endpointMap = new TreeMap();
 		for (var i = 0; i < mLine.getNumGeometries(); i++) {
@@ -87,28 +71,42 @@ export default class BoundaryOp {
 			}
 		}
 		return CoordinateArrays.toCoordinateArray(bdyPts);
-	}
-	addEndpoint(pt) {
+	},
+	addEndpoint: function (pt) {
 		var counter = this.endpointMap.get(pt);
 		if (counter === null) {
 			counter = new Counter();
 			this.endpointMap.put(pt, counter);
 		}
 		counter.count++;
-	}
-	getClass() {
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
 		return BoundaryOp;
 	}
+});
+BoundaryOp.getBoundary = function () {
+	if (arguments.length === 1) {
+		let g = arguments[0];
+		var bop = new BoundaryOp(g);
+		return bop.getBoundary();
+	} else if (arguments.length === 2) {
+		let g = arguments[0], bnRule = arguments[1];
+		var bop = new BoundaryOp(g, bnRule);
+		return bop.getBoundary();
+	}
+};
+function Counter() {
+	this.count = null;
 }
-class Counter {
-	constructor(...args) {
-		this.count = null;
-	}
-	get interfaces_() {
+extend(Counter.prototype, {
+	interfaces_: function () {
 		return [];
-	}
-	getClass() {
+	},
+	getClass: function () {
 		return Counter;
 	}
-}
+});
 
