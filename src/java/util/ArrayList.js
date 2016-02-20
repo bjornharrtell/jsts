@@ -36,6 +36,9 @@ ArrayList.prototype.add = function(e) {
   return true;
 };
 
+ArrayList.prototype.clear = function() {
+  this.array_ = []
+}
 
 /**
  * @override

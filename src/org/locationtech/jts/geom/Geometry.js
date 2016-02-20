@@ -1,5 +1,6 @@
 import Comparable from '../../../../java/lang/Comparable';
 import Cloneable from '../../../../java/lang/Cloneable';
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import Serializable from '../../../../java/io/Serializable';
 import Envelope from './Envelope';
 import Assert from '../util/Assert';
