@@ -24,10 +24,8 @@ export default function BufferBuilder() {
 	this.geomFact = null;
 	this.graph = null;
 	this.edgeList = new EdgeList();
-	if (arguments.length === 1) {
-		let bufParams = arguments[0];
-		this.bufParams = bufParams;
-	}
+	let bufParams = arguments[0];
+	this.bufParams = bufParams;
 }
 extend(BufferBuilder.prototype, {
 	setWorkingPrecisionModel: function (pm) {

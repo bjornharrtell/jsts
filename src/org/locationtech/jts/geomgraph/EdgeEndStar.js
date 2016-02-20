@@ -12,7 +12,6 @@ export default function EdgeEndStar() {
 	this.edgeMap = new TreeMap();
 	this.edgeList = null;
 	this.ptInAreaLocation = [Location.NONE, Location.NONE];
-	if (arguments.length === 0) {}
 }
 extend(EdgeEndStar.prototype, {
 	getNextCW: function (ee) {

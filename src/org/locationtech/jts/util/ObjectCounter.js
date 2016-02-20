@@ -2,7 +2,6 @@ import HashMap from '../../../../java/util/HashMap';
 import extend from '../../../../extend';
 export default function ObjectCounter() {
 	this.counts = new HashMap();
-	if (arguments.length === 0) {}
 }
 extend(ObjectCounter.prototype, {
 	count: function (o) {

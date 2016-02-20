@@ -17,13 +17,11 @@ export default function MCIndexSnapRounder() {
 	this.noder = null;
 	this.pointSnapper = null;
 	this.nodedSegStrings = null;
-	if (arguments.length === 1) {
-		let pm = arguments[0];
-		this.pm = pm;
-		this.li = new RobustLineIntersector();
-		this.li.setPrecisionModel(pm);
-		this.scaleFactor = pm.getScale();
-	}
+	let pm = arguments[0];
+	this.pm = pm;
+	this.li = new RobustLineIntersector();
+	this.li.setPrecisionModel(pm);
+	this.scaleFactor = pm.getScale();
 }
 extend(MCIndexSnapRounder.prototype, {
 	checkCorrectness: function (inputSegmentStrings) {
@@ -52,22 +50,20 @@ extend(MCIndexSnapRounder.prototype, {
 		return intFinderAdder.getInteriorIntersections();
 	},
 	computeVertexSnaps: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], Collection)) {
-				let edges = arguments[0];
-				for (var i0 = edges.iterator(); i0.hasNext(); ) {
-					var edge0 = i0.next();
-					this.computeVertexSnaps(edge0);
-				}
-			} else if (arguments[0] instanceof NodedSegmentString) {
-				let e = arguments[0];
-				var pts0 = e.getCoordinates();
-				for (var i = 0; i < pts0.length; i++) {
-					var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
-					var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
-					if (isNodeAdded) {
-						e.addIntersection(pts0[i], i);
-					}
+		if (hasInterface(arguments[0], Collection)) {
+			let edges = arguments[0];
+			for (var i0 = edges.iterator(); i0.hasNext(); ) {
+				var edge0 = i0.next();
+				this.computeVertexSnaps(edge0);
+			}
+		} else if (arguments[0] instanceof NodedSegmentString) {
+			let e = arguments[0];
+			var pts0 = e.getCoordinates();
+			for (var i = 0; i < pts0.length; i++) {
+				var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
+				var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
+				if (isNodeAdded) {
+					e.addIntersection(pts0[i], i);
 				}
 			}
 		}

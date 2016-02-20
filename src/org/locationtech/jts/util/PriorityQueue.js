@@ -3,11 +3,9 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default function PriorityQueue() {
 	this._size = null;
 	this.items = null;
-	if (arguments.length === 0) {
-		this._size = 0;
-		this.items = new ArrayList();
-		this.items.add(null);
-	}
+	this._size = 0;
+	this.items = new ArrayList();
+	this.items.add(null);
 }
 extend(PriorityQueue.prototype, {
 	poll: function () {

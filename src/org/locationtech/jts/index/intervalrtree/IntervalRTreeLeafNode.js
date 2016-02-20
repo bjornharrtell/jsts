@@ -4,12 +4,10 @@ import inherits from '../../../../../inherits';
 export default function IntervalRTreeLeafNode() {
 	IntervalRTreeNode.apply(this);
 	this.item = null;
-	if (arguments.length === 3) {
-		let min = arguments[0], max = arguments[1], item = arguments[2];
-		this.min = min;
-		this.max = max;
-		this.item = item;
-	}
+	let min = arguments[0], max = arguments[1], item = arguments[2];
+	this.min = min;
+	this.max = max;
+	this.item = item;
 }
 inherits(IntervalRTreeLeafNode, IntervalRTreeNode);
 extend(IntervalRTreeLeafNode.prototype, {

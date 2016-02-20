@@ -2,11 +2,8 @@ import Node from '../../geomgraph/Node';
 import extend from '../../../../../extend';
 import inherits from '../../../../../inherits';
 export default function RelateNode() {
-	Node.apply(this);
-	if (arguments.length === 2) {
-		let coord = arguments[0], edges = arguments[1];
-		Node.call(this, coord, edges);
-	}
+	let coord = arguments[0], edges = arguments[1];
+	Node.call(this, coord, edges);
 }
 inherits(RelateNode, Node);
 extend(RelateNode.prototype, {

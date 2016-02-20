@@ -6,10 +6,8 @@ export default function BufferInputLineSimplifier() {
 	this.distanceTol = null;
 	this.isDeleted = null;
 	this.angleOrientation = CGAlgorithms.COUNTERCLOCKWISE;
-	if (arguments.length === 1) {
-		let inputLine = arguments[0];
-		this.inputLine = inputLine;
-	}
+	let inputLine = arguments[0];
+	this.inputLine = inputLine;
 }
 extend(BufferInputLineSimplifier.prototype, {
 	isDeletable: function (i0, i1, i2, distanceTol) {

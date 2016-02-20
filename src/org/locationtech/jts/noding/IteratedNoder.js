@@ -9,12 +9,10 @@ export default function IteratedNoder() {
 	this.li = null;
 	this.nodedSegStrings = null;
 	this.maxIter = IteratedNoder.MAX_ITER;
-	if (arguments.length === 1) {
-		let pm = arguments[0];
-		this.li = new RobustLineIntersector();
-		this.pm = pm;
-		this.li.setPrecisionModel(pm);
-	}
+	let pm = arguments[0];
+	this.li = new RobustLineIntersector();
+	this.pm = pm;
+	this.li.setPrecisionModel(pm);
 }
 extend(IteratedNoder.prototype, {
 	setMaximumIterations: function (maxIter) {

@@ -5,7 +5,6 @@ import SinglePassNoder from './SinglePassNoder';
 export default function SimpleNoder() {
 	SinglePassNoder.apply(this);
 	this.nodedSegStrings = null;
-	if (arguments.length === 0) {}
 }
 inherits(SimpleNoder, SinglePassNoder);
 extend(SimpleNoder.prototype, {

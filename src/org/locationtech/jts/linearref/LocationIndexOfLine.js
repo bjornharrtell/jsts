@@ -2,10 +2,8 @@ import extend from '../../../../extend';
 import LocationIndexOfPoint from './LocationIndexOfPoint';
 export default function LocationIndexOfLine() {
 	this.linearGeom = null;
-	if (arguments.length === 1) {
-		let linearGeom = arguments[0];
-		this.linearGeom = linearGeom;
-	}
+	let linearGeom = arguments[0];
+	this.linearGeom = linearGeom;
 }
 extend(LocationIndexOfLine.prototype, {
 	indicesOf: function (subLine) {

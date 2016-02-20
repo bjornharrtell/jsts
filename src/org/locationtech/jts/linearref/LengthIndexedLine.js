@@ -6,10 +6,8 @@ import LengthLocationMap from './LengthLocationMap';
 import ExtractLineByLocation from './ExtractLineByLocation';
 export default function LengthIndexedLine() {
 	this.linearGeom = null;
-	if (arguments.length === 1) {
-		let linearGeom = arguments[0];
-		this.linearGeom = linearGeom;
-	}
+	let linearGeom = arguments[0];
+	this.linearGeom = linearGeom;
 }
 extend(LengthIndexedLine.prototype, {
 	clampIndex: function (index) {

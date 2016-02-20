@@ -2,7 +2,6 @@ import extend from '../../../../extend';
 import TreeMap from '../../../../java/util/TreeMap';
 export default function NodeMap() {
 	this.nodeMap = new TreeMap();
-	if (arguments.length === 0) {}
 }
 extend(NodeMap.prototype, {
 	find: function (coord) {

@@ -7,10 +7,8 @@ export default function ConsistentPolygonRingChecker() {
 	this.graph = null;
 	this.SCANNING_FOR_INCOMING = 1;
 	this.LINKING_TO_OUTGOING = 2;
-	if (arguments.length === 1) {
-		let graph = arguments[0];
-		this.graph = graph;
-	}
+	let graph = arguments[0];
+	this.graph = graph;
 }
 extend(ConsistentPolygonRingChecker.prototype, {
 	testLinkResultDirectedEdges: function (deStar, opCode) {

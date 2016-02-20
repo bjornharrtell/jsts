@@ -4,11 +4,9 @@ import CoordinateArrays from '../geom/CoordinateArrays';
 export default function OrientedCoordinateArray() {
 	this.pts = null;
 	this._orientation = null;
-	if (arguments.length === 1) {
-		let pts = arguments[0];
-		this.pts = pts;
-		this._orientation = OrientedCoordinateArray.orientation(pts);
-	}
+	let pts = arguments[0];
+	this.pts = pts;
+	this._orientation = OrientedCoordinateArray.orientation(pts);
 }
 extend(OrientedCoordinateArray.prototype, {
 	compareTo: function (o1) {

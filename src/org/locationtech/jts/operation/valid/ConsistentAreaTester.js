@@ -6,10 +6,8 @@ export default function ConsistentAreaTester() {
 	this.geomGraph = null;
 	this.nodeGraph = new RelateNodeGraph();
 	this.invalidPoint = null;
-	if (arguments.length === 1) {
-		let geomGraph = arguments[0];
-		this.geomGraph = geomGraph;
-	}
+	let geomGraph = arguments[0];
+	this.geomGraph = geomGraph;
 }
 extend(ConsistentAreaTester.prototype, {
 	isNodeEdgeAreaLabelsConsistent: function () {

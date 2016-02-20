@@ -9,10 +9,8 @@ import inherits from '../../../../inherits';
 export default function Densifier() {
 	this.inputGeom = null;
 	this.distanceTolerance = null;
-	if (arguments.length === 1) {
-		let inputGeom = arguments[0];
-		this.inputGeom = inputGeom;
-	}
+	let inputGeom = arguments[0];
+	this.inputGeom = inputGeom;
 }
 extend(Densifier.prototype, {
 	getResultGeometry: function () {
@@ -59,10 +57,8 @@ Densifier.densify = function (geom, distanceTolerance) {
 function DensifyTransformer() {
 	GeometryTransformer.apply(this);
 	this.distanceTolerance = null;
-	if (arguments.length === 1) {
-		let distanceTolerance = arguments[0];
-		this.distanceTolerance = distanceTolerance;
-	}
+	let distanceTolerance = arguments[0];
+	this.distanceTolerance = distanceTolerance;
 }
 inherits(DensifyTransformer, GeometryTransformer);
 extend(DensifyTransformer.prototype, {

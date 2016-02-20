@@ -11,12 +11,10 @@ export default function PlanarPolygon3D() {
 	this.plane = null;
 	this.poly = null;
 	this.facingPlane = -1;
-	if (arguments.length === 1) {
-		let poly = arguments[0];
-		this.poly = poly;
-		this.plane = this.findBestFitPlane(poly);
-		this.facingPlane = this.plane.closestAxisPlane();
-	}
+	let poly = arguments[0];
+	this.poly = poly;
+	this.plane = this.findBestFitPlane(poly);
+	this.facingPlane = this.plane.closestAxisPlane();
 }
 extend(PlanarPolygon3D.prototype, {
 	intersects: function () {
@@ -92,27 +90,25 @@ extend(PlanarPolygon3D.prototype, {
 	}
 });
 PlanarPolygon3D.project = function () {
-	if (arguments.length === 2) {
-		if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
-			let seq = arguments[0], facingPlane = arguments[1];
-			switch (facingPlane) {
-				case Plane3D.XY_PLANE:
-					return AxisPlaneCoordinateSequence.projectToXY(seq);
-				case Plane3D.XZ_PLANE:
-					return AxisPlaneCoordinateSequence.projectToXZ(seq);
-				default:
-					return AxisPlaneCoordinateSequence.projectToYZ(seq);
-			}
-		} else if (arguments[0] instanceof Coordinate && Number.isInteger(arguments[1])) {
-			let p = arguments[0], facingPlane = arguments[1];
-			switch (facingPlane) {
-				case Plane3D.XY_PLANE:
-					return new Coordinate(p.x, p.y);
-				case Plane3D.XZ_PLANE:
-					return new Coordinate(p.x, p.z);
-				default:
-					return new Coordinate(p.y, p.z);
-			}
+	if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
+		let seq = arguments[0], facingPlane = arguments[1];
+		switch (facingPlane) {
+			case Plane3D.XY_PLANE:
+				return AxisPlaneCoordinateSequence.projectToXY(seq);
+			case Plane3D.XZ_PLANE:
+				return AxisPlaneCoordinateSequence.projectToXZ(seq);
+			default:
+				return AxisPlaneCoordinateSequence.projectToYZ(seq);
+		}
+	} else if (arguments[0] instanceof Coordinate && Number.isInteger(arguments[1])) {
+		let p = arguments[0], facingPlane = arguments[1];
+		switch (facingPlane) {
+			case Plane3D.XY_PLANE:
+				return new Coordinate(p.x, p.y);
+			case Plane3D.XZ_PLANE:
+				return new Coordinate(p.x, p.z);
+			default:
+				return new Coordinate(p.y, p.z);
 		}
 	}
 };

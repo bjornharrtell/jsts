@@ -94,41 +94,39 @@ extend(Distance3DOp.prototype, {
 		}
 	},
 	computeMinDistanceOneMulti: function () {
-		if (arguments.length === 3) {
-			if (typeof arguments[2] === "boolean" && (arguments[0] instanceof Geometry && arguments[1] instanceof Geometry)) {
-				let g0 = arguments[0], g1 = arguments[1], flip = arguments[2];
-				if (g1 instanceof GeometryCollection) {
-					var n = g1.getNumGeometries();
-					for (var i = 0; i < n; i++) {
-						var g = g1.getGeometryN(i);
-						this.computeMinDistanceOneMulti(g0, g, flip);
-						if (this.isDone) return null;
-					}
-				} else {
-					this.computeMinDistance(g0, g1, flip);
+		if (typeof arguments[2] === "boolean" && (arguments[0] instanceof Geometry && arguments[1] instanceof Geometry)) {
+			let g0 = arguments[0], g1 = arguments[1], flip = arguments[2];
+			if (g1 instanceof GeometryCollection) {
+				var n = g1.getNumGeometries();
+				for (var i = 0; i < n; i++) {
+					var g = g1.getGeometryN(i);
+					this.computeMinDistanceOneMulti(g0, g, flip);
+					if (this.isDone) return null;
 				}
-			} else if (typeof arguments[2] === "boolean" && (arguments[0] instanceof PlanarPolygon3D && arguments[1] instanceof Geometry)) {
-				let poly = arguments[0], geom = arguments[1], flip = arguments[2];
-				if (geom instanceof GeometryCollection) {
-					var n = geom.getNumGeometries();
-					for (var i = 0; i < n; i++) {
-						var g = geom.getGeometryN(i);
-						this.computeMinDistanceOneMulti(poly, g, flip);
-						if (this.isDone) return null;
-					}
-				} else {
-					if (geom instanceof Point) {
-						this.computeMinDistancePolygonPoint(poly, geom, flip);
-						return null;
-					}
-					if (geom instanceof LineString) {
-						this.computeMinDistancePolygonLine(poly, geom, flip);
-						return null;
-					}
-					if (geom instanceof Polygon) {
-						this.computeMinDistancePolygonPolygon(poly, geom, flip);
-						return null;
-					}
+			} else {
+				this.computeMinDistance(g0, g1, flip);
+			}
+		} else if (typeof arguments[2] === "boolean" && (arguments[0] instanceof PlanarPolygon3D && arguments[1] instanceof Geometry)) {
+			let poly = arguments[0], geom = arguments[1], flip = arguments[2];
+			if (geom instanceof GeometryCollection) {
+				var n = geom.getNumGeometries();
+				for (var i = 0; i < n; i++) {
+					var g = geom.getGeometryN(i);
+					this.computeMinDistanceOneMulti(poly, g, flip);
+					if (this.isDone) return null;
+				}
+			} else {
+				if (geom instanceof Point) {
+					this.computeMinDistancePolygonPoint(poly, geom, flip);
+					return null;
+				}
+				if (geom instanceof LineString) {
+					this.computeMinDistancePolygonLine(poly, geom, flip);
+					return null;
+				}
+				if (geom instanceof Polygon) {
+					this.computeMinDistancePolygonPolygon(poly, geom, flip);
+					return null;
 				}
 			}
 		}

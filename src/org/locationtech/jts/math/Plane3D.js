@@ -5,11 +5,9 @@ import Vector3D from './Vector3D';
 export default function Plane3D() {
 	this.normal = null;
 	this.basePt = null;
-	if (arguments.length === 2) {
-		let normal = arguments[0], basePt = arguments[1];
-		this.normal = normal;
-		this.basePt = basePt;
-	}
+	let normal = arguments[0], basePt = arguments[1];
+	this.normal = normal;
+	this.basePt = basePt;
 }
 extend(Plane3D.prototype, {
 	closestAxisPlane: function () {

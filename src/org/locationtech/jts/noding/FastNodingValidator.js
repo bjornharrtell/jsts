@@ -10,10 +10,8 @@ export default function FastNodingValidator() {
 	this.findAllIntersections = false;
 	this.segInt = null;
 	this._isValid = true;
-	if (arguments.length === 1) {
-		let segStrings = arguments[0];
-		this.segStrings = segStrings;
-	}
+	let segStrings = arguments[0];
+	this.segStrings = segStrings;
 }
 extend(FastNodingValidator.prototype, {
 	execute: function () {

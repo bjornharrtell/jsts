@@ -1,9 +1,7 @@
 import extend from '../../../../extend';
 import SplitSegment from './SplitSegment';
 import ConstraintSplitPointFinder from './ConstraintSplitPointFinder';
-export default function NonEncroachingSplitPointFinder() {
-	if (arguments.length === 0) {}
-}
+export default function NonEncroachingSplitPointFinder() {}
 extend(NonEncroachingSplitPointFinder.prototype, {
 	findSplitPoint: function (seg, encroachPt) {
 		var lineSeg = seg.getLineSegment();

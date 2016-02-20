@@ -3,7 +3,6 @@ import extend from '../../../../extend';
 import HalfEdge from './HalfEdge';
 export default function EdgeGraph() {
 	this.vertexMap = new HashMap();
-	if (arguments.length === 0) {}
 }
 extend(EdgeGraph.prototype, {
 	insert: function (orig, dest, eAdj) {

@@ -84,22 +84,20 @@ extend(Polygonizer.prototype, {
 		return this.polyList;
 	},
 	add: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], Collection)) {
-				let geomList = arguments[0];
-				for (var i = geomList.iterator(); i.hasNext(); ) {
-					var geometry = i.next();
-					this.add(geometry);
-				}
-			} else if (arguments[0] instanceof LineString) {
-				let line = arguments[0];
-				this.geomFactory = line.getFactory();
-				if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
-				this.graph.addEdge(line);
-			} else if (arguments[0] instanceof Geometry) {
-				let g = arguments[0];
-				g.apply(this.lineStringAdder);
+		if (hasInterface(arguments[0], Collection)) {
+			let geomList = arguments[0];
+			for (var i = geomList.iterator(); i.hasNext(); ) {
+				var geometry = i.next();
+				this.add(geometry);
 			}
+		} else if (arguments[0] instanceof LineString) {
+			let line = arguments[0];
+			this.geomFactory = line.getFactory();
+			if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
+			this.graph.addEdge(line);
+		} else if (arguments[0] instanceof Geometry) {
+			let g = arguments[0];
+			g.apply(this.lineStringAdder);
 		}
 	},
 	setCheckRingsValid: function (isCheckingRingsValid) {
@@ -170,10 +168,8 @@ Polygonizer.findDisjointShells = function (shellList) {
 };
 function LineStringAdder() {
 	this.p = null;
-	if (arguments.length === 1) {
-		let p = arguments[0];
-		this.p = p;
-	}
+	let p = arguments[0];
+	this.p = p;
 }
 extend(LineStringAdder.prototype, {
 	filter: function (g) {

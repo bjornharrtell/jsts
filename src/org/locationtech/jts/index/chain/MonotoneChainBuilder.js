@@ -3,9 +3,7 @@ import extend from '../../../../../extend';
 import Integer from '../../../../../java/lang/Integer';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Quadrant from '../../geomgraph/Quadrant';
-export default function MonotoneChainBuilder() {
-	if (arguments.length === 0) {}
-}
+export default function MonotoneChainBuilder() {}
 extend(MonotoneChainBuilder.prototype, {
 	interfaces_: function () {
 		return [];

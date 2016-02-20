@@ -8,12 +8,10 @@ export default function LineBuilder() {
 	this.ptLocator = null;
 	this.lineEdgesList = new ArrayList();
 	this.resultLineList = new ArrayList();
-	if (arguments.length === 3) {
-		let op = arguments[0], geometryFactory = arguments[1], ptLocator = arguments[2];
-		this.op = op;
-		this.geometryFactory = geometryFactory;
-		this.ptLocator = ptLocator;
-	}
+	let op = arguments[0], geometryFactory = arguments[1], ptLocator = arguments[2];
+	this.op = op;
+	this.geometryFactory = geometryFactory;
+	this.ptLocator = ptLocator;
 }
 extend(LineBuilder.prototype, {
 	collectLines: function (opCode) {

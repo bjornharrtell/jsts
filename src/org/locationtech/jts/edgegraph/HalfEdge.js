@@ -6,10 +6,8 @@ export default function HalfEdge() {
 	this._orig = null;
 	this._sym = null;
 	this._next = null;
-	if (arguments.length === 1) {
-		let orig = arguments[0];
-		this._orig = orig;
-	}
+	let orig = arguments[0];
+	this._orig = orig;
 }
 extend(HalfEdge.prototype, {
 	find: function (dest) {

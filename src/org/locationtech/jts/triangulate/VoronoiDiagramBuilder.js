@@ -14,7 +14,6 @@ export default function VoronoiDiagramBuilder() {
 	this.subdiv = null;
 	this.clipEnv = null;
 	this.diagramEnv = null;
-	if (arguments.length === 0) {}
 }
 extend(VoronoiDiagramBuilder.prototype, {
 	create: function () {
@@ -38,14 +37,12 @@ extend(VoronoiDiagramBuilder.prototype, {
 		this.tolerance = tolerance;
 	},
 	setSites: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Geometry) {
-				let geom = arguments[0];
-				this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-			} else if (hasInterface(arguments[0], Collection)) {
-				let coords = arguments[0];
-				this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
-			}
+		if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+		} else if (hasInterface(arguments[0], Collection)) {
+			let coords = arguments[0];
+			this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
 		}
 	},
 	setClipEnvelope: function (clipEnv) {

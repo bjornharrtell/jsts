@@ -3,10 +3,8 @@ import extend from '../../../../extend';
 import PointInRing from './PointInRing';
 export default function SimplePointInRing() {
 	this.pts = null;
-	if (arguments.length === 1) {
-		let ring = arguments[0];
-		this.pts = ring.getCoordinates();
-	}
+	let ring = arguments[0];
+	this.pts = ring.getCoordinates();
 }
 extend(SimplePointInRing.prototype, {
 	isInside: function (pt) {

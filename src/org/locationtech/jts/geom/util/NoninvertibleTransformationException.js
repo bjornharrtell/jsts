@@ -2,7 +2,6 @@ import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
 import inherits from '../../../../../inherits';
 export default function NoninvertibleTransformationException() {
-	Exception.apply(this);
 	if (arguments.length === 0) {
 		Exception.call(this);
 	} else if (arguments.length === 1) {

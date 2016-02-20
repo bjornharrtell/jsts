@@ -34,14 +34,12 @@ extend(PlanarGraph.prototype, {
 		return this.nodes.find(coord);
 	},
 	addNode: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Node) {
-				let node = arguments[0];
-				return this.nodes.addNode(node);
-			} else if (arguments[0] instanceof Coordinate) {
-				let coord = arguments[0];
-				return this.nodes.addNode(coord);
-			}
+		if (arguments[0] instanceof Node) {
+			let node = arguments[0];
+			return this.nodes.addNode(node);
+		} else if (arguments[0] instanceof Coordinate) {
+			let coord = arguments[0];
+			return this.nodes.addNode(coord);
 		}
 	},
 	getNodeIterator: function () {

@@ -9,10 +9,8 @@ export default function LinearGeometryBuilder() {
 	this.ignoreInvalidLines = false;
 	this.fixInvalidLines = false;
 	this.lastPt = null;
-	if (arguments.length === 1) {
-		let geomFact = arguments[0];
-		this.geomFact = geomFact;
-	}
+	let geomFact = arguments[0];
+	this.geomFact = geomFact;
 }
 extend(LinearGeometryBuilder.prototype, {
 	getGeometry: function () {

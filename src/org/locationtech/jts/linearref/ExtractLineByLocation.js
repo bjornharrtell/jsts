@@ -7,10 +7,8 @@ import LinearGeometryBuilder from './LinearGeometryBuilder';
 import MultiLineString from '../geom/MultiLineString';
 export default function ExtractLineByLocation() {
 	this.line = null;
-	if (arguments.length === 1) {
-		let line = arguments[0];
-		this.line = line;
-	}
+	let line = arguments[0];
+	this.line = line;
 }
 extend(ExtractLineByLocation.prototype, {
 	computeLinear: function (start, end) {

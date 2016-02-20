@@ -7,10 +7,8 @@ export default function DouglasPeuckerLineSimplifier() {
 	this.usePt = null;
 	this.distanceTolerance = null;
 	this.seg = new LineSegment();
-	if (arguments.length === 1) {
-		let pts = arguments[0];
-		this.pts = pts;
-	}
+	let pts = arguments[0];
+	this.pts = pts;
 }
 extend(DouglasPeuckerLineSimplifier.prototype, {
 	simplifySection: function (i, j) {

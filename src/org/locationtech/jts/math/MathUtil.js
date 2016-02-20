@@ -23,18 +23,16 @@ MathUtil.min = function (v1, v2, v3, v4) {
 	return min;
 };
 MathUtil.clamp = function () {
-	if (arguments.length === 3) {
-		if (typeof arguments[2] === "number" && (typeof arguments[0] === "number" && typeof arguments[1] === "number")) {
-			let x = arguments[0], min = arguments[1], max = arguments[2];
-			if (x < min) return min;
-			if (x > max) return max;
-			return x;
-		} else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
-			let x = arguments[0], min = arguments[1], max = arguments[2];
-			if (x < min) return min;
-			if (x > max) return max;
-			return x;
-		}
+	if (typeof arguments[2] === "number" && (typeof arguments[0] === "number" && typeof arguments[1] === "number")) {
+		let x = arguments[0], min = arguments[1], max = arguments[2];
+		if (x < min) return min;
+		if (x > max) return max;
+		return x;
+	} else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
+		let x = arguments[0], min = arguments[1], max = arguments[2];
+		if (x < min) return min;
+		if (x > max) return max;
+		return x;
 	}
 };
 MathUtil.wrap = function (index, max) {

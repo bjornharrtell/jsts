@@ -3,11 +3,9 @@ import Position from './Position';
 import extend from '../../../../extend';
 export default function Depth() {
 	this.depth = Array(2).fill().map(() => Array(3));
-	if (arguments.length === 0) {
-		for (var i = 0; i < 2; i++) {
-			for (var j = 0; j < 3; j++) {
-				this.depth[i][j] = Depth.NULL_VALUE;
-			}
+	for (var i = 0; i < 2; i++) {
+		for (var j = 0; j < 3; j++) {
+			this.depth[i][j] = Depth.NULL_VALUE;
 		}
 	}
 }

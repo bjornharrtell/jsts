@@ -6,7 +6,6 @@ export default function PointPairDistance() {
 	this.pt = [new Coordinate(), new Coordinate()];
 	this.distance = Double.NaN;
 	this.isNull = true;
-	if (arguments.length === 0) {}
 }
 extend(PointPairDistance.prototype, {
 	getCoordinates: function () {

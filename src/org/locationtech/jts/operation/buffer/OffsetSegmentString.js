@@ -6,9 +6,7 @@ export default function OffsetSegmentString() {
 	this.ptList = null;
 	this.precisionModel = null;
 	this.minimimVertexDistance = 0.0;
-	if (arguments.length === 0) {
-		this.ptList = new ArrayList();
-	}
+	this.ptList = new ArrayList();
 }
 extend(OffsetSegmentString.prototype, {
 	getCoordinates: function () {

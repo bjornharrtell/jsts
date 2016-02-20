@@ -4,11 +4,8 @@ import EdgeRing from '../../geomgraph/EdgeRing';
 import ArrayList from '../../../../../java/util/ArrayList';
 import inherits from '../../../../../inherits';
 export default function MaximalEdgeRing() {
-	EdgeRing.apply(this);
-	if (arguments.length === 2) {
-		let start = arguments[0], geometryFactory = arguments[1];
-		EdgeRing.call(this, start, geometryFactory);
-	}
+	let start = arguments[0], geometryFactory = arguments[1];
+	EdgeRing.call(this, start, geometryFactory);
 }
 inherits(MaximalEdgeRing, EdgeRing);
 extend(MaximalEdgeRing.prototype, {

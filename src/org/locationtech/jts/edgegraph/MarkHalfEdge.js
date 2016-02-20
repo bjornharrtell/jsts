@@ -2,12 +2,9 @@ import extend from '../../../../extend';
 import HalfEdge from './HalfEdge';
 import inherits from '../../../../inherits';
 export default function MarkHalfEdge() {
-	HalfEdge.apply(this);
 	this._isMarked = false;
-	if (arguments.length === 1) {
-		let orig = arguments[0];
-		HalfEdge.call(this, orig);
-	}
+	let orig = arguments[0];
+	HalfEdge.call(this, orig);
 }
 inherits(MarkHalfEdge, HalfEdge);
 extend(MarkHalfEdge.prototype, {

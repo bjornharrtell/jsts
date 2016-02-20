@@ -8,14 +8,12 @@ export default function SegmentNode() {
 	this.segmentIndex = null;
 	this.segmentOctant = null;
 	this._isInterior = null;
-	if (arguments.length === 4) {
-		let segString = arguments[0], coord = arguments[1], segmentIndex = arguments[2], segmentOctant = arguments[3];
-		this.segString = segString;
-		this.coord = new Coordinate(coord);
-		this.segmentIndex = segmentIndex;
-		this.segmentOctant = segmentOctant;
-		this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
-	}
+	let segString = arguments[0], coord = arguments[1], segmentIndex = arguments[2], segmentOctant = arguments[3];
+	this.segString = segString;
+	this.coord = new Coordinate(coord);
+	this.segmentIndex = segmentIndex;
+	this.segmentOctant = segmentOctant;
+	this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
 }
 extend(SegmentNode.prototype, {
 	getCoordinate: function () {

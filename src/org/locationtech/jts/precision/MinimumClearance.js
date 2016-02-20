@@ -11,10 +11,8 @@ export default function MinimumClearance() {
 	this.inputGeom = null;
 	this.minClearance = null;
 	this.minClearancePts = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.inputGeom = geom;
-	}
+	let geom = arguments[0];
+	this.inputGeom = geom;
 }
 extend(MinimumClearance.prototype, {
 	getLine: function () {
@@ -99,23 +97,21 @@ extend(MinClearanceDistance.prototype, {
 		return this.minDist;
 	},
 	distance: function () {
-		if (arguments.length === 2) {
-			if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
-				let b1 = arguments[0], b2 = arguments[1];
-				var fs1 = b1.getItem();
-				var fs2 = b2.getItem();
-				this.minDist = Double.MAX_VALUE;
-				return this.distance(fs1, fs2);
-			} else if (arguments[0] instanceof FacetSequence && arguments[1] instanceof FacetSequence) {
-				let fs1 = arguments[0], fs2 = arguments[1];
-				this.vertexDistance(fs1, fs2);
-				if (fs1.size() === 1 && fs2.size() === 1) return this.minDist;
-				if (this.minDist <= 0.0) return this.minDist;
-				this.segmentDistance(fs1, fs2);
-				if (this.minDist <= 0.0) return this.minDist;
-				this.segmentDistance(fs2, fs1);
-				return this.minDist;
-			}
+		if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
+			let b1 = arguments[0], b2 = arguments[1];
+			var fs1 = b1.getItem();
+			var fs2 = b2.getItem();
+			this.minDist = Double.MAX_VALUE;
+			return this.distance(fs1, fs2);
+		} else if (arguments[0] instanceof FacetSequence && arguments[1] instanceof FacetSequence) {
+			let fs1 = arguments[0], fs2 = arguments[1];
+			this.vertexDistance(fs1, fs2);
+			if (fs1.size() === 1 && fs2.size() === 1) return this.minDist;
+			if (this.minDist <= 0.0) return this.minDist;
+			this.segmentDistance(fs1, fs2);
+			if (this.minDist <= 0.0) return this.minDist;
+			this.segmentDistance(fs2, fs1);
+			return this.minDist;
 		}
 	},
 	updatePts: function (p, seg0, seg1) {

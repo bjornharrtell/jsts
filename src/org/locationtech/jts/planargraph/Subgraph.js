@@ -7,10 +7,8 @@ export default function Subgraph() {
 	this.edges = new HashSet();
 	this.dirEdges = new ArrayList();
 	this.nodeMap = new NodeMap();
-	if (arguments.length === 1) {
-		let parentGraph = arguments[0];
-		this.parentGraph = parentGraph;
-	}
+	let parentGraph = arguments[0];
+	this.parentGraph = parentGraph;
 }
 extend(Subgraph.prototype, {
 	dirEdgeIterator: function () {

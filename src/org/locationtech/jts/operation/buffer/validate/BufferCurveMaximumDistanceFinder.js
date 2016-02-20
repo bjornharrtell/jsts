@@ -7,10 +7,8 @@ import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter';
 export default function BufferCurveMaximumDistanceFinder() {
 	this.inputGeom = null;
 	this.maxPtDist = new PointPairDistance();
-	if (arguments.length === 1) {
-		let inputGeom = arguments[0];
-		this.inputGeom = inputGeom;
-	}
+	let inputGeom = arguments[0];
+	this.inputGeom = inputGeom;
 }
 extend(BufferCurveMaximumDistanceFinder.prototype, {
 	computeMaxMidpointDistance: function (curve) {
@@ -42,10 +40,8 @@ function MaxPointDistanceFilter() {
 	this.maxPtDist = new PointPairDistance();
 	this.minPtDist = new PointPairDistance();
 	this.geom = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.geom = geom;
-	}
+	let geom = arguments[0];
+	this.geom = geom;
 }
 extend(MaxPointDistanceFilter.prototype, {
 	filter: function (pt) {
@@ -67,10 +63,8 @@ function MaxMidpointDistanceFilter() {
 	this.maxPtDist = new PointPairDistance();
 	this.minPtDist = new PointPairDistance();
 	this.geom = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.geom = geom;
-	}
+	let geom = arguments[0];
+	this.geom = geom;
 }
 extend(MaxMidpointDistanceFilter.prototype, {
 	filter: function (seq, index) {

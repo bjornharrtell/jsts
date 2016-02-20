@@ -33,22 +33,20 @@ Matrix.solve = function (a, b) {
 	return solution;
 };
 Matrix.swapRows = function () {
-	if (arguments.length === 3) {
-		if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-			let m = arguments[0], i = arguments[1], j = arguments[2];
-			if (i === j) return null;
-			for (var col = 0; col < m[0].length; col++) {
-				var temp = m[i][col];
-				m[i][col] = m[j][col];
-				m[j][col] = temp;
-			}
-		} else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-			let m = arguments[0], i = arguments[1], j = arguments[2];
-			if (i === j) return null;
-			var temp = m[i];
-			m[i] = m[j];
-			m[j] = temp;
+	if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
+		let m = arguments[0], i = arguments[1], j = arguments[2];
+		if (i === j) return null;
+		for (var col = 0; col < m[0].length; col++) {
+			var temp = m[i][col];
+			m[i][col] = m[j][col];
+			m[j][col] = temp;
 		}
+	} else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
+		let m = arguments[0], i = arguments[1], j = arguments[2];
+		if (i === j) return null;
+		var temp = m[i];
+		m[i] = m[j];
+		m[j] = temp;
 	}
 };
 

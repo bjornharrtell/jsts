@@ -6,7 +6,6 @@ export default function SweepLineIndex() {
 	this.events = new ArrayList();
 	this.indexBuilt = null;
 	this.nOverlaps = null;
-	if (arguments.length === 0) {}
 }
 extend(SweepLineIndex.prototype, {
 	computeOverlaps: function (action) {

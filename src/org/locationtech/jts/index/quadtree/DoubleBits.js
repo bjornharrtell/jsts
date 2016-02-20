@@ -4,11 +4,9 @@ import extend from '../../../../../extend';
 export default function DoubleBits() {
 	this.x = null;
 	this.xBits = null;
-	if (arguments.length === 1) {
-		let x = arguments[0];
-		this.x = x;
-		this.xBits = Double.doubleToLongBits(x);
-	}
+	let x = arguments[0];
+	this.x = x;
+	this.xBits = Double.doubleToLongBits(x);
 }
 extend(DoubleBits.prototype, {
 	numCommonMantissaBits: function (db) {

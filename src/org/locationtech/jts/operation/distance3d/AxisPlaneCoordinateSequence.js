@@ -4,11 +4,9 @@ import CoordinateSequence from '../../geom/CoordinateSequence';
 export default function AxisPlaneCoordinateSequence() {
 	this.seq = null;
 	this.indexMap = null;
-	if (arguments.length === 2) {
-		let seq = arguments[0], indexMap = arguments[1];
-		this.seq = seq;
-		this.indexMap = indexMap;
-	}
+	let seq = arguments[0], indexMap = arguments[1];
+	this.seq = seq;
+	this.indexMap = indexMap;
 }
 extend(AxisPlaneCoordinateSequence.prototype, {
 	setOrdinate: function (index, ordinateIndex, value) {

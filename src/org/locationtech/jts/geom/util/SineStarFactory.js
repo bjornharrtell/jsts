@@ -3,7 +3,6 @@ import extend from '../../../../../extend';
 import inherits from '../../../../../inherits';
 import GeometricShapeFactory from '../../util/GeometricShapeFactory';
 export default function SineStarFactory() {
-	GeometricShapeFactory.apply(this);
 	this.numArms = 8;
 	this.armLengthRatio = 0.5;
 	if (arguments.length === 0) {

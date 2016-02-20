@@ -13,10 +13,8 @@ export default function ConnectedInteriorTester() {
 	this.geometryFactory = new GeometryFactory();
 	this.geomGraph = null;
 	this.disconnectedRingcoord = null;
-	if (arguments.length === 1) {
-		let geomGraph = arguments[0];
-		this.geomGraph = geomGraph;
-	}
+	let geomGraph = arguments[0];
+	this.geomGraph = geomGraph;
 }
 extend(ConnectedInteriorTester.prototype, {
 	visitInteriorRing: function (ring, graph) {

@@ -2,7 +2,6 @@ import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import inherits from '../../../../inherits';
 export default function TaggedLineSegment() {
-	LineSegment.apply(this);
 	this.parent = null;
 	this.index = null;
 	if (arguments.length === 2) {

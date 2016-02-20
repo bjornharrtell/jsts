@@ -3,11 +3,9 @@ import extend from '../../../../extend';
 export default function IncrementalDelaunayTriangulator() {
 	this.subdiv = null;
 	this.isUsingTolerance = false;
-	if (arguments.length === 1) {
-		let subdiv = arguments[0];
-		this.subdiv = subdiv;
-		this.isUsingTolerance = subdiv.getTolerance() > 0.0;
-	}
+	let subdiv = arguments[0];
+	this.subdiv = subdiv;
+	this.isUsingTolerance = subdiv.getTolerance() > 0.0;
 }
 extend(IncrementalDelaunayTriangulator.prototype, {
 	insertSite: function (v) {

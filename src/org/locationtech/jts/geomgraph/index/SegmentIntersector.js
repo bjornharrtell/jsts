@@ -13,12 +13,10 @@ export default function SegmentIntersector() {
 	this.bdyNodes = null;
 	this._isDone = false;
 	this.isDoneWhenProperInt = false;
-	if (arguments.length === 3) {
-		let li = arguments[0], includeProper = arguments[1], recordIsolated = arguments[2];
-		this.li = li;
-		this.includeProper = includeProper;
-		this.recordIsolated = recordIsolated;
-	}
+	let li = arguments[0], includeProper = arguments[1], recordIsolated = arguments[2];
+	this.li = li;
+	this.includeProper = includeProper;
+	this.recordIsolated = recordIsolated;
 }
 extend(SegmentIntersector.prototype, {
 	isTrivialIntersection: function (e0, segIndex0, e1, segIndex1) {

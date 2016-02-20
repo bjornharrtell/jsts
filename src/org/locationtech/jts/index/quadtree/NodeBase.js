@@ -4,7 +4,6 @@ import Serializable from '../../../../../java/io/Serializable';
 export default function NodeBase() {
 	this.items = new ArrayList();
 	this.subnode = new Array(4);
-	if (arguments.length === 0) {}
 }
 extend(NodeBase.prototype, {
 	hasChildren: function () {

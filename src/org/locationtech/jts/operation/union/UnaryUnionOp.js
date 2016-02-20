@@ -42,20 +42,18 @@ extend(UnaryUnionOp.prototype, {
 		return g0.union(g1);
 	},
 	extract: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], Collection)) {
-				let geoms = arguments[0];
-				for (var i = geoms.iterator(); i.hasNext(); ) {
-					var geom = i.next();
-					this.extract(geom);
-				}
-			} else if (arguments[0] instanceof Geometry) {
-				let geom = arguments[0];
-				if (this.geomFact === null) this.geomFact = geom.getFactory();
-				GeometryExtracter.extract(geom, Polygon, this.polygons);
-				GeometryExtracter.extract(geom, LineString, this.lines);
-				GeometryExtracter.extract(geom, Point, this.points);
+		if (hasInterface(arguments[0], Collection)) {
+			let geoms = arguments[0];
+			for (var i = geoms.iterator(); i.hasNext(); ) {
+				var geom = i.next();
+				this.extract(geom);
 			}
+		} else if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			if (this.geomFact === null) this.geomFact = geom.getFactory();
+			GeometryExtracter.extract(geom, Polygon, this.polygons);
+			GeometryExtracter.extract(geom, LineString, this.lines);
+			GeometryExtracter.extract(geom, Point, this.points);
 		}
 	},
 	union: function () {

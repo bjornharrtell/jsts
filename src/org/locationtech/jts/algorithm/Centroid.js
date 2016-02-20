@@ -15,11 +15,9 @@ export default function Centroid() {
 	this.totalLength = 0.0;
 	this.ptCount = 0;
 	this.ptCentSum = new Coordinate();
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.areaBasePt = null;
-		this.add(geom);
-	}
+	let geom = arguments[0];
+	this.areaBasePt = null;
+	this.add(geom);
 }
 extend(Centroid.prototype, {
 	addPoint: function (pt) {
@@ -84,28 +82,26 @@ extend(Centroid.prototype, {
 		this.areasum2 += sign * area2;
 	},
 	add: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Polygon) {
-				let poly = arguments[0];
-				this.addShell(poly.getExteriorRing().getCoordinates());
-				for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-					this.addHole(poly.getInteriorRingN(i).getCoordinates());
-				}
-			} else if (arguments[0] instanceof Geometry) {
-				let geom = arguments[0];
-				if (geom.isEmpty()) return null;
-				if (geom instanceof Point) {
-					this.addPoint(geom.getCoordinate());
-				} else if (geom instanceof LineString) {
-					this.addLineSegments(geom.getCoordinates());
-				} else if (geom instanceof Polygon) {
-					var poly = geom;
-					this.add(poly);
-				} else if (geom instanceof GeometryCollection) {
-					var gc = geom;
-					for (var i = 0; i < gc.getNumGeometries(); i++) {
-						this.add(gc.getGeometryN(i));
-					}
+		if (arguments[0] instanceof Polygon) {
+			let poly = arguments[0];
+			this.addShell(poly.getExteriorRing().getCoordinates());
+			for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+				this.addHole(poly.getInteriorRingN(i).getCoordinates());
+			}
+		} else if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			if (geom.isEmpty()) return null;
+			if (geom instanceof Point) {
+				this.addPoint(geom.getCoordinate());
+			} else if (geom instanceof LineString) {
+				this.addLineSegments(geom.getCoordinates());
+			} else if (geom instanceof Polygon) {
+				var poly = geom;
+				this.add(poly);
+			} else if (geom instanceof GeometryCollection) {
+				var gc = geom;
+				for (var i = 0; i < gc.getNumGeometries(); i++) {
+					this.add(gc.getGeometryN(i));
 				}
 			}
 		}

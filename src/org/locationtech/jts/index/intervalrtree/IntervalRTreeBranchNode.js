@@ -5,12 +5,10 @@ export default function IntervalRTreeBranchNode() {
 	IntervalRTreeNode.apply(this);
 	this.node1 = null;
 	this.node2 = null;
-	if (arguments.length === 2) {
-		let n1 = arguments[0], n2 = arguments[1];
-		this.node1 = n1;
-		this.node2 = n2;
-		this.buildExtent(this.node1, this.node2);
-	}
+	let n1 = arguments[0], n2 = arguments[1];
+	this.node1 = n1;
+	this.node2 = n2;
+	this.buildExtent(this.node1, this.node2);
 }
 inherits(IntervalRTreeBranchNode, IntervalRTreeNode);
 extend(IntervalRTreeBranchNode.prototype, {

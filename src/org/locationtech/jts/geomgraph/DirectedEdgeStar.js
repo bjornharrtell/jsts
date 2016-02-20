@@ -15,7 +15,6 @@ export default function DirectedEdgeStar() {
 	this.label = null;
 	this.SCANNING_FOR_INCOMING = 1;
 	this.LINKING_TO_OUTGOING = 2;
-	if (arguments.length === 0) {}
 }
 inherits(DirectedEdgeStar, EdgeEndStar);
 extend(DirectedEdgeStar.prototype, {

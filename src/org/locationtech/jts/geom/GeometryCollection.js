@@ -13,19 +13,16 @@ import Envelope from './Envelope';
 import Assert from '../util/Assert';
 import inherits from '../../../../inherits';
 export default function GeometryCollection() {
-	Geometry.apply(this);
 	this.geometries = null;
-	if (arguments.length === 2) {
-		let geometries = arguments[0], factory = arguments[1];
-		Geometry.call(this, factory);
-		if (geometries === null) {
-			geometries = [];
-		}
-		if (Geometry.hasNullElements(geometries)) {
-			throw new IllegalArgumentException("geometries must not contain null elements");
-		}
-		this.geometries = geometries;
+	let geometries = arguments[0], factory = arguments[1];
+	Geometry.call(this, factory);
+	if (geometries === null) {
+		geometries = [];
 	}
+	if (Geometry.hasNullElements(geometries)) {
+		throw new IllegalArgumentException("geometries must not contain null elements");
+	}
+	this.geometries = geometries;
 }
 inherits(GeometryCollection, Geometry);
 extend(GeometryCollection.prototype, {
@@ -153,34 +150,32 @@ extend(GeometryCollection.prototype, {
 		}
 	},
 	apply: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], CoordinateFilter)) {
-				let filter = arguments[0];
-				for (var i = 0; i < this.geometries.length; i++) {
-					this.geometries[i].apply(filter);
+		if (hasInterface(arguments[0], CoordinateFilter)) {
+			let filter = arguments[0];
+			for (var i = 0; i < this.geometries.length; i++) {
+				this.geometries[i].apply(filter);
+			}
+		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+			let filter = arguments[0];
+			if (this.geometries.length === 0) return null;
+			for (var i = 0; i < this.geometries.length; i++) {
+				this.geometries[i].apply(filter);
+				if (filter.isDone()) {
+					break;
 				}
-			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
-				let filter = arguments[0];
-				if (this.geometries.length === 0) return null;
-				for (var i = 0; i < this.geometries.length; i++) {
-					this.geometries[i].apply(filter);
-					if (filter.isDone()) {
-						break;
-					}
-				}
-				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (hasInterface(arguments[0], GeometryFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
-				for (var i = 0; i < this.geometries.length; i++) {
-					this.geometries[i].apply(filter);
-				}
-			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
-				for (var i = 0; i < this.geometries.length; i++) {
-					this.geometries[i].apply(filter);
-				}
+			}
+			if (filter.isGeometryChanged()) this.geometryChanged();
+		} else if (hasInterface(arguments[0], GeometryFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
+			for (var i = 0; i < this.geometries.length; i++) {
+				this.geometries[i].apply(filter);
+			}
+		} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
+			for (var i = 0; i < this.geometries.length; i++) {
+				this.geometries[i].apply(filter);
 			}
 		}
 	},

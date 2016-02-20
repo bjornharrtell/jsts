@@ -139,12 +139,10 @@ function EndpointInfo() {
 	this.pt = null;
 	this.isClosed = null;
 	this.degree = null;
-	if (arguments.length === 1) {
-		let pt = arguments[0];
-		this.pt = pt;
-		this.isClosed = false;
-		this.degree = 0;
-	}
+	let pt = arguments[0];
+	this.pt = pt;
+	this.isClosed = false;
+	this.degree = 0;
 }
 extend(EndpointInfo.prototype, {
 	addEndpoint: function (isClosed) {

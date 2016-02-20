@@ -35,23 +35,21 @@ Quadrant.isInHalfPlane = function (quad, halfPlane) {
 	return quad === halfPlane || quad === halfPlane + 1;
 };
 Quadrant.quadrant = function () {
-	if (arguments.length === 2) {
-		if (typeof arguments[0] === "number" && typeof arguments[1] === "number") {
-			let dx = arguments[0], dy = arguments[1];
-			if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
-			if (dx >= 0.0) {
-				if (dy >= 0.0) return Quadrant.NE; else return Quadrant.SE;
-			} else {
-				if (dy >= 0.0) return Quadrant.NW; else return Quadrant.SW;
-			}
-		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
-			let p0 = arguments[0], p1 = arguments[1];
-			if (p1.x === p0.x && p1.y === p0.y) throw new IllegalArgumentException("Cannot compute the quadrant for two identical points " + p0);
-			if (p1.x >= p0.x) {
-				if (p1.y >= p0.y) return Quadrant.NE; else return Quadrant.SE;
-			} else {
-				if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW;
-			}
+	if (typeof arguments[0] === "number" && typeof arguments[1] === "number") {
+		let dx = arguments[0], dy = arguments[1];
+		if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
+		if (dx >= 0.0) {
+			if (dy >= 0.0) return Quadrant.NE; else return Quadrant.SE;
+		} else {
+			if (dy >= 0.0) return Quadrant.NW; else return Quadrant.SW;
+		}
+	} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
+		let p0 = arguments[0], p1 = arguments[1];
+		if (p1.x === p0.x && p1.y === p0.y) throw new IllegalArgumentException("Cannot compute the quadrant for two identical points " + p0);
+		if (p1.x >= p0.x) {
+			if (p1.y >= p0.y) return Quadrant.NE; else return Quadrant.SE;
+		} else {
+			if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW;
 		}
 	}
 };

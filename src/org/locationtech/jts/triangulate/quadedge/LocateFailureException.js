@@ -3,7 +3,6 @@ import LineSegment from '../../geom/LineSegment';
 import RuntimeException from '../../../../../java/lang/RuntimeException';
 import inherits from '../../../../../inherits';
 export default function LocateFailureException() {
-	RuntimeException.apply(this);
 	this.seg = null;
 	if (arguments.length === 1) {
 		if (typeof arguments[0] === "string") {

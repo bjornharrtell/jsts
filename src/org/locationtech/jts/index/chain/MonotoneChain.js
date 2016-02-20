@@ -7,13 +7,11 @@ export default function MonotoneChain() {
 	this.env = null;
 	this.context = null;
 	this.id = null;
-	if (arguments.length === 4) {
-		let pts = arguments[0], start = arguments[1], end = arguments[2], context = arguments[3];
-		this.pts = pts;
-		this.start = start;
-		this.end = end;
-		this.context = context;
-	}
+	let pts = arguments[0], start = arguments[1], end = arguments[2], context = arguments[3];
+	this.pts = pts;
+	this.start = start;
+	this.end = end;
+	this.context = context;
 }
 extend(MonotoneChain.prototype, {
 	getLineSegment: function (index, ls) {

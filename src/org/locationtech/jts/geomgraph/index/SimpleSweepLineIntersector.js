@@ -13,7 +13,6 @@ export default function SimpleSweepLineIntersector() {
 	EdgeSetIntersector.apply(this);
 	this.events = new ArrayList();
 	this.nOverlaps = null;
-	if (arguments.length === 0) {}
 }
 inherits(SimpleSweepLineIntersector, EdgeSetIntersector);
 extend(SimpleSweepLineIntersector.prototype, {

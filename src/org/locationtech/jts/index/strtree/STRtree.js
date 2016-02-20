@@ -18,7 +18,6 @@ import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 import ItemDistance from './ItemDistance';
 export default function STRtree() {
-	AbstractSTRtree.apply(this);
 	if (arguments.length === 0) {
 		STRtree.call(this, STRtree.DEFAULT_NODE_CAPACITY);
 	} else if (arguments.length === 1) {
@@ -171,11 +170,8 @@ STRtree.centreY = function (e) {
 	return STRtree.avg(e.getMinY(), e.getMaxY());
 };
 function STRtreeNode() {
-	AbstractNode.apply(this);
-	if (arguments.length === 1) {
-		let level = arguments[0];
-		AbstractNode.call(this, level);
-	}
+	let level = arguments[0];
+	AbstractNode.call(this, level);
 }
 inherits(STRtreeNode, AbstractNode);
 extend(STRtreeNode.prototype, {

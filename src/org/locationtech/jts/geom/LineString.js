@@ -14,13 +14,10 @@ import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import Envelope from './Envelope';
 import inherits from '../../../../inherits';
 export default function LineString() {
-	Geometry.apply(this);
 	this.points = null;
-	if (arguments.length === 2) {
-		let points = arguments[0], factory = arguments[1];
-		Geometry.call(this, factory);
-		this.init(points);
-	}
+	let points = arguments[0], factory = arguments[1];
+	Geometry.call(this, factory);
+	this.init(points);
 }
 inherits(LineString, Geometry);
 extend(LineString.prototype, {
@@ -133,27 +130,25 @@ extend(LineString.prototype, {
 		}
 	},
 	apply: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], CoordinateFilter)) {
-				let filter = arguments[0];
-				for (var i = 0; i < this.points.size(); i++) {
-					filter.filter(this.points.getCoordinate(i));
-				}
-			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
-				let filter = arguments[0];
-				if (this.points.size() === 0) return null;
-				for (var i = 0; i < this.points.size(); i++) {
-					filter.filter(this.points, i);
-					if (filter.isDone()) break;
-				}
-				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (hasInterface(arguments[0], GeometryFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
-			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
+		if (hasInterface(arguments[0], CoordinateFilter)) {
+			let filter = arguments[0];
+			for (var i = 0; i < this.points.size(); i++) {
+				filter.filter(this.points.getCoordinate(i));
 			}
+		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+			let filter = arguments[0];
+			if (this.points.size() === 0) return null;
+			for (var i = 0; i < this.points.size(); i++) {
+				filter.filter(this.points, i);
+				if (filter.isDone()) break;
+			}
+			if (filter.isGeometryChanged()) this.geometryChanged();
+		} else if (hasInterface(arguments[0], GeometryFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
+		} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
 		}
 	},
 	getBoundary: function () {

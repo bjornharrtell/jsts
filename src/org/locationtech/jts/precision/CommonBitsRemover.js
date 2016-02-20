@@ -6,7 +6,6 @@ import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default function CommonBitsRemover() {
 	this.commonCoord = null;
 	this.ccFilter = new CommonCoordinateFilter();
-	if (arguments.length === 0) {}
 }
 extend(CommonBitsRemover.prototype, {
 	addCommonBits: function (geom) {
@@ -59,10 +58,8 @@ extend(CommonCoordinateFilter.prototype, {
 });
 function Translater() {
 	this.trans = null;
-	if (arguments.length === 1) {
-		let trans = arguments[0];
-		this.trans = trans;
-	}
+	let trans = arguments[0];
+	this.trans = trans;
 }
 extend(Translater.prototype, {
 	filter: function (seq, i) {

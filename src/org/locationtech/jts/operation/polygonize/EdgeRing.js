@@ -22,10 +22,8 @@ export default function EdgeRing() {
 	this._isProcessed = false;
 	this._isIncludedSet = false;
 	this._isIncluded = false;
-	if (arguments.length === 1) {
-		let factory = arguments[0];
-		this.factory = factory;
-	}
+	let factory = arguments[0];
+	this.factory = factory;
 }
 extend(EdgeRing.prototype, {
 	isIncluded: function () {
@@ -84,18 +82,16 @@ extend(EdgeRing.prototype, {
 		return this._isProcessed;
 	},
 	addHole: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof LinearRing) {
-				let hole = arguments[0];
-				if (this.holes === null) this.holes = new ArrayList();
-				this.holes.add(hole);
-			} else if (arguments[0] instanceof EdgeRing) {
-				let holeER = arguments[0];
-				holeER.setShell(this);
-				var hole = holeER.getRing();
-				if (this.holes === null) this.holes = new ArrayList();
-				this.holes.add(hole);
-			}
+		if (arguments[0] instanceof LinearRing) {
+			let hole = arguments[0];
+			if (this.holes === null) this.holes = new ArrayList();
+			this.holes.add(hole);
+		} else if (arguments[0] instanceof EdgeRing) {
+			let holeER = arguments[0];
+			holeER.setShell(this);
+			var hole = holeER.getRing();
+			if (this.holes === null) this.holes = new ArrayList();
+			this.holes.add(hole);
 		}
 	},
 	setIncluded: function (isIncluded) {

@@ -12,13 +12,11 @@ export default function LineIntersector() {
 	this.pa = null;
 	this.pb = null;
 	this.precisionModel = null;
-	if (arguments.length === 0) {
-		this.intPt[0] = new Coordinate();
-		this.intPt[1] = new Coordinate();
-		this.pa = this.intPt[0];
-		this.pb = this.intPt[1];
-		this.result = 0;
-	}
+	this.intPt[0] = new Coordinate();
+	this.intPt[1] = new Coordinate();
+	this.pa = this.intPt[0];
+	this.pb = this.intPt[1];
+	this.result = 0;
 }
 extend(LineIntersector.prototype, {
 	getIndexAlongSegment: function (segmentIndex, intIndex) {

@@ -7,12 +7,10 @@ export default function Triangle() {
 	this.p0 = null;
 	this.p1 = null;
 	this.p2 = null;
-	if (arguments.length === 3) {
-		let p0 = arguments[0], p1 = arguments[1], p2 = arguments[2];
-		this.p0 = p0;
-		this.p1 = p1;
-		this.p2 = p2;
-	}
+	let p0 = arguments[0], p1 = arguments[1], p2 = arguments[2];
+	this.p0 = p0;
+	this.p1 = p1;
+	this.p2 = p2;
 }
 extend(Triangle.prototype, {
 	area: function () {

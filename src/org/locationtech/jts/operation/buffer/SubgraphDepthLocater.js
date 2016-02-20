@@ -13,10 +13,8 @@ export default function SubgraphDepthLocater() {
 	this.subgraphs = null;
 	this.seg = new LineSegment();
 	this.cga = new CGAlgorithms();
-	if (arguments.length === 1) {
-		let subgraphs = arguments[0];
-		this.subgraphs = subgraphs;
-	}
+	let subgraphs = arguments[0];
+	this.subgraphs = subgraphs;
 }
 extend(SubgraphDepthLocater.prototype, {
 	findStabbedSegments: function () {
@@ -74,11 +72,9 @@ extend(SubgraphDepthLocater.prototype, {
 function DepthSegment() {
 	this.upwardSeg = null;
 	this.leftDepth = null;
-	if (arguments.length === 2) {
-		let seg = arguments[0], depth = arguments[1];
-		this.upwardSeg = new LineSegment(seg);
-		this.leftDepth = depth;
-	}
+	let seg = arguments[0], depth = arguments[1];
+	this.upwardSeg = new LineSegment(seg);
+	this.leftDepth = depth;
 }
 extend(DepthSegment.prototype, {
 	compareTo: function (obj) {

@@ -7,10 +7,8 @@ import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator';
 import GeometryCollection from '../../geom/GeometryCollection';
 export default function SimplePointInAreaLocator() {
 	this.geom = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.geom = geom;
-	}
+	let geom = arguments[0];
+	this.geom = geom;
 }
 extend(SimplePointInAreaLocator.prototype, {
 	locate: function (p) {

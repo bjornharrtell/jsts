@@ -5,18 +5,15 @@ import extend from '../../../../../extend';
 import LinkedList from '../../../../../java/util/LinkedList';
 export default function EdgeConnectedTriangleTraversal() {
 	this.triQueue = new LinkedList();
-	if (arguments.length === 0) {}
 }
 extend(EdgeConnectedTriangleTraversal.prototype, {
 	init: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof QuadEdgeTriangle) {
-				let tri = arguments[0];
-				this.triQueue.addLast(tri);
-			} else if (hasInterface(arguments[0], Collection)) {
-				let tris = arguments[0];
-				this.triQueue.addAll(tris);
-			}
+		if (arguments[0] instanceof QuadEdgeTriangle) {
+			let tri = arguments[0];
+			this.triQueue.addLast(tri);
+		} else if (hasInterface(arguments[0], Collection)) {
+			let tris = arguments[0];
+			this.triQueue.addAll(tris);
 		}
 	},
 	process: function (currTri, visitor) {

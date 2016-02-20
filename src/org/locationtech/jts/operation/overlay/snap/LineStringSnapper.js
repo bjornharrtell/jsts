@@ -10,16 +10,14 @@ export default function LineStringSnapper() {
 	this.seg = new LineSegment();
 	this.allowSnappingToSourceVertices = false;
 	this._isClosed = false;
-	if (arguments.length === 2) {
-		if (arguments[0] instanceof LineString && typeof arguments[1] === "number") {
-			let srcLine = arguments[0], snapTolerance = arguments[1];
-			LineStringSnapper.call(this, srcLine.getCoordinates(), snapTolerance);
-		} else if (arguments[0] instanceof Array && typeof arguments[1] === "number") {
-			let srcPts = arguments[0], snapTolerance = arguments[1];
-			this.srcPts = srcPts;
-			this._isClosed = LineStringSnapper.isClosed(srcPts);
-			this.snapTolerance = snapTolerance;
-		}
+	if (arguments[0] instanceof LineString && typeof arguments[1] === "number") {
+		let srcLine = arguments[0], snapTolerance = arguments[1];
+		LineStringSnapper.call(this, srcLine.getCoordinates(), snapTolerance);
+	} else if (arguments[0] instanceof Array && typeof arguments[1] === "number") {
+		let srcPts = arguments[0], snapTolerance = arguments[1];
+		this.srcPts = srcPts;
+		this._isClosed = LineStringSnapper.isClosed(srcPts);
+		this.snapTolerance = snapTolerance;
 	}
 }
 extend(LineStringSnapper.prototype, {

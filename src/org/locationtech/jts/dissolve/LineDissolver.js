@@ -16,9 +16,7 @@ export default function LineDissolver() {
 	this.lines = new ArrayList();
 	this.nodeEdgeStack = new Stack();
 	this.ringStartEdge = null;
-	if (arguments.length === 0) {
-		this.graph = new DissolveEdgeGraph();
-	}
+	this.graph = new DissolveEdgeGraph();
 }
 extend(LineDissolver.prototype, {
 	addLine: function (line) {
@@ -105,39 +103,37 @@ extend(LineDissolver.prototype, {
 		}
 	},
 	add: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Geometry) {
-				let geometry = arguments[0];
-				geometry.apply({
-					interfaces_: function () {
-						return [GeometryComponentFilter];
-					},
-					filter: function (component) {
-						if (component instanceof LineString) {
-							this.add(component);
-						}
+		if (arguments[0] instanceof Geometry) {
+			let geometry = arguments[0];
+			geometry.apply({
+				interfaces_: function () {
+					return [GeometryComponentFilter];
+				},
+				filter: function (component) {
+					if (component instanceof LineString) {
+						this.add(component);
 					}
-				});
-			} else if (hasInterface(arguments[0], Collection)) {
-				let geometries = arguments[0];
-				for (var i = geometries.iterator(); i.hasNext(); ) {
-					var geometry = i.next();
-					this.add(geometry);
 				}
-			} else if (arguments[0] instanceof LineString) {
-				let lineString = arguments[0];
-				if (this.factory === null) {
-					this.factory = lineString.getFactory();
-				}
-				var seq = lineString.getCoordinateSequence();
-				var doneStart = false;
-				for (var i = 1; i < seq.size(); i++) {
-					var e = this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
-					if (e === null) continue;
-					if (!doneStart) {
-						e.setStart();
-						doneStart = true;
-					}
+			});
+		} else if (hasInterface(arguments[0], Collection)) {
+			let geometries = arguments[0];
+			for (var i = geometries.iterator(); i.hasNext(); ) {
+				var geometry = i.next();
+				this.add(geometry);
+			}
+		} else if (arguments[0] instanceof LineString) {
+			let lineString = arguments[0];
+			if (this.factory === null) {
+				this.factory = lineString.getFactory();
+			}
+			var seq = lineString.getCoordinateSequence();
+			var doneStart = false;
+			for (var i = 1; i < seq.size(); i++) {
+				var e = this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
+				if (e === null) continue;
+				if (!doneStart) {
+					e.setStart();
+					doneStart = true;
 				}
 			}
 		}

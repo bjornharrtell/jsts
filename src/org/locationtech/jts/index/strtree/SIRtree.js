@@ -8,7 +8,6 @@ import inherits from '../../../../../inherits';
 import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 export default function SIRtree() {
-	AbstractSTRtree.apply(this);
 	this.comparator = {
 		interfaces_: function () {
 			return [Comparator];

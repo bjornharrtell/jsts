@@ -4,7 +4,6 @@ import extend from '../../../../extend';
 import inherits from '../../../../inherits';
 export default function NonRobustCGAlgorithms() {
 	CGAlgorithms.apply(this);
-	if (arguments.length === 0) {}
 }
 inherits(NonRobustCGAlgorithms, CGAlgorithms);
 extend(NonRobustCGAlgorithms.prototype, {

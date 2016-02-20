@@ -6,14 +6,12 @@ export default function SweepLineEvent() {
 	this.insertEvent = null;
 	this.deleteEventIndex = null;
 	this.sweepInt = null;
-	if (arguments.length === 3) {
-		let x = arguments[0], insertEvent = arguments[1], sweepInt = arguments[2];
-		this.xValue = x;
-		this.insertEvent = insertEvent;
-		this.eventType = SweepLineEvent.INSERT;
-		if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
-		this.sweepInt = sweepInt;
-	}
+	let x = arguments[0], insertEvent = arguments[1], sweepInt = arguments[2];
+	this.xValue = x;
+	this.insertEvent = insertEvent;
+	this.eventType = SweepLineEvent.INSERT;
+	if (insertEvent !== null) this.eventType = SweepLineEvent.DELETE;
+	this.sweepInt = sweepInt;
 }
 extend(SweepLineEvent.prototype, {
 	getInterval: function () {

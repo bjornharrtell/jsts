@@ -3,7 +3,6 @@ export default function GraphComponent() {
 	this._isMarked = false;
 	this._isVisited = false;
 	this.data = null;
-	if (arguments.length === 0) {}
 }
 extend(GraphComponent.prototype, {
 	setVisited: function (isVisited) {

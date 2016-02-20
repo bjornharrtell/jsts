@@ -5,10 +5,8 @@ import RuntimeException from '../../../../java/lang/RuntimeException';
 export default function NodingValidator() {
 	this.li = new RobustLineIntersector();
 	this.segStrings = null;
-	if (arguments.length === 1) {
-		let segStrings = arguments[0];
-		this.segStrings = segStrings;
-	}
+	let segStrings = arguments[0];
+	this.segStrings = segStrings;
 }
 extend(NodingValidator.prototype, {
 	checkEndPtVertexIntersections: function () {

@@ -2,10 +2,8 @@ import SegmentSetMutualIntersector from './SegmentSetMutualIntersector';
 import extend from '../../../../extend';
 export default function SimpleSegmentSetMutualIntersector() {
 	this.baseSegStrings = null;
-	if (arguments.length === 1) {
-		let segStrings = arguments[0];
-		this.baseSegStrings = segStrings;
-	}
+	let segStrings = arguments[0];
+	this.baseSegStrings = segStrings;
 }
 extend(SimpleSegmentSetMutualIntersector.prototype, {
 	intersect: function (ss0, ss1, segInt) {

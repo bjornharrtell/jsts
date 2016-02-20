@@ -1,8 +1,6 @@
 import extend from '../../../extend';
 import System from '../../../java/lang/System';
-export default function JTSVersion() {
-	if (arguments.length === 0) {}
-}
+export default function JTSVersion() {}
 extend(JTSVersion.prototype, {
 	getMajor: function () {
 		return JTSVersion.MAJOR;

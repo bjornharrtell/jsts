@@ -3,7 +3,6 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default function NodeBase() {
 	this.items = new ArrayList();
 	this.subnode = [null, null];
-	if (arguments.length === 0) {}
 }
 extend(NodeBase.prototype, {
 	hasChildren: function () {

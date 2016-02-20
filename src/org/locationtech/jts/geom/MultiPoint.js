@@ -5,11 +5,8 @@ import Dimension from './Dimension';
 import Puntal from './Puntal';
 import inherits from '../../../../inherits';
 export default function MultiPoint() {
-	GeometryCollection.apply(this);
-	if (arguments.length === 2) {
-		let points = arguments[0], factory = arguments[1];
-		GeometryCollection.call(this, points, factory);
-	}
+	let points = arguments[0], factory = arguments[1];
+	GeometryCollection.call(this, points, factory);
 }
 inherits(MultiPoint, GeometryCollection);
 extend(MultiPoint.prototype, {

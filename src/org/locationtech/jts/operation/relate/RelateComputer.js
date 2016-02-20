@@ -16,10 +16,8 @@ export default function RelateComputer() {
 	this.im = null;
 	this.isolatedEdges = new ArrayList();
 	this.invalidPoint = null;
-	if (arguments.length === 1) {
-		let arg = arguments[0];
-		this.arg = arg;
-	}
+	let arg = arguments[0];
+	this.arg = arg;
 }
 extend(RelateComputer.prototype, {
 	insertEdgeEnds: function (ee) {

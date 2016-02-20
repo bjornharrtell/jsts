@@ -9,11 +9,9 @@ import inherits from '../../../../../inherits';
 export default function RectangleIntersects() {
 	this.rectangle = null;
 	this.rectEnv = null;
-	if (arguments.length === 1) {
-		let rectangle = arguments[0];
-		this.rectangle = rectangle;
-		this.rectEnv = rectangle.getEnvelopeInternal();
-	}
+	let rectangle = arguments[0];
+	this.rectangle = rectangle;
+	this.rectEnv = rectangle.getEnvelopeInternal();
 }
 extend(RectangleIntersects.prototype, {
 	intersects: function (geom) {
@@ -44,10 +42,8 @@ function EnvelopeIntersectsVisitor() {
 	ShortCircuitedGeometryVisitor.apply(this);
 	this.rectEnv = null;
 	this._intersects = false;
-	if (arguments.length === 1) {
-		let rectEnv = arguments[0];
-		this.rectEnv = rectEnv;
-	}
+	let rectEnv = arguments[0];
+	this.rectEnv = rectEnv;
 }
 inherits(EnvelopeIntersectsVisitor, ShortCircuitedGeometryVisitor);
 extend(EnvelopeIntersectsVisitor.prototype, {
@@ -87,11 +83,9 @@ function GeometryContainsPointVisitor() {
 	this.rectSeq = null;
 	this.rectEnv = null;
 	this._containsPoint = false;
-	if (arguments.length === 1) {
-		let rectangle = arguments[0];
-		this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
-		this.rectEnv = rectangle.getEnvelopeInternal();
-	}
+	let rectangle = arguments[0];
+	this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
+	this.rectEnv = rectangle.getEnvelopeInternal();
 }
 inherits(GeometryContainsPointVisitor, ShortCircuitedGeometryVisitor);
 extend(GeometryContainsPointVisitor.prototype, {
@@ -129,11 +123,9 @@ function RectangleIntersectsSegmentVisitor() {
 	this.hasIntersection = false;
 	this.p0 = new Coordinate();
 	this.p1 = new Coordinate();
-	if (arguments.length === 1) {
-		let rectangle = arguments[0];
-		this.rectEnv = rectangle.getEnvelopeInternal();
-		this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
-	}
+	let rectangle = arguments[0];
+	this.rectEnv = rectangle.getEnvelopeInternal();
+	this.rectIntersector = new RectangleLineIntersector(this.rectEnv);
 }
 inherits(RectangleIntersectsSegmentVisitor, ShortCircuitedGeometryVisitor);
 extend(RectangleIntersectsSegmentVisitor.prototype, {

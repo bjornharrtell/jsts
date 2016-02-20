@@ -10,16 +10,13 @@ import CoordinateSequence from './CoordinateSequence';
 import Dimension from './Dimension';
 import inherits from '../../../../inherits';
 export default function LinearRing() {
-	LineString.apply(this);
-	if (arguments.length === 2) {
-		if (arguments[0] instanceof Coordinate && arguments[1] instanceof GeometryFactory) {
-			let points = arguments[0], factory = arguments[1];
-			LinearRing.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
-		} else if (hasInterface(arguments[0], CoordinateSequence) && arguments[1] instanceof GeometryFactory) {
-			let points = arguments[0], factory = arguments[1];
-			LineString.call(this, points, factory);
-			this.validateConstruction();
-		}
+	if (arguments[0] instanceof Coordinate && arguments[1] instanceof GeometryFactory) {
+		let points = arguments[0], factory = arguments[1];
+		LinearRing.call(this, factory.getCoordinateSequenceFactory().create(points), factory);
+	} else if (hasInterface(arguments[0], CoordinateSequence) && arguments[1] instanceof GeometryFactory) {
+		let points = arguments[0], factory = arguments[1];
+		LineString.call(this, points, factory);
+		this.validateConstruction();
 	}
 }
 inherits(LinearRing, LineString);

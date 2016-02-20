@@ -10,10 +10,8 @@ export default function MinimumBoundingCircle() {
 	this.extremalPts = null;
 	this.centre = null;
 	this.radius = 0.0;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.input = geom;
-	}
+	let geom = arguments[0];
+	this.input = geom;
 }
 extend(MinimumBoundingCircle.prototype, {
 	getRadius: function () {

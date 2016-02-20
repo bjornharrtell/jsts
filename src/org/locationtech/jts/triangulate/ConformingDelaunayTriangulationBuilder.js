@@ -12,7 +12,6 @@ export default function ConformingDelaunayTriangulationBuilder() {
 	this.tolerance = 0.0;
 	this.subdiv = null;
 	this.constraintVertexMap = new TreeMap();
-	if (arguments.length === 0) {}
 }
 extend(ConformingDelaunayTriangulationBuilder.prototype, {
 	createSiteVertices: function (coords) {

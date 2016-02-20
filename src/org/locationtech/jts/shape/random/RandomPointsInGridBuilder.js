@@ -5,7 +5,6 @@ import MathUtil from '../../math/MathUtil';
 import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function RandomPointsInGridBuilder() {
-	GeometricShapeBuilder.apply(this);
 	this.isConstrainedToCircle = false;
 	this.gutterFraction = 0;
 	if (arguments.length === 0) {

@@ -10,13 +10,11 @@ export default function Node() {
 	this.centrex = null;
 	this.centrey = null;
 	this.level = null;
-	if (arguments.length === 2) {
-		let env = arguments[0], level = arguments[1];
-		this.env = env;
-		this.level = level;
-		this.centrex = (env.getMinX() + env.getMaxX()) / 2;
-		this.centrey = (env.getMinY() + env.getMaxY()) / 2;
-	}
+	let env = arguments[0], level = arguments[1];
+	this.env = env;
+	this.level = level;
+	this.centrex = (env.getMinX() + env.getMaxX()) / 2;
+	this.centrey = (env.getMinY() + env.getMaxY()) / 2;
 }
 inherits(Node, NodeBase);
 extend(Node.prototype, {

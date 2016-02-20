@@ -5,9 +5,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default function Bintree() {
 	this.root = null;
 	this.minExtent = 1.0;
-	if (arguments.length === 0) {
-		this.root = new Root();
-	}
+	this.root = new Root();
 }
 extend(Bintree.prototype, {
 	size: function () {

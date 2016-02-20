@@ -17,20 +17,18 @@ export default function HotPixel() {
 	this.maxy = null;
 	this.corner = new Array(4);
 	this.safeEnv = null;
-	if (arguments.length === 3) {
-		let pt = arguments[0], scaleFactor = arguments[1], li = arguments[2];
-		this.originalPt = pt;
-		this.pt = pt;
-		this.scaleFactor = scaleFactor;
-		this.li = li;
-		if (scaleFactor <= 0) throw new IllegalArgumentException("Scale factor must be non-zero");
-		if (scaleFactor !== 1.0) {
-			this.pt = new Coordinate(this.scale(pt.x), this.scale(pt.y));
-			this.p0Scaled = new Coordinate();
-			this.p1Scaled = new Coordinate();
-		}
-		this.initCorners(this.pt);
+	let pt = arguments[0], scaleFactor = arguments[1], li = arguments[2];
+	this.originalPt = pt;
+	this.pt = pt;
+	this.scaleFactor = scaleFactor;
+	this.li = li;
+	if (scaleFactor <= 0) throw new IllegalArgumentException("Scale factor must be non-zero");
+	if (scaleFactor !== 1.0) {
+		this.pt = new Coordinate(this.scale(pt.x), this.scale(pt.y));
+		this.p0Scaled = new Coordinate();
+		this.p1Scaled = new Coordinate();
 	}
+	this.initCorners(this.pt);
 }
 extend(HotPixel.prototype, {
 	intersectsScaled: function (p0, p1) {

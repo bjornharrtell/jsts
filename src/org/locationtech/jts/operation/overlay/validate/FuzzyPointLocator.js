@@ -12,12 +12,10 @@ export default function FuzzyPointLocator() {
 	this.linework = null;
 	this.ptLocator = new PointLocator();
 	this.seg = new LineSegment();
-	if (arguments.length === 2) {
-		let g = arguments[0], boundaryDistanceTolerance = arguments[1];
-		this.g = g;
-		this.boundaryDistanceTolerance = boundaryDistanceTolerance;
-		this.linework = this.extractLinework(g);
-	}
+	let g = arguments[0], boundaryDistanceTolerance = arguments[1];
+	this.g = g;
+	this.boundaryDistanceTolerance = boundaryDistanceTolerance;
+	this.linework = this.extractLinework(g);
 }
 extend(FuzzyPointLocator.prototype, {
 	isWithinToleranceOfBoundary: function (pt) {
@@ -53,9 +51,7 @@ extend(FuzzyPointLocator.prototype, {
 });
 function PolygonalLineworkExtracter() {
 	this.linework = null;
-	if (arguments.length === 0) {
-		this.linework = new ArrayList();
-	}
+	this.linework = new ArrayList();
 }
 extend(PolygonalLineworkExtracter.prototype, {
 	getLinework: function () {

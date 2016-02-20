@@ -7,35 +7,31 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default function NodeMap() {
 	this.nodeMap = new TreeMap();
 	this.nodeFact = null;
-	if (arguments.length === 1) {
-		let nodeFact = arguments[0];
-		this.nodeFact = nodeFact;
-	}
+	let nodeFact = arguments[0];
+	this.nodeFact = nodeFact;
 }
 extend(NodeMap.prototype, {
 	find: function (coord) {
 		return this.nodeMap.get(coord);
 	},
 	addNode: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Coordinate) {
-				let coord = arguments[0];
-				var node = this.nodeMap.get(coord);
-				if (node === null) {
-					node = this.nodeFact.createNode(coord);
-					this.nodeMap.put(coord, node);
-				}
-				return node;
-			} else if (arguments[0] instanceof Node) {
-				let n = arguments[0];
-				var node = this.nodeMap.get(n.getCoordinate());
-				if (node === null) {
-					this.nodeMap.put(n.getCoordinate(), n);
-					return n;
-				}
-				node.mergeLabel(n);
-				return node;
+		if (arguments[0] instanceof Coordinate) {
+			let coord = arguments[0];
+			var node = this.nodeMap.get(coord);
+			if (node === null) {
+				node = this.nodeFact.createNode(coord);
+				this.nodeMap.put(coord, node);
 			}
+			return node;
+		} else if (arguments[0] instanceof Node) {
+			let n = arguments[0];
+			var node = this.nodeMap.get(n.getCoordinate());
+			if (node === null) {
+				this.nodeMap.put(n.getCoordinate(), n);
+				return n;
+			}
+			node.mergeLabel(n);
+			return node;
 		}
 	},
 	print: function (out) {

@@ -9,7 +9,6 @@ import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInArea
 import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function RandomPointsBuilder() {
-	GeometricShapeBuilder.apply(this);
 	this.maskPoly = null;
 	this.extentLocator = null;
 	if (arguments.length === 0) {

@@ -14,9 +14,7 @@ export default function BufferSubgraph() {
 	this.nodes = new ArrayList();
 	this.rightMostCoord = null;
 	this.env = null;
-	if (arguments.length === 0) {
-		this.finder = new RightmostEdgeFinder();
-	}
+	this.finder = new RightmostEdgeFinder();
 }
 extend(BufferSubgraph.prototype, {
 	clearVisitedEdges: function () {

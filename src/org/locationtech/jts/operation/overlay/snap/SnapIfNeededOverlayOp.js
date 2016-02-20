@@ -4,11 +4,9 @@ import RuntimeException from '../../../../../../java/lang/RuntimeException';
 import OverlayOp from '../OverlayOp';
 export default function SnapIfNeededOverlayOp() {
 	this.geom = new Array(2);
-	if (arguments.length === 2) {
-		let g1 = arguments[0], g2 = arguments[1];
-		this.geom[0] = g1;
-		this.geom[1] = g2;
-	}
+	let g1 = arguments[0], g2 = arguments[1];
+	this.geom[0] = g1;
+	this.geom[1] = g2;
 }
 extend(SnapIfNeededOverlayOp.prototype, {
 	getResultGeometry: function (opCode) {

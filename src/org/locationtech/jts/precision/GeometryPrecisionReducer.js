@@ -9,10 +9,8 @@ export default function GeometryPrecisionReducer() {
 	this.removeCollapsed = true;
 	this.changePrecisionModel = false;
 	this.isPointwise = false;
-	if (arguments.length === 1) {
-		let pm = arguments[0];
-		this.targetPM = pm;
-	}
+	let pm = arguments[0];
+	this.targetPM = pm;
 }
 extend(GeometryPrecisionReducer.prototype, {
 	fixPolygonalTopology: function (geom) {

@@ -5,7 +5,6 @@ export default function CommonBits() {
 	this.commonMantissaBitsCount = 53;
 	this.commonBits = 0;
 	this.commonSignExp = null;
-	if (arguments.length === 0) {}
 }
 extend(CommonBits.prototype, {
 	getCommon: function () {

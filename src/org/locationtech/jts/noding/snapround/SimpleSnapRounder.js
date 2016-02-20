@@ -14,13 +14,11 @@ export default function SimpleSnapRounder() {
 	this.li = null;
 	this.scaleFactor = null;
 	this.nodedSegStrings = null;
-	if (arguments.length === 1) {
-		let pm = arguments[0];
-		this.pm = pm;
-		this.li = new RobustLineIntersector();
-		this.li.setPrecisionModel(pm);
-		this.scaleFactor = pm.getScale();
-	}
+	let pm = arguments[0];
+	this.pm = pm;
+	this.li = new RobustLineIntersector();
+	this.li.setPrecisionModel(pm);
+	this.scaleFactor = pm.getScale();
 }
 extend(SimpleSnapRounder.prototype, {
 	checkCorrectness: function (inputSegmentStrings) {
@@ -82,21 +80,19 @@ extend(SimpleSnapRounder.prototype, {
 		this.snapRound(inputSegmentStrings, this.li);
 	},
 	computeSnaps: function () {
-		if (arguments.length === 2) {
-			if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection)) {
-				let segStrings = arguments[0], snapPts = arguments[1];
-				for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
-					var ss = i0.next();
-					this.computeSnaps(ss, snapPts);
-				}
-			} else if (arguments[0] instanceof NodedSegmentString && hasInterface(arguments[1], Collection)) {
-				let ss = arguments[0], snapPts = arguments[1];
-				for (var it = snapPts.iterator(); it.hasNext(); ) {
-					var snapPt = it.next();
-					var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
-					for (var i = 0; i < ss.size() - 1; i++) {
-						hotPixel.addSnappedNode(ss, i);
-					}
+		if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection)) {
+			let segStrings = arguments[0], snapPts = arguments[1];
+			for (var i0 = segStrings.iterator(); i0.hasNext(); ) {
+				var ss = i0.next();
+				this.computeSnaps(ss, snapPts);
+			}
+		} else if (arguments[0] instanceof NodedSegmentString && hasInterface(arguments[1], Collection)) {
+			let ss = arguments[0], snapPts = arguments[1];
+			for (var it = snapPts.iterator(); it.hasNext(); ) {
+				var snapPt = it.next();
+				var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
+				for (var i = 0; i < ss.size() - 1; i++) {
+					hotPixel.addSnappedNode(ss, i);
 				}
 			}
 		}

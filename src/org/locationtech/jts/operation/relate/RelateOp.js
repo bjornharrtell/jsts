@@ -3,7 +3,6 @@ import extend from '../../../../../extend';
 import GeometryGraphOperation from '../GeometryGraphOperation';
 import inherits from '../../../../../inherits';
 export default function RelateOp() {
-	GeometryGraphOperation.apply(this);
 	this._relate = null;
 	if (arguments.length === 2) {
 		let g0 = arguments[0], g1 = arguments[1];

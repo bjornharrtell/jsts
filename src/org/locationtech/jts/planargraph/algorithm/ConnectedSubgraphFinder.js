@@ -5,10 +5,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GraphComponent from '../GraphComponent';
 export default function ConnectedSubgraphFinder() {
 	this.graph = null;
-	if (arguments.length === 1) {
-		let graph = arguments[0];
-		this.graph = graph;
-	}
+	let graph = arguments[0];
+	this.graph = graph;
 }
 extend(ConnectedSubgraphFinder.prototype, {
 	addReachable: function (startNode, subgraph) {

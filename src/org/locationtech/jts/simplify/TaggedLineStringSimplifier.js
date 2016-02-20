@@ -9,11 +9,9 @@ export default function TaggedLineStringSimplifier() {
 	this.line = null;
 	this.linePts = null;
 	this.distanceTolerance = 0.0;
-	if (arguments.length === 2) {
-		let inputIndex = arguments[0], outputIndex = arguments[1];
-		this.inputIndex = inputIndex;
-		this.outputIndex = outputIndex;
-	}
+	let inputIndex = arguments[0], outputIndex = arguments[1];
+	this.inputIndex = inputIndex;
+	this.outputIndex = outputIndex;
 }
 extend(TaggedLineStringSimplifier.prototype, {
 	flatten: function (start, end) {

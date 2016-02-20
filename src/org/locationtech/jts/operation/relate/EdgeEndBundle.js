@@ -8,7 +8,6 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Edge from '../../geomgraph/Edge';
 import inherits from '../../../../../inherits';
 export default function EdgeEndBundle() {
-	EdgeEnd.apply(this);
 	this.edgeEnds = new ArrayList();
 	if (arguments.length === 1) {
 		let e = arguments[0];

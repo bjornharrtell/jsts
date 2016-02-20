@@ -2,9 +2,7 @@ import extend from '../../../../../extend';
 import Integer from '../../../../../java/lang/Integer';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Quadrant from '../Quadrant';
-export default function MonotoneChainIndexer() {
-	if (arguments.length === 0) {}
-}
+export default function MonotoneChainIndexer() {}
 extend(MonotoneChainIndexer.prototype, {
 	getChainStartIndices: function (pts) {
 		var start = 0;

@@ -10,7 +10,6 @@ export default function SortedPackedIntervalRTree() {
 	this.leaves = new ArrayList();
 	this.root = null;
 	this.level = 0;
-	if (arguments.length === 0) {}
 }
 extend(SortedPackedIntervalRTree.prototype, {
 	buildTree: function () {

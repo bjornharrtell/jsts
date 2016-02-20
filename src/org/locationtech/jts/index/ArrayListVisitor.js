@@ -3,7 +3,6 @@ import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function ArrayListVisitor() {
 	this.items = new ArrayList();
-	if (arguments.length === 0) {}
 }
 extend(ArrayListVisitor.prototype, {
 	visitItem: function (item) {

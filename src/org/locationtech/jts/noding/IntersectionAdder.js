@@ -12,10 +12,8 @@ export default function IntersectionAdder() {
 	this.numInteriorIntersections = 0;
 	this.numProperIntersections = 0;
 	this.numTests = 0;
-	if (arguments.length === 1) {
-		let li = arguments[0];
-		this.li = li;
-	}
+	let li = arguments[0];
+	this.li = li;
 }
 extend(IntersectionAdder.prototype, {
 	isTrivialIntersection: function (e0, segIndex0, e1, segIndex1) {

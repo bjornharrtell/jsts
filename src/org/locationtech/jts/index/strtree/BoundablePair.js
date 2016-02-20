@@ -7,13 +7,11 @@ export default function BoundablePair() {
 	this.boundable2 = null;
 	this._distance = null;
 	this.itemDistance = null;
-	if (arguments.length === 3) {
-		let boundable1 = arguments[0], boundable2 = arguments[1], itemDistance = arguments[2];
-		this.boundable1 = boundable1;
-		this.boundable2 = boundable2;
-		this.itemDistance = itemDistance;
-		this._distance = this.distance();
-	}
+	let boundable1 = arguments[0], boundable2 = arguments[1], itemDistance = arguments[2];
+	this.boundable1 = boundable1;
+	this.boundable2 = boundable2;
+	this.itemDistance = itemDistance;
+	this._distance = this.distance();
 }
 extend(BoundablePair.prototype, {
 	expandToQueue: function (priQ, minDistance) {

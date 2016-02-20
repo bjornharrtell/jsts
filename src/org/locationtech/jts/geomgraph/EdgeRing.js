@@ -17,12 +17,10 @@ export default function EdgeRing() {
 	this.shell = null;
 	this.holes = new ArrayList();
 	this.geometryFactory = null;
-	if (arguments.length === 2) {
-		let start = arguments[0], geometryFactory = arguments[1];
-		this.geometryFactory = geometryFactory;
-		this.computePoints(start);
-		this.computeRing();
-	}
+	let start = arguments[0], geometryFactory = arguments[1];
+	this.geometryFactory = geometryFactory;
+	this.computePoints(start);
+	this.computeRing();
 }
 extend(EdgeRing.prototype, {
 	computeRing: function () {

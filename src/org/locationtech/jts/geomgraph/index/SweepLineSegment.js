@@ -3,12 +3,10 @@ export default function SweepLineSegment() {
 	this.edge = null;
 	this.pts = null;
 	this.ptIndex = null;
-	if (arguments.length === 2) {
-		let edge = arguments[0], ptIndex = arguments[1];
-		this.edge = edge;
-		this.ptIndex = ptIndex;
-		this.pts = edge.getCoordinates();
-	}
+	let edge = arguments[0], ptIndex = arguments[1];
+	this.edge = edge;
+	this.ptIndex = ptIndex;
+	this.pts = edge.getCoordinates();
 }
 extend(SweepLineSegment.prototype, {
 	getMaxX: function () {

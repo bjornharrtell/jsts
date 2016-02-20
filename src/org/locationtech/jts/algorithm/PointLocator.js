@@ -63,52 +63,50 @@ extend(PointLocator.prototype, {
 		}
 	},
 	locate: function () {
-		if (arguments.length === 2) {
-			if (arguments[0] instanceof Coordinate && arguments[1] instanceof Polygon) {
-				let p = arguments[0], poly = arguments[1];
-				if (poly.isEmpty()) return Location.EXTERIOR;
-				var shell = poly.getExteriorRing();
-				var shellLoc = this.locateInPolygonRing(p, shell);
-				if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR;
-				if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY;
-				for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-					var hole = poly.getInteriorRingN(i);
-					var holeLoc = this.locateInPolygonRing(p, hole);
-					if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
-					if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
-				}
-				return Location.INTERIOR;
-			} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof LineString) {
-				let p = arguments[0], l = arguments[1];
-				if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
-				var pt = l.getCoordinates();
-				if (!l.isClosed()) {
-					if (p.equals(pt[0]) || p.equals(pt[pt.length - 1])) {
-						return Location.BOUNDARY;
-					}
-				}
-				if (CGAlgorithms.isOnLine(p, pt)) return Location.INTERIOR;
-				return Location.EXTERIOR;
-			} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Point) {
-				let p = arguments[0], pt = arguments[1];
-				var ptCoord = pt.getCoordinate();
-				if (ptCoord.equals2D(p)) return Location.INTERIOR;
-				return Location.EXTERIOR;
-			} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Geometry) {
-				let p = arguments[0], geom = arguments[1];
-				if (geom.isEmpty()) return Location.EXTERIOR;
-				if (geom instanceof LineString) {
-					return this.locate(p, geom);
-				} else if (geom instanceof Polygon) {
-					return this.locate(p, geom);
-				}
-				this.isIn = false;
-				this.numBoundaries = 0;
-				this.computeLocation(p, geom);
-				if (this.boundaryRule.isInBoundary(this.numBoundaries)) return Location.BOUNDARY;
-				if (this.numBoundaries > 0 || this.isIn) return Location.INTERIOR;
-				return Location.EXTERIOR;
+		if (arguments[0] instanceof Coordinate && arguments[1] instanceof Polygon) {
+			let p = arguments[0], poly = arguments[1];
+			if (poly.isEmpty()) return Location.EXTERIOR;
+			var shell = poly.getExteriorRing();
+			var shellLoc = this.locateInPolygonRing(p, shell);
+			if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR;
+			if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY;
+			for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+				var hole = poly.getInteriorRingN(i);
+				var holeLoc = this.locateInPolygonRing(p, hole);
+				if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
+				if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
 			}
+			return Location.INTERIOR;
+		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof LineString) {
+			let p = arguments[0], l = arguments[1];
+			if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
+			var pt = l.getCoordinates();
+			if (!l.isClosed()) {
+				if (p.equals(pt[0]) || p.equals(pt[pt.length - 1])) {
+					return Location.BOUNDARY;
+				}
+			}
+			if (CGAlgorithms.isOnLine(p, pt)) return Location.INTERIOR;
+			return Location.EXTERIOR;
+		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Point) {
+			let p = arguments[0], pt = arguments[1];
+			var ptCoord = pt.getCoordinate();
+			if (ptCoord.equals2D(p)) return Location.INTERIOR;
+			return Location.EXTERIOR;
+		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Geometry) {
+			let p = arguments[0], geom = arguments[1];
+			if (geom.isEmpty()) return Location.EXTERIOR;
+			if (geom instanceof LineString) {
+				return this.locate(p, geom);
+			} else if (geom instanceof Polygon) {
+				return this.locate(p, geom);
+			}
+			this.isIn = false;
+			this.numBoundaries = 0;
+			this.computeLocation(p, geom);
+			if (this.boundaryRule.isInBoundary(this.numBoundaries)) return Location.BOUNDARY;
+			if (this.numBoundaries > 0 || this.isIn) return Location.INTERIOR;
+			return Location.EXTERIOR;
 		}
 	},
 	interfaces_: function () {

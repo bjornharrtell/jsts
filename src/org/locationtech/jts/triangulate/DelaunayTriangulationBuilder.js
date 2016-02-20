@@ -14,7 +14,6 @@ export default function DelaunayTriangulationBuilder() {
 	this.siteCoords = null;
 	this.tolerance = 0.0;
 	this.subdiv = null;
-	if (arguments.length === 0) {}
 }
 extend(DelaunayTriangulationBuilder.prototype, {
 	create: function () {
@@ -29,14 +28,12 @@ extend(DelaunayTriangulationBuilder.prototype, {
 		this.tolerance = tolerance;
 	},
 	setSites: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Geometry) {
-				let geom = arguments[0];
-				this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-			} else if (hasInterface(arguments[0], Collection)) {
-				let coords = arguments[0];
-				this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
-			}
+		if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+		} else if (hasInterface(arguments[0], Collection)) {
+			let coords = arguments[0];
+			this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
 		}
 	},
 	getEdges: function (geomFact) {

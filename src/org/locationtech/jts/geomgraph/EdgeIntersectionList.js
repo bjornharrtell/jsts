@@ -7,10 +7,8 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default function EdgeIntersectionList() {
 	this.nodeMap = new TreeMap();
 	this.edge = null;
-	if (arguments.length === 1) {
-		let edge = arguments[0];
-		this.edge = edge;
-	}
+	let edge = arguments[0];
+	this.edge = edge;
 }
 extend(EdgeIntersectionList.prototype, {
 	print: function (out) {

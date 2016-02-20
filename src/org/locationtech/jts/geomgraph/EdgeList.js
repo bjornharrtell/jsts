@@ -5,7 +5,6 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default function EdgeList() {
 	this.edges = new ArrayList();
 	this.ocaMap = new TreeMap();
-	if (arguments.length === 0) {}
 }
 extend(EdgeList.prototype, {
 	print: function (out) {

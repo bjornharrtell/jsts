@@ -97,35 +97,33 @@ extend(OctagonalEnvelope.prototype, {
 		return this.maxX;
 	},
 	intersects: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof OctagonalEnvelope) {
-				let other = arguments[0];
-				if (this.isNull() || other.isNull()) {
-					return false;
-				}
-				if (this.minX > other.maxX) return false;
-				if (this.maxX < other.minX) return false;
-				if (this.minY > other.maxY) return false;
-				if (this.maxY < other.minY) return false;
-				if (this.minA > other.maxA) return false;
-				if (this.maxA < other.minA) return false;
-				if (this.minB > other.maxB) return false;
-				if (this.maxB < other.minB) return false;
-				return true;
-			} else if (arguments[0] instanceof Coordinate) {
-				let p = arguments[0];
-				if (this.minX > p.x) return false;
-				if (this.maxX < p.x) return false;
-				if (this.minY > p.y) return false;
-				if (this.maxY < p.y) return false;
-				var A = OctagonalEnvelope.computeA(p.x, p.y);
-				var B = OctagonalEnvelope.computeB(p.x, p.y);
-				if (this.minA > A) return false;
-				if (this.maxA < A) return false;
-				if (this.minB > B) return false;
-				if (this.maxB < B) return false;
-				return true;
+		if (arguments[0] instanceof OctagonalEnvelope) {
+			let other = arguments[0];
+			if (this.isNull() || other.isNull()) {
+				return false;
 			}
+			if (this.minX > other.maxX) return false;
+			if (this.maxX < other.minX) return false;
+			if (this.minY > other.maxY) return false;
+			if (this.maxY < other.minY) return false;
+			if (this.minA > other.maxA) return false;
+			if (this.maxA < other.minA) return false;
+			if (this.minB > other.maxB) return false;
+			if (this.maxB < other.minB) return false;
+			return true;
+		} else if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			if (this.minX > p.x) return false;
+			if (this.maxX < p.x) return false;
+			if (this.minY > p.y) return false;
+			if (this.maxY < p.y) return false;
+			var A = OctagonalEnvelope.computeA(p.x, p.y);
+			var B = OctagonalEnvelope.computeB(p.x, p.y);
+			if (this.minA > A) return false;
+			if (this.maxA < A) return false;
+			if (this.minB > B) return false;
+			if (this.maxB < B) return false;
+			return true;
 		}
 	},
 	getMinY: function () {
@@ -257,10 +255,8 @@ OctagonalEnvelope.computeA = function (x, y) {
 };
 function BoundingOctagonComponentFilter() {
 	this.oe = null;
-	if (arguments.length === 1) {
-		let oe = arguments[0];
-		this.oe = oe;
-	}
+	let oe = arguments[0];
+	this.oe = oe;
 }
 extend(BoundingOctagonComponentFilter.prototype, {
 	filter: function (geom) {

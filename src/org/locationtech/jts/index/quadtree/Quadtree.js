@@ -8,9 +8,7 @@ import Envelope from '../../geom/Envelope';
 export default function Quadtree() {
 	this.root = null;
 	this.minExtent = 1.0;
-	if (arguments.length === 0) {
-		this.root = new Root();
-	}
+	this.root = new Root();
 }
 extend(Quadtree.prototype, {
 	size: function () {

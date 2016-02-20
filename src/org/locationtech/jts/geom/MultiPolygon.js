@@ -5,11 +5,8 @@ import Polygonal from './Polygonal';
 import ArrayList from '../../../../java/util/ArrayList';
 import inherits from '../../../../inherits';
 export default function MultiPolygon() {
-	GeometryCollection.apply(this);
-	if (arguments.length === 2) {
-		let polygons = arguments[0], factory = arguments[1];
-		GeometryCollection.call(this, polygons, factory);
-	}
+	let polygons = arguments[0], factory = arguments[1];
+	GeometryCollection.call(this, polygons, factory);
 }
 inherits(MultiPolygon, GeometryCollection);
 extend(MultiPolygon.prototype, {

@@ -101,15 +101,13 @@ extend(GeometryGraph.prototype, {
 		return this._hasTooFewPoints;
 	},
 	addPoint: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Point) {
-				let p = arguments[0];
-				var coord = p.getCoordinate();
-				this.insertPoint(this.argIndex, coord, Location.INTERIOR);
-			} else if (arguments[0] instanceof Coordinate) {
-				let pt = arguments[0];
-				this.insertPoint(this.argIndex, pt, Location.INTERIOR);
-			}
+		if (arguments[0] instanceof Point) {
+			let p = arguments[0];
+			var coord = p.getCoordinate();
+			this.insertPoint(this.argIndex, coord, Location.INTERIOR);
+		} else if (arguments[0] instanceof Coordinate) {
+			let pt = arguments[0];
+			this.insertPoint(this.argIndex, pt, Location.INTERIOR);
 		}
 	},
 	addPolygon: function (p) {

@@ -13,27 +13,24 @@ import GeometryFilter from './GeometryFilter';
 import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import inherits from '../../../../inherits';
 export default function Polygon() {
-	Geometry.apply(this);
 	this.shell = null;
 	this.holes = null;
-	if (arguments.length === 3) {
-		let shell = arguments[0], holes = arguments[1], factory = arguments[2];
-		Geometry.call(this, factory);
-		if (shell === null) {
-			shell = this.getFactory().createLinearRing();
-		}
-		if (holes === null) {
-			holes = [];
-		}
-		if (Geometry.hasNullElements(holes)) {
-			throw new IllegalArgumentException("holes must not contain null elements");
-		}
-		if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes)) {
-			throw new IllegalArgumentException("shell is empty but holes are not");
-		}
-		this.shell = shell;
-		this.holes = holes;
+	let shell = arguments[0], holes = arguments[1], factory = arguments[2];
+	Geometry.call(this, factory);
+	if (shell === null) {
+		shell = this.getFactory().createLinearRing();
 	}
+	if (holes === null) {
+		holes = [];
+	}
+	if (Geometry.hasNullElements(holes)) {
+		throw new IllegalArgumentException("holes must not contain null elements");
+	}
+	if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes)) {
+		throw new IllegalArgumentException("shell is empty but holes are not");
+	}
+	this.shell = shell;
+	this.holes = holes;
 }
 inherits(Polygon, Geometry);
 extend(Polygon.prototype, {
@@ -210,33 +207,31 @@ extend(Polygon.prototype, {
 		}
 	},
 	apply: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], CoordinateFilter)) {
-				let filter = arguments[0];
-				this.shell.apply(filter);
+		if (hasInterface(arguments[0], CoordinateFilter)) {
+			let filter = arguments[0];
+			this.shell.apply(filter);
+			for (var i = 0; i < this.holes.length; i++) {
+				this.holes[i].apply(filter);
+			}
+		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+			let filter = arguments[0];
+			this.shell.apply(filter);
+			if (!filter.isDone()) {
 				for (var i = 0; i < this.holes.length; i++) {
 					this.holes[i].apply(filter);
+					if (filter.isDone()) break;
 				}
-			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
-				let filter = arguments[0];
-				this.shell.apply(filter);
-				if (!filter.isDone()) {
-					for (var i = 0; i < this.holes.length; i++) {
-						this.holes[i].apply(filter);
-						if (filter.isDone()) break;
-					}
-				}
-				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (hasInterface(arguments[0], GeometryFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
-			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
-				this.shell.apply(filter);
-				for (var i = 0; i < this.holes.length; i++) {
-					this.holes[i].apply(filter);
-				}
+			}
+			if (filter.isGeometryChanged()) this.geometryChanged();
+		} else if (hasInterface(arguments[0], GeometryFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
+		} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
+			this.shell.apply(filter);
+			for (var i = 0; i < this.holes.length; i++) {
+				this.holes[i].apply(filter);
 			}
 		}
 	},

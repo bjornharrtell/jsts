@@ -5,12 +5,9 @@ import inherits from '../../../../../inherits';
 import Vector2D from '../../math/Vector2D';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function KochSnowflakeBuilder() {
-	GeometricShapeBuilder.apply(this);
 	this.coordList = new CoordinateList();
-	if (arguments.length === 1) {
-		let geomFactory = arguments[0];
-		GeometricShapeBuilder.call(this, geomFactory);
-	}
+	let geomFactory = arguments[0];
+	GeometricShapeBuilder.call(this, geomFactory);
 }
 inherits(KochSnowflakeBuilder, GeometricShapeBuilder);
 extend(KochSnowflakeBuilder.prototype, {

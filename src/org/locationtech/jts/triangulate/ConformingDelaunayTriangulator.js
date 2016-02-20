@@ -25,12 +25,10 @@ export default function ConformingDelaunayTriangulator() {
 	this.computeAreaEnv = null;
 	this.splitPt = null;
 	this.tolerance = null;
-	if (arguments.length === 2) {
-		let initialVertices = arguments[0], tolerance = arguments[1];
-		this.initialVertices = new ArrayList(initialVertices);
-		this.tolerance = tolerance;
-		this.kdt = new KdTree(tolerance);
-	}
+	let initialVertices = arguments[0], tolerance = arguments[1];
+	this.initialVertices = new ArrayList(initialVertices);
+	this.tolerance = tolerance;
+	this.kdt = new KdTree(tolerance);
 }
 extend(ConformingDelaunayTriangulator.prototype, {
 	getInitialVertices: function () {
@@ -182,22 +180,20 @@ extend(ConformingDelaunayTriangulator.prototype, {
 		this.insertSites(this.initialVertices);
 	},
 	insertSite: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof ConstraintVertex) {
-				let v = arguments[0];
-				var kdnode = this.kdt.insert(v.getCoordinate(), v);
-				if (!kdnode.isRepeated()) {
-					this.incDel.insertSite(v);
-				} else {
-					var snappedV = kdnode.getData();
-					snappedV.merge(v);
-					return snappedV;
-				}
-				return v;
-			} else if (arguments[0] instanceof Coordinate) {
-				let p = arguments[0];
-				this.insertSite(this.createVertex(p));
+		if (arguments[0] instanceof ConstraintVertex) {
+			let v = arguments[0];
+			var kdnode = this.kdt.insert(v.getCoordinate(), v);
+			if (!kdnode.isRepeated()) {
+				this.incDel.insertSite(v);
+			} else {
+				var snappedV = kdnode.getData();
+				snappedV.merge(v);
+				return snappedV;
 			}
+			return v;
+		} else if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			this.insertSite(this.createVertex(p));
 		}
 	},
 	interfaces_: function () {

@@ -9,12 +9,10 @@ export default function Node() {
 	this.interval = null;
 	this.centre = null;
 	this.level = null;
-	if (arguments.length === 2) {
-		let interval = arguments[0], level = arguments[1];
-		this.interval = interval;
-		this.level = level;
-		this.centre = (interval.getMin() + interval.getMax()) / 2;
-	}
+	let interval = arguments[0], level = arguments[1];
+	this.interval = interval;
+	this.level = level;
+	this.centre = (interval.getMin() + interval.getMax()) / 2;
 }
 inherits(Node, NodeBase);
 extend(Node.prototype, {

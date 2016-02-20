@@ -9,12 +9,10 @@ import TriangleVisitor from './TriangleVisitor';
 export default function QuadEdgeTriangle() {
 	this.edge = null;
 	this.data = null;
-	if (arguments.length === 1) {
-		let edge = arguments[0];
-		this.edge = edge.clone();
-		for (var i = 0; i < 3; i++) {
-			edge[i].setData(this);
-		}
+	let edge = arguments[0];
+	this.edge = edge.clone();
+	for (var i = 0; i < 3; i++) {
+		edge[i].setData(this);
 	}
 }
 extend(QuadEdgeTriangle.prototype, {
@@ -41,20 +39,18 @@ extend(QuadEdgeTriangle.prototype, {
 		}
 	},
 	getEdgeIndex: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof QuadEdge) {
-				let e = arguments[0];
-				for (var i = 0; i < 3; i++) {
-					if (this.edge[i] === e) return i;
-				}
-				return -1;
-			} else if (arguments[0] instanceof Vertex) {
-				let v = arguments[0];
-				for (var i = 0; i < 3; i++) {
-					if (this.edge[i].orig() === v) return i;
-				}
-				return -1;
+		if (arguments[0] instanceof QuadEdge) {
+			let e = arguments[0];
+			for (var i = 0; i < 3; i++) {
+				if (this.edge[i] === e) return i;
 			}
+			return -1;
+		} else if (arguments[0] instanceof Vertex) {
+			let v = arguments[0];
+			for (var i = 0; i < 3; i++) {
+				if (this.edge[i].orig() === v) return i;
+			}
+			return -1;
 		}
 	},
 	getGeometry: function (fact) {
@@ -136,38 +132,34 @@ extend(QuadEdgeTriangle.prototype, {
 	}
 });
 QuadEdgeTriangle.toPolygon = function () {
-	if (arguments.length === 1) {
-		if (arguments[0] instanceof Array) {
-			let v = arguments[0];
-			var ringPts = [v[0].getCoordinate(), v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate()];
-			var fact = new GeometryFactory();
-			var ring = fact.createLinearRing(ringPts);
-			var tri = fact.createPolygon(ring, null);
-			return tri;
-		} else if (arguments[0] instanceof Array) {
-			let e = arguments[0];
-			var ringPts = [e[0].orig().getCoordinate(), e[1].orig().getCoordinate(), e[2].orig().getCoordinate(), e[0].orig().getCoordinate()];
-			var fact = new GeometryFactory();
-			var ring = fact.createLinearRing(ringPts);
-			var tri = fact.createPolygon(ring, null);
-			return tri;
-		}
+	if (arguments[0] instanceof Array) {
+		let v = arguments[0];
+		var ringPts = [v[0].getCoordinate(), v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate()];
+		var fact = new GeometryFactory();
+		var ring = fact.createLinearRing(ringPts);
+		var tri = fact.createPolygon(ring, null);
+		return tri;
+	} else if (arguments[0] instanceof Array) {
+		let e = arguments[0];
+		var ringPts = [e[0].orig().getCoordinate(), e[1].orig().getCoordinate(), e[2].orig().getCoordinate(), e[0].orig().getCoordinate()];
+		var fact = new GeometryFactory();
+		var ring = fact.createLinearRing(ringPts);
+		var tri = fact.createPolygon(ring, null);
+		return tri;
 	}
 };
 QuadEdgeTriangle.nextIndex = function (index) {
 	return index = (index + 1) % 3;
 };
 QuadEdgeTriangle.contains = function () {
-	if (arguments.length === 2) {
-		if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
-			let tri = arguments[0], pt = arguments[1];
-			var ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()];
-			return CGAlgorithms.isPointInRing(pt, ring);
-		} else if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
-			let tri = arguments[0], pt = arguments[1];
-			var ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()];
-			return CGAlgorithms.isPointInRing(pt, ring);
-		}
+	if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
+		let tri = arguments[0], pt = arguments[1];
+		var ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()];
+		return CGAlgorithms.isPointInRing(pt, ring);
+	} else if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
+		let tri = arguments[0], pt = arguments[1];
+		var ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()];
+		return CGAlgorithms.isPointInRing(pt, ring);
 	}
 };
 QuadEdgeTriangle.createOn = function (subdiv) {
@@ -177,7 +169,6 @@ QuadEdgeTriangle.createOn = function (subdiv) {
 };
 function QuadEdgeTriangleBuilderVisitor() {
 	this.triangles = new ArrayList();
-	if (arguments.length === 0) {}
 }
 extend(QuadEdgeTriangleBuilderVisitor.prototype, {
 	visit: function (edges) {

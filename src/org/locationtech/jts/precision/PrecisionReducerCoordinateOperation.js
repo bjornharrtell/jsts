@@ -9,11 +9,9 @@ export default function PrecisionReducerCoordinateOperation() {
 	GeometryEditor.CoordinateOperation.apply(this);
 	this.targetPM = null;
 	this.removeCollapsed = true;
-	if (arguments.length === 2) {
-		let targetPM = arguments[0], removeCollapsed = arguments[1];
-		this.targetPM = targetPM;
-		this.removeCollapsed = removeCollapsed;
-	}
+	let targetPM = arguments[0], removeCollapsed = arguments[1];
+	this.targetPM = targetPM;
+	this.removeCollapsed = removeCollapsed;
 }
 inherits(PrecisionReducerCoordinateOperation, GeometryEditor.CoordinateOperation);
 extend(PrecisionReducerCoordinateOperation.prototype, {

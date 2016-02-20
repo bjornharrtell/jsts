@@ -165,39 +165,37 @@ extend(Double.prototype, {
 function Float() {
 	PackedCoordinateSequence.apply(this);
 	this.coords = null;
-	if (arguments.length === 2) {
-		if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
-			let coords = arguments[0], dimensions = arguments[1];
-			if (dimensions < 2) {
-				throw new IllegalArgumentException("Must have at least 2 dimensions");
-			}
-			if (coords.length % dimensions !== 0) {
-				throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
-			}
-			this.dimension = dimensions;
-			this.coords = coords;
-		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
-			let coordinates = arguments[0], dimensions = arguments[1];
-			this.coords = new Array(coordinates.length);
-			this.dimension = dimensions;
-			for (var i = 0; i < coordinates.length; i++) {
-				this.coords[i] = coordinates[i];
-			}
-		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
-			let coordinates = arguments[0], dimension = arguments[1];
-			if (coordinates === null) coordinates = new Array(0);
-			this.dimension = dimension;
-			this.coords = new Array(coordinates.length * this.dimension);
-			for (var i = 0; i < coordinates.length; i++) {
-				this.coords[i * this.dimension] = coordinates[i].x;
-				if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
-				if (this.dimension >= 3) this.coords[i * this.dimension + 2] = coordinates[i].z;
-			}
-		} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
-			let size = arguments[0], dimension = arguments[1];
-			this.dimension = dimension;
-			this.coords = new Array(size * this.dimension);
+	if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+		let coords = arguments[0], dimensions = arguments[1];
+		if (dimensions < 2) {
+			throw new IllegalArgumentException("Must have at least 2 dimensions");
 		}
+		if (coords.length % dimensions !== 0) {
+			throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
+		}
+		this.dimension = dimensions;
+		this.coords = coords;
+	} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+		let coordinates = arguments[0], dimensions = arguments[1];
+		this.coords = new Array(coordinates.length);
+		this.dimension = dimensions;
+		for (var i = 0; i < coordinates.length; i++) {
+			this.coords[i] = coordinates[i];
+		}
+	} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+		let coordinates = arguments[0], dimension = arguments[1];
+		if (coordinates === null) coordinates = new Array(0);
+		this.dimension = dimension;
+		this.coords = new Array(coordinates.length * this.dimension);
+		for (var i = 0; i < coordinates.length; i++) {
+			this.coords[i * this.dimension] = coordinates[i].x;
+			if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
+			if (this.dimension >= 3) this.coords[i * this.dimension + 2] = coordinates[i].z;
+		}
+	} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
+		let size = arguments[0], dimension = arguments[1];
+		this.dimension = dimension;
+		this.coords = new Array(size * this.dimension);
 	}
 }
 inherits(Float, PackedCoordinateSequence);

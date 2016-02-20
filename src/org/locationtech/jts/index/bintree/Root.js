@@ -6,7 +6,6 @@ import Assert from '../../util/Assert';
 import inherits from '../../../../../inherits';
 export default function Root() {
 	NodeBase.apply(this);
-	if (arguments.length === 0) {}
 }
 inherits(Root, NodeBase);
 extend(Root.prototype, {

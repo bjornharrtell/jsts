@@ -8,13 +8,11 @@ export default function GeometryCollectionIterator() {
 	this.max = null;
 	this.index = null;
 	this.subcollectionIterator = null;
-	if (arguments.length === 1) {
-		let parent = arguments[0];
-		this.parent = parent;
-		this.atStart = true;
-		this.index = 0;
-		this.max = parent.getNumGeometries();
-	}
+	let parent = arguments[0];
+	this.parent = parent;
+	this.atStart = true;
+	this.index = 0;
+	this.max = parent.getNumGeometries();
 }
 extend(GeometryCollectionIterator.prototype, {
 	next: function () {

@@ -15,7 +15,6 @@ import Assert from '../../util/Assert';
 import inherits from '../../../../../inherits';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default function OverlayOp() {
-	GeometryGraphOperation.apply(this);
 	this.ptLocator = new PointLocator();
 	this.geomFact = null;
 	this.resultGeom = null;
@@ -24,12 +23,10 @@ export default function OverlayOp() {
 	this.resultPolyList = new ArrayList();
 	this.resultLineList = new ArrayList();
 	this.resultPointList = new ArrayList();
-	if (arguments.length === 2) {
-		let g0 = arguments[0], g1 = arguments[1];
-		GeometryGraphOperation.call(this, g0, g1);
-		this.graph = new PlanarGraph(new OverlayNodeFactory());
-		this.geomFact = g0.getFactory();
-	}
+	let g0 = arguments[0], g1 = arguments[1];
+	GeometryGraphOperation.call(this, g0, g1);
+	this.graph = new PlanarGraph(new OverlayNodeFactory());
+	this.geomFact = g0.getFactory();
 }
 inherits(OverlayOp, GeometryGraphOperation);
 extend(OverlayOp.prototype, {

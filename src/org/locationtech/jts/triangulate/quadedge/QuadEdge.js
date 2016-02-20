@@ -6,7 +6,6 @@ export default function QuadEdge() {
 	this.vertex = null;
 	this.next = null;
 	this.data = null;
-	if (arguments.length === 0) {}
 }
 extend(QuadEdge.prototype, {
 	equalsNonOriented: function (qe) {

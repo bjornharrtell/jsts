@@ -5,7 +5,6 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default function UniqueCoordinateArrayFilter() {
 	this.treeSet = new TreeSet();
 	this.list = new ArrayList();
-	if (arguments.length === 0) {}
 }
 extend(UniqueCoordinateArrayFilter.prototype, {
 	filter: function (coord) {

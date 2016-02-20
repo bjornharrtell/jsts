@@ -11,11 +11,9 @@ import List from '../../../../../java/util/List';
 export default function CascadedPolygonUnion() {
 	this.inputPolys = null;
 	this.geomFactory = null;
-	if (arguments.length === 1) {
-		let polys = arguments[0];
-		this.inputPolys = polys;
-		if (this.inputPolys === null) this.inputPolys = new ArrayList();
-	}
+	let polys = arguments[0];
+	this.inputPolys = polys;
+	if (this.inputPolys === null) this.inputPolys = new ArrayList();
 }
 extend(CascadedPolygonUnion.prototype, {
 	reduceToGeometries: function (geomTree) {

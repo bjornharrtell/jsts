@@ -178,33 +178,31 @@ extend(IntersectionMatrix.prototype, {
 	}
 });
 IntersectionMatrix.matches = function () {
-	if (arguments.length === 2) {
-		if (Number.isInteger(arguments[0]) && typeof arguments[1] === "string") {
-			let actualDimensionValue = arguments[0], requiredDimensionSymbol = arguments[1];
-			if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
-				return true;
-			}
-			if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
-				return true;
-			}
-			if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
-				return true;
-			}
-			if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
-				return true;
-			}
-			if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
-				return true;
-			}
-			if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
-				return true;
-			}
-			return false;
-		} else if (typeof arguments[0] === "string" && typeof arguments[1] === "string") {
-			let actualDimensionSymbols = arguments[0], requiredDimensionSymbols = arguments[1];
-			var m = new IntersectionMatrix(actualDimensionSymbols);
-			return m.matches(requiredDimensionSymbols);
+	if (Number.isInteger(arguments[0]) && typeof arguments[1] === "string") {
+		let actualDimensionValue = arguments[0], requiredDimensionSymbol = arguments[1];
+		if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
+			return true;
 		}
+		if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
+			return true;
+		}
+		if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
+			return true;
+		}
+		if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
+			return true;
+		}
+		if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
+			return true;
+		}
+		if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
+			return true;
+		}
+		return false;
+	} else if (typeof arguments[0] === "string" && typeof arguments[1] === "string") {
+		let actualDimensionSymbols = arguments[0], requiredDimensionSymbols = arguments[1];
+		var m = new IntersectionMatrix(actualDimensionSymbols);
+		return m.matches(requiredDimensionSymbols);
 	}
 };
 IntersectionMatrix.isTrue = function (actualDimensionValue) {

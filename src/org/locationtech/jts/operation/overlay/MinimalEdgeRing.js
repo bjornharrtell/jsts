@@ -2,11 +2,8 @@ import extend from '../../../../../extend';
 import EdgeRing from '../../geomgraph/EdgeRing';
 import inherits from '../../../../../inherits';
 export default function MinimalEdgeRing() {
-	EdgeRing.apply(this);
-	if (arguments.length === 2) {
-		let start = arguments[0], geometryFactory = arguments[1];
-		EdgeRing.call(this, start, geometryFactory);
-	}
+	let start = arguments[0], geometryFactory = arguments[1];
+	EdgeRing.call(this, start, geometryFactory);
 }
 inherits(MinimalEdgeRing, EdgeRing);
 extend(MinimalEdgeRing.prototype, {

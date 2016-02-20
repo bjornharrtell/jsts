@@ -6,7 +6,6 @@ import Edge from './Edge';
 export default function DirectedEdgeStar() {
 	this.outEdges = new ArrayList();
 	this.sorted = false;
-	if (arguments.length === 0) {}
 }
 extend(DirectedEdgeStar.prototype, {
 	getNextEdge: function (dirEdge) {
@@ -41,29 +40,27 @@ extend(DirectedEdgeStar.prototype, {
 		return this.outEdges.get(this.getIndex(i - 1));
 	},
 	getIndex: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Edge) {
-				let edge = arguments[0];
-				this.sortEdges();
-				for (var i = 0; i < this.outEdges.size(); i++) {
-					var de = this.outEdges.get(i);
-					if (de.getEdge() === edge) return i;
-				}
-				return -1;
-			} else if (arguments[0] instanceof DirectedEdge) {
-				let dirEdge = arguments[0];
-				this.sortEdges();
-				for (var i = 0; i < this.outEdges.size(); i++) {
-					var de = this.outEdges.get(i);
-					if (de === dirEdge) return i;
-				}
-				return -1;
-			} else if (Number.isInteger(arguments[0])) {
-				let i = arguments[0];
-				var modi = i % this.outEdges.size();
-				if (modi < 0) modi += this.outEdges.size();
-				return modi;
+		if (arguments[0] instanceof Edge) {
+			let edge = arguments[0];
+			this.sortEdges();
+			for (var i = 0; i < this.outEdges.size(); i++) {
+				var de = this.outEdges.get(i);
+				if (de.getEdge() === edge) return i;
 			}
+			return -1;
+		} else if (arguments[0] instanceof DirectedEdge) {
+			let dirEdge = arguments[0];
+			this.sortEdges();
+			for (var i = 0; i < this.outEdges.size(); i++) {
+				var de = this.outEdges.get(i);
+				if (de === dirEdge) return i;
+			}
+			return -1;
+		} else if (Number.isInteger(arguments[0])) {
+			let i = arguments[0];
+			var modi = i % this.outEdges.size();
+			if (modi < 0) modi += this.outEdges.size();
+			return modi;
 		}
 	},
 	add: function (de) {

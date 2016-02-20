@@ -5,10 +5,8 @@ import Polygon from '../../geom/Polygon';
 import extend from '../../../../../extend';
 export default function RectangleContains() {
 	this.rectEnv = null;
-	if (arguments.length === 1) {
-		let rectangle = arguments[0];
-		this.rectEnv = rectangle.getEnvelopeInternal();
-	}
+	let rectangle = arguments[0];
+	this.rectEnv = rectangle.getEnvelopeInternal();
 }
 extend(RectangleContains.prototype, {
 	isContainedInBoundary: function (geom) {
@@ -42,14 +40,12 @@ extend(RectangleContains.prototype, {
 		return true;
 	},
 	isPointContainedInBoundary: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Point) {
-				let point = arguments[0];
-				return this.isPointContainedInBoundary(point.getCoordinate());
-			} else if (arguments[0] instanceof Coordinate) {
-				let pt = arguments[0];
-				return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
-			}
+		if (arguments[0] instanceof Point) {
+			let point = arguments[0];
+			return this.isPointContainedInBoundary(point.getCoordinate());
+		} else if (arguments[0] instanceof Coordinate) {
+			let pt = arguments[0];
+			return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
 		}
 	},
 	contains: function (geom) {

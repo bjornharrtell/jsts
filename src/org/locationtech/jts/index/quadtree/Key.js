@@ -6,10 +6,8 @@ export default function Key() {
 	this.pt = new Coordinate();
 	this.level = 0;
 	this.env = null;
-	if (arguments.length === 1) {
-		let itemEnv = arguments[0];
-		this.computeKey(itemEnv);
-	}
+	let itemEnv = arguments[0];
+	this.computeKey(itemEnv);
 }
 extend(Key.prototype, {
 	getLevel: function () {

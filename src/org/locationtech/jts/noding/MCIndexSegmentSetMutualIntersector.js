@@ -7,10 +7,8 @@ import ArrayList from '../../../../java/util/ArrayList';
 import inherits from '../../../../inherits';
 export default function MCIndexSegmentSetMutualIntersector() {
 	this.index = new STRtree();
-	if (arguments.length === 1) {
-		let baseSegStrings = arguments[0];
-		this.initBaseSegments(baseSegStrings);
-	}
+	let baseSegStrings = arguments[0];
+	this.initBaseSegments(baseSegStrings);
 }
 extend(MCIndexSegmentSetMutualIntersector.prototype, {
 	addToIndex: function (segStr) {
@@ -65,10 +63,8 @@ extend(MCIndexSegmentSetMutualIntersector.prototype, {
 function SegmentOverlapAction() {
 	MonotoneChainOverlapAction.apply(this);
 	this.si = null;
-	if (arguments.length === 1) {
-		let si = arguments[0];
-		this.si = si;
-	}
+	let si = arguments[0];
+	this.si = si;
 }
 inherits(SegmentOverlapAction, MonotoneChainOverlapAction);
 extend(SegmentOverlapAction.prototype, {

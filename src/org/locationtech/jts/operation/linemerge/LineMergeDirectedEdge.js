@@ -3,11 +3,8 @@ import DirectedEdge from '../../planargraph/DirectedEdge';
 import Assert from '../../util/Assert';
 import inherits from '../../../../../inherits';
 export default function LineMergeDirectedEdge() {
-	DirectedEdge.apply(this);
-	if (arguments.length === 4) {
-		let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
-		DirectedEdge.call(this, from, to, directionPt, edgeDirection);
-	}
+	let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
+	DirectedEdge.call(this, from, to, directionPt, edgeDirection);
 }
 inherits(LineMergeDirectedEdge, DirectedEdge);
 extend(LineMergeDirectedEdge.prototype, {

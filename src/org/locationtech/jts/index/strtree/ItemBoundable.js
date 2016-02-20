@@ -4,11 +4,9 @@ import Serializable from '../../../../../java/io/Serializable';
 export default function ItemBoundable() {
 	this.bounds = null;
 	this.item = null;
-	if (arguments.length === 2) {
-		let bounds = arguments[0], item = arguments[1];
-		this.bounds = bounds;
-		this.item = item;
-	}
+	let bounds = arguments[0], item = arguments[1];
+	this.bounds = bounds;
+	this.item = item;
 }
 extend(ItemBoundable.prototype, {
 	getItem: function () {

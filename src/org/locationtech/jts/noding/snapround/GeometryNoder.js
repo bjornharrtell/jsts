@@ -8,10 +8,8 @@ export default function GeometryNoder() {
 	this.geomFact = null;
 	this.pm = null;
 	this.isValidityChecked = false;
-	if (arguments.length === 1) {
-		let pm = arguments[0];
-		this.pm = pm;
-	}
+	let pm = arguments[0];
+	this.pm = pm;
 }
 extend(GeometryNoder.prototype, {
 	extractLines: function (geoms) {

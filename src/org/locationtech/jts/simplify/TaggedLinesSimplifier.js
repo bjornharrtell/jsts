@@ -5,7 +5,6 @@ export default function TaggedLinesSimplifier() {
 	this.inputIndex = new LineSegmentIndex();
 	this.outputIndex = new LineSegmentIndex();
 	this.distanceTolerance = 0.0;
-	if (arguments.length === 0) {}
 }
 extend(TaggedLinesSimplifier.prototype, {
 	setDistanceTolerance: function (distanceTolerance) {

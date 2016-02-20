@@ -23,30 +23,26 @@ export default function IsValidOp() {
 	this.parentGeometry = null;
 	this.isSelfTouchingRingFormingHoleValid = false;
 	this.validErr = null;
-	if (arguments.length === 1) {
-		let parentGeometry = arguments[0];
-		this.parentGeometry = parentGeometry;
-	}
+	let parentGeometry = arguments[0];
+	this.parentGeometry = parentGeometry;
 }
 extend(IsValidOp.prototype, {
 	checkInvalidCoordinates: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Array) {
-				let coords = arguments[0];
-				for (var i = 0; i < coords.length; i++) {
-					if (!IsValidOp.isValid(coords[i])) {
-						this.validErr = new TopologyValidationError(TopologyValidationError.INVALID_COORDINATE, coords[i]);
-						return null;
-					}
+		if (arguments[0] instanceof Array) {
+			let coords = arguments[0];
+			for (var i = 0; i < coords.length; i++) {
+				if (!IsValidOp.isValid(coords[i])) {
+					this.validErr = new TopologyValidationError(TopologyValidationError.INVALID_COORDINATE, coords[i]);
+					return null;
 				}
-			} else if (arguments[0] instanceof Polygon) {
-				let poly = arguments[0];
-				this.checkInvalidCoordinates(poly.getExteriorRing().getCoordinates());
+			}
+		} else if (arguments[0] instanceof Polygon) {
+			let poly = arguments[0];
+			this.checkInvalidCoordinates(poly.getExteriorRing().getCoordinates());
+			if (this.validErr !== null) return null;
+			for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+				this.checkInvalidCoordinates(poly.getInteriorRingN(i).getCoordinates());
 				if (this.validErr !== null) return null;
-				for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-					this.checkInvalidCoordinates(poly.getInteriorRingN(i).getCoordinates());
-					if (this.validErr !== null) return null;
-				}
 			}
 		}
 	},
@@ -150,95 +146,93 @@ extend(IsValidOp.prototype, {
 		return this.validErr;
 	},
 	checkValid: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Point) {
-				let g = arguments[0];
-				this.checkInvalidCoordinates(g.getCoordinates());
-			} else if (arguments[0] instanceof MultiPoint) {
-				let g = arguments[0];
-				this.checkInvalidCoordinates(g.getCoordinates());
-			} else if (arguments[0] instanceof LinearRing) {
-				let g = arguments[0];
-				this.checkInvalidCoordinates(g.getCoordinates());
-				if (this.validErr !== null) return null;
-				this.checkClosedRing(g);
-				if (this.validErr !== null) return null;
-				var graph = new GeometryGraph(0, g);
-				this.checkTooFewPoints(graph);
-				if (this.validErr !== null) return null;
-				var li = new RobustLineIntersector();
-				graph.computeSelfNodes(li, true, true);
+		if (arguments[0] instanceof Point) {
+			let g = arguments[0];
+			this.checkInvalidCoordinates(g.getCoordinates());
+		} else if (arguments[0] instanceof MultiPoint) {
+			let g = arguments[0];
+			this.checkInvalidCoordinates(g.getCoordinates());
+		} else if (arguments[0] instanceof LinearRing) {
+			let g = arguments[0];
+			this.checkInvalidCoordinates(g.getCoordinates());
+			if (this.validErr !== null) return null;
+			this.checkClosedRing(g);
+			if (this.validErr !== null) return null;
+			var graph = new GeometryGraph(0, g);
+			this.checkTooFewPoints(graph);
+			if (this.validErr !== null) return null;
+			var li = new RobustLineIntersector();
+			graph.computeSelfNodes(li, true, true);
+			this.checkNoSelfIntersectingRings(graph);
+		} else if (arguments[0] instanceof LineString) {
+			let g = arguments[0];
+			this.checkInvalidCoordinates(g.getCoordinates());
+			if (this.validErr !== null) return null;
+			var graph = new GeometryGraph(0, g);
+			this.checkTooFewPoints(graph);
+		} else if (arguments[0] instanceof Polygon) {
+			let g = arguments[0];
+			this.checkInvalidCoordinates(g);
+			if (this.validErr !== null) return null;
+			this.checkClosedRings(g);
+			if (this.validErr !== null) return null;
+			var graph = new GeometryGraph(0, g);
+			this.checkTooFewPoints(graph);
+			if (this.validErr !== null) return null;
+			this.checkConsistentArea(graph);
+			if (this.validErr !== null) return null;
+			if (!this.isSelfTouchingRingFormingHoleValid) {
 				this.checkNoSelfIntersectingRings(graph);
-			} else if (arguments[0] instanceof LineString) {
-				let g = arguments[0];
-				this.checkInvalidCoordinates(g.getCoordinates());
 				if (this.validErr !== null) return null;
-				var graph = new GeometryGraph(0, g);
-				this.checkTooFewPoints(graph);
-			} else if (arguments[0] instanceof Polygon) {
-				let g = arguments[0];
-				this.checkInvalidCoordinates(g);
-				if (this.validErr !== null) return null;
-				this.checkClosedRings(g);
-				if (this.validErr !== null) return null;
-				var graph = new GeometryGraph(0, g);
-				this.checkTooFewPoints(graph);
-				if (this.validErr !== null) return null;
-				this.checkConsistentArea(graph);
-				if (this.validErr !== null) return null;
-				if (!this.isSelfTouchingRingFormingHoleValid) {
-					this.checkNoSelfIntersectingRings(graph);
-					if (this.validErr !== null) return null;
-				}
-				this.checkHolesInShell(g, graph);
-				if (this.validErr !== null) return null;
-				this.checkHolesNotNested(g, graph);
-				if (this.validErr !== null) return null;
-				this.checkConnectedInteriors(graph);
-			} else if (arguments[0] instanceof MultiPolygon) {
-				let g = arguments[0];
-				for (var i = 0; i < g.getNumGeometries(); i++) {
-					var p = g.getGeometryN(i);
-					this.checkInvalidCoordinates(p);
-					if (this.validErr !== null) return null;
-					this.checkClosedRings(p);
-					if (this.validErr !== null) return null;
-				}
-				var graph = new GeometryGraph(0, g);
-				this.checkTooFewPoints(graph);
-				if (this.validErr !== null) return null;
-				this.checkConsistentArea(graph);
-				if (this.validErr !== null) return null;
-				if (!this.isSelfTouchingRingFormingHoleValid) {
-					this.checkNoSelfIntersectingRings(graph);
-					if (this.validErr !== null) return null;
-				}
-				for (var i = 0; i < g.getNumGeometries(); i++) {
-					var p = g.getGeometryN(i);
-					this.checkHolesInShell(p, graph);
-					if (this.validErr !== null) return null;
-				}
-				for (var i = 0; i < g.getNumGeometries(); i++) {
-					var p = g.getGeometryN(i);
-					this.checkHolesNotNested(p, graph);
-					if (this.validErr !== null) return null;
-				}
-				this.checkShellsNotNested(g, graph);
-				if (this.validErr !== null) return null;
-				this.checkConnectedInteriors(graph);
-			} else if (arguments[0] instanceof GeometryCollection) {
-				let gc = arguments[0];
-				for (var i = 0; i < gc.getNumGeometries(); i++) {
-					var g = gc.getGeometryN(i);
-					this.checkValid(g);
-					if (this.validErr !== null) return null;
-				}
-			} else if (arguments[0] instanceof Geometry) {
-				let g = arguments[0];
-				this.validErr = null;
-				if (g.isEmpty()) return null;
-				if (g instanceof Point) this.checkValid(g); else if (g instanceof MultiPoint) this.checkValid(g); else if (g instanceof LinearRing) this.checkValid(g); else if (g instanceof LineString) this.checkValid(g); else if (g instanceof Polygon) this.checkValid(g); else if (g instanceof MultiPolygon) this.checkValid(g); else if (g instanceof GeometryCollection) this.checkValid(g); else throw new UnsupportedOperationException(g.getClass().getName());
 			}
+			this.checkHolesInShell(g, graph);
+			if (this.validErr !== null) return null;
+			this.checkHolesNotNested(g, graph);
+			if (this.validErr !== null) return null;
+			this.checkConnectedInteriors(graph);
+		} else if (arguments[0] instanceof MultiPolygon) {
+			let g = arguments[0];
+			for (var i = 0; i < g.getNumGeometries(); i++) {
+				var p = g.getGeometryN(i);
+				this.checkInvalidCoordinates(p);
+				if (this.validErr !== null) return null;
+				this.checkClosedRings(p);
+				if (this.validErr !== null) return null;
+			}
+			var graph = new GeometryGraph(0, g);
+			this.checkTooFewPoints(graph);
+			if (this.validErr !== null) return null;
+			this.checkConsistentArea(graph);
+			if (this.validErr !== null) return null;
+			if (!this.isSelfTouchingRingFormingHoleValid) {
+				this.checkNoSelfIntersectingRings(graph);
+				if (this.validErr !== null) return null;
+			}
+			for (var i = 0; i < g.getNumGeometries(); i++) {
+				var p = g.getGeometryN(i);
+				this.checkHolesInShell(p, graph);
+				if (this.validErr !== null) return null;
+			}
+			for (var i = 0; i < g.getNumGeometries(); i++) {
+				var p = g.getGeometryN(i);
+				this.checkHolesNotNested(p, graph);
+				if (this.validErr !== null) return null;
+			}
+			this.checkShellsNotNested(g, graph);
+			if (this.validErr !== null) return null;
+			this.checkConnectedInteriors(graph);
+		} else if (arguments[0] instanceof GeometryCollection) {
+			let gc = arguments[0];
+			for (var i = 0; i < gc.getNumGeometries(); i++) {
+				var g = gc.getGeometryN(i);
+				this.checkValid(g);
+				if (this.validErr !== null) return null;
+			}
+		} else if (arguments[0] instanceof Geometry) {
+			let g = arguments[0];
+			this.validErr = null;
+			if (g.isEmpty()) return null;
+			if (g instanceof Point) this.checkValid(g); else if (g instanceof MultiPoint) this.checkValid(g); else if (g instanceof LinearRing) this.checkValid(g); else if (g instanceof LineString) this.checkValid(g); else if (g instanceof Polygon) this.checkValid(g); else if (g instanceof MultiPolygon) this.checkValid(g); else if (g instanceof GeometryCollection) this.checkValid(g); else throw new UnsupportedOperationException(g.getClass().getName());
 		}
 	},
 	setSelfTouchingRingFormingHoleValid: function (isValid) {
@@ -308,19 +302,17 @@ IsValidOp.findPtNotNode = function (testCoords, searchRing, graph) {
 	return null;
 };
 IsValidOp.isValid = function () {
-	if (arguments.length === 1) {
-		if (arguments[0] instanceof Geometry) {
-			let geom = arguments[0];
-			var isValidOp = new IsValidOp(geom);
-			return isValidOp.isValid();
-		} else if (arguments[0] instanceof Coordinate) {
-			let coord = arguments[0];
-			if (Double.isNaN(coord.x)) return false;
-			if (Double.isInfinite(coord.x)) return false;
-			if (Double.isNaN(coord.y)) return false;
-			if (Double.isInfinite(coord.y)) return false;
-			return true;
-		}
+	if (arguments[0] instanceof Geometry) {
+		let geom = arguments[0];
+		var isValidOp = new IsValidOp(geom);
+		return isValidOp.isValid();
+	} else if (arguments[0] instanceof Coordinate) {
+		let coord = arguments[0];
+		if (Double.isNaN(coord.x)) return false;
+		if (Double.isInfinite(coord.x)) return false;
+		if (Double.isNaN(coord.y)) return false;
+		if (Double.isInfinite(coord.y)) return false;
+		return true;
 	}
 };
 

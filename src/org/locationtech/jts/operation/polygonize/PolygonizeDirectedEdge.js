@@ -2,14 +2,11 @@ import extend from '../../../../../extend';
 import DirectedEdge from '../../planargraph/DirectedEdge';
 import inherits from '../../../../../inherits';
 export default function PolygonizeDirectedEdge() {
-	DirectedEdge.apply(this);
 	this.edgeRing = null;
 	this.next = null;
 	this.label = -1;
-	if (arguments.length === 4) {
-		let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
-		DirectedEdge.call(this, from, to, directionPt, edgeDirection);
-	}
+	let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
+	DirectedEdge.call(this, from, to, directionPt, edgeDirection);
 }
 inherits(PolygonizeDirectedEdge, DirectedEdge);
 extend(PolygonizeDirectedEdge.prototype, {

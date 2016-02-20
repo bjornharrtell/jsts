@@ -10,11 +10,9 @@ export default function DiscreteHausdorffDistance() {
 	this.g1 = null;
 	this.ptDist = new PointPairDistance();
 	this.densifyFrac = 0.0;
-	if (arguments.length === 2) {
-		let g0 = arguments[0], g1 = arguments[1];
-		this.g0 = g0;
-		this.g1 = g1;
-	}
+	let g0 = arguments[0], g1 = arguments[1];
+	this.g0 = g0;
+	this.g1 = g1;
 }
 extend(DiscreteHausdorffDistance.prototype, {
 	getCoordinates: function () {
@@ -70,10 +68,8 @@ function MaxPointDistanceFilter() {
 	this.minPtDist = new PointPairDistance();
 	this.euclideanDist = new DistanceToPoint();
 	this.geom = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.geom = geom;
-	}
+	let geom = arguments[0];
+	this.geom = geom;
 }
 extend(MaxPointDistanceFilter.prototype, {
 	filter: function (pt) {
@@ -96,11 +92,9 @@ function MaxDensifiedByFractionDistanceFilter() {
 	this.minPtDist = new PointPairDistance();
 	this.geom = null;
 	this.numSubSegs = 0;
-	if (arguments.length === 2) {
-		let geom = arguments[0], fraction = arguments[1];
-		this.geom = geom;
-		this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
-	}
+	let geom = arguments[0], fraction = arguments[1];
+	this.geom = geom;
+	this.numSubSegs = Math.trunc(Math.round(1.0 / fraction));
 }
 extend(MaxDensifiedByFractionDistanceFilter.prototype, {
 	filter: function (seq, index) {

@@ -4,9 +4,7 @@ import ArrayList from '../../../../java/util/ArrayList';
 import inherits from '../../../../inherits';
 export default function CoordinateList() {
 	ArrayList.apply(this);
-	if (arguments.length === 0) {
-		ArrayList.call(this);
-	} else if (arguments.length === 1) {
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let coord = arguments[0];
 		this.ensureCapacity(coord.length);
 		this.add(coord, true);

@@ -12,7 +12,6 @@ export default function SimpleMCSweepLineIntersector() {
 	EdgeSetIntersector.apply(this);
 	this.events = new ArrayList();
 	this.nOverlaps = null;
-	if (arguments.length === 0) {}
 }
 inherits(SimpleMCSweepLineIntersector, EdgeSetIntersector);
 extend(SimpleMCSweepLineIntersector.prototype, {

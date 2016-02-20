@@ -8,10 +8,8 @@ import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default function PolygonBuilder() {
 	this.geometryFactory = null;
 	this.shellList = new ArrayList();
-	if (arguments.length === 1) {
-		let geometryFactory = arguments[0];
-		this.geometryFactory = geometryFactory;
-	}
+	let geometryFactory = arguments[0];
+	this.geometryFactory = geometryFactory;
 }
 extend(PolygonBuilder.prototype, {
 	sortShellsAndHoles: function (edgeRings, shellList, freeHoleList) {

@@ -2,7 +2,6 @@ import extend from '../../../../../extend';
 import GeometryCollection from '../GeometryCollection';
 export default function ShortCircuitedGeometryVisitor() {
 	this._isDone = false;
-	if (arguments.length === 0) {}
 }
 extend(ShortCircuitedGeometryVisitor.prototype, {
 	applyTo: function (geom) {

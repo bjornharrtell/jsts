@@ -63,24 +63,22 @@ extend(PrecisionModel.prototype, {
 		return description;
 	},
 	makePrecise: function () {
-		if (arguments.length === 1) {
-			if (typeof arguments[0] === "number") {
-				let val = arguments[0];
-				if (Double.isNaN(val)) return val;
-				if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
-					var floatSingleVal = val;
-					return floatSingleVal;
-				}
-				if (this.modelType === PrecisionModel.FIXED) {
-					return Math.round(val * this.scale) / this.scale;
-				}
-				return val;
-			} else if (arguments[0] instanceof Coordinate) {
-				let coord = arguments[0];
-				if (this.modelType === PrecisionModel.FLOATING) return null;
-				coord.x = this.makePrecise(coord.x);
-				coord.y = this.makePrecise(coord.y);
+		if (typeof arguments[0] === "number") {
+			let val = arguments[0];
+			if (Double.isNaN(val)) return val;
+			if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
+				var floatSingleVal = val;
+				return floatSingleVal;
 			}
+			if (this.modelType === PrecisionModel.FIXED) {
+				return Math.round(val * this.scale) / this.scale;
+			}
+			return val;
+		} else if (arguments[0] instanceof Coordinate) {
+			let coord = arguments[0];
+			if (this.modelType === PrecisionModel.FLOATING) return null;
+			coord.x = this.makePrecise(coord.x);
+			coord.y = this.makePrecise(coord.y);
 		}
 	},
 	getMaximumSignificantDigits: function () {
@@ -110,11 +108,9 @@ PrecisionModel.mostPrecise = function (pm1, pm2) {
 };
 function Type() {
 	this.name = null;
-	if (arguments.length === 1) {
-		let name = arguments[0];
-		this.name = name;
-		Type.nameToTypeMap.put(name, this);
-	}
+	let name = arguments[0];
+	this.name = name;
+	Type.nameToTypeMap.put(name, this);
 }
 extend(Type.prototype, {
 	readResolve: function () {

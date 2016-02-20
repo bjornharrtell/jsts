@@ -10,10 +10,8 @@ export default function DouglasPeuckerSimplifier() {
 	this.inputGeom = null;
 	this.distanceTolerance = null;
 	this.isEnsureValidTopology = true;
-	if (arguments.length === 1) {
-		let inputGeom = arguments[0];
-		this.inputGeom = inputGeom;
-	}
+	let inputGeom = arguments[0];
+	this.inputGeom = inputGeom;
 }
 extend(DouglasPeuckerSimplifier.prototype, {
 	setEnsureValid: function (isEnsureValidTopology) {
@@ -43,11 +41,9 @@ function DPTransformer() {
 	GeometryTransformer.apply(this);
 	this.isEnsureValidTopology = true;
 	this.distanceTolerance = null;
-	if (arguments.length === 2) {
-		let isEnsureValidTopology = arguments[0], distanceTolerance = arguments[1];
-		this.isEnsureValidTopology = isEnsureValidTopology;
-		this.distanceTolerance = distanceTolerance;
-	}
+	let isEnsureValidTopology = arguments[0], distanceTolerance = arguments[1];
+	this.isEnsureValidTopology = isEnsureValidTopology;
+	this.distanceTolerance = distanceTolerance;
 }
 inherits(DPTransformer, GeometryTransformer);
 extend(DPTransformer.prototype, {

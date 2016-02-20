@@ -13,10 +13,8 @@ import PlanarGraph from '../../planargraph/PlanarGraph';
 export default function PolygonizeGraph() {
 	PlanarGraph.apply(this);
 	this.factory = null;
-	if (arguments.length === 1) {
-		let factory = arguments[0];
-		this.factory = factory;
-	}
+	let factory = arguments[0];
+	this.factory = factory;
 }
 inherits(PolygonizeGraph, PlanarGraph);
 extend(PolygonizeGraph.prototype, {

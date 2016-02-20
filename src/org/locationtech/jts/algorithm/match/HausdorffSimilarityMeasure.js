@@ -2,9 +2,7 @@ import SimilarityMeasure from './SimilarityMeasure';
 import extend from '../../../../../extend';
 import Envelope from '../../geom/Envelope';
 import DiscreteHausdorffDistance from '../distance/DiscreteHausdorffDistance';
-export default function HausdorffSimilarityMeasure() {
-	if (arguments.length === 0) {}
-}
+export default function HausdorffSimilarityMeasure() {}
 extend(HausdorffSimilarityMeasure.prototype, {
 	measure: function (g1, g2) {
 		var distance = DiscreteHausdorffDistance.distance(g1, g2, HausdorffSimilarityMeasure.DENSIFY_FRACTION);

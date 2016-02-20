@@ -4,10 +4,8 @@ import FastNodingValidator from '../noding/FastNodingValidator';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function EdgeNodingValidator() {
 	this.nv = null;
-	if (arguments.length === 1) {
-		let edges = arguments[0];
-		this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
-	}
+	let edges = arguments[0];
+	this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
 }
 extend(EdgeNodingValidator.prototype, {
 	checkValid: function () {

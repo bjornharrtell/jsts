@@ -5,10 +5,8 @@ import LineSegment from '../geom/LineSegment';
 import Assert from '../util/Assert';
 export default function LengthIndexOfPoint() {
 	this.linearGeom = null;
-	if (arguments.length === 1) {
-		let linearGeom = arguments[0];
-		this.linearGeom = linearGeom;
-	}
+	let linearGeom = arguments[0];
+	this.linearGeom = linearGeom;
 }
 extend(LengthIndexOfPoint.prototype, {
 	indexOf: function (inputPt) {

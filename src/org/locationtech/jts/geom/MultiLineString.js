@@ -6,11 +6,8 @@ import GeometryCollection from './GeometryCollection';
 import Dimension from './Dimension';
 import inherits from '../../../../inherits';
 export default function MultiLineString() {
-	GeometryCollection.apply(this);
-	if (arguments.length === 2) {
-		let lineStrings = arguments[0], factory = arguments[1];
-		GeometryCollection.call(this, lineStrings, factory);
-	}
+	let lineStrings = arguments[0], factory = arguments[1];
+	GeometryCollection.call(this, lineStrings, factory);
 }
 inherits(MultiLineString, GeometryCollection);
 extend(MultiLineString.prototype, {

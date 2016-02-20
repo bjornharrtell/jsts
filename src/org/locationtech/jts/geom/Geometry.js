@@ -11,11 +11,9 @@ export default function Geometry() {
 	this.factory = null;
 	this.SRID = null;
 	this.userData = null;
-	if (arguments.length === 1) {
-		let factory = arguments[0];
-		this.factory = factory;
-		this.SRID = factory.getSRID();
-	}
+	let factory = arguments[0];
+	this.factory = factory;
+	this.SRID = factory.getSRID();
 }
 extend(Geometry.prototype, {
 	isGeometryCollection: function () {

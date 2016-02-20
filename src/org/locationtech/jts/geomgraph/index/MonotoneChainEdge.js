@@ -7,13 +7,11 @@ export default function MonotoneChainEdge() {
 	this.startIndex = null;
 	this.env1 = new Envelope();
 	this.env2 = new Envelope();
-	if (arguments.length === 1) {
-		let e = arguments[0];
-		this.e = e;
-		this.pts = e.getCoordinates();
-		var mcb = new MonotoneChainIndexer();
-		this.startIndex = mcb.getChainStartIndices(this.pts);
-	}
+	let e = arguments[0];
+	this.e = e;
+	this.pts = e.getCoordinates();
+	var mcb = new MonotoneChainIndexer();
+	this.startIndex = mcb.getChainStartIndices(this.pts);
 }
 extend(MonotoneChainEdge.prototype, {
 	getCoordinates: function () {

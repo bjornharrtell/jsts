@@ -14,15 +14,13 @@ export default function AffineTransformationBuilder() {
 	this.m10 = null;
 	this.m11 = null;
 	this.m12 = null;
-	if (arguments.length === 6) {
-		let src0 = arguments[0], src1 = arguments[1], src2 = arguments[2], dest0 = arguments[3], dest1 = arguments[4], dest2 = arguments[5];
-		this.src0 = src0;
-		this.src1 = src1;
-		this.src2 = src2;
-		this.dest0 = dest0;
-		this.dest1 = dest1;
-		this.dest2 = dest2;
-	}
+	let src0 = arguments[0], src1 = arguments[1], src2 = arguments[2], dest0 = arguments[3], dest1 = arguments[4], dest2 = arguments[5];
+	this.src0 = src0;
+	this.src1 = src1;
+	this.src2 = src2;
+	this.dest0 = dest0;
+	this.dest1 = dest1;
+	this.dest2 = dest2;
 }
 extend(AffineTransformationBuilder.prototype, {
 	solve: function (b) {

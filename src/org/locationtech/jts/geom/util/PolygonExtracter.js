@@ -5,10 +5,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default function PolygonExtracter() {
 	this.comps = null;
-	if (arguments.length === 1) {
-		let comps = arguments[0];
-		this.comps = comps;
-	}
+	let comps = arguments[0];
+	this.comps = comps;
 }
 extend(PolygonExtracter.prototype, {
 	filter: function (geom) {

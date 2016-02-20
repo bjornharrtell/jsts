@@ -3,10 +3,8 @@ import SegmentIntersectionDetector from './SegmentIntersectionDetector';
 import MCIndexSegmentSetMutualIntersector from './MCIndexSegmentSetMutualIntersector';
 export default function FastSegmentSetIntersectionFinder() {
 	this.segSetMutInt = null;
-	if (arguments.length === 1) {
-		let baseSegStrings = arguments[0];
-		this.segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
-	}
+	let baseSegStrings = arguments[0];
+	this.segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
 }
 extend(FastSegmentSetIntersectionFinder.prototype, {
 	getSegmentSetIntersector: function () {

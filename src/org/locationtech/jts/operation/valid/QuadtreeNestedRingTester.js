@@ -11,10 +11,8 @@ export default function QuadtreeNestedRingTester() {
 	this.totalEnv = new Envelope();
 	this.quadtree = null;
 	this.nestedPt = null;
-	if (arguments.length === 1) {
-		let graph = arguments[0];
-		this.graph = graph;
-	}
+	let graph = arguments[0];
+	this.graph = graph;
 }
 extend(QuadtreeNestedRingTester.prototype, {
 	getNestedPoint: function () {

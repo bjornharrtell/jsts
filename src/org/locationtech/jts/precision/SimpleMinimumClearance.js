@@ -9,10 +9,8 @@ export default function SimpleMinimumClearance() {
 	this.inputGeom = null;
 	this.minClearance = null;
 	this.minClearancePts = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.inputGeom = geom;
-	}
+	let geom = arguments[0];
+	this.inputGeom = geom;
 }
 extend(SimpleMinimumClearance.prototype, {
 	getLine: function () {
@@ -64,10 +62,8 @@ SimpleMinimumClearance.getDistance = function (g) {
 };
 function VertexCoordinateFilter() {
 	this.smc = null;
-	if (arguments.length === 1) {
-		let smc = arguments[0];
-		this.smc = smc;
-	}
+	let smc = arguments[0];
+	this.smc = smc;
 }
 extend(VertexCoordinateFilter.prototype, {
 	filter: function (coord) {
@@ -83,11 +79,9 @@ extend(VertexCoordinateFilter.prototype, {
 function ComputeMCCoordinateSequenceFilter() {
 	this.smc = null;
 	this.queryPt = null;
-	if (arguments.length === 2) {
-		let smc = arguments[0], queryPt = arguments[1];
-		this.smc = smc;
-		this.queryPt = queryPt;
-	}
+	let smc = arguments[0], queryPt = arguments[1];
+	this.smc = smc;
+	this.queryPt = queryPt;
 }
 extend(ComputeMCCoordinateSequenceFilter.prototype, {
 	isGeometryChanged: function () {

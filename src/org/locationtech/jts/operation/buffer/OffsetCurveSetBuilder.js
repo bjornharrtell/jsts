@@ -20,12 +20,10 @@ export default function OffsetCurveSetBuilder() {
 	this.distance = null;
 	this.curveBuilder = null;
 	this.curveList = new ArrayList();
-	if (arguments.length === 3) {
-		let inputGeom = arguments[0], distance = arguments[1], curveBuilder = arguments[2];
-		this.inputGeom = inputGeom;
-		this.distance = distance;
-		this.curveBuilder = curveBuilder;
-	}
+	let inputGeom = arguments[0], distance = arguments[1], curveBuilder = arguments[2];
+	this.inputGeom = inputGeom;
+	this.distance = distance;
+	this.curveBuilder = curveBuilder;
 }
 extend(OffsetCurveSetBuilder.prototype, {
 	addPoint: function (p) {

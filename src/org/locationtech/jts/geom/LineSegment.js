@@ -29,18 +29,16 @@ extend(LineSegment.prototype, {
 		return Math.min(this.p0.x, this.p1.x);
 	},
 	orientationIndex: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof LineSegment) {
-				let seg = arguments[0];
-				var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
-				var orient1 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p1);
-				if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
-				if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
-				return 0;
-			} else if (arguments[0] instanceof Coordinate) {
-				let p = arguments[0];
-				return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
-			}
+		if (arguments[0] instanceof LineSegment) {
+			let seg = arguments[0];
+			var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
+			var orient1 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p1);
+			if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
+			if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
+			return 0;
+		} else if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
 		}
 	},
 	toGeometry: function (geomFactory) {
@@ -63,29 +61,27 @@ extend(LineSegment.prototype, {
 		return null;
 	},
 	project: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Coordinate) {
-				let p = arguments[0];
-				if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
-				var r = this.projectionFactor(p);
-				var coord = new Coordinate();
-				coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
-				coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
-				return coord;
-			} else if (arguments[0] instanceof LineSegment) {
-				let seg = arguments[0];
-				var pf0 = this.projectionFactor(seg.p0);
-				var pf1 = this.projectionFactor(seg.p1);
-				if (pf0 >= 1.0 && pf1 >= 1.0) return null;
-				if (pf0 <= 0.0 && pf1 <= 0.0) return null;
-				var newp0 = this.project(seg.p0);
-				if (pf0 < 0.0) newp0 = this.p0;
-				if (pf0 > 1.0) newp0 = this.p1;
-				var newp1 = this.project(seg.p1);
-				if (pf1 < 0.0) newp1 = this.p0;
-				if (pf1 > 1.0) newp1 = this.p1;
-				return new LineSegment(newp0, newp1);
-			}
+		if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
+			var r = this.projectionFactor(p);
+			var coord = new Coordinate();
+			coord.x = this.p0.x + r * (this.p1.x - this.p0.x);
+			coord.y = this.p0.y + r * (this.p1.y - this.p0.y);
+			return coord;
+		} else if (arguments[0] instanceof LineSegment) {
+			let seg = arguments[0];
+			var pf0 = this.projectionFactor(seg.p0);
+			var pf1 = this.projectionFactor(seg.p1);
+			if (pf0 >= 1.0 && pf1 >= 1.0) return null;
+			if (pf0 <= 0.0 && pf1 <= 0.0) return null;
+			var newp0 = this.project(seg.p0);
+			if (pf0 < 0.0) newp0 = this.p0;
+			if (pf0 > 1.0) newp0 = this.p1;
+			var newp1 = this.project(seg.p1);
+			if (pf1 < 0.0) newp1 = this.p0;
+			if (pf1 > 1.0) newp1 = this.p1;
+			return new LineSegment(newp0, newp1);
 		}
 	},
 	normalize: function () {
@@ -236,14 +232,12 @@ extend(LineSegment.prototype, {
 		return this.p0.y === this.p1.y;
 	},
 	distance: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof LineSegment) {
-				let ls = arguments[0];
-				return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
-			} else if (arguments[0] instanceof Coordinate) {
-				let p = arguments[0];
-				return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
-			}
+		if (arguments[0] instanceof LineSegment) {
+			let ls = arguments[0];
+			return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
+		} else if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
 		}
 	},
 	pointAlong: function (segmentLengthFraction) {

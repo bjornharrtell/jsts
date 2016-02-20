@@ -13,12 +13,10 @@ export default function OverlayResultValidator() {
 	this.invalidLocation = null;
 	this.boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE;
 	this.testCoords = new ArrayList();
-	if (arguments.length === 3) {
-		let a = arguments[0], b = arguments[1], result = arguments[2];
-		this.boundaryDistanceTolerance = OverlayResultValidator.computeBoundaryDistanceTolerance(a, b);
-		this.geom = [a, b, result];
-		this.locFinder = [new FuzzyPointLocator(this.geom[0], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[1], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[2], this.boundaryDistanceTolerance)];
-	}
+	let a = arguments[0], b = arguments[1], result = arguments[2];
+	this.boundaryDistanceTolerance = OverlayResultValidator.computeBoundaryDistanceTolerance(a, b);
+	this.geom = [a, b, result];
+	this.locFinder = [new FuzzyPointLocator(this.geom[0], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[1], this.boundaryDistanceTolerance), new FuzzyPointLocator(this.geom[2], this.boundaryDistanceTolerance)];
 }
 extend(OverlayResultValidator.prototype, {
 	reportResult: function (overlayOp, location, expectedInterior) {

@@ -4,11 +4,9 @@ export default function GeometryCombiner() {
 	this.geomFactory = null;
 	this.skipEmpty = false;
 	this.inputGeoms = null;
-	if (arguments.length === 1) {
-		let geoms = arguments[0];
-		this.geomFactory = GeometryCombiner.extractFactory(geoms);
-		this.inputGeoms = geoms;
-	}
+	let geoms = arguments[0];
+	this.geomFactory = GeometryCombiner.extractFactory(geoms);
+	this.inputGeoms = geoms;
 }
 extend(GeometryCombiner.prototype, {
 	extractElements: function (geom, elems) {

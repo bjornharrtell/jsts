@@ -8,11 +8,9 @@ export default function InteriorPointArea() {
 	this.factory = null;
 	this.interiorPoint = null;
 	this.maxWidth = 0.0;
-	if (arguments.length === 1) {
-		let g = arguments[0];
-		this.factory = g.getFactory();
-		this.add(g);
-	}
+	let g = arguments[0];
+	this.factory = g.getFactory();
+	this.add(g);
 }
 extend(InteriorPointArea.prototype, {
 	addPolygon: function (geometry) {
@@ -38,26 +36,24 @@ extend(InteriorPointArea.prototype, {
 		return this.interiorPoint;
 	},
 	widestGeometry: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof GeometryCollection) {
-				let gc = arguments[0];
-				if (gc.isEmpty()) {
-					return gc;
-				}
-				var widestGeometry = gc.getGeometryN(0);
-				for (var i = 1; i < gc.getNumGeometries(); i++) {
-					if (gc.getGeometryN(i).getEnvelopeInternal().getWidth() > widestGeometry.getEnvelopeInternal().getWidth()) {
-						widestGeometry = gc.getGeometryN(i);
-					}
-				}
-				return widestGeometry;
-			} else if (arguments[0] instanceof Geometry) {
-				let geometry = arguments[0];
-				if (!(geometry instanceof GeometryCollection)) {
-					return geometry;
-				}
-				return this.widestGeometry(geometry);
+		if (arguments[0] instanceof GeometryCollection) {
+			let gc = arguments[0];
+			if (gc.isEmpty()) {
+				return gc;
 			}
+			var widestGeometry = gc.getGeometryN(0);
+			for (var i = 1; i < gc.getNumGeometries(); i++) {
+				if (gc.getGeometryN(i).getEnvelopeInternal().getWidth() > widestGeometry.getEnvelopeInternal().getWidth()) {
+					widestGeometry = gc.getGeometryN(i);
+				}
+			}
+			return widestGeometry;
+		} else if (arguments[0] instanceof Geometry) {
+			let geometry = arguments[0];
+			if (!(geometry instanceof GeometryCollection)) {
+				return geometry;
+			}
+			return this.widestGeometry(geometry);
 		}
 	},
 	horizontalBisector: function (geometry) {
@@ -93,13 +89,11 @@ function SafeBisectorFinder() {
 	this.centreY = null;
 	this.hiY = Double.MAX_VALUE;
 	this.loY = -Double.MAX_VALUE;
-	if (arguments.length === 1) {
-		let poly = arguments[0];
-		this.poly = poly;
-		this.hiY = poly.getEnvelopeInternal().getMaxY();
-		this.loY = poly.getEnvelopeInternal().getMinY();
-		this.centreY = InteriorPointArea.avg(this.loY, this.hiY);
-	}
+	let poly = arguments[0];
+	this.poly = poly;
+	this.hiY = poly.getEnvelopeInternal().getMaxY();
+	this.loY = poly.getEnvelopeInternal().getMinY();
+	this.centreY = InteriorPointArea.avg(this.loY, this.hiY);
 }
 extend(SafeBisectorFinder.prototype, {
 	updateInterval: function (y) {

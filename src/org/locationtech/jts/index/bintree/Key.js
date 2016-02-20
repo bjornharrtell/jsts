@@ -5,10 +5,8 @@ export default function Key() {
 	this.pt = 0.0;
 	this.level = 0;
 	this.interval = null;
-	if (arguments.length === 1) {
-		let interval = arguments[0];
-		this.computeKey(interval);
-	}
+	let interval = arguments[0];
+	this.computeKey(interval);
 }
 extend(Key.prototype, {
 	getInterval: function () {

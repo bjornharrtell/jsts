@@ -7,10 +7,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../../geom/GeometryFilter';
 export default function ConnectedElementLocationFilter() {
 	this.locations = null;
-	if (arguments.length === 1) {
-		let locations = arguments[0];
-		this.locations = locations;
-	}
+	let locations = arguments[0];
+	this.locations = locations;
 }
 extend(ConnectedElementLocationFilter.prototype, {
 	filter: function (geom) {

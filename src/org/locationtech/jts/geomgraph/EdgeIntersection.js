@@ -5,12 +5,10 @@ export default function EdgeIntersection() {
 	this.coord = null;
 	this.segmentIndex = null;
 	this.dist = null;
-	if (arguments.length === 3) {
-		let coord = arguments[0], segmentIndex = arguments[1], dist = arguments[2];
-		this.coord = new Coordinate(coord);
-		this.segmentIndex = segmentIndex;
-		this.dist = dist;
-	}
+	let coord = arguments[0], segmentIndex = arguments[1], dist = arguments[2];
+	this.coord = new Coordinate(coord);
+	this.segmentIndex = segmentIndex;
+	this.dist = dist;
 }
 extend(EdgeIntersection.prototype, {
 	getSegmentIndex: function () {

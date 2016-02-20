@@ -7,12 +7,10 @@ export default function SnapOverlayOp() {
 	this.geom = new Array(2);
 	this.snapTolerance = null;
 	this.cbr = null;
-	if (arguments.length === 2) {
-		let g1 = arguments[0], g2 = arguments[1];
-		this.geom[0] = g1;
-		this.geom[1] = g2;
-		this.computeSnapTolerance();
-	}
+	let g1 = arguments[0], g2 = arguments[1];
+	this.geom[0] = g1;
+	this.geom[1] = g2;
+	this.computeSnapTolerance();
 }
 extend(SnapOverlayOp.prototype, {
 	selfSnap: function (geom) {

@@ -27,15 +27,13 @@ export default function OffsetSegmentGenerator() {
 	this.offset1 = new LineSegment();
 	this.side = 0;
 	this._hasNarrowConcaveAngle = false;
-	if (arguments.length === 3) {
-		let precisionModel = arguments[0], bufParams = arguments[1], distance = arguments[2];
-		this.precisionModel = precisionModel;
-		this.bufParams = bufParams;
-		this.li = new RobustLineIntersector();
-		this.filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments();
-		if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this.closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
-		this.init(distance);
-	}
+	let precisionModel = arguments[0], bufParams = arguments[1], distance = arguments[2];
+	this.precisionModel = precisionModel;
+	this.bufParams = bufParams;
+	this.li = new RobustLineIntersector();
+	this.filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments();
+	if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this.closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
+	this.init(distance);
 }
 extend(OffsetSegmentGenerator.prototype, {
 	addNextSegment: function (p, addStartPoint) {

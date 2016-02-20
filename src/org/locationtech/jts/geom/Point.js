@@ -11,13 +11,10 @@ import Envelope from './Envelope';
 import Assert from '../util/Assert';
 import inherits from '../../../../inherits';
 export default function Point() {
-	Geometry.apply(this);
 	this.coordinates = null;
-	if (arguments.length === 2) {
-		let coordinates = arguments[0], factory = arguments[1];
-		Geometry.call(this, factory);
-		this.init(coordinates);
-	}
+	let coordinates = arguments[0], factory = arguments[1];
+	Geometry.call(this, factory);
+	this.init(coordinates);
 }
 inherits(Point, Geometry);
 extend(Point.prototype, {
@@ -84,25 +81,23 @@ extend(Point.prototype, {
 		}
 	},
 	apply: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], CoordinateFilter)) {
-				let filter = arguments[0];
-				if (this.isEmpty()) {
-					return null;
-				}
-				filter.filter(this.getCoordinate());
-			} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
-				let filter = arguments[0];
-				if (this.isEmpty()) return null;
-				filter.filter(this.coordinates, 0);
-				if (filter.isGeometryChanged()) this.geometryChanged();
-			} else if (hasInterface(arguments[0], GeometryFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
-			} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
-				let filter = arguments[0];
-				filter.filter(this);
+		if (hasInterface(arguments[0], CoordinateFilter)) {
+			let filter = arguments[0];
+			if (this.isEmpty()) {
+				return null;
 			}
+			filter.filter(this.getCoordinate());
+		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
+			let filter = arguments[0];
+			if (this.isEmpty()) return null;
+			filter.filter(this.coordinates, 0);
+			if (filter.isGeometryChanged()) this.geometryChanged();
+		} else if (hasInterface(arguments[0], GeometryFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
+		} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
+			let filter = arguments[0];
+			filter.filter(this);
 		}
 	},
 	getBoundary: function () {

@@ -4,7 +4,6 @@ import inherits from '../../../../../inherits';
 import EdgeEndBundle from './EdgeEndBundle';
 export default function EdgeEndBundleStar() {
 	EdgeEndStar.apply(this);
-	if (arguments.length === 0) {}
 }
 inherits(EdgeEndBundleStar, EdgeEndStar);
 extend(EdgeEndBundleStar.prototype, {

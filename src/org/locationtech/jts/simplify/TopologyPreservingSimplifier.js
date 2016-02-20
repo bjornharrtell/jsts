@@ -11,10 +11,8 @@ export default function TopologyPreservingSimplifier() {
 	this.inputGeom = null;
 	this.lineSimplifier = new TaggedLinesSimplifier();
 	this.linestringMap = null;
-	if (arguments.length === 1) {
-		let inputGeom = arguments[0];
-		this.inputGeom = inputGeom;
-	}
+	let inputGeom = arguments[0];
+	this.inputGeom = inputGeom;
 }
 extend(TopologyPreservingSimplifier.prototype, {
 	getResultGeometry: function () {
@@ -44,10 +42,8 @@ TopologyPreservingSimplifier.simplify = function (geom, distanceTolerance) {
 function LineStringTransformer() {
 	GeometryTransformer.apply(this);
 	this.linestringMap = null;
-	if (arguments.length === 1) {
-		let linestringMap = arguments[0];
-		this.linestringMap = linestringMap;
-	}
+	let linestringMap = arguments[0];
+	this.linestringMap = linestringMap;
 }
 inherits(LineStringTransformer, GeometryTransformer);
 extend(LineStringTransformer.prototype, {
@@ -68,10 +64,8 @@ extend(LineStringTransformer.prototype, {
 });
 function LineStringMapBuilderFilter() {
 	this.tps = null;
-	if (arguments.length === 1) {
-		let tps = arguments[0];
-		this.tps = tps;
-	}
+	let tps = arguments[0];
+	this.tps = tps;
 }
 extend(LineStringMapBuilderFilter.prototype, {
 	filter: function (geom) {

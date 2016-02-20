@@ -2,13 +2,10 @@ import extend from '../../../../extend';
 import Vertex from './quadedge/Vertex';
 import inherits from '../../../../inherits';
 export default function ConstraintVertex() {
-	Vertex.apply(this);
 	this._isOnConstraint = null;
 	this.constraint = null;
-	if (arguments.length === 1) {
-		let p = arguments[0];
-		Vertex.call(this, p);
-	}
+	let p = arguments[0];
+	Vertex.call(this, p);
 }
 inherits(ConstraintVertex, Vertex);
 extend(ConstraintVertex.prototype, {

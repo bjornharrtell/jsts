@@ -5,10 +5,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 export default function EdgeSetNoder() {
 	this.li = null;
 	this.inputEdges = new ArrayList();
-	if (arguments.length === 1) {
-		let li = arguments[0];
-		this.li = li;
-	}
+	let li = arguments[0];
+	this.li = li;
 }
 extend(EdgeSetNoder.prototype, {
 	addEdges: function (edges) {

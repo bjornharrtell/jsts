@@ -6,7 +6,6 @@ import extend from '../../../../extend';
 import Label from './Label';
 import inherits from '../../../../inherits';
 export default function DirectedEdge() {
-	EdgeEnd.apply(this);
 	this._isForward = null;
 	this._isInResult = false;
 	this._isVisited = false;
@@ -16,18 +15,16 @@ export default function DirectedEdge() {
 	this.edgeRing = null;
 	this.minEdgeRing = null;
 	this.depth = [0, -999, -999];
-	if (arguments.length === 2) {
-		let edge = arguments[0], isForward = arguments[1];
-		EdgeEnd.call(this, edge);
-		this._isForward = isForward;
-		if (isForward) {
-			this.init(edge.getCoordinate(0), edge.getCoordinate(1));
-		} else {
-			var n = edge.getNumPoints() - 1;
-			this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1));
-		}
-		this.computeDirectedLabel();
+	let edge = arguments[0], isForward = arguments[1];
+	EdgeEnd.call(this, edge);
+	this._isForward = isForward;
+	if (isForward) {
+		this.init(edge.getCoordinate(0), edge.getCoordinate(1));
+	} else {
+		var n = edge.getNumPoints() - 1;
+		this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1));
 	}
+	this.computeDirectedLabel();
 }
 inherits(DirectedEdge, EdgeEnd);
 extend(DirectedEdge.prototype, {

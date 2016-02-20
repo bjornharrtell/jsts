@@ -160,11 +160,9 @@ function BestMatchVisitor() {
 	this.matchNode = null;
 	this.matchDist = 0.0;
 	this.p = null;
-	if (arguments.length === 2) {
-		let p = arguments[0], tolerance = arguments[1];
-		this.p = p;
-		this.tolerance = tolerance;
-	}
+	let p = arguments[0], tolerance = arguments[1];
+	this.p = p;
+	this.tolerance = tolerance;
 }
 extend(BestMatchVisitor.prototype, {
 	visit: function (node) {

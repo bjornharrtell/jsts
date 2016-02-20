@@ -4,11 +4,9 @@ import ArrayList from '../../../../java/util/ArrayList';
 export default function InteriorIntersectionFinderAdder() {
 	this.li = null;
 	this.interiorIntersections = null;
-	if (arguments.length === 1) {
-		let li = arguments[0];
-		this.li = li;
-		this.interiorIntersections = new ArrayList();
-	}
+	let li = arguments[0];
+	this.li = li;
+	this.interiorIntersections = new ArrayList();
 }
 extend(InteriorIntersectionFinderAdder.prototype, {
 	processIntersections: function (e0, segIndex0, e1, segIndex1) {

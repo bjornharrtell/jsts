@@ -8,11 +8,9 @@ import ExtractLineByLocation from './ExtractLineByLocation';
 import MultiLineString from '../geom/MultiLineString';
 export default function LocationIndexedLine() {
 	this.linearGeom = null;
-	if (arguments.length === 1) {
-		let linearGeom = arguments[0];
-		this.linearGeom = linearGeom;
-		this.checkGeometryType();
-	}
+	let linearGeom = arguments[0];
+	this.linearGeom = linearGeom;
+	this.checkGeometryType();
 }
 extend(LocationIndexedLine.prototype, {
 	clampIndex: function (index) {

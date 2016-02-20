@@ -9,11 +9,9 @@ export default function OffsetCurveBuilder() {
 	this.distance = 0.0;
 	this.precisionModel = null;
 	this.bufParams = null;
-	if (arguments.length === 2) {
-		let precisionModel = arguments[0], bufParams = arguments[1];
-		this.precisionModel = precisionModel;
-		this.bufParams = bufParams;
-	}
+	let precisionModel = arguments[0], bufParams = arguments[1];
+	this.precisionModel = precisionModel;
+	this.bufParams = bufParams;
 }
 extend(OffsetCurveBuilder.prototype, {
 	getOffsetCurve: function (inputPts, distance) {

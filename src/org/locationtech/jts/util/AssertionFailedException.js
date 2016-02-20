@@ -2,7 +2,6 @@ import extend from '../../../../extend';
 import RuntimeException from '../../../../java/lang/RuntimeException';
 import inherits from '../../../../inherits';
 export default function AssertionFailedException() {
-	RuntimeException.apply(this);
 	if (arguments.length === 0) {
 		RuntimeException.call(this);
 	} else if (arguments.length === 1) {

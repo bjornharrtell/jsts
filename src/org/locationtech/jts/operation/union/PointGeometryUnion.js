@@ -8,12 +8,10 @@ export default function PointGeometryUnion() {
 	this.pointGeom = null;
 	this.otherGeom = null;
 	this.geomFact = null;
-	if (arguments.length === 2) {
-		let pointGeom = arguments[0], otherGeom = arguments[1];
-		this.pointGeom = pointGeom;
-		this.otherGeom = otherGeom;
-		this.geomFact = otherGeom.getFactory();
-	}
+	let pointGeom = arguments[0], otherGeom = arguments[1];
+	this.pointGeom = pointGeom;
+	this.otherGeom = otherGeom;
+	this.geomFact = otherGeom.getFactory();
 }
 extend(PointGeometryUnion.prototype, {
 	union: function () {

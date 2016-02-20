@@ -9,10 +9,8 @@ import Polygonal from '../../../geom/Polygonal';
 import inherits from '../../../../../../inherits';
 export default function GeometrySnapper() {
 	this.srcGeom = null;
-	if (arguments.length === 1) {
-		let srcGeom = arguments[0];
-		this.srcGeom = srcGeom;
-	}
+	let srcGeom = arguments[0];
+	this.srcGeom = srcGeom;
 }
 extend(GeometrySnapper.prototype, {
 	snapTo: function (snapGeom, snapTolerance) {

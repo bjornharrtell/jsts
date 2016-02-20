@@ -2,11 +2,9 @@ import extend from '../../../../../extend';
 export default function MonotoneChain() {
 	this.mce = null;
 	this.chainIndex = null;
-	if (arguments.length === 2) {
-		let mce = arguments[0], chainIndex = arguments[1];
-		this.mce = mce;
-		this.chainIndex = chainIndex;
-	}
+	let mce = arguments[0], chainIndex = arguments[1];
+	this.mce = mce;
+	this.chainIndex = chainIndex;
 }
 extend(MonotoneChain.prototype, {
 	computeIntersections: function (mc, si) {

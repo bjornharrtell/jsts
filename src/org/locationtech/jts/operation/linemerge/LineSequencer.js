@@ -155,26 +155,24 @@ extend(LineSequencer.prototype, {
 		return this._isSequenceable;
 	},
 	add: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], Collection)) {
-				let geometries = arguments[0];
-				for (var i = geometries.iterator(); i.hasNext(); ) {
-					var geometry = i.next();
-					this.add(geometry);
-				}
-			} else if (arguments[0] instanceof Geometry) {
-				let geometry = arguments[0];
-				geometry.apply({
-					interfaces_: function () {
-						return [GeometryComponentFilter];
-					},
-					filter: function (component) {
-						if (component instanceof LineString) {
-							this.addLine(component);
-						}
-					}
-				});
+		if (hasInterface(arguments[0], Collection)) {
+			let geometries = arguments[0];
+			for (var i = geometries.iterator(); i.hasNext(); ) {
+				var geometry = i.next();
+				this.add(geometry);
 			}
+		} else if (arguments[0] instanceof Geometry) {
+			let geometry = arguments[0];
+			geometry.apply({
+				interfaces_: function () {
+					return [GeometryComponentFilter];
+				},
+				filter: function (component) {
+					if (component instanceof LineString) {
+						this.addLine(component);
+					}
+				}
+			});
 		}
 	},
 	interfaces_: function () {

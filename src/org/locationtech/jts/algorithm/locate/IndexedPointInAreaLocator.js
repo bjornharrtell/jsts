@@ -11,11 +11,9 @@ import ArrayListVisitor from '../../index/ArrayListVisitor';
 import RayCrossingCounter from '../RayCrossingCounter';
 export default function IndexedPointInAreaLocator() {
 	this.index = null;
-	if (arguments.length === 1) {
-		let g = arguments[0];
-		if (!hasInterface(g, Polygonal)) throw new IllegalArgumentException("Argument must be Polygonal");
-		this.index = new IntervalIndexedGeometry(g);
-	}
+	let g = arguments[0];
+	if (!hasInterface(g, Polygonal)) throw new IllegalArgumentException("Argument must be Polygonal");
+	this.index = new IntervalIndexedGeometry(g);
 }
 extend(IndexedPointInAreaLocator.prototype, {
 	locate: function (p) {
@@ -33,10 +31,8 @@ extend(IndexedPointInAreaLocator.prototype, {
 });
 function SegmentVisitor() {
 	this.counter = null;
-	if (arguments.length === 1) {
-		let counter = arguments[0];
-		this.counter = counter;
-	}
+	let counter = arguments[0];
+	this.counter = counter;
 }
 extend(SegmentVisitor.prototype, {
 	visitItem: function (item) {
@@ -52,10 +48,8 @@ extend(SegmentVisitor.prototype, {
 });
 function IntervalIndexedGeometry() {
 	this.index = new SortedPackedIntervalRTree();
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this.init(geom);
-	}
+	let geom = arguments[0];
+	this.init(geom);
 }
 extend(IntervalIndexedGeometry.prototype, {
 	init: function (geom) {

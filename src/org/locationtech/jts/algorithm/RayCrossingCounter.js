@@ -8,10 +8,8 @@ export default function RayCrossingCounter() {
 	this.p = null;
 	this.crossingCount = 0;
 	this.isPointOnSegment = false;
-	if (arguments.length === 1) {
-		let p = arguments[0];
-		this.p = p;
-	}
+	let p = arguments[0];
+	this.p = p;
 }
 extend(RayCrossingCounter.prototype, {
 	countSegment: function (p1, p2) {
@@ -69,30 +67,28 @@ extend(RayCrossingCounter.prototype, {
 	}
 });
 RayCrossingCounter.locatePointInRing = function () {
-	if (arguments.length === 2) {
-		if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
-			let p = arguments[0], ring = arguments[1];
-			var counter = new RayCrossingCounter(p);
-			var p1 = new Coordinate();
-			var p2 = new Coordinate();
-			for (var i = 1; i < ring.size(); i++) {
-				ring.getCoordinate(i, p1);
-				ring.getCoordinate(i - 1, p2);
-				counter.countSegment(p1, p2);
-				if (counter.isOnSegment()) return counter.getLocation();
-			}
-			return counter.getLocation();
-		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
-			let p = arguments[0], ring = arguments[1];
-			var counter = new RayCrossingCounter(p);
-			for (var i = 1; i < ring.length; i++) {
-				var p1 = ring[i];
-				var p2 = ring[i - 1];
-				counter.countSegment(p1, p2);
-				if (counter.isOnSegment()) return counter.getLocation();
-			}
-			return counter.getLocation();
+	if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
+		let p = arguments[0], ring = arguments[1];
+		var counter = new RayCrossingCounter(p);
+		var p1 = new Coordinate();
+		var p2 = new Coordinate();
+		for (var i = 1; i < ring.size(); i++) {
+			ring.getCoordinate(i, p1);
+			ring.getCoordinate(i - 1, p2);
+			counter.countSegment(p1, p2);
+			if (counter.isOnSegment()) return counter.getLocation();
 		}
+		return counter.getLocation();
+	} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
+		let p = arguments[0], ring = arguments[1];
+		var counter = new RayCrossingCounter(p);
+		for (var i = 1; i < ring.length; i++) {
+			var p1 = ring[i];
+			var p2 = ring[i - 1];
+			counter.countSegment(p1, p2);
+			if (counter.isOnSegment()) return counter.getLocation();
+		}
+		return counter.getLocation();
 	}
 };
 

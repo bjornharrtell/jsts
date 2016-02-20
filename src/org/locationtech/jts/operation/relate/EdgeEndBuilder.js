@@ -2,9 +2,7 @@ import EdgeEnd from '../../geomgraph/EdgeEnd';
 import extend from '../../../../../extend';
 import Label from '../../geomgraph/Label';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default function EdgeEndBuilder() {
-	if (arguments.length === 0) {}
-}
+export default function EdgeEndBuilder() {}
 extend(EdgeEndBuilder.prototype, {
 	createEdgeEndForNext: function (edge, l, eiCurr, eiNext) {
 		var iNext = eiCurr.segmentIndex + 1;

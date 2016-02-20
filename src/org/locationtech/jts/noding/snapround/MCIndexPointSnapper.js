@@ -4,10 +4,8 @@ import extend from '../../../../../extend';
 import inherits from '../../../../../inherits';
 export default function MCIndexPointSnapper() {
 	this.index = null;
-	if (arguments.length === 1) {
-		let index = arguments[0];
-		this.index = index;
-	}
+	let index = arguments[0];
+	this.index = index;
 }
 extend(MCIndexPointSnapper.prototype, {
 	snap: function () {
@@ -43,12 +41,10 @@ function HotPixelSnapAction() {
 	this.parentEdge = null;
 	this.hotPixelVertexIndex = null;
 	this._isNodeAdded = false;
-	if (arguments.length === 3) {
-		let hotPixel = arguments[0], parentEdge = arguments[1], hotPixelVertexIndex = arguments[2];
-		this.hotPixel = hotPixel;
-		this.parentEdge = parentEdge;
-		this.hotPixelVertexIndex = hotPixelVertexIndex;
-	}
+	let hotPixel = arguments[0], parentEdge = arguments[1], hotPixelVertexIndex = arguments[2];
+	this.hotPixel = hotPixel;
+	this.parentEdge = parentEdge;
+	this.hotPixelVertexIndex = hotPixelVertexIndex;
 }
 inherits(HotPixelSnapAction, MonotoneChainSelectAction);
 extend(HotPixelSnapAction.prototype, {

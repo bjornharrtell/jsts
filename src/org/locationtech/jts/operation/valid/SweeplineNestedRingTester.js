@@ -10,10 +10,8 @@ export default function SweeplineNestedRingTester() {
 	this.rings = new ArrayList();
 	this.sweepLine = null;
 	this.nestedPt = null;
-	if (arguments.length === 1) {
-		let graph = arguments[0];
-		this.graph = graph;
-	}
+	let graph = arguments[0];
+	this.graph = graph;
 }
 extend(SweeplineNestedRingTester.prototype, {
 	buildIndex: function () {

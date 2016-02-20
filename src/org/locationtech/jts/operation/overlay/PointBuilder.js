@@ -5,11 +5,9 @@ export default function PointBuilder() {
 	this.op = null;
 	this.geometryFactory = null;
 	this.resultPointList = new ArrayList();
-	if (arguments.length === 3) {
-		let op = arguments[0], geometryFactory = arguments[1], ptLocator = arguments[2];
-		this.op = op;
-		this.geometryFactory = geometryFactory;
-	}
+	let op = arguments[0], geometryFactory = arguments[1], ptLocator = arguments[2];
+	this.op = op;
+	this.geometryFactory = geometryFactory;
 }
 extend(PointBuilder.prototype, {
 	filterCoveredNodeToPoint: function (n) {

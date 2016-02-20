@@ -12,12 +12,10 @@ export default function BufferResultValidator() {
 	this.errorMsg = null;
 	this.errorLocation = null;
 	this.errorIndicator = null;
-	if (arguments.length === 3) {
-		let input = arguments[0], distance = arguments[1], result = arguments[2];
-		this.input = input;
-		this.distance = distance;
-		this.result = result;
-	}
+	let input = arguments[0], distance = arguments[1], result = arguments[2];
+	this.input = input;
+	this.distance = distance;
+	this.result = result;
 }
 extend(BufferResultValidator.prototype, {
 	isValid: function () {

@@ -14,7 +14,6 @@ export default function LineMerger() {
 	this.mergedLineStrings = null;
 	this.factory = null;
 	this.edgeStrings = null;
-	if (arguments.length === 0) {}
 }
 extend(LineMerger.prototype, {
 	buildEdgeStringsForUnprocessedNodes: function () {
@@ -78,33 +77,31 @@ extend(LineMerger.prototype, {
 		return edgeString;
 	},
 	add: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Geometry) {
-				let geometry = arguments[0];
-				geometry.apply({
-					interfaces_: function () {
-						return [GeometryComponentFilter];
-					},
-					filter: function (component) {
-						if (component instanceof LineString) {
-							this.add(component);
-						}
+		if (arguments[0] instanceof Geometry) {
+			let geometry = arguments[0];
+			geometry.apply({
+				interfaces_: function () {
+					return [GeometryComponentFilter];
+				},
+				filter: function (component) {
+					if (component instanceof LineString) {
+						this.add(component);
 					}
-				});
-			} else if (hasInterface(arguments[0], Collection)) {
-				let geometries = arguments[0];
-				this.mergedLineStrings = null;
-				for (var i = geometries.iterator(); i.hasNext(); ) {
-					var geometry = i.next();
-					this.add(geometry);
 				}
-			} else if (arguments[0] instanceof LineString) {
-				let lineString = arguments[0];
-				if (this.factory === null) {
-					this.factory = lineString.getFactory();
-				}
-				this.graph.addEdge(lineString);
+			});
+		} else if (hasInterface(arguments[0], Collection)) {
+			let geometries = arguments[0];
+			this.mergedLineStrings = null;
+			for (var i = geometries.iterator(); i.hasNext(); ) {
+				var geometry = i.next();
+				this.add(geometry);
 			}
+		} else if (arguments[0] instanceof LineString) {
+			let lineString = arguments[0];
+			if (this.factory === null) {
+				this.factory = lineString.getFactory();
+			}
+			this.graph.addEdge(lineString);
 		}
 	},
 	buildEdgeStringsForIsolatedLoops: function () {

@@ -12,10 +12,8 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default function SegmentNodeList() {
 	this.nodeMap = new TreeMap();
 	this.edge = null;
-	if (arguments.length === 1) {
-		let edge = arguments[0];
-		this.edge = edge;
-	}
+	let edge = arguments[0];
+	this.edge = edge;
 }
 extend(SegmentNodeList.prototype, {
 	getSplitCoordinates: function () {
@@ -168,13 +166,11 @@ function NodeVertexIterator() {
 	this.currNode = null;
 	this.nextNode = null;
 	this.currSegIndex = 0;
-	if (arguments.length === 1) {
-		let nodeList = arguments[0];
-		this.nodeList = nodeList;
-		this.edge = nodeList.getEdge();
-		this.nodeIt = nodeList.iterator();
-		this.readNextNode();
-	}
+	let nodeList = arguments[0];
+	this.nodeList = nodeList;
+	this.edge = nodeList.getEdge();
+	this.nodeIt = nodeList.iterator();
+	this.readNextNode();
 }
 extend(NodeVertexIterator.prototype, {
 	next: function () {

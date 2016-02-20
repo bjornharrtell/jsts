@@ -3,10 +3,8 @@ import LinearLocation from './LinearLocation';
 import extend from '../../../../extend';
 export default function LengthLocationMap() {
 	this.linearGeom = null;
-	if (arguments.length === 1) {
-		let linearGeom = arguments[0];
-		this.linearGeom = linearGeom;
-	}
+	let linearGeom = arguments[0];
+	this.linearGeom = linearGeom;
 }
 extend(LengthLocationMap.prototype, {
 	getLength: function (loc) {

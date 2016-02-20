@@ -6,10 +6,8 @@ export default function OffsetPointGenerator() {
 	this.g = null;
 	this.doLeft = true;
 	this.doRight = true;
-	if (arguments.length === 1) {
-		let g = arguments[0];
-		this.g = g;
-	}
+	let g = arguments[0];
+	this.g = g;
 }
 extend(OffsetPointGenerator.prototype, {
 	extractPoints: function (line, offsetDistance, offsetPts) {

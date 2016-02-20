@@ -6,11 +6,9 @@ import SegmentString from './SegmentString';
 export default function BasicSegmentString() {
 	this.pts = null;
 	this.data = null;
-	if (arguments.length === 2) {
-		let pts = arguments[0], data = arguments[1];
-		this.pts = pts;
-		this.data = data;
-	}
+	let pts = arguments[0], data = arguments[1];
+	this.pts = pts;
+	this.data = data;
 }
 extend(BasicSegmentString.prototype, {
 	getCoordinates: function () {

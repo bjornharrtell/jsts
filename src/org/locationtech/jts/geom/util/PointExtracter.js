@@ -6,10 +6,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default function PointExtracter() {
 	this.pts = null;
-	if (arguments.length === 1) {
-		let pts = arguments[0];
-		this.pts = pts;
-	}
+	let pts = arguments[0];
+	this.pts = pts;
 }
 extend(PointExtracter.prototype, {
 	filter: function (geom) {

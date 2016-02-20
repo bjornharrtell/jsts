@@ -9,14 +9,12 @@ export default function RectangleLineIntersector() {
 	this.diagUp1 = null;
 	this.diagDown0 = null;
 	this.diagDown1 = null;
-	if (arguments.length === 1) {
-		let rectEnv = arguments[0];
-		this.rectEnv = rectEnv;
-		this.diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
-		this.diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
-		this.diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
-		this.diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
-	}
+	let rectEnv = arguments[0];
+	this.rectEnv = rectEnv;
+	this.diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
+	this.diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
+	this.diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
+	this.diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
 }
 extend(RectangleLineIntersector.prototype, {
 	intersects: function (p0, p1) {

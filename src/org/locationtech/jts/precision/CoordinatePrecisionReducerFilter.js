@@ -2,10 +2,8 @@ import extend from '../../../../extend';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default function CoordinatePrecisionReducerFilter() {
 	this.precModel = null;
-	if (arguments.length === 1) {
-		let precModel = arguments[0];
-		this.precModel = precModel;
-	}
+	let precModel = arguments[0];
+	this.precModel = precModel;
 }
 extend(CoordinatePrecisionReducerFilter.prototype, {
 	filter: function (seq, i) {

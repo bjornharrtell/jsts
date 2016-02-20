@@ -7,7 +7,6 @@ import ArrayList from '../../../../java/util/ArrayList';
 import inherits from '../../../../inherits';
 import SinglePassNoder from './SinglePassNoder';
 export default function MCIndexNoder() {
-	SinglePassNoder.apply(this);
 	this.monoChains = new ArrayList();
 	this.index = new STRtree();
 	this.idCounter = 0;
@@ -70,10 +69,8 @@ extend(MCIndexNoder.prototype, {
 function SegmentOverlapAction() {
 	MonotoneChainOverlapAction.apply(this);
 	this.si = null;
-	if (arguments.length === 1) {
-		let si = arguments[0];
-		this.si = si;
-	}
+	let si = arguments[0];
+	this.si = si;
 }
 inherits(SegmentOverlapAction, MonotoneChainOverlapAction);
 extend(SegmentOverlapAction.prototype, {

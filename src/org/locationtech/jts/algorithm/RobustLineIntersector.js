@@ -10,7 +10,6 @@ import inherits from '../../../../inherits';
 import LineIntersector from './LineIntersector';
 export default function RobustLineIntersector() {
 	LineIntersector.apply(this);
-	if (arguments.length === 0) {}
 }
 inherits(RobustLineIntersector, LineIntersector);
 extend(RobustLineIntersector.prototype, {

@@ -6,10 +6,8 @@ export default function GeometricShapeBuilder() {
 	this.extent = new Envelope(0, 1, 0, 1);
 	this.numPts = 0;
 	this.geomFactory = null;
-	if (arguments.length === 1) {
-		let geomFactory = arguments[0];
-		this.geomFactory = geomFactory;
-	}
+	let geomFactory = arguments[0];
+	this.geomFactory = geomFactory;
 }
 extend(GeometricShapeBuilder.prototype, {
 	setNumPoints: function (numPts) {

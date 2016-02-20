@@ -6,10 +6,8 @@ export default function EdgeString() {
 	this.factory = null;
 	this.directedEdges = new ArrayList();
 	this.coordinates = null;
-	if (arguments.length === 1) {
-		let factory = arguments[0];
-		this.factory = factory;
-	}
+	let factory = arguments[0];
+	this.factory = factory;
 }
 extend(EdgeString.prototype, {
 	getCoordinates: function () {

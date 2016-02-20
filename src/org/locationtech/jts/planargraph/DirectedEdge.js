@@ -16,18 +16,16 @@ export default function DirectedEdge() {
 	this.edgeDirection = null;
 	this.quadrant = null;
 	this.angle = null;
-	if (arguments.length === 4) {
-		let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
-		this.from = from;
-		this.to = to;
-		this.edgeDirection = edgeDirection;
-		this.p0 = from.getCoordinate();
-		this.p1 = directionPt;
-		var dx = this.p1.x - this.p0.x;
-		var dy = this.p1.y - this.p0.y;
-		this.quadrant = Quadrant.quadrant(dx, dy);
-		this.angle = Math.atan2(dy, dx);
-	}
+	let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
+	this.from = from;
+	this.to = to;
+	this.edgeDirection = edgeDirection;
+	this.p0 = from.getCoordinate();
+	this.p1 = directionPt;
+	var dx = this.p1.x - this.p0.x;
+	var dy = this.p1.y - this.p0.y;
+	this.quadrant = Quadrant.quadrant(dx, dy);
+	this.angle = Math.atan2(dy, dx);
 }
 inherits(DirectedEdge, GraphComponent);
 extend(DirectedEdge.prototype, {

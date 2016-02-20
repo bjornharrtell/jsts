@@ -3,7 +3,6 @@ import extend from '../../../../extend';
 import RuntimeException from '../../../../java/lang/RuntimeException';
 import inherits from '../../../../inherits';
 export default function TopologyException() {
-	RuntimeException.apply(this);
 	this.pt = null;
 	if (arguments.length === 1) {
 		let msg = arguments[0];

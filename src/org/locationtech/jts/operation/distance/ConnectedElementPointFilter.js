@@ -6,10 +6,8 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../../geom/GeometryFilter';
 export default function ConnectedElementPointFilter() {
 	this.pts = null;
-	if (arguments.length === 1) {
-		let pts = arguments[0];
-		this.pts = pts;
-	}
+	let pts = arguments[0];
+	this.pts = pts;
 }
 extend(ConnectedElementPointFilter.prototype, {
 	filter: function (geom) {

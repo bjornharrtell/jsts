@@ -14,11 +14,9 @@ export default function MCPointInRing() {
 	this.tree = null;
 	this.crossings = 0;
 	this.interval = new Interval();
-	if (arguments.length === 1) {
-		let ring = arguments[0];
-		this.ring = ring;
-		this.buildIndex();
-	}
+	let ring = arguments[0];
+	this.ring = ring;
+	this.buildIndex();
 }
 extend(MCPointInRing.prototype, {
 	testLineSegment: function (p, seg) {
@@ -82,11 +80,9 @@ function MCSelecter() {
 	MonotoneChainSelectAction.apply(this);
 	this.mcp = null;
 	this.p = null;
-	if (arguments.length === 2) {
-		let mcp = arguments[0], p = arguments[1];
-		this.mcp = mcp;
-		this.p = p;
-	}
+	let mcp = arguments[0], p = arguments[1];
+	this.mcp = mcp;
+	this.p = p;
 }
 inherits(MCSelecter, MonotoneChainSelectAction);
 extend(MCSelecter.prototype, {

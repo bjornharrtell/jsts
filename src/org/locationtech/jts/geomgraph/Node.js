@@ -7,12 +7,10 @@ export default function Node() {
 	GraphComponent.apply(this);
 	this.coord = null;
 	this.edges = null;
-	if (arguments.length === 2) {
-		let coord = arguments[0], edges = arguments[1];
-		this.coord = coord;
-		this.edges = edges;
-		this.label = new Label(0, Location.NONE);
-	}
+	let coord = arguments[0], edges = arguments[1];
+	this.coord = coord;
+	this.edges = edges;
+	this.label = new Label(0, Location.NONE);
 }
 inherits(Node, GraphComponent);
 extend(Node.prototype, {
@@ -54,17 +52,15 @@ extend(Node.prototype, {
 		return this.edges;
 	},
 	mergeLabel: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Node) {
-				let n = arguments[0];
-				this.mergeLabel(n.label);
-			} else if (arguments[0] instanceof Label) {
-				let label2 = arguments[0];
-				for (var i = 0; i < 2; i++) {
-					var loc = this.computeMergedLocation(label2, i);
-					var thisLoc = this.label.getLocation(i);
-					if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
-				}
+		if (arguments[0] instanceof Node) {
+			let n = arguments[0];
+			this.mergeLabel(n.label);
+		} else if (arguments[0] instanceof Label) {
+			let label2 = arguments[0];
+			for (var i = 0; i < 2; i++) {
+				var loc = this.computeMergedLocation(label2, i);
+				var thisLoc = this.label.getLocation(i);
+				if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
 			}
 		}
 	},

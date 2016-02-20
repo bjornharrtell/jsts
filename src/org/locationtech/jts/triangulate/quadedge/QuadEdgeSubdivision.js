@@ -27,14 +27,12 @@ export default function QuadEdgeSubdivision() {
 	this.locator = null;
 	this.seg = new LineSegment();
 	this.triEdges = new Array(3);
-	if (arguments.length === 2) {
-		let env = arguments[0], tolerance = arguments[1];
-		this.tolerance = tolerance;
-		this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
-		this.createFrame(env);
-		this.startingEdge = this.initSubdiv();
-		this.locator = new LastFoundQuadEdgeLocator(this);
-	}
+	let env = arguments[0], tolerance = arguments[1];
+	this.tolerance = tolerance;
+	this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
+	this.createFrame(env);
+	this.startingEdge = this.initSubdiv();
+	this.locator = new LastFoundQuadEdgeLocator(this);
 }
 extend(QuadEdgeSubdivision.prototype, {
 	getTriangleVertices: function (includeFrame) {
@@ -357,9 +355,7 @@ QuadEdgeSubdivision.getTriangleEdges = function (startQE, triEdge) {
 	triEdge[2] = triEdge[1].lNext();
 	if (triEdge[2].lNext() !== triEdge[0]) throw new IllegalArgumentException("Edges do not form a triangle");
 };
-function TriangleCircumcentreVisitor() {
-	if (arguments.length === 0) {}
-}
+function TriangleCircumcentreVisitor() {}
 extend(TriangleCircumcentreVisitor.prototype, {
 	visit: function (triEdges) {
 		var a = triEdges[0].orig().getCoordinate();
@@ -415,7 +411,6 @@ extend(TriangleVertexListVisitor.prototype, {
 function TriangleCoordinatesVisitor() {
 	this.coordList = new CoordinateList();
 	this.triCoords = new ArrayList();
-	if (arguments.length === 0) {}
 }
 extend(TriangleCoordinatesVisitor.prototype, {
 	checkTriangleSize: function (pts) {

@@ -1,7 +1,5 @@
 import extend from '../../../../../extend';
-export default function EdgeSetIntersector() {
-	if (arguments.length === 0) {}
-}
+export default function EdgeSetIntersector() {}
 extend(EdgeSetIntersector.prototype, {
 	interfaces_: function () {
 		return [];

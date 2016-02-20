@@ -4,9 +4,7 @@ import CoordinateArraySequence from './CoordinateArraySequence';
 import extend from '../../../../../extend';
 import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
-export default function CoordinateArraySequenceFactory() {
-	if (arguments.length === 0) {}
-}
+export default function CoordinateArraySequenceFactory() {}
 extend(CoordinateArraySequenceFactory.prototype, {
 	readResolve: function () {
 		return CoordinateArraySequenceFactory.instance();

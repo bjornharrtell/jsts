@@ -5,11 +5,9 @@ import GeometryFilter from '../GeometryFilter';
 export default function GeometryExtracter() {
 	this.clz = null;
 	this.comps = null;
-	if (arguments.length === 2) {
-		let clz = arguments[0], comps = arguments[1];
-		this.clz = clz;
-		this.comps = comps;
-	}
+	let clz = arguments[0], comps = arguments[1];
+	this.clz = clz;
+	this.comps = comps;
 }
 extend(GeometryExtracter.prototype, {
 	filter: function (geom) {

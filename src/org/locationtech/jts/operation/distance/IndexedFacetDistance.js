@@ -3,10 +3,8 @@ import FacetSequenceTreeBuilder from './FacetSequenceTreeBuilder';
 import ItemDistance from '../../index/strtree/ItemDistance';
 export default function IndexedFacetDistance() {
 	this.cachedTree = null;
-	if (arguments.length === 1) {
-		let g1 = arguments[0];
-		this.cachedTree = FacetSequenceTreeBuilder.build(g1);
-	}
+	let g1 = arguments[0];
+	this.cachedTree = FacetSequenceTreeBuilder.build(g1);
 }
 extend(IndexedFacetDistance.prototype, {
 	getDistance: function (g) {

@@ -5,10 +5,8 @@ import GeometryComponentFilter from '../GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function ComponentCoordinateExtracter() {
 	this.coords = null;
-	if (arguments.length === 1) {
-		let coords = arguments[0];
-		this.coords = coords;
-	}
+	let coords = arguments[0];
+	this.coords = coords;
 }
 extend(ComponentCoordinateExtracter.prototype, {
 	filter: function (geom) {

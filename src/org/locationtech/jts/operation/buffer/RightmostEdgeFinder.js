@@ -7,7 +7,6 @@ export default function RightmostEdgeFinder() {
 	this.minCoord = null;
 	this.minDe = null;
 	this.orientedDe = null;
-	if (arguments.length === 0) {}
 }
 extend(RightmostEdgeFinder.prototype, {
 	getCoordinate: function () {

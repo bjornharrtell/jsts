@@ -3,10 +3,8 @@ import extend from '../../../../extend';
 export default function CoordinateArrayFilter() {
 	this.pts = null;
 	this.n = 0;
-	if (arguments.length === 1) {
-		let size = arguments[0];
-		this.pts = new Array(size);
-	}
+	let size = arguments[0];
+	this.pts = new Array(size);
 }
 extend(CoordinateArrayFilter.prototype, {
 	filter: function (coord) {

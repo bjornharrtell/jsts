@@ -210,10 +210,8 @@ ConvexHull.extractCoordinates = function (geom) {
 };
 function RadialComparator() {
 	this.origin = null;
-	if (arguments.length === 1) {
-		let origin = arguments[0];
-		this.origin = origin;
-	}
+	let origin = arguments[0];
+	this.origin = origin;
 }
 extend(RadialComparator.prototype, {
 	compare: function (o1, o2) {

@@ -17,7 +17,6 @@ export default function GeometryTransformer() {
 	this.preserveGeometryCollectionType = true;
 	this.preserveCollections = false;
 	this.preserveType = false;
-	if (arguments.length === 0) {}
 }
 extend(GeometryTransformer.prototype, {
 	transformPoint: function (geom, parent) {

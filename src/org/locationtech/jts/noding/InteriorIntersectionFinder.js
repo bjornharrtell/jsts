@@ -10,11 +10,9 @@ export default function InteriorIntersectionFinder() {
 	this.intersections = new ArrayList();
 	this.intersectionCount = 0;
 	this.keepIntersections = true;
-	if (arguments.length === 1) {
-		let li = arguments[0];
-		this.li = li;
-		this.interiorIntersection = null;
-	}
+	let li = arguments[0];
+	this.li = li;
+	this.interiorIntersection = null;
 }
 extend(InteriorIntersectionFinder.prototype, {
 	getInteriorIntersection: function () {

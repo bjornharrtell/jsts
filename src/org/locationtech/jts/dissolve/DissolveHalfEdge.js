@@ -2,12 +2,9 @@ import extend from '../../../../extend';
 import MarkHalfEdge from '../edgegraph/MarkHalfEdge';
 import inherits from '../../../../inherits';
 export default function DissolveHalfEdge() {
-	MarkHalfEdge.apply(this);
 	this._isStart = false;
-	if (arguments.length === 1) {
-		let orig = arguments[0];
-		MarkHalfEdge.call(this, orig);
-	}
+	let orig = arguments[0];
+	MarkHalfEdge.call(this, orig);
 }
 inherits(DissolveHalfEdge, MarkHalfEdge);
 extend(DissolveHalfEdge.prototype, {

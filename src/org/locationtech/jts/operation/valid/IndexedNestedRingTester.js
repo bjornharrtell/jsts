@@ -10,10 +10,8 @@ export default function IndexedNestedRingTester() {
 	this.totalEnv = new Envelope();
 	this.index = null;
 	this.nestedPt = null;
-	if (arguments.length === 1) {
-		let graph = arguments[0];
-		this.graph = graph;
-	}
+	let graph = arguments[0];
+	this.graph = graph;
 }
 extend(IndexedNestedRingTester.prototype, {
 	buildIndex: function () {

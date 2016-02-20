@@ -5,11 +5,9 @@ export default function SplitSegment() {
 	this.segLen = null;
 	this.splitPt = null;
 	this.minimumLen = 0.0;
-	if (arguments.length === 1) {
-		let seg = arguments[0];
-		this.seg = seg;
-		this.segLen = seg.getLength();
-	}
+	let seg = arguments[0];
+	this.seg = seg;
+	this.segLen = seg.getLength();
 }
 extend(SplitSegment.prototype, {
 	splitAt: function () {

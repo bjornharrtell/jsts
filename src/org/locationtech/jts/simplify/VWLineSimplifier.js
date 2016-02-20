@@ -6,11 +6,9 @@ import Triangle from '../geom/Triangle';
 export default function VWLineSimplifier() {
 	this.pts = null;
 	this.tolerance = null;
-	if (arguments.length === 2) {
-		let pts = arguments[0], distanceTolerance = arguments[1];
-		this.pts = pts;
-		this.tolerance = distanceTolerance * distanceTolerance;
-	}
+	let pts = arguments[0], distanceTolerance = arguments[1];
+	this.pts = pts;
+	this.tolerance = distanceTolerance * distanceTolerance;
 }
 extend(VWLineSimplifier.prototype, {
 	simplifyVertex: function (vwLine) {
@@ -60,10 +58,8 @@ function VWVertex() {
 	this.next = null;
 	this.area = VWVertex.MAX_AREA;
 	this._isLive = true;
-	if (arguments.length === 1) {
-		let pt = arguments[0];
-		this.pt = pt;
-	}
+	let pt = arguments[0];
+	this.pt = pt;
 }
 extend(VWVertex.prototype, {
 	getCoordinates: function () {

@@ -6,23 +6,20 @@ import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
 export default function VertexTaggedGeometryDataMapper() {
 	this.coordDataMap = new TreeMap();
-	if (arguments.length === 0) {}
 }
 extend(VertexTaggedGeometryDataMapper.prototype, {
 	loadSourceGeometries: function () {
-		if (arguments.length === 1) {
-			if (hasInterface(arguments[0], Collection)) {
-				let geoms = arguments[0];
-				for (var i = geoms.iterator(); i.hasNext(); ) {
-					var geom = i.next();
-					this.loadVertices(geom.getCoordinates(), geom.getUserData());
-				}
-			} else if (arguments[0] instanceof Geometry) {
-				let geomColl = arguments[0];
-				for (var i = 0; i < geomColl.getNumGeometries(); i++) {
-					var geom = geomColl.getGeometryN(i);
-					this.loadVertices(geom.getCoordinates(), geom.getUserData());
-				}
+		if (hasInterface(arguments[0], Collection)) {
+			let geoms = arguments[0];
+			for (var i = geoms.iterator(); i.hasNext(); ) {
+				var geom = i.next();
+				this.loadVertices(geom.getCoordinates(), geom.getUserData());
+			}
+		} else if (arguments[0] instanceof Geometry) {
+			let geomColl = arguments[0];
+			for (var i = 0; i < geomColl.getNumGeometries(); i++) {
+				var geom = geomColl.getGeometryN(i);
+				this.loadVertices(geom.getCoordinates(), geom.getUserData());
 			}
 		}
 	},

@@ -7,25 +7,22 @@ import Envelope from '../geom/Envelope';
 import TaggedLineString from './TaggedLineString';
 export default function LineSegmentIndex() {
 	this.index = new Quadtree();
-	if (arguments.length === 0) {}
 }
 extend(LineSegmentIndex.prototype, {
 	remove: function (seg) {
 		this.index.remove(new Envelope(seg.p0, seg.p1), seg);
 	},
 	add: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof TaggedLineString) {
-				let line = arguments[0];
-				var segs = line.getSegments();
-				for (var i = 0; i < segs.length; i++) {
-					var seg = segs[i];
-					this.add(seg);
-				}
-			} else if (arguments[0] instanceof LineSegment) {
-				let seg = arguments[0];
-				this.index.insert(new Envelope(seg.p0, seg.p1), seg);
+		if (arguments[0] instanceof TaggedLineString) {
+			let line = arguments[0];
+			var segs = line.getSegments();
+			for (var i = 0; i < segs.length; i++) {
+				var seg = segs[i];
+				this.add(seg);
 			}
+		} else if (arguments[0] instanceof LineSegment) {
+			let seg = arguments[0];
+			this.index.insert(new Envelope(seg.p0, seg.p1), seg);
 		}
 	},
 	query: function (querySeg) {
@@ -45,10 +42,8 @@ extend(LineSegmentIndex.prototype, {
 function LineSegmentVisitor() {
 	this.querySeg = null;
 	this.items = new ArrayList();
-	if (arguments.length === 1) {
-		let querySeg = arguments[0];
-		this.querySeg = querySeg;
-	}
+	let querySeg = arguments[0];
+	this.querySeg = querySeg;
 }
 extend(LineSegmentVisitor.prototype, {
 	visitItem: function (item) {

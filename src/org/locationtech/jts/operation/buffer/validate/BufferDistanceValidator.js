@@ -21,12 +21,10 @@ export default function BufferDistanceValidator() {
 	this.errMsg = null;
 	this.errorLocation = null;
 	this.errorIndicator = null;
-	if (arguments.length === 3) {
-		let input = arguments[0], bufDistance = arguments[1], result = arguments[2];
-		this.input = input;
-		this.bufDistance = bufDistance;
-		this.result = result;
-	}
+	let input = arguments[0], bufDistance = arguments[1], result = arguments[2];
+	this.input = input;
+	this.bufDistance = bufDistance;
+	this.result = result;
 }
 extend(BufferDistanceValidator.prototype, {
 	checkMaximumDistance: function (input, bufCurve, maxDist) {

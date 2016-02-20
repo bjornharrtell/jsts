@@ -3,10 +3,8 @@ import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function GeometryCollectionMapper() {
 	this.mapOp = null;
-	if (arguments.length === 1) {
-		let mapOp = arguments[0];
-		this.mapOp = mapOp;
-	}
+	let mapOp = arguments[0];
+	this.mapOp = mapOp;
 }
 extend(GeometryCollectionMapper.prototype, {
 	map: function (gc) {

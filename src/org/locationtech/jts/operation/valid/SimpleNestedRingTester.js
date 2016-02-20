@@ -7,10 +7,8 @@ export default function SimpleNestedRingTester() {
 	this.graph = null;
 	this.rings = new ArrayList();
 	this.nestedPt = null;
-	if (arguments.length === 1) {
-		let graph = arguments[0];
-		this.graph = graph;
-	}
+	let graph = arguments[0];
+	this.graph = graph;
 }
 extend(SimpleNestedRingTester.prototype, {
 	getNestedPoint: function () {

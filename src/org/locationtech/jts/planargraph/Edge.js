@@ -25,16 +25,14 @@ extend(Edge.prototype, {
 		de1.getFromNode().addOutEdge(de1);
 	},
 	getDirEdge: function () {
-		if (arguments.length === 1) {
-			if (Number.isInteger(arguments[0])) {
-				let i = arguments[0];
-				return this.dirEdge[i];
-			} else if (arguments[0] instanceof Node) {
-				let fromNode = arguments[0];
-				if (this.dirEdge[0].getFromNode() === fromNode) return this.dirEdge[0];
-				if (this.dirEdge[1].getFromNode() === fromNode) return this.dirEdge[1];
-				return null;
-			}
+		if (Number.isInteger(arguments[0])) {
+			let i = arguments[0];
+			return this.dirEdge[i];
+		} else if (arguments[0] instanceof Node) {
+			let fromNode = arguments[0];
+			if (this.dirEdge[0].getFromNode() === fromNode) return this.dirEdge[0];
+			if (this.dirEdge[1].getFromNode() === fromNode) return this.dirEdge[1];
+			return null;
 		}
 	},
 	remove: function () {

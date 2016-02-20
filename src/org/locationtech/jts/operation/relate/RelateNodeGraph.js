@@ -5,7 +5,6 @@ import NodeMap from '../../geomgraph/NodeMap';
 import RelateNodeFactory from './RelateNodeFactory';
 export default function RelateNodeGraph() {
 	this.nodes = new NodeMap(new RelateNodeFactory());
-	if (arguments.length === 0) {}
 }
 extend(RelateNodeGraph.prototype, {
 	insertEdgeEnds: function (ee) {

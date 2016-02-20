@@ -3,11 +3,9 @@ import QuadEdgeLocator from './QuadEdgeLocator';
 export default function LastFoundQuadEdgeLocator() {
 	this.subdiv = null;
 	this.lastEdge = null;
-	if (arguments.length === 1) {
-		let subdiv = arguments[0];
-		this.subdiv = subdiv;
-		this.init();
-	}
+	let subdiv = arguments[0];
+	this.subdiv = subdiv;
+	this.init();
 }
 extend(LastFoundQuadEdgeLocator.prototype, {
 	init: function () {
