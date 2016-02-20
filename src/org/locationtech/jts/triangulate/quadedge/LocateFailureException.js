@@ -7,16 +7,12 @@ export default function LocateFailureException() {
 	this.seg = null;
 	if (arguments.length === 1) {
 		if (typeof arguments[0] === "string") {
-			return (() => {
-				let msg = arguments[0];
-				RuntimeException.call(this, msg);
-			})(arguments);
+			let msg = arguments[0];
+			RuntimeException.call(this, msg);
 		} else if (arguments[0] instanceof LineSegment) {
-			return (() => {
-				let seg = arguments[0];
-				RuntimeException.call(this, "Locate failed to converge (at edge: " + seg + ").  Possible causes include invalid Subdivision topology or very close sites");
-				this.seg = new LineSegment(seg);
-			})(arguments);
+			let seg = arguments[0];
+			RuntimeException.call(this, "Locate failed to converge (at edge: " + seg + ").  Possible causes include invalid Subdivision topology or very close sites");
+			this.seg = new LineSegment(seg);
 		}
 	} else if (arguments.length === 2) {
 		let msg = arguments[0], seg = arguments[1];
