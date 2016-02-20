@@ -12,7 +12,6 @@ const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', '
 /**
  * Class for reading and writing Well-Known Text.Create a new parser for GeoJSON
  * NOTE: Adapted from OpenLayers 2.11 implementation.
- * @private
  */
 
 /**
@@ -20,6 +19,8 @@ const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', '
  *
  * @param {GeometryFactory} geometryFactory
  * @return An instance of GeoJsonParser.
+ * @constructor
+ * @private
  */
 export default function GeoJSONParser (geometryFactory) {
   this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -32,6 +33,7 @@ extend(GeoJSONParser.prototype, {
    * @param {}
    *          A GeoJSON object.
    * @return {} A Geometry instance or object representing a Feature(Collection) with Geometry instances.
+   * @private
    */
   read (json) {
     let obj
@@ -63,6 +65,7 @@ extend(GeoJSONParser.prototype, {
    * @param {Geometry}
    *          geometry A Geometry or array of Geometries.
    * @return {Object} A GeoJSON object represting the input Geometry/Geometries.
+   * @private
    */
   write (geometry) {
     const type = geometry.getGeometryType()

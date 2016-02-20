@@ -22,6 +22,7 @@ import extend from '../../../../extend'
 
 /**
  * @param {GeometryFactory} geometryFactory
+ * @constructor
  */
 export default function WKTWriter (geometryFactory) {
   this.parser = new WKTParser(geometryFactory)
@@ -34,6 +35,7 @@ extend(WKTWriter.prototype, {
    * @param {Geometry} geometry a <code>Geometry</code> to process.
    * @return {string} a <Geometry Tagged Text> string (see the OpenGIS Simple
    *         Features Specification).
+   * @memberof WKTWriter
    */
   write (geometry) {
     return this.parser.write(geometry)
@@ -47,6 +49,7 @@ extend(WKTWriter.prototype, {
    * @param p1 the second coordinate.
    *
    * @return the WKT.
+   * @private
    */
   toLineString (p0, p1) {
     if (arguments.length !== 2) {

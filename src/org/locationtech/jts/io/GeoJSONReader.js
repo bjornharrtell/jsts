@@ -19,6 +19,7 @@ import extend from '../../../../extend'
  * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
  *
  * @param {GeometryFactory} geometryFactory
+ * @constructor
  */
 export default function GeoJSONReader (geometryFactory) {
   this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -32,6 +33,7 @@ extend(GeoJSONReader.prototype, {
    *
    * @param {Object|String} geoJson a GeoJSON Object or String.
    * @return {Geometry} a <code>Geometry.</code>
+   * @memberof GeoJSONReader
    */
   read (geoJson) {
     var geometry = this.parser.read(geoJson)

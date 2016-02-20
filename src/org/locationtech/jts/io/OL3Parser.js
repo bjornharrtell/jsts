@@ -14,6 +14,7 @@ function p2c (p) { return [p.x, p.y] }
 /**
  * OpenLayers 3 Geometry parser and writer
  * @param {GeometryFactory} geometryFactory
+ * @constructor
  */
 export default function OL3Parser (geometryFactory) {
   this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -23,6 +24,7 @@ extend(OL3Parser.prototype, {
   /**
    * @param geometry {ol.geom.Geometry}
    * @return {Geometry}
+   * @memberof OL3Parser
    */
   read (geometry) {
     if (geometry instanceof ol.geom.Point) {
@@ -108,6 +110,7 @@ extend(OL3Parser.prototype, {
    * @param geometry
    *          {Geometry}
    * @return {ol.geom.Geometry}
+   * @memberof! OL3Parser
    */
   write (geometry) {
     if (geometry.getGeometryType() === 'Point') {

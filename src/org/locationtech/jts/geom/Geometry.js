@@ -6,20 +6,17 @@ import Envelope from './Envelope';
 import Assert from '../util/Assert';
 import extend from '../../../../extend';
 import inherits from '../../../../inherits';
-export default function Geometry(...args) {
+export default function Geometry() {
 	this.envelope = null;
 	this.factory = null;
 	this.SRID = null;
 	this.userData = null;
-	if (args.length === 1) {
-		let [factory] = args;
+	if (arguments.length === 1) {
+		let factory = arguments[0];
 		this.factory = factory;
 		this.SRID = factory.getSRID();
 	}
 }
-inherits(Geometry, Serializable);
-inherits(Geometry, Comparable);
-inherits(Geometry, Cloneable);
 extend(Geometry.prototype, {
 	isGeometryCollection: function () {
 		return this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION;
@@ -33,36 +30,17 @@ extend(Geometry.prototype, {
 	getArea: function () {
 		return 0.0;
 	},
-	union: function (...args) {
-		if (args.length === 0) {
-			let [] = args;
-			return UnaryUnionOp.union(this);
-		} else if (args.length === 1) {
-			let [other] = args;
-			if (this.isEmpty() || other.isEmpty()) {
-				if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, this, other, this.factory);
-				if (this.isEmpty()) return other.copy();
-				if (other.isEmpty()) return this.copy();
-			}
-			this.checkNotGeometryCollection(this);
-			this.checkNotGeometryCollection(other);
-			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
-		}
-	},
-	isValid: function () {
-		return IsValidOp.isValid(this);
-	},
 	isRectangle: function () {
 		return false;
 	},
-	equals: function (...args) {
-		if (args.length === 1) {
-			if (args[0] instanceof Geometry) {
-				let [g] = args;
+	equals: function () {
+		if (arguments.length === 1) {
+			if (arguments[0] instanceof Geometry) {
+				let g = arguments[0];
 				if (g === null) return false;
 				return this.equalsTopo(g);
-			} else if (args[0] instanceof Object) {
-				let [o] = args;
+			} else if (arguments[0] instanceof Object) {
+				let o = arguments[0];
 				if (!(o instanceof Geometry)) return false;
 				var g = o;
 				return this.equalsExact(g);
@@ -72,39 +50,12 @@ extend(Geometry.prototype, {
 	equalsExact: function (other) {
 		return this === other || this.equalsExact(other, 0);
 	},
-	intersection: function (other) {
-		if (this.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, this, other, this.factory);
-		if (this.isGeometryCollection()) {
-			var g2 = other;
-			return GeometryCollectionMapper.map(this, {
-				interfaces_: function () {
-					return [MapOp];
-				},
-				map: function (g) {
-					return g.intersection(g2);
-				}
-			});
-		}
-		this.checkNotGeometryCollection(this);
-		this.checkNotGeometryCollection(other);
-		return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
-	},
 	covers: function (g) {
 		if (!this.getEnvelopeInternal().covers(g.getEnvelopeInternal())) return false;
 		if (this.isRectangle()) {
 			return true;
 		}
 		return this.relate(g).isCovers();
-	},
-	intersects: function (g) {
-		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
-		if (this.isRectangle()) {
-			return RectangleIntersects.intersects(this, g);
-		}
-		if (g.isRectangle()) {
-			return RectangleIntersects.intersects(g, this);
-		}
-		return this.relate(g).isIntersects();
 	},
 	touches: function (g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
@@ -119,18 +70,6 @@ extend(Geometry.prototype, {
 	geometryChangedAction: function () {
 		this.envelope = null;
 	},
-	buffer: function (...args) {
-		if (args.length === 1) {
-			let [distance] = args;
-			return BufferOp.bufferOp(this, distance);
-		} else if (args.length === 2) {
-			let [distance, quadrantSegments] = args;
-			return BufferOp.bufferOp(this, distance, quadrantSegments);
-		} else if (args.length === 3) {
-			let [distance, quadrantSegments, endCapStyle] = args;
-			return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
-		}
-	},
 	equalsNorm: function (g) {
 		if (g === null) return false;
 		return this.norm().equalsExact(g.norm());
@@ -141,9 +80,9 @@ extend(Geometry.prototype, {
 	getNumGeometries: function () {
 		return 1;
 	},
-	compareTo: function (...args) {
-		if (args.length === 1) {
-			let [o] = args;
+	compareTo: function () {
+		if (arguments.length === 1) {
+			let o = arguments[0];
 			var other = o;
 			if (this.getSortIndex() !== other.getSortIndex()) {
 				return this.getSortIndex() - other.getSortIndex();
@@ -158,8 +97,8 @@ extend(Geometry.prototype, {
 				return 1;
 			}
 			return this.compareToSameClass(o);
-		} else if (args.length === 2) {
-			let [o, comp] = args;
+		} else if (arguments.length === 2) {
+			let o = arguments[0], comp = arguments[1];
 			var other = o;
 			if (this.getSortIndex() !== other.getSortIndex()) {
 				return this.getSortIndex() - other.getSortIndex();
@@ -175,9 +114,6 @@ extend(Geometry.prototype, {
 			}
 			return this.compareToSameClass(o, comp);
 		}
-	},
-	convexHull: function () {
-		return new ConvexHull(this).getConvexHull();
 	},
 	equalsTopo: function (g) {
 		if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) return false;
@@ -206,14 +142,14 @@ extend(Geometry.prototype, {
 		}
 		return a.distance(b) <= tolerance;
 	},
-	relate: function (...args) {
-		if (args.length === 1) {
-			let [g] = args;
+	relate: function () {
+		if (arguments.length === 1) {
+			let g = arguments[0];
 			this.checkNotGeometryCollection(this);
 			this.checkNotGeometryCollection(g);
 			return RelateOp.relate(this, g);
-		} else if (args.length === 2) {
-			let [g, intersectionPattern] = args;
+		} else if (arguments.length === 2) {
+			let g = arguments[0], intersectionPattern = arguments[1];
 			return this.relate(g).matches(intersectionPattern);
 		}
 	},
@@ -229,62 +165,14 @@ extend(Geometry.prototype, {
 	getPrecisionModel: function () {
 		return this.factory.getPrecisionModel();
 	},
-	getCentroid: function () {
-		if (this.isEmpty()) return this.factory.createPoint();
-		var centPt = Centroid.getCentroid(this);
-		return this.createPointFromInternalCoord(centPt, this);
-	},
 	getEnvelopeInternal: function () {
 		if (this.envelope === null) {
 			this.envelope = this.computeEnvelopeInternal();
 		}
 		return new Envelope(this.envelope);
 	},
-	isEquivalentClass: function (other) {
-		return this.name === other.getClass().getName();
-	},
-	clone: function () {
-		try {
-			var clone = null;
-			if (clone.envelope !== null) {
-				clone.envelope = new Envelope(clone.envelope);
-			}
-			return clone;
-		} catch (e) {
-			if (e instanceof CloneNotSupportedException) {
-				Assert.shouldNeverReachHere();
-				return null;
-			} else throw e;
-		} finally {}
-	},
 	setSRID: function (SRID) {
 		this.SRID = SRID;
-	},
-	getInteriorPoint: function () {
-		if (this.isEmpty()) return this.factory.createPoint();
-		var interiorPt = null;
-		var dim = this.getDimension();
-		if (dim === 0) {
-			var intPt = new InteriorPointPoint(this);
-			interiorPt = intPt.getInteriorPoint();
-		} else if (dim === 1) {
-			var intPt = new InteriorPointLine(this);
-			interiorPt = intPt.getInteriorPoint();
-		} else {
-			var intPt = new InteriorPointArea(this);
-			interiorPt = intPt.getInteriorPoint();
-		}
-		return this.createPointFromInternalCoord(interiorPt, this);
-	},
-	symDifference: function (other) {
-		if (this.isEmpty() || other.isEmpty()) {
-			if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, this, other, this.factory);
-			if (this.isEmpty()) return other.copy();
-			if (other.isEmpty()) return this.copy();
-		}
-		this.checkNotGeometryCollection(this);
-		this.checkNotGeometryCollection(other);
-		return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.SYMDIFFERENCE);
 	},
 	setUserData: function (userData) {
 		this.userData = userData;
@@ -292,38 +180,12 @@ extend(Geometry.prototype, {
 	toString: function () {
 		return this.toText();
 	},
-	createPointFromInternalCoord: function (coord, exemplar) {
-		exemplar.getPrecisionModel().makePrecise(coord);
-		return exemplar.getFactory().createPoint(coord);
-	},
 	disjoint: function (g) {
 		return !this.intersects(g);
-	},
-	toText: function () {
-		var writer = new WKTWriter();
-		return writer.write(this);
 	},
 	crosses: function (g) {
 		if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isCrosses(this.getDimension(), g.getDimension());
-	},
-	contains: function (g) {
-		if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal())) return false;
-		if (this.isRectangle()) {
-			return RectangleContains.contains(this, g);
-		}
-		return this.relate(g).isContains();
-	},
-	difference: function (other) {
-		if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this.factory);
-		if (other.isEmpty()) return this.copy();
-		this.checkNotGeometryCollection(this);
-		this.checkNotGeometryCollection(other);
-		return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.DIFFERENCE);
-	},
-	isSimple: function () {
-		var op = new IsSimpleOp(this);
-		return op.isSimple();
 	},
 	compare: function (a, b) {
 		var i = a.iterator();
@@ -344,14 +206,6 @@ extend(Geometry.prototype, {
 		}
 		return 0;
 	},
-	isWithinDistance: function (geom, distance) {
-		var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal());
-		if (envDist > distance) return false;
-		return DistanceOp.isWithinDistance(this, geom, distance);
-	},
-	distance: function (g) {
-		return DistanceOp.distance(this, g);
-	},
 	hashCode: function () {
 		return this.getEnvelopeInternal().hashCode();
 	},
@@ -360,6 +214,9 @@ extend(Geometry.prototype, {
 			return true;
 		}
 		return false;
+	},
+	interfaces_: function () {
+		return [Cloneable, Comparable, Serializable];
 	},
 	getClass: function () {
 		return Geometry;

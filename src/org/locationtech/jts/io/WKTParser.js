@@ -26,6 +26,7 @@ const regExes = {
  *
  * @param {GeometryFactory} geometryFactory
  * @return An instance of WKTParser.
+ * @constructor
  * @private
  */
 export default function WKTParser (geometryFactory) {
@@ -40,6 +41,7 @@ extend(WKTParser.prototype, {
    *
    * @param {String} wkt A WKT string.
    * @return {Geometry} A geometry instance.
+   * @private
    */
   read (wkt) {
     var geometry, type, str
@@ -67,6 +69,7 @@ extend(WKTParser.prototype, {
    *
    * @param {Geometry} geometry A feature or array of features.
    * @return {String} The WKT string representation of the input geometries.
+   * @private
    */
   write (geometry) {
     return this.extractGeometry(geometry)
@@ -77,6 +80,7 @@ extend(WKTParser.prototype, {
    *
    * @param {Geometry} geometry
    * @return {String} A WKT string of representing the geometry.
+   * @private
    */
   extractGeometry (geometry) {
     var type = geometry.getGeometryType().toLowerCase()

@@ -23,6 +23,7 @@ import extend from '../../../../extend'
  * implementation. In particular, the <code>GeometryFactory</code> determines
  * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
  * @param {GeometryFactory} geometryFactory
+ * @constructor
  */
 export default function WKTReader (geometryFactory) {
   this.geometryFactory = geometryFactory || new GeometryFactory()
@@ -39,6 +40,7 @@ extend(WKTReader.prototype, {
    *          Specification).
    * @return {Geometry} a <code>Geometry</code> read from
    *         <code>string.</code>
+   * @memberof WKTReader
    */
   read (wkt) {
     var geometry = this.parser.read(wkt)

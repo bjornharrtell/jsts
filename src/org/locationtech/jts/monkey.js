@@ -25,39 +25,12 @@ import Geometry from './geom/Geometry';
 import GeometryCollection from './geom/GeometryCollection';
 
 export default function patch () {
-	Geometry.hasNonEmptyElements = function(geometries) {
-		for (var i = 0; i < geometries.length; i++) {
-			if (!geometries[i].isEmpty()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	Geometry.hasNullElements = function(array) {
-		for (var i = 0; i < array.length; i++) {
-			if (array[i] === null) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	const mixin = {
-		getFactory() {
-			return this.factory;
-		},
-		getGeometryN(n) {
-			return this;
-		},
-		getArea() {
-			return 0.0;
-		},
-		union(...args) {
-			if (args.length === 0) {
-				let [] = args;
+		union: function () {
+			if (arguments.length === 0) {
 				return UnaryUnionOp.union(this);
-			} else if (args.length === 1) {
-				let [other] = args;
+			} else if (arguments.length === 1) {
+				let other = arguments[0];
 				if (this.isEmpty() || other.isEmpty()) {
 					if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, this, other, this.factory);
 					if (this.isEmpty()) return other.copy();
@@ -68,24 +41,27 @@ export default function patch () {
 				return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.UNION);
 			}
 		},
-		isValid() {
+		isValid: function () {
 			return IsValidOp.isValid(this);
 		},
-		intersection(other) {
+		intersection: function (other) {
 			if (this.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, this, other, this.factory);
 			if (this.isGeometryCollection()) {
 				var g2 = other;
-				return GeometryCollectionMapper.map(this, new (class {
-					map(g) {
+				return GeometryCollectionMapper.map(this, {
+					interfaces_: function () {
+						return [MapOp];
+					},
+					map: function (g) {
 						return g.intersection(g2);
 					}
-				})());
+				});
 			}
 			this.checkNotGeometryCollection(this);
 			this.checkNotGeometryCollection(other);
 			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
 		},
-		intersects(g) {
+		intersects: function (g) {
 			if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
 			if (this.isRectangle()) {
 				return RectangleIntersects.intersects(this, g);
@@ -95,19 +71,19 @@ export default function patch () {
 			}
 			return this.relate(g).isIntersects();
 		},
-		buffer(...args) {
-			if (args.length === 1) {
-				let [distance] = args;
+		buffer: function () {
+			if (arguments.length === 1) {
+				let distance = arguments[0];
 				return BufferOp.bufferOp(this, distance);
-			} else if (args.length === 2) {
-				let [distance, quadrantSegments] = args;
+			} else if (arguments.length === 2) {
+				let distance = arguments[0], quadrantSegments = arguments[1];
 				return BufferOp.bufferOp(this, distance, quadrantSegments);
-			} else if (args.length === 3) {
-				let [distance, quadrantSegments, endCapStyle] = args;
+			} else if (arguments.length === 3) {
+				let distance = arguments[0], quadrantSegments = arguments[1], endCapStyle = arguments[2];
 				return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
 			}
 		},
-		convexHull() {
+		convexHull: function () {
 			return new ConvexHull(this).getConvexHull();
 		},
 		relate(...args) {
@@ -121,15 +97,12 @@ export default function patch () {
 				return this.relate(g).matches(intersectionPattern);
 			}
 		},
-		getCentroid() {
+		getCentroid: function () {
 			if (this.isEmpty()) return this.factory.createPoint();
 			var centPt = Centroid.getCentroid(this);
 			return this.createPointFromInternalCoord(centPt, this);
 		},
-		isEquivalentClass(other) {
-			return this.getClass() === other.getClass();
-		},
-		getInteriorPoint() {
+		getInteriorPoint: function () {
 			if (this.isEmpty()) return this.factory.createPoint();
 			var interiorPt = null;
 			var dim = this.getDimension();
@@ -145,7 +118,7 @@ export default function patch () {
 			}
 			return this.createPointFromInternalCoord(interiorPt, this);
 		},
-		symDifference(other) {
+		symDifference: function (other) {
 			if (this.isEmpty() || other.isEmpty()) {
 				if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, this, other, this.factory);
 				if (this.isEmpty()) return other.copy();
@@ -155,42 +128,45 @@ export default function patch () {
 			this.checkNotGeometryCollection(other);
 			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.SYMDIFFERENCE);
 		},
-		createPointFromInternalCoord(coord, exemplar) {
+		createPointFromInternalCoord: function (coord, exemplar) {
 			exemplar.getPrecisionModel().makePrecise(coord);
 			return exemplar.getFactory().createPoint(coord);
 		},
 		disjoint(g) {
 			return !this.intersects(g);
 		},
-		toText() {
+		toText: function () {
 			var writer = new WKTWriter();
 			return writer.write(this);
 		},
-		contains(g) {
+		contains: function (g) {
 			if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal())) return false;
 			if (this.isRectangle()) {
 				return RectangleContains.contains(this, g);
 			}
 			return this.relate(g).isContains();
 		},
-		difference(other) {
+		difference: function (other) {
 			if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this.factory);
 			if (other.isEmpty()) return this.copy();
 			this.checkNotGeometryCollection(this);
 			this.checkNotGeometryCollection(other);
 			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.DIFFERENCE);
 		},
-		isSimple() {
+		isSimple: function () {
 			var op = new IsSimpleOp(this);
 			return op.isSimple();
 		},
-		isWithinDistance(geom, distance) {
+		isWithinDistance: function (geom, distance) {
 			var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal());
 			if (envDist > distance) return false;
 			return DistanceOp.isWithinDistance(this, geom, distance);
 		},
-		distance(g) {
+		distance: function (g) {
 			return DistanceOp.distance(this, g);
+		},
+		isEquivalentClass: function (other) {
+			return this.getClass() === other.getClass();
 		}
 	}
 

@@ -19,6 +19,7 @@ import extend from '../../../../extend'
  * ordinates to the required precision will be output.
  *
  * @param {GeometryFactory} geometryFactory
+ * @constructor
  */
 export default function GeoJSONWriter () {
   this.parser = new GeoJSONParser(this.geometryFactory)
@@ -31,6 +32,7 @@ extend(GeoJSONWriter.prototype, {
    * @param {Geometry}
    *          geometry a <code>Geometry</code> to process.
    * @return {Object} The GeoJSON representation of the Geometry.
+   * @memberof GeoJSONWriter
    */
   write (geometry) {
     return this.parser.write(geometry)
