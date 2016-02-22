@@ -6,20 +6,20 @@ JSTS is an ECMAScript 2015 library of spatial predicates and functions for proce
 
 The primary goal of the project is to provide web mapping applications with a complete library for processing and analyzing simple geometries but JSTS can also be used as a free standing geometry library.
 
-JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-rc4/apidocs/), except for the io related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers 3.
+JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-rc5/apidocs/), except for the io related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers 3.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
 
-A [port](http://bjornharrtell.github.com/jsts/1.0.0-rc4/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
+A [port](http://bjornharrtell.github.com/jsts/1.0.0-rc5/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
 
 Basic functionality together with OpenLayers 3 is demonstrated [here](http://bjornharrtell.github.io/jsts).
 
 ## Browser or Node.js use
 
-An ES5 (the most common JavaScript variant) compatible build for browsers is available [here](https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.0.0-rc4/jsts.min.js).
+An ES5 (the most common JavaScript variant) compatible build for browsers is available [here](https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.0.0-rc5/jsts.min.js).
 
-Including the above build as a script will import a global object `jsts` exposing similar public API as `org.locationtech.jts` in the [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-rc4/apidocs/).
+Including the above build as a script will import a global object `jsts` exposing similar public API as `org.locationtech.jts` in the [JTS API](http://bjornharrtell.github.io/jsts/1.0.0-rc5/apidocs/).
 
-For Node.js, install using `npm install jsts@1.0.0-rc4` after which `require('jsts')` will import an object with the same properties as `jsts` in the browser build.
+For Node.js, install using `npm install jsts@1.0.0-rc5` after which `require('jsts')` will import an object with the same properties as `jsts` in the browser build.
 
-I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3 geometries exist. See the [specific API documentation](http://bjornharrtell.github.io/jsts/1.0.0-rc4/doc/) for these specific classes.
+I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3 geometries exist. See the [specific API documentation](http://bjornharrtell.github.io/jsts/1.0.0-rc5/doc/) for these specific classes.
