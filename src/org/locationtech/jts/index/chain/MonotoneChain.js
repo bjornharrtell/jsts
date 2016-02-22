@@ -36,7 +36,7 @@ extend(MonotoneChain.prototype, {
 		}
 	},
 	getCoordinates: function () {
-		var coord = new Array(this.end - this.start + 1);
+		var coord = new Array(this.end - this.start + 1).fill(null);
 		var index = 0;
 		for (var i = this.start; i <= this.end; i++) {
 			coord[index++] = this.pts[i];

@@ -6,7 +6,7 @@ import Assert from '../util/Assert';
 export default function LineIntersector() {
 	this.result = null;
 	this.inputLines = Array(2).fill().map(() => Array(2));
-	this.intPt = new Array(2);
+	this.intPt = new Array(2).fill(null);
 	this.intLineIndex = null;
 	this._isProper = null;
 	this.pa = null;

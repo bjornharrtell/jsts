@@ -13,7 +13,7 @@ extend(SegmentStringUtil.prototype, {
 	}
 });
 SegmentStringUtil.toGeometry = function (segStrings, geomFact) {
-	var lines = new Array(segStrings.size());
+	var lines = new Array(segStrings.size()).fill(null);
 	var index = 0;
 	for (var i = segStrings.iterator(); i.hasNext(); ) {
 		var ss = i.next();

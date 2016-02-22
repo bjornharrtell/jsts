@@ -250,7 +250,7 @@ OverlayOp.createEmptyResult = function (overlayOpCode, a, b, geomFact) {
 	var result = null;
 	switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
 		case -1:
-			result = geomFact.createGeometryCollection(new Array(0));
+			result = geomFact.createGeometryCollection(new Array(0).fill(null));
 			break;
 		case 0:
 			result = geomFact.createPoint();

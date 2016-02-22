@@ -143,7 +143,7 @@ extend(LineSequencer.prototype, {
 				lines.add(lineToAdd);
 			}
 		}
-		if (lines.size() === 0) return this.factory.createMultiLineString(new Array(0));
+		if (lines.size() === 0) return this.factory.createMultiLineString(new Array(0).fill(null));
 		return this.factory.buildGeometry(lines);
 	},
 	getSequencedLineStrings: function () {
@@ -235,7 +235,7 @@ LineSequencer.isSequenced = function (geom) {
 };
 LineSequencer.reverse = function (line) {
 	var pts = line.getCoordinates();
-	var revPts = new Array(pts.length);
+	var revPts = new Array(pts.length).fill(null);
 	var len = pts.length;
 	for (var i = 0; i < len; i++) {
 		revPts[len - 1 - i] = new Coordinate(pts[i]);

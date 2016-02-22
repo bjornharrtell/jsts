@@ -9,7 +9,7 @@ import OverlayOp from '../OverlayOp';
 export default function OverlayResultValidator() {
 	this.geom = null;
 	this.locFinder = null;
-	this.location = new Array(3);
+	this.location = new Array(3).fill(null);
 	this.invalidLocation = null;
 	this.boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE;
 	this.testCoords = new ArrayList();

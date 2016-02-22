@@ -77,7 +77,7 @@ extend(DensifyTransformer.prototype, {
 		var inputPts = coords.toCoordinateArray();
 		var newPts = Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel());
 		if (parent instanceof LineString && newPts.length === 1) {
-			newPts = new Array(0);
+			newPts = new Array(0).fill(null);
 		}
 		return this.factory.getCoordinateSequenceFactory().create(newPts);
 	},

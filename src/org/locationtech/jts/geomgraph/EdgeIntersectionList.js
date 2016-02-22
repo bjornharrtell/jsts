@@ -44,7 +44,7 @@ extend(EdgeIntersectionList.prototype, {
 		if (!useIntPt1) {
 			npts--;
 		}
-		var pts = new Array(npts);
+		var pts = new Array(npts).fill(null);
 		var ipt = 0;
 		pts[ipt++] = new Coordinate(ei0.coord);
 		for (var i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {

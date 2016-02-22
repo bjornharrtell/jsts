@@ -113,5 +113,5 @@ extend(CoordinateList.prototype, {
 		return CoordinateList;
 	}
 });
-CoordinateList.coordArrayType = new Array(0);
+CoordinateList.coordArrayType = new Array(0).fill(null);
 

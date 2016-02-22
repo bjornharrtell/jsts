@@ -59,7 +59,7 @@ extend(ScaledNoder.prototype, {
 			return nodedSegmentStrings;
 		} else if (arguments[0] instanceof Array) {
 			let pts = arguments[0];
-			var roundPts = new Array(pts.length);
+			var roundPts = new Array(pts.length).fill(null);
 			for (var i = 0; i < pts.length; i++) {
 				roundPts[i] = new Coordinate(Math.round((pts[i].x - this.offsetX) * this.scaleFactor), Math.round((pts[i].y - this.offsetY) * this.scaleFactor), pts[i].z);
 			}

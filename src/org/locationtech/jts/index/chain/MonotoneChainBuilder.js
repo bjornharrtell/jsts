@@ -59,7 +59,7 @@ MonotoneChainBuilder.getChains = function () {
 	}
 };
 MonotoneChainBuilder.toIntArray = function (list) {
-	var array = new Array(list.size());
+	var array = new Array(list.size()).fill(null);
 	for (var i = 0; i < array.length; i++) {
 		array[i] = list.get(i).intValue();
 	}

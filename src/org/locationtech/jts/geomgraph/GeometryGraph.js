@@ -142,7 +142,7 @@ extend(GeometryGraph.prototype, {
 	},
 	getBoundaryPoints: function () {
 		var coll = this.getBoundaryNodes();
-		var pts = new Array(coll.size());
+		var pts = new Array(coll.size()).fill(null);
 		var i = 0;
 		for (var it = coll.iterator(); it.hasNext(); ) {
 			var node = it.next();

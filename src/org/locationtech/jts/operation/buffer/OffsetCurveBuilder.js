@@ -160,7 +160,7 @@ extend(OffsetCurveBuilder.prototype, {
 	}
 });
 OffsetCurveBuilder.copyCoordinates = function (pts) {
-	var copy = new Array(pts.length);
+	var copy = new Array(pts.length).fill(null);
 	for (var i = 0; i < copy.length; i++) {
 		copy[i] = new Coordinate(pts[i]);
 	}

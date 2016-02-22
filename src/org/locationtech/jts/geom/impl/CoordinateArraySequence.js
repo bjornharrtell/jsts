@@ -15,18 +15,18 @@ export default function CoordinateArraySequence() {
 			CoordinateArraySequence.call(this, coordinates, 3);
 		} else if (Number.isInteger(arguments[0])) {
 			let size = arguments[0];
-			this.coordinates = new Array(size);
+			this.coordinates = new Array(size).fill(null);
 			for (var i = 0; i < size; i++) {
 				this.coordinates[i] = new Coordinate();
 			}
 		} else if (hasInterface(arguments[0], CoordinateSequence)) {
 			let coordSeq = arguments[0];
 			if (coordSeq === null) {
-				this.coordinates = new Array(0);
+				this.coordinates = new Array(0).fill(null);
 				return null;
 			}
 			this.dimension = coordSeq.getDimension();
-			this.coordinates = new Array(coordSeq.size());
+			this.coordinates = new Array(coordSeq.size()).fill(null);
 			for (var i = 0; i < this.coordinates.length; i++) {
 				this.coordinates[i] = coordSeq.getCoordinateCopy(i);
 			}
@@ -36,10 +36,10 @@ export default function CoordinateArraySequence() {
 			let coordinates = arguments[0], dimension = arguments[1];
 			this.coordinates = coordinates;
 			this.dimension = dimension;
-			if (coordinates === null) this.coordinates = new Array(0);
+			if (coordinates === null) this.coordinates = new Array(0).fill(null);
 		} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
 			let size = arguments[0], dimension = arguments[1];
-			this.coordinates = new Array(size);
+			this.coordinates = new Array(size).fill(null);
 			this.dimension = dimension;
 			for (var i = 0; i < size; i++) {
 				this.coordinates[i] = new Coordinate();
@@ -98,7 +98,7 @@ extend(CoordinateArraySequence.prototype, {
 		return this.coordinates[index].x;
 	},
 	clone: function () {
-		var cloneCoordinates = new Array(this.size());
+		var cloneCoordinates = new Array(this.size()).fill(null);
 		for (var i = 0; i < this.coordinates.length; i++) {
 			cloneCoordinates[i] = this.coordinates[i].clone();
 		}
@@ -111,7 +111,7 @@ extend(CoordinateArraySequence.prototype, {
 		return env;
 	},
 	copy: function () {
-		var cloneCoordinates = new Array(this.size());
+		var cloneCoordinates = new Array(this.size()).fill(null);
 		for (var i = 0; i < this.coordinates.length; i++) {
 			cloneCoordinates[i] = this.coordinates[i].copy();
 		}

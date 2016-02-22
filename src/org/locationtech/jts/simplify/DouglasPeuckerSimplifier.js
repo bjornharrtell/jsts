@@ -63,7 +63,7 @@ extend(DPTransformer.prototype, {
 		var inputPts = coords.toCoordinateArray();
 		var newPts = null;
 		if (inputPts.length === 0) {
-			newPts = new Array(0);
+			newPts = new Array(0).fill(null);
 		} else {
 			newPts = DouglasPeuckerLineSimplifier.simplify(inputPts, this.distanceTolerance);
 		}

@@ -60,7 +60,7 @@ extend(BufferInputLineSimplifier.prototype, {
 	simplify: function (distanceTol) {
 		this.distanceTol = Math.abs(distanceTol);
 		if (distanceTol < 0) this.angleOrientation = CGAlgorithms.CLOCKWISE;
-		this.isDeleted = new Array(this.inputLine.length);
+		this.isDeleted = new Array(this.inputLine.length).fill(null);
 		var isChanged = false;
 		do {
 			isChanged = this.deleteShallowConcavities();

@@ -40,7 +40,7 @@ extend(GeometryCollection.prototype, {
 		return Geometry.SORTINDEX_GEOMETRYCOLLECTION;
 	},
 	getCoordinates: function () {
-		var coordinates = new Array(this.getNumPoints());
+		var coordinates = new Array(this.getNumPoints()).fill(null);
 		var k = -1;
 		for (var i = 0; i < this.geometries.length; i++) {
 			var childCoordinates = this.geometries[i].getCoordinates();
@@ -119,7 +119,7 @@ extend(GeometryCollection.prototype, {
 	},
 	reverse: function () {
 		var n = this.geometries.length;
-		var revGeoms = new Array(n);
+		var revGeoms = new Array(n).fill(null);
 		for (var i = 0; i < this.geometries.length; i++) {
 			revGeoms[i] = this.geometries[i].reverse();
 		}
@@ -186,7 +186,7 @@ extend(GeometryCollection.prototype, {
 	},
 	clone: function () {
 		var gc = Geometry.prototype.clone.call(this);
-		gc.geometries = new Array(this.geometries.length);
+		gc.geometries = new Array(this.geometries.length).fill(null);
 		for (var i = 0; i < this.geometries.length; i++) {
 			gc.geometries[i] = this.geometries[i].clone();
 		}
@@ -196,7 +196,7 @@ extend(GeometryCollection.prototype, {
 		return "GeometryCollection";
 	},
 	copy: function () {
-		var geometries = new Array(this.geometries.length);
+		var geometries = new Array(this.geometries.length).fill(null);
 		for (var i = 0; i < geometries.length; i++) {
 			geometries[i] = this.geometries[i].copy();
 		}

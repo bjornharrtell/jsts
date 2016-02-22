@@ -59,7 +59,7 @@ extend(PackedCoordinateSequence.prototype, {
 	toCoordinateArray: function () {
 		var coords = this.getCachedCoords();
 		if (coords !== null) return coords;
-		coords = new Array(this.size());
+		coords = new Array(this.size()).fill(null);
 		for (var i = 0; i < coords.length; i++) {
 			coords[i] = this.getCoordinateInternal(i);
 		}
@@ -96,16 +96,16 @@ function Double() {
 			this.coords = coords;
 		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
 			let coordinates = arguments[0], dimensions = arguments[1];
-			this.coords = new Array(coordinates.length);
+			this.coords = new Array(coordinates.length).fill(null);
 			this.dimension = dimensions;
 			for (var i = 0; i < coordinates.length; i++) {
 				this.coords[i] = coordinates[i];
 			}
 		} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
 			let coordinates = arguments[0], dimension = arguments[1];
-			if (coordinates === null) coordinates = new Array(0);
+			if (coordinates === null) coordinates = new Array(0).fill(null);
 			this.dimension = dimension;
-			this.coords = new Array(coordinates.length * this.dimension);
+			this.coords = new Array(coordinates.length * this.dimension).fill(null);
 			for (var i = 0; i < coordinates.length; i++) {
 				this.coords[i * this.dimension] = coordinates[i].x;
 				if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
@@ -114,7 +114,7 @@ function Double() {
 		} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
 			let size = arguments[0], dimension = arguments[1];
 			this.dimension = dimension;
-			this.coords = new Array(size * this.dimension);
+			this.coords = new Array(size * this.dimension).fill(null);
 		}
 	}
 }
@@ -140,7 +140,7 @@ extend(Double.prototype, {
 		return this.coords;
 	},
 	clone: function () {
-		var clone = new Array(this.coords.length);
+		var clone = new Array(this.coords.length).fill(null);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Double(clone, this.dimension);
 	},
@@ -151,7 +151,7 @@ extend(Double.prototype, {
 		return env;
 	},
 	copy: function () {
-		var clone = new Array(this.coords.length);
+		var clone = new Array(this.coords.length).fill(null);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Double(clone, this.dimension);
 	},
@@ -177,16 +177,16 @@ function Float() {
 		this.coords = coords;
 	} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
 		let coordinates = arguments[0], dimensions = arguments[1];
-		this.coords = new Array(coordinates.length);
+		this.coords = new Array(coordinates.length).fill(null);
 		this.dimension = dimensions;
 		for (var i = 0; i < coordinates.length; i++) {
 			this.coords[i] = coordinates[i];
 		}
 	} else if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
 		let coordinates = arguments[0], dimension = arguments[1];
-		if (coordinates === null) coordinates = new Array(0);
+		if (coordinates === null) coordinates = new Array(0).fill(null);
 		this.dimension = dimension;
-		this.coords = new Array(coordinates.length * this.dimension);
+		this.coords = new Array(coordinates.length * this.dimension).fill(null);
 		for (var i = 0; i < coordinates.length; i++) {
 			this.coords[i * this.dimension] = coordinates[i].x;
 			if (this.dimension >= 2) this.coords[i * this.dimension + 1] = coordinates[i].y;
@@ -195,7 +195,7 @@ function Float() {
 	} else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
 		let size = arguments[0], dimension = arguments[1];
 		this.dimension = dimension;
-		this.coords = new Array(size * this.dimension);
+		this.coords = new Array(size * this.dimension).fill(null);
 	}
 }
 inherits(Float, PackedCoordinateSequence);
@@ -220,7 +220,7 @@ extend(Float.prototype, {
 		return this.coords;
 	},
 	clone: function () {
-		var clone = new Array(this.coords.length);
+		var clone = new Array(this.coords.length).fill(null);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Float(clone, this.dimension);
 	},
@@ -231,7 +231,7 @@ extend(Float.prototype, {
 		return env;
 	},
 	copy: function () {
-		var clone = new Array(this.coords.length);
+		var clone = new Array(this.coords.length).fill(null);
 		System.arraycopy(this.coords, 0, clone, 0, this.coords.length);
 		return new Float(clone, this.dimension);
 	},

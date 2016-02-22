@@ -34,7 +34,7 @@ extend(Edge.prototype, {
 		return this.depth;
 	},
 	getCollapsedEdge: function () {
-		var newPts = new Array(2);
+		var newPts = new Array(2).fill(null);
 		newPts[0] = this.pts[0];
 		newPts[1] = this.pts[1];
 		var newe = new Edge(newPts, Label.toLineLabel(this.label));

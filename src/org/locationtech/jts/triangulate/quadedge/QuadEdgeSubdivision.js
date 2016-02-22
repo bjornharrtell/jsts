@@ -22,11 +22,11 @@ export default function QuadEdgeSubdivision() {
 	this.startingEdge = null;
 	this.tolerance = null;
 	this.edgeCoincidenceTolerance = null;
-	this.frameVertex = new Array(3);
+	this.frameVertex = new Array(3).fill(null);
 	this.frameEnv = null;
 	this.locator = null;
 	this.seg = new LineSegment();
-	this.triEdges = new Array(3);
+	this.triEdges = new Array(3).fill(null);
 	let env = arguments[0], tolerance = arguments[1];
 	this.tolerance = tolerance;
 	this.edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR;
@@ -91,9 +91,9 @@ extend(QuadEdgeSubdivision.prototype, {
 		return ea;
 	},
 	isFrameBorderEdge: function (e) {
-		var leftTri = new Array(3);
+		var leftTri = new Array(3).fill(null);
 		QuadEdgeSubdivision.getTriangleEdges(e, leftTri);
-		var rightTri = new Array(3);
+		var rightTri = new Array(3).fill(null);
 		QuadEdgeSubdivision.getTriangleEdges(e.sym(), rightTri);
 		var vLeftTriOther = e.lNext().dest();
 		if (this.isFrameVertex(vLeftTriOther)) return true;
@@ -184,7 +184,7 @@ extend(QuadEdgeSubdivision.prototype, {
 		} else if (arguments.length === 1) {
 			let geomFact = arguments[0];
 			var quadEdges = this.getPrimaryEdges(false);
-			var edges = new Array(quadEdges.size());
+			var edges = new Array(quadEdges.size()).fill(null);
 			var i = 0;
 			for (var it = quadEdges.iterator(); it.hasNext(); ) {
 				var qe = it.next();
@@ -297,7 +297,7 @@ extend(QuadEdgeSubdivision.prototype, {
 	},
 	getTriangles: function (geomFact) {
 		var triPtsList = this.getTriangleCoordinates(false);
-		var tris = new Array(triPtsList.size());
+		var tris = new Array(triPtsList.size()).fill(null);
 		var i = 0;
 		for (var it = triPtsList.iterator(); it.hasNext(); ) {
 			var triPt = it.next();

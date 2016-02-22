@@ -67,7 +67,7 @@ extend(EdgeRing.prototype, {
 	getPolygon: function () {
 		var holeLR = null;
 		if (this.holes !== null) {
-			holeLR = new Array(this.holes.size());
+			holeLR = new Array(this.holes.size()).fill(null);
 			for (var i = 0; i < this.holes.size(); i++) {
 				holeLR[i] = this.holes.get(i);
 			}

@@ -32,7 +32,7 @@ extend(TaggedLineStringSimplifier.prototype, {
 	},
 	simplifySection: function (i, j, depth) {
 		depth += 1;
-		var sectionIndex = new Array(2);
+		var sectionIndex = new Array(2).fill(null);
 		if (i + 1 === j) {
 			var newSeg = this.line.getSegment(i);
 			this.line.addToResult(newSeg);
@@ -43,7 +43,7 @@ extend(TaggedLineStringSimplifier.prototype, {
 			var worstCaseSize = depth + 1;
 			if (worstCaseSize < this.line.getMinimumSize()) isValidToSimplify = false;
 		}
-		var distance = new Array(1);
+		var distance = new Array(1).fill(null);
 		var furthestPtIndex = this.findFurthestPoint(this.linePts, i, j, distance);
 		if (distance[0] > this.distanceTolerance) isValidToSimplify = false;
 		var candidateSeg = new LineSegment();

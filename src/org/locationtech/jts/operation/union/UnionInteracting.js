@@ -12,8 +12,8 @@ export default function UnionInteracting() {
 	this.g0 = g0;
 	this.g1 = g1;
 	this.geomFactory = g0.getFactory();
-	this.interacts0 = new Array(g0.getNumGeometries());
-	this.interacts1 = new Array(g1.getNumGeometries());
+	this.interacts0 = new Array(g0.getNumGeometries()).fill(null);
+	this.interacts1 = new Array(g1.getNumGeometries()).fill(null);
 }
 extend(UnionInteracting.prototype, {
 	extractElements: function (geom, interacts, isInteracting) {

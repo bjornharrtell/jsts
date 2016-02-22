@@ -65,5 +65,5 @@ extend(OffsetSegmentString.prototype, {
 		return OffsetSegmentString;
 	}
 });
-OffsetSegmentString.COORDINATE_ARRAY_TYPE = new Array(0);
+OffsetSegmentString.COORDINATE_ARRAY_TYPE = new Array(0).fill(null);
 

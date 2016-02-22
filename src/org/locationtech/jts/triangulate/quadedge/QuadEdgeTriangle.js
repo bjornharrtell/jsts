@@ -17,7 +17,7 @@ export default function QuadEdgeTriangle() {
 }
 extend(QuadEdgeTriangle.prototype, {
 	getCoordinates: function () {
-		var pts = new Array(4);
+		var pts = new Array(4).fill(null);
 		for (var i = 0; i < 3; i++) {
 			pts[i] = this.edge[i].orig().getCoordinate();
 		}
@@ -75,7 +75,7 @@ extend(QuadEdgeTriangle.prototype, {
 		return adjTris;
 	},
 	getNeighbours: function () {
-		var neigh = new Array(3);
+		var neigh = new Array(3).fill(null);
 		for (var i = 0; i < 3; i++) {
 			neigh[i] = this.getEdge(i).sym().getData();
 		}
@@ -94,7 +94,7 @@ extend(QuadEdgeTriangle.prototype, {
 		return this.getAdjacentTriangleAcrossEdge(i).getEdgeIndex(this.getEdge(i).sym());
 	},
 	getVertices: function () {
-		var vert = new Array(3);
+		var vert = new Array(3).fill(null);
 		for (var i = 0; i < 3; i++) {
 			vert[i] = this.getVertex(i);
 		}

@@ -17,7 +17,7 @@ inherits(PrecisionReducerCoordinateOperation, GeometryEditor.CoordinateOperation
 extend(PrecisionReducerCoordinateOperation.prototype, {
 	editCoordinates: function (coordinates, geom) {
 		if (coordinates.length === 0) return null;
-		var reducedCoords = new Array(coordinates.length);
+		var reducedCoords = new Array(coordinates.length).fill(null);
 		for (var i = 0; i < coordinates.length; i++) {
 			var coord = new Coordinate(coordinates[i]);
 			this.targetPM.makePrecise(coord);

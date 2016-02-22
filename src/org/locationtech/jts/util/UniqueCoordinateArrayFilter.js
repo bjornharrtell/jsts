@@ -14,7 +14,7 @@ extend(UniqueCoordinateArrayFilter.prototype, {
 		}
 	},
 	getCoordinates: function () {
-		var coordinates = new Array(this.list.size());
+		var coordinates = new Array(this.list.size()).fill(null);
 		return this.list.toArray(coordinates);
 	},
 	interfaces_: function () {

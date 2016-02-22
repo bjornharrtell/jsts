@@ -29,7 +29,7 @@ CoordinateArrays.ptNotInList = function (testPts, pts) {
 CoordinateArrays.scroll = function (coordinates, firstCoordinate) {
 	var i = CoordinateArrays.indexOf(firstCoordinate, coordinates);
 	if (i < 0) return null;
-	var newCoordinates = new Array(coordinates.length);
+	var newCoordinates = new Array(coordinates.length).fill(null);
 	System.arraycopy(coordinates, i, newCoordinates, 0, coordinates.length - i);
 	System.arraycopy(coordinates, 0, newCoordinates, coordinates.length - i, i);
 	System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length);
@@ -89,7 +89,7 @@ CoordinateArrays.removeNull = function (coord) {
 	for (var i = 0; i < coord.length; i++) {
 		if (coord[i] !== null) nonNull++;
 	}
-	var newCoord = new Array(nonNull);
+	var newCoord = new Array(nonNull).fill(null);
 	if (nonNull === 0) return newCoord;
 	var j = 0;
 	for (var i = 0; i < coord.length; i++) {
@@ -100,7 +100,7 @@ CoordinateArrays.removeNull = function (coord) {
 CoordinateArrays.copyDeep = function () {
 	if (arguments.length === 1) {
 		let coordinates = arguments[0];
-		var copy = new Array(coordinates.length);
+		var copy = new Array(coordinates.length).fill(null);
 		for (var i = 0; i < coordinates.length; i++) {
 			copy[i] = new Coordinate(coordinates[i]);
 		}
@@ -176,7 +176,7 @@ CoordinateArrays.extract = function (pts, start, end) {
 	if (end < 0) npts = 0;
 	if (start >= pts.length) npts = 0;
 	if (end < start) npts = 0;
-	var extractPts = new Array(npts);
+	var extractPts = new Array(npts).fill(null);
 	if (npts === 0) return extractPts;
 	var iPts = 0;
 	for (var i = start; i <= end; i++) {
@@ -238,5 +238,5 @@ extend(BidirectionalComparator.prototype, {
 });
 CoordinateArrays.ForwardComparator = ForwardComparator;
 CoordinateArrays.BidirectionalComparator = BidirectionalComparator;
-CoordinateArrays.coordArrayType = new Array(0);
+CoordinateArrays.coordArrayType = new Array(0).fill(null);
 

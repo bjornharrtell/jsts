@@ -39,7 +39,7 @@ extend(GeometrySnapper.prototype, {
 		for (var i = 0; i < pts.length; i++) {
 			ptSet.add(pts[i]);
 		}
-		return ptSet.toArray(new Array(0));
+		return ptSet.toArray(new Array(0).fill(null));
 	},
 	computeMinimumSegmentLength: function (pts) {
 		var minSegLen = Double.MAX_VALUE;
@@ -57,7 +57,7 @@ extend(GeometrySnapper.prototype, {
 	}
 });
 GeometrySnapper.snap = function (g0, g1, snapTolerance) {
-	var snapGeom = new Array(2);
+	var snapGeom = new Array(2).fill(null);
 	var snapper0 = new GeometrySnapper(g0);
 	snapGeom[0] = snapper0.snapTo(g1, snapTolerance);
 	var snapper1 = new GeometrySnapper(g1);

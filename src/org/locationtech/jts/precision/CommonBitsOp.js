@@ -35,7 +35,7 @@ extend(CommonBitsOp.prototype, {
 			this.cbr = new CommonBitsRemover();
 			this.cbr.add(geom0);
 			this.cbr.add(geom1);
-			var geom = new Array(2);
+			var geom = new Array(2).fill(null);
 			geom[0] = this.cbr.removeCommonBits(geom0.copy());
 			geom[1] = this.cbr.removeCommonBits(geom1.copy());
 			return geom;

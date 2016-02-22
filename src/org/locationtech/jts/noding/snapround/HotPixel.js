@@ -15,7 +15,7 @@ export default function HotPixel() {
 	this.maxx = null;
 	this.miny = null;
 	this.maxy = null;
-	this.corner = new Array(4);
+	this.corner = new Array(4).fill(null);
 	this.safeEnv = null;
 	let pt = arguments[0], scaleFactor = arguments[1], li = arguments[2];
 	this.originalPt = pt;

@@ -50,7 +50,7 @@ extend(InteriorIntersectionFinder.prototype, {
 		this.li.computeIntersection(p00, p01, p10, p11);
 		if (this.li.hasIntersection()) {
 			if (this.li.isInteriorIntersection()) {
-				this.intSegments = new Array(4);
+				this.intSegments = new Array(4).fill(null);
 				this.intSegments[0] = p00;
 				this.intSegments[1] = p01;
 				this.intSegments[2] = p10;

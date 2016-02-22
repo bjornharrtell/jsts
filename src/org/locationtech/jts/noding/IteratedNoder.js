@@ -27,7 +27,7 @@ extend(IteratedNoder.prototype, {
 		numInteriorIntersections[0] = si.numInteriorIntersections;
 	},
 	computeNodes: function (segStrings) {
-		var numInteriorIntersections = new Array(1);
+		var numInteriorIntersections = new Array(1).fill(null);
 		this.nodedSegStrings = segStrings;
 		var nodingIterationCount = 0;
 		var lastNodesCreated = -1;

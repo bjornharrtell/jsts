@@ -57,7 +57,7 @@ extend(STRtree.prototype, {
 	},
 	verticalSlices: function (childBoundables, sliceCount) {
 		var sliceCapacity = Math.trunc(Math.ceil(childBoundables.size() / sliceCount));
-		var slices = new Array(sliceCount);
+		var slices = new Array(sliceCount).fill(null);
 		var i = childBoundables.iterator();
 		for (var j = 0; j < sliceCount; j++) {
 			slices[j] = new ArrayList();

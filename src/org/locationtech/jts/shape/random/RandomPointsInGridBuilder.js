@@ -33,7 +33,7 @@ extend(RandomPointsInGridBuilder.prototype, {
 		var cellFrac = 1.0 - gutterFrac;
 		var cellDX = cellFrac * gridDX;
 		var cellDY = cellFrac * gridDY;
-		var pts = new Array(nCells * nCells);
+		var pts = new Array(nCells * nCells).fill(null);
 		var index = 0;
 		for (var i = 0; i < nCells; i++) {
 			for (var j = 0; j < nCells; j++) {

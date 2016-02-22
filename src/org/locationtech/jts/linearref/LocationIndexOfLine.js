@@ -11,7 +11,7 @@ extend(LocationIndexOfLine.prototype, {
 		var lastLine = subLine.getGeometryN(subLine.getNumGeometries() - 1);
 		var endPt = lastLine.getCoordinateN(lastLine.getNumPoints() - 1);
 		var locPt = new LocationIndexOfPoint(this.linearGeom);
-		var subLineLoc = new Array(2);
+		var subLineLoc = new Array(2).fill(null);
 		subLineLoc[0] = locPt.indexOf(startPt);
 		if (subLine.getLength() === 0.0) {
 			subLineLoc[1] = subLineLoc[0].clone();

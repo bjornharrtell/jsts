@@ -21,7 +21,7 @@ export default function RandomPointsBuilder() {
 inherits(RandomPointsBuilder, GeometricShapeBuilder);
 extend(RandomPointsBuilder.prototype, {
 	getGeometry: function () {
-		var pts = new Array(this.numPts);
+		var pts = new Array(this.numPts).fill(null);
 		var i = 0;
 		while (i < this.numPts) {
 			var p = this.createRandomCoord(this.getExtent());

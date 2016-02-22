@@ -26,7 +26,7 @@ extend(GeometricShapeFactory.prototype, {
 		var xyInt = Math.pow(r4 / 2, recipPow);
 		var nSegsInOct = Math.trunc(this.nPts / 8);
 		var totPts = nSegsInOct * 8 + 1;
-		var pts = new Array(totPts);
+		var pts = new Array(totPts).fill(null);
 		var xInc = xyInt / nSegsInOct;
 		for (var i = 0; i <= nSegsInOct; i++) {
 			var x = 0.0;
@@ -68,7 +68,7 @@ extend(GeometricShapeFactory.prototype, {
 		var yRadius = env.getHeight() / 2.0;
 		var centreX = env.getMinX() + xRadius;
 		var centreY = env.getMinY() + yRadius;
-		var pts = new Array(this.nPts + 1);
+		var pts = new Array(this.nPts + 1).fill(null);
 		var iPt = 0;
 		for (var i = 0; i < this.nPts; i++) {
 			var ang = i * (2 * Math.PI / this.nPts);
@@ -102,7 +102,7 @@ extend(GeometricShapeFactory.prototype, {
 		var angSize = angExtent;
 		if (angSize <= 0.0 || angSize > 2 * Math.PI) angSize = 2 * Math.PI;
 		var angInc = angSize / (this.nPts - 1);
-		var pts = new Array(this.nPts);
+		var pts = new Array(this.nPts).fill(null);
 		var iPt = 0;
 		for (var i = 0; i < this.nPts; i++) {
 			var ang = startAng + i * angInc;
@@ -134,7 +134,7 @@ extend(GeometricShapeFactory.prototype, {
 		var angSize = angExtent;
 		if (angSize <= 0.0 || angSize > 2 * Math.PI) angSize = 2 * Math.PI;
 		var angInc = angSize / (this.nPts - 1);
-		var pts = new Array(this.nPts + 2);
+		var pts = new Array(this.nPts + 2).fill(null);
 		var iPt = 0;
 		pts[iPt++] = this.coord(centreX, centreY);
 		for (var i = 0; i < this.nPts; i++) {
@@ -155,7 +155,7 @@ extend(GeometricShapeFactory.prototype, {
 		if (nSide < 1) nSide = 1;
 		var XsegLen = this.dim.getEnvelope().getWidth() / nSide;
 		var YsegLen = this.dim.getEnvelope().getHeight() / nSide;
-		var pts = new Array(4 * nSide + 1);
+		var pts = new Array(4 * nSide + 1).fill(null);
 		var env = this.dim.getEnvelope();
 		for ((i = 0); i < nSide; i++) {
 			var x = env.getMinX() + i * XsegLen;

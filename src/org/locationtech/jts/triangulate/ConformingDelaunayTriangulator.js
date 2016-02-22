@@ -56,7 +56,7 @@ extend(ConformingDelaunayTriangulator.prototype, {
 		return this.vertexFactory;
 	},
 	getPointArray: function () {
-		var pts = new Array(this.initialVertices.size() + this.segVertices.size());
+		var pts = new Array(this.initialVertices.size() + this.segVertices.size()).fill(null);
 		var index = 0;
 		for (var i = this.initialVertices.iterator(); i.hasNext(); ) {
 			var v = i.next();

@@ -4,7 +4,7 @@ import System from '../../../../../../java/lang/System';
 import CommonBitsRemover from '../../../precision/CommonBitsRemover';
 import OverlayOp from '../OverlayOp';
 export default function SnapOverlayOp() {
-	this.geom = new Array(2);
+	this.geom = new Array(2).fill(null);
 	this.snapTolerance = null;
 	this.cbr = null;
 	let g1 = arguments[0], g2 = arguments[1];
@@ -22,7 +22,7 @@ extend(SnapOverlayOp.prototype, {
 		this.cbr = new CommonBitsRemover();
 		this.cbr.add(geom[0]);
 		this.cbr.add(geom[1]);
-		var remGeom = new Array(2);
+		var remGeom = new Array(2).fill(null);
 		remGeom[0] = this.cbr.removeCommonBits(geom[0].copy());
 		remGeom[1] = this.cbr.removeCommonBits(geom[1].copy());
 		return remGeom;

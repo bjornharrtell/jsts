@@ -44,7 +44,7 @@ extend(Polygon.prototype, {
 		if (this.isEmpty()) {
 			return [];
 		}
-		var coordinates = new Array(this.getNumPoints());
+		var coordinates = new Array(this.getNumPoints()).fill(null);
 		var k = -1;
 		var shellCoordinates = this.shell.getCoordinates();
 		for (var x = 0; x < shellCoordinates.length; x++) {
@@ -128,7 +128,7 @@ extend(Polygon.prototype, {
 			if (ring.isEmpty()) {
 				return null;
 			}
-			var uniqueCoordinates = new Array(ring.getCoordinates().length - 1);
+			var uniqueCoordinates = new Array(ring.getCoordinates().length - 1).fill(null);
 			System.arraycopy(ring.getCoordinates(), 0, uniqueCoordinates, 0, uniqueCoordinates.length);
 			var minCoordinate = CoordinateArrays.minCoordinate(ring.getCoordinates());
 			CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
@@ -169,7 +169,7 @@ extend(Polygon.prototype, {
 	reverse: function () {
 		var poly = this.copy();
 		poly.shell = this.shell.clone().reverse();
-		poly.holes = new Array(this.holes.length);
+		poly.holes = new Array(this.holes.length).fill(null);
 		for (var i = 0; i < this.holes.length; i++) {
 			poly.holes[i] = this.holes[i].clone().reverse();
 		}
@@ -239,7 +239,7 @@ extend(Polygon.prototype, {
 		if (this.isEmpty()) {
 			return this.getFactory().createMultiLineString();
 		}
-		var rings = new Array(this.holes.length + 1);
+		var rings = new Array(this.holes.length + 1).fill(null);
 		rings[0] = this.shell;
 		for (var i = 0; i < this.holes.length; i++) {
 			rings[i + 1] = this.holes[i];
@@ -250,7 +250,7 @@ extend(Polygon.prototype, {
 	clone: function () {
 		var poly = Geometry.prototype.clone.call(this);
 		poly.shell = this.shell.clone();
-		poly.holes = new Array(this.holes.length);
+		poly.holes = new Array(this.holes.length).fill(null);
 		for (var i = 0; i < this.holes.length; i++) {
 			poly.holes[i] = this.holes[i].clone();
 		}
@@ -261,7 +261,7 @@ extend(Polygon.prototype, {
 	},
 	copy: function () {
 		var shell = this.shell.copy();
-		var holes = new Array(this.holes.length);
+		var holes = new Array(this.holes.length).fill(null);
 		for (var i = 0; i < holes.length; i++) {
 			holes[i] = this.holes[i].copy();
 		}

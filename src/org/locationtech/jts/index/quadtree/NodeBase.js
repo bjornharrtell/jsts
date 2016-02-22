@@ -3,7 +3,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 export default function NodeBase() {
 	this.items = new ArrayList();
-	this.subnode = new Array(4);
+	this.subnode = new Array(4).fill(null);
 }
 extend(NodeBase.prototype, {
 	hasChildren: function () {

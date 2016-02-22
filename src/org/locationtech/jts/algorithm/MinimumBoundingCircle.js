@@ -36,7 +36,7 @@ extend(MinimumBoundingCircle.prototype, {
 	},
 	computeCirclePoints: function () {
 		if (this.input.isEmpty()) {
-			this.extremalPts = new Array(0);
+			this.extremalPts = new Array(0).fill(null);
 			return null;
 		}
 		if (this.input.getNumPoints() === 1) {
@@ -48,7 +48,7 @@ extend(MinimumBoundingCircle.prototype, {
 		var hullPts = convexHull.getCoordinates();
 		var pts = hullPts;
 		if (hullPts[0].equals2D(hullPts[hullPts.length - 1])) {
-			pts = new Array(hullPts.length - 1);
+			pts = new Array(hullPts.length - 1).fill(null);
 			CoordinateArrays.copyDeep(hullPts, 0, pts, 0, hullPts.length - 1);
 		}
 		if (pts.length <= 2) {

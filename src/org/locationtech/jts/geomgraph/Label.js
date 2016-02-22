@@ -4,7 +4,7 @@ import Position from './Position';
 import extend from '../../../../extend';
 import TopologyLocation from './TopologyLocation';
 export default function Label() {
-	this.elt = new Array(2);
+	this.elt = new Array(2).fill(null);
 	if (arguments.length === 1) {
 		if (Number.isInteger(arguments[0])) {
 			let onLoc = arguments[0];

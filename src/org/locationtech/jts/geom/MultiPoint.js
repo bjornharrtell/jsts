@@ -44,7 +44,7 @@ extend(MultiPoint.prototype, {
 		return "MultiPoint";
 	},
 	copy: function () {
-		var points = new Array(this.geometries.length);
+		var points = new Array(this.geometries.length).fill(null);
 		for (var i = 0; i < points.length; i++) {
 			points[i] = this.geometries[i].copy();
 		}

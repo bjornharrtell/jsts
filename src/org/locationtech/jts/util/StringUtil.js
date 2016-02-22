@@ -18,7 +18,7 @@ extend(StringUtil.prototype, {
 	}
 });
 StringUtil.chars = function (c, n) {
-	var ch = new Array(n);
+	var ch = new Array(n).fill(null);
 	for (var i = 0; i < n; i++) {
 		ch[i] = c;
 	}
@@ -60,7 +60,7 @@ StringUtil.split = function (s, separator) {
 		pos = tmpString.indexOf(separator);
 	}
 	if (tmpString.length > 0) tokenList.add(tmpString);
-	var res = new Array(tokenList.size());
+	var res = new Array(tokenList.size()).fill(null);
 	for (var i = 0; i < res.length; i++) {
 		res[i] = tokenList.get(i);
 	}

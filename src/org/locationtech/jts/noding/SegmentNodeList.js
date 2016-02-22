@@ -98,7 +98,7 @@ extend(SegmentNodeList.prototype, {
 		return false;
 	},
 	findCollapsesFromInsertedNodes: function (collapsedVertexIndexes) {
-		var collapsedVertexIndex = new Array(1);
+		var collapsedVertexIndex = new Array(1).fill(null);
 		var it = this.iterator();
 		var eiPrev = it.next();
 		while (it.hasNext()) {
@@ -123,7 +123,7 @@ extend(SegmentNodeList.prototype, {
 		if (!useIntPt1) {
 			npts--;
 		}
-		var pts = new Array(npts);
+		var pts = new Array(npts).fill(null);
 		var ipt = 0;
 		pts[ipt++] = new Coordinate(ei0.coord);
 		for (var i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {

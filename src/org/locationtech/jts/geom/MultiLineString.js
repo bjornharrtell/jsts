@@ -45,7 +45,7 @@ extend(MultiLineString.prototype, {
 	},
 	reverse: function () {
 		var nLines = this.geometries.length;
-		var revLines = new Array(nLines);
+		var revLines = new Array(nLines).fill(null);
 		for (var i = 0; i < this.geometries.length; i++) {
 			revLines[nLines - 1 - i] = this.geometries[i].reverse();
 		}
@@ -58,7 +58,7 @@ extend(MultiLineString.prototype, {
 		return "MultiLineString";
 	},
 	copy: function () {
-		var lineStrings = new Array(this.geometries.length);
+		var lineStrings = new Array(this.geometries.length).fill(null);
 		for (var i = 0; i < lineStrings.length; i++) {
 			lineStrings[i] = this.geometries[i].copy();
 		}

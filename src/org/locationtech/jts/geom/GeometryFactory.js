@@ -207,9 +207,9 @@ extend(GeometryFactory.prototype, {
 			} else if (hasInterface(arguments[0], CoordinateSequence)) {
 				let coordinates = arguments[0];
 				if (coordinates === null) {
-					return this.createMultiPoint(new Array(0));
+					return this.createMultiPoint(new Array(0).fill(null));
 				}
-				var points = new Array(coordinates.size());
+				var points = new Array(coordinates.size()).fill(null);
 				for (var i = 0; i < coordinates.size(); i++) {
 					var ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension());
 					CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1);
@@ -227,39 +227,39 @@ extend(GeometryFactory.prototype, {
 	}
 });
 GeometryFactory.toMultiPolygonArray = function (multiPolygons) {
-	var multiPolygonArray = new Array(multiPolygons.size());
+	var multiPolygonArray = new Array(multiPolygons.size()).fill(null);
 	return multiPolygons.toArray(multiPolygonArray);
 };
 GeometryFactory.toGeometryArray = function (geometries) {
 	if (geometries === null) return null;
-	var geometryArray = new Array(geometries.size());
+	var geometryArray = new Array(geometries.size()).fill(null);
 	return geometries.toArray(geometryArray);
 };
 GeometryFactory.getDefaultCoordinateSequenceFactory = function () {
 	return CoordinateArraySequenceFactory.instance();
 };
 GeometryFactory.toMultiLineStringArray = function (multiLineStrings) {
-	var multiLineStringArray = new Array(multiLineStrings.size());
+	var multiLineStringArray = new Array(multiLineStrings.size()).fill(null);
 	return multiLineStrings.toArray(multiLineStringArray);
 };
 GeometryFactory.toLineStringArray = function (lineStrings) {
-	var lineStringArray = new Array(lineStrings.size());
+	var lineStringArray = new Array(lineStrings.size()).fill(null);
 	return lineStrings.toArray(lineStringArray);
 };
 GeometryFactory.toMultiPointArray = function (multiPoints) {
-	var multiPointArray = new Array(multiPoints.size());
+	var multiPointArray = new Array(multiPoints.size()).fill(null);
 	return multiPoints.toArray(multiPointArray);
 };
 GeometryFactory.toLinearRingArray = function (linearRings) {
-	var linearRingArray = new Array(linearRings.size());
+	var linearRingArray = new Array(linearRings.size()).fill(null);
 	return linearRings.toArray(linearRingArray);
 };
 GeometryFactory.toPointArray = function (points) {
-	var pointArray = new Array(points.size());
+	var pointArray = new Array(points.size()).fill(null);
 	return points.toArray(pointArray);
 };
 GeometryFactory.toPolygonArray = function (polygons) {
-	var polygonArray = new Array(polygons.size());
+	var polygonArray = new Array(polygons.size()).fill(null);
 	return polygons.toArray(polygonArray);
 };
 GeometryFactory.createPointFromInternalCoord = function (coord, exemplar) {

@@ -26,7 +26,7 @@ export default function DistanceOp() {
 		DistanceOp.call(this, g0, g1, 0.0);
 	} else if (arguments.length === 3) {
 		let g0 = arguments[0], g1 = arguments[1], terminateDistance = arguments[2];
-		this.geom = new Array(2);
+		this.geom = new Array(2).fill(null);
 		this.geom[0] = g0;
 		this.geom[1] = g1;
 		this.terminateDistance = terminateDistance;
@@ -35,7 +35,7 @@ export default function DistanceOp() {
 extend(DistanceOp.prototype, {
 	computeContainmentDistance: function () {
 		if (arguments.length === 0) {
-			var locPtPoly = new Array(2);
+			var locPtPoly = new Array(2).fill(null);
 			this.computeContainmentDistance(0, locPtPoly);
 			if (this.minDistance <= this.terminateDistance) return null;
 			this.computeContainmentDistance(1, locPtPoly);
@@ -86,7 +86,7 @@ extend(DistanceOp.prototype, {
 		}
 	},
 	computeFacetDistance: function () {
-		var locGeom = new Array(2);
+		var locGeom = new Array(2).fill(null);
 		var lines0 = LinearComponentExtracter.getLines(this.geom[0]);
 		var lines1 = LinearComponentExtracter.getLines(this.geom[1]);
 		var pts0 = PointExtracter.getPoints(this.geom[0]);
@@ -131,7 +131,7 @@ extend(DistanceOp.prototype, {
 	computeMinDistance: function () {
 		if (arguments.length === 0) {
 			if (this.minDistanceLocation !== null) return null;
-			this.minDistanceLocation = new Array(2);
+			this.minDistanceLocation = new Array(2).fill(null);
 			this.computeContainmentDistance();
 			if (this.minDistance <= this.terminateDistance) return null;
 			this.computeFacetDistance();

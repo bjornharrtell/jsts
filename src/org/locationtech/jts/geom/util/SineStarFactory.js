@@ -30,7 +30,7 @@ extend(SineStarFactory.prototype, {
 		var insideRadius = (1 - armRatio) * radius;
 		var centreX = env.getMinX() + radius;
 		var centreY = env.getMinY() + radius;
-		var pts = new Array(this.nPts + 1);
+		var pts = new Array(this.nPts + 1).fill(null);
 		var iPt = 0;
 		for (var i = 0; i < this.nPts; i++) {
 			var ptArcFrac = i / this.nPts * this.numArms;

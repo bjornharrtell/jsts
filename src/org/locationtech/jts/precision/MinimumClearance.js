@@ -22,7 +22,7 @@ extend(MinimumClearance.prototype, {
 	},
 	compute: function () {
 		if (this.minClearancePts !== null) return null;
-		this.minClearancePts = new Array(2);
+		this.minClearancePts = new Array(2).fill(null);
 		this.minClearance = Double.MAX_VALUE;
 		if (this.inputGeom.isEmpty()) {
 			return null;
@@ -54,7 +54,7 @@ MinimumClearance.getDistance = function (g) {
 };
 function MinClearanceDistance() {
 	this.minDist = Double.MAX_VALUE;
-	this.minPts = new Array(2);
+	this.minPts = new Array(2).fill(null);
 }
 extend(MinClearanceDistance.prototype, {
 	vertexDistance: function (fs1, fs2) {

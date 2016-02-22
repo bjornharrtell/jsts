@@ -25,7 +25,7 @@ export default function EdgeRing() {
 extend(EdgeRing.prototype, {
 	computeRing: function () {
 		if (this.ring !== null) return null;
-		var coord = new Array(this.pts.size());
+		var coord = new Array(this.pts.size()).fill(null);
 		for (var i = 0; i < this.pts.size(); i++) {
 			coord[i] = this.pts.get(i);
 		}
@@ -145,7 +145,7 @@ extend(EdgeRing.prototype, {
 		if (shell !== null) shell.addHole(this);
 	},
 	toPolygon: function (geometryFactory) {
-		var holeLR = new Array(this.holes.size());
+		var holeLR = new Array(this.holes.size()).fill(null);
 		for (var i = 0; i < this.holes.size(); i++) {
 			holeLR[i] = this.holes.get(i).getLinearRing();
 		}

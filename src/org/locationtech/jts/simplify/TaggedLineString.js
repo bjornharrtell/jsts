@@ -47,7 +47,7 @@ extend(TaggedLineString.prototype, {
 	},
 	init: function () {
 		var pts = this.parentLine.getCoordinates();
-		this.segs = new Array(pts.length - 1);
+		this.segs = new Array(pts.length - 1).fill(null);
 		for (var i = 0; i < pts.length - 1; i++) {
 			var seg = new TaggedLineSegment(pts[i], pts[i + 1], this.parentLine, i);
 			this.segs[i] = seg;
@@ -64,7 +64,7 @@ extend(TaggedLineString.prototype, {
 	}
 });
 TaggedLineString.extractCoordinates = function (segs) {
-	var pts = new Array(segs.size() + 1);
+	var pts = new Array(segs.size() + 1).fill(null);
 	var seg = null;
 	for (var i = 0; i < segs.size(); i++) {
 		seg = segs.get(i);

@@ -39,7 +39,7 @@ extend(DouglasPeuckerLineSimplifier.prototype, {
 		this.distanceTolerance = distanceTolerance;
 	},
 	simplify: function () {
-		this.usePt = new Array(this.pts.length);
+		this.usePt = new Array(this.pts.length).fill(null);
 		for (var i = 0; i < this.pts.length; i++) {
 			this.usePt[i] = true;
 		}

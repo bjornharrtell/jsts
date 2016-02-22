@@ -22,7 +22,7 @@ export default function Distance3DOp() {
 		Distance3DOp.call(this, g0, g1, 0.0);
 	} else if (arguments.length === 3) {
 		let g0 = arguments[0], g1 = arguments[1], terminateDistance = arguments[2];
-		this.geom = new Array(2);
+		this.geom = new Array(2).fill(null);
 		this.geom[0] = g0;
 		this.geom[1] = g1;
 		this.terminateDistance = terminateDistance;
@@ -156,7 +156,7 @@ extend(Distance3DOp.prototype, {
 	computeMinDistance: function () {
 		if (arguments.length === 0) {
 			if (this.minDistanceLocation !== null) return null;
-			this.minDistanceLocation = new Array(2);
+			this.minDistanceLocation = new Array(2).fill(null);
 			var geomIndex = this.mostPolygonalIndex();
 			var flip = geomIndex === 0;
 			this.computeMinDistanceMultiMulti(this.geom[geomIndex], this.geom[1 - geomIndex], flip);

@@ -24,7 +24,7 @@ Matrix.solve = function (a, b) {
 			b[j] -= b[i] * rowFactor;
 		}
 	}
-	var solution = new Array(n);
+	var solution = new Array(n).fill(null);
 	for (var j = n - 1; j >= 0; j--) {
 		var t = 0.0;
 		for (var k = j + 1; k < n; k++) t += a[j][k] * solution[k];

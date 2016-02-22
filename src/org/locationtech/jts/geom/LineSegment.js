@@ -118,7 +118,7 @@ extend(LineSegment.prototype, {
 		if (intPt !== null) {
 			return [intPt, intPt];
 		}
-		var closestPt = new Array(2);
+		var closestPt = new Array(2).fill(null);
 		var minDistance = Double.MAX_VALUE;
 		var dist = null;
 		var close00 = this.closestPoint(line.p0);

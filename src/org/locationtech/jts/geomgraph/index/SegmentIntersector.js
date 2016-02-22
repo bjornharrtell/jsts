@@ -66,7 +66,7 @@ extend(SegmentIntersector.prototype, {
 		return false;
 	},
 	setBoundaryNodes: function (bdyNodes0, bdyNodes1) {
-		this.bdyNodes = new Array(2);
+		this.bdyNodes = new Array(2).fill(null);
 		this.bdyNodes[0] = bdyNodes0;
 		this.bdyNodes[1] = bdyNodes1;
 	},

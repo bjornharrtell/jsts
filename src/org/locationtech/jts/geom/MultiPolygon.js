@@ -30,7 +30,7 @@ extend(MultiPolygon.prototype, {
 	},
 	reverse: function () {
 		var n = this.geometries.length;
-		var revGeoms = new Array(n);
+		var revGeoms = new Array(n).fill(null);
 		for (var i = 0; i < this.geometries.length; i++) {
 			revGeoms[i] = this.geometries[i].reverse();
 		}
@@ -48,14 +48,14 @@ extend(MultiPolygon.prototype, {
 				allRings.add(rings.getGeometryN(j));
 			}
 		}
-		var allRingsArray = new Array(allRings.size());
+		var allRingsArray = new Array(allRings.size()).fill(null);
 		return this.getFactory().createMultiLineString(allRings.toArray(allRingsArray));
 	},
 	getGeometryType: function () {
 		return "MultiPolygon";
 	},
 	copy: function () {
-		var polygons = new Array(this.geometries.length);
+		var polygons = new Array(this.geometries.length).fill(null);
 		for (var i = 0; i < polygons.length; i++) {
 			polygons[i] = this.geometries[i].copy();
 		}

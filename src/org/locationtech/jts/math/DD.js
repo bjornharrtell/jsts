@@ -375,7 +375,7 @@ extend(DD.prototype, {
 	toStandardNotation: function () {
 		var specialStr = this.getSpecialNumberString();
 		if (specialStr !== null) return specialStr;
-		var magnitude = new Array(1);
+		var magnitude = new Array(1).fill(null);
 		var sigDigits = this.extractSignificantDigits(true, magnitude);
 		var decimalPointPos = magnitude[0] + 1;
 		var num = sigDigits;
@@ -413,7 +413,7 @@ extend(DD.prototype, {
 		if (this.isZero()) return DD.SCI_NOT_ZERO;
 		var specialStr = this.getSpecialNumberString();
 		if (specialStr !== null) return specialStr;
-		var magnitude = new Array(1);
+		var magnitude = new Array(1).fill(null);
 		var digits = this.extractSignificantDigits(false, magnitude);
 		var expStr = DD.SCI_NOT_EXPONENT_CHAR + magnitude[0];
 		if (digits.charAt(0) === '0') {

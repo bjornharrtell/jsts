@@ -37,7 +37,7 @@ extend(SimpleMinimumClearance.prototype, {
 	},
 	compute: function () {
 		if (this.minClearancePts !== null) return null;
-		this.minClearancePts = new Array(2);
+		this.minClearancePts = new Array(2).fill(null);
 		this.minClearance = Double.MAX_VALUE;
 		this.inputGeom.apply(new VertexCoordinateFilter(this));
 	},

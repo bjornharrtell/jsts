@@ -51,7 +51,7 @@ extend(TopologyLocation.prototype, {
 	},
 	merge: function (gl) {
 		if (gl.location.length > this.location.length) {
-			var newLoc = new Array(3);
+			var newLoc = new Array(3).fill(null);
 			newLoc[Position.ON] = this.location[Position.ON];
 			newLoc[Position.LEFT] = Location.NONE;
 			newLoc[Position.RIGHT] = Location.NONE;
@@ -105,7 +105,7 @@ extend(TopologyLocation.prototype, {
 		}
 	},
 	init: function (size) {
-		this.location = new Array(size);
+		this.location = new Array(size).fill(null);
 		this.setAllLocations(Location.NONE);
 	},
 	isEqualOnSide: function (le, locIndex) {

@@ -69,7 +69,7 @@ extend(ConvexHull.prototype, {
 			previousDistinctCoordinate = currentCoordinate;
 		}
 		cleanedRing.add(original[original.length - 1]);
-		var cleanedRingCoordinates = new Array(cleanedRing.size());
+		var cleanedRingCoordinates = new Array(cleanedRing.size()).fill(null);
 		return cleanedRing.toArray(cleanedRingCoordinates);
 	},
 	isBetween: function (c1, c2, c3) {
@@ -130,7 +130,7 @@ extend(ConvexHull.prototype, {
 		return this.lineOrPolygon(cH);
 	},
 	padArray3: function (pts) {
-		var pad = new Array(3);
+		var pad = new Array(3).fill(null);
 		for (var i = 0; i < pad.length; i++) {
 			if (i < pts.length) {
 				pad[i] = pts[i];
@@ -139,7 +139,7 @@ extend(ConvexHull.prototype, {
 		return pad;
 	},
 	computeOctPts: function (inputPts) {
-		var pts = new Array(8);
+		var pts = new Array(8).fill(null);
 		for (var j = 0; j < pts.length; j++) {
 			pts[j] = inputPts[0];
 		}
@@ -172,7 +172,7 @@ extend(ConvexHull.prototype, {
 		return pts;
 	},
 	toCoordinateArray: function (stack) {
-		var coordinates = new Array(stack.size());
+		var coordinates = new Array(stack.size()).fill(null);
 		for (var i = 0; i < stack.size(); i++) {
 			var coordinate = stack.get(i);
 			coordinates[i] = coordinate;
