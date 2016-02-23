@@ -4,6 +4,8 @@
  * @module
  */
 
+import 'babel-polyfill'
+
 import Coordinate from './org/locationtech/jts/geom/Coordinate'
 import GeometryFactory from './org/locationtech/jts/geom/GeometryFactory'
 import Geometry from './org/locationtech/jts/geom/Geometry'
