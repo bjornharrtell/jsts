@@ -7,15 +7,20 @@
 import 'babel-polyfill'
 
 import Coordinate from './org/locationtech/jts/geom/Coordinate'
+import Envelope from './org/locationtech/jts/geom/Envelope'
+import LineSegment from './org/locationtech/jts/geom/LineSegment'
 import GeometryFactory from './org/locationtech/jts/geom/GeometryFactory'
 import Geometry from './org/locationtech/jts/geom/Geometry'
 import Point from './org/locationtech/jts/geom/Point'
 import LineString from './org/locationtech/jts/geom/LineString'
+import LinearRing from './org/locationtech/jts/geom/LinearRing'
 import Polygon from './org/locationtech/jts/geom/MultiPolygon'
 import GeometryCollection from './org/locationtech/jts/geom/GeometryCollection'
 import MultiPoint from './org/locationtech/jts/geom/MultiPoint'
 import MultiLineString from './org/locationtech/jts/geom/MultiLineString'
 import MultiPolygon from './org/locationtech/jts/geom/MultiPolygon'
+import Dimension from './org/locationtech/jts/geom/Dimension'
+import IntersectionMatrix from './org/locationtech/jts/geom/IntersectionMatrix'
 
 import Densifier from './org/locationtech/jts/densify/Densifier'
 import LineDissolver from './org/locationtech/jts/dissolve/LineDissolver'
@@ -67,15 +72,20 @@ export default {
   },
   geom: {
     Coordinate,
+    Envelope,
+    LineSegment,
     GeometryFactory,
     Geometry,
     Point,
     LineString,
+    LinearRing,
     Polygon,
     GeometryCollection,
     MultiPoint,
     MultiLineString,
-    MultiPolygon
+    MultiPolygon,
+    Dimension,
+    IntersectionMatrix
   },
   index: {
     quadtree: {
