@@ -1,6 +1,6 @@
 import jsts from './jsts'
 
 /** @global */
-window.jsts = jsts
+global.jsts = jsts
 
 /** @namespace jsts.io */
