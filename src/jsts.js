@@ -22,8 +22,8 @@ import MultiPolygon from './org/locationtech/jts/geom/MultiPolygon'
 import Dimension from './org/locationtech/jts/geom/Dimension'
 import IntersectionMatrix from './org/locationtech/jts/geom/IntersectionMatrix'
 
+import Centroid from './org/locationtech/jts/algorithm/Centroid'
 import CGAlgorithms from './org/locationtech/jts/algorithm/CGAlgorithms'
-import CGAlgorithms3D from './org/locationtech/jts/algorithm/CGAlgorithms3D'
 import ConvexHull from './org/locationtech/jts/algorithm/ConvexHull'
 import InteriorPointArea from './org/locationtech/jts/algorithm/InteriorPointArea'
 import InteriorPointLine from './org/locationtech/jts/algorithm/InteriorPointLine'
@@ -75,8 +75,8 @@ import patch from './org/locationtech/jts/monkey'
 export default {
   version: `${process.env.npm_package_version} (${process.env.GITHASH})`,
   algorithm: {
+    Centroid,
     CGAlgorithms,
-    CGAlgorithms3D,
     ConvexHull,
     InteriorPointArea,
     InteriorPointLine,
