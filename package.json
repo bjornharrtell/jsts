@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "1.0.0-rc8",
+  "version": "1.0.0",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -24,8 +24,8 @@
     "core-js": "2.1.1",
     "expect.js": "0.3.1",
     "jsdoc": "jsdoc3/jsdoc",
-    "math-float64-exponent": "^1.0.0",
-    "math-float64-get-high-word": "^1.0.0",
+    "math-float64-exponent": "1.0.0",
+    "math-float64-get-high-word": "1.0.0",
     "mocha": "2.4.5",
     "rollup": "0.25.4",
     "rollup-plugin-node-resolve": "1.4.0",
