@@ -13,6 +13,7 @@
   ],
   "license": "(BSD-3-Clause OR EPL-1.0)",
   "dependencies": {
+    "array-fill": "^1.1.0",
     "es6-collections": "0.5.5",
     "math-float64-exponent": "1.0.0",
     "math-float64-get-high-word": "1.0.0"
