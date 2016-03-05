@@ -1,4 +1,4 @@
-const exponent = require('math-float64-exponent')
+import exponent from 'math-float64-exponent'
 
 export default function DoubleBits () { }
 DoubleBits.exponent = function (d) {
