@@ -1,4 +1,4 @@
-import generate from './generate_browser'
+import generate from './generate'
 
 const suites = [
   'TestBoundary',
@@ -30,7 +30,7 @@ suites.forEach(xml => {
   count++
   const suite = Mocha.Suite.create(mocha.suite, xml)
 
-  const fileName = 'testxml/general/' + xml + '.xml'
+  const fileName = '../../../testxml/general/' + xml + '.xml'
 
   const parser = new DOMParser() // eslint-disable-line
   fetch(fileName)  // eslint-disable-line

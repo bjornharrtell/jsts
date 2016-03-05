@@ -4,7 +4,7 @@ import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 import patch from 'org/locationtech/jts/monkey'
-import BufferResultMatcher from './BufferResultMatcher'
+import BufferResultMatcher from '../BufferResultMatcher'
 
 patch()
 

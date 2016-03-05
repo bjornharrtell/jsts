@@ -7,7 +7,7 @@ import WKTReader from 'org/locationtech/jts/io/WKTReader'
 import patch from 'org/locationtech/jts/monkey'
 patch()
 
-import BufferResultMatcher from './BufferResultMatcher'
+import BufferResultMatcher from '../BufferResultMatcher'
 
 /**
  * @return GeometryFactory with PrecisionModel from test XML (undefined if no such info in XML)

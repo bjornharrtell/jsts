@@ -49,10 +49,10 @@
     ]
   },
   "scripts": {
-    "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test",
+    "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test/auto/node test/manual",
     "build-jsdoc-es5": "rollup -c rollup.config.node.js > doc/jsts.js && jsdoc -c doc/es5.json",
     "build-node": "rollup -c rollup.config.node.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
     "build-browser": "rollup -c rollup.config.browser.js | GITHASH=$(git rev-parse --short HEAD) babel --presets es2015 --plugins transform-inline-environment-variables | browserify - | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
-    "build-tests": "NODE_PATH=src browserify test/runner_browser.js -o dist/tests.js -t [ babelify --presets [ es2015 ] ]"
+    "build-tests": "NODE_PATH=src browserify test/auto/browser/runner.js -o dist/tests.js -t [ babelify --presets [ es2015 ] ]"
   }
 }
