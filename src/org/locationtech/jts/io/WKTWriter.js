@@ -39,8 +39,10 @@ extend(WKTWriter.prototype, {
    */
   write (geometry) {
     return this.parser.write(geometry)
-  },
+  }
+})
 
+extend(WKTWriter, {
   /**
    * Generates the WKT for a <tt>LINESTRING</tt> specified by two
    * {@link Coordinate}s.
