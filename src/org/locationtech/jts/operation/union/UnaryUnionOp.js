@@ -1,10 +1,7 @@
-import LineString from '../../geom/LineString';
 import Geometry from '../../geom/Geometry';
 import PointGeometryUnion from './PointGeometryUnion';
 import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
-import Point from '../../geom/Point';
-import Polygon from '../../geom/Polygon';
 import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp';
 import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
@@ -51,9 +48,9 @@ extend(UnaryUnionOp.prototype, {
 		} else if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
 			if (this.geomFact === null) this.geomFact = geom.getFactory();
-			GeometryExtracter.extract(geom, Polygon, this.polygons);
-			GeometryExtracter.extract(geom, LineString, this.lines);
-			GeometryExtracter.extract(geom, Point, this.points);
+			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POLYGON, this.polygons);
+			GeometryExtracter.extract(geom, Geometry.SORTINDEX_LINESTRING, this.lines);
+			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POINT, this.points);
 		}
 	},
 	union: function () {
@@ -77,7 +74,7 @@ extend(UnaryUnionOp.prototype, {
 		var unionLA = this.unionWithNull(unionLines, unionPolygons);
 		var union = null;
 		if (unionPoints === null) union = unionLA; else if (unionLA === null) union = unionPoints; else union = PointGeometryUnion.union(unionPoints, unionLA);
-		if (union === null) return this.geomFact.createGeometryCollection(null);
+		if (union === null) return this.geomFact.createGeometryCollection();
 		return union;
 	},
 	interfaces_: function () {
