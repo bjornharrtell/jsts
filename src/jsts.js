@@ -13,6 +13,7 @@ import './isNaN'
 import './trunc'
 
 import Coordinate from './org/locationtech/jts/geom/Coordinate'
+import CoordinateList from './org/locationtech/jts/geom/CoordinateList'
 import Envelope from './org/locationtech/jts/geom/Envelope'
 import LineSegment from './org/locationtech/jts/geom/LineSegment'
 import GeometryFactory from './org/locationtech/jts/geom/GeometryFactory'
@@ -99,6 +100,7 @@ export default {
   },
   geom: {
     Coordinate,
+    CoordinateList,
     Envelope,
     LineSegment,
     GeometryFactory,
