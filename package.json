@@ -33,6 +33,7 @@
     "uglify-js": "2.6.2"
   },
   "main": "dist/jsts.min.js",
+  "jsnext:main": "dist/jsts.es6.js",
   "engines": {
     "node": ">= 4"
   },
@@ -52,6 +53,7 @@
     "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test/auto/node test/manual",
     "build-jsdoc-es5": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
     "build": "GITHASH=$(git rev-parse --short HEAD) rollup -c rollup.config.js | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
+    "build-es6": "GITHASH=$(git rev-parse --short HEAD) rollup -c rollup.config.es6.js | (cat license.txt && cat) > dist/jsts.es6.js",
     "build-tests": "NODE_PATH=src browserify test/auto/browser/runner.js -o dist/tests.js -t [ babelify --presets [ es2015 ] ]"
   }
 }

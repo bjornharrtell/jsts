@@ -3,11 +3,11 @@
  * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
  */
 
-import GeoJSONReader from './io/GeoJSONReader'
-import GeoJSONWriter from './io/GeoJSONWriter'
-import WKTReader from './io/WKTReader'
-import WKTWriter from './io/WKTWriter'
-import OL3Parser from './io/OL3Parser'
+import GeoJSONReader from './GeoJSONReader'
+import GeoJSONWriter from './GeoJSONWriter'
+import WKTReader from './WKTReader'
+import WKTWriter from './WKTWriter'
+import OL3Parser from './OL3Parser'
 
 /**
  * @module jsts/io
