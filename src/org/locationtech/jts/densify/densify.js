@@ -1,5 +1,5 @@
 import Densifier from './Densifier'
 
-export default {
+export {
   Densifier
 }

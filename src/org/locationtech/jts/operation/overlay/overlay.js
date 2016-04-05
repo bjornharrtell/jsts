@@ -1,5 +1,5 @@
 import OverlayOp from './OverlayOp'
 
-export default {
+export {
   OverlayOp
 }

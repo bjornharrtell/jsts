@@ -12,17 +12,17 @@ import './isInteger'
 import './isNaN'
 import './trunc'
 
-import geom from './org/locationtech/jts/geom/geom'
-import algorithm from './org/locationtech/jts/algorithm/algorithm'
-import densify from './org/locationtech/jts/densify/densify'
-import dissolve from './org/locationtech/jts/dissolve/dissolve'
-import index from './org/locationtech/jts/index/index'
-import io from './org/locationtech/jts/io/io'
-import noding from './org/locationtech/jts/noding/noding'
-import operation from './org/locationtech/jts/operation/operation'
-import precision from './org/locationtech/jts/precision/precision'
-import simplify from './org/locationtech/jts/simplify/simplify'
-import triangulate from './org/locationtech/jts/triangulate/triangulate'
+import * as geom from './org/locationtech/jts/geom/geom'
+import * as algorithm from './org/locationtech/jts/algorithm/algorithm'
+import * as densify from './org/locationtech/jts/densify/densify'
+import * as dissolve from './org/locationtech/jts/dissolve/dissolve'
+import * as index from './org/locationtech/jts/index/index'
+import * as io from './org/locationtech/jts/io/io'
+import * as noding from './org/locationtech/jts/noding/noding'
+import * as operation from './org/locationtech/jts/operation/operation'
+import * as precision from './org/locationtech/jts/precision/precision'
+import * as simplify from './org/locationtech/jts/simplify/simplify'
+import * as triangulate from './org/locationtech/jts/triangulate/triangulate'
 
 import patch from './org/locationtech/jts/monkey'
 
@@ -30,8 +30,9 @@ import patch from './org/locationtech/jts/monkey'
   patch()
 })()
 
-export const version = 'npm_package_version (git_hash)'
+const version = 'npm_package_version (git_hash)'
 export {
+  version,
   algorithm,
   densify,
   dissolve,

@@ -1,5 +1,5 @@
 import LineDissolver from './LineDissolver'
 
-export default {
+export {
   LineDissolver
 }

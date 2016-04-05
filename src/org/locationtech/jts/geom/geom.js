@@ -15,7 +15,7 @@ import MultiPolygon from './MultiPolygon'
 import Dimension from './Dimension'
 import IntersectionMatrix from './IntersectionMatrix'
 
-export default {
+export {
   Coordinate,
   CoordinateList,
   Envelope,

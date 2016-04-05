@@ -1,5 +1,5 @@
 import LineMerger from './LineMerger'
 
-export default {
+export {
   LineMerger
 }

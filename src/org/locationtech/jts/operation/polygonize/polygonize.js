@@ -1,5 +1,5 @@
 import Polygonizer from './Polygonizer'
 
-export default {
+export {
   Polygonizer
 }

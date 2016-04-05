@@ -1,5 +1,5 @@
 import DistanceOp from './DistanceOp'
 
-export default {
+export {
   DistanceOp
 }

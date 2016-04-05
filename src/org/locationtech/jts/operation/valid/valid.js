@@ -1,5 +1,5 @@
 import IsValidOp from './IsValidOp'
 
-export default {
+export {
   IsValidOp
 }

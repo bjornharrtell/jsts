@@ -1,7 +1,7 @@
 import DouglasPeuckerSimplifier from './DouglasPeuckerSimplifier'
 import TopologyPreservingSimplifier from './TopologyPreservingSimplifier'
 
-export default {
+export {
   DouglasPeuckerSimplifier,
   TopologyPreservingSimplifier
 }

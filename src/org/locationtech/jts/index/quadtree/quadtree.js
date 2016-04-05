@@ -1,5 +1,5 @@
 import Quadtree from './Quadtree'
 
-export default {
+export {
   Quadtree
 }

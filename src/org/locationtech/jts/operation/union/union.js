@@ -1,5 +1,5 @@
 import UnaryUnionOp from './UnaryUnionOp'
 
-export default {
+export {
   UnaryUnionOp
 }

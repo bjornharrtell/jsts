@@ -6,7 +6,7 @@ import commonjs from 'rollup-plugin-commonjs'
 
 export default {
   entry: 'src/jsts.js',
-  moduleName: 'jsts',
+  exports: 'named',
   plugins: [
     replace({
       npm_package_version: pjson.version,

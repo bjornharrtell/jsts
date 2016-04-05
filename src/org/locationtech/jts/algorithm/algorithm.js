@@ -8,7 +8,7 @@ import RobustLineIntersector from './RobustLineIntersector'
 import MinimumBoundingCircle from './MinimumBoundingCircle'
 import MinimumDiameter from './MinimumDiameter'
 
-export default {
+export {
   Centroid,
   CGAlgorithms,
   ConvexHull,

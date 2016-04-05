@@ -1,15 +1,15 @@
 import BoundaryOp from './BoundaryOp'
 import IsSimpleOp from './IsSimpleOp'
-import buffer from './buffer/buffer'
-import distance from './distance/distance'
-import linemerge from './linemerge/linemerge'
-import overlay from './overlay/overlay'
-import polygonize from './polygonize/polygonize'
-import relate from './relate/relate'
-import union from './union/union'
-import valid from './valid/valid'
+import * as buffer from './buffer/buffer'
+import * as distance from './distance/distance'
+import * as linemerge from './linemerge/linemerge'
+import * as overlay from './overlay/overlay'
+import * as polygonize from './polygonize/polygonize'
+import * as relate from './relate/relate'
+import * as union from './union/union'
+import * as valid from './valid/valid'
 
-export default {
+export {
   BoundaryOp,
   IsSimpleOp,
   buffer,

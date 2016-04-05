@@ -1,5 +1,5 @@
 import STRtree from './STRtree'
 
-export default {
+export {
   STRtree
 }

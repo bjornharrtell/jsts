@@ -12,7 +12,7 @@ import OL3Parser from './OL3Parser'
 /**
  * @module jsts/io
  */
-export default {
+export {
   /**
    * @type {GeoJSONReader}
    * @memberof module:jsts/io

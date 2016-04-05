@@ -1,4 +1,4 @@
-import quadtree from './quadtree/quadtree'
-import strtree from './strtree/strtree'
+import * as quadtree from './quadtree/quadtree'
+import * as strtree from './strtree/strtree'
 
-export default { quadtree, strtree }
+export { quadtree, strtree }

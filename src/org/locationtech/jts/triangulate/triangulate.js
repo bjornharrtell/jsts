@@ -2,7 +2,7 @@ import ConformingDelaunayTriangulationBuilder from './ConformingDelaunayTriangul
 import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder'
 import VoronoiDiagramBuilder from './VoronoiDiagramBuilder'
 
-export default {
+export {
   ConformingDelaunayTriangulationBuilder,
   DelaunayTriangulationBuilder,
   VoronoiDiagramBuilder
