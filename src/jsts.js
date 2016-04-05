@@ -30,7 +30,7 @@ import patch from './org/locationtech/jts/monkey'
   patch()
 })()
 
-export const version = `${process.env.npm_package_version} (${process.env.GITHASH})`
+export const version = 'npm_package_version (git_hash)'
 export {
   algorithm,
   densify,
