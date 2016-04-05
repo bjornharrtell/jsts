@@ -23,3 +23,7 @@ Including the above build as a script will import a global object `jsts` exposin
 For Node.js, install using `npm install jsts` after which `require('jsts')` will import an object with the same properties as `jsts` in the browser build.
 
 I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3 geometries exist. See the [API documentation](http://bjornharrtell.github.io/jsts/1.0.2/doc/) for these specific classes.
+
+## Caveats
+
+* In a few cases Java overloading cannot be correctly translated to JavaScript. One such case is `createMultiPoint` in `GeometryFactory` which only works with `Point[]` arguments.
