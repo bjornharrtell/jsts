@@ -1,9 +1,11 @@
 import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import Polygon from '../geom/Polygon';
+import SnapIfNeededOverlayOp from '../operation/overlay/snap/SnapIfNeededOverlayOp';
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
+import OverlayOp from '../operation/overlay/OverlayOp';
 export default function InteriorPointArea() {
 	this.factory = null;
 	this.interiorPoint = null;
@@ -22,7 +24,7 @@ extend(InteriorPointArea.prototype, {
 			width = 0;
 			intPt = bisector.getCoordinate();
 		} else {
-			var intersections = bisector.intersection(geometry);
+			var intersections = SnapIfNeededOverlayOp.overlayOp(bisector, geometry, OverlayOp.INTERSECTION);
 			var widestIntersection = this.widestGeometry(intersections);
 			width = widestIntersection.getEnvelopeInternal().getWidth();
 			intPt = InteriorPointArea.centre(widestIntersection.getEnvelopeInternal());
