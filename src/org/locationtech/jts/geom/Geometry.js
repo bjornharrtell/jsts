@@ -103,9 +103,6 @@ extend(Geometry.prototype, {
 		if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) return false;
 		return this.relate(g).isEquals(this.getDimension(), g.getDimension());
 	},
-	coveredBy: function (g) {
-		return g.covers(this);
-	},
 	getUserData: function () {
 		return this.userData;
 	},
@@ -145,9 +142,6 @@ extend(Geometry.prototype, {
 	},
 	setUserData: function (userData) {
 		this.userData = userData;
-	},
-	toString: function () {
-		return this.toText();
 	},
 	compare: function (a, b) {
 		var i = a.iterator();

@@ -64,6 +64,9 @@ export default function patch () {
 		covers: function (g) {
 			return RelateOp.covers(this, g);
 		},
+		coveredBy: function (g) {
+			return RelateOp.coveredBy(this, g);
+		},
 		touches: function (g) {
 			return RelateOp.touches(this, g);
 		},
@@ -141,6 +144,9 @@ export default function patch () {
 		toText: function () {
 			var writer = new WKTWriter();
 			return writer.write(this);
+		},
+		toString: function() {
+			this.toText();
 		},
 		contains: function (g) {
 			return RelateOp.contains(this, g);
