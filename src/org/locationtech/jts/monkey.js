@@ -61,8 +61,26 @@ export default function patch () {
 			this.checkNotGeometryCollection(other);
 			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
 		},
+		covers: function (g) {
+			return RelateOp.covers(this, g);
+		},
+		touches: function (g) {
+			return RelateOp.touches(this, g);
+		},
 		intersects (g) {
 			return RelateOp.intersects(this, g);
+		},
+		within: function (g) {
+			return RelateOp.within(this, g);
+		},
+		overlaps: function (g) {
+			return RelateOp.overlaps(this, g);
+		},
+		disjoint: function (g) {
+			return RelateOp.disjoint(this, g);
+		},
+		crosses: function (g) {
+			return RelateOp.crosses(this, g);
 		},
 		buffer: function () {
 			if (arguments.length === 1) {
@@ -80,15 +98,7 @@ export default function patch () {
 			return new ConvexHull(this).getConvexHull();
 		},
 		relate(...args) {
-			if (args.length === 1) {
-				let [g] = args;
-				this.checkNotGeometryCollection(this);
-				this.checkNotGeometryCollection(g);
-				return RelateOp.relate(this, g);
-			} else if (args.length === 2) {
-				let [g, intersectionPattern] = args;
-				return this.relate(g).matches(intersectionPattern);
-			}
+			return RelateOp.relate(this, ...args);
 		},
 		getCentroid: function () {
 			if (this.isEmpty()) return this.factory.createPoint();
@@ -126,18 +136,14 @@ export default function patch () {
 			return exemplar.getFactory().createPoint(coord);
 		},
 		disjoint(g) {
-			return !this.intersects(g);
+			return RelateOp.disjoint(this, g);
 		},
 		toText: function () {
 			var writer = new WKTWriter();
 			return writer.write(this);
 		},
 		contains: function (g) {
-			if (!this.getEnvelopeInternal().contains(g.getEnvelopeInternal())) return false;
-			if (this.isRectangle()) {
-				return RectangleContains.contains(this, g);
-			}
-			return this.relate(g).isContains();
+			return RelateOp.contains(this, g);
 		},
 		difference: function (other) {
 			if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this.factory);
