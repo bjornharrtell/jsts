@@ -2,6 +2,7 @@ import GeometryFactory from '../geom/GeometryFactory';
 import Coordinate from '../geom/Coordinate';
 import AffineTransformation from '../geom/util/AffineTransformation';
 import extend from '../../../../extend';
+import Envelope from '../geom/Envelope';
 export default function GeometricShapeFactory() {
 	this.geomFact = null;
 	this.precModel = null;
@@ -198,4 +199,68 @@ extend(GeometricShapeFactory.prototype, {
 		return GeometricShapeFactory;
 	}
 });
+function Dimensions() {
+	this.base = null;
+	this.centre = null;
+	this.width = null;
+	this.height = null;
+}
+extend(Dimensions.prototype, {
+	setBase: function (base) {
+		this.base = base;
+	},
+	setWidth: function (width) {
+		this.width = width;
+	},
+	getBase: function () {
+		return this.base;
+	},
+	getWidth: function () {
+		return this.width;
+	},
+	setEnvelope: function (env) {
+		this.width = env.getWidth();
+		this.height = env.getHeight();
+		this.base = new Coordinate(env.getMinX(), env.getMinY());
+		this.centre = new Coordinate(env.centre());
+	},
+	setCentre: function (centre) {
+		this.centre = centre;
+	},
+	getMinSize: function () {
+		return Math.min(this.width, this.height);
+	},
+	getEnvelope: function () {
+		if (this.base !== null) {
+			return new Envelope(this.base.x, this.base.x + this.width, this.base.y, this.base.y + this.height);
+		}
+		if (this.centre !== null) {
+			return new Envelope(this.centre.x - this.width / 2, this.centre.x + this.width / 2, this.centre.y - this.height / 2, this.centre.y + this.height / 2);
+		}
+		return new Envelope(0, this.width, 0, this.height);
+	},
+	getCentre: function () {
+		if (this.centre === null) {
+			this.centre = new Coordinate(this.base.x + this.width / 2, this.base.y + this.height / 2);
+		}
+		return this.centre;
+	},
+	getHeight: function () {
+		return this.height;
+	},
+	setHeight: function (height) {
+		this.height = height;
+	},
+	setSize: function (size) {
+		this.height = size;
+		this.width = size;
+	},
+	interfaces_: function () {
+		return [];
+	},
+	getClass: function () {
+		return Dimensions;
+	}
+});
+GeometricShapeFactory.Dimensions = Dimensions;
 
