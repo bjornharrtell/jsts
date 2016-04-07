@@ -2,6 +2,7 @@ import RelateComputer from './RelateComputer';
 import extend from '../../../../../extend';
 import GeometryGraphOperation from '../GeometryGraphOperation';
 import inherits from '../../../../../inherits';
+import RectangleIntersects from '../predicate/RectangleIntersects';
 export default function RelateOp() {
 	this._relate = null;
 	if (arguments.length === 2) {
@@ -38,5 +39,15 @@ RelateOp.relate = function () {
 		var im = relOp.getIntersectionMatrix();
 		return im;
 	}
+};
+RelateOp.intersects = function (g1, g2) {
+	if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false;
+	if (g1.isRectangle()) {
+		return RectangleIntersects.intersects(g1, g2);
+	}
+	if (g2.isRectangle()) {
+		return RectangleIntersects.intersects(g2, g1);
+	}
+	return RelateOp.relate(g1, g2).isIntersects();
 };
 

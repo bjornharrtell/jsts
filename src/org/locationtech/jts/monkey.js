@@ -61,15 +61,8 @@ export default function patch () {
 			this.checkNotGeometryCollection(other);
 			return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
 		},
-		intersects: function (g) {
-			if (!this.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false;
-			if (this.isRectangle()) {
-				return RectangleIntersects.intersects(this, g);
-			}
-			if (g.isRectangle()) {
-				return RectangleIntersects.intersects(g, this);
-			}
-			return this.relate(g).isIntersects();
+		intersects (g) {
+			return RelateOp.intersects(this, g);
 		},
 		buffer: function () {
 			if (arguments.length === 1) {
