@@ -34,7 +34,6 @@
     "uglify-js": "2.6.2"
   },
   "main": "dist/jsts.min.js",
-  "jsnext:main": "dist/jsts.es6.js",
   "engines": {
     "node": ">= 4"
   },
