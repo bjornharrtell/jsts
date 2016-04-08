@@ -90,7 +90,7 @@ RelateOp.relateWithCheck = function (g1, g2) {
 };
 RelateOp.crosses = function (g1, g2) {
 	if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false;
-	return g1.relate(g2).isCrosses(g1.getDimension(), g2.getDimension());
+	return RelateOp.relate(g1, g2).isCrosses(g1.getDimension(), g2.getDimension());
 };
 RelateOp.contains = function (g1, g2) {
 	if (!g1.getEnvelopeInternal().contains(g2.getEnvelopeInternal())) return false;
@@ -99,4 +99,3 @@ RelateOp.contains = function (g1, g2) {
 	}
 	return RelateOp.relate(g1, g2).isContains();
 };
-
