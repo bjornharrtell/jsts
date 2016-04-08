@@ -1,6 +1,12 @@
 import ArrayList from './ArrayList'
 import MapInterface from './Map'
 import HashSet from './HashSet'
+import MapAlternative from '../../Map'
+
+let MapInternal = Map
+if (typeof Map === 'undefined') {
+  MapInternal = MapAlternative
+}
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/HashMap.html
@@ -14,7 +20,7 @@ export default function HashMap () {
    * @type {Object}
    * @private
   */
-  this.map_ = new Map()
+  this.map_ = new MapInternal()
 }
 HashMap.prototype = new MapInterface()
 

@@ -70,7 +70,7 @@ export default function patch () {
 		touches: function (g) {
 			return RelateOp.touches(this, g);
 		},
-		intersects (g) {
+		intersects: function (g) {
 			return RelateOp.intersects(this, g);
 		},
 		within: function (g) {
@@ -100,7 +100,7 @@ export default function patch () {
 		convexHull: function () {
 			return new ConvexHull(this).getConvexHull();
 		},
-		relate(...args) {
+		relate: function (...args) {
 			return RelateOp.relate(this, ...args);
 		},
 		getCentroid: function () {
@@ -138,7 +138,7 @@ export default function patch () {
 			exemplar.getPrecisionModel().makePrecise(coord);
 			return exemplar.getFactory().createPoint(coord);
 		},
-		disjoint(g) {
+		disjoint: function(g) {
 			return RelateOp.disjoint(this, g);
 		},
 		toText: function () {

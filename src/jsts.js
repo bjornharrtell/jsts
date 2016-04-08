@@ -4,7 +4,6 @@
  * @module
  */
 
-import 'es6-collections'
 import './fill'
 import './parseFloat'
 import './isFinite'
