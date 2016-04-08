@@ -28,6 +28,10 @@ import GeometryCollection from './geom/GeometryCollection';
 import extend from '../../../extend';
 
 extend(Geometry.prototype, {
+	equalsTopo: function (g) {
+		if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) return false;
+		return RelateOp.relate(this, g).isEquals(this.getDimension(), g.getDimension());
+	},
 	union: function () {
 		if (arguments.length === 0) {
 			return UnaryUnionOp.union(this);

@@ -1,10 +1,12 @@
 import PointLocator from '../../algorithm/PointLocator';
 import Location from '../../geom/Location';
 import EdgeNodingValidator from '../../geomgraph/EdgeNodingValidator';
+import GeometryCollectionMapper from '../../geom/util/GeometryCollectionMapper';
 import PolygonBuilder from './PolygonBuilder';
 import Position from '../../geomgraph/Position';
 import LineBuilder from './LineBuilder';
 import PointBuilder from './PointBuilder';
+import SnapIfNeededOverlayOp from './snap/SnapIfNeededOverlayOp';
 import extend from '../../../../../extend';
 import Label from '../../geomgraph/Label';
 import OverlayNodeFactory from './OverlayNodeFactory';
@@ -223,6 +225,78 @@ OverlayOp.overlayOp = function (geom0, geom1, opCode) {
 	var geomOv = gov.getResultGeometry(opCode);
 	return geomOv;
 };
+OverlayOp.intersection = function (g, other) {
+	if (g.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, g, other, g.getFactory());
+	if (g.isGeometryCollection()) {
+		var g2 = other;
+		return GeometryCollectionMapper.map(g, {
+			interfaces_: function () {
+				return [MapOp];
+			},
+			map: function (g) {
+				return g.intersection(g2);
+			}
+		});
+	}
+	g.checkNotGeometryCollection(g);
+	g.checkNotGeometryCollection(other);
+	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.INTERSECTION);
+};
+OverlayOp.symDifference = function (g, other) {
+	if (g.isEmpty() || other.isEmpty()) {
+		if (g.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, g, other, g.getFactory());
+		if (g.isEmpty()) return other.copy();
+		if (other.isEmpty()) return g.copy();
+	}
+	g.checkNotGeometryCollection(g);
+	g.checkNotGeometryCollection(other);
+	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.SYMDIFFERENCE);
+};
+OverlayOp.resultDimension = function (opCode, g0, g1) {
+	var dim0 = g0.getDimension();
+	var dim1 = g1.getDimension();
+	var resultDimension = -1;
+	switch (opCode) {
+		case OverlayOp.INTERSECTION:
+			resultDimension = Math.min(dim0, dim1);
+			break;
+		case OverlayOp.UNION:
+			resultDimension = Math.max(dim0, dim1);
+			break;
+		case OverlayOp.DIFFERENCE:
+			resultDimension = dim0;
+			break;
+		case OverlayOp.SYMDIFFERENCE:
+			resultDimension = Math.max(dim0, dim1);
+			break;
+	}
+	return resultDimension;
+};
+OverlayOp.createEmptyResult = function (overlayOpCode, a, b, geomFact) {
+	var result = null;
+	switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
+		case -1:
+			result = geomFact.createGeometryCollection(new Array(0).fill(null));
+			break;
+		case 0:
+			result = geomFact.createPoint();
+			break;
+		case 1:
+			result = geomFact.createLineString();
+			break;
+		case 2:
+			result = geomFact.createPolygon();
+			break;
+	}
+	return result;
+};
+OverlayOp.difference = function (g, other) {
+	if (g.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, g, other, g.getFactory());
+	if (other.isEmpty()) return g.copy();
+	g.checkNotGeometryCollection(g);
+	g.checkNotGeometryCollection(other);
+	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.DIFFERENCE);
+};
 OverlayOp.isResultOfOp = function () {
 	if (arguments.length === 2) {
 		let label = arguments[0], opCode = arguments[1];
@@ -245,44 +319,6 @@ OverlayOp.isResultOfOp = function () {
 		}
 		return false;
 	}
-};
-OverlayOp.createEmptyResult = function (overlayOpCode, a, b, geomFact) {
-	var result = null;
-	switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
-		case -1:
-			result = geomFact.createGeometryCollection(new Array(0).fill(null));
-			break;
-		case 0:
-			result = geomFact.createPoint();
-			break;
-		case 1:
-			result = geomFact.createLineString();
-			break;
-		case 2:
-			result = geomFact.createPolygon();
-			break;
-	}
-	return result;
-};
-OverlayOp.resultDimension = function (opCode, g0, g1) {
-	var dim0 = g0.getDimension();
-	var dim1 = g1.getDimension();
-	var resultDimension = -1;
-	switch (opCode) {
-		case OverlayOp.INTERSECTION:
-			resultDimension = Math.min(dim0, dim1);
-			break;
-		case OverlayOp.UNION:
-			resultDimension = Math.max(dim0, dim1);
-			break;
-		case OverlayOp.DIFFERENCE:
-			resultDimension = dim0;
-			break;
-		case OverlayOp.SYMDIFFERENCE:
-			resultDimension = Math.max(dim0, dim1);
-			break;
-	}
-	return resultDimension;
 };
 OverlayOp.INTERSECTION = 1;
 OverlayOp.UNION = 2;

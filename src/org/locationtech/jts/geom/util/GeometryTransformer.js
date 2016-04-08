@@ -85,7 +85,7 @@ extend(GeometryTransformer.prototype, {
 		return this.factory.buildGeometry(transGeomList);
 	},
 	copy: function (seq) {
-		return seq.clone();
+		return seq.copy();
 	},
 	transformGeometryCollection: function (geom, parent) {
 		var transGeomList = new ArrayList();

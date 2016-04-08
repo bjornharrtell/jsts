@@ -56,7 +56,7 @@ RelateOp.within = function (g1, g2) {
 	return g2.contains(g1);
 };
 RelateOp.coveredBy = function (g1, g2) {
-	return g2.covers(g1);
+	return RelateOp.covers(g2, g1);
 };
 RelateOp.relate = function () {
 	if (arguments.length === 2) {
@@ -99,3 +99,4 @@ RelateOp.contains = function (g1, g2) {
 	}
 	return RelateOp.relate(g1, g2).isContains();
 };
+

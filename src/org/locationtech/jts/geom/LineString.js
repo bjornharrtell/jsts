@@ -211,3 +211,4 @@ extend(LineString.prototype, {
 	}
 });
 LineString.serialVersionUID = 3110669828065365560;
+

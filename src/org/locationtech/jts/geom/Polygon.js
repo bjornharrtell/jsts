@@ -284,3 +284,4 @@ extend(Polygon.prototype, {
 	}
 });
 Polygon.serialVersionUID = -3494792200821764533;
+

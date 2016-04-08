@@ -146,3 +146,4 @@ extend(CoordinateArraySequence.prototype, {
 	}
 });
 CoordinateArraySequence.serialVersionUID = -915438501601840650;
+

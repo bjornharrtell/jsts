@@ -99,10 +99,6 @@ extend(Geometry.prototype, {
 			return this.compareToSameClass(o, comp);
 		}
 	},
-	equalsTopo: function (g) {
-		if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) return false;
-		return this.relate(g).isEquals(this.getDimension(), g.getDimension());
-	},
 	getUserData: function () {
 		return this.userData;
 	},

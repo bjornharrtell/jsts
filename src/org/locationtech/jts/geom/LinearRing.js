@@ -62,3 +62,4 @@ extend(LinearRing.prototype, {
 });
 LinearRing.MINIMUM_VALID_SIZE = 4;
 LinearRing.serialVersionUID = -4261142084085851829;
+
