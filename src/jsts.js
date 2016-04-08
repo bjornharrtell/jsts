@@ -23,11 +23,7 @@ import * as precision from './org/locationtech/jts/precision/precision'
 import * as simplify from './org/locationtech/jts/simplify/simplify'
 import * as triangulate from './org/locationtech/jts/triangulate/triangulate'
 
-import patch from './org/locationtech/jts/monkey'
-
-(function () {
-  patch()
-})()
+import './org/locationtech/jts/monkey'
 
 const version = 'npm_package_version (git_hash)'
 export {
