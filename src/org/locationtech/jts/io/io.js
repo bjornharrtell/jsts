@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016 by Björn Harrtell.
- * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- */
-
 import GeoJSONReader from './GeoJSONReader'
 import GeoJSONWriter from './GeoJSONWriter'
 import WKTReader from './WKTReader'

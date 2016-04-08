@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016 by Björn Harrtell.
- * License: https://github.com/bjornharrtell/jsts/blob/master/LICENSE_BHARRTELL_BSD3.txt
- */
-
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
 import extend from '../../../../extend'
