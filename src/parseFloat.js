@@ -1,5 +1,3 @@
-;(function () {
-  if (!Number.parseFloat) {
-    Number.parseFloat = parseFloat
-  }
-})()
+if (!Number.parseFloat) {
+  Number.parseFloat = parseFloat
+}
