@@ -97,7 +97,7 @@ extend(LineString.prototype, {
 		return this.points.size();
 	},
 	reverse: function () {
-		var seq = this.points.clone();
+		var seq = this.points.copy();
 		CoordinateSequences.reverse(seq);
 		var revLine = this.getFactory().createLineString(seq);
 		return revLine;
@@ -211,4 +211,3 @@ extend(LineString.prototype, {
 	}
 });
 LineString.serialVersionUID = 3110669828065365560;
-

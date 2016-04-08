@@ -168,10 +168,10 @@ extend(Polygon.prototype, {
 	},
 	reverse: function () {
 		var poly = this.copy();
-		poly.shell = this.shell.clone().reverse();
+		poly.shell = this.shell.copy().reverse();
 		poly.holes = new Array(this.holes.length).fill(null);
 		for (var i = 0; i < this.holes.length; i++) {
-			poly.holes[i] = this.holes[i].clone().reverse();
+			poly.holes[i] = this.holes[i].copy().reverse();
 		}
 		return poly;
 	},
@@ -284,4 +284,3 @@ extend(Polygon.prototype, {
 	}
 });
 Polygon.serialVersionUID = -3494792200821764533;
-

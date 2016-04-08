@@ -34,7 +34,7 @@ extend(LinearRing.prototype, {
 		return LineString.prototype.isClosed.call(this);
 	},
 	reverse: function () {
-		var seq = this.points.clone();
+		var seq = this.points.copy();
 		CoordinateSequences.reverse(seq);
 		var rev = this.getFactory().createLinearRing(seq);
 		return rev;
@@ -62,4 +62,3 @@ extend(LinearRing.prototype, {
 });
 LinearRing.MINIMUM_VALID_SIZE = 4;
 LinearRing.serialVersionUID = -4261142084085851829;
-
