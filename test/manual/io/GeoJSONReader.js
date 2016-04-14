@@ -22,6 +22,5 @@ describe('GeoJSONReader', function () {
 
     const reader = new GeoJSONReader()
     const geometry = reader.read(feature)
-    console.log(geometry)
   })
 })
