@@ -51,7 +51,7 @@ extend(GeoJSONParser.prototype, {
     }
 
     // feature or feature collection
-    return this.parse[type].apply(this, [obj])
+    return parse[type].apply(this, [obj])
   },
 
   /**
@@ -93,7 +93,7 @@ const parse = {
     // parse geometry
     if (obj.geometry) {
       const type = obj.geometry.type
-      if (!this.parse[type]) {
+      if (!parse[type]) {
         throw new Error('Unknown GeoJSON type: ' + obj.type)
       }
       feature.geometry = this.read(obj.geometry)
@@ -101,7 +101,7 @@ const parse = {
 
     // bbox
     if (obj.bbox) {
-      feature.bbox = this.parse.bbox.apply(this, [obj.bbox])
+      feature.bbox = parse.bbox.apply(this, [obj.bbox])
     }
 
     return feature

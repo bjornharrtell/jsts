@@ -26,8 +26,10 @@ extend(GeoJSONReader.prototype, {
   /**
    * Reads a GeoJSON representation of a {@link Geometry}
    *
+   * Will also parse GeoJSON Features/FeatureCollections as custom objects.
+   *
    * @param {Object|String} geoJson a GeoJSON Object or String.
-   * @return {Geometry} a <code>Geometry.</code>
+   * @return {Geometry|Object} a <code>Geometry or Feature/FeatureCollection representation.</code>
    * @memberof GeoJSONReader
    */
   read (geoJson) {
