@@ -18,10 +18,13 @@
     "babel-preset-es2015-rollup": "1.1.1",
     "babel-register": "6.7.2",
     "cheerio": "0.20.0",
+    "coveralls": "2.11.9",
     "expect.js": "0.3.1",
     "git-rev-sync": "1.5.0",
     "jsdoc": "jsdoc3/jsdoc",
     "mocha": "2.4.5",
+    "mocha-lcov-reporter": "1.2.0",
+    "nyc": "6.4.0",
     "rollup": "0.25.8",
     "rollup-plugin-babel": "2.4.0",
     "rollup-plugin-replace": "1.1.0",
@@ -44,7 +47,8 @@
     ]
   },
   "scripts": {
-    "test": "NODE_PATH=src mocha --compilers js:babel-register --recursive test/auto/node test/manual",
+    "test": "NODE_PATH=src nyc mocha --compilers js:babel-register --recursive test/auto/node test/manual",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build-jsdoc-es5": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
     "build": "rollup -c rollup.config.js | uglifyjs -c -m --screw-ie8 | (cat license.txt && cat) > dist/jsts.min.js",
     "build-es6": "rollup -c rollup.config.es6.js | (cat license.txt && cat) > dist/jsts.es6.js",
