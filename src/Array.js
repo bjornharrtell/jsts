@@ -1,5 +1,5 @@
 if (!Array.prototype.fill) {
-  Array.prototype.fill = function (value) {
+  Array.prototype.fill = function (value) { // eslint-disable-line
     var O = Object(this)
     var len = parseInt(O.length, 10)
     var start = arguments[1]

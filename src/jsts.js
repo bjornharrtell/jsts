@@ -1,9 +1,6 @@
-import './fill'
-import './parseFloat'
-import './isFinite'
-import './isInteger'
-import './isNaN'
-import './trunc'
+import './Array'
+import './Number'
+import './Math'
 
 import * as geom from './org/locationtech/jts/geom/geom'
 import * as algorithm from './org/locationtech/jts/algorithm/algorithm'

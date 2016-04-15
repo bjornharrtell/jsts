@@ -1,11 +1,11 @@
 import ArrayList from './ArrayList'
 import MapInterface from './Map'
 import HashSet from './HashSet'
-import MapAlternative from '../../Map'
+import MapPolyfill from '../../Map'
 
-let MapInternal = Map
-if (typeof Map === 'undefined') {
-  MapInternal = MapAlternative
+let MapImpl = Map
+if (typeof Map === 'undefined' || !Map.prototype.values) {
+  MapImpl = MapPolyfill
 }
 
 /**
@@ -20,7 +20,7 @@ export default function HashMap () {
    * @type {Object}
    * @private
   */
-  this.map_ = new MapInternal()
+  this.map_ = new MapImpl()
 }
 HashMap.prototype = new MapInterface()
 
@@ -44,7 +44,12 @@ HashMap.prototype.put = function (key, value) {
  */
 HashMap.prototype.values = function () {
   const arrayList = new ArrayList()
-  Array.from(this.map_.values()).forEach(value => arrayList.add(value))
+  const it = this.map_.values()
+  let o = it.next()
+  while (!o.done) {
+    arrayList.add(o.value)
+    o = it.next()
+  }
   return arrayList
 }
 
