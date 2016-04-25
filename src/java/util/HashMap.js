@@ -3,10 +3,7 @@ import MapInterface from './Map'
 import HashSet from './HashSet'
 import MapPolyfill from '../../Map'
 
-let MapImpl = Map
-if (typeof Map === 'undefined' || !Map.prototype.values) {
-  MapImpl = MapPolyfill
-}
+let MapImpl = typeof Map === 'undefined' || !Map.prototype.values ? MapPolyfill : Map
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/HashMap.html
