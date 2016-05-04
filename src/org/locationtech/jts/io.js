@@ -1,8 +1,8 @@
-import GeoJSONReader from './GeoJSONReader'
-import GeoJSONWriter from './GeoJSONWriter'
-import WKTReader from './WKTReader'
-import WKTWriter from './WKTWriter'
-import OL3Parser from './OL3Parser'
+import GeoJSONReader from './io/GeoJSONReader'
+import GeoJSONWriter from './io/GeoJSONWriter'
+import WKTReader from './io/WKTReader'
+import WKTWriter from './io/WKTWriter'
+import OL3Parser from './io/OL3Parser'
 
 /**
  * @module jsts/io
