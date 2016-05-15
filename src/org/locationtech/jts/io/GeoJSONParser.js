@@ -430,7 +430,7 @@ const extract = {
     const array = []
     for (let i = 0; i < collection.geometries.length; ++i) {
       const geometry = collection.geometries[i]
-      const type = geometry.getGeometryType().slice(10)
+      const type = geometry.getGeometryType()
       array.push(extract[type].apply(this, [geometry]))
     }
     return {
