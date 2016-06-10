@@ -5,6 +5,7 @@ import InteriorPointArea from './algorithm/InteriorPointArea'
 import InteriorPointLine from './algorithm/InteriorPointLine'
 import InteriorPointPoint from './algorithm/InteriorPointPoint'
 import RobustLineIntersector from './algorithm/RobustLineIntersector'
+import MCPointInRing from './algorithm/MCPointInRing'
 import MinimumBoundingCircle from './algorithm/MinimumBoundingCircle'
 import MinimumDiameter from './algorithm/MinimumDiameter'
 
@@ -16,6 +17,7 @@ export {
   InteriorPointLine,
   InteriorPointPoint,
   RobustLineIntersector,
+  MCPointInRing,
   MinimumBoundingCircle,
   MinimumDiameter
 }
