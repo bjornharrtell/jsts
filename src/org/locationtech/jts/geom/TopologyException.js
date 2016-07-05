@@ -10,6 +10,7 @@ export default function TopologyException() {
 	} else if (arguments.length === 2) {
 		let msg = arguments[0], pt = arguments[1];
 		RuntimeException.call(this, TopologyException.msgWithCoord(msg, pt));
+		this.name = 'TopologyException';
 		this.pt = new Coordinate(pt);
 	}
 }
@@ -29,4 +30,3 @@ TopologyException.msgWithCoord = function (msg, pt) {
 	if (pt !== null) return msg + " [ " + pt + " ]";
 	return msg;
 };
-
