@@ -6,6 +6,7 @@ import * as geom from './org/locationtech/jts/geom'
 import * as algorithm from './org/locationtech/jts/algorithm'
 import * as densify from './org/locationtech/jts/densify'
 import * as dissolve from './org/locationtech/jts/dissolve'
+import * as geomgraph from './org/locationtech/jts/geomgraph'
 import * as index from './org/locationtech/jts/index'
 import * as io from './org/locationtech/jts/io'
 import * as noding from './org/locationtech/jts/noding'
@@ -23,6 +24,7 @@ export {
   densify,
   dissolve,
   geom,
+  geomgraph,
   index,
   io,
   noding,
