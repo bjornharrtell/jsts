@@ -98,20 +98,28 @@ GWT lacks... VJET seemed promising but activity stopped in early incubation proc
 * ESTree (AST) <!-- .element: class="fragment" -->
 * Beginning to think AST to AST transformation is possible <!-- .element: class="fragment" -->
 
+Note:
+Add explanation of ESTree
+
 
 # Java AST
 
 * Javaparser https://github.com/javaparser/javaparser <!-- .element: class="fragment" -->
 * Missing type bindings analysis
 * Eclipse JDT
+* java2estree
+ * estree representation in Java
+ * JSON serializer (Jackson)
 
 
 # Javaparser
 
 ![Javaparser](javaparser.png "Javaparser")
 
+
 # TODO
 
+* java2estree
 * Emulating java.* stuff
 * Overloading...
 * Class woes
