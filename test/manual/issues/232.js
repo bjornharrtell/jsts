@@ -3,6 +3,8 @@ import expect from 'expect.js'
 import Envelope from 'org/locationtech/jts/geom/Envelope'
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 
+import 'org/locationtech/jts/monkey'
+
 describe('MultiPoint does not support getEnvelopeInternal (#232)', function () {
   var reader = new WKTReader()
 

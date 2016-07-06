@@ -2,6 +2,8 @@ import expect from 'expect.js'
 
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 
+import 'org/locationtech/jts/monkey'
+
 describe('Class.isAssignableFrom used but not ported from Java (#246)', function () {
   var reader = new WKTReader()
 

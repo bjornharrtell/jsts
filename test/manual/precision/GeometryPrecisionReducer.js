@@ -5,6 +5,8 @@ import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
 import GeometryPrecisionReducer from 'org/locationtech/jts/precision/GeometryPrecisionReducer'
 
+import 'org/locationtech/jts/monkey'
+
 describe('GeometryPrecisionReducer', function () {
   it('should be able to reduce a Point', function () {
     const factory = new GeometryFactory()

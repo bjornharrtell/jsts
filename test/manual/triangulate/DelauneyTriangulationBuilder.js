@@ -4,6 +4,8 @@ import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import DelaunayTriangulationBuilder from 'org/locationtech/jts/triangulate/DelaunayTriangulationBuilder'
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 
+import 'org/locationtech/jts/monkey'
+
 describe('DelauneyTriangulationBuilder', function () {
   var geomFact = new GeometryFactory()
   var reader = new WKTReader()

@@ -2,6 +2,8 @@ import expect from 'expect.js'
 
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 
+import 'org/locationtech/jts/monkey'
+
 describe('IsValid throws exception in some cases (#236)', function () {
   var reader = new WKTReader()
 
