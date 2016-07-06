@@ -189,5 +189,5 @@ Iterator_.prototype.set = function(element) {
  * @override
  */
 Iterator_.prototype.remove = function() {
-  throw new OperationNotSupported();
+  this.arrayList_.remove(this.arrayList_.get(this.position_));
 };
