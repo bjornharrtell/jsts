@@ -14,6 +14,7 @@ import MultiLineString from './geom/MultiLineString'
 import MultiPolygon from './geom/MultiPolygon'
 import Dimension from './geom/Dimension'
 import IntersectionMatrix from './geom/IntersectionMatrix'
+import PrecisionModel from './geom/PrecisionModel'
 
 export {
   Coordinate,
@@ -31,5 +32,6 @@ export {
   MultiLineString,
   MultiPolygon,
   Dimension,
-  IntersectionMatrix
+  IntersectionMatrix,
+  PrecisionModel
 }
