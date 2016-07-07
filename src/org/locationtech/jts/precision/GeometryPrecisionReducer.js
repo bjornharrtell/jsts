@@ -20,9 +20,6 @@ extend(GeometryPrecisionReducer.prototype, {
 		}
 		var bufGeom = geomToBuffer.buffer(0);
 		var finalGeom = bufGeom;
-		if (!this.changePrecisionModel) {
-			finalGeom = geom.getFactory().createGeometry(bufGeom);
-		}
 		return finalGeom;
 	},
 	reducePointwise: function (geom) {
@@ -82,4 +79,3 @@ GeometryPrecisionReducer.reducePointwise = function (g, precModel) {
 	reducer.setPointwise(true);
 	return reducer.reduce(g);
 };
-

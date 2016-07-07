@@ -112,7 +112,8 @@ function CoordinateOperation() {}
 extend(CoordinateOperation.prototype, {
 	edit: function (geometry, factory) {
 		if (geometry instanceof LinearRing) {
-			return factory.createLinearRing(this.editCoordinates(geometry.getCoordinates(), geometry));
+			const e = this.editCoordinates(geometry.getCoordinates(), geometry);
+			return e ? factory.createLinearRing(e) : factory.createLinearRing();
 		}
 		if (geometry instanceof LineString) {
 			return factory.createLineString(this.editCoordinates(geometry.getCoordinates(), geometry));
@@ -158,4 +159,3 @@ extend(CoordinateSequenceOperation.prototype, {
 GeometryEditor.NoOpGeometryOperation = NoOpGeometryOperation;
 GeometryEditor.CoordinateOperation = CoordinateOperation;
 GeometryEditor.CoordinateSequenceOperation = CoordinateSequenceOperation;
-
