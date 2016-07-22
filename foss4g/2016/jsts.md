@@ -1,26 +1,35 @@
 # JSTS
 
+A port of Java Topology Suite<!-- .element: class="fragment" -->
+
 
 
 # Quick orientation
 
 
-# Java Topology Suite (JTS)
-
-![Martin Davis](martin_davis.jpg "Martin Davis")
-
-* Founder of JTS project
-* Recieved the Sol Katz award in 2011
-
-
-# JTS is...
+# Java Topology Suite
 
 * A Java library of spatial predicates and operations <!-- .element: class="fragment" -->
+![JTS](jts.png "JTS")<!-- .element: class="fragment" -->
 * Dates back to 2002 <!-- .element: class="fragment" -->
 * Used in one or another way in prominent Open Source GIS software like QGIS, PostGIS and GeoTools <!-- .element: class="fragment" -->
 
+Note:
+Based on
 
-# Ported to...
+
+# Due credit
+
+![Martin Davis](martin_davis.jpg "Martin Davis")<!-- .element: class="fragment" -->
+
+* Founder of JTS project<!-- .element: class="fragment" -->
+* Recieved the Sol Katz award in 2011<!-- .element: class="fragment" -->
+
+Note:
+This guy is Martin Davis. He founded the JTS project and recieved the Sol Katz award in 2011 for his contributions.
+
+
+# JTS ports
 
 * C++ (GEOS, used in PostGIS) <!-- .element: class="fragment" -->
 * Python (Shapely) <!-- .element: class="fragment" -->
@@ -59,17 +68,19 @@ jsts.geom.Coordinate = function(x, y) {
 <!-- .element: class="fragment" -->
 
 Note:
-A central class in JTS is of course the Coordinate class, which has a constructor that looks like this. Converting to JavaScript is trivial and this is in the first commited code to JSTS where I ignore the z-axis.
+A central class in JTS is of course the Coordinate class, which has a constructor that looks like this. Converting to JavaScript is trivial and this is in the first commited code to JSTS where I ignore the z-axis. A namespace is simulated with a JavaScript object called jsts.
 
 
-# Working implementation
+## Working implementation
 
+* August 2011 <!-- .element: class="fragment" -->
 * 200 files, x lines of code <!-- .element: class="fragment" -->
 * Selective port of Java collection classes <!-- .element: class="fragment" -->
 
 Note:
 The initial working version of JSTS, 0.9.0, required porting almost 200 files. Had I known this was required for basic functionality at the start I probably would have given up.
 
+Some ways into the project I realized that porting Java code using collection classes like ArrayList required alot of work and that the process could be simplified by simply porting ArrayList first. Unfortunately this meant that some initially ported code used a native JavaScript array as input/output instead of an instance of an ArrayList which caused alot of problems later on and is the reason a port of CascadedPolygonUnion was never completed.
 
 
 # JSTS 1.0
