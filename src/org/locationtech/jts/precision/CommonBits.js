@@ -65,4 +65,3 @@ CommonBits.numCommonMostSigMantissaBits = function (num1, num2) {
 	}
 	return 52;
 };
-

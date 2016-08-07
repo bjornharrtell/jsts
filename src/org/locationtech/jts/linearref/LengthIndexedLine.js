@@ -82,4 +82,3 @@ extend(LengthIndexedLine.prototype, {
 		return LengthIndexedLine;
 	}
 });
-

@@ -95,4 +95,3 @@ HCoordinate.intersection = function (p1, p2, q1, q2) {
 	}
 	return new Coordinate(xInt, yInt);
 };
-

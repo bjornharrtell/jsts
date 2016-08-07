@@ -100,4 +100,3 @@ LengthLocationMap.getLocation = function () {
 		return locater.getLocation(length, resolveLower);
 	}
 };
-

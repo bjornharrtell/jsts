@@ -89,4 +89,3 @@ LineStringSnapper.isClosed = function (pts) {
 	if (pts.length <= 1) return false;
 	return pts[0].equals2D(pts[pts.length - 1]);
 };
-

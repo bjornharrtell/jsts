@@ -49,4 +49,3 @@ extend(SimpleEdgeSetIntersector.prototype, {
 		return SimpleEdgeSetIntersector;
 	}
 });
-

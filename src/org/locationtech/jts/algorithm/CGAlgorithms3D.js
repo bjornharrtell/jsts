@@ -64,4 +64,3 @@ CGAlgorithms3D.distancePointSegment = function (p, A, B) {
 	var dz = p.z - qz;
 	return Math.sqrt(dx * dx + dy * dy + dz * dz);
 };
-

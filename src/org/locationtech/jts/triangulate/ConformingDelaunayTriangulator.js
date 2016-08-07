@@ -212,4 +212,3 @@ ConformingDelaunayTriangulator.computeVertexEnvelope = function (vertices) {
 	return env;
 };
 ConformingDelaunayTriangulator.MAX_SPLIT_ITER = 99;
-

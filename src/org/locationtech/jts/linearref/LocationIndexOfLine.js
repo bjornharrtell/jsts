@@ -31,4 +31,3 @@ LocationIndexOfLine.indicesOf = function (linearGeom, subLine) {
 	var locater = new LocationIndexOfLine(linearGeom);
 	return locater.indicesOf(subLine);
 };
-

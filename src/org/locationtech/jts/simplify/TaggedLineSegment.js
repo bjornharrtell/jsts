@@ -29,4 +29,3 @@ extend(TaggedLineSegment.prototype, {
 		return TaggedLineSegment;
 	}
 });
-

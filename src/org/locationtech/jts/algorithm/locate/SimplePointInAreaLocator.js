@@ -52,4 +52,3 @@ SimplePointInAreaLocator.locate = function (p, geom) {
 	if (SimplePointInAreaLocator.containsPoint(p, geom)) return Location.INTERIOR;
 	return Location.EXTERIOR;
 };
-

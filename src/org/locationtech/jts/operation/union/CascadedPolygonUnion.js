@@ -152,4 +152,3 @@ CascadedPolygonUnion.union = function (polys) {
 	return op.union();
 };
 CascadedPolygonUnion.STRTREE_NODE_CAPACITY = 4;
-

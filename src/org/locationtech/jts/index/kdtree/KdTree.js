@@ -192,4 +192,3 @@ extend(BestMatchVisitor.prototype, {
 	}
 });
 KdTree.BestMatchVisitor = BestMatchVisitor;
-

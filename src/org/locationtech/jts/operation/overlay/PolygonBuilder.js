@@ -149,4 +149,3 @@ extend(PolygonBuilder.prototype, {
 		return PolygonBuilder;
 	}
 });
-

@@ -30,4 +30,3 @@ extend(IntervalRTreeBranchNode.prototype, {
 		return IntervalRTreeBranchNode;
 	}
 });
-

@@ -83,4 +83,3 @@ OverlayResultValidator.isValid = function (a, b, overlayOp, result) {
 	return validator.isValid(overlayOp);
 };
 OverlayResultValidator.TOLERANCE = 0.000001;
-

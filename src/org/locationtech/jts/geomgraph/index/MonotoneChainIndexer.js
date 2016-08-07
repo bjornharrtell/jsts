@@ -40,4 +40,3 @@ MonotoneChainIndexer.toIntArray = function (list) {
 	}
 	return array;
 };
-

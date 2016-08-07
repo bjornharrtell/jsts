@@ -58,4 +58,3 @@ extend(MultiPoint.prototype, {
 	}
 });
 MultiPoint.serialVersionUID = -8048474874175355449;
-

@@ -218,4 +218,3 @@ extend(GeometryCollection.prototype, {
 	}
 });
 GeometryCollection.serialVersionUID = -5694727726395021467;
-

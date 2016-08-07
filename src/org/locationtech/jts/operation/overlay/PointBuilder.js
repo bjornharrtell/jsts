@@ -41,4 +41,3 @@ extend(PointBuilder.prototype, {
 		return PointBuilder;
 	}
 });
-

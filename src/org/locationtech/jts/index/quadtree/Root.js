@@ -42,4 +42,3 @@ extend(Root.prototype, {
 	}
 });
 Root.origin = new Coordinate(0.0, 0.0);
-

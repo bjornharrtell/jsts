@@ -59,4 +59,3 @@ extend(EdgeList.prototype, {
 		return EdgeList;
 	}
 });
-

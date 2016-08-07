@@ -239,4 +239,3 @@ extend(BidirectionalComparator.prototype, {
 CoordinateArrays.ForwardComparator = ForwardComparator;
 CoordinateArrays.BidirectionalComparator = BidirectionalComparator;
 CoordinateArrays.coordArrayType = new Array(0).fill(null);
-

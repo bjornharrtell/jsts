@@ -9,4 +9,3 @@ extend(CoordinateFilter.prototype, {
 		return CoordinateFilter;
 	}
 });
-

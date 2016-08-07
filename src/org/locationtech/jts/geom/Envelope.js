@@ -327,4 +327,3 @@ Envelope.intersects = function () {
 	}
 };
 Envelope.serialVersionUID = 5873921885273102420;
-

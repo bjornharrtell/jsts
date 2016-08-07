@@ -14,4 +14,3 @@ extend(SegmentString.prototype, {
 		return SegmentString;
 	}
 });
-

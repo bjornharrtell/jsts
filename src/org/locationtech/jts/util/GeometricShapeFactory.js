@@ -263,4 +263,3 @@ extend(Dimensions.prototype, {
 	}
 });
 GeometricShapeFactory.Dimensions = Dimensions;
-

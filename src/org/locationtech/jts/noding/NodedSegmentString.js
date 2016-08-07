@@ -95,4 +95,3 @@ NodedSegmentString.getNodedSubstrings = function () {
 		}
 	}
 };
-

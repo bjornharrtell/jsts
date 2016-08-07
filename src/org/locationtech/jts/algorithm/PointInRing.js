@@ -9,4 +9,3 @@ extend(PointInRing.prototype, {
 		return PointInRing;
 	}
 });
-

@@ -78,4 +78,3 @@ Quadtree.ensureExtent = function (itemEnv, minExtent) {
 	return new Envelope(minx, maxx, miny, maxy);
 };
 Quadtree.serialVersionUID = -7461163625812743604;
-

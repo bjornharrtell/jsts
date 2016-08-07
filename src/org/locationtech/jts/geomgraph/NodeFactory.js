@@ -12,4 +12,3 @@ extend(NodeFactory.prototype, {
 		return NodeFactory;
 	}
 });
-

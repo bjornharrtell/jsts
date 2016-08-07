@@ -41,4 +41,3 @@ extend(LineMergeGraph.prototype, {
 		return LineMergeGraph;
 	}
 });
-

@@ -144,4 +144,3 @@ QuadEdge.connect = function (a, b) {
 	QuadEdge.splice(e.sym(), b);
 	return e;
 };
-

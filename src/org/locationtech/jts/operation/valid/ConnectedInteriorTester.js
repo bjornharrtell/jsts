@@ -119,4 +119,3 @@ ConnectedInteriorTester.findDifferentPoint = function (coord, pt) {
 	}
 	return null;
 };
-

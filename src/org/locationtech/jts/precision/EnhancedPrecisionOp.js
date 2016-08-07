@@ -115,4 +115,3 @@ EnhancedPrecisionOp.difference = function (geom0, geom1) {
 		} else throw ex2;
 	} finally {}
 };
-

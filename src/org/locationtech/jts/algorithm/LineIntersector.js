@@ -154,4 +154,3 @@ LineIntersector.COLLINEAR = 2;
 LineIntersector.NO_INTERSECTION = 0;
 LineIntersector.POINT_INTERSECTION = 1;
 LineIntersector.COLLINEAR_INTERSECTION = 2;
-

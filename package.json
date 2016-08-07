@@ -47,7 +47,7 @@
     ]
   },
   "scripts": {
-    "test": "NODE_PATH=src nyc mocha --timeout 4s --compilers js:babel-register --recursive test/auto/node test/manual",
+    "test": "NODE_PATH=src nyc mocha --timeout 10s --compilers js:babel-register --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build-jsdoc-es5": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
     "build": "rollup -c rollup.config.js | uglifyjs -c -m | (cat license.txt && cat) > dist/jsts.min.js",

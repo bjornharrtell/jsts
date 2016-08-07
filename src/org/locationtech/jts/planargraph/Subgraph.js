@@ -41,4 +41,3 @@ extend(Subgraph.prototype, {
 		return Subgraph;
 	}
 });
-

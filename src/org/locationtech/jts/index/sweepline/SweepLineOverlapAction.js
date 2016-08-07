@@ -9,4 +9,3 @@ extend(SweepLineOverlapAction.prototype, {
 		return SweepLineOverlapAction;
 	}
 });
-

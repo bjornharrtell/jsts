@@ -150,4 +150,3 @@ LineDissolver.dissolve = function (g) {
 	d.add(g);
 	return d.getResult();
 };
-

@@ -449,4 +449,3 @@ QuadEdgeSubdivision.TriangleEdgesListVisitor = TriangleEdgesListVisitor;
 QuadEdgeSubdivision.TriangleVertexListVisitor = TriangleVertexListVisitor;
 QuadEdgeSubdivision.TriangleCoordinatesVisitor = TriangleCoordinatesVisitor;
 QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR = 1000;
-

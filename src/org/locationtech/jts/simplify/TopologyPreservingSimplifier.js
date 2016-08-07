@@ -86,4 +86,3 @@ extend(LineStringMapBuilderFilter.prototype, {
 });
 TopologyPreservingSimplifier.LineStringTransformer = LineStringTransformer;
 TopologyPreservingSimplifier.LineStringMapBuilderFilter = LineStringMapBuilderFilter;
-

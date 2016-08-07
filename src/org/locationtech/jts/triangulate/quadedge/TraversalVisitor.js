@@ -9,4 +9,3 @@ extend(TraversalVisitor.prototype, {
 		return TraversalVisitor;
 	}
 });
-

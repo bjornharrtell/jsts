@@ -98,4 +98,3 @@ BufferInputLineSimplifier.INIT = 0;
 BufferInputLineSimplifier.DELETE = 1;
 BufferInputLineSimplifier.KEEP = 1;
 BufferInputLineSimplifier.NUM_PTS_TO_CHECK = 10;
-

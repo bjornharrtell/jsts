@@ -25,4 +25,3 @@ ConnectedElementPointFilter.getCoordinates = function (geom) {
 	geom.apply(new ConnectedElementPointFilter(pts));
 	return pts;
 };
-

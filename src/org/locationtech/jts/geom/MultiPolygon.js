@@ -69,4 +69,3 @@ extend(MultiPolygon.prototype, {
 	}
 });
 MultiPolygon.serialVersionUID = -551033529766975875;
-

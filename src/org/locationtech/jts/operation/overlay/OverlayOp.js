@@ -324,4 +324,3 @@ OverlayOp.INTERSECTION = 1;
 OverlayOp.UNION = 2;
 OverlayOp.DIFFERENCE = 3;
 OverlayOp.SYMDIFFERENCE = 4;
-

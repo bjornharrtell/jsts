@@ -90,4 +90,3 @@ extend(SegmentOverlapAction.prototype, {
 	}
 });
 MCIndexNoder.SegmentOverlapAction = SegmentOverlapAction;
-

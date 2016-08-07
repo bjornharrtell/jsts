@@ -92,4 +92,3 @@ extend(LineBuilder.prototype, {
 		return LineBuilder;
 	}
 });
-

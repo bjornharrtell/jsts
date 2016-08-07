@@ -72,4 +72,3 @@ SnapOverlayOp.symDifference = function (g0, g1) {
 SnapOverlayOp.difference = function (g0, g1) {
 	return SnapOverlayOp.overlayOp(g0, g1, OverlayOp.DIFFERENCE);
 };
-

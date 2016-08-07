@@ -211,4 +211,3 @@ IntersectionMatrix.isTrue = function (actualDimensionValue) {
 	}
 	return false;
 };
-

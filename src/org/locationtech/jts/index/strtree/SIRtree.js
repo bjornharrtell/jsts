@@ -85,4 +85,3 @@ extend(SIRtree.prototype, {
 		return SIRtree;
 	}
 });
-

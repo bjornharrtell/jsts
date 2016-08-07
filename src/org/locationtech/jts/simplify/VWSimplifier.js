@@ -88,4 +88,3 @@ extend(VWTransformer.prototype, {
 	}
 });
 VWSimplifier.VWTransformer = VWTransformer;
-

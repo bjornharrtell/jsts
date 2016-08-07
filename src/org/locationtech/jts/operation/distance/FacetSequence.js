@@ -108,4 +108,3 @@ extend(FacetSequence.prototype, {
 		return FacetSequence;
 	}
 });
-

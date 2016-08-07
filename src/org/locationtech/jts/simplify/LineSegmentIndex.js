@@ -60,4 +60,3 @@ extend(LineSegmentVisitor.prototype, {
 		return LineSegmentVisitor;
 	}
 });
-

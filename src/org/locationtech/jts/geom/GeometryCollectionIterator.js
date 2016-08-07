@@ -66,4 +66,3 @@ extend(GeometryCollectionIterator.prototype, {
 GeometryCollectionIterator.isAtomic = function (geom) {
 	return !(geom instanceof GeometryCollection);
 };
-

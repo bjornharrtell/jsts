@@ -392,4 +392,3 @@ AffineTransformation.scaleInstance = function () {
 		return trans;
 	}
 };
-

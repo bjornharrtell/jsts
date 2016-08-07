@@ -54,4 +54,3 @@ extend(AffineTransformationBuilder.prototype, {
 		return AffineTransformationBuilder;
 	}
 });
-

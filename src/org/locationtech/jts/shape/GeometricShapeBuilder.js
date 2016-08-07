@@ -52,4 +52,3 @@ extend(GeometricShapeBuilder.prototype, {
 		return GeometricShapeBuilder;
 	}
 });
-

@@ -251,4 +251,3 @@ PolygonizeGraph.findIntersectionNodes = function (startDE, label) {
 	} while (de !== startDE);
 	return intNodes;
 };
-

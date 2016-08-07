@@ -122,4 +122,3 @@ extend(HotPixel.prototype, {
 	}
 });
 HotPixel.SAFE_ENV_EXPANSION_FACTOR = 0.75;
-

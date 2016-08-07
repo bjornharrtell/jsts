@@ -60,4 +60,3 @@ extend(CommonBitsOp.prototype, {
 		return CommonBitsOp;
 	}
 });
-

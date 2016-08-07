@@ -23,4 +23,3 @@ extend(CoordinatePrecisionReducerFilter.prototype, {
 		return CoordinatePrecisionReducerFilter;
 	}
 });
-

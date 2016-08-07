@@ -11,4 +11,3 @@ extend(SimilarityMeasureCombiner.prototype, {
 SimilarityMeasureCombiner.combine = function (measure1, measure2) {
 	return Math.min(measure1, measure2);
 };
-

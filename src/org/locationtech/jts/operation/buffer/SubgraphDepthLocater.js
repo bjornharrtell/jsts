@@ -103,4 +103,3 @@ extend(DepthSegment.prototype, {
 	}
 });
 SubgraphDepthLocater.DepthSegment = DepthSegment;
-

@@ -43,4 +43,3 @@ extend(AbstractNode.prototype, {
 	}
 });
 AbstractNode.serialVersionUID = 6493722185909573708;
-

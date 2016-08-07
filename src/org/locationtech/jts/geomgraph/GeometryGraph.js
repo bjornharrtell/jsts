@@ -236,4 +236,3 @@ extend(GeometryGraph.prototype, {
 GeometryGraph.determineBoundary = function (boundaryNodeRule, boundaryCount) {
 	return boundaryNodeRule.isInBoundary(boundaryCount) ? Location.BOUNDARY : Location.INTERIOR;
 };
-

@@ -128,4 +128,3 @@ BufferOp.CAP_BUTT = BufferParameters.CAP_FLAT;
 BufferOp.CAP_FLAT = BufferParameters.CAP_FLAT;
 BufferOp.CAP_SQUARE = BufferParameters.CAP_SQUARE;
 BufferOp.MAX_PRECISION_DIGITS = 12;
-

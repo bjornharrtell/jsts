@@ -275,4 +275,3 @@ extend(BoundingOctagonComponentFilter.prototype, {
 });
 OctagonalEnvelope.BoundingOctagonComponentFilter = BoundingOctagonComponentFilter;
 OctagonalEnvelope.SQRT2 = Math.sqrt(2.0);
-

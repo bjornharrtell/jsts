@@ -10,4 +10,3 @@ extend(Noder.prototype, {
 		return Noder;
 	}
 });
-

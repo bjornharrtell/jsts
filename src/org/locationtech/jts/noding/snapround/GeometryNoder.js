@@ -61,4 +61,3 @@ extend(GeometryNoder.prototype, {
 		return GeometryNoder;
 	}
 });
-

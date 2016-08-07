@@ -62,4 +62,3 @@ extend(EdgeEndBuilder.prototype, {
 		return EdgeEndBuilder;
 	}
 });
-

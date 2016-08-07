@@ -31,4 +31,3 @@ ConstraintEnforcementException.msgWithCoord = function (msg, pt) {
 	return msg;
 };
 ConstraintEnforcementException.serialVersionUID = 386496846550080140;
-

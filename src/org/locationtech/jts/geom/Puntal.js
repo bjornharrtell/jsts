@@ -8,4 +8,3 @@ extend(Puntal.prototype, {
 		return Puntal;
 	}
 });
-

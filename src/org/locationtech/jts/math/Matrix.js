@@ -49,4 +49,3 @@ Matrix.swapRows = function () {
 		m[j] = temp;
 	}
 };
-

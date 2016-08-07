@@ -62,4 +62,3 @@ FastNodingValidator.computeIntersections = function (segStrings) {
 	nv.isValid();
 	return nv.getIntersections();
 };
-

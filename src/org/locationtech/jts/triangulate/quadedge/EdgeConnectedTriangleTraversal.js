@@ -37,4 +37,3 @@ extend(EdgeConnectedTriangleTraversal.prototype, {
 		return EdgeConnectedTriangleTraversal;
 	}
 });
-

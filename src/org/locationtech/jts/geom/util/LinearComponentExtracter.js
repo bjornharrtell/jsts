@@ -87,4 +87,3 @@ LinearComponentExtracter.getLines = function () {
 		}
 	}
 };
-

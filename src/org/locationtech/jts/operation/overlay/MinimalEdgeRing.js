@@ -20,4 +20,3 @@ extend(MinimalEdgeRing.prototype, {
 		return MinimalEdgeRing;
 	}
 });
-

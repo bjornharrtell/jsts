@@ -159,4 +159,3 @@ extend(EdgeRing.prototype, {
 		return EdgeRing;
 	}
 });
-

@@ -21,4 +21,3 @@ extend(DissolveHalfEdge.prototype, {
 		return DissolveHalfEdge;
 	}
 });
-

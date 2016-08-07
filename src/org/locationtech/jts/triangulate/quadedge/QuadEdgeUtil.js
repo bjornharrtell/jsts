@@ -18,4 +18,3 @@ QuadEdgeUtil.findEdgesIncidentOnOrigin = function (start) {
 	} while (qe !== start);
 	return incEdge;
 };
-

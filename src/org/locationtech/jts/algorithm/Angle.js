@@ -103,4 +103,3 @@ Angle.PI_OVER_4 = Math.PI / 4.0;
 Angle.COUNTERCLOCKWISE = CGAlgorithms.COUNTERCLOCKWISE;
 Angle.CLOCKWISE = CGAlgorithms.CLOCKWISE;
 Angle.NONE = CGAlgorithms.COLLINEAR;
-

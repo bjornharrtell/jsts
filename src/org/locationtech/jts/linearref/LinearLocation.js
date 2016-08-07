@@ -195,4 +195,3 @@ LinearLocation.compareLocationValues = function (componentIndex0, segmentIndex0,
 	if (segmentFraction0 > segmentFraction1) return 1;
 	return 0;
 };
-

@@ -127,4 +127,3 @@ extend(MinClearanceDistance.prototype, {
 	}
 });
 MinimumClearance.MinClearanceDistance = MinClearanceDistance;
-

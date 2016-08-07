@@ -31,4 +31,3 @@ CoordinateSequence.X = 0;
 CoordinateSequence.Y = 1;
 CoordinateSequence.Z = 2;
 CoordinateSequence.M = 3;
-

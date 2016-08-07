@@ -53,4 +53,3 @@ extend(OffsetPointGenerator.prototype, {
 		return OffsetPointGenerator;
 	}
 });
-

@@ -160,4 +160,3 @@ MinimumDiameter.computeSegmentForLine = function (a, b, c) {
 	}
 	return new LineSegment(p0, p1);
 };
-

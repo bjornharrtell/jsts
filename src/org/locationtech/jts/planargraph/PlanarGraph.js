@@ -98,4 +98,3 @@ extend(PlanarGraph.prototype, {
 		return PlanarGraph;
 	}
 });
-

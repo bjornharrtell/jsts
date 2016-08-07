@@ -190,4 +190,3 @@ CGAlgorithms.COUNTERCLOCKWISE = 1;
 CGAlgorithms.LEFT = CGAlgorithms.COUNTERCLOCKWISE;
 CGAlgorithms.COLLINEAR = 0;
 CGAlgorithms.STRAIGHT = CGAlgorithms.COLLINEAR;
-

@@ -20,4 +20,3 @@ extend(RelateNode.prototype, {
 		return RelateNode;
 	}
 });
-

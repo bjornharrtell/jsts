@@ -51,4 +51,3 @@ EdgeGraphBuilder.build = function (geoms) {
 	builder.add(geoms);
 	return builder.getGraph();
 };
-

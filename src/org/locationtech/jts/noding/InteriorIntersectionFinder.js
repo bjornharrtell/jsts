@@ -94,4 +94,3 @@ InteriorIntersectionFinder.createIntersectionCounter = function (li) {
 	finder.setKeepIntersections(false);
 	return finder;
 };
-

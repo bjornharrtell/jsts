@@ -61,4 +61,3 @@ MathUtil.average = function (x1, x2) {
 	return (x1 + x2) / 2.0;
 };
 MathUtil.LOG_10 = Math.log(10);
-

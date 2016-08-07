@@ -31,4 +31,3 @@ UniqueCoordinateArrayFilter.filterCoordinates = function (coords) {
 	}
 	return filter.getCoordinates();
 };
-

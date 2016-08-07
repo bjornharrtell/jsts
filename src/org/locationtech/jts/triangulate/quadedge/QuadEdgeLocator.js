@@ -9,4 +9,3 @@ extend(QuadEdgeLocator.prototype, {
 		return QuadEdgeLocator;
 	}
 });
-

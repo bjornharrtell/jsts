@@ -93,4 +93,3 @@ extend(EdgeEnd.prototype, {
 		return EdgeEnd;
 	}
 });
-

@@ -72,4 +72,3 @@ extend(MultiLineString.prototype, {
 	}
 });
 MultiLineString.serialVersionUID = 8166665132445433741;
-

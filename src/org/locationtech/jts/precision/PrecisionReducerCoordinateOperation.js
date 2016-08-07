@@ -42,4 +42,3 @@ extend(PrecisionReducerCoordinateOperation.prototype, {
 		return PrecisionReducerCoordinateOperation;
 	}
 });
-

@@ -87,4 +87,3 @@ extend(ScaledNoder.prototype, {
 		return ScaledNoder;
 	}
 });
-

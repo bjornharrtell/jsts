@@ -267,4 +267,3 @@ GeometryFactory.createPointFromInternalCoord = function (coord, exemplar) {
 	return exemplar.getFactory().createPoint(coord);
 };
 GeometryFactory.serialVersionUID = -6820524753094095635;
-

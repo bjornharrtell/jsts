@@ -244,4 +244,3 @@ extend(Float.prototype, {
 });
 PackedCoordinateSequence.Double = Double;
 PackedCoordinateSequence.Float = Float;
-

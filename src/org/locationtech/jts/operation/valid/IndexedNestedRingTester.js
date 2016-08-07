@@ -58,4 +58,3 @@ extend(IndexedNestedRingTester.prototype, {
 		return IndexedNestedRingTester;
 	}
 });
-

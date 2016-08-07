@@ -51,4 +51,3 @@ extend(SweepLineIndex.prototype, {
 		return SweepLineIndex;
 	}
 });
-

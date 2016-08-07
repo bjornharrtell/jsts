@@ -99,4 +99,3 @@ RelateOp.contains = function (g1, g2) {
 	}
 	return RelateOp.relate(g1, g2).isContains();
 };
-

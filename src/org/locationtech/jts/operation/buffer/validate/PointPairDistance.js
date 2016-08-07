@@ -68,4 +68,3 @@ extend(PointPairDistance.prototype, {
 		return PointPairDistance;
 	}
 });
-

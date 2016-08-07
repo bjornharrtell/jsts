@@ -71,4 +71,3 @@ extend(ConsistentPolygonRingChecker.prototype, {
 		return ConsistentPolygonRingChecker;
 	}
 });
-

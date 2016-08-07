@@ -18,4 +18,3 @@ extend(SinglePassNoder.prototype, {
 		return SinglePassNoder;
 	}
 });
-

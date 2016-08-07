@@ -17,4 +17,3 @@ extend(SimplePointInRing.prototype, {
 		return SimplePointInRing;
 	}
 });
-

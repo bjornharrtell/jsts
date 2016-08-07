@@ -26,4 +26,3 @@ ConnectedElementLocationFilter.getLocations = function (geom) {
 	geom.apply(new ConnectedElementLocationFilter(locations));
 	return locations;
 };
-

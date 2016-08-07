@@ -34,4 +34,3 @@ GeometryExtracter.extract = function () {
 		return list;
 	}
 };
-

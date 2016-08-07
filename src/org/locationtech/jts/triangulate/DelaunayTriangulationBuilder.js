@@ -82,4 +82,3 @@ DelaunayTriangulationBuilder.toVertices = function (coords) {
 	}
 	return verts;
 };
-

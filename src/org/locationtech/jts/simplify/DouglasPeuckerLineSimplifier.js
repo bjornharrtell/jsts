@@ -62,4 +62,3 @@ DouglasPeuckerLineSimplifier.simplify = function (pts, distanceTolerance) {
 	simp.setDistanceTolerance(distanceTolerance);
 	return simp.simplify();
 };
-

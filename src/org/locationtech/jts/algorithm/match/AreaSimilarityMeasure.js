@@ -14,4 +14,3 @@ extend(AreaSimilarityMeasure.prototype, {
 		return AreaSimilarityMeasure;
 	}
 });
-

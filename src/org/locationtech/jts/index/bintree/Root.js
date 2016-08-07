@@ -40,4 +40,3 @@ extend(Root.prototype, {
 	}
 });
 Root.origin = 0.0;
-

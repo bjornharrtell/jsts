@@ -47,4 +47,3 @@ extend(NodeComparator.prototype, {
 	}
 });
 IntervalRTreeNode.NodeComparator = NodeComparator;
-

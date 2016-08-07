@@ -30,4 +30,3 @@ EdgeNodingValidator.checkValid = function (edges) {
 	var validator = new EdgeNodingValidator(edges);
 	validator.checkValid();
 };
-

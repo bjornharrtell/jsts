@@ -29,4 +29,3 @@ extend(SweepLineSegment.prototype, {
 		return SweepLineSegment;
 	}
 });
-

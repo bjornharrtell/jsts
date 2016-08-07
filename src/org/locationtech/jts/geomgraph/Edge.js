@@ -191,4 +191,3 @@ Edge.updateIM = function () {
 		}
 	} else return GraphComponent.prototype.updateIM.apply(this, arguments);
 };
-

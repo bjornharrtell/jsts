@@ -73,4 +73,3 @@ extend(MonotoneChainEdge.prototype, {
 		return MonotoneChainEdge;
 	}
 });
-

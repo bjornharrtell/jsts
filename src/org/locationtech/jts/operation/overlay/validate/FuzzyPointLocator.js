@@ -73,4 +73,3 @@ extend(PolygonalLineworkExtracter.prototype, {
 		return PolygonalLineworkExtracter;
 	}
 });
-

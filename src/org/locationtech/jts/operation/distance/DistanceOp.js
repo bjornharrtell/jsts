@@ -224,4 +224,3 @@ DistanceOp.nearestPoints = function (g0, g1) {
 	var distOp = new DistanceOp(g0, g1);
 	return distOp.nearestPoints();
 };
-

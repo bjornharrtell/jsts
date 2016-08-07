@@ -93,4 +93,3 @@ extend(RightmostEdgeFinder.prototype, {
 		return RightmostEdgeFinder;
 	}
 });
-

@@ -149,4 +149,3 @@ extend(BufferSubgraph.prototype, {
 		return BufferSubgraph;
 	}
 });
-

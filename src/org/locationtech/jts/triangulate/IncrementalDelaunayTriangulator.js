@@ -48,4 +48,3 @@ extend(IncrementalDelaunayTriangulator.prototype, {
 		return IncrementalDelaunayTriangulator;
 	}
 });
-

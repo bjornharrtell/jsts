@@ -63,4 +63,3 @@ LengthIndexOfPoint.indexOfAfter = function (linearGeom, inputPt, minIndex) {
 	var locater = new LengthIndexOfPoint(linearGeom);
 	return locater.indexOfAfter(inputPt, minIndex);
 };
-

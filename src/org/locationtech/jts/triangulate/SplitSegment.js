@@ -53,4 +53,3 @@ SplitSegment.pointAlongReverse = function (seg, segmentLengthFraction) {
 	coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y);
 	return coord;
 };
-

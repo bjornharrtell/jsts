@@ -25,4 +25,3 @@ extend(LineMergeDirectedEdge.prototype, {
 		return LineMergeDirectedEdge;
 	}
 });
-

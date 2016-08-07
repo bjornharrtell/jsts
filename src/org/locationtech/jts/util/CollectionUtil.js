@@ -33,4 +33,3 @@ CollectionUtil.apply = function (coll, func) {
 };
 function Function() {}
 CollectionUtil.Function = Function;
-

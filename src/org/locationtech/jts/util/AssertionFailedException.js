@@ -18,4 +18,3 @@ extend(AssertionFailedException.prototype, {
 		return AssertionFailedException;
 	}
 });
-

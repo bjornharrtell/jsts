@@ -125,4 +125,3 @@ Centroid.getCentroid = function (geom) {
 	var cent = new Centroid(geom);
 	return cent.getCentroid();
 };
-

@@ -30,4 +30,3 @@ NonEncroachingSplitPointFinder.projectedSplitPoint = function (seg, encroachPt) 
 	var projPt = lineSeg.project(encroachPt);
 	return projPt;
 };
-

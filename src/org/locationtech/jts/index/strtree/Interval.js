@@ -39,4 +39,3 @@ extend(Interval.prototype, {
 		return Interval;
 	}
 });
-

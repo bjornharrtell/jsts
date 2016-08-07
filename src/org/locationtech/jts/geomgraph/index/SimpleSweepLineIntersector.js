@@ -95,4 +95,3 @@ extend(SimpleSweepLineIntersector.prototype, {
 		return SimpleSweepLineIntersector;
 	}
 });
-

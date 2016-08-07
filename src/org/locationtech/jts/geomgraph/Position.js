@@ -16,4 +16,3 @@ Position.opposite = function (position) {
 Position.ON = 0;
 Position.LEFT = 1;
 Position.RIGHT = 2;
-

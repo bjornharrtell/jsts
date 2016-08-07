@@ -43,4 +43,3 @@ Assert.equals = function () {
 		}
 	}
 };
-

@@ -60,4 +60,3 @@ extend(RandomPointsBuilder.prototype, {
 		return RandomPointsBuilder;
 	}
 });
-

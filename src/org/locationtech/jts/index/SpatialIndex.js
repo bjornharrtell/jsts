@@ -17,4 +17,3 @@ extend(SpatialIndex.prototype, {
 		return SpatialIndex;
 	}
 });
-

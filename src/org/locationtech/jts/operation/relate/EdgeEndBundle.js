@@ -94,4 +94,3 @@ extend(EdgeEndBundle.prototype, {
 		return EdgeEndBundle;
 	}
 });
-

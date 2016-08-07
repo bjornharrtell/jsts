@@ -50,4 +50,3 @@ extend(Edge.prototype, {
 		return Edge;
 	}
 });
-

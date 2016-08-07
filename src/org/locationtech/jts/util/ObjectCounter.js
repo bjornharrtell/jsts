@@ -41,4 +41,3 @@ extend(Counter.prototype, {
 	}
 });
 ObjectCounter.Counter = Counter;
-

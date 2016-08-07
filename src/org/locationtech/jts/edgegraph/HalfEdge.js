@@ -140,4 +140,3 @@ HalfEdge.create = function (p0, p1) {
 	e0.init(e1);
 	return e0;
 };
-

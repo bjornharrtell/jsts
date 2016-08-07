@@ -29,4 +29,3 @@ extend(EdgeEndBundleStar.prototype, {
 		return EdgeEndBundleStar;
 	}
 });
-

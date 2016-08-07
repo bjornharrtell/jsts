@@ -38,4 +38,3 @@ extend(Plane3D.prototype, {
 Plane3D.XY_PLANE = 1;
 Plane3D.YZ_PLANE = 2;
 Plane3D.XZ_PLANE = 3;
-

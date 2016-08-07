@@ -31,4 +31,3 @@ JTSVersion.MAJOR = 1;
 JTSVersion.MINOR = 14;
 JTSVersion.PATCH = 0;
 JTSVersion.releaseInfo = "";
-

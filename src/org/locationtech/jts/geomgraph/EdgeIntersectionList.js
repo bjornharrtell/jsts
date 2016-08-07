@@ -76,4 +76,3 @@ extend(EdgeIntersectionList.prototype, {
 		return EdgeIntersectionList;
 	}
 });
-

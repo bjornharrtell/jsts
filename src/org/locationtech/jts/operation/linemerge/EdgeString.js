@@ -44,4 +44,3 @@ extend(EdgeString.prototype, {
 		return EdgeString;
 	}
 });
-

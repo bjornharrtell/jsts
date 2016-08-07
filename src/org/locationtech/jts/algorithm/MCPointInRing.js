@@ -100,4 +100,3 @@ extend(MCSelecter.prototype, {
 	}
 });
 MCPointInRing.MCSelecter = MCSelecter;
-

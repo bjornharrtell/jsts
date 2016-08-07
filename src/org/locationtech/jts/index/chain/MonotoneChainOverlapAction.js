@@ -25,4 +25,3 @@ extend(MonotoneChainOverlapAction.prototype, {
 		return MonotoneChainOverlapAction;
 	}
 });
-

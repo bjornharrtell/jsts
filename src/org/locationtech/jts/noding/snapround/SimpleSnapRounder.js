@@ -104,4 +104,3 @@ extend(SimpleSnapRounder.prototype, {
 		return SimpleSnapRounder;
 	}
 });
-

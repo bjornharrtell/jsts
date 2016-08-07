@@ -14,4 +14,3 @@ extend(GeometryItemDistance.prototype, {
 		return GeometryItemDistance;
 	}
 });
-

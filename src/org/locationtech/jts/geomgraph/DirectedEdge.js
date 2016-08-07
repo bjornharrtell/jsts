@@ -146,4 +146,3 @@ DirectedEdge.depthFactor = function (currLocation, nextLocation) {
 	if (currLocation === Location.EXTERIOR && nextLocation === Location.INTERIOR) return 1; else if (currLocation === Location.INTERIOR && nextLocation === Location.EXTERIOR) return -1;
 	return 0;
 };
-

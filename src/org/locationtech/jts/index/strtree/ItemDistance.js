@@ -9,4 +9,3 @@ extend(ItemDistance.prototype, {
 		return ItemDistance;
 	}
 });
-

@@ -54,4 +54,3 @@ Key.computeQuadLevel = function (env) {
 	var level = DoubleBits.exponent(dMax) + 1;
 	return level;
 };
-

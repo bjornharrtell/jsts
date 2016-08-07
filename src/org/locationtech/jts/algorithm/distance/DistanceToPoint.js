@@ -52,4 +52,3 @@ DistanceToPoint.computeDistance = function () {
 		ptDist.setMinimum(closestPt, pt);
 	}
 };
-

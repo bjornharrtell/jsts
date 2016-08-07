@@ -26,4 +26,3 @@ GeometryCollectionMapper.map = function (gc, op) {
 	var mapper = new GeometryCollectionMapper(op);
 	return mapper.map(gc);
 };
-

@@ -9,4 +9,3 @@ extend(SegmentSetMutualIntersector.prototype, {
 		return SegmentSetMutualIntersector;
 	}
 });
-

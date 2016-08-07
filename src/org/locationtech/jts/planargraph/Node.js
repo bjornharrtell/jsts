@@ -59,4 +59,3 @@ Node.getEdgesBetween = function (node0, node1) {
 	commonEdges.retainAll(edges1);
 	return commonEdges;
 };
-

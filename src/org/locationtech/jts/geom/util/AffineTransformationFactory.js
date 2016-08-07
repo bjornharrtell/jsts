@@ -61,4 +61,3 @@ AffineTransformationFactory.createFromControlVectors = function () {
 		return builder.getTransformation();
 	}
 };
-

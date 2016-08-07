@@ -245,4 +245,3 @@ RadialComparator.polarCompare = function (o, p, q) {
 	return 0;
 };
 ConvexHull.RadialComparator = RadialComparator;
-

@@ -89,4 +89,3 @@ BufferParameters.JOIN_BEVEL = 3;
 BufferParameters.DEFAULT_QUADRANT_SEGMENTS = 8;
 BufferParameters.DEFAULT_MITRE_LIMIT = 5.0;
 BufferParameters.DEFAULT_SIMPLIFY_FACTOR = 0.01;
-

@@ -73,4 +73,3 @@ TaggedLineString.extractCoordinates = function (segs) {
 	pts[pts.length - 1] = seg.p1;
 	return pts;
 };
-

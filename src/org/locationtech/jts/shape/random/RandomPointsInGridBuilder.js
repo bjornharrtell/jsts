@@ -74,4 +74,3 @@ RandomPointsInGridBuilder.randomPointInCircle = function (orgX, orgY, width, hei
 	var y0 = centreY + rndY;
 	return new Coordinate(x0, y0);
 };
-

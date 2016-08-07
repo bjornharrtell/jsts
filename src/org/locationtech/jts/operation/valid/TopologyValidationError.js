@@ -46,4 +46,3 @@ TopologyValidationError.TOO_FEW_POINTS = 9;
 TopologyValidationError.INVALID_COORDINATE = 10;
 TopologyValidationError.RING_NOT_CLOSED = 11;
 TopologyValidationError.errMsg = ["Topology Validation Error", "Repeated Point", "Hole lies outside shell", "Holes are nested", "Interior is disconnected", "Self-intersection", "Ring Self-intersection", "Nested shells", "Duplicate Rings", "Too few distinct points in geometry component", "Invalid Coordinate", "Ring is not closed"];
-

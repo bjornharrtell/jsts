@@ -77,4 +77,3 @@ StringUtil.spaces = function (n) {
 };
 StringUtil.NEWLINE = System.getProperty("line.separator");
 StringUtil.SIMPLE_ORDINATE_FORMAT = new DecimalFormat("0.#");
-

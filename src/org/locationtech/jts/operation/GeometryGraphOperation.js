@@ -38,4 +38,3 @@ extend(GeometryGraphOperation.prototype, {
 		return GeometryGraphOperation;
 	}
 });
-

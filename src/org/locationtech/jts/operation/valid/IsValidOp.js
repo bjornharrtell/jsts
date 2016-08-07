@@ -315,4 +315,3 @@ IsValidOp.isValid = function () {
 		return true;
 	}
 };
-

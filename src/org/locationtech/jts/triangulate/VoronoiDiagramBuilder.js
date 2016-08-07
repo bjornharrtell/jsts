@@ -75,4 +75,3 @@ VoronoiDiagramBuilder.clipGeometryCollection = function (geom, clipEnv) {
 	}
 	return geom.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(clipped));
 };
-

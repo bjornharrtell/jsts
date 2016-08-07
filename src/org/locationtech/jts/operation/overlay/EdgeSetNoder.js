@@ -30,4 +30,3 @@ extend(EdgeSetNoder.prototype, {
 		return EdgeSetNoder;
 	}
 });
-

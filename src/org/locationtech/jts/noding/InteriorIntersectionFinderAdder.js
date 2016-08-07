@@ -39,4 +39,3 @@ extend(InteriorIntersectionFinderAdder.prototype, {
 		return InteriorIntersectionFinderAdder;
 	}
 });
-

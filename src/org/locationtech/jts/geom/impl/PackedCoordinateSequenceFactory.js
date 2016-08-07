@@ -84,4 +84,3 @@ PackedCoordinateSequenceFactory.DOUBLE = 0;
 PackedCoordinateSequenceFactory.FLOAT = 1;
 PackedCoordinateSequenceFactory.DOUBLE_FACTORY = new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.DOUBLE);
 PackedCoordinateSequenceFactory.FLOAT_FACTORY = new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.FLOAT);
-

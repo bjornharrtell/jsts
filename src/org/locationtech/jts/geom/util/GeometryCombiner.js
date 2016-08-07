@@ -73,4 +73,3 @@ GeometryCombiner.createList = function () {
 		return list;
 	}
 };
-

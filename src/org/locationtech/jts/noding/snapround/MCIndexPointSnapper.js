@@ -69,4 +69,3 @@ extend(HotPixelSnapAction.prototype, {
 	}
 });
 MCIndexPointSnapper.HotPixelSnapAction = HotPixelSnapAction;
-

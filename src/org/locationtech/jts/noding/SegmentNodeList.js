@@ -207,4 +207,3 @@ extend(NodeVertexIterator.prototype, {
 		return NodeVertexIterator;
 	}
 });
-

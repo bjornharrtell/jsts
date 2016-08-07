@@ -91,4 +91,3 @@ RayCrossingCounter.locatePointInRing = function () {
 		return counter.getLocation();
 	}
 };
-

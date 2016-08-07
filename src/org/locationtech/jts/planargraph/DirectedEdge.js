@@ -98,4 +98,3 @@ DirectedEdge.toEdges = function (dirEdges) {
 	}
 	return edges;
 };
-

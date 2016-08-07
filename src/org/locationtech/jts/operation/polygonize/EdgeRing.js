@@ -229,4 +229,3 @@ extend(EnvelopeComparator.prototype, {
 	}
 });
 EdgeRing.EnvelopeComparator = EnvelopeComparator;
-

@@ -63,4 +63,3 @@ extend(KdNode.prototype, {
 		return KdNode;
 	}
 });
-

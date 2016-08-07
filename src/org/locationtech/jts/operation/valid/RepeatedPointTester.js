@@ -49,4 +49,3 @@ extend(RepeatedPointTester.prototype, {
 		return RepeatedPointTester;
 	}
 });
-

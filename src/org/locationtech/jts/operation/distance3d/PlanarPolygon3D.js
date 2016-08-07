@@ -112,4 +112,3 @@ PlanarPolygon3D.project = function () {
 		}
 	}
 };
-

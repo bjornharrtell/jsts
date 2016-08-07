@@ -96,4 +96,3 @@ extend(SimpleMCSweepLineIntersector.prototype, {
 		return SimpleMCSweepLineIntersector;
 	}
 });
-

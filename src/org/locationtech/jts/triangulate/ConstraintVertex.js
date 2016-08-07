@@ -35,4 +35,3 @@ extend(ConstraintVertex.prototype, {
 		return ConstraintVertex;
 	}
 });
-

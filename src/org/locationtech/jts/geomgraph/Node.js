@@ -93,4 +93,3 @@ extend(Node.prototype, {
 		return Node;
 	}
 });
-

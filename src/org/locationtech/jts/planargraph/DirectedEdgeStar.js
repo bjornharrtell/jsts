@@ -77,4 +77,3 @@ extend(DirectedEdgeStar.prototype, {
 		return DirectedEdgeStar;
 	}
 });
-

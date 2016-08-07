@@ -44,4 +44,3 @@ OrientedCoordinateArray.compareOriented = function (pts1, orientation1, pts2, or
 		if (done1 && done2) return 0;
 	}
 };
-

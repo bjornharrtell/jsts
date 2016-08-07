@@ -37,4 +37,3 @@ extend(SimpleNoder.prototype, {
 		return SimpleNoder;
 	}
 });
-

@@ -50,4 +50,3 @@ extend(ConnectedSubgraphFinder.prototype, {
 		return ConnectedSubgraphFinder;
 	}
 });
-

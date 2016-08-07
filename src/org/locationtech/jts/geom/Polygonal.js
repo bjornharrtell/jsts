@@ -8,4 +8,3 @@ extend(Polygonal.prototype, {
 		return Polygonal;
 	}
 });
-

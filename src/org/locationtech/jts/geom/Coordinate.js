@@ -192,4 +192,3 @@ Coordinate.NULL_ORDINATE = Double.NaN;
 Coordinate.X = 0;
 Coordinate.Y = 1;
 Coordinate.Z = 2;
-

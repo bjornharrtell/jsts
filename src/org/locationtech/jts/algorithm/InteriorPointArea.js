@@ -134,4 +134,3 @@ SafeBisectorFinder.getBisectorY = function (poly) {
 	return finder.getBisectorY();
 };
 InteriorPointArea.SafeBisectorFinder = SafeBisectorFinder;
-

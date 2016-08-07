@@ -18,4 +18,3 @@ extend(ArrayListVisitor.prototype, {
 		return ArrayListVisitor;
 	}
 });
-

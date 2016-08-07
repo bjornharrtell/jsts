@@ -42,4 +42,3 @@ extend(MaximalEdgeRing.prototype, {
 		return MaximalEdgeRing;
 	}
 });
-

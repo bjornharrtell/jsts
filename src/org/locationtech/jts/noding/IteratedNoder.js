@@ -52,4 +52,3 @@ extend(IteratedNoder.prototype, {
 	}
 });
 IteratedNoder.MAX_ITER = 5;
-

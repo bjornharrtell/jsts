@@ -594,4 +594,3 @@ DD.TEN = DD.valueOf(10.0);
 DD.ONE = DD.valueOf(1.0);
 DD.SCI_NOT_EXPONENT_CHAR = "E";
 DD.SCI_NOT_ZERO = "0.0E0";
-

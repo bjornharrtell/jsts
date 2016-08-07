@@ -9,4 +9,3 @@ extend(TriangleVisitor.prototype, {
 		return TriangleVisitor;
 	}
 });
-

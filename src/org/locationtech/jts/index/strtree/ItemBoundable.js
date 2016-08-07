@@ -22,4 +22,3 @@ extend(ItemBoundable.prototype, {
 		return ItemBoundable;
 	}
 });
-

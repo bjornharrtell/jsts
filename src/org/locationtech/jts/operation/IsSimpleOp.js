@@ -160,4 +160,3 @@ extend(EndpointInfo.prototype, {
 	}
 });
 IsSimpleOp.EndpointInfo = EndpointInfo;
-

@@ -66,4 +66,3 @@ extend(OffsetSegmentString.prototype, {
 	}
 });
 OffsetSegmentString.COORDINATE_ARRAY_TYPE = new Array(0).fill(null);
-

@@ -18,4 +18,3 @@ extend(NoninvertibleTransformationException.prototype, {
 		return NoninvertibleTransformationException;
 	}
 });
-

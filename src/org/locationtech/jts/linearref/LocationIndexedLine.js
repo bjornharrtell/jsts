@@ -62,4 +62,3 @@ extend(LocationIndexedLine.prototype, {
 		return LocationIndexedLine;
 	}
 });
-

@@ -170,4 +170,3 @@ extend(RelateComputer.prototype, {
 		return RelateComputer;
 	}
 });
-

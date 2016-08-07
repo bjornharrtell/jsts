@@ -48,4 +48,3 @@ SegmentStringUtil.toString = function () {
 		return buf.toString();
 	}
 };
-

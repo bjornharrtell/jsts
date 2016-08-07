@@ -43,4 +43,3 @@ extend(InteriorPointPoint.prototype, {
 		return InteriorPointPoint;
 	}
 });
-

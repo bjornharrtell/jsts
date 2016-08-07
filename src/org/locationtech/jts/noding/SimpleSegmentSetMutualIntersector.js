@@ -33,4 +33,3 @@ extend(SimpleSegmentSetMutualIntersector.prototype, {
 		return SimpleSegmentSetMutualIntersector;
 	}
 });
-

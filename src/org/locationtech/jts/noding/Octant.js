@@ -37,4 +37,3 @@ Octant.octant = function () {
 		return Octant.octant(dx, dy);
 	}
 };
-

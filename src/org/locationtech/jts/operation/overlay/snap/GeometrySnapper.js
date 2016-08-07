@@ -125,4 +125,3 @@ extend(SnapTransformer.prototype, {
 		return SnapTransformer;
 	}
 });
-

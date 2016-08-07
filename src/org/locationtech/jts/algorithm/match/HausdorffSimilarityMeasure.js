@@ -26,4 +26,3 @@ HausdorffSimilarityMeasure.diagonalSize = function (env) {
 	return Math.sqrt(width * width + hgt * hgt);
 };
 HausdorffSimilarityMeasure.DENSIFY_FRACTION = 0.25;
-

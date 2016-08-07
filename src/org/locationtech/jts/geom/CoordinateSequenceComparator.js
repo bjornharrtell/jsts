@@ -66,4 +66,3 @@ CoordinateSequenceComparator.compare = function (a, b) {
 	if (Double.isNaN(b)) return 1;
 	return 0;
 };
-

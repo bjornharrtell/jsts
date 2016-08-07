@@ -79,4 +79,3 @@ BoundablePair.area = function (b) {
 BoundablePair.isComposite = function (item) {
 	return item instanceof AbstractNode;
 };
-

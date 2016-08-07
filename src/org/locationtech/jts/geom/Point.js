@@ -144,4 +144,3 @@ extend(Point.prototype, {
 	}
 });
 Point.serialVersionUID = 4902022702746614570;
-

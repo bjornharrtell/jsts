@@ -10,4 +10,3 @@ extend(SegmentIntersector.prototype, {
 		return SegmentIntersector;
 	}
 });
-

@@ -43,4 +43,3 @@ extend(BasicSegmentString.prototype, {
 		return BasicSegmentString;
 	}
 });
-

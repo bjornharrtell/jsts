@@ -34,4 +34,3 @@ GeometryMapper.map = function () {
 };
 function MapOp() {}
 GeometryMapper.MapOp = MapOp;
-

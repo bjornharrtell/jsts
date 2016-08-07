@@ -27,4 +27,3 @@ extend(TaggedLinesSimplifier.prototype, {
 		return TaggedLinesSimplifier;
 	}
 });
-

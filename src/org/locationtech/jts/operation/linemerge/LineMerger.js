@@ -114,4 +114,3 @@ extend(LineMerger.prototype, {
 		return LineMerger;
 	}
 });
-

@@ -103,4 +103,3 @@ CoordinateSequences.createClosedRing = function (fact, seq, size) {
 	for (var i = n; i < size; i++) CoordinateSequences.copy(seq, 0, newseq, i, 1);
 	return newseq;
 };
-

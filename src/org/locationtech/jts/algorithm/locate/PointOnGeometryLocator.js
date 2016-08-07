@@ -9,4 +9,3 @@ extend(PointOnGeometryLocator.prototype, {
 		return PointOnGeometryLocator;
 	}
 });
-

@@ -79,4 +79,3 @@ extend(SegmentIntersectionDetector.prototype, {
 		return SegmentIntersectionDetector;
 	}
 });
-

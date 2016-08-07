@@ -65,4 +65,3 @@ extend(SortedPackedIntervalRTree.prototype, {
 		return SortedPackedIntervalRTree;
 	}
 });
-

@@ -44,4 +44,3 @@ extend(RectangleLineIntersector.prototype, {
 		return RectangleLineIntersector;
 	}
 });
-

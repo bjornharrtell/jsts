@@ -13,4 +13,3 @@ extend(NotRepresentableException.prototype, {
 		return NotRepresentableException;
 	}
 });
-

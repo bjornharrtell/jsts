@@ -51,4 +51,3 @@ extend(GraphComponent.prototype, {
 		return GraphComponent;
 	}
 });
-

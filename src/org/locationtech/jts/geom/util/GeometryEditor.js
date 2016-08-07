@@ -159,4 +159,3 @@ extend(CoordinateSequenceOperation.prototype, {
 GeometryEditor.NoOpGeometryOperation = NoOpGeometryOperation;
 GeometryEditor.CoordinateOperation = CoordinateOperation;
 GeometryEditor.CoordinateSequenceOperation = CoordinateSequenceOperation;
-

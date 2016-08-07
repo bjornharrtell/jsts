@@ -44,4 +44,3 @@ extend(SimpleNestedRingTester.prototype, {
 		return SimpleNestedRingTester;
 	}
 });
-

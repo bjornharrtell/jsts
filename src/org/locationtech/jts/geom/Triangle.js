@@ -145,4 +145,3 @@ Triangle.inCentre = function (a, b, c) {
 	var inCentreY = (len0 * a.y + len1 * b.y + len2 * c.y) / circum;
 	return new Coordinate(inCentreX, inCentreY);
 };
-

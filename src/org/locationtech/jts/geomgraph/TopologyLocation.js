@@ -124,4 +124,3 @@ extend(TopologyLocation.prototype, {
 		return TopologyLocation;
 	}
 });
-

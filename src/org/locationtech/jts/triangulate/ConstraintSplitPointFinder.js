@@ -9,4 +9,3 @@ extend(ConstraintSplitPointFinder.prototype, {
 		return ConstraintSplitPointFinder;
 	}
 });
-

@@ -204,4 +204,3 @@ RobustDeterminant.signOfDet2x2 = function (x1, y1, x2, y2) {
 		}
 	}
 };
-

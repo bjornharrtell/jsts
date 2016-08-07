@@ -65,4 +65,3 @@ MonotoneChainBuilder.toIntArray = function (list) {
 	}
 	return array;
 };
-

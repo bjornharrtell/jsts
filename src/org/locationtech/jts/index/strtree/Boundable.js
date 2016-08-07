@@ -9,4 +9,3 @@ extend(Boundable.prototype, {
 		return Boundable;
 	}
 });
-

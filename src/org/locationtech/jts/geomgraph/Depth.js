@@ -87,4 +87,3 @@ Depth.depthAtLocation = function (location) {
 	return Depth.NULL_VALUE;
 };
 Depth.NULL_VALUE = -1;
-

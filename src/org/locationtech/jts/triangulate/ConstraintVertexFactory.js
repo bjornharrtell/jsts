@@ -9,4 +9,3 @@ extend(ConstraintVertexFactory.prototype, {
 		return ConstraintVertexFactory;
 	}
 });
-

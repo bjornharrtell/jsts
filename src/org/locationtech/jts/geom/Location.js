@@ -26,4 +26,3 @@ Location.INTERIOR = 0;
 Location.BOUNDARY = 1;
 Location.EXTERIOR = 2;
 Location.NONE = -1;
-

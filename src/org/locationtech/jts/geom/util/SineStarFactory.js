@@ -55,4 +55,3 @@ extend(SineStarFactory.prototype, {
 		return SineStarFactory;
 	}
 });
-

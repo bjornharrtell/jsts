@@ -94,4 +94,3 @@ extend(MaxMidpointDistanceFilter.prototype, {
 });
 BufferCurveMaximumDistanceFinder.MaxPointDistanceFilter = MaxPointDistanceFilter;
 BufferCurveMaximumDistanceFinder.MaxMidpointDistanceFilter = MaxMidpointDistanceFilter;
-

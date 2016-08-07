@@ -55,4 +55,3 @@ extend(SweeplineNestedRingTester.prototype, {
 		return SweeplineNestedRingTester;
 	}
 });
-

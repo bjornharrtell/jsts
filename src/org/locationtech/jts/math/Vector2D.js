@@ -174,4 +174,3 @@ Vector2D.create = function () {
 		}
 	}
 };
-

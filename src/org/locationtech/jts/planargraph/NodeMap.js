@@ -27,4 +27,3 @@ extend(NodeMap.prototype, {
 		return NodeMap;
 	}
 });
-

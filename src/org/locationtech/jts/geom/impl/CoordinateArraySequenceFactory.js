@@ -37,4 +37,3 @@ CoordinateArraySequenceFactory.instance = function () {
 };
 CoordinateArraySequenceFactory.serialVersionUID = -4099577099607551657;
 CoordinateArraySequenceFactory.instanceObject = new CoordinateArraySequenceFactory();
-

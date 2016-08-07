@@ -84,4 +84,3 @@ extend(SegmentOverlapAction.prototype, {
 	}
 });
 MCIndexSegmentSetMutualIntersector.SegmentOverlapAction = SegmentOverlapAction;
-

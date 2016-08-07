@@ -76,4 +76,3 @@ AxisPlaneCoordinateSequence.projectToXY = function (seq) {
 AxisPlaneCoordinateSequence.XY_INDEX = [0, 1];
 AxisPlaneCoordinateSequence.XZ_INDEX = [0, 2];
 AxisPlaneCoordinateSequence.YZ_INDEX = [1, 2];
-

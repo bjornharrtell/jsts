@@ -30,4 +30,3 @@ extend(LastFoundQuadEdgeLocator.prototype, {
 		return LastFoundQuadEdgeLocator;
 	}
 });
-

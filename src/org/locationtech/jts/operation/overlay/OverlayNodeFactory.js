@@ -18,4 +18,3 @@ extend(OverlayNodeFactory.prototype, {
 		return OverlayNodeFactory;
 	}
 });
-

@@ -109,4 +109,3 @@ extend(Counter.prototype, {
 		return Counter;
 	}
 });
-

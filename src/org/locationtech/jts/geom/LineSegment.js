@@ -266,4 +266,3 @@ LineSegment.midPoint = function (p0, p1) {
 	return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
 };
 LineSegment.serialVersionUID = 3252005833466256227;
-

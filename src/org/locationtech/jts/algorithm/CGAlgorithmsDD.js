@@ -71,4 +71,3 @@ CGAlgorithmsDD.signum = function (x) {
 	return 0;
 };
 CGAlgorithmsDD.DP_SAFE_EPSILON = 1e-15;
-

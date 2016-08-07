@@ -33,4 +33,3 @@ PolygonExtracter.getPolygons = function () {
 		return list;
 	}
 };
-

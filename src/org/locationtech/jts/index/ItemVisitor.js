@@ -9,4 +9,3 @@ extend(ItemVisitor.prototype, {
 		return ItemVisitor;
 	}
 });
-

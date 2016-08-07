@@ -114,4 +114,3 @@ NonRobustCGAlgorithms.computeOrientation = function () {
 		return NonRobustCGAlgorithms.orientationIndex(p1, p2, q);
 	} else return CGAlgorithms.prototype.computeOrientation.apply(this, arguments);
 };
-

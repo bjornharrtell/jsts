@@ -111,4 +111,3 @@ extend(SegmentIntersector.prototype, {
 SegmentIntersector.isAdjacentSegments = function (i1, i2) {
 	return Math.abs(i1 - i2) === 1;
 };
-

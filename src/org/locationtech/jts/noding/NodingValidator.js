@@ -98,4 +98,3 @@ extend(NodingValidator.prototype, {
 	}
 });
 NodingValidator.fact = new GeometryFactory();
-

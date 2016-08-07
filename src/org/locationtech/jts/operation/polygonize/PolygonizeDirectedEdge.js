@@ -38,4 +38,3 @@ extend(PolygonizeDirectedEdge.prototype, {
 		return PolygonizeDirectedEdge;
 	}
 });
-

@@ -93,4 +93,3 @@ Node.createExpanded = function (node, addInterval) {
 	if (node !== null) largerNode.insert(node);
 	return largerNode;
 };
-

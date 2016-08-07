@@ -55,4 +55,3 @@ extend(SegmentStringDissolver.prototype, {
 });
 function SegmentStringMerger() {}
 SegmentStringDissolver.SegmentStringMerger = SegmentStringMerger;
-

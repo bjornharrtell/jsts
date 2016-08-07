@@ -168,4 +168,3 @@ MinimumBoundingCircle.pointWithMinAngleWithSegment = function (pts, P, Q) {
 	}
 	return minAngPt;
 };
-

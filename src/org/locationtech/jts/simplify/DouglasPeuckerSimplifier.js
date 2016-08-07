@@ -88,4 +88,3 @@ extend(DPTransformer.prototype, {
 	}
 });
 DouglasPeuckerSimplifier.DPTransformer = DPTransformer;
-

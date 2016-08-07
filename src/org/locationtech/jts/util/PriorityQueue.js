@@ -53,4 +53,3 @@ extend(PriorityQueue.prototype, {
 		return PriorityQueue;
 	}
 });
-

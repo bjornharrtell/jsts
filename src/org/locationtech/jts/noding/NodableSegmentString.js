@@ -10,4 +10,3 @@ extend(NodableSegmentString.prototype, {
 		return NodableSegmentString;
 	}
 });
-

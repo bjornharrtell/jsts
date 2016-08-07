@@ -72,4 +72,3 @@ UnionInteracting.union = function (g0, g1) {
 	var uue = new UnionInteracting(g0, g1);
 	return uue.union();
 };
-

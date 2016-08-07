@@ -88,4 +88,3 @@ extend(MCIndexSnapRounder.prototype, {
 		return MCIndexSnapRounder;
 	}
 });
-

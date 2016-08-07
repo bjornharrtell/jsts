@@ -112,4 +112,3 @@ TrianglePredicate.triAreaDDFast = function (a, b, c) {
 	var t2 = DD.valueOf(b.y).selfSubtract(a.y).selfMultiply(DD.valueOf(c.x).selfSubtract(a.x));
 	return t1.selfSubtract(t2);
 };
-

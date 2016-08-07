@@ -59,4 +59,3 @@ extend(QuadtreeNestedRingTester.prototype, {
 		return QuadtreeNestedRingTester;
 	}
 });
-

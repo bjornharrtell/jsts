@@ -64,4 +64,3 @@ RectangleContains.contains = function (rectangle, b) {
 	var rc = new RectangleContains(rectangle);
 	return rc.contains(b);
 };
-

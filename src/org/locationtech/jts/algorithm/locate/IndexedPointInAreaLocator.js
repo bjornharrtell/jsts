@@ -88,4 +88,3 @@ extend(IntervalIndexedGeometry.prototype, {
 });
 IndexedPointInAreaLocator.SegmentVisitor = SegmentVisitor;
 IndexedPointInAreaLocator.IntervalIndexedGeometry = IntervalIndexedGeometry;
-

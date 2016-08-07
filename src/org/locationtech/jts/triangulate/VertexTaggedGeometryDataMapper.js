@@ -46,4 +46,3 @@ extend(VertexTaggedGeometryDataMapper.prototype, {
 		return VertexTaggedGeometryDataMapper;
 	}
 });
-

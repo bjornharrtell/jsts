@@ -82,4 +82,3 @@ GeometryPrecisionReducer.reducePointwise = function (g, precModel) {
 	reducer.setPointwise(true);
 	return reducer.reduce(g);
 };
-

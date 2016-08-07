@@ -30,4 +30,3 @@ extend(SweepLineInterval.prototype, {
 		return SweepLineInterval;
 	}
 });
-

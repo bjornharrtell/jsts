@@ -19,4 +19,3 @@ extend(PolygonizeEdge.prototype, {
 		return PolygonizeEdge;
 	}
 });
-

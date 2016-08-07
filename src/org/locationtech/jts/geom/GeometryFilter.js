@@ -9,4 +9,3 @@ extend(GeometryFilter.prototype, {
 		return GeometryFilter;
 	}
 });
-

@@ -20,4 +20,3 @@ UnionOp.union = function (g, other) {
 	g.checkNotGeometryCollection(other);
 	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.UNION);
 };
-

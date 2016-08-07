@@ -175,4 +175,3 @@ extend(EdgeEndStar.prototype, {
 		return EdgeEndStar;
 	}
 });
-

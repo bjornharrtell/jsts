@@ -44,4 +44,3 @@ PointGeometryUnion.union = function (pointGeom, otherGeom) {
 	var unioner = new PointGeometryUnion(pointGeom, otherGeom);
 	return unioner.union();
 };
-

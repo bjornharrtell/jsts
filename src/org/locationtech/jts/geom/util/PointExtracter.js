@@ -37,4 +37,3 @@ PointExtracter.getPoints = function () {
 		return list;
 	}
 };
-

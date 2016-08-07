@@ -17,4 +17,3 @@ extend(DissolveEdgeGraph.prototype, {
 		return DissolveEdgeGraph;
 	}
 });
-

@@ -34,4 +34,3 @@ extend(GeometryLocation.prototype, {
 	}
 });
 GeometryLocation.INSIDE_AREA = -1;
-

@@ -17,4 +17,3 @@ extend(CoordinateCountFilter.prototype, {
 		return CoordinateCountFilter;
 	}
 });
-

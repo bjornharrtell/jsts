@@ -22,4 +22,3 @@ extend(MonotoneChainSelectAction.prototype, {
 		return MonotoneChainSelectAction;
 	}
 });
-

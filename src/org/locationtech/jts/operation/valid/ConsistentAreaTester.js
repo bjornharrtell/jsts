@@ -52,4 +52,3 @@ extend(ConsistentAreaTester.prototype, {
 		return ConsistentAreaTester;
 	}
 });
-

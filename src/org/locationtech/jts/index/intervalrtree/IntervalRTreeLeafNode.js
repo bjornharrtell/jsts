@@ -22,4 +22,3 @@ extend(IntervalRTreeLeafNode.prototype, {
 		return IntervalRTreeLeafNode;
 	}
 });
-

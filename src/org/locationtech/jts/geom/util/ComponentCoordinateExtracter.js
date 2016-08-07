@@ -24,4 +24,3 @@ ComponentCoordinateExtracter.getCoordinates = function (geom) {
 	geom.apply(new ComponentCoordinateExtracter(coords));
 	return coords;
 };
-

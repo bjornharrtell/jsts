@@ -61,4 +61,3 @@ EdgeGraph.isValidEdge = function (orig, dest) {
 	var cmp = dest.compareTo(orig);
 	return cmp !== 0;
 };
-

@@ -140,4 +140,3 @@ PlanarGraph.linkResultDirectedEdges = function (nodes) {
 		node.getEdges().linkResultDirectedEdges();
 	}
 };
-

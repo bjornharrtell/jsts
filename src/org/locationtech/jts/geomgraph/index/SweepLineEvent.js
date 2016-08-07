@@ -60,4 +60,3 @@ extend(SweepLineEvent.prototype, {
 });
 SweepLineEvent.INSERT = 1;
 SweepLineEvent.DELETE = 2;
-

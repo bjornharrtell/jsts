@@ -102,4 +102,3 @@ extend(MonotoneChain.prototype, {
 		return MonotoneChain;
 	}
 });
-

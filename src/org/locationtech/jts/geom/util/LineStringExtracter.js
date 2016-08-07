@@ -36,4 +36,3 @@ LineStringExtracter.getLines = function () {
 		return lines;
 	}
 };
-

@@ -92,4 +92,3 @@ ConformingDelaunayTriangulationBuilder.createConstraintSegments = function () {
 		}
 	}
 };
-

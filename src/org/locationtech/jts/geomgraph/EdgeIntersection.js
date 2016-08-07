@@ -51,4 +51,3 @@ extend(EdgeIntersection.prototype, {
 		return EdgeIntersection;
 	}
 });
-

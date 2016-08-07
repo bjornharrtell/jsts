@@ -185,4 +185,3 @@ extend(QuadEdgeTriangleBuilderVisitor.prototype, {
 	}
 });
 QuadEdgeTriangle.QuadEdgeTriangleBuilderVisitor = QuadEdgeTriangleBuilderVisitor;
-

@@ -114,4 +114,3 @@ extend(CoordinateList.prototype, {
 	}
 });
 CoordinateList.coordArrayType = new Array(0).fill(null);
-

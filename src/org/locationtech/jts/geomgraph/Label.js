@@ -134,4 +134,3 @@ Label.toLineLabel = function (label) {
 	}
 	return lineLabel;
 };
-

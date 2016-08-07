@@ -129,4 +129,3 @@ NodeBase.getSubnodeIndex = function (env, centrex, centrey) {
 	}
 	return subnodeIndex;
 };
-

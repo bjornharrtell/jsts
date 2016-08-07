@@ -28,4 +28,3 @@ extend(FastSegmentSetIntersectionFinder.prototype, {
 		return FastSegmentSetIntersectionFinder;
 	}
 });
-

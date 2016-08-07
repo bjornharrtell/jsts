@@ -57,4 +57,3 @@ SierpinskiCarpetBuilder.recursionLevelForSize = function (numPts) {
 	var exp = Math.log(pow4) / Math.log(4);
 	return Math.trunc(exp);
 };
-

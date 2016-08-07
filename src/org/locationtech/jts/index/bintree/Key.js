@@ -44,4 +44,3 @@ Key.computeLevel = function (interval) {
 	var level = DoubleBits.exponent(dx) + 1;
 	return level;
 };
-

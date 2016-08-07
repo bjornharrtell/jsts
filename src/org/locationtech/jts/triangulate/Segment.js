@@ -75,4 +75,3 @@ extend(Segment.prototype, {
 		return Segment;
 	}
 });
-

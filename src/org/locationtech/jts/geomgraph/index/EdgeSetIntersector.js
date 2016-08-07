@@ -8,4 +8,3 @@ extend(EdgeSetIntersector.prototype, {
 		return EdgeSetIntersector;
 	}
 });
-

@@ -21,4 +21,3 @@ extend(CoordinateSequenceFactory.prototype, {
 		return CoordinateSequenceFactory;
 	}
 });
-

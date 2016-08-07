@@ -113,4 +113,3 @@ Node.createExpanded = function (node, addEnv) {
 	if (node !== null) largerNode.insertNode(node);
 	return largerNode;
 };
-

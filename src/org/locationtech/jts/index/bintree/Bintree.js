@@ -71,4 +71,3 @@ Bintree.ensureExtent = function (itemInterval, minExtent) {
 	}
 	return new Interval(min, max);
 };
-

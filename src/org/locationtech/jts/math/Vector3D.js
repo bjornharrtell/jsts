@@ -86,4 +86,3 @@ Vector3D.create = function () {
 		return new Vector3D(x, y, z);
 	}
 };
-

@@ -247,4 +247,3 @@ LineSequencer.sequence = function (geom) {
 	sequencer.add(geom);
 	return sequencer.getSequencedLineStrings();
 };
-

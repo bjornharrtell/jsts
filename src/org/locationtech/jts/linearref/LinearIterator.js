@@ -78,4 +78,3 @@ LinearIterator.segmentEndVertexIndex = function (loc) {
 	if (loc.getSegmentFraction() > 0.0) return loc.getSegmentIndex() + 1;
 	return loc.getSegmentIndex();
 };
-

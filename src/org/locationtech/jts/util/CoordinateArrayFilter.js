@@ -20,4 +20,3 @@ extend(CoordinateArrayFilter.prototype, {
 		return CoordinateArrayFilter;
 	}
 });
-

@@ -199,4 +199,3 @@ Vertex.BEHIND = 3;
 Vertex.BETWEEN = 4;
 Vertex.ORIGIN = 5;
 Vertex.DESTINATION = 6;
-

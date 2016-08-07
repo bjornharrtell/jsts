@@ -45,4 +45,3 @@ extend(SegmentNode.prototype, {
 		return SegmentNode;
 	}
 });
-

@@ -134,4 +134,3 @@ PrecisionModel.FIXED = new Type("FIXED");
 PrecisionModel.FLOATING = new Type("FLOATING");
 PrecisionModel.FLOATING_SINGLE = new Type("FLOATING SINGLE");
 PrecisionModel.maximumPreciseValue = 9007199254740992.0;
-

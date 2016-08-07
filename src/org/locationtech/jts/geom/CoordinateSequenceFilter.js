@@ -11,4 +11,3 @@ extend(CoordinateSequenceFilter.prototype, {
 		return CoordinateSequenceFilter;
 	}
 });
-

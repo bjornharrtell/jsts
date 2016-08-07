@@ -43,4 +43,3 @@ extend(FacetSequenceDistance.prototype, {
 	}
 });
 IndexedFacetDistance.FacetSequenceDistance = FacetSequenceDistance;
-

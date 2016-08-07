@@ -131,4 +131,3 @@ VWVertex.buildLine = function (pts) {
 };
 VWVertex.MAX_AREA = Double.MAX_VALUE;
 VWLineSimplifier.VWVertex = VWVertex;
-

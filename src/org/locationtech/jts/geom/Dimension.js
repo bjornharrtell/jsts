@@ -56,4 +56,3 @@ Dimension.SYM_DONTCARE = '*';
 Dimension.SYM_P = '0';
 Dimension.SYM_L = '1';
 Dimension.SYM_A = '2';
-

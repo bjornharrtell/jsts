@@ -125,4 +125,3 @@ extend(GeometryTransformer.prototype, {
 		return GeometryTransformer;
 	}
 });
-

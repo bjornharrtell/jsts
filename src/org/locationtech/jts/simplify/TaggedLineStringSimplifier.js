@@ -126,4 +126,3 @@ TaggedLineStringSimplifier.isInLineSection = function (line, sectionIndex, seg) 
 	if (segIndex >= sectionIndex[0] && segIndex < sectionIndex[1]) return true;
 	return false;
 };
-

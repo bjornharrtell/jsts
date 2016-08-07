@@ -9,4 +9,3 @@ extend(SimilarityMeasure.prototype, {
 		return SimilarityMeasure;
 	}
 });
-

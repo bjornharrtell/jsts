@@ -8,4 +8,3 @@ extend(Lineal.prototype, {
 		return Lineal;
 	}
 });
-

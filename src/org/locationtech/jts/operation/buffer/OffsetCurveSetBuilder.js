@@ -111,4 +111,3 @@ extend(OffsetCurveSetBuilder.prototype, {
 		return OffsetCurveSetBuilder;
 	}
 });
-

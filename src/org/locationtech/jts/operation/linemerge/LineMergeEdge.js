@@ -19,4 +19,3 @@ extend(LineMergeEdge.prototype, {
 		return LineMergeEdge;
 	}
 });
-

@@ -166,4 +166,3 @@ extend(RectangleIntersectsSegmentVisitor.prototype, {
 		return RectangleIntersectsSegmentVisitor;
 	}
 });
-

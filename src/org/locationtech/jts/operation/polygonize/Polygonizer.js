@@ -183,4 +183,3 @@ extend(LineStringAdder.prototype, {
 	}
 });
 Polygonizer.LineStringAdder = LineStringAdder;
-

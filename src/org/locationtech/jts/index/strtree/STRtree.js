@@ -221,4 +221,3 @@ STRtree.intersectsOp = {
 	}
 };
 STRtree.DEFAULT_NODE_CAPACITY = 10;
-

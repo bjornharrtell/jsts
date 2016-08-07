@@ -101,4 +101,3 @@ UnaryUnionOp.union = function () {
 		return op.union();
 	}
 };
-

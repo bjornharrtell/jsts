@@ -35,4 +35,3 @@ LocateFailureException.msgWithSpatial = function (msg, seg) {
 	if (seg !== null) return msg + " [ " + seg + " ]";
 	return msg;
 };
-

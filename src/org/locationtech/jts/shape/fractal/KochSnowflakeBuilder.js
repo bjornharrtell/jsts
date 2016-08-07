@@ -66,4 +66,3 @@ KochSnowflakeBuilder.HEIGHT_FACTOR = Math.sin(Math.PI / 3.0);
 KochSnowflakeBuilder.ONE_THIRD = 1.0 / 3.0;
 KochSnowflakeBuilder.THIRD_HEIGHT = KochSnowflakeBuilder.HEIGHT_FACTOR / 3.0;
 KochSnowflakeBuilder.TWO_THIRDS = 2.0 / 3.0;
-

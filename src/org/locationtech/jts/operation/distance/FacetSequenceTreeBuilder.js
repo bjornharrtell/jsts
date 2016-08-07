@@ -56,4 +56,3 @@ FacetSequenceTreeBuilder.build = function (g) {
 };
 FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE = 6;
 FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY = 4;
-

@@ -47,4 +47,3 @@ Memory.free = function () {
 Memory.KB = 1024;
 Memory.MB = 1048576;
 Memory.GB = 1073741824;
-

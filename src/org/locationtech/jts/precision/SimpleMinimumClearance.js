@@ -116,4 +116,3 @@ extend(ComputeMCCoordinateSequenceFilter.prototype, {
 });
 SimpleMinimumClearance.VertexCoordinateFilter = VertexCoordinateFilter;
 SimpleMinimumClearance.ComputeMCCoordinateSequenceFilter = ComputeMCCoordinateSequenceFilter;
-

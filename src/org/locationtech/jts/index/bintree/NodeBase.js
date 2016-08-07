@@ -95,4 +95,3 @@ NodeBase.getSubnodeIndex = function (interval, centre) {
 	if (interval.max <= centre) subnodeIndex = 0;
 	return subnodeIndex;
 };
-

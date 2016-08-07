@@ -41,4 +41,3 @@ MarkHalfEdge.markBoth = function (e) {
 MarkHalfEdge.mark = function (e) {
 	e.mark();
 };
-

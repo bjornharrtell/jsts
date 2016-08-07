@@ -150,4 +150,3 @@ BufferBuilder.convertSegStrings = function (it) {
 	}
 	return fact.buildGeometry(lines);
 };
-

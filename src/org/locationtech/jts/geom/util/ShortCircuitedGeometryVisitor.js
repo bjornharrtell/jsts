@@ -23,4 +23,3 @@ extend(ShortCircuitedGeometryVisitor.prototype, {
 		return ShortCircuitedGeometryVisitor;
 	}
 });
-

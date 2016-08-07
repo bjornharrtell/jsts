@@ -71,4 +71,3 @@ extend(LinearGeometryBuilder.prototype, {
 		return LinearGeometryBuilder;
 	}
 });
-

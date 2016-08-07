@@ -9,4 +9,3 @@ extend(KdNodeVisitor.prototype, {
 		return KdNodeVisitor;
 	}
 });
-

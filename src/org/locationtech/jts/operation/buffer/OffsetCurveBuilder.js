@@ -166,4 +166,3 @@ OffsetCurveBuilder.copyCoordinates = function (pts) {
 	}
 	return copy;
 };
-

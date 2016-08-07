@@ -57,4 +57,3 @@ Quadrant.NE = 0;
 Quadrant.NW = 1;
 Quadrant.SW = 2;
 Quadrant.SE = 3;
-

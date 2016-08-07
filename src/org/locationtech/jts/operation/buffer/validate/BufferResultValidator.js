@@ -118,4 +118,3 @@ BufferResultValidator.isValid = function (g, distance, result) {
 };
 BufferResultValidator.VERBOSE = false;
 BufferResultValidator.MAX_ENV_DIFF_FRAC = .012;
-

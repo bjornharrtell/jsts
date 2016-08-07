@@ -50,4 +50,3 @@ extend(RelateNodeGraph.prototype, {
 		return RelateNodeGraph;
 	}
 });
-

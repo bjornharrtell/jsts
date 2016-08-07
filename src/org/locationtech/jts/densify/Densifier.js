@@ -92,4 +92,3 @@ extend(DensifyTransformer.prototype, {
 	}
 });
 Densifier.DensifyTransformer = DensifyTransformer;
-

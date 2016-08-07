@@ -55,4 +55,3 @@ GraphComponent.setMarked = function (i, marked) {
 		comp.setMarked(marked);
 	}
 };
-

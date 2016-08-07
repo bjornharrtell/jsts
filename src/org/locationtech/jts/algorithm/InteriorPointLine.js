@@ -66,4 +66,3 @@ extend(InteriorPointLine.prototype, {
 		return InteriorPointLine;
 	}
 });
-

@@ -46,4 +46,3 @@ SegmentPointComparator.compareValue = function (compareSign0, compareSign1) {
 	if (compareSign1 > 0) return 1;
 	return 0;
 };
-

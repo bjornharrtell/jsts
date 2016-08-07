@@ -18,4 +18,3 @@ extend(RelateNodeFactory.prototype, {
 		return RelateNodeFactory;
 	}
 });
-

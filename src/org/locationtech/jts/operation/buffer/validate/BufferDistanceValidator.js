@@ -109,4 +109,3 @@ extend(BufferDistanceValidator.prototype, {
 });
 BufferDistanceValidator.VERBOSE = false;
 BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC = .012;
-

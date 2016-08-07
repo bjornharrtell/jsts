@@ -18,4 +18,3 @@ IntervalSize.isZeroWidth = function (min, max) {
 	return level <= IntervalSize.MIN_BINARY_EXPONENT;
 };
 IntervalSize.MIN_BINARY_EXPONENT = -50;
-

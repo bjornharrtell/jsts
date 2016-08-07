@@ -115,4 +115,3 @@ extend(PointLocator.prototype, {
 		return PointLocator;
 	}
 });
-

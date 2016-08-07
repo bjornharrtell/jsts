@@ -130,4 +130,3 @@ extend(MaxDensifiedByFractionDistanceFilter.prototype, {
 });
 DiscreteHausdorffDistance.MaxPointDistanceFilter = MaxPointDistanceFilter;
 DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter = MaxDensifiedByFractionDistanceFilter;
-

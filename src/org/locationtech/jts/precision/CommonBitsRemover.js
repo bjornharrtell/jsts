@@ -83,4 +83,3 @@ extend(Translater.prototype, {
 });
 CommonBitsRemover.CommonCoordinateFilter = CommonCoordinateFilter;
 CommonBitsRemover.Translater = Translater;
-

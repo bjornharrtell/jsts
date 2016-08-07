@@ -67,4 +67,3 @@ ExtractLineByLocation.extract = function (line, start, end) {
 	var ls = new ExtractLineByLocation(line);
 	return ls.extract(start, end);
 };
-

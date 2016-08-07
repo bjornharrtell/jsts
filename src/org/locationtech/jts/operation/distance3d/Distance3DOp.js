@@ -301,4 +301,3 @@ Distance3DOp.distance = function (g0, g1) {
 	var distOp = new Distance3DOp(g0, g1);
 	return distOp.distance();
 };
-
