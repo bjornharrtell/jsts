@@ -21,7 +21,7 @@ extend(GeometryPrecisionReducer.prototype, {
 		var bufGeom = geomToBuffer.buffer(0);
 		var finalGeom = bufGeom;
 		if (!this.changePrecisionModel) {
-			finalGeom = geom.getFactory().createGeometry(bufGeom);
+			finalGeom = this.changePM(bufGeom, geom.getPrecisionModel());
 		}
 		return finalGeom;
 	},
