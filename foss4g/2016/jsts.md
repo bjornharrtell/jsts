@@ -132,8 +132,9 @@ GWT obfuscates the Java API in the compiled JavaScript. VJET seemed promising bu
 * Beginning to think AST to AST transformation is possible <!-- .element: class="fragment" -->
 
 Note:
-In 2015 I learned about ECMAScript 2015, the new version of JavaScript and that it could be transpiled to ES5 that existing browsers expects. The transpliation works with something called AST or Abstract Source Tree which and for JavaScript there is a defacto standard AST specification called ESTree that can be represented as JSON. Show http://esprima.org ?
+In 2015 I learned about ECMAScript 2015, the new version of JavaScript and that it could be transpiled to ES5 that existing browsers expects. The transpliation works with something called AST or Abstract Source Tree which and for JavaScript there is a defacto standard AST specification called ESTree that can be represented as JSON.
 
+http://esprima.org
 
 # Java AST
 
@@ -143,36 +144,49 @@ In 2015 I learned about ECMAScript 2015, the new version of JavaScript and that 
 * java2estree <!-- .element: class="fragment" -->
  * estree representation in Java
  * JSON serializer (Jackson)
+* Astring <!-- .element: class="fragment" -->
 
 Note:
 To be able to do AST to AST transformation I would also need an AST representation of Java. First I found Javaparser which is a very nice AST parser for Java, but after some experimentation I realized it missed type binding information which is needed to determine details about a identifier.
 
 So I looked for alternatives and realized there must be both an AST parser and statical analysis in the Eclipse IDE used to provide code completion and syntax checking.
 
-I used Eclipse JDT in my tool java2estree, written in my favorite language Scala. To serialize ESTree into JSON I used the Java library Jackson.
+The result was java2estree, a tool I wrote to translate Java into ESTree JSON in which I used Eclipse JDT. To serialize ESTree into JSON I used the Java library Jackson. I also have to mention that java2estree is written in Scala which is probably my favorite language.
 
+https://github.com/bjornharrtell/java2estree/blob/master/src/main/scala/org/wololo/estree/estree.scala
+
+I was able to define the whole ESTree specification in a serialisable structure with 327 LOC almost identical to the specification itself.
+
+https://github.com/davidbonnet/astring
+
+I also needed a tool to turn ESTree JSON into JavaScript. There are many such tools available, the one I use is called Astring by David Bonnet.
 
 # Difficulties
 
-* Java class != ECMAScript 2015 class
-* Overloading
-* Performance
-* Floating point woes (DD)
+* Java class != ECMAScript 2015 class <!-- .element: class="fragment" -->
+* Overloading <!-- .element: class="fragment" -->
+* Performance <!-- .element: class="fragment" -->
+* Floating point woes (DD) <!-- .element: class="fragment" -->
 
 Note:
 
 At first I thought ECMAScript 2015 would be a good target for the transformation, mainly because it introduces classes. I got initial functionality working with ECMAScript 2015 but there was sublte bugs and ugly workarounds needed because classes in ECMAScrip 2015 and Java has small but important differences.
 
 https://github.com/bjornharrtell/jsts/blob/1.0.0-beta1/src/org/locationtech/jts/geom/Coordinate.js
+
+At beta 1 the constructor for Coordinate was looking quite terrible. I had overloaded constructors wrapped in anonymous arrow functions and I used the rest/spread operator to extract local variables from args.
+
 https://github.com/bjornharrtell/jsts/blob/1.0.0-beta4/src/org/locationtech/jts/geom/Coordinate.js
 
-An ECMAScript 2015 class constructor cannot call itself which in effect is what overloading Java constructors require.
-
-If in Java you combine overloading with inheritance you get a really hard to analyze overload resolution. For JSTS I only handle what was required to translate JTS.
-
-Performance was worse than JSTS 0.x until the final simplication for constructor and overloading translation.
+At beta 4 I was able to reduce the number of wrapper functions.
 
 https://github.com/bjornharrtell/jsts/blob/1.0.0-rc3/src/org/locationtech/jts/geom/Coordinate.js
+
+At release candidate 3 I reached the version used in the stable version which drops ECMAScript 2015 classes and does not use rest/spread operator.
+
+The main reason for using a standard function was that an ECMAScript 2015 class constructor cannot call itself which in effect is what overloading Java constructors require. Another difference is that ECMAScript 2015 classes require you to call super before using this in a derived class. When using a standard function there are no such restrictions.
+
+It also turned out that performance was worse than JSTS 0.x until the final simplication for constructor and overloading translation.
 
 One of the last bugs that had to be taken care of before making 1.0.0 stable was failing validity tests. The reason turned out to be DoubleBits, a part of JTS that uses bit manipulation to get better accuracy for some mathematical operations.
 
