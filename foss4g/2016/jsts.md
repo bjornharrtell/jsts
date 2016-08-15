@@ -1,17 +1,20 @@
-# Introduction
+# JSTS
+
+A port of Java Topology Suite<!-- .element: class="fragment" -->
+
+
+# Me
 
 * Björn Harrtell<!-- .element: class="fragment" -->
 * GIS consultant at Sweco Position in Malmö, Sweden<!-- .element: class="fragment" -->
 * I like Open Source<!-- .element: class="fragment" -->
 
 
-# JSTS
-
-A port of Java Topology Suite<!-- .element: class="fragment" -->
-
-
 
 # Quick orientation
+
+Note:
+First a quick orientation.
 
 
 # Java Topology Suite
@@ -19,7 +22,7 @@ A port of Java Topology Suite<!-- .element: class="fragment" -->
 * A Java library of spatial predicates and operations <!-- .element: class="fragment" -->
 ![JTS](example-intersection.gif "JTS")<!-- .element: class="fragment" -->
 * Dates back to 2002 <!-- .element: class="fragment" -->
-* Used in one or another way in prominent Open Source GIS software like QGIS, PostGIS and GeoTools <!-- .element: class="fragment" -->
+* Used in prominent Open Source GIS software like QGIS, PostGIS and GeoTools <!-- .element: class="fragment" -->
 
 Note:
 What is Java Topology Suite?
@@ -102,6 +105,7 @@ Halfway into the working implementation I realized alot of the Java code involve
 
 * Wanted to update JSTS to upstream but not manually <!-- .element: class="fragment" -->
 * Issue opened at GitHub in May 2015 discussion with Martin followed <!-- .element: class="fragment" -->
+* Success! <!-- .element: class="fragment" -->
 * First beta release january 2016 <!-- .element: class="fragment" -->
 * 1.0.0 released february 2016 <!-- .element: class="fragment" -->
 
@@ -111,6 +115,7 @@ Fast forward to 2015. JSTS 0.x lagged behind upstream, so I wanted to update it 
 I was motivated alot by Martins interest and encouragement so I really want to thank him for that.
 
 I made rapid progress early 2016 with stable release 1.0.0 done in february 2016.
+
 
 # How was it done?
 
@@ -132,9 +137,10 @@ GWT obfuscates the Java API in the compiled JavaScript. VJET seemed promising bu
 * Beginning to think AST to AST transformation is possible <!-- .element: class="fragment" -->
 
 Note:
-In 2015 I learned about ECMAScript 2015, the new version of JavaScript and that it could be transpiled to ES5 that existing browsers expects. The transpliation works with something called AST or Abstract Source Tree which and for JavaScript there is a defacto standard AST specification called ESTree that can be represented as JSON.
+In 2015 I learned about ECMAScript 2015, the new version of JavaScript and that it could be transpiled to ES5 that existing browsers expects. The transpilation works with something called Abstract Source Tree or AST that can be understood as a simple as possible tree structure representing the code. ASTs have existed for a long time since it's used in compilators, and it's also useful for IDEs to support features like autocompletion. For JavaScript there is a defacto standard AST called ESTree that can be represented as JSON.
 
-http://esprima.org
+This made me thing that AST to AST transformation is possible.
+
 
 # Java AST
 
@@ -149,7 +155,7 @@ http://esprima.org
 Note:
 To be able to do AST to AST transformation I would also need an AST representation of Java. First I found Javaparser which is a very nice AST parser for Java, but after some experimentation I realized it missed type binding information which is needed to determine details about a identifier.
 
-So I looked for alternatives and realized there must be both an AST parser and statical analysis in the Eclipse IDE used to provide code completion and syntax checking.
+So I looked for alternatives and realized there must be both an AST parser and type binding analysis in the Eclipse IDE used to provide code completion and syntax checking.
 
 The result was java2estree, a tool I wrote to translate Java into ESTree JSON in which I used Eclipse JDT. To serialize ESTree into JSON I used the Java library Jackson. I also have to mention that java2estree is written in Scala which is probably my favorite language.
 
@@ -161,12 +167,13 @@ https://github.com/davidbonnet/astring
 
 I also needed a tool to turn ESTree JSON into JavaScript. There are many such tools available, the one I use is called Astring by David Bonnet.
 
+
 # Difficulties
 
 * Java class != ECMAScript 2015 class <!-- .element: class="fragment" -->
 * Overloading <!-- .element: class="fragment" -->
 * Performance <!-- .element: class="fragment" -->
-* Floating point woes (DD) <!-- .element: class="fragment" -->
+* IsValid test failures (DoubleBits) <!-- .element: class="fragment" -->
 
 Note:
 
