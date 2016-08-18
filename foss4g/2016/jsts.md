@@ -2,13 +2,22 @@
 
 A port of Java Topology Suite<!-- .element: class="fragment" -->
 
+Note:
+This is a talk about JSTS, a port of Java Topology Suite.
 
-# Me
+
+# About me
 
 * Björn Harrtell<!-- .element: class="fragment" -->
-* GIS consultant at Sweco Position in Malmö, Sweden<!-- .element: class="fragment" -->
+* Malmö, Sweden<!-- .element: class="fragment" -->
 * I like Open Source<!-- .element: class="fragment" -->
 
+Note:
+My name is Björn Harrtell, I come from Sweden and live in a city called Malmö.
+
+https://www.google.se/maps/@54.4856214,12.8718359,6z
+
+Anyway it's nice to be here in Bonn. Even though I've been working with GIS and open source for almost ten years it's my first time at FOSS4G so I'm happy to finally be here.
 
 
 # Quick orientation
@@ -27,7 +36,7 @@ First a quick orientation.
 Note:
 What is Java Topology Suite?
 
-It's a Java library of spatial predicates and operations which dates back to 2002 and has been used in prominent Open Source GIS software like QGIS, PostGIS and GeoTools.
+It's a Java library of spatial predicates and operations. That can be for instance an intersection as demonstrated here. JTS dates back to 2002 and has been used in prominent Open Source GIS software like QGIS, PostGIS and GeoTools.
 
 
 # Due credit
@@ -38,7 +47,7 @@ It's a Java library of spatial predicates and operations which dates back to 200
 * Recieved the Sol Katz award in 2011<!-- .element: class="fragment" -->
 
 Note:
-This guy is Martin Davis. He founded the JTS project and recieved the Sol Katz award in 2011 for his contributions.
+I want to give due credit. This guy is Martin Davis. He founded the JTS project and recieved the Sol Katz award in 2011 for his contributions.
 
 
 # JTS ports
@@ -49,7 +58,7 @@ This guy is Martin Davis. He founded the JTS project and recieved the Sol Katz a
 * JavaScript (JSTS) <!-- .element: class="fragment" -->
 
 Note:
-JTS has been ported to C++, Python, C# and with JSTS also JavaScript.
+The widespread use of JTS is probably because it has been ported to C++, Python, C# and with JSTS also JavaScript.
 
 
 # JSTS 0.x
@@ -60,7 +69,7 @@ JTS has been ported to C++, Python, C# and with JSTS also JavaScript.
 Note:
 I started work on JSTS back in 2011 and it was a manual effort.
 
-My motivation to do it was firstly that I was curious if it was at all possible and secondly I was in need of a programming hobby that did not require alot of thinking (or so I thought). My approach was naive and I did not investigate the architecture or scope of original source in any depth before trying to simply manually translate the initial classes.
+My motivation to do it was firstly that I was curious if it was at all possible. My approach was perhaps a bit naive and I did not investigate the architecture or scope of original source in any depth before trying to simply translate the initial classes manually.
 
 
 # Small beginnings
@@ -91,111 +100,207 @@ A central class in JTS is of course the Coordinate class, which has a constructo
 ## Working implementation
 
 * August 2011 <!-- .element: class="fragment" -->
-* 200 files, x lines of code <!-- .element: class="fragment" -->
+* 158 files, ~30000 lines of code <!-- .element: class="fragment" -->
+* Test cases from JTS was critical <!-- .element: class="fragment" -->
 * Selective port of Java collection classes <!-- .element: class="fragment" -->
 
 Note:
 The initial working version of JSTS, 0.9.0, required porting almost 200 files. Had I known this was required for basic functionality at the start I probably would have given up.
 
-Halfway into the working implementation I realized alot of the Java code involved using Java collection classes like ArrayList and porting this to native JavaScript arrays required alot of rewriting. This process could be simplified by simply porting Java collection classes first. This made porting code much more straight forward. Unfortunately as I had already done half of the port, this meant that some initially ported code used a native JavaScript arrays as input/output instead of an instance of an ArrayList. This caused alot of problems later on and is the reason that CascadedPolygonUnion was never completed in JSTS 0.x.
+I was able to port test cases from JTS quite easily because they where specified as XML. This turned out to be absolutely critical to be able to progress on the actual port.
+
+Halfway into the working implementation I realized alot of work was spent rewriting code using Java collection classes like ArrayList to code using JavaScript arrays. I ported the parts of Java collection classes needed which made porting the remaining JTS code much faster and easier. But I didn't want to redo what I had already ported and that turned out to cause alot of problems later on and is the reason CascadedPolygonUnion was never completed in the old JSTS.
 
 
 
-# JSTS 1.0
+# The road to JSTS 1.0
 
 * Wanted to update JSTS to upstream but not manually <!-- .element: class="fragment" -->
-* Issue opened at GitHub in May 2015 discussion with Martin followed <!-- .element: class="fragment" -->
+* Issue "Automated port" opened at GitHub in May 2015 <!-- .element: class="fragment" -->
 * Success! <!-- .element: class="fragment" -->
 * First beta release january 2016 <!-- .element: class="fragment" -->
 * 1.0.0 released february 2016 <!-- .element: class="fragment" -->
 
 Note:
-Fast forward to 2015. JSTS 0.x lagged behind upstream, so I wanted to update it but not manually.
+Fast forward to 2015. Existing JSTS lagged behind upstream, so I wanted to update it but not manually.
 
-I was motivated alot by Martins interest and encouragement so I really want to thank him for that.
+Issue "Automated port" opened at GitHub in May 2015 and I managed to get Martins interest and encouragement which motivated me alot.
 
 I made rapid progress early 2016 with stable release 1.0.0 done in february 2016.
 
 
 # How was it done?
 
+
 # Existing tools
 
-* GWT <!-- .element: class="fragment" -->
+* Google Web Toolkit (GWT) <!-- .element: class="fragment" -->
 * Eclipse VJET <!-- .element: class="fragment" -->
 
 Note:
-I first started to look at existing tools.
+I first started to look at existing tools. The most known Java to JavaScript compiler is probably Google Web Toolkit.
 
-GWT obfuscates the Java API in the compiled JavaScript. VJET seemed promising but activity stopped in early incubation process. So none of the existing tools seemed to work.
+The problem with Google Web Toolkit is that it obfuscates the Java API in the compiled JavaScript. Newer versions of Google Web Toolkit has some support to export APIs but it requires changes to the source and has also has restrictions. VJET seemed promising but activity stopped in early incubation process. My conclusion was that none of the existing tools did the trick.
 
 
 # Learning stuff
 
-* ECMAScript 2015 <!-- .element: class="fragment" -->
-* ESTree (AST) <!-- .element: class="fragment" -->
-* Beginning to think AST to AST transformation is possible <!-- .element: class="fragment" -->
+* ES6 (aka. ECMAScript 2015) <!-- .element: class="fragment" -->
+* Transpilation via Abstract Syntax Trees<!-- .element: class="fragment" -->
+* ESTree, a JavaScript AST spec in JSON <!-- .element: class="fragment" -->
+* Was it possible to translate JTS to JavaScript using transpilation? <!-- .element: class="fragment" -->
 
 Note:
-In 2015 I learned about ECMAScript 2015, the new version of JavaScript and that it could be transpiled to ES5 that existing browsers expects. The transpilation works with something called Abstract Source Tree or AST that can be understood as a simple as possible tree structure representing the code. ASTs have existed for a long time since it's used in compilators, and it's also useful for IDEs to support features like autocompletion. For JavaScript there is a defacto standard AST called ESTree that can be represented as JSON.
+In 2015 I learned about ES6, the new version of JavaScript and that it could be transpiled to whatever version of JavaScript that existing browsers expects. The transpilation works with something called abstract syntax trees. Syntax trees have existed for a long time since they are used in compilators, and are also useful for integrated development environments for features like autocompletion and syntax checking. For JavaScript there is a defacto standard AST called ESTree represented as JSON.
 
-This made me thing that AST to AST transformation is possible.
+Learning about this stuff made me think that perhaps it was possible to use transpilation to port JTS to JavaScript.
 
 
-# Java AST
+# Java parsing
 
 * Javaparser <!-- .element: class="fragment" -->
-* Missing type bindings analysis <!-- .element: class="fragment" -->
+* Missing type binding information <!-- .element: class="fragment" -->
 * Eclipse JDT <!-- .element: class="fragment" -->
 * java2estree <!-- .element: class="fragment" -->
- * estree representation in Java
- * JSON serializer (Jackson)
-* Astring <!-- .element: class="fragment" -->
+* ESTree representation in Scala <!-- .element: class="fragment" -->
+* JSON serializer (Jackson) <!-- .element: class="fragment" -->
+* ESTree to JavaScript (Astring) <!-- .element: class="fragment" -->
 
 Note:
-To be able to do AST to AST transformation I would also need an AST representation of Java. First I found Javaparser which is a very nice AST parser for Java, but after some experimentation I realized it missed type binding information which is needed to determine details about a identifier.
+To be able to do transpilation I would need a representation for Java. First I found Javaparser which is a very nice AST parser for Java, but after some experimentation I realized it missed a critical feature which was type binding information.
 
-So I looked for alternatives and realized there must be both an AST parser and type binding analysis in the Eclipse IDE used to provide code completion and syntax checking.
+So I looked for alternatives and realized there must be both Java syntax tree parser and type binding information in an integrated development environment like Eclipse to provide code completion and syntax checking.
 
-The result was java2estree, a tool I wrote to translate Java into ESTree JSON in which I used Eclipse JDT. To serialize ESTree into JSON I used the Java library Jackson. I also have to mention that java2estree is written in Scala which is probably my favorite language.
+The result was java2estree, a tool I wrote to translate Java into ESTree JSON. I wrote jsts2estree in Scala, which by the way probably is my favourite language. With Scala I was able to define the whole ESTree specification in a serialisable structure with only 327 LOC and the code looks alot like the specification itself. To serialize the in memory structure into JSON I used the Java library Jackson, essentially making that a one liner.
 
-https://github.com/bjornharrtell/java2estree/blob/master/src/main/scala/org/wololo/estree/estree.scala
-
-I was able to define the whole ESTree specification in a serialisable structure with 327 LOC almost identical to the specification itself.
-
-https://github.com/davidbonnet/astring
-
-I also needed a tool to turn ESTree JSON into JavaScript. There are many such tools available, the one I use is called Astring by David Bonnet.
+I also needed a tool to turn ESTree JSON into JavaScript. There are many such tools available, the one I use is called Astring.
 
 
 # Difficulties
 
-* Java class != ECMAScript 2015 class <!-- .element: class="fragment" -->
+* Java class != ES6 class <!-- .element: class="fragment" -->
 * Overloading <!-- .element: class="fragment" -->
+
+Note:
+At first I thought ES6 would be a good target for the transformation because it introduces classes with similar syntax as Java. I got initial functionality working with ES6 but soon I hit hard to fix bugs and ugly workarounds where needed. It turns out classes in Java and ES6 have small but important differences which boils down to that Java has support for overloading and JavaScript does not.
+
+
+<!-- -- data-transition="fade" -->
+```js
+export default class Coordinate {
+  constructor(...args) {
+    (() => {
+      this.x = null;
+      this.y = null;
+      this.z = null;
+    })();
+    const overloads = (...args) => {
+      switch (args.length) {
+        case 0:
+          return ((...args) => {
+            let [] = args;
+            overloads.call(this, 0.0, 0.0);
+          })(...args);
+        case 1:
+          return ((...args) => {
+            let [c] = args;
+            overloads.call(this, c.x, c.y, c.z);
+          })(...args);
+        case 2:
+          return ((...args) => {
+            let [x, y] = args;
+            overloads.call(this, x, y, Coordinate.NULL_ORDINATE);
+          })(...args);
+        case 3:
+          return ((...args) => {
+            let [x, y, z] = args;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+          })(...args);
+      }
+    };
+    return overloads.apply(this, args);
+  }
+```
+
+Note:
+The initial translated Coordinate class constructor in beta 1 looked quite terrible. It has too many nested levels of inner functions and uses the rest/spread operator to extract parameters.
+
+
+<!-- -- data-transition="fade" -->
+```js
+export default class Coordinate {
+  constructor(...args) {
+    this.x = null;
+    this.y = null;
+    this.z = null;
+    const overloaded = (...args) => {
+      if (args.length === 0) {
+        let [] = args;
+        overloaded.call(this, 0.0, 0.0);
+      } else if (args.length === 1) {
+        let [c] = args;
+        overloaded.call(this, c.x, c.y, c.z);
+      } else if (args.length === 2) {
+        let [x, y] = args;
+        overloaded.call(this, x, y, Coordinate.NULL_ORDINATE);
+      } else if (args.length === 3) {
+        let [x, y, z] = args;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+      }
+    };
+    return overloaded.apply(this, args);
+  }
+```
+
+Note:
+At beta 4 I was able to reduce the number of wrapper functions.
+
+
+<!-- -- data-transition="fade" -->
+```js
+export default function Coordinate() {
+  this.x = null;
+  this.y = null;
+  this.z = null;
+  if (arguments.length === 0) {
+    Coordinate.call(this, 0.0, 0.0);
+  } else if (arguments.length === 1) {
+    let c = arguments[0];
+    Coordinate.call(this, c.x, c.y, c.z);
+  } else if (arguments.length === 2) {
+    let x = arguments[0], y = arguments[1];
+    Coordinate.call(this, x, y, Coordinate.NULL_ORDINATE);
+  } else if (arguments.length === 3) {
+    let x = arguments[0], y = arguments[1], z = arguments[2];
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+}
+```
+.<br>
+.<br>
+.<br>
+
+Note:
+At release candidate 3 I reached the version used in the stable version which drops ES6 classes and does not use rest/spread operator.
+
+The main reason for using a standard function was that an ES6 class constructor cannot call itself which in effect what I need to do to simulate Java overloading. For derived classes that needs to also call a superclass constructor this becomes even more complex.
+
+
+# Difficulties
+
 * Performance <!-- .element: class="fragment" -->
 * IsValid test failures (DoubleBits) <!-- .element: class="fragment" -->
 
 Note:
+It also turned out that performance was actually alot worse than old JSTS 0.x until the final simplication for constructor and overloading translation.
 
-At first I thought ECMAScript 2015 would be a good target for the transformation, mainly because it introduces classes. I got initial functionality working with ECMAScript 2015 but there was sublte bugs and ugly workarounds needed because classes in ECMAScrip 2015 and Java has small but important differences.
-
-https://github.com/bjornharrtell/jsts/blob/1.0.0-beta1/src/org/locationtech/jts/geom/Coordinate.js
-
-At beta 1 the constructor for Coordinate was looking quite terrible. I had overloaded constructors wrapped in anonymous arrow functions and I used the rest/spread operator to extract local variables from args.
-
-https://github.com/bjornharrtell/jsts/blob/1.0.0-beta4/src/org/locationtech/jts/geom/Coordinate.js
-
-At beta 4 I was able to reduce the number of wrapper functions.
-
-https://github.com/bjornharrtell/jsts/blob/1.0.0-rc3/src/org/locationtech/jts/geom/Coordinate.js
-
-At release candidate 3 I reached the version used in the stable version which drops ECMAScript 2015 classes and does not use rest/spread operator.
-
-The main reason for using a standard function was that an ECMAScript 2015 class constructor cannot call itself which in effect is what overloading Java constructors require. Another difference is that ECMAScript 2015 classes require you to call super before using this in a derived class. When using a standard function there are no such restrictions.
-
-It also turned out that performance was worse than JSTS 0.x until the final simplication for constructor and overloading translation.
-
-One of the last bugs that had to be taken care of before making 1.0.0 stable was failing validity tests. The reason turned out to be DoubleBits, a part of JTS that uses bit manipulation to get better accuracy for some mathematical operations.
+One of the last bugs that had to be taken care of before making a stable relase was that I had some failing validity tests. The reason turned out to be DoubleBits, a part of JTS that uses bit manipulation to get better accuracy for some mathematical operations. So, in the end DoubleBits had to be manually translated and I guess that means I actually failed my goal to create an automated port. Oh well...
 
 
 
