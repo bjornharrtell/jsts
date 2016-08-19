@@ -58,7 +58,7 @@ I want to give due credit. This guy is Martin Davis. He founded the JTS project 
 * JavaScript (JSTS) <!-- .element: class="fragment" -->
 
 Note:
-The widespread use of JTS is probably because it has been ported to C++, Python, C# and with JSTS also JavaScript.
+One reason of the widespread use of JTS is probably because it has been ported to C++, Python, C# and with JSTS also JavaScript.
 
 
 # JSTS 0.x
@@ -100,16 +100,16 @@ A central class in JTS is of course the Coordinate class, which has a constructo
 ## Working implementation
 
 * August 2011 <!-- .element: class="fragment" -->
-* 158 files, ~30000 lines of code <!-- .element: class="fragment" -->
+* 158 files, ~ 30 000 lines of code <!-- .element: class="fragment" -->
 * Test cases from JTS was critical <!-- .element: class="fragment" -->
 * Selective port of Java collection classes <!-- .element: class="fragment" -->
 
 Note:
-The initial working version of JSTS, 0.9.0, required porting almost 200 files. Had I known this was required for basic functionality at the start I probably would have given up.
+The initial working version required porting 158 files. Had I known this was required for basic functionality at the start I probably would have given up.
 
 I was able to port test cases from JTS quite easily because they where specified as XML. This turned out to be absolutely critical to be able to progress on the actual port.
 
-Halfway into the working implementation I realized alot of work was spent rewriting code using Java collection classes like ArrayList to code using JavaScript arrays. I ported the parts of Java collection classes needed which made porting the remaining JTS code much faster and easier. But I didn't want to redo what I had already ported and that turned out to cause alot of problems later on and is the reason CascadedPolygonUnion was never completed in the old JSTS.
+Halfway into the working implementation I realized alot of work was spent rewriting code using Java collection classes like ArrayList to code using JavaScript arrays. I ported the parts of Java collection classes needed which made porting the remaining JTS code much faster and easier. But I didn't want to redo what I had already ported and that turned out to cause alot of problems later on and is the reason CascadedPolygonUnion was never completed in the old version of JSTS.
 
 
 
@@ -117,7 +117,7 @@ Halfway into the working implementation I realized alot of work was spent rewrit
 
 * Wanted to update JSTS to upstream but not manually <!-- .element: class="fragment" -->
 * Issue "Automated port" opened at GitHub in May 2015 <!-- .element: class="fragment" -->
-* Success! <!-- .element: class="fragment" -->
+* Rapid progress early 2016 <!-- .element: class="fragment" -->
 * First beta release january 2016 <!-- .element: class="fragment" -->
 * 1.0.0 released february 2016 <!-- .element: class="fragment" -->
 
@@ -140,18 +140,18 @@ I made rapid progress early 2016 with stable release 1.0.0 done in february 2016
 Note:
 I first started to look at existing tools. The most known Java to JavaScript compiler is probably Google Web Toolkit.
 
-The problem with Google Web Toolkit is that it obfuscates the Java API in the compiled JavaScript. Newer versions of Google Web Toolkit has some support to export APIs but it requires changes to the source and has also has restrictions. VJET seemed promising but activity stopped in early incubation process. My conclusion was that none of the existing tools did the trick.
+The problem with Google Web Toolkit is that it obfuscates the Java API in the compiled JavaScript. Newer versions of Google Web Toolkit has some support to export APIs but it requires changes to the source and has also has restrictions.
 
 
 # Learning stuff
 
 * ES6 (aka. ECMAScript 2015) <!-- .element: class="fragment" -->
 * Transpilation via Abstract Syntax Trees<!-- .element: class="fragment" -->
-* ESTree, a JavaScript AST spec in JSON <!-- .element: class="fragment" -->
+* ESTree, a JavaScript syntax tree spec in JSON <!-- .element: class="fragment" -->
 * Was it possible to translate JTS to JavaScript using transpilation? <!-- .element: class="fragment" -->
 
 Note:
-In 2015 I learned about ES6, the new version of JavaScript and that it could be transpiled to whatever version of JavaScript that existing browsers expects. The transpilation works with something called abstract syntax trees. Syntax trees have existed for a long time since they are used in compilators, and are also useful for integrated development environments for features like autocompletion and syntax checking. For JavaScript there is a defacto standard AST called ESTree represented as JSON.
+In 2015 I learned about ES6, the new version of JavaScript and that it could be transpiled to whatever version of JavaScript that existing browsers expects. The transpilation works with something called abstract syntax trees. Syntax trees have a long history since they are used in compilators, and are also useful for integrated development environments as a part of features like autocompletion. For JavaScript there is a syntax tree representation called ESTree in JSON.
 
 Learning about this stuff made me think that perhaps it was possible to use transpilation to port JTS to JavaScript.
 
@@ -167,11 +167,9 @@ Learning about this stuff made me think that perhaps it was possible to use tran
 * ESTree to JavaScript (Astring) <!-- .element: class="fragment" -->
 
 Note:
-To be able to do transpilation I would need a representation for Java. First I found Javaparser which is a very nice AST parser for Java, but after some experimentation I realized it missed a critical feature which was type binding information.
+To be able to do transpilation I would need a representation for Java. After some searching I realized there must be both Java syntax tree parser and type binding information in an integrated development environment like Eclipse to provide code completion and syntax checking. It's perhaps not the normal use of the Eclipse platform, but it can be used as a stand alone tool to parse Java without the GUI parts of Eclipse.
 
-So I looked for alternatives and realized there must be both Java syntax tree parser and type binding information in an integrated development environment like Eclipse to provide code completion and syntax checking.
-
-The result was java2estree, a tool I wrote to translate Java into ESTree JSON. I wrote jsts2estree in Scala, which by the way probably is my favourite language. With Scala I was able to define the whole ESTree specification in a serialisable structure with only 327 LOC and the code looks alot like the specification itself. To serialize the in memory structure into JSON I used the Java library Jackson, essentially making that a one liner.
+The result was java2estree. I wrote jsts2estree in Scala, which is probably is my favourite language. With Scala I was able to define the ESTree specification in about 300 lines of code looking alot like the specification itself. To serialize the in memory structure into JSON I used the Java library Jackson.
 
 I also needed a tool to turn ESTree JSON into JavaScript. There are many such tools available, the one I use is called Astring.
 
@@ -182,7 +180,7 @@ I also needed a tool to turn ESTree JSON into JavaScript. There are many such to
 * Overloading <!-- .element: class="fragment" -->
 
 Note:
-At first I thought ES6 would be a good target for the transformation because it introduces classes with similar syntax as Java. I got initial functionality working with ES6 but soon I hit hard to fix bugs and ugly workarounds where needed. It turns out classes in Java and ES6 have small but important differences which boils down to that Java has support for overloading and JavaScript does not.
+At first I thought ES6 would be a good target for the transformation because it introduces classes with similar syntax as Java. I got initial functionality working with ES6 but soon I hit hard to fix bugs and ugly workarounds where needed. It turns out classes in Java and ES6 have small but important differences and most are because Java has support for overloading and JavaScript does not.
 
 
 <!-- -- data-transition="fade" -->
