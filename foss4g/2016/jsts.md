@@ -3,36 +3,37 @@
 A port of Java Topology Suite<!-- .element: class="fragment" -->
 
 Note:
-This is a talk about JSTS, a port of Java Topology Suite.
+Hello everyone. This is a talk about JSTS, a port of the Java Topology Suite.
 
 
 # About me
 
 * Björn Harrtell <!-- .element: class="fragment" -->
 * Sweden, Malmö <!-- .element: class="fragment" -->
+* Programmer and GIS consultant at Sweco Position <!-- .element: class="fragment" -->
 
 Note:
-My name is Björn Harrtell and I come from a town in Sweden called Malmö. It's the town connected to Copenhagen with a bridge.
+My name is Björn Harrtell and I come from a town in Sweden called Malmö. If you never heard of Malmö, it's the town connected to Copenhagen by a bridge.
 
-Anyway it's nice to be here in Bonn. I have worked in this field for almost ten years but this is my FOSS4G so I'm happy to finally be here.
+I have worked in this field for almost ten years but this is my FOSS4G so I'm happy to finally be here and I look forward to the rest of the conference.
 
 
 # Java Topology Suite
 
-* A Java library of spatial predicates and operations <!-- .element: class="fragment" -->
+* A Java geometry library implementing various alorithms <!-- .element: class="fragment" -->
 ![JTS](example-intersection.gif "JTS")<!-- .element: class="fragment" -->
 * Dates back to 2002 <!-- .element: class="fragment" -->
 * Used in Open Source GIS software like QGIS, PostGIS and GeoTools <!-- .element: class="fragment" -->
 
 Note:
-As many of you probably know Java Topology Suite is a Java geometry library of spatial predicates and operations. It can for example calculate the intersection of two polugons like in this image I found on an old JTS web page. JTS dates back to 2002 and has been used in Open Source GIS software like Quantum GIS, PostGIS and GeoTools.
+As many of you probably know Java Topology Suite is a Java geometry library implementing various alorithms. It can for example calculate the intersection of two polygons like in this image I found on an old JTS web page. JTS dates back to 2002 and has been used in Open Source GIS software like Quantum GIS, PostGIS and GeoTools.
 
 
 # Due credit
 
 ![Martin Davis](martin_davis.jpg "Martin Davis")<!-- .element: class="fragment" -->
 
-* Founder of JTS project<!-- .element: class="fragment" -->
+* Martin Davis, founder of JTS project<!-- .element: class="fragment" -->
 * Recieved the Sol Katz award in 2011<!-- .element: class="fragment" -->
 
 Note:
@@ -277,7 +278,7 @@ It also turned out that performance was actually alot worse than old JSTS 0.x un
 # Stable release
 
 * After release candidate 7 - failing 1 test out of 508 !-- .element: class="fragment" -->
-* IsValid !-- .element: class="fragment" -->
+* IsValid <!-- .element: class="fragment" -->
 * DoubleBits <!-- .element: class="fragment" -->
 
 Note:
