@@ -134,11 +134,11 @@ I first started to look at existing tools. The most known Java to JavaScript com
 
 * ES6 (aka. ECMAScript 2015) <!-- .element: class="fragment" -->
 * Transpilation via Abstract Syntax Trees<!-- .element: class="fragment" -->
-* ESTree, a JavaScript syntax tree spec in JSON <!-- .element: class="fragment" -->
+* ESTree (JavaScript syntax tree spec in JSON) <!-- .element: class="fragment" -->
 * Was it possible to translate JTS to JavaScript using transpilation? <!-- .element: class="fragment" -->
 
 Note:
-In 2015 I learned about ES6, the new version of JavaScript and that it could be transpiled to whatever version of JavaScript that existing browsers expects. The transpilation works with something called abstract syntax trees. Syntax trees have a long history since they are used in compilators, and are also useful for integrated development environments as a part of features like autocompletion. For JavaScript there is a syntax tree representation called ESTree in JSON.
+In 2015 I learned about ES6, the new version of JavaScript and that it could be transpiled to whatever version of JavaScript that existing browsers expects. The transpilation works with something called abstract syntax trees. Syntax trees have a long history since they are used in compilers and are also useful for integrated development environments to enable features like autocompletion. For JavaScript there is a syntax tree representation called ESTree in JSON.
 
 Learning about this stuff made me think that perhaps it was possible to use syntax trees to port JTS to JavaScript.
 
@@ -165,7 +165,7 @@ Now I had something that could translate Java into ESTree JSON. To convert ESTre
 * Overloading <!-- .element: class="fragment" -->
 
 Note:
-At first I thought ES6 would be a good target for the transformation because it introduces classes with similar syntax as Java. I got initial functionality working with ES6 but soon I hit hard to fix bugs and ugly workarounds where needed. It turns out classes in Java and ES6 have small but important differences and most are because Java has support for overloading and JavaScript does not.
+At first I thought ES6 would be a good target for the transformation because it introduces classes with similar syntax as Java to JavaScript. I managed to get a partial working port with ES6 classes as a target but it had bugs and ugly workarounds. It turns out classes in Java and ES6 have small but important differences.
 
 
 <!-- -- data-transition="fade" -->
@@ -208,7 +208,7 @@ export default class Coordinate {
 ```
 
 Note:
-The initial translated Coordinate class constructor in beta 1 looked quite terrible. It has too many nested levels of inner functions and uses the rest/spread operator to extract parameters.
+The initial translated Coordinate class constructor in beta 1 looked quite terrible. It has too many nested levels of inner functions. Lets look at the improved version.
 
 
 <!-- -- data-transition="fade" -->
@@ -240,7 +240,7 @@ export default class Coordinate {
 ```
 
 Note:
-At beta 4 I was able to reduce the number of wrapper functions, but it still has the overloaded inner function. I never managed to work that out for more complex cases, especially for derived classes that calls a superclass constructor.
+At beta 4 I was able to reduce the number of wrapper functions, but it still has an inner function to simulate Java overloading. This was needed because ES6 classes does not allow the constructor to call itself. I never managed to work out how to translate more complex cases, especially derived classes that calls a superclass constructor.
 
 
 <!-- -- data-transition="fade" -->
@@ -277,12 +277,12 @@ It also turned out that performance was actually alot worse than old JSTS 0.x un
 
 # Stable release
 
-* After release candidate 7 - failing 1 test out of 508 !-- .element: class="fragment" -->
-* IsValid <!-- .element: class="fragment" -->
-* DoubleBits <!-- .element: class="fragment" -->
+* After release candidate 7 - failing 1 test out of 508 <!-- .element: class="fragment" -->
+* IsValid failure <!-- .element: class="fragment" -->
+* DoubleBits manual port <!-- .element: class="fragment" -->
 
 Note:
-After release candidate 7 I was failing only one test out of 508. The failing test was for the IsValid operation for a specific geometry. The reason for this faulure turned out to be DoubleBits, a class in JTS that uses bit manipulation to get better accuracy for some mathematical operations and for this it uses some functions in the Java virtual machine that are not available in JavaScript. So, in the end I had to manually port DoubleBits I guess that means I actually failed my goal to create an automated port but I guess an almost automated port will have to do for now.
+After release candidate 7 I was failing only one test out of 508. The failing test was for the IsValid operation for a specific geometry. The reason for this faulure turned out to be DoubleBits, a class in JTS that uses bit manipulation to get better accuracy for some mathematical operations and for this it uses some functions in the Java virtual machine that are not available in JavaScript. So, in the end I had to manually port DoubleBits. I guess that means I actually failed my goal to create an automated port so an almost automated port will have to do for now.
 
 
 
