@@ -2,6 +2,7 @@ import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import CoordinateList from '../../geom/CoordinateList';
 import WKTWriter from '../../io/WKTWriter';
 import CoordinateArraySequence from '../../geom/impl/CoordinateArraySequence';
+import IsValidOp from '../valid/IsValidOp';
 import LinearRing from '../../geom/LinearRing';
 import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
@@ -48,7 +49,7 @@ extend(EdgeRing.prototype, {
 		this.getCoordinates();
 		if (this.ringPts.length <= 3) return false;
 		this.getRing();
-		return this.ring.isValid();
+		return IsValidOp.isValid(this.ring);
 	},
 	build: function (startDE) {
 		var de = startDE;
