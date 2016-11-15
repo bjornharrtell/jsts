@@ -18,13 +18,13 @@
     "babel-preset-es2015-rollup": "1.2.0",
     "babel-register": "6.18.0",
     "cheerio": "0.22.0",
-    "coveralls": "2.11.14",
+    "coveralls": "2.11.15",
     "expect.js": "0.3.1",
     "git-rev-sync": "1.8.0",
     "jsdoc": "jsdoc3/jsdoc",
     "mocha": "3.1.2",
     "mocha-lcov-reporter": "1.2.0",
-    "nyc": "8.4.0",
+    "nyc": "9.0.1",
     "rollup": "0.36.3",
     "rollup-plugin-babel": "2.6.1",
     "rollup-plugin-replace": "1.1.1",
@@ -47,6 +47,7 @@
     ]
   },
   "scripts": {
+    "test-manual": "NODE_PATH=src mocha --timeout 10s --compilers js:babel-register --recursive test/manual",
     "test": "NODE_PATH=src nyc mocha --timeout 10s --compilers js:babel-register --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build-jsdoc-es5": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
