@@ -28,3 +28,4 @@ I/O related classes in JTS had to be manually ported. From the original formats 
 ## Caveats
 
 * In a few cases Java overloading cannot be correctly translated to JavaScript. One such case is `createMultiPoint` in `GeometryFactory` which only works with `Point[]` arguments.
+* In some cases you might get a `TopologyException` thrown as an `Error`. This is expected if a calculation fails due to precision issues. To resolve this issue try reducing precision in the input and at the same time make sure the input is valid as defined by the [OGC Simple Features specification](http://www.opengeospatial.org/standards/sfs).
