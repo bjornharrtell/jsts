@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -51,7 +51,7 @@
     "test": "NODE_PATH=src nyc mocha --timeout 10s --compilers js:babel-register --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build-jsdoc-es5": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
-    "build": "rollup -c rollup.config.js | uglifyjs -c -m | (cat license.txt && cat) > dist/jsts.min.js",
+    "build": "rollup -c rollup.config.js -o dist/jsts.js && uglifyjs dist/jsts.js --in-source-map dist/jsts.js.map --source-map dist/jsts.min.js.map --source-map-url jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
     "build-es6": "rollup -c rollup.config.es6.js | (cat license.txt && cat) > dist/jsts.es6.js",
     "build-tests": "NODE_PATH=src browserify test/auto/browser/runner.js -o dist/tests.js -t [ babelify --presets [ es2015 ] ]"
   }
