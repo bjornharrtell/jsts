@@ -6,6 +6,7 @@ import commonjs from 'rollup-plugin-commonjs'
 
 export default {
   entry: 'src/jsts.js',
+  format: 'es',
   exports: 'named',
   plugins: [
     replace({
