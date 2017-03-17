@@ -1,7 +1,7 @@
 # JSTS
 
 [![Build Status](https://travis-ci.org/bjornharrtell/jsts.svg)](https://travis-ci.org/bjornharrtell/jsts)
-[![Coverage Status](https://coveralls.io/repos/github/bjornharrtell/jsts/badge.svg?branch=master)](https://coveralls.io/github/bjornharrtell/jsts?branch=master)
+[![codecov](https://codecov.io/gh/bjornharrtell/jsts/branch/master/graph/badge.svg)](https://codecov.io/gh/bjornharrtell/jsts)
 
 JSTS is an ECMAScript 2015 library of spatial predicates and functions for processing geometry conforming to the Simple Features Specification for SQL published by the Open Geospatial Consortium. JSTS is also a port of the well established Java library [JTS](https://github.com/locationtech/jts).
 

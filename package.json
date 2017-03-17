@@ -18,7 +18,7 @@
     "babel-preset-env": "1.2.2",
     "babel-register": "6.24.0",
     "cheerio": "0.22.0",
-    "coveralls": "2.12.0",
+    "codecov": "2.0.2",
     "expect.js": "0.3.1",
     "git-rev-sync": "1.8.0",
     "jsdoc": "jsdoc3/jsdoc",
@@ -51,7 +51,7 @@
   "scripts": {
     "test-manual": "NODE_PATH=src mocha --timeout 10s --compilers js:babel-register --recursive test/manual",
     "test": "NODE_PATH=src nyc mocha --timeout 10s --compilers js:babel-register --recursive test/auto/node test/manual",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc-es5": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.js && uglifyjs dist/jsts.js --in-source-map dist/jsts.js.map --source-map dist/jsts.min.js.map --source-map-url jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
     "build-es6": "rollup -c rollup.config.es6.js | (cat license.txt && cat) > dist/jsts.es6.js",
