@@ -1,5 +1,5 @@
 language: node_js
 node_js:
-  - "4.1"
+  - "6"
 sudo: false
 after_success: npm run coverage
