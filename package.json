@@ -33,8 +33,9 @@
     "uglify-js": "2.8.18"
   },
   "main": "dist/jsts.min.js",
+  "module": "index.js",
   "engines": {
-    "node": ">= 4"
+    "node": ">= 6"
   },
   "repository": {
     "type": "git",
