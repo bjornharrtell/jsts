@@ -8,6 +8,7 @@ import RobustLineIntersector from './algorithm/RobustLineIntersector'
 import MCPointInRing from './algorithm/MCPointInRing'
 import MinimumBoundingCircle from './algorithm/MinimumBoundingCircle'
 import MinimumDiameter from './algorithm/MinimumDiameter'
+import MCPointInRing from './algorithm/MCPointInRing.js'
 
 export {
   Centroid,
@@ -19,5 +20,6 @@ export {
   RobustLineIntersector,
   MCPointInRing,
   MinimumBoundingCircle,
-  MinimumDiameter
+  MinimumDiameter,
+  MCPointInRing
 }
