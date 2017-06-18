@@ -7,7 +7,7 @@ JSTS is an ECMAScript 2015 library of spatial predicates and functions for proce
 
 The primary goal of the project is to provide web mapping applications with a complete library for processing and analyzing simple geometries but JSTS can also be used as a free standing geometry library.
 
-JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://bjornharrtell.github.io/jsts/1.3.0/apidocs/), except for the io related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers.
+JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://bjornharrtell.github.io/jsts/1.3.0/apidocs/), except for the I/O related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
 
