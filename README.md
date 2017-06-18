@@ -13,7 +13,7 @@ A [Google group](http://groups.google.com/group/jsts-devs) is available for disc
 
 A [port](http://bjornharrtell.github.com/jsts/1.3.0/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
 
-Basic functionality together with OpenLayers 3 is demonstrated [here](http://bjornharrtell.github.io/jsts).
+Basic functionality together with OpenLayers is demonstrated [here](http://bjornharrtell.github.io/jsts).
 
 ## Browser or Node.js use
 
