@@ -4,6 +4,7 @@ node_js:
 sudo: false
 cache:
   directories:
+    - $HOME/.nvm
     - $HOME/.npm
     - node_modules
 before_install:
