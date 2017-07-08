@@ -3,11 +3,7 @@ node_js:
   - "6"
 sudo: false
 cache:
+  yarn: true
   directories:
-    - $HOME/.nvm
-    - $HOME/.npm
     - node_modules
-before_install:
-  - npm install npm@latest -g
-  - npm config set spin false
-after_success: npm run coverage
+after_success: yarn run coverage

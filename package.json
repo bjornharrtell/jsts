@@ -15,7 +15,7 @@
   "devDependencies": {
     "babel-core": "6.25.0",
     "babel-plugin-external-helpers": "6.22.0",
-    "babel-preset-env": "1.5.2",
+    "babel-preset-env": "1.6.0",
     "babel-register": "6.24.1",
     "chai": "4.0.2",
     "cheerio": "0.22.0",
@@ -25,12 +25,12 @@
     "jsdoc": "jsdoc3/jsdoc",
     "mocha": "3.4.2",
     "mocha-lcov-reporter": "1.3.0",
-    "nyc": "11.0.2",
+    "nyc": "11.0.3",
     "rollup": "0.43.0",
     "rollup-plugin-babel": "2.7.1",
     "rollup-plugin-includepaths": "0.2.2",
     "rollup-plugin-replace": "1.1.1",
-    "uglify-js": "3.0.18"
+    "uglify-js": "3.0.24"
   },
   "main": "dist/jsts.min.js",
   "module": "index.js",
