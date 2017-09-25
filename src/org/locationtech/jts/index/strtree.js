@@ -1,5 +1,2 @@
-import STRtree from './strtree/STRtree'
+export { default as STRtree } from './strtree/STRtree'
 
-export {
-  STRtree
-}

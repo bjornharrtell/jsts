@@ -1,5 +1,1 @@
-import Densifier from './densify/Densifier'
-
-export {
-  Densifier
-}
+export { default as Densifier } from './densify/Densifier'

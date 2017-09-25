@@ -1,5 +1,1 @@
-import Quadtree from './quadtree/Quadtree'
-
-export {
-  Quadtree
-}
+export { default as Quadtree } from './quadtree/Quadtree'

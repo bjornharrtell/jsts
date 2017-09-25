@@ -1,5 +1,2 @@
-import LineDissolver from './dissolve/LineDissolver'
+export { default as LineDissolver } from './dissolve/LineDissolver'
 
-export {
-  LineDissolver
-}

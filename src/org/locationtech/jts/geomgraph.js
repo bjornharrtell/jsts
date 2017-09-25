@@ -1,5 +1,1 @@
-import GeometryGraph from './geomgraph/GeometryGraph'
-
-export {
-  GeometryGraph
-}
+export { default as GeometryGraph } from './geomgraph/GeometryGraph'

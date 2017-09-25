@@ -1,5 +1,1 @@
-import RelateOp from './relate/RelateOp'
-
-export {
-  RelateOp
-}
+export { default as RelateOp } from './relate/RelateOp'

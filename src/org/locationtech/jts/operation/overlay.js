@@ -1,5 +1,1 @@
-import OverlayOp from './overlay/OverlayOp'
-
-export {
-  OverlayOp
-}
+export { default as OverlayOp } from './overlay/OverlayOp'

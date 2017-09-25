@@ -1,7 +1,2 @@
-import DouglasPeuckerSimplifier from './simplify/DouglasPeuckerSimplifier'
-import TopologyPreservingSimplifier from './simplify/TopologyPreservingSimplifier'
-
-export {
-  DouglasPeuckerSimplifier,
-  TopologyPreservingSimplifier
-}
+export { default as DouglasPeuckerSimplifier } from './simplify/DouglasPeuckerSimplifier'
+export { default as TopologyPreservingSimplifier } from './simplify/TopologyPreservingSimplifier'
