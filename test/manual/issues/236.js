@@ -1,8 +1,10 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+const {
+  WKTReader // 'org/locationtech/jts/io/WKTReader'
+} = require('../../../')
 
-import 'org/locationtech/jts/monkey'
+// import 'org/locationtech/jts/monkey'
 
 describe('IsValid throws exception in some cases (#236)', function () {
   var reader = new WKTReader()

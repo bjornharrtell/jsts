@@ -1,10 +1,12 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import VoronoiDiagramBuilder from 'org/locationtech/jts/triangulate/VoronoiDiagramBuilder'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+const {
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  VoronoiDiagramBuilder, // 'org/locationtech/jts/triangulate/VoronoiDiagramBuilder'
+  WKTReader, // 'org/locationtech/jts/io/WKTReader'
+} = require('../../../')
 
-import 'org/locationtech/jts/monkey'
+// import 'org/locationtech/jts/monkey'
 
 describe('VoronoiDiagramBuilder', function () {
   var geomFact = new GeometryFactory()

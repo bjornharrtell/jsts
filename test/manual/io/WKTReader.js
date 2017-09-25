@@ -1,6 +1,8 @@
 // import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+const {
+  WKTReader // 'org/locationtech/jts/io/WKTReader'
+} = require('../../../')
 
 const reader = new WKTReader()
 

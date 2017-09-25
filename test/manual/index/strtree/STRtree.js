@@ -1,7 +1,9 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import Envelope from 'org/locationtech/jts/geom/Envelope'
-import STRtree from 'org/locationtech/jts/index/strtree/STRtree'
+const {
+  Envelope, // 'org/locationtech/jts/geom/Envelope'
+  STRtree // 'org/locationtech/jts/index/strtree/STRtree'
+} = require('../../../../')
 
 describe('STRtree', function () {
   it('should be able to contain a single envelope and find it with a valid query', function () {

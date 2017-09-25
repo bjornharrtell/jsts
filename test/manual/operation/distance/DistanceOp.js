@@ -1,8 +1,10 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import DistanceOp from 'org/locationtech/jts/operation/distance/DistanceOp'
+const {
+  Coordinate, // 'org/locationtech/jts/geom/Coordinate'
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  DistanceOp, // 'org/locationtech/jts/operation/distance/DistanceOp'
+} = require('../../../../')
 
 describe('DistanceOp', function () {
   it('should be able calculate the distance between two points', function () {

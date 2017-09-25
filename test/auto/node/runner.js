@@ -1,6 +1,5 @@
-import fs from 'fs'
-
-import generate from './generate'
+const fs = require('fs')
+const generate = require('./generate')
 
 const suites = [
   'TestBoundary',

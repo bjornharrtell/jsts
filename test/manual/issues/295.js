@@ -1,10 +1,12 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import GeometryPrecisionReducer from 'org/locationtech/jts/precision/GeometryPrecisionReducer'
+const {
+  WKTReader, // 'org/locationtech/jts/io/WKTReader'
+  RelateOp, // 'org/locationtech/jts/operation/relate/RelateOp'
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  PrecisionModel, // 'org/locationtech/jts/geom/PrecisionModel'
+  GeometryPrecisionReducer, // 'org/locationtech/jts/precision/GeometryPrecisionReducer'
+} = require('../../../')
 
 describe('Test (#295)', function () {
   const reader = new WKTReader()

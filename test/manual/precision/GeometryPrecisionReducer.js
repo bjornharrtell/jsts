@@ -1,11 +1,13 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import GeometryPrecisionReducer from 'org/locationtech/jts/precision/GeometryPrecisionReducer'
+const {
+  Coordinate, // 'org/locationtech/jts/geom/Coordinate'
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  PrecisionModel, // 'org/locationtech/jts/geom/PrecisionModel'
+  GeometryPrecisionReducer, // 'org/locationtech/jts/precision/GeometryPrecisionReducer'
+} = require('../../../')
 
-import 'org/locationtech/jts/monkey'
+// import 'org/locationtech/jts/monkey'
 
 describe('GeometryPrecisionReducer', function () {
   it('should be able to reduce a Point', function () {

@@ -1,16 +1,18 @@
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
-import BufferOp from 'org/locationtech/jts/operation/buffer/BufferOp'
-import OverlayOp from 'org/locationtech/jts/operation/overlay/OverlayOp'
-import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
-import DiscreteHausdorffDistance from 'org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance'
+const {
+  WKTReader, // 'org/locationtech/jts/io/WKTReader'
+  WKTWriter, // 'org/locationtech/jts/io/WKTWriter'
+  BufferOp, // 'org/locationtech/jts/operation/buffer/BufferOp'
+  OverlayOp, // 'org/locationtech/jts/operation/overlay/OverlayOp'
+  RelateOp, // 'org/locationtech/jts/operation/relate/RelateOp'
+  DiscreteHausdorffDistance // 'org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance'
+} = require('../../')
 
 /**
  * A {@link ResultMatcher} which compares the results of buffer operations for
  * equality, up to the given tolerance. All other operations are delagated to
  * the standard {@link EqualityResultMatcher} algorithm.
  */
-export default class BufferResultMatcher {
+module.exports = class BufferResultMatcher {
   static get MAX_RELATIVE_AREA_DIFFERENCE() { return 1.0E-3; }
   static get MAX_HAUSDORFF_DISTANCE_FACTOR() { return 100; }
   /**

@@ -1,8 +1,10 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+const {
+  WKTReader // 'org/locationtech/jts/io/WKTReader'
+} = require('../../../')
 
-import 'org/locationtech/jts/monkey'
+// import 'org/locationtech/jts/monkey'
 
 describe('Class.isAssignableFrom used but not ported from Java (#246)', function () {
   var reader = new WKTReader()

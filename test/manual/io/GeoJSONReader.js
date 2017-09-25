@@ -1,6 +1,8 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import GeoJSONReader from 'org/locationtech/jts/io/GeoJSONReader'
+const {
+  GeoJSONReader // 'org/locationtech/jts/io/GeoJSONReader'
+} = require('../../../')
 
 describe('GeoJSONReader', function () {
   it('should be able to read a Point geometry', function () {
