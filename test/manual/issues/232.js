@@ -1,9 +1,11 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import Envelope from 'org/locationtech/jts/geom/Envelope'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+const {
+  Envelope, // 'org/locationtech/jts/geom/Envelope'
+  WKTReader, // 'org/locationtech/jts/io/WKTReader'
+} = require('../../../')
 
-import 'org/locationtech/jts/monkey'
+// import 'org/locationtech/jts/monkey'
 
 describe('MultiPoint does not support getEnvelopeInternal (#232)', function () {
   var reader = new WKTReader()

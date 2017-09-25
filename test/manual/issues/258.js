@@ -1,9 +1,11 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import TopologyException from 'org/locationtech/jts/geom/TopologyException'
-import OverlayOp from 'org/locationtech/jts/operation/overlay/OverlayOp'
+const {
+  Coordinate, // 'org/locationtech/jts/geom/Coordinate'
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  TopologyException, // 'org/locationtech/jts/geom/TopologyException'
+  OverlayOp, // 'org/locationtech/jts/operation/overlay/OverlayOp'
+} = require('../../../')
 
 describe('GeometryComponentFilter is not defined on polygon intersection (#258)', function () {
   const factory = new GeometryFactory()

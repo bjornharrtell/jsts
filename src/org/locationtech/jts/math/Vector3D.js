@@ -55,9 +55,6 @@ extend(Vector3D.prototype, {
 		return Vector3D;
 	}
 });
-Vector3D.length = function (v) {
-	return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-};
 Vector3D.dot = function () {
 	if (arguments.length === 2) {
 		let v1 = arguments[0], v2 = arguments[1];

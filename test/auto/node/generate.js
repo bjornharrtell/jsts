@@ -1,12 +1,11 @@
-import $ from 'cheerio'
-import { expect } from 'chai'
-
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import 'org/locationtech/jts/monkey'
-
-import BufferResultMatcher from '../BufferResultMatcher'
+const $ = require('cheerio')
+const { expect } = require('chai')
+const {
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  PrecisionModel, // 'org/locationtech/jts/geom/PrecisionModel'
+  WKTReader // 'org/locationtech/jts/io/WKTReader'
+} = require('../../../');
+const BufferResultMatcher = require('../BufferResultMatcher')
 
 /**
  * @return GeometryFactory with PrecisionModel from test XML (undefined if no such info in XML)
@@ -32,7 +31,7 @@ function fail (r, e, i) {
 /**
  * Translate JTS XML testcase document to Mocha suites
  */
-export default function (doc, title) {
+module.exports = function (doc, title) {
   const cases = $('case', doc)
   const geometryFactory = createGeometryFactory($('precisionModel', doc))
   const reader = new WKTReader(geometryFactory)

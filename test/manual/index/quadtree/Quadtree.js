@@ -1,8 +1,10 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import Quadtree from 'org/locationtech/jts/index/quadtree/Quadtree'
+const {
+  Coordinate, // 'org/locationtech/jts/geom/Coordinate'
+  GeometryFactory, // 'org/locationtech/jts/geom/GeometryFactory'
+  Quadtree // 'org/locationtech/jts/index/quadtree/Quadtree'
+} = require('../../../../')
 
 describe('Quadtree', function () {
   it('should be able to handle a simple insert/query/delete/query test', function () {

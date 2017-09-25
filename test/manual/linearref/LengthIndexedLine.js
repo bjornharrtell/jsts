@@ -1,8 +1,11 @@
-import expect from 'expect.js'
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
-import LengthIndexedLine from 'org/locationtech/jts/linearref/LengthIndexedLine'
+const expect = require('expect.js')
+
+const {
+  Coordinate, // 'org/locationtech/jts/geom/Coordinate'
+  WKTReader, // 'org/locationtech/jts/io/WKTReader'
+  WKTWriter, // 'org/locationtech/jts/io/WKTWriter'
+  LengthIndexedLine // 'org/locationtech/jts/linearref/LengthIndexedLine'
+} = require('../../../')
 
 const reader = new WKTReader()
 const writer = new WKTWriter()

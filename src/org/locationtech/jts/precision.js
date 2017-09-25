@@ -1,5 +1,1 @@
-import GeometryPrecisionReducer from './precision/GeometryPrecisionReducer'
-
-export {
-  GeometryPrecisionReducer
-}
+export { default as GeometryPrecisionReducer } from './precision/GeometryPrecisionReducer'

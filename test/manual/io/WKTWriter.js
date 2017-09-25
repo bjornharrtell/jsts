@@ -1,6 +1,8 @@
-import expect from 'expect.js'
+const expect = require('expect.js')
 
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
+const {
+  WKTWriter // 'org/locationtech/jts/io/WKTWriter'
+} = require('../../../')
 
 describe('WKTWriter', function () {
   it('should be able to create a LINESTRING from two points', function () {
