@@ -22,7 +22,7 @@
     "codecov": "2.3.0",
     "expect.js": "0.3.1",
     "git-rev-sync": "1.9.1",
-    "jsdoc": "jsdoc3/jsdoc",
+    "jsdoc": "3.5.5",
     "mocha": "4.0.0",
     "mocha-lcov-reporter": "1.3.0",
     "nyc": "11.2.1",
