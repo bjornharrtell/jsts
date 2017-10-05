@@ -7,11 +7,14 @@ const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 const license = fs.readFileSync('./license.txt')
 
 export default {
-  entry: 'src/jsts.js',
-  format: 'umd',
-  moduleName: 'jsts',
-  banner: license,
-  sourceMap: true,
+  input: 'src/jsts.js',
+  output: {
+    file: 'dist/jsts.js',
+    format: 'umd',
+    name: 'jsts',
+    banner: license,
+    sourcemap: true
+  },
   plugins: [
     replace({
       npm_package_version: packageJson.version,
