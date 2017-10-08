@@ -125,54 +125,17 @@ extend(Geometry.prototype, {
 	getPrecisionModel: function () {
 		return this._factory.getPrecisionModel();
 	},
-	getCentroid: function () {
-		if (this.isEmpty()) return this._factory.createPoint();
-		var centPt = Centroid.getCentroid(this);
-		return this.createPointFromInternalCoord(centPt, this);
-	},
 	getEnvelopeInternal: function () {
 		if (this._envelope === null) {
 			this._envelope = this.computeEnvelopeInternal();
 		}
 		return new Envelope(this._envelope);
 	},
-	isEquivalentClass: function (other) {
-		return this.name === other.getClass().getName();
-	},
 	setSRID: function (SRID) {
 		this._SRID = SRID;
 	},
-	getInteriorPoint: function () {
-		if (this.isEmpty()) return this._factory.createPoint();
-		var interiorPt = null;
-		var dim = this.getDimension();
-		if (dim === 0) {
-			var intPt = new InteriorPointPoint(this);
-			interiorPt = intPt.getInteriorPoint();
-		} else if (dim === 1) {
-			var intPt = new InteriorPointLine(this);
-			interiorPt = intPt.getInteriorPoint();
-		} else {
-			var intPt = new InteriorPointArea(this);
-			interiorPt = intPt.getInteriorPoint();
-		}
-		return this.createPointFromInternalCoord(interiorPt, this);
-	},
-	symDifference: function (other) {
-		return OverlayOp.symDifference(this, other);
-	},
 	setUserData: function (userData) {
 		this._userData = userData;
-	},
-	toString: function () {
-		return this.toText();
-	},
-	createPointFromInternalCoord: function (coord, exemplar) {
-		exemplar.getPrecisionModel().makePrecise(coord);
-		return exemplar.getFactory().createPoint(coord);
-	},
-	disjoint: function (g) {
-		return !this.intersects(g);
 	},
 	compare: function (a, b) {
 		var i = a.iterator();
