@@ -5,12 +5,12 @@ import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
 export default function Node() {
 	GraphComponent.apply(this);
-	this.coord = null;
-	this.edges = null;
+	this._coord = null;
+	this._edges = null;
 	let coord = arguments[0], edges = arguments[1];
-	this.coord = coord;
-	this.edges = edges;
-	this.label = new Label(0, Location.NONE);
+	this._coord = coord;
+	this._edges = edges;
+	this._label = new Label(0, Location.NONE);
 }
 inherits(Node, GraphComponent);
 extend(Node.prototype, {
@@ -22,18 +22,18 @@ extend(Node.prototype, {
 		return false;
 	},
 	isIsolated: function () {
-		return this.label.getGeometryCount() === 1;
+		return this._label.getGeometryCount() === 1;
 	},
 	getCoordinate: function () {
-		return this.coord;
+		return this._coord;
 	},
 	print: function (out) {
-		out.println("node " + this.coord + " lbl: " + this.label);
+		out.println("node " + this._coord + " lbl: " + this._label);
 	},
 	computeIM: function (im) {},
 	computeMergedLocation: function (label2, eltIndex) {
 		var loc = Location.NONE;
-		loc = this.label.getLocation(eltIndex);
+		loc = this._label.getLocation(eltIndex);
 		if (!label2.isNull(eltIndex)) {
 			var nLoc = label2.getLocation(eltIndex);
 			if (loc !== Location.BOUNDARY) loc = nLoc;
@@ -43,35 +43,35 @@ extend(Node.prototype, {
 	setLabel: function () {
 		if (arguments.length === 2) {
 			let argIndex = arguments[0], onLocation = arguments[1];
-			if (this.label === null) {
-				this.label = new Label(argIndex, onLocation);
-			} else this.label.setLocation(argIndex, onLocation);
+			if (this._label === null) {
+				this._label = new Label(argIndex, onLocation);
+			} else this._label.setLocation(argIndex, onLocation);
 		} else return GraphComponent.prototype.setLabel.apply(this, arguments);
 	},
 	getEdges: function () {
-		return this.edges;
+		return this._edges;
 	},
 	mergeLabel: function () {
 		if (arguments[0] instanceof Node) {
 			let n = arguments[0];
-			this.mergeLabel(n.label);
+			this.mergeLabel(n._label);
 		} else if (arguments[0] instanceof Label) {
 			let label2 = arguments[0];
 			for (var i = 0; i < 2; i++) {
 				var loc = this.computeMergedLocation(label2, i);
-				var thisLoc = this.label.getLocation(i);
-				if (thisLoc === Location.NONE) this.label.setLocation(i, loc);
+				var thisLoc = this._label.getLocation(i);
+				if (thisLoc === Location.NONE) this._label.setLocation(i, loc);
 			}
 		}
 	},
 	add: function (e) {
-		this.edges.insert(e);
+		this._edges.insert(e);
 		e.setNode(this);
 	},
 	setLabelBoundary: function (argIndex) {
-		if (this.label === null) return null;
+		if (this._label === null) return null;
 		var loc = Location.NONE;
-		if (this.label !== null) loc = this.label.getLocation(argIndex);
+		if (this._label !== null) loc = this._label.getLocation(argIndex);
 		var newLoc = null;
 		switch (loc) {
 			case Location.BOUNDARY:
@@ -84,7 +84,7 @@ extend(Node.prototype, {
 				newLoc = Location.BOUNDARY;
 				break;
 		}
-		this.label.setLocation(argIndex, newLoc);
+		this._label.setLocation(argIndex, newLoc);
 	},
 	interfaces_: function () {
 		return [];

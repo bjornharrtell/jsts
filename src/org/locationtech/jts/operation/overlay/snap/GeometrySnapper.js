@@ -116,7 +116,7 @@ extend(SnapTransformer.prototype, {
 	transformCoordinates: function (coords, parent) {
 		var srcPts = coords.toCoordinateArray();
 		var newPts = this.snapLine(srcPts, this._snapPts);
-		return this.factory.getCoordinateSequenceFactory().create(newPts);
+		return this._factory.getCoordinateSequenceFactory().create(newPts);
 	},
 	interfaces_: function () {
 		return [];

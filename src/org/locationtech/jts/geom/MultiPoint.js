@@ -28,7 +28,7 @@ extend(MultiPoint.prototype, {
 	getCoordinate: function () {
 		if (arguments.length === 1) {
 			let n = arguments[0];
-			return this.geometries[n].getCoordinate();
+			return this._geometries[n].getCoordinate();
 		} else return GeometryCollection.prototype.getCoordinate.apply(this, arguments);
 	},
 	getBoundaryDimension: function () {
@@ -44,11 +44,11 @@ extend(MultiPoint.prototype, {
 		return "MultiPoint";
 	},
 	copy: function () {
-		var points = new Array(this.geometries.length).fill(null);
+		var points = new Array(this._geometries.length).fill(null);
 		for (var i = 0; i < points.length; i++) {
-			points[i] = this.geometries[i].copy();
+			points[i] = this._geometries[i].copy();
 		}
-		return new MultiPoint(points, this.factory);
+		return new MultiPoint(points, this._factory);
 	},
 	interfaces_: function () {
 		return [Puntal];

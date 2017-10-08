@@ -9,26 +9,26 @@ export default function LineStringSnapper() {
 	this._srcPts = null;
 	this._seg = new LineSegment();
 	this._allowSnappingToSourceVertices = false;
-	this.__isClosed = false;
+	this._isClosed = false;
 	if (arguments[0] instanceof LineString && typeof arguments[1] === "number") {
 		let srcLine = arguments[0], snapTolerance = arguments[1];
 		LineStringSnapper.call(this, srcLine.getCoordinates(), snapTolerance);
 	} else if (arguments[0] instanceof Array && typeof arguments[1] === "number") {
 		let srcPts = arguments[0], snapTolerance = arguments[1];
 		this._srcPts = srcPts;
-		this.__isClosed = LineStringSnapper.isClosed(srcPts);
+		this._isClosed = LineStringSnapper.isClosed(srcPts);
 		this._snapTolerance = snapTolerance;
 	}
 }
 extend(LineStringSnapper.prototype, {
 	snapVertices: function (srcCoords, snapPts) {
-		var end = this.__isClosed ? srcCoords.size() - 1 : srcCoords.size();
+		var end = this._isClosed ? srcCoords.size() - 1 : srcCoords.size();
 		for (var i = 0; i < end; i++) {
 			var srcPt = srcCoords.get(i);
 			var snapVert = this.findSnapForVertex(srcPt, snapPts);
 			if (snapVert !== null) {
 				srcCoords.set(i, new Coordinate(snapVert));
-				if (i === 0 && this.__isClosed) srcCoords.set(srcCoords.size() - 1, new Coordinate(snapVert));
+				if (i === 0 && this._isClosed) srcCoords.set(srcCoords.size() - 1, new Coordinate(snapVert));
 			}
 		}
 	},

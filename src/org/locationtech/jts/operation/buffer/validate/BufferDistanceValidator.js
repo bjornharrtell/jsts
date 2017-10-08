@@ -17,7 +17,7 @@ export default function BufferDistanceValidator() {
 	this._maxValidDistance = null;
 	this._minDistanceFound = null;
 	this._maxDistanceFound = null;
-	this.__isValid = true;
+	this._isValid = true;
 	this._errMsg = null;
 	this._errorLocation = null;
 	this._errorIndicator = null;
@@ -32,7 +32,7 @@ extend(BufferDistanceValidator.prototype, {
 		haus.setDensifyFraction(0.25);
 		this._maxDistanceFound = haus.orientedDistance();
 		if (this._maxDistanceFound > maxDist) {
-			this.__isValid = false;
+			this._isValid = false;
 			var pts = haus.getCoordinates();
 			this._errorLocation = pts[1];
 			this._errorIndicator = input.getFactory().createLineString(pts);
@@ -53,7 +53,7 @@ extend(BufferDistanceValidator.prototype, {
 		if (BufferDistanceValidator.VERBOSE) {
 			System.out.println("Min Dist= " + this._minDistanceFound + "  err= " + (1.0 - this._minDistanceFound / this._bufDistance) + "  Max Dist= " + this._maxDistanceFound + "  err= " + (this._maxDistanceFound / this._bufDistance - 1.0));
 		}
-		return this.__isValid;
+		return this._isValid;
 	},
 	checkNegativeValid: function () {
 		if (!(this._input instanceof Polygon || this._input instanceof MultiPolygon || this._input instanceof GeometryCollection)) {
@@ -61,7 +61,7 @@ extend(BufferDistanceValidator.prototype, {
 		}
 		var inputCurve = this.getPolygonLines(this._input);
 		this.checkMinimumDistance(inputCurve, this._result, this._minValidDistance);
-		if (!this.__isValid) return null;
+		if (!this._isValid) return null;
 		this.checkMaximumDistance(inputCurve, this._result, this._maxValidDistance);
 	},
 	getErrorIndicator: function () {
@@ -71,7 +71,7 @@ extend(BufferDistanceValidator.prototype, {
 		var distOp = new DistanceOp(g1, g2, minDist);
 		this._minDistanceFound = distOp.distance();
 		if (this._minDistanceFound < minDist) {
-			this.__isValid = false;
+			this._isValid = false;
 			var pts = distOp.nearestPoints();
 			this._errorLocation = distOp.nearestPoints()[1];
 			this._errorIndicator = g1.getFactory().createLineString(pts);
@@ -81,7 +81,7 @@ extend(BufferDistanceValidator.prototype, {
 	checkPositiveValid: function () {
 		var bufCurve = this._result.getBoundary();
 		this.checkMinimumDistance(this._input, bufCurve, this._minValidDistance);
-		if (!this.__isValid) return null;
+		if (!this._isValid) return null;
 		this.checkMaximumDistance(this._input, bufCurve, this._maxValidDistance);
 	},
 	getErrorLocation: function () {

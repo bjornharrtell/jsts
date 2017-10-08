@@ -100,8 +100,8 @@ extend(DirectedEdgeStar.prototype, {
 		this.getEdges();
 		var prevOut = null;
 		var firstIn = null;
-		for (var i = this.edgeList.size() - 1; i >= 0; i--) {
-			var nextOut = this.edgeList.get(i);
+		for (var i = this._edgeList.size() - 1; i >= 0; i--) {
+			var nextOut = this._edgeList.get(i);
 			var nextIn = nextOut.getSym();
 			if (firstIn === null) firstIn = nextIn;
 			if (prevOut !== null) nextIn.setNext(prevOut);
@@ -116,14 +116,14 @@ extend(DirectedEdgeStar.prototype, {
 			var label = de.getLabel();
 			var startDepth = de.getDepth(Position.LEFT);
 			var targetLastDepth = de.getDepth(Position.RIGHT);
-			var nextDepth = this.computeDepths(edgeIndex + 1, this.edgeList.size(), startDepth);
+			var nextDepth = this.computeDepths(edgeIndex + 1, this._edgeList.size(), startDepth);
 			var lastDepth = this.computeDepths(0, edgeIndex, nextDepth);
 			if (lastDepth !== targetLastDepth) throw new TopologyException("depth mismatch at " + de.getCoordinate());
 		} else if (arguments.length === 3) {
 			let startIndex = arguments[0], endIndex = arguments[1], startDepth = arguments[2];
 			var currDepth = startDepth;
 			for (var i = startIndex; i < endIndex; i++) {
-				var nextDe = this.edgeList.get(i);
+				var nextDe = this._edgeList.get(i);
 				var label = nextDe.getLabel();
 				nextDe.setEdgeDepths(Position.RIGHT, currDepth);
 				currDepth = nextDe.getDepth(Position.LEFT);

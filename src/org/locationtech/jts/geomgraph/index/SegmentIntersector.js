@@ -1,6 +1,6 @@
 import extend from '../../../../../extend';
 export default function SegmentIntersector() {
-	this.__hasIntersection = false;
+	this._hasIntersection = false;
 	this._hasProper = false;
 	this._hasProperInterior = false;
 	this._properIntersectionPoint = null;
@@ -11,7 +11,7 @@ export default function SegmentIntersector() {
 	this._numIntersections = 0;
 	this.numTests = 0;
 	this._bdyNodes = null;
-	this.__isDone = false;
+	this._isDone = false;
 	this._isDoneWhenProperInt = false;
 	let li = arguments[0], includeProper = arguments[1], recordIsolated = arguments[2];
 	this._li = li;
@@ -54,10 +54,10 @@ extend(SegmentIntersector.prototype, {
 		return this._hasProper;
 	},
 	hasIntersection: function () {
-		return this.__hasIntersection;
+		return this._hasIntersection;
 	},
 	isDone: function () {
-		return this.__isDone;
+		return this._isDone;
 	},
 	isBoundaryPoint: function (li, bdyNodes) {
 		if (bdyNodes === null) return false;
@@ -85,7 +85,7 @@ extend(SegmentIntersector.prototype, {
 			}
 			this._numIntersections++;
 			if (!this.isTrivialIntersection(e0, segIndex0, e1, segIndex1)) {
-				this.__hasIntersection = true;
+				this._hasIntersection = true;
 				if (this._includeProper || !this._li.isProper()) {
 					e0.addIntersections(this._li, segIndex0, 0);
 					e1.addIntersections(this._li, segIndex1, 1);
@@ -94,7 +94,7 @@ extend(SegmentIntersector.prototype, {
 					this._properIntersectionPoint = this._li.getIntersection(0).copy();
 					this._hasProper = true;
 					if (this._isDoneWhenProperInt) {
-						this.__isDone = true;
+						this._isDone = true;
 					}
 					if (!this.isBoundaryPoint(this._li, this._bdyNodes)) this._hasProperInterior = true;
 				}

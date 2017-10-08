@@ -12,7 +12,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import MultiLineString from '../MultiLineString';
 export default function GeometryTransformer() {
 	this._inputGeom = null;
-	this.factory = null;
+	this._factory = null;
 	this._pruneEmptyGeometry = true;
 	this._preserveGeometryCollectionType = true;
 	this._preserveCollections = false;
@@ -20,7 +20,7 @@ export default function GeometryTransformer() {
 }
 extend(GeometryTransformer.prototype, {
 	transformPoint: function (geom, parent) {
-		return this.factory.createPoint(this.transformCoordinates(geom.getCoordinateSequence(), geom));
+		return this._factory.createPoint(this.transformCoordinates(geom.getCoordinateSequence(), geom));
 	},
 	transformPolygon: function (geom, parent) {
 		var isAllValidLinearRings = true;
@@ -35,15 +35,15 @@ extend(GeometryTransformer.prototype, {
 			if (!(hole instanceof LinearRing)) isAllValidLinearRings = false;
 			holes.add(hole);
 		}
-		if (isAllValidLinearRings) return this.factory.createPolygon(shell, holes.toArray([])); else {
+		if (isAllValidLinearRings) return this._factory.createPolygon(shell, holes.toArray([])); else {
 			var components = new ArrayList();
 			if (shell !== null) components.add(shell);
 			components.addAll(holes);
-			return this.factory.buildGeometry(components);
+			return this._factory.buildGeometry(components);
 		}
 	},
 	createCoordinateSequence: function (coords) {
-		return this.factory.getCoordinateSequenceFactory().create(coords);
+		return this._factory.getCoordinateSequenceFactory().create(coords);
 	},
 	getInputGeometry: function () {
 		return this._inputGeom;
@@ -56,13 +56,13 @@ extend(GeometryTransformer.prototype, {
 			if (transformGeom.isEmpty()) continue;
 			transGeomList.add(transformGeom);
 		}
-		return this.factory.buildGeometry(transGeomList);
+		return this._factory.buildGeometry(transGeomList);
 	},
 	transformCoordinates: function (coords, parent) {
 		return this.copy(coords);
 	},
 	transformLineString: function (geom, parent) {
-		return this.factory.createLineString(this.transformCoordinates(geom.getCoordinateSequence(), geom));
+		return this._factory.createLineString(this.transformCoordinates(geom.getCoordinateSequence(), geom));
 	},
 	transformMultiPoint: function (geom, parent) {
 		var transGeomList = new ArrayList();
@@ -72,7 +72,7 @@ extend(GeometryTransformer.prototype, {
 			if (transformGeom.isEmpty()) continue;
 			transGeomList.add(transformGeom);
 		}
-		return this.factory.buildGeometry(transGeomList);
+		return this._factory.buildGeometry(transGeomList);
 	},
 	transformMultiPolygon: function (geom, parent) {
 		var transGeomList = new ArrayList();
@@ -82,7 +82,7 @@ extend(GeometryTransformer.prototype, {
 			if (transformGeom.isEmpty()) continue;
 			transGeomList.add(transformGeom);
 		}
-		return this.factory.buildGeometry(transGeomList);
+		return this._factory.buildGeometry(transGeomList);
 	},
 	copy: function (seq) {
 		return seq.copy();
@@ -95,12 +95,12 @@ extend(GeometryTransformer.prototype, {
 			if (this._pruneEmptyGeometry && transformGeom.isEmpty()) continue;
 			transGeomList.add(transformGeom);
 		}
-		if (this._preserveGeometryCollectionType) return this.factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList));
-		return this.factory.buildGeometry(transGeomList);
+		if (this._preserveGeometryCollectionType) return this._factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList));
+		return this._factory.buildGeometry(transGeomList);
 	},
 	transform: function (inputGeom) {
 		this._inputGeom = inputGeom;
-		this.factory = inputGeom.getFactory();
+		this._factory = inputGeom.getFactory();
 		if (inputGeom instanceof Point) return this.transformPoint(inputGeom, null);
 		if (inputGeom instanceof MultiPoint) return this.transformMultiPoint(inputGeom, null);
 		if (inputGeom instanceof LinearRing) return this.transformLinearRing(inputGeom, null);
@@ -113,10 +113,10 @@ extend(GeometryTransformer.prototype, {
 	},
 	transformLinearRing: function (geom, parent) {
 		var seq = this.transformCoordinates(geom.getCoordinateSequence(), geom);
-		if (seq === null) return this.factory.createLinearRing(null);
+		if (seq === null) return this._factory.createLinearRing(null);
 		var seqSize = seq.size();
-		if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this.factory.createLineString(seq);
-		return this.factory.createLinearRing(seq);
+		if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this._factory.createLineString(seq);
+		return this._factory.createLinearRing(seq);
 	},
 	interfaces_: function () {
 		return [];

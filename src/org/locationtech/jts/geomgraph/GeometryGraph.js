@@ -33,7 +33,7 @@ export default function GeometryGraph() {
 	this._useBoundaryDeterminationRule = true;
 	this._argIndex = null;
 	this._boundaryNodes = null;
-	this.__hasTooFewPoints = false;
+	this._hasTooFewPoints = false;
 	this._invalidPoint = null;
 	this._areaPtLocator = null;
 	this._ptLocator = new PointLocator();
@@ -53,7 +53,7 @@ export default function GeometryGraph() {
 inherits(GeometryGraph, PlanarGraph);
 extend(GeometryGraph.prototype, {
 	insertBoundaryPoint: function (argIndex, coord) {
-		var n = this.nodes.addNode(coord);
+		var n = this._nodes.addNode(coord);
 		var lbl = n.getLabel();
 		var boundaryCount = 1;
 		var loc = Location.NONE;
@@ -73,13 +73,13 @@ extend(GeometryGraph.prototype, {
 			var esi = this.createEdgeSetIntersector();
 			var isRings = this._parentGeom instanceof LinearRing || this._parentGeom instanceof Polygon || this._parentGeom instanceof MultiPolygon;
 			var computeAllSegments = computeRingSelfNodes || !isRings;
-			esi.computeIntersections(this.edges, si, computeAllSegments);
+			esi.computeIntersections(this._edges, si, computeAllSegments);
 			this.addSelfIntersectionNodes(this._argIndex);
 			return si;
 		}
 	},
 	computeSplitEdges: function (edgelist) {
-		for (var i = this.edges.iterator(); i.hasNext(); ) {
+		for (var i = this._edges.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			e.eiList.addSplitEdges(edgelist);
 		}
@@ -88,7 +88,7 @@ extend(GeometryGraph.prototype, {
 		var si = new SegmentIntersector(li, includeProper, true);
 		si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes());
 		var esi = this.createEdgeSetIntersector();
-		esi.computeIntersections(this.edges, g.edges, si);
+		esi.computeIntersections(this._edges, g._edges, si);
 		return si;
 	},
 	getGeometry: function () {
@@ -98,7 +98,7 @@ extend(GeometryGraph.prototype, {
 		return this._boundaryNodeRule;
 	},
 	hasTooFewPoints: function () {
-		return this.__hasTooFewPoints;
+		return this._hasTooFewPoints;
 	},
 	addPoint: function () {
 		if (arguments[0] instanceof Point) {
@@ -126,7 +126,7 @@ extend(GeometryGraph.prototype, {
 	addLineString: function (line) {
 		var coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
 		if (coord.length < 2) {
-			this.__hasTooFewPoints = true;
+			this._hasTooFewPoints = true;
 			this._invalidPoint = coord[0];
 			return null;
 		}
@@ -151,7 +151,7 @@ extend(GeometryGraph.prototype, {
 		return pts;
 	},
 	getBoundaryNodes: function () {
-		if (this._boundaryNodes === null) this._boundaryNodes = this.nodes.getBoundaryNodes(this._argIndex);
+		if (this._boundaryNodes === null) this._boundaryNodes = this._nodes.getBoundaryNodes(this._argIndex);
 		return this._boundaryNodes;
 	},
 	addSelfIntersectionNode: function (argIndex, coord, loc) {
@@ -162,7 +162,7 @@ extend(GeometryGraph.prototype, {
 		if (lr.isEmpty()) return null;
 		var coord = CoordinateArrays.removeRepeatedPoints(lr.getCoordinates());
 		if (coord.length < 4) {
-			this.__hasTooFewPoints = true;
+			this._hasTooFewPoints = true;
 			this._invalidPoint = coord[0];
 			return null;
 		}
@@ -178,17 +178,17 @@ extend(GeometryGraph.prototype, {
 		this.insertPoint(this._argIndex, coord[0], Location.BOUNDARY);
 	},
 	insertPoint: function (argIndex, coord, onLocation) {
-		var n = this.nodes.addNode(coord);
+		var n = this._nodes.addNode(coord);
 		var lbl = n.getLabel();
 		if (lbl === null) {
-			n.label = new Label(argIndex, onLocation);
+			n._label = new Label(argIndex, onLocation);
 		} else lbl.setLocation(argIndex, onLocation);
 	},
 	createEdgeSetIntersector: function () {
 		return new SimpleMCSweepLineIntersector();
 	},
 	addSelfIntersectionNodes: function (argIndex) {
-		for (var i = this.edges.iterator(); i.hasNext(); ) {
+		for (var i = this._edges.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			var eLoc = e.getLabel().getLocation(argIndex);
 			for (var eiIt = e.eiList.iterator(); eiIt.hasNext(); ) {

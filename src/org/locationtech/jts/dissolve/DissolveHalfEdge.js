@@ -2,17 +2,17 @@ import extend from '../../../../extend';
 import MarkHalfEdge from '../edgegraph/MarkHalfEdge';
 import inherits from '../../../../inherits';
 export default function DissolveHalfEdge() {
-	this.__isStart = false;
+	this._isStart = false;
 	let orig = arguments[0];
 	MarkHalfEdge.call(this, orig);
 }
 inherits(DissolveHalfEdge, MarkHalfEdge);
 extend(DissolveHalfEdge.prototype, {
 	setStart: function () {
-		this.__isStart = true;
+		this._isStart = true;
 	},
 	isStart: function () {
-		return this.__isStart;
+		return this._isStart;
 	},
 	interfaces_: function () {
 		return [];

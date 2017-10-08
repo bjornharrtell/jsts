@@ -1,7 +1,7 @@
 import extend from '../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
 export default function IntersectionAdder() {
-	this.__hasIntersection = false;
+	this._hasIntersection = false;
 	this._hasProper = false;
 	this._hasProperInterior = false;
 	this._hasInterior = false;
@@ -57,7 +57,7 @@ extend(IntersectionAdder.prototype, {
 				this._hasInterior = true;
 			}
 			if (!this.isTrivialIntersection(e0, segIndex0, e1, segIndex1)) {
-				this.__hasIntersection = true;
+				this._hasIntersection = true;
 				e0.addIntersections(this._li, segIndex0, 0);
 				e1.addIntersections(this._li, segIndex1, 1);
 				if (this._li.isProper()) {
@@ -69,7 +69,7 @@ extend(IntersectionAdder.prototype, {
 		}
 	},
 	hasIntersection: function () {
-		return this.__hasIntersection;
+		return this._hasIntersection;
 	},
 	isDone: function () {
 		return false;

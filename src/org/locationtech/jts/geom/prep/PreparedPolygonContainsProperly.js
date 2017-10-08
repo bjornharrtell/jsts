@@ -14,10 +14,10 @@ extend(PreparedPolygonContainsProperly.prototype, {
 		var isAllInPrepGeomAreaInterior = this.isAllTestComponentsInTargetInterior(geom);
 		if (!isAllInPrepGeomAreaInterior) return false;
 		var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
-		var segsIntersect = this.prepPoly.getIntersectionFinder().intersects(lineSegStr);
+		var segsIntersect = this._prepPoly.getIntersectionFinder().intersects(lineSegStr);
 		if (segsIntersect) return false;
 		if (hasInterface(geom, Polygonal)) {
-			var isTargetGeomInTestArea = this.isAnyTargetComponentInAreaTest(geom, this.prepPoly.getRepresentativePoints());
+			var isTargetGeomInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints());
 			if (isTargetGeomInTestArea) return false;
 		}
 		return true;

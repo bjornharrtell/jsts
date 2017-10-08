@@ -16,12 +16,12 @@ extend(Root.prototype, {
 			this.add(item);
 			return null;
 		}
-		var node = this.subnode[index];
+		var node = this._subnode[index];
 		if (node === null || !node.getEnvelope().contains(itemEnv)) {
 			var largerNode = Node.createExpanded(node, itemEnv);
-			this.subnode[index] = largerNode;
+			this._subnode[index] = largerNode;
 		}
-		this.insertContained(this.subnode[index], itemEnv, item);
+		this.insertContained(this._subnode[index], itemEnv, item);
 	},
 	isSearchMatch: function (searchEnv) {
 		return true;

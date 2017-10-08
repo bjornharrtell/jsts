@@ -7,82 +7,82 @@ import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
 export default function DirectedEdge() {
 	GraphComponent.apply(this);
-	this.parentEdge = null;
-	this.from = null;
-	this.to = null;
-	this.p0 = null;
-	this.p1 = null;
-	this.sym = null;
-	this.edgeDirection = null;
-	this.quadrant = null;
-	this.angle = null;
+	this._parentEdge = null;
+	this._from = null;
+	this._to = null;
+	this._p0 = null;
+	this._p1 = null;
+	this._sym = null;
+	this._edgeDirection = null;
+	this._quadrant = null;
+	this._angle = null;
 	let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
-	this.from = from;
-	this.to = to;
-	this.edgeDirection = edgeDirection;
-	this.p0 = from.getCoordinate();
-	this.p1 = directionPt;
-	var dx = this.p1.x - this.p0.x;
-	var dy = this.p1.y - this.p0.y;
-	this.quadrant = Quadrant.quadrant(dx, dy);
-	this.angle = Math.atan2(dy, dx);
+	this._from = from;
+	this._to = to;
+	this._edgeDirection = edgeDirection;
+	this._p0 = from.getCoordinate();
+	this._p1 = directionPt;
+	var dx = this._p1.x - this._p0.x;
+	var dy = this._p1.y - this._p0.y;
+	this._quadrant = Quadrant.quadrant(dx, dy);
+	this._angle = Math.atan2(dy, dx);
 }
 inherits(DirectedEdge, GraphComponent);
 extend(DirectedEdge.prototype, {
 	isRemoved: function () {
-		return this.parentEdge === null;
+		return this._parentEdge === null;
 	},
 	compareDirection: function (e) {
-		if (this.quadrant > e.quadrant) return 1;
-		if (this.quadrant < e.quadrant) return -1;
-		return CGAlgorithms.computeOrientation(e.p0, e.p1, this.p1);
+		if (this._quadrant > e._quadrant) return 1;
+		if (this._quadrant < e._quadrant) return -1;
+		return CGAlgorithms.computeOrientation(e._p0, e._p1, this._p1);
 	},
 	getCoordinate: function () {
-		return this.from.getCoordinate();
+		return this._from.getCoordinate();
 	},
 	print: function (out) {
 		var className = this.getClass().getName();
 		var lastDotPos = className.lastIndexOf('.');
 		var name = className.substring(lastDotPos + 1);
-		out.print("  " + name + ": " + this.p0 + " - " + this.p1 + " " + this.quadrant + ":" + this.angle);
+		out.print("  " + name + ": " + this._p0 + " - " + this._p1 + " " + this._quadrant + ":" + this._angle);
 	},
 	getDirectionPt: function () {
-		return this.p1;
+		return this._p1;
 	},
 	getAngle: function () {
-		return this.angle;
+		return this._angle;
 	},
 	compareTo: function (obj) {
 		var de = obj;
 		return this.compareDirection(de);
 	},
 	getFromNode: function () {
-		return this.from;
+		return this._from;
 	},
 	getSym: function () {
-		return this.sym;
+		return this._sym;
 	},
 	setEdge: function (parentEdge) {
-		this.parentEdge = parentEdge;
+		this._parentEdge = parentEdge;
 	},
 	remove: function () {
-		this.sym = null;
-		this.parentEdge = null;
+		this._sym = null;
+		this._parentEdge = null;
 	},
 	getEdge: function () {
-		return this.parentEdge;
+		return this._parentEdge;
 	},
 	getQuadrant: function () {
-		return this.quadrant;
+		return this._quadrant;
 	},
 	setSym: function (sym) {
-		this.sym = sym;
+		this._sym = sym;
 	},
 	getToNode: function () {
-		return this.to;
+		return this._to;
 	},
 	getEdgeDirection: function () {
-		return this.edgeDirection;
+		return this._edgeDirection;
 	},
 	interfaces_: function () {
 		return [Comparable];
@@ -94,7 +94,7 @@ extend(DirectedEdge.prototype, {
 DirectedEdge.toEdges = function (dirEdges) {
 	var edges = new ArrayList();
 	for (var i = dirEdges.iterator(); i.hasNext(); ) {
-		edges.add(i.next().parentEdge);
+		edges.add(i.next()._parentEdge);
 	}
 	return edges;
 };

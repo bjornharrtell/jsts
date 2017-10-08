@@ -33,8 +33,8 @@ extend(MultiLineString.prototype, {
 		if (this.isEmpty()) {
 			return false;
 		}
-		for (var i = 0; i < this.geometries.length; i++) {
-			if (!this.geometries[i].isClosed()) {
+		for (var i = 0; i < this._geometries.length; i++) {
+			if (!this._geometries[i].isClosed()) {
 				return false;
 			}
 		}
@@ -44,10 +44,10 @@ extend(MultiLineString.prototype, {
 		return 1;
 	},
 	reverse: function () {
-		var nLines = this.geometries.length;
+		var nLines = this._geometries.length;
 		var revLines = new Array(nLines).fill(null);
-		for (var i = 0; i < this.geometries.length; i++) {
-			revLines[nLines - 1 - i] = this.geometries[i].reverse();
+		for (var i = 0; i < this._geometries.length; i++) {
+			revLines[nLines - 1 - i] = this._geometries[i].reverse();
 		}
 		return this.getFactory().createMultiLineString(revLines);
 	},
@@ -58,11 +58,11 @@ extend(MultiLineString.prototype, {
 		return "MultiLineString";
 	},
 	copy: function () {
-		var lineStrings = new Array(this.geometries.length).fill(null);
+		var lineStrings = new Array(this._geometries.length).fill(null);
 		for (var i = 0; i < lineStrings.length; i++) {
-			lineStrings[i] = this.geometries[i].copy();
+			lineStrings[i] = this._geometries[i].copy();
 		}
-		return new MultiLineString(lineStrings, this.factory);
+		return new MultiLineString(lineStrings, this._factory);
 	},
 	interfaces_: function () {
 		return [Lineal];

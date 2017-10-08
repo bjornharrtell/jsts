@@ -16,7 +16,7 @@ export default function Edge() {
 	this.eiList = new EdgeIntersectionList(this);
 	this._name = null;
 	this._mce = null;
-	this.__isIsolated = true;
+	this._isIsolated = true;
 	this._depth = new Depth();
 	this._depthDelta = 0;
 	if (arguments.length === 1) {
@@ -25,7 +25,7 @@ export default function Edge() {
 	} else if (arguments.length === 2) {
 		let pts = arguments[0], label = arguments[1];
 		this.pts = pts;
-		this.label = label;
+		this._label = label;
 	}
 }
 inherits(Edge, GraphComponent);
@@ -37,17 +37,17 @@ extend(Edge.prototype, {
 		var newPts = new Array(2).fill(null);
 		newPts[0] = this.pts[0];
 		newPts[1] = this.pts[1];
-		var newe = new Edge(newPts, Label.toLineLabel(this.label));
+		var newe = new Edge(newPts, Label.toLineLabel(this._label));
 		return newe;
 	},
 	isIsolated: function () {
-		return this.__isIsolated;
+		return this._isIsolated;
 	},
 	getCoordinates: function () {
 		return this.pts;
 	},
 	setIsolated: function (isIsolated) {
-		this.__isIsolated = isIsolated;
+		this._isIsolated = isIsolated;
 	},
 	setName: function (name) {
 		this._name = name;
@@ -86,13 +86,13 @@ extend(Edge.prototype, {
 			if (i > 0) out.print(",");
 			out.print(this.pts[i].x + " " + this.pts[i].y);
 		}
-		out.print(")  " + this.label + " " + this._depthDelta);
+		out.print(")  " + this._label + " " + this._depthDelta);
 	},
 	computeIM: function (im) {
-		Edge.updateIM(this.label, im);
+		Edge.updateIM(this._label, im);
 	},
 	isCollapsed: function () {
-		if (!this.label.isArea()) return false;
+		if (!this._label.isArea()) return false;
 		if (this.pts.length !== 3) return false;
 		if (this.pts[0].equals(this.pts[2])) return true;
 		return false;
@@ -151,7 +151,7 @@ extend(Edge.prototype, {
 			if (i > 0) buf.append(",");
 			buf.append(this.pts[i].x + " " + this.pts[i].y);
 		}
-		buf.append(")  " + this.label + " " + this._depthDelta);
+		buf.append(")  " + this._label + " " + this._depthDelta);
 		return buf.toString();
 	},
 	isPointwiseEqual: function (e) {

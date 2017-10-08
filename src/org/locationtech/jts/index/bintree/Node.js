@@ -22,8 +22,8 @@ extend(Node.prototype, {
 	find: function (searchInterval) {
 		var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre);
 		if (subnodeIndex === -1) return this;
-		if (this.subnode[subnodeIndex] !== null) {
-			var node = this.subnode[subnodeIndex];
+		if (this._subnode[subnodeIndex] !== null) {
+			var node = this._subnode[subnodeIndex];
 			return node.find(searchInterval);
 		}
 		return this;
@@ -32,21 +32,21 @@ extend(Node.prototype, {
 		Assert.isTrue(this._interval === null || this._interval.contains(node._interval));
 		var index = NodeBase.getSubnodeIndex(node._interval, this._centre);
 		if (node._level === this._level - 1) {
-			this.subnode[index] = node;
+			this._subnode[index] = node;
 		} else {
 			var childNode = this.createSubnode(index);
 			childNode.insert(node);
-			this.subnode[index] = childNode;
+			this._subnode[index] = childNode;
 		}
 	},
 	isSearchMatch: function (itemInterval) {
 		return itemInterval.overlaps(this._interval);
 	},
 	getSubnode: function (index) {
-		if (this.subnode[index] === null) {
-			this.subnode[index] = this.createSubnode(index);
+		if (this._subnode[index] === null) {
+			this._subnode[index] = this.createSubnode(index);
 		}
-		return this.subnode[index];
+		return this._subnode[index];
 	},
 	getNode: function (searchInterval) {
 		var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre);

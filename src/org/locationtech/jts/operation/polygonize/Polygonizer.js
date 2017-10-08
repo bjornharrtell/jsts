@@ -11,13 +11,13 @@ import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function Polygonizer() {
 	this._lineStringAdder = new LineStringAdder(this);
-	this.graph = null;
-	this.dangles = new ArrayList();
-	this.cutEdges = new ArrayList();
-	this.invalidRingLines = new ArrayList();
-	this.holeList = null;
-	this.shellList = null;
-	this.polyList = null;
+	this._graph = null;
+	this._dangles = new ArrayList();
+	this._cutEdges = new ArrayList();
+	this._invalidRingLines = new ArrayList();
+	this._holeList = null;
+	this._shellList = null;
+	this._polyList = null;
 	this._isCheckingRingsValid = true;
 	this._extractOnlyPolygonal = null;
 	this._geomFactory = null;
@@ -33,13 +33,13 @@ extend(Polygonizer.prototype, {
 		if (this._geomFactory === null) this._geomFactory = new GeometryFactory();
 		this.polygonize();
 		if (this._extractOnlyPolygonal) {
-			return this._geomFactory.buildGeometry(this.polyList);
+			return this._geomFactory.buildGeometry(this._polyList);
 		}
-		return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this.polyList));
+		return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this._polyList));
 	},
 	getInvalidRingLines: function () {
 		this.polygonize();
-		return this.invalidRingLines;
+		return this._invalidRingLines;
 	},
 	findValidRings: function (edgeRingList, validEdgeRingList, invalidRingList) {
 		for (var i = edgeRingList.iterator(); i.hasNext(); ) {
@@ -48,40 +48,40 @@ extend(Polygonizer.prototype, {
 		}
 	},
 	polygonize: function () {
-		if (this.polyList !== null) return null;
-		this.polyList = new ArrayList();
-		if (this.graph === null) return null;
-		this.dangles = this.graph.deleteDangles();
-		this.cutEdges = this.graph.deleteCutEdges();
-		var edgeRingList = this.graph.getEdgeRings();
+		if (this._polyList !== null) return null;
+		this._polyList = new ArrayList();
+		if (this._graph === null) return null;
+		this._dangles = this._graph.deleteDangles();
+		this._cutEdges = this._graph.deleteCutEdges();
+		var edgeRingList = this._graph.getEdgeRings();
 		var validEdgeRingList = new ArrayList();
-		this.invalidRingLines = new ArrayList();
+		this._invalidRingLines = new ArrayList();
 		if (this._isCheckingRingsValid) {
-			this.findValidRings(edgeRingList, validEdgeRingList, this.invalidRingLines);
+			this.findValidRings(edgeRingList, validEdgeRingList, this._invalidRingLines);
 		} else {
 			validEdgeRingList = edgeRingList;
 		}
 		this.findShellsAndHoles(validEdgeRingList);
-		Polygonizer.assignHolesToShells(this.holeList, this.shellList);
-		Collections.sort(this.shellList, new EdgeRing.EnvelopeComparator());
+		Polygonizer.assignHolesToShells(this._holeList, this._shellList);
+		Collections.sort(this._shellList, new EdgeRing.EnvelopeComparator());
 		var includeAll = true;
 		if (this._extractOnlyPolygonal) {
-			Polygonizer.findDisjointShells(this.shellList);
+			Polygonizer.findDisjointShells(this._shellList);
 			includeAll = false;
 		}
-		this.polyList = Polygonizer.extractPolygons(this.shellList, includeAll);
+		this._polyList = Polygonizer.extractPolygons(this._shellList, includeAll);
 	},
 	getDangles: function () {
 		this.polygonize();
-		return this.dangles;
+		return this._dangles;
 	},
 	getCutEdges: function () {
 		this.polygonize();
-		return this.cutEdges;
+		return this._cutEdges;
 	},
 	getPolygons: function () {
 		this.polygonize();
-		return this.polyList;
+		return this._polyList;
 	},
 	add: function () {
 		if (hasInterface(arguments[0], Collection)) {
@@ -93,8 +93,8 @@ extend(Polygonizer.prototype, {
 		} else if (arguments[0] instanceof LineString) {
 			let line = arguments[0];
 			this._geomFactory = line.getFactory();
-			if (this.graph === null) this.graph = new PolygonizeGraph(this._geomFactory);
-			this.graph.addEdge(line);
+			if (this._graph === null) this._graph = new PolygonizeGraph(this._geomFactory);
+			this._graph.addEdge(line);
 		} else if (arguments[0] instanceof Geometry) {
 			let g = arguments[0];
 			g.apply(this._lineStringAdder);
@@ -104,12 +104,12 @@ extend(Polygonizer.prototype, {
 		this._isCheckingRingsValid = isCheckingRingsValid;
 	},
 	findShellsAndHoles: function (edgeRingList) {
-		this.holeList = new ArrayList();
-		this.shellList = new ArrayList();
+		this._holeList = new ArrayList();
+		this._shellList = new ArrayList();
 		for (var i = edgeRingList.iterator(); i.hasNext(); ) {
 			var er = i.next();
 			er.computeHole();
-			if (er.isHole()) this.holeList.add(er); else this.shellList.add(er);
+			if (er.isHole()) this._holeList.add(er); else this._shellList.add(er);
 		}
 	},
 	interfaces_: function () {

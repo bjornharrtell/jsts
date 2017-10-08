@@ -35,15 +35,15 @@ extend(SierpinskiCarpetBuilder.prototype, {
 	},
 	createSquareHole: function (x, y, width) {
 		var pts = [new Coordinate(x, y), new Coordinate(x + width, y), new Coordinate(x + width, y + width), new Coordinate(x, y + width), new Coordinate(x, y)];
-		return this.geomFactory.createLinearRing(pts);
+		return this._geomFactory.createLinearRing(pts);
 	},
 	getGeometry: function () {
-		var level = SierpinskiCarpetBuilder.recursionLevelForSize(this.numPts);
+		var level = SierpinskiCarpetBuilder.recursionLevelForSize(this._numPts);
 		var baseLine = this.getSquareBaseLine();
 		var origin = baseLine.getCoordinate(0);
 		var holes = this.getHoles(level, origin.x, origin.y, this.getDiameter());
-		var shell = this.geomFactory.toGeometry(this.getSquareExtent()).getExteriorRing();
-		return this.geomFactory.createPolygon(shell, holes);
+		var shell = this._geomFactory.toGeometry(this.getSquareExtent()).getExteriorRing();
+		return this._geomFactory.createPolygon(shell, holes);
 	},
 	interfaces_: function () {
 		return [];

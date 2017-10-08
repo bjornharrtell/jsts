@@ -74,7 +74,7 @@ extend(OverlayOp.prototype, {
 		geomList.addAll(resultPointList);
 		geomList.addAll(resultLineList);
 		geomList.addAll(resultPolyList);
-		if (geomList.isEmpty()) return OverlayOp.createEmptyResult(opcode, this.arg[0].getGeometry(), this.arg[1].getGeometry(), this._geomFact);
+		if (geomList.isEmpty()) return OverlayOp.createEmptyResult(opcode, this._arg[0].getGeometry(), this._arg[1].getGeometry(), this._geomFact);
 		return this._geomFact.buildGeometry(geomList);
 	},
 	mergeSymLabels: function () {
@@ -122,12 +122,12 @@ extend(OverlayOp.prototype, {
 	computeOverlay: function (opCode) {
 		this.copyPoints(0);
 		this.copyPoints(1);
-		this.arg[0].computeSelfNodes(this.li, false);
-		this.arg[1].computeSelfNodes(this.li, false);
-		this.arg[0].computeEdgeIntersections(this.arg[1], this.li, true);
+		this._arg[0].computeSelfNodes(this._li, false);
+		this._arg[1].computeSelfNodes(this._li, false);
+		this._arg[0].computeEdgeIntersections(this._arg[1], this._li, true);
 		var baseSplitEdges = new ArrayList();
-		this.arg[0].computeSplitEdges(baseSplitEdges);
-		this.arg[1].computeSplitEdges(baseSplitEdges);
+		this._arg[0].computeSplitEdges(baseSplitEdges);
+		this._arg[1].computeSplitEdges(baseSplitEdges);
 		var splitEdges = baseSplitEdges;
 		this.insertUniqueEdges(baseSplitEdges);
 		this.computeLabelsFromDepths();
@@ -148,11 +148,11 @@ extend(OverlayOp.prototype, {
 		this._resultGeom = this.computeGeometry(this._resultPointList, this._resultLineList, this._resultPolyList, opCode);
 	},
 	labelIncompleteNode: function (n, targetIndex) {
-		var loc = this._ptLocator.locate(n.getCoordinate(), this.arg[targetIndex].getGeometry());
+		var loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry());
 		n.getLabel().setLocation(targetIndex, loc);
 	},
 	copyPoints: function (argIndex) {
-		for (var i = this.arg[argIndex].getNodeIterator(); i.hasNext(); ) {
+		for (var i = this._arg[argIndex].getNodeIterator(); i.hasNext(); ) {
 			var graphNode = i.next();
 			var newNode = this._graph.addNode(graphNode.getCoordinate());
 			newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
@@ -192,7 +192,7 @@ extend(OverlayOp.prototype, {
 	computeLabelling: function () {
 		for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
-			node.getEdges().computeLabelling(this.arg);
+			node.getEdges().computeLabelling(this._arg);
 		}
 		this.mergeSymLabels();
 		this.updateNodeLabelling();

@@ -19,16 +19,16 @@ export default function EdgeRing() {
 	this._ringPts = null;
 	this._holes = null;
 	this._shell = null;
-	this.__isHole = null;
-	this.__isProcessed = false;
-	this.__isIncludedSet = false;
-	this.__isIncluded = false;
+	this._isHole = null;
+	this._isProcessed = false;
+	this._isIncludedSet = false;
+	this._isIncluded = false;
 	let factory = arguments[0];
 	this._factory = factory;
 }
 extend(EdgeRing.prototype, {
 	isIncluded: function () {
-		return this.__isIncluded;
+		return this._isIncluded;
 	},
 	getCoordinates: function () {
 		if (this._ringPts === null) {
@@ -43,7 +43,7 @@ extend(EdgeRing.prototype, {
 		return this._ringPts;
 	},
 	isIncludedSet: function () {
-		return this.__isIncludedSet;
+		return this._isIncludedSet;
 	},
 	isValid: function () {
 		this.getCoordinates();
@@ -62,7 +62,7 @@ extend(EdgeRing.prototype, {
 		} while (de !== startDE);
 	},
 	isOuterHole: function () {
-		if (!this.__isHole) return false;
+		if (!this._isHole) return false;
 		return !this.hasShell();
 	},
 	getPolygon: function () {
@@ -77,10 +77,10 @@ extend(EdgeRing.prototype, {
 		return poly;
 	},
 	isHole: function () {
-		return this.__isHole;
+		return this._isHole;
 	},
 	isProcessed: function () {
-		return this.__isProcessed;
+		return this._isProcessed;
 	},
 	addHole: function () {
 		if (arguments[0] instanceof LinearRing) {
@@ -96,8 +96,8 @@ extend(EdgeRing.prototype, {
 		}
 	},
 	setIncluded: function (isIncluded) {
-		this.__isIncluded = isIncluded;
-		this.__isIncludedSet = true;
+		this._isIncluded = isIncluded;
+		this._isIncludedSet = true;
 	},
 	getOuterHole: function () {
 		if (this.isHole()) return null;
@@ -110,7 +110,7 @@ extend(EdgeRing.prototype, {
 	},
 	computeHole: function () {
 		var ring = this.getRing();
-		this.__isHole = CGAlgorithms.isCCW(ring.getCoordinates());
+		this._isHole = CGAlgorithms.isCCW(ring.getCoordinates());
 	},
 	hasShell: function () {
 		return this._shell !== null;
@@ -160,7 +160,7 @@ extend(EdgeRing.prototype, {
 		this._shell = shell;
 	},
 	setProcessed: function (isProcessed) {
-		this.__isProcessed = isProcessed;
+		this._isProcessed = isProcessed;
 	},
 	interfaces_: function () {
 		return [];

@@ -51,13 +51,13 @@ extend(WKTReader.prototype, {
   reducePrecision (geometry) {
     if (geometry.coordinate) {
       this.precisionModel.makePrecise(geometry.coordinate)
-    } else if (geometry.points) {
-      for (let i = 0, len = geometry.points._coordinates.length; i < len; i++) {
-        this.precisionModel.makePrecise(geometry.points._coordinates[i])
+    } else if (geometry._points) {
+      for (let i = 0, len = geometry._points._coordinates.length; i < len; i++) {
+        this.precisionModel.makePrecise(geometry._points._coordinates[i])
       }
-    } else if (geometry.geometries) {
-      for (let i = 0, len = geometry.geometries.length; i < len; i++) {
-        this.reducePrecision(geometry.geometries[i])
+    } else if (geometry._geometries) {
+      for (let i = 0, len = geometry._geometries.length; i < len; i++) {
+        this.reducePrecision(geometry._geometries[i])
       }
     }
   }

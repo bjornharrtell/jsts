@@ -26,10 +26,10 @@ extend(KochSnowflakeBuilder.prototype, {
 		return this._coordList.toCoordinateArray();
 	},
 	getGeometry: function () {
-		var level = KochSnowflakeBuilder.recursionLevelForSize(this.numPts);
+		var level = KochSnowflakeBuilder.recursionLevelForSize(this._numPts);
 		var baseLine = this.getSquareBaseLine();
 		var pts = this.getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength());
-		return this.geomFactory.createPolygon(this.geomFactory.createLinearRing(pts), null);
+		return this._geomFactory.createPolygon(this._geomFactory.createLinearRing(pts), null);
 	},
 	addSegment: function (p0, p1) {
 		this._coordList.add(p1);

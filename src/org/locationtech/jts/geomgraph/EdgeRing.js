@@ -7,18 +7,18 @@ import Label from './Label';
 import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
 export default function EdgeRing() {
-	this.startDe = null;
+	this._startDe = null;
 	this._maxNodeDegree = -1;
 	this._edges = new ArrayList();
 	this._pts = new ArrayList();
 	this._label = new Label(Location.NONE);
 	this._ring = null;
-	this.__isHole = null;
+	this._isHole = null;
 	this._shell = null;
 	this._holes = new ArrayList();
-	this.geometryFactory = null;
+	this._geometryFactory = null;
 	let start = arguments[0], geometryFactory = arguments[1];
-	this.geometryFactory = geometryFactory;
+	this._geometryFactory = geometryFactory;
 	this.computePoints(start);
 	this.computeRing();
 }
@@ -29,14 +29,14 @@ extend(EdgeRing.prototype, {
 		for (var i = 0; i < this._pts.size(); i++) {
 			coord[i] = this._pts.get(i);
 		}
-		this._ring = this.geometryFactory.createLinearRing(coord);
-		this.__isHole = CGAlgorithms.isCCW(this._ring.getCoordinates());
+		this._ring = this._geometryFactory.createLinearRing(coord);
+		this._isHole = CGAlgorithms.isCCW(this._ring.getCoordinates());
 	},
 	isIsolated: function () {
 		return this._label.getGeometryCount() === 1;
 	},
 	computePoints: function (start) {
-		this.startDe = start;
+		this._startDe = start;
 		var de = start;
 		var isFirstEdge = true;
 		do {
@@ -50,7 +50,7 @@ extend(EdgeRing.prototype, {
 			isFirstEdge = false;
 			this.setEdgeRing(de, this);
 			de = this.getNext(de);
-		} while (de !== this.startDe);
+		} while (de !== this._startDe);
 	},
 	getLinearRing: function () {
 		return this._ring;
@@ -60,13 +60,13 @@ extend(EdgeRing.prototype, {
 	},
 	computeMaxNodeDegree: function () {
 		this._maxNodeDegree = 0;
-		var de = this.startDe;
+		var de = this._startDe;
 		do {
 			var node = de.getNode();
 			var degree = node.getEdges().getOutgoingDegree(this);
 			if (degree > this._maxNodeDegree) this._maxNodeDegree = degree;
 			de = this.getNext(de);
-		} while (de !== this.startDe);
+		} while (de !== this._startDe);
 		this._maxNodeDegree *= 2;
 	},
 	addPoints: function (edge, isForward, isFirstEdge) {
@@ -86,14 +86,14 @@ extend(EdgeRing.prototype, {
 		}
 	},
 	isHole: function () {
-		return this.__isHole;
+		return this._isHole;
 	},
 	setInResult: function () {
-		var de = this.startDe;
+		var de = this._startDe;
 		do {
 			de.getEdge().setInResult(true);
 			de = de.getNext();
-		} while (de !== this.startDe);
+		} while (de !== this._startDe);
 	},
 	containsPoint: function (p) {
 		var shell = this.getLinearRing();

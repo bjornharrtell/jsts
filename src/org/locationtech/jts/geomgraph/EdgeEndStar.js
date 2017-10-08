@@ -9,17 +9,17 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
 import TreeMap from '../../../../java/util/TreeMap';
 export default function EdgeEndStar() {
-	this.edgeMap = new TreeMap();
-	this.edgeList = null;
+	this._edgeMap = new TreeMap();
+	this._edgeList = null;
 	this._ptInAreaLocation = [Location.NONE, Location.NONE];
 }
 extend(EdgeEndStar.prototype, {
 	getNextCW: function (ee) {
 		this.getEdges();
-		var i = this.edgeList.indexOf(ee);
+		var i = this._edgeList.indexOf(ee);
 		var iNextCW = i - 1;
-		if (i === 0) iNextCW = this.edgeList.size() - 1;
-		return this.edgeList.get(iNextCW);
+		if (i === 0) iNextCW = this._edgeList.size() - 1;
+		return this._edgeList.get(iNextCW);
 	},
 	propagateSideLabels: function (geomIndex) {
 		var startLoc = Location.NONE;
@@ -94,8 +94,8 @@ extend(EdgeEndStar.prototype, {
 	},
 	findIndex: function (eSearch) {
 		this.iterator();
-		for (var i = 0; i < this.edgeList.size(); i++) {
-			var e = this.edgeList.get(i);
+		for (var i = 0; i < this._edgeList.size(); i++) {
+			var e = this._edgeList.get(i);
 			if (e === eSearch) return i;
 		}
 		return -1;
@@ -104,10 +104,10 @@ extend(EdgeEndStar.prototype, {
 		return this.getEdges().iterator();
 	},
 	getEdges: function () {
-		if (this.edgeList === null) {
-			this.edgeList = new ArrayList(this.edgeMap.values());
+		if (this._edgeList === null) {
+			this._edgeList = new ArrayList(this._edgeMap.values());
 		}
-		return this.edgeList;
+		return this._edgeList;
 	},
 	getLocation: function (geomIndex, p, geom) {
 		if (this._ptInAreaLocation[geomIndex] === Location.NONE) {
@@ -162,11 +162,11 @@ extend(EdgeEndStar.prototype, {
 		}
 	},
 	getDegree: function () {
-		return this.edgeMap.size();
+		return this._edgeMap.size();
 	},
 	insertEdgeEnd: function (e, obj) {
-		this.edgeMap.put(e, obj);
-		this.edgeList = null;
+		this._edgeMap.put(e, obj);
+		this._edgeList = null;
 	},
 	interfaces_: function () {
 		return [];

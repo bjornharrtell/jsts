@@ -21,7 +21,7 @@ export default function LineSequencer() {
 	this._lineCount = 0;
 	this._isRun = false;
 	this._sequencedGeometry = null;
-	this.__isSequenceable = false;
+	this._isSequenceable = false;
 }
 extend(LineSequencer.prototype, {
 	addLine: function (lineString) {
@@ -47,7 +47,7 @@ extend(LineSequencer.prototype, {
 		var sequences = this.findSequences();
 		if (sequences === null) return null;
 		this._sequencedGeometry = this.buildSequencedGeometry(sequences);
-		this.__isSequenceable = true;
+		this._isSequenceable = true;
 		var finalLineCount = this._sequencedGeometry.getNumGeometries();
 		Assert.isTrue(this._lineCount === finalLineCount, "Lines were missing from result");
 		Assert.isTrue(this._sequencedGeometry instanceof LineString || this._sequencedGeometry instanceof MultiLineString, "Result is not lineal");
@@ -152,7 +152,7 @@ extend(LineSequencer.prototype, {
 	},
 	isSequenceable: function () {
 		this.computeSequence();
-		return this.__isSequenceable;
+		return this._isSequenceable;
 	},
 	add: function () {
 		if (hasInterface(arguments[0], Collection)) {

@@ -14,7 +14,7 @@ extend(EdgeEndBundleStar.prototype, {
 		}
 	},
 	insert: function (e) {
-		var eb = this.edgeMap.get(e);
+		var eb = this._edgeMap.get(e);
 		if (eb === null) {
 			eb = new EdgeEndBundle(e);
 			this.insertEdgeEnd(e, eb);

@@ -321,8 +321,8 @@ const extract = {
    */
   MultiPoint: function (multipoint) {
     const array = []
-    for (let i = 0; i < multipoint.geometries.length; ++i) {
-      const point = multipoint.geometries[i]
+    for (let i = 0; i < multipoint._geometries.length; ++i) {
+      const point = multipoint._geometries[i]
       const geoJson = extract.Point.apply(this, [point])
       array.push(geoJson.coordinates)
     }
@@ -363,8 +363,8 @@ const extract = {
    */
   MultiLineString: function (multilinestring) {
     const array = []
-    for (let i = 0; i < multilinestring.geometries.length; ++i) {
-      const linestring = multilinestring.geometries[i]
+    for (let i = 0; i < multilinestring._geometries.length; ++i) {
+      const linestring = multilinestring._geometries[i]
       const geoJson = extract.LineString.apply(this, [linestring])
       array.push(geoJson.coordinates)
     }
@@ -384,10 +384,10 @@ const extract = {
    */
   Polygon: function (polygon) {
     const array = []
-    const shellGeoJson = extract.LineString.apply(this, [polygon.shell])
+    const shellGeoJson = extract.LineString.apply(this, [polygon._shell])
     array.push(shellGeoJson.coordinates)
-    for (let i = 0; i < polygon.holes.length; ++i) {
-      const hole = polygon.holes[i]
+    for (let i = 0; i < polygon._holes.length; ++i) {
+      const hole = polygon._holes[i]
       const holeGeoJson = extract.LineString.apply(this, [hole])
       array.push(holeGeoJson.coordinates)
     }
@@ -407,8 +407,8 @@ const extract = {
    */
   MultiPolygon: function (multipolygon) {
     const array = []
-    for (let i = 0; i < multipolygon.geometries.length; ++i) {
-      const polygon = multipolygon.geometries[i]
+    for (let i = 0; i < multipolygon._geometries.length; ++i) {
+      const polygon = multipolygon._geometries[i]
       const geoJson = extract.Polygon.apply(this, [polygon])
       array.push(geoJson.coordinates)
     }
@@ -428,8 +428,8 @@ const extract = {
    */
   GeometryCollection: function (collection) {
     const array = []
-    for (let i = 0; i < collection.geometries.length; ++i) {
-      const geometry = collection.geometries[i]
+    for (let i = 0; i < collection._geometries.length; ++i) {
+      const geometry = collection._geometries[i]
       const type = geometry.getGeometryType()
       array.push(extract[type].apply(this, [geometry]))
     }

@@ -67,7 +67,7 @@ extend(DPTransformer.prototype, {
 		} else {
 			newPts = DouglasPeuckerLineSimplifier.simplify(inputPts, this._distanceTolerance);
 		}
-		return this.factory.getCoordinateSequenceFactory().create(newPts);
+		return this._factory.getCoordinateSequenceFactory().create(newPts);
 	},
 	transformMultiPolygon: function (geom, parent) {
 		var rawGeom = GeometryTransformer.prototype.transformMultiPolygon.call(this, geom, parent);

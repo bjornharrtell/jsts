@@ -24,7 +24,7 @@ extend(EdgeEndBundle.prototype, {
 		this._edgeEnds.add(e);
 	},
 	print: function (out) {
-		out.println("EdgeEndBundle--> Label: " + this.label);
+		out.println("EdgeEndBundle--> Label: " + this._label);
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ee = it.next();
 			ee.print(out);
@@ -51,7 +51,7 @@ extend(EdgeEndBundle.prototype, {
 		if (boundaryCount > 0) {
 			loc = GeometryGraph.determineBoundary(boundaryNodeRule, boundaryCount);
 		}
-		this.label.setLocation(geomIndex, loc);
+		this._label.setLocation(geomIndex, loc);
 	},
 	computeLabelSide: function (geomIndex, side) {
 		for (var it = this.iterator(); it.hasNext(); ) {
@@ -59,21 +59,21 @@ extend(EdgeEndBundle.prototype, {
 			if (e.getLabel().isArea()) {
 				var loc = e.getLabel().getLocation(geomIndex, side);
 				if (loc === Location.INTERIOR) {
-					this.label.setLocation(geomIndex, side, Location.INTERIOR);
+					this._label.setLocation(geomIndex, side, Location.INTERIOR);
 					return null;
-				} else if (loc === Location.EXTERIOR) this.label.setLocation(geomIndex, side, Location.EXTERIOR);
+				} else if (loc === Location.EXTERIOR) this._label.setLocation(geomIndex, side, Location.EXTERIOR);
 			}
 		}
 	},
 	getLabel: function () {
-		return this.label;
+		return this._label;
 	},
 	computeLabelSides: function (geomIndex) {
 		this.computeLabelSide(geomIndex, Position.LEFT);
 		this.computeLabelSide(geomIndex, Position.RIGHT);
 	},
 	updateIM: function (im) {
-		Edge.updateIM(this.label, im);
+		Edge.updateIM(this._label, im);
 	},
 	computeLabel: function (boundaryNodeRule) {
 		var isArea = false;
@@ -81,7 +81,7 @@ extend(EdgeEndBundle.prototype, {
 			var e = it.next();
 			if (e.getLabel().isArea()) isArea = true;
 		}
-		if (isArea) this.label = new Label(Location.NONE, Location.NONE, Location.NONE); else this.label = new Label(Location.NONE);
+		if (isArea) this._label = new Label(Location.NONE, Location.NONE, Location.NONE); else this._label = new Label(Location.NONE);
 		for (var i = 0; i < 2; i++) {
 			this.computeLabelOn(i, boundaryNodeRule);
 			if (isArea) this.computeLabelSides(i);

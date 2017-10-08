@@ -7,8 +7,8 @@ import Label from './Label';
 import inherits from '../../../../inherits';
 export default function DirectedEdge() {
 	this._isForward = null;
-	this.__isInResult = false;
-	this.__isVisited = false;
+	this._isInResult = false;
+	this._isVisited = false;
 	this._sym = null;
 	this._next = null;
 	this._nextMin = null;
@@ -35,11 +35,11 @@ extend(DirectedEdge.prototype, {
 		return this._depth[position];
 	},
 	setVisited: function (isVisited) {
-		this.__isVisited = isVisited;
+		this._isVisited = isVisited;
 	},
 	computeDirectedLabel: function () {
-		this.label = new Label(this.edge.getLabel());
-		if (!this._isForward) this.label.flip();
+		this._label = new Label(this._edge.getLabel());
+		if (!this._isForward) this._label.flip();
 	},
 	getNext: function () {
 		return this._next;
@@ -53,7 +53,7 @@ extend(DirectedEdge.prototype, {
 	isInteriorAreaEdge: function () {
 		var isInteriorAreaEdge = true;
 		for (var i = 0; i < 2; i++) {
-			if (!(this.label.isArea(i) && this.label.getLocation(i, Position.LEFT) === Location.INTERIOR && this.label.getLocation(i, Position.RIGHT) === Location.INTERIOR)) {
+			if (!(this._label.isArea(i) && this._label.getLocation(i, Position.LEFT) === Location.INTERIOR && this._label.getLocation(i, Position.RIGHT) === Location.INTERIOR)) {
 				isInteriorAreaEdge = false;
 			}
 		}
@@ -66,15 +66,15 @@ extend(DirectedEdge.prototype, {
 		EdgeEnd.prototype.print.call(this, out);
 		out.print(" " + this._depth[Position.LEFT] + "/" + this._depth[Position.RIGHT]);
 		out.print(" (" + this.getDepthDelta() + ")");
-		if (this.__isInResult) out.print(" inResult");
+		if (this._isInResult) out.print(" inResult");
 	},
 	setMinEdgeRing: function (minEdgeRing) {
 		this._minEdgeRing = minEdgeRing;
 	},
 	isLineEdge: function () {
-		var isLine = this.label.isLine(0) || this.label.isLine(1);
-		var isExteriorIfArea0 = !this.label.isArea(0) || this.label.allPositionsEqual(0, Location.EXTERIOR);
-		var isExteriorIfArea1 = !this.label.isArea(1) || this.label.allPositionsEqual(1, Location.EXTERIOR);
+		var isLine = this._label.isLine(0) || this._label.isLine(1);
+		var isExteriorIfArea0 = !this._label.isArea(0) || this._label.allPositionsEqual(0, Location.EXTERIOR);
+		var isExteriorIfArea1 = !this._label.isArea(1) || this._label.allPositionsEqual(1, Location.EXTERIOR);
 		return isLine && isExteriorIfArea0 && isExteriorIfArea1;
 	},
 	setEdgeRing: function (edgeRing) {
@@ -84,12 +84,12 @@ extend(DirectedEdge.prototype, {
 		return this._minEdgeRing;
 	},
 	getDepthDelta: function () {
-		var depthDelta = this.edge.getDepthDelta();
+		var depthDelta = this._edge.getDepthDelta();
 		if (!this._isForward) depthDelta = -depthDelta;
 		return depthDelta;
 	},
 	setInResult: function (isInResult) {
-		this.__isInResult = isInResult;
+		this._isInResult = isInResult;
 	},
 	getSym: function () {
 		return this._sym;
@@ -98,12 +98,12 @@ extend(DirectedEdge.prototype, {
 		return this._isForward;
 	},
 	getEdge: function () {
-		return this.edge;
+		return this._edge;
 	},
 	printEdge: function (out) {
 		this.print(out);
 		out.print(" ");
-		if (this._isForward) this.edge.print(out); else this.edge.printReverse(out);
+		if (this._isForward) this._edge.print(out); else this._edge.printReverse(out);
 	},
 	setSym: function (de) {
 		this._sym = de;
@@ -127,13 +127,13 @@ extend(DirectedEdge.prototype, {
 		return this._edgeRing;
 	},
 	isInResult: function () {
-		return this.__isInResult;
+		return this._isInResult;
 	},
 	setNext: function (next) {
 		this._next = next;
 	},
 	isVisited: function () {
-		return this.__isVisited;
+		return this._isVisited;
 	},
 	interfaces_: function () {
 		return [];

@@ -7,13 +7,13 @@ export default function SegmentNode() {
 	this.coord = null;
 	this.segmentIndex = null;
 	this._segmentOctant = null;
-	this.__isInterior = null;
+	this._isInterior = null;
 	let segString = arguments[0], coord = arguments[1], segmentIndex = arguments[2], segmentOctant = arguments[3];
 	this._segString = segString;
 	this.coord = new Coordinate(coord);
 	this.segmentIndex = segmentIndex;
 	this._segmentOctant = segmentOctant;
-	this.__isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
+	this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex));
 }
 extend(SegmentNode.prototype, {
 	getCoordinate: function () {
@@ -31,12 +31,12 @@ extend(SegmentNode.prototype, {
 		return SegmentPointComparator.compare(this._segmentOctant, this.coord, other.coord);
 	},
 	isEndPoint: function (maxSegmentIndex) {
-		if (this.segmentIndex === 0 && !this.__isInterior) return true;
+		if (this.segmentIndex === 0 && !this._isInterior) return true;
 		if (this.segmentIndex === maxSegmentIndex) return true;
 		return false;
 	},
 	isInterior: function () {
-		return this.__isInterior;
+		return this._isInterior;
 	},
 	interfaces_: function () {
 		return [Comparable];

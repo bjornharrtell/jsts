@@ -57,7 +57,7 @@ function VWVertex() {
 	this._prev = null;
 	this._next = null;
 	this._area = VWVertex.MAX_AREA;
-	this.__isLive = true;
+	this._isLive = true;
 	let pt = arguments[0];
 	this._pt = pt;
 }
@@ -95,11 +95,11 @@ extend(VWVertex.prototype, {
 			this._next.updateArea();
 			if (result === null) result = this._next;
 		}
-		this.__isLive = false;
+		this._isLive = false;
 		return result;
 	},
 	isLive: function () {
-		return this.__isLive;
+		return this._isLive;
 	},
 	setPrev: function (prev) {
 		this._prev = prev;

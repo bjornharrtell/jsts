@@ -14,8 +14,8 @@ export default function RobustLineIntersector() {
 inherits(RobustLineIntersector, LineIntersector);
 extend(RobustLineIntersector.prototype, {
 	isInSegmentEnvelopes: function (intPt) {
-		var env0 = new Envelope(this.inputLines[0][0], this.inputLines[0][1]);
-		var env1 = new Envelope(this.inputLines[1][0], this.inputLines[1][1]);
+		var env0 = new Envelope(this._inputLines[0][0], this._inputLines[0][1]);
+		var env1 = new Envelope(this._inputLines[1][0], this._inputLines[1][1]);
 		return env0.contains(intPt) && env1.contains(intPt);
 	},
 	computeIntersection: function () {
@@ -28,11 +28,11 @@ extend(RobustLineIntersector.prototype, {
 					if (p.equals(p1) || p.equals(p2)) {
 						this._isProper = false;
 					}
-					this.result = LineIntersector.POINT_INTERSECTION;
+					this._result = LineIntersector.POINT_INTERSECTION;
 					return null;
 				}
 			}
-			this.result = LineIntersector.NO_INTERSECTION;
+			this._result = LineIntersector.NO_INTERSECTION;
 		} else return LineIntersector.prototype.computeIntersection.apply(this, arguments);
 	},
 	normalizeToMinimum: function (n1, n2, n3, n4, normPt) {
@@ -63,8 +63,8 @@ extend(RobustLineIntersector.prototype, {
 		if (!this.isInSegmentEnvelopes(intPt)) {
 			intPt = new Coordinate(RobustLineIntersector.nearestEndpoint(p1, p2, q1, q2));
 		}
-		if (this.precisionModel !== null) {
-			this.precisionModel.makePrecise(intPt);
+		if (this._precisionModel !== null) {
+			this._precisionModel.makePrecise(intPt);
 		}
 		return intPt;
 	},
@@ -110,33 +110,33 @@ extend(RobustLineIntersector.prototype, {
 		var q1p1q2 = Envelope.intersects(q1, q2, p1);
 		var q1p2q2 = Envelope.intersects(q1, q2, p2);
 		if (p1q1p2 && p1q2p2) {
-			this.intPt[0] = q1;
-			this.intPt[1] = q2;
+			this._intPt[0] = q1;
+			this._intPt[1] = q2;
 			return LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		if (q1p1q2 && q1p2q2) {
-			this.intPt[0] = p1;
-			this.intPt[1] = p2;
+			this._intPt[0] = p1;
+			this._intPt[1] = p2;
 			return LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		if (p1q1p2 && q1p1q2) {
-			this.intPt[0] = q1;
-			this.intPt[1] = p1;
+			this._intPt[0] = q1;
+			this._intPt[1] = p1;
 			return q1.equals(p1) && !p1q2p2 && !q1p2q2 ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		if (p1q1p2 && q1p2q2) {
-			this.intPt[0] = q1;
-			this.intPt[1] = p2;
+			this._intPt[0] = q1;
+			this._intPt[1] = p2;
 			return q1.equals(p2) && !p1q2p2 && !q1p1q2 ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		if (p1q2p2 && q1p1q2) {
-			this.intPt[0] = q2;
-			this.intPt[1] = p1;
+			this._intPt[0] = q2;
+			this._intPt[1] = p1;
 			return q2.equals(p1) && !p1q1p2 && !q1p2q2 ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		if (p1q2p2 && q1p2q2) {
-			this.intPt[0] = q2;
-			this.intPt[1] = p2;
+			this._intPt[0] = q2;
+			this._intPt[1] = p2;
 			return q2.equals(p2) && !p1q1p2 && !q1p1q2 ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		return LineIntersector.NO_INTERSECTION;
@@ -187,21 +187,21 @@ extend(RobustLineIntersector.prototype, {
 		if (Pq1 === 0 || Pq2 === 0 || Qp1 === 0 || Qp2 === 0) {
 			this._isProper = false;
 			if (p1.equals2D(q1) || p1.equals2D(q2)) {
-				this.intPt[0] = p1;
+				this._intPt[0] = p1;
 			} else if (p2.equals2D(q1) || p2.equals2D(q2)) {
-				this.intPt[0] = p2;
+				this._intPt[0] = p2;
 			} else if (Pq1 === 0) {
-				this.intPt[0] = new Coordinate(q1);
+				this._intPt[0] = new Coordinate(q1);
 			} else if (Pq2 === 0) {
-				this.intPt[0] = new Coordinate(q2);
+				this._intPt[0] = new Coordinate(q2);
 			} else if (Qp1 === 0) {
-				this.intPt[0] = new Coordinate(p1);
+				this._intPt[0] = new Coordinate(p1);
 			} else if (Qp2 === 0) {
-				this.intPt[0] = new Coordinate(p2);
+				this._intPt[0] = new Coordinate(p2);
 			}
 		} else {
 			this._isProper = true;
-			this.intPt[0] = this.intersection(p1, p2, q1, q2);
+			this._intPt[0] = this.intersection(p1, p2, q1, q2);
 		}
 		return LineIntersector.POINT_INTERSECTION;
 	},

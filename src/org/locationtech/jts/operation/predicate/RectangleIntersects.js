@@ -41,14 +41,14 @@ RectangleIntersects.intersects = function (rectangle, b) {
 function EnvelopeIntersectsVisitor() {
 	ShortCircuitedGeometryVisitor.apply(this);
 	this._rectEnv = null;
-	this.__intersects = false;
+	this._intersects = false;
 	let rectEnv = arguments[0];
 	this._rectEnv = rectEnv;
 }
 inherits(EnvelopeIntersectsVisitor, ShortCircuitedGeometryVisitor);
 extend(EnvelopeIntersectsVisitor.prototype, {
 	isDone: function () {
-		return this.__intersects === true;
+		return this._intersects === true;
 	},
 	visit: function (element) {
 		var elementEnv = element.getEnvelopeInternal();
@@ -56,20 +56,20 @@ extend(EnvelopeIntersectsVisitor.prototype, {
 			return null;
 		}
 		if (this._rectEnv.contains(elementEnv)) {
-			this.__intersects = true;
+			this._intersects = true;
 			return null;
 		}
 		if (elementEnv.getMinX() >= this._rectEnv.getMinX() && elementEnv.getMaxX() <= this._rectEnv.getMaxX()) {
-			this.__intersects = true;
+			this._intersects = true;
 			return null;
 		}
 		if (elementEnv.getMinY() >= this._rectEnv.getMinY() && elementEnv.getMaxY() <= this._rectEnv.getMaxY()) {
-			this.__intersects = true;
+			this._intersects = true;
 			return null;
 		}
 	},
 	intersects: function () {
-		return this.__intersects;
+		return this._intersects;
 	},
 	interfaces_: function () {
 		return [];
@@ -82,7 +82,7 @@ function GeometryContainsPointVisitor() {
 	ShortCircuitedGeometryVisitor.apply(this);
 	this._rectSeq = null;
 	this._rectEnv = null;
-	this.__containsPoint = false;
+	this._containsPoint = false;
 	let rectangle = arguments[0];
 	this._rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
 	this._rectEnv = rectangle.getEnvelopeInternal();
@@ -90,7 +90,7 @@ function GeometryContainsPointVisitor() {
 inherits(GeometryContainsPointVisitor, ShortCircuitedGeometryVisitor);
 extend(GeometryContainsPointVisitor.prototype, {
 	isDone: function () {
-		return this.__containsPoint === true;
+		return this._containsPoint === true;
 	},
 	visit: function (geom) {
 		if (!(geom instanceof Polygon)) return null;
@@ -101,13 +101,13 @@ extend(GeometryContainsPointVisitor.prototype, {
 			this._rectSeq.getCoordinate(i, rectPt);
 			if (!elementEnv.contains(rectPt)) continue;
 			if (SimplePointInAreaLocator.containsPointInPolygon(rectPt, geom)) {
-				this.__containsPoint = true;
+				this._containsPoint = true;
 				return null;
 			}
 		}
 	},
 	containsPoint: function () {
-		return this.__containsPoint;
+		return this._containsPoint;
 	},
 	interfaces_: function () {
 		return [];

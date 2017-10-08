@@ -4,24 +4,24 @@ import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
 import Assert from '../util/Assert';
 export default function LineIntersector() {
-	this.result = null;
-	this.inputLines = Array(2).fill().map(() => Array(2));
-	this.intPt = new Array(2).fill(null);
-	this.intLineIndex = null;
+	this._result = null;
+	this._inputLines = Array(2).fill().map(() => Array(2));
+	this._intPt = new Array(2).fill(null);
+	this._intLineIndex = null;
 	this._isProper = null;
-	this.pa = null;
-	this.pb = null;
-	this.precisionModel = null;
-	this.intPt[0] = new Coordinate();
-	this.intPt[1] = new Coordinate();
-	this.pa = this.intPt[0];
-	this.pb = this.intPt[1];
-	this.result = 0;
+	this._pa = null;
+	this._pb = null;
+	this._precisionModel = null;
+	this._intPt[0] = new Coordinate();
+	this._intPt[1] = new Coordinate();
+	this._pa = this._intPt[0];
+	this._pb = this._intPt[1];
+	this._result = 0;
 }
 extend(LineIntersector.prototype, {
 	getIndexAlongSegment: function (segmentIndex, intIndex) {
 		this.computeIntLineIndex();
-		return this.intLineIndex[segmentIndex][intIndex];
+		return this._intLineIndex[segmentIndex][intIndex];
 	},
 	getTopologySummary: function () {
 		var catBuf = new StringBuffer();
@@ -31,19 +31,19 @@ extend(LineIntersector.prototype, {
 		return catBuf.toString();
 	},
 	computeIntersection: function (p1, p2, p3, p4) {
-		this.inputLines[0][0] = p1;
-		this.inputLines[0][1] = p2;
-		this.inputLines[1][0] = p3;
-		this.inputLines[1][1] = p4;
-		this.result = this.computeIntersect(p1, p2, p3, p4);
+		this._inputLines[0][0] = p1;
+		this._inputLines[0][1] = p2;
+		this._inputLines[1][0] = p3;
+		this._inputLines[1][1] = p4;
+		this._result = this.computeIntersect(p1, p2, p3, p4);
 	},
 	getIntersectionNum: function () {
-		return this.result;
+		return this._result;
 	},
 	computeIntLineIndex: function () {
 		if (arguments.length === 0) {
-			if (this.intLineIndex === null) {
-				this.intLineIndex = Array(2).fill().map(() => Array(2));
+			if (this._intLineIndex === null) {
+				this._intLineIndex = Array(2).fill().map(() => Array(2));
 				this.computeIntLineIndex(0);
 				this.computeIntLineIndex(1);
 			}
@@ -52,11 +52,11 @@ extend(LineIntersector.prototype, {
 			var dist0 = this.getEdgeDistance(segmentIndex, 0);
 			var dist1 = this.getEdgeDistance(segmentIndex, 1);
 			if (dist0 > dist1) {
-				this.intLineIndex[segmentIndex][0] = 0;
-				this.intLineIndex[segmentIndex][1] = 1;
+				this._intLineIndex[segmentIndex][0] = 0;
+				this._intLineIndex[segmentIndex][1] = 1;
 			} else {
-				this.intLineIndex[segmentIndex][0] = 1;
-				this.intLineIndex[segmentIndex][1] = 0;
+				this._intLineIndex[segmentIndex][0] = 1;
+				this._intLineIndex[segmentIndex][1] = 0;
 			}
 		}
 	},
@@ -64,7 +64,7 @@ extend(LineIntersector.prototype, {
 		return this.hasIntersection() && this._isProper;
 	},
 	setPrecisionModel: function (precisionModel) {
-		this.precisionModel = precisionModel;
+		this._precisionModel = precisionModel;
 	},
 	isInteriorIntersection: function () {
 		if (arguments.length === 0) {
@@ -73,8 +73,8 @@ extend(LineIntersector.prototype, {
 			return false;
 		} else if (arguments.length === 1) {
 			let inputLineIndex = arguments[0];
-			for (var i = 0; i < this.result; i++) {
-				if (!(this.intPt[i].equals2D(this.inputLines[inputLineIndex][0]) || this.intPt[i].equals2D(this.inputLines[inputLineIndex][1]))) {
+			for (var i = 0; i < this._result; i++) {
+				if (!(this._intPt[i].equals2D(this._inputLines[inputLineIndex][0]) || this._intPt[i].equals2D(this._inputLines[inputLineIndex][1]))) {
 					return true;
 				}
 			}
@@ -82,30 +82,30 @@ extend(LineIntersector.prototype, {
 		}
 	},
 	getIntersection: function (intIndex) {
-		return this.intPt[intIndex];
+		return this._intPt[intIndex];
 	},
 	isEndPoint: function () {
 		return this.hasIntersection() && !this._isProper;
 	},
 	hasIntersection: function () {
-		return this.result !== LineIntersector.NO_INTERSECTION;
+		return this._result !== LineIntersector.NO_INTERSECTION;
 	},
 	getEdgeDistance: function (segmentIndex, intIndex) {
-		var dist = LineIntersector.computeEdgeDistance(this.intPt[intIndex], this.inputLines[segmentIndex][0], this.inputLines[segmentIndex][1]);
+		var dist = LineIntersector.computeEdgeDistance(this._intPt[intIndex], this._inputLines[segmentIndex][0], this._inputLines[segmentIndex][1]);
 		return dist;
 	},
 	isCollinear: function () {
-		return this.result === LineIntersector.COLLINEAR_INTERSECTION;
+		return this._result === LineIntersector.COLLINEAR_INTERSECTION;
 	},
 	toString: function () {
-		return WKTWriter.toLineString(this.inputLines[0][0], this.inputLines[0][1]) + " - " + WKTWriter.toLineString(this.inputLines[1][0], this.inputLines[1][1]) + this.getTopologySummary();
+		return WKTWriter.toLineString(this._inputLines[0][0], this._inputLines[0][1]) + " - " + WKTWriter.toLineString(this._inputLines[1][0], this._inputLines[1][1]) + this.getTopologySummary();
 	},
 	getEndpoint: function (segmentIndex, ptIndex) {
-		return this.inputLines[segmentIndex][ptIndex];
+		return this._inputLines[segmentIndex][ptIndex];
 	},
 	isIntersection: function (pt) {
-		for (var i = 0; i < this.result; i++) {
-			if (this.intPt[i].equals2D(pt)) {
+		for (var i = 0; i < this._result; i++) {
+			if (this._intPt[i].equals2D(pt)) {
 				return true;
 			}
 		}
@@ -113,7 +113,7 @@ extend(LineIntersector.prototype, {
 	},
 	getIntersectionAlongSegment: function (segmentIndex, intIndex) {
 		this.computeIntLineIndex();
-		return this.intPt[this.intLineIndex[segmentIndex][intIndex]];
+		return this._intPt[this._intLineIndex[segmentIndex][intIndex]];
 	},
 	interfaces_: function () {
 		return [];

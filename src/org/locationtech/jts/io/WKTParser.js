@@ -124,8 +124,8 @@ const extract = {
    */
   multipoint (multipoint) {
     var array = []
-    for (let i = 0, len = multipoint.geometries.length; i < len; ++i) {
-      array.push('(' + extract.point.apply(this, [multipoint.geometries[i]]) + ')')
+    for (let i = 0, len = multipoint._geometries.length; i < len; ++i) {
+      array.push('(' + extract.point.apply(this, [multipoint._geometries[i]]) + ')')
     }
     return array.join(',')
   },
@@ -138,16 +138,16 @@ const extract = {
    */
   linestring (linestring) {
     var array = []
-    for (let i = 0, len = linestring.points._coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.apply(this, [linestring.points._coordinates[i]]))
+    for (let i = 0, len = linestring._points._coordinates.length; i < len; ++i) {
+      array.push(extract.coordinate.apply(this, [linestring._points._coordinates[i]]))
     }
     return array.join(',')
   },
 
   linearring (linearring) {
     var array = []
-    for (let i = 0, len = linearring.points._coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.apply(this, [linearring.points._coordinates[i]]))
+    for (let i = 0, len = linearring._points._coordinates.length; i < len; ++i) {
+      array.push(extract.coordinate.apply(this, [linearring._points._coordinates[i]]))
     }
     return array.join(',')
   },
@@ -161,9 +161,9 @@ const extract = {
    */
   multilinestring (multilinestring) {
     var array = []
-    for (let i = 0, len = multilinestring.geometries.length; i < len; ++i) {
+    for (let i = 0, len = multilinestring._geometries.length; i < len; ++i) {
       array.push('(' +
-        extract.linestring.apply(this, [multilinestring.geometries[i]]) +
+        extract.linestring.apply(this, [multilinestring._geometries[i]]) +
         ')')
     }
     return array.join(',')
@@ -177,9 +177,9 @@ const extract = {
    */
   polygon (polygon) {
     var array = []
-    array.push('(' + extract.linestring.apply(this, [polygon.shell]) + ')')
-    for (let i = 0, len = polygon.holes.length; i < len; ++i) {
-      array.push('(' + extract.linestring.apply(this, [polygon.holes[i]]) + ')')
+    array.push('(' + extract.linestring.apply(this, [polygon._shell]) + ')')
+    for (let i = 0, len = polygon._holes.length; i < len; ++i) {
+      array.push('(' + extract.linestring.apply(this, [polygon._holes[i]]) + ')')
     }
     return array.join(',')
   },
@@ -192,8 +192,8 @@ const extract = {
    */
   multipolygon (multipolygon) {
     var array = []
-    for (let i = 0, len = multipolygon.geometries.length; i < len; ++i) {
-      array.push('(' + extract.polygon.apply(this, [multipolygon.geometries[i]]) + ')')
+    for (let i = 0, len = multipolygon._geometries.length; i < len; ++i) {
+      array.push('(' + extract.polygon.apply(this, [multipolygon._geometries[i]]) + ')')
     }
     return array.join(',')
   },
@@ -207,8 +207,8 @@ const extract = {
    */
   geometrycollection (collection) {
     var array = []
-    for (let i = 0, len = collection.geometries.length; i < len; ++i) {
-      array.push(this.extractGeometry(collection.geometries[i]))
+    for (let i = 0, len = collection._geometries.length; i < len; ++i) {
+      array.push(this.extractGeometry(collection._geometries[i]))
     }
     return array.join(',')
   }
@@ -344,7 +344,7 @@ const parse = {
     for (let i = 0, len = rings.length; i < len; ++i) {
       ring = rings[i].replace(regExes.trimParens, '$1')
       linestring = parse.linestring.apply(this, [ring])
-      linearring = this.geometryFactory.createLinearRing(linestring.points)
+      linearring = this.geometryFactory.createLinearRing(linestring._points)
       if (i === 0) {
         shell = linearring
       } else {

@@ -3,12 +3,12 @@ import extend from '../../../../extend';
 import Integer from '../../../../java/lang/Integer';
 import Comparator from '../../../../java/util/Comparator';
 export default function CoordinateSequenceComparator() {
-	this.dimensionLimit = null;
+	this._dimensionLimit = null;
 	if (arguments.length === 0) {
-		this.dimensionLimit = Integer.MAX_VALUE;
+		this._dimensionLimit = Integer.MAX_VALUE;
 	} else if (arguments.length === 1) {
 		let dimensionLimit = arguments[0];
-		this.dimensionLimit = dimensionLimit;
+		this._dimensionLimit = dimensionLimit;
 	}
 }
 extend(CoordinateSequenceComparator.prototype, {
@@ -22,8 +22,8 @@ extend(CoordinateSequenceComparator.prototype, {
 		var minDim = dim1;
 		if (dim2 < minDim) minDim = dim2;
 		var dimLimited = false;
-		if (this.dimensionLimit <= minDim) {
-			minDim = this.dimensionLimit;
+		if (this._dimensionLimit <= minDim) {
+			minDim = this._dimensionLimit;
 			dimLimited = true;
 		}
 		if (!dimLimited) {

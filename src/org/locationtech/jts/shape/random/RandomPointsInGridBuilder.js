@@ -23,8 +23,8 @@ extend(RandomPointsInGridBuilder.prototype, {
 		return this.randomPointInGridCell(orgX, orgY, xLen, yLen);
 	},
 	getGeometry: function () {
-		var nCells = Math.trunc(Math.sqrt(this.numPts));
-		if (nCells * nCells < this.numPts) nCells += 1;
+		var nCells = Math.trunc(Math.sqrt(this._numPts));
+		if (nCells * nCells < this._numPts) nCells += 1;
 		var gridDX = this.getExtent().getWidth() / nCells;
 		var gridDY = this.getExtent().getHeight() / nCells;
 		var gutterFrac = MathUtil.clamp(this._gutterFraction, 0.0, 1.0);
@@ -42,7 +42,7 @@ extend(RandomPointsInGridBuilder.prototype, {
 				pts[index++] = this.randomPointInCell(orgX, orgY, cellDX, cellDY);
 			}
 		}
-		return this.geomFactory.createMultiPointFromCoords(pts);
+		return this._geomFactory.createMultiPointFromCoords(pts);
 	},
 	setConstrainedToCircle: function (isConstrainedToCircle) {
 		this._isConstrainedToCircle = isConstrainedToCircle;

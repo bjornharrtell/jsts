@@ -14,7 +14,7 @@ import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import Envelope from './Envelope';
 import inherits from '../../../../inherits';
 export default function LineString() {
-	this.points = null;
+	this._points = null;
 	let points = arguments[0], factory = arguments[1];
 	Geometry.call(this, factory);
 	this.init(points);
@@ -25,7 +25,7 @@ extend(LineString.prototype, {
 		if (this.isEmpty()) {
 			return new Envelope();
 		}
-		return this.points.expandEnvelope(new Envelope());
+		return this._points.expandEnvelope(new Envelope());
 	},
 	isRing: function () {
 		return this.isClosed() && this.isSimple();
@@ -34,7 +34,7 @@ extend(LineString.prototype, {
 		return Geometry.SORTINDEX_LINESTRING;
 	},
 	getCoordinates: function () {
-		return this.points.toCoordinateArray();
+		return this._points.toCoordinateArray();
 	},
 	equalsExact: function () {
 		if (arguments.length === 2) {
@@ -43,11 +43,11 @@ extend(LineString.prototype, {
 				return false;
 			}
 			var otherLineString = other;
-			if (this.points.size() !== otherLineString.points.size()) {
+			if (this._points.size() !== otherLineString._points.size()) {
 				return false;
 			}
-			for (var i = 0; i < this.points.size(); i++) {
-				if (!this.equal(this.points.getCoordinate(i), otherLineString.points.getCoordinate(i), tolerance)) {
+			for (var i = 0; i < this._points.size(); i++) {
+				if (!this.equal(this._points.getCoordinate(i), otherLineString._points.getCoordinate(i), tolerance)) {
 					return false;
 				}
 			}
@@ -55,11 +55,11 @@ extend(LineString.prototype, {
 		} else return Geometry.prototype.equalsExact.apply(this, arguments);
 	},
 	normalize: function () {
-		for (var i = 0; i < Math.trunc(this.points.size() / 2); i++) {
-			var j = this.points.size() - 1 - i;
-			if (!this.points.getCoordinate(i).equals(this.points.getCoordinate(j))) {
-				if (this.points.getCoordinate(i).compareTo(this.points.getCoordinate(j)) > 0) {
-					CoordinateSequences.reverse(this.points);
+		for (var i = 0; i < Math.trunc(this._points.size() / 2); i++) {
+			var j = this._points.size() - 1 - i;
+			if (!this._points.getCoordinate(i).equals(this._points.getCoordinate(j))) {
+				if (this._points.getCoordinate(i).compareTo(this._points.getCoordinate(j)) > 0) {
+					CoordinateSequences.reverse(this._points);
 				}
 				return null;
 			}
@@ -67,7 +67,7 @@ extend(LineString.prototype, {
 	},
 	getCoordinate: function () {
 		if (this.isEmpty()) return null;
-		return this.points.getCoordinate(0);
+		return this._points.getCoordinate(0);
 	},
 	getBoundaryDimension: function () {
 		if (this.isClosed()) {
@@ -91,13 +91,13 @@ extend(LineString.prototype, {
 		return 1;
 	},
 	getLength: function () {
-		return CGAlgorithms.computeLength(this.points);
+		return CGAlgorithms.computeLength(this._points);
 	},
 	getNumPoints: function () {
-		return this.points.size();
+		return this._points.size();
 	},
 	reverse: function () {
-		var seq = this.points.copy();
+		var seq = this._points.copy();
 		CoordinateSequences.reverse(seq);
 		var revLine = this.getFactory().createLineString(seq);
 		return revLine;
@@ -108,38 +108,38 @@ extend(LineString.prototype, {
 			var line = o;
 			var i = 0;
 			var j = 0;
-			while (i < this.points.size() && j < line.points.size()) {
-				var comparison = this.points.getCoordinate(i).compareTo(line.points.getCoordinate(j));
+			while (i < this._points.size() && j < line._points.size()) {
+				var comparison = this._points.getCoordinate(i).compareTo(line._points.getCoordinate(j));
 				if (comparison !== 0) {
 					return comparison;
 				}
 				i++;
 				j++;
 			}
-			if (i < this.points.size()) {
+			if (i < this._points.size()) {
 				return 1;
 			}
-			if (j < line.points.size()) {
+			if (j < line._points.size()) {
 				return -1;
 			}
 			return 0;
 		} else if (arguments.length === 2) {
 			let o = arguments[0], comp = arguments[1];
 			var line = o;
-			return comp.compare(this.points, line.points);
+			return comp.compare(this._points, line._points);
 		}
 	},
 	apply: function () {
 		if (hasInterface(arguments[0], CoordinateFilter)) {
 			let filter = arguments[0];
-			for (var i = 0; i < this.points.size(); i++) {
-				filter.filter(this.points.getCoordinate(i));
+			for (var i = 0; i < this._points.size(); i++) {
+				filter.filter(this._points.getCoordinate(i));
 			}
 		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
 			let filter = arguments[0];
-			if (this.points.size() === 0) return null;
-			for (var i = 0; i < this.points.size(); i++) {
-				filter.filter(this.points, i);
+			if (this._points.size() === 0) return null;
+			for (var i = 0; i < this._points.size(); i++) {
+				filter.filter(this._points, i);
 				if (filter.isDone()) break;
 			}
 			if (filter.isGeometryChanged()) this.geometryChanged();
@@ -159,23 +159,23 @@ extend(LineString.prototype, {
 	},
 	clone: function () {
 		var ls = Geometry.prototype.clone.call(this);
-		ls.points = this.points.clone();
+		ls._points = this._points.clone();
 		return ls;
 	},
 	getCoordinateN: function (n) {
-		return this.points.getCoordinate(n);
+		return this._points.getCoordinate(n);
 	},
 	getGeometryType: function () {
 		return "LineString";
 	},
 	copy: function () {
-		return new LineString(this.points.copy(), this.factory);
+		return new LineString(this._points.copy(), this._factory);
 	},
 	getCoordinateSequence: function () {
-		return this.points;
+		return this._points;
 	},
 	isEmpty: function () {
-		return this.points.size() === 0;
+		return this._points.size() === 0;
 	},
 	init: function (points) {
 		if (points === null) {
@@ -184,11 +184,11 @@ extend(LineString.prototype, {
 		if (points.size() === 1) {
 			throw new IllegalArgumentException("Invalid number of points in LineString (found " + points.size() + " - must be 0 or >= 2)");
 		}
-		this.points = points;
+		this._points = points;
 	},
 	isCoordinate: function (pt) {
-		for (var i = 0; i < this.points.size(); i++) {
-			if (this.points.getCoordinate(i).equals(pt)) {
+		for (var i = 0; i < this._points.size(); i++) {
+			if (this._points.getCoordinate(i).equals(pt)) {
 				return true;
 			}
 		}
@@ -201,7 +201,7 @@ extend(LineString.prototype, {
 		return this.getPointN(0);
 	},
 	getPointN: function (n) {
-		return this.getFactory().createPoint(this.points.getCoordinate(n));
+		return this.getFactory().createPoint(this._points.getCoordinate(n));
 	},
 	interfaces_: function () {
 		return [Lineal];

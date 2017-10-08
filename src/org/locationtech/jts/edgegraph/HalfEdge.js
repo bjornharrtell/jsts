@@ -3,11 +3,11 @@ import extend from '../../../../extend';
 import Quadrant from '../geomgraph/Quadrant';
 import Assert from '../util/Assert';
 export default function HalfEdge() {
-	this.__orig = null;
-	this.__sym = null;
-	this.__next = null;
+	this._orig = null;
+	this._sym = null;
+	this._next = null;
 	let orig = arguments[0];
-	this.__orig = orig;
+	this._orig = orig;
 }
 extend(HalfEdge.prototype, {
 	find: function (dest) {
@@ -20,10 +20,10 @@ extend(HalfEdge.prototype, {
 		return null;
 	},
 	dest: function () {
-		return this.__sym.__orig;
+		return this._sym._orig;
 	},
 	oNext: function () {
-		return this.__sym.__next;
+		return this._sym._next;
 	},
 	insert: function (e) {
 		if (this.oNext() === this) {
@@ -44,9 +44,9 @@ extend(HalfEdge.prototype, {
 		Assert.shouldNeverReachHere();
 	},
 	insertAfter: function (e) {
-		Assert.equals(this.__orig, e.orig());
+		Assert.equals(this._orig, e.orig());
 		var save = this.oNext();
-		this.__sym.setNext(e);
+		this._sym.setNext(e);
 		e.sym().setNext(save);
 	},
 	degree: function () {
@@ -61,17 +61,17 @@ extend(HalfEdge.prototype, {
 	equals: function () {
 		if (arguments.length === 2) {
 			let p0 = arguments[0], p1 = arguments[1];
-			return this.__orig.equals2D(p0) && this.__sym.__orig.equals(p1);
+			return this._orig.equals2D(p0) && this._sym._orig.equals(p1);
 		}
 	},
 	deltaY: function () {
-		return this.__sym.__orig.y - this.__orig.y;
+		return this._sym._orig.y - this._orig.y;
 	},
 	sym: function () {
-		return this.__sym;
+		return this._sym;
 	},
 	prev: function () {
-		return this.__sym.next().__sym;
+		return this._sym.next()._sym;
 	},
 	compareAngularDirection: function (e) {
 		var dx = this.deltaX();
@@ -83,7 +83,7 @@ extend(HalfEdge.prototype, {
 		var quadrant2 = Quadrant.quadrant(dx2, dy2);
 		if (quadrant > quadrant2) return 1;
 		if (quadrant < quadrant2) return -1;
-		return CGAlgorithms.computeOrientation(e.__orig, e.dest(), this.dest());
+		return CGAlgorithms.computeOrientation(e._orig, e.dest(), this.dest());
 	},
 	prevNode: function () {
 		var e = this;
@@ -99,19 +99,19 @@ extend(HalfEdge.prototype, {
 		return comp;
 	},
 	next: function () {
-		return this.__next;
+		return this._next;
 	},
 	setSym: function (e) {
-		this.__sym = e;
+		this._sym = e;
 	},
 	orig: function () {
-		return this.__orig;
+		return this._orig;
 	},
 	toString: function () {
-		return "HE(" + this.__orig.x + " " + this.__orig.y + ", " + this.__sym.__orig.x + " " + this.__sym.__orig.y + ")";
+		return "HE(" + this._orig.x + " " + this._orig.y + ", " + this._sym._orig.x + " " + this._sym._orig.y + ")";
 	},
 	setNext: function (e) {
-		this.__next = e;
+		this._next = e;
 	},
 	init: function (e) {
 		this.setSym(e);
@@ -120,7 +120,7 @@ extend(HalfEdge.prototype, {
 		e.setNext(this);
 	},
 	deltaX: function () {
-		return this.__sym.__orig.x - this.__orig.x;
+		return this._sym._orig.x - this._orig.x;
 	},
 	interfaces_: function () {
 		return [];
@@ -130,7 +130,7 @@ extend(HalfEdge.prototype, {
 	}
 });
 HalfEdge.init = function (e0, e1) {
-	if (e0.__sym !== null || e1.__sym !== null || e0.__next !== null || e1.__next !== null) throw new IllegalStateException("Edges are already initialized");
+	if (e0._sym !== null || e1._sym !== null || e0._next !== null || e1._next !== null) throw new IllegalStateException("Edges are already initialized");
 	e0.init(e1);
 	return e0;
 };

@@ -23,7 +23,7 @@ extend(SimpleNoder.prototype, {
 		var pts1 = e1.getCoordinates();
 		for (var i0 = 0; i0 < pts0.length - 1; i0++) {
 			for (var i1 = 0; i1 < pts1.length - 1; i1++) {
-				this.segInt.processIntersections(e0, i0, e1, i1);
+				this._segInt.processIntersections(e0, i0, e1, i1);
 			}
 		}
 	},

@@ -40,7 +40,7 @@ function HotPixelSnapAction() {
 	this._hotPixel = null;
 	this._parentEdge = null;
 	this._hotPixelVertexIndex = null;
-	this.__isNodeAdded = false;
+	this._isNodeAdded = false;
 	let hotPixel = arguments[0], parentEdge = arguments[1], hotPixelVertexIndex = arguments[2];
 	this._hotPixel = hotPixel;
 	this._parentEdge = parentEdge;
@@ -49,7 +49,7 @@ function HotPixelSnapAction() {
 inherits(HotPixelSnapAction, MonotoneChainSelectAction);
 extend(HotPixelSnapAction.prototype, {
 	isNodeAdded: function () {
-		return this.__isNodeAdded;
+		return this._isNodeAdded;
 	},
 	select: function () {
 		if (arguments.length === 2) {
@@ -58,7 +58,7 @@ extend(HotPixelSnapAction.prototype, {
 			if (this._parentEdge !== null) {
 				if (ss === this._parentEdge && startIndex === this._hotPixelVertexIndex) return null;
 			}
-			this.__isNodeAdded = this._hotPixel.addSnappedNode(ss, startIndex);
+			this._isNodeAdded = this._hotPixel.addSnappedNode(ss, startIndex);
 		} else return MonotoneChainSelectAction.prototype.select.apply(this, arguments);
 	},
 	interfaces_: function () {

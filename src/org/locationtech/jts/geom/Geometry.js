@@ -1,27 +1,26 @@
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
+import extend from '../../../../extend';
+import GeometryComponentFilter from './GeometryComponentFilter';
 import Comparable from '../../../../java/lang/Comparable';
 import Cloneable from '../../../../java/lang/Cloneable';
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import Serializable from '../../../../java/io/Serializable';
-import GeometryComponentFilter from './GeometryComponentFilter';
 import Envelope from './Envelope';
 import Assert from '../util/Assert';
-import extend from '../../../../extend';
-import inherits from '../../../../inherits';
 export default function Geometry() {
-	this.envelope = null;
-	this.factory = null;
-	this.SRID = null;
-	this.userData = null;
+	this._envelope = null;
+	this._factory = null;
+	this._SRID = null;
+	this._userData = null;
 	let factory = arguments[0];
-	this.factory = factory;
-	this.SRID = factory.getSRID();
+	this._factory = factory;
+	this._SRID = factory.getSRID();
 }
 extend(Geometry.prototype, {
 	isGeometryCollection: function () {
 		return this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION;
 	},
 	getFactory: function () {
-		return this.factory;
+		return this._factory;
 	},
 	getGeometryN: function (n) {
 		return this;
@@ -33,17 +32,15 @@ extend(Geometry.prototype, {
 		return false;
 	},
 	equals: function () {
-		if (arguments.length === 1) {
-			if (arguments[0] instanceof Geometry) {
-				let g = arguments[0];
-				if (g === null) return false;
-				return this.equalsTopo(g);
-			} else if (arguments[0] instanceof Object) {
-				let o = arguments[0];
-				if (!(o instanceof Geometry)) return false;
-				var g = o;
-				return this.equalsExact(g);
-			}
+		if (arguments[0] instanceof Geometry) {
+			let g = arguments[0];
+			if (g === null) return false;
+			return this.equalsTopo(g);
+		} else if (arguments[0] instanceof Object) {
+			let o = arguments[0];
+			if (!(o instanceof Geometry)) return false;
+			var g = o;
+			return this.equalsExact(g);
 		}
 	},
 	equalsExact: function (other) {
@@ -53,7 +50,7 @@ extend(Geometry.prototype, {
 		this.apply(Geometry.geometryChangedFilter);
 	},
 	geometryChangedAction: function () {
-		this.envelope = null;
+		this._envelope = null;
 	},
 	equalsNorm: function (g) {
 		if (g === null) return false;
@@ -101,10 +98,10 @@ extend(Geometry.prototype, {
 		}
 	},
 	getUserData: function () {
-		return this.userData;
+		return this._userData;
 	},
 	getSRID: function () {
-		return this.SRID;
+		return this._SRID;
 	},
 	getEnvelope: function () {
 		return this.getFactory().toGeometry(this.getEnvelopeInternal());
@@ -126,19 +123,56 @@ extend(Geometry.prototype, {
 		return copy;
 	},
 	getPrecisionModel: function () {
-		return this.factory.getPrecisionModel();
+		return this._factory.getPrecisionModel();
+	},
+	getCentroid: function () {
+		if (this.isEmpty()) return this._factory.createPoint();
+		var centPt = Centroid.getCentroid(this);
+		return this.createPointFromInternalCoord(centPt, this);
 	},
 	getEnvelopeInternal: function () {
-		if (this.envelope === null) {
-			this.envelope = this.computeEnvelopeInternal();
+		if (this._envelope === null) {
+			this._envelope = this.computeEnvelopeInternal();
 		}
-		return new Envelope(this.envelope);
+		return new Envelope(this._envelope);
+	},
+	isEquivalentClass: function (other) {
+		return this.name === other.getClass().getName();
 	},
 	setSRID: function (SRID) {
-		this.SRID = SRID;
+		this._SRID = SRID;
+	},
+	getInteriorPoint: function () {
+		if (this.isEmpty()) return this._factory.createPoint();
+		var interiorPt = null;
+		var dim = this.getDimension();
+		if (dim === 0) {
+			var intPt = new InteriorPointPoint(this);
+			interiorPt = intPt.getInteriorPoint();
+		} else if (dim === 1) {
+			var intPt = new InteriorPointLine(this);
+			interiorPt = intPt.getInteriorPoint();
+		} else {
+			var intPt = new InteriorPointArea(this);
+			interiorPt = intPt.getInteriorPoint();
+		}
+		return this.createPointFromInternalCoord(interiorPt, this);
+	},
+	symDifference: function (other) {
+		return OverlayOp.symDifference(this, other);
 	},
 	setUserData: function (userData) {
-		this.userData = userData;
+		this._userData = userData;
+	},
+	toString: function () {
+		return this.toText();
+	},
+	createPointFromInternalCoord: function (coord, exemplar) {
+		exemplar.getPrecisionModel().makePrecise(coord);
+		return exemplar.getFactory().createPoint(coord);
+	},
+	disjoint: function (g) {
+		return !this.intersects(g);
 	},
 	compare: function (a, b) {
 		var i = a.iterator();

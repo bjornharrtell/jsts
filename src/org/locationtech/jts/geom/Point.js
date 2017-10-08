@@ -112,7 +112,7 @@ extend(Point.prototype, {
 		return "Point";
 	},
 	copy: function () {
-		return new Point(this._coordinates.copy(), this.factory);
+		return new Point(this._coordinates.copy(), this._factory);
 	},
 	getCoordinateSequence: function () {
 		return this._coordinates;

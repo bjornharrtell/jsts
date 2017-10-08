@@ -19,19 +19,19 @@ extend(NonRobustLineIntersector.prototype, {
 			c1 = p2.x * p1.y - p1.x * p2.y;
 			r = a1 * p.x + b1 * p.y + c1;
 			if (r !== 0) {
-				this.result = LineIntersector.NO_INTERSECTION;
+				this._result = LineIntersector.NO_INTERSECTION;
 				return null;
 			}
 			var dist = this.rParameter(p1, p2, p);
 			if (dist < 0.0 || dist > 1.0) {
-				this.result = LineIntersector.NO_INTERSECTION;
+				this._result = LineIntersector.NO_INTERSECTION;
 				return null;
 			}
 			this._isProper = true;
 			if (p.equals(p1) || p.equals(p2)) {
 				this._isProper = false;
 			}
-			this.result = LineIntersector.POINT_INTERSECTION;
+			this._result = LineIntersector.POINT_INTERSECTION;
 		} else return LineIntersector.prototype.computeIntersection.apply(this, arguments);
 	},
 	computeCollinearIntersection: function (p1, p2, p3, p4) {
@@ -62,20 +62,20 @@ extend(NonRobustLineIntersector.prototype, {
 			return LineIntersector.NO_INTERSECTION;
 		}
 		if (q4 === p1) {
-			this.pa.setCoordinate(p1);
+			this._pa.setCoordinate(p1);
 			return LineIntersector.POINT_INTERSECTION;
 		}
 		if (q3 === p2) {
-			this.pa.setCoordinate(p2);
+			this._pa.setCoordinate(p2);
 			return LineIntersector.POINT_INTERSECTION;
 		}
-		this.pa.setCoordinate(p1);
+		this._pa.setCoordinate(p1);
 		if (t3 > r1) {
-			this.pa.setCoordinate(q3);
+			this._pa.setCoordinate(q3);
 		}
-		this.pb.setCoordinate(p2);
+		this._pb.setCoordinate(p2);
 		if (t4 < r2) {
-			this.pb.setCoordinate(q4);
+			this._pb.setCoordinate(q4);
 		}
 		return LineIntersector.COLLINEAR_INTERSECTION;
 	},
@@ -123,15 +123,15 @@ extend(NonRobustLineIntersector.prototype, {
 			return this.computeCollinearIntersection(p1, p2, p3, p4);
 		}
 		var numX = b1 * c2 - b2 * c1;
-		this.pa.x = numX / denom;
+		this._pa.x = numX / denom;
 		var numY = a2 * c1 - a1 * c2;
-		this.pa.y = numY / denom;
+		this._pa.y = numY / denom;
 		this._isProper = true;
-		if (this.pa.equals(p1) || this.pa.equals(p2) || this.pa.equals(p3) || this.pa.equals(p4)) {
+		if (this._pa.equals(p1) || this._pa.equals(p2) || this._pa.equals(p3) || this._pa.equals(p4)) {
 			this._isProper = false;
 		}
-		if (this.precisionModel !== null) {
-			this.precisionModel.makePrecise(this.pa);
+		if (this._precisionModel !== null) {
+			this._precisionModel.makePrecise(this._pa);
 		}
 		return LineIntersector.POINT_INTERSECTION;
 	},

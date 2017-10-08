@@ -8,7 +8,7 @@ export default function PreparedPolygonContains() {
 inherits(PreparedPolygonContains, AbstractPreparedPolygonContains);
 extend(PreparedPolygonContains.prototype, {
 	fullTopologicalPredicate: function (geom) {
-		var isContained = this.prepPoly.getGeometry().contains(geom);
+		var isContained = this._prepPoly.getGeometry().contains(geom);
 		return isContained;
 	},
 	contains: function (geom) {

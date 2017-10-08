@@ -103,12 +103,12 @@ extend(Geometry.prototype, {
 		return RelateOp.relate(this, ...args);
 	},
 	getCentroid: function () {
-		if (this.isEmpty()) return this.factory.createPoint();
+		if (this.isEmpty()) return this._factory.createPoint();
 		var centPt = Centroid.getCentroid(this);
 		return this.createPointFromInternalCoord(centPt, this);
 	},
 	getInteriorPoint: function () {
-		if (this.isEmpty()) return this.factory.createPoint();
+		if (this.isEmpty()) return this._factory.createPoint();
 		var interiorPt = null;
 		var dim = this.getDimension();
 		if (dim === 0) {

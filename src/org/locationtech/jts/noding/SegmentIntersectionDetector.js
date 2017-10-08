@@ -5,9 +5,9 @@ export default function SegmentIntersectionDetector() {
 	this._li = null;
 	this._findProper = false;
 	this._findAllTypes = false;
-	this.__hasIntersection = false;
-	this.__hasProperIntersection = false;
-	this.__hasNonProperIntersection = false;
+	this._hasIntersection = false;
+	this._hasProperIntersection = false;
+	this._hasNonProperIntersection = false;
 	this._intPt = null;
 	this._intSegments = null;
 	if (arguments.length === 0) {
@@ -25,7 +25,7 @@ extend(SegmentIntersectionDetector.prototype, {
 		this._findAllTypes = findAllTypes;
 	},
 	hasProperIntersection: function () {
-		return this.__hasProperIntersection;
+		return this._hasProperIntersection;
 	},
 	getIntersection: function () {
 		return this._intPt;
@@ -38,10 +38,10 @@ extend(SegmentIntersectionDetector.prototype, {
 		var p11 = e1.getCoordinates()[segIndex1 + 1];
 		this._li.computeIntersection(p00, p01, p10, p11);
 		if (this._li.hasIntersection()) {
-			this.__hasIntersection = true;
+			this._hasIntersection = true;
 			var isProper = this._li.isProper();
-			if (isProper) this.__hasProperIntersection = true;
-			if (!isProper) this.__hasNonProperIntersection = true;
+			if (isProper) this._hasProperIntersection = true;
+			if (!isProper) this._hasNonProperIntersection = true;
 			var saveLocation = true;
 			if (this._findProper && !isProper) saveLocation = false;
 			if (this._intPt === null || saveLocation) {
@@ -55,19 +55,19 @@ extend(SegmentIntersectionDetector.prototype, {
 		}
 	},
 	hasIntersection: function () {
-		return this.__hasIntersection;
+		return this._hasIntersection;
 	},
 	isDone: function () {
 		if (this._findAllTypes) {
-			return this.__hasProperIntersection && this.__hasNonProperIntersection;
+			return this._hasProperIntersection && this._hasNonProperIntersection;
 		}
 		if (this._findProper) {
-			return this.__hasProperIntersection;
+			return this._hasProperIntersection;
 		}
-		return this.__hasIntersection;
+		return this._hasIntersection;
 	},
 	hasNonProperIntersection: function () {
-		return this.__hasNonProperIntersection;
+		return this._hasNonProperIntersection;
 	},
 	setFindProper: function (findProper) {
 		this._findProper = findProper;

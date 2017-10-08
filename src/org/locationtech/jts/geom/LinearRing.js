@@ -34,7 +34,7 @@ extend(LinearRing.prototype, {
 		return LineString.prototype.isClosed.call(this);
 	},
 	reverse: function () {
-		var seq = this.points.copy();
+		var seq = this._points.copy();
 		CoordinateSequences.reverse(seq);
 		var rev = this.getFactory().createLinearRing(seq);
 		return rev;
@@ -51,7 +51,7 @@ extend(LinearRing.prototype, {
 		return "LinearRing";
 	},
 	copy: function () {
-		return new LinearRing(this.points.copy(), this.factory);
+		return new LinearRing(this._points.copy(), this._factory);
 	},
 	interfaces_: function () {
 		return [];

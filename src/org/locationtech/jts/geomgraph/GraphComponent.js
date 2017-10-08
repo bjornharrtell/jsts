@@ -1,48 +1,48 @@
 import extend from '../../../../extend';
 import Assert from '../util/Assert';
 export default function GraphComponent() {
-	this.label = null;
-	this.__isInResult = false;
-	this.__isCovered = false;
-	this.__isCoveredSet = false;
-	this.__isVisited = false;
+	this._label = null;
+	this._isInResult = false;
+	this._isCovered = false;
+	this._isCoveredSet = false;
+	this._isVisited = false;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let label = arguments[0];
-		this.label = label;
+		this._label = label;
 	}
 }
 extend(GraphComponent.prototype, {
 	setVisited: function (isVisited) {
-		this.__isVisited = isVisited;
+		this._isVisited = isVisited;
 	},
 	setInResult: function (isInResult) {
-		this.__isInResult = isInResult;
+		this._isInResult = isInResult;
 	},
 	isCovered: function () {
-		return this.__isCovered;
+		return this._isCovered;
 	},
 	isCoveredSet: function () {
-		return this.__isCoveredSet;
+		return this._isCoveredSet;
 	},
 	setLabel: function (label) {
-		this.label = label;
+		this._label = label;
 	},
 	getLabel: function () {
-		return this.label;
+		return this._label;
 	},
 	setCovered: function (isCovered) {
-		this.__isCovered = isCovered;
-		this.__isCoveredSet = true;
+		this._isCovered = isCovered;
+		this._isCoveredSet = true;
 	},
 	updateIM: function (im) {
-		Assert.isTrue(this.label.getGeometryCount() >= 2, "found partial label");
+		Assert.isTrue(this._label.getGeometryCount() >= 2, "found partial label");
 		this.computeIM(im);
 	},
 	isInResult: function () {
-		return this.__isInResult;
+		return this._isInResult;
 	},
 	isVisited: function () {
-		return this.__isVisited;
+		return this._isVisited;
 	},
 	interfaces_: function () {
 		return [];

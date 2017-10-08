@@ -6,7 +6,7 @@ import Polygonal from '../Polygonal';
 import inherits from '../../../../../inherits';
 import PreparedPolygonPredicate from './PreparedPolygonPredicate';
 export default function AbstractPreparedPolygonContains() {
-	this.requireSomePointInInterior = true;
+	this._requireSomePointInInterior = true;
 	this._hasSegmentIntersection = false;
 	this._hasProperIntersection = false;
 	this._hasNonProperIntersection = false;
@@ -18,7 +18,7 @@ extend(AbstractPreparedPolygonContains.prototype, {
 	eval: function (geom) {
 		var isAllInTargetArea = this.isAllTestComponentsInTarget(geom);
 		if (!isAllInTargetArea) return false;
-		if (this.requireSomePointInInterior && geom.getDimension() === 0) {
+		if (this._requireSomePointInInterior && geom.getDimension() === 0) {
 			var isAnyInTargetInterior = this.isAnyTestComponentInTargetInterior(geom);
 			return isAnyInTargetInterior;
 		}
@@ -30,7 +30,7 @@ extend(AbstractPreparedPolygonContains.prototype, {
 			return this.fullTopologicalPredicate(geom);
 		}
 		if (hasInterface(geom, Polygonal)) {
-			var isTargetInTestArea = this.isAnyTargetComponentInAreaTest(geom, this.prepPoly.getRepresentativePoints());
+			var isTargetInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints());
 			if (isTargetInTestArea) return false;
 		}
 		return true;
@@ -39,14 +39,14 @@ extend(AbstractPreparedPolygonContains.prototype, {
 		var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
 		var intDetector = new SegmentIntersectionDetector();
 		intDetector.setFindAllIntersectionTypes(true);
-		this.prepPoly.getIntersectionFinder().intersects(lineSegStr, intDetector);
+		this._prepPoly.getIntersectionFinder().intersects(lineSegStr, intDetector);
 		this._hasSegmentIntersection = intDetector.hasIntersection();
 		this._hasProperIntersection = intDetector.hasProperIntersection();
 		this._hasNonProperIntersection = intDetector.hasNonProperIntersection();
 	},
 	isProperIntersectionImpliesNotContainedSituation: function (testGeom) {
 		if (hasInterface(testGeom, Polygonal)) return true;
-		if (this.isSingleShell(this.prepPoly.getGeometry())) return true;
+		if (this.isSingleShell(this._prepPoly.getGeometry())) return true;
 		return false;
 	},
 	isSingleShell: function (geom) {

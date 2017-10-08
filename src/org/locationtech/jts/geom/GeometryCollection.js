@@ -13,7 +13,7 @@ import Envelope from './Envelope';
 import Assert from '../util/Assert';
 import inherits from '../../../../inherits';
 export default function GeometryCollection() {
-	this.geometries = null;
+	this._geometries = null;
 	let geometries = arguments[0], factory = arguments[1];
 	Geometry.call(this, factory);
 	if (geometries === null) {
@@ -22,19 +22,19 @@ export default function GeometryCollection() {
 	if (Geometry.hasNullElements(geometries)) {
 		throw new IllegalArgumentException("geometries must not contain null elements");
 	}
-	this.geometries = geometries;
+	this._geometries = geometries;
 }
 inherits(GeometryCollection, Geometry);
 extend(GeometryCollection.prototype, {
 	computeEnvelopeInternal: function () {
 		var envelope = new Envelope();
-		for (var i = 0; i < this.geometries.length; i++) {
-			envelope.expandToInclude(this.geometries[i].getEnvelopeInternal());
+		for (var i = 0; i < this._geometries.length; i++) {
+			envelope.expandToInclude(this._geometries[i].getEnvelopeInternal());
 		}
 		return envelope;
 	},
 	getGeometryN: function (n) {
-		return this.geometries[n];
+		return this._geometries[n];
 	},
 	getSortIndex: function () {
 		return Geometry.SORTINDEX_GEOMETRYCOLLECTION;
@@ -42,8 +42,8 @@ extend(GeometryCollection.prototype, {
 	getCoordinates: function () {
 		var coordinates = new Array(this.getNumPoints()).fill(null);
 		var k = -1;
-		for (var i = 0; i < this.geometries.length; i++) {
-			var childCoordinates = this.geometries[i].getCoordinates();
+		for (var i = 0; i < this._geometries.length; i++) {
+			var childCoordinates = this._geometries[i].getCoordinates();
 			for (var j = 0; j < childCoordinates.length; j++) {
 				k++;
 				coordinates[k] = childCoordinates[j];
@@ -53,8 +53,8 @@ extend(GeometryCollection.prototype, {
 	},
 	getArea: function () {
 		var area = 0.0;
-		for (var i = 0; i < this.geometries.length; i++) {
-			area += this.geometries[i].getArea();
+		for (var i = 0; i < this._geometries.length; i++) {
+			area += this._geometries[i].getArea();
 		}
 		return area;
 	},
@@ -65,11 +65,11 @@ extend(GeometryCollection.prototype, {
 				return false;
 			}
 			var otherCollection = other;
-			if (this.geometries.length !== otherCollection.geometries.length) {
+			if (this._geometries.length !== otherCollection._geometries.length) {
 				return false;
 			}
-			for (var i = 0; i < this.geometries.length; i++) {
-				if (!this.geometries[i].equalsExact(otherCollection.geometries[i], tolerance)) {
+			for (var i = 0; i < this._geometries.length; i++) {
+				if (!this._geometries[i].equalsExact(otherCollection._geometries[i], tolerance)) {
 					return false;
 				}
 			}
@@ -77,59 +77,59 @@ extend(GeometryCollection.prototype, {
 		} else return Geometry.prototype.equalsExact.apply(this, arguments);
 	},
 	normalize: function () {
-		for (var i = 0; i < this.geometries.length; i++) {
-			this.geometries[i].normalize();
+		for (var i = 0; i < this._geometries.length; i++) {
+			this._geometries[i].normalize();
 		}
-		Arrays.sort(this.geometries);
+		Arrays.sort(this._geometries);
 	},
 	getCoordinate: function () {
 		if (this.isEmpty()) return null;
-		return this.geometries[0].getCoordinate();
+		return this._geometries[0].getCoordinate();
 	},
 	getBoundaryDimension: function () {
 		var dimension = Dimension.FALSE;
-		for (var i = 0; i < this.geometries.length; i++) {
-			dimension = Math.max(dimension, this.geometries[i].getBoundaryDimension());
+		for (var i = 0; i < this._geometries.length; i++) {
+			dimension = Math.max(dimension, this._geometries[i].getBoundaryDimension());
 		}
 		return dimension;
 	},
 	getDimension: function () {
 		var dimension = Dimension.FALSE;
-		for (var i = 0; i < this.geometries.length; i++) {
-			dimension = Math.max(dimension, this.geometries[i].getDimension());
+		for (var i = 0; i < this._geometries.length; i++) {
+			dimension = Math.max(dimension, this._geometries[i].getDimension());
 		}
 		return dimension;
 	},
 	getLength: function () {
 		var sum = 0.0;
-		for (var i = 0; i < this.geometries.length; i++) {
-			sum += this.geometries[i].getLength();
+		for (var i = 0; i < this._geometries.length; i++) {
+			sum += this._geometries[i].getLength();
 		}
 		return sum;
 	},
 	getNumPoints: function () {
 		var numPoints = 0;
-		for (var i = 0; i < this.geometries.length; i++) {
-			numPoints += this.geometries[i].getNumPoints();
+		for (var i = 0; i < this._geometries.length; i++) {
+			numPoints += this._geometries[i].getNumPoints();
 		}
 		return numPoints;
 	},
 	getNumGeometries: function () {
-		return this.geometries.length;
+		return this._geometries.length;
 	},
 	reverse: function () {
-		var n = this.geometries.length;
+		var n = this._geometries.length;
 		var revGeoms = new Array(n).fill(null);
-		for (var i = 0; i < this.geometries.length; i++) {
-			revGeoms[i] = this.geometries[i].reverse();
+		for (var i = 0; i < this._geometries.length; i++) {
+			revGeoms[i] = this._geometries[i].reverse();
 		}
 		return this.getFactory().createGeometryCollection(revGeoms);
 	},
 	compareToSameClass: function () {
 		if (arguments.length === 1) {
 			let o = arguments[0];
-			var theseElements = new TreeSet(Arrays.asList(this.geometries));
-			var otherElements = new TreeSet(Arrays.asList(o.geometries));
+			var theseElements = new TreeSet(Arrays.asList(this._geometries));
+			var otherElements = new TreeSet(Arrays.asList(o._geometries));
 			return this.compare(theseElements, otherElements);
 		} else if (arguments.length === 2) {
 			let o = arguments[0], comp = arguments[1];
@@ -152,14 +152,14 @@ extend(GeometryCollection.prototype, {
 	apply: function () {
 		if (hasInterface(arguments[0], CoordinateFilter)) {
 			let filter = arguments[0];
-			for (var i = 0; i < this.geometries.length; i++) {
-				this.geometries[i].apply(filter);
+			for (var i = 0; i < this._geometries.length; i++) {
+				this._geometries[i].apply(filter);
 			}
 		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
 			let filter = arguments[0];
-			if (this.geometries.length === 0) return null;
-			for (var i = 0; i < this.geometries.length; i++) {
-				this.geometries[i].apply(filter);
+			if (this._geometries.length === 0) return null;
+			for (var i = 0; i < this._geometries.length; i++) {
+				this._geometries[i].apply(filter);
 				if (filter.isDone()) {
 					break;
 				}
@@ -168,14 +168,14 @@ extend(GeometryCollection.prototype, {
 		} else if (hasInterface(arguments[0], GeometryFilter)) {
 			let filter = arguments[0];
 			filter.filter(this);
-			for (var i = 0; i < this.geometries.length; i++) {
-				this.geometries[i].apply(filter);
+			for (var i = 0; i < this._geometries.length; i++) {
+				this._geometries[i].apply(filter);
 			}
 		} else if (hasInterface(arguments[0], GeometryComponentFilter)) {
 			let filter = arguments[0];
 			filter.filter(this);
-			for (var i = 0; i < this.geometries.length; i++) {
-				this.geometries[i].apply(filter);
+			for (var i = 0; i < this._geometries.length; i++) {
+				this._geometries[i].apply(filter);
 			}
 		}
 	},
@@ -186,9 +186,9 @@ extend(GeometryCollection.prototype, {
 	},
 	clone: function () {
 		var gc = Geometry.prototype.clone.call(this);
-		gc.geometries = new Array(this.geometries.length).fill(null);
-		for (var i = 0; i < this.geometries.length; i++) {
-			gc.geometries[i] = this.geometries[i].clone();
+		gc._geometries = new Array(this._geometries.length).fill(null);
+		for (var i = 0; i < this._geometries.length; i++) {
+			gc._geometries[i] = this._geometries[i].clone();
 		}
 		return gc;
 	},
@@ -196,15 +196,15 @@ extend(GeometryCollection.prototype, {
 		return "GeometryCollection";
 	},
 	copy: function () {
-		var geometries = new Array(this.geometries.length).fill(null);
+		var geometries = new Array(this._geometries.length).fill(null);
 		for (var i = 0; i < geometries.length; i++) {
-			geometries[i] = this.geometries[i].copy();
+			geometries[i] = this._geometries[i].copy();
 		}
-		return new GeometryCollection(geometries, this.factory);
+		return new GeometryCollection(geometries, this._factory);
 	},
 	isEmpty: function () {
-		for (var i = 0; i < this.geometries.length; i++) {
-			if (!this.geometries[i].isEmpty()) {
+		for (var i = 0; i < this._geometries.length; i++) {
+			if (!this._geometries[i].isEmpty()) {
 				return false;
 			}
 		}

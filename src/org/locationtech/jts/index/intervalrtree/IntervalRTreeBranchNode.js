@@ -13,8 +13,8 @@ export default function IntervalRTreeBranchNode() {
 inherits(IntervalRTreeBranchNode, IntervalRTreeNode);
 extend(IntervalRTreeBranchNode.prototype, {
 	buildExtent: function (n1, n2) {
-		this.min = Math.min(n1.min, n2.min);
-		this.max = Math.max(n1.max, n2.max);
+		this._min = Math.min(n1._min, n2._min);
+		this._max = Math.max(n1._max, n2._max);
 	},
 	query: function (queryMin, queryMax, visitor) {
 		if (!this.intersects(queryMin, queryMax)) {

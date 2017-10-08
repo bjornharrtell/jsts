@@ -45,7 +45,7 @@ extend(MCIndexNoder.prototype, {
 		this.intersectChains();
 	},
 	intersectChains: function () {
-		var overlapAction = new SegmentOverlapAction(this.segInt);
+		var overlapAction = new SegmentOverlapAction(this._segInt);
 		for (var i = this._monoChains.iterator(); i.hasNext(); ) {
 			var queryChain = i.next();
 			var overlapChains = this._index.query(queryChain.getEnvelope());
@@ -55,7 +55,7 @@ extend(MCIndexNoder.prototype, {
 					queryChain.computeOverlaps(testChain, overlapAction);
 					this._nOverlaps++;
 				}
-				if (this.segInt.isDone()) return null;
+				if (this._segInt.isDone()) return null;
 			}
 		}
 	},

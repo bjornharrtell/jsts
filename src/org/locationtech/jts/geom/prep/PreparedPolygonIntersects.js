@@ -14,11 +14,11 @@ extend(PreparedPolygonIntersects.prototype, {
 		if (geom.getDimension() === 0) return false;
 		var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
 		if (lineSegStr.size() > 0) {
-			var segsIntersect = this.prepPoly.getIntersectionFinder().intersects(lineSegStr);
+			var segsIntersect = this._prepPoly.getIntersectionFinder().intersects(lineSegStr);
 			if (segsIntersect) return true;
 		}
 		if (geom.getDimension() === 2) {
-			var isPrepGeomInArea = this.isAnyTargetComponentInAreaTest(geom, this.prepPoly.getRepresentativePoints());
+			var isPrepGeomInArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints());
 			if (isPrepGeomInArea) return true;
 		}
 		return false;

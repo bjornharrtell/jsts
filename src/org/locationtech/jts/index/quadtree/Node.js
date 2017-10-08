@@ -21,8 +21,8 @@ extend(Node.prototype, {
 	find: function (searchEnv) {
 		var subnodeIndex = NodeBase.getSubnodeIndex(searchEnv, this._centrex, this._centrey);
 		if (subnodeIndex === -1) return this;
-		if (this.subnode[subnodeIndex] !== null) {
-			var node = this.subnode[subnodeIndex];
+		if (this._subnode[subnodeIndex] !== null) {
+			var node = this._subnode[subnodeIndex];
 			return node.find(searchEnv);
 		}
 		return this;
@@ -31,10 +31,10 @@ extend(Node.prototype, {
 		return this._env.intersects(searchEnv);
 	},
 	getSubnode: function (index) {
-		if (this.subnode[index] === null) {
-			this.subnode[index] = this.createSubnode(index);
+		if (this._subnode[index] === null) {
+			this._subnode[index] = this.createSubnode(index);
 		}
-		return this.subnode[index];
+		return this._subnode[index];
 	},
 	getEnvelope: function () {
 		return this._env;
@@ -87,11 +87,11 @@ extend(Node.prototype, {
 		Assert.isTrue(this._env === null || this._env.contains(node._env));
 		var index = NodeBase.getSubnodeIndex(node._env, this._centrex, this._centrey);
 		if (node._level === this._level - 1) {
-			this.subnode[index] = node;
+			this._subnode[index] = node;
 		} else {
 			var childNode = this.createSubnode(index);
 			childNode.insertNode(node);
-			this.subnode[index] = childNode;
+			this._subnode[index] = childNode;
 		}
 	},
 	interfaces_: function () {

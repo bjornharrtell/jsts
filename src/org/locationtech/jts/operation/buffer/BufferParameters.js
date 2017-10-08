@@ -4,7 +4,7 @@ export default function BufferParameters() {
 	this._endCapStyle = BufferParameters.CAP_ROUND;
 	this._joinStyle = BufferParameters.JOIN_ROUND;
 	this._mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
-	this.__isSingleSided = false;
+	this._isSingleSided = false;
 	this._simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let quadrantSegments = arguments[0];
@@ -26,7 +26,7 @@ extend(BufferParameters.prototype, {
 		return this._endCapStyle;
 	},
 	isSingleSided: function () {
-		return this.__isSingleSided;
+		return this._isSingleSided;
 	},
 	setQuadrantSegments: function (quadSegs) {
 		this._quadrantSegments = quadSegs;
@@ -67,7 +67,7 @@ extend(BufferParameters.prototype, {
 		this._mitreLimit = mitreLimit;
 	},
 	setSingleSided: function (isSingleSided) {
-		this.__isSingleSided = isSingleSided;
+		this._isSingleSided = isSingleSided;
 	},
 	interfaces_: function () {
 		return [];

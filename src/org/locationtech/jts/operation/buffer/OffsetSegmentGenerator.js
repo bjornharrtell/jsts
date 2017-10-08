@@ -26,7 +26,7 @@ export default function OffsetSegmentGenerator() {
 	this._offset0 = new LineSegment();
 	this._offset1 = new LineSegment();
 	this._side = 0;
-	this.__hasNarrowConcaveAngle = false;
+	this._hasNarrowConcaveAngle = false;
 	let precisionModel = arguments[0], bufParams = arguments[1], distance = arguments[2];
 	this._precisionModel = precisionModel;
 	this._bufParams = bufParams;
@@ -222,7 +222,7 @@ extend(OffsetSegmentGenerator.prototype, {
 		if (this._li.hasIntersection()) {
 			this._segList.addPt(this._li.getIntersection(0));
 		} else {
-			this.__hasNarrowConcaveAngle = true;
+			this._hasNarrowConcaveAngle = true;
 			if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR) {
 				this._segList.addPt(this._offset0.p1);
 			} else {
@@ -272,7 +272,7 @@ extend(OffsetSegmentGenerator.prototype, {
 		this._segList.closeRing();
 	},
 	hasNarrowConcaveAngle: function () {
-		return this.__hasNarrowConcaveAngle;
+		return this._hasNarrowConcaveAngle;
 	},
 	interfaces_: function () {
 		return [];

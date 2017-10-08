@@ -51,7 +51,7 @@ extend(EdgeIntersectionList.prototype, {
 			pts[ipt++] = this.edge.pts[i];
 		}
 		if (useIntPt1) pts[ipt] = ei1.coord;
-		return new Edge(pts, new Label(this.edge.label));
+		return new Edge(pts, new Label(this.edge._label));
 	},
 	add: function (intPt, segmentIndex, dist) {
 		var eiNew = new EdgeIntersection(intPt, segmentIndex, dist);

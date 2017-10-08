@@ -4,8 +4,8 @@ import Comparable from '../../../../java/lang/Comparable';
 import Quadrant from './Quadrant';
 import Assert from '../util/Assert';
 export default function EdgeEnd() {
-	this.edge = null;
-	this.label = null;
+	this._edge = null;
+	this._label = null;
 	this._node = null;
 	this._p0 = null;
 	this._p1 = null;
@@ -14,7 +14,7 @@ export default function EdgeEnd() {
 	this._quadrant = null;
 	if (arguments.length === 1) {
 		let edge = arguments[0];
-		this.edge = edge;
+		this._edge = edge;
 	} else if (arguments.length === 3) {
 		let edge = arguments[0], p0 = arguments[1], p1 = arguments[2];
 		EdgeEnd.call(this, edge, p0, p1, null);
@@ -22,7 +22,7 @@ export default function EdgeEnd() {
 		let edge = arguments[0], p0 = arguments[1], p1 = arguments[2], label = arguments[3];
 		EdgeEnd.call(this, edge);
 		this.init(p0, p1);
-		this.label = label;
+		this._label = label;
 	}
 }
 extend(EdgeEnd.prototype, {
@@ -46,7 +46,7 @@ extend(EdgeEnd.prototype, {
 		var className = this.getClass().getName();
 		var lastDotPos = className.lastIndexOf('.');
 		var name = className.substring(lastDotPos + 1);
-		out.print("  " + name + ": " + this._p0 + " - " + this._p1 + " " + this._quadrant + ":" + angle + "   " + this.label);
+		out.print("  " + name + ": " + this._p0 + " - " + this._p1 + " " + this._quadrant + ":" + angle + "   " + this._label);
 	},
 	compareTo: function (obj) {
 		var e = obj;
@@ -59,10 +59,10 @@ extend(EdgeEnd.prototype, {
 		return this._dx;
 	},
 	getLabel: function () {
-		return this.label;
+		return this._label;
 	},
 	getEdge: function () {
-		return this.edge;
+		return this._edge;
 	},
 	getQuadrant: function () {
 		return this._quadrant;
@@ -75,7 +75,7 @@ extend(EdgeEnd.prototype, {
 		var className = this.getClass().getName();
 		var lastDotPos = className.lastIndexOf('.');
 		var name = className.substring(lastDotPos + 1);
-		return "  " + name + ": " + this._p0 + " - " + this._p1 + " " + this._quadrant + ":" + angle + "   " + this.label;
+		return "  " + name + ": " + this._p0 + " - " + this._p1 + " " + this._quadrant + ":" + angle + "   " + this._label;
 	},
 	computeLabel: function (boundaryNodeRule) {},
 	init: function (p0, p1) {

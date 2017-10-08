@@ -2,13 +2,13 @@ import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 export default function NodeBase() {
-	this.items = new ArrayList();
-	this.subnode = new Array(4).fill(null);
+	this._items = new ArrayList();
+	this._subnode = new Array(4).fill(null);
 }
 extend(NodeBase.prototype, {
 	hasChildren: function () {
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) return true;
+			if (this._subnode[i] !== null) return true;
 		}
 		return false;
 	},
@@ -16,10 +16,10 @@ extend(NodeBase.prototype, {
 		return !(this.hasChildren() || this.hasItems());
 	},
 	addAllItems: function (resultItems) {
-		resultItems.addAll(this.items);
+		resultItems.addAll(this._items);
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				this.subnode[i].addAllItems(resultItems);
+			if (this._subnode[i] !== null) {
+				this._subnode[i].addAllItems(resultItems);
 			}
 		}
 		return resultItems;
@@ -27,8 +27,8 @@ extend(NodeBase.prototype, {
 	getNodeCount: function () {
 		var subSize = 0;
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				subSize += this.subnode[i].size();
+			if (this._subnode[i] !== null) {
+				subSize += this._subnode[i].size();
 			}
 		}
 		return subSize + 1;
@@ -36,62 +36,62 @@ extend(NodeBase.prototype, {
 	size: function () {
 		var subSize = 0;
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				subSize += this.subnode[i].size();
+			if (this._subnode[i] !== null) {
+				subSize += this._subnode[i].size();
 			}
 		}
-		return subSize + this.items.size();
+		return subSize + this._items.size();
 	},
 	addAllItemsFromOverlapping: function (searchEnv, resultItems) {
 		if (!this.isSearchMatch(searchEnv)) return null;
-		resultItems.addAll(this.items);
+		resultItems.addAll(this._items);
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				this.subnode[i].addAllItemsFromOverlapping(searchEnv, resultItems);
+			if (this._subnode[i] !== null) {
+				this._subnode[i].addAllItemsFromOverlapping(searchEnv, resultItems);
 			}
 		}
 	},
 	visitItems: function (searchEnv, visitor) {
-		for (var i = this.items.iterator(); i.hasNext(); ) {
+		for (var i = this._items.iterator(); i.hasNext(); ) {
 			visitor.visitItem(i.next());
 		}
 	},
 	hasItems: function () {
-		return !this.items.isEmpty();
+		return !this._items.isEmpty();
 	},
 	remove: function (itemEnv, item) {
 		if (!this.isSearchMatch(itemEnv)) return false;
 		var found = false;
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				found = this.subnode[i].remove(itemEnv, item);
+			if (this._subnode[i] !== null) {
+				found = this._subnode[i].remove(itemEnv, item);
 				if (found) {
-					if (this.subnode[i].isPrunable()) this.subnode[i] = null;
+					if (this._subnode[i].isPrunable()) this._subnode[i] = null;
 					break;
 				}
 			}
 		}
 		if (found) return found;
-		found = this.items.remove(item);
+		found = this._items.remove(item);
 		return found;
 	},
 	visit: function (searchEnv, visitor) {
 		if (!this.isSearchMatch(searchEnv)) return null;
 		this.visitItems(searchEnv, visitor);
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				this.subnode[i].visit(searchEnv, visitor);
+			if (this._subnode[i] !== null) {
+				this._subnode[i].visit(searchEnv, visitor);
 			}
 		}
 	},
 	getItems: function () {
-		return this.items;
+		return this._items;
 	},
 	depth: function () {
 		var maxSubDepth = 0;
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				var sqd = this.subnode[i].depth();
+			if (this._subnode[i] !== null) {
+				var sqd = this._subnode[i].depth();
 				if (sqd > maxSubDepth) maxSubDepth = sqd;
 			}
 		}
@@ -99,16 +99,16 @@ extend(NodeBase.prototype, {
 	},
 	isEmpty: function () {
 		var isEmpty = true;
-		if (!this.items.isEmpty()) isEmpty = false;
+		if (!this._items.isEmpty()) isEmpty = false;
 		for (var i = 0; i < 4; i++) {
-			if (this.subnode[i] !== null) {
-				if (!this.subnode[i].isEmpty()) isEmpty = false;
+			if (this._subnode[i] !== null) {
+				if (!this._subnode[i].isEmpty()) isEmpty = false;
 			}
 		}
 		return isEmpty;
 	},
 	add: function (item) {
-		this.items.add(item);
+		this._items.add(item);
 	},
 	interfaces_: function () {
 		return [Serializable];

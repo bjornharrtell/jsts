@@ -5,8 +5,8 @@ export default function IntervalRTreeLeafNode() {
 	IntervalRTreeNode.apply(this);
 	this._item = null;
 	let min = arguments[0], max = arguments[1], item = arguments[2];
-	this.min = min;
-	this.max = max;
+	this._min = min;
+	this._max = max;
 	this._item = item;
 }
 inherits(IntervalRTreeLeafNode, IntervalRTreeNode);

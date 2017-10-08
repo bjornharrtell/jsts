@@ -3,15 +3,15 @@ import Comparable from '../../../../java/lang/Comparable';
 import CoordinateArrays from '../geom/CoordinateArrays';
 export default function OrientedCoordinateArray() {
 	this._pts = null;
-	this.__orientation = null;
+	this._orientation = null;
 	let pts = arguments[0];
 	this._pts = pts;
-	this.__orientation = OrientedCoordinateArray.orientation(pts);
+	this._orientation = OrientedCoordinateArray.orientation(pts);
 }
 extend(OrientedCoordinateArray.prototype, {
 	compareTo: function (o1) {
 		var oca = o1;
-		var comp = OrientedCoordinateArray.compareOriented(this._pts, this.__orientation, oca._pts, oca.__orientation);
+		var comp = OrientedCoordinateArray.compareOriented(this._pts, this._orientation, oca._pts, oca._orientation);
 		return comp;
 	},
 	interfaces_: function () {

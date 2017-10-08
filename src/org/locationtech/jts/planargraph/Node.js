@@ -6,44 +6,44 @@ import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
 export default function Node() {
 	GraphComponent.apply(this);
-	this.pt = null;
-	this.deStar = null;
+	this._pt = null;
+	this._deStar = null;
 	if (arguments.length === 1) {
 		let pt = arguments[0];
 		Node.call(this, pt, new DirectedEdgeStar());
 	} else if (arguments.length === 2) {
 		let pt = arguments[0], deStar = arguments[1];
-		this.pt = pt;
-		this.deStar = deStar;
+		this._pt = pt;
+		this._deStar = deStar;
 	}
 }
 inherits(Node, GraphComponent);
 extend(Node.prototype, {
 	isRemoved: function () {
-		return this.pt === null;
+		return this._pt === null;
 	},
 	addOutEdge: function (de) {
-		this.deStar.add(de);
+		this._deStar.add(de);
 	},
 	getCoordinate: function () {
-		return this.pt;
+		return this._pt;
 	},
 	getOutEdges: function () {
-		return this.deStar;
+		return this._deStar;
 	},
 	remove: function () {
 		if (arguments.length === 0) {
-			this.pt = null;
+			this._pt = null;
 		} else if (arguments.length === 1) {
 			let de = arguments[0];
-			this.deStar.remove(de);
+			this._deStar.remove(de);
 		}
 	},
 	getIndex: function (edge) {
-		return this.deStar.getIndex(edge);
+		return this._deStar.getIndex(edge);
 	},
 	getDegree: function () {
-		return this.deStar.getDegree();
+		return this._deStar.getDegree();
 	},
 	interfaces_: function () {
 		return [];

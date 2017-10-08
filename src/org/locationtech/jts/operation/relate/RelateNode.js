@@ -8,10 +8,10 @@ export default function RelateNode() {
 inherits(RelateNode, Node);
 extend(RelateNode.prototype, {
 	updateIMFromEdges: function (im) {
-		this.edges.updateIM(im);
+		this._edges.updateIM(im);
 	},
 	computeIM: function (im) {
-		im.setAtLeastIfValid(this.label.getLocation(0), this.label.getLocation(1), 0);
+		im.setAtLeastIfValid(this._label.getLocation(0), this._label.getLocation(1), 0);
 	},
 	interfaces_: function () {
 		return [];

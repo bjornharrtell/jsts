@@ -5,13 +5,13 @@ import Comparable from '../../../../../java/lang/Comparable';
 export default function BoundablePair() {
 	this._boundable1 = null;
 	this._boundable2 = null;
-	this.__distance = null;
+	this._distance = null;
 	this._itemDistance = null;
 	let boundable1 = arguments[0], boundable2 = arguments[1], itemDistance = arguments[2];
 	this._boundable1 = boundable1;
 	this._boundable2 = boundable2;
 	this._itemDistance = itemDistance;
-	this.__distance = this.distance();
+	this._distance = this.distance();
 }
 extend(BoundablePair.prototype, {
 	expandToQueue: function (priQ, minDistance) {
@@ -39,8 +39,8 @@ extend(BoundablePair.prototype, {
 	},
 	compareTo: function (o) {
 		var nd = o;
-		if (this.__distance < nd.__distance) return -1;
-		if (this.__distance > nd.__distance) return 1;
+		if (this._distance < nd._distance) return -1;
+		if (this._distance > nd._distance) return 1;
 		return 0;
 	},
 	expand: function (bndComposite, bndOther, priQ, minDistance) {
@@ -58,7 +58,7 @@ extend(BoundablePair.prototype, {
 		return this._boundable2;
 	},
 	getDistance: function () {
-		return this.__distance;
+		return this._distance;
 	},
 	distance: function () {
 		if (this.isLeaves()) {

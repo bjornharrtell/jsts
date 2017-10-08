@@ -1,7 +1,7 @@
 import Noder from './Noder';
 import extend from '../../../../extend';
 export default function SinglePassNoder() {
-	this.segInt = null;
+	this._segInt = null;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let segInt = arguments[0];
 		this.setSegmentIntersector(segInt);
@@ -9,7 +9,7 @@ export default function SinglePassNoder() {
 }
 extend(SinglePassNoder.prototype, {
 	setSegmentIntersector: function (segInt) {
-		this.segInt = segInt;
+		this._segInt = segInt;
 	},
 	interfaces_: function () {
 		return [Noder];

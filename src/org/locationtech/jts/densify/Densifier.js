@@ -79,7 +79,7 @@ extend(DensifyTransformer.prototype, {
 		if (parent instanceof LineString && newPts.length === 1) {
 			newPts = new Array(0).fill(null);
 		}
-		return this.factory.getCoordinateSequenceFactory().create(newPts);
+		return this._factory.getCoordinateSequenceFactory().create(newPts);
 	},
 	createValidArea: function (roughAreaGeom) {
 		return roughAreaGeom.buffer(0.0);

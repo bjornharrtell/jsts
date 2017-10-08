@@ -3,21 +3,21 @@ import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import Envelope from '../geom/Envelope';
 export default function GeometricShapeBuilder() {
-	this.extent = new Envelope(0, 1, 0, 1);
-	this.numPts = 0;
-	this.geomFactory = null;
+	this._extent = new Envelope(0, 1, 0, 1);
+	this._numPts = 0;
+	this._geomFactory = null;
 	let geomFactory = arguments[0];
-	this.geomFactory = geomFactory;
+	this._geomFactory = geomFactory;
 }
 extend(GeometricShapeBuilder.prototype, {
 	setNumPoints: function (numPts) {
-		this.numPts = numPts;
+		this._numPts = numPts;
 	},
 	getRadius: function () {
 		return this.getDiameter() / 2;
 	},
 	getDiameter: function () {
-		return Math.min(this.extent.getHeight(), this.extent.getWidth());
+		return Math.min(this._extent.getHeight(), this._extent.getWidth());
 	},
 	getSquareBaseLine: function () {
 		var radius = this.getRadius();
@@ -27,13 +27,13 @@ extend(GeometricShapeBuilder.prototype, {
 		return new LineSegment(p0, p1);
 	},
 	setExtent: function (extent) {
-		this.extent = extent;
+		this._extent = extent;
 	},
 	getCentre: function () {
-		return this.extent.centre();
+		return this._extent.centre();
 	},
 	getExtent: function () {
-		return this.extent;
+		return this._extent;
 	},
 	getSquareExtent: function () {
 		var radius = this.getRadius();
@@ -42,7 +42,7 @@ extend(GeometricShapeBuilder.prototype, {
 	},
 	createCoord: function (x, y) {
 		var pt = new Coordinate(x, y);
-		this.geomFactory.getPrecisionModel().makePrecise(pt);
+		this._geomFactory.getPrecisionModel().makePrecise(pt);
 		return pt;
 	},
 	interfaces_: function () {

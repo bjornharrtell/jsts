@@ -11,26 +11,26 @@ inherits(MaximalEdgeRing, EdgeRing);
 extend(MaximalEdgeRing.prototype, {
 	buildMinimalRings: function () {
 		var minEdgeRings = new ArrayList();
-		var de = this.startDe;
+		var de = this._startDe;
 		do {
 			if (de.getMinEdgeRing() === null) {
-				var minEr = new MinimalEdgeRing(de, this.geometryFactory);
+				var minEr = new MinimalEdgeRing(de, this._geometryFactory);
 				minEdgeRings.add(minEr);
 			}
 			de = de.getNext();
-		} while (de !== this.startDe);
+		} while (de !== this._startDe);
 		return minEdgeRings;
 	},
 	setEdgeRing: function (de, er) {
 		de.setEdgeRing(er);
 	},
 	linkDirectedEdgesForMinimalEdgeRings: function () {
-		var de = this.startDe;
+		var de = this._startDe;
 		do {
 			var node = de.getNode();
 			node.getEdges().linkMinimalDirectedEdges(this);
 			de = de.getNext();
-		} while (de !== this.startDe);
+		} while (de !== this._startDe);
 	},
 	getNext: function (de) {
 		return de.getNext();

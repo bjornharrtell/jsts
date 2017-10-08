@@ -8,21 +8,21 @@ import RectangleContains from '../predicate/RectangleContains';
 import inherits from '../../../../../inherits';
 import RectangleIntersects from '../predicate/RectangleIntersects';
 export default function RelateOp() {
-	this.__relate = null;
+	this._relate = null;
 	if (arguments.length === 2) {
 		let g0 = arguments[0], g1 = arguments[1];
 		GeometryGraphOperation.call(this, g0, g1);
-		this.__relate = new RelateComputer(this.arg);
+		this._relate = new RelateComputer(this._arg);
 	} else if (arguments.length === 3) {
 		let g0 = arguments[0], g1 = arguments[1], boundaryNodeRule = arguments[2];
 		GeometryGraphOperation.call(this, g0, g1, boundaryNodeRule);
-		this.__relate = new RelateComputer(this.arg);
+		this._relate = new RelateComputer(this._arg);
 	}
 }
 inherits(RelateOp, GeometryGraphOperation);
 extend(RelateOp.prototype, {
 	getIntersectionMatrix: function () {
-		return this.__relate.computeIM();
+		return this._relate.computeIM();
 	},
 	interfaces_: function () {
 		return [];

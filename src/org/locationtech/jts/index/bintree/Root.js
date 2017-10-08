@@ -15,12 +15,12 @@ extend(Root.prototype, {
 			this.add(item);
 			return null;
 		}
-		var node = this.subnode[index];
+		var node = this._subnode[index];
 		if (node === null || !node.getInterval().contains(itemInterval)) {
 			var largerNode = Node.createExpanded(node, itemInterval);
-			this.subnode[index] = largerNode;
+			this._subnode[index] = largerNode;
 		}
-		this.insertContained(this.subnode[index], itemInterval, item);
+		this.insertContained(this._subnode[index], itemInterval, item);
 	},
 	isSearchMatch: function (interval) {
 		return true;

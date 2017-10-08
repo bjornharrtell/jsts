@@ -38,7 +38,7 @@ extend(SortedPackedIntervalRTree.prototype, {
 		this._root = this.buildTree();
 	},
 	printNode: function (node) {
-		System.out.println(WKTWriter.toLineString(new Coordinate(node.min, this._level), new Coordinate(node.max, this._level)));
+		System.out.println(WKTWriter.toLineString(new Coordinate(node._min, this._level), new Coordinate(node._max, this._level)));
 	},
 	init: function () {
 		if (this._root !== null) return null;

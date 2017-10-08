@@ -20,18 +20,18 @@ extend(ObjectCounter.prototype, {
 	}
 });
 function Counter() {
-	this._count = 0;
+	this.count = 0;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let count = arguments[0];
-		this._count = count;
+		this.count = count;
 	}
 }
 extend(Counter.prototype, {
 	count: function () {
-		return this._count;
+		return this.count;
 	},
 	increment: function () {
-		this._count++;
+		this.count++;
 	},
 	interfaces_: function () {
 		return [];

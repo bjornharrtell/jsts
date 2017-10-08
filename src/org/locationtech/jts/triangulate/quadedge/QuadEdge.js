@@ -2,7 +2,7 @@ import WKTWriter from '../../io/WKTWriter';
 import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
 export default function QuadEdge() {
-	this.__rot = null;
+	this._rot = null;
 	this._vertex = null;
 	this._next = null;
 	this._data = null;
@@ -36,13 +36,13 @@ extend(QuadEdge.prototype, {
 		return this.sym().oNext();
 	},
 	rot: function () {
-		return this.__rot;
+		return this._rot;
 	},
 	oPrev: function () {
-		return this.__rot._next.__rot;
+		return this._rot._next._rot;
 	},
 	sym: function () {
-		return this.__rot.__rot;
+		return this._rot._rot;
 	},
 	setOrig: function (o) {
 		this._vertex = o;
@@ -54,7 +54,7 @@ extend(QuadEdge.prototype, {
 		return this.orig().getCoordinate().distance(this.dest().getCoordinate());
 	},
 	invRot: function () {
-		return this.__rot.sym();
+		return this._rot.sym();
 	},
 	setDest: function (d) {
 		this.sym().setOrig(d);
@@ -66,13 +66,13 @@ extend(QuadEdge.prototype, {
 		return this._data;
 	},
 	delete: function () {
-		this.__rot = null;
+		this._rot = null;
 	},
 	orig: function () {
 		return this._vertex;
 	},
 	rNext: function () {
-		return this.__rot._next.invRot();
+		return this._rot._next.invRot();
 	},
 	toString: function () {
 		var p0 = this._vertex.getCoordinate();
@@ -80,7 +80,7 @@ extend(QuadEdge.prototype, {
 		return WKTWriter.toLineString(p0, p1);
 	},
 	isLive: function () {
-		return this.__rot !== null;
+		return this._rot !== null;
 	},
 	getPrimary: function () {
 		if (this.orig().getCoordinate().compareTo(this.dest().getCoordinate()) <= 0) return this; else return this.sym();
@@ -103,10 +103,10 @@ QuadEdge.makeEdge = function (o, d) {
 	var q1 = new QuadEdge();
 	var q2 = new QuadEdge();
 	var q3 = new QuadEdge();
-	q0.__rot = q1;
-	q1.__rot = q2;
-	q2.__rot = q3;
-	q3.__rot = q0;
+	q0._rot = q1;
+	q1._rot = q2;
+	q2._rot = q3;
+	q3._rot = q0;
 	q0.setNext(q0);
 	q1.setNext(q3);
 	q2.setNext(q2);

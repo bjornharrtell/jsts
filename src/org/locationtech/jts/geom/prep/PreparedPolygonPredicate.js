@@ -3,10 +3,10 @@ import extend from '../../../../../extend';
 import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter';
 import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator';
 export default function PreparedPolygonPredicate() {
-	this.prepPoly = null;
+	this._prepPoly = null;
 	this._targetPointLocator = null;
 	let prepPoly = arguments[0];
-	this.prepPoly = prepPoly;
+	this._prepPoly = prepPoly;
 	this._targetPointLocator = prepPoly.getPointLocator();
 }
 extend(PreparedPolygonPredicate.prototype, {
