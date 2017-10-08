@@ -2,7 +2,7 @@ import extend from '../../../../extend';
 export default function GraphComponent() {
 	this._isMarked = false;
 	this._isVisited = false;
-	this.data = null;
+	this._data = null;
 }
 extend(GraphComponent.prototype, {
 	setVisited: function (isVisited) {
@@ -12,22 +12,22 @@ extend(GraphComponent.prototype, {
 		return this._isMarked;
 	},
 	setData: function (data) {
-		this.data = data;
+		this._data = data;
 	},
 	getData: function () {
-		return this.data;
+		return this._data;
 	},
 	setMarked: function (isMarked) {
 		this._isMarked = isMarked;
 	},
 	getContext: function () {
-		return this.data;
+		return this._data;
 	},
 	isVisited: function () {
 		return this._isVisited;
 	},
 	setContext: function (data) {
-		this.data = data;
+		this._data = data;
 	},
 	interfaces_: function () {
 		return [];

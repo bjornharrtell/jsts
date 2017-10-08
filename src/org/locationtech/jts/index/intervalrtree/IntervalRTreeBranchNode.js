@@ -3,12 +3,12 @@ import extend from '../../../../../extend';
 import inherits from '../../../../../inherits';
 export default function IntervalRTreeBranchNode() {
 	IntervalRTreeNode.apply(this);
-	this.node1 = null;
-	this.node2 = null;
+	this._node1 = null;
+	this._node2 = null;
 	let n1 = arguments[0], n2 = arguments[1];
-	this.node1 = n1;
-	this.node2 = n2;
-	this.buildExtent(this.node1, this.node2);
+	this._node1 = n1;
+	this._node2 = n2;
+	this.buildExtent(this._node1, this._node2);
 }
 inherits(IntervalRTreeBranchNode, IntervalRTreeNode);
 extend(IntervalRTreeBranchNode.prototype, {
@@ -20,8 +20,8 @@ extend(IntervalRTreeBranchNode.prototype, {
 		if (!this.intersects(queryMin, queryMax)) {
 			return null;
 		}
-		if (this.node1 !== null) this.node1.query(queryMin, queryMax, visitor);
-		if (this.node2 !== null) this.node2.query(queryMin, queryMax, visitor);
+		if (this._node1 !== null) this._node1.query(queryMin, queryMax, visitor);
+		if (this._node2 !== null) this._node2.query(queryMin, queryMax, visitor);
 	},
 	interfaces_: function () {
 		return [];

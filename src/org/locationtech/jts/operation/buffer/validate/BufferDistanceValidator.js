@@ -10,82 +10,82 @@ import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracte
 import DistanceOp from '../../distance/DistanceOp';
 import DiscreteHausdorffDistance from '../../../algorithm/distance/DiscreteHausdorffDistance';
 export default function BufferDistanceValidator() {
-	this.input = null;
-	this.bufDistance = null;
-	this.result = null;
-	this.minValidDistance = null;
-	this.maxValidDistance = null;
-	this.minDistanceFound = null;
-	this.maxDistanceFound = null;
-	this._isValid = true;
-	this.errMsg = null;
-	this.errorLocation = null;
-	this.errorIndicator = null;
+	this._input = null;
+	this._bufDistance = null;
+	this._result = null;
+	this._minValidDistance = null;
+	this._maxValidDistance = null;
+	this._minDistanceFound = null;
+	this._maxDistanceFound = null;
+	this.__isValid = true;
+	this._errMsg = null;
+	this._errorLocation = null;
+	this._errorIndicator = null;
 	let input = arguments[0], bufDistance = arguments[1], result = arguments[2];
-	this.input = input;
-	this.bufDistance = bufDistance;
-	this.result = result;
+	this._input = input;
+	this._bufDistance = bufDistance;
+	this._result = result;
 }
 extend(BufferDistanceValidator.prototype, {
 	checkMaximumDistance: function (input, bufCurve, maxDist) {
 		var haus = new DiscreteHausdorffDistance(bufCurve, input);
 		haus.setDensifyFraction(0.25);
-		this.maxDistanceFound = haus.orientedDistance();
-		if (this.maxDistanceFound > maxDist) {
-			this._isValid = false;
+		this._maxDistanceFound = haus.orientedDistance();
+		if (this._maxDistanceFound > maxDist) {
+			this.__isValid = false;
 			var pts = haus.getCoordinates();
-			this.errorLocation = pts[1];
-			this.errorIndicator = input.getFactory().createLineString(pts);
-			this.errMsg = "Distance between buffer curve and input is too large " + "(" + this.maxDistanceFound + " at " + WKTWriter.toLineString(pts[0], pts[1]) + ")";
+			this._errorLocation = pts[1];
+			this._errorIndicator = input.getFactory().createLineString(pts);
+			this._errMsg = "Distance between buffer curve and input is too large " + "(" + this._maxDistanceFound + " at " + WKTWriter.toLineString(pts[0], pts[1]) + ")";
 		}
 	},
 	isValid: function () {
-		var posDistance = Math.abs(this.bufDistance);
+		var posDistance = Math.abs(this._bufDistance);
 		var distDelta = BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC * posDistance;
-		this.minValidDistance = posDistance - distDelta;
-		this.maxValidDistance = posDistance + distDelta;
-		if (this.input.isEmpty() || this.result.isEmpty()) return true;
-		if (this.bufDistance > 0.0) {
+		this._minValidDistance = posDistance - distDelta;
+		this._maxValidDistance = posDistance + distDelta;
+		if (this._input.isEmpty() || this._result.isEmpty()) return true;
+		if (this._bufDistance > 0.0) {
 			this.checkPositiveValid();
 		} else {
 			this.checkNegativeValid();
 		}
 		if (BufferDistanceValidator.VERBOSE) {
-			System.out.println("Min Dist= " + this.minDistanceFound + "  err= " + (1.0 - this.minDistanceFound / this.bufDistance) + "  Max Dist= " + this.maxDistanceFound + "  err= " + (this.maxDistanceFound / this.bufDistance - 1.0));
+			System.out.println("Min Dist= " + this._minDistanceFound + "  err= " + (1.0 - this._minDistanceFound / this._bufDistance) + "  Max Dist= " + this._maxDistanceFound + "  err= " + (this._maxDistanceFound / this._bufDistance - 1.0));
 		}
-		return this._isValid;
+		return this.__isValid;
 	},
 	checkNegativeValid: function () {
-		if (!(this.input instanceof Polygon || this.input instanceof MultiPolygon || this.input instanceof GeometryCollection)) {
+		if (!(this._input instanceof Polygon || this._input instanceof MultiPolygon || this._input instanceof GeometryCollection)) {
 			return null;
 		}
-		var inputCurve = this.getPolygonLines(this.input);
-		this.checkMinimumDistance(inputCurve, this.result, this.minValidDistance);
-		if (!this._isValid) return null;
-		this.checkMaximumDistance(inputCurve, this.result, this.maxValidDistance);
+		var inputCurve = this.getPolygonLines(this._input);
+		this.checkMinimumDistance(inputCurve, this._result, this._minValidDistance);
+		if (!this.__isValid) return null;
+		this.checkMaximumDistance(inputCurve, this._result, this._maxValidDistance);
 	},
 	getErrorIndicator: function () {
-		return this.errorIndicator;
+		return this._errorIndicator;
 	},
 	checkMinimumDistance: function (g1, g2, minDist) {
 		var distOp = new DistanceOp(g1, g2, minDist);
-		this.minDistanceFound = distOp.distance();
-		if (this.minDistanceFound < minDist) {
-			this._isValid = false;
+		this._minDistanceFound = distOp.distance();
+		if (this._minDistanceFound < minDist) {
+			this.__isValid = false;
 			var pts = distOp.nearestPoints();
-			this.errorLocation = distOp.nearestPoints()[1];
-			this.errorIndicator = g1.getFactory().createLineString(pts);
-			this.errMsg = "Distance between buffer curve and input is too small " + "(" + this.minDistanceFound + " at " + WKTWriter.toLineString(pts[0], pts[1]) + " )";
+			this._errorLocation = distOp.nearestPoints()[1];
+			this._errorIndicator = g1.getFactory().createLineString(pts);
+			this._errMsg = "Distance between buffer curve and input is too small " + "(" + this._minDistanceFound + " at " + WKTWriter.toLineString(pts[0], pts[1]) + " )";
 		}
 	},
 	checkPositiveValid: function () {
-		var bufCurve = this.result.getBoundary();
-		this.checkMinimumDistance(this.input, bufCurve, this.minValidDistance);
-		if (!this._isValid) return null;
-		this.checkMaximumDistance(this.input, bufCurve, this.maxValidDistance);
+		var bufCurve = this._result.getBoundary();
+		this.checkMinimumDistance(this._input, bufCurve, this._minValidDistance);
+		if (!this.__isValid) return null;
+		this.checkMaximumDistance(this._input, bufCurve, this._maxValidDistance);
 	},
 	getErrorLocation: function () {
-		return this.errorLocation;
+		return this._errorLocation;
 	},
 	getPolygonLines: function (g) {
 		var lines = new ArrayList();
@@ -98,7 +98,7 @@ extend(BufferDistanceValidator.prototype, {
 		return g.getFactory().buildGeometry(lines);
 	},
 	getErrorMessage: function () {
-		return this.errMsg;
+		return this._errMsg;
 	},
 	interfaces_: function () {
 		return [];

@@ -1,18 +1,18 @@
 import extend from '../../../../extend';
 import CommonBitsRemover from './CommonBitsRemover';
 export default function CommonBitsOp() {
-	this.returnToOriginalPrecision = true;
-	this.cbr = null;
+	this._returnToOriginalPrecision = true;
+	this._cbr = null;
 	if (arguments.length === 0) {
 		CommonBitsOp.call(this, true);
 	} else if (arguments.length === 1) {
 		let returnToOriginalPrecision = arguments[0];
-		this.returnToOriginalPrecision = returnToOriginalPrecision;
+		this._returnToOriginalPrecision = returnToOriginalPrecision;
 	}
 }
 extend(CommonBitsOp.prototype, {
 	computeResultPrecision: function (result) {
-		if (this.returnToOriginalPrecision) this.cbr.addCommonBits(result);
+		if (this._returnToOriginalPrecision) this._cbr.addCommonBits(result);
 		return result;
 	},
 	union: function (geom0, geom1) {
@@ -26,18 +26,18 @@ extend(CommonBitsOp.prototype, {
 	removeCommonBits: function () {
 		if (arguments.length === 1) {
 			let geom0 = arguments[0];
-			this.cbr = new CommonBitsRemover();
-			this.cbr.add(geom0);
-			var geom = this.cbr.removeCommonBits(geom0.copy());
+			this._cbr = new CommonBitsRemover();
+			this._cbr.add(geom0);
+			var geom = this._cbr.removeCommonBits(geom0.copy());
 			return geom;
 		} else if (arguments.length === 2) {
 			let geom0 = arguments[0], geom1 = arguments[1];
-			this.cbr = new CommonBitsRemover();
-			this.cbr.add(geom0);
-			this.cbr.add(geom1);
+			this._cbr = new CommonBitsRemover();
+			this._cbr.add(geom0);
+			this._cbr.add(geom1);
 			var geom = new Array(2).fill(null);
-			geom[0] = this.cbr.removeCommonBits(geom0.copy());
-			geom[1] = this.cbr.removeCommonBits(geom1.copy());
+			geom[0] = this._cbr.removeCommonBits(geom0.copy());
+			geom[1] = this._cbr.removeCommonBits(geom1.copy());
 			return geom;
 		}
 	},

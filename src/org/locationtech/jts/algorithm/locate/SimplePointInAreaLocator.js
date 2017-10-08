@@ -6,13 +6,13 @@ import extend from '../../../../../extend';
 import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator';
 import GeometryCollection from '../../geom/GeometryCollection';
 export default function SimplePointInAreaLocator() {
-	this.geom = null;
+	this._geom = null;
 	let geom = arguments[0];
-	this.geom = geom;
+	this._geom = geom;
 }
 extend(SimplePointInAreaLocator.prototype, {
 	locate: function (p) {
-		return SimplePointInAreaLocator.locate(p, this.geom);
+		return SimplePointInAreaLocator.locate(p, this._geom);
 	},
 	interfaces_: function () {
 		return [PointOnGeometryLocator];

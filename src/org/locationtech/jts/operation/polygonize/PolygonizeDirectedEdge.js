@@ -2,34 +2,34 @@ import extend from '../../../../../extend';
 import DirectedEdge from '../../planargraph/DirectedEdge';
 import inherits from '../../../../../inherits';
 export default function PolygonizeDirectedEdge() {
-	this.edgeRing = null;
-	this.next = null;
-	this.label = -1;
+	this._edgeRing = null;
+	this._next = null;
+	this._label = -1;
 	let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
 	DirectedEdge.call(this, from, to, directionPt, edgeDirection);
 }
 inherits(PolygonizeDirectedEdge, DirectedEdge);
 extend(PolygonizeDirectedEdge.prototype, {
 	getNext: function () {
-		return this.next;
+		return this._next;
 	},
 	isInRing: function () {
-		return this.edgeRing !== null;
+		return this._edgeRing !== null;
 	},
 	setRing: function (edgeRing) {
-		this.edgeRing = edgeRing;
+		this._edgeRing = edgeRing;
 	},
 	setLabel: function (label) {
-		this.label = label;
+		this._label = label;
 	},
 	getLabel: function () {
-		return this.label;
+		return this._label;
 	},
 	setNext: function (next) {
-		this.next = next;
+		this._next = next;
 	},
 	getRing: function () {
-		return this.edgeRing;
+		return this._edgeRing;
 	},
 	interfaces_: function () {
 		return [];

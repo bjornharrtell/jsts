@@ -7,14 +7,14 @@ import Label from './Label';
 import inherits from '../../../../inherits';
 export default function DirectedEdge() {
 	this._isForward = null;
-	this._isInResult = false;
-	this._isVisited = false;
-	this.sym = null;
-	this.next = null;
-	this.nextMin = null;
-	this.edgeRing = null;
-	this.minEdgeRing = null;
-	this.depth = [0, -999, -999];
+	this.__isInResult = false;
+	this.__isVisited = false;
+	this._sym = null;
+	this._next = null;
+	this._nextMin = null;
+	this._edgeRing = null;
+	this._minEdgeRing = null;
+	this._depth = [0, -999, -999];
 	let edge = arguments[0], isForward = arguments[1];
 	EdgeEnd.call(this, edge);
 	this._isForward = isForward;
@@ -29,26 +29,26 @@ export default function DirectedEdge() {
 inherits(DirectedEdge, EdgeEnd);
 extend(DirectedEdge.prototype, {
 	getNextMin: function () {
-		return this.nextMin;
+		return this._nextMin;
 	},
 	getDepth: function (position) {
-		return this.depth[position];
+		return this._depth[position];
 	},
 	setVisited: function (isVisited) {
-		this._isVisited = isVisited;
+		this.__isVisited = isVisited;
 	},
 	computeDirectedLabel: function () {
 		this.label = new Label(this.edge.getLabel());
 		if (!this._isForward) this.label.flip();
 	},
 	getNext: function () {
-		return this.next;
+		return this._next;
 	},
 	setDepth: function (position, depthVal) {
-		if (this.depth[position] !== -999) {
-			if (this.depth[position] !== depthVal) throw new TopologyException("assigned depths do not match", this.getCoordinate());
+		if (this._depth[position] !== -999) {
+			if (this._depth[position] !== depthVal) throw new TopologyException("assigned depths do not match", this.getCoordinate());
 		}
-		this.depth[position] = depthVal;
+		this._depth[position] = depthVal;
 	},
 	isInteriorAreaEdge: function () {
 		var isInteriorAreaEdge = true;
@@ -60,16 +60,16 @@ extend(DirectedEdge.prototype, {
 		return isInteriorAreaEdge;
 	},
 	setNextMin: function (nextMin) {
-		this.nextMin = nextMin;
+		this._nextMin = nextMin;
 	},
 	print: function (out) {
 		EdgeEnd.prototype.print.call(this, out);
-		out.print(" " + this.depth[Position.LEFT] + "/" + this.depth[Position.RIGHT]);
+		out.print(" " + this._depth[Position.LEFT] + "/" + this._depth[Position.RIGHT]);
 		out.print(" (" + this.getDepthDelta() + ")");
-		if (this._isInResult) out.print(" inResult");
+		if (this.__isInResult) out.print(" inResult");
 	},
 	setMinEdgeRing: function (minEdgeRing) {
-		this.minEdgeRing = minEdgeRing;
+		this._minEdgeRing = minEdgeRing;
 	},
 	isLineEdge: function () {
 		var isLine = this.label.isLine(0) || this.label.isLine(1);
@@ -78,10 +78,10 @@ extend(DirectedEdge.prototype, {
 		return isLine && isExteriorIfArea0 && isExteriorIfArea1;
 	},
 	setEdgeRing: function (edgeRing) {
-		this.edgeRing = edgeRing;
+		this._edgeRing = edgeRing;
 	},
 	getMinEdgeRing: function () {
-		return this.minEdgeRing;
+		return this._minEdgeRing;
 	},
 	getDepthDelta: function () {
 		var depthDelta = this.edge.getDepthDelta();
@@ -89,10 +89,10 @@ extend(DirectedEdge.prototype, {
 		return depthDelta;
 	},
 	setInResult: function (isInResult) {
-		this._isInResult = isInResult;
+		this.__isInResult = isInResult;
 	},
 	getSym: function () {
-		return this.sym;
+		return this._sym;
 	},
 	isForward: function () {
 		return this._isForward;
@@ -106,11 +106,11 @@ extend(DirectedEdge.prototype, {
 		if (this._isForward) this.edge.print(out); else this.edge.printReverse(out);
 	},
 	setSym: function (de) {
-		this.sym = de;
+		this._sym = de;
 	},
 	setVisitedEdge: function (isVisited) {
 		this.setVisited(isVisited);
-		this.sym.setVisited(isVisited);
+		this._sym.setVisited(isVisited);
 	},
 	setEdgeDepths: function (position, depth) {
 		var depthDelta = this.getEdge().getDepthDelta();
@@ -124,16 +124,16 @@ extend(DirectedEdge.prototype, {
 		this.setDepth(oppositePos, oppositeDepth);
 	},
 	getEdgeRing: function () {
-		return this.edgeRing;
+		return this._edgeRing;
 	},
 	isInResult: function () {
-		return this._isInResult;
+		return this.__isInResult;
 	},
 	setNext: function (next) {
-		this.next = next;
+		this._next = next;
 	},
 	isVisited: function () {
-		return this._isVisited;
+		return this.__isVisited;
 	},
 	interfaces_: function () {
 		return [];

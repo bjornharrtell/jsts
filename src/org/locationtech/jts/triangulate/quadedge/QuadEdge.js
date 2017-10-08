@@ -2,10 +2,10 @@ import WKTWriter from '../../io/WKTWriter';
 import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
 export default function QuadEdge() {
-	this._rot = null;
-	this.vertex = null;
-	this.next = null;
-	this.data = null;
+	this.__rot = null;
+	this._vertex = null;
+	this._next = null;
+	this._data = null;
 }
 extend(QuadEdge.prototype, {
 	equalsNonOriented: function (qe) {
@@ -14,13 +14,13 @@ extend(QuadEdge.prototype, {
 		return false;
 	},
 	toLineSegment: function () {
-		return new LineSegment(this.vertex.getCoordinate(), this.dest().getCoordinate());
+		return new LineSegment(this._vertex.getCoordinate(), this.dest().getCoordinate());
 	},
 	dest: function () {
 		return this.sym().orig();
 	},
 	oNext: function () {
-		return this.next;
+		return this._next;
 	},
 	equalsOriented: function (qe) {
 		if (this.orig().getCoordinate().equals2D(qe.orig().getCoordinate()) && this.dest().getCoordinate().equals2D(qe.dest().getCoordinate())) return true;
@@ -30,22 +30,22 @@ extend(QuadEdge.prototype, {
 		return this.sym().oNext().sym();
 	},
 	lPrev: function () {
-		return this.next.sym();
+		return this._next.sym();
 	},
 	rPrev: function () {
 		return this.sym().oNext();
 	},
 	rot: function () {
-		return this._rot;
+		return this.__rot;
 	},
 	oPrev: function () {
-		return this._rot.next._rot;
+		return this.__rot._next.__rot;
 	},
 	sym: function () {
-		return this._rot._rot;
+		return this.__rot.__rot;
 	},
 	setOrig: function (o) {
-		this.vertex = o;
+		this._vertex = o;
 	},
 	lNext: function () {
 		return this.invRot().oNext().rot();
@@ -54,33 +54,33 @@ extend(QuadEdge.prototype, {
 		return this.orig().getCoordinate().distance(this.dest().getCoordinate());
 	},
 	invRot: function () {
-		return this._rot.sym();
+		return this.__rot.sym();
 	},
 	setDest: function (d) {
 		this.sym().setOrig(d);
 	},
 	setData: function (data) {
-		this.data = data;
+		this._data = data;
 	},
 	getData: function () {
-		return this.data;
+		return this._data;
 	},
 	delete: function () {
-		this._rot = null;
+		this.__rot = null;
 	},
 	orig: function () {
-		return this.vertex;
+		return this._vertex;
 	},
 	rNext: function () {
-		return this._rot.next.invRot();
+		return this.__rot._next.invRot();
 	},
 	toString: function () {
-		var p0 = this.vertex.getCoordinate();
+		var p0 = this._vertex.getCoordinate();
 		var p1 = this.dest().getCoordinate();
 		return WKTWriter.toLineString(p0, p1);
 	},
 	isLive: function () {
-		return this._rot !== null;
+		return this.__rot !== null;
 	},
 	getPrimary: function () {
 		if (this.orig().getCoordinate().compareTo(this.dest().getCoordinate()) <= 0) return this; else return this.sym();
@@ -89,7 +89,7 @@ extend(QuadEdge.prototype, {
 		return this.invRot().oNext().invRot();
 	},
 	setNext: function (next) {
-		this.next = next;
+		this._next = next;
 	},
 	interfaces_: function () {
 		return [];
@@ -103,10 +103,10 @@ QuadEdge.makeEdge = function (o, d) {
 	var q1 = new QuadEdge();
 	var q2 = new QuadEdge();
 	var q3 = new QuadEdge();
-	q0._rot = q1;
-	q1._rot = q2;
-	q2._rot = q3;
-	q3._rot = q0;
+	q0.__rot = q1;
+	q1.__rot = q2;
+	q2.__rot = q3;
+	q3.__rot = q0;
 	q0.setNext(q0);
 	q1.setNext(q3);
 	q2.setNext(q2);

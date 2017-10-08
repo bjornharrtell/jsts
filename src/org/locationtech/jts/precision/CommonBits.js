@@ -1,30 +1,30 @@
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 export default function CommonBits() {
-	this.isFirst = true;
-	this.commonMantissaBitsCount = 53;
-	this.commonBits = 0;
-	this.commonSignExp = null;
+	this._isFirst = true;
+	this._commonMantissaBitsCount = 53;
+	this._commonBits = 0;
+	this._commonSignExp = null;
 }
 extend(CommonBits.prototype, {
 	getCommon: function () {
-		return Double.longBitsToDouble(this.commonBits);
+		return Double.longBitsToDouble(this._commonBits);
 	},
 	add: function (num) {
 		var numBits = Double.doubleToLongBits(num);
-		if (this.isFirst) {
-			this.commonBits = numBits;
-			this.commonSignExp = CommonBits.signExpBits(this.commonBits);
-			this.isFirst = false;
+		if (this._isFirst) {
+			this._commonBits = numBits;
+			this._commonSignExp = CommonBits.signExpBits(this._commonBits);
+			this._isFirst = false;
 			return null;
 		}
 		var numSignExp = CommonBits.signExpBits(numBits);
-		if (numSignExp !== this.commonSignExp) {
-			this.commonBits = 0;
+		if (numSignExp !== this._commonSignExp) {
+			this._commonBits = 0;
 			return null;
 		}
-		this.commonMantissaBitsCount = CommonBits.numCommonMostSigMantissaBits(this.commonBits, numBits);
-		this.commonBits = CommonBits.zeroLowerBits(this.commonBits, 64 - (12 + this.commonMantissaBitsCount));
+		this._commonMantissaBitsCount = CommonBits.numCommonMostSigMantissaBits(this._commonBits, numBits);
+		this._commonBits = CommonBits.zeroLowerBits(this._commonBits, 64 - (12 + this._commonMantissaBitsCount));
 	},
 	toString: function () {
 		if (arguments.length === 1) {

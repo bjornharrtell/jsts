@@ -6,13 +6,13 @@ import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../../geom/GeometryFilter';
 export default function ConnectedElementLocationFilter() {
-	this.locations = null;
+	this._locations = null;
 	let locations = arguments[0];
-	this.locations = locations;
+	this._locations = locations;
 }
 extend(ConnectedElementLocationFilter.prototype, {
 	filter: function (geom) {
-		if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this.locations.add(new GeometryLocation(geom, 0, geom.getCoordinate()));
+		if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this._locations.add(new GeometryLocation(geom, 0, geom.getCoordinate()));
 	},
 	interfaces_: function () {
 		return [GeometryFilter];

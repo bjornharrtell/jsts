@@ -5,33 +5,33 @@ import extend from '../../../../../extend';
 import GeometryCombiner from '../../geom/util/GeometryCombiner';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 export default function PointGeometryUnion() {
-	this.pointGeom = null;
-	this.otherGeom = null;
-	this.geomFact = null;
+	this._pointGeom = null;
+	this._otherGeom = null;
+	this._geomFact = null;
 	let pointGeom = arguments[0], otherGeom = arguments[1];
-	this.pointGeom = pointGeom;
-	this.otherGeom = otherGeom;
-	this.geomFact = otherGeom.getFactory();
+	this._pointGeom = pointGeom;
+	this._otherGeom = otherGeom;
+	this._geomFact = otherGeom.getFactory();
 }
 extend(PointGeometryUnion.prototype, {
 	union: function () {
 		var locater = new PointLocator();
 		var exteriorCoords = new TreeSet();
-		for (var i = 0; i < this.pointGeom.getNumGeometries(); i++) {
-			var point = this.pointGeom.getGeometryN(i);
+		for (var i = 0; i < this._pointGeom.getNumGeometries(); i++) {
+			var point = this._pointGeom.getGeometryN(i);
 			var coord = point.getCoordinate();
-			var loc = locater.locate(coord, this.otherGeom);
+			var loc = locater.locate(coord, this._otherGeom);
 			if (loc === Location.EXTERIOR) exteriorCoords.add(coord);
 		}
-		if (exteriorCoords.size() === 0) return this.otherGeom;
+		if (exteriorCoords.size() === 0) return this._otherGeom;
 		var ptComp = null;
 		var coords = CoordinateArrays.toCoordinateArray(exteriorCoords);
 		if (coords.length === 1) {
-			ptComp = this.geomFact.createPoint(coords[0]);
+			ptComp = this._geomFact.createPoint(coords[0]);
 		} else {
-			ptComp = this.geomFact.createMultiPointFromCoords(coords);
+			ptComp = this._geomFact.createMultiPointFromCoords(coords);
 		}
-		return GeometryCombiner.combine(ptComp, this.otherGeom);
+		return GeometryCombiner.combine(ptComp, this._otherGeom);
 	},
 	interfaces_: function () {
 		return [];

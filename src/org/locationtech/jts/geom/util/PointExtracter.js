@@ -5,13 +5,13 @@ import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default function PointExtracter() {
-	this.pts = null;
+	this._pts = null;
 	let pts = arguments[0];
-	this.pts = pts;
+	this._pts = pts;
 }
 extend(PointExtracter.prototype, {
 	filter: function (geom) {
-		if (geom instanceof Point) this.pts.add(geom);
+		if (geom instanceof Point) this._pts.add(geom);
 	},
 	interfaces_: function () {
 		return [GeometryFilter];

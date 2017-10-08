@@ -8,7 +8,7 @@ import inherits from '../../../../../inherits';
 import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 export default function SIRtree() {
-	this.comparator = {
+	this._comparator = {
 		interfaces_: function () {
 			return [Comparator];
 		},
@@ -16,7 +16,7 @@ export default function SIRtree() {
 			return AbstractSTRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre());
 		}
 	};
-	this.intersectsOp = {
+	this._intersectsOp = {
 		interfaces_: function () {
 			return [IntersectsOp];
 		},
@@ -56,7 +56,7 @@ extend(SIRtree.prototype, {
 		} else return AbstractSTRtree.prototype.insert.apply(this, arguments);
 	},
 	getIntersectsOp: function () {
-		return this.intersectsOp;
+		return this._intersectsOp;
 	},
 	query: function () {
 		if (arguments.length === 1) {
@@ -76,7 +76,7 @@ extend(SIRtree.prototype, {
 		}
 	},
 	getComparator: function () {
-		return this.comparator;
+		return this._comparator;
 	},
 	interfaces_: function () {
 		return [];

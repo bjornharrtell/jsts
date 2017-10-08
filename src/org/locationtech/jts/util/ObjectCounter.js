@@ -1,16 +1,16 @@
 import HashMap from '../../../../java/util/HashMap';
 import extend from '../../../../extend';
 export default function ObjectCounter() {
-	this.counts = new HashMap();
+	this._counts = new HashMap();
 }
 extend(ObjectCounter.prototype, {
 	count: function (o) {
-		var counter = this.counts.get(o);
+		var counter = this._counts.get(o);
 		if (counter === null) return 0; else return counter.count();
 	},
 	add: function (o) {
-		var counter = this.counts.get(o);
-		if (counter === null) this.counts.put(o, new Counter(1)); else counter.increment();
+		var counter = this._counts.get(o);
+		if (counter === null) this._counts.put(o, new Counter(1)); else counter.increment();
 	},
 	interfaces_: function () {
 		return [];

@@ -6,10 +6,10 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default function PolygonBuilder() {
-	this.geometryFactory = null;
-	this.shellList = new ArrayList();
+	this._geometryFactory = null;
+	this._shellList = new ArrayList();
 	let geometryFactory = arguments[0];
-	this.geometryFactory = geometryFactory;
+	this._geometryFactory = geometryFactory;
 }
 extend(PolygonBuilder.prototype, {
 	sortShellsAndHoles: function (edgeRings, shellList, freeHoleList) {
@@ -26,7 +26,7 @@ extend(PolygonBuilder.prototype, {
 		var resultPolyList = new ArrayList();
 		for (var it = shellList.iterator(); it.hasNext(); ) {
 			var er = it.next();
-			var poly = er.toPolygon(this.geometryFactory);
+			var poly = er.toPolygon(this._geometryFactory);
 			resultPolyList.add(poly);
 		}
 		return resultPolyList;
@@ -62,7 +62,7 @@ extend(PolygonBuilder.prototype, {
 		return edgeRings;
 	},
 	containsPoint: function (p) {
-		for (var it = this.shellList.iterator(); it.hasNext(); ) {
+		for (var it = this._shellList.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.containsPoint(p)) return true;
 		}
@@ -74,7 +74,7 @@ extend(PolygonBuilder.prototype, {
 			var de = it.next();
 			if (de.isInResult() && de.getLabel().isArea()) {
 				if (de.getEdgeRing() === null) {
-					var er = new MaximalEdgeRing(de, this.geometryFactory);
+					var er = new MaximalEdgeRing(de, this._geometryFactory);
 					maxEdgeRings.add(er);
 					er.setInResult();
 				}
@@ -91,7 +91,7 @@ extend(PolygonBuilder.prototype, {
 		}
 	},
 	getPolygons: function () {
-		var resultPolyList = this.computePolygons(this.shellList);
+		var resultPolyList = this.computePolygons(this._shellList);
 		return resultPolyList;
 	},
 	findEdgeRingContaining: function (testEr, shellList) {
@@ -137,9 +137,9 @@ extend(PolygonBuilder.prototype, {
 			PlanarGraph.linkResultDirectedEdges(nodes);
 			var maxEdgeRings = this.buildMaximalEdgeRings(dirEdges);
 			var freeHoleList = new ArrayList();
-			var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this.shellList, freeHoleList);
-			this.sortShellsAndHoles(edgeRings, this.shellList, freeHoleList);
-			this.placeFreeHoles(this.shellList, freeHoleList);
+			var edgeRings = this.buildMinimalEdgeRings(maxEdgeRings, this._shellList, freeHoleList);
+			this.sortShellsAndHoles(edgeRings, this._shellList, freeHoleList);
+			this.placeFreeHoles(this._shellList, freeHoleList);
 		}
 	},
 	interfaces_: function () {

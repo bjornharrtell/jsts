@@ -4,18 +4,18 @@ import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
 export default function CommonBitsRemover() {
-	this.commonCoord = null;
-	this.ccFilter = new CommonCoordinateFilter();
+	this._commonCoord = null;
+	this._ccFilter = new CommonCoordinateFilter();
 }
 extend(CommonBitsRemover.prototype, {
 	addCommonBits: function (geom) {
-		var trans = new Translater(this.commonCoord);
+		var trans = new Translater(this._commonCoord);
 		geom.apply(trans);
 		geom.geometryChanged();
 	},
 	removeCommonBits: function (geom) {
-		if (this.commonCoord.x === 0.0 && this.commonCoord.y === 0.0) return geom;
-		var invCoord = new Coordinate(this.commonCoord);
+		if (this._commonCoord.x === 0.0 && this._commonCoord.y === 0.0) return geom;
+		var invCoord = new Coordinate(this._commonCoord);
 		invCoord.x = -invCoord.x;
 		invCoord.y = -invCoord.y;
 		var trans = new Translater(invCoord);
@@ -24,11 +24,11 @@ extend(CommonBitsRemover.prototype, {
 		return geom;
 	},
 	getCommonCoordinate: function () {
-		return this.commonCoord;
+		return this._commonCoord;
 	},
 	add: function (geom) {
-		geom.apply(this.ccFilter);
-		this.commonCoord = this.ccFilter.getCommonCoordinate();
+		geom.apply(this._ccFilter);
+		this._commonCoord = this._ccFilter.getCommonCoordinate();
 	},
 	interfaces_: function () {
 		return [];
@@ -38,16 +38,16 @@ extend(CommonBitsRemover.prototype, {
 	}
 });
 function CommonCoordinateFilter() {
-	this.commonBitsX = new CommonBits();
-	this.commonBitsY = new CommonBits();
+	this._commonBitsX = new CommonBits();
+	this._commonBitsY = new CommonBits();
 }
 extend(CommonCoordinateFilter.prototype, {
 	filter: function (coord) {
-		this.commonBitsX.add(coord.x);
-		this.commonBitsY.add(coord.y);
+		this._commonBitsX.add(coord.x);
+		this._commonBitsY.add(coord.y);
 	},
 	getCommonCoordinate: function () {
-		return new Coordinate(this.commonBitsX.getCommon(), this.commonBitsY.getCommon());
+		return new Coordinate(this._commonBitsX.getCommon(), this._commonBitsY.getCommon());
 	},
 	interfaces_: function () {
 		return [CoordinateFilter];

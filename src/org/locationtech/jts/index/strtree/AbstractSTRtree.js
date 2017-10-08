@@ -10,20 +10,20 @@ import Assert from '../../util/Assert';
 import List from '../../../../../java/util/List';
 export default function AbstractSTRtree() {
 	this.root = null;
-	this.built = false;
-	this.itemBoundables = new ArrayList();
-	this.nodeCapacity = null;
+	this._built = false;
+	this._itemBoundables = new ArrayList();
+	this._nodeCapacity = null;
 	if (arguments.length === 0) {
 		AbstractSTRtree.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY);
 	} else if (arguments.length === 1) {
 		let nodeCapacity = arguments[0];
 		Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-		this.nodeCapacity = nodeCapacity;
+		this._nodeCapacity = nodeCapacity;
 	}
 }
 extend(AbstractSTRtree.prototype, {
 	getNodeCapacity: function () {
-		return this.nodeCapacity;
+		return this._nodeCapacity;
 	},
 	lastNode: function (nodes) {
 		return nodes.get(nodes.size() - 1);
@@ -88,8 +88,8 @@ extend(AbstractSTRtree.prototype, {
 		}
 	},
 	insert: function (bounds, item) {
-		Assert.isTrue(!this.built, "Cannot insert items into an STR packed R-tree after it has been built.");
-		this.itemBoundables.add(new ItemBoundable(bounds, item));
+		Assert.isTrue(!this._built, "Cannot insert items into an STR packed R-tree after it has been built.");
+		this._itemBoundables.add(new ItemBoundable(bounds, item));
 	},
 	boundablesAtLevel: function () {
 		if (arguments.length === 1) {
@@ -176,10 +176,10 @@ extend(AbstractSTRtree.prototype, {
 		}
 	},
 	build: function () {
-		if (this.built) return null;
-		this.root = this.itemBoundables.isEmpty() ? this.createNode(0) : this.createHigherLevels(this.itemBoundables, -1);
-		this.itemBoundables = null;
-		this.built = true;
+		if (this._built) return null;
+		this.root = this._itemBoundables.isEmpty() ? this.createNode(0) : this.createHigherLevels(this._itemBoundables, -1);
+		this._itemBoundables = null;
+		this._built = true;
 	},
 	getRoot: function () {
 		this.build();
@@ -263,7 +263,7 @@ extend(AbstractSTRtree.prototype, {
 		return parentBoundables;
 	},
 	isEmpty: function () {
-		if (!this.built) return this.itemBoundables.isEmpty();
+		if (!this._built) return this._itemBoundables.isEmpty();
 		return this.root.isEmpty();
 	},
 	interfaces_: function () {

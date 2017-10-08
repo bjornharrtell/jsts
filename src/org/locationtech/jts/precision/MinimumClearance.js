@@ -8,34 +8,34 @@ import LineSegment from '../geom/LineSegment';
 import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBuilder';
 import ItemDistance from '../index/strtree/ItemDistance';
 export default function MinimumClearance() {
-	this.inputGeom = null;
-	this.minClearance = null;
-	this.minClearancePts = null;
+	this._inputGeom = null;
+	this._minClearance = null;
+	this._minClearancePts = null;
 	let geom = arguments[0];
-	this.inputGeom = geom;
+	this._inputGeom = geom;
 }
 extend(MinimumClearance.prototype, {
 	getLine: function () {
 		this.compute();
-		if (this.minClearancePts === null || this.minClearancePts[0] === null) return this.inputGeom.getFactory().createLineString(null);
-		return this.inputGeom.getFactory().createLineString(this.minClearancePts);
+		if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString(null);
+		return this._inputGeom.getFactory().createLineString(this._minClearancePts);
 	},
 	compute: function () {
-		if (this.minClearancePts !== null) return null;
-		this.minClearancePts = new Array(2).fill(null);
-		this.minClearance = Double.MAX_VALUE;
-		if (this.inputGeom.isEmpty()) {
+		if (this._minClearancePts !== null) return null;
+		this._minClearancePts = new Array(2).fill(null);
+		this._minClearance = Double.MAX_VALUE;
+		if (this._inputGeom.isEmpty()) {
 			return null;
 		}
-		var geomTree = FacetSequenceTreeBuilder.build(this.inputGeom);
+		var geomTree = FacetSequenceTreeBuilder.build(this._inputGeom);
 		var nearest = geomTree.nearestNeighbour(new MinClearanceDistance());
 		var mcd = new MinClearanceDistance();
-		this.minClearance = mcd.distance(nearest[0], nearest[1]);
-		this.minClearancePts = mcd.getCoordinates();
+		this._minClearance = mcd.distance(nearest[0], nearest[1]);
+		this._minClearancePts = mcd.getCoordinates();
 	},
 	getDistance: function () {
 		this.compute();
-		return this.minClearance;
+		return this._minClearance;
 	},
 	interfaces_: function () {
 		return [];
@@ -53,8 +53,8 @@ MinimumClearance.getDistance = function (g) {
 	return rp.getDistance();
 };
 function MinClearanceDistance() {
-	this.minDist = Double.MAX_VALUE;
-	this.minPts = new Array(2).fill(null);
+	this._minDist = Double.MAX_VALUE;
+	this._minPts = new Array(2).fill(null);
 }
 extend(MinClearanceDistance.prototype, {
 	vertexDistance: function (fs1, fs2) {
@@ -64,19 +64,19 @@ extend(MinClearanceDistance.prototype, {
 				var p2 = fs2.getCoordinate(i2);
 				if (!p1.equals2D(p2)) {
 					var d = p1.distance(p2);
-					if (d < this.minDist) {
-						this.minDist = d;
-						this.minPts[0] = p1;
-						this.minPts[1] = p2;
+					if (d < this._minDist) {
+						this._minDist = d;
+						this._minPts[0] = p1;
+						this._minPts[1] = p2;
 						if (d === 0.0) return d;
 					}
 				}
 			}
 		}
-		return this.minDist;
+		return this._minDist;
 	},
 	getCoordinates: function () {
-		return this.minPts;
+		return this._minPts;
 	},
 	segmentDistance: function (fs1, fs2) {
 		for (var i1 = 0; i1 < fs1.size(); i1++) {
@@ -86,38 +86,38 @@ extend(MinClearanceDistance.prototype, {
 				var seg1 = fs2.getCoordinate(i2);
 				if (!(p.equals2D(seg0) || p.equals2D(seg1))) {
 					var d = CGAlgorithms.distancePointLine(p, seg0, seg1);
-					if (d < this.minDist) {
-						this.minDist = d;
+					if (d < this._minDist) {
+						this._minDist = d;
 						this.updatePts(p, seg0, seg1);
 						if (d === 0.0) return d;
 					}
 				}
 			}
 		}
-		return this.minDist;
+		return this._minDist;
 	},
 	distance: function () {
 		if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
 			let b1 = arguments[0], b2 = arguments[1];
 			var fs1 = b1.getItem();
 			var fs2 = b2.getItem();
-			this.minDist = Double.MAX_VALUE;
+			this._minDist = Double.MAX_VALUE;
 			return this.distance(fs1, fs2);
 		} else if (arguments[0] instanceof FacetSequence && arguments[1] instanceof FacetSequence) {
 			let fs1 = arguments[0], fs2 = arguments[1];
 			this.vertexDistance(fs1, fs2);
-			if (fs1.size() === 1 && fs2.size() === 1) return this.minDist;
-			if (this.minDist <= 0.0) return this.minDist;
+			if (fs1.size() === 1 && fs2.size() === 1) return this._minDist;
+			if (this._minDist <= 0.0) return this._minDist;
 			this.segmentDistance(fs1, fs2);
-			if (this.minDist <= 0.0) return this.minDist;
+			if (this._minDist <= 0.0) return this._minDist;
 			this.segmentDistance(fs2, fs1);
-			return this.minDist;
+			return this._minDist;
 		}
 	},
 	updatePts: function (p, seg0, seg1) {
-		this.minPts[0] = p;
+		this._minPts[0] = p;
 		var seg = new LineSegment(seg0, seg1);
-		this.minPts[1] = new Coordinate(seg.closestPoint(p));
+		this._minPts[1] = new Coordinate(seg.closestPoint(p));
 	},
 	interfaces_: function () {
 		return [ItemDistance];

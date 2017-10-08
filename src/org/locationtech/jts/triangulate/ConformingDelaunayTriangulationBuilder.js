@@ -7,64 +7,64 @@ import ArrayList from '../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
 import TreeMap from '../../../../java/util/TreeMap';
 export default function ConformingDelaunayTriangulationBuilder() {
-	this.siteCoords = null;
-	this.constraintLines = null;
-	this.tolerance = 0.0;
-	this.subdiv = null;
-	this.constraintVertexMap = new TreeMap();
+	this._siteCoords = null;
+	this._constraintLines = null;
+	this._tolerance = 0.0;
+	this._subdiv = null;
+	this._constraintVertexMap = new TreeMap();
 }
 extend(ConformingDelaunayTriangulationBuilder.prototype, {
 	createSiteVertices: function (coords) {
 		var verts = new ArrayList();
 		for (var i = coords.iterator(); i.hasNext(); ) {
 			var coord = i.next();
-			if (this.constraintVertexMap.containsKey(coord)) continue;
+			if (this._constraintVertexMap.containsKey(coord)) continue;
 			verts.add(new ConstraintVertex(coord));
 		}
 		return verts;
 	},
 	create: function () {
-		if (this.subdiv !== null) return null;
-		var siteEnv = DelaunayTriangulationBuilder.envelope(this.siteCoords);
+		if (this._subdiv !== null) return null;
+		var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords);
 		var segments = new ArrayList();
-		if (this.constraintLines !== null) {
-			siteEnv.expandToInclude(this.constraintLines.getEnvelopeInternal());
-			this.createVertices(this.constraintLines);
-			segments = ConformingDelaunayTriangulationBuilder.createConstraintSegments(this.constraintLines);
+		if (this._constraintLines !== null) {
+			siteEnv.expandToInclude(this._constraintLines.getEnvelopeInternal());
+			this.createVertices(this._constraintLines);
+			segments = ConformingDelaunayTriangulationBuilder.createConstraintSegments(this._constraintLines);
 		}
-		var sites = this.createSiteVertices(this.siteCoords);
-		var cdt = new ConformingDelaunayTriangulator(sites, this.tolerance);
-		cdt.setConstraints(segments, new ArrayList(this.constraintVertexMap.values()));
+		var sites = this.createSiteVertices(this._siteCoords);
+		var cdt = new ConformingDelaunayTriangulator(sites, this._tolerance);
+		cdt.setConstraints(segments, new ArrayList(this._constraintVertexMap.values()));
 		cdt.formInitialDelaunay();
 		cdt.enforceConstraints();
-		this.subdiv = cdt.getSubdivision();
+		this._subdiv = cdt.getSubdivision();
 	},
 	setTolerance: function (tolerance) {
-		this.tolerance = tolerance;
+		this._tolerance = tolerance;
 	},
 	setConstraints: function (constraintLines) {
-		this.constraintLines = constraintLines;
+		this._constraintLines = constraintLines;
 	},
 	setSites: function (geom) {
-		this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+		this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
 	},
 	getEdges: function (geomFact) {
 		this.create();
-		return this.subdiv.getEdges(geomFact);
+		return this._subdiv.getEdges(geomFact);
 	},
 	getSubdivision: function () {
 		this.create();
-		return this.subdiv;
+		return this._subdiv;
 	},
 	getTriangles: function (geomFact) {
 		this.create();
-		return this.subdiv.getTriangles(geomFact);
+		return this._subdiv.getTriangles(geomFact);
 	},
 	createVertices: function (geom) {
 		var coords = geom.getCoordinates();
 		for (var i = 0; i < coords.length; i++) {
 			var v = new ConstraintVertex(coords[i]);
-			this.constraintVertexMap.put(coords[i], v);
+			this._constraintVertexMap.put(coords[i], v);
 		}
 	},
 	interfaces_: function () {

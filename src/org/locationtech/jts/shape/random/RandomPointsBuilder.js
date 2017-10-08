@@ -10,7 +10,7 @@ import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function RandomPointsBuilder() {
 	this.maskPoly = null;
-	this.extentLocator = null;
+	this._extentLocator = null;
 	if (arguments.length === 0) {
 		GeometricShapeBuilder.call(this, new GeometryFactory());
 	} else if (arguments.length === 1) {
@@ -25,7 +25,7 @@ extend(RandomPointsBuilder.prototype, {
 		var i = 0;
 		while (i < this.numPts) {
 			var p = this.createRandomCoord(this.getExtent());
-			if (this.extentLocator !== null && !this.isInExtent(p)) continue;
+			if (this._extentLocator !== null && !this.isInExtent(p)) continue;
 			pts[i++] = p;
 		}
 		return this.geomFactory.createMultiPointFromCoords(pts);
@@ -36,7 +36,7 @@ extend(RandomPointsBuilder.prototype, {
 		return this.createCoord(x, y);
 	},
 	isInExtent: function (p) {
-		if (this.extentLocator !== null) return this.extentLocator.locate(p) !== Location.EXTERIOR;
+		if (this._extentLocator !== null) return this._extentLocator.locate(p) !== Location.EXTERIOR;
 		return this.getExtent().contains(p);
 	},
 	setExtent: function () {
@@ -45,7 +45,7 @@ extend(RandomPointsBuilder.prototype, {
 			if (!hasInterface(mask, Polygonal)) throw new IllegalArgumentException("Only polygonal extents are supported");
 			this.maskPoly = mask;
 			this.setExtent(mask.getEnvelopeInternal());
-			this.extentLocator = new IndexedPointInAreaLocator(mask);
+			this._extentLocator = new IndexedPointInAreaLocator(mask);
 		} else return GeometricShapeBuilder.prototype.setExtent.apply(this, arguments);
 	},
 	createCoord: function (x, y) {

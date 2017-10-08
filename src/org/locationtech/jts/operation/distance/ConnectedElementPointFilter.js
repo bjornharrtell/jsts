@@ -5,13 +5,13 @@ import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../../geom/GeometryFilter';
 export default function ConnectedElementPointFilter() {
-	this.pts = null;
+	this._pts = null;
 	let pts = arguments[0];
-	this.pts = pts;
+	this._pts = pts;
 }
 extend(ConnectedElementPointFilter.prototype, {
 	filter: function (geom) {
-		if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this.pts.add(geom.getCoordinate());
+		if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this._pts.add(geom.getCoordinate());
 	},
 	interfaces_: function () {
 		return [GeometryFilter];

@@ -6,22 +6,22 @@ import SegmentString from './SegmentString';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import TreeMap from '../../../../java/util/TreeMap';
 export default function SegmentStringDissolver() {
-	this.merger = null;
-	this.ocaMap = new TreeMap();
+	this._merger = null;
+	this._ocaMap = new TreeMap();
 	if (arguments.length === 0) {
 		SegmentStringDissolver.call(this, null);
 	} else if (arguments.length === 1) {
 		let merger = arguments[0];
-		this.merger = merger;
+		this._merger = merger;
 	}
 }
 extend(SegmentStringDissolver.prototype, {
 	findMatching: function (oca, segString) {
-		var matchSS = this.ocaMap.get(oca);
+		var matchSS = this._ocaMap.get(oca);
 		return matchSS;
 	},
 	getDissolved: function () {
-		return this.ocaMap.values();
+		return this._ocaMap.values();
 	},
 	dissolve: function () {
 		if (hasInterface(arguments[0], Collection)) {
@@ -36,15 +36,15 @@ extend(SegmentStringDissolver.prototype, {
 			if (existing === null) {
 				this.add(oca, segString);
 			} else {
-				if (this.merger !== null) {
+				if (this._merger !== null) {
 					var isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
-					this.merger.merge(existing, segString, isSameOrientation);
+					this._merger.merge(existing, segString, isSameOrientation);
 				}
 			}
 		}
 	},
 	add: function (oca, segString) {
-		this.ocaMap.put(oca, segString);
+		this._ocaMap.put(oca, segString);
 	},
 	interfaces_: function () {
 		return [];

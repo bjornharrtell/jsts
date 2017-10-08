@@ -3,47 +3,47 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function LinearGeometryBuilder() {
-	this.geomFact = null;
-	this.lines = new ArrayList();
-	this.coordList = null;
-	this.ignoreInvalidLines = false;
-	this.fixInvalidLines = false;
-	this.lastPt = null;
+	this._geomFact = null;
+	this._lines = new ArrayList();
+	this._coordList = null;
+	this._ignoreInvalidLines = false;
+	this._fixInvalidLines = false;
+	this._lastPt = null;
 	let geomFact = arguments[0];
-	this.geomFact = geomFact;
+	this._geomFact = geomFact;
 }
 extend(LinearGeometryBuilder.prototype, {
 	getGeometry: function () {
 		this.endLine();
-		return this.geomFact.buildGeometry(this.lines);
+		return this._geomFact.buildGeometry(this._lines);
 	},
 	getLastCoordinate: function () {
-		return this.lastPt;
+		return this._lastPt;
 	},
 	endLine: function () {
-		if (this.coordList === null) {
+		if (this._coordList === null) {
 			return null;
 		}
-		if (this.ignoreInvalidLines && this.coordList.size() < 2) {
-			this.coordList = null;
+		if (this._ignoreInvalidLines && this._coordList.size() < 2) {
+			this._coordList = null;
 			return null;
 		}
-		var rawPts = this.coordList.toCoordinateArray();
+		var rawPts = this._coordList.toCoordinateArray();
 		var pts = rawPts;
-		if (this.fixInvalidLines) pts = this.validCoordinateSequence(rawPts);
-		this.coordList = null;
+		if (this._fixInvalidLines) pts = this.validCoordinateSequence(rawPts);
+		this._coordList = null;
 		var line = null;
 		try {
-			line = this.geomFact.createLineString(pts);
+			line = this._geomFact.createLineString(pts);
 		} catch (ex) {
 			if (ex instanceof IllegalArgumentException) {
-				if (!this.ignoreInvalidLines) throw ex;
+				if (!this._ignoreInvalidLines) throw ex;
 			} else throw ex;
 		} finally {}
-		if (line !== null) this.lines.add(line);
+		if (line !== null) this._lines.add(line);
 	},
 	setFixInvalidLines: function (fixInvalidLines) {
-		this.fixInvalidLines = fixInvalidLines;
+		this._fixInvalidLines = fixInvalidLines;
 	},
 	add: function () {
 		if (arguments.length === 1) {
@@ -51,13 +51,13 @@ extend(LinearGeometryBuilder.prototype, {
 			this.add(pt, true);
 		} else if (arguments.length === 2) {
 			let pt = arguments[0], allowRepeatedPoints = arguments[1];
-			if (this.coordList === null) this.coordList = new CoordinateList();
-			this.coordList.add(pt, allowRepeatedPoints);
-			this.lastPt = pt;
+			if (this._coordList === null) this._coordList = new CoordinateList();
+			this._coordList.add(pt, allowRepeatedPoints);
+			this._lastPt = pt;
 		}
 	},
 	setIgnoreInvalidLines: function (ignoreInvalidLines) {
-		this.ignoreInvalidLines = ignoreInvalidLines;
+		this._ignoreInvalidLines = ignoreInvalidLines;
 	},
 	validCoordinateSequence: function (pts) {
 		if (pts.length >= 2) return pts;

@@ -2,14 +2,14 @@ import LinearIterator from './LinearIterator';
 import LinearLocation from './LinearLocation';
 import extend from '../../../../extend';
 export default function LengthLocationMap() {
-	this.linearGeom = null;
+	this._linearGeom = null;
 	let linearGeom = arguments[0];
-	this.linearGeom = linearGeom;
+	this._linearGeom = linearGeom;
 }
 extend(LengthLocationMap.prototype, {
 	getLength: function (loc) {
 		var totalLength = 0.0;
-		var it = new LinearIterator(this.linearGeom);
+		var it = new LinearIterator(this._linearGeom);
 		while (it.hasNext()) {
 			if (!it.isEndOfLine()) {
 				var p0 = it.getSegmentStart();
@@ -25,12 +25,12 @@ extend(LengthLocationMap.prototype, {
 		return totalLength;
 	},
 	resolveHigher: function (loc) {
-		if (!loc.isEndpoint(this.linearGeom)) return loc;
+		if (!loc.isEndpoint(this._linearGeom)) return loc;
 		var compIndex = loc.getComponentIndex();
-		if (compIndex >= this.linearGeom.getNumGeometries() - 1) return loc;
+		if (compIndex >= this._linearGeom.getNumGeometries() - 1) return loc;
 		do {
 			compIndex++;
-		} while (compIndex < this.linearGeom.getNumGeometries() - 1 && this.linearGeom.getGeometryN(compIndex).getLength() === 0);
+		} while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0);
 		return new LinearLocation(compIndex, 0, 0.0);
 	},
 	getLocation: function () {
@@ -41,7 +41,7 @@ extend(LengthLocationMap.prototype, {
 			let length = arguments[0], resolveLower = arguments[1];
 			var forwardLength = length;
 			if (length < 0.0) {
-				var lineLen = this.linearGeom.getLength();
+				var lineLen = this._linearGeom.getLength();
 				forwardLength = lineLen + length;
 			}
 			var loc = this.getLocationForward(forwardLength);
@@ -54,7 +54,7 @@ extend(LengthLocationMap.prototype, {
 	getLocationForward: function (length) {
 		if (length <= 0.0) return new LinearLocation();
 		var totalLength = 0.0;
-		var it = new LinearIterator(this.linearGeom);
+		var it = new LinearIterator(this._linearGeom);
 		while (it.hasNext()) {
 			if (it.isEndOfLine()) {
 				if (totalLength === length) {
@@ -76,7 +76,7 @@ extend(LengthLocationMap.prototype, {
 			}
 			it.next();
 		}
-		return LinearLocation.getEndLocation(this.linearGeom);
+		return LinearLocation.getEndLocation(this._linearGeom);
 	},
 	interfaces_: function () {
 		return [];

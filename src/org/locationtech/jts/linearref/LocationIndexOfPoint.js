@@ -5,9 +5,9 @@ import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import Assert from '../util/Assert';
 export default function LocationIndexOfPoint() {
-	this.linearGeom = null;
+	this._linearGeom = null;
 	let linearGeom = arguments[0];
-	this.linearGeom = linearGeom;
+	this._linearGeom = linearGeom;
 }
 extend(LocationIndexOfPoint.prototype, {
 	indexOf: function (inputPt) {
@@ -19,7 +19,7 @@ extend(LocationIndexOfPoint.prototype, {
 		var minSegmentIndex = 0;
 		var minFrac = -1.0;
 		var seg = new LineSegment();
-		for (var it = new LinearIterator(this.linearGeom); it.hasNext(); it.next()) {
+		for (var it = new LinearIterator(this._linearGeom); it.hasNext(); it.next()) {
 			if (!it.isEndOfLine()) {
 				seg.p0 = it.getSegmentStart();
 				seg.p1 = it.getSegmentEnd();
@@ -45,7 +45,7 @@ extend(LocationIndexOfPoint.prototype, {
 	},
 	indexOfAfter: function (inputPt, minIndex) {
 		if (minIndex === null) return this.indexOf(inputPt);
-		var endLoc = LinearLocation.getEndLocation(this.linearGeom);
+		var endLoc = LinearLocation.getEndLocation(this._linearGeom);
 		if (endLoc.compareTo(minIndex) <= 0) return endLoc;
 		var closestAfter = this.indexOfFromStart(inputPt, minIndex);
 		Assert.isTrue(closestAfter.compareTo(minIndex) >= 0, "computed location is before specified minimum location");

@@ -1,35 +1,35 @@
 import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function GeometryCombiner() {
-	this.geomFactory = null;
-	this.skipEmpty = false;
-	this.inputGeoms = null;
+	this._geomFactory = null;
+	this._skipEmpty = false;
+	this._inputGeoms = null;
 	let geoms = arguments[0];
-	this.geomFactory = GeometryCombiner.extractFactory(geoms);
-	this.inputGeoms = geoms;
+	this._geomFactory = GeometryCombiner.extractFactory(geoms);
+	this._inputGeoms = geoms;
 }
 extend(GeometryCombiner.prototype, {
 	extractElements: function (geom, elems) {
 		if (geom === null) return null;
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var elemGeom = geom.getGeometryN(i);
-			if (this.skipEmpty && elemGeom.isEmpty()) continue;
+			if (this._skipEmpty && elemGeom.isEmpty()) continue;
 			elems.add(elemGeom);
 		}
 	},
 	combine: function () {
 		var elems = new ArrayList();
-		for (var i = this.inputGeoms.iterator(); i.hasNext(); ) {
+		for (var i = this._inputGeoms.iterator(); i.hasNext(); ) {
 			var g = i.next();
 			this.extractElements(g, elems);
 		}
 		if (elems.size() === 0) {
-			if (this.geomFactory !== null) {
-				return this.geomFactory.createGeometryCollection(null);
+			if (this._geomFactory !== null) {
+				return this._geomFactory.createGeometryCollection(null);
 			}
 			return null;
 		}
-		return this.geomFactory.buildGeometry(elems);
+		return this._geomFactory.buildGeometry(elems);
 	},
 	interfaces_: function () {
 		return [];

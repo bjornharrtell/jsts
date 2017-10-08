@@ -4,9 +4,9 @@ import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GraphComponent from '../GraphComponent';
 export default function ConnectedSubgraphFinder() {
-	this.graph = null;
+	this._graph = null;
 	let graph = arguments[0];
-	this.graph = graph;
+	this._graph = graph;
 }
 extend(ConnectedSubgraphFinder.prototype, {
 	addReachable: function (startNode, subgraph) {
@@ -18,14 +18,14 @@ extend(ConnectedSubgraphFinder.prototype, {
 		}
 	},
 	findSubgraph: function (node) {
-		var subgraph = new Subgraph(this.graph);
+		var subgraph = new Subgraph(this._graph);
 		this.addReachable(node, subgraph);
 		return subgraph;
 	},
 	getConnectedSubgraphs: function () {
 		var subgraphs = new ArrayList();
-		GraphComponent.setVisited(this.graph.nodeIterator(), false);
-		for (var i = this.graph.edgeIterator(); i.hasNext(); ) {
+		GraphComponent.setVisited(this._graph.nodeIterator(), false);
+		for (var i = this._graph.edgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var node = e.getDirEdge(0).getFromNode();
 			if (!node.isVisited()) {

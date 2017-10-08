@@ -4,9 +4,9 @@ import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import Assert from '../util/Assert';
 export default function LengthIndexOfPoint() {
-	this.linearGeom = null;
+	this._linearGeom = null;
 	let linearGeom = arguments[0];
-	this.linearGeom = linearGeom;
+	this._linearGeom = linearGeom;
 }
 extend(LengthIndexOfPoint.prototype, {
 	indexOf: function (inputPt) {
@@ -17,7 +17,7 @@ extend(LengthIndexOfPoint.prototype, {
 		var ptMeasure = minIndex;
 		var segmentStartMeasure = 0.0;
 		var seg = new LineSegment();
-		var it = new LinearIterator(this.linearGeom);
+		var it = new LinearIterator(this._linearGeom);
 		while (it.hasNext()) {
 			if (!it.isEndOfLine()) {
 				seg.p0 = it.getSegmentStart();
@@ -36,7 +36,7 @@ extend(LengthIndexOfPoint.prototype, {
 	},
 	indexOfAfter: function (inputPt, minIndex) {
 		if (minIndex < 0.0) return this.indexOf(inputPt);
-		var endIndex = this.linearGeom.getLength();
+		var endIndex = this._linearGeom.getLength();
 		if (endIndex < minIndex) return endIndex;
 		var closestAfter = this.indexOfFromStart(inputPt, minIndex);
 		Assert.isTrue(closestAfter >= minIndex, "computed index is before specified minimum index");

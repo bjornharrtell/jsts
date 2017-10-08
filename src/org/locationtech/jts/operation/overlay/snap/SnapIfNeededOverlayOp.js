@@ -3,10 +3,10 @@ import extend from '../../../../../../extend';
 import RuntimeException from '../../../../../../java/lang/RuntimeException';
 import OverlayOp from '../OverlayOp';
 export default function SnapIfNeededOverlayOp() {
-	this.geom = new Array(2).fill(null);
+	this._geom = new Array(2).fill(null);
 	let g1 = arguments[0], g2 = arguments[1];
-	this.geom[0] = g1;
-	this.geom[1] = g2;
+	this._geom[0] = g1;
+	this._geom[1] = g2;
 }
 extend(SnapIfNeededOverlayOp.prototype, {
 	getResultGeometry: function (opCode) {
@@ -14,7 +14,7 @@ extend(SnapIfNeededOverlayOp.prototype, {
 		var isSuccess = false;
 		var savedException = null;
 		try {
-			result = OverlayOp.overlayOp(this.geom[0], this.geom[1], opCode);
+			result = OverlayOp.overlayOp(this._geom[0], this._geom[1], opCode);
 			var isValid = true;
 			if (isValid) isSuccess = true;
 		} catch (ex) {
@@ -24,7 +24,7 @@ extend(SnapIfNeededOverlayOp.prototype, {
 		} finally {}
 		if (!isSuccess) {
 			try {
-				result = SnapOverlayOp.overlayOp(this.geom[0], this.geom[1], opCode);
+				result = SnapOverlayOp.overlayOp(this._geom[0], this._geom[1], opCode);
 			} catch (ex) {
 				if (ex instanceof RuntimeException) {
 					throw savedException;

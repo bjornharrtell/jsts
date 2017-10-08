@@ -8,24 +8,24 @@ import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import inherits from '../../../../inherits';
 import TaggedLineString from './TaggedLineString';
 export default function TopologyPreservingSimplifier() {
-	this.inputGeom = null;
-	this.lineSimplifier = new TaggedLinesSimplifier();
-	this.linestringMap = null;
+	this._inputGeom = null;
+	this._lineSimplifier = new TaggedLinesSimplifier();
+	this._linestringMap = null;
 	let inputGeom = arguments[0];
-	this.inputGeom = inputGeom;
+	this._inputGeom = inputGeom;
 }
 extend(TopologyPreservingSimplifier.prototype, {
 	getResultGeometry: function () {
-		if (this.inputGeom.isEmpty()) return this.inputGeom.copy();
-		this.linestringMap = new HashMap();
-		this.inputGeom.apply(new LineStringMapBuilderFilter(this));
-		this.lineSimplifier.simplify(this.linestringMap.values());
-		var result = new LineStringTransformer(this.linestringMap).transform(this.inputGeom);
+		if (this._inputGeom.isEmpty()) return this._inputGeom.copy();
+		this._linestringMap = new HashMap();
+		this._inputGeom.apply(new LineStringMapBuilderFilter(this));
+		this._lineSimplifier.simplify(this._linestringMap.values());
+		var result = new LineStringTransformer(this._linestringMap).transform(this._inputGeom);
 		return result;
 	},
 	setDistanceTolerance: function (distanceTolerance) {
 		if (distanceTolerance < 0.0) throw new IllegalArgumentException("Tolerance must be non-negative");
-		this.lineSimplifier.setDistanceTolerance(distanceTolerance);
+		this._lineSimplifier.setDistanceTolerance(distanceTolerance);
 	},
 	interfaces_: function () {
 		return [];
@@ -41,16 +41,16 @@ TopologyPreservingSimplifier.simplify = function (geom, distanceTolerance) {
 };
 function LineStringTransformer() {
 	GeometryTransformer.apply(this);
-	this.linestringMap = null;
+	this._linestringMap = null;
 	let linestringMap = arguments[0];
-	this.linestringMap = linestringMap;
+	this._linestringMap = linestringMap;
 }
 inherits(LineStringTransformer, GeometryTransformer);
 extend(LineStringTransformer.prototype, {
 	transformCoordinates: function (coords, parent) {
 		if (coords.size() === 0) return null;
 		if (parent instanceof LineString) {
-			var taggedLine = this.linestringMap.get(parent);
+			var taggedLine = this._linestringMap.get(parent);
 			return this.createCoordinateSequence(taggedLine.getResultCoordinates());
 		}
 		return GeometryTransformer.prototype.transformCoordinates.call(this, coords, parent);
@@ -74,7 +74,7 @@ extend(LineStringMapBuilderFilter.prototype, {
 			if (line.isEmpty()) return null;
 			var minSize = line.isClosed() ? 4 : 2;
 			var taggedLine = new TaggedLineString(line, minSize);
-			this.tps.linestringMap.put(line, taggedLine);
+			this.tps._linestringMap.put(line, taggedLine);
 		}
 	},
 	interfaces_: function () {

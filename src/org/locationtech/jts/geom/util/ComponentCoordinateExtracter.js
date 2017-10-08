@@ -4,13 +4,13 @@ import extend from '../../../../../extend';
 import GeometryComponentFilter from '../GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function ComponentCoordinateExtracter() {
-	this.coords = null;
+	this._coords = null;
 	let coords = arguments[0];
-	this.coords = coords;
+	this._coords = coords;
 }
 extend(ComponentCoordinateExtracter.prototype, {
 	filter: function (geom) {
-		if (geom instanceof LineString || geom instanceof Point) this.coords.add(geom.getCoordinate());
+		if (geom instanceof LineString || geom instanceof Point) this._coords.add(geom.getCoordinate());
 	},
 	interfaces_: function () {
 		return [GeometryComponentFilter];

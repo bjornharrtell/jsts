@@ -9,10 +9,10 @@ import GeometryExtracter from '../../geom/util/GeometryExtracter';
 import OverlayOp from '../overlay/OverlayOp';
 import CascadedPolygonUnion from './CascadedPolygonUnion';
 export default function UnaryUnionOp() {
-	this.polygons = new ArrayList();
-	this.lines = new ArrayList();
-	this.points = new ArrayList();
-	this.geomFact = null;
+	this._polygons = new ArrayList();
+	this._lines = new ArrayList();
+	this._points = new ArrayList();
+	this._geomFact = null;
 	if (arguments.length === 1) {
 		if (hasInterface(arguments[0], Collection)) {
 			let geoms = arguments[0];
@@ -23,13 +23,13 @@ export default function UnaryUnionOp() {
 		}
 	} else if (arguments.length === 2) {
 		let geoms = arguments[0], geomFact = arguments[1];
-		this.geomFact = geomFact;
+		this._geomFact = geomFact;
 		this.extract(geoms);
 	}
 }
 extend(UnaryUnionOp.prototype, {
 	unionNoOpt: function (g0) {
-		var empty = this.geomFact.createPoint();
+		var empty = this._geomFact.createPoint();
 		return SnapIfNeededOverlayOp.overlayOp(g0, empty, OverlayOp.UNION);
 	},
 	unionWithNull: function (g0, g1) {
@@ -47,34 +47,34 @@ extend(UnaryUnionOp.prototype, {
 			}
 		} else if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
-			if (this.geomFact === null) this.geomFact = geom.getFactory();
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POLYGON, this.polygons);
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_LINESTRING, this.lines);
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POINT, this.points);
+			if (this._geomFact === null) this._geomFact = geom.getFactory();
+			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POLYGON, this._polygons);
+			GeometryExtracter.extract(geom, Geometry.SORTINDEX_LINESTRING, this._lines);
+			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POINT, this._points);
 		}
 	},
 	union: function () {
-		if (this.geomFact === null) {
+		if (this._geomFact === null) {
 			return null;
 		}
 		var unionPoints = null;
-		if (this.points.size() > 0) {
-			var ptGeom = this.geomFact.buildGeometry(this.points);
+		if (this._points.size() > 0) {
+			var ptGeom = this._geomFact.buildGeometry(this._points);
 			unionPoints = this.unionNoOpt(ptGeom);
 		}
 		var unionLines = null;
-		if (this.lines.size() > 0) {
-			var lineGeom = this.geomFact.buildGeometry(this.lines);
+		if (this._lines.size() > 0) {
+			var lineGeom = this._geomFact.buildGeometry(this._lines);
 			unionLines = this.unionNoOpt(lineGeom);
 		}
 		var unionPolygons = null;
-		if (this.polygons.size() > 0) {
-			unionPolygons = CascadedPolygonUnion.union(this.polygons);
+		if (this._polygons.size() > 0) {
+			unionPolygons = CascadedPolygonUnion.union(this._polygons);
 		}
 		var unionLA = this.unionWithNull(unionLines, unionPolygons);
 		var union = null;
 		if (unionPoints === null) union = unionLA; else if (unionLA === null) union = unionPoints; else union = PointGeometryUnion.union(unionPoints, unionLA);
-		if (union === null) return this.geomFact.createGeometryCollection();
+		if (union === null) return this._geomFact.createGeometryCollection();
 		return union;
 	},
 	interfaces_: function () {

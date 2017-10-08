@@ -4,22 +4,22 @@ import extend from '../../../../../extend';
 import NodeMap from '../../geomgraph/NodeMap';
 import RelateNodeFactory from './RelateNodeFactory';
 export default function RelateNodeGraph() {
-	this.nodes = new NodeMap(new RelateNodeFactory());
+	this._nodes = new NodeMap(new RelateNodeFactory());
 }
 extend(RelateNodeGraph.prototype, {
 	insertEdgeEnds: function (ee) {
 		for (var i = ee.iterator(); i.hasNext(); ) {
 			var e = i.next();
-			this.nodes.add(e);
+			this._nodes.add(e);
 		}
 	},
 	getNodeIterator: function () {
-		return this.nodes.iterator();
+		return this._nodes.iterator();
 	},
 	copyNodesAndLabels: function (geomGraph, argIndex) {
 		for (var nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext(); ) {
 			var graphNode = nodeIt.next();
-			var newNode = this.nodes.addNode(graphNode.getCoordinate());
+			var newNode = this._nodes.addNode(graphNode.getCoordinate());
 			newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 		}
 	},
@@ -36,7 +36,7 @@ extend(RelateNodeGraph.prototype, {
 			var eLoc = e.getLabel().getLocation(argIndex);
 			for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext(); ) {
 				var ei = eiIt.next();
-				var n = this.nodes.addNode(ei.coord);
+				var n = this._nodes.addNode(ei.coord);
 				if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else {
 					if (n.getLabel().isNull(argIndex)) n.setLabel(argIndex, Location.INTERIOR);
 				}

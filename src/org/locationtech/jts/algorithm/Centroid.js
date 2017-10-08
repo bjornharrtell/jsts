@@ -7,26 +7,26 @@ import Polygon from '../geom/Polygon';
 import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
 export default function Centroid() {
-	this.areaBasePt = null;
-	this.triangleCent3 = new Coordinate();
-	this.areasum2 = 0;
-	this.cg3 = new Coordinate();
-	this.lineCentSum = new Coordinate();
-	this.totalLength = 0.0;
-	this.ptCount = 0;
-	this.ptCentSum = new Coordinate();
+	this._areaBasePt = null;
+	this._triangleCent3 = new Coordinate();
+	this._areasum2 = 0;
+	this._cg3 = new Coordinate();
+	this._lineCentSum = new Coordinate();
+	this._totalLength = 0.0;
+	this._ptCount = 0;
+	this._ptCentSum = new Coordinate();
 	let geom = arguments[0];
-	this.areaBasePt = null;
+	this._areaBasePt = null;
 	this.add(geom);
 }
 extend(Centroid.prototype, {
 	addPoint: function (pt) {
-		this.ptCount += 1;
-		this.ptCentSum.x += pt.x;
-		this.ptCentSum.y += pt.y;
+		this._ptCount += 1;
+		this._ptCentSum.x += pt.x;
+		this._ptCentSum.y += pt.y;
 	},
 	setBasePoint: function (basePt) {
-		if (this.areaBasePt === null) this.areaBasePt = basePt;
+		if (this._areaBasePt === null) this._areaBasePt = basePt;
 	},
 	addLineSegments: function (pts) {
 		var lineLen = 0.0;
@@ -35,31 +35,31 @@ extend(Centroid.prototype, {
 			if (segmentLen === 0.0) continue;
 			lineLen += segmentLen;
 			var midx = (pts[i].x + pts[i + 1].x) / 2;
-			this.lineCentSum.x += segmentLen * midx;
+			this._lineCentSum.x += segmentLen * midx;
 			var midy = (pts[i].y + pts[i + 1].y) / 2;
-			this.lineCentSum.y += segmentLen * midy;
+			this._lineCentSum.y += segmentLen * midy;
 		}
-		this.totalLength += lineLen;
+		this._totalLength += lineLen;
 		if (lineLen === 0.0 && pts.length > 0) this.addPoint(pts[0]);
 	},
 	addHole: function (pts) {
 		var isPositiveArea = CGAlgorithms.isCCW(pts);
 		for (var i = 0; i < pts.length - 1; i++) {
-			this.addTriangle(this.areaBasePt, pts[i], pts[i + 1], isPositiveArea);
+			this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea);
 		}
 		this.addLineSegments(pts);
 	},
 	getCentroid: function () {
 		var cent = new Coordinate();
-		if (Math.abs(this.areasum2) > 0.0) {
-			cent.x = this.cg3.x / 3 / this.areasum2;
-			cent.y = this.cg3.y / 3 / this.areasum2;
-		} else if (this.totalLength > 0.0) {
-			cent.x = this.lineCentSum.x / this.totalLength;
-			cent.y = this.lineCentSum.y / this.totalLength;
-		} else if (this.ptCount > 0) {
-			cent.x = this.ptCentSum.x / this.ptCount;
-			cent.y = this.ptCentSum.y / this.ptCount;
+		if (Math.abs(this._areasum2) > 0.0) {
+			cent.x = this._cg3.x / 3 / this._areasum2;
+			cent.y = this._cg3.y / 3 / this._areasum2;
+		} else if (this._totalLength > 0.0) {
+			cent.x = this._lineCentSum.x / this._totalLength;
+			cent.y = this._lineCentSum.y / this._totalLength;
+		} else if (this._ptCount > 0) {
+			cent.x = this._ptCentSum.x / this._ptCount;
+			cent.y = this._ptCentSum.y / this._ptCount;
 		} else {
 			return null;
 		}
@@ -69,17 +69,17 @@ extend(Centroid.prototype, {
 		if (pts.length > 0) this.setBasePoint(pts[0]);
 		var isPositiveArea = !CGAlgorithms.isCCW(pts);
 		for (var i = 0; i < pts.length - 1; i++) {
-			this.addTriangle(this.areaBasePt, pts[i], pts[i + 1], isPositiveArea);
+			this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea);
 		}
 		this.addLineSegments(pts);
 	},
 	addTriangle: function (p0, p1, p2, isPositiveArea) {
 		var sign = isPositiveArea ? 1.0 : -1.0;
-		Centroid.centroid3(p0, p1, p2, this.triangleCent3);
+		Centroid.centroid3(p0, p1, p2, this._triangleCent3);
 		var area2 = Centroid.area2(p0, p1, p2);
-		this.cg3.x += sign * area2 * this.triangleCent3.x;
-		this.cg3.y += sign * area2 * this.triangleCent3.y;
-		this.areasum2 += sign * area2;
+		this._cg3.x += sign * area2 * this._triangleCent3.x;
+		this._cg3.y += sign * area2 * this._triangleCent3.y;
+		this._areasum2 += sign * area2;
 	},
 	add: function () {
 		if (arguments[0] instanceof Polygon) {

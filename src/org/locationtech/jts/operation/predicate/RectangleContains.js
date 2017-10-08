@@ -4,9 +4,9 @@ import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
 import extend from '../../../../../extend';
 export default function RectangleContains() {
-	this.rectEnv = null;
+	this._rectEnv = null;
 	let rectangle = arguments[0];
-	this.rectEnv = rectangle.getEnvelopeInternal();
+	this._rectEnv = rectangle.getEnvelopeInternal();
 }
 extend(RectangleContains.prototype, {
 	isContainedInBoundary: function (geom) {
@@ -22,9 +22,9 @@ extend(RectangleContains.prototype, {
 	isLineSegmentContainedInBoundary: function (p0, p1) {
 		if (p0.equals(p1)) return this.isPointContainedInBoundary(p0);
 		if (p0.x === p1.x) {
-			if (p0.x === this.rectEnv.getMinX() || p0.x === this.rectEnv.getMaxX()) return true;
+			if (p0.x === this._rectEnv.getMinX() || p0.x === this._rectEnv.getMaxX()) return true;
 		} else if (p0.y === p1.y) {
-			if (p0.y === this.rectEnv.getMinY() || p0.y === this.rectEnv.getMaxY()) return true;
+			if (p0.y === this._rectEnv.getMinY() || p0.y === this._rectEnv.getMaxY()) return true;
 		}
 		return false;
 	},
@@ -45,11 +45,11 @@ extend(RectangleContains.prototype, {
 			return this.isPointContainedInBoundary(point.getCoordinate());
 		} else if (arguments[0] instanceof Coordinate) {
 			let pt = arguments[0];
-			return pt.x === this.rectEnv.getMinX() || pt.x === this.rectEnv.getMaxX() || pt.y === this.rectEnv.getMinY() || pt.y === this.rectEnv.getMaxY();
+			return pt.x === this._rectEnv.getMinX() || pt.x === this._rectEnv.getMaxX() || pt.y === this._rectEnv.getMinY() || pt.y === this._rectEnv.getMaxY();
 		}
 	},
 	contains: function (geom) {
-		if (!this.rectEnv.contains(geom.getEnvelopeInternal())) return false;
+		if (!this._rectEnv.contains(geom.getEnvelopeInternal())) return false;
 		if (this.isContainedInBoundary(geom)) return false;
 		return true;
 	},

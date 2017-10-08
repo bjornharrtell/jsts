@@ -6,11 +6,11 @@ import MultiPoint from '../../geom/MultiPoint';
 import extend from '../../../../../extend';
 import GeometryCollection from '../../geom/GeometryCollection';
 export default function RepeatedPointTester() {
-	this.repeatedCoord = null;
+	this._repeatedCoord = null;
 }
 extend(RepeatedPointTester.prototype, {
 	getCoordinate: function () {
-		return this.repeatedCoord;
+		return this._repeatedCoord;
 	},
 	hasRepeatedPoint: function () {
 		if (arguments[0] instanceof Geometry) {
@@ -21,7 +21,7 @@ extend(RepeatedPointTester.prototype, {
 			let coord = arguments[0];
 			for (var i = 1; i < coord.length; i++) {
 				if (coord[i - 1].equals(coord[i])) {
-					this.repeatedCoord = coord[i];
+					this._repeatedCoord = coord[i];
 					return true;
 				}
 			}

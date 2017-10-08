@@ -1,36 +1,36 @@
 import extend from '../../../../../extend';
 import Assert from '../../util/Assert';
 export default function Interval() {
-	this.min = null;
-	this.max = null;
+	this._min = null;
+	this._max = null;
 	if (arguments.length === 1) {
 		let other = arguments[0];
-		Interval.call(this, other.min, other.max);
+		Interval.call(this, other._min, other._max);
 	} else if (arguments.length === 2) {
 		let min = arguments[0], max = arguments[1];
 		Assert.isTrue(min <= max);
-		this.min = min;
-		this.max = max;
+		this._min = min;
+		this._max = max;
 	}
 }
 extend(Interval.prototype, {
 	expandToInclude: function (other) {
-		this.max = Math.max(this.max, other.max);
-		this.min = Math.min(this.min, other.min);
+		this._max = Math.max(this._max, other._max);
+		this._min = Math.min(this._min, other._min);
 		return this;
 	},
 	getCentre: function () {
-		return (this.min + this.max) / 2;
+		return (this._min + this._max) / 2;
 	},
 	intersects: function (other) {
-		return !(other.min > this.max || other.max < this.min);
+		return !(other._min > this._max || other._max < this._min);
 	},
 	equals: function (o) {
 		if (!(o instanceof Interval)) {
 			return false;
 		}
 		var other = o;
-		return this.min === other.min && this.max === other.max;
+		return this._min === other._min && this._max === other._max;
 	},
 	interfaces_: function () {
 		return [];

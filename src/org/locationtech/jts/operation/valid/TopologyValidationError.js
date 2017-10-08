@@ -1,29 +1,29 @@
 import extend from '../../../../../extend';
 export default function TopologyValidationError() {
-	this.errorType = null;
-	this.pt = null;
+	this._errorType = null;
+	this._pt = null;
 	if (arguments.length === 1) {
 		let errorType = arguments[0];
 		TopologyValidationError.call(this, errorType, null);
 	} else if (arguments.length === 2) {
 		let errorType = arguments[0], pt = arguments[1];
-		this.errorType = errorType;
-		if (pt !== null) this.pt = pt.copy();
+		this._errorType = errorType;
+		if (pt !== null) this._pt = pt.copy();
 	}
 }
 extend(TopologyValidationError.prototype, {
 	getErrorType: function () {
-		return this.errorType;
+		return this._errorType;
 	},
 	getMessage: function () {
-		return TopologyValidationError.errMsg[this.errorType];
+		return TopologyValidationError.errMsg[this._errorType];
 	},
 	getCoordinate: function () {
-		return this.pt;
+		return this._pt;
 	},
 	toString: function () {
 		var locStr = "";
-		if (this.pt !== null) locStr = " at or near point " + this.pt;
+		if (this._pt !== null) locStr = " at or near point " + this._pt;
 		return this.getMessage() + locStr;
 	},
 	interfaces_: function () {

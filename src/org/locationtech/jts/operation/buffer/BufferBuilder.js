@@ -18,21 +18,21 @@ import IntersectionAdder from '../../noding/IntersectionAdder';
 import Edge from '../../geomgraph/Edge';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default function BufferBuilder() {
-	this.bufParams = null;
-	this.workingPrecisionModel = null;
-	this.workingNoder = null;
-	this.geomFact = null;
-	this.graph = null;
-	this.edgeList = new EdgeList();
+	this._bufParams = null;
+	this._workingPrecisionModel = null;
+	this._workingNoder = null;
+	this._geomFact = null;
+	this._graph = null;
+	this._edgeList = new EdgeList();
 	let bufParams = arguments[0];
-	this.bufParams = bufParams;
+	this._bufParams = bufParams;
 }
 extend(BufferBuilder.prototype, {
 	setWorkingPrecisionModel: function (pm) {
-		this.workingPrecisionModel = pm;
+		this._workingPrecisionModel = pm;
 	},
 	insertUniqueEdge: function (e) {
-		var existingEdge = this.edgeList.findEqualEdge(e);
+		var existingEdge = this._edgeList.findEqualEdge(e);
 		if (existingEdge !== null) {
 			var existingLabel = existingEdge.getLabel();
 			var labelToMerge = e.getLabel();
@@ -46,7 +46,7 @@ extend(BufferBuilder.prototype, {
 			var newDelta = existingDelta + mergeDelta;
 			existingEdge.setDepthDelta(newDelta);
 		} else {
-			this.edgeList.add(e);
+			this._edgeList.add(e);
 			e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()));
 		}
 	},
@@ -77,11 +77,11 @@ extend(BufferBuilder.prototype, {
 		return subgraphList;
 	},
 	createEmptyResultGeometry: function () {
-		var emptyGeom = this.geomFact.createPolygon();
+		var emptyGeom = this._geomFact.createPolygon();
 		return emptyGeom;
 	},
 	getNoder: function (precisionModel) {
-		if (this.workingNoder !== null) return this.workingNoder;
+		if (this._workingNoder !== null) return this._workingNoder;
 		var noder = new MCIndexNoder();
 		var li = new RobustLineIntersector();
 		li.setPrecisionModel(precisionModel);
@@ -89,26 +89,26 @@ extend(BufferBuilder.prototype, {
 		return noder;
 	},
 	buffer: function (g, distance) {
-		var precisionModel = this.workingPrecisionModel;
+		var precisionModel = this._workingPrecisionModel;
 		if (precisionModel === null) precisionModel = g.getPrecisionModel();
-		this.geomFact = g.getFactory();
-		var curveBuilder = new OffsetCurveBuilder(precisionModel, this.bufParams);
+		this._geomFact = g.getFactory();
+		var curveBuilder = new OffsetCurveBuilder(precisionModel, this._bufParams);
 		var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 		var bufferSegStrList = curveSetBuilder.getCurves();
 		if (bufferSegStrList.size() <= 0) {
 			return this.createEmptyResultGeometry();
 		}
 		this.computeNodedEdges(bufferSegStrList, precisionModel);
-		this.graph = new PlanarGraph(new OverlayNodeFactory());
-		this.graph.addEdges(this.edgeList.getEdges());
-		var subgraphList = this.createSubgraphs(this.graph);
-		var polyBuilder = new PolygonBuilder(this.geomFact);
+		this._graph = new PlanarGraph(new OverlayNodeFactory());
+		this._graph.addEdges(this._edgeList.getEdges());
+		var subgraphList = this.createSubgraphs(this._graph);
+		var polyBuilder = new PolygonBuilder(this._geomFact);
 		this.buildSubgraphs(subgraphList, polyBuilder);
 		var resultPolyList = polyBuilder.getPolygons();
 		if (resultPolyList.size() <= 0) {
 			return this.createEmptyResultGeometry();
 		}
-		var resultGeom = this.geomFact.buildGeometry(resultPolyList);
+		var resultGeom = this._geomFact.buildGeometry(resultPolyList);
 		return resultGeom;
 	},
 	computeNodedEdges: function (bufferSegStrList, precisionModel) {
@@ -125,7 +125,7 @@ extend(BufferBuilder.prototype, {
 		}
 	},
 	setNoder: function (noder) {
-		this.workingNoder = noder;
+		this._workingNoder = noder;
 	},
 	interfaces_: function () {
 		return [];

@@ -10,11 +10,11 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
 export default function ConnectedInteriorTester() {
-	this.geometryFactory = new GeometryFactory();
-	this.geomGraph = null;
-	this.disconnectedRingcoord = null;
+	this._geometryFactory = new GeometryFactory();
+	this._geomGraph = null;
+	this._disconnectedRingcoord = null;
 	let geomGraph = arguments[0];
-	this.geomGraph = geomGraph;
+	this._geomGraph = geomGraph;
 }
 extend(ConnectedInteriorTester.prototype, {
 	visitInteriorRing: function (ring, graph) {
@@ -46,7 +46,7 @@ extend(ConnectedInteriorTester.prototype, {
 		}
 	},
 	getCoordinate: function () {
-		return this.disconnectedRingcoord;
+		return this._disconnectedRingcoord;
 	},
 	setInteriorEdgesInResult: function (graph) {
 		for (var it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
@@ -70,7 +70,7 @@ extend(ConnectedInteriorTester.prototype, {
 		for (var it = dirEdges.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (de.isInResult() && de.getEdgeRing() === null) {
-				var er = new MaximalEdgeRing(de, this.geometryFactory);
+				var er = new MaximalEdgeRing(de, this._geometryFactory);
 				er.linkDirectedEdgesForMinimalEdgeRings();
 				var minEdgeRings = er.buildMinimalRings();
 				edgeRings.addAll(minEdgeRings);
@@ -88,7 +88,7 @@ extend(ConnectedInteriorTester.prototype, {
 			for (var j = 0; j < edges.size(); j++) {
 				de = edges.get(j);
 				if (!de.isVisited()) {
-					this.disconnectedRingcoord = de.getCoordinate();
+					this._disconnectedRingcoord = de.getCoordinate();
 					return true;
 				}
 			}
@@ -97,13 +97,13 @@ extend(ConnectedInteriorTester.prototype, {
 	},
 	isInteriorsConnected: function () {
 		var splitEdges = new ArrayList();
-		this.geomGraph.computeSplitEdges(splitEdges);
+		this._geomGraph.computeSplitEdges(splitEdges);
 		var graph = new PlanarGraph(new OverlayNodeFactory());
 		graph.addEdges(splitEdges);
 		this.setInteriorEdgesInResult(graph);
 		graph.linkResultDirectedEdges();
 		var edgeRings = this.buildEdgeRings(graph.getEdgeEnds());
-		this.visitShellInteriors(this.geomGraph.getGeometry(), graph);
+		this.visitShellInteriors(this._geomGraph.getGeometry(), graph);
 		return !this.hasUnvisitedShellEdge(edgeRings);
 	},
 	interfaces_: function () {

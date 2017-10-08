@@ -10,43 +10,43 @@ import Angle from '../../algorithm/Angle';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import HCoordinate from '../../algorithm/HCoordinate';
 export default function OffsetSegmentGenerator() {
-	this.maxCurveSegmentError = 0.0;
-	this.filletAngleQuantum = null;
-	this.closingSegLengthFactor = 1;
-	this.segList = null;
-	this.distance = 0.0;
-	this.precisionModel = null;
-	this.bufParams = null;
-	this.li = null;
-	this.s0 = null;
-	this.s1 = null;
-	this.s2 = null;
-	this.seg0 = new LineSegment();
-	this.seg1 = new LineSegment();
-	this.offset0 = new LineSegment();
-	this.offset1 = new LineSegment();
-	this.side = 0;
-	this._hasNarrowConcaveAngle = false;
+	this._maxCurveSegmentError = 0.0;
+	this._filletAngleQuantum = null;
+	this._closingSegLengthFactor = 1;
+	this._segList = null;
+	this._distance = 0.0;
+	this._precisionModel = null;
+	this._bufParams = null;
+	this._li = null;
+	this._s0 = null;
+	this._s1 = null;
+	this._s2 = null;
+	this._seg0 = new LineSegment();
+	this._seg1 = new LineSegment();
+	this._offset0 = new LineSegment();
+	this._offset1 = new LineSegment();
+	this._side = 0;
+	this.__hasNarrowConcaveAngle = false;
 	let precisionModel = arguments[0], bufParams = arguments[1], distance = arguments[2];
-	this.precisionModel = precisionModel;
-	this.bufParams = bufParams;
-	this.li = new RobustLineIntersector();
-	this.filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments();
-	if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this.closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
+	this._precisionModel = precisionModel;
+	this._bufParams = bufParams;
+	this._li = new RobustLineIntersector();
+	this._filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments();
+	if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this._closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR;
 	this.init(distance);
 }
 extend(OffsetSegmentGenerator.prototype, {
 	addNextSegment: function (p, addStartPoint) {
-		this.s0 = this.s1;
-		this.s1 = this.s2;
-		this.s2 = p;
-		this.seg0.setCoordinates(this.s0, this.s1);
-		this.computeOffsetSegment(this.seg0, this.side, this.distance, this.offset0);
-		this.seg1.setCoordinates(this.s1, this.s2);
-		this.computeOffsetSegment(this.seg1, this.side, this.distance, this.offset1);
-		if (this.s1.equals(this.s2)) return null;
-		var orientation = CGAlgorithms.computeOrientation(this.s0, this.s1, this.s2);
-		var outsideTurn = orientation === CGAlgorithms.CLOCKWISE && this.side === Position.LEFT || orientation === CGAlgorithms.COUNTERCLOCKWISE && this.side === Position.RIGHT;
+		this._s0 = this._s1;
+		this._s1 = this._s2;
+		this._s2 = p;
+		this._seg0.setCoordinates(this._s0, this._s1);
+		this.computeOffsetSegment(this._seg0, this._side, this._distance, this._offset0);
+		this._seg1.setCoordinates(this._s1, this._s2);
+		this.computeOffsetSegment(this._seg1, this._side, this._distance, this._offset1);
+		if (this._s1.equals(this._s2)) return null;
+		var orientation = CGAlgorithms.computeOrientation(this._s0, this._s1, this._s2);
+		var outsideTurn = orientation === CGAlgorithms.CLOCKWISE && this._side === Position.LEFT || orientation === CGAlgorithms.COUNTERCLOCKWISE && this._side === Position.RIGHT;
 		if (orientation === 0) {
 			this.addCollinear(addStartPoint);
 		} else if (outsideTurn) {
@@ -58,35 +58,35 @@ extend(OffsetSegmentGenerator.prototype, {
 	addLineEndCap: function (p0, p1) {
 		var seg = new LineSegment(p0, p1);
 		var offsetL = new LineSegment();
-		this.computeOffsetSegment(seg, Position.LEFT, this.distance, offsetL);
+		this.computeOffsetSegment(seg, Position.LEFT, this._distance, offsetL);
 		var offsetR = new LineSegment();
-		this.computeOffsetSegment(seg, Position.RIGHT, this.distance, offsetR);
+		this.computeOffsetSegment(seg, Position.RIGHT, this._distance, offsetR);
 		var dx = p1.x - p0.x;
 		var dy = p1.y - p0.y;
 		var angle = Math.atan2(dy, dx);
-		switch (this.bufParams.getEndCapStyle()) {
+		switch (this._bufParams.getEndCapStyle()) {
 			case BufferParameters.CAP_ROUND:
-				this.segList.addPt(offsetL.p1);
-				this.addFilletArc(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.CLOCKWISE, this.distance);
-				this.segList.addPt(offsetR.p1);
+				this._segList.addPt(offsetL.p1);
+				this.addFilletArc(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.CLOCKWISE, this._distance);
+				this._segList.addPt(offsetR.p1);
 				break;
 			case BufferParameters.CAP_FLAT:
-				this.segList.addPt(offsetL.p1);
-				this.segList.addPt(offsetR.p1);
+				this._segList.addPt(offsetL.p1);
+				this._segList.addPt(offsetR.p1);
 				break;
 			case BufferParameters.CAP_SQUARE:
 				var squareCapSideOffset = new Coordinate();
-				squareCapSideOffset.x = Math.abs(this.distance) * Math.cos(angle);
-				squareCapSideOffset.y = Math.abs(this.distance) * Math.sin(angle);
+				squareCapSideOffset.x = Math.abs(this._distance) * Math.cos(angle);
+				squareCapSideOffset.y = Math.abs(this._distance) * Math.sin(angle);
 				var squareCapLOffset = new Coordinate(offsetL.p1.x + squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y);
 				var squareCapROffset = new Coordinate(offsetR.p1.x + squareCapSideOffset.x, offsetR.p1.y + squareCapSideOffset.y);
-				this.segList.addPt(squareCapLOffset);
-				this.segList.addPt(squareCapROffset);
+				this._segList.addPt(squareCapLOffset);
+				this._segList.addPt(squareCapROffset);
 				break;
 		}
 	},
 	getCoordinates: function () {
-		var pts = this.segList.getCoordinates();
+		var pts = this._segList.getCoordinates();
 		return pts;
 	},
 	addMitreJoin: function (p, offset0, offset1, distance) {
@@ -95,7 +95,7 @@ extend(OffsetSegmentGenerator.prototype, {
 		try {
 			intPt = HCoordinate.intersection(offset0.p0, offset0.p1, offset1.p0, offset1.p1);
 			var mitreRatio = distance <= 0.0 ? 1.0 : intPt.distance(p) / Math.abs(distance);
-			if (mitreRatio > this.bufParams.getMitreLimit()) isMitreWithinLimit = false;
+			if (mitreRatio > this._bufParams.getMitreLimit()) isMitreWithinLimit = false;
 		} catch (ex) {
 			if (ex instanceof NotRepresentableException) {
 				intPt = new Coordinate(0, 0);
@@ -103,9 +103,9 @@ extend(OffsetSegmentGenerator.prototype, {
 			} else throw ex;
 		} finally {}
 		if (isMitreWithinLimit) {
-			this.segList.addPt(intPt);
+			this._segList.addPt(intPt);
 		} else {
-			this.addLimitedMitreJoin(offset0, offset1, distance, this.bufParams.getMitreLimit());
+			this.addLimitedMitreJoin(offset0, offset1, distance, this._bufParams.getMitreLimit());
 		}
 	},
 	addFilletCorner: function (p, p0, p1, direction, radius) {
@@ -120,53 +120,53 @@ extend(OffsetSegmentGenerator.prototype, {
 		} else {
 			if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
 		}
-		this.segList.addPt(p0);
+		this._segList.addPt(p0);
 		this.addFilletArc(p, startAngle, endAngle, direction, radius);
-		this.segList.addPt(p1);
+		this._segList.addPt(p1);
 	},
 	addOutsideTurn: function (orientation, addStartPoint) {
-		if (this.offset0.p1.distance(this.offset1.p0) < this.distance * OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
-			this.segList.addPt(this.offset0.p1);
+		if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
+			this._segList.addPt(this._offset0.p1);
 			return null;
 		}
-		if (this.bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
-			this.addMitreJoin(this.s1, this.offset0, this.offset1, this.distance);
-		} else if (this.bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL) {
-			this.addBevelJoin(this.offset0, this.offset1);
+		if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
+			this.addMitreJoin(this._s1, this._offset0, this._offset1, this._distance);
+		} else if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL) {
+			this.addBevelJoin(this._offset0, this._offset1);
 		} else {
-			if (addStartPoint) this.segList.addPt(this.offset0.p1);
-			this.addFilletCorner(this.s1, this.offset0.p1, this.offset1.p0, orientation, this.distance);
-			this.segList.addPt(this.offset1.p0);
+			if (addStartPoint) this._segList.addPt(this._offset0.p1);
+			this.addFilletCorner(this._s1, this._offset0.p1, this._offset1.p0, orientation, this._distance);
+			this._segList.addPt(this._offset1.p0);
 		}
 	},
 	createSquare: function (p) {
-		this.segList.addPt(new Coordinate(p.x + this.distance, p.y + this.distance));
-		this.segList.addPt(new Coordinate(p.x + this.distance, p.y - this.distance));
-		this.segList.addPt(new Coordinate(p.x - this.distance, p.y - this.distance));
-		this.segList.addPt(new Coordinate(p.x - this.distance, p.y + this.distance));
-		this.segList.closeRing();
+		this._segList.addPt(new Coordinate(p.x + this._distance, p.y + this._distance));
+		this._segList.addPt(new Coordinate(p.x + this._distance, p.y - this._distance));
+		this._segList.addPt(new Coordinate(p.x - this._distance, p.y - this._distance));
+		this._segList.addPt(new Coordinate(p.x - this._distance, p.y + this._distance));
+		this._segList.closeRing();
 	},
 	addSegments: function (pt, isForward) {
-		this.segList.addPts(pt, isForward);
+		this._segList.addPts(pt, isForward);
 	},
 	addFirstSegment: function () {
-		this.segList.addPt(this.offset1.p0);
+		this._segList.addPt(this._offset1.p0);
 	},
 	addLastSegment: function () {
-		this.segList.addPt(this.offset1.p1);
+		this._segList.addPt(this._offset1.p1);
 	},
 	initSideSegments: function (s1, s2, side) {
-		this.s1 = s1;
-		this.s2 = s2;
-		this.side = side;
-		this.seg1.setCoordinates(s1, s2);
-		this.computeOffsetSegment(this.seg1, side, this.distance, this.offset1);
+		this._s1 = s1;
+		this._s2 = s2;
+		this._side = side;
+		this._seg1.setCoordinates(s1, s2);
+		this.computeOffsetSegment(this._seg1, side, this._distance, this._offset1);
 	},
 	addLimitedMitreJoin: function (offset0, offset1, distance, mitreLimit) {
-		var basePt = this.seg0.p1;
-		var ang0 = Angle.angle(basePt, this.seg0.p0);
-		var ang1 = Angle.angle(basePt, this.seg1.p1);
-		var angDiff = Angle.angleBetweenOriented(this.seg0.p0, basePt, this.seg1.p1);
+		var basePt = this._seg0.p1;
+		var ang0 = Angle.angle(basePt, this._seg0.p0);
+		var ang1 = Angle.angle(basePt, this._seg1.p1);
+		var angDiff = Angle.angleBetweenOriented(this._seg0.p0, basePt, this._seg1.p1);
 		var angDiffHalf = angDiff / 2;
 		var midAng = Angle.normalize(ang0 + angDiffHalf);
 		var mitreMidAng = Angle.normalize(midAng + Math.PI);
@@ -179,12 +179,12 @@ extend(OffsetSegmentGenerator.prototype, {
 		var mitreMidLine = new LineSegment(basePt, bevelMidPt);
 		var bevelEndLeft = mitreMidLine.pointAlongOffset(1.0, bevelHalfLen);
 		var bevelEndRight = mitreMidLine.pointAlongOffset(1.0, -bevelHalfLen);
-		if (this.side === Position.LEFT) {
-			this.segList.addPt(bevelEndLeft);
-			this.segList.addPt(bevelEndRight);
+		if (this._side === Position.LEFT) {
+			this._segList.addPt(bevelEndLeft);
+			this._segList.addPt(bevelEndRight);
 		} else {
-			this.segList.addPt(bevelEndRight);
-			this.segList.addPt(bevelEndLeft);
+			this._segList.addPt(bevelEndRight);
+			this._segList.addPt(bevelEndLeft);
 		}
 	},
 	computeOffsetSegment: function (seg, side, distance, offset) {
@@ -202,7 +202,7 @@ extend(OffsetSegmentGenerator.prototype, {
 	addFilletArc: function (p, startAngle, endAngle, direction, radius) {
 		var directionFactor = direction === CGAlgorithms.CLOCKWISE ? -1 : 1;
 		var totalAngle = Math.abs(startAngle - endAngle);
-		var nSegs = Math.trunc(totalAngle / this.filletAngleQuantum + 0.5);
+		var nSegs = Math.trunc(totalAngle / this._filletAngleQuantum + 0.5);
 		if (nSegs < 1) return null;
 		var initAngle = null, currAngleInc = null;
 		initAngle = 0.0;
@@ -213,66 +213,66 @@ extend(OffsetSegmentGenerator.prototype, {
 			var angle = startAngle + directionFactor * currAngle;
 			pt.x = p.x + radius * Math.cos(angle);
 			pt.y = p.y + radius * Math.sin(angle);
-			this.segList.addPt(pt);
+			this._segList.addPt(pt);
 			currAngle += currAngleInc;
 		}
 	},
 	addInsideTurn: function (orientation, addStartPoint) {
-		this.li.computeIntersection(this.offset0.p0, this.offset0.p1, this.offset1.p0, this.offset1.p1);
-		if (this.li.hasIntersection()) {
-			this.segList.addPt(this.li.getIntersection(0));
+		this._li.computeIntersection(this._offset0.p0, this._offset0.p1, this._offset1.p0, this._offset1.p1);
+		if (this._li.hasIntersection()) {
+			this._segList.addPt(this._li.getIntersection(0));
 		} else {
-			this._hasNarrowConcaveAngle = true;
-			if (this.offset0.p1.distance(this.offset1.p0) < this.distance * OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR) {
-				this.segList.addPt(this.offset0.p1);
+			this.__hasNarrowConcaveAngle = true;
+			if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR) {
+				this._segList.addPt(this._offset0.p1);
 			} else {
-				this.segList.addPt(this.offset0.p1);
-				if (this.closingSegLengthFactor > 0) {
-					var mid0 = new Coordinate((this.closingSegLengthFactor * this.offset0.p1.x + this.s1.x) / (this.closingSegLengthFactor + 1), (this.closingSegLengthFactor * this.offset0.p1.y + this.s1.y) / (this.closingSegLengthFactor + 1));
-					this.segList.addPt(mid0);
-					var mid1 = new Coordinate((this.closingSegLengthFactor * this.offset1.p0.x + this.s1.x) / (this.closingSegLengthFactor + 1), (this.closingSegLengthFactor * this.offset1.p0.y + this.s1.y) / (this.closingSegLengthFactor + 1));
-					this.segList.addPt(mid1);
+				this._segList.addPt(this._offset0.p1);
+				if (this._closingSegLengthFactor > 0) {
+					var mid0 = new Coordinate((this._closingSegLengthFactor * this._offset0.p1.x + this._s1.x) / (this._closingSegLengthFactor + 1), (this._closingSegLengthFactor * this._offset0.p1.y + this._s1.y) / (this._closingSegLengthFactor + 1));
+					this._segList.addPt(mid0);
+					var mid1 = new Coordinate((this._closingSegLengthFactor * this._offset1.p0.x + this._s1.x) / (this._closingSegLengthFactor + 1), (this._closingSegLengthFactor * this._offset1.p0.y + this._s1.y) / (this._closingSegLengthFactor + 1));
+					this._segList.addPt(mid1);
 				} else {
-					this.segList.addPt(this.s1);
+					this._segList.addPt(this._s1);
 				}
-				this.segList.addPt(this.offset1.p0);
+				this._segList.addPt(this._offset1.p0);
 			}
 		}
 	},
 	createCircle: function (p) {
-		var pt = new Coordinate(p.x + this.distance, p.y);
-		this.segList.addPt(pt);
-		this.addFilletArc(p, 0.0, 2.0 * Math.PI, -1, this.distance);
-		this.segList.closeRing();
+		var pt = new Coordinate(p.x + this._distance, p.y);
+		this._segList.addPt(pt);
+		this.addFilletArc(p, 0.0, 2.0 * Math.PI, -1, this._distance);
+		this._segList.closeRing();
 	},
 	addBevelJoin: function (offset0, offset1) {
-		this.segList.addPt(offset0.p1);
-		this.segList.addPt(offset1.p0);
+		this._segList.addPt(offset0.p1);
+		this._segList.addPt(offset1.p0);
 	},
 	init: function (distance) {
-		this.distance = distance;
-		this.maxCurveSegmentError = distance * (1 - Math.cos(this.filletAngleQuantum / 2.0));
-		this.segList = new OffsetSegmentString();
-		this.segList.setPrecisionModel(this.precisionModel);
-		this.segList.setMinimumVertexDistance(distance * OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR);
+		this._distance = distance;
+		this._maxCurveSegmentError = distance * (1 - Math.cos(this._filletAngleQuantum / 2.0));
+		this._segList = new OffsetSegmentString();
+		this._segList.setPrecisionModel(this._precisionModel);
+		this._segList.setMinimumVertexDistance(distance * OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR);
 	},
 	addCollinear: function (addStartPoint) {
-		this.li.computeIntersection(this.s0, this.s1, this.s1, this.s2);
-		var numInt = this.li.getIntersectionNum();
+		this._li.computeIntersection(this._s0, this._s1, this._s1, this._s2);
+		var numInt = this._li.getIntersectionNum();
 		if (numInt >= 2) {
-			if (this.bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL || this.bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
-				if (addStartPoint) this.segList.addPt(this.offset0.p1);
-				this.segList.addPt(this.offset1.p0);
+			if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL || this._bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
+				if (addStartPoint) this._segList.addPt(this._offset0.p1);
+				this._segList.addPt(this._offset1.p0);
 			} else {
-				this.addFilletCorner(this.s1, this.offset0.p1, this.offset1.p0, CGAlgorithms.CLOCKWISE, this.distance);
+				this.addFilletCorner(this._s1, this._offset0.p1, this._offset1.p0, CGAlgorithms.CLOCKWISE, this._distance);
 			}
 		}
 	},
 	closeRing: function () {
-		this.segList.closeRing();
+		this._segList.closeRing();
 	},
 	hasNarrowConcaveAngle: function () {
-		return this._hasNarrowConcaveAngle;
+		return this.__hasNarrowConcaveAngle;
 	},
 	interfaces_: function () {
 		return [];

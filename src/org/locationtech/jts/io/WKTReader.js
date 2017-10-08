@@ -52,8 +52,8 @@ extend(WKTReader.prototype, {
     if (geometry.coordinate) {
       this.precisionModel.makePrecise(geometry.coordinate)
     } else if (geometry.points) {
-      for (let i = 0, len = geometry.points.coordinates.length; i < len; i++) {
-        this.precisionModel.makePrecise(geometry.points.coordinates[i])
+      for (let i = 0, len = geometry.points._coordinates.length; i < len; i++) {
+        this.precisionModel.makePrecise(geometry.points._coordinates[i])
       }
     } else if (geometry.geometries) {
       for (let i = 0, len = geometry.geometries.length; i < len; i++) {

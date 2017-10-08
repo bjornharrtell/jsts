@@ -10,15 +10,15 @@ import Comparator from '../../../../java/util/Comparator';
 import UniqueCoordinateArrayFilter from '../util/UniqueCoordinateArrayFilter';
 import Assert from '../util/Assert';
 export default function ConvexHull() {
-	this.geomFactory = null;
-	this.inputPts = null;
+	this._geomFactory = null;
+	this._inputPts = null;
 	if (arguments.length === 1) {
 		let geometry = arguments[0];
 		ConvexHull.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory());
 	} else if (arguments.length === 2) {
 		let pts = arguments[0], geomFactory = arguments[1];
-		this.inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
-		this.geomFactory = geomFactory;
+		this._inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
+		this._geomFactory = geomFactory;
 	}
 }
 extend(ConvexHull.prototype, {
@@ -47,10 +47,10 @@ extend(ConvexHull.prototype, {
 	lineOrPolygon: function (coordinates) {
 		coordinates = this.cleanRing(coordinates);
 		if (coordinates.length === 3) {
-			return this.geomFactory.createLineString([coordinates[0], coordinates[1]]);
+			return this._geomFactory.createLineString([coordinates[0], coordinates[1]]);
 		}
-		var linearRing = this.geomFactory.createLinearRing(coordinates);
-		return this.geomFactory.createPolygon(linearRing, null);
+		var linearRing = this._geomFactory.createLinearRing(coordinates);
+		return this._geomFactory.createPolygon(linearRing, null);
 	},
 	cleanRing: function (original) {
 		Assert.equals(original[0], original[original.length - 1]);
@@ -111,18 +111,18 @@ extend(ConvexHull.prototype, {
 		return reducedPts;
 	},
 	getConvexHull: function () {
-		if (this.inputPts.length === 0) {
-			return this.geomFactory.createGeometryCollection(null);
+		if (this._inputPts.length === 0) {
+			return this._geomFactory.createGeometryCollection(null);
 		}
-		if (this.inputPts.length === 1) {
-			return this.geomFactory.createPoint(this.inputPts[0]);
+		if (this._inputPts.length === 1) {
+			return this._geomFactory.createPoint(this._inputPts[0]);
 		}
-		if (this.inputPts.length === 2) {
-			return this.geomFactory.createLineString(this.inputPts);
+		if (this._inputPts.length === 2) {
+			return this._geomFactory.createLineString(this._inputPts);
 		}
-		var reducedPts = this.inputPts;
-		if (this.inputPts.length > 50) {
-			reducedPts = this.reduce(this.inputPts);
+		var reducedPts = this._inputPts;
+		if (this._inputPts.length > 50) {
+			reducedPts = this.reduce(this._inputPts);
 		}
 		var sortedPts = this.preSort(reducedPts);
 		var cHS = this.grahamScan(sortedPts);
@@ -209,15 +209,15 @@ ConvexHull.extractCoordinates = function (geom) {
 	return filter.getCoordinates();
 };
 function RadialComparator() {
-	this.origin = null;
+	this._origin = null;
 	let origin = arguments[0];
-	this.origin = origin;
+	this._origin = origin;
 }
 extend(RadialComparator.prototype, {
 	compare: function (o1, o2) {
 		var p1 = o1;
 		var p2 = o2;
-		return RadialComparator.polarCompare(this.origin, p1, p2);
+		return RadialComparator.polarCompare(this._origin, p1, p2);
 	},
 	interfaces_: function () {
 		return [Comparator];

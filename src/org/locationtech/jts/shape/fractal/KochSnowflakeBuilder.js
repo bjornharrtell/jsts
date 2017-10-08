@@ -5,7 +5,7 @@ import inherits from '../../../../../inherits';
 import Vector2D from '../../math/Vector2D';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function KochSnowflakeBuilder() {
-	this.coordList = new CoordinateList();
+	this._coordList = new CoordinateList();
 	let geomFactory = arguments[0];
 	GeometricShapeBuilder.call(this, geomFactory);
 }
@@ -22,8 +22,8 @@ extend(KochSnowflakeBuilder.prototype, {
 		this.addSide(level, p0, p1);
 		this.addSide(level, p1, p2);
 		this.addSide(level, p2, p0);
-		this.coordList.closeRing();
-		return this.coordList.toCoordinateArray();
+		this._coordList.closeRing();
+		return this._coordList.toCoordinateArray();
 	},
 	getGeometry: function () {
 		var level = KochSnowflakeBuilder.recursionLevelForSize(this.numPts);
@@ -32,7 +32,7 @@ extend(KochSnowflakeBuilder.prototype, {
 		return this.geomFactory.createPolygon(this.geomFactory.createLinearRing(pts), null);
 	},
 	addSegment: function (p0, p1) {
-		this.coordList.add(p1);
+		this._coordList.add(p1);
 	},
 	addSide: function (level, p0, p1) {
 		if (level === 0) this.addSegment(p0, p1); else {

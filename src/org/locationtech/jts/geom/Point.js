@@ -11,7 +11,7 @@ import Envelope from './Envelope';
 import Assert from '../util/Assert';
 import inherits from '../../../../inherits';
 export default function Point() {
-	this.coordinates = null;
+	this._coordinates = null;
 	let coordinates = arguments[0], factory = arguments[1];
 	Geometry.call(this, factory);
 	this.init(coordinates);
@@ -23,7 +23,7 @@ extend(Point.prototype, {
 			return new Envelope();
 		}
 		var env = new Envelope();
-		env.expandToInclude(this.coordinates.getX(0), this.coordinates.getY(0));
+		env.expandToInclude(this._coordinates.getX(0), this._coordinates.getY(0));
 		return env;
 	},
 	getSortIndex: function () {
@@ -49,7 +49,7 @@ extend(Point.prototype, {
 	},
 	normalize: function () {},
 	getCoordinate: function () {
-		return this.coordinates.size() !== 0 ? this.coordinates.getCoordinate(0) : null;
+		return this._coordinates.size() !== 0 ? this._coordinates.getCoordinate(0) : null;
 	},
 	getBoundaryDimension: function () {
 		return Dimension.FALSE;
@@ -77,7 +77,7 @@ extend(Point.prototype, {
 		} else if (arguments.length === 2) {
 			let other = arguments[0], comp = arguments[1];
 			var point = other;
-			return comp.compare(this.coordinates, point.coordinates);
+			return comp.compare(this._coordinates, point._coordinates);
 		}
 	},
 	apply: function () {
@@ -90,7 +90,7 @@ extend(Point.prototype, {
 		} else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
 			let filter = arguments[0];
 			if (this.isEmpty()) return null;
-			filter.filter(this.coordinates, 0);
+			filter.filter(this._coordinates, 0);
 			if (filter.isGeometryChanged()) this.geometryChanged();
 		} else if (hasInterface(arguments[0], GeometryFilter)) {
 			let filter = arguments[0];
@@ -105,17 +105,17 @@ extend(Point.prototype, {
 	},
 	clone: function () {
 		var p = Geometry.prototype.clone.call(this);
-		p.coordinates = this.coordinates.clone();
+		p._coordinates = this._coordinates.clone();
 		return p;
 	},
 	getGeometryType: function () {
 		return "Point";
 	},
 	copy: function () {
-		return new Point(this.coordinates.copy(), this.factory);
+		return new Point(this._coordinates.copy(), this.factory);
 	},
 	getCoordinateSequence: function () {
-		return this.coordinates;
+		return this._coordinates;
 	},
 	getY: function () {
 		if (this.getCoordinate() === null) {
@@ -124,14 +124,14 @@ extend(Point.prototype, {
 		return this.getCoordinate().y;
 	},
 	isEmpty: function () {
-		return this.coordinates.size() === 0;
+		return this._coordinates.size() === 0;
 	},
 	init: function (coordinates) {
 		if (coordinates === null) {
 			coordinates = this.getFactory().getCoordinateSequenceFactory().create([]);
 		}
 		Assert.isTrue(coordinates.size() <= 1);
-		this.coordinates = coordinates;
+		this._coordinates = coordinates;
 	},
 	isSimple: function () {
 		return true;

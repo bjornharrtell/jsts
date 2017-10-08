@@ -7,10 +7,10 @@ import Vertex from './Vertex';
 import ArrayList from '../../../../../java/util/ArrayList';
 import TriangleVisitor from './TriangleVisitor';
 export default function QuadEdgeTriangle() {
-	this.edge = null;
-	this.data = null;
+	this._edge = null;
+	this._data = null;
 	let edge = arguments[0];
-	this.edge = edge.clone();
+	this._edge = edge.clone();
 	for (var i = 0; i < 3; i++) {
 		edge[i].setData(this);
 	}
@@ -19,13 +19,13 @@ extend(QuadEdgeTriangle.prototype, {
 	getCoordinates: function () {
 		var pts = new Array(4).fill(null);
 		for (var i = 0; i < 3; i++) {
-			pts[i] = this.edge[i].orig().getCoordinate();
+			pts[i] = this._edge[i].orig().getCoordinate();
 		}
 		pts[3] = new Coordinate(pts[0]);
 		return pts;
 	},
 	getVertex: function (i) {
-		return this.edge[i].orig();
+		return this._edge[i].orig();
 	},
 	isBorder: function () {
 		if (arguments.length === 0) {
@@ -42,13 +42,13 @@ extend(QuadEdgeTriangle.prototype, {
 		if (arguments[0] instanceof QuadEdge) {
 			let e = arguments[0];
 			for (var i = 0; i < 3; i++) {
-				if (this.edge[i] === e) return i;
+				if (this._edge[i] === e) return i;
 			}
 			return -1;
 		} else if (arguments[0] instanceof Vertex) {
 			let v = arguments[0];
 			for (var i = 0; i < 3; i++) {
-				if (this.edge[i].orig() === v) return i;
+				if (this._edge[i].orig() === v) return i;
 			}
 			return -1;
 		}
@@ -59,7 +59,7 @@ extend(QuadEdgeTriangle.prototype, {
 		return tri;
 	},
 	getCoordinate: function (i) {
-		return this.edge[i].orig().getCoordinate();
+		return this._edge[i].orig().getCoordinate();
 	},
 	getTrianglesAdjacentToVertex: function (vertexIndex) {
 		var adjTris = new ArrayList();
@@ -85,10 +85,10 @@ extend(QuadEdgeTriangle.prototype, {
 		return this.getEdge(edgeIndex).sym().getData();
 	},
 	setData: function (data) {
-		this.data = data;
+		this._data = data;
 	},
 	getData: function () {
-		return this.data;
+		return this._data;
 	},
 	getAdjacentTriangleEdgeIndex: function (i) {
 		return this.getAdjacentTriangleAcrossEdge(i).getEdgeIndex(this.getEdge(i).sym());
@@ -101,28 +101,28 @@ extend(QuadEdgeTriangle.prototype, {
 		return vert;
 	},
 	getEdges: function () {
-		return this.edge;
+		return this._edge;
 	},
 	getEdge: function (i) {
-		return this.edge[i];
+		return this._edge[i];
 	},
 	toString: function () {
 		return this.getGeometry(new GeometryFactory()).toString();
 	},
 	isLive: function () {
-		return this.edge !== null;
+		return this._edge !== null;
 	},
 	kill: function () {
-		this.edge = null;
+		this._edge = null;
 	},
 	contains: function (pt) {
 		var ring = this.getCoordinates();
 		return CGAlgorithms.isPointInRing(pt, ring);
 	},
 	getEdgeSegment: function (i, seg) {
-		seg.p0 = this.edge[i].orig().getCoordinate();
+		seg.p0 = this._edge[i].orig().getCoordinate();
 		var nexti = (i + 1) % 3;
-		seg.p1 = this.edge[nexti].orig().getCoordinate();
+		seg.p1 = this._edge[nexti].orig().getCoordinate();
 	},
 	interfaces_: function () {
 		return [];
@@ -168,14 +168,14 @@ QuadEdgeTriangle.createOn = function (subdiv) {
 	return visitor.getTriangles();
 };
 function QuadEdgeTriangleBuilderVisitor() {
-	this.triangles = new ArrayList();
+	this._triangles = new ArrayList();
 }
 extend(QuadEdgeTriangleBuilderVisitor.prototype, {
 	visit: function (edges) {
-		this.triangles.add(new QuadEdgeTriangle(edges));
+		this._triangles.add(new QuadEdgeTriangle(edges));
 	},
 	getTriangles: function () {
-		return this.triangles;
+		return this._triangles;
 	},
 	interfaces_: function () {
 		return [TriangleVisitor];

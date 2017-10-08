@@ -7,23 +7,23 @@ import extend from '../../../../extend';
 import MultiPolygon from '../geom/MultiPolygon';
 import inherits from '../../../../inherits';
 export default function VWSimplifier() {
-	this.inputGeom = null;
-	this.distanceTolerance = null;
-	this.isEnsureValidTopology = true;
+	this._inputGeom = null;
+	this._distanceTolerance = null;
+	this._isEnsureValidTopology = true;
 	let inputGeom = arguments[0];
-	this.inputGeom = inputGeom;
+	this._inputGeom = inputGeom;
 }
 extend(VWSimplifier.prototype, {
 	setEnsureValid: function (isEnsureValidTopology) {
-		this.isEnsureValidTopology = isEnsureValidTopology;
+		this._isEnsureValidTopology = isEnsureValidTopology;
 	},
 	getResultGeometry: function () {
-		if (this.inputGeom.isEmpty()) return this.inputGeom.copy();
-		return new VWTransformer(this.isEnsureValidTopology, this.distanceTolerance).transform(this.inputGeom);
+		if (this._inputGeom.isEmpty()) return this._inputGeom.copy();
+		return new VWTransformer(this._isEnsureValidTopology, this._distanceTolerance).transform(this._inputGeom);
 	},
 	setDistanceTolerance: function (distanceTolerance) {
 		if (distanceTolerance < 0.0) throw new IllegalArgumentException("Tolerance must be non-negative");
-		this.distanceTolerance = distanceTolerance;
+		this._distanceTolerance = distanceTolerance;
 	},
 	interfaces_: function () {
 		return [];
@@ -39,11 +39,11 @@ VWSimplifier.simplify = function (geom, distanceTolerance) {
 };
 function VWTransformer() {
 	GeometryTransformer.apply(this);
-	this.isEnsureValidTopology = true;
-	this.distanceTolerance = null;
+	this._isEnsureValidTopology = true;
+	this._distanceTolerance = null;
 	let isEnsureValidTopology = arguments[0], distanceTolerance = arguments[1];
-	this.isEnsureValidTopology = isEnsureValidTopology;
-	this.distanceTolerance = distanceTolerance;
+	this._isEnsureValidTopology = isEnsureValidTopology;
+	this._distanceTolerance = distanceTolerance;
 }
 inherits(VWTransformer, GeometryTransformer);
 extend(VWTransformer.prototype, {
@@ -56,7 +56,7 @@ extend(VWTransformer.prototype, {
 		return this.createValidArea(rawGeom);
 	},
 	createValidArea: function (rawAreaGeom) {
-		if (this.isEnsureValidTopology) return rawAreaGeom.buffer(0.0);
+		if (this._isEnsureValidTopology) return rawAreaGeom.buffer(0.0);
 		return rawAreaGeom;
 	},
 	transformCoordinates: function (coords, parent) {
@@ -65,7 +65,7 @@ extend(VWTransformer.prototype, {
 		if (inputPts.length === 0) {
 			newPts = new Array(0).fill(null);
 		} else {
-			newPts = VWLineSimplifier.simplify(inputPts, this.distanceTolerance);
+			newPts = VWLineSimplifier.simplify(inputPts, this._distanceTolerance);
 		}
 		return this.factory.getCoordinateSequenceFactory().create(newPts);
 	},

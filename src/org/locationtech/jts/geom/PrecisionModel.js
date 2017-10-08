@@ -6,25 +6,25 @@ import Integer from '../../../../java/lang/Integer';
 import Comparable from '../../../../java/lang/Comparable';
 import Serializable from '../../../../java/io/Serializable';
 export default function PrecisionModel() {
-	this.modelType = null;
-	this.scale = null;
+	this._modelType = null;
+	this._scale = null;
 	if (arguments.length === 0) {
-		this.modelType = PrecisionModel.FLOATING;
+		this._modelType = PrecisionModel.FLOATING;
 	} else if (arguments.length === 1) {
 		if (arguments[0] instanceof Type) {
 			let modelType = arguments[0];
-			this.modelType = modelType;
+			this._modelType = modelType;
 			if (modelType === PrecisionModel.FIXED) {
 				this.setScale(1.0);
 			}
 		} else if (typeof arguments[0] === "number") {
 			let scale = arguments[0];
-			this.modelType = PrecisionModel.FIXED;
+			this._modelType = PrecisionModel.FIXED;
 			this.setScale(scale);
 		} else if (arguments[0] instanceof PrecisionModel) {
 			let pm = arguments[0];
-			this.modelType = pm.modelType;
-			this.scale = pm.scale;
+			this._modelType = pm._modelType;
+			this._scale = pm._scale;
 		}
 	}
 }
@@ -34,7 +34,7 @@ extend(PrecisionModel.prototype, {
 			return false;
 		}
 		var otherPrecisionModel = other;
-		return this.modelType === otherPrecisionModel.modelType && this.scale === otherPrecisionModel.scale;
+		return this._modelType === otherPrecisionModel._modelType && this._scale === otherPrecisionModel._scale;
 	},
 	compareTo: function (o) {
 		var other = o;
@@ -43,21 +43,21 @@ extend(PrecisionModel.prototype, {
 		return new Integer(sigDigits).compareTo(new Integer(otherSigDigits));
 	},
 	getScale: function () {
-		return this.scale;
+		return this._scale;
 	},
 	isFloating: function () {
-		return this.modelType === PrecisionModel.FLOATING || this.modelType === PrecisionModel.FLOATING_SINGLE;
+		return this._modelType === PrecisionModel.FLOATING || this._modelType === PrecisionModel.FLOATING_SINGLE;
 	},
 	getType: function () {
-		return this.modelType;
+		return this._modelType;
 	},
 	toString: function () {
 		var description = "UNKNOWN";
-		if (this.modelType === PrecisionModel.FLOATING) {
+		if (this._modelType === PrecisionModel.FLOATING) {
 			description = "Floating";
-		} else if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
+		} else if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
 			description = "Floating-Single";
-		} else if (this.modelType === PrecisionModel.FIXED) {
+		} else if (this._modelType === PrecisionModel.FIXED) {
 			description = "Fixed (Scale=" + this.getScale() + ")";
 		}
 		return description;
@@ -66,34 +66,34 @@ extend(PrecisionModel.prototype, {
 		if (typeof arguments[0] === "number") {
 			let val = arguments[0];
 			if (Double.isNaN(val)) return val;
-			if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
+			if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
 				var floatSingleVal = val;
 				return floatSingleVal;
 			}
-			if (this.modelType === PrecisionModel.FIXED) {
-				return Math.round(val * this.scale) / this.scale;
+			if (this._modelType === PrecisionModel.FIXED) {
+				return Math.round(val * this._scale) / this._scale;
 			}
 			return val;
 		} else if (arguments[0] instanceof Coordinate) {
 			let coord = arguments[0];
-			if (this.modelType === PrecisionModel.FLOATING) return null;
+			if (this._modelType === PrecisionModel.FLOATING) return null;
 			coord.x = this.makePrecise(coord.x);
 			coord.y = this.makePrecise(coord.y);
 		}
 	},
 	getMaximumSignificantDigits: function () {
 		var maxSigDigits = 16;
-		if (this.modelType === PrecisionModel.FLOATING) {
+		if (this._modelType === PrecisionModel.FLOATING) {
 			maxSigDigits = 16;
-		} else if (this.modelType === PrecisionModel.FLOATING_SINGLE) {
+		} else if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
 			maxSigDigits = 6;
-		} else if (this.modelType === PrecisionModel.FIXED) {
+		} else if (this._modelType === PrecisionModel.FIXED) {
 			maxSigDigits = 1 + Math.trunc(Math.ceil(Math.log(this.getScale()) / Math.log(10)));
 		}
 		return maxSigDigits;
 	},
 	setScale: function (scale) {
-		this.scale = Math.abs(scale);
+		this._scale = Math.abs(scale);
 	},
 	interfaces_: function () {
 		return [Serializable, Comparable];
@@ -107,17 +107,17 @@ PrecisionModel.mostPrecise = function (pm1, pm2) {
 	return pm2;
 };
 function Type() {
-	this.name = null;
+	this._name = null;
 	let name = arguments[0];
-	this.name = name;
+	this._name = name;
 	Type.nameToTypeMap.put(name, this);
 }
 extend(Type.prototype, {
 	readResolve: function () {
-		return Type.nameToTypeMap.get(this.name);
+		return Type.nameToTypeMap.get(this._name);
 	},
 	toString: function () {
-		return this.name;
+		return this._name;
 	},
 	interfaces_: function () {
 		return [Serializable];

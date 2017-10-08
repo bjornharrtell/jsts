@@ -5,16 +5,16 @@ import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
 export default function InteriorPointPoint() {
-	this.centroid = null;
-	this.minDistance = Double.MAX_VALUE;
-	this.interiorPoint = null;
+	this._centroid = null;
+	this._minDistance = Double.MAX_VALUE;
+	this._interiorPoint = null;
 	let g = arguments[0];
-	this.centroid = g.getCentroid().getCoordinate();
+	this._centroid = g.getCentroid().getCoordinate();
 	this.add(g);
 }
 extend(InteriorPointPoint.prototype, {
 	getInteriorPoint: function () {
-		return this.interiorPoint;
+		return this._interiorPoint;
 	},
 	add: function () {
 		if (arguments[0] instanceof Geometry) {
@@ -29,10 +29,10 @@ extend(InteriorPointPoint.prototype, {
 			}
 		} else if (arguments[0] instanceof Coordinate) {
 			let point = arguments[0];
-			var dist = point.distance(this.centroid);
-			if (dist < this.minDistance) {
-				this.interiorPoint = new Coordinate(point);
-				this.minDistance = dist;
+			var dist = point.distance(this._centroid);
+			if (dist < this._minDistance) {
+				this._interiorPoint = new Coordinate(point);
+				this._minDistance = dist;
 			}
 		}
 	},

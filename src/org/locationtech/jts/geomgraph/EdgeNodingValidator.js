@@ -3,13 +3,13 @@ import extend from '../../../../extend';
 import FastNodingValidator from '../noding/FastNodingValidator';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function EdgeNodingValidator() {
-	this.nv = null;
+	this._nv = null;
 	let edges = arguments[0];
-	this.nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
+	this._nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges));
 }
 extend(EdgeNodingValidator.prototype, {
 	checkValid: function () {
-		this.nv.checkValid();
+		this._nv.checkValid();
 	},
 	interfaces_: function () {
 		return [];

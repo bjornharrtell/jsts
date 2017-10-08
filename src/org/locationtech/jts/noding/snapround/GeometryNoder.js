@@ -5,11 +5,11 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import MCIndexSnapRounder from './MCIndexSnapRounder';
 export default function GeometryNoder() {
-	this.geomFact = null;
-	this.pm = null;
-	this.isValidityChecked = false;
+	this._geomFact = null;
+	this._pm = null;
+	this._isValidityChecked = false;
 	let pm = arguments[0];
-	this.pm = pm;
+	this._pm = pm;
 }
 extend(GeometryNoder.prototype, {
 	extractLines: function (geoms) {
@@ -22,16 +22,16 @@ extend(GeometryNoder.prototype, {
 		return lines;
 	},
 	setValidate: function (isValidityChecked) {
-		this.isValidityChecked = isValidityChecked;
+		this._isValidityChecked = isValidityChecked;
 	},
 	node: function (geoms) {
 		var geom0 = geoms.iterator().next();
-		this.geomFact = geom0.getFactory();
+		this._geomFact = geom0.getFactory();
 		var segStrings = this.toSegmentStrings(this.extractLines(geoms));
-		var sr = new MCIndexSnapRounder(this.pm);
+		var sr = new MCIndexSnapRounder(this._pm);
 		sr.computeNodes(segStrings);
 		var nodedLines = sr.getNodedSubstrings();
-		if (this.isValidityChecked) {
+		if (this._isValidityChecked) {
 			var nv = new NodingValidator(nodedLines);
 			nv.checkValid();
 		}
@@ -50,7 +50,7 @@ extend(GeometryNoder.prototype, {
 		for (var it = segStrings.iterator(); it.hasNext(); ) {
 			var ss = it.next();
 			if (ss.size() < 2) continue;
-			lines.add(this.geomFact.createLineString(ss.getCoordinates()));
+			lines.add(this._geomFact.createLineString(ss.getCoordinates()));
 		}
 		return lines;
 	},

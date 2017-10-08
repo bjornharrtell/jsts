@@ -3,32 +3,32 @@ import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 export default function DouglasPeuckerLineSimplifier() {
-	this.pts = null;
-	this.usePt = null;
-	this.distanceTolerance = null;
-	this.seg = new LineSegment();
+	this._pts = null;
+	this._usePt = null;
+	this._distanceTolerance = null;
+	this._seg = new LineSegment();
 	let pts = arguments[0];
-	this.pts = pts;
+	this._pts = pts;
 }
 extend(DouglasPeuckerLineSimplifier.prototype, {
 	simplifySection: function (i, j) {
 		if (i + 1 === j) {
 			return null;
 		}
-		this.seg.p0 = this.pts[i];
-		this.seg.p1 = this.pts[j];
+		this._seg.p0 = this._pts[i];
+		this._seg.p1 = this._pts[j];
 		var maxDistance = -1.0;
 		var maxIndex = i;
 		for (var k = i + 1; k < j; k++) {
-			var distance = this.seg.distance(this.pts[k]);
+			var distance = this._seg.distance(this._pts[k]);
 			if (distance > maxDistance) {
 				maxDistance = distance;
 				maxIndex = k;
 			}
 		}
-		if (maxDistance <= this.distanceTolerance) {
+		if (maxDistance <= this._distanceTolerance) {
 			for (var k = i + 1; k < j; k++) {
-				this.usePt[k] = false;
+				this._usePt[k] = false;
 			}
 		} else {
 			this.simplifySection(i, maxIndex);
@@ -36,17 +36,17 @@ extend(DouglasPeuckerLineSimplifier.prototype, {
 		}
 	},
 	setDistanceTolerance: function (distanceTolerance) {
-		this.distanceTolerance = distanceTolerance;
+		this._distanceTolerance = distanceTolerance;
 	},
 	simplify: function () {
-		this.usePt = new Array(this.pts.length).fill(null);
-		for (var i = 0; i < this.pts.length; i++) {
-			this.usePt[i] = true;
+		this._usePt = new Array(this._pts.length).fill(null);
+		for (var i = 0; i < this._pts.length; i++) {
+			this._usePt[i] = true;
 		}
-		this.simplifySection(0, this.pts.length - 1);
+		this.simplifySection(0, this._pts.length - 1);
 		var coordList = new CoordinateList();
-		for (var i = 0; i < this.pts.length; i++) {
-			if (this.usePt[i]) coordList.add(new Coordinate(this.pts[i]));
+		for (var i = 0; i < this._pts.length; i++) {
+			if (this._usePt[i]) coordList.add(new Coordinate(this._pts[i]));
 		}
 		return coordList.toCoordinateArray();
 	},

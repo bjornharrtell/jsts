@@ -8,20 +8,20 @@ import PrecisionModel from '../../../geom/PrecisionModel';
 import Polygonal from '../../../geom/Polygonal';
 import inherits from '../../../../../../inherits';
 export default function GeometrySnapper() {
-	this.srcGeom = null;
+	this._srcGeom = null;
 	let srcGeom = arguments[0];
-	this.srcGeom = srcGeom;
+	this._srcGeom = srcGeom;
 }
 extend(GeometrySnapper.prototype, {
 	snapTo: function (snapGeom, snapTolerance) {
 		var snapPts = this.extractTargetCoordinates(snapGeom);
 		var snapTrans = new SnapTransformer(snapTolerance, snapPts);
-		return snapTrans.transform(this.srcGeom);
+		return snapTrans.transform(this._srcGeom);
 	},
 	snapToSelf: function (snapTolerance, cleanResult) {
-		var snapPts = this.extractTargetCoordinates(this.srcGeom);
+		var snapPts = this.extractTargetCoordinates(this._srcGeom);
 		var snapTrans = new SnapTransformer(snapTolerance, snapPts, true);
-		var snappedGeom = snapTrans.transform(this.srcGeom);
+		var snappedGeom = snapTrans.transform(this._srcGeom);
 		var result = snappedGeom;
 		if (cleanResult && hasInterface(result, Polygonal)) {
 			result = snappedGeom.buffer(0);
@@ -92,30 +92,30 @@ GeometrySnapper.snapToSelf = function (geom, snapTolerance, cleanResult) {
 GeometrySnapper.SNAP_PRECISION_FACTOR = 1e-9;
 function SnapTransformer() {
 	GeometryTransformer.apply(this);
-	this.snapTolerance = null;
-	this.snapPts = null;
-	this.isSelfSnap = false;
+	this._snapTolerance = null;
+	this._snapPts = null;
+	this._isSelfSnap = false;
 	if (arguments.length === 2) {
 		let snapTolerance = arguments[0], snapPts = arguments[1];
-		this.snapTolerance = snapTolerance;
-		this.snapPts = snapPts;
+		this._snapTolerance = snapTolerance;
+		this._snapPts = snapPts;
 	} else if (arguments.length === 3) {
 		let snapTolerance = arguments[0], snapPts = arguments[1], isSelfSnap = arguments[2];
-		this.snapTolerance = snapTolerance;
-		this.snapPts = snapPts;
-		this.isSelfSnap = isSelfSnap;
+		this._snapTolerance = snapTolerance;
+		this._snapPts = snapPts;
+		this._isSelfSnap = isSelfSnap;
 	}
 }
 inherits(SnapTransformer, GeometryTransformer);
 extend(SnapTransformer.prototype, {
 	snapLine: function (srcPts, snapPts) {
-		var snapper = new LineStringSnapper(srcPts, this.snapTolerance);
-		snapper.setAllowSnappingToSourceVertices(this.isSelfSnap);
+		var snapper = new LineStringSnapper(srcPts, this._snapTolerance);
+		snapper.setAllowSnappingToSourceVertices(this._isSelfSnap);
 		return snapper.snapTo(snapPts);
 	},
 	transformCoordinates: function (coords, parent) {
 		var srcPts = coords.toCoordinateArray();
-		var newPts = this.snapLine(srcPts, this.snapPts);
+		var newPts = this.snapLine(srcPts, this._snapPts);
 		return this.factory.getCoordinateSequenceFactory().create(newPts);
 	},
 	interfaces_: function () {

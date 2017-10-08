@@ -11,10 +11,10 @@ import Assert from '../util/Assert';
 import inherits from '../../../../inherits';
 export default function DirectedEdgeStar() {
 	EdgeEndStar.apply(this);
-	this.resultAreaEdgeList = null;
-	this.label = null;
-	this.SCANNING_FOR_INCOMING = 1;
-	this.LINKING_TO_OUTGOING = 2;
+	this._resultAreaEdgeList = null;
+	this._label = null;
+	this._SCANNING_FOR_INCOMING = 1;
+	this._LINKING_TO_OUTGOING = 2;
 }
 inherits(DirectedEdgeStar, EdgeEndStar);
 extend(DirectedEdgeStar.prototype, {
@@ -22,26 +22,26 @@ extend(DirectedEdgeStar.prototype, {
 		this.getResultAreaEdges();
 		var firstOut = null;
 		var incoming = null;
-		var state = this.SCANNING_FOR_INCOMING;
-		for (var i = 0; i < this.resultAreaEdgeList.size(); i++) {
-			var nextOut = this.resultAreaEdgeList.get(i);
+		var state = this._SCANNING_FOR_INCOMING;
+		for (var i = 0; i < this._resultAreaEdgeList.size(); i++) {
+			var nextOut = this._resultAreaEdgeList.get(i);
 			var nextIn = nextOut.getSym();
 			if (!nextOut.getLabel().isArea()) continue;
 			if (firstOut === null && nextOut.isInResult()) firstOut = nextOut;
 			switch (state) {
-				case this.SCANNING_FOR_INCOMING:
+				case this._SCANNING_FOR_INCOMING:
 					if (!nextIn.isInResult()) continue;
 					incoming = nextIn;
-					state = this.LINKING_TO_OUTGOING;
+					state = this._LINKING_TO_OUTGOING;
 					break;
-				case this.LINKING_TO_OUTGOING:
+				case this._LINKING_TO_OUTGOING:
 					if (!nextOut.isInResult()) continue;
 					incoming.setNext(nextOut);
-					state = this.SCANNING_FOR_INCOMING;
+					state = this._SCANNING_FOR_INCOMING;
 					break;
 			}
 		}
-		if (state === this.LINKING_TO_OUTGOING) {
+		if (state === this._LINKING_TO_OUTGOING) {
 			if (firstOut === null) throw new TopologyException("no outgoing dirEdge found", this.getCoordinate());
 			Assert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
 			incoming.setNext(firstOut);
@@ -80,13 +80,13 @@ extend(DirectedEdgeStar.prototype, {
 		}
 	},
 	getResultAreaEdges: function () {
-		if (this.resultAreaEdgeList !== null) return this.resultAreaEdgeList;
-		this.resultAreaEdgeList = new ArrayList();
+		if (this._resultAreaEdgeList !== null) return this._resultAreaEdgeList;
+		this._resultAreaEdgeList = new ArrayList();
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var de = it.next();
-			if (de.isInResult() || de.getSym().isInResult()) this.resultAreaEdgeList.add(de);
+			if (de.isInResult() || de.getSym().isInResult()) this._resultAreaEdgeList.add(de);
 		}
-		return this.resultAreaEdgeList;
+		return this._resultAreaEdgeList;
 	},
 	updateLabelling: function (nodeLabel) {
 		for (var it = this.iterator(); it.hasNext(); ) {
@@ -141,25 +141,25 @@ extend(DirectedEdgeStar.prototype, {
 	linkMinimalDirectedEdges: function (er) {
 		var firstOut = null;
 		var incoming = null;
-		var state = this.SCANNING_FOR_INCOMING;
-		for (var i = this.resultAreaEdgeList.size() - 1; i >= 0; i--) {
-			var nextOut = this.resultAreaEdgeList.get(i);
+		var state = this._SCANNING_FOR_INCOMING;
+		for (var i = this._resultAreaEdgeList.size() - 1; i >= 0; i--) {
+			var nextOut = this._resultAreaEdgeList.get(i);
 			var nextIn = nextOut.getSym();
 			if (firstOut === null && nextOut.getEdgeRing() === er) firstOut = nextOut;
 			switch (state) {
-				case this.SCANNING_FOR_INCOMING:
+				case this._SCANNING_FOR_INCOMING:
 					if (nextIn.getEdgeRing() !== er) continue;
 					incoming = nextIn;
-					state = this.LINKING_TO_OUTGOING;
+					state = this._LINKING_TO_OUTGOING;
 					break;
-				case this.LINKING_TO_OUTGOING:
+				case this._LINKING_TO_OUTGOING:
 					if (nextOut.getEdgeRing() !== er) continue;
 					incoming.setNextMin(nextOut);
-					state = this.SCANNING_FOR_INCOMING;
+					state = this._SCANNING_FOR_INCOMING;
 					break;
 			}
 		}
-		if (state === this.LINKING_TO_OUTGOING) {
+		if (state === this._LINKING_TO_OUTGOING) {
 			Assert.isTrue(firstOut !== null, "found null for first outgoing dirEdge");
 			Assert.isTrue(firstOut.getEdgeRing() === er, "unable to link last incoming dirEdge");
 			incoming.setNextMin(firstOut);
@@ -184,7 +184,7 @@ extend(DirectedEdgeStar.prototype, {
 		}
 	},
 	getLabel: function () {
-		return this.label;
+		return this._label;
 	},
 	findCoveredLineEdges: function () {
 		var startLoc = Location.NONE;
@@ -217,14 +217,14 @@ extend(DirectedEdgeStar.prototype, {
 	},
 	computeLabelling: function (geom) {
 		EdgeEndStar.prototype.computeLabelling.call(this, geom);
-		this.label = new Label(Location.NONE);
+		this._label = new Label(Location.NONE);
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ee = it.next();
 			var e = ee.getEdge();
 			var eLabel = e.getLabel();
 			for (var i = 0; i < 2; i++) {
 				var eLoc = eLabel.getLocation(i);
-				if (eLoc === Location.INTERIOR || eLoc === Location.BOUNDARY) this.label.setLocation(i, Location.INTERIOR);
+				if (eLoc === Location.INTERIOR || eLoc === Location.BOUNDARY) this._label.setLocation(i, Location.INTERIOR);
 			}
 		}
 	},

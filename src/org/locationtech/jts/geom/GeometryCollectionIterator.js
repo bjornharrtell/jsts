@@ -3,38 +3,38 @@ import NoSuchElementException from '../../../../java/util/NoSuchElementException
 import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
 export default function GeometryCollectionIterator() {
-	this.parent = null;
-	this.atStart = null;
-	this.max = null;
-	this.index = null;
-	this.subcollectionIterator = null;
+	this._parent = null;
+	this._atStart = null;
+	this._max = null;
+	this._index = null;
+	this._subcollectionIterator = null;
 	let parent = arguments[0];
-	this.parent = parent;
-	this.atStart = true;
-	this.index = 0;
-	this.max = parent.getNumGeometries();
+	this._parent = parent;
+	this._atStart = true;
+	this._index = 0;
+	this._max = parent.getNumGeometries();
 }
 extend(GeometryCollectionIterator.prototype, {
 	next: function () {
-		if (this.atStart) {
-			this.atStart = false;
-			if (GeometryCollectionIterator.isAtomic(this.parent)) this.index++;
-			return this.parent;
+		if (this._atStart) {
+			this._atStart = false;
+			if (GeometryCollectionIterator.isAtomic(this._parent)) this._index++;
+			return this._parent;
 		}
-		if (this.subcollectionIterator !== null) {
-			if (this.subcollectionIterator.hasNext()) {
-				return this.subcollectionIterator.next();
+		if (this._subcollectionIterator !== null) {
+			if (this._subcollectionIterator.hasNext()) {
+				return this._subcollectionIterator.next();
 			} else {
-				this.subcollectionIterator = null;
+				this._subcollectionIterator = null;
 			}
 		}
-		if (this.index >= this.max) {
+		if (this._index >= this._max) {
 			throw new NoSuchElementException();
 		}
-		var obj = this.parent.getGeometryN(this.index++);
+		var obj = this._parent.getGeometryN(this._index++);
 		if (obj instanceof GeometryCollection) {
-			this.subcollectionIterator = new GeometryCollectionIterator(obj);
-			return this.subcollectionIterator.next();
+			this._subcollectionIterator = new GeometryCollectionIterator(obj);
+			return this._subcollectionIterator.next();
 		}
 		return obj;
 	},
@@ -42,16 +42,16 @@ extend(GeometryCollectionIterator.prototype, {
 		throw new UnsupportedOperationException(this.getClass().getName());
 	},
 	hasNext: function () {
-		if (this.atStart) {
+		if (this._atStart) {
 			return true;
 		}
-		if (this.subcollectionIterator !== null) {
-			if (this.subcollectionIterator.hasNext()) {
+		if (this._subcollectionIterator !== null) {
+			if (this._subcollectionIterator.hasNext()) {
 				return true;
 			}
-			this.subcollectionIterator = null;
+			this._subcollectionIterator = null;
 		}
-		if (this.index >= this.max) {
+		if (this._index >= this._max) {
 			return false;
 		}
 		return true;

@@ -13,36 +13,36 @@ import KdTree from '../index/kdtree/KdTree';
 import ArrayList from '../../../../java/util/ArrayList';
 import Envelope from '../geom/Envelope';
 export default function ConformingDelaunayTriangulator() {
-	this.initialVertices = null;
-	this.segVertices = null;
-	this.segments = new ArrayList();
-	this.subdiv = null;
-	this.incDel = null;
-	this.convexHull = null;
-	this.splitFinder = new NonEncroachingSplitPointFinder();
-	this.kdt = null;
-	this.vertexFactory = null;
-	this.computeAreaEnv = null;
-	this.splitPt = null;
-	this.tolerance = null;
+	this._initialVertices = null;
+	this._segVertices = null;
+	this._segments = new ArrayList();
+	this._subdiv = null;
+	this._incDel = null;
+	this._convexHull = null;
+	this._splitFinder = new NonEncroachingSplitPointFinder();
+	this._kdt = null;
+	this._vertexFactory = null;
+	this._computeAreaEnv = null;
+	this._splitPt = null;
+	this._tolerance = null;
 	let initialVertices = arguments[0], tolerance = arguments[1];
-	this.initialVertices = new ArrayList(initialVertices);
-	this.tolerance = tolerance;
-	this.kdt = new KdTree(tolerance);
+	this._initialVertices = new ArrayList(initialVertices);
+	this._tolerance = tolerance;
+	this._kdt = new KdTree(tolerance);
 }
 extend(ConformingDelaunayTriangulator.prototype, {
 	getInitialVertices: function () {
-		return this.initialVertices;
+		return this._initialVertices;
 	},
 	getKDT: function () {
-		return this.kdt;
+		return this._kdt;
 	},
 	enforceConstraints: function () {
 		this.addConstraintVertices();
 		var count = 0;
 		var splits = 0;
 		do {
-			splits = this.enforceGabriel(this.segments);
+			splits = this.enforceGabriel(this._segments);
 			count++;
 		} while (splits > 0 && count < ConformingDelaunayTriangulator.MAX_SPLIT_ITER);
 	},
@@ -53,34 +53,34 @@ extend(ConformingDelaunayTriangulator.prototype, {
 		}
 	},
 	getVertexFactory: function () {
-		return this.vertexFactory;
+		return this._vertexFactory;
 	},
 	getPointArray: function () {
-		var pts = new Array(this.initialVertices.size() + this.segVertices.size()).fill(null);
+		var pts = new Array(this._initialVertices.size() + this._segVertices.size()).fill(null);
 		var index = 0;
-		for (var i = this.initialVertices.iterator(); i.hasNext(); ) {
+		for (var i = this._initialVertices.iterator(); i.hasNext(); ) {
 			var v = i.next();
 			pts[index++] = v.getCoordinate();
 		}
-		for (var i2 = this.segVertices.iterator(); i2.hasNext(); ) {
+		for (var i2 = this._segVertices.iterator(); i2.hasNext(); ) {
 			var v = i2.next();
 			pts[index++] = v.getCoordinate();
 		}
 		return pts;
 	},
 	setConstraints: function (segments, segVertices) {
-		this.segments = segments;
-		this.segVertices = segVertices;
+		this._segments = segments;
+		this._segVertices = segVertices;
 	},
 	computeConvexHull: function () {
 		var fact = new GeometryFactory();
 		var coords = this.getPointArray();
 		var hull = new ConvexHull(coords, fact);
-		this.convexHull = hull.getConvexHull();
+		this._convexHull = hull.getConvexHull();
 	},
 	addConstraintVertices: function () {
 		this.computeConvexHull();
-		this.insertSites(this.segVertices);
+		this.insertSites(this._segVertices);
 	},
 	findNonGabrielPoint: function (seg) {
 		var p = seg.getStart();
@@ -89,7 +89,7 @@ extend(ConformingDelaunayTriangulator.prototype, {
 		var segRadius = p.distance(midPt);
 		var env = new Envelope(midPt);
 		env.expandBy(segRadius);
-		var result = this.kdt.query(env);
+		var result = this._kdt.query(env);
 		var closestNonGabriel = null;
 		var minDist = Double.MAX_VALUE;
 		for (var i = result.iterator(); i.hasNext(); ) {
@@ -108,16 +108,16 @@ extend(ConformingDelaunayTriangulator.prototype, {
 		return closestNonGabriel;
 	},
 	getConstraintSegments: function () {
-		return this.segments;
+		return this._segments;
 	},
 	setSplitPointFinder: function (splitFinder) {
-		this.splitFinder = splitFinder;
+		this._splitFinder = splitFinder;
 	},
 	getConvexHull: function () {
-		return this.convexHull;
+		return this._convexHull;
 	},
 	getTolerance: function () {
-		return this.tolerance;
+		return this._tolerance;
 	},
 	enforceGabriel: function (segsToInsert) {
 		var newSegments = new ArrayList();
@@ -127,8 +127,8 @@ extend(ConformingDelaunayTriangulator.prototype, {
 			var seg = i.next();
 			var encroachPt = this.findNonGabrielPoint(seg);
 			if (encroachPt === null) continue;
-			this.splitPt = this.splitFinder.findSplitPoint(seg, encroachPt);
-			var splitVertex = this.createVertex(this.splitPt, seg);
+			this._splitPt = this._splitFinder.findSplitPoint(seg, encroachPt);
+			var splitVertex = this.createVertex(this._splitPt, seg);
 			var insertedVertex = this.insertSite(splitVertex);
 			var s1 = new Segment(seg.getStartX(), seg.getStartY(), seg.getStartZ(), splitVertex.getX(), splitVertex.getY(), splitVertex.getZ(), seg.getData());
 			var s2 = new Segment(splitVertex.getX(), splitVertex.getY(), splitVertex.getZ(), seg.getEndX(), seg.getEndY(), seg.getEndZ(), seg.getData());
@@ -145,46 +145,46 @@ extend(ConformingDelaunayTriangulator.prototype, {
 		if (arguments.length === 1) {
 			let p = arguments[0];
 			var v = null;
-			if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p);
+			if (this._vertexFactory !== null) v = this._vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p);
 			return v;
 		} else if (arguments.length === 2) {
 			let p = arguments[0], seg = arguments[1];
 			var v = null;
-			if (this.vertexFactory !== null) v = this.vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p);
+			if (this._vertexFactory !== null) v = this._vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p);
 			v.setOnConstraint(true);
 			return v;
 		}
 	},
 	getSubdivision: function () {
-		return this.subdiv;
+		return this._subdiv;
 	},
 	computeBoundingBox: function () {
-		var vertexEnv = ConformingDelaunayTriangulator.computeVertexEnvelope(this.initialVertices);
-		var segEnv = ConformingDelaunayTriangulator.computeVertexEnvelope(this.segVertices);
+		var vertexEnv = ConformingDelaunayTriangulator.computeVertexEnvelope(this._initialVertices);
+		var segEnv = ConformingDelaunayTriangulator.computeVertexEnvelope(this._segVertices);
 		var allPointsEnv = new Envelope(vertexEnv);
 		allPointsEnv.expandToInclude(segEnv);
 		var deltaX = allPointsEnv.getWidth() * 0.2;
 		var deltaY = allPointsEnv.getHeight() * 0.2;
 		var delta = Math.max(deltaX, deltaY);
-		this.computeAreaEnv = new Envelope(allPointsEnv);
-		this.computeAreaEnv.expandBy(delta);
+		this._computeAreaEnv = new Envelope(allPointsEnv);
+		this._computeAreaEnv.expandBy(delta);
 	},
 	setVertexFactory: function (vertexFactory) {
-		this.vertexFactory = vertexFactory;
+		this._vertexFactory = vertexFactory;
 	},
 	formInitialDelaunay: function () {
 		this.computeBoundingBox();
-		this.subdiv = new QuadEdgeSubdivision(this.computeAreaEnv, this.tolerance);
-		this.subdiv.setLocator(new LastFoundQuadEdgeLocator(this.subdiv));
-		this.incDel = new IncrementalDelaunayTriangulator(this.subdiv);
-		this.insertSites(this.initialVertices);
+		this._subdiv = new QuadEdgeSubdivision(this._computeAreaEnv, this._tolerance);
+		this._subdiv.setLocator(new LastFoundQuadEdgeLocator(this._subdiv));
+		this._incDel = new IncrementalDelaunayTriangulator(this._subdiv);
+		this.insertSites(this._initialVertices);
 	},
 	insertSite: function () {
 		if (arguments[0] instanceof ConstraintVertex) {
 			let v = arguments[0];
-			var kdnode = this.kdt.insert(v.getCoordinate(), v);
+			var kdnode = this._kdt.insert(v.getCoordinate(), v);
 			if (!kdnode.isRepeated()) {
-				this.incDel.insertSite(v);
+				this._incDel.insertSite(v);
 			} else {
 				var snappedV = kdnode.getData();
 				snappedV.merge(v);

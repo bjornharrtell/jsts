@@ -2,63 +2,63 @@ import Coordinate from '../../../geom/Coordinate';
 import Double from '../../../../../../java/lang/Double';
 import extend from '../../../../../../extend';
 export default function PointPairDistance() {
-	this.pt = [new Coordinate(), new Coordinate()];
-	this.distance = Double.NaN;
-	this.isNull = true;
+	this._pt = [new Coordinate(), new Coordinate()];
+	this._distance = Double.NaN;
+	this._isNull = true;
 }
 extend(PointPairDistance.prototype, {
 	getCoordinates: function () {
-		return this.pt;
+		return this._pt;
 	},
 	getCoordinate: function (i) {
-		return this.pt[i];
+		return this._pt[i];
 	},
 	setMinimum: function () {
 		if (arguments.length === 1) {
 			let ptDist = arguments[0];
-			this.setMinimum(ptDist.pt[0], ptDist.pt[1]);
+			this.setMinimum(ptDist._pt[0], ptDist._pt[1]);
 		} else if (arguments.length === 2) {
 			let p0 = arguments[0], p1 = arguments[1];
-			if (this.isNull) {
+			if (this._isNull) {
 				this.initialize(p0, p1);
 				return null;
 			}
 			var dist = p0.distance(p1);
-			if (dist < this.distance) this.initialize(p0, p1, dist);
+			if (dist < this._distance) this.initialize(p0, p1, dist);
 		}
 	},
 	initialize: function () {
 		if (arguments.length === 0) {
-			this.isNull = true;
+			this._isNull = true;
 		} else if (arguments.length === 2) {
 			let p0 = arguments[0], p1 = arguments[1];
-			this.pt[0].setCoordinate(p0);
-			this.pt[1].setCoordinate(p1);
-			this.distance = p0.distance(p1);
-			this.isNull = false;
+			this._pt[0].setCoordinate(p0);
+			this._pt[1].setCoordinate(p1);
+			this._distance = p0.distance(p1);
+			this._isNull = false;
 		} else if (arguments.length === 3) {
 			let p0 = arguments[0], p1 = arguments[1], distance = arguments[2];
-			this.pt[0].setCoordinate(p0);
-			this.pt[1].setCoordinate(p1);
-			this.distance = distance;
-			this.isNull = false;
+			this._pt[0].setCoordinate(p0);
+			this._pt[1].setCoordinate(p1);
+			this._distance = distance;
+			this._isNull = false;
 		}
 	},
 	getDistance: function () {
-		return this.distance;
+		return this._distance;
 	},
 	setMaximum: function () {
 		if (arguments.length === 1) {
 			let ptDist = arguments[0];
-			this.setMaximum(ptDist.pt[0], ptDist.pt[1]);
+			this.setMaximum(ptDist._pt[0], ptDist._pt[1]);
 		} else if (arguments.length === 2) {
 			let p0 = arguments[0], p1 = arguments[1];
-			if (this.isNull) {
+			if (this._isNull) {
 				this.initialize(p0, p1);
 				return null;
 			}
 			var dist = p0.distance(p1);
-			if (dist > this.distance) this.initialize(p0, p1, dist);
+			if (dist > this._distance) this.initialize(p0, p1, dist);
 		}
 	},
 	interfaces_: function () {

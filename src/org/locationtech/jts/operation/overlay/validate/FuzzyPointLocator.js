@@ -7,33 +7,33 @@ import LineSegment from '../../../geom/LineSegment';
 import ArrayList from '../../../../../../java/util/ArrayList';
 import GeometryFilter from '../../../geom/GeometryFilter';
 export default function FuzzyPointLocator() {
-	this.g = null;
-	this.boundaryDistanceTolerance = null;
-	this.linework = null;
-	this.ptLocator = new PointLocator();
-	this.seg = new LineSegment();
+	this._g = null;
+	this._boundaryDistanceTolerance = null;
+	this._linework = null;
+	this._ptLocator = new PointLocator();
+	this._seg = new LineSegment();
 	let g = arguments[0], boundaryDistanceTolerance = arguments[1];
-	this.g = g;
-	this.boundaryDistanceTolerance = boundaryDistanceTolerance;
-	this.linework = this.extractLinework(g);
+	this._g = g;
+	this._boundaryDistanceTolerance = boundaryDistanceTolerance;
+	this._linework = this.extractLinework(g);
 }
 extend(FuzzyPointLocator.prototype, {
 	isWithinToleranceOfBoundary: function (pt) {
-		for (var i = 0; i < this.linework.getNumGeometries(); i++) {
-			var line = this.linework.getGeometryN(i);
+		for (var i = 0; i < this._linework.getNumGeometries(); i++) {
+			var line = this._linework.getGeometryN(i);
 			var seq = line.getCoordinateSequence();
 			for (var j = 0; j < seq.size() - 1; j++) {
-				seq.getCoordinate(j, this.seg.p0);
-				seq.getCoordinate(j + 1, this.seg.p1);
-				var dist = this.seg.distance(pt);
-				if (dist <= this.boundaryDistanceTolerance) return true;
+				seq.getCoordinate(j, this._seg.p0);
+				seq.getCoordinate(j + 1, this._seg.p1);
+				var dist = this._seg.distance(pt);
+				if (dist <= this._boundaryDistanceTolerance) return true;
 			}
 		}
 		return false;
 	},
 	getLocation: function (pt) {
 		if (this.isWithinToleranceOfBoundary(pt)) return Location.BOUNDARY;
-		return this.ptLocator.locate(pt, this.g);
+		return this._ptLocator.locate(pt, this._g);
 	},
 	extractLinework: function (g) {
 		var extracter = new PolygonalLineworkExtracter();
@@ -50,19 +50,19 @@ extend(FuzzyPointLocator.prototype, {
 	}
 });
 function PolygonalLineworkExtracter() {
-	this.linework = null;
-	this.linework = new ArrayList();
+	this._linework = null;
+	this._linework = new ArrayList();
 }
 extend(PolygonalLineworkExtracter.prototype, {
 	getLinework: function () {
-		return this.linework;
+		return this._linework;
 	},
 	filter: function (g) {
 		if (g instanceof Polygon) {
 			var poly = g;
-			this.linework.add(poly.getExteriorRing());
+			this._linework.add(poly.getExteriorRing());
 			for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-				this.linework.add(poly.getInteriorRingN(i));
+				this._linework.add(poly.getInteriorRingN(i));
 			}
 		}
 	},

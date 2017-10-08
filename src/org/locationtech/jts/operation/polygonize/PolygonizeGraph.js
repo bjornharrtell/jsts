@@ -12,14 +12,14 @@ import inherits from '../../../../../inherits';
 import PlanarGraph from '../../planargraph/PlanarGraph';
 export default function PolygonizeGraph() {
 	PlanarGraph.apply(this);
-	this.factory = null;
+	this._factory = null;
 	let factory = arguments[0];
-	this.factory = factory;
+	this._factory = factory;
 }
 inherits(PolygonizeGraph, PlanarGraph);
 extend(PolygonizeGraph.prototype, {
 	findEdgeRing: function (startDE) {
-		var er = new EdgeRing(this.factory);
+		var er = new EdgeRing(this._factory);
 		er.build(startDE);
 		return er;
 	},

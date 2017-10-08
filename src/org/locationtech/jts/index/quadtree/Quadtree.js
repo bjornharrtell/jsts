@@ -6,19 +6,19 @@ import ArrayListVisitor from '../ArrayListVisitor';
 import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 export default function Quadtree() {
-	this.root = null;
-	this.minExtent = 1.0;
-	this.root = new Root();
+	this._root = null;
+	this._minExtent = 1.0;
+	this._root = new Root();
 }
 extend(Quadtree.prototype, {
 	size: function () {
-		if (this.root !== null) return this.root.size();
+		if (this._root !== null) return this._root.size();
 		return 0;
 	},
 	insert: function (itemEnv, item) {
 		this.collectStats(itemEnv);
-		var insertEnv = Quadtree.ensureExtent(itemEnv, this.minExtent);
-		this.root.insert(insertEnv, item);
+		var insertEnv = Quadtree.ensureExtent(itemEnv, this._minExtent);
+		this._root.insert(insertEnv, item);
 	},
 	query: function () {
 		if (arguments.length === 1) {
@@ -28,30 +28,30 @@ extend(Quadtree.prototype, {
 			return visitor.getItems();
 		} else if (arguments.length === 2) {
 			let searchEnv = arguments[0], visitor = arguments[1];
-			this.root.visit(searchEnv, visitor);
+			this._root.visit(searchEnv, visitor);
 		}
 	},
 	queryAll: function () {
 		var foundItems = new ArrayList();
-		this.root.addAllItems(foundItems);
+		this._root.addAllItems(foundItems);
 		return foundItems;
 	},
 	remove: function (itemEnv, item) {
-		var posEnv = Quadtree.ensureExtent(itemEnv, this.minExtent);
-		return this.root.remove(posEnv, item);
+		var posEnv = Quadtree.ensureExtent(itemEnv, this._minExtent);
+		return this._root.remove(posEnv, item);
 	},
 	collectStats: function (itemEnv) {
 		var delX = itemEnv.getWidth();
-		if (delX < this.minExtent && delX > 0.0) this.minExtent = delX;
+		if (delX < this._minExtent && delX > 0.0) this._minExtent = delX;
 		var delY = itemEnv.getHeight();
-		if (delY < this.minExtent && delY > 0.0) this.minExtent = delY;
+		if (delY < this._minExtent && delY > 0.0) this._minExtent = delY;
 	},
 	depth: function () {
-		if (this.root !== null) return this.root.depth();
+		if (this._root !== null) return this._root.depth();
 		return 0;
 	},
 	isEmpty: function () {
-		if (this.root === null) return true;
+		if (this._root === null) return true;
 		return false;
 	},
 	interfaces_: function () {

@@ -6,7 +6,7 @@ import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder';
 import ArrayList from '../../../../java/util/ArrayList';
 import inherits from '../../../../inherits';
 export default function MCIndexSegmentSetMutualIntersector() {
-	this.index = new STRtree();
+	this._index = new STRtree();
 	let baseSegStrings = arguments[0];
 	this.initBaseSegments(baseSegStrings);
 }
@@ -15,7 +15,7 @@ extend(MCIndexSegmentSetMutualIntersector.prototype, {
 		var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
 		for (var i = segChains.iterator(); i.hasNext(); ) {
 			var mc = i.next();
-			this.index.insert(mc.getEnvelope(), mc);
+			this._index.insert(mc.getEnvelope(), mc);
 		}
 	},
 	addToMonoChains: function (segStr, monoChains) {
@@ -36,16 +36,16 @@ extend(MCIndexSegmentSetMutualIntersector.prototype, {
 		for (var i = segStrings.iterator(); i.hasNext(); ) {
 			this.addToIndex(i.next());
 		}
-		this.index.build();
+		this._index.build();
 	},
 	getIndex: function () {
-		return this.index;
+		return this._index;
 	},
 	intersectChains: function (monoChains, segInt) {
 		var overlapAction = new SegmentOverlapAction(segInt);
 		for (var i = monoChains.iterator(); i.hasNext(); ) {
 			var queryChain = i.next();
-			var overlapChains = this.index.query(queryChain.getEnvelope());
+			var overlapChains = this._index.query(queryChain.getEnvelope());
 			for (var j = overlapChains.iterator(); j.hasNext(); ) {
 				var testChain = j.next();
 				queryChain.computeOverlaps(testChain, overlapAction);
@@ -62,9 +62,9 @@ extend(MCIndexSegmentSetMutualIntersector.prototype, {
 });
 function SegmentOverlapAction() {
 	MonotoneChainOverlapAction.apply(this);
-	this.si = null;
+	this._si = null;
 	let si = arguments[0];
-	this.si = si;
+	this._si = si;
 }
 inherits(SegmentOverlapAction, MonotoneChainOverlapAction);
 extend(SegmentOverlapAction.prototype, {
@@ -73,7 +73,7 @@ extend(SegmentOverlapAction.prototype, {
 			let mc1 = arguments[0], start1 = arguments[1], mc2 = arguments[2], start2 = arguments[3];
 			var ss1 = mc1.getContext();
 			var ss2 = mc2.getContext();
-			this.si.processIntersections(ss1, start1, ss2, start2);
+			this._si.processIntersections(ss1, start1, ss2, start2);
 		} else return MonotoneChainOverlapAction.prototype.overlap.apply(this, arguments);
 	},
 	interfaces_: function () {

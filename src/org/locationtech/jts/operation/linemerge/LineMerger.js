@@ -10,14 +10,14 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import GraphComponent from '../../planargraph/GraphComponent';
 export default function LineMerger() {
-	this.graph = new LineMergeGraph();
-	this.mergedLineStrings = null;
-	this.factory = null;
-	this.edgeStrings = null;
+	this._graph = new LineMergeGraph();
+	this._mergedLineStrings = null;
+	this._factory = null;
+	this._edgeStrings = null;
 }
 extend(LineMerger.prototype, {
 	buildEdgeStringsForUnprocessedNodes: function () {
-		for (var i = this.graph.getNodes().iterator(); i.hasNext(); ) {
+		for (var i = this._graph.getNodes().iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (!node.isMarked()) {
 				Assert.isTrue(node.getDegree() === 2);
@@ -27,7 +27,7 @@ extend(LineMerger.prototype, {
 		}
 	},
 	buildEdgeStringsForNonDegree2Nodes: function () {
-		for (var i = this.graph.getNodes().iterator(); i.hasNext(); ) {
+		for (var i = this._graph.getNodes().iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (node.getDegree() !== 2) {
 				this.buildEdgeStringsStartingAt(node);
@@ -40,7 +40,7 @@ extend(LineMerger.prototype, {
 	},
 	getMergedLineStrings: function () {
 		this.merge();
-		return this.mergedLineStrings;
+		return this._mergedLineStrings;
 	},
 	buildEdgeStringsStartingAt: function (node) {
 		for (var i = node.getOutEdges().iterator(); i.hasNext(); ) {
@@ -48,26 +48,26 @@ extend(LineMerger.prototype, {
 			if (directedEdge.getEdge().isMarked()) {
 				continue;
 			}
-			this.edgeStrings.add(this.buildEdgeStringStartingWith(directedEdge));
+			this._edgeStrings.add(this.buildEdgeStringStartingWith(directedEdge));
 		}
 	},
 	merge: function () {
-		if (this.mergedLineStrings !== null) {
+		if (this._mergedLineStrings !== null) {
 			return null;
 		}
-		GraphComponent.setMarked(this.graph.nodeIterator(), false);
-		GraphComponent.setMarked(this.graph.edgeIterator(), false);
-		this.edgeStrings = new ArrayList();
+		GraphComponent.setMarked(this._graph.nodeIterator(), false);
+		GraphComponent.setMarked(this._graph.edgeIterator(), false);
+		this._edgeStrings = new ArrayList();
 		this.buildEdgeStringsForObviousStartNodes();
 		this.buildEdgeStringsForIsolatedLoops();
-		this.mergedLineStrings = new ArrayList();
-		for (var i = this.edgeStrings.iterator(); i.hasNext(); ) {
+		this._mergedLineStrings = new ArrayList();
+		for (var i = this._edgeStrings.iterator(); i.hasNext(); ) {
 			var edgeString = i.next();
-			this.mergedLineStrings.add(edgeString.toLineString());
+			this._mergedLineStrings.add(edgeString.toLineString());
 		}
 	},
 	buildEdgeStringStartingWith: function (start) {
-		var edgeString = new EdgeString(this.factory);
+		var edgeString = new EdgeString(this._factory);
 		var current = start;
 		do {
 			edgeString.add(current);
@@ -91,17 +91,17 @@ extend(LineMerger.prototype, {
 			});
 		} else if (hasInterface(arguments[0], Collection)) {
 			let geometries = arguments[0];
-			this.mergedLineStrings = null;
+			this._mergedLineStrings = null;
 			for (var i = geometries.iterator(); i.hasNext(); ) {
 				var geometry = i.next();
 				this.add(geometry);
 			}
 		} else if (arguments[0] instanceof LineString) {
 			let lineString = arguments[0];
-			if (this.factory === null) {
-				this.factory = lineString.getFactory();
+			if (this._factory === null) {
+				this._factory = lineString.getFactory();
 			}
-			this.graph.addEdge(lineString);
+			this._graph.addEdge(lineString);
 		}
 	},
 	buildEdgeStringsForIsolatedLoops: function () {

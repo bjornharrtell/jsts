@@ -7,39 +7,39 @@ import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import NodableSegmentString from './NodableSegmentString';
 export default function NodedSegmentString() {
-	this.nodeList = new SegmentNodeList(this);
-	this.pts = null;
-	this.data = null;
+	this._nodeList = new SegmentNodeList(this);
+	this._pts = null;
+	this._data = null;
 	let pts = arguments[0], data = arguments[1];
-	this.pts = pts;
-	this.data = data;
+	this._pts = pts;
+	this._data = data;
 }
 extend(NodedSegmentString.prototype, {
 	getCoordinates: function () {
-		return this.pts;
+		return this._pts;
 	},
 	size: function () {
-		return this.pts.length;
+		return this._pts.length;
 	},
 	getCoordinate: function (i) {
-		return this.pts[i];
+		return this._pts[i];
 	},
 	isClosed: function () {
-		return this.pts[0].equals(this.pts[this.pts.length - 1]);
+		return this._pts[0].equals(this._pts[this._pts.length - 1]);
 	},
 	getSegmentOctant: function (index) {
-		if (index === this.pts.length - 1) return -1;
+		if (index === this._pts.length - 1) return -1;
 		return this.safeOctant(this.getCoordinate(index), this.getCoordinate(index + 1));
 	},
 	setData: function (data) {
-		this.data = data;
+		this._data = data;
 	},
 	safeOctant: function (p0, p1) {
 		if (p0.equals2D(p1)) return 0;
 		return Octant.octant(p0, p1);
 	},
 	getData: function () {
-		return this.data;
+		return this._data;
 	},
 	addIntersection: function () {
 		if (arguments.length === 2) {
@@ -52,21 +52,21 @@ extend(NodedSegmentString.prototype, {
 		}
 	},
 	toString: function () {
-		return WKTWriter.toLineString(new CoordinateArraySequence(this.pts));
+		return WKTWriter.toLineString(new CoordinateArraySequence(this._pts));
 	},
 	getNodeList: function () {
-		return this.nodeList;
+		return this._nodeList;
 	},
 	addIntersectionNode: function (intPt, segmentIndex) {
 		var normalizedSegmentIndex = segmentIndex;
 		var nextSegIndex = normalizedSegmentIndex + 1;
-		if (nextSegIndex < this.pts.length) {
-			var nextPt = this.pts[nextSegIndex];
+		if (nextSegIndex < this._pts.length) {
+			var nextPt = this._pts[nextSegIndex];
 			if (intPt.equals2D(nextPt)) {
 				normalizedSegmentIndex = nextSegIndex;
 			}
 		}
-		var ei = this.nodeList.add(intPt, normalizedSegmentIndex);
+		var ei = this._nodeList.add(intPt, normalizedSegmentIndex);
 		return ei;
 	},
 	addIntersections: function (li, segmentIndex, geomIndex) {

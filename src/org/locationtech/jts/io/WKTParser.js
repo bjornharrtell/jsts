@@ -111,7 +111,7 @@ const extract = {
    * @return {String} A string of coordinates representing the point.
    */
   point (point) {
-    return extract.coordinate.call(this, point.coordinates.coordinates[0])
+    return extract.coordinate.call(this, point._coordinates._coordinates[0])
   },
 
   /**
@@ -138,16 +138,16 @@ const extract = {
    */
   linestring (linestring) {
     var array = []
-    for (let i = 0, len = linestring.points.coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.apply(this, [linestring.points.coordinates[i]]))
+    for (let i = 0, len = linestring.points._coordinates.length; i < len; ++i) {
+      array.push(extract.coordinate.apply(this, [linestring.points._coordinates[i]]))
     }
     return array.join(',')
   },
 
   linearring (linearring) {
     var array = []
-    for (let i = 0, len = linearring.points.coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.apply(this, [linearring.points.coordinates[i]]))
+    for (let i = 0, len = linearring.points._coordinates.length; i < len; ++i) {
+      array.push(extract.coordinate.apply(this, [linearring.points._coordinates[i]]))
     }
     return array.join(',')
   },

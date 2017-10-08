@@ -11,17 +11,17 @@ import MCIndexPointSnapper from './MCIndexPointSnapper';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder';
 export default function MCIndexSnapRounder() {
-	this.pm = null;
-	this.li = null;
-	this.scaleFactor = null;
-	this.noder = null;
-	this.pointSnapper = null;
-	this.nodedSegStrings = null;
+	this._pm = null;
+	this._li = null;
+	this._scaleFactor = null;
+	this._noder = null;
+	this._pointSnapper = null;
+	this._nodedSegStrings = null;
 	let pm = arguments[0];
-	this.pm = pm;
-	this.li = new RobustLineIntersector();
-	this.li.setPrecisionModel(pm);
-	this.scaleFactor = pm.getScale();
+	this._pm = pm;
+	this._li = new RobustLineIntersector();
+	this._li.setPrecisionModel(pm);
+	this._scaleFactor = pm.getScale();
 }
 extend(MCIndexSnapRounder.prototype, {
 	checkCorrectness: function (inputSegmentStrings) {
@@ -36,7 +36,7 @@ extend(MCIndexSnapRounder.prototype, {
 		} finally {}
 	},
 	getNodedSubstrings: function () {
-		return NodedSegmentString.getNodedSubstrings(this.nodedSegStrings);
+		return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings);
 	},
 	snapRound: function (segStrings, li) {
 		var intersections = this.findInteriorIntersections(segStrings, li);
@@ -45,8 +45,8 @@ extend(MCIndexSnapRounder.prototype, {
 	},
 	findInteriorIntersections: function (segStrings, li) {
 		var intFinderAdder = new InteriorIntersectionFinderAdder(li);
-		this.noder.setSegmentIntersector(intFinderAdder);
-		this.noder.computeNodes(segStrings);
+		this._noder.setSegmentIntersector(intFinderAdder);
+		this._noder.computeNodes(segStrings);
 		return intFinderAdder.getInteriorIntersections();
 	},
 	computeVertexSnaps: function () {
@@ -60,8 +60,8 @@ extend(MCIndexSnapRounder.prototype, {
 			let e = arguments[0];
 			var pts0 = e.getCoordinates();
 			for (var i = 0; i < pts0.length; i++) {
-				var hotPixel = new HotPixel(pts0[i], this.scaleFactor, this.li);
-				var isNodeAdded = this.pointSnapper.snap(hotPixel, e, i);
+				var hotPixel = new HotPixel(pts0[i], this._scaleFactor, this._li);
+				var isNodeAdded = this._pointSnapper.snap(hotPixel, e, i);
 				if (isNodeAdded) {
 					e.addIntersection(pts0[i], i);
 				}
@@ -69,16 +69,16 @@ extend(MCIndexSnapRounder.prototype, {
 		}
 	},
 	computeNodes: function (inputSegmentStrings) {
-		this.nodedSegStrings = inputSegmentStrings;
-		this.noder = new MCIndexNoder();
-		this.pointSnapper = new MCIndexPointSnapper(this.noder.getIndex());
-		this.snapRound(inputSegmentStrings, this.li);
+		this._nodedSegStrings = inputSegmentStrings;
+		this._noder = new MCIndexNoder();
+		this._pointSnapper = new MCIndexPointSnapper(this._noder.getIndex());
+		this.snapRound(inputSegmentStrings, this._li);
 	},
 	computeIntersectionSnaps: function (snapPts) {
 		for (var it = snapPts.iterator(); it.hasNext(); ) {
 			var snapPt = it.next();
-			var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
-			this.pointSnapper.snap(hotPixel);
+			var hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li);
+			this._pointSnapper.snap(hotPixel);
 		}
 	},
 	interfaces_: function () {

@@ -3,19 +3,19 @@ import extend from '../../../../../extend';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function EdgeString() {
-	this.factory = null;
-	this.directedEdges = new ArrayList();
-	this.coordinates = null;
+	this._factory = null;
+	this._directedEdges = new ArrayList();
+	this._coordinates = null;
 	let factory = arguments[0];
-	this.factory = factory;
+	this._factory = factory;
 }
 extend(EdgeString.prototype, {
 	getCoordinates: function () {
-		if (this.coordinates === null) {
+		if (this._coordinates === null) {
 			var forwardDirectedEdges = 0;
 			var reverseDirectedEdges = 0;
 			var coordinateList = new CoordinateList();
-			for (var i = this.directedEdges.iterator(); i.hasNext(); ) {
+			for (var i = this._directedEdges.iterator(); i.hasNext(); ) {
 				var directedEdge = i.next();
 				if (directedEdge.getEdgeDirection()) {
 					forwardDirectedEdges++;
@@ -24,18 +24,18 @@ extend(EdgeString.prototype, {
 				}
 				coordinateList.add(directedEdge.getEdge().getLine().getCoordinates(), false, directedEdge.getEdgeDirection());
 			}
-			this.coordinates = coordinateList.toCoordinateArray();
+			this._coordinates = coordinateList.toCoordinateArray();
 			if (reverseDirectedEdges > forwardDirectedEdges) {
-				CoordinateArrays.reverse(this.coordinates);
+				CoordinateArrays.reverse(this._coordinates);
 			}
 		}
-		return this.coordinates;
+		return this._coordinates;
 	},
 	toLineString: function () {
-		return this.factory.createLineString(this.getCoordinates());
+		return this._factory.createLineString(this.getCoordinates());
 	},
 	add: function (directedEdge) {
-		this.directedEdges.add(directedEdge);
+		this._directedEdges.add(directedEdge);
 	},
 	interfaces_: function () {
 		return [];

@@ -2,59 +2,59 @@ import extend from '../../../../extend';
 import TaggedLineSegment from './TaggedLineSegment';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function TaggedLineString() {
-	this.parentLine = null;
-	this.segs = null;
-	this.resultSegs = new ArrayList();
-	this.minimumSize = null;
+	this._parentLine = null;
+	this._segs = null;
+	this._resultSegs = new ArrayList();
+	this._minimumSize = null;
 	if (arguments.length === 1) {
 		let parentLine = arguments[0];
 		TaggedLineString.call(this, parentLine, 2);
 	} else if (arguments.length === 2) {
 		let parentLine = arguments[0], minimumSize = arguments[1];
-		this.parentLine = parentLine;
-		this.minimumSize = minimumSize;
+		this._parentLine = parentLine;
+		this._minimumSize = minimumSize;
 		this.init();
 	}
 }
 extend(TaggedLineString.prototype, {
 	addToResult: function (seg) {
-		this.resultSegs.add(seg);
+		this._resultSegs.add(seg);
 	},
 	asLineString: function () {
-		return this.parentLine.getFactory().createLineString(TaggedLineString.extractCoordinates(this.resultSegs));
+		return this._parentLine.getFactory().createLineString(TaggedLineString.extractCoordinates(this._resultSegs));
 	},
 	getResultSize: function () {
-		var resultSegsSize = this.resultSegs.size();
+		var resultSegsSize = this._resultSegs.size();
 		return resultSegsSize === 0 ? 0 : resultSegsSize + 1;
 	},
 	getParent: function () {
-		return this.parentLine;
+		return this._parentLine;
 	},
 	getSegment: function (i) {
-		return this.segs[i];
+		return this._segs[i];
 	},
 	getParentCoordinates: function () {
-		return this.parentLine.getCoordinates();
+		return this._parentLine.getCoordinates();
 	},
 	getMinimumSize: function () {
-		return this.minimumSize;
+		return this._minimumSize;
 	},
 	asLinearRing: function () {
-		return this.parentLine.getFactory().createLinearRing(TaggedLineString.extractCoordinates(this.resultSegs));
+		return this._parentLine.getFactory().createLinearRing(TaggedLineString.extractCoordinates(this._resultSegs));
 	},
 	getSegments: function () {
-		return this.segs;
+		return this._segs;
 	},
 	init: function () {
-		var pts = this.parentLine.getCoordinates();
-		this.segs = new Array(pts.length - 1).fill(null);
+		var pts = this._parentLine.getCoordinates();
+		this._segs = new Array(pts.length - 1).fill(null);
 		for (var i = 0; i < pts.length - 1; i++) {
-			var seg = new TaggedLineSegment(pts[i], pts[i + 1], this.parentLine, i);
-			this.segs[i] = seg;
+			var seg = new TaggedLineSegment(pts[i], pts[i + 1], this._parentLine, i);
+			this._segs[i] = seg;
 		}
 	},
 	getResultCoordinates: function () {
-		return TaggedLineString.extractCoordinates(this.resultSegs);
+		return TaggedLineString.extractCoordinates(this._resultSegs);
 	},
 	interfaces_: function () {
 		return [];

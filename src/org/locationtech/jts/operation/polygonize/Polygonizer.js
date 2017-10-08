@@ -10,7 +10,7 @@ import EdgeRing from './EdgeRing';
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function Polygonizer() {
-	this.lineStringAdder = new LineStringAdder(this);
+	this._lineStringAdder = new LineStringAdder(this);
 	this.graph = null;
 	this.dangles = new ArrayList();
 	this.cutEdges = new ArrayList();
@@ -18,24 +18,24 @@ export default function Polygonizer() {
 	this.holeList = null;
 	this.shellList = null;
 	this.polyList = null;
-	this.isCheckingRingsValid = true;
-	this.extractOnlyPolygonal = null;
-	this.geomFactory = null;
+	this._isCheckingRingsValid = true;
+	this._extractOnlyPolygonal = null;
+	this._geomFactory = null;
 	if (arguments.length === 0) {
 		Polygonizer.call(this, false);
 	} else if (arguments.length === 1) {
 		let extractOnlyPolygonal = arguments[0];
-		this.extractOnlyPolygonal = extractOnlyPolygonal;
+		this._extractOnlyPolygonal = extractOnlyPolygonal;
 	}
 }
 extend(Polygonizer.prototype, {
 	getGeometry: function () {
-		if (this.geomFactory === null) this.geomFactory = new GeometryFactory();
+		if (this._geomFactory === null) this._geomFactory = new GeometryFactory();
 		this.polygonize();
-		if (this.extractOnlyPolygonal) {
-			return this.geomFactory.buildGeometry(this.polyList);
+		if (this._extractOnlyPolygonal) {
+			return this._geomFactory.buildGeometry(this.polyList);
 		}
-		return this.geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this.polyList));
+		return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this.polyList));
 	},
 	getInvalidRingLines: function () {
 		this.polygonize();
@@ -56,7 +56,7 @@ extend(Polygonizer.prototype, {
 		var edgeRingList = this.graph.getEdgeRings();
 		var validEdgeRingList = new ArrayList();
 		this.invalidRingLines = new ArrayList();
-		if (this.isCheckingRingsValid) {
+		if (this._isCheckingRingsValid) {
 			this.findValidRings(edgeRingList, validEdgeRingList, this.invalidRingLines);
 		} else {
 			validEdgeRingList = edgeRingList;
@@ -65,7 +65,7 @@ extend(Polygonizer.prototype, {
 		Polygonizer.assignHolesToShells(this.holeList, this.shellList);
 		Collections.sort(this.shellList, new EdgeRing.EnvelopeComparator());
 		var includeAll = true;
-		if (this.extractOnlyPolygonal) {
+		if (this._extractOnlyPolygonal) {
 			Polygonizer.findDisjointShells(this.shellList);
 			includeAll = false;
 		}
@@ -92,16 +92,16 @@ extend(Polygonizer.prototype, {
 			}
 		} else if (arguments[0] instanceof LineString) {
 			let line = arguments[0];
-			this.geomFactory = line.getFactory();
-			if (this.graph === null) this.graph = new PolygonizeGraph(this.geomFactory);
+			this._geomFactory = line.getFactory();
+			if (this.graph === null) this.graph = new PolygonizeGraph(this._geomFactory);
 			this.graph.addEdge(line);
 		} else if (arguments[0] instanceof Geometry) {
 			let g = arguments[0];
-			g.apply(this.lineStringAdder);
+			g.apply(this._lineStringAdder);
 		}
 	},
 	setCheckRingsValid: function (isCheckingRingsValid) {
-		this.isCheckingRingsValid = isCheckingRingsValid;
+		this._isCheckingRingsValid = isCheckingRingsValid;
 	},
 	findShellsAndHoles: function (edgeRingList) {
 		this.holeList = new ArrayList();

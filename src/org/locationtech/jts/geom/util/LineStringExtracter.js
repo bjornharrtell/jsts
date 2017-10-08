@@ -4,13 +4,13 @@ import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default function LineStringExtracter() {
-	this.comps = null;
+	this._comps = null;
 	let comps = arguments[0];
-	this.comps = comps;
+	this._comps = comps;
 }
 extend(LineStringExtracter.prototype, {
 	filter: function (geom) {
-		if (geom instanceof LineString) this.comps.add(geom);
+		if (geom instanceof LineString) this._comps.add(geom);
 	},
 	interfaces_: function () {
 		return [GeometryFilter];

@@ -3,19 +3,19 @@ import extend from '../../../../extend';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import RuntimeException from '../../../../java/lang/RuntimeException';
 export default function NodingValidator() {
-	this.li = new RobustLineIntersector();
-	this.segStrings = null;
+	this._li = new RobustLineIntersector();
+	this._segStrings = null;
 	let segStrings = arguments[0];
-	this.segStrings = segStrings;
+	this._segStrings = segStrings;
 }
 extend(NodingValidator.prototype, {
 	checkEndPtVertexIntersections: function () {
 		if (arguments.length === 0) {
-			for (var i = this.segStrings.iterator(); i.hasNext(); ) {
+			for (var i = this._segStrings.iterator(); i.hasNext(); ) {
 				var ss = i.next();
 				var pts = ss.getCoordinates();
-				this.checkEndPtVertexIntersections(pts[0], this.segStrings);
-				this.checkEndPtVertexIntersections(pts[pts.length - 1], this.segStrings);
+				this.checkEndPtVertexIntersections(pts[0], this._segStrings);
+				this.checkEndPtVertexIntersections(pts[pts.length - 1], this._segStrings);
 			}
 		} else if (arguments.length === 2) {
 			let testPt = arguments[0], segStrings = arguments[1];
@@ -30,9 +30,9 @@ extend(NodingValidator.prototype, {
 	},
 	checkInteriorIntersections: function () {
 		if (arguments.length === 0) {
-			for (var i = this.segStrings.iterator(); i.hasNext(); ) {
+			for (var i = this._segStrings.iterator(); i.hasNext(); ) {
 				var ss0 = i.next();
-				for (var j = this.segStrings.iterator(); j.hasNext(); ) {
+				for (var j = this._segStrings.iterator(); j.hasNext(); ) {
 					var ss1 = j.next();
 					this.checkInteriorIntersections(ss0, ss1);
 				}
@@ -53,9 +53,9 @@ extend(NodingValidator.prototype, {
 			var p01 = e0.getCoordinates()[segIndex0 + 1];
 			var p10 = e1.getCoordinates()[segIndex1];
 			var p11 = e1.getCoordinates()[segIndex1 + 1];
-			this.li.computeIntersection(p00, p01, p10, p11);
-			if (this.li.hasIntersection()) {
-				if (this.li.isProper() || this.hasInteriorIntersection(this.li, p00, p01) || this.hasInteriorIntersection(this.li, p10, p11)) {
+			this._li.computeIntersection(p00, p01, p10, p11);
+			if (this._li.hasIntersection()) {
+				if (this._li.isProper() || this.hasInteriorIntersection(this._li, p00, p01) || this.hasInteriorIntersection(this._li, p10, p11)) {
 					throw new RuntimeException("found non-noded intersection at " + p00 + "-" + p01 + " and " + p10 + "-" + p11);
 				}
 			}
@@ -68,7 +68,7 @@ extend(NodingValidator.prototype, {
 	},
 	checkCollapses: function () {
 		if (arguments.length === 0) {
-			for (var i = this.segStrings.iterator(); i.hasNext(); ) {
+			for (var i = this._segStrings.iterator(); i.hasNext(); ) {
 				var ss = i.next();
 				this.checkCollapses(ss);
 			}

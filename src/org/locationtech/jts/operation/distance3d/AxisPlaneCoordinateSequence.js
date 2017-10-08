@@ -2,11 +2,11 @@ import Coordinate from '../../geom/Coordinate';
 import extend from '../../../../../extend';
 import CoordinateSequence from '../../geom/CoordinateSequence';
 export default function AxisPlaneCoordinateSequence() {
-	this.seq = null;
-	this.indexMap = null;
+	this._seq = null;
+	this._indexMap = null;
 	let seq = arguments[0], indexMap = arguments[1];
-	this.seq = seq;
-	this.indexMap = indexMap;
+	this._seq = seq;
+	this._indexMap = indexMap;
 }
 extend(AxisPlaneCoordinateSequence.prototype, {
 	setOrdinate: function (index, ordinateIndex, value) {
@@ -16,11 +16,11 @@ extend(AxisPlaneCoordinateSequence.prototype, {
 		return this.getOrdinate(index, CoordinateSequence.Z);
 	},
 	size: function () {
-		return this.seq.size();
+		return this._seq.size();
 	},
 	getOrdinate: function (index, ordinateIndex) {
 		if (ordinateIndex > 1) return 0;
-		return this.seq.getOrdinate(index, this.indexMap[ordinateIndex]);
+		return this._seq.getOrdinate(index, this._indexMap[ordinateIndex]);
 	},
 	getCoordinate: function () {
 		if (arguments.length === 1) {

@@ -3,14 +3,14 @@ import Edge from '../../planargraph/Edge';
 import inherits from '../../../../../inherits';
 export default function LineMergeEdge() {
 	Edge.apply(this);
-	this.line = null;
+	this._line = null;
 	let line = arguments[0];
-	this.line = line;
+	this._line = line;
 }
 inherits(LineMergeEdge, Edge);
 extend(LineMergeEdge.prototype, {
 	getLine: function () {
-		return this.line;
+		return this._line;
 	},
 	interfaces_: function () {
 		return [];

@@ -6,11 +6,11 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Envelope from '../geom/Envelope';
 import TaggedLineString from './TaggedLineString';
 export default function LineSegmentIndex() {
-	this.index = new Quadtree();
+	this._index = new Quadtree();
 }
 extend(LineSegmentIndex.prototype, {
 	remove: function (seg) {
-		this.index.remove(new Envelope(seg.p0, seg.p1), seg);
+		this._index.remove(new Envelope(seg.p0, seg.p1), seg);
 	},
 	add: function () {
 		if (arguments[0] instanceof TaggedLineString) {
@@ -22,13 +22,13 @@ extend(LineSegmentIndex.prototype, {
 			}
 		} else if (arguments[0] instanceof LineSegment) {
 			let seg = arguments[0];
-			this.index.insert(new Envelope(seg.p0, seg.p1), seg);
+			this._index.insert(new Envelope(seg.p0, seg.p1), seg);
 		}
 	},
 	query: function (querySeg) {
 		var env = new Envelope(querySeg.p0, querySeg.p1);
 		var visitor = new LineSegmentVisitor(querySeg);
-		this.index.query(env, visitor);
+		this._index.query(env, visitor);
 		var itemsFound = visitor.getItems();
 		return itemsFound;
 	},
@@ -40,18 +40,18 @@ extend(LineSegmentIndex.prototype, {
 	}
 });
 function LineSegmentVisitor() {
-	this.querySeg = null;
-	this.items = new ArrayList();
+	this._querySeg = null;
+	this._items = new ArrayList();
 	let querySeg = arguments[0];
-	this.querySeg = querySeg;
+	this._querySeg = querySeg;
 }
 extend(LineSegmentVisitor.prototype, {
 	visitItem: function (item) {
 		var seg = item;
-		if (Envelope.intersects(seg.p0, seg.p1, this.querySeg.p0, this.querySeg.p1)) this.items.add(item);
+		if (Envelope.intersects(seg.p0, seg.p1, this._querySeg.p0, this._querySeg.p1)) this._items.add(item);
 	},
 	getItems: function () {
-		return this.items;
+		return this._items;
 	},
 	interfaces_: function () {
 		return [ItemVisitor];

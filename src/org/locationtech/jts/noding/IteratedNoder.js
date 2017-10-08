@@ -5,44 +5,44 @@ import extend from '../../../../extend';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import IntersectionAdder from './IntersectionAdder';
 export default function IteratedNoder() {
-	this.pm = null;
-	this.li = null;
-	this.nodedSegStrings = null;
-	this.maxIter = IteratedNoder.MAX_ITER;
+	this._pm = null;
+	this._li = null;
+	this._nodedSegStrings = null;
+	this._maxIter = IteratedNoder.MAX_ITER;
 	let pm = arguments[0];
-	this.li = new RobustLineIntersector();
-	this.pm = pm;
-	this.li.setPrecisionModel(pm);
+	this._li = new RobustLineIntersector();
+	this._pm = pm;
+	this._li.setPrecisionModel(pm);
 }
 extend(IteratedNoder.prototype, {
 	setMaximumIterations: function (maxIter) {
-		this.maxIter = maxIter;
+		this._maxIter = maxIter;
 	},
 	node: function (segStrings, numInteriorIntersections) {
-		var si = new IntersectionAdder(this.li);
+		var si = new IntersectionAdder(this._li);
 		var noder = new MCIndexNoder();
 		noder.setSegmentIntersector(si);
 		noder.computeNodes(segStrings);
-		this.nodedSegStrings = noder.getNodedSubstrings();
+		this._nodedSegStrings = noder.getNodedSubstrings();
 		numInteriorIntersections[0] = si.numInteriorIntersections;
 	},
 	computeNodes: function (segStrings) {
 		var numInteriorIntersections = new Array(1).fill(null);
-		this.nodedSegStrings = segStrings;
+		this._nodedSegStrings = segStrings;
 		var nodingIterationCount = 0;
 		var lastNodesCreated = -1;
 		do {
-			this.node(this.nodedSegStrings, numInteriorIntersections);
+			this.node(this._nodedSegStrings, numInteriorIntersections);
 			nodingIterationCount++;
 			var nodesCreated = numInteriorIntersections[0];
-			if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this.maxIter) {
+			if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this._maxIter) {
 				throw new TopologyException("Iterated noding failed to converge after " + nodingIterationCount + " iterations");
 			}
 			lastNodesCreated = nodesCreated;
 		} while (lastNodesCreated > 0);
 	},
 	getNodedSubstrings: function () {
-		return this.nodedSegStrings;
+		return this._nodedSegStrings;
 	},
 	interfaces_: function () {
 		return [Noder];

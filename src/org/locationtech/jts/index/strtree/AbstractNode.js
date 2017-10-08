@@ -4,36 +4,36 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Serializable from '../../../../../java/io/Serializable';
 import Assert from '../../util/Assert';
 export default function AbstractNode() {
-	this.childBoundables = new ArrayList();
-	this.bounds = null;
-	this.level = null;
+	this._childBoundables = new ArrayList();
+	this._bounds = null;
+	this._level = null;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let level = arguments[0];
-		this.level = level;
+		this._level = level;
 	}
 }
 extend(AbstractNode.prototype, {
 	getLevel: function () {
-		return this.level;
+		return this._level;
 	},
 	size: function () {
-		return this.childBoundables.size();
+		return this._childBoundables.size();
 	},
 	getChildBoundables: function () {
-		return this.childBoundables;
+		return this._childBoundables;
 	},
 	addChildBoundable: function (childBoundable) {
-		Assert.isTrue(this.bounds === null);
-		this.childBoundables.add(childBoundable);
+		Assert.isTrue(this._bounds === null);
+		this._childBoundables.add(childBoundable);
 	},
 	isEmpty: function () {
-		return this.childBoundables.isEmpty();
+		return this._childBoundables.isEmpty();
 	},
 	getBounds: function () {
-		if (this.bounds === null) {
-			this.bounds = this.computeBounds();
+		if (this._bounds === null) {
+			this._bounds = this.computeBounds();
 		}
-		return this.bounds;
+		return this._bounds;
 	},
 	interfaces_: function () {
 		return [Boundable, Serializable];

@@ -7,53 +7,53 @@ import LocationIndexOfLine from './LocationIndexOfLine';
 import ExtractLineByLocation from './ExtractLineByLocation';
 import MultiLineString from '../geom/MultiLineString';
 export default function LocationIndexedLine() {
-	this.linearGeom = null;
+	this._linearGeom = null;
 	let linearGeom = arguments[0];
-	this.linearGeom = linearGeom;
+	this._linearGeom = linearGeom;
 	this.checkGeometryType();
 }
 extend(LocationIndexedLine.prototype, {
 	clampIndex: function (index) {
 		var loc = index.clone();
-		loc.clamp(this.linearGeom);
+		loc.clamp(this._linearGeom);
 		return loc;
 	},
 	project: function (pt) {
-		return LocationIndexOfPoint.indexOf(this.linearGeom, pt);
+		return LocationIndexOfPoint.indexOf(this._linearGeom, pt);
 	},
 	checkGeometryType: function () {
-		if (!(this.linearGeom instanceof LineString || this.linearGeom instanceof MultiLineString)) throw new IllegalArgumentException("Input geometry must be linear");
+		if (!(this._linearGeom instanceof LineString || this._linearGeom instanceof MultiLineString)) throw new IllegalArgumentException("Input geometry must be linear");
 	},
 	extractPoint: function () {
 		if (arguments.length === 1) {
 			let index = arguments[0];
-			return index.getCoordinate(this.linearGeom);
+			return index.getCoordinate(this._linearGeom);
 		} else if (arguments.length === 2) {
 			let index = arguments[0], offsetDistance = arguments[1];
-			var indexLow = index.toLowest(this.linearGeom);
-			return indexLow.getSegment(this.linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
+			var indexLow = index.toLowest(this._linearGeom);
+			return indexLow.getSegment(this._linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance);
 		}
 	},
 	isValidIndex: function (index) {
-		return index.isValid(this.linearGeom);
+		return index.isValid(this._linearGeom);
 	},
 	getEndIndex: function () {
-		return LinearLocation.getEndLocation(this.linearGeom);
+		return LinearLocation.getEndLocation(this._linearGeom);
 	},
 	getStartIndex: function () {
 		return new LinearLocation();
 	},
 	indexOfAfter: function (pt, minIndex) {
-		return LocationIndexOfPoint.indexOfAfter(this.linearGeom, pt, minIndex);
+		return LocationIndexOfPoint.indexOfAfter(this._linearGeom, pt, minIndex);
 	},
 	extractLine: function (startIndex, endIndex) {
-		return ExtractLineByLocation.extract(this.linearGeom, startIndex, endIndex);
+		return ExtractLineByLocation.extract(this._linearGeom, startIndex, endIndex);
 	},
 	indexOf: function (pt) {
-		return LocationIndexOfPoint.indexOf(this.linearGeom, pt);
+		return LocationIndexOfPoint.indexOf(this._linearGeom, pt);
 	},
 	indicesOf: function (subLine) {
-		return LocationIndexOfLine.indicesOf(this.linearGeom, subLine);
+		return LocationIndexOfLine.indicesOf(this._linearGeom, subLine);
 	},
 	interfaces_: function () {
 		return [];

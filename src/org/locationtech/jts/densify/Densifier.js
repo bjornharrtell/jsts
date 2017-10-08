@@ -7,18 +7,18 @@ import MultiPolygon from '../geom/MultiPolygon';
 import LineSegment from '../geom/LineSegment';
 import inherits from '../../../../inherits';
 export default function Densifier() {
-	this.inputGeom = null;
-	this.distanceTolerance = null;
+	this._inputGeom = null;
+	this._distanceTolerance = null;
 	let inputGeom = arguments[0];
-	this.inputGeom = inputGeom;
+	this._inputGeom = inputGeom;
 }
 extend(Densifier.prototype, {
 	getResultGeometry: function () {
-		return new DensifyTransformer(this.distanceTolerance).transform(this.inputGeom);
+		return new DensifyTransformer(this._distanceTolerance).transform(this._inputGeom);
 	},
 	setDistanceTolerance: function (distanceTolerance) {
 		if (distanceTolerance <= 0.0) throw new IllegalArgumentException("Tolerance must be positive");
-		this.distanceTolerance = distanceTolerance;
+		this._distanceTolerance = distanceTolerance;
 	},
 	interfaces_: function () {
 		return [];

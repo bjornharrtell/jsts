@@ -9,22 +9,22 @@ import Comparable from '../../../../../java/lang/Comparable';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
 export default function BufferSubgraph() {
-	this.finder = null;
-	this.dirEdgeList = new ArrayList();
-	this.nodes = new ArrayList();
-	this.rightMostCoord = null;
-	this.env = null;
-	this.finder = new RightmostEdgeFinder();
+	this._finder = null;
+	this._dirEdgeList = new ArrayList();
+	this._nodes = new ArrayList();
+	this._rightMostCoord = null;
+	this._env = null;
+	this._finder = new RightmostEdgeFinder();
 }
 extend(BufferSubgraph.prototype, {
 	clearVisitedEdges: function () {
-		for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
+		for (var it = this._dirEdgeList.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			de.setVisited(false);
 		}
 	},
 	getRightmostCoordinate: function () {
-		return this.rightMostCoord;
+		return this._rightMostCoord;
 	},
 	computeNodeDepth: function (n) {
 		var startEdge = null;
@@ -45,7 +45,7 @@ extend(BufferSubgraph.prototype, {
 	},
 	computeDepth: function (outsideDepth) {
 		this.clearVisitedEdges();
-		var de = this.finder.getEdge();
+		var de = this._finder.getEdge();
 		var n = de.getNode();
 		var label = de.getLabel();
 		de.setEdgeDepths(Position.RIGHT, outsideDepth);
@@ -54,11 +54,11 @@ extend(BufferSubgraph.prototype, {
 	},
 	create: function (node) {
 		this.addReachable(node);
-		this.finder.findEdge(this.dirEdgeList);
-		this.rightMostCoord = this.finder.getCoordinate();
+		this._finder.findEdge(this._dirEdgeList);
+		this._rightMostCoord = this._finder.getCoordinate();
 	},
 	findResultEdges: function () {
-		for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
+		for (var it = this._dirEdgeList.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (de.getDepth(Position.RIGHT) >= 1 && de.getDepth(Position.LEFT) <= 0 && !de.isInteriorAreaEdge()) {
 				de.setInResult(true);
@@ -90,27 +90,27 @@ extend(BufferSubgraph.prototype, {
 	},
 	compareTo: function (o) {
 		var graph = o;
-		if (this.rightMostCoord.x < graph.rightMostCoord.x) {
+		if (this._rightMostCoord.x < graph._rightMostCoord.x) {
 			return -1;
 		}
-		if (this.rightMostCoord.x > graph.rightMostCoord.x) {
+		if (this._rightMostCoord.x > graph._rightMostCoord.x) {
 			return 1;
 		}
 		return 0;
 	},
 	getEnvelope: function () {
-		if (this.env === null) {
+		if (this._env === null) {
 			var edgeEnv = new Envelope();
-			for (var it = this.dirEdgeList.iterator(); it.hasNext(); ) {
+			for (var it = this._dirEdgeList.iterator(); it.hasNext(); ) {
 				var dirEdge = it.next();
 				var pts = dirEdge.getEdge().getCoordinates();
 				for (var i = 0; i < pts.length - 1; i++) {
 					edgeEnv.expandToInclude(pts[i]);
 				}
 			}
-			this.env = edgeEnv;
+			this._env = edgeEnv;
 		}
-		return this.env;
+		return this._env;
 	},
 	addReachable: function (startNode) {
 		var nodeStack = new Stack();
@@ -127,20 +127,20 @@ extend(BufferSubgraph.prototype, {
 	},
 	add: function (node, nodeStack) {
 		node.setVisited(true);
-		this.nodes.add(node);
+		this._nodes.add(node);
 		for (var i = node.getEdges().iterator(); i.hasNext(); ) {
 			var de = i.next();
-			this.dirEdgeList.add(de);
+			this._dirEdgeList.add(de);
 			var sym = de.getSym();
 			var symNode = sym.getNode();
 			if (!symNode.isVisited()) nodeStack.push(symNode);
 		}
 	},
 	getNodes: function () {
-		return this.nodes;
+		return this._nodes;
 	},
 	getDirectedEdges: function () {
-		return this.dirEdgeList;
+		return this._dirEdgeList;
 	},
 	interfaces_: function () {
 		return [Comparable];

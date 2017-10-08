@@ -1,11 +1,11 @@
 import extend from '../../../../../extend';
 export default function BufferParameters() {
-	this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
-	this.endCapStyle = BufferParameters.CAP_ROUND;
-	this.joinStyle = BufferParameters.JOIN_ROUND;
-	this.mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
-	this._isSingleSided = false;
-	this.simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
+	this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
+	this._endCapStyle = BufferParameters.CAP_ROUND;
+	this._joinStyle = BufferParameters.JOIN_ROUND;
+	this._mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT;
+	this.__isSingleSided = false;
+	this._simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let quadrantSegments = arguments[0];
 		this.setQuadrantSegments(quadrantSegments);
@@ -23,51 +23,51 @@ export default function BufferParameters() {
 }
 extend(BufferParameters.prototype, {
 	getEndCapStyle: function () {
-		return this.endCapStyle;
+		return this._endCapStyle;
 	},
 	isSingleSided: function () {
-		return this._isSingleSided;
+		return this.__isSingleSided;
 	},
 	setQuadrantSegments: function (quadSegs) {
-		this.quadrantSegments = quadSegs;
-		if (this.quadrantSegments === 0) this.joinStyle = BufferParameters.JOIN_BEVEL;
-		if (this.quadrantSegments < 0) {
-			this.joinStyle = BufferParameters.JOIN_MITRE;
-			this.mitreLimit = Math.abs(this.quadrantSegments);
+		this._quadrantSegments = quadSegs;
+		if (this._quadrantSegments === 0) this._joinStyle = BufferParameters.JOIN_BEVEL;
+		if (this._quadrantSegments < 0) {
+			this._joinStyle = BufferParameters.JOIN_MITRE;
+			this._mitreLimit = Math.abs(this._quadrantSegments);
 		}
 		if (quadSegs <= 0) {
-			this.quadrantSegments = 1;
+			this._quadrantSegments = 1;
 		}
-		if (this.joinStyle !== BufferParameters.JOIN_ROUND) {
-			this.quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
+		if (this._joinStyle !== BufferParameters.JOIN_ROUND) {
+			this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
 		}
 	},
 	getJoinStyle: function () {
-		return this.joinStyle;
+		return this._joinStyle;
 	},
 	setJoinStyle: function (joinStyle) {
-		this.joinStyle = joinStyle;
+		this._joinStyle = joinStyle;
 	},
 	setSimplifyFactor: function (simplifyFactor) {
-		this.simplifyFactor = simplifyFactor < 0 ? 0 : simplifyFactor;
+		this._simplifyFactor = simplifyFactor < 0 ? 0 : simplifyFactor;
 	},
 	getSimplifyFactor: function () {
-		return this.simplifyFactor;
+		return this._simplifyFactor;
 	},
 	getQuadrantSegments: function () {
-		return this.quadrantSegments;
+		return this._quadrantSegments;
 	},
 	setEndCapStyle: function (endCapStyle) {
-		this.endCapStyle = endCapStyle;
+		this._endCapStyle = endCapStyle;
 	},
 	getMitreLimit: function () {
-		return this.mitreLimit;
+		return this._mitreLimit;
 	},
 	setMitreLimit: function (mitreLimit) {
-		this.mitreLimit = mitreLimit;
+		this._mitreLimit = mitreLimit;
 	},
 	setSingleSided: function (isSingleSided) {
-		this._isSingleSided = isSingleSided;
+		this.__isSingleSided = isSingleSided;
 	},
 	interfaces_: function () {
 		return [];

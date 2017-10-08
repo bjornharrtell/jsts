@@ -5,35 +5,35 @@ import extend from '../../../../extend';
 import Polygonal from '../geom/Polygonal';
 import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation';
 export default function GeometryPrecisionReducer() {
-	this.targetPM = null;
-	this.removeCollapsed = true;
-	this.changePrecisionModel = false;
-	this.isPointwise = false;
+	this._targetPM = null;
+	this._removeCollapsed = true;
+	this._changePrecisionModel = false;
+	this._isPointwise = false;
 	let pm = arguments[0];
-	this.targetPM = pm;
+	this._targetPM = pm;
 }
 extend(GeometryPrecisionReducer.prototype, {
 	fixPolygonalTopology: function (geom) {
 		var geomToBuffer = geom;
-		if (!this.changePrecisionModel) {
-			geomToBuffer = this.changePM(geom, this.targetPM);
+		if (!this._changePrecisionModel) {
+			geomToBuffer = this.changePM(geom, this._targetPM);
 		}
 		var bufGeom = geomToBuffer.buffer(0);
 		var finalGeom = bufGeom;
-		if (!this.changePrecisionModel) {
+		if (!this._changePrecisionModel) {
 			finalGeom = this.changePM(bufGeom, geom.getPrecisionModel());
 		}
 		return finalGeom;
 	},
 	reducePointwise: function (geom) {
 		var geomEdit = null;
-		if (this.changePrecisionModel) {
-			var newFactory = this.createFactory(geom.getFactory(), this.targetPM);
+		if (this._changePrecisionModel) {
+			var newFactory = this.createFactory(geom.getFactory(), this._targetPM);
 			geomEdit = new GeometryEditor(newFactory);
 		} else geomEdit = new GeometryEditor();
-		var finalRemoveCollapsed = this.removeCollapsed;
+		var finalRemoveCollapsed = this._removeCollapsed;
 		if (geom.getDimension() >= 2) finalRemoveCollapsed = true;
-		var reduceGeom = geomEdit.edit(geom, new PrecisionReducerCoordinateOperation(this.targetPM, finalRemoveCollapsed));
+		var reduceGeom = geomEdit.edit(geom, new PrecisionReducerCoordinateOperation(this._targetPM, finalRemoveCollapsed));
 		return reduceGeom;
 	},
 	changePM: function (geom, newPM) {
@@ -41,24 +41,24 @@ extend(GeometryPrecisionReducer.prototype, {
 		return geomEditor.edit(geom, new GeometryEditor.NoOpGeometryOperation());
 	},
 	setRemoveCollapsedComponents: function (removeCollapsed) {
-		this.removeCollapsed = removeCollapsed;
+		this._removeCollapsed = removeCollapsed;
 	},
 	createFactory: function (inputFactory, pm) {
 		var newFactory = new GeometryFactory(pm, inputFactory.getSRID(), inputFactory.getCoordinateSequenceFactory());
 		return newFactory;
 	},
 	setChangePrecisionModel: function (changePrecisionModel) {
-		this.changePrecisionModel = changePrecisionModel;
+		this._changePrecisionModel = changePrecisionModel;
 	},
 	reduce: function (geom) {
 		var reducePW = this.reducePointwise(geom);
-		if (this.isPointwise) return reducePW;
+		if (this._isPointwise) return reducePW;
 		if (!hasInterface(reducePW, Polygonal)) return reducePW;
 		if (reducePW.isValid()) return reducePW;
 		return this.fixPolygonalTopology(reducePW);
 	},
 	setPointwise: function (isPointwise) {
-		this.isPointwise = isPointwise;
+		this._isPointwise = isPointwise;
 	},
 	createEditor: function (geomFactory, newPM) {
 		if (geomFactory.getPrecisionModel() === newPM) return new GeometryEditor();

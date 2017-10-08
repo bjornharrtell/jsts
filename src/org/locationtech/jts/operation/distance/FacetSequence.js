@@ -5,40 +5,40 @@ import Double from '../../../../../java/lang/Double';
 import extend from '../../../../../extend';
 import Envelope from '../../geom/Envelope';
 export default function FacetSequence() {
-	this.pts = null;
-	this.start = null;
-	this.end = null;
-	this.pt = new Coordinate();
-	this.seqPt = new Coordinate();
-	this.p0 = new Coordinate();
-	this.p1 = new Coordinate();
-	this.q0 = new Coordinate();
-	this.q1 = new Coordinate();
+	this._pts = null;
+	this._start = null;
+	this._end = null;
+	this._pt = new Coordinate();
+	this._seqPt = new Coordinate();
+	this._p0 = new Coordinate();
+	this._p1 = new Coordinate();
+	this._q0 = new Coordinate();
+	this._q1 = new Coordinate();
 	if (arguments.length === 2) {
 		let pts = arguments[0], start = arguments[1];
-		this.pts = pts;
-		this.start = start;
-		this.end = start + 1;
+		this._pts = pts;
+		this._start = start;
+		this._end = start + 1;
 	} else if (arguments.length === 3) {
 		let pts = arguments[0], start = arguments[1], end = arguments[2];
-		this.pts = pts;
-		this.start = start;
-		this.end = end;
+		this._pts = pts;
+		this._start = start;
+		this._end = end;
 	}
 }
 extend(FacetSequence.prototype, {
 	size: function () {
-		return this.end - this.start;
+		return this._end - this._start;
 	},
 	computeLineLineDistance: function (facetSeq) {
 		var minDistance = Double.MAX_VALUE;
-		for (var i = this.start; i < this.end - 1; i++) {
-			for (var j = facetSeq.start; j < facetSeq.end - 1; j++) {
-				this.pts.getCoordinate(i, this.p0);
-				this.pts.getCoordinate(i + 1, this.p1);
-				facetSeq.pts.getCoordinate(j, this.q0);
-				facetSeq.pts.getCoordinate(j + 1, this.q1);
-				var dist = CGAlgorithms.distanceLineLine(this.p0, this.p1, this.q0, this.q1);
+		for (var i = this._start; i < this._end - 1; i++) {
+			for (var j = facetSeq._start; j < facetSeq._end - 1; j++) {
+				this._pts.getCoordinate(i, this._p0);
+				this._pts.getCoordinate(i + 1, this._p1);
+				facetSeq._pts.getCoordinate(j, this._q0);
+				facetSeq._pts.getCoordinate(j + 1, this._q1);
+				var dist = CGAlgorithms.distanceLineLine(this._p0, this._p1, this._q0, this._q1);
 				if (dist === 0.0) return 0.0;
 				if (dist < minDistance) {
 					minDistance = dist;
@@ -48,21 +48,21 @@ extend(FacetSequence.prototype, {
 		return minDistance;
 	},
 	getCoordinate: function (index) {
-		return this.pts.getCoordinate(this.start + index);
+		return this._pts.getCoordinate(this._start + index);
 	},
 	getEnvelope: function () {
 		var env = new Envelope();
-		for (var i = this.start; i < this.end; i++) {
-			env.expandToInclude(this.pts.getX(i), this.pts.getY(i));
+		for (var i = this._start; i < this._end; i++) {
+			env.expandToInclude(this._pts.getX(i), this._pts.getY(i));
 		}
 		return env;
 	},
 	computePointLineDistance: function (pt, facetSeq) {
 		var minDistance = Double.MAX_VALUE;
-		for (var i = facetSeq.start; i < facetSeq.end - 1; i++) {
-			facetSeq.pts.getCoordinate(i, this.q0);
-			facetSeq.pts.getCoordinate(i + 1, this.q1);
-			var dist = CGAlgorithms.distancePointLine(pt, this.q0, this.q1);
+		for (var i = facetSeq._start; i < facetSeq._end - 1; i++) {
+			facetSeq._pts.getCoordinate(i, this._q0);
+			facetSeq._pts.getCoordinate(i + 1, this._q1);
+			var dist = CGAlgorithms.distancePointLine(pt, this._q0, this._q1);
 			if (dist === 0.0) return 0.0;
 			if (dist < minDistance) {
 				minDistance = dist;
@@ -74,30 +74,30 @@ extend(FacetSequence.prototype, {
 		var buf = new StringBuffer();
 		buf.append("LINESTRING ( ");
 		var p = new Coordinate();
-		for (var i = this.start; i < this.end; i++) {
-			if (i > this.start) buf.append(", ");
-			this.pts.getCoordinate(i, p);
+		for (var i = this._start; i < this._end; i++) {
+			if (i > this._start) buf.append(", ");
+			this._pts.getCoordinate(i, p);
 			buf.append(p.x + " " + p.y);
 		}
 		buf.append(" )");
 		return buf.toString();
 	},
 	isPoint: function () {
-		return this.end - this.start === 1;
+		return this._end - this._start === 1;
 	},
 	distance: function (facetSeq) {
 		var isPoint = this.isPoint();
 		var isPointOther = facetSeq.isPoint();
 		if (isPoint && isPointOther) {
-			this.pts.getCoordinate(this.start, this.pt);
-			facetSeq.pts.getCoordinate(facetSeq.start, this.seqPt);
-			return this.pt.distance(this.seqPt);
+			this._pts.getCoordinate(this._start, this._pt);
+			facetSeq._pts.getCoordinate(facetSeq._start, this._seqPt);
+			return this._pt.distance(this._seqPt);
 		} else if (isPoint) {
-			this.pts.getCoordinate(this.start, this.pt);
-			return this.computePointLineDistance(this.pt, facetSeq);
+			this._pts.getCoordinate(this._start, this._pt);
+			return this.computePointLineDistance(this._pt, facetSeq);
 		} else if (isPointOther) {
-			facetSeq.pts.getCoordinate(facetSeq.start, this.seqPt);
-			return this.computePointLineDistance(this.seqPt, this);
+			facetSeq._pts.getCoordinate(facetSeq._start, this._seqPt);
+			return this.computePointLineDistance(this._seqPt, this);
 		}
 		return this.computeLineLineDistance(facetSeq);
 	},

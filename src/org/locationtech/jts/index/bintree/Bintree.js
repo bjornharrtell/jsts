@@ -3,19 +3,19 @@ import Interval from './Interval';
 import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function Bintree() {
-	this.root = null;
-	this.minExtent = 1.0;
-	this.root = new Root();
+	this._root = null;
+	this._minExtent = 1.0;
+	this._root = new Root();
 }
 extend(Bintree.prototype, {
 	size: function () {
-		if (this.root !== null) return this.root.size();
+		if (this._root !== null) return this._root.size();
 		return 0;
 	},
 	insert: function (itemInterval, item) {
 		this.collectStats(itemInterval);
-		var insertInterval = Bintree.ensureExtent(itemInterval, this.minExtent);
-		this.root.insert(insertInterval, item);
+		var insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent);
+		this._root.insert(insertInterval, item);
 	},
 	query: function () {
 		if (arguments.length === 1) {
@@ -30,28 +30,28 @@ extend(Bintree.prototype, {
 			}
 		} else if (arguments.length === 2) {
 			let interval = arguments[0], foundItems = arguments[1];
-			this.root.addAllItemsFromOverlapping(interval, foundItems);
+			this._root.addAllItemsFromOverlapping(interval, foundItems);
 		}
 	},
 	iterator: function () {
 		var foundItems = new ArrayList();
-		this.root.addAllItems(foundItems);
+		this._root.addAllItems(foundItems);
 		return foundItems.iterator();
 	},
 	remove: function (itemInterval, item) {
-		var insertInterval = Bintree.ensureExtent(itemInterval, this.minExtent);
-		return this.root.remove(insertInterval, item);
+		var insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent);
+		return this._root.remove(insertInterval, item);
 	},
 	collectStats: function (interval) {
 		var del = interval.getWidth();
-		if (del < this.minExtent && del > 0.0) this.minExtent = del;
+		if (del < this._minExtent && del > 0.0) this._minExtent = del;
 	},
 	depth: function () {
-		if (this.root !== null) return this.root.depth();
+		if (this._root !== null) return this._root.depth();
 		return 0;
 	},
 	nodeSize: function () {
-		if (this.root !== null) return this.root.nodeSize();
+		if (this._root !== null) return this._root.nodeSize();
 		return 0;
 	},
 	interfaces_: function () {

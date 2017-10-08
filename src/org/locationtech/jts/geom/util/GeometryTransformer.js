@@ -11,12 +11,12 @@ import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import MultiLineString from '../MultiLineString';
 export default function GeometryTransformer() {
-	this.inputGeom = null;
+	this._inputGeom = null;
 	this.factory = null;
-	this.pruneEmptyGeometry = true;
-	this.preserveGeometryCollectionType = true;
-	this.preserveCollections = false;
-	this.preserveType = false;
+	this._pruneEmptyGeometry = true;
+	this._preserveGeometryCollectionType = true;
+	this._preserveCollections = false;
+	this._preserveType = false;
 }
 extend(GeometryTransformer.prototype, {
 	transformPoint: function (geom, parent) {
@@ -46,7 +46,7 @@ extend(GeometryTransformer.prototype, {
 		return this.factory.getCoordinateSequenceFactory().create(coords);
 	},
 	getInputGeometry: function () {
-		return this.inputGeom;
+		return this._inputGeom;
 	},
 	transformMultiLineString: function (geom, parent) {
 		var transGeomList = new ArrayList();
@@ -92,14 +92,14 @@ extend(GeometryTransformer.prototype, {
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var transformGeom = this.transform(geom.getGeometryN(i));
 			if (transformGeom === null) continue;
-			if (this.pruneEmptyGeometry && transformGeom.isEmpty()) continue;
+			if (this._pruneEmptyGeometry && transformGeom.isEmpty()) continue;
 			transGeomList.add(transformGeom);
 		}
-		if (this.preserveGeometryCollectionType) return this.factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList));
+		if (this._preserveGeometryCollectionType) return this.factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList));
 		return this.factory.buildGeometry(transGeomList);
 	},
 	transform: function (inputGeom) {
-		this.inputGeom = inputGeom;
+		this._inputGeom = inputGeom;
 		this.factory = inputGeom.getFactory();
 		if (inputGeom instanceof Point) return this.transformPoint(inputGeom, null);
 		if (inputGeom instanceof MultiPoint) return this.transformMultiPoint(inputGeom, null);
@@ -115,7 +115,7 @@ extend(GeometryTransformer.prototype, {
 		var seq = this.transformCoordinates(geom.getCoordinateSequence(), geom);
 		if (seq === null) return this.factory.createLinearRing(null);
 		var seqSize = seq.size();
-		if (seqSize > 0 && seqSize < 4 && !this.preserveType) return this.factory.createLineString(seq);
+		if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this.factory.createLineString(seq);
 		return this.factory.createLinearRing(seq);
 	},
 	interfaces_: function () {

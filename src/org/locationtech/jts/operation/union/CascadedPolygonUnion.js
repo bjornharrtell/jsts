@@ -9,11 +9,11 @@ import Polygonal from '../../geom/Polygonal';
 import ArrayList from '../../../../../java/util/ArrayList';
 import List from '../../../../../java/util/List';
 export default function CascadedPolygonUnion() {
-	this.inputPolys = null;
-	this.geomFactory = null;
+	this._inputPolys = null;
+	this._geomFactory = null;
 	let polys = arguments[0];
-	this.inputPolys = polys;
-	if (this.inputPolys === null) this.inputPolys = new ArrayList();
+	this._inputPolys = polys;
+	if (this._inputPolys === null) this._inputPolys = new ArrayList();
 }
 extend(CascadedPolygonUnion.prototype, {
 	reduceToGeometries: function (geomTree) {
@@ -36,7 +36,7 @@ extend(CascadedPolygonUnion.prototype, {
 			var elem = geom.getGeometryN(i);
 			if (elem.getEnvelopeInternal().intersects(env)) intersectingGeoms.add(elem); else disjointGeoms.add(elem);
 		}
-		return this.geomFactory.buildGeometry(intersectingGeoms);
+		return this._geomFactory.buildGeometry(intersectingGeoms);
 	},
 	unionOptimized: function (g0, g1) {
 		var g0Env = g0.getEnvelopeInternal();
@@ -50,15 +50,15 @@ extend(CascadedPolygonUnion.prototype, {
 		return this.unionUsingEnvelopeIntersection(g0, g1, commonEnv);
 	},
 	union: function () {
-		if (this.inputPolys === null) throw new IllegalStateException("union() method cannot be called twice");
-		if (this.inputPolys.isEmpty()) return null;
-		this.geomFactory = this.inputPolys.iterator().next().getFactory();
+		if (this._inputPolys === null) throw new IllegalStateException("union() method cannot be called twice");
+		if (this._inputPolys.isEmpty()) return null;
+		this._geomFactory = this._inputPolys.iterator().next().getFactory();
 		var index = new STRtree(CascadedPolygonUnion.STRTREE_NODE_CAPACITY);
-		for (var i = this.inputPolys.iterator(); i.hasNext(); ) {
+		for (var i = this._inputPolys.iterator(); i.hasNext(); ) {
 			var item = i.next();
 			index.insert(item.getEnvelopeInternal(), item);
 		}
-		this.inputPolys = null;
+		this._inputPolys = null;
 		var itemTree = index.itemsTree();
 		var unionAll = this.unionTree(itemTree);
 		return unionAll;

@@ -1,26 +1,26 @@
 import extend from '../../../../../extend';
 import Envelope from '../../geom/Envelope';
 export default function MonotoneChain() {
-	this.pts = null;
-	this.start = null;
-	this.end = null;
-	this.env = null;
-	this.context = null;
-	this.id = null;
+	this._pts = null;
+	this._start = null;
+	this._end = null;
+	this._env = null;
+	this._context = null;
+	this._id = null;
 	let pts = arguments[0], start = arguments[1], end = arguments[2], context = arguments[3];
-	this.pts = pts;
-	this.start = start;
-	this.end = end;
-	this.context = context;
+	this._pts = pts;
+	this._start = start;
+	this._end = end;
+	this._context = context;
 }
 extend(MonotoneChain.prototype, {
 	getLineSegment: function (index, ls) {
-		ls.p0 = this.pts[index];
-		ls.p1 = this.pts[index + 1];
+		ls.p0 = this._pts[index];
+		ls.p1 = this._pts[index + 1];
 	},
 	computeSelect: function (searchEnv, start0, end0, mcs) {
-		var p0 = this.pts[start0];
-		var p1 = this.pts[end0];
+		var p0 = this._pts[start0];
+		var p1 = this._pts[end0];
 		mcs.tempEnv1.init(p0, p1);
 		if (end0 - start0 === 1) {
 			mcs.select(this, start0);
@@ -36,47 +36,47 @@ extend(MonotoneChain.prototype, {
 		}
 	},
 	getCoordinates: function () {
-		var coord = new Array(this.end - this.start + 1).fill(null);
+		var coord = new Array(this._end - this._start + 1).fill(null);
 		var index = 0;
-		for (var i = this.start; i <= this.end; i++) {
-			coord[index++] = this.pts[i];
+		for (var i = this._start; i <= this._end; i++) {
+			coord[index++] = this._pts[i];
 		}
 		return coord;
 	},
 	computeOverlaps: function (mc, mco) {
-		this.computeOverlapsInternal(this.start, this.end, mc, mc.start, mc.end, mco);
+		this.computeOverlapsInternal(this._start, this._end, mc, mc._start, mc._end, mco);
 	},
 	setId: function (id) {
-		this.id = id;
+		this._id = id;
 	},
 	select: function (searchEnv, mcs) {
-		this.computeSelect(searchEnv, this.start, this.end, mcs);
+		this.computeSelect(searchEnv, this._start, this._end, mcs);
 	},
 	getEnvelope: function () {
-		if (this.env === null) {
-			var p0 = this.pts[this.start];
-			var p1 = this.pts[this.end];
-			this.env = new Envelope(p0, p1);
+		if (this._env === null) {
+			var p0 = this._pts[this._start];
+			var p1 = this._pts[this._end];
+			this._env = new Envelope(p0, p1);
 		}
-		return this.env;
+		return this._env;
 	},
 	getEndIndex: function () {
-		return this.end;
+		return this._end;
 	},
 	getStartIndex: function () {
-		return this.start;
+		return this._start;
 	},
 	getContext: function () {
-		return this.context;
+		return this._context;
 	},
 	getId: function () {
-		return this.id;
+		return this._id;
 	},
 	computeOverlapsInternal: function (start0, end0, mc, start1, end1, mco) {
-		var p00 = this.pts[start0];
-		var p01 = this.pts[end0];
-		var p10 = mc.pts[start1];
-		var p11 = mc.pts[end1];
+		var p00 = this._pts[start0];
+		var p01 = this._pts[end0];
+		var p10 = mc._pts[start1];
+		var p11 = mc._pts[end1];
 		if (end0 - start0 === 1 && end1 - start1 === 1) {
 			mco.overlap(this, start0, mc, start1);
 			return null;

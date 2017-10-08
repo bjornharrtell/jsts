@@ -1,44 +1,44 @@
 import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
 export default function SplitSegment() {
-	this.seg = null;
-	this.segLen = null;
-	this.splitPt = null;
-	this.minimumLen = 0.0;
+	this._seg = null;
+	this._segLen = null;
+	this._splitPt = null;
+	this._minimumLen = 0.0;
 	let seg = arguments[0];
-	this.seg = seg;
-	this.segLen = seg.getLength();
+	this._seg = seg;
+	this._segLen = seg.getLength();
 }
 extend(SplitSegment.prototype, {
 	splitAt: function () {
 		if (arguments.length === 1) {
 			let pt = arguments[0];
-			var minFrac = this.minimumLen / this.segLen;
-			if (pt.distance(this.seg.p0) < this.minimumLen) {
-				this.splitPt = this.seg.pointAlong(minFrac);
+			var minFrac = this._minimumLen / this._segLen;
+			if (pt.distance(this._seg.p0) < this._minimumLen) {
+				this._splitPt = this._seg.pointAlong(minFrac);
 				return null;
 			}
-			if (pt.distance(this.seg.p1) < this.minimumLen) {
-				this.splitPt = SplitSegment.pointAlongReverse(this.seg, minFrac);
+			if (pt.distance(this._seg.p1) < this._minimumLen) {
+				this._splitPt = SplitSegment.pointAlongReverse(this._seg, minFrac);
 				return null;
 			}
-			this.splitPt = pt;
+			this._splitPt = pt;
 		} else if (arguments.length === 2) {
 			let length = arguments[0], endPt = arguments[1];
 			var actualLen = this.getConstrainedLength(length);
-			var frac = actualLen / this.segLen;
-			if (endPt.equals2D(this.seg.p0)) this.splitPt = this.seg.pointAlong(frac); else this.splitPt = SplitSegment.pointAlongReverse(this.seg, frac);
+			var frac = actualLen / this._segLen;
+			if (endPt.equals2D(this._seg.p0)) this._splitPt = this._seg.pointAlong(frac); else this._splitPt = SplitSegment.pointAlongReverse(this._seg, frac);
 		}
 	},
 	setMinimumLength: function (minLen) {
-		this.minimumLen = minLen;
+		this._minimumLen = minLen;
 	},
 	getConstrainedLength: function (len) {
-		if (len < this.minimumLen) return this.minimumLen;
+		if (len < this._minimumLen) return this._minimumLen;
 		return len;
 	},
 	getSplitPoint: function () {
-		return this.splitPt;
+		return this._splitPt;
 	},
 	interfaces_: function () {
 		return [];

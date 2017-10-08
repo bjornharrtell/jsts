@@ -4,12 +4,12 @@ import inherits from '../../../../inherits';
 import SinglePassNoder from './SinglePassNoder';
 export default function SimpleNoder() {
 	SinglePassNoder.apply(this);
-	this.nodedSegStrings = null;
+	this._nodedSegStrings = null;
 }
 inherits(SimpleNoder, SinglePassNoder);
 extend(SimpleNoder.prototype, {
 	computeNodes: function (inputSegStrings) {
-		this.nodedSegStrings = inputSegStrings;
+		this._nodedSegStrings = inputSegStrings;
 		for (var i0 = inputSegStrings.iterator(); i0.hasNext(); ) {
 			var edge0 = i0.next();
 			for (var i1 = inputSegStrings.iterator(); i1.hasNext(); ) {
@@ -28,7 +28,7 @@ extend(SimpleNoder.prototype, {
 		}
 	},
 	getNodedSubstrings: function () {
-		return NodedSegmentString.getNodedSubstrings(this.nodedSegStrings);
+		return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings);
 	},
 	interfaces_: function () {
 		return [];

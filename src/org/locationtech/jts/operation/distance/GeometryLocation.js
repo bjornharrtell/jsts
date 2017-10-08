@@ -1,30 +1,30 @@
 import extend from '../../../../../extend';
 export default function GeometryLocation() {
-	this.component = null;
-	this.segIndex = null;
-	this.pt = null;
+	this._component = null;
+	this._segIndex = null;
+	this._pt = null;
 	if (arguments.length === 2) {
 		let component = arguments[0], pt = arguments[1];
 		GeometryLocation.call(this, component, GeometryLocation.INSIDE_AREA, pt);
 	} else if (arguments.length === 3) {
 		let component = arguments[0], segIndex = arguments[1], pt = arguments[2];
-		this.component = component;
-		this.segIndex = segIndex;
-		this.pt = pt;
+		this._component = component;
+		this._segIndex = segIndex;
+		this._pt = pt;
 	}
 }
 extend(GeometryLocation.prototype, {
 	isInsideArea: function () {
-		return this.segIndex === GeometryLocation.INSIDE_AREA;
+		return this._segIndex === GeometryLocation.INSIDE_AREA;
 	},
 	getCoordinate: function () {
-		return this.pt;
+		return this._pt;
 	},
 	getGeometryComponent: function () {
-		return this.component;
+		return this._component;
 	},
 	getSegmentIndex: function () {
-		return this.segIndex;
+		return this._segIndex;
 	},
 	interfaces_: function () {
 		return [];

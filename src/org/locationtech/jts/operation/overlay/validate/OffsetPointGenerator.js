@@ -3,11 +3,11 @@ import extend from '../../../../../../extend';
 import ArrayList from '../../../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter';
 export default function OffsetPointGenerator() {
-	this.g = null;
-	this.doLeft = true;
-	this.doRight = true;
+	this._g = null;
+	this._doLeft = true;
+	this._doRight = true;
 	let g = arguments[0];
-	this.g = g;
+	this._g = g;
 }
 extend(OffsetPointGenerator.prototype, {
 	extractPoints: function (line, offsetDistance, offsetPts) {
@@ -17,12 +17,12 @@ extend(OffsetPointGenerator.prototype, {
 		}
 	},
 	setSidesToGenerate: function (doLeft, doRight) {
-		this.doLeft = doLeft;
-		this.doRight = doRight;
+		this._doLeft = doLeft;
+		this._doRight = doRight;
 	},
 	getPoints: function (offsetDistance) {
 		var offsetPts = new ArrayList();
-		var lines = LinearComponentExtracter.getLines(this.g);
+		var lines = LinearComponentExtracter.getLines(this._g);
 		for (var i = lines.iterator(); i.hasNext(); ) {
 			var line = i.next();
 			this.extractPoints(line, offsetDistance, offsetPts);
@@ -37,11 +37,11 @@ extend(OffsetPointGenerator.prototype, {
 		var uy = offsetDistance * dy / len;
 		var midX = (p1.x + p0.x) / 2;
 		var midY = (p1.y + p0.y) / 2;
-		if (this.doLeft) {
+		if (this._doLeft) {
 			var offsetLeft = new Coordinate(midX - uy, midY + ux);
 			offsetPts.add(offsetLeft);
 		}
-		if (this.doRight) {
+		if (this._doRight) {
 			var offsetRight = new Coordinate(midX + uy, midY - ux);
 			offsetPts.add(offsetRight);
 		}

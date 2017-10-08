@@ -16,38 +16,38 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import MultiLineString from '../../geom/MultiLineString';
 import Triangle from '../../geom/Triangle';
 export default function OffsetCurveSetBuilder() {
-	this.inputGeom = null;
-	this.distance = null;
-	this.curveBuilder = null;
-	this.curveList = new ArrayList();
+	this._inputGeom = null;
+	this._distance = null;
+	this._curveBuilder = null;
+	this._curveList = new ArrayList();
 	let inputGeom = arguments[0], distance = arguments[1], curveBuilder = arguments[2];
-	this.inputGeom = inputGeom;
-	this.distance = distance;
-	this.curveBuilder = curveBuilder;
+	this._inputGeom = inputGeom;
+	this._distance = distance;
+	this._curveBuilder = curveBuilder;
 }
 extend(OffsetCurveSetBuilder.prototype, {
 	addPoint: function (p) {
-		if (this.distance <= 0.0) return null;
+		if (this._distance <= 0.0) return null;
 		var coord = p.getCoordinates();
-		var curve = this.curveBuilder.getLineCurve(coord, this.distance);
+		var curve = this._curveBuilder.getLineCurve(coord, this._distance);
 		this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
 	},
 	addPolygon: function (p) {
-		var offsetDistance = this.distance;
+		var offsetDistance = this._distance;
 		var offsetSide = Position.LEFT;
-		if (this.distance < 0.0) {
-			offsetDistance = -this.distance;
+		if (this._distance < 0.0) {
+			offsetDistance = -this._distance;
 			offsetSide = Position.RIGHT;
 		}
 		var shell = p.getExteriorRing();
 		var shellCoord = CoordinateArrays.removeRepeatedPoints(shell.getCoordinates());
-		if (this.distance < 0.0 && this.isErodedCompletely(shell, this.distance)) return null;
-		if (this.distance <= 0.0 && shellCoord.length < 3) return null;
+		if (this._distance < 0.0 && this.isErodedCompletely(shell, this._distance)) return null;
+		if (this._distance <= 0.0 && shellCoord.length < 3) return null;
 		this.addPolygonRing(shellCoord, offsetDistance, offsetSide, Location.EXTERIOR, Location.INTERIOR);
 		for (var i = 0; i < p.getNumInteriorRing(); i++) {
 			var hole = p.getInteriorRingN(i);
 			var holeCoord = CoordinateArrays.removeRepeatedPoints(hole.getCoordinates());
-			if (this.distance > 0.0 && this.isErodedCompletely(hole, -this.distance)) continue;
+			if (this._distance > 0.0 && this.isErodedCompletely(hole, -this._distance)) continue;
 			this.addPolygonRing(holeCoord, offsetDistance, Position.opposite(offsetSide), Location.INTERIOR, Location.EXTERIOR);
 		}
 	},
@@ -58,19 +58,19 @@ extend(OffsetCurveSetBuilder.prototype, {
 		return distToCentre < Math.abs(bufferDistance);
 	},
 	addLineString: function (line) {
-		if (this.distance <= 0.0 && !this.curveBuilder.getBufferParameters().isSingleSided()) return null;
+		if (this._distance <= 0.0 && !this._curveBuilder.getBufferParameters().isSingleSided()) return null;
 		var coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
-		var curve = this.curveBuilder.getLineCurve(coord, this.distance);
+		var curve = this._curveBuilder.getLineCurve(coord, this._distance);
 		this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
 	},
 	addCurve: function (coord, leftLoc, rightLoc) {
 		if (coord === null || coord.length < 2) return null;
 		var e = new NodedSegmentString(coord, new Label(0, Location.BOUNDARY, leftLoc, rightLoc));
-		this.curveList.add(e);
+		this._curveList.add(e);
 	},
 	getCurves: function () {
-		this.add(this.inputGeom);
-		return this.curveList;
+		this.add(this._inputGeom);
+		return this._curveList;
 	},
 	addPolygonRing: function (coord, offsetDistance, side, cwLeftLoc, cwRightLoc) {
 		if (offsetDistance === 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) return null;
@@ -81,7 +81,7 @@ extend(OffsetCurveSetBuilder.prototype, {
 			rightLoc = cwLeftLoc;
 			side = Position.opposite(side);
 		}
-		var curve = this.curveBuilder.getRingCurve(coord, side, offsetDistance);
+		var curve = this._curveBuilder.getRingCurve(coord, side, offsetDistance);
 		this.addCurve(curve, leftLoc, rightLoc);
 	},
 	add: function (g) {

@@ -16,20 +16,20 @@ import Assert from '../../util/Assert';
 import MultiLineString from '../../geom/MultiLineString';
 import GraphComponent from '../../planargraph/GraphComponent';
 export default function LineSequencer() {
-	this.graph = new LineMergeGraph();
-	this.factory = new GeometryFactory();
-	this.lineCount = 0;
-	this.isRun = false;
-	this.sequencedGeometry = null;
-	this._isSequenceable = false;
+	this._graph = new LineMergeGraph();
+	this._factory = new GeometryFactory();
+	this._lineCount = 0;
+	this._isRun = false;
+	this._sequencedGeometry = null;
+	this.__isSequenceable = false;
 }
 extend(LineSequencer.prototype, {
 	addLine: function (lineString) {
-		if (this.factory === null) {
-			this.factory = lineString.getFactory();
+		if (this._factory === null) {
+			this._factory = lineString.getFactory();
 		}
-		this.graph.addEdge(lineString);
-		this.lineCount++;
+		this._graph.addEdge(lineString);
+		this._lineCount++;
 	},
 	hasSequence: function (graph) {
 		var oddDegreeCount = 0;
@@ -40,21 +40,21 @@ extend(LineSequencer.prototype, {
 		return oddDegreeCount <= 2;
 	},
 	computeSequence: function () {
-		if (this.isRun) {
+		if (this._isRun) {
 			return null;
 		}
-		this.isRun = true;
+		this._isRun = true;
 		var sequences = this.findSequences();
 		if (sequences === null) return null;
-		this.sequencedGeometry = this.buildSequencedGeometry(sequences);
-		this._isSequenceable = true;
-		var finalLineCount = this.sequencedGeometry.getNumGeometries();
-		Assert.isTrue(this.lineCount === finalLineCount, "Lines were missing from result");
-		Assert.isTrue(this.sequencedGeometry instanceof LineString || this.sequencedGeometry instanceof MultiLineString, "Result is not lineal");
+		this._sequencedGeometry = this.buildSequencedGeometry(sequences);
+		this.__isSequenceable = true;
+		var finalLineCount = this._sequencedGeometry.getNumGeometries();
+		Assert.isTrue(this._lineCount === finalLineCount, "Lines were missing from result");
+		Assert.isTrue(this._sequencedGeometry instanceof LineString || this._sequencedGeometry instanceof MultiLineString, "Result is not lineal");
 	},
 	findSequences: function () {
 		var sequences = new ArrayList();
-		var csFinder = new ConnectedSubgraphFinder(this.graph);
+		var csFinder = new ConnectedSubgraphFinder(this._graph);
 		var subgraphs = csFinder.getConnectedSubgraphs();
 		for (var i = subgraphs.iterator(); i.hasNext(); ) {
 			var subgraph = i.next();
@@ -143,16 +143,16 @@ extend(LineSequencer.prototype, {
 				lines.add(lineToAdd);
 			}
 		}
-		if (lines.size() === 0) return this.factory.createMultiLineString(new Array(0).fill(null));
-		return this.factory.buildGeometry(lines);
+		if (lines.size() === 0) return this._factory.createMultiLineString(new Array(0).fill(null));
+		return this._factory.buildGeometry(lines);
 	},
 	getSequencedLineStrings: function () {
 		this.computeSequence();
-		return this.sequencedGeometry;
+		return this._sequencedGeometry;
 	},
 	isSequenceable: function () {
 		this.computeSequence();
-		return this._isSequenceable;
+		return this.__isSequenceable;
 	},
 	add: function () {
 		if (hasInterface(arguments[0], Collection)) {

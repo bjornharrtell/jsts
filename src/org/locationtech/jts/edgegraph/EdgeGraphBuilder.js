@@ -6,7 +6,7 @@ import EdgeGraph from './EdgeGraph';
 import extend from '../../../../extend';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 export default function EdgeGraphBuilder() {
-	this.graph = new EdgeGraph();
+	this._graph = new EdgeGraph();
 }
 extend(EdgeGraphBuilder.prototype, {
 	add: function () {
@@ -32,12 +32,12 @@ extend(EdgeGraphBuilder.prototype, {
 			let lineString = arguments[0];
 			var seq = lineString.getCoordinateSequence();
 			for (var i = 1; i < seq.size(); i++) {
-				this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
+				this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
 			}
 		}
 	},
 	getGraph: function () {
-		return this.graph;
+		return this._graph;
 	},
 	interfaces_: function () {
 		return [];

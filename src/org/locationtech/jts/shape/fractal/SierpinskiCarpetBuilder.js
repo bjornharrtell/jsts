@@ -6,7 +6,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function SierpinskiCarpetBuilder() {
-	this.coordList = new CoordinateList();
+	this._coordList = new CoordinateList();
 	let geomFactory = arguments[0];
 	GeometricShapeBuilder.call(this, geomFactory);
 }

@@ -12,44 +12,44 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Comparator from '../../../../../java/util/Comparator';
 import Assert from '../../util/Assert';
 export default function EdgeRing() {
-	this.factory = null;
-	this.deList = new ArrayList();
-	this.lowestEdge = null;
-	this.ring = null;
-	this.ringPts = null;
-	this.holes = null;
-	this.shell = null;
-	this._isHole = null;
-	this._isProcessed = false;
-	this._isIncludedSet = false;
-	this._isIncluded = false;
+	this._factory = null;
+	this._deList = new ArrayList();
+	this._lowestEdge = null;
+	this._ring = null;
+	this._ringPts = null;
+	this._holes = null;
+	this._shell = null;
+	this.__isHole = null;
+	this.__isProcessed = false;
+	this.__isIncludedSet = false;
+	this.__isIncluded = false;
 	let factory = arguments[0];
-	this.factory = factory;
+	this._factory = factory;
 }
 extend(EdgeRing.prototype, {
 	isIncluded: function () {
-		return this._isIncluded;
+		return this.__isIncluded;
 	},
 	getCoordinates: function () {
-		if (this.ringPts === null) {
+		if (this._ringPts === null) {
 			var coordList = new CoordinateList();
-			for (var i = this.deList.iterator(); i.hasNext(); ) {
+			for (var i = this._deList.iterator(); i.hasNext(); ) {
 				var de = i.next();
 				var edge = de.getEdge();
 				EdgeRing.addEdge(edge.getLine().getCoordinates(), de.getEdgeDirection(), coordList);
 			}
-			this.ringPts = coordList.toCoordinateArray();
+			this._ringPts = coordList.toCoordinateArray();
 		}
-		return this.ringPts;
+		return this._ringPts;
 	},
 	isIncludedSet: function () {
-		return this._isIncludedSet;
+		return this.__isIncludedSet;
 	},
 	isValid: function () {
 		this.getCoordinates();
-		if (this.ringPts.length <= 3) return false;
+		if (this._ringPts.length <= 3) return false;
 		this.getRing();
-		return IsValidOp.isValid(this.ring);
+		return IsValidOp.isValid(this._ring);
 	},
 	build: function (startDE) {
 		var de = startDE;
@@ -62,47 +62,47 @@ extend(EdgeRing.prototype, {
 		} while (de !== startDE);
 	},
 	isOuterHole: function () {
-		if (!this._isHole) return false;
+		if (!this.__isHole) return false;
 		return !this.hasShell();
 	},
 	getPolygon: function () {
 		var holeLR = null;
-		if (this.holes !== null) {
-			holeLR = new Array(this.holes.size()).fill(null);
-			for (var i = 0; i < this.holes.size(); i++) {
-				holeLR[i] = this.holes.get(i);
+		if (this._holes !== null) {
+			holeLR = new Array(this._holes.size()).fill(null);
+			for (var i = 0; i < this._holes.size(); i++) {
+				holeLR[i] = this._holes.get(i);
 			}
 		}
-		var poly = this.factory.createPolygon(this.ring, holeLR);
+		var poly = this._factory.createPolygon(this._ring, holeLR);
 		return poly;
 	},
 	isHole: function () {
-		return this._isHole;
+		return this.__isHole;
 	},
 	isProcessed: function () {
-		return this._isProcessed;
+		return this.__isProcessed;
 	},
 	addHole: function () {
 		if (arguments[0] instanceof LinearRing) {
 			let hole = arguments[0];
-			if (this.holes === null) this.holes = new ArrayList();
-			this.holes.add(hole);
+			if (this._holes === null) this._holes = new ArrayList();
+			this._holes.add(hole);
 		} else if (arguments[0] instanceof EdgeRing) {
 			let holeER = arguments[0];
 			holeER.setShell(this);
 			var hole = holeER.getRing();
-			if (this.holes === null) this.holes = new ArrayList();
-			this.holes.add(hole);
+			if (this._holes === null) this._holes = new ArrayList();
+			this._holes.add(hole);
 		}
 	},
 	setIncluded: function (isIncluded) {
-		this._isIncluded = isIncluded;
-		this._isIncludedSet = true;
+		this.__isIncluded = isIncluded;
+		this.__isIncludedSet = true;
 	},
 	getOuterHole: function () {
 		if (this.isHole()) return null;
-		for (var i = 0; i < this.deList.size(); i++) {
-			var de = this.deList.get(i);
+		for (var i = 0; i < this._deList.size(); i++) {
+			var de = this._deList.get(i);
 			var adjRing = de.getSym().getRing();
 			if (adjRing.isOuterHole()) return adjRing;
 		}
@@ -110,45 +110,45 @@ extend(EdgeRing.prototype, {
 	},
 	computeHole: function () {
 		var ring = this.getRing();
-		this._isHole = CGAlgorithms.isCCW(ring.getCoordinates());
+		this.__isHole = CGAlgorithms.isCCW(ring.getCoordinates());
 	},
 	hasShell: function () {
-		return this.shell !== null;
+		return this._shell !== null;
 	},
 	isOuterShell: function () {
 		return this.getOuterHole() !== null;
 	},
 	getLineString: function () {
 		this.getCoordinates();
-		return this.factory.createLineString(this.ringPts);
+		return this._factory.createLineString(this._ringPts);
 	},
 	toString: function () {
 		return WKTWriter.toLineString(new CoordinateArraySequence(this.getCoordinates()));
 	},
 	getShell: function () {
-		if (this.isHole()) return this.shell;
+		if (this.isHole()) return this._shell;
 		return this;
 	},
 	add: function (de) {
-		this.deList.add(de);
+		this._deList.add(de);
 	},
 	getRing: function () {
-		if (this.ring !== null) return this.ring;
+		if (this._ring !== null) return this._ring;
 		this.getCoordinates();
-		if (this.ringPts.length < 3) System.out.println(this.ringPts);
+		if (this._ringPts.length < 3) System.out.println(this._ringPts);
 		try {
-			this.ring = this.factory.createLinearRing(this.ringPts);
+			this._ring = this._factory.createLinearRing(this._ringPts);
 		} catch (ex) {
 			if (ex instanceof Exception) {
-				System.out.println(this.ringPts);
+				System.out.println(this._ringPts);
 			} else throw ex;
 		} finally {}
-		return this.ring;
+		return this._ring;
 	},
 	updateIncluded: function () {
 		if (this.isHole()) return null;
-		for (var i = 0; i < this.deList.size(); i++) {
-			var de = this.deList.get(i);
+		for (var i = 0; i < this._deList.size(); i++) {
+			var de = this._deList.get(i);
 			var adjShell = de.getSym().getRing().getShell();
 			if (adjShell !== null && adjShell.isIncludedSet()) {
 				this.setIncluded(!adjShell.isIncluded());
@@ -157,10 +157,10 @@ extend(EdgeRing.prototype, {
 		}
 	},
 	setShell: function (shell) {
-		this.shell = shell;
+		this._shell = shell;
 	},
 	setProcessed: function (isProcessed) {
-		this._isProcessed = isProcessed;
+		this.__isProcessed = isProcessed;
 	},
 	interfaces_: function () {
 		return [];

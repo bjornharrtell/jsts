@@ -6,45 +6,45 @@ import Angle from './Angle';
 import Assert from '../util/Assert';
 import Triangle from '../geom/Triangle';
 export default function MinimumBoundingCircle() {
-	this.input = null;
-	this.extremalPts = null;
-	this.centre = null;
-	this.radius = 0.0;
+	this._input = null;
+	this._extremalPts = null;
+	this._centre = null;
+	this._radius = 0.0;
 	let geom = arguments[0];
-	this.input = geom;
+	this._input = geom;
 }
 extend(MinimumBoundingCircle.prototype, {
 	getRadius: function () {
 		this.compute();
-		return this.radius;
+		return this._radius;
 	},
 	getDiameter: function () {
 		this.compute();
-		switch (this.extremalPts.length) {
+		switch (this._extremalPts.length) {
 			case 0:
-				return this.input.getFactory().createLineString();
+				return this._input.getFactory().createLineString();
 			case 1:
-				return this.input.getFactory().createPoint(this.centre);
+				return this._input.getFactory().createPoint(this._centre);
 		}
-		var p0 = this.extremalPts[0];
-		var p1 = this.extremalPts[1];
-		return this.input.getFactory().createLineString([p0, p1]);
+		var p0 = this._extremalPts[0];
+		var p1 = this._extremalPts[1];
+		return this._input.getFactory().createLineString([p0, p1]);
 	},
 	getExtremalPoints: function () {
 		this.compute();
-		return this.extremalPts;
+		return this._extremalPts;
 	},
 	computeCirclePoints: function () {
-		if (this.input.isEmpty()) {
-			this.extremalPts = new Array(0).fill(null);
+		if (this._input.isEmpty()) {
+			this._extremalPts = new Array(0).fill(null);
 			return null;
 		}
-		if (this.input.getNumPoints() === 1) {
-			var pts = this.input.getCoordinates();
-			this.extremalPts = [new Coordinate(pts[0])];
+		if (this._input.getNumPoints() === 1) {
+			var pts = this._input.getCoordinates();
+			this._extremalPts = [new Coordinate(pts[0])];
 			return null;
 		}
-		var convexHull = this.input.convexHull();
+		var convexHull = this._input.convexHull();
 		var hullPts = convexHull.getCoordinates();
 		var pts = hullPts;
 		if (hullPts[0].equals2D(hullPts[hullPts.length - 1])) {
@@ -52,7 +52,7 @@ extend(MinimumBoundingCircle.prototype, {
 			CoordinateArrays.copyDeep(hullPts, 0, pts, 0, hullPts.length - 1);
 		}
 		if (pts.length <= 2) {
-			this.extremalPts = CoordinateArrays.copyDeep(pts);
+			this._extremalPts = CoordinateArrays.copyDeep(pts);
 			return null;
 		}
 		var P = MinimumBoundingCircle.lowestPoint(pts);
@@ -60,7 +60,7 @@ extend(MinimumBoundingCircle.prototype, {
 		for (var i = 0; i < pts.length; i++) {
 			var R = MinimumBoundingCircle.pointWithMinAngleWithSegment(pts, P, Q);
 			if (Angle.isObtuse(P, R, Q)) {
-				this.extremalPts = [new Coordinate(P), new Coordinate(Q)];
+				this._extremalPts = [new Coordinate(P), new Coordinate(Q)];
 				return null;
 			}
 			if (Angle.isObtuse(R, P, Q)) {
@@ -71,53 +71,53 @@ extend(MinimumBoundingCircle.prototype, {
 				Q = R;
 				continue;
 			}
-			this.extremalPts = [new Coordinate(P), new Coordinate(Q), new Coordinate(R)];
+			this._extremalPts = [new Coordinate(P), new Coordinate(Q), new Coordinate(R)];
 			return null;
 		}
 		Assert.shouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");
 	},
 	compute: function () {
-		if (this.extremalPts !== null) return null;
+		if (this._extremalPts !== null) return null;
 		this.computeCirclePoints();
 		this.computeCentre();
-		if (this.centre !== null) this.radius = this.centre.distance(this.extremalPts[0]);
+		if (this._centre !== null) this._radius = this._centre.distance(this._extremalPts[0]);
 	},
 	getFarthestPoints: function () {
 		this.compute();
-		switch (this.extremalPts.length) {
+		switch (this._extremalPts.length) {
 			case 0:
-				return this.input.getFactory().createLineString();
+				return this._input.getFactory().createLineString();
 			case 1:
-				return this.input.getFactory().createPoint(this.centre);
+				return this._input.getFactory().createPoint(this._centre);
 		}
-		var p0 = this.extremalPts[0];
-		var p1 = this.extremalPts[this.extremalPts.length - 1];
-		return this.input.getFactory().createLineString([p0, p1]);
+		var p0 = this._extremalPts[0];
+		var p1 = this._extremalPts[this._extremalPts.length - 1];
+		return this._input.getFactory().createLineString([p0, p1]);
 	},
 	getCircle: function () {
 		this.compute();
-		if (this.centre === null) return this.input.getFactory().createPolygon();
-		var centrePoint = this.input.getFactory().createPoint(this.centre);
-		if (this.radius === 0.0) return centrePoint;
-		return centrePoint.buffer(this.radius);
+		if (this._centre === null) return this._input.getFactory().createPolygon();
+		var centrePoint = this._input.getFactory().createPoint(this._centre);
+		if (this._radius === 0.0) return centrePoint;
+		return centrePoint.buffer(this._radius);
 	},
 	getCentre: function () {
 		this.compute();
-		return this.centre;
+		return this._centre;
 	},
 	computeCentre: function () {
-		switch (this.extremalPts.length) {
+		switch (this._extremalPts.length) {
 			case 0:
-				this.centre = null;
+				this._centre = null;
 				break;
 			case 1:
-				this.centre = this.extremalPts[0];
+				this._centre = this._extremalPts[0];
 				break;
 			case 2:
-				this.centre = new Coordinate((this.extremalPts[0].x + this.extremalPts[1].x) / 2.0, (this.extremalPts[0].y + this.extremalPts[1].y) / 2.0);
+				this._centre = new Coordinate((this._extremalPts[0].x + this._extremalPts[1].x) / 2.0, (this._extremalPts[0].y + this._extremalPts[1].y) / 2.0);
 				break;
 			case 3:
-				this.centre = Triangle.circumcentre(this.extremalPts[0], this.extremalPts[1], this.extremalPts[2]);
+				this._centre = Triangle.circumcentre(this._extremalPts[0], this._extremalPts[1], this._extremalPts[2]);
 				break;
 		}
 	},

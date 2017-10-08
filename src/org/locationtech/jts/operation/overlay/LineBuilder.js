@@ -3,33 +3,33 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import OverlayOp from './OverlayOp';
 export default function LineBuilder() {
-	this.op = null;
-	this.geometryFactory = null;
-	this.ptLocator = null;
-	this.lineEdgesList = new ArrayList();
-	this.resultLineList = new ArrayList();
+	this._op = null;
+	this._geometryFactory = null;
+	this._ptLocator = null;
+	this._lineEdgesList = new ArrayList();
+	this._resultLineList = new ArrayList();
 	let op = arguments[0], geometryFactory = arguments[1], ptLocator = arguments[2];
-	this.op = op;
-	this.geometryFactory = geometryFactory;
-	this.ptLocator = ptLocator;
+	this._op = op;
+	this._geometryFactory = geometryFactory;
+	this._ptLocator = ptLocator;
 }
 extend(LineBuilder.prototype, {
 	collectLines: function (opCode) {
-		for (var it = this.op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
+		for (var it = this._op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
 			var de = it.next();
-			this.collectLineEdge(de, opCode, this.lineEdgesList);
-			this.collectBoundaryTouchEdge(de, opCode, this.lineEdgesList);
+			this.collectLineEdge(de, opCode, this._lineEdgesList);
+			this.collectBoundaryTouchEdge(de, opCode, this._lineEdgesList);
 		}
 	},
 	labelIsolatedLine: function (e, targetIndex) {
-		var loc = this.ptLocator.locate(e.getCoordinate(), this.op.getArgGeometry(targetIndex));
+		var loc = this._ptLocator.locate(e.getCoordinate(), this._op.getArgGeometry(targetIndex));
 		e.getLabel().setLocation(targetIndex, loc);
 	},
 	build: function (opCode) {
 		this.findCoveredLineEdges();
 		this.collectLines(opCode);
 		this.buildLines(opCode);
-		return this.resultLineList;
+		return this._resultLineList;
 	},
 	collectLineEdge: function (de, opCode, edges) {
 		var label = de.getLabel();
@@ -42,15 +42,15 @@ extend(LineBuilder.prototype, {
 		}
 	},
 	findCoveredLineEdges: function () {
-		for (var nodeit = this.op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
+		for (var nodeit = this._op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
 			var node = nodeit.next();
 			node.getEdges().findCoveredLineEdges();
 		}
-		for (var it = this.op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
+		for (var it = this._op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
 			var de = it.next();
 			var e = de.getEdge();
 			if (de.isLineEdge() && !e.isCoveredSet()) {
-				var isCovered = this.op.isCoveredByA(de.getCoordinate());
+				var isCovered = this._op.isCoveredByA(de.getCoordinate());
 				e.setCovered(isCovered);
 			}
 		}
@@ -65,11 +65,11 @@ extend(LineBuilder.prototype, {
 		}
 	},
 	buildLines: function (opCode) {
-		for (var it = this.lineEdgesList.iterator(); it.hasNext(); ) {
+		for (var it = this._lineEdgesList.iterator(); it.hasNext(); ) {
 			var e = it.next();
 			var label = e.getLabel();
-			var line = this.geometryFactory.createLineString(e.getCoordinates());
-			this.resultLineList.add(line);
+			var line = this._geometryFactory.createLineString(e.getCoordinates());
+			this._resultLineList.add(line);
 			e.setInResult(true);
 		}
 	},

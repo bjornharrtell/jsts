@@ -8,19 +8,19 @@ import System from '../../../../java/lang/System';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function ScaledNoder() {
-	this.noder = null;
-	this.scaleFactor = null;
-	this.offsetX = null;
-	this.offsetY = null;
-	this.isScaled = false;
+	this._noder = null;
+	this._scaleFactor = null;
+	this._offsetX = null;
+	this._offsetY = null;
+	this._isScaled = false;
 	if (arguments.length === 2) {
 		let noder = arguments[0], scaleFactor = arguments[1];
 		ScaledNoder.call(this, noder, scaleFactor, 0, 0);
 	} else if (arguments.length === 4) {
 		let noder = arguments[0], scaleFactor = arguments[1], offsetX = arguments[2], offsetY = arguments[3];
-		this.noder = noder;
-		this.scaleFactor = scaleFactor;
-		this.isScaled = !this.isIntegerPrecision();
+		this._noder = noder;
+		this._scaleFactor = scaleFactor;
+		this._isScaled = !this.isIntegerPrecision();
 	}
 }
 extend(ScaledNoder.prototype, {
@@ -40,8 +40,8 @@ extend(ScaledNoder.prototype, {
 				p1 = new Coordinate(pts[1]);
 			}
 			for (var i = 0; i < pts.length; i++) {
-				pts[i].x = pts[i].x / this.scaleFactor + this.offsetX;
-				pts[i].y = pts[i].y / this.scaleFactor + this.offsetY;
+				pts[i].x = pts[i].x / this._scaleFactor + this._offsetX;
+				pts[i].y = pts[i].y / this._scaleFactor + this._offsetY;
 			}
 			if (pts.length === 2 && pts[0].equals2D(pts[1])) {
 				System.out.println(pts);
@@ -61,24 +61,24 @@ extend(ScaledNoder.prototype, {
 			let pts = arguments[0];
 			var roundPts = new Array(pts.length).fill(null);
 			for (var i = 0; i < pts.length; i++) {
-				roundPts[i] = new Coordinate(Math.round((pts[i].x - this.offsetX) * this.scaleFactor), Math.round((pts[i].y - this.offsetY) * this.scaleFactor), pts[i].z);
+				roundPts[i] = new Coordinate(Math.round((pts[i].x - this._offsetX) * this._scaleFactor), Math.round((pts[i].y - this._offsetY) * this._scaleFactor), pts[i].z);
 			}
 			var roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts);
 			return roundPtsNoDup;
 		}
 	},
 	isIntegerPrecision: function () {
-		return this.scaleFactor === 1.0;
+		return this._scaleFactor === 1.0;
 	},
 	getNodedSubstrings: function () {
-		var splitSS = this.noder.getNodedSubstrings();
-		if (this.isScaled) this.rescale(splitSS);
+		var splitSS = this._noder.getNodedSubstrings();
+		if (this._isScaled) this.rescale(splitSS);
 		return splitSS;
 	},
 	computeNodes: function (inputSegStrings) {
 		var intSegStrings = inputSegStrings;
-		if (this.isScaled) intSegStrings = this.scale(inputSegStrings);
-		this.noder.computeNodes(intSegStrings);
+		if (this._isScaled) intSegStrings = this.scale(inputSegStrings);
+		this._noder.computeNodes(intSegStrings);
 	},
 	interfaces_: function () {
 		return [Noder];

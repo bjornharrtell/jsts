@@ -3,10 +3,10 @@ import extend from '../../../../extend';
 import Comparable from '../../../../java/lang/Comparable';
 import Serializable from '../../../../java/io/Serializable';
 export default function Envelope() {
-	this.minx = null;
-	this.maxx = null;
-	this.miny = null;
-	this.maxy = null;
+	this._minx = null;
+	this._maxx = null;
+	this._miny = null;
+	this._maxy = null;
 	if (arguments.length === 0) {
 		this.init();
 	} else if (arguments.length === 1) {
@@ -37,21 +37,21 @@ extend(Envelope.prototype, {
 		if (this.isNull()) {
 			return otherEnvelope.isNull();
 		}
-		return this.maxx === otherEnvelope.getMaxX() && this.maxy === otherEnvelope.getMaxY() && this.minx === otherEnvelope.getMinX() && this.miny === otherEnvelope.getMinY();
+		return this._maxx === otherEnvelope.getMaxX() && this._maxy === otherEnvelope.getMaxY() && this._minx === otherEnvelope.getMinX() && this._miny === otherEnvelope.getMinY();
 	},
 	intersection: function (env) {
 		if (this.isNull() || env.isNull() || !this.intersects(env)) return new Envelope();
-		var intMinX = this.minx > env.minx ? this.minx : env.minx;
-		var intMinY = this.miny > env.miny ? this.miny : env.miny;
-		var intMaxX = this.maxx < env.maxx ? this.maxx : env.maxx;
-		var intMaxY = this.maxy < env.maxy ? this.maxy : env.maxy;
+		var intMinX = this._minx > env._minx ? this._minx : env._minx;
+		var intMinY = this._miny > env._miny ? this._miny : env._miny;
+		var intMaxX = this._maxx < env._maxx ? this._maxx : env._maxx;
+		var intMaxY = this._maxy < env._maxy ? this._maxy : env._maxy;
 		return new Envelope(intMinX, intMaxX, intMinY, intMaxY);
 	},
 	isNull: function () {
-		return this.maxx < this.minx;
+		return this._maxx < this._minx;
 	},
 	getMaxX: function () {
-		return this.maxx;
+		return this._maxx;
 	},
 	covers: function () {
 		if (arguments.length === 1) {
@@ -63,12 +63,12 @@ extend(Envelope.prototype, {
 				if (this.isNull() || other.isNull()) {
 					return false;
 				}
-				return other.getMinX() >= this.minx && other.getMaxX() <= this.maxx && other.getMinY() >= this.miny && other.getMaxY() <= this.maxy;
+				return other.getMinX() >= this._minx && other.getMaxX() <= this._maxx && other.getMinY() >= this._miny && other.getMaxY() <= this._maxy;
 			}
 		} else if (arguments.length === 2) {
 			let x = arguments[0], y = arguments[1];
 			if (this.isNull()) return false;
-			return x >= this.minx && x <= this.maxx && y >= this.miny && y <= this.maxy;
+			return x >= this._minx && x <= this._maxx && y >= this._miny && y <= this._maxy;
 		}
 	},
 	intersects: function () {
@@ -78,7 +78,7 @@ extend(Envelope.prototype, {
 				if (this.isNull() || other.isNull()) {
 					return false;
 				}
-				return !(other.minx > this.maxx || other.maxx < this.minx || other.miny > this.maxy || other.maxy < this.miny);
+				return !(other._minx > this._maxx || other._maxx < this._minx || other._miny > this._maxy || other._maxy < this._miny);
 			} else if (arguments[0] instanceof Coordinate) {
 				let p = arguments[0];
 				return this.intersects(p.x, p.y);
@@ -86,14 +86,14 @@ extend(Envelope.prototype, {
 		} else if (arguments.length === 2) {
 			let x = arguments[0], y = arguments[1];
 			if (this.isNull()) return false;
-			return !(x > this.maxx || x < this.minx || y > this.maxy || y < this.miny);
+			return !(x > this._maxx || x < this._minx || y > this._maxy || y < this._miny);
 		}
 	},
 	getMinY: function () {
-		return this.miny;
+		return this._miny;
 	},
 	getMinX: function () {
-		return this.minx;
+		return this._minx;
 	},
 	expandToInclude: function () {
 		if (arguments.length === 1) {
@@ -106,44 +106,44 @@ extend(Envelope.prototype, {
 					return null;
 				}
 				if (this.isNull()) {
-					this.minx = other.getMinX();
-					this.maxx = other.getMaxX();
-					this.miny = other.getMinY();
-					this.maxy = other.getMaxY();
+					this._minx = other.getMinX();
+					this._maxx = other.getMaxX();
+					this._miny = other.getMinY();
+					this._maxy = other.getMaxY();
 				} else {
-					if (other.minx < this.minx) {
-						this.minx = other.minx;
+					if (other._minx < this._minx) {
+						this._minx = other._minx;
 					}
-					if (other.maxx > this.maxx) {
-						this.maxx = other.maxx;
+					if (other._maxx > this._maxx) {
+						this._maxx = other._maxx;
 					}
-					if (other.miny < this.miny) {
-						this.miny = other.miny;
+					if (other._miny < this._miny) {
+						this._miny = other._miny;
 					}
-					if (other.maxy > this.maxy) {
-						this.maxy = other.maxy;
+					if (other._maxy > this._maxy) {
+						this._maxy = other._maxy;
 					}
 				}
 			}
 		} else if (arguments.length === 2) {
 			let x = arguments[0], y = arguments[1];
 			if (this.isNull()) {
-				this.minx = x;
-				this.maxx = x;
-				this.miny = y;
-				this.maxy = y;
+				this._minx = x;
+				this._maxx = x;
+				this._miny = y;
+				this._maxy = y;
 			} else {
-				if (x < this.minx) {
-					this.minx = x;
+				if (x < this._minx) {
+					this._minx = x;
 				}
-				if (x > this.maxx) {
-					this.maxx = x;
+				if (x > this._maxx) {
+					this._maxx = x;
 				}
-				if (y < this.miny) {
-					this.miny = y;
+				if (y < this._miny) {
+					this._miny = y;
 				}
-				if (y > this.maxy) {
-					this.maxy = y;
+				if (y > this._maxy) {
+					this._maxy = y;
 				}
 			}
 		}
@@ -159,7 +159,7 @@ extend(Envelope.prototype, {
 		if (this.isNull()) {
 			return 0;
 		}
-		return this.maxx - this.minx;
+		return this._maxx - this._minx;
 	},
 	compareTo: function (o) {
 		var env = o;
@@ -169,14 +169,14 @@ extend(Envelope.prototype, {
 		} else {
 			if (env.isNull()) return 1;
 		}
-		if (this.minx < env.minx) return -1;
-		if (this.minx > env.minx) return 1;
-		if (this.miny < env.miny) return -1;
-		if (this.miny > env.miny) return 1;
-		if (this.maxx < env.maxx) return -1;
-		if (this.maxx > env.maxx) return 1;
-		if (this.maxy < env.maxy) return -1;
-		if (this.maxy > env.maxy) return 1;
+		if (this._minx < env._minx) return -1;
+		if (this._minx > env._minx) return 1;
+		if (this._miny < env._miny) return -1;
+		if (this._miny > env._miny) return 1;
+		if (this._maxx < env._maxx) return -1;
+		if (this._maxx > env._maxx) return 1;
+		if (this._maxy < env._maxy) return -1;
+		if (this._maxy > env._maxy) return 1;
 		return 0;
 	},
 	translate: function (transX, transY) {
@@ -186,19 +186,19 @@ extend(Envelope.prototype, {
 		this.init(this.getMinX() + transX, this.getMaxX() + transX, this.getMinY() + transY, this.getMaxY() + transY);
 	},
 	toString: function () {
-		return "Env[" + this.minx + " : " + this.maxx + ", " + this.miny + " : " + this.maxy + "]";
+		return "Env[" + this._minx + " : " + this._maxx + ", " + this._miny + " : " + this._maxy + "]";
 	},
 	setToNull: function () {
-		this.minx = 0;
-		this.maxx = -1;
-		this.miny = 0;
-		this.maxy = -1;
+		this._minx = 0;
+		this._maxx = -1;
+		this._miny = 0;
+		this._maxy = -1;
 	},
 	getHeight: function () {
 		if (this.isNull()) {
 			return 0;
 		}
-		return this.maxy - this.miny;
+		return this._maxy - this._miny;
 	},
 	maxExtent: function () {
 		if (this.isNull()) return 0.0;
@@ -214,11 +214,11 @@ extend(Envelope.prototype, {
 		} else if (arguments.length === 2) {
 			let deltaX = arguments[0], deltaY = arguments[1];
 			if (this.isNull()) return null;
-			this.minx -= deltaX;
-			this.maxx += deltaX;
-			this.miny -= deltaY;
-			this.maxy += deltaY;
-			if (this.minx > this.maxx || this.miny > this.maxy) this.setToNull();
+			this._minx -= deltaX;
+			this._maxx += deltaX;
+			this._miny -= deltaY;
+			this._maxy += deltaY;
+			if (this._minx > this._maxx || this._miny > this._maxy) this.setToNull();
 		}
 	},
 	contains: function () {
@@ -248,10 +248,10 @@ extend(Envelope.prototype, {
 				this.init(p.x, p.x, p.y, p.y);
 			} else if (arguments[0] instanceof Envelope) {
 				let env = arguments[0];
-				this.minx = env.minx;
-				this.maxx = env.maxx;
-				this.miny = env.miny;
-				this.maxy = env.maxy;
+				this._minx = env._minx;
+				this._maxx = env._maxx;
+				this._miny = env._miny;
+				this._maxy = env._maxy;
 			}
 		} else if (arguments.length === 2) {
 			let p1 = arguments[0], p2 = arguments[1];
@@ -259,40 +259,40 @@ extend(Envelope.prototype, {
 		} else if (arguments.length === 4) {
 			let x1 = arguments[0], x2 = arguments[1], y1 = arguments[2], y2 = arguments[3];
 			if (x1 < x2) {
-				this.minx = x1;
-				this.maxx = x2;
+				this._minx = x1;
+				this._maxx = x2;
 			} else {
-				this.minx = x2;
-				this.maxx = x1;
+				this._minx = x2;
+				this._maxx = x1;
 			}
 			if (y1 < y2) {
-				this.miny = y1;
-				this.maxy = y2;
+				this._miny = y1;
+				this._maxy = y2;
 			} else {
-				this.miny = y2;
-				this.maxy = y1;
+				this._miny = y2;
+				this._maxy = y1;
 			}
 		}
 	},
 	getMaxY: function () {
-		return this.maxy;
+		return this._maxy;
 	},
 	distance: function (env) {
 		if (this.intersects(env)) return 0;
 		var dx = 0.0;
-		if (this.maxx < env.minx) dx = env.minx - this.maxx; else if (this.minx > env.maxx) dx = this.minx - env.maxx;
+		if (this._maxx < env._minx) dx = env._minx - this._maxx; else if (this._minx > env._maxx) dx = this._minx - env._maxx;
 		var dy = 0.0;
-		if (this.maxy < env.miny) dy = env.miny - this.maxy; else if (this.miny > env.maxy) dy = this.miny - env.maxy;
+		if (this._maxy < env._miny) dy = env._miny - this._maxy; else if (this._miny > env._maxy) dy = this._miny - env._maxy;
 		if (dx === 0.0) return dy;
 		if (dy === 0.0) return dx;
 		return Math.sqrt(dx * dx + dy * dy);
 	},
 	hashCode: function () {
 		var result = 17;
-		result = 37 * result + Coordinate.hashCode(this.minx);
-		result = 37 * result + Coordinate.hashCode(this.maxx);
-		result = 37 * result + Coordinate.hashCode(this.miny);
-		result = 37 * result + Coordinate.hashCode(this.maxy);
+		result = 37 * result + Coordinate.hashCode(this._minx);
+		result = 37 * result + Coordinate.hashCode(this._maxx);
+		result = 37 * result + Coordinate.hashCode(this._miny);
+		result = 37 * result + Coordinate.hashCode(this._maxy);
 		return result;
 	},
 	interfaces_: function () {

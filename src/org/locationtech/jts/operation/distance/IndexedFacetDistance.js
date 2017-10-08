@@ -2,14 +2,14 @@ import extend from '../../../../../extend';
 import FacetSequenceTreeBuilder from './FacetSequenceTreeBuilder';
 import ItemDistance from '../../index/strtree/ItemDistance';
 export default function IndexedFacetDistance() {
-	this.cachedTree = null;
+	this._cachedTree = null;
 	let g1 = arguments[0];
-	this.cachedTree = FacetSequenceTreeBuilder.build(g1);
+	this._cachedTree = FacetSequenceTreeBuilder.build(g1);
 }
 extend(IndexedFacetDistance.prototype, {
 	getDistance: function (g) {
 		var tree2 = FacetSequenceTreeBuilder.build(g);
-		var obj = this.cachedTree.nearestNeighbour(tree2, new FacetSequenceDistance());
+		var obj = this._cachedTree.nearestNeighbour(tree2, new FacetSequenceDistance());
 		return IndexedFacetDistance.facetDistance(obj);
 	},
 	interfaces_: function () {

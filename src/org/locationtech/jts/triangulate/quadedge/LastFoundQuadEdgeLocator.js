@@ -1,26 +1,26 @@
 import extend from '../../../../../extend';
 import QuadEdgeLocator from './QuadEdgeLocator';
 export default function LastFoundQuadEdgeLocator() {
-	this.subdiv = null;
-	this.lastEdge = null;
+	this._subdiv = null;
+	this._lastEdge = null;
 	let subdiv = arguments[0];
-	this.subdiv = subdiv;
+	this._subdiv = subdiv;
 	this.init();
 }
 extend(LastFoundQuadEdgeLocator.prototype, {
 	init: function () {
-		this.lastEdge = this.findEdge();
+		this._lastEdge = this.findEdge();
 	},
 	locate: function (v) {
-		if (!this.lastEdge.isLive()) {
+		if (!this._lastEdge.isLive()) {
 			this.init();
 		}
-		var e = this.subdiv.locateFromEdge(v, this.lastEdge);
-		this.lastEdge = e;
+		var e = this._subdiv.locateFromEdge(v, this._lastEdge);
+		this._lastEdge = e;
 		return e;
 	},
 	findEdge: function () {
-		var edges = this.subdiv.getEdges();
+		var edges = this._subdiv.getEdges();
 		return edges.iterator().next();
 	},
 	interfaces_: function () {

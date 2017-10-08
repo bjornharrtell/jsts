@@ -4,12 +4,12 @@ import Collections from '../../../../../java/util/Collections';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function SweepLineIndex() {
 	this.events = new ArrayList();
-	this.indexBuilt = null;
-	this.nOverlaps = null;
+	this._indexBuilt = null;
+	this._nOverlaps = null;
 }
 extend(SweepLineIndex.prototype, {
 	computeOverlaps: function (action) {
-		this.nOverlaps = 0;
+		this._nOverlaps = 0;
 		this.buildIndex();
 		for (var i = 0; i < this.events.size(); i++) {
 			var ev = this.events.get(i);
@@ -24,12 +24,12 @@ extend(SweepLineIndex.prototype, {
 			if (ev.isInsert()) {
 				var s1 = ev.getInterval();
 				action.overlap(s0, s1);
-				this.nOverlaps++;
+				this._nOverlaps++;
 			}
 		}
 	},
 	buildIndex: function () {
-		if (this.indexBuilt) return null;
+		if (this._indexBuilt) return null;
 		Collections.sort(this.events);
 		for (var i = 0; i < this.events.size(); i++) {
 			var ev = this.events.get(i);
@@ -37,7 +37,7 @@ extend(SweepLineIndex.prototype, {
 				ev.getInsertEvent().setDeleteEventIndex(i);
 			}
 		}
-		this.indexBuilt = true;
+		this._indexBuilt = true;
 	},
 	add: function (sweepInt) {
 		var insertEvent = new SweepLineEvent(sweepInt.getMin(), null, sweepInt);

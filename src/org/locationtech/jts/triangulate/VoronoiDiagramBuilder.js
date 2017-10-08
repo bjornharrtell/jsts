@@ -9,48 +9,48 @@ import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function VoronoiDiagramBuilder() {
-	this.siteCoords = null;
-	this.tolerance = 0.0;
-	this.subdiv = null;
-	this.clipEnv = null;
-	this.diagramEnv = null;
+	this._siteCoords = null;
+	this._tolerance = 0.0;
+	this._subdiv = null;
+	this._clipEnv = null;
+	this._diagramEnv = null;
 }
 extend(VoronoiDiagramBuilder.prototype, {
 	create: function () {
-		if (this.subdiv !== null) return null;
-		var siteEnv = DelaunayTriangulationBuilder.envelope(this.siteCoords);
-		this.diagramEnv = siteEnv;
-		var expandBy = Math.max(this.diagramEnv.getWidth(), this.diagramEnv.getHeight());
-		this.diagramEnv.expandBy(expandBy);
-		if (this.clipEnv !== null) this.diagramEnv.expandToInclude(this.clipEnv);
-		var vertices = DelaunayTriangulationBuilder.toVertices(this.siteCoords);
-		this.subdiv = new QuadEdgeSubdivision(siteEnv, this.tolerance);
-		var triangulator = new IncrementalDelaunayTriangulator(this.subdiv);
+		if (this._subdiv !== null) return null;
+		var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords);
+		this._diagramEnv = siteEnv;
+		var expandBy = Math.max(this._diagramEnv.getWidth(), this._diagramEnv.getHeight());
+		this._diagramEnv.expandBy(expandBy);
+		if (this._clipEnv !== null) this._diagramEnv.expandToInclude(this._clipEnv);
+		var vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords);
+		this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance);
+		var triangulator = new IncrementalDelaunayTriangulator(this._subdiv);
 		triangulator.insertSites(vertices);
 	},
 	getDiagram: function (geomFact) {
 		this.create();
-		var polys = this.subdiv.getVoronoiDiagram(geomFact);
-		return VoronoiDiagramBuilder.clipGeometryCollection(polys, this.diagramEnv);
+		var polys = this._subdiv.getVoronoiDiagram(geomFact);
+		return VoronoiDiagramBuilder.clipGeometryCollection(polys, this._diagramEnv);
 	},
 	setTolerance: function (tolerance) {
-		this.tolerance = tolerance;
+		this._tolerance = tolerance;
 	},
 	setSites: function () {
 		if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
-			this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+			this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
 		} else if (hasInterface(arguments[0], Collection)) {
 			let coords = arguments[0];
-			this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
+			this._siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
 		}
 	},
 	setClipEnvelope: function (clipEnv) {
-		this.clipEnv = clipEnv;
+		this._clipEnv = clipEnv;
 	},
 	getSubdivision: function () {
 		this.create();
-		return this.subdiv;
+		return this._subdiv;
 	},
 	interfaces_: function () {
 		return [];

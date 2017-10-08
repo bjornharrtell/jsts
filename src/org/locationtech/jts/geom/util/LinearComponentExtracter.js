@@ -7,28 +7,28 @@ import extend from '../../../../../extend';
 import GeometryComponentFilter from '../GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function LinearComponentExtracter() {
-	this.lines = null;
-	this.isForcedToLineString = false;
+	this._lines = null;
+	this._isForcedToLineString = false;
 	if (arguments.length === 1) {
 		let lines = arguments[0];
-		this.lines = lines;
+		this._lines = lines;
 	} else if (arguments.length === 2) {
 		let lines = arguments[0], isForcedToLineString = arguments[1];
-		this.lines = lines;
-		this.isForcedToLineString = isForcedToLineString;
+		this._lines = lines;
+		this._isForcedToLineString = isForcedToLineString;
 	}
 }
 extend(LinearComponentExtracter.prototype, {
 	filter: function (geom) {
-		if (this.isForcedToLineString && geom instanceof LinearRing) {
+		if (this._isForcedToLineString && geom instanceof LinearRing) {
 			var line = geom.getFactory().createLineString(geom.getCoordinateSequence());
-			this.lines.add(line);
+			this._lines.add(line);
 			return null;
 		}
-		if (geom instanceof LineString) this.lines.add(geom);
+		if (geom instanceof LineString) this._lines.add(geom);
 	},
 	setForceToLineString: function (isForcedToLineString) {
-		this.isForcedToLineString = isForcedToLineString;
+		this._isForcedToLineString = isForcedToLineString;
 	},
 	interfaces_: function () {
 		return [GeometryComponentFilter];

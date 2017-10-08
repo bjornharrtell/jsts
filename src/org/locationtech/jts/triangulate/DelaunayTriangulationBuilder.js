@@ -11,42 +11,42 @@ import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 import Envelope from '../geom/Envelope';
 export default function DelaunayTriangulationBuilder() {
-	this.siteCoords = null;
-	this.tolerance = 0.0;
-	this.subdiv = null;
+	this._siteCoords = null;
+	this._tolerance = 0.0;
+	this._subdiv = null;
 }
 extend(DelaunayTriangulationBuilder.prototype, {
 	create: function () {
-		if (this.subdiv !== null) return null;
-		var siteEnv = DelaunayTriangulationBuilder.envelope(this.siteCoords);
-		var vertices = DelaunayTriangulationBuilder.toVertices(this.siteCoords);
-		this.subdiv = new QuadEdgeSubdivision(siteEnv, this.tolerance);
-		var triangulator = new IncrementalDelaunayTriangulator(this.subdiv);
+		if (this._subdiv !== null) return null;
+		var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords);
+		var vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords);
+		this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance);
+		var triangulator = new IncrementalDelaunayTriangulator(this._subdiv);
 		triangulator.insertSites(vertices);
 	},
 	setTolerance: function (tolerance) {
-		this.tolerance = tolerance;
+		this._tolerance = tolerance;
 	},
 	setSites: function () {
 		if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
-			this.siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
+			this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
 		} else if (hasInterface(arguments[0], Collection)) {
 			let coords = arguments[0];
-			this.siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
+			this._siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
 		}
 	},
 	getEdges: function (geomFact) {
 		this.create();
-		return this.subdiv.getEdges(geomFact);
+		return this._subdiv.getEdges(geomFact);
 	},
 	getSubdivision: function () {
 		this.create();
-		return this.subdiv;
+		return this._subdiv;
 	},
 	getTriangles: function (geomFact) {
 		this.create();
-		return this.subdiv.getTriangles(geomFact);
+		return this._subdiv.getTriangles(geomFact);
 	},
 	interfaces_: function () {
 		return [];

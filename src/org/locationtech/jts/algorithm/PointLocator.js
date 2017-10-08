@@ -12,13 +12,13 @@ import GeometryCollectionIterator from '../geom/GeometryCollectionIterator';
 import GeometryCollection from '../geom/GeometryCollection';
 import MultiLineString from '../geom/MultiLineString';
 export default function PointLocator() {
-	this.boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
-	this.isIn = null;
-	this.numBoundaries = null;
+	this._boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+	this._isIn = null;
+	this._numBoundaries = null;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let boundaryRule = arguments[0];
 		if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
-		this.boundaryRule = boundaryRule;
+		this._boundaryRule = boundaryRule;
 	}
 }
 extend(PointLocator.prototype, {
@@ -63,8 +63,8 @@ extend(PointLocator.prototype, {
 		return this.locate(p, geom) !== Location.EXTERIOR;
 	},
 	updateLocationInfo: function (loc) {
-		if (loc === Location.INTERIOR) this.isIn = true;
-		if (loc === Location.BOUNDARY) this.numBoundaries++;
+		if (loc === Location.INTERIOR) this._isIn = true;
+		if (loc === Location.BOUNDARY) this._numBoundaries++;
 	},
 	computeLocation: function (p, geom) {
 		if (geom instanceof Point) {
@@ -101,11 +101,11 @@ extend(PointLocator.prototype, {
 		} else if (geom instanceof Polygon) {
 			return this.locateInternal(p, geom);
 		}
-		this.isIn = false;
-		this.numBoundaries = 0;
+		this._isIn = false;
+		this._numBoundaries = 0;
 		this.computeLocation(p, geom);
-		if (this.boundaryRule.isInBoundary(this.numBoundaries)) return Location.BOUNDARY;
-		if (this.numBoundaries > 0 || this.isIn) return Location.INTERIOR;
+		if (this._boundaryRule.isInBoundary(this._numBoundaries)) return Location.BOUNDARY;
+		if (this._numBoundaries > 0 || this._isIn) return Location.INTERIOR;
 		return Location.EXTERIOR;
 	},
 	interfaces_: function () {

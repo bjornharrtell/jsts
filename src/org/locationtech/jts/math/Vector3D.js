@@ -1,32 +1,32 @@
 import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
 export default function Vector3D() {
-	this.x = null;
-	this.y = null;
-	this.z = null;
+	this._x = null;
+	this._y = null;
+	this._z = null;
 	if (arguments.length === 1) {
 		let v = arguments[0];
-		this.x = v.x;
-		this.y = v.y;
-		this.z = v.z;
+		this._x = v.x;
+		this._y = v.y;
+		this._z = v.z;
 	} else if (arguments.length === 2) {
 		let from = arguments[0], to = arguments[1];
-		this.x = to.x - from.x;
-		this.y = to.y - from.y;
-		this.z = to.z - from.z;
+		this._x = to.x - from.x;
+		this._y = to.y - from.y;
+		this._z = to.z - from.z;
 	} else if (arguments.length === 3) {
 		let x = arguments[0], y = arguments[1], z = arguments[2];
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this._x = x;
+		this._y = y;
+		this._z = z;
 	}
 }
 extend(Vector3D.prototype, {
 	dot: function (v) {
-		return this.x * v.x + this.y * v.y + this.z * v.z;
+		return this._x * v._x + this._y * v._y + this._z * v._z;
 	},
 	getZ: function () {
-		return this.z;
+		return this._z;
 	},
 	normalize: function () {
 		var length = this.length();
@@ -34,19 +34,19 @@ extend(Vector3D.prototype, {
 		return Vector3D.create(0.0, 0.0, 0.0);
 	},
 	divide: function (d) {
-		return Vector3D.create(this.x / d, this.y / d, this.z / d);
+		return Vector3D.create(this._x / d, this._y / d, this._z / d);
 	},
 	getX: function () {
-		return this.x;
+		return this._x;
 	},
 	toString: function () {
-		return "[" + this.x + ", " + this.y + ", " + this.z + "]";
+		return "[" + this._x + ", " + this._y + ", " + this._z + "]";
 	},
 	length: function () {
-		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+		return Math.sqrt(this._x * this._x + this._y * this._y + this._z * this._z);
 	},
 	getY: function () {
-		return this.y;
+		return this._y;
 	},
 	interfaces_: function () {
 		return [];

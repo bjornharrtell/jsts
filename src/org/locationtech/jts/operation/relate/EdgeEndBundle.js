@@ -8,7 +8,7 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Edge from '../../geomgraph/Edge';
 import inherits from '../../../../../inherits';
 export default function EdgeEndBundle() {
-	this.edgeEnds = new ArrayList();
+	this._edgeEnds = new ArrayList();
 	if (arguments.length === 1) {
 		let e = arguments[0];
 		EdgeEndBundle.call(this, null, e);
@@ -21,7 +21,7 @@ export default function EdgeEndBundle() {
 inherits(EdgeEndBundle, EdgeEnd);
 extend(EdgeEndBundle.prototype, {
 	insert: function (e) {
-		this.edgeEnds.add(e);
+		this._edgeEnds.add(e);
 	},
 	print: function (out) {
 		out.println("EdgeEndBundle--> Label: " + this.label);
@@ -32,10 +32,10 @@ extend(EdgeEndBundle.prototype, {
 		}
 	},
 	iterator: function () {
-		return this.edgeEnds.iterator();
+		return this._edgeEnds.iterator();
 	},
 	getEdgeEnds: function () {
-		return this.edgeEnds;
+		return this._edgeEnds;
 	},
 	computeLabelOn: function (geomIndex, boundaryNodeRule) {
 		var boundaryCount = 0;

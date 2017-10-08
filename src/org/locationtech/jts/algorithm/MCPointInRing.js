@@ -10,12 +10,12 @@ import Envelope from '../geom/Envelope';
 import inherits from '../../../../inherits';
 import PointInRing from './PointInRing';
 export default function MCPointInRing() {
-	this.ring = null;
-	this.tree = null;
-	this.crossings = 0;
-	this.interval = new Interval();
+	this._ring = null;
+	this._tree = null;
+	this._crossings = 0;
+	this._interval = new Interval();
 	let ring = arguments[0];
-	this.ring = ring;
+	this._ring = ring;
 	this.buildIndex();
 }
 extend(MCPointInRing.prototype, {
@@ -34,37 +34,37 @@ extend(MCPointInRing.prototype, {
 		if (y1 > 0 && y2 <= 0 || y2 > 0 && y1 <= 0) {
 			xInt = RobustDeterminant.signOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 			if (0.0 < xInt) {
-				this.crossings++;
+				this._crossings++;
 			}
 		}
 	},
 	buildIndex: function () {
-		this.tree = new Bintree();
-		var pts = CoordinateArrays.removeRepeatedPoints(this.ring.getCoordinates());
+		this._tree = new Bintree();
+		var pts = CoordinateArrays.removeRepeatedPoints(this._ring.getCoordinates());
 		var mcList = MonotoneChainBuilder.getChains(pts);
 		for (var i = 0; i < mcList.size(); i++) {
 			var mc = mcList.get(i);
 			var mcEnv = mc.getEnvelope();
-			this.interval.min = mcEnv.getMinY();
-			this.interval.max = mcEnv.getMaxY();
-			this.tree.insert(this.interval, mc);
+			this._interval.min = mcEnv.getMinY();
+			this._interval.max = mcEnv.getMaxY();
+			this._tree.insert(this._interval, mc);
 		}
 	},
 	testMonotoneChain: function (rayEnv, mcSelecter, mc) {
 		mc.select(rayEnv, mcSelecter);
 	},
 	isInside: function (pt) {
-		this.crossings = 0;
+		this._crossings = 0;
 		var rayEnv = new Envelope(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, pt.y, pt.y);
-		this.interval.min = pt.y;
-		this.interval.max = pt.y;
-		var segs = this.tree.query(this.interval);
+		this._interval.min = pt.y;
+		this._interval.max = pt.y;
+		var segs = this._tree.query(this._interval);
 		var mcSelecter = new MCSelecter(this, pt);
 		for (var i = segs.iterator(); i.hasNext(); ) {
 			var mc = i.next();
 			this.testMonotoneChain(rayEnv, mcSelecter, mc);
 		}
-		if (this.crossings % 2 === 1) {
+		if (this._crossings % 2 === 1) {
 			return true;
 		}
 		return false;

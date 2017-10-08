@@ -10,27 +10,27 @@ import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import MultiLineString from '../MultiLineString';
 export default function GeometryEditor() {
-	this.factory = null;
-	this.isUserDataCopied = false;
+	this._factory = null;
+	this._isUserDataCopied = false;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let factory = arguments[0];
-		this.factory = factory;
+		this._factory = factory;
 	}
 }
 extend(GeometryEditor.prototype, {
 	setCopyUserData: function (isUserDataCopied) {
-		this.isUserDataCopied = isUserDataCopied;
+		this._isUserDataCopied = isUserDataCopied;
 	},
 	edit: function (geometry, operation) {
 		if (geometry === null) return null;
 		var result = this.editInternal(geometry, operation);
-		if (this.isUserDataCopied) {
+		if (this._isUserDataCopied) {
 			result.setUserData(geometry.getUserData());
 		}
 		return result;
 	},
 	editInternal: function (geometry, operation) {
-		if (this.factory === null) this.factory = geometry.getFactory();
+		if (this._factory === null) this._factory = geometry.getFactory();
 		if (geometry instanceof GeometryCollection) {
 			return this.editGeometryCollection(geometry, operation);
 		}
@@ -38,16 +38,16 @@ extend(GeometryEditor.prototype, {
 			return this.editPolygon(geometry, operation);
 		}
 		if (geometry instanceof Point) {
-			return operation.edit(geometry, this.factory);
+			return operation.edit(geometry, this._factory);
 		}
 		if (geometry instanceof LineString) {
-			return operation.edit(geometry, this.factory);
+			return operation.edit(geometry, this._factory);
 		}
 		Assert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
 		return null;
 	},
 	editGeometryCollection: function (collection, operation) {
-		var collectionForType = operation.edit(collection, this.factory);
+		var collectionForType = operation.edit(collection, this._factory);
 		var geometries = new ArrayList();
 		for (var i = 0; i < collectionForType.getNumGeometries(); i++) {
 			var geometry = this.edit(collectionForType.getGeometryN(i), operation);
@@ -57,25 +57,25 @@ extend(GeometryEditor.prototype, {
 			geometries.add(geometry);
 		}
 		if (collectionForType.getClass() === MultiPoint) {
-			return this.factory.createMultiPoint(geometries.toArray([]));
+			return this._factory.createMultiPoint(geometries.toArray([]));
 		}
 		if (collectionForType.getClass() === MultiLineString) {
-			return this.factory.createMultiLineString(geometries.toArray([]));
+			return this._factory.createMultiLineString(geometries.toArray([]));
 		}
 		if (collectionForType.getClass() === MultiPolygon) {
-			return this.factory.createMultiPolygon(geometries.toArray([]));
+			return this._factory.createMultiPolygon(geometries.toArray([]));
 		}
-		return this.factory.createGeometryCollection(geometries.toArray([]));
+		return this._factory.createGeometryCollection(geometries.toArray([]));
 	},
 	editPolygon: function (polygon, operation) {
-		var newPolygon = operation.edit(polygon, this.factory);
-		if (newPolygon === null) newPolygon = this.factory.createPolygon(null);
+		var newPolygon = operation.edit(polygon, this._factory);
+		if (newPolygon === null) newPolygon = this._factory.createPolygon(null);
 		if (newPolygon.isEmpty()) {
 			return newPolygon;
 		}
 		var shell = this.edit(newPolygon.getExteriorRing(), operation);
 		if (shell === null || shell.isEmpty()) {
-			return this.factory.createPolygon();
+			return this._factory.createPolygon();
 		}
 		var holes = new ArrayList();
 		for (var i = 0; i < newPolygon.getNumInteriorRing(); i++) {
@@ -85,7 +85,7 @@ extend(GeometryEditor.prototype, {
 			}
 			holes.add(hole);
 		}
-		return this.factory.createPolygon(shell, holes.toArray([]));
+		return this._factory.createPolygon(shell, holes.toArray([]));
 	},
 	interfaces_: function () {
 		return [];

@@ -5,8 +5,8 @@ import MathUtil from '../../math/MathUtil';
 import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
 export default function RandomPointsInGridBuilder() {
-	this.isConstrainedToCircle = false;
-	this.gutterFraction = 0;
+	this._isConstrainedToCircle = false;
+	this._gutterFraction = 0;
 	if (arguments.length === 0) {
 		GeometricShapeBuilder.call(this, new GeometryFactory());
 	} else if (arguments.length === 1) {
@@ -17,7 +17,7 @@ export default function RandomPointsInGridBuilder() {
 inherits(RandomPointsInGridBuilder, GeometricShapeBuilder);
 extend(RandomPointsInGridBuilder.prototype, {
 	randomPointInCell: function (orgX, orgY, xLen, yLen) {
-		if (this.isConstrainedToCircle) {
+		if (this._isConstrainedToCircle) {
 			return RandomPointsInGridBuilder.randomPointInCircle(orgX, orgY, xLen, yLen);
 		}
 		return this.randomPointInGridCell(orgX, orgY, xLen, yLen);
@@ -27,7 +27,7 @@ extend(RandomPointsInGridBuilder.prototype, {
 		if (nCells * nCells < this.numPts) nCells += 1;
 		var gridDX = this.getExtent().getWidth() / nCells;
 		var gridDY = this.getExtent().getHeight() / nCells;
-		var gutterFrac = MathUtil.clamp(this.gutterFraction, 0.0, 1.0);
+		var gutterFrac = MathUtil.clamp(this._gutterFraction, 0.0, 1.0);
 		var gutterOffsetX = gridDX * gutterFrac / 2;
 		var gutterOffsetY = gridDY * gutterFrac / 2;
 		var cellFrac = 1.0 - gutterFrac;
@@ -45,10 +45,10 @@ extend(RandomPointsInGridBuilder.prototype, {
 		return this.geomFactory.createMultiPointFromCoords(pts);
 	},
 	setConstrainedToCircle: function (isConstrainedToCircle) {
-		this.isConstrainedToCircle = isConstrainedToCircle;
+		this._isConstrainedToCircle = isConstrainedToCircle;
 	},
 	setGutterFraction: function (gutterFraction) {
-		this.gutterFraction = gutterFraction;
+		this._gutterFraction = gutterFraction;
 	},
 	randomPointInGridCell: function (orgX, orgY, xLen, yLen) {
 		var x = orgX + xLen * Math.random();

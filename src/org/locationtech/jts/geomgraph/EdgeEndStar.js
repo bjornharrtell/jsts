@@ -11,7 +11,7 @@ import TreeMap from '../../../../java/util/TreeMap';
 export default function EdgeEndStar() {
 	this.edgeMap = new TreeMap();
 	this.edgeList = null;
-	this.ptInAreaLocation = [Location.NONE, Location.NONE];
+	this._ptInAreaLocation = [Location.NONE, Location.NONE];
 }
 extend(EdgeEndStar.prototype, {
 	getNextCW: function (ee) {
@@ -110,10 +110,10 @@ extend(EdgeEndStar.prototype, {
 		return this.edgeList;
 	},
 	getLocation: function (geomIndex, p, geom) {
-		if (this.ptInAreaLocation[geomIndex] === Location.NONE) {
-			this.ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p, geom[geomIndex].getGeometry());
+		if (this._ptInAreaLocation[geomIndex] === Location.NONE) {
+			this._ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p, geom[geomIndex].getGeometry());
 		}
-		return this.ptInAreaLocation[geomIndex];
+		return this._ptInAreaLocation[geomIndex];
 	},
 	toString: function () {
 		var buf = new StringBuffer();

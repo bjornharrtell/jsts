@@ -9,27 +9,27 @@ import PrecisionModel from '../../geom/PrecisionModel';
 import RuntimeException from '../../../../../java/lang/RuntimeException';
 import MCIndexSnapRounder from '../../noding/snapround/MCIndexSnapRounder';
 export default function BufferOp() {
-	this.argGeom = null;
-	this.distance = null;
-	this.bufParams = new BufferParameters();
-	this.resultGeometry = null;
-	this.saveException = null;
+	this._argGeom = null;
+	this._distance = null;
+	this._bufParams = new BufferParameters();
+	this._resultGeometry = null;
+	this._saveException = null;
 	if (arguments.length === 1) {
 		let g = arguments[0];
-		this.argGeom = g;
+		this._argGeom = g;
 	} else if (arguments.length === 2) {
 		let g = arguments[0], bufParams = arguments[1];
-		this.argGeom = g;
-		this.bufParams = bufParams;
+		this._argGeom = g;
+		this._bufParams = bufParams;
 	}
 }
 extend(BufferOp.prototype, {
 	bufferFixedPrecision: function (fixedPM) {
 		var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.getScale());
-		var bufBuilder = new BufferBuilder(this.bufParams);
+		var bufBuilder = new BufferBuilder(this._bufParams);
 		bufBuilder.setWorkingPrecisionModel(fixedPM);
 		bufBuilder.setNoder(noder);
-		this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
+		this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance);
 	},
 	bufferReducedPrecision: function () {
 		if (arguments.length === 0) {
@@ -38,45 +38,45 @@ extend(BufferOp.prototype, {
 					this.bufferReducedPrecision(precDigits);
 				} catch (ex) {
 					if (ex instanceof TopologyException) {
-						this.saveException = ex;
+						this._saveException = ex;
 					} else throw ex;
 				} finally {}
-				if (this.resultGeometry !== null) return null;
+				if (this._resultGeometry !== null) return null;
 			}
-			throw this.saveException;
+			throw this._saveException;
 		} else if (arguments.length === 1) {
 			let precisionDigits = arguments[0];
-			var sizeBasedScaleFactor = BufferOp.precisionScaleFactor(this.argGeom, this.distance, precisionDigits);
+			var sizeBasedScaleFactor = BufferOp.precisionScaleFactor(this._argGeom, this._distance, precisionDigits);
 			var fixedPM = new PrecisionModel(sizeBasedScaleFactor);
 			this.bufferFixedPrecision(fixedPM);
 		}
 	},
 	computeGeometry: function () {
 		this.bufferOriginalPrecision();
-		if (this.resultGeometry !== null) return null;
-		var argPM = this.argGeom.getFactory().getPrecisionModel();
+		if (this._resultGeometry !== null) return null;
+		var argPM = this._argGeom.getFactory().getPrecisionModel();
 		if (argPM.getType() === PrecisionModel.FIXED) this.bufferFixedPrecision(argPM); else this.bufferReducedPrecision();
 	},
 	setQuadrantSegments: function (quadrantSegments) {
-		this.bufParams.setQuadrantSegments(quadrantSegments);
+		this._bufParams.setQuadrantSegments(quadrantSegments);
 	},
 	bufferOriginalPrecision: function () {
 		try {
-			var bufBuilder = new BufferBuilder(this.bufParams);
-			this.resultGeometry = bufBuilder.buffer(this.argGeom, this.distance);
+			var bufBuilder = new BufferBuilder(this._bufParams);
+			this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance);
 		} catch (ex) {
 			if (ex instanceof RuntimeException) {
-				this.saveException = ex;
+				this._saveException = ex;
 			} else throw ex;
 		} finally {}
 	},
 	getResultGeometry: function (distance) {
-		this.distance = distance;
+		this._distance = distance;
 		this.computeGeometry();
-		return this.resultGeometry;
+		return this._resultGeometry;
 	},
 	setEndCapStyle: function (endCapStyle) {
-		this.bufParams.setEndCapStyle(endCapStyle);
+		this._bufParams.setEndCapStyle(endCapStyle);
 	},
 	interfaces_: function () {
 		return [];

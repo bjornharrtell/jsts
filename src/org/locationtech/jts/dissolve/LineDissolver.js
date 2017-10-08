@@ -10,34 +10,34 @@ import DissolveEdgeGraph from './DissolveEdgeGraph';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import ArrayList from '../../../../java/util/ArrayList';
 export default function LineDissolver() {
-	this.result = null;
-	this.factory = null;
-	this.graph = null;
-	this.lines = new ArrayList();
-	this.nodeEdgeStack = new Stack();
-	this.ringStartEdge = null;
-	this.graph = new DissolveEdgeGraph();
+	this._result = null;
+	this._factory = null;
+	this._graph = null;
+	this._lines = new ArrayList();
+	this._nodeEdgeStack = new Stack();
+	this._ringStartEdge = null;
+	this._graph = new DissolveEdgeGraph();
 }
 extend(LineDissolver.prototype, {
 	addLine: function (line) {
-		this.lines.add(this.factory.createLineString(line.toCoordinateArray()));
+		this._lines.add(this._factory.createLineString(line.toCoordinateArray()));
 	},
 	updateRingStartEdge: function (e) {
 		if (!e.isStart()) {
 			e = e.sym();
 			if (!e.isStart()) return null;
 		}
-		if (this.ringStartEdge === null) {
-			this.ringStartEdge = e;
+		if (this._ringStartEdge === null) {
+			this._ringStartEdge = e;
 			return null;
 		}
-		if (e.orig().compareTo(this.ringStartEdge.orig()) < 0) {
-			this.ringStartEdge = e;
+		if (e.orig().compareTo(this._ringStartEdge.orig()) < 0) {
+			this._ringStartEdge = e;
 		}
 	},
 	getResult: function () {
-		if (this.result === null) this.computeResult();
-		return this.result;
+		if (this._result === null) this.computeResult();
+		return this._result;
 	},
 	process: function (e) {
 		var eNode = e.prevNode();
@@ -61,14 +61,14 @@ extend(LineDissolver.prototype, {
 	buildLine: function (eStart) {
 		var line = new CoordinateList();
 		var e = eStart;
-		this.ringStartEdge = null;
+		this._ringStartEdge = null;
 		MarkHalfEdge.markBoth(e);
 		line.add(e.orig().copy(), false);
 		while (e.sym().degree() === 2) {
 			this.updateRingStartEdge(e);
 			var eNext = e.next();
 			if (eNext === eStart) {
-				this.buildRing(this.ringStartEdge);
+				this.buildRing(this._ringStartEdge);
 				return null;
 			}
 			line.add(eNext.orig().copy(), false);
@@ -82,22 +82,22 @@ extend(LineDissolver.prototype, {
 	stackEdges: function (node) {
 		var e = node;
 		do {
-			if (!MarkHalfEdge.isMarked(e)) this.nodeEdgeStack.add(e);
+			if (!MarkHalfEdge.isMarked(e)) this._nodeEdgeStack.add(e);
 			e = e.oNext();
 		} while (e !== node);
 	},
 	computeResult: function () {
-		var edges = this.graph.getVertexEdges();
+		var edges = this._graph.getVertexEdges();
 		for (var i = edges.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			if (MarkHalfEdge.isMarked(e)) continue;
 			this.process(e);
 		}
-		this.result = this.factory.buildGeometry(this.lines);
+		this._result = this._factory.buildGeometry(this._lines);
 	},
 	buildLines: function () {
-		while (!this.nodeEdgeStack.empty()) {
-			var e = this.nodeEdgeStack.pop();
+		while (!this._nodeEdgeStack.empty()) {
+			var e = this._nodeEdgeStack.pop();
 			if (MarkHalfEdge.isMarked(e)) continue;
 			this.buildLine(e);
 		}
@@ -123,13 +123,13 @@ extend(LineDissolver.prototype, {
 			}
 		} else if (arguments[0] instanceof LineString) {
 			let lineString = arguments[0];
-			if (this.factory === null) {
-				this.factory = lineString.getFactory();
+			if (this._factory === null) {
+				this._factory = lineString.getFactory();
 			}
 			var seq = lineString.getCoordinateSequence();
 			var doneStart = false;
 			for (var i = 1; i < seq.size(); i++) {
-				var e = this.graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
+				var e = this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
 				if (e === null) continue;
 				if (!doneStart) {
 					e.setStart();

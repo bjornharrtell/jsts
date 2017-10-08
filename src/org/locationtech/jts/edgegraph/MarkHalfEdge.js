@@ -2,20 +2,20 @@ import extend from '../../../../extend';
 import HalfEdge from './HalfEdge';
 import inherits from '../../../../inherits';
 export default function MarkHalfEdge() {
-	this._isMarked = false;
+	this.__isMarked = false;
 	let orig = arguments[0];
 	HalfEdge.call(this, orig);
 }
 inherits(MarkHalfEdge, HalfEdge);
 extend(MarkHalfEdge.prototype, {
 	mark: function () {
-		this._isMarked = true;
+		this.__isMarked = true;
 	},
 	setMark: function (isMarked) {
-		this._isMarked = isMarked;
+		this.__isMarked = isMarked;
 	},
 	isMarked: function () {
-		return this._isMarked;
+		return this.__isMarked;
 	},
 	interfaces_: function () {
 		return [];

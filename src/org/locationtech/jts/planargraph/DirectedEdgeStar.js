@@ -5,7 +5,7 @@ import ArrayList from '../../../../java/util/ArrayList';
 import Edge from './Edge';
 export default function DirectedEdgeStar() {
 	this.outEdges = new ArrayList();
-	this.sorted = false;
+	this._sorted = false;
 }
 extend(DirectedEdgeStar.prototype, {
 	getNextEdge: function (dirEdge) {
@@ -23,9 +23,9 @@ extend(DirectedEdgeStar.prototype, {
 		return this.outEdges.iterator();
 	},
 	sortEdges: function () {
-		if (!this.sorted) {
+		if (!this._sorted) {
 			Collections.sort(this.outEdges);
-			this.sorted = true;
+			this._sorted = true;
 		}
 	},
 	remove: function (de) {
@@ -65,7 +65,7 @@ extend(DirectedEdgeStar.prototype, {
 	},
 	add: function (de) {
 		this.outEdges.add(de);
-		this.sorted = false;
+		this._sorted = false;
 	},
 	getDegree: function () {
 		return this.outEdges.size();

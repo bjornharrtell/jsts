@@ -9,23 +9,23 @@ import Cloneable from '../../../../../java/lang/Cloneable';
 import CoordinateSequenceFilter from '../CoordinateSequenceFilter';
 import Assert from '../../util/Assert';
 export default function AffineTransformation() {
-	this.m00 = null;
-	this.m01 = null;
-	this.m02 = null;
-	this.m10 = null;
-	this.m11 = null;
-	this.m12 = null;
+	this._m00 = null;
+	this._m01 = null;
+	this._m02 = null;
+	this._m10 = null;
+	this._m11 = null;
+	this._m12 = null;
 	if (arguments.length === 0) {
 		this.setToIdentity();
 	} else if (arguments.length === 1) {
 		if (arguments[0] instanceof Array) {
 			let matrix = arguments[0];
-			this.m00 = matrix[0];
-			this.m01 = matrix[1];
-			this.m02 = matrix[2];
-			this.m10 = matrix[3];
-			this.m11 = matrix[4];
-			this.m12 = matrix[5];
+			this._m00 = matrix[0];
+			this._m01 = matrix[1];
+			this._m02 = matrix[2];
+			this._m10 = matrix[3];
+			this._m11 = matrix[4];
+			this._m12 = matrix[5];
 		} else if (arguments[0] instanceof AffineTransformation) {
 			let trans = arguments[0];
 			this.setTransformation(trans);
@@ -51,69 +51,69 @@ extend(AffineTransformation.prototype, {
 		var cos = dx / d;
 		var cs2 = 2 * sin * cos;
 		var c2s2 = cos * cos - sin * sin;
-		this.m00 = c2s2;
-		this.m01 = cs2;
-		this.m02 = 0.0;
-		this.m10 = cs2;
-		this.m11 = -c2s2;
-		this.m12 = 0.0;
+		this._m00 = c2s2;
+		this._m01 = cs2;
+		this._m02 = 0.0;
+		this._m10 = cs2;
+		this._m11 = -c2s2;
+		this._m12 = 0.0;
 		return this;
 	},
 	getInverse: function () {
 		var det = this.getDeterminant();
 		if (det === 0) throw new NoninvertibleTransformationException("Transformation is non-invertible");
-		var im00 = this.m11 / det;
-		var im10 = -this.m10 / det;
-		var im01 = -this.m01 / det;
-		var im11 = this.m00 / det;
-		var im02 = (this.m01 * this.m12 - this.m02 * this.m11) / det;
-		var im12 = (-this.m00 * this.m12 + this.m10 * this.m02) / det;
+		var im00 = this._m11 / det;
+		var im10 = -this._m10 / det;
+		var im01 = -this._m01 / det;
+		var im11 = this._m00 / det;
+		var im02 = (this._m01 * this._m12 - this._m02 * this._m11) / det;
+		var im12 = (-this._m00 * this._m12 + this._m10 * this._m02) / det;
 		return new AffineTransformation(im00, im01, im02, im10, im11, im12);
 	},
 	compose: function (trans) {
-		var mp00 = trans.m00 * this.m00 + trans.m01 * this.m10;
-		var mp01 = trans.m00 * this.m01 + trans.m01 * this.m11;
-		var mp02 = trans.m00 * this.m02 + trans.m01 * this.m12 + trans.m02;
-		var mp10 = trans.m10 * this.m00 + trans.m11 * this.m10;
-		var mp11 = trans.m10 * this.m01 + trans.m11 * this.m11;
-		var mp12 = trans.m10 * this.m02 + trans.m11 * this.m12 + trans.m12;
-		this.m00 = mp00;
-		this.m01 = mp01;
-		this.m02 = mp02;
-		this.m10 = mp10;
-		this.m11 = mp11;
-		this.m12 = mp12;
+		var mp00 = trans._m00 * this._m00 + trans._m01 * this._m10;
+		var mp01 = trans._m00 * this._m01 + trans._m01 * this._m11;
+		var mp02 = trans._m00 * this._m02 + trans._m01 * this._m12 + trans._m02;
+		var mp10 = trans._m10 * this._m00 + trans._m11 * this._m10;
+		var mp11 = trans._m10 * this._m01 + trans._m11 * this._m11;
+		var mp12 = trans._m10 * this._m02 + trans._m11 * this._m12 + trans._m12;
+		this._m00 = mp00;
+		this._m01 = mp01;
+		this._m02 = mp02;
+		this._m10 = mp10;
+		this._m11 = mp11;
+		this._m12 = mp12;
 		return this;
 	},
 	equals: function (obj) {
 		if (obj === null) return false;
 		if (!(obj instanceof AffineTransformation)) return false;
 		var trans = obj;
-		return this.m00 === trans.m00 && this.m01 === trans.m01 && this.m02 === trans.m02 && this.m10 === trans.m10 && this.m11 === trans.m11 && this.m12 === trans.m12;
+		return this._m00 === trans._m00 && this._m01 === trans._m01 && this._m02 === trans._m02 && this._m10 === trans._m10 && this._m11 === trans._m11 && this._m12 === trans._m12;
 	},
 	setToScale: function (xScale, yScale) {
-		this.m00 = xScale;
-		this.m01 = 0.0;
-		this.m02 = 0.0;
-		this.m10 = 0.0;
-		this.m11 = yScale;
-		this.m12 = 0.0;
+		this._m00 = xScale;
+		this._m01 = 0.0;
+		this._m02 = 0.0;
+		this._m10 = 0.0;
+		this._m11 = yScale;
+		this._m12 = 0.0;
 		return this;
 	},
 	isIdentity: function () {
-		return this.m00 === 1 && this.m01 === 0 && this.m02 === 0 && this.m10 === 0 && this.m11 === 1 && this.m12 === 0;
+		return this._m00 === 1 && this._m01 === 0 && this._m02 === 0 && this._m10 === 0 && this._m11 === 1 && this._m12 === 0;
 	},
 	scale: function (xScale, yScale) {
 		this.compose(AffineTransformation.scaleInstance(xScale, yScale));
 		return this;
 	},
 	setToIdentity: function () {
-		this.m00 = 1.0;
-		this.m01 = 0.0;
-		this.m02 = 0.0;
-		this.m10 = 0.0;
-		this.m11 = 1.0;
-		this.m12 = 0.0;
+		this._m00 = 1.0;
+		this._m01 = 0.0;
+		this._m02 = 0.0;
+		this._m10 = 0.0;
+		this._m11 = 1.0;
+		this._m12 = 0.0;
 		return this;
 	},
 	isGeometryChanged: function () {
@@ -122,21 +122,21 @@ extend(AffineTransformation.prototype, {
 	setTransformation: function () {
 		if (arguments.length === 1) {
 			let trans = arguments[0];
-			this.m00 = trans.m00;
-			this.m01 = trans.m01;
-			this.m02 = trans.m02;
-			this.m10 = trans.m10;
-			this.m11 = trans.m11;
-			this.m12 = trans.m12;
+			this._m00 = trans._m00;
+			this._m01 = trans._m01;
+			this._m02 = trans._m02;
+			this._m10 = trans._m10;
+			this._m11 = trans._m11;
+			this._m12 = trans._m12;
 			return this;
 		} else if (arguments.length === 6) {
 			let m00 = arguments[0], m01 = arguments[1], m02 = arguments[2], m10 = arguments[3], m11 = arguments[4], m12 = arguments[5];
-			this.m00 = m00;
-			this.m01 = m01;
-			this.m02 = m02;
-			this.m10 = m10;
-			this.m11 = m11;
-			this.m12 = m12;
+			this._m00 = m00;
+			this._m01 = m01;
+			this._m02 = m02;
+			this._m10 = m10;
+			this._m11 = m11;
+			this._m12 = m12;
 			return this;
 		}
 	},
@@ -147,12 +147,12 @@ extend(AffineTransformation.prototype, {
 			return this;
 		} else if (arguments.length === 2) {
 			let sinTheta = arguments[0], cosTheta = arguments[1];
-			this.m00 = cosTheta;
-			this.m01 = -sinTheta;
-			this.m02 = 0.0;
-			this.m10 = sinTheta;
-			this.m11 = cosTheta;
-			this.m12 = 0.0;
+			this._m00 = cosTheta;
+			this._m01 = -sinTheta;
+			this._m02 = 0.0;
+			this._m10 = sinTheta;
+			this._m11 = cosTheta;
+			this._m12 = 0.0;
 			return this;
 		} else if (arguments.length === 3) {
 			let theta = arguments[0], x = arguments[1], y = arguments[2];
@@ -160,17 +160,17 @@ extend(AffineTransformation.prototype, {
 			return this;
 		} else if (arguments.length === 4) {
 			let sinTheta = arguments[0], cosTheta = arguments[1], x = arguments[2], y = arguments[3];
-			this.m00 = cosTheta;
-			this.m01 = -sinTheta;
-			this.m02 = x - x * cosTheta + y * sinTheta;
-			this.m10 = sinTheta;
-			this.m11 = cosTheta;
-			this.m12 = y - x * sinTheta - y * cosTheta;
+			this._m00 = cosTheta;
+			this._m01 = -sinTheta;
+			this._m02 = x - x * cosTheta + y * sinTheta;
+			this._m10 = sinTheta;
+			this._m11 = cosTheta;
+			this._m12 = y - x * sinTheta - y * cosTheta;
 			return this;
 		}
 	},
 	getMatrixEntries: function () {
-		return [this.m00, this.m01, this.m02, this.m10, this.m11, this.m12];
+		return [this._m00, this._m01, this._m02, this._m10, this._m11, this._m12];
 	},
 	filter: function (seq, i) {
 		this.transform(seq, i);
@@ -195,30 +195,30 @@ extend(AffineTransformation.prototype, {
 		}
 	},
 	getDeterminant: function () {
-		return this.m00 * this.m11 - this.m01 * this.m10;
+		return this._m00 * this._m11 - this._m01 * this._m10;
 	},
 	composeBefore: function (trans) {
-		var mp00 = this.m00 * trans.m00 + this.m01 * trans.m10;
-		var mp01 = this.m00 * trans.m01 + this.m01 * trans.m11;
-		var mp02 = this.m00 * trans.m02 + this.m01 * trans.m12 + this.m02;
-		var mp10 = this.m10 * trans.m00 + this.m11 * trans.m10;
-		var mp11 = this.m10 * trans.m01 + this.m11 * trans.m11;
-		var mp12 = this.m10 * trans.m02 + this.m11 * trans.m12 + this.m12;
-		this.m00 = mp00;
-		this.m01 = mp01;
-		this.m02 = mp02;
-		this.m10 = mp10;
-		this.m11 = mp11;
-		this.m12 = mp12;
+		var mp00 = this._m00 * trans._m00 + this._m01 * trans._m10;
+		var mp01 = this._m00 * trans._m01 + this._m01 * trans._m11;
+		var mp02 = this._m00 * trans._m02 + this._m01 * trans._m12 + this._m02;
+		var mp10 = this._m10 * trans._m00 + this._m11 * trans._m10;
+		var mp11 = this._m10 * trans._m01 + this._m11 * trans._m11;
+		var mp12 = this._m10 * trans._m02 + this._m11 * trans._m12 + this._m12;
+		this._m00 = mp00;
+		this._m01 = mp01;
+		this._m02 = mp02;
+		this._m10 = mp10;
+		this._m11 = mp11;
+		this._m12 = mp12;
 		return this;
 	},
 	setToShear: function (xShear, yShear) {
-		this.m00 = 1.0;
-		this.m01 = xShear;
-		this.m02 = 0.0;
-		this.m10 = yShear;
-		this.m11 = 1.0;
-		this.m12 = 0.0;
+		this._m00 = 1.0;
+		this._m01 = xShear;
+		this._m02 = 0.0;
+		this._m10 = yShear;
+		this._m11 = 1.0;
+		this._m12 = 0.0;
 		return this;
 	},
 	isDone: function () {
@@ -245,12 +245,12 @@ extend(AffineTransformation.prototype, {
 				throw new IllegalArgumentException("Reflection vector must be non-zero");
 			}
 			if (x === y) {
-				this.m00 = 0.0;
-				this.m01 = 1.0;
-				this.m02 = 0.0;
-				this.m10 = 1.0;
-				this.m11 = 0.0;
-				this.m12 = 0.0;
+				this._m00 = 0.0;
+				this._m01 = 1.0;
+				this._m02 = 0.0;
+				this._m10 = 1.0;
+				this._m11 = 0.0;
+				this._m12 = 0.0;
 				return this;
 			}
 			var d = Math.sqrt(x * x + y * y);
@@ -279,15 +279,15 @@ extend(AffineTransformation.prototype, {
 		}
 	},
 	toString: function () {
-		return "AffineTransformation[[" + this.m00 + ", " + this.m01 + ", " + this.m02 + "], [" + this.m10 + ", " + this.m11 + ", " + this.m12 + "]]";
+		return "AffineTransformation[[" + this._m00 + ", " + this._m01 + ", " + this._m02 + "], [" + this._m10 + ", " + this._m11 + ", " + this._m12 + "]]";
 	},
 	setToTranslation: function (dx, dy) {
-		this.m00 = 1.0;
-		this.m01 = 0.0;
-		this.m02 = dx;
-		this.m10 = 0.0;
-		this.m11 = 1.0;
-		this.m12 = dy;
+		this._m00 = 1.0;
+		this._m01 = 0.0;
+		this._m02 = dx;
+		this._m10 = 0.0;
+		this._m11 = 1.0;
+		this._m12 = dy;
 		return this;
 	},
 	shear: function (xShear, yShear) {
@@ -303,15 +303,15 @@ extend(AffineTransformation.prototype, {
 		} else if (arguments.length === 2) {
 			if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
 				let src = arguments[0], dest = arguments[1];
-				var xp = this.m00 * src.x + this.m01 * src.y + this.m02;
-				var yp = this.m10 * src.x + this.m11 * src.y + this.m12;
+				var xp = this._m00 * src.x + this._m01 * src.y + this._m02;
+				var yp = this._m10 * src.x + this._m11 * src.y + this._m12;
 				dest.x = xp;
 				dest.y = yp;
 				return dest;
 			} else if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
 				let seq = arguments[0], i = arguments[1];
-				var xp = this.m00 * seq.getOrdinate(i, 0) + this.m01 * seq.getOrdinate(i, 1) + this.m02;
-				var yp = this.m10 * seq.getOrdinate(i, 0) + this.m11 * seq.getOrdinate(i, 1) + this.m12;
+				var xp = this._m00 * seq.getOrdinate(i, 0) + this._m01 * seq.getOrdinate(i, 1) + this._m02;
+				var yp = this._m10 * seq.getOrdinate(i, 0) + this._m11 * seq.getOrdinate(i, 1) + this._m12;
 				seq.setOrdinate(i, 0, xp);
 				seq.setOrdinate(i, 1, yp);
 			}

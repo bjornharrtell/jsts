@@ -10,15 +10,15 @@ import Exception from '../../../../../java/lang/Exception';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder';
 export default function SimpleSnapRounder() {
-	this.pm = null;
-	this.li = null;
-	this.scaleFactor = null;
-	this.nodedSegStrings = null;
+	this._pm = null;
+	this._li = null;
+	this._scaleFactor = null;
+	this._nodedSegStrings = null;
 	let pm = arguments[0];
-	this.pm = pm;
-	this.li = new RobustLineIntersector();
-	this.li.setPrecisionModel(pm);
-	this.scaleFactor = pm.getScale();
+	this._pm = pm;
+	this._li = new RobustLineIntersector();
+	this._li.setPrecisionModel(pm);
+	this._scaleFactor = pm.getScale();
 }
 extend(SimpleSnapRounder.prototype, {
 	checkCorrectness: function (inputSegmentStrings) {
@@ -33,7 +33,7 @@ extend(SimpleSnapRounder.prototype, {
 		} finally {}
 	},
 	getNodedSubstrings: function () {
-		return NodedSegmentString.getNodedSubstrings(this.nodedSegStrings);
+		return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings);
 	},
 	snapRound: function (segStrings, li) {
 		var intersections = this.findInteriorIntersections(segStrings, li);
@@ -62,7 +62,7 @@ extend(SimpleSnapRounder.prototype, {
 			var pts0 = e0.getCoordinates();
 			var pts1 = e1.getCoordinates();
 			for (var i0 = 0; i0 < pts0.length - 1; i0++) {
-				var hotPixel = new HotPixel(pts0[i0], this.scaleFactor, this.li);
+				var hotPixel = new HotPixel(pts0[i0], this._scaleFactor, this._li);
 				for (var i1 = 0; i1 < pts1.length - 1; i1++) {
 					if (e0 === e1) {
 						if (i0 === i1) continue;
@@ -76,8 +76,8 @@ extend(SimpleSnapRounder.prototype, {
 		}
 	},
 	computeNodes: function (inputSegmentStrings) {
-		this.nodedSegStrings = inputSegmentStrings;
-		this.snapRound(inputSegmentStrings, this.li);
+		this._nodedSegStrings = inputSegmentStrings;
+		this.snapRound(inputSegmentStrings, this._li);
 	},
 	computeSnaps: function () {
 		if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection)) {
@@ -90,7 +90,7 @@ extend(SimpleSnapRounder.prototype, {
 			let ss = arguments[0], snapPts = arguments[1];
 			for (var it = snapPts.iterator(); it.hasNext(); ) {
 				var snapPt = it.next();
-				var hotPixel = new HotPixel(snapPt, this.scaleFactor, this.li);
+				var hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li);
 				for (var i = 0; i < ss.size() - 1; i++) {
 					hotPixel.addSnappedNode(ss, i);
 				}

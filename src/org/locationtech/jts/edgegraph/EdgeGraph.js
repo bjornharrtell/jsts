@@ -2,7 +2,7 @@ import HashMap from '../../../../java/util/HashMap';
 import extend from '../../../../extend';
 import HalfEdge from './HalfEdge';
 export default function EdgeGraph() {
-	this.vertexMap = new HashMap();
+	this._vertexMap = new HashMap();
 }
 extend(EdgeGraph.prototype, {
 	insert: function (orig, dest, eAdj) {
@@ -10,13 +10,13 @@ extend(EdgeGraph.prototype, {
 		if (eAdj !== null) {
 			eAdj.insert(e);
 		} else {
-			this.vertexMap.put(orig, e);
+			this._vertexMap.put(orig, e);
 		}
-		var eAdjDest = this.vertexMap.get(dest);
+		var eAdjDest = this._vertexMap.get(dest);
 		if (eAdjDest !== null) {
 			eAdjDest.insert(e.sym());
 		} else {
-			this.vertexMap.put(dest, e.sym());
+			this._vertexMap.put(dest, e.sym());
 		}
 		return e;
 	},
@@ -31,7 +31,7 @@ extend(EdgeGraph.prototype, {
 	},
 	addEdge: function (orig, dest) {
 		if (!EdgeGraph.isValidEdge(orig, dest)) return null;
-		var eAdj = this.vertexMap.get(orig);
+		var eAdj = this._vertexMap.get(orig);
 		var eSame = null;
 		if (eAdj !== null) {
 			eSame = eAdj.find(dest);
@@ -43,10 +43,10 @@ extend(EdgeGraph.prototype, {
 		return e;
 	},
 	getVertexEdges: function () {
-		return this.vertexMap.values();
+		return this._vertexMap.values();
 	},
 	findEdge: function (orig, dest) {
-		var e = this.vertexMap.get(orig);
+		var e = this._vertexMap.get(orig);
 		if (e === null) return null;
 		return e.find(dest);
 	},

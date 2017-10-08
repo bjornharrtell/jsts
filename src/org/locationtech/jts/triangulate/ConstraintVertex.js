@@ -2,31 +2,31 @@ import extend from '../../../../extend';
 import Vertex from './quadedge/Vertex';
 import inherits from '../../../../inherits';
 export default function ConstraintVertex() {
-	this._isOnConstraint = null;
-	this.constraint = null;
+	this.__isOnConstraint = null;
+	this._constraint = null;
 	let p = arguments[0];
 	Vertex.call(this, p);
 }
 inherits(ConstraintVertex, Vertex);
 extend(ConstraintVertex.prototype, {
 	getConstraint: function () {
-		return this.constraint;
+		return this._constraint;
 	},
 	setOnConstraint: function (isOnConstraint) {
-		this._isOnConstraint = isOnConstraint;
+		this.__isOnConstraint = isOnConstraint;
 	},
 	merge: function (other) {
-		if (other._isOnConstraint) {
-			this._isOnConstraint = true;
-			this.constraint = other.constraint;
+		if (other.__isOnConstraint) {
+			this.__isOnConstraint = true;
+			this._constraint = other._constraint;
 		}
 	},
 	isOnConstraint: function () {
-		return this._isOnConstraint;
+		return this.__isOnConstraint;
 	},
 	setConstraint: function (constraint) {
-		this._isOnConstraint = true;
-		this.constraint = constraint;
+		this.__isOnConstraint = true;
+		this._constraint = constraint;
 	},
 	interfaces_: function () {
 		return [];

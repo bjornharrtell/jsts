@@ -4,13 +4,13 @@ import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default function PolygonExtracter() {
-	this.comps = null;
+	this._comps = null;
 	let comps = arguments[0];
-	this.comps = comps;
+	this._comps = comps;
 }
 extend(PolygonExtracter.prototype, {
 	filter: function (geom) {
-		if (geom instanceof Polygon) this.comps.add(geom);
+		if (geom instanceof Polygon) this._comps.add(geom);
 	},
 	interfaces_: function () {
 		return [GeometryFilter];

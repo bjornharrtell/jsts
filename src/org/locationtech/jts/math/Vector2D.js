@@ -4,52 +4,52 @@ import Angle from '../algorithm/Angle';
 import RobustDeterminant from '../algorithm/RobustDeterminant';
 import Assert from '../util/Assert';
 export default function Vector2D() {
-	this.x = null;
-	this.y = null;
+	this._x = null;
+	this._y = null;
 	if (arguments.length === 0) {
 		Vector2D.call(this, 0.0, 0.0);
 	} else if (arguments.length === 1) {
 		if (arguments[0] instanceof Vector2D) {
 			let v = arguments[0];
-			this.x = v.x;
-			this.y = v.y;
+			this._x = v._x;
+			this._y = v._y;
 		} else if (arguments[0] instanceof Coordinate) {
 			let v = arguments[0];
-			this.x = v.x;
-			this.y = v.y;
+			this._x = v.x;
+			this._y = v.y;
 		}
 	} else if (arguments.length === 2) {
 		if (typeof arguments[0] === "number" && typeof arguments[1] === "number") {
 			let x = arguments[0], y = arguments[1];
-			this.x = x;
-			this.y = y;
+			this._x = x;
+			this._y = y;
 		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
 			let from = arguments[0], to = arguments[1];
-			this.x = to.x - from.x;
-			this.y = to.y - from.y;
+			this._x = to.x - from.x;
+			this._y = to.y - from.y;
 		}
 	}
 }
 extend(Vector2D.prototype, {
 	dot: function (v) {
-		return this.x * v.x + this.y * v.y;
+		return this._x * v._x + this._y * v._y;
 	},
 	isParallel: function (v) {
-		return 0.0 === RobustDeterminant.signOfDet2x2(this.x, this.y, v.x, v.y);
+		return 0.0 === RobustDeterminant.signOfDet2x2(this._x, this._y, v._x, v._y);
 	},
 	getComponent: function (index) {
-		if (index === 0) return this.x;
-		return this.y;
+		if (index === 0) return this._x;
+		return this._y;
 	},
 	subtract: function (v) {
-		return Vector2D.create(this.x - v.x, this.y - v.y);
+		return Vector2D.create(this._x - v._x, this._y - v._y);
 	},
 	equals: function (o) {
 		if (!(o instanceof Vector2D)) {
 			return false;
 		}
 		var v = o;
-		return this.x === v.x && this.y === v.y;
+		return this._x === v._x && this._y === v._y;
 	},
 	normalize: function () {
 		var length = this.length();
@@ -58,17 +58,17 @@ extend(Vector2D.prototype, {
 	},
 	angle: function () {
 		if (arguments.length === 0) {
-			return Math.atan2(this.y, this.x);
+			return Math.atan2(this._y, this._x);
 		} else if (arguments.length === 1) {
 			let v = arguments[0];
 			return Angle.diff(v.angle(), this.angle());
 		}
 	},
 	weightedSum: function (v, frac) {
-		return Vector2D.create(frac * this.x + (1.0 - frac) * v.x, frac * this.y + (1.0 - frac) * v.y);
+		return Vector2D.create(frac * this._x + (1.0 - frac) * v._x, frac * this._y + (1.0 - frac) * v._y);
 	},
 	divide: function (d) {
-		return Vector2D.create(this.x / d, this.y / d);
+		return Vector2D.create(this._x / d, this._y / d);
 	},
 	rotateByQuarterCircle: function (numQuarters) {
 		var nQuad = numQuarters % 4;
@@ -77,13 +77,13 @@ extend(Vector2D.prototype, {
 		}
 		switch (nQuad) {
 			case 0:
-				return Vector2D.create(this.x, this.y);
+				return Vector2D.create(this._x, this._y);
 			case 1:
-				return Vector2D.create(-this.y, this.x);
+				return Vector2D.create(-this._y, this._x);
 			case 2:
-				return Vector2D.create(-this.x, -this.y);
+				return Vector2D.create(-this._x, -this._y);
 			case 3:
-				return Vector2D.create(this.y, -this.x);
+				return Vector2D.create(this._y, -this._x);
 		}
 		Assert.shouldNeverReachHere();
 		return null;
@@ -91,7 +91,7 @@ extend(Vector2D.prototype, {
 	rotate: function (angle) {
 		var cos = Math.cos(angle);
 		var sin = Math.sin(angle);
-		return Vector2D.create(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
+		return Vector2D.create(this._x * cos - this._y * sin, this._x * sin + this._y * cos);
 	},
 	angleTo: function (v) {
 		var a1 = this.angle();
@@ -102,50 +102,50 @@ extend(Vector2D.prototype, {
 		return angDel;
 	},
 	getX: function () {
-		return this.x;
+		return this._x;
 	},
 	lengthSquared: function () {
-		return this.x * this.x + this.y * this.y;
+		return this._x * this._x + this._y * this._y;
 	},
 	negate: function () {
-		return Vector2D.create(-this.x, -this.y);
+		return Vector2D.create(-this._x, -this._y);
 	},
 	clone: function () {
 		return new Vector2D(this);
 	},
 	toCoordinate: function () {
-		return new Coordinate(this.x, this.y);
+		return new Coordinate(this._x, this._y);
 	},
 	translate: function (coord) {
-		return new Coordinate(this.x + coord.x, this.y + coord.y);
+		return new Coordinate(this._x + coord.x, this._y + coord.y);
 	},
 	multiply: function (d) {
-		return Vector2D.create(this.x * d, this.y * d);
+		return Vector2D.create(this._x * d, this._y * d);
 	},
 	toString: function () {
-		return "[" + this.x + ", " + this.y + "]";
+		return "[" + this._x + ", " + this._y + "]";
 	},
 	length: function () {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
+		return Math.sqrt(this._x * this._x + this._y * this._y);
 	},
 	average: function (v) {
 		return this.weightedSum(v, 0.5);
 	},
 	getY: function () {
-		return this.y;
+		return this._y;
 	},
 	add: function (v) {
-		return Vector2D.create(this.x + v.x, this.y + v.y);
+		return Vector2D.create(this._x + v._x, this._y + v._y);
 	},
 	distance: function (v) {
-		var delx = v.x - this.x;
-		var dely = v.y - this.y;
+		var delx = v._x - this._x;
+		var dely = v._y - this._y;
 		return Math.sqrt(delx * delx + dely * dely);
 	},
 	hashCode: function () {
 		var result = 17;
-		result = 37 * result + Coordinate.hashCode(this.x);
-		result = 37 * result + Coordinate.hashCode(this.y);
+		result = 37 * result + Coordinate.hashCode(this._x);
+		result = 37 * result + Coordinate.hashCode(this._y);
 		return result;
 	},
 	interfaces_: function () {

@@ -3,38 +3,38 @@ import Position from '../../geomgraph/Position';
 import extend from '../../../../../extend';
 import Assert from '../../util/Assert';
 export default function RightmostEdgeFinder() {
-	this.minIndex = -1;
-	this.minCoord = null;
-	this.minDe = null;
-	this.orientedDe = null;
+	this._minIndex = -1;
+	this._minCoord = null;
+	this._minDe = null;
+	this._orientedDe = null;
 }
 extend(RightmostEdgeFinder.prototype, {
 	getCoordinate: function () {
-		return this.minCoord;
+		return this._minCoord;
 	},
 	getRightmostSide: function (de, index) {
 		var side = this.getRightmostSideOfSegment(de, index);
 		if (side < 0) side = this.getRightmostSideOfSegment(de, index - 1);
 		if (side < 0) {
-			this.minCoord = null;
+			this._minCoord = null;
 			this.checkForRightmostCoordinate(de);
 		}
 		return side;
 	},
 	findRightmostEdgeAtVertex: function () {
-		var pts = this.minDe.getEdge().getCoordinates();
-		Assert.isTrue(this.minIndex > 0 && this.minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
-		var pPrev = pts[this.minIndex - 1];
-		var pNext = pts[this.minIndex + 1];
-		var orientation = CGAlgorithms.computeOrientation(this.minCoord, pNext, pPrev);
+		var pts = this._minDe.getEdge().getCoordinates();
+		Assert.isTrue(this._minIndex > 0 && this._minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
+		var pPrev = pts[this._minIndex - 1];
+		var pNext = pts[this._minIndex + 1];
+		var orientation = CGAlgorithms.computeOrientation(this._minCoord, pNext, pPrev);
 		var usePrev = false;
-		if (pPrev.y < this.minCoord.y && pNext.y < this.minCoord.y && orientation === CGAlgorithms.COUNTERCLOCKWISE) {
+		if (pPrev.y < this._minCoord.y && pNext.y < this._minCoord.y && orientation === CGAlgorithms.COUNTERCLOCKWISE) {
 			usePrev = true;
-		} else if (pPrev.y > this.minCoord.y && pNext.y > this.minCoord.y && orientation === CGAlgorithms.CLOCKWISE) {
+		} else if (pPrev.y > this._minCoord.y && pNext.y > this._minCoord.y && orientation === CGAlgorithms.CLOCKWISE) {
 			usePrev = true;
 		}
 		if (usePrev) {
-			this.minIndex = this.minIndex - 1;
+			this._minIndex = this._minIndex - 1;
 		}
 	},
 	getRightmostSideOfSegment: function (de, i) {
@@ -47,25 +47,25 @@ extend(RightmostEdgeFinder.prototype, {
 		return pos;
 	},
 	getEdge: function () {
-		return this.orientedDe;
+		return this._orientedDe;
 	},
 	checkForRightmostCoordinate: function (de) {
 		var coord = de.getEdge().getCoordinates();
 		for (var i = 0; i < coord.length - 1; i++) {
-			if (this.minCoord === null || coord[i].x > this.minCoord.x) {
-				this.minDe = de;
-				this.minIndex = i;
-				this.minCoord = coord[i];
+			if (this._minCoord === null || coord[i].x > this._minCoord.x) {
+				this._minDe = de;
+				this._minIndex = i;
+				this._minCoord = coord[i];
 			}
 		}
 	},
 	findRightmostEdgeAtNode: function () {
-		var node = this.minDe.getNode();
+		var node = this._minDe.getNode();
 		var star = node.getEdges();
-		this.minDe = star.getRightmostEdge();
-		if (!this.minDe.isForward()) {
-			this.minDe = this.minDe.getSym();
-			this.minIndex = this.minDe.getEdge().getCoordinates().length - 1;
+		this._minDe = star.getRightmostEdge();
+		if (!this._minDe.isForward()) {
+			this._minDe = this._minDe.getSym();
+			this._minIndex = this._minDe.getEdge().getCoordinates().length - 1;
 		}
 	},
 	findEdge: function (dirEdgeList) {
@@ -74,16 +74,16 @@ extend(RightmostEdgeFinder.prototype, {
 			if (!de.isForward()) continue;
 			this.checkForRightmostCoordinate(de);
 		}
-		Assert.isTrue(this.minIndex !== 0 || this.minCoord.equals(this.minDe.getCoordinate()), "inconsistency in rightmost processing");
-		if (this.minIndex === 0) {
+		Assert.isTrue(this._minIndex !== 0 || this._minCoord.equals(this._minDe.getCoordinate()), "inconsistency in rightmost processing");
+		if (this._minIndex === 0) {
 			this.findRightmostEdgeAtNode();
 		} else {
 			this.findRightmostEdgeAtVertex();
 		}
-		this.orientedDe = this.minDe;
-		var rightmostSide = this.getRightmostSide(this.minDe, this.minIndex);
+		this._orientedDe = this._minDe;
+		var rightmostSide = this.getRightmostSide(this._minDe, this._minIndex);
 		if (rightmostSide === Position.LEFT) {
-			this.orientedDe = this.minDe.getSym();
+			this._orientedDe = this._minDe.getSym();
 		}
 	},
 	interfaces_: function () {

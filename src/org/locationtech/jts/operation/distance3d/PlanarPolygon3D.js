@@ -8,28 +8,28 @@ import CoordinateSequence from '../../geom/CoordinateSequence';
 import Plane3D from '../../math/Plane3D';
 import RayCrossingCounter from '../../algorithm/RayCrossingCounter';
 export default function PlanarPolygon3D() {
-	this.plane = null;
-	this.poly = null;
-	this.facingPlane = -1;
+	this._plane = null;
+	this._poly = null;
+	this._facingPlane = -1;
 	let poly = arguments[0];
-	this.poly = poly;
-	this.plane = this.findBestFitPlane(poly);
-	this.facingPlane = this.plane.closestAxisPlane();
+	this._poly = poly;
+	this._plane = this.findBestFitPlane(poly);
+	this._facingPlane = this._plane.closestAxisPlane();
 }
 extend(PlanarPolygon3D.prototype, {
 	intersects: function () {
 		if (arguments.length === 1) {
 			let intPt = arguments[0];
-			if (Location.EXTERIOR === this.locate(intPt, this.poly.getExteriorRing())) return false;
-			for (var i = 0; i < this.poly.getNumInteriorRing(); i++) {
-				if (Location.INTERIOR === this.locate(intPt, this.poly.getInteriorRingN(i))) return false;
+			if (Location.EXTERIOR === this.locate(intPt, this._poly.getExteriorRing())) return false;
+			for (var i = 0; i < this._poly.getNumInteriorRing(); i++) {
+				if (Location.INTERIOR === this.locate(intPt, this._poly.getInteriorRingN(i))) return false;
 			}
 			return true;
 		} else if (arguments.length === 2) {
 			let pt = arguments[0], ring = arguments[1];
 			var seq = ring.getCoordinateSequence();
-			var seqProj = PlanarPolygon3D.project(seq, this.facingPlane);
-			var ptProj = PlanarPolygon3D.project(pt, this.facingPlane);
+			var seqProj = PlanarPolygon3D.project(seq, this._facingPlane);
+			var ptProj = PlanarPolygon3D.project(pt, this._facingPlane);
 			return Location.EXTERIOR !== RayCrossingCounter.locatePointInRing(ptProj, seqProj);
 		}
 	},
@@ -47,10 +47,10 @@ extend(PlanarPolygon3D.prototype, {
 		return a;
 	},
 	getPolygon: function () {
-		return this.poly;
+		return this._poly;
 	},
 	getPlane: function () {
-		return this.plane;
+		return this._plane;
 	},
 	findBestFitPlane: function (poly) {
 		var seq = poly.getExteriorRing().getCoordinateSequence();
@@ -78,8 +78,8 @@ extend(PlanarPolygon3D.prototype, {
 	},
 	locate: function (pt, ring) {
 		var seq = ring.getCoordinateSequence();
-		var seqProj = PlanarPolygon3D.project(seq, this.facingPlane);
-		var ptProj = PlanarPolygon3D.project(pt, this.facingPlane);
+		var seqProj = PlanarPolygon3D.project(seq, this._facingPlane);
+		var ptProj = PlanarPolygon3D.project(pt, this._facingPlane);
 		return RayCrossingCounter.locatePointInRing(ptProj, seqProj);
 	},
 	interfaces_: function () {

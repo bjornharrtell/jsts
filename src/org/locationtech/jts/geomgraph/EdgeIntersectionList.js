@@ -5,7 +5,7 @@ import Label from './Label';
 import Edge from './Edge';
 import TreeMap from '../../../../java/util/TreeMap';
 export default function EdgeIntersectionList() {
-	this.nodeMap = new TreeMap();
+	this._nodeMap = new TreeMap();
 	this.edge = null;
 	let edge = arguments[0];
 	this.edge = edge;
@@ -19,7 +19,7 @@ extend(EdgeIntersectionList.prototype, {
 		}
 	},
 	iterator: function () {
-		return this.nodeMap.values().iterator();
+		return this._nodeMap.values().iterator();
 	},
 	addSplitEdges: function (edgeList) {
 		this.addEndpoints();
@@ -55,11 +55,11 @@ extend(EdgeIntersectionList.prototype, {
 	},
 	add: function (intPt, segmentIndex, dist) {
 		var eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
-		var ei = this.nodeMap.get(eiNew);
+		var ei = this._nodeMap.get(eiNew);
 		if (ei !== null) {
 			return ei;
 		}
-		this.nodeMap.put(eiNew, eiNew);
+		this._nodeMap.put(eiNew, eiNew);
 		return eiNew;
 	},
 	isIntersection: function (pt) {

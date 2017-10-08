@@ -11,16 +11,16 @@ import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
 import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
 export default function IsSimpleOp() {
-	this.inputGeom = null;
-	this.isClosedEndpointsInInterior = true;
-	this.nonSimpleLocation = null;
+	this._inputGeom = null;
+	this._isClosedEndpointsInInterior = true;
+	this._nonSimpleLocation = null;
 	if (arguments.length === 1) {
 		let geom = arguments[0];
-		this.inputGeom = geom;
+		this._inputGeom = geom;
 	} else if (arguments.length === 2) {
 		let geom = arguments[0], boundaryNodeRule = arguments[1];
-		this.inputGeom = geom;
-		this.isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
+		this._inputGeom = geom;
+		this._isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
 	}
 }
 extend(IsSimpleOp.prototype, {
@@ -31,7 +31,7 @@ extend(IsSimpleOp.prototype, {
 			var pt = mp.getGeometryN(i);
 			var p = pt.getCoordinate();
 			if (points.contains(p)) {
-				this.nonSimpleLocation = p;
+				this._nonSimpleLocation = p;
 				return false;
 			}
 			points.add(p);
@@ -60,14 +60,14 @@ extend(IsSimpleOp.prototype, {
 		for (var i = endPoints.values().iterator(); i.hasNext(); ) {
 			var eiInfo = i.next();
 			if (eiInfo.isClosed && eiInfo.degree !== 2) {
-				this.nonSimpleLocation = eiInfo.getCoordinate();
+				this._nonSimpleLocation = eiInfo.getCoordinate();
 				return true;
 			}
 		}
 		return false;
 	},
 	getNonSimpleLocation: function () {
-		return this.nonSimpleLocation;
+		return this._nonSimpleLocation;
 	},
 	isSimpleLinearGeometry: function (geom) {
 		if (geom.isEmpty()) return true;
@@ -76,11 +76,11 @@ extend(IsSimpleOp.prototype, {
 		var si = graph.computeSelfNodes(li, true);
 		if (!si.hasIntersection()) return true;
 		if (si.hasProperIntersection()) {
-			this.nonSimpleLocation = si.getProperIntersectionPoint();
+			this._nonSimpleLocation = si.getProperIntersectionPoint();
 			return false;
 		}
 		if (this.hasNonEndpointIntersection(graph)) return false;
-		if (this.isClosedEndpointsInInterior) {
+		if (this._isClosedEndpointsInInterior) {
 			if (this.hasClosedEndpointIntersection(graph)) return false;
 		}
 		return true;
@@ -92,7 +92,7 @@ extend(IsSimpleOp.prototype, {
 			for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext(); ) {
 				var ei = eiIt.next();
 				if (!ei.isEndPoint(maxSegmentIndex)) {
-					this.nonSimpleLocation = ei.getCoordinate();
+					this._nonSimpleLocation = ei.getCoordinate();
 					return true;
 				}
 			}
@@ -108,7 +108,7 @@ extend(IsSimpleOp.prototype, {
 		eiInfo.addEndpoint(isClosed);
 	},
 	computeSimple: function (geom) {
-		this.nonSimpleLocation = null;
+		this._nonSimpleLocation = null;
 		if (geom.isEmpty()) return true;
 		if (geom instanceof LineString) return this.isSimpleLinearGeometry(geom);
 		if (geom instanceof MultiLineString) return this.isSimpleLinearGeometry(geom);
@@ -118,8 +118,8 @@ extend(IsSimpleOp.prototype, {
 		return true;
 	},
 	isSimple: function () {
-		this.nonSimpleLocation = null;
-		return this.computeSimple(this.inputGeom);
+		this._nonSimpleLocation = null;
+		return this.computeSimple(this._inputGeom);
 	},
 	isSimpleGeometryCollection: function (geom) {
 		for (var i = 0; i < geom.getNumGeometries(); i++) {

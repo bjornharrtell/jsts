@@ -4,11 +4,11 @@ import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 import Triangle from '../geom/Triangle';
 export default function VWLineSimplifier() {
-	this.pts = null;
-	this.tolerance = null;
+	this._pts = null;
+	this._tolerance = null;
 	let pts = arguments[0], distanceTolerance = arguments[1];
-	this.pts = pts;
-	this.tolerance = distanceTolerance * distanceTolerance;
+	this._pts = pts;
+	this._tolerance = distanceTolerance * distanceTolerance;
 }
 extend(VWLineSimplifier.prototype, {
 	simplifyVertex: function (vwLine) {
@@ -21,20 +21,20 @@ extend(VWLineSimplifier.prototype, {
 				minArea = area;
 				minVertex = curr;
 			}
-			curr = curr.next;
+			curr = curr._next;
 		}
-		if (minVertex !== null && minArea < this.tolerance) {
+		if (minVertex !== null && minArea < this._tolerance) {
 			minVertex.remove();
 		}
 		if (!vwLine.isLive()) return -1;
 		return minArea;
 	},
 	simplify: function () {
-		var vwLine = VWVertex.buildLine(this.pts);
-		var minArea = this.tolerance;
+		var vwLine = VWVertex.buildLine(this._pts);
+		var minArea = this._tolerance;
 		do {
 			minArea = this.simplifyVertex(vwLine);
-		} while (minArea < this.tolerance);
+		} while (minArea < this._tolerance);
 		var simp = vwLine.getCoordinates();
 		if (simp.length < 2) {
 			return [simp[0], new Coordinate(simp[0])];
@@ -53,59 +53,59 @@ VWLineSimplifier.simplify = function (pts, distanceTolerance) {
 	return simp.simplify();
 };
 function VWVertex() {
-	this.pt = null;
-	this.prev = null;
-	this.next = null;
-	this.area = VWVertex.MAX_AREA;
-	this._isLive = true;
+	this._pt = null;
+	this._prev = null;
+	this._next = null;
+	this._area = VWVertex.MAX_AREA;
+	this.__isLive = true;
 	let pt = arguments[0];
-	this.pt = pt;
+	this._pt = pt;
 }
 extend(VWVertex.prototype, {
 	getCoordinates: function () {
 		var coords = new CoordinateList();
 		var curr = this;
 		do {
-			coords.add(curr.pt, false);
-			curr = curr.next;
+			coords.add(curr._pt, false);
+			curr = curr._next;
 		} while (curr !== null);
 		return coords.toCoordinateArray();
 	},
 	getArea: function () {
-		return this.area;
+		return this._area;
 	},
 	updateArea: function () {
-		if (this.prev === null || this.next === null) {
-			this.area = VWVertex.MAX_AREA;
+		if (this._prev === null || this._next === null) {
+			this._area = VWVertex.MAX_AREA;
 			return null;
 		}
-		this.area = Math.abs(Triangle.area(this.prev.pt, this.pt, this.next.pt));
+		this._area = Math.abs(Triangle.area(this._prev._pt, this._pt, this._next._pt));
 	},
 	remove: function () {
-		var tmpPrev = this.prev;
-		var tmpNext = this.next;
+		var tmpPrev = this._prev;
+		var tmpNext = this._next;
 		var result = null;
-		if (this.prev !== null) {
-			this.prev.setNext(tmpNext);
-			this.prev.updateArea();
-			result = this.prev;
+		if (this._prev !== null) {
+			this._prev.setNext(tmpNext);
+			this._prev.updateArea();
+			result = this._prev;
 		}
-		if (this.next !== null) {
-			this.next.setPrev(tmpPrev);
-			this.next.updateArea();
-			if (result === null) result = this.next;
+		if (this._next !== null) {
+			this._next.setPrev(tmpPrev);
+			this._next.updateArea();
+			if (result === null) result = this._next;
 		}
-		this._isLive = false;
+		this.__isLive = false;
 		return result;
 	},
 	isLive: function () {
-		return this._isLive;
+		return this.__isLive;
 	},
 	setPrev: function (prev) {
-		this.prev = prev;
+		this._prev = prev;
 	},
 	setNext: function (next) {
-		this.next = next;
+		this._next = next;
 	},
 	interfaces_: function () {
 		return [];

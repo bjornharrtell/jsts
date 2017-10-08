@@ -3,15 +3,15 @@ import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GeometryFilter from '../GeometryFilter';
 export default function GeometryExtracter() {
-	this.sortIndex = -1;
-	this.comps = null;
+	this._sortIndex = -1;
+	this._comps = null;
 	let sortIndex = arguments[0], comps = arguments[1];
-	this.sortIndex = sortIndex;
-	this.comps = comps;
+	this._sortIndex = sortIndex;
+	this._comps = comps;
 }
 extend(GeometryExtracter.prototype, {
 	filter: function (geom) {
-		if (this.sortIndex === -1 || geom.getSortIndex() === this.sortIndex) this.comps.add(geom);
+		if (this._sortIndex === -1 || geom.getSortIndex() === this._sortIndex) this._comps.add(geom);
 	},
 	interfaces_: function () {
 		return [GeometryFilter];

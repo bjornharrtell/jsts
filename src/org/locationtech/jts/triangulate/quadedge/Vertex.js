@@ -5,16 +5,16 @@ import extend from '../../../../../extend';
 import System from '../../../../../java/lang/System';
 import HCoordinate from '../../algorithm/HCoordinate';
 export default function Vertex() {
-	this.p = null;
+	this._p = null;
 	if (arguments.length === 1) {
 		let _p = arguments[0];
-		this.p = new Coordinate(_p);
+		this._p = new Coordinate(_p);
 	} else if (arguments.length === 2) {
 		let _x = arguments[0], _y = arguments[1];
-		this.p = new Coordinate(_x, _y);
+		this._p = new Coordinate(_x, _y);
 	} else if (arguments.length === 3) {
 		let _x = arguments[0], _y = arguments[1], _z = arguments[2];
-		this.p = new Coordinate(_x, _y, _z);
+		this._p = new Coordinate(_x, _y, _z);
 	}
 }
 extend(Vertex.prototype, {
@@ -35,13 +35,13 @@ extend(Vertex.prototype, {
 		return cc;
 	},
 	dot: function (v) {
-		return this.p.x * v.getX() + this.p.y * v.getY();
+		return this._p.x * v.getX() + this._p.y * v.getY();
 	},
 	magn: function () {
-		return Math.sqrt(this.p.x * this.p.x + this.p.y * this.p.y);
+		return Math.sqrt(this._p.x * this._p.x + this._p.y * this._p.y);
 	},
 	getZ: function () {
-		return this.p.z;
+		return this._p.z;
 	},
 	bisector: function (a, b) {
 		var dx = b.getX() - a.getX();
@@ -53,14 +53,14 @@ extend(Vertex.prototype, {
 	equals: function () {
 		if (arguments.length === 1) {
 			let _x = arguments[0];
-			if (this.p.x === _x.getX() && this.p.y === _x.getY()) {
+			if (this._p.x === _x.getX() && this._p.y === _x.getY()) {
 				return true;
 			} else {
 				return false;
 			}
 		} else if (arguments.length === 2) {
 			let _x = arguments[0], tolerance = arguments[1];
-			if (this.p.distance(_x.getCoordinate()) < tolerance) {
+			if (this._p.distance(_x.getCoordinate()) < tolerance) {
 				return true;
 			} else {
 				return false;
@@ -68,10 +68,10 @@ extend(Vertex.prototype, {
 		}
 	},
 	getCoordinate: function () {
-		return this.p;
+		return this._p;
 	},
 	isInCircle: function (a, b, c) {
-		return TrianglePredicate.isInCircleRobust(a.p, b.p, c.p, this.p);
+		return TrianglePredicate.isInCircleRobust(a._p, b._p, c._p, this._p);
 	},
 	interpolateZValue: function (v0, v1, v2) {
 		var x0 = v0.getX();
@@ -89,43 +89,43 @@ extend(Vertex.prototype, {
 		return z;
 	},
 	midPoint: function (a) {
-		var xm = (this.p.x + a.getX()) / 2.0;
-		var ym = (this.p.y + a.getY()) / 2.0;
-		var zm = (this.p.z + a.getZ()) / 2.0;
+		var xm = (this._p.x + a.getX()) / 2.0;
+		var ym = (this._p.y + a.getY()) / 2.0;
+		var zm = (this._p.z + a.getZ()) / 2.0;
 		return new Vertex(xm, ym, zm);
 	},
 	rightOf: function (e) {
 		return this.isCCW(e.dest(), e.orig());
 	},
 	isCCW: function (b, c) {
-		return (b.p.x - this.p.x) * (c.p.y - this.p.y) - (b.p.y - this.p.y) * (c.p.x - this.p.x) > 0;
+		return (b._p.x - this._p.x) * (c._p.y - this._p.y) - (b._p.y - this._p.y) * (c._p.x - this._p.x) > 0;
 	},
 	getX: function () {
-		return this.p.x;
+		return this._p.x;
 	},
 	crossProduct: function (v) {
-		return this.p.x * v.getY() - this.p.y * v.getX();
+		return this._p.x * v.getY() - this._p.y * v.getX();
 	},
 	setZ: function (_z) {
-		this.p.z = _z;
+		this._p.z = _z;
 	},
 	times: function (c) {
-		return new Vertex(c * this.p.x, c * this.p.y);
+		return new Vertex(c * this._p.x, c * this._p.y);
 	},
 	cross: function () {
-		return new Vertex(this.p.y, -this.p.x);
+		return new Vertex(this._p.y, -this._p.x);
 	},
 	leftOf: function (e) {
 		return this.isCCW(e.orig(), e.dest());
 	},
 	toString: function () {
-		return "POINT (" + this.p.x + " " + this.p.y + ")";
+		return "POINT (" + this._p.x + " " + this._p.y + ")";
 	},
 	sub: function (v) {
-		return new Vertex(this.p.x - v.getX(), this.p.y - v.getY());
+		return new Vertex(this._p.x - v.getX(), this._p.y - v.getY());
 	},
 	getY: function () {
-		return this.p.y;
+		return this._p.y;
 	},
 	classify: function (p0, p1) {
 		var p2 = this;
@@ -141,7 +141,7 @@ extend(Vertex.prototype, {
 		return Vertex.BETWEEN;
 	},
 	sum: function (v) {
-		return new Vertex(this.p.x + v.getX(), this.p.y + v.getY());
+		return new Vertex(this._p.x + v.getX(), this._p.y + v.getY());
 	},
 	distance: function (v1, v2) {
 		return Math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0) + Math.pow(v2.getY() - v1.getY(), 2.0));
