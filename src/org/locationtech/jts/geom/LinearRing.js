@@ -21,6 +21,34 @@ export default function LinearRing() {
 }
 inherits(LinearRing, LineString);
 extend(LinearRing.prototype, {
+	// HACK: These functions are copied from `LineString.js` to get ES6 modules
+	// to work.
+	// See https://github.com/bjornharrtell/jsts/issues/311
+	getCoordinates: function () {
+		return this.points.toCoordinateArray();
+	},
+	getNumPoints: function () {
+		return this.points.size();
+	},
+	getCoordinateN: function (n) {
+		return this.points.getCoordinate(n);
+	},
+	getCoordinateSequence: function () {
+		return this.points;
+	},
+	isEmpty: function () {
+		return this.points.size() === 0;
+	},
+	init: function (points) {
+		if (points === null) {
+			points = this.getFactory().getCoordinateSequenceFactory().create([]);
+		}
+		if (points.size() === 1) {
+			throw new IllegalArgumentException("Invalid number of points in LineString (found " + points.size() + " - must be 0 or >= 2)");
+		}
+		this.points = points;
+	},
+
 	getSortIndex: function () {
 		return Geometry.SORTINDEX_LINEARRING;
 	},
