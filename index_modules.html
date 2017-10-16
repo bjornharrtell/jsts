@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>JSTS demonstration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.19.1/ol.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.19.1/ol.js"></script>
+  <script type="module" src="index_modules.js"></script>
+  <style>
+    html {
+      margin: 0;
+      padding: 0;
+      color: #333;
+      font-size: 13px;
+    }
+    body {
+      margin: 50px;
+      max-width: 800px;
+      padding-left: 50px;
+      font: 1.4rem/2.4rem 'Open Sans',Helvetica,Arial,sans-serif;
+    }
+    pre {
+      margin: 2rem 0;
+      padding: 1rem 0.8rem 1rem 1.2rem;
+      color: #3f3b36;
+      border: 1px solid #f5d995;
+      border-left: 1rem solid #f5d995;
+      font: lighter 1.2rem/2rem Monaco,'MonacoRegular',monospace;
+      background: url(/wp/wp-content/themes/wire/img/pre.png) repeat 0 -0.9rem;
+      background-size: 1px 4rem;
+    }
+    pre code {
+      padding: 0;
+      color: #3f3b36;
+      background-color: transparent;
+      font-size: 1.2rem;
+      line-height: 2rem;
+      text-shadow: none;
+    }
+    code {
+      padding: 0;
+      margin: 0;
+      font-weight: lighter;
+      font-family: Monaco,'MonacoRegular',monospace;
+    }
+    .map {
+      border: 1px solid #f5d995;
+      width:200px;
+      height:200px;
+    }
+  </style>
+</head>
+<body>
+  <a href="https://github.com/bjornharrtell/jsts"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+
+  <h1>JSTS</h1>
+  <p>
+  JSTS is a JavaScript library of spatial predicates and functions
+  for processing geometry conforming to the Simple Features Specification for SQL published by
+  the Open Geospatial Consortium. JSTS is also a JavaScript port of the well
+  established Java library <a href="https://github.com/locationtech/jts">JTS</a> with
+  a built in parser for OpenLayers 3 interopability.
+  </p>
+  <p>
+  JSTS is licensed with a dual BSD/EPL liceence. For more details go to the <a href="https://github.com/bjornharrtell/jsts">project page</a>.
+  </p>
+  <h2>Example use</h2>
+  <p>NOTE: OpenLayers 3 specific code omitted. Please refer to <a href="http://openlayers.org/en/master/examples/jsts.html?q=jsts">this page</a> for a complete example of usage with OpenLayers 3.</p>
+  <h3>Read two point geometries A and B from WKT format</h3>
+  <pre><code>var reader = new jsts.io.WKTReader()
+var a = reader.read('POINT (-20 0)')
+var b = reader.read('POINT (20 0)')</code></pre>
+  <div id="map0" class="map"></div>
+  <h3>Buffer A and B by 40 units</h3>
+  <pre><code>a = a.buffer(40)
+b = b.buffer(40)</code></pre>
+  <div id="map1" class="map"></div>
+  <h3>Intersection of A and B</h3>
+  <pre><code>var intersection = a.intersection(b)</code></pre>
+  <div id="map2" class="map"></div>
+  <h3>Difference of A and B</h3>
+  <pre><code>var difference = a.difference(b)</code></pre>
+  <div id="map3" class="map"></div>
+  <h3>Union of A and B</h3>
+  <pre><code>var union = a.union(b)</code></pre>
+  <div id="map4" class="map"></div>
+  <h3>Symmetric difference of A and B</h3>
+  <pre><code>var symDifference = a.symDifference(b)</code></pre>
+  <div id="map5" class="map"></div>
+  
+</body>
+</html>
