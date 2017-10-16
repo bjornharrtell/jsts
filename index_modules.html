@@ -3,8 +3,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>JSTS demonstration</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.19.1/ol.css" type="text/css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.19.1/ol.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.4.2/ol.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.4.2/ol.js"></script>
   <script type="module" src="index_modules.js"></script>
   <style>
     html {
@@ -67,25 +67,25 @@
   <h2>Example use</h2>
   <p>NOTE: OpenLayers 3 specific code omitted. Please refer to <a href="http://openlayers.org/en/master/examples/jsts.html?q=jsts">this page</a> for a complete example of usage with OpenLayers 3.</p>
   <h3>Read two point geometries A and B from WKT format</h3>
-  <pre><code>var reader = new jsts.io.WKTReader()
+  <pre><code>var reader = new WKTReader()
 var a = reader.read('POINT (-20 0)')
 var b = reader.read('POINT (20 0)')</code></pre>
   <div id="map0" class="map"></div>
   <h3>Buffer A and B by 40 units</h3>
-  <pre><code>a = a.buffer(40)
-b = b.buffer(40)</code></pre>
+  <pre><code>a = BufferOp.bufferOp(a, 40)
+b = BufferOp.bufferOp(40)</code></pre>
   <div id="map1" class="map"></div>
   <h3>Intersection of A and B</h3>
-  <pre><code>var intersection = a.intersection(b)</code></pre>
+  <pre><code>var intersection = OverlayOp.intersection(a, b)</code></pre>
   <div id="map2" class="map"></div>
   <h3>Difference of A and B</h3>
-  <pre><code>var difference = a.difference(b)</code></pre>
+  <pre><code>var difference = OverlayOp.difference(a, b)</code></pre>
   <div id="map3" class="map"></div>
   <h3>Union of A and B</h3>
-  <pre><code>var union = a.union(b)</code></pre>
+  <pre><code>var union = UnionOp.union(a, b)</code></pre>
   <div id="map4" class="map"></div>
   <h3>Symmetric difference of A and B</h3>
-  <pre><code>var symDifference = a.symDifference(b)</code></pre>
+  <pre><code>var symDifference = OverlayOp.symDifference(a, b)</code></pre>
   <div id="map5" class="map"></div>
   
 </body>
