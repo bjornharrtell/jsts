@@ -48,7 +48,7 @@ extend(GeometricShapeFactory.prototype, {
 		}
 		pts[pts.length - 1] = new Coordinate(pts[0]);
 		var ring = this._geomFact.createLinearRing(pts);
-		var poly = this._geomFact.createPolygon(ring, null);
+		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
 	},
 	setNumPoints: function (nPts) {
@@ -79,7 +79,7 @@ extend(GeometricShapeFactory.prototype, {
 		}
 		pts[iPt] = new Coordinate(pts[0]);
 		var ring = this._geomFact.createLinearRing(pts);
-		var poly = this._geomFact.createPolygon(ring, null);
+		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
 	},
 	coordTrans: function (x, y, trans) {
@@ -146,7 +146,7 @@ extend(GeometricShapeFactory.prototype, {
 		}
 		pts[iPt++] = this.coord(centreX, centreY);
 		var ring = this._geomFact.createLinearRing(pts);
-		var poly = this._geomFact.createPolygon(ring, null);
+		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
 	},
 	createRectangle: function () {
@@ -180,7 +180,7 @@ extend(GeometricShapeFactory.prototype, {
 		}
 		pts[ipt++] = new Coordinate(pts[0]);
 		var ring = this._geomFact.createLinearRing(pts);
-		var poly = this._geomFact.createPolygon(ring, null);
+		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
 	},
 	createCircle: function () {

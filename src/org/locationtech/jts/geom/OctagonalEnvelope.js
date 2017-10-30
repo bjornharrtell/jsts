@@ -41,7 +41,7 @@ export default function OctagonalEnvelope() {
 extend(OctagonalEnvelope.prototype, {
 	toGeometry: function (geomFactory) {
 		if (this.isNull()) {
-			return geomFactory.createPoint(null);
+			return geomFactory.createPoint();
 		}
 		var px00 = new Coordinate(this._minX, this._minA - this._minX);
 		var px01 = new Coordinate(this._minX, this._minX - this._minB);
@@ -78,7 +78,7 @@ extend(OctagonalEnvelope.prototype, {
 		}
 		coordList.add(px00, false);
 		var pts = coordList.toCoordinateArray();
-		return geomFactory.createPolygon(geomFactory.createLinearRing(pts), null);
+		return geomFactory.createPolygon(geomFactory.createLinearRing(pts));
 	},
 	getMinA: function () {
 		return this._minA;

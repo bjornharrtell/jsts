@@ -33,7 +33,7 @@ extend(CoordinateList.prototype, {
 	clone: function () {
 		var clone = ArrayList.prototype.clone.call(this);
 		for (var i = 0; i < this.size(); i++) {
-			clone.add(i, this.get(i).copy());
+			clone.add(i, this.get(i).clone());
 		}
 		return clone;
 	},

@@ -1,4 +1,3 @@
-import StringBuffer from '../../../../java/lang/StringBuffer';
 import EdgeIntersectionList from './EdgeIntersectionList';
 import MonotoneChainEdge from './index/MonotoneChainEdge';
 import Position from './Position';
@@ -7,6 +6,7 @@ import extend from '../../../../extend';
 import Label from './Label';
 import Envelope from '../geom/Envelope';
 import inherits from '../../../../inherits';
+import StringBuilder from '../../../../java/lang/StringBuilder';
 import Depth from './Depth';
 import GraphComponent from './GraphComponent';
 export default function Edge() {
@@ -144,15 +144,15 @@ extend(Edge.prototype, {
 		var ei = this.eiList.add(intPt, normalizedSegmentIndex, dist);
 	},
 	toString: function () {
-		var buf = new StringBuffer();
-		buf.append("edge " + this._name + ": ");
-		buf.append("LINESTRING (");
+		var builder = new StringBuilder();
+		builder.append("edge " + this._name + ": ");
+		builder.append("LINESTRING (");
 		for (var i = 0; i < this.pts.length; i++) {
-			if (i > 0) buf.append(",");
-			buf.append(this.pts[i].x + " " + this.pts[i].y);
+			if (i > 0) builder.append(",");
+			builder.append(this.pts[i].x + " " + this.pts[i].y);
 		}
-		buf.append(")  " + this._label + " " + this._depthDelta);
-		return buf.toString();
+		builder.append(")  " + this._label + " " + this._depthDelta);
+		return builder.toString();
 	},
 	isPointwiseEqual: function (e) {
 		if (this.pts.length !== e.pts.length) return false;

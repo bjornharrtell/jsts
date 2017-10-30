@@ -2,6 +2,7 @@ import hasInterface from '../../../../../hasInterface';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import ItemVisitor from '../../index/ItemVisitor';
 import PointOnGeometryLocator from './PointOnGeometryLocator';
+import LinearRing from '../../geom/LinearRing';
 import extend from '../../../../../extend';
 import SortedPackedIntervalRTree from '../../index/intervalrtree/SortedPackedIntervalRTree';
 import LineSegment from '../../geom/LineSegment';
@@ -12,7 +13,7 @@ import RayCrossingCounter from '../RayCrossingCounter';
 export default function IndexedPointInAreaLocator() {
 	this._index = null;
 	let g = arguments[0];
-	if (!hasInterface(g, Polygonal)) throw new IllegalArgumentException("Argument must be Polygonal");
+	if (!(hasInterface(g, Polygonal) || g instanceof LinearRing)) throw new IllegalArgumentException("Argument must be Polygonal or LinearRing");
 	this._index = new IntervalIndexedGeometry(g);
 }
 extend(IndexedPointInAreaLocator.prototype, {

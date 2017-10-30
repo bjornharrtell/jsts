@@ -184,14 +184,6 @@ extend(GeometryCollection.prototype, {
 		Assert.shouldNeverReachHere();
 		return null;
 	},
-	clone: function () {
-		var gc = Geometry.prototype.clone.call(this);
-		gc._geometries = new Array(this._geometries.length).fill(null);
-		for (var i = 0; i < this._geometries.length; i++) {
-			gc._geometries[i] = this._geometries[i].clone();
-		}
-		return gc;
-	},
 	getGeometryType: function () {
 		return "GeometryCollection";
 	},

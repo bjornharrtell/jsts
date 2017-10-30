@@ -1,8 +1,9 @@
 import Location from '../geom/Location';
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Position from './Position';
+import PointLocation from '../algorithm/PointLocation';
 import TopologyException from '../geom/TopologyException';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import Label from './Label';
 import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
@@ -30,7 +31,7 @@ extend(EdgeRing.prototype, {
 			coord[i] = this._pts.get(i);
 		}
 		this._ring = this._geometryFactory.createLinearRing(coord);
-		this._isHole = CGAlgorithms.isCCW(this._ring.getCoordinates());
+		this._isHole = Orientation.isCCW(this._ring.getCoordinates());
 	},
 	isIsolated: function () {
 		return this._label.getGeometryCount() === 1;
@@ -99,7 +100,7 @@ extend(EdgeRing.prototype, {
 		var shell = this.getLinearRing();
 		var env = shell.getEnvelopeInternal();
 		if (!env.contains(p)) return false;
-		if (!CGAlgorithms.isPointInRing(p, shell.getCoordinates())) return false;
+		if (!PointLocation.isInRing(p, shell.getCoordinates())) return false;
 		for (var i = this._holes.iterator(); i.hasNext(); ) {
 			var hole = i.next();
 			if (hole.containsPoint(p)) return false;

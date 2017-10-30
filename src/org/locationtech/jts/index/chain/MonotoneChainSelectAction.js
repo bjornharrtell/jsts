@@ -1,8 +1,6 @@
 import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
-import Envelope from '../../geom/Envelope';
 export default function MonotoneChainSelectAction() {
-	this.tempEnv1 = new Envelope();
 	this.selectedSegment = new LineSegment();
 }
 extend(MonotoneChainSelectAction.prototype, {

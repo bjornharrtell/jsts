@@ -1,8 +1,8 @@
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import hasInterface from '../../../../../hasInterface';
 import Position from '../../geomgraph/Position';
 import Coordinate from '../../geom/Coordinate';
 import extend from '../../../../../extend';
+import Orientation from '../../algorithm/Orientation';
 import Collections from '../../../../../java/util/Collections';
 import DirectedEdge from '../../geomgraph/DirectedEdge';
 import LineSegment from '../../geom/LineSegment';
@@ -12,7 +12,6 @@ import List from '../../../../../java/util/List';
 export default function SubgraphDepthLocater() {
 	this._subgraphs = null;
 	this._seg = new LineSegment();
-	this._cga = new CGAlgorithms();
 	let subgraphs = arguments[0];
 	this._subgraphs = subgraphs;
 }
@@ -40,7 +39,7 @@ extend(SubgraphDepthLocater.prototype, {
 					if (maxx < stabbingRayLeftPt.x) continue;
 					if (this._seg.isHorizontal()) continue;
 					if (stabbingRayLeftPt.y < this._seg.p0.y || stabbingRayLeftPt.y > this._seg.p1.y) continue;
-					if (CGAlgorithms.computeOrientation(this._seg.p0, this._seg.p1, stabbingRayLeftPt) === CGAlgorithms.RIGHT) continue;
+					if (Orientation.index(this._seg.p0, this._seg.p1, stabbingRayLeftPt) === Orientation.RIGHT) continue;
 					var depth = dirEdge.getDepth(Position.LEFT);
 					if (!this._seg.p0.equals(pts[i])) depth = dirEdge.getDepth(Position.RIGHT);
 					var ds = new DepthSegment(this._seg, depth);

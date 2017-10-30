@@ -45,7 +45,7 @@ extend(SineStarFactory.prototype, {
 		}
 		pts[iPt] = new Coordinate(pts[0]);
 		var ring = this._geomFact.createLinearRing(pts);
-		var poly = this._geomFact.createPolygon(ring, null);
+		var poly = this._geomFact.createPolygon(ring);
 		return poly;
 	},
 	interfaces_: function () {

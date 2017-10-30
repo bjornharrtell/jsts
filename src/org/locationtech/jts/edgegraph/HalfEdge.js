@@ -1,5 +1,5 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import Quadrant from '../geomgraph/Quadrant';
 import Assert from '../util/Assert';
 export default function HalfEdge() {
@@ -83,7 +83,7 @@ extend(HalfEdge.prototype, {
 		var quadrant2 = Quadrant.quadrant(dx2, dy2);
 		if (quadrant > quadrant2) return 1;
 		if (quadrant < quadrant2) return -1;
-		return CGAlgorithms.computeOrientation(e._orig, e.dest(), this.dest());
+		return Orientation.index(e._orig, e.dest(), this.dest());
 	},
 	prevNode: function () {
 		var e = this;

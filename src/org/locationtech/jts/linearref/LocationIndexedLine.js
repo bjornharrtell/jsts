@@ -14,7 +14,7 @@ export default function LocationIndexedLine() {
 }
 extend(LocationIndexedLine.prototype, {
 	clampIndex: function (index) {
-		var loc = index.clone();
+		var loc = index.copy();
 		loc.clamp(this._linearGeom);
 		return loc;
 	},

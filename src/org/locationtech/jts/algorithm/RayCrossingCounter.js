@@ -2,8 +2,8 @@ import Location from '../geom/Location';
 import hasInterface from '../../../../hasInterface';
 import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
+import Orientation from './Orientation';
 import CoordinateSequence from '../geom/CoordinateSequence';
-import RobustDeterminant from './RobustDeterminant';
 export default function RayCrossingCounter() {
 	this._p = null;
 	this._crossingCount = 0;
@@ -31,17 +31,15 @@ extend(RayCrossingCounter.prototype, {
 			return null;
 		}
 		if (p1.y > this._p.y && p2.y <= this._p.y || p2.y > this._p.y && p1.y <= this._p.y) {
-			var x1 = p1.x - this._p.x;
-			var y1 = p1.y - this._p.y;
-			var x2 = p2.x - this._p.x;
-			var y2 = p2.y - this._p.y;
-			var xIntSign = RobustDeterminant.signOfDet2x2(x1, y1, x2, y2);
-			if (xIntSign === 0.0) {
+			var orient = Orientation.index(p1, p2, this._p);
+			if (orient === Orientation.COLLINEAR) {
 				this._isPointOnSegment = true;
 				return null;
 			}
-			if (y2 < y1) xIntSign = -xIntSign;
-			if (xIntSign > 0.0) {
+			if (p2.y < p1.y) {
+				orient = -orient;
+			}
+			if (orient === Orientation.LEFT) {
 				this._crossingCount++;
 			}
 		}

@@ -1,5 +1,5 @@
-import CGAlgorithms from './CGAlgorithms';
 import extend from '../../../../extend';
+import Orientation from './Orientation';
 export default function Angle() {}
 extend(Angle.prototype, {
 	interfaces_: function () {
@@ -100,6 +100,6 @@ Angle.angleBetweenOriented = function (tip1, tail, tip2) {
 Angle.PI_TIMES_2 = 2.0 * Math.PI;
 Angle.PI_OVER_2 = Math.PI / 2.0;
 Angle.PI_OVER_4 = Math.PI / 4.0;
-Angle.COUNTERCLOCKWISE = CGAlgorithms.COUNTERCLOCKWISE;
-Angle.CLOCKWISE = CGAlgorithms.CLOCKWISE;
-Angle.NONE = CGAlgorithms.COLLINEAR;
+Angle.COUNTERCLOCKWISE = Orientation.COUNTERCLOCKWISE;
+Angle.CLOCKWISE = Orientation.CLOCKWISE;
+Angle.NONE = Orientation.COLLINEAR;

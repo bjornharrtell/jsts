@@ -1,7 +1,10 @@
+import LineString from '../../geom/LineString';
 import Geometry from '../../geom/Geometry';
 import PointGeometryUnion from './PointGeometryUnion';
 import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
+import Point from '../../geom/Point';
+import Polygon from '../../geom/Polygon';
 import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp';
 import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
@@ -48,9 +51,9 @@ extend(UnaryUnionOp.prototype, {
 		} else if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
 			if (this._geomFact === null) this._geomFact = geom.getFactory();
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POLYGON, this._polygons);
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_LINESTRING, this._lines);
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POINT, this._points);
+			GeometryExtracter.extract(geom, Polygon, this._polygons);
+			GeometryExtracter.extract(geom, LineString, this._lines);
+			GeometryExtracter.extract(geom, Point, this._points);
 		}
 	},
 	union: function () {

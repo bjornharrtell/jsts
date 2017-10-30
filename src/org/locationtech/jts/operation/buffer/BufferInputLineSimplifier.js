@@ -1,11 +1,12 @@
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import CoordinateList from '../../geom/CoordinateList';
 import extend from '../../../../../extend';
+import Orientation from '../../algorithm/Orientation';
+import Distance from '../../algorithm/Distance';
 export default function BufferInputLineSimplifier() {
 	this._inputLine = null;
 	this._distanceTol = null;
 	this._isDeleted = null;
-	this._angleOrientation = CGAlgorithms.COUNTERCLOCKWISE;
+	this._angleOrientation = Orientation.COUNTERCLOCKWISE;
 	let inputLine = arguments[0];
 	this._inputLine = inputLine;
 }
@@ -38,10 +39,10 @@ extend(BufferInputLineSimplifier.prototype, {
 		return isChanged;
 	},
 	isShallowConcavity: function (p0, p1, p2, distanceTol) {
-		var orientation = CGAlgorithms.computeOrientation(p0, p1, p2);
+		var orientation = Orientation.index(p0, p1, p2);
 		var isAngleToSimplify = orientation === this._angleOrientation;
 		if (!isAngleToSimplify) return false;
-		var dist = CGAlgorithms.distancePointLine(p1, p0, p2);
+		var dist = Distance.pointToSegment(p1, p0, p2);
 		return dist < distanceTol;
 	},
 	isShallowSampled: function (p0, p2, i0, i2, distanceTol) {
@@ -53,13 +54,13 @@ extend(BufferInputLineSimplifier.prototype, {
 		return true;
 	},
 	isConcave: function (p0, p1, p2) {
-		var orientation = CGAlgorithms.computeOrientation(p0, p1, p2);
+		var orientation = Orientation.index(p0, p1, p2);
 		var isConcave = orientation === this._angleOrientation;
 		return isConcave;
 	},
 	simplify: function (distanceTol) {
 		this._distanceTol = Math.abs(distanceTol);
-		if (distanceTol < 0) this._angleOrientation = CGAlgorithms.CLOCKWISE;
+		if (distanceTol < 0) this._angleOrientation = Orientation.CLOCKWISE;
 		this._isDeleted = new Array(this._inputLine.length).fill(null);
 		var isChanged = false;
 		do {
@@ -73,7 +74,7 @@ extend(BufferInputLineSimplifier.prototype, {
 		return next;
 	},
 	isShallow: function (p0, p1, p2, distanceTol) {
-		var dist = CGAlgorithms.distancePointLine(p1, p0, p2);
+		var dist = Distance.pointToSegment(p1, p0, p2);
 		return dist < distanceTol;
 	},
 	collapseLine: function () {

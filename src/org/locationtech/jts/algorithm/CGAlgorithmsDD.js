@@ -19,9 +19,20 @@ CGAlgorithmsDD.orientationIndex = function (p1, p2, q) {
 	var dy2 = DD.valueOf(q.y).selfAdd(-p2.y);
 	return dx1.selfMultiply(dy2).selfSubtract(dy1.selfMultiply(dx2)).signum();
 };
-CGAlgorithmsDD.signOfDet2x2 = function (x1, y1, x2, y2) {
-	var det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
-	return det.signum();
+CGAlgorithmsDD.signOfDet2x2 = function () {
+	if (arguments[0] instanceof DD) {
+		let x1 = arguments[0], y1 = arguments[1], x2 = arguments[2], y2 = arguments[3];
+		var det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
+		return det.signum();
+	} else if (typeof arguments[0] === "number") {
+		let dx1 = arguments[0], dy1 = arguments[1], dx2 = arguments[2], dy2 = arguments[3];
+		var x1 = DD.valueOf(dx1);
+		var y1 = DD.valueOf(dy1);
+		var x2 = DD.valueOf(dx2);
+		var y2 = DD.valueOf(dy2);
+		var det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
+		return det.signum();
+	}
 };
 CGAlgorithmsDD.intersection = function (p1, p2, q1, q2) {
 	var denom1 = DD.valueOf(q2.y).selfSubtract(q1.y).selfMultiply(DD.valueOf(p2.x).selfSubtract(p1.x));

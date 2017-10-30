@@ -1,12 +1,13 @@
 import NotRepresentableException from '../algorithm/NotRepresentableException';
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Coordinate from './Coordinate';
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import Comparable from '../../../../java/lang/Comparable';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import HCoordinate from '../algorithm/HCoordinate';
 import Serializable from '../../../../java/io/Serializable';
+import Distance from '../algorithm/Distance';
 export default function LineSegment() {
 	this.p0 = null;
 	this.p1 = null;
@@ -31,14 +32,14 @@ extend(LineSegment.prototype, {
 	orientationIndex: function () {
 		if (arguments[0] instanceof LineSegment) {
 			let seg = arguments[0];
-			var orient0 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p0);
-			var orient1 = CGAlgorithms.orientationIndex(this.p0, this.p1, seg.p1);
+			var orient0 = Orientation.index(this.p0, this.p1, seg.p0);
+			var orient1 = Orientation.index(this.p0, this.p1, seg.p1);
 			if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1);
 			if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1);
 			return 0;
 		} else if (arguments[0] instanceof Coordinate) {
 			let p = arguments[0];
-			return CGAlgorithms.orientationIndex(this.p0, this.p1, p);
+			return Orientation.index(this.p0, this.p1, p);
 		}
 	},
 	toGeometry: function (geomFactory) {
@@ -95,7 +96,7 @@ extend(LineSegment.prototype, {
 		return this.p1;
 	},
 	distancePerpendicular: function (p) {
-		return CGAlgorithms.distancePointLinePerpendicular(p, this.p0, this.p1);
+		return Distance.pointToLinePerpendicular(p, this.p0, this.p1);
 	},
 	minY: function () {
 		return Math.min(this.p0.y, this.p1.y);
@@ -234,10 +235,10 @@ extend(LineSegment.prototype, {
 	distance: function () {
 		if (arguments[0] instanceof LineSegment) {
 			let ls = arguments[0];
-			return CGAlgorithms.distanceLineLine(this.p0, this.p1, ls.p0, ls.p1);
+			return Distance.segmentToSegment(this.p0, this.p1, ls.p0, ls.p1);
 		} else if (arguments[0] instanceof Coordinate) {
 			let p = arguments[0];
-			return CGAlgorithms.distancePointLine(p, this.p0, this.p1);
+			return Distance.pointToSegment(p, this.p0, this.p1);
 		}
 	},
 	pointAlong: function (segmentLengthFraction) {

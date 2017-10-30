@@ -2,7 +2,6 @@ import PointLocator from '../algorithm/PointLocator';
 import Location from '../geom/Location';
 import LineString from '../geom/LineString';
 import HashMap from '../../../../java/util/HashMap';
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import hasInterface from '../../../../hasInterface';
 import Position from './Position';
 import Coordinate from '../geom/Coordinate';
@@ -13,6 +12,7 @@ import SimpleMCSweepLineIntersector from './index/SimpleMCSweepLineIntersector';
 import LinearRing from '../geom/LinearRing';
 import BoundaryNodeRule from '../algorithm/BoundaryNodeRule';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import SegmentIntersector from './index/SegmentIntersector';
 import MultiPolygon from '../geom/MultiPolygon';
 import Label from './Label';
@@ -168,7 +168,7 @@ extend(GeometryGraph.prototype, {
 		}
 		var left = cwLeft;
 		var right = cwRight;
-		if (CGAlgorithms.isCCW(coord)) {
+		if (Orientation.isCCW(coord)) {
 			left = cwRight;
 			right = cwLeft;
 		}

@@ -1,7 +1,7 @@
 import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
+import CGAlgorithmsDD from '../algorithm/CGAlgorithmsDD';
 import Angle from '../algorithm/Angle';
-import RobustDeterminant from '../algorithm/RobustDeterminant';
 import Assert from '../util/Assert';
 export default function Vector2D() {
 	this._x = null;
@@ -35,7 +35,7 @@ extend(Vector2D.prototype, {
 		return this._x * v._x + this._y * v._y;
 	},
 	isParallel: function (v) {
-		return 0.0 === RobustDeterminant.signOfDet2x2(this._x, this._y, v._x, v._y);
+		return 0.0 === CGAlgorithmsDD.signOfDet2x2(this._x, this._y, v._x, v._y);
 	},
 	getComponent: function (index) {
 		if (index === 0) return this._x;

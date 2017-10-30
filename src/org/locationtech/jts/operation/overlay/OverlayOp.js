@@ -4,6 +4,7 @@ import EdgeNodingValidator from '../../geomgraph/EdgeNodingValidator';
 import GeometryCollectionMapper from '../../geom/util/GeometryCollectionMapper';
 import PolygonBuilder from './PolygonBuilder';
 import Position from '../../geomgraph/Position';
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import LineBuilder from './LineBuilder';
 import PointBuilder from './PointBuilder';
 import SnapIfNeededOverlayOp from './snap/SnapIfNeededOverlayOp';
@@ -225,11 +226,20 @@ OverlayOp.overlayOp = function (geom0, geom1, opCode) {
 	var geomOv = gov.getResultGeometry(opCode);
 	return geomOv;
 };
-OverlayOp.intersection = function (g, other) {
-	if (g.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, g, other, g.getFactory());
-	if (g.isGeometryCollection()) {
+OverlayOp.union = function (geom, other) {
+	if (geom.isEmpty() || other.isEmpty()) {
+		if (geom.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, geom, other, geom.getFactory());
+		if (geom.isEmpty()) return other.copy();
+		if (other.isEmpty()) return geom.copy();
+	}
+	if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
+	return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.UNION);
+};
+OverlayOp.intersection = function (geom, other) {
+	if (geom.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, geom, other, geom.getFactory());
+	if (geom.isGeometryCollection()) {
 		var g2 = other;
-		return GeometryCollectionMapper.map(g, {
+		return GeometryCollectionMapper.map(geom, {
 			interfaces_: function () {
 				return [MapOp];
 			},
@@ -238,19 +248,17 @@ OverlayOp.intersection = function (g, other) {
 			}
 		});
 	}
-	g.checkNotGeometryCollection(g);
-	g.checkNotGeometryCollection(other);
-	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.INTERSECTION);
+	if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
+	return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.INTERSECTION);
 };
-OverlayOp.symDifference = function (g, other) {
-	if (g.isEmpty() || other.isEmpty()) {
-		if (g.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, g, other, g.getFactory());
-		if (g.isEmpty()) return other.copy();
-		if (other.isEmpty()) return g.copy();
+OverlayOp.symDifference = function (geom, other) {
+	if (geom.isEmpty() || other.isEmpty()) {
+		if (geom.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, geom, other, geom.getFactory());
+		if (geom.isEmpty()) return other.copy();
+		if (other.isEmpty()) return geom.copy();
 	}
-	g.checkNotGeometryCollection(g);
-	g.checkNotGeometryCollection(other);
-	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.SYMDIFFERENCE);
+	if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
+	return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.SYMDIFFERENCE);
 };
 OverlayOp.resultDimension = function (opCode, g0, g1) {
 	var dim0 = g0.getDimension();
@@ -276,7 +284,7 @@ OverlayOp.createEmptyResult = function (overlayOpCode, a, b, geomFact) {
 	var result = null;
 	switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
 		case -1:
-			result = geomFact.createGeometryCollection(new Array(0).fill(null));
+			result = geomFact.createGeometryCollection();
 			break;
 		case 0:
 			result = geomFact.createPoint();
@@ -290,12 +298,11 @@ OverlayOp.createEmptyResult = function (overlayOpCode, a, b, geomFact) {
 	}
 	return result;
 };
-OverlayOp.difference = function (g, other) {
-	if (g.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, g, other, g.getFactory());
-	if (other.isEmpty()) return g.copy();
-	g.checkNotGeometryCollection(g);
-	g.checkNotGeometryCollection(other);
-	return SnapIfNeededOverlayOp.overlayOp(g, other, OverlayOp.DIFFERENCE);
+OverlayOp.difference = function (geom, other) {
+	if (geom.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, geom, other, geom.getFactory());
+	if (other.isEmpty()) return geom.copy();
+	if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
+	return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.DIFFERENCE);
 };
 OverlayOp.isResultOfOp = function () {
 	if (arguments.length === 2) {

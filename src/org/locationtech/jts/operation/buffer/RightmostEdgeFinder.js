@@ -1,6 +1,6 @@
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Position from '../../geomgraph/Position';
 import extend from '../../../../../extend';
+import Orientation from '../../algorithm/Orientation';
 import Assert from '../../util/Assert';
 export default function RightmostEdgeFinder() {
 	this._minIndex = -1;
@@ -26,11 +26,11 @@ extend(RightmostEdgeFinder.prototype, {
 		Assert.isTrue(this._minIndex > 0 && this._minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
 		var pPrev = pts[this._minIndex - 1];
 		var pNext = pts[this._minIndex + 1];
-		var orientation = CGAlgorithms.computeOrientation(this._minCoord, pNext, pPrev);
+		var orientation = Orientation.index(this._minCoord, pNext, pPrev);
 		var usePrev = false;
-		if (pPrev.y < this._minCoord.y && pNext.y < this._minCoord.y && orientation === CGAlgorithms.COUNTERCLOCKWISE) {
+		if (pPrev.y < this._minCoord.y && pNext.y < this._minCoord.y && orientation === Orientation.COUNTERCLOCKWISE) {
 			usePrev = true;
-		} else if (pPrev.y > this._minCoord.y && pNext.y > this._minCoord.y && orientation === CGAlgorithms.CLOCKWISE) {
+		} else if (pPrev.y > this._minCoord.y && pNext.y > this._minCoord.y && orientation === Orientation.CLOCKWISE) {
 			usePrev = true;
 		}
 		if (usePrev) {

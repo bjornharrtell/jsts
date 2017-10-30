@@ -38,7 +38,7 @@ extend(MultiPoint.prototype, {
 		return 0;
 	},
 	getBoundary: function () {
-		return this.getFactory().createGeometryCollection(null);
+		return this.getFactory().createGeometryCollection();
 	},
 	getGeometryType: function () {
 		return "MultiPoint";

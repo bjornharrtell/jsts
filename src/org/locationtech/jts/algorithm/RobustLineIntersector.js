@@ -1,12 +1,13 @@
 import NotRepresentableException from './NotRepresentableException';
-import CGAlgorithms from './CGAlgorithms';
 import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
+import Orientation from './Orientation';
 import CGAlgorithmsDD from './CGAlgorithmsDD';
 import System from '../../../../java/lang/System';
 import HCoordinate from './HCoordinate';
 import Envelope from '../geom/Envelope';
 import inherits from '../../../../inherits';
+import Distance from './Distance';
 import LineIntersector from './LineIntersector';
 export default function RobustLineIntersector() {
 	LineIntersector.apply(this);
@@ -23,7 +24,7 @@ extend(RobustLineIntersector.prototype, {
 			let p = arguments[0], p1 = arguments[1], p2 = arguments[2];
 			this._isProper = false;
 			if (Envelope.intersects(p1, p2, p)) {
-				if (CGAlgorithms.orientationIndex(p1, p2, p) === 0 && CGAlgorithms.orientationIndex(p2, p1, p) === 0) {
+				if (Orientation.index(p1, p2, p) === 0 && Orientation.index(p2, p1, p) === 0) {
 					this._isProper = true;
 					if (p.equals(p1) || p.equals(p2)) {
 						this._isProper = false;
@@ -170,13 +171,13 @@ extend(RobustLineIntersector.prototype, {
 	computeIntersect: function (p1, p2, q1, q2) {
 		this._isProper = false;
 		if (!Envelope.intersects(p1, p2, q1, q2)) return LineIntersector.NO_INTERSECTION;
-		var Pq1 = CGAlgorithms.orientationIndex(p1, p2, q1);
-		var Pq2 = CGAlgorithms.orientationIndex(p1, p2, q2);
+		var Pq1 = Orientation.index(p1, p2, q1);
+		var Pq2 = Orientation.index(p1, p2, q2);
 		if (Pq1 > 0 && Pq2 > 0 || Pq1 < 0 && Pq2 < 0) {
 			return LineIntersector.NO_INTERSECTION;
 		}
-		var Qp1 = CGAlgorithms.orientationIndex(q1, q2, p1);
-		var Qp2 = CGAlgorithms.orientationIndex(q1, q2, p2);
+		var Qp1 = Orientation.index(q1, q2, p1);
+		var Qp2 = Orientation.index(q1, q2, p2);
 		if (Qp1 > 0 && Qp2 > 0 || Qp1 < 0 && Qp2 < 0) {
 			return LineIntersector.NO_INTERSECTION;
 		}
@@ -214,18 +215,18 @@ extend(RobustLineIntersector.prototype, {
 });
 RobustLineIntersector.nearestEndpoint = function (p1, p2, q1, q2) {
 	var nearestPt = p1;
-	var minDist = CGAlgorithms.distancePointLine(p1, q1, q2);
-	var dist = CGAlgorithms.distancePointLine(p2, q1, q2);
+	var minDist = Distance.pointToSegment(p1, q1, q2);
+	var dist = Distance.pointToSegment(p2, q1, q2);
 	if (dist < minDist) {
 		minDist = dist;
 		nearestPt = p2;
 	}
-	dist = CGAlgorithms.distancePointLine(q1, p1, p2);
+	dist = Distance.pointToSegment(q1, p1, p2);
 	if (dist < minDist) {
 		minDist = dist;
 		nearestPt = q1;
 	}
-	dist = CGAlgorithms.distancePointLine(q2, p1, p2);
+	dist = Distance.pointToSegment(q2, p1, p2);
 	if (dist < minDist) {
 		minDist = dist;
 		nearestPt = q2;

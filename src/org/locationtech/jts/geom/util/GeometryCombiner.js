@@ -25,7 +25,7 @@ extend(GeometryCombiner.prototype, {
 		}
 		if (elems.size() === 0) {
 			if (this._geomFactory !== null) {
-				return this._geomFactory.createGeometryCollection(null);
+				return this._geomFactory.createGeometryCollection();
 			}
 			return null;
 		}

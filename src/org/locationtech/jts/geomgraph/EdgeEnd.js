@@ -1,5 +1,5 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import Comparable from '../../../../java/lang/Comparable';
 import Quadrant from './Quadrant';
 import Assert from '../util/Assert';
@@ -30,7 +30,7 @@ extend(EdgeEnd.prototype, {
 		if (this._dx === e._dx && this._dy === e._dy) return 0;
 		if (this._quadrant > e._quadrant) return 1;
 		if (this._quadrant < e._quadrant) return -1;
-		return CGAlgorithms.computeOrientation(e._p0, e._p1, this._p1);
+		return Orientation.index(e._p0, e._p1, this._p1);
 	},
 	getDy: function () {
 		return this._dy;

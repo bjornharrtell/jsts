@@ -101,12 +101,7 @@ extend(Point.prototype, {
 		}
 	},
 	getBoundary: function () {
-		return this.getFactory().createGeometryCollection(null);
-	},
-	clone: function () {
-		var p = Geometry.prototype.clone.call(this);
-		p._coordinates = this._coordinates.clone();
-		return p;
+		return this.getFactory().createGeometryCollection();
 	},
 	getGeometryType: function () {
 		return "Point";

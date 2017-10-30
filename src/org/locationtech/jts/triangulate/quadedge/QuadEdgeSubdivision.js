@@ -73,7 +73,7 @@ extend(QuadEdgeSubdivision.prototype, {
 			coordList.add(coordList.get(coordList.size() - 1), true);
 		}
 		var pts = coordList.toCoordinateArray();
-		var cellPoly = geomFact.createPolygon(geomFact.createLinearRing(pts), null);
+		var cellPoly = geomFact.createPolygon(geomFact.createLinearRing(pts));
 		var v = startQE.orig();
 		cellPoly.setUserData(v.getCoordinate());
 		return cellPoly;
@@ -301,7 +301,7 @@ extend(QuadEdgeSubdivision.prototype, {
 		var i = 0;
 		for (var it = triPtsList.iterator(); it.hasNext(); ) {
 			var triPt = it.next();
-			tris[i++] = geomFact.createPolygon(geomFact.createLinearRing(triPt), null);
+			tris[i++] = geomFact.createPolygon(geomFact.createLinearRing(triPt));
 		}
 		return geomFact.createGeometryCollection(tris);
 	},
@@ -382,7 +382,7 @@ extend(TriangleEdgesListVisitor.prototype, {
 		return this._triList;
 	},
 	visit: function (triEdges) {
-		this._triList.add(triEdges.clone());
+		this._triList.add(triEdges);
 	},
 	interfaces_: function () {
 		return [TriangleVisitor];

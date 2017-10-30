@@ -1,11 +1,11 @@
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import CoordinateList from '../../geom/CoordinateList';
 import WKTWriter from '../../io/WKTWriter';
 import CoordinateArraySequence from '../../geom/impl/CoordinateArraySequence';
-import IsValidOp from '../valid/IsValidOp';
+import PointLocation from '../../algorithm/PointLocation';
 import LinearRing from '../../geom/LinearRing';
 import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
+import Orientation from '../../algorithm/Orientation';
 import System from '../../../../../java/lang/System';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import ArrayList from '../../../../../java/util/ArrayList';
@@ -49,7 +49,7 @@ extend(EdgeRing.prototype, {
 		this.getCoordinates();
 		if (this._ringPts.length <= 3) return false;
 		this.getRing();
-		return IsValidOp.isValid(this._ring);
+		return this._ring.isValid();
 	},
 	build: function (startDE) {
 		var de = startDE;
@@ -110,7 +110,7 @@ extend(EdgeRing.prototype, {
 	},
 	computeHole: function () {
 		var ring = this.getRing();
-		this._isHole = CGAlgorithms.isCCW(ring.getCoordinates());
+		this._isHole = Orientation.isCCW(ring.getCoordinates());
 	},
 	hasShell: function () {
 		return this._shell !== null;
@@ -205,7 +205,7 @@ EdgeRing.findEdgeRingContaining = function (testEr, shellList) {
 		if (!tryShellEnv.contains(testEnv)) continue;
 		testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates());
 		var isContained = false;
-		if (CGAlgorithms.isPointInRing(testPt, tryShellRing.getCoordinates())) isContained = true;
+		if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates())) isContained = true;
 		if (isContained) {
 			if (minShell === null || minShellEnv.contains(tryShellEnv)) {
 				minShell = tryShell;

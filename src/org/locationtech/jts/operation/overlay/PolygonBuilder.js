@@ -1,4 +1,4 @@
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
+import PointLocation from '../../algorithm/PointLocation';
 import TopologyException from '../../geom/TopologyException';
 import extend from '../../../../../extend';
 import MaximalEdgeRing from './MaximalEdgeRing';
@@ -106,7 +106,7 @@ extend(PolygonBuilder.prototype, {
 			var tryEnv = tryRing.getEnvelopeInternal();
 			if (minShell !== null) minEnv = minShell.getLinearRing().getEnvelopeInternal();
 			var isContained = false;
-			if (tryEnv.contains(testEnv) && CGAlgorithms.isPointInRing(testPt, tryRing.getCoordinates())) isContained = true;
+			if (tryEnv.contains(testEnv) && PointLocation.isInRing(testPt, tryRing.getCoordinates())) isContained = true;
 			if (isContained) {
 				if (minShell === null || minEnv.contains(tryEnv)) {
 					minShell = tryShell;

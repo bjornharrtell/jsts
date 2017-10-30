@@ -1,6 +1,7 @@
 import WKTWriter from '../../io/WKTWriter';
 import Coordinate from '../../geom/Coordinate';
 import IntervalRTreeLeafNode from './IntervalRTreeLeafNode';
+import IntervalRTreeNode from './IntervalRTreeNode';
 import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import System from '../../../../../java/lang/System';

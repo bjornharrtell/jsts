@@ -122,7 +122,7 @@ extend(LinearLocation.prototype, {
 		if (this._segmentFraction > other._segmentFraction) return 1;
 		return 0;
 	},
-	clone: function () {
+	copy: function () {
 		return new LinearLocation(this._componentIndex, this._segmentIndex, this._segmentFraction);
 	},
 	toString: function () {

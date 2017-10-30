@@ -1,9 +1,9 @@
 import StringBuffer from '../../../../../java/lang/StringBuffer';
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Coordinate from '../../geom/Coordinate';
 import Double from '../../../../../java/lang/Double';
 import extend from '../../../../../extend';
 import Envelope from '../../geom/Envelope';
+import Distance from '../../algorithm/Distance';
 export default function FacetSequence() {
 	this._pts = null;
 	this._start = null;
@@ -38,7 +38,7 @@ extend(FacetSequence.prototype, {
 				this._pts.getCoordinate(i + 1, this._p1);
 				facetSeq._pts.getCoordinate(j, this._q0);
 				facetSeq._pts.getCoordinate(j + 1, this._q1);
-				var dist = CGAlgorithms.distanceLineLine(this._p0, this._p1, this._q0, this._q1);
+				var dist = Distance.segmentToSegment(this._p0, this._p1, this._q0, this._q1);
 				if (dist === 0.0) return 0.0;
 				if (dist < minDistance) {
 					minDistance = dist;
@@ -62,7 +62,7 @@ extend(FacetSequence.prototype, {
 		for (var i = facetSeq._start; i < facetSeq._end - 1; i++) {
 			facetSeq._pts.getCoordinate(i, this._q0);
 			facetSeq._pts.getCoordinate(i + 1, this._q1);
-			var dist = CGAlgorithms.distancePointLine(pt, this._q0, this._q1);
+			var dist = Distance.pointToSegment(pt, this._q0, this._q1);
 			if (dist === 0.0) return 0.0;
 			if (dist < minDistance) {
 				minDistance = dist;

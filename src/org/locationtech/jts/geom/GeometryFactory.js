@@ -44,7 +44,7 @@ export default function GeometryFactory() {
 extend(GeometryFactory.prototype, {
 	toGeometry: function (envelope) {
 		if (envelope.isNull()) {
-			return this.createPoint(null);
+			return this.createPoint();
 		}
 		if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY()) {
 			return this.createPoint(new Coordinate(envelope.getMinX(), envelope.getMinY()));
@@ -88,7 +88,7 @@ extend(GeometryFactory.prototype, {
 			if (partClass !== geomClass) {
 				isHeterogeneous = true;
 			}
-			if (geom.isGeometryCollectionOrDerived()) hasGeometryCollection = true;
+			if (geom instanceof GeometryCollection) hasGeometryCollection = true;
 		}
 		if (geomClass === null) {
 			return this.createGeometryCollection();
@@ -131,14 +131,14 @@ extend(GeometryFactory.prototype, {
 	},
 	createPolygon: function () {
 		if (arguments.length === 0) {
-			return new Polygon(null, null, this);
+			return this.createPolygon(null, null);
 		} else if (arguments.length === 1) {
 			if (hasInterface(arguments[0], CoordinateSequence)) {
-				let coordinates = arguments[0];
-				return this.createPolygon(this.createLinearRing(coordinates));
+				let shell = arguments[0];
+				return this.createPolygon(this.createLinearRing(shell));
 			} else if (arguments[0] instanceof Array) {
-				let coordinates = arguments[0];
-				return this.createPolygon(this.createLinearRing(coordinates));
+				let shell = arguments[0];
+				return this.createPolygon(this.createLinearRing(shell));
 			} else if (arguments[0] instanceof LinearRing) {
 				let shell = arguments[0];
 				return this.createPolygon(shell, null);

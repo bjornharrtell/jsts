@@ -1,6 +1,7 @@
 import ItemBoundable from './ItemBoundable';
 import PriorityQueue from '../../util/PriorityQueue';
 import hasInterface from '../../../../../hasInterface';
+import BoundablePairDistanceComparator from './BoundablePairDistanceComparator';
 import ItemVisitor from '../ItemVisitor';
 import SpatialIndex from '../SpatialIndex';
 import AbstractNode from './AbstractNode';
@@ -145,12 +146,49 @@ extend(STRtree.prototype, {
 					}
 				}
 				return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
+			} else if (arguments[0] instanceof BoundablePair && Number.isInteger(arguments[1])) {
+				let initBndPair = arguments[0], k = arguments[1];
+				return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY, k);
 			}
 		} else if (arguments.length === 3) {
-			let env = arguments[0], item = arguments[1], itemDist = arguments[2];
+			if (hasInterface(arguments[2], ItemDistance) && (arguments[0] instanceof Envelope && arguments[1] instanceof Object)) {
+				let env = arguments[0], item = arguments[1], itemDist = arguments[2];
+				var bnd = new ItemBoundable(env, item);
+				var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
+				return this.nearestNeighbour(bp)[0];
+			} else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof BoundablePair && typeof arguments[1] === "number")) {
+				let initBndPair = arguments[0], maxDistance = arguments[1], k = arguments[2];
+				var distanceLowerBound = maxDistance;
+				var priQ = new PriorityQueue();
+				priQ.add(initBndPair);
+				var kNearestNeighbors = new java.util.PriorityQueue<BoundablePair>(k, new BoundablePairDistanceComparator(false));
+				while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
+					var bndPair = priQ.poll();
+					var currentDistance = bndPair.getDistance();
+					if (currentDistance >= distanceLowerBound) {
+						break;
+					}
+					if (bndPair.isLeaves()) {
+						if (kNearestNeighbors.size() < k) {
+							kNearestNeighbors.add(bndPair);
+						} else {
+							if (kNearestNeighbors.peek().getDistance() > currentDistance) {
+								kNearestNeighbors.poll();
+								kNearestNeighbors.add(bndPair);
+							}
+							distanceLowerBound = kNearestNeighbors.peek().getDistance();
+						}
+					} else {
+						bndPair.expandToQueue(priQ, distanceLowerBound);
+					}
+				}
+				return STRtree.getItems(kNearestNeighbors);
+			}
+		} else if (arguments.length === 4) {
+			let env = arguments[0], item = arguments[1], itemDist = arguments[2], k = arguments[3];
 			var bnd = new ItemBoundable(env, item);
 			var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
-			return this.nearestNeighbour(bp)[0];
+			return this.nearestNeighbour(bp, k);
 		}
 	},
 	interfaces_: function () {
@@ -165,6 +203,16 @@ STRtree.centreX = function (e) {
 };
 STRtree.avg = function (a, b) {
 	return (a + b) / 2;
+};
+STRtree.getItems = function (kNearestNeighbors) {
+	var items = new Array(kNearestNeighbors.size()).fill(null);
+	var resultIterator = kNearestNeighbors.iterator();
+	var count = 0;
+	while (resultIterator.hasNext()) {
+		items[count] = resultIterator.next().getBoundable(0).getItem();
+		count++;
+	}
+	return items;
 };
 STRtree.centreY = function (e) {
 	return STRtree.avg(e.getMinY(), e.getMaxY());
