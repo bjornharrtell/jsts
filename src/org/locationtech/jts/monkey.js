@@ -100,7 +100,13 @@ extend(Geometry.prototype, {
 		return new ConvexHull(this).getConvexHull();
 	},
 	relate: function (...args) {
-		return RelateOp.relate(this, ...args);
+		if (arguments.length === 1) {
+			let geometry = arguments[0];
+			return RelateOp.relate(this, geometry);
+		} else if (arguments.length === 2) {
+			let geometry = arguments[0], intersectionPattern = arguments[1];
+			return RelateOp.relate(this, geometry).matches(intersectionPattern);
+		}
 	},
 	getCentroid: function () {
 		if (this.isEmpty()) return this._factory.createPoint();
