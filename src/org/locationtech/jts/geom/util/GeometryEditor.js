@@ -69,7 +69,7 @@ extend(GeometryEditor.prototype, {
 	},
 	editPolygon: function (polygon, operation) {
 		var newPolygon = operation.edit(polygon, this._factory);
-		if (newPolygon === null) newPolygon = this._factory.createPolygon(null);
+		if (newPolygon === null) newPolygon = this._factory.createPolygon();
 		if (newPolygon.isEmpty()) {
 			return newPolygon;
 		}
@@ -111,20 +111,15 @@ extend(NoOpGeometryOperation.prototype, {
 function CoordinateOperation() {}
 extend(CoordinateOperation.prototype, {
 	edit: function (geometry, factory) {
-		var coords = this.editCoordinates(geometry.getCoordinates(), geometry);
-		if (coords === null) return geometry;
+		var coordinates = this.edit(geometry.getCoordinates(), geometry);
 		if (geometry instanceof LinearRing) {
-			return factory.createLinearRing(coords);
+			if (coordinates === null) return factory.createLinearRing(); else return factory.createLinearRing(coordinates);
 		}
 		if (geometry instanceof LineString) {
-			return factory.createLineString(coords);
+			if (coordinates === null) return factory.createLineString(); else return factory.createLineString(coordinates);
 		}
 		if (geometry instanceof Point) {
-			if (coords.length > 0) {
-				return factory.createPoint(coords[0]);
-			} else {
-				return factory.createPoint();
-			}
+			if (coordinates === null || coordinates.length === 0) return factory.createPoint(); else return factory.createPoint(coordinates[0]);
 		}
 		return geometry;
 	},

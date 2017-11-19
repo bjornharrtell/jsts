@@ -1,11 +1,11 @@
 import ItemBoundable from '../index/strtree/ItemBoundable';
 import FacetSequence from '../operation/distance/FacetSequence';
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBuilder';
+import Distance from '../algorithm/Distance';
 import ItemDistance from '../index/strtree/ItemDistance';
 export default function MinimumClearance() {
 	this._inputGeom = null;
@@ -17,7 +17,7 @@ export default function MinimumClearance() {
 extend(MinimumClearance.prototype, {
 	getLine: function () {
 		this.compute();
-		if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString(null);
+		if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString();
 		return this._inputGeom.getFactory().createLineString(this._minClearancePts);
 	},
 	compute: function () {
@@ -85,7 +85,7 @@ extend(MinClearanceDistance.prototype, {
 				var seg0 = fs2.getCoordinate(i2 - 1);
 				var seg1 = fs2.getCoordinate(i2);
 				if (!(p.equals2D(seg0) || p.equals2D(seg1))) {
-					var d = CGAlgorithms.distancePointLine(p, seg0, seg1);
+					var d = Distance.pointToSegment(p, seg0, seg1);
 					if (d < this._minDist) {
 						this._minDist = d;
 						this.updatePts(p, seg0, seg1);

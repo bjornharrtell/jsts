@@ -1,8 +1,8 @@
-import StringBuffer from '../../../../java/lang/StringBuffer';
 import WKTWriter from '../io/WKTWriter';
 import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
 import Assert from '../util/Assert';
+import StringBuilder from '../../../../java/lang/StringBuilder';
 export default function LineIntersector() {
 	this._result = null;
 	this._inputLines = Array(2).fill().map(() => Array(2));
@@ -24,11 +24,11 @@ extend(LineIntersector.prototype, {
 		return this._intLineIndex[segmentIndex][intIndex];
 	},
 	getTopologySummary: function () {
-		var catBuf = new StringBuffer();
-		if (this.isEndPoint()) catBuf.append(" endpoint");
-		if (this._isProper) catBuf.append(" proper");
-		if (this.isCollinear()) catBuf.append(" collinear");
-		return catBuf.toString();
+		var catBuilder = new StringBuilder();
+		if (this.isEndPoint()) catBuilder.append(" endpoint");
+		if (this._isProper) catBuilder.append(" proper");
+		if (this.isCollinear()) catBuilder.append(" collinear");
+		return catBuilder.toString();
 	},
 	computeIntersection: function (p1, p2, p3, p4) {
 		this._inputLines[0][0] = p1;

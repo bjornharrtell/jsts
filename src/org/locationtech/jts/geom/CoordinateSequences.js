@@ -1,8 +1,9 @@
-import StringBuffer from '../../../../java/lang/StringBuffer';
+import hasInterface from '../../../../hasInterface';
 import StringUtil from '../util/StringUtil';
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 import CoordinateSequence from './CoordinateSequence';
+import StringBuilder from '../../../../java/lang/StringBuilder';
 export default function CoordinateSequences() {}
 extend(CoordinateSequences.prototype, {
 	interfaces_: function () {
@@ -70,22 +71,22 @@ CoordinateSequences.copy = function (src, srcPos, dest, destPos, length) {
 	}
 };
 CoordinateSequences.toString = function () {
-	if (arguments.length === 1) {
+	if (arguments.length === 1 && hasInterface(arguments[0], CoordinateSequence)) {
 		let cs = arguments[0];
 		var size = cs.size();
 		if (size === 0) return "()";
 		var dim = cs.getDimension();
-		var buf = new StringBuffer();
-		buf.append('(');
+		var builder = new StringBuilder();
+		builder.append('(');
 		for (var i = 0; i < size; i++) {
-			if (i > 0) buf.append(" ");
+			if (i > 0) builder.append(" ");
 			for (var d = 0; d < dim; d++) {
-				if (d > 0) buf.append(",");
-				buf.append(StringUtil.toString(cs.getOrdinate(i, d)));
+				if (d > 0) builder.append(",");
+				builder.append(StringUtil.toString(cs.getOrdinate(i, d)));
 			}
 		}
-		buf.append(')');
-		return buf.toString();
+		builder.append(')');
+		return builder.toString();
 	}
 };
 CoordinateSequences.ensureValidRing = function (fact, seq) {

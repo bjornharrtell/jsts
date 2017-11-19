@@ -1,9 +1,9 @@
 import BufferParameters from './BufferParameters';
 import NotRepresentableException from '../../algorithm/NotRepresentableException';
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Position from '../../geomgraph/Position';
 import Coordinate from '../../geom/Coordinate';
 import extend from '../../../../../extend';
+import Orientation from '../../algorithm/Orientation';
 import OffsetSegmentString from './OffsetSegmentString';
 import LineSegment from '../../geom/LineSegment';
 import Angle from '../../algorithm/Angle';
@@ -45,8 +45,8 @@ extend(OffsetSegmentGenerator.prototype, {
 		this._seg1.setCoordinates(this._s1, this._s2);
 		this.computeOffsetSegment(this._seg1, this._side, this._distance, this._offset1);
 		if (this._s1.equals(this._s2)) return null;
-		var orientation = CGAlgorithms.computeOrientation(this._s0, this._s1, this._s2);
-		var outsideTurn = orientation === CGAlgorithms.CLOCKWISE && this._side === Position.LEFT || orientation === CGAlgorithms.COUNTERCLOCKWISE && this._side === Position.RIGHT;
+		var orientation = Orientation.index(this._s0, this._s1, this._s2);
+		var outsideTurn = orientation === Orientation.CLOCKWISE && this._side === Position.LEFT || orientation === Orientation.COUNTERCLOCKWISE && this._side === Position.RIGHT;
 		if (orientation === 0) {
 			this.addCollinear(addStartPoint);
 		} else if (outsideTurn) {
@@ -67,7 +67,7 @@ extend(OffsetSegmentGenerator.prototype, {
 		switch (this._bufParams.getEndCapStyle()) {
 			case BufferParameters.CAP_ROUND:
 				this._segList.addPt(offsetL.p1);
-				this.addFilletArc(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.CLOCKWISE, this._distance);
+				this.addDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, Orientation.CLOCKWISE, this._distance);
 				this._segList.addPt(offsetR.p1);
 				break;
 			case BufferParameters.CAP_FLAT:
@@ -108,22 +108,6 @@ extend(OffsetSegmentGenerator.prototype, {
 			this.addLimitedMitreJoin(offset0, offset1, distance, this._bufParams.getMitreLimit());
 		}
 	},
-	addFilletCorner: function (p, p0, p1, direction, radius) {
-		var dx0 = p0.x - p.x;
-		var dy0 = p0.y - p.y;
-		var startAngle = Math.atan2(dy0, dx0);
-		var dx1 = p1.x - p.x;
-		var dy1 = p1.y - p.y;
-		var endAngle = Math.atan2(dy1, dx1);
-		if (direction === CGAlgorithms.CLOCKWISE) {
-			if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
-		} else {
-			if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
-		}
-		this._segList.addPt(p0);
-		this.addFilletArc(p, startAngle, endAngle, direction, radius);
-		this._segList.addPt(p1);
-	},
 	addOutsideTurn: function (orientation, addStartPoint) {
 		if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
 			this._segList.addPt(this._offset0.p1);
@@ -135,7 +119,7 @@ extend(OffsetSegmentGenerator.prototype, {
 			this.addBevelJoin(this._offset0, this._offset1);
 		} else {
 			if (addStartPoint) this._segList.addPt(this._offset0.p1);
-			this.addFilletCorner(this._s1, this._offset0.p1, this._offset1.p0, orientation, this._distance);
+			this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, orientation, this._distance);
 			this._segList.addPt(this._offset1.p0);
 		}
 	},
@@ -151,6 +135,22 @@ extend(OffsetSegmentGenerator.prototype, {
 	},
 	addFirstSegment: function () {
 		this._segList.addPt(this._offset1.p0);
+	},
+	addCornerFillet: function (p, p0, p1, direction, radius) {
+		var dx0 = p0.x - p.x;
+		var dy0 = p0.y - p.y;
+		var startAngle = Math.atan2(dy0, dx0);
+		var dx1 = p1.x - p.x;
+		var dy1 = p1.y - p.y;
+		var endAngle = Math.atan2(dy1, dx1);
+		if (direction === Orientation.CLOCKWISE) {
+			if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
+		} else {
+			if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
+		}
+		this._segList.addPt(p0);
+		this.addDirectedFillet(p, startAngle, endAngle, direction, radius);
+		this._segList.addPt(p1);
 	},
 	addLastSegment: function () {
 		this._segList.addPt(this._offset1.p1);
@@ -187,20 +187,8 @@ extend(OffsetSegmentGenerator.prototype, {
 			this._segList.addPt(bevelEndLeft);
 		}
 	},
-	computeOffsetSegment: function (seg, side, distance, offset) {
-		var sideSign = side === Position.LEFT ? 1 : -1;
-		var dx = seg.p1.x - seg.p0.x;
-		var dy = seg.p1.y - seg.p0.y;
-		var len = Math.sqrt(dx * dx + dy * dy);
-		var ux = sideSign * distance * dx / len;
-		var uy = sideSign * distance * dy / len;
-		offset.p0.x = seg.p0.x - uy;
-		offset.p0.y = seg.p0.y + ux;
-		offset.p1.x = seg.p1.x - uy;
-		offset.p1.y = seg.p1.y + ux;
-	},
-	addFilletArc: function (p, startAngle, endAngle, direction, radius) {
-		var directionFactor = direction === CGAlgorithms.CLOCKWISE ? -1 : 1;
+	addDirectedFillet: function (p, startAngle, endAngle, direction, radius) {
+		var directionFactor = direction === Orientation.CLOCKWISE ? -1 : 1;
 		var totalAngle = Math.abs(startAngle - endAngle);
 		var nSegs = Math.trunc(totalAngle / this._filletAngleQuantum + 0.5);
 		if (nSegs < 1) return null;
@@ -216,6 +204,18 @@ extend(OffsetSegmentGenerator.prototype, {
 			this._segList.addPt(pt);
 			currAngle += currAngleInc;
 		}
+	},
+	computeOffsetSegment: function (seg, side, distance, offset) {
+		var sideSign = side === Position.LEFT ? 1 : -1;
+		var dx = seg.p1.x - seg.p0.x;
+		var dy = seg.p1.y - seg.p0.y;
+		var len = Math.sqrt(dx * dx + dy * dy);
+		var ux = sideSign * distance * dx / len;
+		var uy = sideSign * distance * dy / len;
+		offset.p0.x = seg.p0.x - uy;
+		offset.p0.y = seg.p0.y + ux;
+		offset.p1.x = seg.p1.x - uy;
+		offset.p1.y = seg.p1.y + ux;
 	},
 	addInsideTurn: function (orientation, addStartPoint) {
 		this._li.computeIntersection(this._offset0.p0, this._offset0.p1, this._offset1.p0, this._offset1.p1);
@@ -242,7 +242,7 @@ extend(OffsetSegmentGenerator.prototype, {
 	createCircle: function (p) {
 		var pt = new Coordinate(p.x + this._distance, p.y);
 		this._segList.addPt(pt);
-		this.addFilletArc(p, 0.0, 2.0 * Math.PI, -1, this._distance);
+		this.addDirectedFillet(p, 0.0, 2.0 * Math.PI, -1, this._distance);
 		this._segList.closeRing();
 	},
 	addBevelJoin: function (offset0, offset1) {
@@ -264,7 +264,7 @@ extend(OffsetSegmentGenerator.prototype, {
 				if (addStartPoint) this._segList.addPt(this._offset0.p1);
 				this._segList.addPt(this._offset1.p0);
 			} else {
-				this.addFilletCorner(this._s1, this._offset0.p1, this._offset1.p0, CGAlgorithms.CLOCKWISE, this._distance);
+				this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, Orientation.CLOCKWISE, this._distance);
 			}
 		}
 	},

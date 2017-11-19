@@ -1,3 +1,5 @@
+import hasInterface from '../../../../hasInterface';
+import Collection from '../../../../java/util/Collection';
 import Coordinate from './Coordinate';
 import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
@@ -20,7 +22,7 @@ extend(CoordinateList.prototype, {
 		return this.get(i);
 	},
 	addAll: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "boolean" && hasInterface(arguments[0], Collection))) {
 			let coll = arguments[0], allowRepeated = arguments[1];
 			var isChanged = false;
 			for (var i = coll.iterator(); i.hasNext(); ) {
@@ -33,7 +35,7 @@ extend(CoordinateList.prototype, {
 	clone: function () {
 		var clone = ArrayList.prototype.clone.call(this);
 		for (var i = 0; i < this.size(); i++) {
-			clone.add(i, this.get(i).copy());
+			clone.add(i, this.get(i).clone());
 		}
 		return clone;
 	},

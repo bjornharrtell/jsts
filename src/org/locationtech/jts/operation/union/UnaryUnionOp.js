@@ -48,9 +48,9 @@ extend(UnaryUnionOp.prototype, {
 		} else if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
 			if (this._geomFact === null) this._geomFact = geom.getFactory();
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POLYGON, this._polygons);
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_LINESTRING, this._lines);
-			GeometryExtracter.extract(geom, Geometry.SORTINDEX_POINT, this._points);
+			GeometryExtracter.extract(geom, Geometry.TYPENAME_POLYGON, this._polygons);
+			GeometryExtracter.extract(geom, Geometry.TYPENAME_LINESTRING, this._lines);
+			GeometryExtracter.extract(geom, Geometry.TYPENAME_POINT, this._points);
 		}
 	},
 	union: function () {

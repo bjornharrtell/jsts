@@ -28,6 +28,7 @@ extend(Node.prototype, {
 		return this;
 	},
 	isSearchMatch: function (searchEnv) {
+		if (searchEnv === null) return false;
 		return this._env.intersects(searchEnv);
 	},
 	getSubnode: function (index) {

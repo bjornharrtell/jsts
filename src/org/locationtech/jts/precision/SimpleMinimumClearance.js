@@ -1,10 +1,10 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import CoordinateFilter from '../geom/CoordinateFilter';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter';
+import Distance from '../algorithm/Distance';
 export default function SimpleMinimumClearance() {
 	this._inputGeom = null;
 	this._minClearance = null;
@@ -101,7 +101,7 @@ extend(ComputeMCCoordinateSequenceFilter.prototype, {
 	},
 	checkSegmentDistance: function (seg0, seg1) {
 		if (this._queryPt.equals2D(seg0) || this._queryPt.equals2D(seg1)) return null;
-		var segDist = CGAlgorithms.distancePointLine(this._queryPt, seg1, seg0);
+		var segDist = Distance.pointToSegment(this._queryPt, seg1, seg0);
 		if (segDist > 0) this.smc.updateClearance(segDist, this._queryPt, seg1, seg0);
 	},
 	isDone: function () {

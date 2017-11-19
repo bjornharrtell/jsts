@@ -1,8 +1,8 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Geometry from './Geometry';
 import CoordinateFilter from './CoordinateFilter';
 import hasInterface from '../../../../hasInterface';
 import BoundaryOp from '../operation/BoundaryOp';
+import Length from '../algorithm/Length';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import extend from '../../../../extend';
 import Lineal from './Lineal';
@@ -30,14 +30,11 @@ extend(LineString.prototype, {
 	isRing: function () {
 		return this.isClosed() && this.isSimple();
 	},
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_LINESTRING;
-	},
 	getCoordinates: function () {
 		return this._points.toCoordinateArray();
 	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -59,7 +56,9 @@ extend(LineString.prototype, {
 			var j = this._points.size() - 1 - i;
 			if (!this._points.getCoordinate(i).equals(this._points.getCoordinate(j))) {
 				if (this._points.getCoordinate(i).compareTo(this._points.getCoordinate(j)) > 0) {
-					CoordinateSequences.reverse(this._points);
+					var copy = this._points.copy();
+					CoordinateSequences.reverse(copy);
+					this._points = copy;
 				}
 				return null;
 			}
@@ -87,11 +86,14 @@ extend(LineString.prototype, {
 		}
 		return this.getPointN(this.getNumPoints() - 1);
 	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_LINESTRING;
+	},
 	getDimension: function () {
 		return 1;
 	},
 	getLength: function () {
-		return CGAlgorithms.computeLength(this._points);
+		return Length.ofLine(this._points);
 	},
 	getNumPoints: function () {
 		return this._points.size();
@@ -157,16 +159,11 @@ extend(LineString.prototype, {
 	isEquivalentClass: function (other) {
 		return other instanceof LineString;
 	},
-	clone: function () {
-		var ls = Geometry.prototype.clone.call(this);
-		ls._points = this._points.clone();
-		return ls;
-	},
 	getCoordinateN: function (n) {
 		return this._points.getCoordinate(n);
 	},
 	getGeometryType: function () {
-		return "LineString";
+		return Geometry.TYPENAME_LINESTRING;
 	},
 	copy: function () {
 		return new LineString(this._points.copy(), this._factory);

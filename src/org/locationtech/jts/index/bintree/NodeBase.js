@@ -2,7 +2,7 @@ import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 export default function NodeBase() {
 	this._items = new ArrayList();
-	this._subnode = [null, null];
+	this._subnode = new Array(2).fill(null);
 }
 extend(NodeBase.prototype, {
 	hasChildren: function () {

@@ -1,5 +1,5 @@
-import StringBuffer from '../../../../java/lang/StringBuffer';
 import EdgeIntersectionList from './EdgeIntersectionList';
+import IntersectionMatrix from '../geom/IntersectionMatrix';
 import MonotoneChainEdge from './index/MonotoneChainEdge';
 import Position from './Position';
 import Coordinate from '../geom/Coordinate';
@@ -7,6 +7,7 @@ import extend from '../../../../extend';
 import Label from './Label';
 import Envelope from '../geom/Envelope';
 import inherits from '../../../../inherits';
+import StringBuilder from '../../../../java/lang/StringBuilder';
 import Depth from './Depth';
 import GraphComponent from './GraphComponent';
 export default function Edge() {
@@ -144,15 +145,15 @@ extend(Edge.prototype, {
 		var ei = this.eiList.add(intPt, normalizedSegmentIndex, dist);
 	},
 	toString: function () {
-		var buf = new StringBuffer();
-		buf.append("edge " + this._name + ": ");
-		buf.append("LINESTRING (");
+		var builder = new StringBuilder();
+		builder.append("edge " + this._name + ": ");
+		builder.append("LINESTRING (");
 		for (var i = 0; i < this.pts.length; i++) {
-			if (i > 0) buf.append(",");
-			buf.append(this.pts[i].x + " " + this.pts[i].y);
+			if (i > 0) builder.append(",");
+			builder.append(this.pts[i].x + " " + this.pts[i].y);
 		}
-		buf.append(")  " + this._label + " " + this._depthDelta);
-		return buf.toString();
+		builder.append(")  " + this._label + " " + this._depthDelta);
+		return builder.toString();
 	},
 	isPointwiseEqual: function (e) {
 		if (this.pts.length !== e.pts.length) return false;
@@ -182,7 +183,7 @@ extend(Edge.prototype, {
 	}
 });
 Edge.updateIM = function () {
-	if (arguments.length === 2) {
+	if (arguments.length === 2 && (arguments[1] instanceof IntersectionMatrix && arguments[0] instanceof Label)) {
 		let label = arguments[0], im = arguments[1];
 		im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
 		if (label.isArea()) {

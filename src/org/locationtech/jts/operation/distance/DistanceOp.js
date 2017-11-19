@@ -2,7 +2,6 @@ import PointLocator from '../../algorithm/PointLocator';
 import PolygonExtracter from '../../geom/util/PolygonExtracter';
 import Location from '../../geom/Location';
 import LineString from '../../geom/LineString';
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import hasInterface from '../../../../../hasInterface';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import Point from '../../geom/Point';
@@ -15,6 +14,7 @@ import ConnectedElementLocationFilter from './ConnectedElementLocationFilter';
 import LineSegment from '../../geom/LineSegment';
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import List from '../../../../../java/util/List';
+import Distance from '../../algorithm/Distance';
 export default function DistanceOp() {
 	this._geom = null;
 	this._terminateDistance = 0.0;
@@ -41,8 +41,10 @@ extend(DistanceOp.prototype, {
 			this.computeContainmentDistance(1, locPtPoly);
 		} else if (arguments.length === 2) {
 			let polyGeomIndex = arguments[0], locPtPoly = arguments[1];
+			var polyGeom = this._geom[polyGeomIndex];
+			if (polyGeom.getDimension() < 2) return null;
 			var locationsIndex = 1 - polyGeomIndex;
-			var polys = PolygonExtracter.getPolygons(this._geom[polyGeomIndex]);
+			var polys = PolygonExtracter.getPolygons(polyGeom);
 			if (polys.size() > 0) {
 				var insideLocs = ConnectedElementLocationFilter.getLocations(this._geom[locationsIndex]);
 				this.computeContainmentDistance(insideLocs, polys, locPtPoly);
@@ -142,7 +144,7 @@ extend(DistanceOp.prototype, {
 				var coord0 = line.getCoordinates();
 				var coord = pt.getCoordinate();
 				for (var i = 0; i < coord0.length - 1; i++) {
-					var dist = CGAlgorithms.distancePointLine(coord, coord0[i], coord0[i + 1]);
+					var dist = Distance.pointToSegment(coord, coord0[i], coord0[i + 1]);
 					if (dist < this._minDistance) {
 						this._minDistance = dist;
 						var seg = new LineSegment(coord0[i], coord0[i + 1]);
@@ -159,7 +161,7 @@ extend(DistanceOp.prototype, {
 				var coord1 = line1.getCoordinates();
 				for (var i = 0; i < coord0.length - 1; i++) {
 					for (var j = 0; j < coord1.length - 1; j++) {
-						var dist = CGAlgorithms.distanceLineLine(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1]);
+						var dist = Distance.segmentToSegment(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1]);
 						if (dist < this._minDistance) {
 							this._minDistance = dist;
 							var seg0 = new LineSegment(coord0[i], coord0[i + 1]);
@@ -217,6 +219,8 @@ DistanceOp.distance = function (g0, g1) {
 	return distOp.distance();
 };
 DistanceOp.isWithinDistance = function (g0, g1, distance) {
+	var envDist = g0.getEnvelopeInternal().distance(g1.getEnvelopeInternal());
+	if (envDist > distance) return false;
 	var distOp = new DistanceOp(g0, g1, distance);
 	return distOp.distance() <= distance;
 };

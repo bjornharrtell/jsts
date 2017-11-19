@@ -1,6 +1,5 @@
 import Location from '../../geom/Location';
 import LineString from '../../geom/LineString';
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Position from '../../geomgraph/Position';
 import Point from '../../geom/Point';
 import NodedSegmentString from '../../noding/NodedSegmentString';
@@ -8,11 +7,13 @@ import Polygon from '../../geom/Polygon';
 import MultiPoint from '../../geom/MultiPoint';
 import LinearRing from '../../geom/LinearRing';
 import extend from '../../../../../extend';
+import Orientation from '../../algorithm/Orientation';
 import MultiPolygon from '../../geom/MultiPolygon';
 import Label from '../../geomgraph/Label';
 import GeometryCollection from '../../geom/GeometryCollection';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import ArrayList from '../../../../../java/util/ArrayList';
+import Distance from '../../algorithm/Distance';
 import MultiLineString from '../../geom/MultiLineString';
 import Triangle from '../../geom/Triangle';
 export default function OffsetCurveSetBuilder() {
@@ -54,7 +55,7 @@ extend(OffsetCurveSetBuilder.prototype, {
 	isTriangleErodedCompletely: function (triangleCoord, bufferDistance) {
 		var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
 		var inCentre = tri.inCentre();
-		var distToCentre = CGAlgorithms.distancePointLine(inCentre, tri.p0, tri.p1);
+		var distToCentre = Distance.pointToSegment(inCentre, tri.p0, tri.p1);
 		return distToCentre < Math.abs(bufferDistance);
 	},
 	addLineString: function (line) {
@@ -76,7 +77,7 @@ extend(OffsetCurveSetBuilder.prototype, {
 		if (offsetDistance === 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) return null;
 		var leftLoc = cwLeftLoc;
 		var rightLoc = cwRightLoc;
-		if (coord.length >= LinearRing.MINIMUM_VALID_SIZE && CGAlgorithms.isCCW(coord)) {
+		if (coord.length >= LinearRing.MINIMUM_VALID_SIZE && Orientation.isCCW(coord)) {
 			leftLoc = cwRightLoc;
 			rightLoc = cwLeftLoc;
 			side = Position.opposite(side);

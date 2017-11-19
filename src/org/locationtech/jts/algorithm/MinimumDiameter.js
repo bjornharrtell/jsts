@@ -32,7 +32,7 @@ extend(MinimumDiameter.prototype, {
 	},
 	getDiameter: function () {
 		this.computeMinimumDiameter();
-		if (this._minWidthPt === null) return this._inputGeom.getFactory().createLineString(null);
+		if (this._minWidthPt === null) return this._inputGeom.getFactory().createLineString();
 		var basePt = this._minBaseSeg.project(this._minWidthPt);
 		return this._inputGeom.getFactory().createLineString([basePt, this._minWidthPt]);
 	},
@@ -125,7 +125,7 @@ extend(MinimumDiameter.prototype, {
 		var p2 = minParaLine.lineIntersection(minPerpLine);
 		var p3 = maxParaLine.lineIntersection(minPerpLine);
 		var shell = this._inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0]);
-		return this._inputGeom.getFactory().createPolygon(shell, null);
+		return this._inputGeom.getFactory().createPolygon(shell);
 	},
 	interfaces_: function () {
 		return [];

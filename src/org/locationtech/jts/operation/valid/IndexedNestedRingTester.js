@@ -1,6 +1,6 @@
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import STRtree from '../../index/strtree/STRtree';
 import IsValidOp from './IsValidOp';
+import PointLocation from '../../algorithm/PointLocation';
 import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
@@ -38,7 +38,7 @@ extend(IndexedNestedRingTester.prototype, {
 				if (!innerRing.getEnvelopeInternal().intersects(searchRing.getEnvelopeInternal())) continue;
 				var innerRingPt = IsValidOp.findPtNotNode(innerRingPts, searchRing, this._graph);
 				if (innerRingPt === null) continue;
-				var isInside = CGAlgorithms.isPointInRing(innerRingPt, searchRingPts);
+				var isInside = PointLocation.isInRing(innerRingPt, searchRingPts);
 				if (isInside) {
 					this._nestedPt = innerRingPt;
 					return false;

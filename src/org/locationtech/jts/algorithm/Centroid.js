@@ -1,10 +1,10 @@
 import LineString from '../geom/LineString';
-import CGAlgorithms from './CGAlgorithms';
 import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import Point from '../geom/Point';
 import Polygon from '../geom/Polygon';
 import extend from '../../../../extend';
+import Orientation from './Orientation';
 import GeometryCollection from '../geom/GeometryCollection';
 export default function Centroid() {
 	this._areaBasePt = null;
@@ -20,13 +20,13 @@ export default function Centroid() {
 	this.add(geom);
 }
 extend(Centroid.prototype, {
+	setAreaBasePoint: function (basePt) {
+		this._areaBasePt = basePt;
+	},
 	addPoint: function (pt) {
 		this._ptCount += 1;
 		this._ptCentSum.x += pt.x;
 		this._ptCentSum.y += pt.y;
-	},
-	setBasePoint: function (basePt) {
-		if (this._areaBasePt === null) this._areaBasePt = basePt;
 	},
 	addLineSegments: function (pts) {
 		var lineLen = 0.0;
@@ -43,7 +43,7 @@ extend(Centroid.prototype, {
 		if (lineLen === 0.0 && pts.length > 0) this.addPoint(pts[0]);
 	},
 	addHole: function (pts) {
-		var isPositiveArea = CGAlgorithms.isCCW(pts);
+		var isPositiveArea = Orientation.isCCW(pts);
 		for (var i = 0; i < pts.length - 1; i++) {
 			this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea);
 		}
@@ -66,8 +66,8 @@ extend(Centroid.prototype, {
 		return cent;
 	},
 	addShell: function (pts) {
-		if (pts.length > 0) this.setBasePoint(pts[0]);
-		var isPositiveArea = !CGAlgorithms.isCCW(pts);
+		if (pts.length > 0) this.setAreaBasePoint(pts[0]);
+		var isPositiveArea = !Orientation.isCCW(pts);
 		for (var i = 0; i < pts.length - 1; i++) {
 			this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea);
 		}

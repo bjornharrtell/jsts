@@ -67,7 +67,7 @@ StringUtil.split = function (s, separator) {
 	return res;
 };
 StringUtil.toString = function () {
-	if (arguments.length === 1) {
+	if (arguments.length === 1 && typeof arguments[0] === "number") {
 		let d = arguments[0];
 		return StringUtil.SIMPLE_ORDINATE_FORMAT.format(d);
 	}

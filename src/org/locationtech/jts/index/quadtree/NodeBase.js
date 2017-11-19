@@ -99,10 +99,14 @@ extend(NodeBase.prototype, {
 	},
 	isEmpty: function () {
 		var isEmpty = true;
-		if (!this._items.isEmpty()) isEmpty = false;
-		for (var i = 0; i < 4; i++) {
-			if (this._subnode[i] !== null) {
-				if (!this._subnode[i].isEmpty()) isEmpty = false;
+		if (!this._items.isEmpty()) isEmpty = false; else {
+			for (var i = 0; i < 4; i++) {
+				if (this._subnode[i] !== null) {
+					if (!this._subnode[i].isEmpty()) {
+						isEmpty = false;
+						break;
+					}
+				}
 			}
 		}
 		return isEmpty;

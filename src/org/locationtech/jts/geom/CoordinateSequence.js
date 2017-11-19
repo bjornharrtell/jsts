@@ -15,7 +15,6 @@ extend(CoordinateSequence.prototype, {
 	getCoordinateCopy: function (i) {},
 	getDimension: function () {},
 	getX: function (index) {},
-	clone: function () {},
 	expandEnvelope: function (env) {},
 	copy: function () {},
 	getY: function (index) {},

@@ -1,4 +1,3 @@
-import StringBuffer from '../../../../../java/lang/StringBuffer';
 import hasInterface from '../../../../../hasInterface';
 import Coordinate from '../Coordinate';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
@@ -6,6 +5,7 @@ import Double from '../../../../../java/lang/Double';
 import extend from '../../../../../extend';
 import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
+import StringBuilder from '../../../../../java/lang/StringBuilder';
 export default function CoordinateArraySequence() {
 	this._dimension = 3;
 	this._coordinates = null;
@@ -97,13 +97,6 @@ extend(CoordinateArraySequence.prototype, {
 	getX: function (index) {
 		return this._coordinates[index].x;
 	},
-	clone: function () {
-		var cloneCoordinates = new Array(this.size()).fill(null);
-		for (var i = 0; i < this._coordinates.length; i++) {
-			cloneCoordinates[i] = this._coordinates[i].clone();
-		}
-		return new CoordinateArraySequence(cloneCoordinates, this._dimension);
-	},
 	expandEnvelope: function (env) {
 		for (var i = 0; i < this._coordinates.length; i++) {
 			env.expandToInclude(this._coordinates[i]);
@@ -119,15 +112,15 @@ extend(CoordinateArraySequence.prototype, {
 	},
 	toString: function () {
 		if (this._coordinates.length > 0) {
-			var strBuf = new StringBuffer(17 * this._coordinates.length);
-			strBuf.append('(');
-			strBuf.append(this._coordinates[0]);
+			var strBuilder = new StringBuilder(17 * this._coordinates.length);
+			strBuilder.append('(');
+			strBuilder.append(this._coordinates[0]);
 			for (var i = 1; i < this._coordinates.length; i++) {
-				strBuf.append(", ");
-				strBuf.append(this._coordinates[i]);
+				strBuilder.append(", ");
+				strBuilder.append(this._coordinates[i]);
 			}
-			strBuf.append(')');
-			return strBuf.toString();
+			strBuilder.append(')');
+			return strBuilder.toString();
 		} else {
 			return "()";
 		}

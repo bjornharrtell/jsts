@@ -1,6 +1,6 @@
 import Location from '../../geom/Location';
-import CGAlgorithms from '../CGAlgorithms';
 import Polygon from '../../geom/Polygon';
+import PointLocation from '../PointLocation';
 import PointOnGeometryLocator from './PointOnGeometryLocator';
 import extend from '../../../../../extend';
 import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator';
@@ -21,34 +21,42 @@ extend(SimplePointInAreaLocator.prototype, {
 		return SimplePointInAreaLocator;
 	}
 });
-SimplePointInAreaLocator.isPointInRing = function (p, ring) {
-	if (!ring.getEnvelopeInternal().intersects(p)) return false;
-	return CGAlgorithms.isPointInRing(p, ring.getCoordinates());
-};
-SimplePointInAreaLocator.containsPointInPolygon = function (p, poly) {
-	if (poly.isEmpty()) return false;
+SimplePointInAreaLocator.locatePointInPolygon = function (p, poly) {
+	if (poly.isEmpty()) return Location.EXTERIOR;
 	var shell = poly.getExteriorRing();
-	if (!SimplePointInAreaLocator.isPointInRing(p, shell)) return false;
+	var shellLoc = SimplePointInAreaLocator.locatePointInRing(p, shell);
+	if (shellLoc !== Location.INTERIOR) return shellLoc;
 	for (var i = 0; i < poly.getNumInteriorRing(); i++) {
 		var hole = poly.getInteriorRingN(i);
-		if (SimplePointInAreaLocator.isPointInRing(p, hole)) return false;
+		var holeLoc = SimplePointInAreaLocator.locatePointInRing(p, hole);
+		if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
+		if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
 	}
-	return true;
+	return Location.INTERIOR;
 };
-SimplePointInAreaLocator.containsPoint = function (p, geom) {
+SimplePointInAreaLocator.locatePointInRing = function (p, ring) {
+	if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
+	return PointLocation.locateInRing(p, ring.getCoordinates());
+};
+SimplePointInAreaLocator.containsPointInPolygon = function (p, poly) {
+	return Location.EXTERIOR !== SimplePointInAreaLocator.locatePointInPolygon(p, poly);
+};
+SimplePointInAreaLocator.locateInGeometry = function (p, geom) {
 	if (geom instanceof Polygon) {
-		return SimplePointInAreaLocator.containsPointInPolygon(p, geom);
+		return SimplePointInAreaLocator.locatePointInPolygon(p, geom);
 	} else if (geom instanceof GeometryCollection) {
 		var geomi = new GeometryCollectionIterator(geom);
 		while (geomi.hasNext()) {
 			var g2 = geomi.next();
-			if (g2 !== geom) if (SimplePointInAreaLocator.containsPoint(p, g2)) return true;
+			if (g2 !== geom) {
+				var loc = SimplePointInAreaLocator.locateInGeometry(p, g2);
+				if (loc !== Location.EXTERIOR) return loc;
+			}
 		}
 	}
-	return false;
+	return Location.EXTERIOR;
 };
 SimplePointInAreaLocator.locate = function (p, geom) {
 	if (geom.isEmpty()) return Location.EXTERIOR;
-	if (SimplePointInAreaLocator.containsPoint(p, geom)) return Location.INTERIOR;
-	return Location.EXTERIOR;
+	return SimplePointInAreaLocator.locateInGeometry(p, geom);
 };

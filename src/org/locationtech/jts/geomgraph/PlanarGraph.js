@@ -1,9 +1,9 @@
 import Location from '../geom/Location';
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import Coordinate from '../geom/Coordinate';
 import Node from './Node';
 import extend from '../../../../extend';
 import NodeMap from './NodeMap';
+import Orientation from '../algorithm/Orientation';
 import DirectedEdge from './DirectedEdge';
 import System from '../../../../java/lang/System';
 import ArrayList from '../../../../java/util/ArrayList';
@@ -69,7 +69,7 @@ extend(PlanarGraph.prototype, {
 	},
 	matchInSameDirection: function (p0, p1, ep0, ep1) {
 		if (!p0.equals(ep0)) return false;
-		if (CGAlgorithms.computeOrientation(p0, p1, ep1) === CGAlgorithms.COLLINEAR && Quadrant.quadrant(p0, p1) === Quadrant.quadrant(ep0, ep1)) return true;
+		if (Orientation.index(p0, p1, ep1) === Orientation.COLLINEAR && Quadrant.quadrant(p0, p1) === Quadrant.quadrant(ep0, ep1)) return true;
 		return false;
 	},
 	getEdgeEnds: function () {

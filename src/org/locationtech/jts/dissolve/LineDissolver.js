@@ -75,7 +75,7 @@ extend(LineDissolver.prototype, {
 			e = eNext;
 			MarkHalfEdge.markBoth(e);
 		}
-		line.add(e.dest().copy(), false);
+		line.add(e.dest().clone(), false);
 		this.stackEdges(e.sym());
 		this.addLine(line);
 	},

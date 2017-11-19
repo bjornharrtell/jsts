@@ -1,9 +1,6 @@
 import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
-import Envelope from '../../geom/Envelope';
 export default function MonotoneChainOverlapAction() {
-	this.tempEnv1 = new Envelope();
-	this.tempEnv2 = new Envelope();
 	this._overlapSeg1 = new LineSegment();
 	this._overlapSeg2 = new LineSegment();
 }

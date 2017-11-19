@@ -1,5 +1,6 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
+import Coordinate from '../geom/Coordinate';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import Quadrant from '../geomgraph/Quadrant';
 import Assert from '../util/Assert';
 export default function HalfEdge() {
@@ -59,7 +60,7 @@ extend(HalfEdge.prototype, {
 		return degree;
 	},
 	equals: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (arguments[1] instanceof Coordinate && arguments[0] instanceof Coordinate)) {
 			let p0 = arguments[0], p1 = arguments[1];
 			return this._orig.equals2D(p0) && this._sym._orig.equals(p1);
 		}
@@ -83,7 +84,7 @@ extend(HalfEdge.prototype, {
 		var quadrant2 = Quadrant.quadrant(dx2, dy2);
 		if (quadrant > quadrant2) return 1;
 		if (quadrant < quadrant2) return -1;
-		return CGAlgorithms.computeOrientation(e._orig, e.dest(), this.dest());
+		return Orientation.index(e._orig, e.dest(), this.dest());
 	},
 	prevNode: function () {
 		var e = this;

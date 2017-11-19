@@ -84,9 +84,25 @@ extend(Envelope.prototype, {
 				return this.intersects(p.x, p.y);
 			}
 		} else if (arguments.length === 2) {
-			let x = arguments[0], y = arguments[1];
-			if (this.isNull()) return false;
-			return !(x > this._maxx || x < this._minx || y > this._maxy || y < this._miny);
+			if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
+				let a = arguments[0], b = arguments[1];
+				if (this.isNull()) {
+					return false;
+				}
+				var envminx = a.x < b.x ? a.x : b.x;
+				if (envminx > this._maxx) return false;
+				var envmaxx = a.x > b.x ? a.x : b.x;
+				if (envmaxx < this._minx) return false;
+				var envminy = a.y < b.y ? a.y : b.y;
+				if (envminy > this._maxy) return false;
+				var envmaxy = a.y > b.y ? a.y : b.y;
+				if (envmaxy < this._miny) return false;
+				return true;
+			} else if (typeof arguments[0] === "number" && typeof arguments[1] === "number") {
+				let x = arguments[0], y = arguments[1];
+				if (this.isNull()) return false;
+				return !(x > this._maxx || x < this._minx || y > this._maxy || y < this._miny);
+			}
 		}
 	},
 	getMinY: function () {

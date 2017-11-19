@@ -1,10 +1,11 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
+import Area from '../algorithm/Area';
 import Geometry from './Geometry';
 import Arrays from '../../../../java/util/Arrays';
 import CoordinateFilter from './CoordinateFilter';
 import hasInterface from '../../../../hasInterface';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import System from '../../../../java/lang/System';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import CoordinateArrays from './CoordinateArrays';
@@ -37,9 +38,6 @@ extend(Polygon.prototype, {
 	computeEnvelopeInternal: function () {
 		return this._shell.getEnvelopeInternal();
 	},
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_POLYGON;
-	},
 	getCoordinates: function () {
 		if (this.isEmpty()) {
 			return [];
@@ -62,9 +60,9 @@ extend(Polygon.prototype, {
 	},
 	getArea: function () {
 		var area = 0.0;
-		area += Math.abs(CGAlgorithms.signedArea(this._shell.getCoordinateSequence()));
+		area += Area.ofRing(this._shell.getCoordinateSequence());
 		for (var i = 0; i < this._holes.length; i++) {
-			area -= Math.abs(CGAlgorithms.signedArea(this._holes[i].getCoordinateSequence()));
+			area -= Area.ofRing(this._holes[i].getCoordinateSequence());
 		}
 		return area;
 	},
@@ -94,7 +92,7 @@ extend(Polygon.prototype, {
 		return true;
 	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -134,7 +132,7 @@ extend(Polygon.prototype, {
 			CoordinateArrays.scroll(uniqueCoordinates, minCoordinate);
 			System.arraycopy(uniqueCoordinates, 0, ring.getCoordinates(), 0, uniqueCoordinates.length);
 			ring.getCoordinates()[uniqueCoordinates.length] = uniqueCoordinates[0];
-			if (CGAlgorithms.isCCW(ring.getCoordinates()) === clockwise) {
+			if (Orientation.isCCW(ring.getCoordinates()) === clockwise) {
 				CoordinateArrays.reverse(ring.getCoordinates());
 			}
 		}
@@ -147,6 +145,9 @@ extend(Polygon.prototype, {
 	},
 	getBoundaryDimension: function () {
 		return 1;
+	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_POLYGON;
 	},
 	getDimension: function () {
 		return 2;
@@ -247,25 +248,16 @@ extend(Polygon.prototype, {
 		if (rings.length <= 1) return this.getFactory().createLinearRing(rings[0].getCoordinateSequence());
 		return this.getFactory().createMultiLineString(rings);
 	},
-	clone: function () {
-		var poly = Geometry.prototype.clone.call(this);
-		poly._shell = this._shell.clone();
-		poly._holes = new Array(this._holes.length).fill(null);
-		for (var i = 0; i < this._holes.length; i++) {
-			poly._holes[i] = this._holes[i].clone();
-		}
-		return poly;
-	},
 	getGeometryType: function () {
-		return "Polygon";
+		return Geometry.TYPENAME_POLYGON;
 	},
 	copy: function () {
-		var shell = this._shell.copy();
-		var holes = new Array(this._holes.length).fill(null);
-		for (var i = 0; i < holes.length; i++) {
-			holes[i] = this._holes[i].copy();
+		var shellCopy = this._shell.copy();
+		var holeCopies = new Array(this._holes.length).fill(null);
+		for (var i = 0; i < this._holes.length; i++) {
+			holeCopies[i] = this._holes[i].copy();
 		}
-		return new Polygon(shell, holes, this._factory);
+		return new Polygon(shellCopy, holeCopies, this._factory);
 	},
 	getExteriorRing: function () {
 		return this._shell;

@@ -1,5 +1,5 @@
-import CGAlgorithms from '../algorithm/CGAlgorithms';
 import extend from '../../../../extend';
+import Orientation from '../algorithm/Orientation';
 import Comparable from '../../../../java/lang/Comparable';
 import ArrayList from '../../../../java/util/ArrayList';
 import Quadrant from '../geomgraph/Quadrant';
@@ -35,7 +35,7 @@ extend(DirectedEdge.prototype, {
 	compareDirection: function (e) {
 		if (this._quadrant > e._quadrant) return 1;
 		if (this._quadrant < e._quadrant) return -1;
-		return CGAlgorithms.computeOrientation(e._p0, e._p1, this._p1);
+		return Orientation.index(e._p0, e._p1, this._p1);
 	},
 	getCoordinate: function () {
 		return this._from.getCoordinate();

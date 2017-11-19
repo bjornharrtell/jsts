@@ -135,6 +135,17 @@ extend(IsSimpleOp.prototype, {
 		return IsSimpleOp;
 	}
 });
+IsSimpleOp.isSimple = function () {
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		var op = new IsSimpleOp(geom);
+		return op.isSimple();
+	} else if (arguments.length === 2) {
+		let geom = arguments[0], boundaryNodeRule = arguments[1];
+		var op = new IsSimpleOp(geom, boundaryNodeRule);
+		return op.isSimple();
+	}
+};
 function EndpointInfo() {
 	this.pt = null;
 	this.isClosed = null;

@@ -1,7 +1,7 @@
 import ItemBoundable from './ItemBoundable';
 import PriorityQueue from '../../util/PriorityQueue';
 import hasInterface from '../../../../../hasInterface';
-import ItemVisitor from '../ItemVisitor';
+import BoundablePairDistanceComparator from './BoundablePairDistanceComparator';
 import SpatialIndex from '../SpatialIndex';
 import AbstractNode from './AbstractNode';
 import Double from '../../../../../java/lang/Double';
@@ -14,7 +14,6 @@ import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
 import inherits from '../../../../../inherits';
-import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 import ItemDistance from './ItemDistance';
 export default function STRtree() {
@@ -44,7 +43,7 @@ extend(STRtree.prototype, {
 		} else return AbstractSTRtree.prototype.size.apply(this, arguments);
 	},
 	insert: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
 			let itemEnv = arguments[0], item = arguments[1];
 			if (itemEnv.isNull()) {
 				return null;
@@ -77,14 +76,6 @@ extend(STRtree.prototype, {
 		} else if (arguments.length === 2) {
 			let searchEnv = arguments[0], visitor = arguments[1];
 			AbstractSTRtree.prototype.query.call(this, searchEnv, visitor);
-		} else if (arguments.length === 3) {
-			if (hasInterface(arguments[2], ItemVisitor) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
-				let searchBounds = arguments[0], node = arguments[1], visitor = arguments[2];
-				AbstractSTRtree.prototype.query.call(this, searchBounds, node, visitor);
-			} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
-				let searchBounds = arguments[0], node = arguments[1], matches = arguments[2];
-				AbstractSTRtree.prototype.query.call(this, searchBounds, node, matches);
-			}
 		}
 	},
 	getComparator: function () {
@@ -94,7 +85,7 @@ extend(STRtree.prototype, {
 		return AbstractSTRtree.prototype.createParentBoundables.call(this, childBoundables, newLevel);
 	},
 	remove: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
 			let itemEnv = arguments[0], item = arguments[1];
 			return AbstractSTRtree.prototype.remove.call(this, itemEnv, item);
 		} else return AbstractSTRtree.prototype.remove.apply(this, arguments);
@@ -145,12 +136,49 @@ extend(STRtree.prototype, {
 					}
 				}
 				return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()];
+			} else if (arguments[0] instanceof BoundablePair && Number.isInteger(arguments[1])) {
+				let initBndPair = arguments[0], k = arguments[1];
+				return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY, k);
 			}
 		} else if (arguments.length === 3) {
-			let env = arguments[0], item = arguments[1], itemDist = arguments[2];
+			if (hasInterface(arguments[2], ItemDistance) && (arguments[0] instanceof Envelope && arguments[1] instanceof Object)) {
+				let env = arguments[0], item = arguments[1], itemDist = arguments[2];
+				var bnd = new ItemBoundable(env, item);
+				var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
+				return this.nearestNeighbour(bp)[0];
+			} else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof BoundablePair && typeof arguments[1] === "number")) {
+				let initBndPair = arguments[0], maxDistance = arguments[1], k = arguments[2];
+				var distanceLowerBound = maxDistance;
+				var priQ = new PriorityQueue();
+				priQ.add(initBndPair);
+				var kNearestNeighbors = new java.util.PriorityQueue<BoundablePair>(k, new BoundablePairDistanceComparator(false));
+				while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
+					var bndPair = priQ.poll();
+					var currentDistance = bndPair.getDistance();
+					if (currentDistance >= distanceLowerBound) {
+						break;
+					}
+					if (bndPair.isLeaves()) {
+						if (kNearestNeighbors.size() < k) {
+							kNearestNeighbors.add(bndPair);
+						} else {
+							if (kNearestNeighbors.peek().getDistance() > currentDistance) {
+								kNearestNeighbors.poll();
+								kNearestNeighbors.add(bndPair);
+							}
+							distanceLowerBound = kNearestNeighbors.peek().getDistance();
+						}
+					} else {
+						bndPair.expandToQueue(priQ, distanceLowerBound);
+					}
+				}
+				return STRtree.getItems(kNearestNeighbors);
+			}
+		} else if (arguments.length === 4) {
+			let env = arguments[0], item = arguments[1], itemDist = arguments[2], k = arguments[3];
 			var bnd = new ItemBoundable(env, item);
 			var bp = new BoundablePair(this.getRoot(), bnd, itemDist);
-			return this.nearestNeighbour(bp)[0];
+			return this.nearestNeighbour(bp, k);
 		}
 	},
 	interfaces_: function () {
@@ -165,6 +193,16 @@ STRtree.centreX = function (e) {
 };
 STRtree.avg = function (a, b) {
 	return (a + b) / 2;
+};
+STRtree.getItems = function (kNearestNeighbors) {
+	var items = new Array(kNearestNeighbors.size()).fill(null);
+	var resultIterator = kNearestNeighbors.iterator();
+	var count = 0;
+	while (resultIterator.hasNext()) {
+		items[count] = resultIterator.next().getBoundable(0).getItem();
+		count++;
+	}
+	return items;
 };
 STRtree.centreY = function (e) {
 	return STRtree.avg(e.getMinY(), e.getMaxY());

@@ -17,7 +17,7 @@ export default function Geometry() {
 }
 extend(Geometry.prototype, {
 	isGeometryCollection: function () {
-		return this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION;
+		return this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION;
 	},
 	getFactory: function () {
 		return this._factory;
@@ -66,8 +66,8 @@ extend(Geometry.prototype, {
 		if (arguments.length === 1) {
 			let o = arguments[0];
 			var other = o;
-			if (this.getSortIndex() !== other.getSortIndex()) {
-				return this.getSortIndex() - other.getSortIndex();
+			if (this.getTypeCode() !== other.getTypeCode()) {
+				return this.getTypeCode() - other.getTypeCode();
 			}
 			if (this.isEmpty() && other.isEmpty()) {
 				return 0;
@@ -82,8 +82,8 @@ extend(Geometry.prototype, {
 		} else if (arguments.length === 2) {
 			let o = arguments[0], comp = arguments[1];
 			var other = o;
-			if (this.getSortIndex() !== other.getSortIndex()) {
-				return this.getSortIndex() - other.getSortIndex();
+			if (this.getTypeCode() !== other.getTypeCode()) {
+				return this.getTypeCode() - other.getTypeCode();
 			}
 			if (this.isEmpty() && other.isEmpty()) {
 				return 0;
@@ -107,7 +107,7 @@ extend(Geometry.prototype, {
 		return this.getFactory().toGeometry(this.getEnvelopeInternal());
 	},
 	checkNotGeometryCollection: function (g) {
-		if (g.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION) {
+		if (g.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION) {
 			throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
 		}
 	},
@@ -160,7 +160,7 @@ extend(Geometry.prototype, {
 		return this.getEnvelopeInternal().hashCode();
 	},
 	isGeometryCollectionOrDerived: function () {
-		if (this.getSortIndex() === Geometry.SORTINDEX_GEOMETRYCOLLECTION || this.getSortIndex() === Geometry.SORTINDEX_MULTIPOINT || this.getSortIndex() === Geometry.SORTINDEX_MULTILINESTRING || this.getSortIndex() === Geometry.SORTINDEX_MULTIPOLYGON) {
+		if (this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION || this.getTypeCode() === Geometry.TYPECODE_MULTIPOINT || this.getTypeCode() === Geometry.TYPECODE_MULTILINESTRING || this.getTypeCode() === Geometry.TYPECODE_MULTIPOLYGON) {
 			return true;
 		}
 		return false;
@@ -189,14 +189,22 @@ Geometry.hasNullElements = function (array) {
 	return false;
 };
 Geometry.serialVersionUID = 8763622679187376702;
-Geometry.SORTINDEX_POINT = 0;
-Geometry.SORTINDEX_MULTIPOINT = 1;
-Geometry.SORTINDEX_LINESTRING = 2;
-Geometry.SORTINDEX_LINEARRING = 3;
-Geometry.SORTINDEX_MULTILINESTRING = 4;
-Geometry.SORTINDEX_POLYGON = 5;
-Geometry.SORTINDEX_MULTIPOLYGON = 6;
-Geometry.SORTINDEX_GEOMETRYCOLLECTION = 7;
+Geometry.TYPECODE_POINT = 0;
+Geometry.TYPECODE_MULTIPOINT = 1;
+Geometry.TYPECODE_LINESTRING = 2;
+Geometry.TYPECODE_LINEARRING = 3;
+Geometry.TYPECODE_MULTILINESTRING = 4;
+Geometry.TYPECODE_POLYGON = 5;
+Geometry.TYPECODE_MULTIPOLYGON = 6;
+Geometry.TYPECODE_GEOMETRYCOLLECTION = 7;
+Geometry.TYPENAME_POINT = "Point";
+Geometry.TYPENAME_MULTIPOINT = "MultiPoint";
+Geometry.TYPENAME_LINESTRING = "LineString";
+Geometry.TYPENAME_LINEARRING = "LinearRing";
+Geometry.TYPENAME_MULTILINESTRING = "MultiLineString";
+Geometry.TYPENAME_POLYGON = "Polygon";
+Geometry.TYPENAME_MULTIPOLYGON = "MultiPolygon";
+Geometry.TYPENAME_GEOMETRYCOLLECTION = "GeometryCollection";
 Geometry.geometryChangedFilter = {
 	interfaces_: function () {
 		return [GeometryComponentFilter];

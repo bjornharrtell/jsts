@@ -41,7 +41,7 @@ extend(Node.prototype, {
 		return loc;
 	},
 	setLabel: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (Number.isInteger(arguments[1]) && Number.isInteger(arguments[0]))) {
 			let argIndex = arguments[0], onLocation = arguments[1];
 			if (this._label === null) {
 				this._label = new Label(argIndex, onLocation);

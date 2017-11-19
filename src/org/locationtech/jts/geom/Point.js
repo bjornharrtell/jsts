@@ -26,14 +26,11 @@ extend(Point.prototype, {
 		env.expandToInclude(this._coordinates.getX(0), this._coordinates.getY(0));
 		return env;
 	},
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_POINT;
-	},
 	getCoordinates: function () {
 		return this.isEmpty() ? [] : [this.getCoordinate()];
 	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -53,6 +50,9 @@ extend(Point.prototype, {
 	},
 	getBoundaryDimension: function () {
 		return Dimension.FALSE;
+	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_POINT;
 	},
 	getDimension: function () {
 		return 0;
@@ -101,15 +101,10 @@ extend(Point.prototype, {
 		}
 	},
 	getBoundary: function () {
-		return this.getFactory().createGeometryCollection(null);
-	},
-	clone: function () {
-		var p = Geometry.prototype.clone.call(this);
-		p._coordinates = this._coordinates.clone();
-		return p;
+		return this.getFactory().createGeometryCollection();
 	},
 	getGeometryType: function () {
-		return "Point";
+		return Geometry.TYPENAME_POINT;
 	},
 	copy: function () {
 		return new Point(this._coordinates.copy(), this._factory);

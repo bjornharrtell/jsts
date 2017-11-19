@@ -1,10 +1,9 @@
 import Location from '../geom/Location';
 import LineString from '../geom/LineString';
-import CGAlgorithms from './CGAlgorithms';
-import Coordinate from '../geom/Coordinate';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import Point from '../geom/Point';
 import Polygon from '../geom/Polygon';
+import PointLocation from './PointLocation';
 import BoundaryNodeRule from './BoundaryNodeRule';
 import extend from '../../../../extend';
 import MultiPolygon from '../geom/MultiPolygon';
@@ -22,42 +21,9 @@ export default function PointLocator() {
 	}
 }
 extend(PointLocator.prototype, {
-	locateInternal: function () {
-		if (arguments[0] instanceof Coordinate && arguments[1] instanceof Polygon) {
-			let p = arguments[0], poly = arguments[1];
-			if (poly.isEmpty()) return Location.EXTERIOR;
-			var shell = poly.getExteriorRing();
-			var shellLoc = this.locateInPolygonRing(p, shell);
-			if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR;
-			if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY;
-			for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-				var hole = poly.getInteriorRingN(i);
-				var holeLoc = this.locateInPolygonRing(p, hole);
-				if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
-				if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
-			}
-			return Location.INTERIOR;
-		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof LineString) {
-			let p = arguments[0], l = arguments[1];
-			if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
-			var pt = l.getCoordinates();
-			if (!l.isClosed()) {
-				if (p.equals(pt[0]) || p.equals(pt[pt.length - 1])) {
-					return Location.BOUNDARY;
-				}
-			}
-			if (CGAlgorithms.isOnLine(p, pt)) return Location.INTERIOR;
-			return Location.EXTERIOR;
-		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Point) {
-			let p = arguments[0], pt = arguments[1];
-			var ptCoord = pt.getCoordinate();
-			if (ptCoord.equals2D(p)) return Location.INTERIOR;
-			return Location.EXTERIOR;
-		}
-	},
 	locateInPolygonRing: function (p, ring) {
 		if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
-		return CGAlgorithms.locatePointInRing(p, ring.getCoordinates());
+		return PointLocation.locateInRing(p, ring.getCoordinates());
 	},
 	intersects: function (p, geom) {
 		return this.locate(p, geom) !== Location.EXTERIOR;
@@ -68,23 +34,23 @@ extend(PointLocator.prototype, {
 	},
 	computeLocation: function (p, geom) {
 		if (geom instanceof Point) {
-			this.updateLocationInfo(this.locateInternal(p, geom));
+			this.updateLocationInfo(this.locateOnPoint(p, geom));
 		}
 		if (geom instanceof LineString) {
-			this.updateLocationInfo(this.locateInternal(p, geom));
+			this.updateLocationInfo(this.locateOnLineString(p, geom));
 		} else if (geom instanceof Polygon) {
-			this.updateLocationInfo(this.locateInternal(p, geom));
+			this.updateLocationInfo(this.locateInPolygon(p, geom));
 		} else if (geom instanceof MultiLineString) {
 			var ml = geom;
 			for (var i = 0; i < ml.getNumGeometries(); i++) {
 				var l = ml.getGeometryN(i);
-				this.updateLocationInfo(this.locateInternal(p, l));
+				this.updateLocationInfo(this.locateOnLineString(p, l));
 			}
 		} else if (geom instanceof MultiPolygon) {
 			var mpoly = geom;
 			for (var i = 0; i < mpoly.getNumGeometries(); i++) {
 				var poly = mpoly.getGeometryN(i);
-				this.updateLocationInfo(this.locateInternal(p, poly));
+				this.updateLocationInfo(this.locateInPolygon(p, poly));
 			}
 		} else if (geom instanceof GeometryCollection) {
 			var geomi = new GeometryCollectionIterator(geom);
@@ -94,12 +60,44 @@ extend(PointLocator.prototype, {
 			}
 		}
 	},
+	locateOnPoint: function (p, pt) {
+		var ptCoord = pt.getCoordinate();
+		if (ptCoord.equals2D(p)) return Location.INTERIOR;
+		return Location.EXTERIOR;
+	},
+	locateOnLineString: function (p, l) {
+		if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
+		var seq = l.getCoordinateSequence();
+		if (!l.isClosed()) {
+			if (p.equals(seq.getCoordinate(0)) || p.equals(seq.getCoordinate(seq.size() - 1))) {
+				return Location.BOUNDARY;
+			}
+		}
+		if (PointLocation.isOnLine(p, seq)) {
+			return Location.INTERIOR;
+		}
+		return Location.EXTERIOR;
+	},
+	locateInPolygon: function (p, poly) {
+		if (poly.isEmpty()) return Location.EXTERIOR;
+		var shell = poly.getExteriorRing();
+		var shellLoc = this.locateInPolygonRing(p, shell);
+		if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR;
+		if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY;
+		for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+			var hole = poly.getInteriorRingN(i);
+			var holeLoc = this.locateInPolygonRing(p, hole);
+			if (holeLoc === Location.INTERIOR) return Location.EXTERIOR;
+			if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
+		}
+		return Location.INTERIOR;
+	},
 	locate: function (p, geom) {
 		if (geom.isEmpty()) return Location.EXTERIOR;
 		if (geom instanceof LineString) {
-			return this.locateInternal(p, geom);
+			return this.locateOnLineString(p, geom);
 		} else if (geom instanceof Polygon) {
-			return this.locateInternal(p, geom);
+			return this.locateInPolygon(p, geom);
 		}
 		this._isIn = false;
 		this._numBoundaries = 0;

@@ -51,7 +51,7 @@ extend(ScaledNoder.prototype, {
 	scale: function () {
 		if (hasInterface(arguments[0], Collection)) {
 			let segStrings = arguments[0];
-			var nodedSegmentStrings = new ArrayList();
+			var nodedSegmentStrings = new ArrayList(segStrings.size());
 			for (var i = segStrings.iterator(); i.hasNext(); ) {
 				var ss = i.next();
 				nodedSegmentStrings.add(new NodedSegmentString(this.scale(ss.getCoordinates()), ss.getData()));

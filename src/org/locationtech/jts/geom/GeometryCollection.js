@@ -36,9 +36,6 @@ extend(GeometryCollection.prototype, {
 	getGeometryN: function (n) {
 		return this._geometries[n];
 	},
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_GEOMETRYCOLLECTION;
-	},
 	getCoordinates: function () {
 		var coordinates = new Array(this.getNumPoints()).fill(null);
 		var k = -1;
@@ -59,7 +56,7 @@ extend(GeometryCollection.prototype, {
 		return area;
 	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -92,6 +89,9 @@ extend(GeometryCollection.prototype, {
 			dimension = Math.max(dimension, this._geometries[i].getBoundaryDimension());
 		}
 		return dimension;
+	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_GEOMETRYCOLLECTION;
 	},
 	getDimension: function () {
 		var dimension = Dimension.FALSE;
@@ -184,16 +184,8 @@ extend(GeometryCollection.prototype, {
 		Assert.shouldNeverReachHere();
 		return null;
 	},
-	clone: function () {
-		var gc = Geometry.prototype.clone.call(this);
-		gc._geometries = new Array(this._geometries.length).fill(null);
-		for (var i = 0; i < this._geometries.length; i++) {
-			gc._geometries[i] = this._geometries[i].clone();
-		}
-		return gc;
-	},
 	getGeometryType: function () {
-		return "GeometryCollection";
+		return Geometry.TYPENAME_GEOMETRYCOLLECTION;
 	},
 	copy: function () {
 		var geometries = new Array(this._geometries.length).fill(null);

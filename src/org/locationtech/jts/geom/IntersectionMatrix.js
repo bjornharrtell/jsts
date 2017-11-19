@@ -1,9 +1,9 @@
-import StringBuffer from '../../../../java/lang/StringBuffer';
 import Location from './Location';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import extend from '../../../../extend';
 import Dimension from './Dimension';
 import Cloneable from '../../../../java/lang/Cloneable';
+import StringBuilder from '../../../../java/lang/StringBuilder';
 export default function IntersectionMatrix() {
 	this._matrix = null;
 	if (arguments.length === 0) {
@@ -105,13 +105,13 @@ extend(IntersectionMatrix.prototype, {
 		return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE;
 	},
 	toString: function () {
-		var buf = new StringBuffer("123456789");
+		var builder = new StringBuilder("123456789");
 		for (var ai = 0; ai < 3; ai++) {
 			for (var bi = 0; bi < 3; bi++) {
-				buf.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(this._matrix[ai][bi]));
+				builder.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(this._matrix[ai][bi]));
 			}
 		}
-		return buf.toString();
+		return builder.toString();
 	},
 	setAll: function (dimensionValue) {
 		for (var ai = 0; ai < 3; ai++) {

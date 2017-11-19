@@ -130,6 +130,7 @@ extend(ConformingDelaunayTriangulator.prototype, {
 			this._splitPt = this._splitFinder.findSplitPoint(seg, encroachPt);
 			var splitVertex = this.createVertex(this._splitPt, seg);
 			var insertedVertex = this.insertSite(splitVertex);
+			if (!insertedVertex.getCoordinate().equals2D(this._splitPt)) {}
 			var s1 = new Segment(seg.getStartX(), seg.getStartY(), seg.getStartZ(), splitVertex.getX(), splitVertex.getY(), splitVertex.getZ(), seg.getData());
 			var s2 = new Segment(splitVertex.getX(), splitVertex.getY(), splitVertex.getZ(), seg.getEndX(), seg.getEndY(), seg.getEndZ(), seg.getData());
 			newSegments.add(s1);

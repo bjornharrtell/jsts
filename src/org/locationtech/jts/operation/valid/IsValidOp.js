@@ -1,16 +1,16 @@
+import Location from '../../geom/Location';
 import TreeSet from '../../../../../java/util/TreeSet';
 import LineString from '../../geom/LineString';
-import CGAlgorithms from '../../algorithm/CGAlgorithms';
 import Geometry from '../../geom/Geometry';
 import ConnectedInteriorTester from './ConnectedInteriorTester';
 import Coordinate from '../../geom/Coordinate';
 import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
 import MultiPoint from '../../geom/MultiPoint';
+import PointLocation from '../../algorithm/PointLocation';
 import LinearRing from '../../geom/LinearRing';
 import Double from '../../../../../java/lang/Double';
 import extend from '../../../../../extend';
-import MCPointInRing from '../../algorithm/MCPointInRing';
 import GeometryGraph from '../../geomgraph/GeometryGraph';
 import MultiPolygon from '../../geom/MultiPolygon';
 import ConsistentAreaTester from './ConsistentAreaTester';
@@ -18,6 +18,7 @@ import GeometryCollection from '../../geom/GeometryCollection';
 import IndexedNestedRingTester from './IndexedNestedRingTester';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import TopologyValidationError from './TopologyValidationError';
+import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator';
 import Assert from '../../util/Assert';
 export default function IsValidOp() {
 	this._parentGeometry = null;
@@ -77,14 +78,14 @@ extend(IsValidOp.prototype, {
 		var holePts = hole.getCoordinates();
 		var shellPt = IsValidOp.findPtNotNode(shellPts, hole, graph);
 		if (shellPt !== null) {
-			var insideHole = CGAlgorithms.isPointInRing(shellPt, holePts);
+			var insideHole = PointLocation.isInRing(shellPt, holePts);
 			if (!insideHole) {
 				return shellPt;
 			}
 		}
 		var holePt = IsValidOp.findPtNotNode(holePts, shell, graph);
 		if (holePt !== null) {
-			var insideShell = CGAlgorithms.isPointInRing(holePt, shellPts);
+			var insideShell = PointLocation.isInRing(holePt, shellPts);
 			if (insideShell) {
 				return holePt;
 			}
@@ -123,12 +124,12 @@ extend(IsValidOp.prototype, {
 	},
 	checkHolesInShell: function (p, graph) {
 		var shell = p.getExteriorRing();
-		var pir = new MCPointInRing(shell);
+		var pir = new IndexedPointInAreaLocator(shell);
 		for (var i = 0; i < p.getNumInteriorRing(); i++) {
 			var hole = p.getInteriorRingN(i);
 			var holePt = IsValidOp.findPtNotNode(hole.getCoordinates(), shell, graph);
 			if (holePt === null) return null;
-			var outside = !pir.isInside(holePt);
+			var outside = Location.EXTERIOR === pir.locate(holePt);
 			if (outside) {
 				this._validErr = new TopologyValidationError(TopologyValidationError.HOLE_OUTSIDE_SHELL, holePt);
 				return null;
@@ -244,7 +245,7 @@ extend(IsValidOp.prototype, {
 		var polyPts = polyShell.getCoordinates();
 		var shellPt = IsValidOp.findPtNotNode(shellPts, polyShell, graph);
 		if (shellPt === null) return null;
-		var insidePolyShell = CGAlgorithms.isPointInRing(shellPt, polyPts);
+		var insidePolyShell = PointLocation.isInRing(shellPt, polyPts);
 		if (!insidePolyShell) return null;
 		if (p.getNumInteriorRing() <= 0) {
 			this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, shellPt);
