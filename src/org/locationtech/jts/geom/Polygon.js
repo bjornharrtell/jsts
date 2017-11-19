@@ -38,9 +38,6 @@ extend(Polygon.prototype, {
 	computeEnvelopeInternal: function () {
 		return this._shell.getEnvelopeInternal();
 	},
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_POLYGON;
-	},
 	getCoordinates: function () {
 		if (this.isEmpty()) {
 			return [];
@@ -95,7 +92,7 @@ extend(Polygon.prototype, {
 		return true;
 	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -148,6 +145,9 @@ extend(Polygon.prototype, {
 	},
 	getBoundaryDimension: function () {
 		return 1;
+	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_POLYGON;
 	},
 	getDimension: function () {
 		return 2;
@@ -249,7 +249,7 @@ extend(Polygon.prototype, {
 		return this.getFactory().createMultiLineString(rings);
 	},
 	getGeometryType: function () {
-		return "Polygon";
+		return Geometry.TYPENAME_POLYGON;
 	},
 	copy: function () {
 		var shellCopy = this._shell.copy();

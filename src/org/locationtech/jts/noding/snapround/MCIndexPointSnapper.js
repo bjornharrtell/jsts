@@ -1,4 +1,5 @@
 import MonotoneChainSelectAction from '../../index/chain/MonotoneChainSelectAction';
+import MonotoneChain from '../../index/chain/MonotoneChain';
 import ItemVisitor from '../../index/ItemVisitor';
 import extend from '../../../../../extend';
 import inherits from '../../../../../inherits';
@@ -52,7 +53,7 @@ extend(HotPixelSnapAction.prototype, {
 		return this._isNodeAdded;
 	},
 	select: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (Number.isInteger(arguments[1]) && arguments[0] instanceof MonotoneChain)) {
 			let mc = arguments[0], startIndex = arguments[1];
 			var ss = mc.getContext();
 			if (this._parentEdge !== null) {

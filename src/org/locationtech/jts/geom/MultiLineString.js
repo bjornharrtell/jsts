@@ -11,11 +11,8 @@ export default function MultiLineString() {
 }
 inherits(MultiLineString, GeometryCollection);
 extend(MultiLineString.prototype, {
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_MULTILINESTRING;
-	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -40,6 +37,9 @@ extend(MultiLineString.prototype, {
 		}
 		return true;
 	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_MULTILINESTRING;
+	},
 	getDimension: function () {
 		return 1;
 	},
@@ -55,7 +55,7 @@ extend(MultiLineString.prototype, {
 		return new BoundaryOp(this).getBoundary();
 	},
 	getGeometryType: function () {
-		return "MultiLineString";
+		return Geometry.TYPENAME_MULTILINESTRING;
 	},
 	copy: function () {
 		var lineStrings = new Array(this._geometries.length).fill(null);

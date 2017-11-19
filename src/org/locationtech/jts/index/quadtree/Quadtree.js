@@ -52,7 +52,7 @@ extend(Quadtree.prototype, {
 	},
 	isEmpty: function () {
 		if (this._root === null) return true;
-		return false;
+		return this._root.isEmpty();
 	},
 	interfaces_: function () {
 		return [SpatialIndex, Serializable];

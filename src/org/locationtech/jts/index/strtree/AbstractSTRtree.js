@@ -22,6 +22,41 @@ export default function AbstractSTRtree() {
 	}
 }
 extend(AbstractSTRtree.prototype, {
+	queryInternal: function () {
+		if (hasInterface(arguments[2], ItemVisitor) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
+			let searchBounds = arguments[0], node = arguments[1], visitor = arguments[2];
+			var childBoundables = node.getChildBoundables();
+			for (var i = 0; i < childBoundables.size(); i++) {
+				var childBoundable = childBoundables.get(i);
+				if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
+					continue;
+				}
+				if (childBoundable instanceof AbstractNode) {
+					this.queryInternal(searchBounds, childBoundable, visitor);
+				} else if (childBoundable instanceof ItemBoundable) {
+					visitor.visitItem(childBoundable.getItem());
+				} else {
+					Assert.shouldNeverReachHere();
+				}
+			}
+		} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
+			let searchBounds = arguments[0], node = arguments[1], matches = arguments[2];
+			var childBoundables = node.getChildBoundables();
+			for (var i = 0; i < childBoundables.size(); i++) {
+				var childBoundable = childBoundables.get(i);
+				if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
+					continue;
+				}
+				if (childBoundable instanceof AbstractNode) {
+					this.queryInternal(searchBounds, childBoundable, matches);
+				} else if (childBoundable instanceof ItemBoundable) {
+					matches.add(childBoundable.getItem());
+				} else {
+					Assert.shouldNeverReachHere();
+				}
+			}
+		}
+	},
 	getNodeCapacity: function () {
 		return this._nodeCapacity;
 	},
@@ -127,7 +162,7 @@ extend(AbstractSTRtree.prototype, {
 				return matches;
 			}
 			if (this.getIntersectsOp().intersects(this._root.getBounds(), searchBounds)) {
-				this.query(searchBounds, this._root, matches);
+				this.queryInternal(searchBounds, this._root, matches);
 			}
 			return matches;
 		} else if (arguments.length === 2) {
@@ -137,41 +172,7 @@ extend(AbstractSTRtree.prototype, {
 				return null;
 			}
 			if (this.getIntersectsOp().intersects(this._root.getBounds(), searchBounds)) {
-				this.query(searchBounds, this._root, visitor);
-			}
-		} else if (arguments.length === 3) {
-			if (hasInterface(arguments[2], ItemVisitor) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
-				let searchBounds = arguments[0], node = arguments[1], visitor = arguments[2];
-				var childBoundables = node.getChildBoundables();
-				for (var i = 0; i < childBoundables.size(); i++) {
-					var childBoundable = childBoundables.get(i);
-					if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
-						continue;
-					}
-					if (childBoundable instanceof AbstractNode) {
-						this.query(searchBounds, childBoundable, visitor);
-					} else if (childBoundable instanceof ItemBoundable) {
-						visitor.visitItem(childBoundable.getItem());
-					} else {
-						Assert.shouldNeverReachHere();
-					}
-				}
-			} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
-				let searchBounds = arguments[0], node = arguments[1], matches = arguments[2];
-				var childBoundables = node.getChildBoundables();
-				for (var i = 0; i < childBoundables.size(); i++) {
-					var childBoundable = childBoundables.get(i);
-					if (!this.getIntersectsOp().intersects(childBoundable.getBounds(), searchBounds)) {
-						continue;
-					}
-					if (childBoundable instanceof AbstractNode) {
-						this.query(searchBounds, childBoundable, matches);
-					} else if (childBoundable instanceof ItemBoundable) {
-						matches.add(childBoundable.getItem());
-					} else {
-						Assert.shouldNeverReachHere();
-					}
-				}
+				this.queryInternal(searchBounds, this._root, visitor);
 			}
 		}
 	},

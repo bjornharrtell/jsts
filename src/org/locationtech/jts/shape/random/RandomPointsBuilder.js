@@ -1,4 +1,5 @@
 import Location from '../../geom/Location';
+import Geometry from '../../geom/Geometry';
 import hasInterface from '../../../../../hasInterface';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Coordinate from '../../geom/Coordinate';
@@ -40,7 +41,7 @@ extend(RandomPointsBuilder.prototype, {
 		return this.getExtent().contains(p);
 	},
 	setExtent: function () {
-		if (arguments.length === 1) {
+		if (arguments.length === 1 && arguments[0] instanceof Geometry) {
 			let mask = arguments[0];
 			if (!hasInterface(mask, Polygonal)) throw new IllegalArgumentException("Only polygonal extents are supported");
 			this._maskPoly = mask;

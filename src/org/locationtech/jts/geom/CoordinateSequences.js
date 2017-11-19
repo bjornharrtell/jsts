@@ -1,3 +1,4 @@
+import hasInterface from '../../../../hasInterface';
 import StringUtil from '../util/StringUtil';
 import Double from '../../../../java/lang/Double';
 import extend from '../../../../extend';
@@ -70,7 +71,7 @@ CoordinateSequences.copy = function (src, srcPos, dest, destPos, length) {
 	}
 };
 CoordinateSequences.toString = function () {
-	if (arguments.length === 1) {
+	if (arguments.length === 1 && hasInterface(arguments[0], CoordinateSequence)) {
 		let cs = arguments[0];
 		var size = cs.size();
 		if (size === 0) return "()";

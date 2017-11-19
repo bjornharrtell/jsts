@@ -30,14 +30,11 @@ extend(LineString.prototype, {
 	isRing: function () {
 		return this.isClosed() && this.isSimple();
 	},
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_LINESTRING;
-	},
 	getCoordinates: function () {
 		return this._points.toCoordinateArray();
 	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -88,6 +85,9 @@ extend(LineString.prototype, {
 			return null;
 		}
 		return this.getPointN(this.getNumPoints() - 1);
+	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_LINESTRING;
 	},
 	getDimension: function () {
 		return 1;
@@ -163,7 +163,7 @@ extend(LineString.prototype, {
 		return this._points.getCoordinate(n);
 	},
 	getGeometryType: function () {
-		return "LineString";
+		return Geometry.TYPENAME_LINESTRING;
 	},
 	copy: function () {
 		return new LineString(this._points.copy(), this._factory);

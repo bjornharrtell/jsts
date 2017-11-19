@@ -10,11 +10,8 @@ export default function MultiPolygon() {
 }
 inherits(MultiPolygon, GeometryCollection);
 extend(MultiPolygon.prototype, {
-	getSortIndex: function () {
-		return Geometry.SORTINDEX_MULTIPOLYGON;
-	},
 	equalsExact: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
@@ -24,6 +21,9 @@ extend(MultiPolygon.prototype, {
 	},
 	getBoundaryDimension: function () {
 		return 1;
+	},
+	getTypeCode: function () {
+		return Geometry.TYPECODE_MULTIPOLYGON;
 	},
 	getDimension: function () {
 		return 2;
@@ -52,7 +52,7 @@ extend(MultiPolygon.prototype, {
 		return this.getFactory().createMultiLineString(allRings.toArray(allRingsArray));
 	},
 	getGeometryType: function () {
-		return "MultiPolygon";
+		return Geometry.TYPENAME_MULTIPOLYGON;
 	},
 	copy: function () {
 		var polygons = new Array(this._geometries.length).fill(null);

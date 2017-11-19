@@ -1,4 +1,5 @@
 import EdgeIntersectionList from './EdgeIntersectionList';
+import IntersectionMatrix from '../geom/IntersectionMatrix';
 import MonotoneChainEdge from './index/MonotoneChainEdge';
 import Position from './Position';
 import Coordinate from '../geom/Coordinate';
@@ -182,7 +183,7 @@ extend(Edge.prototype, {
 	}
 });
 Edge.updateIM = function () {
-	if (arguments.length === 2) {
+	if (arguments.length === 2 && (arguments[1] instanceof IntersectionMatrix && arguments[0] instanceof Label)) {
 		let label = arguments[0], im = arguments[1];
 		im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
 		if (label.isArea()) {

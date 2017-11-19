@@ -1,8 +1,10 @@
 import StringBuffer from '../../../../java/lang/StringBuffer';
+import hasInterface from '../../../../hasInterface';
 import NodedSegmentString from './NodedSegmentString';
 import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
+import List from '../../../../java/util/List';
 export default function SegmentStringUtil() {}
 extend(SegmentStringUtil.prototype, {
 	interfaces_: function () {
@@ -37,7 +39,7 @@ SegmentStringUtil.extractSegmentStrings = function (geom) {
 	return SegmentStringUtil.extractNodedSegmentStrings(geom);
 };
 SegmentStringUtil.toString = function () {
-	if (arguments.length === 1) {
+	if (arguments.length === 1 && hasInterface(arguments[0], List)) {
 		let segStrings = arguments[0];
 		var buf = new StringBuffer();
 		for (var i = segStrings.iterator(); i.hasNext(); ) {

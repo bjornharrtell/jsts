@@ -141,7 +141,7 @@ extend(Coordinate.prototype, {
 	}
 });
 Coordinate.hashCode = function () {
-	if (arguments.length === 1) {
+	if (arguments.length === 1 && typeof arguments[0] === "number") {
 		let x = arguments[0];
 		var f = Double.doubleToLongBits(x);
 		return Math.trunc(f ^ f >>> 32);

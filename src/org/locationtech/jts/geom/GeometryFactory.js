@@ -1,5 +1,6 @@
 import CoordinateSequenceFactory from './CoordinateSequenceFactory';
 import LineString from './LineString';
+import Geometry from './Geometry';
 import hasInterface from '../../../../hasInterface';
 import Coordinate from './Coordinate';
 import Point from './Point';
@@ -163,7 +164,7 @@ extend(GeometryFactory.prototype, {
 		var editor = new GeometryEditor(this);
 		return editor.edit(g, {
 			edit: function () {
-				if (arguments.length === 2) {
+				if (arguments.length === 2 && (arguments[1] instanceof Geometry && hasInterface(arguments[0], CoordinateSequence))) {
 					let coordSeq = arguments[0], geometry = arguments[1];
 					return this._coordinateSequenceFactory.create(coordSeq);
 				}
@@ -201,9 +202,6 @@ extend(GeometryFactory.prototype, {
 			if (arguments[0] instanceof Array) {
 				let point = arguments[0];
 				return new MultiPoint(point, this);
-			} else if (arguments[0] instanceof Array) {
-				let coordinates = arguments[0];
-				return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null);
 			} else if (hasInterface(arguments[0], CoordinateSequence)) {
 				let coordinates = arguments[0];
 				if (coordinates === null) {

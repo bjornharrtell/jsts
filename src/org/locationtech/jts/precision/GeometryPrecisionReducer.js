@@ -1,7 +1,9 @@
 import hasInterface from '../../../../hasInterface';
 import GeometryFactory from '../geom/GeometryFactory';
+import IsValidOp from '../operation/valid/IsValidOp';
 import GeometryEditor from '../geom/util/GeometryEditor';
 import extend from '../../../../extend';
+import BufferOp from '../operation/buffer/BufferOp';
 import Polygonal from '../geom/Polygonal';
 import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation';
 export default function GeometryPrecisionReducer() {
@@ -18,10 +20,11 @@ extend(GeometryPrecisionReducer.prototype, {
 		if (!this._changePrecisionModel) {
 			geomToBuffer = this.changePM(geom, this._targetPM);
 		}
-		var bufGeom = geomToBuffer.buffer(0);
+		var bufGeom = BufferOp.bufferOp(geomToBuffer, 0);
 		var finalGeom = bufGeom;
 		if (!this._changePrecisionModel) {
-			finalGeom = geom.getFactory().createGeometry(bufGeom);
+			finalGeom = bufGeom.copy();
+			this.changePM(finalGeom, geom.getPrecisionModel());
 		}
 		return finalGeom;
 	},
@@ -54,7 +57,7 @@ extend(GeometryPrecisionReducer.prototype, {
 		var reducePW = this.reducePointwise(geom);
 		if (this._isPointwise) return reducePW;
 		if (!hasInterface(reducePW, Polygonal)) return reducePW;
-		if (reducePW.isValid()) return reducePW;
+		if (IsValidOp.isValid(reducePW)) return reducePW;
 		return this.fixPolygonalTopology(reducePW);
 	},
 	setPointwise: function (isPointwise) {

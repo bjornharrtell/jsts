@@ -28,6 +28,6 @@ JTSVersion.main = function (args) {
 };
 JTSVersion.CURRENT_VERSION = new JTSVersion();
 JTSVersion.MAJOR = 1;
-JTSVersion.MINOR = 14;
+JTSVersion.MINOR = 15;
 JTSVersion.PATCH = 0;
 JTSVersion.releaseInfo = "";

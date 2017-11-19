@@ -27,7 +27,7 @@ extend(CommonBits.prototype, {
 		this._commonBits = CommonBits.zeroLowerBits(this._commonBits, 64 - (12 + this._commonMantissaBitsCount));
 	},
 	toString: function () {
-		if (arguments.length === 1) {
+		if (arguments.length === 1 && arguments[0] instanceof long) {
 			let bits = arguments[0];
 			var x = Double.longBitsToDouble(bits);
 			var numStr = Long.toBinaryString(bits);

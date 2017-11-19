@@ -90,7 +90,7 @@ extend(DD.prototype, {
 		}
 	},
 	equals: function () {
-		if (arguments.length === 1) {
+		if (arguments.length === 1 && arguments[0] instanceof DD) {
 			let y = arguments[0];
 			return this._hi === y._hi && this._lo === y._lo;
 		}

@@ -111,15 +111,15 @@ extend(NoOpGeometryOperation.prototype, {
 function CoordinateOperation() {}
 extend(CoordinateOperation.prototype, {
 	edit: function (geometry, factory) {
+		var coordinates = this.edit(geometry.getCoordinates(), geometry);
 		if (geometry instanceof LinearRing) {
-			return factory.createLinearRing(this.editCoordinates(geometry.getCoordinates(), geometry));
+			if (coordinates === null) return factory.createLinearRing(); else return factory.createLinearRing(coordinates);
 		}
 		if (geometry instanceof LineString) {
-			return factory.createLineString(this.editCoordinates(geometry.getCoordinates(), geometry));
+			if (coordinates === null) return factory.createLineString(); else return factory.createLineString(coordinates);
 		}
 		if (geometry instanceof Point) {
-			var newCoordinates = this.editCoordinates(geometry.getCoordinates(), geometry);
-			return factory.createPoint(newCoordinates.length > 0 ? newCoordinates[0] : null);
+			if (coordinates === null || coordinates.length === 0) return factory.createPoint(); else return factory.createPoint(coordinates[0]);
 		}
 		return geometry;
 	},

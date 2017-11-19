@@ -2,6 +2,7 @@ import PointLocator from '../algorithm/PointLocator';
 import Location from '../geom/Location';
 import LineString from '../geom/LineString';
 import HashMap from '../../../../java/util/HashMap';
+import Geometry from '../geom/Geometry';
 import hasInterface from '../../../../hasInterface';
 import Position from './Position';
 import Coordinate from '../geom/Coordinate';
@@ -198,7 +199,7 @@ extend(GeometryGraph.prototype, {
 		}
 	},
 	add: function () {
-		if (arguments.length === 1) {
+		if (arguments.length === 1 && arguments[0] instanceof Geometry) {
 			let g = arguments[0];
 			if (g.isEmpty()) return null;
 			if (g instanceof MultiPolygon) this._useBoundaryDeterminationRule = false;
@@ -221,7 +222,7 @@ extend(GeometryGraph.prototype, {
 		return this._ptLocator.locate(pt, this._parentGeom);
 	},
 	findEdge: function () {
-		if (arguments.length === 1) {
+		if (arguments.length === 1 && arguments[0] instanceof LineString) {
 			let line = arguments[0];
 			return this._lineEdgeMap.get(line);
 		} else return PlanarGraph.prototype.findEdge.apply(this, arguments);

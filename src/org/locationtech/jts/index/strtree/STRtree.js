@@ -2,7 +2,6 @@ import ItemBoundable from './ItemBoundable';
 import PriorityQueue from '../../util/PriorityQueue';
 import hasInterface from '../../../../../hasInterface';
 import BoundablePairDistanceComparator from './BoundablePairDistanceComparator';
-import ItemVisitor from '../ItemVisitor';
 import SpatialIndex from '../SpatialIndex';
 import AbstractNode from './AbstractNode';
 import Double from '../../../../../java/lang/Double';
@@ -15,7 +14,6 @@ import Serializable from '../../../../../java/io/Serializable';
 import Envelope from '../../geom/Envelope';
 import Assert from '../../util/Assert';
 import inherits from '../../../../../inherits';
-import List from '../../../../../java/util/List';
 import AbstractSTRtree from './AbstractSTRtree';
 import ItemDistance from './ItemDistance';
 export default function STRtree() {
@@ -45,7 +43,7 @@ extend(STRtree.prototype, {
 		} else return AbstractSTRtree.prototype.size.apply(this, arguments);
 	},
 	insert: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
 			let itemEnv = arguments[0], item = arguments[1];
 			if (itemEnv.isNull()) {
 				return null;
@@ -78,14 +76,6 @@ extend(STRtree.prototype, {
 		} else if (arguments.length === 2) {
 			let searchEnv = arguments[0], visitor = arguments[1];
 			AbstractSTRtree.prototype.query.call(this, searchEnv, visitor);
-		} else if (arguments.length === 3) {
-			if (hasInterface(arguments[2], ItemVisitor) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
-				let searchBounds = arguments[0], node = arguments[1], visitor = arguments[2];
-				AbstractSTRtree.prototype.query.call(this, searchBounds, node, visitor);
-			} else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Object && arguments[1] instanceof AbstractNode)) {
-				let searchBounds = arguments[0], node = arguments[1], matches = arguments[2];
-				AbstractSTRtree.prototype.query.call(this, searchBounds, node, matches);
-			}
 		}
 	},
 	getComparator: function () {
@@ -95,7 +85,7 @@ extend(STRtree.prototype, {
 		return AbstractSTRtree.prototype.createParentBoundables.call(this, childBoundables, newLevel);
 	},
 	remove: function () {
-		if (arguments.length === 2) {
+		if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
 			let itemEnv = arguments[0], item = arguments[1];
 			return AbstractSTRtree.prototype.remove.call(this, itemEnv, item);
 		} else return AbstractSTRtree.prototype.remove.apply(this, arguments);
