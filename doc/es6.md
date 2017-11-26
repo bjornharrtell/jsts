@@ -1,1 +1,1 @@
-This API documentation is for the ES6 source and describe the manually ported IO-classes. Note that the `jsts` module via translated source also exposes the same public API as `org.locationtech.jts` in the [JTS API](http://bjornharrtell.github.io/jsts/1.3.0/apidocs/).
+This API documentation is for the ES6 source and describe the manually ported IO-classes. Note that the `jsts` module via translated source also exposes the same public API as `org.locationtech.jts` in the [JTS API](http://locationtech.github.io/jts/javadoc).
