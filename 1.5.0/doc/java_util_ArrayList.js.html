@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: java/util/ArrayList.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: java/util/ArrayList.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Collection from './Collection'
+import IndexOutOfBoundsException from './IndexOutOfBoundsException'
+import Iterator from './Iterator'
+import List from './List'
+import NoSuchElementException from './NoSuchElementException'
+import OperationNotSupported from './OperationNotSupported'
+
+/**
+ * @see http://download.oracle.com/javase/6/docs/api/java/util/ArrayList.html
+ *
+ * @extends List
+ * @private
+ */
+export default function ArrayList () {
+  /**
+   * @type {Array}
+   * @private
+  */
+  this.array_ = [];
+
+  if (arguments[0] instanceof Collection) {
+    this.addAll(arguments[0]);
+  }
+};
+ArrayList.prototype = Object.create(List.prototype)
+ArrayList.prototype.constructor = ArrayList;
+
+ArrayList.prototype.ensureCapacity = function () {}
+ArrayList.prototype.interfaces_ = function () { return [List, Collection] }
+
+/**
+ * @override
+ */
+ArrayList.prototype.add = function(e) {
+  if (arguments.length === 1) {
+    this.array_.push(e)
+  } else {
+    this.array_.splice(arguments[0], arguments[1])
+  }
+  return true
+};
+
+ArrayList.prototype.clear = function() {
+  this.array_ = []
+}
+
+/**
+ * @override
+ */
+ArrayList.prototype.addAll = function(c) {
+  for (var i = c.iterator(); i.hasNext();) {
+    this.add(i.next());
+  }
+  return true;
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.set = function(index, element) {
+  var oldElement = this.array_[index];
+  this.array_[index] = element;
+  return oldElement;
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.iterator = function() {
+  return new Iterator_(this);
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.get = function(index) {
+  if (index &lt; 0 || index >= this.size()) {
+    throw new IndexOutOfBoundsException();
+  }
+
+  return this.array_[index];
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.isEmpty = function() {
+  return this.array_.length === 0;
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.size = function() {
+  return this.array_.length;
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.toArray = function() {
+  var array = [];
+
+  for (var i = 0, len = this.array_.length; i &lt; len; i++) {
+    array.push(this.array_[i]);
+  }
+
+  return array;
+};
+
+
+/**
+ * @override
+ */
+ArrayList.prototype.remove = function(o) {
+  var found = false;
+
+  for (var i = 0, len = this.array_.length; i &lt; len; i++) {
+    if (this.array_[i] === o) {
+      this.array_.splice(i, 1);
+      found = true;
+      break;
+    }
+  }
+
+  return found;
+};
+
+
+
+/**
+ * @extends {Iterator}
+ * @param {ArrayList} arrayList
+ * @constructor
+ * @private
+ */
+var Iterator_ = function(arrayList) {
+  /**
+   * @type {ArrayList}
+   * @private
+  */
+  this.arrayList_ = arrayList;
+  /**
+   * @type {number}
+   * @private
+  */
+  this.position_ = 0;
+};
+
+
+/**
+ * @override
+ */
+Iterator_.prototype.next = function() {
+  if (this.position_ === this.arrayList_.size()) {
+    throw new NoSuchElementException();
+  }
+  return this.arrayList_.get(this.position_++);
+};
+
+
+/**
+ * @override
+ */
+Iterator_.prototype.hasNext = function() {
+  if (this.position_ &lt; this.arrayList_.size()) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * TODO: should be in ListIterator
+ * @override
+ */
+Iterator_.prototype.set = function(element) {
+  return this.arrayList_.set(this.position_ - 1, element);
+};
+
+
+/**
+ * @override
+ */
+Iterator_.prototype.remove = function() {
+  this.arrayList_.remove(this.arrayList_.get(this.position_));
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-org_locationtech_jts_io_GeoJSONReader.html">org/locationtech/jts/io/GeoJSONReader</a></li><li><a href="module-org_locationtech_jts_io_GeoJSONWriter.html">org/locationtech/jts/io/GeoJSONWriter</a></li><li><a href="module-org_locationtech_jts_io_OL3Parser.html">org/locationtech/jts/io/OL3Parser</a></li><li><a href="module-org_locationtech_jts_io_WKTReader.html">org/locationtech/jts/io/WKTReader</a></li><li><a href="module-org_locationtech_jts_io_WKTWriter.html">org/locationtech/jts/io/WKTWriter</a></li></ul><h3>Classes</h3><ul><li><a href="module-org_locationtech_jts_io_GeoJSONReader.html">org/locationtech/jts/io/GeoJSONReader</a></li><li><a href="module-org_locationtech_jts_io_GeoJSONWriter.html">org/locationtech/jts/io/GeoJSONWriter</a></li><li><a href="module-org_locationtech_jts_io_OL3Parser.html">org/locationtech/jts/io/OL3Parser</a></li><li><a href="module-org_locationtech_jts_io_WKTReader.html">org/locationtech/jts/io/WKTReader</a></li><li><a href="module-org_locationtech_jts_io_WKTWriter.html">org/locationtech/jts/io/WKTWriter</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 26 2017 19:41:19 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
