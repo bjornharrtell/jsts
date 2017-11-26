@@ -139,19 +139,19 @@ extend(OL3Parser.prototype, {
   },
 
   convertToLineString (lineString) {
-    var points = lineString.points.coordinates.map(p2c)
+    var points = lineString._points._coordinates.map(p2c)
     return new this.ol.geom.LineString(points)
   },
 
   convertToLinearRing (linearRing) {
-    var points = linearRing.points.coordinates.map(p2c)
+    var points = linearRing._points._coordinates.map(p2c)
     return new this.ol.geom.LinearRing(points)
   },
 
   convertToPolygon (polygon) {
-    var rings = [polygon.shell.points.coordinates.map(p2c)]
-    for (let i = 0; i < polygon.holes.length; i++) {
-      rings.push(polygon.holes[i].points.coordinates.map(p2c))
+    var rings = [polygon._shell._points._coordinates.map(p2c)]
+    for (let i = 0; i < polygon._holes.length; i++) {
+      rings.push(polygon._holes[i]._points._coordinates.map(p2c))
     }
     return new this.ol.geom.Polygon(rings)
   },
@@ -162,24 +162,24 @@ extend(OL3Parser.prototype, {
 
   convertToMultiLineString (multiLineString) {
     var lineStrings = []
-    for (let i = 0; i < multiLineString.geometries.length; i++) {
-      lineStrings.push(this.convertToLineString(multiLineString.geometries[i]).getCoordinates())
+    for (let i = 0; i < multiLineString._geometries.length; i++) {
+      lineStrings.push(this.convertToLineString(multiLineString._geometries[i]).getCoordinates())
     }
     return new this.ol.geom.MultiLineString(lineStrings)
   },
 
   convertToMultiPolygon (multiPolygon) {
     var polygons = []
-    for (let i = 0; i < multiPolygon.geometries.length; i++) {
-      polygons.push(this.convertToPolygon(multiPolygon.geometries[i]).getCoordinates())
+    for (let i = 0; i < multiPolygon._geometries.length; i++) {
+      polygons.push(this.convertToPolygon(multiPolygon._geometries[i]).getCoordinates())
     }
     return new this.ol.geom.MultiPolygon(polygons)
   },
 
   convertToCollection (geometryCollection) {
     var geometries = []
-    for (let i = 0; i < geometryCollection.geometries.length; i++) {
-      var geometry = geometryCollection.geometries[i]
+    for (let i = 0; i < geometryCollection._geometries.length; i++) {
+      var geometry = geometryCollection._geometries[i]
       geometries.push(this.write(geometry))
     }
     return new this.ol.geom.GeometryCollection(geometries)
