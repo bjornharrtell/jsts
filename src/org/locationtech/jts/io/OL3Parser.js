@@ -1,5 +1,9 @@
 /*eslint-disable no-undef */
 
+/**
+ * @module org/locationtech/jts/io/OL3Parser
+ */
+
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
 import extend from '../../../../extend'
@@ -21,7 +25,7 @@ extend(OL3Parser.prototype, {
   /**
    * @param geometry {ol.geom.Geometry}
    * @return {Geometry}
-   * @memberof OL3Parser
+   * @memberof module:org/locationtech/jts/io/OL3Parser#
    */
   read (geometry) {
     const ol = this.ol
@@ -108,7 +112,7 @@ extend(OL3Parser.prototype, {
    * @param geometry
    *          {Geometry}
    * @return {ol.geom.Geometry}
-   * @memberof! OL3Parser
+   * @memberof module:org/locationtech/jts/io/OL3Parser#
    */
   write (geometry) {
     if (geometry.getGeometryType() === 'Point') {

@@ -1,3 +1,7 @@
+/**
+ * @module org/locationtech/jts/io/WKTWriter
+ */
+
 import WKTParser from './WKTParser'
 import extend from '../../../../extend'
 
@@ -30,7 +34,7 @@ extend(WKTWriter.prototype, {
    * @param {Geometry} geometry a <code>Geometry</code> to process.
    * @return {string} a <Geometry Tagged Text> string (see the OpenGIS Simple
    *         Features Specification).
-   * @memberof WKTWriter
+   * @memberof module:org/locationtech/jts/io/WKTWriter#
    */
   write (geometry) {
     return this.parser.write(geometry)

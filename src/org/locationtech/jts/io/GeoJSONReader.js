@@ -1,3 +1,7 @@
+/**
+ * @module org/locationtech/jts/io/GeoJSONReader
+ */
+
 import GeometryFactory from '../geom/GeometryFactory'
 import PrecisionModel from '../geom/PrecisionModel'
 import GeoJSONParser from './GeoJSONParser'
@@ -30,7 +34,7 @@ extend(GeoJSONReader.prototype, {
    *
    * @param {Object|String} geoJson a GeoJSON Object or String.
    * @return {Geometry|Object} a <code>Geometry or Feature/FeatureCollection representation.</code>
-   * @memberof GeoJSONReader
+   * @memberof module:org/locationtech/jts/io/GeoJSONReader#
    */
   read (geoJson) {
     var geometry = this.parser.read(geoJson)

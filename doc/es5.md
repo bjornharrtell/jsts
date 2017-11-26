@@ -1,1 +1,0 @@
-This API documentation is for the ES5 builds for browser or Node Js use and describe the manually ported IO-classes. Note that the `jsts` module, via translated source, also exposes the same public API as `org.locationtech.jts` in the [JTS API](http://locationtech.github.io/jts/javadoc) that is not shown here.

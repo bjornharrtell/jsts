@@ -1,5 +1,5 @@
 /**
- * @module GeoJSONWriter
+ * @module org/locationtech/jts/io/GeoJSONWriter
  */
 
 import GeoJSONParser from './GeoJSONParser'
@@ -30,7 +30,7 @@ extend(GeoJSONWriter.prototype, {
    * @param {Geometry}
    *          geometry a <code>Geometry</code> to process.
    * @return {Object} The GeoJSON representation of the Geometry.
-   * @memberof GeoJSONWriter
+   * @memberof module:org/locationtech/jts/io/GeoJSONWriter#
    */
   write (geometry) {
     return this.parser.write(geometry)

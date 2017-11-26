@@ -26,10 +26,6 @@ export default createCollection({
   clear: sharedClear
 })
 
-/**
- * ES6 collection constructor
- * @return {Function} a collection class
- */
 function createCollection (proto, objectOnly) {
   function Collection (a) {
     if (!this || this.constructor !== Collection) return new Collection(a)
@@ -56,7 +52,6 @@ function createCollection (proto, objectOnly) {
   return Collection
 }
 
-/** parse initial iterable argument passed */
 function init (a) {
   // init Set argument, like `[1,2,3,{}]`
   if (this.add) a.forEach(this.add, this)
@@ -64,7 +59,6 @@ function init (a) {
   else a.forEach(function (a) { this.set(a[0], a[1]) }, this)
 }
 
-/** delete */
 function sharedDelete (key) {
   if (this.has(key)) {
     this._keys.splice(i, 1)
@@ -92,7 +86,6 @@ function mapHas (value) {
   return has.call(this, this._keys, value)
 }
 
-/** @chainable */
 function sharedSet (key, value) {
   this.has(key) ? this._values[i] = value : this._values[this._keys.push(key) - 1] = value
   return this
@@ -103,7 +96,6 @@ function sharedClear () {
     this._values.length = 0
 }
 
-/** keys, values, and iterate related methods */
 function sharedKeys () {
   return sharedIterator(this._itp, this._keys)
 }

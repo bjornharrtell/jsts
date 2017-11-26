@@ -15,6 +15,7 @@ DoubleBits.powerOf2 = function (exp) {
  * @param {Number}
  *          Qty the number to calculate the bit pattern for.
  * @return {Number} The integer value of the exponent.
+ * @private
  */
 function CVTFWD (NumW, Qty) {
   var Sign

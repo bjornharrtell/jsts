@@ -53,7 +53,7 @@
     "test-manual": "NODE_PATH=src mocha --timeout 10s --compilers js:babel-register --recursive test/manual",
     "test": "NODE_PATH=src nyc mocha --timeout 10s --compilers js:babel-register --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "build-jsdoc": "rollup -c rollup.config.js > doc/jsts.js && jsdoc -c doc/es5.json",
+    "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.js && uglifyjs dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
     "build-tests": "rollup -c rollup.config.tests.js -o dist/tests.js"
   }

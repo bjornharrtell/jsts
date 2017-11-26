@@ -1,3 +1,7 @@
+/**
+ * @module org/locationtech/jts/io/WKTReader
+ */
+
 import GeometryFactory from '../geom/GeometryFactory'
 import PrecisionModel from '../geom/PrecisionModel'
 import WKTParser from './WKTParser'
@@ -35,7 +39,7 @@ extend(WKTReader.prototype, {
    *          Specification).
    * @return {Geometry} a <code>Geometry</code> read from
    *         <code>string.</code>
-   * @memberof WKTReader
+   * @memberof module:org/locationtech/jts/io/WKTReader#
    */
   read (wkt) {
     var geometry = this.parser.read(wkt)
