@@ -64,7 +64,7 @@ extend(Geometry.prototype, {
 		return RelateOp.covers(this, g);
 	},
 	coveredBy: function (g) {
-		return RelateOp.coveredBy(this, g);
+		return RelateOp.covers(g, this);
 	},
 	touches: function (g) {
 		return RelateOp.touches(this, g);
