@@ -1,3 +1,4 @@
+import Angle from './algorithm/Angle'
 import Centroid from './algorithm/Centroid'
 import CGAlgorithms from './algorithm/CGAlgorithms'
 import ConvexHull from './algorithm/ConvexHull'
@@ -10,6 +11,7 @@ import MinimumBoundingCircle from './algorithm/MinimumBoundingCircle'
 import MinimumDiameter from './algorithm/MinimumDiameter'
 
 export {
+  Angle,
   Centroid,
   CGAlgorithms,
   ConvexHull,

@@ -15,6 +15,8 @@ import MultiPolygon from './geom/MultiPolygon'
 import Dimension from './geom/Dimension'
 import IntersectionMatrix from './geom/IntersectionMatrix'
 import PrecisionModel from './geom/PrecisionModel'
+import Location from './geom/Location'
+import Triangle from './geom/Triangle'
 
 export {
   Coordinate,
@@ -33,5 +35,7 @@ export {
   MultiPolygon,
   Dimension,
   IntersectionMatrix,
-  PrecisionModel
+  PrecisionModel,
+  Location,
+  Triangle
 }
