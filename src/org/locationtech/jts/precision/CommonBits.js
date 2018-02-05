@@ -1,9 +1,10 @@
 import Double from '../../../../java/lang/Double';
+import Long from '../../../../java/lang/Long';
 import extend from '../../../../extend';
 export default function CommonBits() {
 	this._isFirst = true;
 	this._commonMantissaBitsCount = 53;
-	this._commonBits = 0;
+	this._commonBits = new Long();
 	this._commonSignExp = null;
 }
 extend(CommonBits.prototype, {
@@ -45,17 +46,27 @@ extend(CommonBits.prototype, {
 	}
 });
 CommonBits.getBit = function (bits, i) {
-	var mask = 1 << i;
-	return (bits & mask) !== 0 ? 1 : 0;
+	var mask = (1 << (i % 32));
+	if (i < 32) {
+		return (bits.low & mask) != 0 ? 1 : 0;
+	}
+	return (bits.high & mask) != 0 ? 1 : 0;
 };
 CommonBits.signExpBits = function (num) {
-	return num >> 52;
+	return num.high >>> 20;
 };
 CommonBits.zeroLowerBits = function (bits, nBits) {
-	var invMask = (1 << nBits) - 1;
-	var mask = ~invMask;
-	var zeroed = bits & mask;
-	return zeroed;
+	var prop = 'low';
+	if (nBits > 32) {
+		bits.low = 0 | 0;
+		nBits %= 32;
+		prop = 'high';
+	}
+	if (nBits > 0) {
+		var mask = (nBits < 32) ? (~((1 << nBits) - 1)) : 0;
+		bits[prop] &= mask;
+	}
+	return bits;
 };
 CommonBits.numCommonMostSigMantissaBits = function (num1, num2) {
 	var count = 0;
