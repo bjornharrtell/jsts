@@ -21,9 +21,7 @@ import extend from '../../../../extend'
  * @constructor
  */
 export default function GeoJSONReader (geometryFactory) {
-  this.geometryFactory = geometryFactory || new GeometryFactory()
-  this.precisionModel = this.geometryFactory.getPrecisionModel()
-  this.parser = new GeoJSONParser(this.geometryFactory)
+  this.parser = new GeoJSONParser(geometryFactory || new GeometryFactory())
 }
 
 extend(GeoJSONReader.prototype, {
@@ -38,28 +36,6 @@ extend(GeoJSONReader.prototype, {
    */
   read (geoJson) {
     var geometry = this.parser.read(geoJson)
-
-    if (this.precisionModel.getType() === PrecisionModel.FIXED) {
-      this.reducePrecision(geometry)
-    }
-
     return geometry
-  },
-
-  // NOTE: this is a hack
-  reducePrecision (geometry) {
-    var i, len
-
-    if (geometry.coordinate) {
-      this.precisionModel.makePrecise(geometry.coordinate)
-    } else if (geometry.points) {
-      for (i = 0, len = geometry.points.length; i < len; i++) {
-        this.precisionModel.makePrecise(geometry.points[i])
-      }
-    } else if (geometry.geometries) {
-      for (i = 0, len = geometry.geometries.length; i < len; i++) {
-        this.reducePrecision(geometry.geometries[i])
-      }
-    }
   }
 })

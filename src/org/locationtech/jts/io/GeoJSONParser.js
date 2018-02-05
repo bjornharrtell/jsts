@@ -32,26 +32,23 @@ extend(GeoJSONParser.prototype, {
    */
   read (json) {
     let obj
-    if (typeof json === 'string') {
+    if (typeof json === 'string')
       obj = JSON.parse(json)
-    } else {
+    else
       obj = json
-    }
 
     const type = obj.type
 
-    if (!parse[type]) {
+    if (!parse[type])
       throw new Error('Unknown GeoJSON type: ' + obj.type)
-    }
 
-    if (geometryTypes.indexOf(type) !== -1) {
-      return parse[type].apply(this, [obj.coordinates])
-    } else if (type === 'GeometryCollection') {
-      return parse[type].apply(this, [obj.geometries])
-    }
+    if (geometryTypes.indexOf(type) !== -1)
+      return parse[type].call(this, obj.coordinates)
+    else if (type === 'GeometryCollection')
+      return parse[type].call(this, obj.geometries)
 
     // feature or feature collection
-    return parse[type].apply(this, [obj])
+    return parse[type].call(this, obj)
   },
 
   /**
@@ -65,11 +62,10 @@ extend(GeoJSONParser.prototype, {
   write (geometry) {
     const type = geometry.getGeometryType()
 
-    if (!extract[type]) {
+    if (!extract[type])
       throw new Error('Geometry is not supported')
-    }
 
-    return extract[type].apply(this, [geometry])
+    return extract[type].call(this, geometry)
   }
 })
 
@@ -85,24 +81,18 @@ const parse = {
   Feature: function (obj) {
     const feature = {}
 
-    // copy features
-    for (let key in obj) {
+    for (let key in obj)
       feature[key] = obj[key]
-    }
 
-    // parse geometry
     if (obj.geometry) {
       const type = obj.geometry.type
-      if (!parse[type]) {
+      if (!parse[type])
         throw new Error('Unknown GeoJSON type: ' + obj.type)
-      }
       feature.geometry = this.read(obj.geometry)
     }
 
-    // bbox
-    if (obj.bbox) {
-      feature.bbox = parse.bbox.apply(this, [obj.bbox])
-    }
+    if (obj.bbox)
+      feature.bbox = parse.bbox.call(this, obj.bbox)
 
     return feature
   },
@@ -121,14 +111,12 @@ const parse = {
     if (obj.features) {
       featureCollection.features = []
 
-      for (let i = 0; i < obj.features.length; ++i) {
+      for (let i = 0; i < obj.features.length; ++i)
         featureCollection.features.push(this.read(obj.features[i]))
-      }
     }
 
-    if (obj.bbox) {
-      featureCollection.bbox = this.parse.bbox.apply(this, [obj.bbox])
-    }
+    if (obj.bbox)
+      featureCollection.bbox = this.parse.bbox.call(this, obj.bbox)
 
     return featureCollection
   },
@@ -191,9 +179,8 @@ const parse = {
    */
   MultiPoint: function (array) {
     const points = []
-    for (let i = 0; i < array.length; ++i) {
-      points.push(parse.Point.apply(this, [array[i]]))
-    }
+    for (let i = 0; i < array.length; ++i)
+      points.push(parse.Point.call(this, array[i]))
     return this.geometryFactory.createMultiPoint(points)
   },
 
@@ -206,7 +193,7 @@ const parse = {
    * @return {LineString} LineString.
    */
   LineString: function (array) {
-    const coordinates = parse.coordinates.apply(this, [array])
+    const coordinates = parse.coordinates.call(this, array)
     return this.geometryFactory.createLineString(coordinates)
   },
 
@@ -220,9 +207,8 @@ const parse = {
    */
   MultiLineString: function (array) {
     const lineStrings = []
-    for (let i = 0; i < array.length; ++i) {
-      lineStrings.push(parse.LineString.apply(this, [array[i]]))
-    }
+    for (let i = 0; i < array.length; ++i)
+      lineStrings.push(parse.LineString.call(this, array[i]))
     return this.geometryFactory.createMultiLineString(lineStrings)
   },
 
@@ -235,12 +221,12 @@ const parse = {
    * @return {Polygon} Polygon.
    */
   Polygon: function (array) {
-    const shellCoordinates = parse.coordinates.apply(this, [array[0]])
+    const shellCoordinates = parse.coordinates.call(this, array[0])
     const shell = this.geometryFactory.createLinearRing(shellCoordinates)
     const holes = []
     for (let i = 1; i < array.length; ++i) {
       var hole = array[i]
-      var coordinates = parse.coordinates.apply(this, [hole])
+      var coordinates = parse.coordinates.call(this, hole)
       var linearRing = this.geometryFactory.createLinearRing(coordinates)
       holes.push(linearRing)
     }
@@ -259,7 +245,7 @@ const parse = {
     const polygons = []
     for (let i = 0; i < array.length; ++i) {
       const polygon = array[i]
-      polygons.push(parse.Polygon.apply(this, [polygon]))
+      polygons.push(parse.Polygon.call(this, polygon))
     }
     return this.geometryFactory.createMultiPolygon(polygons)
   },
@@ -304,7 +290,7 @@ const extract = {
    * @return {Array} Array of 2 ordinates (paired to a coordinate).
    */
   Point: function (point) {
-    const array = extract.coordinate.apply(this, [point.getCoordinate()])
+    const array = extract.coordinate.call(this, point.getCoordinate())
     return {
       type: 'Point',
       coordinates: array
@@ -323,7 +309,7 @@ const extract = {
     const array = []
     for (let i = 0; i < multipoint._geometries.length; ++i) {
       const point = multipoint._geometries[i]
-      const geoJson = extract.Point.apply(this, [point])
+      const geoJson = extract.Point.call(this, point)
       array.push(geoJson.coordinates)
     }
     return {
@@ -345,7 +331,7 @@ const extract = {
     const coordinates = linestring.getCoordinates()
     for (let i = 0; i < coordinates.length; ++i) {
       const coordinate = coordinates[i]
-      array.push(extract.coordinate.apply(this, [coordinate]))
+      array.push(extract.coordinate.call(this, coordinate))
     }
     return {
       type: 'LineString',
@@ -365,7 +351,7 @@ const extract = {
     const array = []
     for (let i = 0; i < multilinestring._geometries.length; ++i) {
       const linestring = multilinestring._geometries[i]
-      const geoJson = extract.LineString.apply(this, [linestring])
+      const geoJson = extract.LineString.call(this, linestring)
       array.push(geoJson.coordinates)
     }
     return {
@@ -384,11 +370,11 @@ const extract = {
    */
   Polygon: function (polygon) {
     const array = []
-    const shellGeoJson = extract.LineString.apply(this, [polygon._shell])
+    const shellGeoJson = extract.LineString.call(this, polygon._shell)
     array.push(shellGeoJson.coordinates)
     for (let i = 0; i < polygon._holes.length; ++i) {
       const hole = polygon._holes[i]
-      const holeGeoJson = extract.LineString.apply(this, [hole])
+      const holeGeoJson = extract.LineString.call(this, hole)
       array.push(holeGeoJson.coordinates)
     }
     return {
@@ -409,7 +395,7 @@ const extract = {
     const array = []
     for (let i = 0; i < multipolygon._geometries.length; ++i) {
       const polygon = multipolygon._geometries[i]
-      const geoJson = extract.Polygon.apply(this, [polygon])
+      const geoJson = extract.Polygon.call(this, polygon)
       array.push(geoJson.coordinates)
     }
     return {
@@ -431,7 +417,7 @@ const extract = {
     for (let i = 0; i < collection._geometries.length; ++i) {
       const geometry = collection._geometries[i]
       const type = geometry.getGeometryType()
-      array.push(extract[type].apply(this, [geometry]))
+      array.push(extract[type].call(this, geometry))
     }
     return {
       type: 'GeometryCollection',

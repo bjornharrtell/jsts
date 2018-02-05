@@ -26,6 +26,7 @@ const regExes = {
  */
 export default function WKTParser (geometryFactory) {
   this.geometryFactory = geometryFactory || new GeometryFactory()
+  this.precisionModel = this.geometryFactory.getPrecisionModel()
 }
 
 extend(WKTParser.prototype, {
@@ -50,7 +51,7 @@ extend(WKTParser.prototype, {
       type = matches[1].toLowerCase()
       str = matches[2]
       if (parse[type]) {
-        geometry = parse[type].apply(this, [str])
+        geometry = parse[type].call(this, str)
       }
     }
 
@@ -87,7 +88,7 @@ extend(WKTParser.prototype, {
     if (geometry.isEmpty()) {
       data = wktType + ' EMPTY'
     } else {
-      data = wktType + '(' + extract[type].apply(this, [geometry]) + ')'
+      data = wktType + '(' + extract[type].call(this, geometry) + ')'
     }
     return data
   }
@@ -125,7 +126,7 @@ const extract = {
   multipoint (multipoint) {
     var array = []
     for (let i = 0, len = multipoint._geometries.length; i < len; ++i) {
-      array.push('(' + extract.point.apply(this, [multipoint._geometries[i]]) + ')')
+      array.push('(' + extract.point.call(this, multipoint._geometries[i]) + ')')
     }
     return array.join(',')
   },
@@ -139,7 +140,7 @@ const extract = {
   linestring (linestring) {
     var array = []
     for (let i = 0, len = linestring._points._coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.apply(this, [linestring._points._coordinates[i]]))
+      array.push(extract.coordinate.call(this, linestring._points._coordinates[i]))
     }
     return array.join(',')
   },
@@ -147,7 +148,7 @@ const extract = {
   linearring (linearring) {
     var array = []
     for (let i = 0, len = linearring._points._coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.apply(this, [linearring._points._coordinates[i]]))
+      array.push(extract.coordinate.call(this, linearring._points._coordinates[i]))
     }
     return array.join(',')
   },
@@ -163,7 +164,7 @@ const extract = {
     var array = []
     for (let i = 0, len = multilinestring._geometries.length; i < len; ++i) {
       array.push('(' +
-        extract.linestring.apply(this, [multilinestring._geometries[i]]) +
+        extract.linestring.call(this, multilinestring._geometries[i]) +
         ')')
     }
     return array.join(',')
@@ -177,9 +178,9 @@ const extract = {
    */
   polygon (polygon) {
     var array = []
-    array.push('(' + extract.linestring.apply(this, [polygon._shell]) + ')')
+    array.push('(' + extract.linestring.call(this, polygon._shell) + ')')
     for (let i = 0, len = polygon._holes.length; i < len; ++i) {
-      array.push('(' + extract.linestring.apply(this, [polygon._holes[i]]) + ')')
+      array.push('(' + extract.linestring.call(this, polygon._holes[i]) + ')')
     }
     return array.join(',')
   },
@@ -193,7 +194,7 @@ const extract = {
   multipolygon (multipolygon) {
     var array = []
     for (let i = 0, len = multipolygon._geometries.length; i < len; ++i) {
-      array.push('(' + extract.polygon.apply(this, [multipolygon._geometries[i]]) + ')')
+      array.push('(' + extract.polygon.call(this, multipolygon._geometries[i]) + ')')
     }
     return array.join(',')
   },
@@ -220,6 +221,14 @@ const extract = {
  * @private
  */
 const parse = {
+  
+  coord (str) {
+    var coords = str.trim().split(regExes.spaces)
+    var coord = new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1]))
+    this.precisionModel.makePrecise(coord)
+    return coord
+  },
+
   /**
    * Return point geometry given a point WKT fragment.
    *
@@ -228,13 +237,9 @@ const parse = {
    * @private
    */
   point (str) {
-    if (str === undefined) {
+    if (str === undefined)
       return this.geometryFactory.createPoint()
-    }
-
-    var coords = str.trim().split(regExes.spaces)
-    return this.geometryFactory.createPoint(new Coordinate(Number.parseFloat(coords[0]),
-      Number.parseFloat(coords[1])))
+    return this.geometryFactory.createPoint(parse.coord.call(this, str))
   },
 
   /**
@@ -245,16 +250,14 @@ const parse = {
    * @private
    */
   multipoint (str) {
-    if (str === undefined) {
+    if (str === undefined)
       return this.geometryFactory.createMultiPoint()
-    }
-
     var point
     var points = str.trim().split(',')
     var components = []
     for (let i = 0, len = points.length; i < len; ++i) {
       point = points[i].replace(regExes.trimParens, '$1')
-      components.push(parse.point.apply(this, [point]))
+      components.push(parse.point.call(this, point))
     }
     return this.geometryFactory.createMultiPoint(components)
   },
@@ -275,8 +278,7 @@ const parse = {
     var components = []
     var coords
     for (let i = 0, len = points.length; i < len; ++i) {
-      coords = points[i].trim().split(regExes.spaces)
-      components.push(new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1])))
+      components.push(parse.coord.call(this, points[i]))
     }
     return this.geometryFactory.createLineString(components)
   },
@@ -297,8 +299,7 @@ const parse = {
     var components = []
     var coords
     for (let i = 0, len = points.length; i < len; ++i) {
-      coords = points[i].trim().split(regExes.spaces)
-      components.push(new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1])))
+      components.push(parse.coord.call(this, points[i]))
     }
     return this.geometryFactory.createLinearRing(components)
   },
@@ -320,7 +321,7 @@ const parse = {
     var components = []
     for (let i = 0, len = lines.length; i < len; ++i) {
       line = lines[i].replace(regExes.trimParens, '$1')
-      components.push(parse.linestring.apply(this, [line]))
+      components.push(parse.linestring.call(this, line))
     }
     return this.geometryFactory.createMultiLineString(components)
   },
@@ -343,7 +344,7 @@ const parse = {
     var holes = []
     for (let i = 0, len = rings.length; i < len; ++i) {
       ring = rings[i].replace(regExes.trimParens, '$1')
-      linestring = parse.linestring.apply(this, [ring])
+      linestring = parse.linestring.call(this, ring)
       linearring = this.geometryFactory.createLinearRing(linestring._points)
       if (i === 0) {
         shell = linearring
@@ -371,7 +372,7 @@ const parse = {
     var components = []
     for (let i = 0, len = polygons.length; i < len; ++i) {
       polygon = polygons[i].replace(regExes.trimParens, '$1')
-      components.push(parse.polygon.apply(this, [polygon]))
+      components.push(parse.polygon.call(this, polygon))
     }
     return this.geometryFactory.createMultiPolygon(components)
   },

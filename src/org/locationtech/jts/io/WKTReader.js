@@ -25,9 +25,7 @@ import extend from '../../../../extend'
  * @constructor
  */
 export default function WKTReader (geometryFactory) {
-  this.geometryFactory = geometryFactory || new GeometryFactory()
-  this.precisionModel = this.geometryFactory.getPrecisionModel()
-  this.parser = new WKTParser(this.geometryFactory)
+  this.parser = new WKTParser(geometryFactory || new GeometryFactory())
 }
 
 extend(WKTReader.prototype, {
@@ -43,26 +41,6 @@ extend(WKTReader.prototype, {
    */
   read (wkt) {
     var geometry = this.parser.read(wkt)
-
-    // TODO: port and use GeometryPrecisionReducer, this is a hack
-    if (this.precisionModel.getType() === PrecisionModel.FIXED) {
-      this.reducePrecision(geometry)
-    }
-
     return geometry
-  },
-
-  reducePrecision (geometry) {
-    if (geometry.coordinate) {
-      this.precisionModel.makePrecise(geometry.coordinate)
-    } else if (geometry._points) {
-      for (let i = 0, len = geometry._points._coordinates.length; i < len; i++) {
-        this.precisionModel.makePrecise(geometry._points._coordinates[i])
-      }
-    } else if (geometry._geometries) {
-      for (let i = 0, len = geometry._geometries.length; i < len; i++) {
-        this.reducePrecision(geometry._geometries[i])
-      }
-    }
   }
 })
