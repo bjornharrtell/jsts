@@ -28,7 +28,7 @@ extend(OL3Parser.prototype, {
    */
   inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection) {
     this.ol = {
-      geom = {
+      geom: {
         Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
       }
     }
