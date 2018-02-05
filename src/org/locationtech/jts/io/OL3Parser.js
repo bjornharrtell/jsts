@@ -11,9 +11,9 @@ import extend from '../../../../extend'
 function p2c (p) { return [p.x, p.y] }
 
 /**
- * OpenLayers 3 Geometry parser and writer
+ * OpenLayers Geometry parser and writer
  * @param {GeometryFactory} geometryFactory
- * @param {ol} olReference
+ * @param {ol} olReference 
  * @constructor
  */
 export default function OL3Parser (geometryFactory, olReference) {
@@ -22,6 +22,18 @@ export default function OL3Parser (geometryFactory, olReference) {
 }
 
 extend(OL3Parser.prototype, {
+
+  /**
+   * Inject OpenLayers geom classes
+   */
+  inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection) {
+    this.ol = {
+      geom = {
+        Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
+      }
+    }
+  },
+
   /**
    * @param geometry {ol.geom.Geometry}
    * @return {Geometry}
