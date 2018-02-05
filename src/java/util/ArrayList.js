@@ -35,7 +35,7 @@ ArrayList.prototype.add = function(e) {
   if (arguments.length === 1) {
     this.array_.push(e)
   } else {
-    this.array_.splice(arguments[0], arguments[1])
+    this.array_.splice(arguments[0], 0, arguments[1])
   }
   return true
 };
