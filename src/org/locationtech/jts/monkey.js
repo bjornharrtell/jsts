@@ -44,7 +44,7 @@ extend(Geometry.prototype, {
 		return IsValidOp.isValid(this);
 	},
 	intersection: function (other) {
-		if (this.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, this, other, this.factory);
+		if (this.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, this, other, this._factory);
 		if (this.isGeometryCollection()) {
 			var g2 = other;
 			return GeometryCollectionMapper.map(this, {
@@ -131,7 +131,7 @@ extend(Geometry.prototype, {
 	},
 	symDifference: function (other) {
 		if (this.isEmpty() || other.isEmpty()) {
-			if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, this, other, this.factory);
+			if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, this, other, this._factory);
 			if (this.isEmpty()) return other.copy();
 			if (other.isEmpty()) return this.copy();
 		}
@@ -154,7 +154,7 @@ extend(Geometry.prototype, {
 		return RelateOp.contains(this, g);
 	},
 	difference: function (other) {
-		if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this.factory);
+		if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this._factory);
 		if (other.isEmpty()) return this.copy();
 		this.checkNotGeometryCollection(this);
 		this.checkNotGeometryCollection(other);
