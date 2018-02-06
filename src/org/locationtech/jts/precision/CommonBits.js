@@ -21,14 +21,15 @@ extend(CommonBits.prototype, {
 		}
 		var numSignExp = CommonBits.signExpBits(numBits);
 		if (numSignExp !== this._commonSignExp) {
-			this._commonBits = 0;
+			this._commonBits.high = 0 | 0;
+			this._commonBits.low = 0 | 0;
 			return null;
 		}
 		this._commonMantissaBitsCount = CommonBits.numCommonMostSigMantissaBits(this._commonBits, numBits);
 		this._commonBits = CommonBits.zeroLowerBits(this._commonBits, 64 - (12 + this._commonMantissaBitsCount));
 	},
 	toString: function () {
-		if (arguments.length === 1 && arguments[0] instanceof long) {
+		if (arguments.length === 1) {
 			let bits = arguments[0];
 			var x = Double.longBitsToDouble(bits);
 			var numStr = Long.toBinaryString(bits);
