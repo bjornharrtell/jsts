@@ -3,9 +3,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>JSTS demonstration</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.5.0/ol.css" type="text/css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.5.0/ol.js"></script>
-  <script type="text/javascript" src="1.5.0/jsts.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol.js"></script>
+  <script type="text/javascript" src="1.6.0/jsts.min.js"></script>
   <style>
     html {
       margin: 0;
@@ -59,13 +59,13 @@
   for processing geometry conforming to the Simple Features Specification for SQL published by
   the Open Geospatial Consortium. JSTS is also a JavaScript port of the well
   established Java library <a href="https://github.com/locationtech/jts">JTS</a> with
-  a built in parser for OpenLayers 3 interopability.
+  a built in parser for OpenLayers interopability.
   </p>
   <p>
   JSTS is licensed with a dual BSD/EPL liceence. For more details go to the <a href="https://github.com/bjornharrtell/jsts">project page</a>.
   </p>
   <h2>Example use</h2>
-  <p>NOTE: OpenLayers 3 specific code omitted. Please refer to <a href="http://openlayers.org/en/master/examples/jsts.html?q=jsts">this page</a> for a complete example of usage with OpenLayers 3.</p>
+  <p>NOTE: OpenLayers specific code omitted. Please refer to <a href="http://openlayers.org/en/master/examples/jsts.html?q=jsts">this page</a> for a complete example of usage with OpenLayers 3.</p>
   <h3>Read two point geometries A and B from WKT format</h3>
   <pre><code>var reader = new jsts.io.WKTReader()
 var a = reader.read('POINT (-20 0)')

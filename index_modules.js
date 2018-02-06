@@ -1,9 +1,9 @@
-import WKTReader from 'https://unpkg.com/jsts@1.5.0/org/locationtech/jts/io/WKTReader.js'
-import OL3Parser from 'https://unpkg.com/jsts@1.5.0/org/locationtech/jts/io/OL3Parser.js'
+import WKTReader from 'https://unpkg.com/jsts@1.6.0/org/locationtech/jts/io/WKTReader.js'
+import OL3Parser from 'https://unpkg.com/jsts@1.6.0/org/locationtech/jts/io/OL3Parser.js'
 
-import BufferOp from 'https://unpkg.com/jsts@1.5.0/org/locationtech/jts/operation/buffer/BufferOp.js'
-import OverlayOp from 'https://unpkg.com/jsts@1.5.0/org/locationtech/jts/operation/overlay/OverlayOp.js'
-import UnionOp from 'https://unpkg.com/jsts@1.5.0/org/locationtech/jts/operation/union/UnionOp.js'
+import BufferOp from 'https://unpkg.com/jsts@1.6.0/org/locationtech/jts/operation/buffer/BufferOp.js'
+import OverlayOp from 'https://unpkg.com/jsts@1.6.0/org/locationtech/jts/operation/overlay/OverlayOp.js'
+import UnionOp from 'https://unpkg.com/jsts@1.6.0/org/locationtech/jts/operation/union/UnionOp.js'
 
 const reader = new WKTReader()
 const parser = new OL3Parser()
