@@ -1,0 +1,19 @@
+{
+    "sourceDir": "src",
+    "outputFile": "src/jsts.js",
+
+    "verbose": false,
+    "quiet": false,
+
+    "filePrefix": "",
+    "fileSuffix": "",
+    "fileExtension": ".js",
+
+    "pathSeparator": "/",
+    "indentation": "\t",
+    "newline": "\n",
+
+    "includes": [],
+    "excludes": [],
+    "caseInsensitive": false
+}
