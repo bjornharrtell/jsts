@@ -7,7 +7,7 @@ JSTS is an ECMAScript library of spatial predicates and functions for processing
 
 The primary goal of the project is to provide web mapping applications with a complete library for processing and analyzing simple geometries but JSTS can also be used as a free standing geometry library.
 
-JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://locationtech.github.io/jts/javadoc/), except for the I/O related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers.
+JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://locationtech.github.io/jts/javadoc/), except for the I/O related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers 3+.
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
 
@@ -23,7 +23,7 @@ Including the above build as a script will import a global object `jsts` exposin
 
 For Node.js, install using `npm install jsts` after which `require('jsts')` will import an object with the same properties as `jsts` in the browser build.
 
-I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3 geometries exist. See the [API documentation](http://bjornharrtell.github.io/jsts/1.6.0/doc/) for these specific classes.
+I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3+ geometries exist. See the [API documentation](http://bjornharrtell.github.io/jsts/1.6.0/doc/) for these specific classes.
 
 ## ES6 modules use
 
