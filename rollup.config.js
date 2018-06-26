@@ -4,7 +4,7 @@ import replace from 'rollup-plugin-replace'
 import babel from 'rollup-plugin-babel'
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
-const license = fs.readFileSync('./license.txt')
+const license = fs.readFileSync('./license.txt', { encoding: 'utf8' })
 
 export default {
   input: 'src/jsts.js',
