@@ -73,7 +73,7 @@ extend(Geometry.prototype, {
 		return RelateOp.intersects(this, g);
 	},
 	within: function (g) {
-		return RelateOp.within(this, g);
+		return RelateOp.contains(g, this);
 	},
 	overlaps: function (g) {
 		return RelateOp.overlaps(this, g);
