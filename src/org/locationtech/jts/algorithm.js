@@ -17,6 +17,9 @@ import MinimumBoundingCircle from './algorithm/MinimumBoundingCircle'
 import MinimumDiameter from './algorithm/MinimumDiameter'
 
 export {
+  distance,
+  locate,
+  match,
   Angle,
   Centroid,
   CGAlgorithms,
