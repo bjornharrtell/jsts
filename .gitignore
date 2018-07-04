@@ -2,3 +2,4 @@
 node_modules
 dist
 doc/jsts.js
+.nyc_output
