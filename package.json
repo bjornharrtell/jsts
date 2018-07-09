@@ -33,6 +33,7 @@
     "rollup-plugin-replace": "2.0.0",
     "uglify-js": "3.4.3"
   },
+  "browser": "dist/jsts.js",
   "main": "dist/jsts.min.js",
   "module": "index.js",
   "engines": {
