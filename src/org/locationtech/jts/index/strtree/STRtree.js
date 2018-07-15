@@ -1,7 +1,6 @@
 import ItemBoundable from './ItemBoundable';
 import PriorityQueue from '../../util/PriorityQueue';
 import hasInterface from '../../../../../hasInterface';
-import BoundablePairDistanceComparator from './BoundablePairDistanceComparator';
 import SpatialIndex from '../SpatialIndex';
 import AbstractNode from './AbstractNode';
 import Double from '../../../../../java/lang/Double';
@@ -151,7 +150,7 @@ extend(STRtree.prototype, {
 				var distanceLowerBound = maxDistance;
 				var priQ = new PriorityQueue();
 				priQ.add(initBndPair);
-				var kNearestNeighbors = new java.util.PriorityQueue<BoundablePair>(k, new BoundablePairDistanceComparator(false));
+				var kNearestNeighbors = new PriorityQueue();
 				while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
 					var bndPair = priQ.poll();
 					var currentDistance = bndPair.getDistance();
@@ -162,11 +161,13 @@ extend(STRtree.prototype, {
 						if (kNearestNeighbors.size() < k) {
 							kNearestNeighbors.add(bndPair);
 						} else {
-							if (kNearestNeighbors.peek().getDistance() > currentDistance) {
+							var bp1 = kNearestNeighbors.peek();
+							if (bp1.getDistance() > currentDistance) {
 								kNearestNeighbors.poll();
 								kNearestNeighbors.add(bndPair);
 							}
-							distanceLowerBound = kNearestNeighbors.peek().getDistance();
+							var bp2 = kNearestNeighbors.peek();
+							distanceLowerBound = bp2.getDistance();
 						}
 					} else {
 						bndPair.expandToQueue(priQ, distanceLowerBound);
@@ -196,10 +197,10 @@ STRtree.avg = function (a, b) {
 };
 STRtree.getItems = function (kNearestNeighbors) {
 	var items = new Array(kNearestNeighbors.size()).fill(null);
-	var resultIterator = kNearestNeighbors.iterator();
 	var count = 0;
-	while (resultIterator.hasNext()) {
-		items[count] = resultIterator.next().getBoundable(0).getItem();
+	while (!kNearestNeighbors.isEmpty()) {
+		var bp = kNearestNeighbors.poll();
+		items[count] = bp.getBoundable(0).getItem();
 		count++;
 	}
 	return items;

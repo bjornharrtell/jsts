@@ -33,6 +33,11 @@ extend(PriorityQueue.prototype, {
 		this._size = 0;
 		this._items.clear();
 	},
+	peek: function () {
+		if (this.isEmpty()) return null;
+		var minItem = this._items.get(1);
+		return minItem;
+	},
 	isEmpty: function () {
 		return this._size === 0;
 	},
