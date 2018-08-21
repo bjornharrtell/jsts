@@ -268,3 +268,19 @@ TreeMap.successor = function(t) {
 TreeMap.prototype.size = function() {
   return this.size_;
 };
+
+
+TreeMap.prototype.containsKey = function(key) {
+  var p = this.root_;
+  while (p !== null) {
+    var cmp = key['compareTo'](p.key);
+    if (cmp < 0) {
+      p = p.left;
+    } else if (cmp > 0) {
+      p = p.right;
+    } else {
+      return true;
+    }
+  }
+  return false;
+};

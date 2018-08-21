@@ -133,6 +133,14 @@ ArrayList.prototype.remove = function(o) {
 };
 
 
+ArrayList.prototype.removeAll = function(c) {
+  for (var i = c.iterator(); i.hasNext();) {
+    this.remove(i.next());
+  }
+  return true;
+};
+
+
 
 /**
  * @extends {Iterator}
