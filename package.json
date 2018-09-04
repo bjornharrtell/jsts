@@ -32,7 +32,6 @@
     "uglify-js": "3.4.9"
   },
   "main": "dist/jsts.min.js",
-  "module": "index.js",
   "engines": {
     "node": ">= 6"
   },
