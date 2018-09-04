@@ -22,15 +22,12 @@ export default {
     }),
     babel({
       exclude: 'node_modules/**',
-      presets: [['env', {
+      presets: [['@babel/env', {
         modules: false,
         targets: {
           browsers: ['last 2 versions', 'ie >= 11']
         }
       }]],
-      plugins: [
-        'external-helpers'
-      ],
       babelrc: false
     })
   ]
