@@ -2,18 +2,15 @@ import WKTWriter from '../../io/WKTWriter';
 import Coordinate from '../../geom/Coordinate';
 import IntervalRTreeLeafNode from './IntervalRTreeLeafNode';
 import IntervalRTreeNode from './IntervalRTreeNode';
-import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import System from '../../../../../java/lang/System';
 import ArrayList from '../../../../../java/util/ArrayList';
 import IntervalRTreeBranchNode from './IntervalRTreeBranchNode';
-export default function SortedPackedIntervalRTree() {
-	this._leaves = new ArrayList();
-	this._root = null;
-	this._level = 0;
-}
-extend(SortedPackedIntervalRTree.prototype, {
-	buildTree: function () {
+export default class SortedPackedIntervalRTree {
+	constructor() {
+		SortedPackedIntervalRTree.constructor_.apply(this, arguments);
+	}
+	buildTree() {
 		Collections.sort(this._leaves, new IntervalRTreeNode.NodeComparator());
 		var src = this._leaves;
 		var temp = null;
@@ -25,27 +22,27 @@ extend(SortedPackedIntervalRTree.prototype, {
 			src = dest;
 			dest = temp;
 		}
-	},
-	insert: function (min, max, item) {
+	}
+	insert(min, max, item) {
 		if (this._root !== null) throw new IllegalStateException("Index cannot be added to once it has been queried");
 		this._leaves.add(new IntervalRTreeLeafNode(min, max, item));
-	},
-	query: function (min, max, visitor) {
+	}
+	query(min, max, visitor) {
 		this.init();
 		this._root.query(min, max, visitor);
-	},
-	buildRoot: function () {
+	}
+	buildRoot() {
 		if (this._root !== null) return null;
 		this._root = this.buildTree();
-	},
-	printNode: function (node) {
+	}
+	printNode(node) {
 		System.out.println(WKTWriter.toLineString(new Coordinate(node._min, this._level), new Coordinate(node._max, this._level)));
-	},
-	init: function () {
+	}
+	init() {
 		if (this._root !== null) return null;
 		this.buildRoot();
-	},
-	buildLevel: function (src, dest) {
+	}
+	buildLevel(src, dest) {
 		this._level++;
 		dest.clear();
 		for (var i = 0; i < src.size(); i += 2) {
@@ -58,11 +55,16 @@ extend(SortedPackedIntervalRTree.prototype, {
 				dest.add(node);
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SortedPackedIntervalRTree;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SortedPackedIntervalRTree.constructor_ = function () {
+	this._leaves = new ArrayList();
+	this._root = null;
+	this._level = 0;
+};

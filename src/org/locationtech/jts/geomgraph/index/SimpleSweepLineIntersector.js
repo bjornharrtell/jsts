@@ -2,21 +2,17 @@ import hasInterface from '../../../../../hasInterface';
 import SweepLineSegment from './SweepLineSegment';
 import SweepLineEvent from './SweepLineEvent';
 import EdgeSetIntersector from './EdgeSetIntersector';
-import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import SegmentIntersector from './SegmentIntersector';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Edge from '../Edge';
-import inherits from '../../../../../inherits';
 import List from '../../../../../java/util/List';
-export default function SimpleSweepLineIntersector() {
-	EdgeSetIntersector.apply(this);
-	this.events = new ArrayList();
-	this.nOverlaps = null;
-}
-inherits(SimpleSweepLineIntersector, EdgeSetIntersector);
-extend(SimpleSweepLineIntersector.prototype, {
-	processOverlaps: function (start, end, ev0, si) {
+export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
+	constructor() {
+		super();
+		SimpleSweepLineIntersector.constructor_.apply(this, arguments);
+	}
+	processOverlaps(start, end, ev0, si) {
 		var ss0 = ev0.getObject();
 		for (var i = start; i < end; i++) {
 			var ev1 = this.events.get(i);
@@ -28,8 +24,8 @@ extend(SimpleSweepLineIntersector.prototype, {
 				}
 			}
 		}
-	},
-	prepareEvents: function () {
+	}
+	prepareEvents() {
 		Collections.sort(this.events);
 		for (var i = 0; i < this.events.size(); i++) {
 			var ev = this.events.get(i);
@@ -37,8 +33,8 @@ extend(SimpleSweepLineIntersector.prototype, {
 				ev.getInsertEvent().setDeleteEventIndex(i);
 			}
 		}
-	},
-	computeIntersections: function () {
+	}
+	computeIntersections() {
 		if (arguments.length === 1) {
 			let si = arguments[0];
 			this.nOverlaps = 0;
@@ -61,8 +57,8 @@ extend(SimpleSweepLineIntersector.prototype, {
 				this.computeIntersections(si);
 			}
 		}
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments.length === 1) {
 			let edges = arguments[0];
 			for (var i = edges.iterator(); i.hasNext(); ) {
@@ -87,11 +83,15 @@ extend(SimpleSweepLineIntersector.prototype, {
 				}
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SimpleSweepLineIntersector;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SimpleSweepLineIntersector.constructor_ = function () {
+	this.events = new ArrayList();
+	this.nOverlaps = null;
+};

@@ -1,15 +1,11 @@
 import GeometryFactory from '../geom/GeometryFactory';
-import extend from '../../../../extend';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import RuntimeException from '../../../../java/lang/RuntimeException';
-export default function NodingValidator() {
-	this._li = new RobustLineIntersector();
-	this._segStrings = null;
-	let segStrings = arguments[0];
-	this._segStrings = segStrings;
-}
-extend(NodingValidator.prototype, {
-	checkEndPtVertexIntersections: function () {
+export default class NodingValidator {
+	constructor() {
+		NodingValidator.constructor_.apply(this, arguments);
+	}
+	checkEndPtVertexIntersections() {
 		if (arguments.length === 0) {
 			for (var i = this._segStrings.iterator(); i.hasNext(); ) {
 				var ss = i.next();
@@ -27,8 +23,8 @@ extend(NodingValidator.prototype, {
 				}
 			}
 		}
-	},
-	checkInteriorIntersections: function () {
+	}
+	checkInteriorIntersections() {
 		if (arguments.length === 0) {
 			for (var i = this._segStrings.iterator(); i.hasNext(); ) {
 				var ss0 = i.next();
@@ -60,13 +56,13 @@ extend(NodingValidator.prototype, {
 				}
 			}
 		}
-	},
-	checkValid: function () {
+	}
+	checkValid() {
 		this.checkEndPtVertexIntersections();
 		this.checkInteriorIntersections();
 		this.checkCollapses();
-	},
-	checkCollapses: function () {
+	}
+	checkCollapses() {
 		if (arguments.length === 0) {
 			for (var i = this._segStrings.iterator(); i.hasNext(); ) {
 				var ss = i.next();
@@ -79,22 +75,28 @@ extend(NodingValidator.prototype, {
 				this.checkCollapse(pts[i], pts[i + 1], pts[i + 2]);
 			}
 		}
-	},
-	hasInteriorIntersection: function (li, p0, p1) {
+	}
+	hasInteriorIntersection(li, p0, p1) {
 		for (var i = 0; i < li.getIntersectionNum(); i++) {
 			var intPt = li.getIntersection(i);
 			if (!(intPt.equals(p0) || intPt.equals(p1))) return true;
 		}
 		return false;
-	},
-	checkCollapse: function (p0, p1, p2) {
+	}
+	checkCollapse(p0, p1, p2) {
 		if (p0.equals(p2)) throw new RuntimeException("found non-noded collapse at " + NodingValidator.fact.createLineString([p0, p1, p2]));
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NodingValidator;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+NodingValidator.constructor_ = function () {
+	this._li = new RobustLineIntersector();
+	this._segStrings = null;
+	let segStrings = arguments[0];
+	this._segStrings = segStrings;
+};
 NodingValidator.fact = new GeometryFactory();

@@ -2,19 +2,12 @@ import LineString from '../geom/LineString';
 import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
-export default function InteriorPointLine() {
-	this._centroid = null;
-	this._minDistance = Double.MAX_VALUE;
-	this._interiorPoint = null;
-	let g = arguments[0];
-	this._centroid = g.getCentroid().getCoordinate();
-	this.addInterior(g);
-	if (this._interiorPoint === null) this.addEndpoints(g);
-}
-extend(InteriorPointLine.prototype, {
-	addEndpoints: function () {
+export default class InteriorPointLine {
+	constructor() {
+		InteriorPointLine.constructor_.apply(this, arguments);
+	}
+	addEndpoints() {
 		if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
 			if (geom instanceof LineString) {
@@ -30,11 +23,11 @@ extend(InteriorPointLine.prototype, {
 			this.add(pts[0]);
 			this.add(pts[pts.length - 1]);
 		}
-	},
-	getInteriorPoint: function () {
+	}
+	getInteriorPoint() {
 		return this._interiorPoint;
-	},
-	addInterior: function () {
+	}
+	addInterior() {
 		if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
 			if (geom instanceof LineString) {
@@ -51,18 +44,27 @@ extend(InteriorPointLine.prototype, {
 				this.add(pts[i]);
 			}
 		}
-	},
-	add: function (point) {
+	}
+	add(point) {
 		var dist = point.distance(this._centroid);
 		if (dist < this._minDistance) {
 			this._interiorPoint = new Coordinate(point);
 			this._minDistance = dist;
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return InteriorPointLine;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+InteriorPointLine.constructor_ = function () {
+	this._centroid = null;
+	this._minDistance = Double.MAX_VALUE;
+	this._interiorPoint = null;
+	let g = arguments[0];
+	this._centroid = g.getCentroid().getCoordinate();
+	this.addInterior(g);
+	if (this._interiorPoint === null) this.addEndpoints(g);
+};

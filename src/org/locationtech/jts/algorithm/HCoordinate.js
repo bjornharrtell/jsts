@@ -1,8 +1,55 @@
 import NotRepresentableException from './NotRepresentableException';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
-export default function HCoordinate() {
+export default class HCoordinate {
+	constructor() {
+		HCoordinate.constructor_.apply(this, arguments);
+	}
+	static intersection(p1, p2, q1, q2) {
+		var px = p1.y - p2.y;
+		var py = p2.x - p1.x;
+		var pw = p1.x * p2.y - p2.x * p1.y;
+		var qx = q1.y - q2.y;
+		var qy = q2.x - q1.x;
+		var qw = q1.x * q2.y - q2.x * q1.y;
+		var x = py * qw - qy * pw;
+		var y = qx * pw - px * qw;
+		var w = px * qy - qx * py;
+		var xInt = x / w;
+		var yInt = y / w;
+		if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
+			throw new NotRepresentableException();
+		}
+		return new Coordinate(xInt, yInt);
+	}
+	getY() {
+		var a = this.y / this.w;
+		if (Double.isNaN(a) || Double.isInfinite(a)) {
+			throw new NotRepresentableException();
+		}
+		return a;
+	}
+	getX() {
+		var a = this.x / this.w;
+		if (Double.isNaN(a) || Double.isInfinite(a)) {
+			throw new NotRepresentableException();
+		}
+		return a;
+	}
+	getCoordinate() {
+		var p = new Coordinate();
+		p.x = this.getX();
+		p.y = this.getY();
+		return p;
+	}
+	getClass() {
+		return HCoordinate;
+	}
+	get interfaces_() {
+		return [];
+	}
+}
+HCoordinate.constructor_ = function () {
 	this.x = null;
 	this.y = null;
 	this.w = null;
@@ -49,49 +96,4 @@ export default function HCoordinate() {
 		this.y = qx * pw - px * qw;
 		this.w = px * qy - qx * py;
 	}
-}
-extend(HCoordinate.prototype, {
-	getY: function () {
-		var a = this.y / this.w;
-		if (Double.isNaN(a) || Double.isInfinite(a)) {
-			throw new NotRepresentableException();
-		}
-		return a;
-	},
-	getX: function () {
-		var a = this.x / this.w;
-		if (Double.isNaN(a) || Double.isInfinite(a)) {
-			throw new NotRepresentableException();
-		}
-		return a;
-	},
-	getCoordinate: function () {
-		var p = new Coordinate();
-		p.x = this.getX();
-		p.y = this.getY();
-		return p;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
-		return HCoordinate;
-	}
-});
-HCoordinate.intersection = function (p1, p2, q1, q2) {
-	var px = p1.y - p2.y;
-	var py = p2.x - p1.x;
-	var pw = p1.x * p2.y - p2.x * p1.y;
-	var qx = q1.y - q2.y;
-	var qy = q2.x - q1.x;
-	var qw = q1.x * q2.y - q2.x * q1.y;
-	var x = py * qw - qy * pw;
-	var y = qx * pw - px * qw;
-	var w = px * qy - qx * py;
-	var xInt = x / w;
-	var yInt = y / w;
-	if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
-		throw new NotRepresentableException();
-	}
-	return new Coordinate(xInt, yInt);
 };

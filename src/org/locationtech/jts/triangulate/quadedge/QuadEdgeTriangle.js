@@ -3,32 +3,61 @@ import Arrays from '../../../../../java/util/Arrays';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Coordinate from '../../geom/Coordinate';
 import PointLocation from '../../algorithm/PointLocation';
-import extend from '../../../../../extend';
 import Vertex from './Vertex';
 import ArrayList from '../../../../../java/util/ArrayList';
 import TriangleVisitor from './TriangleVisitor';
-export default function QuadEdgeTriangle() {
-	this._edge = null;
-	this._data = null;
-	let edge = arguments[0];
-	this._edge = Arrays.copyOf(edge, edge.length);
-	for (var i = 0; i < 3; i++) {
-		edge[i].setData(this);
+export default class QuadEdgeTriangle {
+	constructor() {
+		QuadEdgeTriangle.constructor_.apply(this, arguments);
 	}
-}
-extend(QuadEdgeTriangle.prototype, {
-	getCoordinates: function () {
+	static toPolygon() {
+		if (arguments[0] instanceof Array) {
+			let v = arguments[0];
+			var ringPts = [v[0].getCoordinate(), v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate()];
+			var fact = new GeometryFactory();
+			var ring = fact.createLinearRing(ringPts);
+			var tri = fact.createPolygon(ring);
+			return tri;
+		} else if (arguments[0] instanceof Array) {
+			let e = arguments[0];
+			var ringPts = [e[0].orig().getCoordinate(), e[1].orig().getCoordinate(), e[2].orig().getCoordinate(), e[0].orig().getCoordinate()];
+			var fact = new GeometryFactory();
+			var ring = fact.createLinearRing(ringPts);
+			var tri = fact.createPolygon(ring);
+			return tri;
+		}
+	}
+	static nextIndex(index) {
+		return index = (index + 1) % 3;
+	}
+	static contains() {
+		if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
+			let tri = arguments[0], pt = arguments[1];
+			var ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()];
+			return PointLocation.isInRing(pt, ring);
+		} else if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
+			let tri = arguments[0], pt = arguments[1];
+			var ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()];
+			return PointLocation.isInRing(pt, ring);
+		}
+	}
+	static createOn(subdiv) {
+		var visitor = new QuadEdgeTriangleBuilderVisitor();
+		subdiv.visitTriangles(visitor, false);
+		return visitor.getTriangles();
+	}
+	getCoordinates() {
 		var pts = new Array(4).fill(null);
 		for (var i = 0; i < 3; i++) {
 			pts[i] = this._edge[i].orig().getCoordinate();
 		}
 		pts[3] = new Coordinate(pts[0]);
 		return pts;
-	},
-	getVertex: function (i) {
+	}
+	getVertex(i) {
 		return this._edge[i].orig();
-	},
-	isBorder: function () {
+	}
+	isBorder() {
 		if (arguments.length === 0) {
 			for (var i = 0; i < 3; i++) {
 				if (this.getAdjacentTriangleAcrossEdge(i) === null) return true;
@@ -38,8 +67,8 @@ extend(QuadEdgeTriangle.prototype, {
 			let i = arguments[0];
 			return this.getAdjacentTriangleAcrossEdge(i) === null;
 		}
-	},
-	getEdgeIndex: function () {
+	}
+	getEdgeIndex() {
 		if (arguments[0] instanceof QuadEdge) {
 			let e = arguments[0];
 			for (var i = 0; i < 3; i++) {
@@ -53,16 +82,16 @@ extend(QuadEdgeTriangle.prototype, {
 			}
 			return -1;
 		}
-	},
-	getGeometry: function (fact) {
+	}
+	getGeometry(fact) {
 		var ring = fact.createLinearRing(this.getCoordinates());
 		var tri = fact.createPolygon(ring);
 		return tri;
-	},
-	getCoordinate: function (i) {
+	}
+	getCoordinate(i) {
 		return this._edge[i].orig().getCoordinate();
-	},
-	getTrianglesAdjacentToVertex: function (vertexIndex) {
+	}
+	getTrianglesAdjacentToVertex(vertexIndex) {
 		var adjTris = new ArrayList();
 		var start = this.getEdge(vertexIndex);
 		var qe = start;
@@ -74,115 +103,91 @@ extend(QuadEdgeTriangle.prototype, {
 			qe = qe.oNext();
 		} while (qe !== start);
 		return adjTris;
-	},
-	getNeighbours: function () {
+	}
+	getNeighbours() {
 		var neigh = new Array(3).fill(null);
 		for (var i = 0; i < 3; i++) {
 			neigh[i] = this.getEdge(i).sym().getData();
 		}
 		return neigh;
-	},
-	getAdjacentTriangleAcrossEdge: function (edgeIndex) {
+	}
+	getAdjacentTriangleAcrossEdge(edgeIndex) {
 		return this.getEdge(edgeIndex).sym().getData();
-	},
-	setData: function (data) {
+	}
+	setData(data) {
 		this._data = data;
-	},
-	getData: function () {
+	}
+	getData() {
 		return this._data;
-	},
-	getAdjacentTriangleEdgeIndex: function (i) {
+	}
+	getAdjacentTriangleEdgeIndex(i) {
 		return this.getAdjacentTriangleAcrossEdge(i).getEdgeIndex(this.getEdge(i).sym());
-	},
-	getVertices: function () {
+	}
+	getVertices() {
 		var vert = new Array(3).fill(null);
 		for (var i = 0; i < 3; i++) {
 			vert[i] = this.getVertex(i);
 		}
 		return vert;
-	},
-	getEdges: function () {
+	}
+	getEdges() {
 		return this._edge;
-	},
-	getEdge: function (i) {
+	}
+	getEdge(i) {
 		return this._edge[i];
-	},
-	toString: function () {
+	}
+	toString() {
 		return this.getGeometry(new GeometryFactory()).toString();
-	},
-	isLive: function () {
+	}
+	isLive() {
 		return this._edge !== null;
-	},
-	kill: function () {
+	}
+	kill() {
 		this._edge = null;
-	},
-	contains: function (pt) {
+	}
+	contains(pt) {
 		var ring = this.getCoordinates();
 		return PointLocation.isInRing(pt, ring);
-	},
-	getEdgeSegment: function (i, seg) {
+	}
+	getEdgeSegment(i, seg) {
 		seg.p0 = this._edge[i].orig().getCoordinate();
 		var nexti = (i + 1) % 3;
 		seg.p1 = this._edge[nexti].orig().getCoordinate();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return QuadEdgeTriangle;
 	}
-});
-QuadEdgeTriangle.toPolygon = function () {
-	if (arguments[0] instanceof Array) {
-		let v = arguments[0];
-		var ringPts = [v[0].getCoordinate(), v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate()];
-		var fact = new GeometryFactory();
-		var ring = fact.createLinearRing(ringPts);
-		var tri = fact.createPolygon(ring);
-		return tri;
-	} else if (arguments[0] instanceof Array) {
-		let e = arguments[0];
-		var ringPts = [e[0].orig().getCoordinate(), e[1].orig().getCoordinate(), e[2].orig().getCoordinate(), e[0].orig().getCoordinate()];
-		var fact = new GeometryFactory();
-		var ring = fact.createLinearRing(ringPts);
-		var tri = fact.createPolygon(ring);
-		return tri;
+	get interfaces_() {
+		return [];
 	}
-};
-QuadEdgeTriangle.nextIndex = function (index) {
-	return index = (index + 1) % 3;
-};
-QuadEdgeTriangle.contains = function () {
-	if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
-		let tri = arguments[0], pt = arguments[1];
-		var ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()];
-		return PointLocation.isInRing(pt, ring);
-	} else if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
-		let tri = arguments[0], pt = arguments[1];
-		var ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()];
-		return PointLocation.isInRing(pt, ring);
-	}
-};
-QuadEdgeTriangle.createOn = function (subdiv) {
-	var visitor = new QuadEdgeTriangleBuilderVisitor();
-	subdiv.visitTriangles(visitor, false);
-	return visitor.getTriangles();
-};
-function QuadEdgeTriangleBuilderVisitor() {
-	this._triangles = new ArrayList();
 }
-extend(QuadEdgeTriangleBuilderVisitor.prototype, {
-	visit: function (edges) {
+class QuadEdgeTriangleBuilderVisitor {
+	constructor() {
+		QuadEdgeTriangleBuilderVisitor.constructor_.apply(this, arguments);
+	}
+	visit(edges) {
 		this._triangles.add(new QuadEdgeTriangle(edges));
-	},
-	getTriangles: function () {
+	}
+	getTriangles() {
 		return this._triangles;
-	},
-	interfaces_: function () {
-		return [TriangleVisitor];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return QuadEdgeTriangleBuilderVisitor;
 	}
-});
+	get interfaces_() {
+		return [TriangleVisitor];
+	}
+}
+QuadEdgeTriangleBuilderVisitor.constructor_ = function () {
+	this._triangles = new ArrayList();
+};
 QuadEdgeTriangle.QuadEdgeTriangleBuilderVisitor = QuadEdgeTriangleBuilderVisitor;
+QuadEdgeTriangle.constructor_ = function () {
+	this._edge = null;
+	this._data = null;
+	let edge = arguments[0];
+	this._edge = Arrays.copyOf(edge, edge.length);
+	for (var i = 0; i < 3; i++) {
+		edge[i].setData(this);
+	}
+};

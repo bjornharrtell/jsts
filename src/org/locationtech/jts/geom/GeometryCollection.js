@@ -4,39 +4,28 @@ import Arrays from '../../../../java/util/Arrays';
 import CoordinateFilter from './CoordinateFilter';
 import hasInterface from '../../../../hasInterface';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
-import extend from '../../../../extend';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import Dimension from './Dimension';
 import GeometryFilter from './GeometryFilter';
 import CoordinateSequenceFilter from './CoordinateSequenceFilter';
 import Envelope from './Envelope';
 import Assert from '../util/Assert';
-import inherits from '../../../../inherits';
-export default function GeometryCollection() {
-	this._geometries = null;
-	let geometries = arguments[0], factory = arguments[1];
-	Geometry.call(this, factory);
-	if (geometries === null) {
-		geometries = [];
+export default class GeometryCollection extends Geometry {
+	constructor() {
+		super();
+		GeometryCollection.constructor_.apply(this, arguments);
 	}
-	if (Geometry.hasNullElements(geometries)) {
-		throw new IllegalArgumentException("geometries must not contain null elements");
-	}
-	this._geometries = geometries;
-}
-inherits(GeometryCollection, Geometry);
-extend(GeometryCollection.prototype, {
-	computeEnvelopeInternal: function () {
+	computeEnvelopeInternal() {
 		var envelope = new Envelope();
 		for (var i = 0; i < this._geometries.length; i++) {
 			envelope.expandToInclude(this._geometries[i].getEnvelopeInternal());
 		}
 		return envelope;
-	},
-	getGeometryN: function (n) {
+	}
+	getGeometryN(n) {
 		return this._geometries[n];
-	},
-	getCoordinates: function () {
+	}
+	getCoordinates() {
 		var coordinates = new Array(this.getNumPoints()).fill(null);
 		var k = -1;
 		for (var i = 0; i < this._geometries.length; i++) {
@@ -47,15 +36,15 @@ extend(GeometryCollection.prototype, {
 			}
 		}
 		return coordinates;
-	},
-	getArea: function () {
+	}
+	getArea() {
 		var area = 0.0;
 		for (var i = 0; i < this._geometries.length; i++) {
 			area += this._geometries[i].getArea();
 		}
 		return area;
-	},
-	equalsExact: function () {
+	}
+	equalsExact() {
 		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
@@ -71,61 +60,61 @@ extend(GeometryCollection.prototype, {
 				}
 			}
 			return true;
-		} else return Geometry.prototype.equalsExact.apply(this, arguments);
-	},
-	normalize: function () {
+		} else return super.equalsExact.apply(this, arguments);
+	}
+	normalize() {
 		for (var i = 0; i < this._geometries.length; i++) {
 			this._geometries[i].normalize();
 		}
 		Arrays.sort(this._geometries);
-	},
-	getCoordinate: function () {
+	}
+	getCoordinate() {
 		if (this.isEmpty()) return null;
 		return this._geometries[0].getCoordinate();
-	},
-	getBoundaryDimension: function () {
+	}
+	getBoundaryDimension() {
 		var dimension = Dimension.FALSE;
 		for (var i = 0; i < this._geometries.length; i++) {
 			dimension = Math.max(dimension, this._geometries[i].getBoundaryDimension());
 		}
 		return dimension;
-	},
-	getTypeCode: function () {
+	}
+	getTypeCode() {
 		return Geometry.TYPECODE_GEOMETRYCOLLECTION;
-	},
-	getDimension: function () {
+	}
+	getDimension() {
 		var dimension = Dimension.FALSE;
 		for (var i = 0; i < this._geometries.length; i++) {
 			dimension = Math.max(dimension, this._geometries[i].getDimension());
 		}
 		return dimension;
-	},
-	getLength: function () {
+	}
+	getLength() {
 		var sum = 0.0;
 		for (var i = 0; i < this._geometries.length; i++) {
 			sum += this._geometries[i].getLength();
 		}
 		return sum;
-	},
-	getNumPoints: function () {
+	}
+	getNumPoints() {
 		var numPoints = 0;
 		for (var i = 0; i < this._geometries.length; i++) {
 			numPoints += this._geometries[i].getNumPoints();
 		}
 		return numPoints;
-	},
-	getNumGeometries: function () {
+	}
+	getNumGeometries() {
 		return this._geometries.length;
-	},
-	reverse: function () {
+	}
+	reverse() {
 		var n = this._geometries.length;
 		var revGeoms = new Array(n).fill(null);
 		for (var i = 0; i < this._geometries.length; i++) {
 			revGeoms[i] = this._geometries[i].reverse();
 		}
 		return this.getFactory().createGeometryCollection(revGeoms);
-	},
-	compareToSameClass: function () {
+	}
+	compareToSameClass() {
 		if (arguments.length === 1) {
 			let o = arguments[0];
 			var theseElements = new TreeSet(Arrays.asList(this._geometries));
@@ -148,8 +137,8 @@ extend(GeometryCollection.prototype, {
 			if (i < n2) return -1;
 			return 0;
 		}
-	},
-	apply: function () {
+	}
+	apply() {
 		if (hasInterface(arguments[0], CoordinateFilter)) {
 			let filter = arguments[0];
 			for (var i = 0; i < this._geometries.length; i++) {
@@ -178,35 +167,49 @@ extend(GeometryCollection.prototype, {
 				this._geometries[i].apply(filter);
 			}
 		}
-	},
-	getBoundary: function () {
+	}
+	getBoundary() {
 		this.checkNotGeometryCollection(this);
 		Assert.shouldNeverReachHere();
 		return null;
-	},
-	getGeometryType: function () {
+	}
+	getGeometryType() {
 		return Geometry.TYPENAME_GEOMETRYCOLLECTION;
-	},
-	copy: function () {
+	}
+	copy() {
 		var geometries = new Array(this._geometries.length).fill(null);
 		for (var i = 0; i < geometries.length; i++) {
 			geometries[i] = this._geometries[i].copy();
 		}
 		return new GeometryCollection(geometries, this._factory);
-	},
-	isEmpty: function () {
+	}
+	isEmpty() {
 		for (var i = 0; i < this._geometries.length; i++) {
 			if (!this._geometries[i].isEmpty()) {
 				return false;
 			}
 		}
 		return true;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return GeometryCollection;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+GeometryCollection.constructor_ = function () {
+	this._geometries = null;
+	if (arguments.length === 0) {} else if (arguments.length === 2) {
+		let geometries = arguments[0], factory = arguments[1];
+		Geometry.constructor_.call(this, factory);
+		if (geometries === null) {
+			geometries = [];
+		}
+		if (Geometry.hasNullElements(geometries)) {
+			throw new IllegalArgumentException("geometries must not contain null elements");
+		}
+		this._geometries = geometries;
+	}
+};
 GeometryCollection.serialVersionUID = -5694727726395021467;

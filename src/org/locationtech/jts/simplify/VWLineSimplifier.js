@@ -1,17 +1,16 @@
 import CoordinateList from '../geom/CoordinateList';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import Triangle from '../geom/Triangle';
-export default function VWLineSimplifier() {
-	this._pts = null;
-	this._tolerance = null;
-	let pts = arguments[0], distanceTolerance = arguments[1];
-	this._pts = pts;
-	this._tolerance = distanceTolerance * distanceTolerance;
-}
-extend(VWLineSimplifier.prototype, {
-	simplifyVertex: function (vwLine) {
+export default class VWLineSimplifier {
+	constructor() {
+		VWLineSimplifier.constructor_.apply(this, arguments);
+	}
+	static simplify(pts, distanceTolerance) {
+		var simp = new VWLineSimplifier(pts, distanceTolerance);
+		return simp.simplify();
+	}
+	simplifyVertex(vwLine) {
 		var curr = vwLine;
 		var minArea = curr.getArea();
 		var minVertex = null;
@@ -28,8 +27,8 @@ extend(VWLineSimplifier.prototype, {
 		}
 		if (!vwLine.isLive()) return -1;
 		return minArea;
-	},
-	simplify: function () {
+	}
+	simplify() {
 		var vwLine = VWVertex.buildLine(this._pts);
 		var minArea = this._tolerance;
 		do {
@@ -40,29 +39,34 @@ extend(VWLineSimplifier.prototype, {
 			return [simp[0], new Coordinate(simp[0])];
 		}
 		return simp;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return VWLineSimplifier;
 	}
-});
-VWLineSimplifier.simplify = function (pts, distanceTolerance) {
-	var simp = new VWLineSimplifier(pts, distanceTolerance);
-	return simp.simplify();
-};
-function VWVertex() {
-	this._pt = null;
-	this._prev = null;
-	this._next = null;
-	this._area = VWVertex.MAX_AREA;
-	this._isLive = true;
-	let pt = arguments[0];
-	this._pt = pt;
+	get interfaces_() {
+		return [];
+	}
 }
-extend(VWVertex.prototype, {
-	getCoordinates: function () {
+class VWVertex {
+	constructor() {
+		VWVertex.constructor_.apply(this, arguments);
+	}
+	static buildLine(pts) {
+		var first = null;
+		var prev = null;
+		for (var i = 0; i < pts.length; i++) {
+			var v = new VWVertex(pts[i]);
+			if (first === null) first = v;
+			v.setPrev(prev);
+			if (prev !== null) {
+				prev.setNext(v);
+				prev.updateArea();
+			}
+			prev = v;
+		}
+		return first;
+	}
+	getCoordinates() {
 		var coords = new CoordinateList();
 		var curr = this;
 		do {
@@ -70,18 +74,18 @@ extend(VWVertex.prototype, {
 			curr = curr._next;
 		} while (curr !== null);
 		return coords.toCoordinateArray();
-	},
-	getArea: function () {
+	}
+	getArea() {
 		return this._area;
-	},
-	updateArea: function () {
+	}
+	updateArea() {
 		if (this._prev === null || this._next === null) {
 			this._area = VWVertex.MAX_AREA;
 			return null;
 		}
 		this._area = Math.abs(Triangle.area(this._prev._pt, this._pt, this._next._pt));
-	},
-	remove: function () {
+	}
+	remove() {
 		var tmpPrev = this._prev;
 		var tmpNext = this._next;
 		var result = null;
@@ -97,37 +101,38 @@ extend(VWVertex.prototype, {
 		}
 		this._isLive = false;
 		return result;
-	},
-	isLive: function () {
+	}
+	isLive() {
 		return this._isLive;
-	},
-	setPrev: function (prev) {
+	}
+	setPrev(prev) {
 		this._prev = prev;
-	},
-	setNext: function (next) {
+	}
+	setNext(next) {
 		this._next = next;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return VWVertex;
 	}
-});
-VWVertex.buildLine = function (pts) {
-	var first = null;
-	var prev = null;
-	for (var i = 0; i < pts.length; i++) {
-		var v = new VWVertex(pts[i]);
-		if (first === null) first = v;
-		v.setPrev(prev);
-		if (prev !== null) {
-			prev.setNext(v);
-			prev.updateArea();
-		}
-		prev = v;
+	get interfaces_() {
+		return [];
 	}
-	return first;
+}
+VWVertex.constructor_ = function () {
+	this._pt = null;
+	this._prev = null;
+	this._next = null;
+	this._area = VWVertex.MAX_AREA;
+	this._isLive = true;
+	let pt = arguments[0];
+	this._pt = pt;
 };
 VWVertex.MAX_AREA = Double.MAX_VALUE;
 VWLineSimplifier.VWVertex = VWVertex;
+VWLineSimplifier.constructor_ = function () {
+	this._pts = null;
+	this._tolerance = null;
+	let pts = arguments[0], distanceTolerance = arguments[1];
+	this._pts = pts;
+	this._tolerance = distanceTolerance * distanceTolerance;
+};

@@ -1,34 +1,24 @@
 import STRtree from '../index/strtree/STRtree';
 import NodedSegmentString from './NodedSegmentString';
 import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction';
-import extend from '../../../../extend';
 import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder';
 import ArrayList from '../../../../java/util/ArrayList';
-import inherits from '../../../../inherits';
 import SinglePassNoder from './SinglePassNoder';
-export default function MCIndexNoder() {
-	this._monoChains = new ArrayList();
-	this._index = new STRtree();
-	this._idCounter = 0;
-	this._nodedSegStrings = null;
-	this._nOverlaps = 0;
-	if (arguments.length === 0) {} else if (arguments.length === 1) {
-		let si = arguments[0];
-		SinglePassNoder.call(this, si);
+export default class MCIndexNoder extends SinglePassNoder {
+	constructor() {
+		super();
+		MCIndexNoder.constructor_.apply(this, arguments);
 	}
-}
-inherits(MCIndexNoder, SinglePassNoder);
-extend(MCIndexNoder.prototype, {
-	getMonotoneChains: function () {
+	getMonotoneChains() {
 		return this._monoChains;
-	},
-	getNodedSubstrings: function () {
+	}
+	getNodedSubstrings() {
 		return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings);
-	},
-	getIndex: function () {
+	}
+	getIndex() {
 		return this._index;
-	},
-	add: function (segStr) {
+	}
+	add(segStr) {
 		var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
 		for (var i = segChains.iterator(); i.hasNext(); ) {
 			var mc = i.next();
@@ -36,15 +26,15 @@ extend(MCIndexNoder.prototype, {
 			this._index.insert(mc.getEnvelope(), mc);
 			this._monoChains.add(mc);
 		}
-	},
-	computeNodes: function (inputSegStrings) {
+	}
+	computeNodes(inputSegStrings) {
 		this._nodedSegStrings = inputSegStrings;
 		for (var i = inputSegStrings.iterator(); i.hasNext(); ) {
 			this.add(i.next());
 		}
 		this.intersectChains();
-	},
-	intersectChains: function () {
+	}
+	intersectChains() {
 		var overlapAction = new SegmentOverlapAction(this._segInt);
 		for (var i = this._monoChains.iterator(); i.hasNext(); ) {
 			var queryChain = i.next();
@@ -58,35 +48,48 @@ extend(MCIndexNoder.prototype, {
 				if (this._segInt.isDone()) return null;
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MCIndexNoder;
 	}
-});
-function SegmentOverlapAction() {
-	MonotoneChainOverlapAction.apply(this);
-	this._si = null;
-	let si = arguments[0];
-	this._si = si;
+	get interfaces_() {
+		return [];
+	}
 }
-inherits(SegmentOverlapAction, MonotoneChainOverlapAction);
-extend(SegmentOverlapAction.prototype, {
-	overlap: function () {
+class SegmentOverlapAction extends MonotoneChainOverlapAction {
+	constructor() {
+		super();
+		SegmentOverlapAction.constructor_.apply(this, arguments);
+	}
+	overlap() {
 		if (arguments.length === 4) {
 			let mc1 = arguments[0], start1 = arguments[1], mc2 = arguments[2], start2 = arguments[3];
 			var ss1 = mc1.getContext();
 			var ss2 = mc2.getContext();
 			this._si.processIntersections(ss1, start1, ss2, start2);
-		} else return MonotoneChainOverlapAction.prototype.overlap.apply(this, arguments);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+		} else return super.overlap.apply(this, arguments);
+	}
+	getClass() {
 		return SegmentOverlapAction;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SegmentOverlapAction.constructor_ = function () {
+	this._si = null;
+	let si = arguments[0];
+	this._si = si;
+};
 MCIndexNoder.SegmentOverlapAction = SegmentOverlapAction;
+MCIndexNoder.constructor_ = function () {
+	this._monoChains = new ArrayList();
+	this._index = new STRtree();
+	this._idCounter = 0;
+	this._nodedSegStrings = null;
+	this._nOverlaps = 0;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let si = arguments[0];
+		SinglePassNoder.constructor_.call(this, si);
+	}
+};

@@ -1,28 +1,25 @@
 import Stack from '../../../../../java/util/Stack';
 import Subgraph from '../Subgraph';
-import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import GraphComponent from '../GraphComponent';
-export default function ConnectedSubgraphFinder() {
-	this._graph = null;
-	let graph = arguments[0];
-	this._graph = graph;
-}
-extend(ConnectedSubgraphFinder.prototype, {
-	addReachable: function (startNode, subgraph) {
+export default class ConnectedSubgraphFinder {
+	constructor() {
+		ConnectedSubgraphFinder.constructor_.apply(this, arguments);
+	}
+	addReachable(startNode, subgraph) {
 		var nodeStack = new Stack();
 		nodeStack.add(startNode);
 		while (!nodeStack.empty()) {
 			var node = nodeStack.pop();
 			this.addEdges(node, nodeStack, subgraph);
 		}
-	},
-	findSubgraph: function (node) {
+	}
+	findSubgraph(node) {
 		var subgraph = new Subgraph(this._graph);
 		this.addReachable(node, subgraph);
 		return subgraph;
-	},
-	getConnectedSubgraphs: function () {
+	}
+	getConnectedSubgraphs() {
 		var subgraphs = new ArrayList();
 		GraphComponent.setVisited(this._graph.nodeIterator(), false);
 		for (var i = this._graph.edgeIterator(); i.hasNext(); ) {
@@ -33,8 +30,8 @@ extend(ConnectedSubgraphFinder.prototype, {
 			}
 		}
 		return subgraphs;
-	},
-	addEdges: function (node, nodeStack, subgraph) {
+	}
+	addEdges(node, nodeStack, subgraph) {
 		node.setVisited(true);
 		for (var i = node.getOutEdges().iterator(); i.hasNext(); ) {
 			var de = i.next();
@@ -42,11 +39,16 @@ extend(ConnectedSubgraphFinder.prototype, {
 			var toNode = de.getToNode();
 			if (!toNode.isVisited()) nodeStack.push(toNode);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ConnectedSubgraphFinder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+ConnectedSubgraphFinder.constructor_ = function () {
+	this._graph = null;
+	let graph = arguments[0];
+	this._graph = graph;
+};

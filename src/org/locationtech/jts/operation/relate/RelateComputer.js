@@ -2,31 +2,22 @@ import PointLocator from '../../algorithm/PointLocator';
 import Location from '../../geom/Location';
 import IntersectionMatrix from '../../geom/IntersectionMatrix';
 import EdgeEndBuilder from './EdgeEndBuilder';
-import extend from '../../../../../extend';
 import NodeMap from '../../geomgraph/NodeMap';
 import RelateNodeFactory from './RelateNodeFactory';
 import ArrayList from '../../../../../java/util/ArrayList';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import Assert from '../../util/Assert';
-export default function RelateComputer() {
-	this._li = new RobustLineIntersector();
-	this._ptLocator = new PointLocator();
-	this._arg = null;
-	this._nodes = new NodeMap(new RelateNodeFactory());
-	this._im = null;
-	this._isolatedEdges = new ArrayList();
-	this._invalidPoint = null;
-	let arg = arguments[0];
-	this._arg = arg;
-}
-extend(RelateComputer.prototype, {
-	insertEdgeEnds: function (ee) {
+export default class RelateComputer {
+	constructor() {
+		RelateComputer.constructor_.apply(this, arguments);
+	}
+	insertEdgeEnds(ee) {
 		for (var i = ee.iterator(); i.hasNext(); ) {
 			var e = i.next();
 			this._nodes.add(e);
 		}
-	},
-	computeProperIntersectionIM: function (intersector, im) {
+	}
+	computeProperIntersectionIM(intersector, im) {
 		var dimA = this._arg[0].getGeometry().getDimension();
 		var dimB = this._arg[1].getGeometry().getDimension();
 		var hasProper = intersector.hasProperIntersection();
@@ -42,8 +33,8 @@ extend(RelateComputer.prototype, {
 		} else if (dimA === 1 && dimB === 1) {
 			if (hasProperInterior) im.setAtLeast("0FFFFFFFF");
 		}
-	},
-	labelIsolatedEdges: function (thisIndex, targetIndex) {
+	}
+	labelIsolatedEdges(thisIndex, targetIndex) {
 		for (var ei = this._arg[thisIndex].getEdgeIterator(); ei.hasNext(); ) {
 			var e = ei.next();
 			if (e.isIsolated()) {
@@ -51,16 +42,16 @@ extend(RelateComputer.prototype, {
 				this._isolatedEdges.add(e);
 			}
 		}
-	},
-	labelIsolatedEdge: function (e, targetIndex, target) {
+	}
+	labelIsolatedEdge(e, targetIndex, target) {
 		if (target.getDimension() > 0) {
 			var loc = this._ptLocator.locate(e.getCoordinate(), target);
 			e.getLabel().setAllLocations(targetIndex, loc);
 		} else {
 			e.getLabel().setAllLocations(targetIndex, Location.EXTERIOR);
 		}
-	},
-	computeIM: function () {
+	}
+	computeIM() {
 		var im = new IntersectionMatrix();
 		im.set(Location.EXTERIOR, Location.EXTERIOR, 2);
 		if (!this._arg[0].getGeometry().getEnvelopeInternal().intersects(this._arg[1].getGeometry().getEnvelopeInternal())) {
@@ -86,21 +77,21 @@ extend(RelateComputer.prototype, {
 		this.labelIsolatedEdges(1, 0);
 		this.updateIM(im);
 		return im;
-	},
-	labelNodeEdges: function () {
+	}
+	labelNodeEdges() {
 		for (var ni = this._nodes.iterator(); ni.hasNext(); ) {
 			var node = ni.next();
 			node.getEdges().computeLabelling(this._arg);
 		}
-	},
-	copyNodesAndLabels: function (argIndex) {
+	}
+	copyNodesAndLabels(argIndex) {
 		for (var i = this._arg[argIndex].getNodeIterator(); i.hasNext(); ) {
 			var graphNode = i.next();
 			var newNode = this._nodes.addNode(graphNode.getCoordinate());
 			newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 		}
-	},
-	labelIntersectionNodes: function (argIndex) {
+	}
+	labelIntersectionNodes(argIndex) {
 		for (var i = this._arg[argIndex].getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var eLoc = e.getLabel().getLocation(argIndex);
@@ -112,12 +103,12 @@ extend(RelateComputer.prototype, {
 				}
 			}
 		}
-	},
-	labelIsolatedNode: function (n, targetIndex) {
+	}
+	labelIsolatedNode(n, targetIndex) {
 		var loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry());
 		n.getLabel().setAllLocations(targetIndex, loc);
-	},
-	computeIntersectionNodes: function (argIndex) {
+	}
+	computeIntersectionNodes(argIndex) {
 		for (var i = this._arg[argIndex].getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var eLoc = e.getLabel().getLocation(argIndex);
@@ -129,8 +120,8 @@ extend(RelateComputer.prototype, {
 				}
 			}
 		}
-	},
-	labelIsolatedNodes: function () {
+	}
+	labelIsolatedNodes() {
 		for (var ni = this._nodes.iterator(); ni.hasNext(); ) {
 			var n = ni.next();
 			var label = n.getLabel();
@@ -139,8 +130,8 @@ extend(RelateComputer.prototype, {
 				if (label.isNull(0)) this.labelIsolatedNode(n, 0); else this.labelIsolatedNode(n, 1);
 			}
 		}
-	},
-	updateIM: function (im) {
+	}
+	updateIM(im) {
 		for (var ei = this._isolatedEdges.iterator(); ei.hasNext(); ) {
 			var e = ei.next();
 			e.updateIM(im);
@@ -150,8 +141,8 @@ extend(RelateComputer.prototype, {
 			node.updateIM(im);
 			node.updateIMFromEdges(im);
 		}
-	},
-	computeDisjointIM: function (im) {
+	}
+	computeDisjointIM(im) {
 		var ga = this._arg[0].getGeometry();
 		if (!ga.isEmpty()) {
 			im.set(Location.INTERIOR, Location.EXTERIOR, ga.getDimension());
@@ -162,11 +153,22 @@ extend(RelateComputer.prototype, {
 			im.set(Location.EXTERIOR, Location.INTERIOR, gb.getDimension());
 			im.set(Location.EXTERIOR, Location.BOUNDARY, gb.getBoundaryDimension());
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RelateComputer;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+RelateComputer.constructor_ = function () {
+	this._li = new RobustLineIntersector();
+	this._ptLocator = new PointLocator();
+	this._arg = null;
+	this._nodes = new NodeMap(new RelateNodeFactory());
+	this._im = null;
+	this._isolatedEdges = new ArrayList();
+	this._invalidPoint = null;
+	let arg = arguments[0];
+	this._arg = arg;
+};

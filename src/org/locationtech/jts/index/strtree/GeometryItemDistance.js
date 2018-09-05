@@ -1,16 +1,18 @@
-import extend from '../../../../../extend';
 import ItemDistance from './ItemDistance';
-export default function GeometryItemDistance() {}
-extend(GeometryItemDistance.prototype, {
-	distance: function (item1, item2) {
+export default class GeometryItemDistance {
+	constructor() {
+		GeometryItemDistance.constructor_.apply(this, arguments);
+	}
+	distance(item1, item2) {
 		var g1 = item1.getItem();
 		var g2 = item2.getItem();
 		return g1.distance(g2);
-	},
-	interfaces_: function () {
-		return [ItemDistance];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return GeometryItemDistance;
 	}
-});
+	get interfaces_() {
+		return [ItemDistance];
+	}
+}
+GeometryItemDistance.constructor_ = function () {};

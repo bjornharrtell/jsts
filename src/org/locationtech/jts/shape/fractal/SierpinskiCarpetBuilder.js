@@ -1,18 +1,19 @@
 import CoordinateList from '../../geom/CoordinateList';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
-import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
-export default function SierpinskiCarpetBuilder() {
-	this._coordList = new CoordinateList();
-	let geomFactory = arguments[0];
-	GeometricShapeBuilder.call(this, geomFactory);
-}
-inherits(SierpinskiCarpetBuilder, GeometricShapeBuilder);
-extend(SierpinskiCarpetBuilder.prototype, {
-	addHoles: function (n, originX, originY, width, holeList) {
+export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
+	constructor() {
+		super();
+		SierpinskiCarpetBuilder.constructor_.apply(this, arguments);
+	}
+	static recursionLevelForSize(numPts) {
+		var pow4 = Math.trunc(numPts / 3);
+		var exp = Math.log(pow4) / Math.log(4);
+		return Math.trunc(exp);
+	}
+	addHoles(n, originX, originY, width, holeList) {
 		if (n < 0) return null;
 		var n2 = n - 1;
 		var widthThird = width / 3.0;
@@ -27,33 +28,33 @@ extend(SierpinskiCarpetBuilder.prototype, {
 		this.addHoles(n2, originX + widthThird, originY + 2 * widthThird, widthThird, holeList);
 		this.addHoles(n2, originX + 2 * widthThird, originY + 2 * widthThird, widthThird, holeList);
 		holeList.add(this.createSquareHole(originX + widthThird, originY + widthThird, widthThird));
-	},
-	getHoles: function (n, originX, originY, width) {
+	}
+	getHoles(n, originX, originY, width) {
 		var holeList = new ArrayList();
 		this.addHoles(n, originX, originY, width, holeList);
 		return GeometryFactory.toLinearRingArray(holeList);
-	},
-	createSquareHole: function (x, y, width) {
+	}
+	createSquareHole(x, y, width) {
 		var pts = [new Coordinate(x, y), new Coordinate(x + width, y), new Coordinate(x + width, y + width), new Coordinate(x, y + width), new Coordinate(x, y)];
 		return this._geomFactory.createLinearRing(pts);
-	},
-	getGeometry: function () {
+	}
+	getGeometry() {
 		var level = SierpinskiCarpetBuilder.recursionLevelForSize(this._numPts);
 		var baseLine = this.getSquareBaseLine();
 		var origin = baseLine.getCoordinate(0);
 		var holes = this.getHoles(level, origin.x, origin.y, this.getDiameter());
 		var shell = this._geomFactory.toGeometry(this.getSquareExtent()).getExteriorRing();
 		return this._geomFactory.createPolygon(shell, holes);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SierpinskiCarpetBuilder;
 	}
-});
-SierpinskiCarpetBuilder.recursionLevelForSize = function (numPts) {
-	var pow4 = Math.trunc(numPts / 3);
-	var exp = Math.log(pow4) / Math.log(4);
-	return Math.trunc(exp);
+	get interfaces_() {
+		return [];
+	}
+}
+SierpinskiCarpetBuilder.constructor_ = function () {
+	this._coordList = new CoordinateList();
+	let geomFactory = arguments[0];
+	GeometricShapeBuilder.constructor_.call(this, geomFactory);
 };

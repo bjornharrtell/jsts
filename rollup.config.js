@@ -25,7 +25,7 @@ export default {
       presets: [['@babel/env', {
         modules: false,
         targets: {
-          browsers: ['last 2 versions', 'ie >= 11']
+          browsers: ['>1%', 'not dead', 'not ie 11']
         }
       }]],
       babelrc: false

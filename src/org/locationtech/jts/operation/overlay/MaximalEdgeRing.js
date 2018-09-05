@@ -1,15 +1,12 @@
 import MinimalEdgeRing from './MinimalEdgeRing';
-import extend from '../../../../../extend';
 import EdgeRing from '../../geomgraph/EdgeRing';
 import ArrayList from '../../../../../java/util/ArrayList';
-import inherits from '../../../../../inherits';
-export default function MaximalEdgeRing() {
-	let start = arguments[0], geometryFactory = arguments[1];
-	EdgeRing.call(this, start, geometryFactory);
-}
-inherits(MaximalEdgeRing, EdgeRing);
-extend(MaximalEdgeRing.prototype, {
-	buildMinimalRings: function () {
+export default class MaximalEdgeRing extends EdgeRing {
+	constructor() {
+		super();
+		MaximalEdgeRing.constructor_.apply(this, arguments);
+	}
+	buildMinimalRings() {
 		var minEdgeRings = new ArrayList();
 		var de = this._startDe;
 		do {
@@ -20,25 +17,29 @@ extend(MaximalEdgeRing.prototype, {
 			de = de.getNext();
 		} while (de !== this._startDe);
 		return minEdgeRings;
-	},
-	setEdgeRing: function (de, er) {
+	}
+	setEdgeRing(de, er) {
 		de.setEdgeRing(er);
-	},
-	linkDirectedEdgesForMinimalEdgeRings: function () {
+	}
+	linkDirectedEdgesForMinimalEdgeRings() {
 		var de = this._startDe;
 		do {
 			var node = de.getNode();
 			node.getEdges().linkMinimalDirectedEdges(this);
 			de = de.getNext();
 		} while (de !== this._startDe);
-	},
-	getNext: function (de) {
+	}
+	getNext(de) {
 		return de.getNext();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MaximalEdgeRing;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+MaximalEdgeRing.constructor_ = function () {
+	let start = arguments[0], geometryFactory = arguments[1];
+	EdgeRing.constructor_.call(this, start, geometryFactory);
+};

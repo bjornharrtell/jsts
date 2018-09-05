@@ -9,31 +9,30 @@ import Polygon from '../../geom/Polygon';
 import GeometryLocation from './GeometryLocation';
 import Double from '../../../../../java/lang/Double';
 import PointExtracter from '../../geom/util/PointExtracter';
-import extend from '../../../../../extend';
 import ConnectedElementLocationFilter from './ConnectedElementLocationFilter';
 import LineSegment from '../../geom/LineSegment';
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter';
 import List from '../../../../../java/util/List';
 import Distance from '../../algorithm/Distance';
-export default function DistanceOp() {
-	this._geom = null;
-	this._terminateDistance = 0.0;
-	this._ptLocator = new PointLocator();
-	this._minDistanceLocation = null;
-	this._minDistance = Double.MAX_VALUE;
-	if (arguments.length === 2) {
-		let g0 = arguments[0], g1 = arguments[1];
-		DistanceOp.call(this, g0, g1, 0.0);
-	} else if (arguments.length === 3) {
-		let g0 = arguments[0], g1 = arguments[1], terminateDistance = arguments[2];
-		this._geom = new Array(2).fill(null);
-		this._geom[0] = g0;
-		this._geom[1] = g1;
-		this._terminateDistance = terminateDistance;
+export default class DistanceOp {
+	constructor() {
+		DistanceOp.constructor_.apply(this, arguments);
 	}
-}
-extend(DistanceOp.prototype, {
-	computeContainmentDistance: function () {
+	static distance(g0, g1) {
+		var distOp = new DistanceOp(g0, g1);
+		return distOp.distance();
+	}
+	static isWithinDistance(g0, g1, distance) {
+		var envDist = g0.getEnvelopeInternal().distance(g1.getEnvelopeInternal());
+		if (envDist > distance) return false;
+		var distOp = new DistanceOp(g0, g1, distance);
+		return distOp.distance() <= distance;
+	}
+	static nearestPoints(g0, g1) {
+		var distOp = new DistanceOp(g0, g1);
+		return distOp.nearestPoints();
+	}
+	computeContainmentDistance() {
 		if (arguments.length === 0) {
 			var locPtPoly = new Array(2).fill(null);
 			this.computeContainmentDistance(0, locPtPoly);
@@ -76,8 +75,8 @@ extend(DistanceOp.prototype, {
 				}
 			}
 		}
-	},
-	computeMinDistanceLinesPoints: function (lines, points, locGeom) {
+	}
+	computeMinDistanceLinesPoints(lines, points, locGeom) {
 		for (var i = 0; i < lines.size(); i++) {
 			var line = lines.get(i);
 			for (var j = 0; j < points.size(); j++) {
@@ -86,8 +85,8 @@ extend(DistanceOp.prototype, {
 				if (this._minDistance <= this._terminateDistance) return null;
 			}
 		}
-	},
-	computeFacetDistance: function () {
+	}
+	computeFacetDistance() {
 		var locGeom = new Array(2).fill(null);
 		var lines0 = LinearComponentExtracter.getLines(this._geom[0]);
 		var lines1 = LinearComponentExtracter.getLines(this._geom[1]);
@@ -110,12 +109,12 @@ extend(DistanceOp.prototype, {
 		locGeom[1] = null;
 		this.computeMinDistancePoints(pts0, pts1, locGeom);
 		this.updateMinDistance(locGeom, false);
-	},
-	nearestLocations: function () {
+	}
+	nearestLocations() {
 		this.computeMinDistance();
 		return this._minDistanceLocation;
-	},
-	updateMinDistance: function (locGeom, flip) {
+	}
+	updateMinDistance(locGeom, flip) {
 		if (locGeom[0] === null) return null;
 		if (flip) {
 			this._minDistanceLocation[0] = locGeom[1];
@@ -124,13 +123,13 @@ extend(DistanceOp.prototype, {
 			this._minDistanceLocation[0] = locGeom[0];
 			this._minDistanceLocation[1] = locGeom[1];
 		}
-	},
-	nearestPoints: function () {
+	}
+	nearestPoints() {
 		this.computeMinDistance();
 		var nearestPts = [this._minDistanceLocation[0].getCoordinate(), this._minDistanceLocation[1].getCoordinate()];
 		return nearestPts;
-	},
-	computeMinDistance: function () {
+	}
+	computeMinDistance() {
 		if (arguments.length === 0) {
 			if (this._minDistanceLocation !== null) return null;
 			this._minDistanceLocation = new Array(2).fill(null);
@@ -175,8 +174,8 @@ extend(DistanceOp.prototype, {
 				}
 			}
 		}
-	},
-	computeMinDistancePoints: function (points0, points1, locGeom) {
+	}
+	computeMinDistancePoints(points0, points1, locGeom) {
 		for (var i = 0; i < points0.size(); i++) {
 			var pt0 = points0.get(i);
 			for (var j = 0; j < points1.size(); j++) {
@@ -190,14 +189,14 @@ extend(DistanceOp.prototype, {
 				if (this._minDistance <= this._terminateDistance) return null;
 			}
 		}
-	},
-	distance: function () {
+	}
+	distance() {
 		if (this._geom[0] === null || this._geom[1] === null) throw new IllegalArgumentException("null geometries are not supported");
 		if (this._geom[0].isEmpty() || this._geom[1].isEmpty()) return 0.0;
 		this.computeMinDistance();
 		return this._minDistance;
-	},
-	computeMinDistanceLines: function (lines0, lines1, locGeom) {
+	}
+	computeMinDistanceLines(lines0, lines1, locGeom) {
 		for (var i = 0; i < lines0.size(); i++) {
 			var line0 = lines0.get(i);
 			for (var j = 0; j < lines1.size(); j++) {
@@ -206,25 +205,28 @@ extend(DistanceOp.prototype, {
 				if (this._minDistance <= this._terminateDistance) return null;
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return DistanceOp;
 	}
-});
-DistanceOp.distance = function (g0, g1) {
-	var distOp = new DistanceOp(g0, g1);
-	return distOp.distance();
-};
-DistanceOp.isWithinDistance = function (g0, g1, distance) {
-	var envDist = g0.getEnvelopeInternal().distance(g1.getEnvelopeInternal());
-	if (envDist > distance) return false;
-	var distOp = new DistanceOp(g0, g1, distance);
-	return distOp.distance() <= distance;
-};
-DistanceOp.nearestPoints = function (g0, g1) {
-	var distOp = new DistanceOp(g0, g1);
-	return distOp.nearestPoints();
+	get interfaces_() {
+		return [];
+	}
+}
+DistanceOp.constructor_ = function () {
+	this._geom = null;
+	this._terminateDistance = 0.0;
+	this._ptLocator = new PointLocator();
+	this._minDistanceLocation = null;
+	this._minDistance = Double.MAX_VALUE;
+	if (arguments.length === 2) {
+		let g0 = arguments[0], g1 = arguments[1];
+		DistanceOp.constructor_.call(this, g0, g1, 0.0);
+	} else if (arguments.length === 3) {
+		let g0 = arguments[0], g1 = arguments[1], terminateDistance = arguments[2];
+		this._geom = new Array(2).fill(null);
+		this._geom[0] = g0;
+		this._geom[1] = g1;
+		this._terminateDistance = terminateDistance;
+	}
 };

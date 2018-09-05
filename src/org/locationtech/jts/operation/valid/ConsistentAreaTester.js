@@ -1,16 +1,10 @@
 import RelateNodeGraph from '../relate/RelateNodeGraph';
-import extend from '../../../../../extend';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
-export default function ConsistentAreaTester() {
-	this._li = new RobustLineIntersector();
-	this._geomGraph = null;
-	this._nodeGraph = new RelateNodeGraph();
-	this._invalidPoint = null;
-	let geomGraph = arguments[0];
-	this._geomGraph = geomGraph;
-}
-extend(ConsistentAreaTester.prototype, {
-	isNodeEdgeAreaLabelsConsistent: function () {
+export default class ConsistentAreaTester {
+	constructor() {
+		ConsistentAreaTester.constructor_.apply(this, arguments);
+	}
+	isNodeEdgeAreaLabelsConsistent() {
 		for (var nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
 			var node = nodeIt.next();
 			if (!node.getEdges().isAreaLabelsConsistent(this._geomGraph)) {
@@ -19,11 +13,11 @@ extend(ConsistentAreaTester.prototype, {
 			}
 		}
 		return true;
-	},
-	getInvalidPoint: function () {
+	}
+	getInvalidPoint() {
 		return this._invalidPoint;
-	},
-	hasDuplicateRings: function () {
+	}
+	hasDuplicateRings() {
 		for (var nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
 			var node = nodeIt.next();
 			for (var i = node.getEdges().iterator(); i.hasNext(); ) {
@@ -35,8 +29,8 @@ extend(ConsistentAreaTester.prototype, {
 			}
 		}
 		return false;
-	},
-	isNodeConsistentArea: function () {
+	}
+	isNodeConsistentArea() {
 		var intersector = this._geomGraph.computeSelfNodes(this._li, true, true);
 		if (intersector.hasProperIntersection()) {
 			this._invalidPoint = intersector.getProperIntersectionPoint();
@@ -44,11 +38,19 @@ extend(ConsistentAreaTester.prototype, {
 		}
 		this._nodeGraph.build(this._geomGraph);
 		return this.isNodeEdgeAreaLabelsConsistent();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ConsistentAreaTester;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+ConsistentAreaTester.constructor_ = function () {
+	this._li = new RobustLineIntersector();
+	this._geomGraph = null;
+	this._nodeGraph = new RelateNodeGraph();
+	this._invalidPoint = null;
+	let geomGraph = arguments[0];
+	this._geomGraph = geomGraph;
+};

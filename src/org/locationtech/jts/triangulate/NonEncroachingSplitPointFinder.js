@@ -1,9 +1,15 @@
-import extend from '../../../../extend';
 import SplitSegment from './SplitSegment';
 import ConstraintSplitPointFinder from './ConstraintSplitPointFinder';
-export default function NonEncroachingSplitPointFinder() {}
-extend(NonEncroachingSplitPointFinder.prototype, {
-	findSplitPoint: function (seg, encroachPt) {
+export default class NonEncroachingSplitPointFinder {
+	constructor() {
+		NonEncroachingSplitPointFinder.constructor_.apply(this, arguments);
+	}
+	static projectedSplitPoint(seg, encroachPt) {
+		var lineSeg = seg.getLineSegment();
+		var projPt = lineSeg.project(encroachPt);
+		return projPt;
+	}
+	findSplitPoint(seg, encroachPt) {
 		var lineSeg = seg.getLineSegment();
 		var segLen = lineSeg.getLength();
 		var midPtLen = segLen / 2;
@@ -17,16 +23,12 @@ extend(NonEncroachingSplitPointFinder.prototype, {
 		splitSeg.setMinimumLength(maxSplitLen);
 		splitSeg.splitAt(projPt);
 		return splitSeg.getSplitPoint();
-	},
-	interfaces_: function () {
-		return [ConstraintSplitPointFinder];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NonEncroachingSplitPointFinder;
 	}
-});
-NonEncroachingSplitPointFinder.projectedSplitPoint = function (seg, encroachPt) {
-	var lineSeg = seg.getLineSegment();
-	var projPt = lineSeg.project(encroachPt);
-	return projPt;
-};
+	get interfaces_() {
+		return [ConstraintSplitPointFinder];
+	}
+}
+NonEncroachingSplitPointFinder.constructor_ = function () {};

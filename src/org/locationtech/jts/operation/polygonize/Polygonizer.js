@@ -4,50 +4,80 @@ import PolygonizeGraph from './PolygonizeGraph';
 import hasInterface from '../../../../../hasInterface';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Collection from '../../../../../java/util/Collection';
-import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import EdgeRing from './EdgeRing';
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default function Polygonizer() {
-	this._lineStringAdder = new LineStringAdder(this);
-	this._graph = null;
-	this._dangles = new ArrayList();
-	this._cutEdges = new ArrayList();
-	this._invalidRingLines = new ArrayList();
-	this._holeList = null;
-	this._shellList = null;
-	this._polyList = null;
-	this._isCheckingRingsValid = true;
-	this._extractOnlyPolygonal = null;
-	this._geomFactory = null;
-	if (arguments.length === 0) {
-		Polygonizer.call(this, false);
-	} else if (arguments.length === 1) {
-		let extractOnlyPolygonal = arguments[0];
-		this._extractOnlyPolygonal = extractOnlyPolygonal;
+export default class Polygonizer {
+	constructor() {
+		Polygonizer.constructor_.apply(this, arguments);
 	}
-}
-extend(Polygonizer.prototype, {
-	getGeometry: function () {
+	static findOuterShells(shellList) {
+		for (var i = shellList.iterator(); i.hasNext(); ) {
+			var er = i.next();
+			var outerHoleER = er.getOuterHole();
+			if (outerHoleER !== null && !outerHoleER.isProcessed()) {
+				er.setIncluded(true);
+				outerHoleER.setProcessed(true);
+			}
+		}
+	}
+	static extractPolygons(shellList, includeAll) {
+		var polyList = new ArrayList();
+		for (var i = shellList.iterator(); i.hasNext(); ) {
+			var er = i.next();
+			if (includeAll || er.isIncluded()) {
+				polyList.add(er.getPolygon());
+			}
+		}
+		return polyList;
+	}
+	static assignHolesToShells(holeList, shellList) {
+		for (var i = holeList.iterator(); i.hasNext(); ) {
+			var holeER = i.next();
+			Polygonizer.assignHoleToShell(holeER, shellList);
+		}
+	}
+	static assignHoleToShell(holeER, shellList) {
+		var shell = EdgeRing.findEdgeRingContaining(holeER, shellList);
+		if (shell !== null) {
+			shell.addHole(holeER);
+		}
+	}
+	static findDisjointShells(shellList) {
+		Polygonizer.findOuterShells(shellList);
+		var isMoreToScan = null;
+		do {
+			isMoreToScan = false;
+			for (var i = shellList.iterator(); i.hasNext(); ) {
+				var er = i.next();
+				if (er.isIncludedSet()) continue;
+				er.updateIncluded();
+				if (!er.isIncludedSet()) {
+					isMoreToScan = true;
+				}
+			}
+		} while (isMoreToScan);
+	}
+	getGeometry() {
 		if (this._geomFactory === null) this._geomFactory = new GeometryFactory();
 		this.polygonize();
 		if (this._extractOnlyPolygonal) {
 			return this._geomFactory.buildGeometry(this._polyList);
 		}
 		return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this._polyList));
-	},
-	getInvalidRingLines: function () {
+	}
+	getInvalidRingLines() {
 		this.polygonize();
 		return this._invalidRingLines;
-	},
-	findValidRings: function (edgeRingList, validEdgeRingList, invalidRingList) {
+	}
+	findValidRings(edgeRingList, validEdgeRingList, invalidRingList) {
 		for (var i = edgeRingList.iterator(); i.hasNext(); ) {
 			var er = i.next();
 			if (er.isValid()) validEdgeRingList.add(er); else invalidRingList.add(er.getLineString());
 		}
-	},
-	polygonize: function () {
+	}
+	polygonize() {
 		if (this._polyList !== null) return null;
 		this._polyList = new ArrayList();
 		if (this._graph === null) return null;
@@ -70,20 +100,20 @@ extend(Polygonizer.prototype, {
 			includeAll = false;
 		}
 		this._polyList = Polygonizer.extractPolygons(this._shellList, includeAll);
-	},
-	getDangles: function () {
+	}
+	getDangles() {
 		this.polygonize();
 		return this._dangles;
-	},
-	getCutEdges: function () {
+	}
+	getCutEdges() {
 		this.polygonize();
 		return this._cutEdges;
-	},
-	getPolygons: function () {
+	}
+	getPolygons() {
 		this.polygonize();
 		return this._polyList;
-	},
-	add: function () {
+	}
+	add() {
 		if (hasInterface(arguments[0], Collection)) {
 			let geomList = arguments[0];
 			for (var i = geomList.iterator(); i.hasNext(); ) {
@@ -99,11 +129,11 @@ extend(Polygonizer.prototype, {
 			let g = arguments[0];
 			g.apply(this._lineStringAdder);
 		}
-	},
-	setCheckRingsValid: function (isCheckingRingsValid) {
+	}
+	setCheckRingsValid(isCheckingRingsValid) {
 		this._isCheckingRingsValid = isCheckingRingsValid;
-	},
-	findShellsAndHoles: function (edgeRingList) {
+	}
+	findShellsAndHoles(edgeRingList) {
 		this._holeList = new ArrayList();
 		this._shellList = new ArrayList();
 		for (var i = edgeRingList.iterator(); i.hasNext(); ) {
@@ -111,75 +141,50 @@ extend(Polygonizer.prototype, {
 			er.computeHole();
 			if (er.isHole()) this._holeList.add(er); else this._shellList.add(er);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Polygonizer;
 	}
-});
-Polygonizer.findOuterShells = function (shellList) {
-	for (var i = shellList.iterator(); i.hasNext(); ) {
-		var er = i.next();
-		var outerHoleER = er.getOuterHole();
-		if (outerHoleER !== null && !outerHoleER.isProcessed()) {
-			er.setIncluded(true);
-			outerHoleER.setProcessed(true);
-		}
+	get interfaces_() {
+		return [];
 	}
-};
-Polygonizer.extractPolygons = function (shellList, includeAll) {
-	var polyList = new ArrayList();
-	for (var i = shellList.iterator(); i.hasNext(); ) {
-		var er = i.next();
-		if (includeAll || er.isIncluded()) {
-			polyList.add(er.getPolygon());
-		}
+}
+class LineStringAdder {
+	constructor() {
+		LineStringAdder.constructor_.apply(this, arguments);
 	}
-	return polyList;
-};
-Polygonizer.assignHolesToShells = function (holeList, shellList) {
-	for (var i = holeList.iterator(); i.hasNext(); ) {
-		var holeER = i.next();
-		Polygonizer.assignHoleToShell(holeER, shellList);
+	filter(g) {
+		if (g instanceof LineString) this.p.add(g);
 	}
-};
-Polygonizer.assignHoleToShell = function (holeER, shellList) {
-	var shell = EdgeRing.findEdgeRingContaining(holeER, shellList);
-	if (shell !== null) {
-		shell.addHole(holeER);
+	getClass() {
+		return LineStringAdder;
 	}
-};
-Polygonizer.findDisjointShells = function (shellList) {
-	Polygonizer.findOuterShells(shellList);
-	var isMoreToScan = null;
-	do {
-		isMoreToScan = false;
-		for (var i = shellList.iterator(); i.hasNext(); ) {
-			var er = i.next();
-			if (er.isIncludedSet()) continue;
-			er.updateIncluded();
-			if (!er.isIncludedSet()) {
-				isMoreToScan = true;
-			}
-		}
-	} while (isMoreToScan);
-};
-function LineStringAdder() {
+	get interfaces_() {
+		return [GeometryComponentFilter];
+	}
+}
+LineStringAdder.constructor_ = function () {
 	this.p = null;
 	let p = arguments[0];
 	this.p = p;
-}
-extend(LineStringAdder.prototype, {
-	filter: function (g) {
-		if (g instanceof LineString) this.p.add(g);
-	},
-	interfaces_: function () {
-		return [GeometryComponentFilter];
-	},
-	getClass: function () {
-		return LineStringAdder;
-	}
-});
+};
 Polygonizer.LineStringAdder = LineStringAdder;
+Polygonizer.constructor_ = function () {
+	this._lineStringAdder = new LineStringAdder(this);
+	this._graph = null;
+	this._dangles = new ArrayList();
+	this._cutEdges = new ArrayList();
+	this._invalidRingLines = new ArrayList();
+	this._holeList = null;
+	this._shellList = null;
+	this._polyList = null;
+	this._isCheckingRingsValid = true;
+	this._extractOnlyPolygonal = null;
+	this._geomFactory = null;
+	if (arguments.length === 0) {
+		Polygonizer.constructor_.call(this, false);
+	} else if (arguments.length === 1) {
+		let extractOnlyPolygonal = arguments[0];
+		this._extractOnlyPolygonal = extractOnlyPolygonal;
+	}
+};

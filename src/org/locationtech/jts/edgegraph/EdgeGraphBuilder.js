@@ -3,25 +3,29 @@ import Geometry from '../geom/Geometry';
 import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import EdgeGraph from './EdgeGraph';
-import extend from '../../../../extend';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
-export default function EdgeGraphBuilder() {
-	this._graph = new EdgeGraph();
-}
-extend(EdgeGraphBuilder.prototype, {
-	add: function () {
+export default class EdgeGraphBuilder {
+	constructor() {
+		EdgeGraphBuilder.constructor_.apply(this, arguments);
+	}
+	static build(geoms) {
+		var builder = new EdgeGraphBuilder();
+		builder.add(geoms);
+		return builder.getGraph();
+	}
+	add() {
 		if (arguments[0] instanceof Geometry) {
 			let geometry = arguments[0];
-			geometry.apply({
-				interfaces_: function () {
+			geometry.apply(new (class {
+				get interfaces_() {
 					return [GeometryComponentFilter];
-				},
-				filter: function (component) {
+				}
+				filter(component) {
 					if (component instanceof LineString) {
 						this.add(component);
 					}
 				}
-			});
+			})());
 		} else if (hasInterface(arguments[0], Collection)) {
 			let geometries = arguments[0];
 			for (var i = geometries.iterator(); i.hasNext(); ) {
@@ -35,19 +39,17 @@ extend(EdgeGraphBuilder.prototype, {
 				this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i));
 			}
 		}
-	},
-	getGraph: function () {
+	}
+	getGraph() {
 		return this._graph;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return EdgeGraphBuilder;
 	}
-});
-EdgeGraphBuilder.build = function (geoms) {
-	var builder = new EdgeGraphBuilder();
-	builder.add(geoms);
-	return builder.getGraph();
+	get interfaces_() {
+		return [];
+	}
+}
+EdgeGraphBuilder.constructor_ = function () {
+	this._graph = new EdgeGraph();
 };

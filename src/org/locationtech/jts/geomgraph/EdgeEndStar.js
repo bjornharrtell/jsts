@@ -2,26 +2,23 @@ import StringBuffer from '../../../../java/lang/StringBuffer';
 import Location from '../geom/Location';
 import Position from './Position';
 import TopologyException from '../geom/TopologyException';
-import extend from '../../../../extend';
 import System from '../../../../java/lang/System';
 import SimplePointInAreaLocator from '../algorithm/locate/SimplePointInAreaLocator';
 import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
 import TreeMap from '../../../../java/util/TreeMap';
-export default function EdgeEndStar() {
-	this._edgeMap = new TreeMap();
-	this._edgeList = null;
-	this._ptInAreaLocation = [Location.NONE, Location.NONE];
-}
-extend(EdgeEndStar.prototype, {
-	getNextCW: function (ee) {
+export default class EdgeEndStar {
+	constructor() {
+		EdgeEndStar.constructor_.apply(this, arguments);
+	}
+	getNextCW(ee) {
 		this.getEdges();
 		var i = this._edgeList.indexOf(ee);
 		var iNextCW = i - 1;
 		if (i === 0) iNextCW = this._edgeList.size() - 1;
 		return this._edgeList.get(iNextCW);
-	},
-	propagateSideLabels: function (geomIndex) {
+	}
+	propagateSideLabels(geomIndex) {
 		var startLoc = Location.NONE;
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var e = it.next();
@@ -50,25 +47,25 @@ extend(EdgeEndStar.prototype, {
 				}
 			}
 		}
-	},
-	getCoordinate: function () {
+	}
+	getCoordinate() {
 		var it = this.iterator();
 		if (!it.hasNext()) return null;
 		var e = it.next();
 		return e.getCoordinate();
-	},
-	print: function (out) {
+	}
+	print(out) {
 		System.out.println("EdgeEndStar:   " + this.getCoordinate());
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var e = it.next();
 			e.print(out);
 		}
-	},
-	isAreaLabelsConsistent: function (geomGraph) {
+	}
+	isAreaLabelsConsistent(geomGraph) {
 		this.computeEdgeEndLabels(geomGraph.getBoundaryNodeRule());
 		return this.checkAreaLabelsConsistent(0);
-	},
-	checkAreaLabelsConsistent: function (geomIndex) {
+	}
+	checkAreaLabelsConsistent(geomIndex) {
 		var edges = this.getEdges();
 		if (edges.size() <= 0) return true;
 		var lastEdgeIndex = edges.size() - 1;
@@ -91,31 +88,31 @@ extend(EdgeEndStar.prototype, {
 			currLoc = leftLoc;
 		}
 		return true;
-	},
-	findIndex: function (eSearch) {
+	}
+	findIndex(eSearch) {
 		this.iterator();
 		for (var i = 0; i < this._edgeList.size(); i++) {
 			var e = this._edgeList.get(i);
 			if (e === eSearch) return i;
 		}
 		return -1;
-	},
-	iterator: function () {
+	}
+	iterator() {
 		return this.getEdges().iterator();
-	},
-	getEdges: function () {
+	}
+	getEdges() {
 		if (this._edgeList === null) {
 			this._edgeList = new ArrayList(this._edgeMap.values());
 		}
 		return this._edgeList;
-	},
-	getLocation: function (geomIndex, p, geom) {
+	}
+	getLocation(geomIndex, p, geom) {
 		if (this._ptInAreaLocation[geomIndex] === Location.NONE) {
 			this._ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p, geom[geomIndex].getGeometry());
 		}
 		return this._ptInAreaLocation[geomIndex];
-	},
-	toString: function () {
+	}
+	toString() {
 		var buf = new StringBuffer();
 		buf.append("EdgeEndStar:   " + this.getCoordinate());
 		buf.append("\n");
@@ -125,14 +122,14 @@ extend(EdgeEndStar.prototype, {
 			buf.append("\n");
 		}
 		return buf.toString();
-	},
-	computeEdgeEndLabels: function (boundaryNodeRule) {
+	}
+	computeEdgeEndLabels(boundaryNodeRule) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ee = it.next();
 			ee.computeLabel(boundaryNodeRule);
 		}
-	},
-	computeLabelling: function (geomGraph) {
+	}
+	computeLabelling(geomGraph) {
 		this.computeEdgeEndLabels(geomGraph[0].getBoundaryNodeRule());
 		this.propagateSideLabels(0);
 		this.propagateSideLabels(1);
@@ -160,18 +157,23 @@ extend(EdgeEndStar.prototype, {
 				}
 			}
 		}
-	},
-	getDegree: function () {
+	}
+	getDegree() {
 		return this._edgeMap.size();
-	},
-	insertEdgeEnd: function (e, obj) {
+	}
+	insertEdgeEnd(e, obj) {
 		this._edgeMap.put(e, obj);
 		this._edgeList = null;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return EdgeEndStar;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+EdgeEndStar.constructor_ = function () {
+	this._edgeMap = new TreeMap();
+	this._edgeList = null;
+	this._ptInAreaLocation = [Location.NONE, Location.NONE];
+};

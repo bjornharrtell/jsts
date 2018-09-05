@@ -1,18 +1,38 @@
 import Location from '../geom/Location';
 import hasInterface from '../../../../hasInterface';
 import Coordinate from '../geom/Coordinate';
-import extend from '../../../../extend';
 import Orientation from './Orientation';
 import CoordinateSequence from '../geom/CoordinateSequence';
-export default function RayCrossingCounter() {
-	this._p = null;
-	this._crossingCount = 0;
-	this._isPointOnSegment = false;
-	let p = arguments[0];
-	this._p = p;
-}
-extend(RayCrossingCounter.prototype, {
-	countSegment: function (p1, p2) {
+export default class RayCrossingCounter {
+	constructor() {
+		RayCrossingCounter.constructor_.apply(this, arguments);
+	}
+	static locatePointInRing() {
+		if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
+			let p = arguments[0], ring = arguments[1];
+			var counter = new RayCrossingCounter(p);
+			var p1 = new Coordinate();
+			var p2 = new Coordinate();
+			for (var i = 1; i < ring.size(); i++) {
+				ring.getCoordinate(i, p1);
+				ring.getCoordinate(i - 1, p2);
+				counter.countSegment(p1, p2);
+				if (counter.isOnSegment()) return counter.getLocation();
+			}
+			return counter.getLocation();
+		} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
+			let p = arguments[0], ring = arguments[1];
+			var counter = new RayCrossingCounter(p);
+			for (var i = 1; i < ring.length; i++) {
+				var p1 = ring[i];
+				var p2 = ring[i - 1];
+				counter.countSegment(p1, p2);
+				if (counter.isOnSegment()) return counter.getLocation();
+			}
+			return counter.getLocation();
+		}
+	}
+	countSegment(p1, p2) {
 		if (p1.x < this._p.x && p2.x < this._p.x) return null;
 		if (this._p.x === p2.x && this._p.y === p2.y) {
 			this._isPointOnSegment = true;
@@ -43,49 +63,31 @@ extend(RayCrossingCounter.prototype, {
 				this._crossingCount++;
 			}
 		}
-	},
-	isPointInPolygon: function () {
+	}
+	isPointInPolygon() {
 		return this.getLocation() !== Location.EXTERIOR;
-	},
-	getLocation: function () {
+	}
+	getLocation() {
 		if (this._isPointOnSegment) return Location.BOUNDARY;
 		if (this._crossingCount % 2 === 1) {
 			return Location.INTERIOR;
 		}
 		return Location.EXTERIOR;
-	},
-	isOnSegment: function () {
+	}
+	isOnSegment() {
 		return this._isPointOnSegment;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RayCrossingCounter;
 	}
-});
-RayCrossingCounter.locatePointInRing = function () {
-	if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
-		let p = arguments[0], ring = arguments[1];
-		var counter = new RayCrossingCounter(p);
-		var p1 = new Coordinate();
-		var p2 = new Coordinate();
-		for (var i = 1; i < ring.size(); i++) {
-			ring.getCoordinate(i, p1);
-			ring.getCoordinate(i - 1, p2);
-			counter.countSegment(p1, p2);
-			if (counter.isOnSegment()) return counter.getLocation();
-		}
-		return counter.getLocation();
-	} else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
-		let p = arguments[0], ring = arguments[1];
-		var counter = new RayCrossingCounter(p);
-		for (var i = 1; i < ring.length; i++) {
-			var p1 = ring[i];
-			var p2 = ring[i - 1];
-			counter.countSegment(p1, p2);
-			if (counter.isOnSegment()) return counter.getLocation();
-		}
-		return counter.getLocation();
+	get interfaces_() {
+		return [];
 	}
+}
+RayCrossingCounter.constructor_ = function () {
+	this._p = null;
+	this._crossingCount = 0;
+	this._isPointOnSegment = false;
+	let p = arguments[0];
+	this._p = p;
 };

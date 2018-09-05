@@ -5,41 +5,23 @@ import hasInterface from '../../../../hasInterface';
 import Coordinate from './Coordinate';
 import Point from './Point';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import CoordinateSequence from './CoordinateSequence';
 import Envelope from './Envelope';
-export default function OctagonalEnvelope() {
-	this._minX = Double.NaN;
-	this._maxX = null;
-	this._minY = null;
-	this._maxY = null;
-	this._minA = null;
-	this._maxA = null;
-	this._minB = null;
-	this._maxB = null;
-	if (arguments.length === 0) {} else if (arguments.length === 1) {
-		if (arguments[0] instanceof Coordinate) {
-			let p = arguments[0];
-			this.expandToInclude(p);
-		} else if (arguments[0] instanceof Envelope) {
-			let env = arguments[0];
-			this.expandToInclude(env);
-		} else if (arguments[0] instanceof OctagonalEnvelope) {
-			let oct = arguments[0];
-			this.expandToInclude(oct);
-		} else if (arguments[0] instanceof Geometry) {
-			let geom = arguments[0];
-			this.expandToInclude(geom);
-		}
-	} else if (arguments.length === 2) {
-		let p0 = arguments[0], p1 = arguments[1];
-		this.expandToInclude(p0);
-		this.expandToInclude(p1);
+export default class OctagonalEnvelope {
+	constructor() {
+		OctagonalEnvelope.constructor_.apply(this, arguments);
 	}
-}
-extend(OctagonalEnvelope.prototype, {
-	toGeometry: function (geomFactory) {
+	static octagonalEnvelope(geom) {
+		return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
+	}
+	static computeB(x, y) {
+		return x - y;
+	}
+	static computeA(x, y) {
+		return x + y;
+	}
+	toGeometry(geomFactory) {
 		if (this.isNull()) {
 			return geomFactory.createPoint();
 		}
@@ -79,24 +61,24 @@ extend(OctagonalEnvelope.prototype, {
 		coordList.add(px00, false);
 		var pts = coordList.toCoordinateArray();
 		return geomFactory.createPolygon(geomFactory.createLinearRing(pts));
-	},
-	getMinA: function () {
+	}
+	getMinA() {
 		return this._minA;
-	},
-	getMaxB: function () {
+	}
+	getMaxB() {
 		return this._maxB;
-	},
-	isValid: function () {
+	}
+	isValid() {
 		if (this.isNull()) return true;
 		return this._minX <= this._maxX && this._minY <= this._maxY && this._minA <= this._maxA && this._minB <= this._maxB;
-	},
-	isNull: function () {
+	}
+	isNull() {
 		return Double.isNaN(this._minX);
-	},
-	getMaxX: function () {
+	}
+	getMaxX() {
 		return this._maxX;
-	},
-	intersects: function () {
+	}
+	intersects() {
 		if (arguments[0] instanceof OctagonalEnvelope) {
 			let other = arguments[0];
 			if (this.isNull() || other.isNull()) {
@@ -125,14 +107,14 @@ extend(OctagonalEnvelope.prototype, {
 			if (this._maxB < B) return false;
 			return true;
 		}
-	},
-	getMinY: function () {
+	}
+	getMinY() {
 		return this._minY;
-	},
-	getMinX: function () {
+	}
+	getMinX() {
 		return this._minX;
-	},
-	expandToInclude: function () {
+	}
+	expandToInclude() {
 		if (arguments.length === 1) {
 			if (arguments[0] instanceof Geometry) {
 				let g = arguments[0];
@@ -205,14 +187,14 @@ extend(OctagonalEnvelope.prototype, {
 			}
 			return this;
 		}
-	},
-	getMinB: function () {
+	}
+	getMinB() {
 		return this._minB;
-	},
-	setToNull: function () {
+	}
+	setToNull() {
 		this._minX = Double.NaN;
-	},
-	expandBy: function (distance) {
+	}
+	expandBy(distance) {
 		if (this.isNull()) return null;
 		var diagonalDistance = OctagonalEnvelope.SQRT2 * distance;
 		this._minX -= distance;
@@ -224,54 +206,77 @@ extend(OctagonalEnvelope.prototype, {
 		this._minB -= diagonalDistance;
 		this._maxB += diagonalDistance;
 		if (!this.isValid()) this.setToNull();
-	},
-	getMaxA: function () {
+	}
+	getMaxA() {
 		return this._maxA;
-	},
-	contains: function (other) {
+	}
+	contains(other) {
 		if (this.isNull() || other.isNull()) {
 			return false;
 		}
 		return other._minX >= this._minX && other._maxX <= this._maxX && other._minY >= this._minY && other._maxY <= this._maxY && other._minA >= this._minA && other._maxA <= this._maxA && other._minB >= this._minB && other._maxB <= this._maxB;
-	},
-	getMaxY: function () {
+	}
+	getMaxY() {
 		return this._maxY;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return OctagonalEnvelope;
 	}
-});
-OctagonalEnvelope.octagonalEnvelope = function (geom) {
-	return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
-};
-OctagonalEnvelope.computeB = function (x, y) {
-	return x - y;
-};
-OctagonalEnvelope.computeA = function (x, y) {
-	return x + y;
-};
-function BoundingOctagonComponentFilter() {
-	this.oe = null;
-	let oe = arguments[0];
-	this.oe = oe;
+	get interfaces_() {
+		return [];
+	}
 }
-extend(BoundingOctagonComponentFilter.prototype, {
-	filter: function (geom) {
+class BoundingOctagonComponentFilter {
+	constructor() {
+		BoundingOctagonComponentFilter.constructor_.apply(this, arguments);
+	}
+	filter(geom) {
 		if (geom instanceof LineString) {
 			this.oe.expandToInclude(geom.getCoordinateSequence());
 		} else if (geom instanceof Point) {
 			this.oe.expandToInclude(geom.getCoordinateSequence());
 		}
-	},
-	interfaces_: function () {
-		return [GeometryComponentFilter];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return BoundingOctagonComponentFilter;
 	}
-});
+	get interfaces_() {
+		return [GeometryComponentFilter];
+	}
+}
+BoundingOctagonComponentFilter.constructor_ = function () {
+	this.oe = null;
+	let oe = arguments[0];
+	this.oe = oe;
+};
 OctagonalEnvelope.BoundingOctagonComponentFilter = BoundingOctagonComponentFilter;
+OctagonalEnvelope.constructor_ = function () {
+	this._minX = Double.NaN;
+	this._maxX = null;
+	this._minY = null;
+	this._maxY = null;
+	this._minA = null;
+	this._maxA = null;
+	this._minB = null;
+	this._maxB = null;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		if (arguments[0] instanceof Coordinate) {
+			let p = arguments[0];
+			this.expandToInclude(p);
+		} else if (arguments[0] instanceof Envelope) {
+			let env = arguments[0];
+			this.expandToInclude(env);
+		} else if (arguments[0] instanceof OctagonalEnvelope) {
+			let oct = arguments[0];
+			this.expandToInclude(oct);
+		} else if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			this.expandToInclude(geom);
+		}
+	} else if (arguments.length === 2) {
+		let p0 = arguments[0], p1 = arguments[1];
+		this.expandToInclude(p0);
+		this.expandToInclude(p1);
+	}
+};
 OctagonalEnvelope.SQRT2 = Math.sqrt(2.0);

@@ -10,7 +10,6 @@ import MultiPoint from '../../geom/MultiPoint';
 import PointLocation from '../../algorithm/PointLocation';
 import LinearRing from '../../geom/LinearRing';
 import Double from '../../../../../java/lang/Double';
-import extend from '../../../../../extend';
 import GeometryGraph from '../../geomgraph/GeometryGraph';
 import MultiPolygon from '../../geom/MultiPolygon';
 import ConsistentAreaTester from './ConsistentAreaTester';
@@ -20,15 +19,34 @@ import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import TopologyValidationError from './TopologyValidationError';
 import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator';
 import Assert from '../../util/Assert';
-export default function IsValidOp() {
-	this._parentGeometry = null;
-	this._isSelfTouchingRingFormingHoleValid = false;
-	this._validErr = null;
-	let parentGeometry = arguments[0];
-	this._parentGeometry = parentGeometry;
-}
-extend(IsValidOp.prototype, {
-	checkInvalidCoordinates: function () {
+export default class IsValidOp {
+	constructor() {
+		IsValidOp.constructor_.apply(this, arguments);
+	}
+	static findPtNotNode(testCoords, searchRing, graph) {
+		var searchEdge = graph.findEdge(searchRing);
+		var eiList = searchEdge.getEdgeIntersectionList();
+		for (var i = 0; i < testCoords.length; i++) {
+			var pt = testCoords[i];
+			if (!eiList.isIntersection(pt)) return pt;
+		}
+		return null;
+	}
+	static isValid() {
+		if (arguments[0] instanceof Geometry) {
+			let geom = arguments[0];
+			var isValidOp = new IsValidOp(geom);
+			return isValidOp.isValid();
+		} else if (arguments[0] instanceof Coordinate) {
+			let coord = arguments[0];
+			if (Double.isNaN(coord.x)) return false;
+			if (Double.isInfinite(coord.x)) return false;
+			if (Double.isNaN(coord.y)) return false;
+			if (Double.isInfinite(coord.y)) return false;
+			return true;
+		}
+	}
+	checkInvalidCoordinates() {
 		if (arguments[0] instanceof Array) {
 			let coords = arguments[0];
 			for (var i = 0; i < coords.length; i++) {
@@ -46,8 +64,8 @@ extend(IsValidOp.prototype, {
 				if (this._validErr !== null) return null;
 			}
 		}
-	},
-	checkHolesNotNested: function (p, graph) {
+	}
+	checkHolesNotNested(p, graph) {
 		var nestedTester = new IndexedNestedRingTester(graph);
 		for (var i = 0; i < p.getNumInteriorRing(); i++) {
 			var innerHole = p.getInteriorRingN(i);
@@ -57,8 +75,8 @@ extend(IsValidOp.prototype, {
 		if (!isNonNested) {
 			this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_HOLES, nestedTester.getNestedPoint());
 		}
-	},
-	checkConsistentArea: function (graph) {
+	}
+	checkConsistentArea(graph) {
 		var cat = new ConsistentAreaTester(graph);
 		var isValidArea = cat.isNodeConsistentArea();
 		if (!isValidArea) {
@@ -68,12 +86,12 @@ extend(IsValidOp.prototype, {
 		if (cat.hasDuplicateRings()) {
 			this._validErr = new TopologyValidationError(TopologyValidationError.DUPLICATE_RINGS, cat.getInvalidPoint());
 		}
-	},
-	isValid: function () {
+	}
+	isValid() {
 		this.checkValid(this._parentGeometry);
 		return this._validErr === null;
-	},
-	checkShellInsideHole: function (shell, hole, graph) {
+	}
+	checkShellInsideHole(shell, hole, graph) {
 		var shellPts = shell.getCoordinates();
 		var holePts = hole.getCoordinates();
 		var shellPt = IsValidOp.findPtNotNode(shellPts, hole, graph);
@@ -93,19 +111,19 @@ extend(IsValidOp.prototype, {
 		}
 		Assert.shouldNeverReachHere("points in shell and hole appear to be equal");
 		return null;
-	},
-	checkNoSelfIntersectingRings: function (graph) {
+	}
+	checkNoSelfIntersectingRings(graph) {
 		for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			this.checkNoSelfIntersectingRing(e.getEdgeIntersectionList());
 			if (this._validErr !== null) return null;
 		}
-	},
-	checkConnectedInteriors: function (graph) {
+	}
+	checkConnectedInteriors(graph) {
 		var cit = new ConnectedInteriorTester(graph);
 		if (!cit.isInteriorsConnected()) this._validErr = new TopologyValidationError(TopologyValidationError.DISCONNECTED_INTERIOR, cit.getCoordinate());
-	},
-	checkNoSelfIntersectingRing: function (eiList) {
+	}
+	checkNoSelfIntersectingRing(eiList) {
 		var nodeSet = new TreeSet();
 		var isFirst = true;
 		for (var i = eiList.iterator(); i.hasNext(); ) {
@@ -121,8 +139,8 @@ extend(IsValidOp.prototype, {
 				nodeSet.add(ei.coord);
 			}
 		}
-	},
-	checkHolesInShell: function (p, graph) {
+	}
+	checkHolesInShell(p, graph) {
 		var shell = p.getExteriorRing();
 		var pir = new IndexedPointInAreaLocator(shell);
 		for (var i = 0; i < p.getNumInteriorRing(); i++) {
@@ -135,18 +153,18 @@ extend(IsValidOp.prototype, {
 				return null;
 			}
 		}
-	},
-	checkTooFewPoints: function (graph) {
+	}
+	checkTooFewPoints(graph) {
 		if (graph.hasTooFewPoints()) {
 			this._validErr = new TopologyValidationError(TopologyValidationError.TOO_FEW_POINTS, graph.getInvalidPoint());
 			return null;
 		}
-	},
-	getValidationError: function () {
+	}
+	getValidationError() {
 		this.checkValid(this._parentGeometry);
 		return this._validErr;
-	},
-	checkValid: function () {
+	}
+	checkValid() {
 		if (arguments[0] instanceof Point) {
 			let g = arguments[0];
 			this.checkInvalidCoordinates(g.getCoordinates());
@@ -235,11 +253,11 @@ extend(IsValidOp.prototype, {
 			if (g.isEmpty()) return null;
 			if (g instanceof Point) this.checkValid(g); else if (g instanceof MultiPoint) this.checkValid(g); else if (g instanceof LinearRing) this.checkValid(g); else if (g instanceof LineString) this.checkValid(g); else if (g instanceof Polygon) this.checkValid(g); else if (g instanceof MultiPolygon) this.checkValid(g); else if (g instanceof GeometryCollection) this.checkValid(g); else throw new UnsupportedOperationException(g.getClass().getName());
 		}
-	},
-	setSelfTouchingRingFormingHoleValid: function (isValid) {
+	}
+	setSelfTouchingRingFormingHoleValid(isValid) {
 		this._isSelfTouchingRingFormingHoleValid = isValid;
-	},
-	checkShellNotNested: function (shell, p, graph) {
+	}
+	checkShellNotNested(shell, p, graph) {
 		var shellPts = shell.getCoordinates();
 		var polyShell = p.getExteriorRing();
 		var polyPts = polyShell.getCoordinates();
@@ -258,23 +276,23 @@ extend(IsValidOp.prototype, {
 			if (badNestedPt === null) return null;
 		}
 		this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, badNestedPt);
-	},
-	checkClosedRings: function (poly) {
+	}
+	checkClosedRings(poly) {
 		this.checkClosedRing(poly.getExteriorRing());
 		if (this._validErr !== null) return null;
 		for (var i = 0; i < poly.getNumInteriorRing(); i++) {
 			this.checkClosedRing(poly.getInteriorRingN(i));
 			if (this._validErr !== null) return null;
 		}
-	},
-	checkClosedRing: function (ring) {
+	}
+	checkClosedRing(ring) {
 		if (!ring.isClosed()) {
 			var pt = null;
 			if (ring.getNumPoints() >= 1) pt = ring.getCoordinateN(0);
 			this._validErr = new TopologyValidationError(TopologyValidationError.RING_NOT_CLOSED, pt);
 		}
-	},
-	checkShellsNotNested: function (mp, graph) {
+	}
+	checkShellsNotNested(mp, graph) {
 		for (var i = 0; i < mp.getNumGeometries(); i++) {
 			var p = mp.getGeometryN(i);
 			var shell = p.getExteriorRing();
@@ -285,34 +303,18 @@ extend(IsValidOp.prototype, {
 				if (this._validErr !== null) return null;
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IsValidOp;
 	}
-});
-IsValidOp.findPtNotNode = function (testCoords, searchRing, graph) {
-	var searchEdge = graph.findEdge(searchRing);
-	var eiList = searchEdge.getEdgeIntersectionList();
-	for (var i = 0; i < testCoords.length; i++) {
-		var pt = testCoords[i];
-		if (!eiList.isIntersection(pt)) return pt;
+	get interfaces_() {
+		return [];
 	}
-	return null;
-};
-IsValidOp.isValid = function () {
-	if (arguments[0] instanceof Geometry) {
-		let geom = arguments[0];
-		var isValidOp = new IsValidOp(geom);
-		return isValidOp.isValid();
-	} else if (arguments[0] instanceof Coordinate) {
-		let coord = arguments[0];
-		if (Double.isNaN(coord.x)) return false;
-		if (Double.isInfinite(coord.x)) return false;
-		if (Double.isNaN(coord.y)) return false;
-		if (Double.isInfinite(coord.y)) return false;
-		return true;
-	}
+}
+IsValidOp.constructor_ = function () {
+	this._parentGeometry = null;
+	this._isSelfTouchingRingFormingHoleValid = false;
+	this._validErr = null;
+	let parentGeometry = arguments[0];
+	this._parentGeometry = parentGeometry;
 };

@@ -1,11 +1,13 @@
-import extend from '../../../../../extend';
-export default function PointOnGeometryLocator() {}
-extend(PointOnGeometryLocator.prototype, {
-	locate: function (p) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class PointOnGeometryLocator {
+	constructor() {
+		PointOnGeometryLocator.constructor_.apply(this, arguments);
+	}
+	locate(p) {}
+	getClass() {
 		return PointOnGeometryLocator;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PointOnGeometryLocator.constructor_ = function () {};

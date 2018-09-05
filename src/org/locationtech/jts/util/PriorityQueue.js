@@ -1,25 +1,20 @@
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default function PriorityQueue() {
-	this._size = null;
-	this._items = null;
-	this._size = 0;
-	this._items = new ArrayList();
-	this._items.add(null);
-}
-extend(PriorityQueue.prototype, {
-	poll: function () {
+export default class PriorityQueue {
+	constructor() {
+		PriorityQueue.constructor_.apply(this, arguments);
+	}
+	poll() {
 		if (this.isEmpty()) return null;
 		var minItem = this._items.get(1);
 		this._items.set(1, this._items.get(this._size));
 		this._size -= 1;
 		this.reorder(1);
 		return minItem;
-	},
-	size: function () {
+	}
+	size() {
 		return this._size;
-	},
-	reorder: function (hole) {
+	}
+	reorder(hole) {
 		var child = null;
 		var tmp = this._items.get(hole);
 		for (; hole * 2 <= this._size; hole = child) {
@@ -28,20 +23,20 @@ extend(PriorityQueue.prototype, {
 			if (this._items.get(child).compareTo(tmp) < 0) this._items.set(hole, this._items.get(child)); else break;
 		}
 		this._items.set(hole, tmp);
-	},
-	clear: function () {
+	}
+	clear() {
 		this._size = 0;
 		this._items.clear();
-	},
-	peek: function () {
+	}
+	peek() {
 		if (this.isEmpty()) return null;
 		var minItem = this._items.get(1);
 		return minItem;
-	},
-	isEmpty: function () {
+	}
+	isEmpty() {
 		return this._size === 0;
-	},
-	add: function (x) {
+	}
+	add(x) {
 		this._items.add(null);
 		this._size += 1;
 		var hole = this._size;
@@ -50,11 +45,18 @@ extend(PriorityQueue.prototype, {
 			this._items.set(hole, this._items.get(Math.trunc(hole / 2)));
 		}
 		this._items.set(hole, x);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PriorityQueue;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PriorityQueue.constructor_ = function () {
+	this._size = null;
+	this._items = null;
+	this._size = 0;
+	this._items = new ArrayList();
+	this._items.add(null);
+};

@@ -3,20 +3,16 @@ import SegmentNode from './SegmentNode';
 import Iterator from '../../../../java/util/Iterator';
 import Coordinate from '../geom/Coordinate';
 import NodedSegmentString from './NodedSegmentString';
-import extend from '../../../../extend';
 import Integer from '../../../../java/lang/Integer';
 import ArrayList from '../../../../java/util/ArrayList';
 import RuntimeException from '../../../../java/lang/RuntimeException';
 import Assert from '../util/Assert';
 import TreeMap from '../../../../java/util/TreeMap';
-export default function SegmentNodeList() {
-	this._nodeMap = new TreeMap();
-	this._edge = null;
-	let edge = arguments[0];
-	this._edge = edge;
-}
-extend(SegmentNodeList.prototype, {
-	getSplitCoordinates: function () {
+export default class SegmentNodeList {
+	constructor() {
+		SegmentNodeList.constructor_.apply(this, arguments);
+	}
+	getSplitCoordinates() {
 		var coordList = new CoordinateList();
 		this.addEndpoints();
 		var it = this.iterator();
@@ -27,8 +23,8 @@ extend(SegmentNodeList.prototype, {
 			eiPrev = ei;
 		}
 		return coordList.toCoordinateArray();
-	},
-	addCollapsedNodes: function () {
+	}
+	addCollapsedNodes() {
 		var collapsedVertexIndexes = new ArrayList();
 		this.findCollapsesFromInsertedNodes(collapsedVertexIndexes);
 		this.findCollapsesFromExistingVertices(collapsedVertexIndexes);
@@ -36,15 +32,15 @@ extend(SegmentNodeList.prototype, {
 			var vertexIndex = it.next().intValue();
 			this.add(this._edge.getCoordinate(vertexIndex), vertexIndex);
 		}
-	},
-	print: function (out) {
+	}
+	print(out) {
 		out.println("Intersections:");
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ei = it.next();
 			ei.print(out);
 		}
-	},
-	findCollapsesFromExistingVertices: function (collapsedVertexIndexes) {
+	}
+	findCollapsesFromExistingVertices(collapsedVertexIndexes) {
 		for (var i = 0; i < this._edge.size() - 2; i++) {
 			var p0 = this._edge.getCoordinate(i);
 			var p1 = this._edge.getCoordinate(i + 1);
@@ -53,8 +49,8 @@ extend(SegmentNodeList.prototype, {
 				collapsedVertexIndexes.add(new Integer(i + 1));
 			}
 		}
-	},
-	addEdgeCoordinates: function (ei0, ei1, coordList) {
+	}
+	addEdgeCoordinates(ei0, ei1, coordList) {
 		var npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 		var lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex);
 		var useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt);
@@ -69,11 +65,11 @@ extend(SegmentNodeList.prototype, {
 		if (useIntPt1) {
 			coordList.add(new Coordinate(ei1.coord));
 		}
-	},
-	iterator: function () {
+	}
+	iterator() {
 		return this._nodeMap.values().iterator();
-	},
-	addSplitEdges: function (edgeList) {
+	}
+	addSplitEdges(edgeList) {
 		this.addEndpoints();
 		this.addCollapsedNodes();
 		var it = this.iterator();
@@ -84,8 +80,8 @@ extend(SegmentNodeList.prototype, {
 			edgeList.add(newEdge);
 			eiPrev = ei;
 		}
-	},
-	findCollapseIndex: function (ei0, ei1, collapsedVertexIndex) {
+	}
+	findCollapseIndex(ei0, ei1, collapsedVertexIndex) {
 		if (!ei0.coord.equals2D(ei1.coord)) return false;
 		var numVerticesBetween = ei1.segmentIndex - ei0.segmentIndex;
 		if (!ei1.isInterior()) {
@@ -96,8 +92,8 @@ extend(SegmentNodeList.prototype, {
 			return true;
 		}
 		return false;
-	},
-	findCollapsesFromInsertedNodes: function (collapsedVertexIndexes) {
+	}
+	findCollapsesFromInsertedNodes(collapsedVertexIndexes) {
 		var collapsedVertexIndex = new Array(1).fill(null);
 		var it = this.iterator();
 		var eiPrev = it.next();
@@ -107,16 +103,16 @@ extend(SegmentNodeList.prototype, {
 			if (isCollapsed) collapsedVertexIndexes.add(new Integer(collapsedVertexIndex[0]));
 			eiPrev = ei;
 		}
-	},
-	getEdge: function () {
+	}
+	getEdge() {
 		return this._edge;
-	},
-	addEndpoints: function () {
+	}
+	addEndpoints() {
 		var maxSegIndex = this._edge.size() - 1;
 		this.add(this._edge.getCoordinate(0), 0);
 		this.add(this._edge.getCoordinate(maxSegIndex), maxSegIndex);
-	},
-	createSplitEdge: function (ei0, ei1) {
+	}
+	createSplitEdge(ei0, ei1) {
 		var npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 		var lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex);
 		var useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt);
@@ -131,8 +127,8 @@ extend(SegmentNodeList.prototype, {
 		}
 		if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord);
 		return new NodedSegmentString(pts, this._edge.getData());
-	},
-	add: function (intPt, segmentIndex) {
+	}
+	add(intPt, segmentIndex) {
 		var eiNew = new SegmentNode(this._edge, intPt, segmentIndex, this._edge.getSegmentOctant(segmentIndex));
 		var ei = this._nodeMap.get(eiNew);
 		if (ei !== null) {
@@ -141,8 +137,8 @@ extend(SegmentNodeList.prototype, {
 		}
 		this._nodeMap.put(eiNew, eiNew);
 		return eiNew;
-	},
-	checkSplitEdgesCorrectness: function (splitEdges) {
+	}
+	checkSplitEdgesCorrectness(splitEdges) {
 		var edgePts = this._edge.getCoordinates();
 		var split0 = splitEdges.get(0);
 		var pt0 = split0.getCoordinate(0);
@@ -151,29 +147,25 @@ extend(SegmentNodeList.prototype, {
 		var splitnPts = splitn.getCoordinates();
 		var ptn = splitnPts[splitnPts.length - 1];
 		if (!ptn.equals2D(edgePts[edgePts.length - 1])) throw new RuntimeException("bad split edge end point at " + ptn);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SegmentNodeList;
 	}
-});
-function NodeVertexIterator() {
-	this._nodeList = null;
-	this._edge = null;
-	this._nodeIt = null;
-	this._currNode = null;
-	this._nextNode = null;
-	this._currSegIndex = 0;
-	let nodeList = arguments[0];
-	this._nodeList = nodeList;
-	this._edge = nodeList.getEdge();
-	this._nodeIt = nodeList.iterator();
-	this.readNextNode();
+	get interfaces_() {
+		return [];
+	}
 }
-extend(NodeVertexIterator.prototype, {
-	next: function () {
+SegmentNodeList.constructor_ = function () {
+	this._nodeMap = new TreeMap();
+	this._edge = null;
+	let edge = arguments[0];
+	this._edge = edge;
+};
+class NodeVertexIterator {
+	constructor() {
+		NodeVertexIterator.constructor_.apply(this, arguments);
+	}
+	next() {
 		if (this._currNode === null) {
 			this._currNode = this._nextNode;
 			this._currSegIndex = this._currNode.segmentIndex;
@@ -189,21 +181,34 @@ extend(NodeVertexIterator.prototype, {
 		}
 		if (this._nextNode.segmentIndex > this._currNode.segmentIndex) {}
 		return null;
-	},
-	remove: function () {
+	}
+	remove() {
 		throw new UnsupportedOperationException(this.getClass().getName());
-	},
-	hasNext: function () {
+	}
+	hasNext() {
 		if (this._nextNode === null) return false;
 		return true;
-	},
-	readNextNode: function () {
+	}
+	readNextNode() {
 		if (this._nodeIt.hasNext()) this._nextNode = this._nodeIt.next(); else this._nextNode = null;
-	},
-	interfaces_: function () {
-		return [Iterator];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NodeVertexIterator;
 	}
-});
+	get interfaces_() {
+		return [Iterator];
+	}
+}
+NodeVertexIterator.constructor_ = function () {
+	this._nodeList = null;
+	this._edge = null;
+	this._nodeIt = null;
+	this._currNode = null;
+	this._nextNode = null;
+	this._currSegIndex = 0;
+	let nodeList = arguments[0];
+	this._nodeList = nodeList;
+	this._edge = nodeList.getEdge();
+	this._nodeIt = nodeList.iterator();
+	this.readNextNode();
+};

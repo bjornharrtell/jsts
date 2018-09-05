@@ -1,11 +1,13 @@
-import extend from '../../../../extend';
-export default function ConstraintVertexFactory() {}
-extend(ConstraintVertexFactory.prototype, {
-	createVertex: function (p, constraintSeg) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class ConstraintVertexFactory {
+	constructor() {
+		ConstraintVertexFactory.constructor_.apply(this, arguments);
+	}
+	createVertex(p, constraintSeg) {}
+	getClass() {
 		return ConstraintVertexFactory;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+ConstraintVertexFactory.constructor_ = function () {};

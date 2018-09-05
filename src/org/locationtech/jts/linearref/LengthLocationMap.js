@@ -1,13 +1,25 @@
 import LinearIterator from './LinearIterator';
 import LinearLocation from './LinearLocation';
-import extend from '../../../../extend';
-export default function LengthLocationMap() {
-	this._linearGeom = null;
-	let linearGeom = arguments[0];
-	this._linearGeom = linearGeom;
-}
-extend(LengthLocationMap.prototype, {
-	getLength: function (loc) {
+export default class LengthLocationMap {
+	constructor() {
+		LengthLocationMap.constructor_.apply(this, arguments);
+	}
+	static getLength(linearGeom, loc) {
+		var locater = new LengthLocationMap(linearGeom);
+		return locater.getLength(loc);
+	}
+	static getLocation() {
+		if (arguments.length === 2) {
+			let linearGeom = arguments[0], length = arguments[1];
+			var locater = new LengthLocationMap(linearGeom);
+			return locater.getLocation(length);
+		} else if (arguments.length === 3) {
+			let linearGeom = arguments[0], length = arguments[1], resolveLower = arguments[2];
+			var locater = new LengthLocationMap(linearGeom);
+			return locater.getLocation(length, resolveLower);
+		}
+	}
+	getLength(loc) {
 		var totalLength = 0.0;
 		var it = new LinearIterator(this._linearGeom);
 		while (it.hasNext()) {
@@ -23,8 +35,8 @@ extend(LengthLocationMap.prototype, {
 			it.next();
 		}
 		return totalLength;
-	},
-	resolveHigher: function (loc) {
+	}
+	resolveHigher(loc) {
 		if (!loc.isEndpoint(this._linearGeom)) return loc;
 		var compIndex = loc.getComponentIndex();
 		if (compIndex >= this._linearGeom.getNumGeometries() - 1) return loc;
@@ -32,8 +44,8 @@ extend(LengthLocationMap.prototype, {
 			compIndex++;
 		} while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0);
 		return new LinearLocation(compIndex, 0, 0.0);
-	},
-	getLocation: function () {
+	}
+	getLocation() {
 		if (arguments.length === 1) {
 			let length = arguments[0];
 			return this.getLocation(length, true);
@@ -50,8 +62,8 @@ extend(LengthLocationMap.prototype, {
 			}
 			return this.resolveHigher(loc);
 		}
-	},
-	getLocationForward: function (length) {
+	}
+	getLocationForward(length) {
 		if (length <= 0.0) return new LinearLocation();
 		var totalLength = 0.0;
 		var it = new LinearIterator(this._linearGeom);
@@ -77,26 +89,16 @@ extend(LengthLocationMap.prototype, {
 			it.next();
 		}
 		return LinearLocation.getEndLocation(this._linearGeom);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return LengthLocationMap;
 	}
-});
-LengthLocationMap.getLength = function (linearGeom, loc) {
-	var locater = new LengthLocationMap(linearGeom);
-	return locater.getLength(loc);
-};
-LengthLocationMap.getLocation = function () {
-	if (arguments.length === 2) {
-		let linearGeom = arguments[0], length = arguments[1];
-		var locater = new LengthLocationMap(linearGeom);
-		return locater.getLocation(length);
-	} else if (arguments.length === 3) {
-		let linearGeom = arguments[0], length = arguments[1], resolveLower = arguments[2];
-		var locater = new LengthLocationMap(linearGeom);
-		return locater.getLocation(length, resolveLower);
+	get interfaces_() {
+		return [];
 	}
+}
+LengthLocationMap.constructor_ = function () {
+	this._linearGeom = null;
+	let linearGeom = arguments[0];
+	this._linearGeom = linearGeom;
 };

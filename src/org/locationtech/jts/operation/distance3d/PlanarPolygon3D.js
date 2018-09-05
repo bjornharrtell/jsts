@@ -1,23 +1,39 @@
 import Location from '../../geom/Location';
 import hasInterface from '../../../../../hasInterface';
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
 import AxisPlaneCoordinateSequence from './AxisPlaneCoordinateSequence';
 import Vector3D from '../../math/Vector3D';
 import CoordinateSequence from '../../geom/CoordinateSequence';
 import Plane3D from '../../math/Plane3D';
 import RayCrossingCounter from '../../algorithm/RayCrossingCounter';
-export default function PlanarPolygon3D() {
-	this._plane = null;
-	this._poly = null;
-	this._facingPlane = -1;
-	let poly = arguments[0];
-	this._poly = poly;
-	this._plane = this.findBestFitPlane(poly);
-	this._facingPlane = this._plane.closestAxisPlane();
-}
-extend(PlanarPolygon3D.prototype, {
-	intersects: function () {
+export default class PlanarPolygon3D {
+	constructor() {
+		PlanarPolygon3D.constructor_.apply(this, arguments);
+	}
+	static project() {
+		if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
+			let seq = arguments[0], facingPlane = arguments[1];
+			switch (facingPlane) {
+				case Plane3D.XY_PLANE:
+					return AxisPlaneCoordinateSequence.projectToXY(seq);
+				case Plane3D.XZ_PLANE:
+					return AxisPlaneCoordinateSequence.projectToXZ(seq);
+				default:
+					return AxisPlaneCoordinateSequence.projectToYZ(seq);
+			}
+		} else if (arguments[0] instanceof Coordinate && Number.isInteger(arguments[1])) {
+			let p = arguments[0], facingPlane = arguments[1];
+			switch (facingPlane) {
+				case Plane3D.XY_PLANE:
+					return new Coordinate(p.x, p.y);
+				case Plane3D.XZ_PLANE:
+					return new Coordinate(p.x, p.z);
+				default:
+					return new Coordinate(p.y, p.z);
+			}
+		}
+	}
+	intersects() {
 		if (arguments.length === 1) {
 			let intPt = arguments[0];
 			if (Location.EXTERIOR === this.locate(intPt, this._poly.getExteriorRing())) return false;
@@ -32,8 +48,8 @@ extend(PlanarPolygon3D.prototype, {
 			var ptProj = PlanarPolygon3D.project(pt, this._facingPlane);
 			return Location.EXTERIOR !== RayCrossingCounter.locatePointInRing(ptProj, seqProj);
 		}
-	},
-	averagePoint: function (seq) {
+	}
+	averagePoint(seq) {
 		var a = new Coordinate(0, 0, 0);
 		var n = seq.size();
 		for (var i = 0; i < n; i++) {
@@ -45,20 +61,20 @@ extend(PlanarPolygon3D.prototype, {
 		a.y /= n;
 		a.z /= n;
 		return a;
-	},
-	getPolygon: function () {
+	}
+	getPolygon() {
 		return this._poly;
-	},
-	getPlane: function () {
+	}
+	getPlane() {
 		return this._plane;
-	},
-	findBestFitPlane: function (poly) {
+	}
+	findBestFitPlane(poly) {
 		var seq = poly.getExteriorRing().getCoordinateSequence();
 		var basePt = this.averagePoint(seq);
 		var normal = this.averageNormal(seq);
 		return new Plane3D(normal, basePt);
-	},
-	averageNormal: function (seq) {
+	}
+	averageNormal(seq) {
 		var n = seq.size();
 		var sum = new Coordinate(0, 0, 0);
 		var p1 = new Coordinate(0, 0, 0);
@@ -75,40 +91,26 @@ extend(PlanarPolygon3D.prototype, {
 		sum.z /= n;
 		var norm = Vector3D.create(sum).normalize();
 		return norm;
-	},
-	locate: function (pt, ring) {
+	}
+	locate(pt, ring) {
 		var seq = ring.getCoordinateSequence();
 		var seqProj = PlanarPolygon3D.project(seq, this._facingPlane);
 		var ptProj = PlanarPolygon3D.project(pt, this._facingPlane);
 		return RayCrossingCounter.locatePointInRing(ptProj, seqProj);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PlanarPolygon3D;
 	}
-});
-PlanarPolygon3D.project = function () {
-	if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
-		let seq = arguments[0], facingPlane = arguments[1];
-		switch (facingPlane) {
-			case Plane3D.XY_PLANE:
-				return AxisPlaneCoordinateSequence.projectToXY(seq);
-			case Plane3D.XZ_PLANE:
-				return AxisPlaneCoordinateSequence.projectToXZ(seq);
-			default:
-				return AxisPlaneCoordinateSequence.projectToYZ(seq);
-		}
-	} else if (arguments[0] instanceof Coordinate && Number.isInteger(arguments[1])) {
-		let p = arguments[0], facingPlane = arguments[1];
-		switch (facingPlane) {
-			case Plane3D.XY_PLANE:
-				return new Coordinate(p.x, p.y);
-			case Plane3D.XZ_PLANE:
-				return new Coordinate(p.x, p.z);
-			default:
-				return new Coordinate(p.y, p.z);
-		}
+	get interfaces_() {
+		return [];
 	}
+}
+PlanarPolygon3D.constructor_ = function () {
+	this._plane = null;
+	this._poly = null;
+	this._facingPlane = -1;
+	let poly = arguments[0];
+	this._poly = poly;
+	this._plane = this.findBestFitPlane(poly);
+	this._facingPlane = this._plane.closestAxisPlane();
 };

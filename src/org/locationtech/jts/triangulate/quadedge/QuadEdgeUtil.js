@@ -1,20 +1,22 @@
-import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default function QuadEdgeUtil() {}
-extend(QuadEdgeUtil.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class QuadEdgeUtil {
+	constructor() {
+		QuadEdgeUtil.constructor_.apply(this, arguments);
+	}
+	static findEdgesIncidentOnOrigin(start) {
+		var incEdge = new ArrayList();
+		var qe = start;
+		do {
+			incEdge.add(qe);
+			qe = qe.oNext();
+		} while (qe !== start);
+		return incEdge;
+	}
+	getClass() {
 		return QuadEdgeUtil;
 	}
-});
-QuadEdgeUtil.findEdgesIncidentOnOrigin = function (start) {
-	var incEdge = new ArrayList();
-	var qe = start;
-	do {
-		incEdge.add(qe);
-		qe = qe.oNext();
-	} while (qe !== start);
-	return incEdge;
-};
+	get interfaces_() {
+		return [];
+	}
+}
+QuadEdgeUtil.constructor_ = function () {};

@@ -1,24 +1,38 @@
 import NotRepresentableException from '../../algorithm/NotRepresentableException';
 import Coordinate from '../../geom/Coordinate';
 import TrianglePredicate from './TrianglePredicate';
-import extend from '../../../../../extend';
 import System from '../../../../../java/lang/System';
 import HCoordinate from '../../algorithm/HCoordinate';
-export default function Vertex() {
-	this._p = null;
-	if (arguments.length === 1) {
-		let _p = arguments[0];
-		this._p = new Coordinate(_p);
-	} else if (arguments.length === 2) {
-		let _x = arguments[0], _y = arguments[1];
-		this._p = new Coordinate(_x, _y);
-	} else if (arguments.length === 3) {
-		let _x = arguments[0], _y = arguments[1], _z = arguments[2];
-		this._p = new Coordinate(_x, _y, _z);
+export default class Vertex {
+	constructor() {
+		Vertex.constructor_.apply(this, arguments);
 	}
-}
-extend(Vertex.prototype, {
-	circleCenter: function (b, c) {
+	static interpolateZ() {
+		if (arguments.length === 3) {
+			let p = arguments[0], p0 = arguments[1], p1 = arguments[2];
+			var segLen = p0.distance(p1);
+			var ptLen = p.distance(p0);
+			var dz = p1.z - p0.z;
+			var pz = p0.z + dz * (ptLen / segLen);
+			return pz;
+		} else if (arguments.length === 4) {
+			let p = arguments[0], v0 = arguments[1], v1 = arguments[2], v2 = arguments[3];
+			var x0 = v0.x;
+			var y0 = v0.y;
+			var a = v1.x - x0;
+			var b = v2.x - x0;
+			var c = v1.y - y0;
+			var d = v2.y - y0;
+			var det = a * d - b * c;
+			var dx = p.x - x0;
+			var dy = p.y - y0;
+			var t = (d * dx - b * dy) / det;
+			var u = (-c * dx + a * dy) / det;
+			var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z);
+			return z;
+		}
+	}
+	circleCenter(b, c) {
 		var a = new Vertex(this.getX(), this.getY());
 		var cab = this.bisector(a, b);
 		var cbc = this.bisector(b, c);
@@ -33,24 +47,24 @@ extend(Vertex.prototype, {
 			} else throw nre;
 		} finally {}
 		return cc;
-	},
-	dot: function (v) {
+	}
+	dot(v) {
 		return this._p.x * v.getX() + this._p.y * v.getY();
-	},
-	magn: function () {
+	}
+	magn() {
 		return Math.sqrt(this._p.x * this._p.x + this._p.y * this._p.y);
-	},
-	getZ: function () {
+	}
+	getZ() {
 		return this._p.z;
-	},
-	bisector: function (a, b) {
+	}
+	bisector(a, b) {
 		var dx = b.getX() - a.getX();
 		var dy = b.getY() - a.getY();
 		var l1 = new HCoordinate(a.getX() + dx / 2.0, a.getY() + dy / 2.0, 1.0);
 		var l2 = new HCoordinate(a.getX() - dy + dx / 2.0, a.getY() + dx + dy / 2.0, 1.0);
 		return new HCoordinate(l1, l2);
-	},
-	equals: function () {
+	}
+	equals() {
 		if (arguments.length === 1) {
 			let _x = arguments[0];
 			if (this._p.x === _x.getX() && this._p.y === _x.getY()) {
@@ -66,14 +80,14 @@ extend(Vertex.prototype, {
 				return false;
 			}
 		}
-	},
-	getCoordinate: function () {
+	}
+	getCoordinate() {
 		return this._p;
-	},
-	isInCircle: function (a, b, c) {
+	}
+	isInCircle(a, b, c) {
 		return TrianglePredicate.isInCircleRobust(a._p, b._p, c._p, this._p);
-	},
-	interpolateZValue: function (v0, v1, v2) {
+	}
+	interpolateZValue(v0, v1, v2) {
 		var x0 = v0.getX();
 		var y0 = v0.getY();
 		var a = v1.getX() - x0;
@@ -87,47 +101,47 @@ extend(Vertex.prototype, {
 		var u = (-c * dx + a * dy) / det;
 		var z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ());
 		return z;
-	},
-	midPoint: function (a) {
+	}
+	midPoint(a) {
 		var xm = (this._p.x + a.getX()) / 2.0;
 		var ym = (this._p.y + a.getY()) / 2.0;
 		var zm = (this._p.z + a.getZ()) / 2.0;
 		return new Vertex(xm, ym, zm);
-	},
-	rightOf: function (e) {
+	}
+	rightOf(e) {
 		return this.isCCW(e.dest(), e.orig());
-	},
-	isCCW: function (b, c) {
+	}
+	isCCW(b, c) {
 		return (b._p.x - this._p.x) * (c._p.y - this._p.y) - (b._p.y - this._p.y) * (c._p.x - this._p.x) > 0;
-	},
-	getX: function () {
+	}
+	getX() {
 		return this._p.x;
-	},
-	crossProduct: function (v) {
+	}
+	crossProduct(v) {
 		return this._p.x * v.getY() - this._p.y * v.getX();
-	},
-	setZ: function (_z) {
+	}
+	setZ(_z) {
 		this._p.z = _z;
-	},
-	times: function (c) {
+	}
+	times(c) {
 		return new Vertex(c * this._p.x, c * this._p.y);
-	},
-	cross: function () {
+	}
+	cross() {
 		return new Vertex(this._p.y, -this._p.x);
-	},
-	leftOf: function (e) {
+	}
+	leftOf(e) {
 		return this.isCCW(e.orig(), e.dest());
-	},
-	toString: function () {
+	}
+	toString() {
 		return "POINT (" + this._p.x + " " + this._p.y + ")";
-	},
-	sub: function (v) {
+	}
+	sub(v) {
 		return new Vertex(this._p.x - v.getX(), this._p.y - v.getY());
-	},
-	getY: function () {
+	}
+	getY() {
 		return this._p.y;
-	},
-	classify: function (p0, p1) {
+	}
+	classify(p0, p1) {
 		var p2 = this;
 		var a = p1.sub(p0);
 		var b = p2.sub(p0);
@@ -139,14 +153,14 @@ extend(Vertex.prototype, {
 		if (p0.equals(p2)) return Vertex.ORIGIN;
 		if (p1.equals(p2)) return Vertex.DESTINATION;
 		return Vertex.BETWEEN;
-	},
-	sum: function (v) {
+	}
+	sum(v) {
 		return new Vertex(this._p.x + v.getX(), this._p.y + v.getY());
-	},
-	distance: function (v1, v2) {
+	}
+	distance(v1, v2) {
 		return Math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0) + Math.pow(v2.getY() - v1.getY(), 2.0));
-	},
-	circumRadiusRatio: function (b, c) {
+	}
+	circumRadiusRatio(b, c) {
 		var x = this.circleCenter(b, c);
 		var radius = this.distance(x, b);
 		var edgeLength = this.distance(this, b);
@@ -159,37 +173,25 @@ extend(Vertex.prototype, {
 			edgeLength = el;
 		}
 		return radius / edgeLength;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Vertex;
 	}
-});
-Vertex.interpolateZ = function () {
-	if (arguments.length === 3) {
-		let p = arguments[0], p0 = arguments[1], p1 = arguments[2];
-		var segLen = p0.distance(p1);
-		var ptLen = p.distance(p0);
-		var dz = p1.z - p0.z;
-		var pz = p0.z + dz * (ptLen / segLen);
-		return pz;
-	} else if (arguments.length === 4) {
-		let p = arguments[0], v0 = arguments[1], v1 = arguments[2], v2 = arguments[3];
-		var x0 = v0.x;
-		var y0 = v0.y;
-		var a = v1.x - x0;
-		var b = v2.x - x0;
-		var c = v1.y - y0;
-		var d = v2.y - y0;
-		var det = a * d - b * c;
-		var dx = p.x - x0;
-		var dy = p.y - y0;
-		var t = (d * dx - b * dy) / det;
-		var u = (-c * dx + a * dy) / det;
-		var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z);
-		return z;
+	get interfaces_() {
+		return [];
+	}
+}
+Vertex.constructor_ = function () {
+	this._p = null;
+	if (arguments.length === 1) {
+		let _p = arguments[0];
+		this._p = new Coordinate(_p);
+	} else if (arguments.length === 2) {
+		let _x = arguments[0], _y = arguments[1];
+		this._p = new Coordinate(_x, _y);
+	} else if (arguments.length === 3) {
+		let _x = arguments[0], _y = arguments[1], _z = arguments[2];
+		this._p = new Coordinate(_x, _y, _z);
 	}
 };
 Vertex.LEFT = 0;

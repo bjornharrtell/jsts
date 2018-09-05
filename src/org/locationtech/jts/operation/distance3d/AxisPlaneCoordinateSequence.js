@@ -1,28 +1,32 @@
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
 import CoordinateSequence from '../../geom/CoordinateSequence';
-export default function AxisPlaneCoordinateSequence() {
-	this._seq = null;
-	this._indexMap = null;
-	let seq = arguments[0], indexMap = arguments[1];
-	this._seq = seq;
-	this._indexMap = indexMap;
-}
-extend(AxisPlaneCoordinateSequence.prototype, {
-	setOrdinate: function (index, ordinateIndex, value) {
+export default class AxisPlaneCoordinateSequence {
+	constructor() {
+		AxisPlaneCoordinateSequence.constructor_.apply(this, arguments);
+	}
+	static projectToYZ(seq) {
+		return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.YZ_INDEX);
+	}
+	static projectToXZ(seq) {
+		return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XZ_INDEX);
+	}
+	static projectToXY(seq) {
+		return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XY_INDEX);
+	}
+	setOrdinate(index, ordinateIndex, value) {
 		throw new UnsupportedOperationException();
-	},
-	getZ: function (index) {
+	}
+	getZ(index) {
 		return this.getOrdinate(index, CoordinateSequence.Z);
-	},
-	size: function () {
+	}
+	size() {
 		return this._seq.size();
-	},
-	getOrdinate: function (index, ordinateIndex) {
+	}
+	getOrdinate(index, ordinateIndex) {
 		if (ordinateIndex > 1) return 0;
 		return this._seq.getOrdinate(index, this._indexMap[ordinateIndex]);
-	},
-	getCoordinate: function () {
+	}
+	getCoordinate() {
 		if (arguments.length === 1) {
 			let i = arguments[0];
 			return this.getCoordinateCopy(i);
@@ -32,46 +36,44 @@ extend(AxisPlaneCoordinateSequence.prototype, {
 			coord.y = this.getOrdinate(index, CoordinateSequence.Y);
 			coord.z = this.getOrdinate(index, CoordinateSequence.Z);
 		}
-	},
-	getCoordinateCopy: function (i) {
+	}
+	getCoordinateCopy(i) {
 		return new Coordinate(this.getX(i), this.getY(i), this.getZ(i));
-	},
-	getDimension: function () {
+	}
+	getDimension() {
 		return 2;
-	},
-	getX: function (index) {
+	}
+	getX(index) {
 		return this.getOrdinate(index, CoordinateSequence.X);
-	},
-	clone: function () {
+	}
+	clone() {
 		throw new UnsupportedOperationException();
-	},
-	expandEnvelope: function (env) {
+	}
+	expandEnvelope(env) {
 		throw new UnsupportedOperationException();
-	},
-	copy: function () {
+	}
+	copy() {
 		throw new UnsupportedOperationException();
-	},
-	getY: function (index) {
+	}
+	getY(index) {
 		return this.getOrdinate(index, CoordinateSequence.Y);
-	},
-	toCoordinateArray: function () {
+	}
+	toCoordinateArray() {
 		throw new UnsupportedOperationException();
-	},
-	interfaces_: function () {
-		return [CoordinateSequence];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return AxisPlaneCoordinateSequence;
 	}
-});
-AxisPlaneCoordinateSequence.projectToYZ = function (seq) {
-	return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.YZ_INDEX);
-};
-AxisPlaneCoordinateSequence.projectToXZ = function (seq) {
-	return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XZ_INDEX);
-};
-AxisPlaneCoordinateSequence.projectToXY = function (seq) {
-	return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XY_INDEX);
+	get interfaces_() {
+		return [CoordinateSequence];
+	}
+}
+AxisPlaneCoordinateSequence.constructor_ = function () {
+	this._seq = null;
+	this._indexMap = null;
+	let seq = arguments[0], indexMap = arguments[1];
+	this._seq = seq;
+	this._indexMap = indexMap;
 };
 AxisPlaneCoordinateSequence.XY_INDEX = [0, 1];
 AxisPlaneCoordinateSequence.XZ_INDEX = [0, 2];

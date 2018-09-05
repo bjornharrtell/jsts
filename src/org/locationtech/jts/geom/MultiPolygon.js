@@ -1,42 +1,39 @@
 import Geometry from './Geometry';
-import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
 import Polygonal from './Polygonal';
 import ArrayList from '../../../../java/util/ArrayList';
-import inherits from '../../../../inherits';
-export default function MultiPolygon() {
-	let polygons = arguments[0], factory = arguments[1];
-	GeometryCollection.call(this, polygons, factory);
-}
-inherits(MultiPolygon, GeometryCollection);
-extend(MultiPolygon.prototype, {
-	equalsExact: function () {
+export default class MultiPolygon extends GeometryCollection {
+	constructor() {
+		super();
+		MultiPolygon.constructor_.apply(this, arguments);
+	}
+	equalsExact() {
 		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
-			return GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
-		} else return GeometryCollection.prototype.equalsExact.apply(this, arguments);
-	},
-	getBoundaryDimension: function () {
+			return super.equalsExact.call(this, other, tolerance);
+		} else return super.equalsExact.apply(this, arguments);
+	}
+	getBoundaryDimension() {
 		return 1;
-	},
-	getTypeCode: function () {
+	}
+	getTypeCode() {
 		return Geometry.TYPECODE_MULTIPOLYGON;
-	},
-	getDimension: function () {
+	}
+	getDimension() {
 		return 2;
-	},
-	reverse: function () {
+	}
+	reverse() {
 		var n = this._geometries.length;
 		var revGeoms = new Array(n).fill(null);
 		for (var i = 0; i < this._geometries.length; i++) {
 			revGeoms[i] = this._geometries[i].reverse();
 		}
 		return this.getFactory().createMultiPolygon(revGeoms);
-	},
-	getBoundary: function () {
+	}
+	getBoundary() {
 		if (this.isEmpty()) {
 			return this.getFactory().createMultiLineString();
 		}
@@ -50,22 +47,26 @@ extend(MultiPolygon.prototype, {
 		}
 		var allRingsArray = new Array(allRings.size()).fill(null);
 		return this.getFactory().createMultiLineString(allRings.toArray(allRingsArray));
-	},
-	getGeometryType: function () {
+	}
+	getGeometryType() {
 		return Geometry.TYPENAME_MULTIPOLYGON;
-	},
-	copy: function () {
+	}
+	copy() {
 		var polygons = new Array(this._geometries.length).fill(null);
 		for (var i = 0; i < polygons.length; i++) {
 			polygons[i] = this._geometries[i].copy();
 		}
 		return new MultiPolygon(polygons, this._factory);
-	},
-	interfaces_: function () {
-		return [Polygonal];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MultiPolygon;
 	}
-});
+	get interfaces_() {
+		return [Polygonal];
+	}
+}
+MultiPolygon.constructor_ = function () {
+	let polygons = arguments[0], factory = arguments[1];
+	GeometryCollection.constructor_.call(this, polygons, factory);
+};
 MultiPolygon.serialVersionUID = -551033529766975875;

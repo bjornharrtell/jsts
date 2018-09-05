@@ -1,61 +1,61 @@
 import DirectedEdgeStar from './DirectedEdgeStar';
 import HashSet from '../../../../java/util/HashSet';
-import extend from '../../../../extend';
 import DirectedEdge from './DirectedEdge';
-import inherits from '../../../../inherits';
 import GraphComponent from './GraphComponent';
-export default function Node() {
-	GraphComponent.apply(this);
-	this._pt = null;
-	this._deStar = null;
-	if (arguments.length === 1) {
-		let pt = arguments[0];
-		Node.call(this, pt, new DirectedEdgeStar());
-	} else if (arguments.length === 2) {
-		let pt = arguments[0], deStar = arguments[1];
-		this._pt = pt;
-		this._deStar = deStar;
+export default class Node extends GraphComponent {
+	constructor() {
+		super();
+		Node.constructor_.apply(this, arguments);
 	}
-}
-inherits(Node, GraphComponent);
-extend(Node.prototype, {
-	isRemoved: function () {
+	static getEdgesBetween(node0, node1) {
+		var edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges());
+		var commonEdges = new HashSet(edges0);
+		var edges1 = DirectedEdge.toEdges(node1.getOutEdges().getEdges());
+		commonEdges.retainAll(edges1);
+		return commonEdges;
+	}
+	isRemoved() {
 		return this._pt === null;
-	},
-	addOutEdge: function (de) {
+	}
+	addOutEdge(de) {
 		this._deStar.add(de);
-	},
-	getCoordinate: function () {
+	}
+	getCoordinate() {
 		return this._pt;
-	},
-	getOutEdges: function () {
+	}
+	getOutEdges() {
 		return this._deStar;
-	},
-	remove: function () {
+	}
+	remove() {
 		if (arguments.length === 0) {
 			this._pt = null;
 		} else if (arguments.length === 1) {
 			let de = arguments[0];
 			this._deStar.remove(de);
 		}
-	},
-	getIndex: function (edge) {
+	}
+	getIndex(edge) {
 		return this._deStar.getIndex(edge);
-	},
-	getDegree: function () {
+	}
+	getDegree() {
 		return this._deStar.getDegree();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Node;
 	}
-});
-Node.getEdgesBetween = function (node0, node1) {
-	var edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges());
-	var commonEdges = new HashSet(edges0);
-	var edges1 = DirectedEdge.toEdges(node1.getOutEdges().getEdges());
-	commonEdges.retainAll(edges1);
-	return commonEdges;
+	get interfaces_() {
+		return [];
+	}
+}
+Node.constructor_ = function () {
+	this._pt = null;
+	this._deStar = null;
+	if (arguments.length === 1) {
+		let pt = arguments[0];
+		Node.constructor_.call(this, pt, new DirectedEdgeStar());
+	} else if (arguments.length === 2) {
+		let pt = arguments[0], deStar = arguments[1];
+		this._pt = pt;
+		this._deStar = deStar;
+	}
 };

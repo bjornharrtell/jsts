@@ -1,33 +1,23 @@
 import NumberUtil from '../util/NumberUtil';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import Comparable from '../../../../java/lang/Comparable';
 import Cloneable from '../../../../java/lang/Cloneable';
 import Comparator from '../../../../java/util/Comparator';
 import Serializable from '../../../../java/io/Serializable';
 import Assert from '../util/Assert';
-export default function Coordinate() {
-	this.x = null;
-	this.y = null;
-	this.z = null;
-	if (arguments.length === 0) {
-		Coordinate.call(this, 0.0, 0.0);
-	} else if (arguments.length === 1) {
-		let c = arguments[0];
-		Coordinate.call(this, c.x, c.y, c.z);
-	} else if (arguments.length === 2) {
-		let x = arguments[0], y = arguments[1];
-		Coordinate.call(this, x, y, Coordinate.NULL_ORDINATE);
-	} else if (arguments.length === 3) {
-		let x = arguments[0], y = arguments[1], z = arguments[2];
-		this.x = x;
-		this.y = y;
-		this.z = z;
+export default class Coordinate {
+	constructor() {
+		Coordinate.constructor_.apply(this, arguments);
 	}
-}
-extend(Coordinate.prototype, {
-	setOrdinate: function (ordinateIndex, value) {
+	static hashCode() {
+		if (arguments.length === 1 && typeof arguments[0] === "number") {
+			let x = arguments[0];
+			var f = Double.doubleToLongBits(x);
+			return Math.trunc(f ^ f >>> 32);
+		}
+	}
+	setOrdinate(ordinateIndex, value) {
 		switch (ordinateIndex) {
 			case Coordinate.X:
 				this.x = value;
@@ -41,8 +31,8 @@ extend(Coordinate.prototype, {
 			default:
 				throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
 		}
-	},
-	equals2D: function () {
+	}
+	equals2D() {
 		if (arguments.length === 1) {
 			let other = arguments[0];
 			if (this.x !== other.x) {
@@ -62,8 +52,8 @@ extend(Coordinate.prototype, {
 			}
 			return true;
 		}
-	},
-	getOrdinate: function (ordinateIndex) {
+	}
+	getOrdinate(ordinateIndex) {
 		switch (ordinateIndex) {
 			case Coordinate.X:
 				return this.x;
@@ -73,28 +63,28 @@ extend(Coordinate.prototype, {
 				return this.z;
 		}
 		throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
-	},
-	equals3D: function (other) {
+	}
+	equals3D(other) {
 		return this.x === other.x && this.y === other.y && (this.z === other.z || Double.isNaN(this.z) && Double.isNaN(other.z));
-	},
-	equals: function (other) {
+	}
+	equals(other) {
 		if (!(other instanceof Coordinate)) {
 			return false;
 		}
 		return this.equals2D(other);
-	},
-	equalInZ: function (c, tolerance) {
+	}
+	equalInZ(c, tolerance) {
 		return NumberUtil.equalsWithTolerance(this.z, c.z, tolerance);
-	},
-	compareTo: function (o) {
+	}
+	compareTo(o) {
 		var other = o;
 		if (this.x < other.x) return -1;
 		if (this.x > other.x) return 1;
 		if (this.y < other.y) return -1;
 		if (this.y > other.y) return 1;
 		return 0;
-	},
-	clone: function () {
+	}
+	clone() {
 		try {
 			var coord = null;
 			return coord;
@@ -104,61 +94,57 @@ extend(Coordinate.prototype, {
 				return null;
 			} else throw e;
 		} finally {}
-	},
-	copy: function () {
+	}
+	copy() {
 		return new Coordinate(this);
-	},
-	toString: function () {
+	}
+	toString() {
 		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
-	},
-	distance3D: function (c) {
+	}
+	distance3D(c) {
 		var dx = this.x - c.x;
 		var dy = this.y - c.y;
 		var dz = this.z - c.z;
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
-	},
-	distance: function (c) {
+	}
+	distance(c) {
 		var dx = this.x - c.x;
 		var dy = this.y - c.y;
 		return Math.sqrt(dx * dx + dy * dy);
-	},
-	hashCode: function () {
+	}
+	hashCode() {
 		var result = 17;
 		result = 37 * result + Coordinate.hashCode(this.x);
 		result = 37 * result + Coordinate.hashCode(this.y);
 		return result;
-	},
-	setCoordinate: function (other) {
+	}
+	setCoordinate(other) {
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
-	},
-	interfaces_: function () {
-		return [Comparable, Cloneable, Serializable];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Coordinate;
 	}
-});
-Coordinate.hashCode = function () {
-	if (arguments.length === 1 && typeof arguments[0] === "number") {
-		let x = arguments[0];
-		var f = Double.doubleToLongBits(x);
-		return Math.trunc(f ^ f >>> 32);
-	}
-};
-function DimensionalComparator() {
-	this._dimensionsToTest = 2;
-	if (arguments.length === 0) {
-		DimensionalComparator.call(this, 2);
-	} else if (arguments.length === 1) {
-		let dimensionsToTest = arguments[0];
-		if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
-		this._dimensionsToTest = dimensionsToTest;
+	get interfaces_() {
+		return [Comparable, Cloneable, Serializable];
 	}
 }
-extend(DimensionalComparator.prototype, {
-	compare: function (o1, o2) {
+class DimensionalComparator {
+	constructor() {
+		DimensionalComparator.constructor_.apply(this, arguments);
+	}
+	static compare(a, b) {
+		if (a < b) return -1;
+		if (a > b) return 1;
+		if (Double.isNaN(a)) {
+			if (Double.isNaN(b)) return 0;
+			return -1;
+		}
+		if (Double.isNaN(b)) return 1;
+		return 0;
+	}
+	compare(o1, o2) {
 		var c1 = o1;
 		var c2 = o2;
 		var compX = DimensionalComparator.compare(c1.x, c2.x);
@@ -168,25 +154,44 @@ extend(DimensionalComparator.prototype, {
 		if (this._dimensionsToTest <= 2) return 0;
 		var compZ = DimensionalComparator.compare(c1.z, c2.z);
 		return compZ;
-	},
-	interfaces_: function () {
-		return [Comparator];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return DimensionalComparator;
 	}
-});
-DimensionalComparator.compare = function (a, b) {
-	if (a < b) return -1;
-	if (a > b) return 1;
-	if (Double.isNaN(a)) {
-		if (Double.isNaN(b)) return 0;
-		return -1;
+	get interfaces_() {
+		return [Comparator];
 	}
-	if (Double.isNaN(b)) return 1;
-	return 0;
+}
+DimensionalComparator.constructor_ = function () {
+	this._dimensionsToTest = 2;
+	if (arguments.length === 0) {
+		DimensionalComparator.constructor_.call(this, 2);
+	} else if (arguments.length === 1) {
+		let dimensionsToTest = arguments[0];
+		if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
+		this._dimensionsToTest = dimensionsToTest;
+	}
 };
 Coordinate.DimensionalComparator = DimensionalComparator;
+Coordinate.constructor_ = function () {
+	this.x = null;
+	this.y = null;
+	this.z = null;
+	if (arguments.length === 0) {
+		Coordinate.constructor_.call(this, 0.0, 0.0);
+	} else if (arguments.length === 1) {
+		let c = arguments[0];
+		Coordinate.constructor_.call(this, c.x, c.y, c.z);
+	} else if (arguments.length === 2) {
+		let x = arguments[0], y = arguments[1];
+		Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE);
+	} else if (arguments.length === 3) {
+		let x = arguments[0], y = arguments[1], z = arguments[2];
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+};
 Coordinate.serialVersionUID = 6683108902428366910;
 Coordinate.NULL_ORDINATE = Double.NaN;
 Coordinate.X = 0;

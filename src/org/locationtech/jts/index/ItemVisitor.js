@@ -1,11 +1,13 @@
-import extend from '../../../../extend';
-export default function ItemVisitor() {}
-extend(ItemVisitor.prototype, {
-	visitItem: function (item) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class ItemVisitor {
+	constructor() {
+		ItemVisitor.constructor_.apply(this, arguments);
+	}
+	visitItem(item) {}
+	getClass() {
 		return ItemVisitor;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+ItemVisitor.constructor_ = function () {};

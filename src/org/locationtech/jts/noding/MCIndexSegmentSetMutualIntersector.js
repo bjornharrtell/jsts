@@ -1,47 +1,43 @@
 import SegmentSetMutualIntersector from './SegmentSetMutualIntersector';
 import STRtree from '../index/strtree/STRtree';
 import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction';
-import extend from '../../../../extend';
 import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder';
 import ArrayList from '../../../../java/util/ArrayList';
-import inherits from '../../../../inherits';
-export default function MCIndexSegmentSetMutualIntersector() {
-	this._index = new STRtree();
-	let baseSegStrings = arguments[0];
-	this.initBaseSegments(baseSegStrings);
-}
-extend(MCIndexSegmentSetMutualIntersector.prototype, {
-	addToIndex: function (segStr) {
+export default class MCIndexSegmentSetMutualIntersector {
+	constructor() {
+		MCIndexSegmentSetMutualIntersector.constructor_.apply(this, arguments);
+	}
+	addToIndex(segStr) {
 		var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
 		for (var i = segChains.iterator(); i.hasNext(); ) {
 			var mc = i.next();
 			this._index.insert(mc.getEnvelope(), mc);
 		}
-	},
-	addToMonoChains: function (segStr, monoChains) {
+	}
+	addToMonoChains(segStr, monoChains) {
 		var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
 		for (var i = segChains.iterator(); i.hasNext(); ) {
 			var mc = i.next();
 			monoChains.add(mc);
 		}
-	},
-	process: function (segStrings, segInt) {
+	}
+	process(segStrings, segInt) {
 		var monoChains = new ArrayList();
 		for (var i = segStrings.iterator(); i.hasNext(); ) {
 			this.addToMonoChains(i.next(), monoChains);
 		}
 		this.intersectChains(monoChains, segInt);
-	},
-	initBaseSegments: function (segStrings) {
+	}
+	initBaseSegments(segStrings) {
 		for (var i = segStrings.iterator(); i.hasNext(); ) {
 			this.addToIndex(i.next());
 		}
 		this._index.build();
-	},
-	getIndex: function () {
+	}
+	getIndex() {
 		return this._index;
-	},
-	intersectChains: function (monoChains, segInt) {
+	}
+	intersectChains(monoChains, segInt) {
 		var overlapAction = new SegmentOverlapAction(segInt);
 		for (var i = monoChains.iterator(); i.hasNext(); ) {
 			var queryChain = i.next();
@@ -52,35 +48,42 @@ extend(MCIndexSegmentSetMutualIntersector.prototype, {
 				if (segInt.isDone()) return null;
 			}
 		}
-	},
-	interfaces_: function () {
-		return [SegmentSetMutualIntersector];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MCIndexSegmentSetMutualIntersector;
 	}
-});
-function SegmentOverlapAction() {
-	MonotoneChainOverlapAction.apply(this);
-	this._si = null;
-	let si = arguments[0];
-	this._si = si;
+	get interfaces_() {
+		return [SegmentSetMutualIntersector];
+	}
 }
-inherits(SegmentOverlapAction, MonotoneChainOverlapAction);
-extend(SegmentOverlapAction.prototype, {
-	overlap: function () {
+class SegmentOverlapAction extends MonotoneChainOverlapAction {
+	constructor() {
+		super();
+		SegmentOverlapAction.constructor_.apply(this, arguments);
+	}
+	overlap() {
 		if (arguments.length === 4) {
 			let mc1 = arguments[0], start1 = arguments[1], mc2 = arguments[2], start2 = arguments[3];
 			var ss1 = mc1.getContext();
 			var ss2 = mc2.getContext();
 			this._si.processIntersections(ss1, start1, ss2, start2);
-		} else return MonotoneChainOverlapAction.prototype.overlap.apply(this, arguments);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+		} else return super.overlap.apply(this, arguments);
+	}
+	getClass() {
 		return SegmentOverlapAction;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SegmentOverlapAction.constructor_ = function () {
+	this._si = null;
+	let si = arguments[0];
+	this._si = si;
+};
 MCIndexSegmentSetMutualIntersector.SegmentOverlapAction = SegmentOverlapAction;
+MCIndexSegmentSetMutualIntersector.constructor_ = function () {
+	this._index = new STRtree();
+	let baseSegStrings = arguments[0];
+	this.initBaseSegments(baseSegStrings);
+};

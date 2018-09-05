@@ -1,10 +1,12 @@
-import extend from '../../../../../extend';
-export default function EdgeSetIntersector() {}
-extend(EdgeSetIntersector.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class EdgeSetIntersector {
+	constructor() {
+		EdgeSetIntersector.constructor_.apply(this, arguments);
+	}
+	getClass() {
 		return EdgeSetIntersector;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+EdgeSetIntersector.constructor_ = function () {};

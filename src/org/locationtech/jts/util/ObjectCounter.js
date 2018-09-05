@@ -1,43 +1,48 @@
 import HashMap from '../../../../java/util/HashMap';
-import extend from '../../../../extend';
-export default function ObjectCounter() {
-	this._counts = new HashMap();
-}
-extend(ObjectCounter.prototype, {
-	count: function (o) {
+export default class ObjectCounter {
+	constructor() {
+		ObjectCounter.constructor_.apply(this, arguments);
+	}
+	count(o) {
 		var counter = this._counts.get(o);
 		if (counter === null) return 0; else return counter.count();
-	},
-	add: function (o) {
+	}
+	add(o) {
 		var counter = this._counts.get(o);
 		if (counter === null) this._counts.put(o, new Counter(1)); else counter.increment();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ObjectCounter;
 	}
-});
-function Counter() {
+	get interfaces_() {
+		return [];
+	}
+}
+class Counter {
+	constructor() {
+		Counter.constructor_.apply(this, arguments);
+	}
+	count() {
+		return this.count;
+	}
+	increment() {
+		this.count++;
+	}
+	getClass() {
+		return Counter;
+	}
+	get interfaces_() {
+		return [];
+	}
+}
+Counter.constructor_ = function () {
 	this.count = 0;
 	if (arguments.length === 0) {} else if (arguments.length === 1) {
 		let count = arguments[0];
 		this.count = count;
 	}
-}
-extend(Counter.prototype, {
-	count: function () {
-		return this.count;
-	},
-	increment: function () {
-		this.count++;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
-		return Counter;
-	}
-});
+};
 ObjectCounter.Counter = Counter;
+ObjectCounter.constructor_ = function () {
+	this._counts = new HashMap();
+};

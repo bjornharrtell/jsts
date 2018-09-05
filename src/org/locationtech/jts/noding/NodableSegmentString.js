@@ -1,12 +1,14 @@
-import extend from '../../../../extend';
 import SegmentString from './SegmentString';
-export default function NodableSegmentString() {}
-extend(NodableSegmentString.prototype, {
-	addIntersection: function (intPt, segmentIndex) {},
-	interfaces_: function () {
-		return [SegmentString];
-	},
-	getClass: function () {
+export default class NodableSegmentString {
+	constructor() {
+		NodableSegmentString.constructor_.apply(this, arguments);
+	}
+	addIntersection(intPt, segmentIndex) {}
+	getClass() {
 		return NodableSegmentString;
 	}
-});
+	get interfaces_() {
+		return [SegmentString];
+	}
+}
+NodableSegmentString.constructor_ = function () {};

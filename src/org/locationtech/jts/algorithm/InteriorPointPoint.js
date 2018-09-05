@@ -2,21 +2,15 @@ import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import Point from '../geom/Point';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import GeometryCollection from '../geom/GeometryCollection';
-export default function InteriorPointPoint() {
-	this._centroid = null;
-	this._minDistance = Double.MAX_VALUE;
-	this._interiorPoint = null;
-	let g = arguments[0];
-	this._centroid = g.getCentroid().getCoordinate();
-	this.add(g);
-}
-extend(InteriorPointPoint.prototype, {
-	getInteriorPoint: function () {
+export default class InteriorPointPoint {
+	constructor() {
+		InteriorPointPoint.constructor_.apply(this, arguments);
+	}
+	getInteriorPoint() {
 		return this._interiorPoint;
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments[0] instanceof Geometry) {
 			let geom = arguments[0];
 			if (geom instanceof Point) {
@@ -35,11 +29,19 @@ extend(InteriorPointPoint.prototype, {
 				this._minDistance = dist;
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return InteriorPointPoint;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+InteriorPointPoint.constructor_ = function () {
+	this._centroid = null;
+	this._minDistance = Double.MAX_VALUE;
+	this._interiorPoint = null;
+	let g = arguments[0];
+	this._centroid = g.getCentroid().getCoordinate();
+	this.add(g);
+};

@@ -1,60 +1,61 @@
 import Geometry from './Geometry';
-import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
 import Dimension from './Dimension';
 import Puntal from './Puntal';
-import inherits from '../../../../inherits';
-export default function MultiPoint() {
-	let points = arguments[0], factory = arguments[1];
-	GeometryCollection.call(this, points, factory);
-}
-inherits(MultiPoint, GeometryCollection);
-extend(MultiPoint.prototype, {
-	isValid: function () {
+export default class MultiPoint extends GeometryCollection {
+	constructor() {
+		super();
+		MultiPoint.constructor_.apply(this, arguments);
+	}
+	isValid() {
 		return true;
-	},
-	equalsExact: function () {
+	}
+	equalsExact() {
 		if (arguments.length === 2 && (typeof arguments[1] === "number" && arguments[0] instanceof Geometry)) {
 			let other = arguments[0], tolerance = arguments[1];
 			if (!this.isEquivalentClass(other)) {
 				return false;
 			}
-			return GeometryCollection.prototype.equalsExact.call(this, other, tolerance);
-		} else return GeometryCollection.prototype.equalsExact.apply(this, arguments);
-	},
-	getCoordinate: function () {
+			return super.equalsExact.call(this, other, tolerance);
+		} else return super.equalsExact.apply(this, arguments);
+	}
+	getCoordinate() {
 		if (arguments.length === 1 && Number.isInteger(arguments[0])) {
 			let n = arguments[0];
 			return this._geometries[n].getCoordinate();
-		} else return GeometryCollection.prototype.getCoordinate.apply(this, arguments);
-	},
-	getBoundaryDimension: function () {
+		} else return super.getCoordinate.apply(this, arguments);
+	}
+	getBoundaryDimension() {
 		return Dimension.FALSE;
-	},
-	getTypeCode: function () {
+	}
+	getTypeCode() {
 		return Geometry.TYPECODE_MULTIPOINT;
-	},
-	getDimension: function () {
+	}
+	getDimension() {
 		return 0;
-	},
-	getBoundary: function () {
+	}
+	getBoundary() {
 		return this.getFactory().createGeometryCollection();
-	},
-	getGeometryType: function () {
+	}
+	getGeometryType() {
 		return Geometry.TYPENAME_MULTIPOINT;
-	},
-	copy: function () {
+	}
+	copy() {
 		var points = new Array(this._geometries.length).fill(null);
 		for (var i = 0; i < points.length; i++) {
 			points[i] = this._geometries[i].copy();
 		}
 		return new MultiPoint(points, this._factory);
-	},
-	interfaces_: function () {
-		return [Puntal];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MultiPoint;
 	}
-});
+	get interfaces_() {
+		return [Puntal];
+	}
+}
+MultiPoint.constructor_ = function () {
+	let points = arguments[0], factory = arguments[1];
+	GeometryCollection.constructor_.call(this, points, factory);
+};
 MultiPoint.serialVersionUID = -8048474874175355449;

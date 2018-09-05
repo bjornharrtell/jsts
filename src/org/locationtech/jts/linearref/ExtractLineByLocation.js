@@ -1,17 +1,18 @@
 import LineString from '../geom/LineString';
 import CoordinateList from '../geom/CoordinateList';
 import LinearIterator from './LinearIterator';
-import extend from '../../../../extend';
 import Assert from '../util/Assert';
 import LinearGeometryBuilder from './LinearGeometryBuilder';
 import MultiLineString from '../geom/MultiLineString';
-export default function ExtractLineByLocation() {
-	this._line = null;
-	let line = arguments[0];
-	this._line = line;
-}
-extend(ExtractLineByLocation.prototype, {
-	computeLinear: function (start, end) {
+export default class ExtractLineByLocation {
+	constructor() {
+		ExtractLineByLocation.constructor_.apply(this, arguments);
+	}
+	static extract(line, start, end) {
+		var ls = new ExtractLineByLocation(line);
+		return ls.extract(start, end);
+	}
+	computeLinear(start, end) {
 		var builder = new LinearGeometryBuilder(this._line.getFactory());
 		builder.setFixInvalidLines(true);
 		if (!start.isVertex()) builder.add(start.getCoordinate(this._line));
@@ -23,8 +24,8 @@ extend(ExtractLineByLocation.prototype, {
 		}
 		if (!end.isVertex()) builder.add(end.getCoordinate(this._line));
 		return builder.getGeometry();
-	},
-	computeLine: function (start, end) {
+	}
+	computeLine(start, end) {
 		var coordinates = this._line.getCoordinates();
 		var newCoordinates = new CoordinateList();
 		var startSegmentIndex = start.getSegmentIndex();
@@ -43,27 +44,28 @@ extend(ExtractLineByLocation.prototype, {
 			newCoordinateArray = [newCoordinateArray[0], newCoordinateArray[0]];
 		}
 		return this._line.getFactory().createLineString(newCoordinateArray);
-	},
-	extract: function (start, end) {
+	}
+	extract(start, end) {
 		if (end.compareTo(start) < 0) {
 			return this.reverse(this.computeLinear(end, start));
 		}
 		return this.computeLinear(start, end);
-	},
-	reverse: function (linear) {
+	}
+	reverse(linear) {
 		if (linear instanceof LineString) return linear.reverse();
 		if (linear instanceof MultiLineString) return linear.reverse();
 		Assert.shouldNeverReachHere("non-linear geometry encountered");
 		return null;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ExtractLineByLocation;
 	}
-});
-ExtractLineByLocation.extract = function (line, start, end) {
-	var ls = new ExtractLineByLocation(line);
-	return ls.extract(start, end);
+	get interfaces_() {
+		return [];
+	}
+}
+ExtractLineByLocation.constructor_ = function () {
+	this._line = null;
+	let line = arguments[0];
+	this._line = line;
 };

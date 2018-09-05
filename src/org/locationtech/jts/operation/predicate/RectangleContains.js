@@ -2,14 +2,15 @@ import LineString from '../../geom/LineString';
 import Coordinate from '../../geom/Coordinate';
 import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
-import extend from '../../../../../extend';
-export default function RectangleContains() {
-	this._rectEnv = null;
-	let rectangle = arguments[0];
-	this._rectEnv = rectangle.getEnvelopeInternal();
-}
-extend(RectangleContains.prototype, {
-	isContainedInBoundary: function (geom) {
+export default class RectangleContains {
+	constructor() {
+		RectangleContains.constructor_.apply(this, arguments);
+	}
+	static contains(rectangle, b) {
+		var rc = new RectangleContains(rectangle);
+		return rc.contains(b);
+	}
+	isContainedInBoundary(geom) {
 		if (geom instanceof Polygon) return false;
 		if (geom instanceof Point) return this.isPointContainedInBoundary(geom);
 		if (geom instanceof LineString) return this.isLineStringContainedInBoundary(geom);
@@ -18,8 +19,8 @@ extend(RectangleContains.prototype, {
 			if (!this.isContainedInBoundary(comp)) return false;
 		}
 		return true;
-	},
-	isLineSegmentContainedInBoundary: function (p0, p1) {
+	}
+	isLineSegmentContainedInBoundary(p0, p1) {
 		if (p0.equals(p1)) return this.isPointContainedInBoundary(p0);
 		if (p0.x === p1.x) {
 			if (p0.x === this._rectEnv.getMinX() || p0.x === this._rectEnv.getMaxX()) return true;
@@ -27,8 +28,8 @@ extend(RectangleContains.prototype, {
 			if (p0.y === this._rectEnv.getMinY() || p0.y === this._rectEnv.getMaxY()) return true;
 		}
 		return false;
-	},
-	isLineStringContainedInBoundary: function (line) {
+	}
+	isLineStringContainedInBoundary(line) {
 		var seq = line.getCoordinateSequence();
 		var p0 = new Coordinate();
 		var p1 = new Coordinate();
@@ -38,8 +39,8 @@ extend(RectangleContains.prototype, {
 			if (!this.isLineSegmentContainedInBoundary(p0, p1)) return false;
 		}
 		return true;
-	},
-	isPointContainedInBoundary: function () {
+	}
+	isPointContainedInBoundary() {
 		if (arguments[0] instanceof Point) {
 			let point = arguments[0];
 			return this.isPointContainedInBoundary(point.getCoordinate());
@@ -47,20 +48,21 @@ extend(RectangleContains.prototype, {
 			let pt = arguments[0];
 			return pt.x === this._rectEnv.getMinX() || pt.x === this._rectEnv.getMaxX() || pt.y === this._rectEnv.getMinY() || pt.y === this._rectEnv.getMaxY();
 		}
-	},
-	contains: function (geom) {
+	}
+	contains(geom) {
 		if (!this._rectEnv.contains(geom.getEnvelopeInternal())) return false;
 		if (this.isContainedInBoundary(geom)) return false;
 		return true;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RectangleContains;
 	}
-});
-RectangleContains.contains = function (rectangle, b) {
-	var rc = new RectangleContains(rectangle);
-	return rc.contains(b);
+	get interfaces_() {
+		return [];
+	}
+}
+RectangleContains.constructor_ = function () {
+	this._rectEnv = null;
+	let rectangle = arguments[0];
+	this._rectEnv = rectangle.getEnvelopeInternal();
 };

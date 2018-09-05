@@ -1,10 +1,12 @@
-import extend from '../../../../extend';
-export default function Polygonal() {}
-extend(Polygonal.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class Polygonal {
+	constructor() {
+		Polygonal.constructor_.apply(this, arguments);
+	}
+	getClass() {
 		return Polygonal;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+Polygonal.constructor_ = function () {};

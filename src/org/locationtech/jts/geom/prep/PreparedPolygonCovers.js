@@ -1,28 +1,29 @@
 import AbstractPreparedPolygonContains from './AbstractPreparedPolygonContains';
-import extend from '../../../../../extend';
-import inherits from '../../../../../inherits';
-export default function PreparedPolygonCovers() {
-	let prepPoly = arguments[0];
-	AbstractPreparedPolygonContains.call(this, prepPoly);
-	this._requireSomePointInInterior = false;
-}
-inherits(PreparedPolygonCovers, AbstractPreparedPolygonContains);
-extend(PreparedPolygonCovers.prototype, {
-	fullTopologicalPredicate: function (geom) {
+export default class PreparedPolygonCovers extends AbstractPreparedPolygonContains {
+	constructor() {
+		super();
+		PreparedPolygonCovers.constructor_.apply(this, arguments);
+	}
+	static covers(prep, geom) {
+		var polyInt = new PreparedPolygonCovers(prep);
+		return polyInt.covers(geom);
+	}
+	fullTopologicalPredicate(geom) {
 		var result = this._prepPoly.getGeometry().covers(geom);
 		return result;
-	},
-	covers: function (geom) {
+	}
+	covers(geom) {
 		return this.eval(geom);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PreparedPolygonCovers;
 	}
-});
-PreparedPolygonCovers.covers = function (prep, geom) {
-	var polyInt = new PreparedPolygonCovers(prep);
-	return polyInt.covers(geom);
+	get interfaces_() {
+		return [];
+	}
+}
+PreparedPolygonCovers.constructor_ = function () {
+	let prepPoly = arguments[0];
+	AbstractPreparedPolygonContains.constructor_.call(this, prepPoly);
+	this._requireSomePointInInterior = false;
 };

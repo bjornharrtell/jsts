@@ -1,20 +1,24 @@
-import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default function NodeBase() {
-	this._items = new ArrayList();
-	this._subnode = new Array(2).fill(null);
-}
-extend(NodeBase.prototype, {
-	hasChildren: function () {
+export default class NodeBase {
+	constructor() {
+		NodeBase.constructor_.apply(this, arguments);
+	}
+	static getSubnodeIndex(interval, centre) {
+		var subnodeIndex = -1;
+		if (interval.min >= centre) subnodeIndex = 1;
+		if (interval.max <= centre) subnodeIndex = 0;
+		return subnodeIndex;
+	}
+	hasChildren() {
 		for (var i = 0; i < 2; i++) {
 			if (this._subnode[i] !== null) return true;
 		}
 		return false;
-	},
-	isPrunable: function () {
+	}
+	isPrunable() {
 		return !(this.hasChildren() || this.hasItems());
-	},
-	addAllItems: function (items) {
+	}
+	addAllItems(items) {
 		items.addAll(this._items);
 		for (var i = 0; i < 2; i++) {
 			if (this._subnode[i] !== null) {
@@ -22,8 +26,8 @@ extend(NodeBase.prototype, {
 			}
 		}
 		return items;
-	},
-	size: function () {
+	}
+	size() {
 		var subSize = 0;
 		for (var i = 0; i < 2; i++) {
 			if (this._subnode[i] !== null) {
@@ -31,17 +35,17 @@ extend(NodeBase.prototype, {
 			}
 		}
 		return subSize + this._items.size();
-	},
-	addAllItemsFromOverlapping: function (interval, resultItems) {
+	}
+	addAllItemsFromOverlapping(interval, resultItems) {
 		if (interval !== null && !this.isSearchMatch(interval)) return null;
 		resultItems.addAll(this._items);
 		if (this._subnode[0] !== null) this._subnode[0].addAllItemsFromOverlapping(interval, resultItems);
 		if (this._subnode[1] !== null) this._subnode[1].addAllItemsFromOverlapping(interval, resultItems);
-	},
-	hasItems: function () {
+	}
+	hasItems() {
 		return !this._items.isEmpty();
-	},
-	remove: function (itemInterval, item) {
+	}
+	remove(itemInterval, item) {
 		if (!this.isSearchMatch(itemInterval)) return false;
 		var found = false;
 		for (var i = 0; i < 2; i++) {
@@ -56,11 +60,11 @@ extend(NodeBase.prototype, {
 		if (found) return found;
 		found = this._items.remove(item);
 		return found;
-	},
-	getItems: function () {
+	}
+	getItems() {
 		return this._items;
-	},
-	depth: function () {
+	}
+	depth() {
 		var maxSubDepth = 0;
 		for (var i = 0; i < 2; i++) {
 			if (this._subnode[i] !== null) {
@@ -69,8 +73,8 @@ extend(NodeBase.prototype, {
 			}
 		}
 		return maxSubDepth + 1;
-	},
-	nodeSize: function () {
+	}
+	nodeSize() {
 		var subSize = 0;
 		for (var i = 0; i < 2; i++) {
 			if (this._subnode[i] !== null) {
@@ -78,20 +82,18 @@ extend(NodeBase.prototype, {
 			}
 		}
 		return subSize + 1;
-	},
-	add: function (item) {
+	}
+	add(item) {
 		this._items.add(item);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NodeBase;
 	}
-});
-NodeBase.getSubnodeIndex = function (interval, centre) {
-	var subnodeIndex = -1;
-	if (interval.min >= centre) subnodeIndex = 1;
-	if (interval.max <= centre) subnodeIndex = 0;
-	return subnodeIndex;
+	get interfaces_() {
+		return [];
+	}
+}
+NodeBase.constructor_ = function () {
+	this._items = new ArrayList();
+	this._subnode = new Array(2).fill(null);
 };

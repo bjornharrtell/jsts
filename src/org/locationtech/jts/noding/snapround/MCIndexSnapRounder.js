@@ -5,26 +5,15 @@ import Noder from '../Noder';
 import MCIndexNoder from '../MCIndexNoder';
 import NodedSegmentString from '../NodedSegmentString';
 import HotPixel from './HotPixel';
-import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
 import MCIndexPointSnapper from './MCIndexPointSnapper';
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder';
-export default function MCIndexSnapRounder() {
-	this._pm = null;
-	this._li = null;
-	this._scaleFactor = null;
-	this._noder = null;
-	this._pointSnapper = null;
-	this._nodedSegStrings = null;
-	let pm = arguments[0];
-	this._pm = pm;
-	this._li = new RobustLineIntersector();
-	this._li.setPrecisionModel(pm);
-	this._scaleFactor = pm.getScale();
-}
-extend(MCIndexSnapRounder.prototype, {
-	checkCorrectness: function (inputSegmentStrings) {
+export default class MCIndexSnapRounder {
+	constructor() {
+		MCIndexSnapRounder.constructor_.apply(this, arguments);
+	}
+	checkCorrectness(inputSegmentStrings) {
 		var resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings);
 		var nv = new NodingValidator(resultSegStrings);
 		try {
@@ -34,22 +23,22 @@ extend(MCIndexSnapRounder.prototype, {
 				ex.printStackTrace();
 			} else throw ex;
 		} finally {}
-	},
-	getNodedSubstrings: function () {
+	}
+	getNodedSubstrings() {
 		return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings);
-	},
-	snapRound: function (segStrings, li) {
+	}
+	snapRound(segStrings, li) {
 		var intersections = this.findInteriorIntersections(segStrings, li);
 		this.computeIntersectionSnaps(intersections);
 		this.computeVertexSnaps(segStrings);
-	},
-	findInteriorIntersections: function (segStrings, li) {
+	}
+	findInteriorIntersections(segStrings, li) {
 		var intFinderAdder = new InteriorIntersectionFinderAdder(li);
 		this._noder.setSegmentIntersector(intFinderAdder);
 		this._noder.computeNodes(segStrings);
 		return intFinderAdder.getInteriorIntersections();
-	},
-	computeVertexSnaps: function () {
+	}
+	computeVertexSnaps() {
 		if (hasInterface(arguments[0], Collection)) {
 			let edges = arguments[0];
 			for (var i0 = edges.iterator(); i0.hasNext(); ) {
@@ -67,24 +56,37 @@ extend(MCIndexSnapRounder.prototype, {
 				}
 			}
 		}
-	},
-	computeNodes: function (inputSegmentStrings) {
+	}
+	computeNodes(inputSegmentStrings) {
 		this._nodedSegStrings = inputSegmentStrings;
 		this._noder = new MCIndexNoder();
 		this._pointSnapper = new MCIndexPointSnapper(this._noder.getIndex());
 		this.snapRound(inputSegmentStrings, this._li);
-	},
-	computeIntersectionSnaps: function (snapPts) {
+	}
+	computeIntersectionSnaps(snapPts) {
 		for (var it = snapPts.iterator(); it.hasNext(); ) {
 			var snapPt = it.next();
 			var hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li);
 			this._pointSnapper.snap(hotPixel);
 		}
-	},
-	interfaces_: function () {
-		return [Noder];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MCIndexSnapRounder;
 	}
-});
+	get interfaces_() {
+		return [Noder];
+	}
+}
+MCIndexSnapRounder.constructor_ = function () {
+	this._pm = null;
+	this._li = null;
+	this._scaleFactor = null;
+	this._noder = null;
+	this._pointSnapper = null;
+	this._nodedSegStrings = null;
+	let pm = arguments[0];
+	this._pm = pm;
+	this._li = new RobustLineIntersector();
+	this._li.setPrecisionModel(pm);
+	this._scaleFactor = pm.getScale();
+};

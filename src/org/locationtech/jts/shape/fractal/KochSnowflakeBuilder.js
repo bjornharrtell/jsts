@@ -1,17 +1,18 @@
 import CoordinateList from '../../geom/CoordinateList';
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
-import inherits from '../../../../../inherits';
 import Vector2D from '../../math/Vector2D';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
-export default function KochSnowflakeBuilder() {
-	this._coordList = new CoordinateList();
-	let geomFactory = arguments[0];
-	GeometricShapeBuilder.call(this, geomFactory);
-}
-inherits(KochSnowflakeBuilder, GeometricShapeBuilder);
-extend(KochSnowflakeBuilder.prototype, {
-	getBoundary: function (level, origin, width) {
+export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
+	constructor() {
+		super();
+		KochSnowflakeBuilder.constructor_.apply(this, arguments);
+	}
+	static recursionLevelForSize(numPts) {
+		var pow4 = Math.trunc(numPts / 3);
+		var exp = Math.log(pow4) / Math.log(4);
+		return Math.trunc(exp);
+	}
+	getBoundary(level, origin, width) {
 		var y = origin.y;
 		if (level > 0) {
 			y += KochSnowflakeBuilder.THIRD_HEIGHT * width;
@@ -24,17 +25,17 @@ extend(KochSnowflakeBuilder.prototype, {
 		this.addSide(level, p2, p0);
 		this._coordList.closeRing();
 		return this._coordList.toCoordinateArray();
-	},
-	getGeometry: function () {
+	}
+	getGeometry() {
 		var level = KochSnowflakeBuilder.recursionLevelForSize(this._numPts);
 		var baseLine = this.getSquareBaseLine();
 		var pts = this.getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength());
 		return this._geomFactory.createPolygon(this._geomFactory.createLinearRing(pts), null);
-	},
-	addSegment: function (p0, p1) {
+	}
+	addSegment(p0, p1) {
 		this._coordList.add(p1);
-	},
-	addSide: function (level, p0, p1) {
+	}
+	addSide(level, p0, p1) {
 		if (level === 0) this.addSegment(p0, p1); else {
 			var base = Vector2D.create(p0, p1);
 			var midPt = base.multiply(0.5).translate(p0);
@@ -49,18 +50,18 @@ extend(KochSnowflakeBuilder.prototype, {
 			this.addSide(n2, offsetPt, twoThirdPt);
 			this.addSide(n2, twoThirdPt, p1);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return KochSnowflakeBuilder;
 	}
-});
-KochSnowflakeBuilder.recursionLevelForSize = function (numPts) {
-	var pow4 = Math.trunc(numPts / 3);
-	var exp = Math.log(pow4) / Math.log(4);
-	return Math.trunc(exp);
+	get interfaces_() {
+		return [];
+	}
+}
+KochSnowflakeBuilder.constructor_ = function () {
+	this._coordList = new CoordinateList();
+	let geomFactory = arguments[0];
+	GeometricShapeBuilder.constructor_.call(this, geomFactory);
 };
 KochSnowflakeBuilder.HEIGHT_FACTOR = Math.sin(Math.PI / 3.0);
 KochSnowflakeBuilder.ONE_THIRD = 1.0 / 3.0;

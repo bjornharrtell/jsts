@@ -1,20 +1,19 @@
 import EdgeEndBundleStar from './EdgeEndBundleStar';
-import extend from '../../../../../extend';
 import RelateNode from './RelateNode';
-import inherits from '../../../../../inherits';
 import NodeFactory from '../../geomgraph/NodeFactory';
-export default function RelateNodeFactory() {
-	NodeFactory.apply(this);
-}
-inherits(RelateNodeFactory, NodeFactory);
-extend(RelateNodeFactory.prototype, {
-	createNode: function (coord) {
+export default class RelateNodeFactory extends NodeFactory {
+	constructor() {
+		super();
+		RelateNodeFactory.constructor_.apply(this, arguments);
+	}
+	createNode(coord) {
 		return new RelateNode(coord, new EdgeEndBundleStar());
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RelateNodeFactory;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+RelateNodeFactory.constructor_ = function () {};

@@ -2,7 +2,6 @@ import TreeSet from '../../../../java/util/TreeSet';
 import LineString from '../geom/LineString';
 import hasInterface from '../../../../hasInterface';
 import MultiPoint from '../geom/MultiPoint';
-import extend from '../../../../extend';
 import GeometryGraph from '../geomgraph/GeometryGraph';
 import GeometryCollection from '../geom/GeometryCollection';
 import Polygonal from '../geom/Polygonal';
@@ -10,21 +9,22 @@ import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter';
 import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
-export default function IsSimpleOp() {
-	this._inputGeom = null;
-	this._isClosedEndpointsInInterior = true;
-	this._nonSimpleLocation = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		this._inputGeom = geom;
-	} else if (arguments.length === 2) {
-		let geom = arguments[0], boundaryNodeRule = arguments[1];
-		this._inputGeom = geom;
-		this._isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
+export default class IsSimpleOp {
+	constructor() {
+		IsSimpleOp.constructor_.apply(this, arguments);
 	}
-}
-extend(IsSimpleOp.prototype, {
-	isSimpleMultiPoint: function (mp) {
+	static isSimple() {
+		if (arguments.length === 1) {
+			let geom = arguments[0];
+			var op = new IsSimpleOp(geom);
+			return op.isSimple();
+		} else if (arguments.length === 2) {
+			let geom = arguments[0], boundaryNodeRule = arguments[1];
+			var op = new IsSimpleOp(geom, boundaryNodeRule);
+			return op.isSimple();
+		}
+	}
+	isSimpleMultiPoint(mp) {
 		if (mp.isEmpty()) return true;
 		var points = new TreeSet();
 		for (var i = 0; i < mp.getNumGeometries(); i++) {
@@ -37,16 +37,16 @@ extend(IsSimpleOp.prototype, {
 			points.add(p);
 		}
 		return true;
-	},
-	isSimplePolygonal: function (geom) {
+	}
+	isSimplePolygonal(geom) {
 		var rings = LinearComponentExtracter.getLines(geom);
 		for (var i = rings.iterator(); i.hasNext(); ) {
 			var ring = i.next();
 			if (!this.isSimpleLinearGeometry(ring)) return false;
 		}
 		return true;
-	},
-	hasClosedEndpointIntersection: function (graph) {
+	}
+	hasClosedEndpointIntersection(graph) {
 		var endPoints = new TreeMap();
 		for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
@@ -65,11 +65,11 @@ extend(IsSimpleOp.prototype, {
 			}
 		}
 		return false;
-	},
-	getNonSimpleLocation: function () {
+	}
+	getNonSimpleLocation() {
 		return this._nonSimpleLocation;
-	},
-	isSimpleLinearGeometry: function (geom) {
+	}
+	isSimpleLinearGeometry(geom) {
 		if (geom.isEmpty()) return true;
 		var graph = new GeometryGraph(0, geom);
 		var li = new RobustLineIntersector();
@@ -84,8 +84,8 @@ extend(IsSimpleOp.prototype, {
 			if (this.hasClosedEndpointIntersection(graph)) return false;
 		}
 		return true;
-	},
-	hasNonEndpointIntersection: function (graph) {
+	}
+	hasNonEndpointIntersection(graph) {
 		for (var i = graph.getEdgeIterator(); i.hasNext(); ) {
 			var e = i.next();
 			var maxSegmentIndex = e.getMaximumSegmentIndex();
@@ -98,16 +98,16 @@ extend(IsSimpleOp.prototype, {
 			}
 		}
 		return false;
-	},
-	addEndpoint: function (endPoints, p, isClosed) {
+	}
+	addEndpoint(endPoints, p, isClosed) {
 		var eiInfo = endPoints.get(p);
 		if (eiInfo === null) {
 			eiInfo = new EndpointInfo(p);
 			endPoints.put(p, eiInfo);
 		}
 		eiInfo.addEndpoint(isClosed);
-	},
-	computeSimple: function (geom) {
+	}
+	computeSimple(geom) {
 		this._nonSimpleLocation = null;
 		if (geom.isEmpty()) return true;
 		if (geom instanceof LineString) return this.isSimpleLinearGeometry(geom);
@@ -116,37 +116,44 @@ extend(IsSimpleOp.prototype, {
 		if (hasInterface(geom, Polygonal)) return this.isSimplePolygonal(geom);
 		if (geom instanceof GeometryCollection) return this.isSimpleGeometryCollection(geom);
 		return true;
-	},
-	isSimple: function () {
+	}
+	isSimple() {
 		this._nonSimpleLocation = null;
 		return this.computeSimple(this._inputGeom);
-	},
-	isSimpleGeometryCollection: function (geom) {
+	}
+	isSimpleGeometryCollection(geom) {
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var comp = geom.getGeometryN(i);
 			if (!this.computeSimple(comp)) return false;
 		}
 		return true;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IsSimpleOp;
 	}
-});
-IsSimpleOp.isSimple = function () {
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		var op = new IsSimpleOp(geom);
-		return op.isSimple();
-	} else if (arguments.length === 2) {
-		let geom = arguments[0], boundaryNodeRule = arguments[1];
-		var op = new IsSimpleOp(geom, boundaryNodeRule);
-		return op.isSimple();
+	get interfaces_() {
+		return [];
 	}
-};
-function EndpointInfo() {
+}
+class EndpointInfo {
+	constructor() {
+		EndpointInfo.constructor_.apply(this, arguments);
+	}
+	addEndpoint(isClosed) {
+		this.degree++;
+		this.isClosed |= isClosed;
+	}
+	getCoordinate() {
+		return this.pt;
+	}
+	getClass() {
+		return EndpointInfo;
+	}
+	get interfaces_() {
+		return [];
+	}
+}
+EndpointInfo.constructor_ = function () {
 	this.pt = null;
 	this.isClosed = null;
 	this.degree = null;
@@ -154,20 +161,18 @@ function EndpointInfo() {
 	this.pt = pt;
 	this.isClosed = false;
 	this.degree = 0;
-}
-extend(EndpointInfo.prototype, {
-	addEndpoint: function (isClosed) {
-		this.degree++;
-		this.isClosed |= isClosed;
-	},
-	getCoordinate: function () {
-		return this.pt;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
-		return EndpointInfo;
-	}
-});
+};
 IsSimpleOp.EndpointInfo = EndpointInfo;
+IsSimpleOp.constructor_ = function () {
+	this._inputGeom = null;
+	this._isClosedEndpointsInInterior = true;
+	this._nonSimpleLocation = null;
+	if (arguments.length === 1) {
+		let geom = arguments[0];
+		this._inputGeom = geom;
+	} else if (arguments.length === 2) {
+		let geom = arguments[0], boundaryNodeRule = arguments[1];
+		this._inputGeom = geom;
+		this._isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2);
+	}
+};

@@ -3,20 +3,16 @@ import Geometry from '../../geom/Geometry';
 import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
 import EdgeString from './EdgeString';
-import extend from '../../../../../extend';
 import LineMergeGraph from './LineMergeGraph';
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import GraphComponent from '../../planargraph/GraphComponent';
-export default function LineMerger() {
-	this._graph = new LineMergeGraph();
-	this._mergedLineStrings = null;
-	this._factory = null;
-	this._edgeStrings = null;
-}
-extend(LineMerger.prototype, {
-	buildEdgeStringsForUnprocessedNodes: function () {
+export default class LineMerger {
+	constructor() {
+		LineMerger.constructor_.apply(this, arguments);
+	}
+	buildEdgeStringsForUnprocessedNodes() {
 		for (var i = this._graph.getNodes().iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (!node.isMarked()) {
@@ -25,8 +21,8 @@ extend(LineMerger.prototype, {
 				node.setMarked(true);
 			}
 		}
-	},
-	buildEdgeStringsForNonDegree2Nodes: function () {
+	}
+	buildEdgeStringsForNonDegree2Nodes() {
 		for (var i = this._graph.getNodes().iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (node.getDegree() !== 2) {
@@ -34,15 +30,15 @@ extend(LineMerger.prototype, {
 				node.setMarked(true);
 			}
 		}
-	},
-	buildEdgeStringsForObviousStartNodes: function () {
+	}
+	buildEdgeStringsForObviousStartNodes() {
 		this.buildEdgeStringsForNonDegree2Nodes();
-	},
-	getMergedLineStrings: function () {
+	}
+	getMergedLineStrings() {
 		this.merge();
 		return this._mergedLineStrings;
-	},
-	buildEdgeStringsStartingAt: function (node) {
+	}
+	buildEdgeStringsStartingAt(node) {
 		for (var i = node.getOutEdges().iterator(); i.hasNext(); ) {
 			var directedEdge = i.next();
 			if (directedEdge.getEdge().isMarked()) {
@@ -50,8 +46,8 @@ extend(LineMerger.prototype, {
 			}
 			this._edgeStrings.add(this.buildEdgeStringStartingWith(directedEdge));
 		}
-	},
-	merge: function () {
+	}
+	merge() {
 		if (this._mergedLineStrings !== null) {
 			return null;
 		}
@@ -65,8 +61,8 @@ extend(LineMerger.prototype, {
 			var edgeString = i.next();
 			this._mergedLineStrings.add(edgeString.toLineString());
 		}
-	},
-	buildEdgeStringStartingWith: function (start) {
+	}
+	buildEdgeStringStartingWith(start) {
 		var edgeString = new EdgeString(this._factory);
 		var current = start;
 		do {
@@ -75,20 +71,20 @@ extend(LineMerger.prototype, {
 			current = current.getNext();
 		} while (current !== null && current !== start);
 		return edgeString;
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments[0] instanceof Geometry) {
 			let geometry = arguments[0];
-			geometry.apply({
-				interfaces_: function () {
+			geometry.apply(new (class {
+				get interfaces_() {
 					return [GeometryComponentFilter];
-				},
-				filter: function (component) {
+				}
+				filter(component) {
 					if (component instanceof LineString) {
 						this.add(component);
 					}
 				}
-			});
+			})());
 		} else if (hasInterface(arguments[0], Collection)) {
 			let geometries = arguments[0];
 			this._mergedLineStrings = null;
@@ -103,14 +99,20 @@ extend(LineMerger.prototype, {
 			}
 			this._graph.addEdge(lineString);
 		}
-	},
-	buildEdgeStringsForIsolatedLoops: function () {
+	}
+	buildEdgeStringsForIsolatedLoops() {
 		this.buildEdgeStringsForUnprocessedNodes();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return LineMerger;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+LineMerger.constructor_ = function () {
+	this._graph = new LineMergeGraph();
+	this._mergedLineStrings = null;
+	this._factory = null;
+	this._edgeStrings = null;
+};

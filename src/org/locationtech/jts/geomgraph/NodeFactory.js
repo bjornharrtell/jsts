@@ -1,14 +1,16 @@
 import Node from './Node';
-import extend from '../../../../extend';
-export default function NodeFactory() {}
-extend(NodeFactory.prototype, {
-	createNode: function (coord) {
+export default class NodeFactory {
+	constructor() {
+		NodeFactory.constructor_.apply(this, arguments);
+	}
+	createNode(coord) {
 		return new Node(coord, null);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NodeFactory;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+NodeFactory.constructor_ = function () {};

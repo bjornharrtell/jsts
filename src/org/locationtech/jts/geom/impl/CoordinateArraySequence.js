@@ -2,17 +2,110 @@ import hasInterface from '../../../../../hasInterface';
 import Coordinate from '../Coordinate';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
 import Double from '../../../../../java/lang/Double';
-import extend from '../../../../../extend';
 import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
 import StringBuilder from '../../../../../java/lang/StringBuilder';
-export default function CoordinateArraySequence() {
+export default class CoordinateArraySequence {
+	constructor() {
+		CoordinateArraySequence.constructor_.apply(this, arguments);
+	}
+	setOrdinate(index, ordinateIndex, value) {
+		switch (ordinateIndex) {
+			case CoordinateSequence.X:
+				this._coordinates[index].x = value;
+				break;
+			case CoordinateSequence.Y:
+				this._coordinates[index].y = value;
+				break;
+			case CoordinateSequence.Z:
+				this._coordinates[index].z = value;
+				break;
+			default:
+				throw new IllegalArgumentException("invalid ordinateIndex");
+		}
+	}
+	size() {
+		return this._coordinates.length;
+	}
+	getOrdinate(index, ordinateIndex) {
+		switch (ordinateIndex) {
+			case CoordinateSequence.X:
+				return this._coordinates[index].x;
+			case CoordinateSequence.Y:
+				return this._coordinates[index].y;
+			case CoordinateSequence.Z:
+				return this._coordinates[index].z;
+		}
+		return Double.NaN;
+	}
+	getCoordinate() {
+		if (arguments.length === 1) {
+			let i = arguments[0];
+			return this._coordinates[i];
+		} else if (arguments.length === 2) {
+			let index = arguments[0], coord = arguments[1];
+			coord.x = this._coordinates[index].x;
+			coord.y = this._coordinates[index].y;
+			coord.z = this._coordinates[index].z;
+		}
+	}
+	getCoordinateCopy(i) {
+		return new Coordinate(this._coordinates[i]);
+	}
+	getDimension() {
+		return this._dimension;
+	}
+	getX(index) {
+		return this._coordinates[index].x;
+	}
+	expandEnvelope(env) {
+		for (var i = 0; i < this._coordinates.length; i++) {
+			env.expandToInclude(this._coordinates[i]);
+		}
+		return env;
+	}
+	copy() {
+		var cloneCoordinates = new Array(this.size()).fill(null);
+		for (var i = 0; i < this._coordinates.length; i++) {
+			cloneCoordinates[i] = this._coordinates[i].copy();
+		}
+		return new CoordinateArraySequence(cloneCoordinates, this._dimension);
+	}
+	toString() {
+		if (this._coordinates.length > 0) {
+			var strBuilder = new StringBuilder(17 * this._coordinates.length);
+			strBuilder.append('(');
+			strBuilder.append(this._coordinates[0]);
+			for (var i = 1; i < this._coordinates.length; i++) {
+				strBuilder.append(", ");
+				strBuilder.append(this._coordinates[i]);
+			}
+			strBuilder.append(')');
+			return strBuilder.toString();
+		} else {
+			return "()";
+		}
+	}
+	getY(index) {
+		return this._coordinates[index].y;
+	}
+	toCoordinateArray() {
+		return this._coordinates;
+	}
+	getClass() {
+		return CoordinateArraySequence;
+	}
+	get interfaces_() {
+		return [CoordinateSequence, Serializable];
+	}
+}
+CoordinateArraySequence.constructor_ = function () {
 	this._dimension = 3;
 	this._coordinates = null;
 	if (arguments.length === 1) {
 		if (arguments[0] instanceof Array) {
 			let coordinates = arguments[0];
-			CoordinateArraySequence.call(this, coordinates, 3);
+			CoordinateArraySequence.constructor_.call(this, coordinates, 3);
 		} else if (Number.isInteger(arguments[0])) {
 			let size = arguments[0];
 			this._coordinates = new Array(size).fill(null);
@@ -46,96 +139,5 @@ export default function CoordinateArraySequence() {
 			}
 		}
 	}
-}
-extend(CoordinateArraySequence.prototype, {
-	setOrdinate: function (index, ordinateIndex, value) {
-		switch (ordinateIndex) {
-			case CoordinateSequence.X:
-				this._coordinates[index].x = value;
-				break;
-			case CoordinateSequence.Y:
-				this._coordinates[index].y = value;
-				break;
-			case CoordinateSequence.Z:
-				this._coordinates[index].z = value;
-				break;
-			default:
-				throw new IllegalArgumentException("invalid ordinateIndex");
-		}
-	},
-	size: function () {
-		return this._coordinates.length;
-	},
-	getOrdinate: function (index, ordinateIndex) {
-		switch (ordinateIndex) {
-			case CoordinateSequence.X:
-				return this._coordinates[index].x;
-			case CoordinateSequence.Y:
-				return this._coordinates[index].y;
-			case CoordinateSequence.Z:
-				return this._coordinates[index].z;
-		}
-		return Double.NaN;
-	},
-	getCoordinate: function () {
-		if (arguments.length === 1) {
-			let i = arguments[0];
-			return this._coordinates[i];
-		} else if (arguments.length === 2) {
-			let index = arguments[0], coord = arguments[1];
-			coord.x = this._coordinates[index].x;
-			coord.y = this._coordinates[index].y;
-			coord.z = this._coordinates[index].z;
-		}
-	},
-	getCoordinateCopy: function (i) {
-		return new Coordinate(this._coordinates[i]);
-	},
-	getDimension: function () {
-		return this._dimension;
-	},
-	getX: function (index) {
-		return this._coordinates[index].x;
-	},
-	expandEnvelope: function (env) {
-		for (var i = 0; i < this._coordinates.length; i++) {
-			env.expandToInclude(this._coordinates[i]);
-		}
-		return env;
-	},
-	copy: function () {
-		var cloneCoordinates = new Array(this.size()).fill(null);
-		for (var i = 0; i < this._coordinates.length; i++) {
-			cloneCoordinates[i] = this._coordinates[i].copy();
-		}
-		return new CoordinateArraySequence(cloneCoordinates, this._dimension);
-	},
-	toString: function () {
-		if (this._coordinates.length > 0) {
-			var strBuilder = new StringBuilder(17 * this._coordinates.length);
-			strBuilder.append('(');
-			strBuilder.append(this._coordinates[0]);
-			for (var i = 1; i < this._coordinates.length; i++) {
-				strBuilder.append(", ");
-				strBuilder.append(this._coordinates[i]);
-			}
-			strBuilder.append(')');
-			return strBuilder.toString();
-		} else {
-			return "()";
-		}
-	},
-	getY: function (index) {
-		return this._coordinates[index].y;
-	},
-	toCoordinateArray: function () {
-		return this._coordinates;
-	},
-	interfaces_: function () {
-		return [CoordinateSequence, Serializable];
-	},
-	getClass: function () {
-		return CoordinateArraySequence;
-	}
-});
+};
 CoordinateArraySequence.serialVersionUID = -915438501601840650;

@@ -1,16 +1,11 @@
 import Location from '../Location';
-import extend from '../../../../../extend';
 import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter';
 import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator';
-export default function PreparedPolygonPredicate() {
-	this._prepPoly = null;
-	this._targetPointLocator = null;
-	let prepPoly = arguments[0];
-	this._prepPoly = prepPoly;
-	this._targetPointLocator = prepPoly.getPointLocator();
-}
-extend(PreparedPolygonPredicate.prototype, {
-	isAnyTargetComponentInAreaTest: function (testGeom, targetRepPts) {
+export default class PreparedPolygonPredicate {
+	constructor() {
+		PreparedPolygonPredicate.constructor_.apply(this, arguments);
+	}
+	isAnyTargetComponentInAreaTest(testGeom, targetRepPts) {
 		var piaLoc = new SimplePointInAreaLocator(testGeom);
 		for (var i = targetRepPts.iterator(); i.hasNext(); ) {
 			var p = i.next();
@@ -18,8 +13,8 @@ extend(PreparedPolygonPredicate.prototype, {
 			if (loc !== Location.EXTERIOR) return true;
 		}
 		return false;
-	},
-	isAllTestComponentsInTarget: function (testGeom) {
+	}
+	isAllTestComponentsInTarget(testGeom) {
 		var coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
 		for (var i = coords.iterator(); i.hasNext(); ) {
 			var p = i.next();
@@ -27,8 +22,8 @@ extend(PreparedPolygonPredicate.prototype, {
 			if (loc === Location.EXTERIOR) return false;
 		}
 		return true;
-	},
-	isAnyTestComponentInTargetInterior: function (testGeom) {
+	}
+	isAnyTestComponentInTargetInterior(testGeom) {
 		var coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
 		for (var i = coords.iterator(); i.hasNext(); ) {
 			var p = i.next();
@@ -36,8 +31,8 @@ extend(PreparedPolygonPredicate.prototype, {
 			if (loc === Location.INTERIOR) return true;
 		}
 		return false;
-	},
-	isAllTestComponentsInTargetInterior: function (testGeom) {
+	}
+	isAllTestComponentsInTargetInterior(testGeom) {
 		var coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
 		for (var i = coords.iterator(); i.hasNext(); ) {
 			var p = i.next();
@@ -45,8 +40,8 @@ extend(PreparedPolygonPredicate.prototype, {
 			if (loc !== Location.INTERIOR) return false;
 		}
 		return true;
-	},
-	isAnyTestComponentInTarget: function (testGeom) {
+	}
+	isAnyTestComponentInTarget(testGeom) {
 		var coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
 		for (var i = coords.iterator(); i.hasNext(); ) {
 			var p = i.next();
@@ -54,11 +49,18 @@ extend(PreparedPolygonPredicate.prototype, {
 			if (loc !== Location.EXTERIOR) return true;
 		}
 		return false;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PreparedPolygonPredicate;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PreparedPolygonPredicate.constructor_ = function () {
+	this._prepPoly = null;
+	this._targetPointLocator = null;
+	let prepPoly = arguments[0];
+	this._prepPoly = prepPoly;
+	this._targetPointLocator = prepPoly.getPointLocator();
+};

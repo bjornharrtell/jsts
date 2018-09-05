@@ -1,16 +1,13 @@
-import extend from '../../../../extend';
 import SegmentIntersectionDetector from './SegmentIntersectionDetector';
 import MCIndexSegmentSetMutualIntersector from './MCIndexSegmentSetMutualIntersector';
-export default function FastSegmentSetIntersectionFinder() {
-	this._segSetMutInt = null;
-	let baseSegStrings = arguments[0];
-	this._segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
-}
-extend(FastSegmentSetIntersectionFinder.prototype, {
-	getSegmentSetIntersector: function () {
+export default class FastSegmentSetIntersectionFinder {
+	constructor() {
+		FastSegmentSetIntersectionFinder.constructor_.apply(this, arguments);
+	}
+	getSegmentSetIntersector() {
 		return this._segSetMutInt;
-	},
-	intersects: function () {
+	}
+	intersects() {
 		if (arguments.length === 1) {
 			let segStrings = arguments[0];
 			var intFinder = new SegmentIntersectionDetector();
@@ -20,11 +17,16 @@ extend(FastSegmentSetIntersectionFinder.prototype, {
 			this._segSetMutInt.process(segStrings, intDetector);
 			return intDetector.hasIntersection();
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return FastSegmentSetIntersectionFinder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+FastSegmentSetIntersectionFinder.constructor_ = function () {
+	this._segSetMutInt = null;
+	let baseSegStrings = arguments[0];
+	this._segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
+};

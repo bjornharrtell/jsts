@@ -3,28 +3,14 @@ import Collection from '../../../../java/util/Collection';
 import Noder from './Noder';
 import Coordinate from '../geom/Coordinate';
 import NodedSegmentString from './NodedSegmentString';
-import extend from '../../../../extend';
 import System from '../../../../java/lang/System';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
-export default function ScaledNoder() {
-	this._noder = null;
-	this._scaleFactor = null;
-	this._offsetX = null;
-	this._offsetY = null;
-	this._isScaled = false;
-	if (arguments.length === 2) {
-		let noder = arguments[0], scaleFactor = arguments[1];
-		ScaledNoder.call(this, noder, scaleFactor, 0, 0);
-	} else if (arguments.length === 4) {
-		let noder = arguments[0], scaleFactor = arguments[1], offsetX = arguments[2], offsetY = arguments[3];
-		this._noder = noder;
-		this._scaleFactor = scaleFactor;
-		this._isScaled = !this.isIntegerPrecision();
+export default class ScaledNoder {
+	constructor() {
+		ScaledNoder.constructor_.apply(this, arguments);
 	}
-}
-extend(ScaledNoder.prototype, {
-	rescale: function () {
+	rescale() {
 		if (hasInterface(arguments[0], Collection)) {
 			let segStrings = arguments[0];
 			for (var i = segStrings.iterator(); i.hasNext(); ) {
@@ -47,8 +33,8 @@ extend(ScaledNoder.prototype, {
 				System.out.println(pts);
 			}
 		}
-	},
-	scale: function () {
+	}
+	scale() {
 		if (hasInterface(arguments[0], Collection)) {
 			let segStrings = arguments[0];
 			var nodedSegmentStrings = new ArrayList(segStrings.size());
@@ -66,24 +52,40 @@ extend(ScaledNoder.prototype, {
 			var roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts);
 			return roundPtsNoDup;
 		}
-	},
-	isIntegerPrecision: function () {
+	}
+	isIntegerPrecision() {
 		return this._scaleFactor === 1.0;
-	},
-	getNodedSubstrings: function () {
+	}
+	getNodedSubstrings() {
 		var splitSS = this._noder.getNodedSubstrings();
 		if (this._isScaled) this.rescale(splitSS);
 		return splitSS;
-	},
-	computeNodes: function (inputSegStrings) {
+	}
+	computeNodes(inputSegStrings) {
 		var intSegStrings = inputSegStrings;
 		if (this._isScaled) intSegStrings = this.scale(inputSegStrings);
 		this._noder.computeNodes(intSegStrings);
-	},
-	interfaces_: function () {
-		return [Noder];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ScaledNoder;
 	}
-});
+	get interfaces_() {
+		return [Noder];
+	}
+}
+ScaledNoder.constructor_ = function () {
+	this._noder = null;
+	this._scaleFactor = null;
+	this._offsetX = null;
+	this._offsetY = null;
+	this._isScaled = false;
+	if (arguments.length === 2) {
+		let noder = arguments[0], scaleFactor = arguments[1];
+		ScaledNoder.constructor_.call(this, noder, scaleFactor, 0, 0);
+	} else if (arguments.length === 4) {
+		let noder = arguments[0], scaleFactor = arguments[1], offsetX = arguments[2], offsetY = arguments[3];
+		this._noder = noder;
+		this._scaleFactor = scaleFactor;
+		this._isScaled = !this.isIntegerPrecision();
+	}
+};

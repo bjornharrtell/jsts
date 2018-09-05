@@ -1,37 +1,38 @@
-import extend from '../../../../extend';
 import Vertex from './quadedge/Vertex';
-import inherits from '../../../../inherits';
-export default function ConstraintVertex() {
-	this._isOnConstraint = null;
-	this._constraint = null;
-	let p = arguments[0];
-	Vertex.call(this, p);
-}
-inherits(ConstraintVertex, Vertex);
-extend(ConstraintVertex.prototype, {
-	getConstraint: function () {
+export default class ConstraintVertex extends Vertex {
+	constructor() {
+		super();
+		ConstraintVertex.constructor_.apply(this, arguments);
+	}
+	getConstraint() {
 		return this._constraint;
-	},
-	setOnConstraint: function (isOnConstraint) {
+	}
+	setOnConstraint(isOnConstraint) {
 		this._isOnConstraint = isOnConstraint;
-	},
-	merge: function (other) {
+	}
+	merge(other) {
 		if (other._isOnConstraint) {
 			this._isOnConstraint = true;
 			this._constraint = other._constraint;
 		}
-	},
-	isOnConstraint: function () {
+	}
+	isOnConstraint() {
 		return this._isOnConstraint;
-	},
-	setConstraint: function (constraint) {
+	}
+	setConstraint(constraint) {
 		this._isOnConstraint = true;
 		this._constraint = constraint;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ConstraintVertex;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+ConstraintVertex.constructor_ = function () {
+	this._isOnConstraint = null;
+	this._constraint = null;
+	let p = arguments[0];
+	Vertex.constructor_.call(this, p);
+};

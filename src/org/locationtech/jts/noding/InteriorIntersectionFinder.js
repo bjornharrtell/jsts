@@ -1,42 +1,45 @@
-import extend from '../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
 import ArrayList from '../../../../java/util/ArrayList';
-export default function InteriorIntersectionFinder() {
-	this._findAllIntersections = false;
-	this._isCheckEndSegmentsOnly = false;
-	this._li = null;
-	this._interiorIntersection = null;
-	this._intSegments = null;
-	this._intersections = new ArrayList();
-	this._intersectionCount = 0;
-	this._keepIntersections = true;
-	let li = arguments[0];
-	this._li = li;
-	this._interiorIntersection = null;
-}
-extend(InteriorIntersectionFinder.prototype, {
-	getInteriorIntersection: function () {
+export default class InteriorIntersectionFinder {
+	constructor() {
+		InteriorIntersectionFinder.constructor_.apply(this, arguments);
+	}
+	static createAllIntersectionsFinder(li) {
+		var finder = new InteriorIntersectionFinder(li);
+		finder.setFindAllIntersections(true);
+		return finder;
+	}
+	static createAnyIntersectionFinder(li) {
+		return new InteriorIntersectionFinder(li);
+	}
+	static createIntersectionCounter(li) {
+		var finder = new InteriorIntersectionFinder(li);
+		finder.setFindAllIntersections(true);
+		finder.setKeepIntersections(false);
+		return finder;
+	}
+	getInteriorIntersection() {
 		return this._interiorIntersection;
-	},
-	setCheckEndSegmentsOnly: function (isCheckEndSegmentsOnly) {
+	}
+	setCheckEndSegmentsOnly(isCheckEndSegmentsOnly) {
 		this._isCheckEndSegmentsOnly = isCheckEndSegmentsOnly;
-	},
-	getIntersectionSegments: function () {
+	}
+	getIntersectionSegments() {
 		return this._intSegments;
-	},
-	count: function () {
+	}
+	count() {
 		return this._intersectionCount;
-	},
-	getIntersections: function () {
+	}
+	getIntersections() {
 		return this._intersections;
-	},
-	setFindAllIntersections: function (findAllIntersections) {
+	}
+	setFindAllIntersections(findAllIntersections) {
 		this._findAllIntersections = findAllIntersections;
-	},
-	setKeepIntersections: function (keepIntersections) {
+	}
+	setKeepIntersections(keepIntersections) {
 		this._keepIntersections = keepIntersections;
-	},
-	processIntersections: function (e0, segIndex0, e1, segIndex1) {
+	}
+	processIntersections(e0, segIndex0, e1, segIndex1) {
 		if (!this._findAllIntersections && this.hasIntersection()) return null;
 		if (e0 === e1 && segIndex0 === segIndex1) return null;
 		if (this._isCheckEndSegmentsOnly) {
@@ -60,37 +63,36 @@ extend(InteriorIntersectionFinder.prototype, {
 				this._intersectionCount++;
 			}
 		}
-	},
-	isEndSegment: function (segStr, index) {
+	}
+	isEndSegment(segStr, index) {
 		if (index === 0) return true;
 		if (index >= segStr.size() - 2) return true;
 		return false;
-	},
-	hasIntersection: function () {
+	}
+	hasIntersection() {
 		return this._interiorIntersection !== null;
-	},
-	isDone: function () {
+	}
+	isDone() {
 		if (this._findAllIntersections) return false;
 		return this._interiorIntersection !== null;
-	},
-	interfaces_: function () {
-		return [SegmentIntersector];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return InteriorIntersectionFinder;
 	}
-});
-InteriorIntersectionFinder.createAllIntersectionsFinder = function (li) {
-	var finder = new InteriorIntersectionFinder(li);
-	finder.setFindAllIntersections(true);
-	return finder;
-};
-InteriorIntersectionFinder.createAnyIntersectionFinder = function (li) {
-	return new InteriorIntersectionFinder(li);
-};
-InteriorIntersectionFinder.createIntersectionCounter = function (li) {
-	var finder = new InteriorIntersectionFinder(li);
-	finder.setFindAllIntersections(true);
-	finder.setKeepIntersections(false);
-	return finder;
+	get interfaces_() {
+		return [SegmentIntersector];
+	}
+}
+InteriorIntersectionFinder.constructor_ = function () {
+	this._findAllIntersections = false;
+	this._isCheckEndSegmentsOnly = false;
+	this._li = null;
+	this._interiorIntersection = null;
+	this._intSegments = null;
+	this._intersections = new ArrayList();
+	this._intersectionCount = 0;
+	this._keepIntersections = true;
+	let li = arguments[0];
+	this._li = li;
+	this._interiorIntersection = null;
 };

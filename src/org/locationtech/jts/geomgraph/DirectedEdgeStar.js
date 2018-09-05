@@ -1,24 +1,18 @@
 import Location from '../geom/Location';
 import Position from './Position';
 import TopologyException from '../geom/TopologyException';
-import extend from '../../../../extend';
 import EdgeEndStar from './EdgeEndStar';
 import System from '../../../../java/lang/System';
 import Label from './Label';
 import ArrayList from '../../../../java/util/ArrayList';
 import Quadrant from './Quadrant';
 import Assert from '../util/Assert';
-import inherits from '../../../../inherits';
-export default function DirectedEdgeStar() {
-	EdgeEndStar.apply(this);
-	this._resultAreaEdgeList = null;
-	this._label = null;
-	this._SCANNING_FOR_INCOMING = 1;
-	this._LINKING_TO_OUTGOING = 2;
-}
-inherits(DirectedEdgeStar, EdgeEndStar);
-extend(DirectedEdgeStar.prototype, {
-	linkResultDirectedEdges: function () {
+export default class DirectedEdgeStar extends EdgeEndStar {
+	constructor() {
+		super();
+		DirectedEdgeStar.constructor_.apply(this, arguments);
+	}
+	linkResultDirectedEdges() {
 		this.getResultAreaEdges();
 		var firstOut = null;
 		var incoming = null;
@@ -46,12 +40,12 @@ extend(DirectedEdgeStar.prototype, {
 			Assert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
 			incoming.setNext(firstOut);
 		}
-	},
-	insert: function (ee) {
+	}
+	insert(ee) {
 		var de = ee;
 		this.insertEdgeEnd(de, de);
-	},
-	getRightmostEdge: function () {
+	}
+	getRightmostEdge() {
 		var edges = this.getEdges();
 		var size = edges.size();
 		if (size < 1) return null;
@@ -66,8 +60,8 @@ extend(DirectedEdgeStar.prototype, {
 		}
 		Assert.shouldNeverReachHere("found two horizontal edges incident on node");
 		return null;
-	},
-	print: function (out) {
+	}
+	print(out) {
 		System.out.println("DirectedEdgeStar: " + this.getCoordinate());
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var de = it.next();
@@ -78,8 +72,8 @@ extend(DirectedEdgeStar.prototype, {
 			de.getSym().print(out);
 			out.println();
 		}
-	},
-	getResultAreaEdges: function () {
+	}
+	getResultAreaEdges() {
 		if (this._resultAreaEdgeList !== null) return this._resultAreaEdgeList;
 		this._resultAreaEdgeList = new ArrayList();
 		for (var it = this.iterator(); it.hasNext(); ) {
@@ -87,16 +81,16 @@ extend(DirectedEdgeStar.prototype, {
 			if (de.isInResult() || de.getSym().isInResult()) this._resultAreaEdgeList.add(de);
 		}
 		return this._resultAreaEdgeList;
-	},
-	updateLabelling: function (nodeLabel) {
+	}
+	updateLabelling(nodeLabel) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			var label = de.getLabel();
 			label.setAllLocationsIfNull(0, nodeLabel.getLocation(0));
 			label.setAllLocationsIfNull(1, nodeLabel.getLocation(1));
 		}
-	},
-	linkAllDirectedEdges: function () {
+	}
+	linkAllDirectedEdges() {
 		this.getEdges();
 		var prevOut = null;
 		var firstIn = null;
@@ -108,8 +102,8 @@ extend(DirectedEdgeStar.prototype, {
 			prevOut = nextOut;
 		}
 		firstIn.setNext(prevOut);
-	},
-	computeDepths: function () {
+	}
+	computeDepths() {
 		if (arguments.length === 1) {
 			let de = arguments[0];
 			var edgeIndex = this.findIndex(de);
@@ -130,15 +124,15 @@ extend(DirectedEdgeStar.prototype, {
 			}
 			return currDepth;
 		}
-	},
-	mergeSymLabels: function () {
+	}
+	mergeSymLabels() {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var de = it.next();
 			var label = de.getLabel();
 			label.merge(de.getSym().getLabel());
 		}
-	},
-	linkMinimalDirectedEdges: function (er) {
+	}
+	linkMinimalDirectedEdges(er) {
 		var firstOut = null;
 		var incoming = null;
 		var state = this._SCANNING_FOR_INCOMING;
@@ -164,8 +158,8 @@ extend(DirectedEdgeStar.prototype, {
 			Assert.isTrue(firstOut.getEdgeRing() === er, "unable to link last incoming dirEdge");
 			incoming.setNextMin(firstOut);
 		}
-	},
-	getOutgoingDegree: function () {
+	}
+	getOutgoingDegree() {
 		if (arguments.length === 0) {
 			var degree = 0;
 			for (var it = this.iterator(); it.hasNext(); ) {
@@ -182,11 +176,11 @@ extend(DirectedEdgeStar.prototype, {
 			}
 			return degree;
 		}
-	},
-	getLabel: function () {
+	}
+	getLabel() {
 		return this._label;
-	},
-	findCoveredLineEdges: function () {
+	}
+	findCoveredLineEdges() {
 		var startLoc = Location.NONE;
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var nextOut = it.next();
@@ -214,9 +208,9 @@ extend(DirectedEdgeStar.prototype, {
 				if (nextIn.isInResult()) currLoc = Location.INTERIOR;
 			}
 		}
-	},
-	computeLabelling: function (geom) {
-		EdgeEndStar.prototype.computeLabelling.call(this, geom);
+	}
+	computeLabelling(geom) {
+		super.computeLabelling.call(this, geom);
 		this._label = new Label(Location.NONE);
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var ee = it.next();
@@ -227,11 +221,17 @@ extend(DirectedEdgeStar.prototype, {
 				if (eLoc === Location.INTERIOR || eLoc === Location.BOUNDARY) this._label.setLocation(i, Location.INTERIOR);
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return DirectedEdgeStar;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+DirectedEdgeStar.constructor_ = function () {
+	this._resultAreaEdgeList = null;
+	this._label = null;
+	this._SCANNING_FOR_INCOMING = 1;
+	this._LINKING_TO_OUTGOING = 2;
+};

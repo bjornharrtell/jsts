@@ -1,13 +1,15 @@
-import extend from '../../../../extend';
-export default function CoordinateSequenceFilter() {}
-extend(CoordinateSequenceFilter.prototype, {
-	filter: function (seq, i) {},
-	isDone: function () {},
-	isGeometryChanged: function () {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class CoordinateSequenceFilter {
+	constructor() {
+		CoordinateSequenceFilter.constructor_.apply(this, arguments);
+	}
+	filter(seq, i) {}
+	isDone() {}
+	isGeometryChanged() {}
+	getClass() {
 		return CoordinateSequenceFilter;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+CoordinateSequenceFilter.constructor_ = function () {};

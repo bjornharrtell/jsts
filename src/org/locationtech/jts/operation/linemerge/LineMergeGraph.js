@@ -1,16 +1,14 @@
 import LineMergeDirectedEdge from './LineMergeDirectedEdge';
 import Node from '../../planargraph/Node';
-import extend from '../../../../../extend';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import LineMergeEdge from './LineMergeEdge';
-import inherits from '../../../../../inherits';
 import PlanarGraph from '../../planargraph/PlanarGraph';
-export default function LineMergeGraph() {
-	PlanarGraph.apply(this);
-}
-inherits(LineMergeGraph, PlanarGraph);
-extend(LineMergeGraph.prototype, {
-	addEdge: function (lineString) {
+export default class LineMergeGraph extends PlanarGraph {
+	constructor() {
+		super();
+		LineMergeGraph.constructor_.apply(this, arguments);
+	}
+	addEdge(lineString) {
 		if (lineString.isEmpty()) {
 			return null;
 		}
@@ -25,19 +23,20 @@ extend(LineMergeGraph.prototype, {
 		var edge = new LineMergeEdge(lineString);
 		edge.setDirectedEdges(directedEdge0, directedEdge1);
 		this.add(edge);
-	},
-	getNode: function (coordinate) {
+	}
+	getNode(coordinate) {
 		var node = this.findNode(coordinate);
 		if (node === null) {
 			node = new Node(coordinate);
 			this.add(node);
 		}
 		return node;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return LineMergeGraph;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+LineMergeGraph.constructor_ = function () {};

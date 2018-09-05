@@ -1,11 +1,13 @@
-import extend from '../../../../extend';
-export default function SegmentSetMutualIntersector() {}
-extend(SegmentSetMutualIntersector.prototype, {
-	process: function (segStrings, segInt) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class SegmentSetMutualIntersector {
+	constructor() {
+		SegmentSetMutualIntersector.constructor_.apply(this, arguments);
+	}
+	process(segStrings, segInt) {}
+	getClass() {
 		return SegmentSetMutualIntersector;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SegmentSetMutualIntersector.constructor_ = function () {};

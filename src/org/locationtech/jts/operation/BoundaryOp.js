@@ -1,27 +1,25 @@
 import LineString from '../geom/LineString';
 import BoundaryNodeRule from '../algorithm/BoundaryNodeRule';
-import extend from '../../../../extend';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
 import MultiLineString from '../geom/MultiLineString';
-export default function BoundaryOp() {
-	this._geom = null;
-	this._geomFact = null;
-	this._bnRule = null;
-	this._endpointMap = null;
-	if (arguments.length === 1) {
-		let geom = arguments[0];
-		BoundaryOp.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
-	} else if (arguments.length === 2) {
-		let geom = arguments[0], bnRule = arguments[1];
-		this._geom = geom;
-		this._geomFact = geom.getFactory();
-		this._bnRule = bnRule;
+export default class BoundaryOp {
+	constructor() {
+		BoundaryOp.constructor_.apply(this, arguments);
 	}
-}
-extend(BoundaryOp.prototype, {
-	boundaryMultiLineString: function (mLine) {
+	static getBoundary() {
+		if (arguments.length === 1) {
+			let g = arguments[0];
+			var bop = new BoundaryOp(g);
+			return bop.getBoundary();
+		} else if (arguments.length === 2) {
+			let g = arguments[0], bnRule = arguments[1];
+			var bop = new BoundaryOp(g, bnRule);
+			return bop.getBoundary();
+		}
+	}
+	boundaryMultiLineString(mLine) {
 		if (this._geom.isEmpty()) {
 			return this.getEmptyMultiPoint();
 		}
@@ -30,13 +28,13 @@ extend(BoundaryOp.prototype, {
 			return this._geomFact.createPoint(bdyPts[0]);
 		}
 		return this._geomFact.createMultiPointFromCoords(bdyPts);
-	},
-	getBoundary: function () {
+	}
+	getBoundary() {
 		if (this._geom instanceof LineString) return this.boundaryLineString(this._geom);
 		if (this._geom instanceof MultiLineString) return this.boundaryMultiLineString(this._geom);
 		return this._geom.getBoundary();
-	},
-	boundaryLineString: function (line) {
+	}
+	boundaryLineString(line) {
 		if (this._geom.isEmpty()) {
 			return this.getEmptyMultiPoint();
 		}
@@ -49,11 +47,11 @@ extend(BoundaryOp.prototype, {
 			}
 		}
 		return this._geomFact.createMultiPoint([line.getStartPoint(), line.getEndPoint()]);
-	},
-	getEmptyMultiPoint: function () {
+	}
+	getEmptyMultiPoint() {
 		return this._geomFact.createMultiPoint();
-	},
-	computeBoundaryCoordinates: function (mLine) {
+	}
+	computeBoundaryCoordinates(mLine) {
 		var bdyPts = new ArrayList();
 		this._endpointMap = new TreeMap();
 		for (var i = 0; i < mLine.getNumGeometries(); i++) {
@@ -71,41 +69,48 @@ extend(BoundaryOp.prototype, {
 			}
 		}
 		return CoordinateArrays.toCoordinateArray(bdyPts);
-	},
-	addEndpoint: function (pt) {
+	}
+	addEndpoint(pt) {
 		var counter = this._endpointMap.get(pt);
 		if (counter === null) {
 			counter = new Counter();
 			this._endpointMap.put(pt, counter);
 		}
 		counter.count++;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return BoundaryOp;
 	}
-});
-BoundaryOp.getBoundary = function () {
+	get interfaces_() {
+		return [];
+	}
+}
+BoundaryOp.constructor_ = function () {
+	this._geom = null;
+	this._geomFact = null;
+	this._bnRule = null;
+	this._endpointMap = null;
 	if (arguments.length === 1) {
-		let g = arguments[0];
-		var bop = new BoundaryOp(g);
-		return bop.getBoundary();
+		let geom = arguments[0];
+		BoundaryOp.constructor_.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
 	} else if (arguments.length === 2) {
-		let g = arguments[0], bnRule = arguments[1];
-		var bop = new BoundaryOp(g, bnRule);
-		return bop.getBoundary();
+		let geom = arguments[0], bnRule = arguments[1];
+		this._geom = geom;
+		this._geomFact = geom.getFactory();
+		this._bnRule = bnRule;
 	}
 };
-function Counter() {
-	this.count = null;
-}
-extend(Counter.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+class Counter {
+	constructor() {
+		Counter.constructor_.apply(this, arguments);
+	}
+	getClass() {
 		return Counter;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+Counter.constructor_ = function () {
+	this.count = null;
+};

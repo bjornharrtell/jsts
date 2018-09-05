@@ -1,19 +1,16 @@
 import Coordinate from '../../../geom/Coordinate';
 import Double from '../../../../../../java/lang/Double';
-import extend from '../../../../../../extend';
-export default function PointPairDistance() {
-	this._pt = [new Coordinate(), new Coordinate()];
-	this._distance = Double.NaN;
-	this._isNull = true;
-}
-extend(PointPairDistance.prototype, {
-	getCoordinates: function () {
+export default class PointPairDistance {
+	constructor() {
+		PointPairDistance.constructor_.apply(this, arguments);
+	}
+	getCoordinates() {
 		return this._pt;
-	},
-	getCoordinate: function (i) {
+	}
+	getCoordinate(i) {
 		return this._pt[i];
-	},
-	setMinimum: function () {
+	}
+	setMinimum() {
 		if (arguments.length === 1) {
 			let ptDist = arguments[0];
 			this.setMinimum(ptDist._pt[0], ptDist._pt[1]);
@@ -26,8 +23,8 @@ extend(PointPairDistance.prototype, {
 			var dist = p0.distance(p1);
 			if (dist < this._distance) this.initialize(p0, p1, dist);
 		}
-	},
-	initialize: function () {
+	}
+	initialize() {
 		if (arguments.length === 0) {
 			this._isNull = true;
 		} else if (arguments.length === 2) {
@@ -43,11 +40,11 @@ extend(PointPairDistance.prototype, {
 			this._distance = distance;
 			this._isNull = false;
 		}
-	},
-	getDistance: function () {
+	}
+	getDistance() {
 		return this._distance;
-	},
-	setMaximum: function () {
+	}
+	setMaximum() {
 		if (arguments.length === 1) {
 			let ptDist = arguments[0];
 			this.setMaximum(ptDist._pt[0], ptDist._pt[1]);
@@ -60,11 +57,16 @@ extend(PointPairDistance.prototype, {
 			var dist = p0.distance(p1);
 			if (dist > this._distance) this.initialize(p0, p1, dist);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PointPairDistance;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PointPairDistance.constructor_ = function () {
+	this._pt = [new Coordinate(), new Coordinate()];
+	this._distance = Double.NaN;
+	this._isNull = true;
+};

@@ -3,16 +3,15 @@ import Geometry from '../../geom/Geometry';
 import Point from '../../geom/Point';
 import Polygon from '../../geom/Polygon';
 import MultiPoint from '../../geom/MultiPoint';
-import extend from '../../../../../extend';
 import GeometryCollection from '../../geom/GeometryCollection';
-export default function RepeatedPointTester() {
-	this._repeatedCoord = null;
-}
-extend(RepeatedPointTester.prototype, {
-	getCoordinate: function () {
+export default class RepeatedPointTester {
+	constructor() {
+		RepeatedPointTester.constructor_.apply(this, arguments);
+	}
+	getCoordinate() {
 		return this._repeatedCoord;
-	},
-	hasRepeatedPoint: function () {
+	}
+	hasRepeatedPoint() {
 		if (arguments[0] instanceof Geometry) {
 			let g = arguments[0];
 			if (g.isEmpty()) return false;
@@ -41,11 +40,14 @@ extend(RepeatedPointTester.prototype, {
 			}
 			return false;
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RepeatedPointTester;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+RepeatedPointTester.constructor_ = function () {
+	this._repeatedCoord = null;
+};

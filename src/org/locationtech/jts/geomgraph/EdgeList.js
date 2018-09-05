@@ -1,13 +1,11 @@
 import OrientedCoordinateArray from '../noding/OrientedCoordinateArray';
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
-export default function EdgeList() {
-	this._edges = new ArrayList();
-	this._ocaMap = new TreeMap();
-}
-extend(EdgeList.prototype, {
-	print: function (out) {
+export default class EdgeList {
+	constructor() {
+		EdgeList.constructor_.apply(this, arguments);
+	}
+	print(out) {
 		out.print("MULTILINESTRING ( ");
 		for (var j = 0; j < this._edges.size(); j++) {
 			var e = this._edges.get(j);
@@ -21,41 +19,45 @@ extend(EdgeList.prototype, {
 			out.println(")");
 		}
 		out.print(")  ");
-	},
-	addAll: function (edgeColl) {
+	}
+	addAll(edgeColl) {
 		for (var i = edgeColl.iterator(); i.hasNext(); ) {
 			this.add(i.next());
 		}
-	},
-	findEdgeIndex: function (e) {
+	}
+	findEdgeIndex(e) {
 		for (var i = 0; i < this._edges.size(); i++) {
 			if (this._edges.get(i).equals(e)) return i;
 		}
 		return -1;
-	},
-	iterator: function () {
+	}
+	iterator() {
 		return this._edges.iterator();
-	},
-	getEdges: function () {
+	}
+	getEdges() {
 		return this._edges;
-	},
-	get: function (i) {
+	}
+	get(i) {
 		return this._edges.get(i);
-	},
-	findEqualEdge: function (e) {
+	}
+	findEqualEdge(e) {
 		var oca = new OrientedCoordinateArray(e.getCoordinates());
 		var matchEdge = this._ocaMap.get(oca);
 		return matchEdge;
-	},
-	add: function (e) {
+	}
+	add(e) {
 		this._edges.add(e);
 		var oca = new OrientedCoordinateArray(e.getCoordinates());
 		this._ocaMap.put(oca, e);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return EdgeList;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+EdgeList.constructor_ = function () {
+	this._edges = new ArrayList();
+	this._ocaMap = new TreeMap();
+};

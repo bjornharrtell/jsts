@@ -1,20 +1,17 @@
 import PointLocator from '../../algorithm/PointLocator';
 import Location from '../../geom/Location';
 import TreeSet from '../../../../../java/util/TreeSet';
-import extend from '../../../../../extend';
 import GeometryCombiner from '../../geom/util/GeometryCombiner';
 import CoordinateArrays from '../../geom/CoordinateArrays';
-export default function PointGeometryUnion() {
-	this._pointGeom = null;
-	this._otherGeom = null;
-	this._geomFact = null;
-	let pointGeom = arguments[0], otherGeom = arguments[1];
-	this._pointGeom = pointGeom;
-	this._otherGeom = otherGeom;
-	this._geomFact = otherGeom.getFactory();
-}
-extend(PointGeometryUnion.prototype, {
-	union: function () {
+export default class PointGeometryUnion {
+	constructor() {
+		PointGeometryUnion.constructor_.apply(this, arguments);
+	}
+	static union(pointGeom, otherGeom) {
+		var unioner = new PointGeometryUnion(pointGeom, otherGeom);
+		return unioner.union();
+	}
+	union() {
 		var locater = new PointLocator();
 		var exteriorCoords = new TreeSet();
 		for (var i = 0; i < this._pointGeom.getNumGeometries(); i++) {
@@ -32,15 +29,20 @@ extend(PointGeometryUnion.prototype, {
 			ptComp = this._geomFact.createMultiPointFromCoords(coords);
 		}
 		return GeometryCombiner.combine(ptComp, this._otherGeom);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PointGeometryUnion;
 	}
-});
-PointGeometryUnion.union = function (pointGeom, otherGeom) {
-	var unioner = new PointGeometryUnion(pointGeom, otherGeom);
-	return unioner.union();
+	get interfaces_() {
+		return [];
+	}
+}
+PointGeometryUnion.constructor_ = function () {
+	this._pointGeom = null;
+	this._otherGeom = null;
+	this._geomFact = null;
+	let pointGeom = arguments[0], otherGeom = arguments[1];
+	this._pointGeom = pointGeom;
+	this._otherGeom = otherGeom;
+	this._geomFact = otherGeom.getFactory();
 };

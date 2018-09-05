@@ -1,18 +1,19 @@
 import EdgeEnd from '../../geomgraph/EdgeEnd';
-import extend from '../../../../../extend';
 import Label from '../../geomgraph/Label';
 import ArrayList from '../../../../../java/util/ArrayList';
-export default function EdgeEndBuilder() {}
-extend(EdgeEndBuilder.prototype, {
-	createEdgeEndForNext: function (edge, l, eiCurr, eiNext) {
+export default class EdgeEndBuilder {
+	constructor() {
+		EdgeEndBuilder.constructor_.apply(this, arguments);
+	}
+	createEdgeEndForNext(edge, l, eiCurr, eiNext) {
 		var iNext = eiCurr.segmentIndex + 1;
 		if (iNext >= edge.getNumPoints() && eiNext === null) return null;
 		var pNext = edge.getCoordinate(iNext);
 		if (eiNext !== null && eiNext.segmentIndex === eiCurr.segmentIndex) pNext = eiNext.coord;
 		var e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()));
 		l.add(e);
-	},
-	createEdgeEndForPrev: function (edge, l, eiCurr, eiPrev) {
+	}
+	createEdgeEndForPrev(edge, l, eiCurr, eiPrev) {
 		var iPrev = eiCurr.segmentIndex;
 		if (eiCurr.dist === 0.0) {
 			if (iPrev === 0) return null;
@@ -24,8 +25,8 @@ extend(EdgeEndBuilder.prototype, {
 		label.flip();
 		var e = new EdgeEnd(edge, eiCurr.coord, pPrev, label);
 		l.add(e);
-	},
-	computeEdgeEnds: function () {
+	}
+	computeEdgeEnds() {
 		if (arguments.length === 1) {
 			let edges = arguments[0];
 			var l = new ArrayList();
@@ -54,11 +55,12 @@ extend(EdgeEndBuilder.prototype, {
 				}
 			} while (eiCurr !== null);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return EdgeEndBuilder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+EdgeEndBuilder.constructor_ = function () {};

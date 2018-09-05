@@ -1,11 +1,13 @@
-import extend from '../../../../../extend';
-export default function Boundable() {}
-extend(Boundable.prototype, {
-	getBounds: function () {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class Boundable {
+	constructor() {
+		Boundable.constructor_.apply(this, arguments);
+	}
+	getBounds() {}
+	getClass() {
 		return Boundable;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+Boundable.constructor_ = function () {};

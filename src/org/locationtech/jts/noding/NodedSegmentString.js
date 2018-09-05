@@ -3,45 +3,53 @@ import WKTWriter from '../io/WKTWriter';
 import CoordinateArraySequence from '../geom/impl/CoordinateArraySequence';
 import Coordinate from '../geom/Coordinate';
 import Octant from './Octant';
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import NodableSegmentString from './NodableSegmentString';
-export default function NodedSegmentString() {
-	this._nodeList = new SegmentNodeList(this);
-	this._pts = null;
-	this._data = null;
-	let pts = arguments[0], data = arguments[1];
-	this._pts = pts;
-	this._data = data;
-}
-extend(NodedSegmentString.prototype, {
-	getCoordinates: function () {
+export default class NodedSegmentString {
+	constructor() {
+		NodedSegmentString.constructor_.apply(this, arguments);
+	}
+	static getNodedSubstrings() {
+		if (arguments.length === 1) {
+			let segStrings = arguments[0];
+			var resultEdgelist = new ArrayList();
+			NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
+			return resultEdgelist;
+		} else if (arguments.length === 2) {
+			let segStrings = arguments[0], resultEdgelist = arguments[1];
+			for (var i = segStrings.iterator(); i.hasNext(); ) {
+				var ss = i.next();
+				ss.getNodeList().addSplitEdges(resultEdgelist);
+			}
+		}
+	}
+	getCoordinates() {
 		return this._pts;
-	},
-	size: function () {
+	}
+	size() {
 		return this._pts.length;
-	},
-	getCoordinate: function (i) {
+	}
+	getCoordinate(i) {
 		return this._pts[i];
-	},
-	isClosed: function () {
+	}
+	isClosed() {
 		return this._pts[0].equals(this._pts[this._pts.length - 1]);
-	},
-	getSegmentOctant: function (index) {
+	}
+	getSegmentOctant(index) {
 		if (index === this._pts.length - 1) return -1;
 		return this.safeOctant(this.getCoordinate(index), this.getCoordinate(index + 1));
-	},
-	setData: function (data) {
+	}
+	setData(data) {
 		this._data = data;
-	},
-	safeOctant: function (p0, p1) {
+	}
+	safeOctant(p0, p1) {
 		if (p0.equals2D(p1)) return 0;
 		return Octant.octant(p0, p1);
-	},
-	getData: function () {
+	}
+	getData() {
 		return this._data;
-	},
-	addIntersection: function () {
+	}
+	addIntersection() {
 		if (arguments.length === 2) {
 			let intPt = arguments[0], segmentIndex = arguments[1];
 			this.addIntersectionNode(intPt, segmentIndex);
@@ -50,14 +58,14 @@ extend(NodedSegmentString.prototype, {
 			var intPt = new Coordinate(li.getIntersection(intIndex));
 			this.addIntersection(intPt, segmentIndex);
 		}
-	},
-	toString: function () {
+	}
+	toString() {
 		return WKTWriter.toLineString(new CoordinateArraySequence(this._pts));
-	},
-	getNodeList: function () {
+	}
+	getNodeList() {
 		return this._nodeList;
-	},
-	addIntersectionNode: function (intPt, segmentIndex) {
+	}
+	addIntersectionNode(intPt, segmentIndex) {
 		var normalizedSegmentIndex = segmentIndex;
 		var nextSegIndex = normalizedSegmentIndex + 1;
 		if (nextSegIndex < this._pts.length) {
@@ -68,30 +76,24 @@ extend(NodedSegmentString.prototype, {
 		}
 		var ei = this._nodeList.add(intPt, normalizedSegmentIndex);
 		return ei;
-	},
-	addIntersections: function (li, segmentIndex, geomIndex) {
+	}
+	addIntersections(li, segmentIndex, geomIndex) {
 		for (var i = 0; i < li.getIntersectionNum(); i++) {
 			this.addIntersection(li, segmentIndex, geomIndex, i);
 		}
-	},
-	interfaces_: function () {
-		return [NodableSegmentString];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NodedSegmentString;
 	}
-});
-NodedSegmentString.getNodedSubstrings = function () {
-	if (arguments.length === 1) {
-		let segStrings = arguments[0];
-		var resultEdgelist = new ArrayList();
-		NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist);
-		return resultEdgelist;
-	} else if (arguments.length === 2) {
-		let segStrings = arguments[0], resultEdgelist = arguments[1];
-		for (var i = segStrings.iterator(); i.hasNext(); ) {
-			var ss = i.next();
-			ss.getNodeList().addSplitEdges(resultEdgelist);
-		}
+	get interfaces_() {
+		return [NodableSegmentString];
 	}
+}
+NodedSegmentString.constructor_ = function () {
+	this._nodeList = new SegmentNodeList(this);
+	this._pts = null;
+	this._data = null;
+	let pts = arguments[0], data = arguments[1];
+	this._pts = pts;
+	this._data = data;
 };

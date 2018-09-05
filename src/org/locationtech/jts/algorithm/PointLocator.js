@@ -5,34 +5,26 @@ import Point from '../geom/Point';
 import Polygon from '../geom/Polygon';
 import PointLocation from './PointLocation';
 import BoundaryNodeRule from './BoundaryNodeRule';
-import extend from '../../../../extend';
 import MultiPolygon from '../geom/MultiPolygon';
 import GeometryCollectionIterator from '../geom/GeometryCollectionIterator';
 import GeometryCollection from '../geom/GeometryCollection';
 import MultiLineString from '../geom/MultiLineString';
-export default function PointLocator() {
-	this._boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
-	this._isIn = null;
-	this._numBoundaries = null;
-	if (arguments.length === 0) {} else if (arguments.length === 1) {
-		let boundaryRule = arguments[0];
-		if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
-		this._boundaryRule = boundaryRule;
+export default class PointLocator {
+	constructor() {
+		PointLocator.constructor_.apply(this, arguments);
 	}
-}
-extend(PointLocator.prototype, {
-	locateInPolygonRing: function (p, ring) {
+	locateInPolygonRing(p, ring) {
 		if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
 		return PointLocation.locateInRing(p, ring.getCoordinates());
-	},
-	intersects: function (p, geom) {
+	}
+	intersects(p, geom) {
 		return this.locate(p, geom) !== Location.EXTERIOR;
-	},
-	updateLocationInfo: function (loc) {
+	}
+	updateLocationInfo(loc) {
 		if (loc === Location.INTERIOR) this._isIn = true;
 		if (loc === Location.BOUNDARY) this._numBoundaries++;
-	},
-	computeLocation: function (p, geom) {
+	}
+	computeLocation(p, geom) {
 		if (geom instanceof Point) {
 			this.updateLocationInfo(this.locateOnPoint(p, geom));
 		}
@@ -59,13 +51,13 @@ extend(PointLocator.prototype, {
 				if (g2 !== geom) this.computeLocation(p, g2);
 			}
 		}
-	},
-	locateOnPoint: function (p, pt) {
+	}
+	locateOnPoint(p, pt) {
 		var ptCoord = pt.getCoordinate();
 		if (ptCoord.equals2D(p)) return Location.INTERIOR;
 		return Location.EXTERIOR;
-	},
-	locateOnLineString: function (p, l) {
+	}
+	locateOnLineString(p, l) {
 		if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
 		var seq = l.getCoordinateSequence();
 		if (!l.isClosed()) {
@@ -77,8 +69,8 @@ extend(PointLocator.prototype, {
 			return Location.INTERIOR;
 		}
 		return Location.EXTERIOR;
-	},
-	locateInPolygon: function (p, poly) {
+	}
+	locateInPolygon(p, poly) {
 		if (poly.isEmpty()) return Location.EXTERIOR;
 		var shell = poly.getExteriorRing();
 		var shellLoc = this.locateInPolygonRing(p, shell);
@@ -91,8 +83,8 @@ extend(PointLocator.prototype, {
 			if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY;
 		}
 		return Location.INTERIOR;
-	},
-	locate: function (p, geom) {
+	}
+	locate(p, geom) {
 		if (geom.isEmpty()) return Location.EXTERIOR;
 		if (geom instanceof LineString) {
 			return this.locateOnLineString(p, geom);
@@ -105,11 +97,21 @@ extend(PointLocator.prototype, {
 		if (this._boundaryRule.isInBoundary(this._numBoundaries)) return Location.BOUNDARY;
 		if (this._numBoundaries > 0 || this._isIn) return Location.INTERIOR;
 		return Location.EXTERIOR;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PointLocator;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PointLocator.constructor_ = function () {
+	this._boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+	this._isIn = null;
+	this._numBoundaries = null;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let boundaryRule = arguments[0];
+		if (boundaryRule === null) throw new IllegalArgumentException("Rule must be non-null");
+		this._boundaryRule = boundaryRule;
+	}
+};

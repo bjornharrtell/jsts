@@ -3,27 +3,132 @@ import HashSet from '../../../../../java/util/HashSet';
 import Stack from '../../../../../java/util/Stack';
 import Node from '../../planargraph/Node';
 import PolygonizeEdge from './PolygonizeEdge';
-import extend from '../../../../../extend';
 import EdgeRing from './EdgeRing';
 import CoordinateArrays from '../../geom/CoordinateArrays';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
-import inherits from '../../../../../inherits';
 import PlanarGraph from '../../planargraph/PlanarGraph';
-export default function PolygonizeGraph() {
-	PlanarGraph.apply(this);
-	this._factory = null;
-	let factory = arguments[0];
-	this._factory = factory;
-}
-inherits(PolygonizeGraph, PlanarGraph);
-extend(PolygonizeGraph.prototype, {
-	findEdgeRing: function (startDE) {
+export default class PolygonizeGraph extends PlanarGraph {
+	constructor() {
+		super();
+		PolygonizeGraph.constructor_.apply(this, arguments);
+	}
+	static findLabeledEdgeRings(dirEdges) {
+		var edgeRingStarts = new ArrayList();
+		var currLabel = 1;
+		for (var i = dirEdges.iterator(); i.hasNext(); ) {
+			var de = i.next();
+			if (de.isMarked()) continue;
+			if (de.getLabel() >= 0) continue;
+			edgeRingStarts.add(de);
+			var edges = EdgeRing.findDirEdgesInRing(de);
+			PolygonizeGraph.label(edges, currLabel);
+			currLabel++;
+		}
+		return edgeRingStarts;
+	}
+	static getDegreeNonDeleted(node) {
+		var edges = node.getOutEdges().getEdges();
+		var degree = 0;
+		for (var i = edges.iterator(); i.hasNext(); ) {
+			var de = i.next();
+			if (!de.isMarked()) degree++;
+		}
+		return degree;
+	}
+	static deleteAllEdges(node) {
+		var edges = node.getOutEdges().getEdges();
+		for (var i = edges.iterator(); i.hasNext(); ) {
+			var de = i.next();
+			de.setMarked(true);
+			var sym = de.getSym();
+			if (sym !== null) sym.setMarked(true);
+		}
+	}
+	static label(dirEdges, label) {
+		for (var i = dirEdges.iterator(); i.hasNext(); ) {
+			var de = i.next();
+			de.setLabel(label);
+		}
+	}
+	static computeNextCWEdges(node) {
+		var deStar = node.getOutEdges();
+		var startDE = null;
+		var prevDE = null;
+		for (var i = deStar.getEdges().iterator(); i.hasNext(); ) {
+			var outDE = i.next();
+			if (outDE.isMarked()) continue;
+			if (startDE === null) startDE = outDE;
+			if (prevDE !== null) {
+				var sym = prevDE.getSym();
+				sym.setNext(outDE);
+			}
+			prevDE = outDE;
+		}
+		if (prevDE !== null) {
+			var sym = prevDE.getSym();
+			sym.setNext(startDE);
+		}
+	}
+	static computeNextCCWEdges(node, label) {
+		var deStar = node.getOutEdges();
+		var firstOutDE = null;
+		var prevInDE = null;
+		var edges = deStar.getEdges();
+		for (var i = edges.size() - 1; i >= 0; i--) {
+			var de = edges.get(i);
+			var sym = de.getSym();
+			var outDE = null;
+			if (de.getLabel() === label) outDE = de;
+			var inDE = null;
+			if (sym.getLabel() === label) inDE = sym;
+			if (outDE === null && inDE === null) continue;
+			if (inDE !== null) {
+				prevInDE = inDE;
+			}
+			if (outDE !== null) {
+				if (prevInDE !== null) {
+					prevInDE.setNext(outDE);
+					prevInDE = null;
+				}
+				if (firstOutDE === null) firstOutDE = outDE;
+			}
+		}
+		if (prevInDE !== null) {
+			Assert.isTrue(firstOutDE !== null);
+			prevInDE.setNext(firstOutDE);
+		}
+	}
+	static getDegree(node, label) {
+		var edges = node.getOutEdges().getEdges();
+		var degree = 0;
+		for (var i = edges.iterator(); i.hasNext(); ) {
+			var de = i.next();
+			if (de.getLabel() === label) degree++;
+		}
+		return degree;
+	}
+	static findIntersectionNodes(startDE, label) {
+		var de = startDE;
+		var intNodes = null;
+		do {
+			var node = de.getFromNode();
+			if (PolygonizeGraph.getDegree(node, label) > 1) {
+				if (intNodes === null) intNodes = new ArrayList();
+				intNodes.add(node);
+			}
+			de = de.getNext();
+			Assert.isTrue(de !== null, "found null DE in ring");
+			Assert.isTrue(de === startDE || !de.isInRing(), "found DE already in ring");
+		} while (de !== startDE);
+		return intNodes;
+	}
+	findEdgeRing(startDE) {
 		var er = new EdgeRing(this._factory);
 		er.build(startDE);
 		return er;
-	},
-	computeDepthParity: function () {
+	}
+	computeDepthParity() {
 		if (arguments.length === 0) {
 			while (true) {
 				var de = null;
@@ -33,14 +138,14 @@ extend(PolygonizeGraph.prototype, {
 		} else if (arguments.length === 1) {
 			let de = arguments[0];
 		}
-	},
-	computeNextCWEdges: function () {
+	}
+	computeNextCWEdges() {
 		for (var iNode = this.nodeIterator(); iNode.hasNext(); ) {
 			var node = iNode.next();
 			PolygonizeGraph.computeNextCWEdges(node);
 		}
-	},
-	addEdge: function (line) {
+	}
+	addEdge(line) {
 		if (line.isEmpty()) {
 			return null;
 		}
@@ -57,8 +162,8 @@ extend(PolygonizeGraph.prototype, {
 		var edge = new PolygonizeEdge(line);
 		edge.setDirectedEdges(de0, de1);
 		this.add(edge);
-	},
-	deleteCutEdges: function () {
+	}
+	deleteCutEdges() {
 		this.computeNextCWEdges();
 		PolygonizeGraph.findLabeledEdgeRings(this._dirEdges);
 		var cutLines = new ArrayList();
@@ -74,8 +179,8 @@ extend(PolygonizeGraph.prototype, {
 			}
 		}
 		return cutLines;
-	},
-	getEdgeRings: function () {
+	}
+	getEdgeRings() {
 		this.computeNextCWEdges();
 		PolygonizeGraph.label(this._dirEdges, -1);
 		var maximalRings = PolygonizeGraph.findLabeledEdgeRings(this._dirEdges);
@@ -89,16 +194,16 @@ extend(PolygonizeGraph.prototype, {
 			edgeRingList.add(er);
 		}
 		return edgeRingList;
-	},
-	getNode: function (pt) {
+	}
+	getNode(pt) {
 		var node = this.findNode(pt);
 		if (node === null) {
 			node = new Node(pt);
 			this.add(node);
 		}
 		return node;
-	},
-	convertMaximalToMinimalEdgeRings: function (ringEdges) {
+	}
+	convertMaximalToMinimalEdgeRings(ringEdges) {
 		for (var i = ringEdges.iterator(); i.hasNext(); ) {
 			var de = i.next();
 			var label = de.getLabel();
@@ -109,8 +214,8 @@ extend(PolygonizeGraph.prototype, {
 				PolygonizeGraph.computeNextCCWEdges(node, label);
 			}
 		}
-	},
-	deleteDangles: function () {
+	}
+	deleteDangles() {
 		var nodesToRemove = this.findNodesOfDegree(1);
 		var dangleLines = new HashSet();
 		var nodeStack = new Stack();
@@ -133,121 +238,16 @@ extend(PolygonizeGraph.prototype, {
 			}
 		}
 		return dangleLines;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PolygonizeGraph;
 	}
-});
-PolygonizeGraph.findLabeledEdgeRings = function (dirEdges) {
-	var edgeRingStarts = new ArrayList();
-	var currLabel = 1;
-	for (var i = dirEdges.iterator(); i.hasNext(); ) {
-		var de = i.next();
-		if (de.isMarked()) continue;
-		if (de.getLabel() >= 0) continue;
-		edgeRingStarts.add(de);
-		var edges = EdgeRing.findDirEdgesInRing(de);
-		PolygonizeGraph.label(edges, currLabel);
-		currLabel++;
+	get interfaces_() {
+		return [];
 	}
-	return edgeRingStarts;
-};
-PolygonizeGraph.getDegreeNonDeleted = function (node) {
-	var edges = node.getOutEdges().getEdges();
-	var degree = 0;
-	for (var i = edges.iterator(); i.hasNext(); ) {
-		var de = i.next();
-		if (!de.isMarked()) degree++;
-	}
-	return degree;
-};
-PolygonizeGraph.deleteAllEdges = function (node) {
-	var edges = node.getOutEdges().getEdges();
-	for (var i = edges.iterator(); i.hasNext(); ) {
-		var de = i.next();
-		de.setMarked(true);
-		var sym = de.getSym();
-		if (sym !== null) sym.setMarked(true);
-	}
-};
-PolygonizeGraph.label = function (dirEdges, label) {
-	for (var i = dirEdges.iterator(); i.hasNext(); ) {
-		var de = i.next();
-		de.setLabel(label);
-	}
-};
-PolygonizeGraph.computeNextCWEdges = function (node) {
-	var deStar = node.getOutEdges();
-	var startDE = null;
-	var prevDE = null;
-	for (var i = deStar.getEdges().iterator(); i.hasNext(); ) {
-		var outDE = i.next();
-		if (outDE.isMarked()) continue;
-		if (startDE === null) startDE = outDE;
-		if (prevDE !== null) {
-			var sym = prevDE.getSym();
-			sym.setNext(outDE);
-		}
-		prevDE = outDE;
-	}
-	if (prevDE !== null) {
-		var sym = prevDE.getSym();
-		sym.setNext(startDE);
-	}
-};
-PolygonizeGraph.computeNextCCWEdges = function (node, label) {
-	var deStar = node.getOutEdges();
-	var firstOutDE = null;
-	var prevInDE = null;
-	var edges = deStar.getEdges();
-	for (var i = edges.size() - 1; i >= 0; i--) {
-		var de = edges.get(i);
-		var sym = de.getSym();
-		var outDE = null;
-		if (de.getLabel() === label) outDE = de;
-		var inDE = null;
-		if (sym.getLabel() === label) inDE = sym;
-		if (outDE === null && inDE === null) continue;
-		if (inDE !== null) {
-			prevInDE = inDE;
-		}
-		if (outDE !== null) {
-			if (prevInDE !== null) {
-				prevInDE.setNext(outDE);
-				prevInDE = null;
-			}
-			if (firstOutDE === null) firstOutDE = outDE;
-		}
-	}
-	if (prevInDE !== null) {
-		Assert.isTrue(firstOutDE !== null);
-		prevInDE.setNext(firstOutDE);
-	}
-};
-PolygonizeGraph.getDegree = function (node, label) {
-	var edges = node.getOutEdges().getEdges();
-	var degree = 0;
-	for (var i = edges.iterator(); i.hasNext(); ) {
-		var de = i.next();
-		if (de.getLabel() === label) degree++;
-	}
-	return degree;
-};
-PolygonizeGraph.findIntersectionNodes = function (startDE, label) {
-	var de = startDE;
-	var intNodes = null;
-	do {
-		var node = de.getFromNode();
-		if (PolygonizeGraph.getDegree(node, label) > 1) {
-			if (intNodes === null) intNodes = new ArrayList();
-			intNodes.add(node);
-		}
-		de = de.getNext();
-		Assert.isTrue(de !== null, "found null DE in ring");
-		Assert.isTrue(de === startDE || !de.isInRing(), "found DE already in ring");
-	} while (de !== startDE);
-	return intNodes;
+}
+PolygonizeGraph.constructor_ = function () {
+	this._factory = null;
+	let factory = arguments[0];
+	this._factory = factory;
 };

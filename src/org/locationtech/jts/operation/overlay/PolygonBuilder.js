@@ -1,18 +1,14 @@
 import PointLocation from '../../algorithm/PointLocation';
 import TopologyException from '../../geom/TopologyException';
-import extend from '../../../../../extend';
 import MaximalEdgeRing from './MaximalEdgeRing';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
-export default function PolygonBuilder() {
-	this._geometryFactory = null;
-	this._shellList = new ArrayList();
-	let geometryFactory = arguments[0];
-	this._geometryFactory = geometryFactory;
-}
-extend(PolygonBuilder.prototype, {
-	sortShellsAndHoles: function (edgeRings, shellList, freeHoleList) {
+export default class PolygonBuilder {
+	constructor() {
+		PolygonBuilder.constructor_.apply(this, arguments);
+	}
+	sortShellsAndHoles(edgeRings, shellList, freeHoleList) {
 		for (var it = edgeRings.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.isHole()) {
@@ -21,8 +17,8 @@ extend(PolygonBuilder.prototype, {
 				shellList.add(er);
 			}
 		}
-	},
-	computePolygons: function (shellList) {
+	}
+	computePolygons(shellList) {
 		var resultPolyList = new ArrayList();
 		for (var it = shellList.iterator(); it.hasNext(); ) {
 			var er = it.next();
@@ -30,8 +26,8 @@ extend(PolygonBuilder.prototype, {
 			resultPolyList.add(poly);
 		}
 		return resultPolyList;
-	},
-	placeFreeHoles: function (shellList, freeHoleList) {
+	}
+	placeFreeHoles(shellList, freeHoleList) {
 		for (var it = freeHoleList.iterator(); it.hasNext(); ) {
 			var hole = it.next();
 			if (hole.getShell() === null) {
@@ -40,8 +36,8 @@ extend(PolygonBuilder.prototype, {
 				hole.setShell(shell);
 			}
 		}
-	},
-	buildMinimalEdgeRings: function (maxEdgeRings, shellList, freeHoleList) {
+	}
+	buildMinimalEdgeRings(maxEdgeRings, shellList, freeHoleList) {
 		var edgeRings = new ArrayList();
 		for (var it = maxEdgeRings.iterator(); it.hasNext(); ) {
 			var er = it.next();
@@ -60,15 +56,15 @@ extend(PolygonBuilder.prototype, {
 			}
 		}
 		return edgeRings;
-	},
-	containsPoint: function (p) {
+	}
+	containsPoint(p) {
 		for (var it = this._shellList.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.containsPoint(p)) return true;
 		}
 		return false;
-	},
-	buildMaximalEdgeRings: function (dirEdges) {
+	}
+	buildMaximalEdgeRings(dirEdges) {
 		var maxEdgeRings = new ArrayList();
 		for (var it = dirEdges.iterator(); it.hasNext(); ) {
 			var de = it.next();
@@ -81,20 +77,20 @@ extend(PolygonBuilder.prototype, {
 			}
 		}
 		return maxEdgeRings;
-	},
-	placePolygonHoles: function (shell, minEdgeRings) {
+	}
+	placePolygonHoles(shell, minEdgeRings) {
 		for (var it = minEdgeRings.iterator(); it.hasNext(); ) {
 			var er = it.next();
 			if (er.isHole()) {
 				er.setShell(shell);
 			}
 		}
-	},
-	getPolygons: function () {
+	}
+	getPolygons() {
 		var resultPolyList = this.computePolygons(this._shellList);
 		return resultPolyList;
-	},
-	findEdgeRingContaining: function (testEr, shellList) {
+	}
+	findEdgeRingContaining(testEr, shellList) {
 		var testRing = testEr.getLinearRing();
 		var testEnv = testRing.getEnvelopeInternal();
 		var testPt = testRing.getCoordinateN(0);
@@ -114,8 +110,8 @@ extend(PolygonBuilder.prototype, {
 			}
 		}
 		return minShell;
-	},
-	findShell: function (minEdgeRings) {
+	}
+	findShell(minEdgeRings) {
 		var shellCount = 0;
 		var shell = null;
 		for (var it = minEdgeRings.iterator(); it.hasNext(); ) {
@@ -127,8 +123,8 @@ extend(PolygonBuilder.prototype, {
 		}
 		Assert.isTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
 		return shell;
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments.length === 1) {
 			let graph = arguments[0];
 			this.add(graph.getEdgeEnds(), graph.getNodes());
@@ -141,11 +137,17 @@ extend(PolygonBuilder.prototype, {
 			this.sortShellsAndHoles(edgeRings, this._shellList, freeHoleList);
 			this.placeFreeHoles(this._shellList, freeHoleList);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PolygonBuilder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PolygonBuilder.constructor_ = function () {
+	this._geometryFactory = null;
+	this._shellList = new ArrayList();
+	let geometryFactory = arguments[0];
+	this._geometryFactory = geometryFactory;
+};

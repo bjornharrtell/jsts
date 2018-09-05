@@ -3,20 +3,31 @@ import STRtree from '../../index/strtree/STRtree';
 import Geometry from '../../geom/Geometry';
 import hasInterface from '../../../../../hasInterface';
 import GeometryFactory from '../../geom/GeometryFactory';
-import extend from '../../../../../extend';
 import GeometryCombiner from '../../geom/util/GeometryCombiner';
 import Polygonal from '../../geom/Polygonal';
 import ArrayList from '../../../../../java/util/ArrayList';
 import List from '../../../../../java/util/List';
-export default function CascadedPolygonUnion() {
-	this._inputPolys = null;
-	this._geomFactory = null;
-	let polys = arguments[0];
-	this._inputPolys = polys;
-	if (this._inputPolys === null) this._inputPolys = new ArrayList();
-}
-extend(CascadedPolygonUnion.prototype, {
-	reduceToGeometries: function (geomTree) {
+export default class CascadedPolygonUnion {
+	constructor() {
+		CascadedPolygonUnion.constructor_.apply(this, arguments);
+	}
+	static restrictToPolygons(g) {
+		if (hasInterface(g, Polygonal)) {
+			return g;
+		}
+		var polygons = PolygonExtracter.getPolygons(g);
+		if (polygons.size() === 1) return polygons.get(0);
+		return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons));
+	}
+	static getGeometry(list, index) {
+		if (index >= list.size()) return null;
+		return list.get(index);
+	}
+	static union(polys) {
+		var op = new CascadedPolygonUnion(polys);
+		return op.union();
+	}
+	reduceToGeometries(geomTree) {
 		var geoms = new ArrayList();
 		for (var i = geomTree.iterator(); i.hasNext(); ) {
 			var o = i.next();
@@ -29,16 +40,16 @@ extend(CascadedPolygonUnion.prototype, {
 			geoms.add(geom);
 		}
 		return geoms;
-	},
-	extractByEnvelope: function (env, geom, disjointGeoms) {
+	}
+	extractByEnvelope(env, geom, disjointGeoms) {
 		var intersectingGeoms = new ArrayList();
 		for (var i = 0; i < geom.getNumGeometries(); i++) {
 			var elem = geom.getGeometryN(i);
 			if (elem.getEnvelopeInternal().intersects(env)) intersectingGeoms.add(elem); else disjointGeoms.add(elem);
 		}
 		return this._geomFactory.buildGeometry(intersectingGeoms);
-	},
-	unionOptimized: function (g0, g1) {
+	}
+	unionOptimized(g0, g1) {
 		var g0Env = g0.getEnvelopeInternal();
 		var g1Env = g1.getEnvelopeInternal();
 		if (!g0Env.intersects(g1Env)) {
@@ -48,8 +59,8 @@ extend(CascadedPolygonUnion.prototype, {
 		if (g0.getNumGeometries() <= 1 && g1.getNumGeometries() <= 1) return this.unionActual(g0, g1);
 		var commonEnv = g0Env.intersection(g1Env);
 		return this.unionUsingEnvelopeIntersection(g0, g1, commonEnv);
-	},
-	union: function () {
+	}
+	union() {
 		if (this._inputPolys === null) throw new IllegalStateException("union() method cannot be called twice");
 		if (this._inputPolys.isEmpty()) return null;
 		this._geomFactory = this._inputPolys.iterator().next().getFactory();
@@ -62,8 +73,8 @@ extend(CascadedPolygonUnion.prototype, {
 		var itemTree = index.itemsTree();
 		var unionAll = this.unionTree(itemTree);
 		return unionAll;
-	},
-	binaryUnion: function () {
+	}
+	binaryUnion() {
 		if (arguments.length === 1) {
 			let geoms = arguments[0];
 			return this.binaryUnion(geoms, 0, geoms.size());
@@ -81,30 +92,30 @@ extend(CascadedPolygonUnion.prototype, {
 				return this.unionSafe(g0, g1);
 			}
 		}
-	},
-	repeatedUnion: function (geoms) {
+	}
+	repeatedUnion(geoms) {
 		var union = null;
 		for (var i = geoms.iterator(); i.hasNext(); ) {
 			var g = i.next();
 			if (union === null) union = g.copy(); else union = union.union(g);
 		}
 		return union;
-	},
-	unionSafe: function (g0, g1) {
+	}
+	unionSafe(g0, g1) {
 		if (g0 === null && g1 === null) return null;
 		if (g0 === null) return g1.copy();
 		if (g1 === null) return g0.copy();
 		return this.unionOptimized(g0, g1);
-	},
-	unionActual: function (g0, g1) {
+	}
+	unionActual(g0, g1) {
 		return CascadedPolygonUnion.restrictToPolygons(g0.union(g1));
-	},
-	unionTree: function (geomTree) {
+	}
+	unionTree(geomTree) {
 		var geoms = this.reduceToGeometries(geomTree);
 		var union = this.binaryUnion(geoms);
 		return union;
-	},
-	unionUsingEnvelopeIntersection: function (g0, g1, common) {
+	}
+	unionUsingEnvelopeIntersection(g0, g1, common) {
 		var disjointPolys = new ArrayList();
 		var g0Int = this.extractByEnvelope(common, g0, disjointPolys);
 		var g1Int = this.extractByEnvelope(common, g1, disjointPolys);
@@ -112,8 +123,8 @@ extend(CascadedPolygonUnion.prototype, {
 		disjointPolys.add(union);
 		var overallUnion = GeometryCombiner.combine(disjointPolys);
 		return overallUnion;
-	},
-	bufferUnion: function () {
+	}
+	bufferUnion() {
 		if (arguments.length === 1) {
 			let geoms = arguments[0];
 			var factory = geoms.get(0).getFactory();
@@ -127,28 +138,19 @@ extend(CascadedPolygonUnion.prototype, {
 			var unionAll = gColl.buffer(0.0);
 			return unionAll;
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return CascadedPolygonUnion;
 	}
-});
-CascadedPolygonUnion.restrictToPolygons = function (g) {
-	if (hasInterface(g, Polygonal)) {
-		return g;
+	get interfaces_() {
+		return [];
 	}
-	var polygons = PolygonExtracter.getPolygons(g);
-	if (polygons.size() === 1) return polygons.get(0);
-	return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons));
-};
-CascadedPolygonUnion.getGeometry = function (list, index) {
-	if (index >= list.size()) return null;
-	return list.get(index);
-};
-CascadedPolygonUnion.union = function (polys) {
-	var op = new CascadedPolygonUnion(polys);
-	return op.union();
+}
+CascadedPolygonUnion.constructor_ = function () {
+	this._inputPolys = null;
+	this._geomFactory = null;
+	let polys = arguments[0];
+	this._inputPolys = polys;
+	if (this._inputPolys === null) this._inputPolys = new ArrayList();
 };
 CascadedPolygonUnion.STRTREE_NODE_CAPACITY = 4;

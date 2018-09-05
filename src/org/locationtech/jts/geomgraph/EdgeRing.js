@@ -2,29 +2,15 @@ import Location from '../geom/Location';
 import Position from './Position';
 import PointLocation from '../algorithm/PointLocation';
 import TopologyException from '../geom/TopologyException';
-import extend from '../../../../extend';
 import Orientation from '../algorithm/Orientation';
 import Label from './Label';
 import ArrayList from '../../../../java/util/ArrayList';
 import Assert from '../util/Assert';
-export default function EdgeRing() {
-	this._startDe = null;
-	this._maxNodeDegree = -1;
-	this._edges = new ArrayList();
-	this._pts = new ArrayList();
-	this._label = new Label(Location.NONE);
-	this._ring = null;
-	this._isHole = null;
-	this._shell = null;
-	this._holes = new ArrayList();
-	this._geometryFactory = null;
-	let start = arguments[0], geometryFactory = arguments[1];
-	this._geometryFactory = geometryFactory;
-	this.computePoints(start);
-	this.computeRing();
-}
-extend(EdgeRing.prototype, {
-	computeRing: function () {
+export default class EdgeRing {
+	constructor() {
+		EdgeRing.constructor_.apply(this, arguments);
+	}
+	computeRing() {
 		if (this._ring !== null) return null;
 		var coord = new Array(this._pts.size()).fill(null);
 		for (var i = 0; i < this._pts.size(); i++) {
@@ -32,11 +18,11 @@ extend(EdgeRing.prototype, {
 		}
 		this._ring = this._geometryFactory.createLinearRing(coord);
 		this._isHole = Orientation.isCCW(this._ring.getCoordinates());
-	},
-	isIsolated: function () {
+	}
+	isIsolated() {
 		return this._label.getGeometryCount() === 1;
-	},
-	computePoints: function (start) {
+	}
+	computePoints(start) {
 		this._startDe = start;
 		var de = start;
 		var isFirstEdge = true;
@@ -52,14 +38,14 @@ extend(EdgeRing.prototype, {
 			this.setEdgeRing(de, this);
 			de = this.getNext(de);
 		} while (de !== this._startDe);
-	},
-	getLinearRing: function () {
+	}
+	getLinearRing() {
 		return this._ring;
-	},
-	getCoordinate: function (i) {
+	}
+	getCoordinate(i) {
 		return this._pts.get(i);
-	},
-	computeMaxNodeDegree: function () {
+	}
+	computeMaxNodeDegree() {
 		this._maxNodeDegree = 0;
 		var de = this._startDe;
 		do {
@@ -69,8 +55,8 @@ extend(EdgeRing.prototype, {
 			de = this.getNext(de);
 		} while (de !== this._startDe);
 		this._maxNodeDegree *= 2;
-	},
-	addPoints: function (edge, isForward, isFirstEdge) {
+	}
+	addPoints(edge, isForward, isFirstEdge) {
 		var edgePts = edge.getCoordinates();
 		if (isForward) {
 			var startIndex = 1;
@@ -85,18 +71,18 @@ extend(EdgeRing.prototype, {
 				this._pts.add(edgePts[i]);
 			}
 		}
-	},
-	isHole: function () {
+	}
+	isHole() {
 		return this._isHole;
-	},
-	setInResult: function () {
+	}
+	setInResult() {
 		var de = this._startDe;
 		do {
 			de.getEdge().setInResult(true);
 			de = de.getNext();
 		} while (de !== this._startDe);
-	},
-	containsPoint: function (p) {
+	}
+	containsPoint(p) {
 		var shell = this.getLinearRing();
 		var env = shell.getEnvelopeInternal();
 		if (!env.contains(p)) return false;
@@ -106,27 +92,27 @@ extend(EdgeRing.prototype, {
 			if (hole.containsPoint(p)) return false;
 		}
 		return true;
-	},
-	addHole: function (ring) {
+	}
+	addHole(ring) {
 		this._holes.add(ring);
-	},
-	isShell: function () {
+	}
+	isShell() {
 		return this._shell === null;
-	},
-	getLabel: function () {
+	}
+	getLabel() {
 		return this._label;
-	},
-	getEdges: function () {
+	}
+	getEdges() {
 		return this._edges;
-	},
-	getMaxNodeDegree: function () {
+	}
+	getMaxNodeDegree() {
 		if (this._maxNodeDegree < 0) this.computeMaxNodeDegree();
 		return this._maxNodeDegree;
-	},
-	getShell: function () {
+	}
+	getShell() {
 		return this._shell;
-	},
-	mergeLabel: function () {
+	}
+	mergeLabel() {
 		if (arguments.length === 1) {
 			let deLabel = arguments[0];
 			this.mergeLabel(deLabel, 0);
@@ -140,23 +126,41 @@ extend(EdgeRing.prototype, {
 				return null;
 			}
 		}
-	},
-	setShell: function (shell) {
+	}
+	setShell(shell) {
 		this._shell = shell;
 		if (shell !== null) shell.addHole(this);
-	},
-	toPolygon: function (geometryFactory) {
+	}
+	toPolygon(geometryFactory) {
 		var holeLR = new Array(this._holes.size()).fill(null);
 		for (var i = 0; i < this._holes.size(); i++) {
 			holeLR[i] = this._holes.get(i).getLinearRing();
 		}
 		var poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR);
 		return poly;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return EdgeRing;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+EdgeRing.constructor_ = function () {
+	this._startDe = null;
+	this._maxNodeDegree = -1;
+	this._edges = new ArrayList();
+	this._pts = new ArrayList();
+	this._label = new Label(Location.NONE);
+	this._ring = null;
+	this._isHole = null;
+	this._shell = null;
+	this._holes = new ArrayList();
+	this._geometryFactory = null;
+	if (arguments.length === 0) {} else if (arguments.length === 2) {
+		let start = arguments[0], geometryFactory = arguments[1];
+		this._geometryFactory = geometryFactory;
+		this.computePoints(start);
+		this.computeRing();
+	}
+};

@@ -1,17 +1,16 @@
 import CoordinateList from '../geom/CoordinateList';
 import Coordinate from '../geom/Coordinate';
-import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
-export default function DouglasPeuckerLineSimplifier() {
-	this._pts = null;
-	this._usePt = null;
-	this._distanceTolerance = null;
-	this._seg = new LineSegment();
-	let pts = arguments[0];
-	this._pts = pts;
-}
-extend(DouglasPeuckerLineSimplifier.prototype, {
-	simplifySection: function (i, j) {
+export default class DouglasPeuckerLineSimplifier {
+	constructor() {
+		DouglasPeuckerLineSimplifier.constructor_.apply(this, arguments);
+	}
+	static simplify(pts, distanceTolerance) {
+		var simp = new DouglasPeuckerLineSimplifier(pts);
+		simp.setDistanceTolerance(distanceTolerance);
+		return simp.simplify();
+	}
+	simplifySection(i, j) {
 		if (i + 1 === j) {
 			return null;
 		}
@@ -34,11 +33,11 @@ extend(DouglasPeuckerLineSimplifier.prototype, {
 			this.simplifySection(i, maxIndex);
 			this.simplifySection(maxIndex, j);
 		}
-	},
-	setDistanceTolerance: function (distanceTolerance) {
+	}
+	setDistanceTolerance(distanceTolerance) {
 		this._distanceTolerance = distanceTolerance;
-	},
-	simplify: function () {
+	}
+	simplify() {
 		this._usePt = new Array(this._pts.length).fill(null);
 		for (var i = 0; i < this._pts.length; i++) {
 			this._usePt[i] = true;
@@ -49,16 +48,19 @@ extend(DouglasPeuckerLineSimplifier.prototype, {
 			if (this._usePt[i]) coordList.add(new Coordinate(this._pts[i]));
 		}
 		return coordList.toCoordinateArray();
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return DouglasPeuckerLineSimplifier;
 	}
-});
-DouglasPeuckerLineSimplifier.simplify = function (pts, distanceTolerance) {
-	var simp = new DouglasPeuckerLineSimplifier(pts);
-	simp.setDistanceTolerance(distanceTolerance);
-	return simp.simplify();
+	get interfaces_() {
+		return [];
+	}
+}
+DouglasPeuckerLineSimplifier.constructor_ = function () {
+	this._pts = null;
+	this._usePt = null;
+	this._distanceTolerance = null;
+	this._seg = new LineSegment();
+	let pts = arguments[0];
+	this._pts = pts;
 };

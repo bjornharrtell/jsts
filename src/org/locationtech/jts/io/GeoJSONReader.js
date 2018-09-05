@@ -3,28 +3,24 @@
  */
 
 import GeometryFactory from '../geom/GeometryFactory'
-import PrecisionModel from '../geom/PrecisionModel'
 import GeoJSONParser from './GeoJSONParser'
-import extend from '../../../../extend'
 
 /**
  * Converts a geometry in GeoJSON to a {@link Geometry}.
  */
+export default class GeoJSONReader {
+  /**
+   * A <code>GeoJSONReader</code> is parameterized by a <code>GeometryFactory</code>,
+   * to allow it to create <code>Geometry</code> objects of the appropriate
+   * implementation. In particular, the <code>GeometryFactory</code> determines
+   * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
+   *
+   * @param {GeometryFactory} geometryFactory
+   */
+  constructor(geometryFactory) {
+    this.parser = new GeoJSONParser(geometryFactory || new GeometryFactory())
+  }
 
-/**
- * A <code>GeoJSONReader</code> is parameterized by a <code>GeometryFactory</code>,
- * to allow it to create <code>Geometry</code> objects of the appropriate
- * implementation. In particular, the <code>GeometryFactory</code> determines
- * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
- *
- * @param {GeometryFactory} geometryFactory
- * @constructor
- */
-export default function GeoJSONReader (geometryFactory) {
-  this.parser = new GeoJSONParser(geometryFactory || new GeometryFactory())
-}
-
-extend(GeoJSONReader.prototype, {
   /**
    * Reads a GeoJSON representation of a {@link Geometry}
    *
@@ -38,4 +34,4 @@ extend(GeoJSONReader.prototype, {
     var geometry = this.parser.read(geoJson)
     return geometry
   }
-})
+}

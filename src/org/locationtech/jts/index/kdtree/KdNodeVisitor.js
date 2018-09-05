@@ -1,11 +1,13 @@
-import extend from '../../../../../extend';
-export default function KdNodeVisitor() {}
-extend(KdNodeVisitor.prototype, {
-	visit: function (node) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class KdNodeVisitor {
+	constructor() {
+		KdNodeVisitor.constructor_.apply(this, arguments);
+	}
+	visit(node) {}
+	getClass() {
 		return KdNodeVisitor;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+KdNodeVisitor.constructor_ = function () {};

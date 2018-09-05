@@ -1,14 +1,9 @@
 import QuadEdge from './quadedge/QuadEdge';
-import extend from '../../../../extend';
-export default function IncrementalDelaunayTriangulator() {
-	this._subdiv = null;
-	this._isUsingTolerance = false;
-	let subdiv = arguments[0];
-	this._subdiv = subdiv;
-	this._isUsingTolerance = subdiv.getTolerance() > 0.0;
-}
-extend(IncrementalDelaunayTriangulator.prototype, {
-	insertSite: function (v) {
+export default class IncrementalDelaunayTriangulator {
+	constructor() {
+		IncrementalDelaunayTriangulator.constructor_.apply(this, arguments);
+	}
+	insertSite(v) {
 		var e = this._subdiv.locate(v);
 		if (this._subdiv.isVertexOfEdge(e, v)) {
 			return e;
@@ -34,17 +29,24 @@ extend(IncrementalDelaunayTriangulator.prototype, {
 				e = e.oNext().lPrev();
 			}
 		} while (true);
-	},
-	insertSites: function (vertices) {
+	}
+	insertSites(vertices) {
 		for (var i = vertices.iterator(); i.hasNext(); ) {
 			var v = i.next();
 			this.insertSite(v);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IncrementalDelaunayTriangulator;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+IncrementalDelaunayTriangulator.constructor_ = function () {
+	this._subdiv = null;
+	this._isUsingTolerance = false;
+	let subdiv = arguments[0];
+	this._subdiv = subdiv;
+	this._isUsingTolerance = subdiv.getTolerance() > 0.0;
+};

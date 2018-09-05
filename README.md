@@ -19,6 +19,8 @@ Basic functionality together with OpenLayers is demonstrated [here](http://bjorn
 
 An ES5 (the most common JavaScript variant) compatible build for browsers is available [here](https://unpkg.com/jsts@1.6.1/dist/jsts.min.js).
 
+An ES6+ compatible build for browsers is available [here](https://unpkg.com/jsts@2.0.0/dist/jsts.min.js).
+
 Including the above build as a script will import a global object `jsts` exposing similar public API as `org.locationtech.jts` in the [JTS API](http://locationtech.github.io/jts/javadoc/).
 
 For Node.js, install using `npm install jsts` after which `require('jsts')` will import an object with the same properties as `jsts` in the browser build.

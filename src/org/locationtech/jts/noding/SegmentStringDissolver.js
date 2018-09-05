@@ -1,29 +1,21 @@
 import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import OrientedCoordinateArray from './OrientedCoordinateArray';
-import extend from '../../../../extend';
 import SegmentString from './SegmentString';
 import CoordinateArrays from '../geom/CoordinateArrays';
 import TreeMap from '../../../../java/util/TreeMap';
-export default function SegmentStringDissolver() {
-	this._merger = null;
-	this._ocaMap = new TreeMap();
-	if (arguments.length === 0) {
-		SegmentStringDissolver.call(this, null);
-	} else if (arguments.length === 1) {
-		let merger = arguments[0];
-		this._merger = merger;
+export default class SegmentStringDissolver {
+	constructor() {
+		SegmentStringDissolver.constructor_.apply(this, arguments);
 	}
-}
-extend(SegmentStringDissolver.prototype, {
-	findMatching: function (oca, segString) {
+	findMatching(oca, segString) {
 		var matchSS = this._ocaMap.get(oca);
 		return matchSS;
-	},
-	getDissolved: function () {
+	}
+	getDissolved() {
 		return this._ocaMap.values();
-	},
-	dissolve: function () {
+	}
+	dissolve() {
 		if (hasInterface(arguments[0], Collection)) {
 			let segStrings = arguments[0];
 			for (var i = segStrings.iterator(); i.hasNext(); ) {
@@ -42,16 +34,26 @@ extend(SegmentStringDissolver.prototype, {
 				}
 			}
 		}
-	},
-	add: function (oca, segString) {
+	}
+	add(oca, segString) {
 		this._ocaMap.put(oca, segString);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SegmentStringDissolver;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
 function SegmentStringMerger() {}
 SegmentStringDissolver.SegmentStringMerger = SegmentStringMerger;
+SegmentStringDissolver.constructor_ = function () {
+	this._merger = null;
+	this._ocaMap = new TreeMap();
+	if (arguments.length === 0) {
+		SegmentStringDissolver.constructor_.call(this, null);
+	} else if (arguments.length === 1) {
+		let merger = arguments[0];
+		this._merger = merger;
+	}
+};

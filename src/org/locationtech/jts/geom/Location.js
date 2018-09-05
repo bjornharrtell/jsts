@@ -1,27 +1,29 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
-import extend from '../../../../extend';
-export default function Location() {}
-extend(Location.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class Location {
+	constructor() {
+		Location.constructor_.apply(this, arguments);
+	}
+	static toLocationSymbol(locationValue) {
+		switch (locationValue) {
+			case Location.EXTERIOR:
+				return 'e';
+			case Location.BOUNDARY:
+				return 'b';
+			case Location.INTERIOR:
+				return 'i';
+			case Location.NONE:
+				return '-';
+		}
+		throw new IllegalArgumentException("Unknown location value: " + locationValue);
+	}
+	getClass() {
 		return Location;
 	}
-});
-Location.toLocationSymbol = function (locationValue) {
-	switch (locationValue) {
-		case Location.EXTERIOR:
-			return 'e';
-		case Location.BOUNDARY:
-			return 'b';
-		case Location.INTERIOR:
-			return 'i';
-		case Location.NONE:
-			return '-';
+	get interfaces_() {
+		return [];
 	}
-	throw new IllegalArgumentException("Unknown location value: " + locationValue);
-};
+}
+Location.constructor_ = function () {};
 Location.INTERIOR = 0;
 Location.BOUNDARY = 1;
 Location.EXTERIOR = 2;

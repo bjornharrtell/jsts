@@ -1,10 +1,18 @@
-import extend from '../../../../../extend';
 import Integer from '../../../../../java/lang/Integer';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Quadrant from '../Quadrant';
-export default function MonotoneChainIndexer() {}
-extend(MonotoneChainIndexer.prototype, {
-	getChainStartIndices: function (pts) {
+export default class MonotoneChainIndexer {
+	constructor() {
+		MonotoneChainIndexer.constructor_.apply(this, arguments);
+	}
+	static toIntArray(list) {
+		var array = new Array(list.size()).fill(null);
+		for (var i = 0; i < array.length; i++) {
+			array[i] = list.get(i).intValue();
+		}
+		return array;
+	}
+	getChainStartIndices(pts) {
 		var start = 0;
 		var startIndexList = new ArrayList();
 		startIndexList.add(new Integer(start));
@@ -15,8 +23,8 @@ extend(MonotoneChainIndexer.prototype, {
 		} while (start < pts.length - 1);
 		var startIndex = MonotoneChainIndexer.toIntArray(startIndexList);
 		return startIndex;
-	},
-	findChainEnd: function (pts, start) {
+	}
+	findChainEnd(pts, start) {
 		var chainQuad = Quadrant.quadrant(pts[start], pts[start + 1]);
 		var last = start + 1;
 		while (last < pts.length) {
@@ -25,18 +33,12 @@ extend(MonotoneChainIndexer.prototype, {
 			last++;
 		}
 		return last - 1;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MonotoneChainIndexer;
 	}
-});
-MonotoneChainIndexer.toIntArray = function (list) {
-	var array = new Array(list.size()).fill(null);
-	for (var i = 0; i < array.length; i++) {
-		array[i] = list.get(i).intValue();
+	get interfaces_() {
+		return [];
 	}
-	return array;
-};
+}
+MonotoneChainIndexer.constructor_ = function () {};

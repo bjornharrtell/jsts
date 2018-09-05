@@ -2,20 +2,23 @@ import hasInterface from '../../../../hasInterface';
 import GeometryFactory from '../geom/GeometryFactory';
 import IsValidOp from '../operation/valid/IsValidOp';
 import GeometryEditor from '../geom/util/GeometryEditor';
-import extend from '../../../../extend';
 import BufferOp from '../operation/buffer/BufferOp';
 import Polygonal from '../geom/Polygonal';
 import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation';
-export default function GeometryPrecisionReducer() {
-	this._targetPM = null;
-	this._removeCollapsed = true;
-	this._changePrecisionModel = false;
-	this._isPointwise = false;
-	let pm = arguments[0];
-	this._targetPM = pm;
-}
-extend(GeometryPrecisionReducer.prototype, {
-	fixPolygonalTopology: function (geom) {
+export default class GeometryPrecisionReducer {
+	constructor() {
+		GeometryPrecisionReducer.constructor_.apply(this, arguments);
+	}
+	static reduce(g, precModel) {
+		var reducer = new GeometryPrecisionReducer(precModel);
+		return reducer.reduce(g);
+	}
+	static reducePointwise(g, precModel) {
+		var reducer = new GeometryPrecisionReducer(precModel);
+		reducer.setPointwise(true);
+		return reducer.reduce(g);
+	}
+	fixPolygonalTopology(geom) {
 		var geomToBuffer = geom;
 		if (!this._changePrecisionModel) {
 			geomToBuffer = this.changePM(geom, this._targetPM);
@@ -27,8 +30,8 @@ extend(GeometryPrecisionReducer.prototype, {
 			this.changePM(finalGeom, geom.getPrecisionModel());
 		}
 		return finalGeom;
-	},
-	reducePointwise: function (geom) {
+	}
+	reducePointwise(geom) {
 		var geomEdit = null;
 		if (this._changePrecisionModel) {
 			var newFactory = this.createFactory(geom.getFactory(), this._targetPM);
@@ -38,50 +41,49 @@ extend(GeometryPrecisionReducer.prototype, {
 		if (geom.getDimension() >= 2) finalRemoveCollapsed = true;
 		var reduceGeom = geomEdit.edit(geom, new PrecisionReducerCoordinateOperation(this._targetPM, finalRemoveCollapsed));
 		return reduceGeom;
-	},
-	changePM: function (geom, newPM) {
+	}
+	changePM(geom, newPM) {
 		var geomEditor = this.createEditor(geom.getFactory(), newPM);
 		return geomEditor.edit(geom, new GeometryEditor.NoOpGeometryOperation());
-	},
-	setRemoveCollapsedComponents: function (removeCollapsed) {
+	}
+	setRemoveCollapsedComponents(removeCollapsed) {
 		this._removeCollapsed = removeCollapsed;
-	},
-	createFactory: function (inputFactory, pm) {
+	}
+	createFactory(inputFactory, pm) {
 		var newFactory = new GeometryFactory(pm, inputFactory.getSRID(), inputFactory.getCoordinateSequenceFactory());
 		return newFactory;
-	},
-	setChangePrecisionModel: function (changePrecisionModel) {
+	}
+	setChangePrecisionModel(changePrecisionModel) {
 		this._changePrecisionModel = changePrecisionModel;
-	},
-	reduce: function (geom) {
+	}
+	reduce(geom) {
 		var reducePW = this.reducePointwise(geom);
 		if (this._isPointwise) return reducePW;
 		if (!hasInterface(reducePW, Polygonal)) return reducePW;
 		if (IsValidOp.isValid(reducePW)) return reducePW;
 		return this.fixPolygonalTopology(reducePW);
-	},
-	setPointwise: function (isPointwise) {
+	}
+	setPointwise(isPointwise) {
 		this._isPointwise = isPointwise;
-	},
-	createEditor: function (geomFactory, newPM) {
+	}
+	createEditor(geomFactory, newPM) {
 		if (geomFactory.getPrecisionModel() === newPM) return new GeometryEditor();
 		var newFactory = this.createFactory(geomFactory, newPM);
 		var geomEdit = new GeometryEditor(newFactory);
 		return geomEdit;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return GeometryPrecisionReducer;
 	}
-});
-GeometryPrecisionReducer.reduce = function (g, precModel) {
-	var reducer = new GeometryPrecisionReducer(precModel);
-	return reducer.reduce(g);
-};
-GeometryPrecisionReducer.reducePointwise = function (g, precModel) {
-	var reducer = new GeometryPrecisionReducer(precModel);
-	reducer.setPointwise(true);
-	return reducer.reduce(g);
+	get interfaces_() {
+		return [];
+	}
+}
+GeometryPrecisionReducer.constructor_ = function () {
+	this._targetPM = null;
+	this._removeCollapsed = true;
+	this._changePrecisionModel = false;
+	this._isPointwise = false;
+	let pm = arguments[0];
+	this._targetPM = pm;
 };

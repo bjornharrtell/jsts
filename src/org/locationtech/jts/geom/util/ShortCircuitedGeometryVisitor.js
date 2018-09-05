@@ -1,10 +1,9 @@
-import extend from '../../../../../extend';
 import GeometryCollection from '../GeometryCollection';
-export default function ShortCircuitedGeometryVisitor() {
-	this._isDone = false;
-}
-extend(ShortCircuitedGeometryVisitor.prototype, {
-	applyTo: function (geom) {
+export default class ShortCircuitedGeometryVisitor {
+	constructor() {
+		ShortCircuitedGeometryVisitor.constructor_.apply(this, arguments);
+	}
+	applyTo(geom) {
 		for (var i = 0; i < geom.getNumGeometries() && !this._isDone; i++) {
 			var element = geom.getGeometryN(i);
 			if (!(element instanceof GeometryCollection)) {
@@ -15,11 +14,14 @@ extend(ShortCircuitedGeometryVisitor.prototype, {
 				}
 			} else this.applyTo(element);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ShortCircuitedGeometryVisitor;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+ShortCircuitedGeometryVisitor.constructor_ = function () {
+	this._isDone = false;
+};

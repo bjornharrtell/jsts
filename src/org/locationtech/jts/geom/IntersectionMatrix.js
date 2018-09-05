@@ -1,47 +1,58 @@
 import Location from './Location';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
-import extend from '../../../../extend';
 import Dimension from './Dimension';
 import Cloneable from '../../../../java/lang/Cloneable';
 import StringBuilder from '../../../../java/lang/StringBuilder';
-export default function IntersectionMatrix() {
-	this._matrix = null;
-	if (arguments.length === 0) {
-		this._matrix = Array(3).fill().map(() => Array(3));
-		this.setAll(Dimension.FALSE);
-	} else if (arguments.length === 1) {
-		if (typeof arguments[0] === "string") {
-			let elements = arguments[0];
-			IntersectionMatrix.call(this);
-			this.set(elements);
-		} else if (arguments[0] instanceof IntersectionMatrix) {
-			let other = arguments[0];
-			IntersectionMatrix.call(this);
-			this._matrix[Location.INTERIOR][Location.INTERIOR] = other._matrix[Location.INTERIOR][Location.INTERIOR];
-			this._matrix[Location.INTERIOR][Location.BOUNDARY] = other._matrix[Location.INTERIOR][Location.BOUNDARY];
-			this._matrix[Location.INTERIOR][Location.EXTERIOR] = other._matrix[Location.INTERIOR][Location.EXTERIOR];
-			this._matrix[Location.BOUNDARY][Location.INTERIOR] = other._matrix[Location.BOUNDARY][Location.INTERIOR];
-			this._matrix[Location.BOUNDARY][Location.BOUNDARY] = other._matrix[Location.BOUNDARY][Location.BOUNDARY];
-			this._matrix[Location.BOUNDARY][Location.EXTERIOR] = other._matrix[Location.BOUNDARY][Location.EXTERIOR];
-			this._matrix[Location.EXTERIOR][Location.INTERIOR] = other._matrix[Location.EXTERIOR][Location.INTERIOR];
-			this._matrix[Location.EXTERIOR][Location.BOUNDARY] = other._matrix[Location.EXTERIOR][Location.BOUNDARY];
-			this._matrix[Location.EXTERIOR][Location.EXTERIOR] = other._matrix[Location.EXTERIOR][Location.EXTERIOR];
+export default class IntersectionMatrix {
+	constructor() {
+		IntersectionMatrix.constructor_.apply(this, arguments);
+	}
+	static matches() {
+		if (Number.isInteger(arguments[0]) && typeof arguments[1] === "string") {
+			let actualDimensionValue = arguments[0], requiredDimensionSymbol = arguments[1];
+			if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
+				return true;
+			}
+			if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
+				return true;
+			}
+			if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
+				return true;
+			}
+			if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
+				return true;
+			}
+			if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
+				return true;
+			}
+			if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
+				return true;
+			}
+			return false;
+		} else if (typeof arguments[0] === "string" && typeof arguments[1] === "string") {
+			let actualDimensionSymbols = arguments[0], requiredDimensionSymbols = arguments[1];
+			var m = new IntersectionMatrix(actualDimensionSymbols);
+			return m.matches(requiredDimensionSymbols);
 		}
 	}
-}
-extend(IntersectionMatrix.prototype, {
-	isIntersects: function () {
+	static isTrue(actualDimensionValue) {
+		if (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE) {
+			return true;
+		}
+		return false;
+	}
+	isIntersects() {
 		return !this.isDisjoint();
-	},
-	isCovers: function () {
+	}
+	isCovers() {
 		var hasPointInCommon = IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY]);
 		return hasPointInCommon && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE;
-	},
-	isCoveredBy: function () {
+	}
+	isCoveredBy() {
 		var hasPointInCommon = IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY]);
 		return hasPointInCommon && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE;
-	},
-	set: function () {
+	}
+	set() {
 		if (arguments.length === 1) {
 			let dimensionSymbols = arguments[0];
 			for (var i = 0; i < dimensionSymbols.length; i++) {
@@ -53,11 +64,11 @@ extend(IntersectionMatrix.prototype, {
 			let row = arguments[0], column = arguments[1], dimensionValue = arguments[2];
 			this._matrix[row][column] = dimensionValue;
 		}
-	},
-	isContains: function () {
+	}
+	isContains() {
 		return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE;
-	},
-	setAtLeast: function () {
+	}
+	setAtLeast() {
 		if (arguments.length === 1) {
 			let minimumDimensionSymbols = arguments[0];
 			for (var i = 0; i < minimumDimensionSymbols.length; i++) {
@@ -71,16 +82,16 @@ extend(IntersectionMatrix.prototype, {
 				this._matrix[row][column] = minimumDimensionValue;
 			}
 		}
-	},
-	setAtLeastIfValid: function (row, column, minimumDimensionValue) {
+	}
+	setAtLeastIfValid(row, column, minimumDimensionValue) {
 		if (row >= 0 && column >= 0) {
 			this.setAtLeast(row, column, minimumDimensionValue);
 		}
-	},
-	isWithin: function () {
+	}
+	isWithin() {
 		return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE;
-	},
-	isTouches: function (dimensionOfGeometryA, dimensionOfGeometryB) {
+	}
+	isTouches(dimensionOfGeometryA, dimensionOfGeometryB) {
 		if (dimensionOfGeometryA > dimensionOfGeometryB) {
 			return this.isTouches(dimensionOfGeometryB, dimensionOfGeometryA);
 		}
@@ -88,8 +99,8 @@ extend(IntersectionMatrix.prototype, {
 			return this._matrix[Location.INTERIOR][Location.INTERIOR] === Dimension.FALSE && (IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY]));
 		}
 		return false;
-	},
-	isOverlaps: function (dimensionOfGeometryA, dimensionOfGeometryB) {
+	}
+	isOverlaps(dimensionOfGeometryA, dimensionOfGeometryB) {
 		if (dimensionOfGeometryA === Dimension.P && dimensionOfGeometryB === Dimension.P || dimensionOfGeometryA === Dimension.A && dimensionOfGeometryB === Dimension.A) {
 			return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.EXTERIOR]) && IntersectionMatrix.isTrue(this._matrix[Location.EXTERIOR][Location.INTERIOR]);
 		}
@@ -97,14 +108,14 @@ extend(IntersectionMatrix.prototype, {
 			return this._matrix[Location.INTERIOR][Location.INTERIOR] === 1 && IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.EXTERIOR]) && IntersectionMatrix.isTrue(this._matrix[Location.EXTERIOR][Location.INTERIOR]);
 		}
 		return false;
-	},
-	isEquals: function (dimensionOfGeometryA, dimensionOfGeometryB) {
+	}
+	isEquals(dimensionOfGeometryA, dimensionOfGeometryB) {
 		if (dimensionOfGeometryA !== dimensionOfGeometryB) {
 			return false;
 		}
 		return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE;
-	},
-	toString: function () {
+	}
+	toString() {
 		var builder = new StringBuilder("123456789");
 		for (var ai = 0; ai < 3; ai++) {
 			for (var bi = 0; bi < 3; bi++) {
@@ -112,18 +123,18 @@ extend(IntersectionMatrix.prototype, {
 			}
 		}
 		return builder.toString();
-	},
-	setAll: function (dimensionValue) {
+	}
+	setAll(dimensionValue) {
 		for (var ai = 0; ai < 3; ai++) {
 			for (var bi = 0; bi < 3; bi++) {
 				this._matrix[ai][bi] = dimensionValue;
 			}
 		}
-	},
-	get: function (row, column) {
+	}
+	get(row, column) {
 		return this._matrix[row][column];
-	},
-	transpose: function () {
+	}
+	transpose() {
 		var temp = this._matrix[1][0];
 		this._matrix[1][0] = this._matrix[0][1];
 		this._matrix[0][1] = temp;
@@ -134,8 +145,8 @@ extend(IntersectionMatrix.prototype, {
 		this._matrix[2][1] = this._matrix[1][2];
 		this._matrix[1][2] = temp;
 		return this;
-	},
-	matches: function (requiredDimensionSymbols) {
+	}
+	matches(requiredDimensionSymbols) {
 		if (requiredDimensionSymbols.length !== 9) {
 			throw new IllegalArgumentException("Should be length 9: " + requiredDimensionSymbols);
 		}
@@ -147,18 +158,18 @@ extend(IntersectionMatrix.prototype, {
 			}
 		}
 		return true;
-	},
-	add: function (im) {
+	}
+	add(im) {
 		for (var i = 0; i < 3; i++) {
 			for (var j = 0; j < 3; j++) {
 				this.setAtLeast(i, j, im.get(i, j));
 			}
 		}
-	},
-	isDisjoint: function () {
+	}
+	isDisjoint() {
 		return this._matrix[Location.INTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.INTERIOR][Location.BOUNDARY] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.BOUNDARY] === Dimension.FALSE;
-	},
-	isCrosses: function (dimensionOfGeometryA, dimensionOfGeometryB) {
+	}
+	isCrosses(dimensionOfGeometryA, dimensionOfGeometryB) {
 		if (dimensionOfGeometryA === Dimension.P && dimensionOfGeometryB === Dimension.L || dimensionOfGeometryA === Dimension.P && dimensionOfGeometryB === Dimension.A || dimensionOfGeometryA === Dimension.L && dimensionOfGeometryB === Dimension.A) {
 			return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.EXTERIOR]);
 		}
@@ -169,45 +180,36 @@ extend(IntersectionMatrix.prototype, {
 			return this._matrix[Location.INTERIOR][Location.INTERIOR] === 0;
 		}
 		return false;
-	},
-	interfaces_: function () {
-		return [Cloneable];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IntersectionMatrix;
 	}
-});
-IntersectionMatrix.matches = function () {
-	if (Number.isInteger(arguments[0]) && typeof arguments[1] === "string") {
-		let actualDimensionValue = arguments[0], requiredDimensionSymbol = arguments[1];
-		if (requiredDimensionSymbol === Dimension.SYM_DONTCARE) {
-			return true;
-		}
-		if (requiredDimensionSymbol === Dimension.SYM_TRUE && (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE)) {
-			return true;
-		}
-		if (requiredDimensionSymbol === Dimension.SYM_FALSE && actualDimensionValue === Dimension.FALSE) {
-			return true;
-		}
-		if (requiredDimensionSymbol === Dimension.SYM_P && actualDimensionValue === Dimension.P) {
-			return true;
-		}
-		if (requiredDimensionSymbol === Dimension.SYM_L && actualDimensionValue === Dimension.L) {
-			return true;
-		}
-		if (requiredDimensionSymbol === Dimension.SYM_A && actualDimensionValue === Dimension.A) {
-			return true;
-		}
-		return false;
-	} else if (typeof arguments[0] === "string" && typeof arguments[1] === "string") {
-		let actualDimensionSymbols = arguments[0], requiredDimensionSymbols = arguments[1];
-		var m = new IntersectionMatrix(actualDimensionSymbols);
-		return m.matches(requiredDimensionSymbols);
+	get interfaces_() {
+		return [Cloneable];
 	}
-};
-IntersectionMatrix.isTrue = function (actualDimensionValue) {
-	if (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE) {
-		return true;
+}
+IntersectionMatrix.constructor_ = function () {
+	this._matrix = null;
+	if (arguments.length === 0) {
+		this._matrix = Array(3).fill().map(() => Array(3));
+		this.setAll(Dimension.FALSE);
+	} else if (arguments.length === 1) {
+		if (typeof arguments[0] === "string") {
+			let elements = arguments[0];
+			IntersectionMatrix.constructor_.call(this);
+			this.set(elements);
+		} else if (arguments[0] instanceof IntersectionMatrix) {
+			let other = arguments[0];
+			IntersectionMatrix.constructor_.call(this);
+			this._matrix[Location.INTERIOR][Location.INTERIOR] = other._matrix[Location.INTERIOR][Location.INTERIOR];
+			this._matrix[Location.INTERIOR][Location.BOUNDARY] = other._matrix[Location.INTERIOR][Location.BOUNDARY];
+			this._matrix[Location.INTERIOR][Location.EXTERIOR] = other._matrix[Location.INTERIOR][Location.EXTERIOR];
+			this._matrix[Location.BOUNDARY][Location.INTERIOR] = other._matrix[Location.BOUNDARY][Location.INTERIOR];
+			this._matrix[Location.BOUNDARY][Location.BOUNDARY] = other._matrix[Location.BOUNDARY][Location.BOUNDARY];
+			this._matrix[Location.BOUNDARY][Location.EXTERIOR] = other._matrix[Location.BOUNDARY][Location.EXTERIOR];
+			this._matrix[Location.EXTERIOR][Location.INTERIOR] = other._matrix[Location.EXTERIOR][Location.INTERIOR];
+			this._matrix[Location.EXTERIOR][Location.BOUNDARY] = other._matrix[Location.EXTERIOR][Location.BOUNDARY];
+			this._matrix[Location.EXTERIOR][Location.EXTERIOR] = other._matrix[Location.EXTERIOR][Location.EXTERIOR];
+		}
 	}
-	return false;
 };

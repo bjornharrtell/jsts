@@ -1,20 +1,16 @@
 import Location from '../geom/Location';
 import Coordinate from '../geom/Coordinate';
 import Node from './Node';
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
-export default function NodeMap() {
-	this.nodeMap = new TreeMap();
-	this.nodeFact = null;
-	let nodeFact = arguments[0];
-	this.nodeFact = nodeFact;
-}
-extend(NodeMap.prototype, {
-	find: function (coord) {
+export default class NodeMap {
+	constructor() {
+		NodeMap.constructor_.apply(this, arguments);
+	}
+	find(coord) {
 		return this.nodeMap.get(coord);
-	},
-	addNode: function () {
+	}
+	addNode() {
 		if (arguments[0] instanceof Coordinate) {
 			let coord = arguments[0];
 			var node = this.nodeMap.get(coord);
@@ -33,36 +29,42 @@ extend(NodeMap.prototype, {
 			node.mergeLabel(n);
 			return node;
 		}
-	},
-	print: function (out) {
+	}
+	print(out) {
 		for (var it = this.iterator(); it.hasNext(); ) {
 			var n = it.next();
 			n.print(out);
 		}
-	},
-	iterator: function () {
+	}
+	iterator() {
 		return this.nodeMap.values().iterator();
-	},
-	values: function () {
+	}
+	values() {
 		return this.nodeMap.values();
-	},
-	getBoundaryNodes: function (geomIndex) {
+	}
+	getBoundaryNodes(geomIndex) {
 		var bdyNodes = new ArrayList();
 		for (var i = this.iterator(); i.hasNext(); ) {
 			var node = i.next();
 			if (node.getLabel().getLocation(geomIndex) === Location.BOUNDARY) bdyNodes.add(node);
 		}
 		return bdyNodes;
-	},
-	add: function (e) {
+	}
+	add(e) {
 		var p = e.getCoordinate();
 		var n = this.addNode(p);
 		n.add(e);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NodeMap;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+NodeMap.constructor_ = function () {
+	this.nodeMap = new TreeMap();
+	this.nodeFact = null;
+	let nodeFact = arguments[0];
+	this.nodeFact = nodeFact;
+};

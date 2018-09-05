@@ -4,25 +4,23 @@ import Geometry from '../geom/Geometry';
 import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
 import Stack from '../../../../java/util/Stack';
-import extend from '../../../../extend';
 import MarkHalfEdge from '../edgegraph/MarkHalfEdge';
 import DissolveEdgeGraph from './DissolveEdgeGraph';
 import GeometryComponentFilter from '../geom/GeometryComponentFilter';
 import ArrayList from '../../../../java/util/ArrayList';
-export default function LineDissolver() {
-	this._result = null;
-	this._factory = null;
-	this._graph = null;
-	this._lines = new ArrayList();
-	this._nodeEdgeStack = new Stack();
-	this._ringStartEdge = null;
-	this._graph = new DissolveEdgeGraph();
-}
-extend(LineDissolver.prototype, {
-	addLine: function (line) {
+export default class LineDissolver {
+	constructor() {
+		LineDissolver.constructor_.apply(this, arguments);
+	}
+	static dissolve(g) {
+		var d = new LineDissolver();
+		d.add(g);
+		return d.getResult();
+	}
+	addLine(line) {
 		this._lines.add(this._factory.createLineString(line.toCoordinateArray()));
-	},
-	updateRingStartEdge: function (e) {
+	}
+	updateRingStartEdge(e) {
 		if (!e.isStart()) {
 			e = e.sym();
 			if (!e.isStart()) return null;
@@ -34,18 +32,18 @@ extend(LineDissolver.prototype, {
 		if (e.orig().compareTo(this._ringStartEdge.orig()) < 0) {
 			this._ringStartEdge = e;
 		}
-	},
-	getResult: function () {
+	}
+	getResult() {
 		if (this._result === null) this.computeResult();
 		return this._result;
-	},
-	process: function (e) {
+	}
+	process(e) {
 		var eNode = e.prevNode();
 		if (eNode === null) eNode = e;
 		this.stackEdges(eNode);
 		this.buildLines();
-	},
-	buildRing: function (eStartRing) {
+	}
+	buildRing(eStartRing) {
 		var line = new CoordinateList();
 		var e = eStartRing;
 		line.add(e.orig().copy(), false);
@@ -57,8 +55,8 @@ extend(LineDissolver.prototype, {
 		}
 		line.add(e.dest().copy(), false);
 		this.addLine(line);
-	},
-	buildLine: function (eStart) {
+	}
+	buildLine(eStart) {
 		var line = new CoordinateList();
 		var e = eStart;
 		this._ringStartEdge = null;
@@ -78,15 +76,15 @@ extend(LineDissolver.prototype, {
 		line.add(e.dest().clone(), false);
 		this.stackEdges(e.sym());
 		this.addLine(line);
-	},
-	stackEdges: function (node) {
+	}
+	stackEdges(node) {
 		var e = node;
 		do {
 			if (!MarkHalfEdge.isMarked(e)) this._nodeEdgeStack.add(e);
 			e = e.oNext();
 		} while (e !== node);
-	},
-	computeResult: function () {
+	}
+	computeResult() {
 		var edges = this._graph.getVertexEdges();
 		for (var i = edges.iterator(); i.hasNext(); ) {
 			var e = i.next();
@@ -94,27 +92,27 @@ extend(LineDissolver.prototype, {
 			this.process(e);
 		}
 		this._result = this._factory.buildGeometry(this._lines);
-	},
-	buildLines: function () {
+	}
+	buildLines() {
 		while (!this._nodeEdgeStack.empty()) {
 			var e = this._nodeEdgeStack.pop();
 			if (MarkHalfEdge.isMarked(e)) continue;
 			this.buildLine(e);
 		}
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments[0] instanceof Geometry) {
 			let geometry = arguments[0];
-			geometry.apply({
-				interfaces_: function () {
+			geometry.apply(new (class {
+				get interfaces_() {
 					return [GeometryComponentFilter];
-				},
-				filter: function (component) {
+				}
+				filter(component) {
 					if (component instanceof LineString) {
 						this.add(component);
 					}
 				}
-			});
+			})());
 		} else if (hasInterface(arguments[0], Collection)) {
 			let geometries = arguments[0];
 			for (var i = geometries.iterator(); i.hasNext(); ) {
@@ -137,16 +135,20 @@ extend(LineDissolver.prototype, {
 				}
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return LineDissolver;
 	}
-});
-LineDissolver.dissolve = function (g) {
-	var d = new LineDissolver();
-	d.add(g);
-	return d.getResult();
+	get interfaces_() {
+		return [];
+	}
+}
+LineDissolver.constructor_ = function () {
+	this._result = null;
+	this._factory = null;
+	this._graph = null;
+	this._lines = new ArrayList();
+	this._nodeEdgeStack = new Stack();
+	this._ringStartEdge = null;
+	this._graph = new DissolveEdgeGraph();
 };

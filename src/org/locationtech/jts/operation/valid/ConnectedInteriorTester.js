@@ -2,22 +2,23 @@ import Location from '../../geom/Location';
 import GeometryFactory from '../../geom/GeometryFactory';
 import Position from '../../geomgraph/Position';
 import Polygon from '../../geom/Polygon';
-import extend from '../../../../../extend';
 import MultiPolygon from '../../geom/MultiPolygon';
 import MaximalEdgeRing from '../overlay/MaximalEdgeRing';
 import OverlayNodeFactory from '../overlay/OverlayNodeFactory';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import PlanarGraph from '../../geomgraph/PlanarGraph';
-export default function ConnectedInteriorTester() {
-	this._geometryFactory = new GeometryFactory();
-	this._geomGraph = null;
-	this._disconnectedRingcoord = null;
-	let geomGraph = arguments[0];
-	this._geomGraph = geomGraph;
-}
-extend(ConnectedInteriorTester.prototype, {
-	visitInteriorRing: function (ring, graph) {
+export default class ConnectedInteriorTester {
+	constructor() {
+		ConnectedInteriorTester.constructor_.apply(this, arguments);
+	}
+	static findDifferentPoint(coord, pt) {
+		for (var i = 0; i < coord.length; i++) {
+			if (!coord[i].equals(pt)) return coord[i];
+		}
+		return null;
+	}
+	visitInteriorRing(ring, graph) {
 		var pts = ring.getCoordinates();
 		var pt0 = pts[0];
 		var pt1 = ConnectedInteriorTester.findDifferentPoint(pts, pt0);
@@ -31,8 +32,8 @@ extend(ConnectedInteriorTester.prototype, {
 		}
 		Assert.isTrue(intDe !== null, "unable to find dirEdge with Interior on RHS");
 		this.visitLinkedDirectedEdges(intDe);
-	},
-	visitShellInteriors: function (g, graph) {
+	}
+	visitShellInteriors(g, graph) {
 		if (g instanceof Polygon) {
 			var p = g;
 			this.visitInteriorRing(p.getExteriorRing(), graph);
@@ -44,19 +45,19 @@ extend(ConnectedInteriorTester.prototype, {
 				this.visitInteriorRing(p.getExteriorRing(), graph);
 			}
 		}
-	},
-	getCoordinate: function () {
+	}
+	getCoordinate() {
 		return this._disconnectedRingcoord;
-	},
-	setInteriorEdgesInResult: function (graph) {
+	}
+	setInteriorEdgesInResult(graph) {
 		for (var it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
 			var de = it.next();
 			if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
 				de.setInResult(true);
 			}
 		}
-	},
-	visitLinkedDirectedEdges: function (start) {
+	}
+	visitLinkedDirectedEdges(start) {
 		var startDe = start;
 		var de = start;
 		do {
@@ -64,8 +65,8 @@ extend(ConnectedInteriorTester.prototype, {
 			de.setVisited(true);
 			de = de.getNext();
 		} while (de !== startDe);
-	},
-	buildEdgeRings: function (dirEdges) {
+	}
+	buildEdgeRings(dirEdges) {
 		var edgeRings = new ArrayList();
 		for (var it = dirEdges.iterator(); it.hasNext(); ) {
 			var de = it.next();
@@ -77,8 +78,8 @@ extend(ConnectedInteriorTester.prototype, {
 			}
 		}
 		return edgeRings;
-	},
-	hasUnvisitedShellEdge: function (edgeRings) {
+	}
+	hasUnvisitedShellEdge(edgeRings) {
 		for (var i = 0; i < edgeRings.size(); i++) {
 			var er = edgeRings.get(i);
 			if (er.isHole()) continue;
@@ -94,8 +95,8 @@ extend(ConnectedInteriorTester.prototype, {
 			}
 		}
 		return false;
-	},
-	isInteriorsConnected: function () {
+	}
+	isInteriorsConnected() {
 		var splitEdges = new ArrayList();
 		this._geomGraph.computeSplitEdges(splitEdges);
 		var graph = new PlanarGraph(new OverlayNodeFactory());
@@ -105,17 +106,18 @@ extend(ConnectedInteriorTester.prototype, {
 		var edgeRings = this.buildEdgeRings(graph.getEdgeEnds());
 		this.visitShellInteriors(this._geomGraph.getGeometry(), graph);
 		return !this.hasUnvisitedShellEdge(edgeRings);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ConnectedInteriorTester;
 	}
-});
-ConnectedInteriorTester.findDifferentPoint = function (coord, pt) {
-	for (var i = 0; i < coord.length; i++) {
-		if (!coord[i].equals(pt)) return coord[i];
+	get interfaces_() {
+		return [];
 	}
-	return null;
+}
+ConnectedInteriorTester.constructor_ = function () {
+	this._geometryFactory = new GeometryFactory();
+	this._geomGraph = null;
+	this._disconnectedRingcoord = null;
+	let geomGraph = arguments[0];
+	this._geomGraph = geomGraph;
 };

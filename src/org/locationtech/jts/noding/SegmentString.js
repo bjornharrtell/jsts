@@ -1,16 +1,18 @@
-import extend from '../../../../extend';
-export default function SegmentString() {}
-extend(SegmentString.prototype, {
-	getCoordinates: function () {},
-	size: function () {},
-	getCoordinate: function (i) {},
-	isClosed: function () {},
-	setData: function (data) {},
-	getData: function () {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class SegmentString {
+	constructor() {
+		SegmentString.constructor_.apply(this, arguments);
+	}
+	getCoordinates() {}
+	size() {}
+	getCoordinate(i) {}
+	isClosed() {}
+	setData(data) {}
+	getData() {}
+	getClass() {
 		return SegmentString;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SegmentString.constructor_ = function () {};

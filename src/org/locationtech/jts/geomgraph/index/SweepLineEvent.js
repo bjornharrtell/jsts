@@ -1,6 +1,46 @@
-import extend from '../../../../../extend';
 import Comparable from '../../../../../java/lang/Comparable';
-export default function SweepLineEvent() {
+export default class SweepLineEvent {
+	constructor() {
+		SweepLineEvent.constructor_.apply(this, arguments);
+	}
+	isDelete() {
+		return this._eventType === SweepLineEvent.DELETE;
+	}
+	setDeleteEventIndex(deleteEventIndex) {
+		this._deleteEventIndex = deleteEventIndex;
+	}
+	getObject() {
+		return this._obj;
+	}
+	compareTo(o) {
+		var pe = o;
+		if (this._xValue < pe._xValue) return -1;
+		if (this._xValue > pe._xValue) return 1;
+		if (this._eventType < pe._eventType) return -1;
+		if (this._eventType > pe._eventType) return 1;
+		return 0;
+	}
+	getInsertEvent() {
+		return this._insertEvent;
+	}
+	isInsert() {
+		return this._eventType === SweepLineEvent.INSERT;
+	}
+	isSameLabel(ev) {
+		if (this._label === null) return false;
+		return this._label === ev._label;
+	}
+	getDeleteEventIndex() {
+		return this._deleteEventIndex;
+	}
+	getClass() {
+		return SweepLineEvent;
+	}
+	get interfaces_() {
+		return [Comparable];
+	}
+}
+SweepLineEvent.constructor_ = function () {
 	this._label = null;
 	this._xValue = null;
 	this._eventType = null;
@@ -19,44 +59,6 @@ export default function SweepLineEvent() {
 		this._xValue = x;
 		this._obj = obj;
 	}
-}
-extend(SweepLineEvent.prototype, {
-	isDelete: function () {
-		return this._eventType === SweepLineEvent.DELETE;
-	},
-	setDeleteEventIndex: function (deleteEventIndex) {
-		this._deleteEventIndex = deleteEventIndex;
-	},
-	getObject: function () {
-		return this._obj;
-	},
-	compareTo: function (o) {
-		var pe = o;
-		if (this._xValue < pe._xValue) return -1;
-		if (this._xValue > pe._xValue) return 1;
-		if (this._eventType < pe._eventType) return -1;
-		if (this._eventType > pe._eventType) return 1;
-		return 0;
-	},
-	getInsertEvent: function () {
-		return this._insertEvent;
-	},
-	isInsert: function () {
-		return this._eventType === SweepLineEvent.INSERT;
-	},
-	isSameLabel: function (ev) {
-		if (this._label === null) return false;
-		return this._label === ev._label;
-	},
-	getDeleteEventIndex: function () {
-		return this._deleteEventIndex;
-	},
-	interfaces_: function () {
-		return [Comparable];
-	},
-	getClass: function () {
-		return SweepLineEvent;
-	}
-});
+};
 SweepLineEvent.INSERT = 1;
 SweepLineEvent.DELETE = 2;

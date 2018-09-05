@@ -1,66 +1,80 @@
-import extend from '../../../../extend';
-export default function BoundaryNodeRule() {}
-extend(BoundaryNodeRule.prototype, {
-	isInBoundary: function (boundaryCount) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class BoundaryNodeRule {
+	constructor() {
+		BoundaryNodeRule.constructor_.apply(this, arguments);
+	}
+	isInBoundary(boundaryCount) {}
+	getClass() {
 		return BoundaryNodeRule;
 	}
-});
-function Mod2BoundaryNodeRule() {}
-extend(Mod2BoundaryNodeRule.prototype, {
-	isInBoundary: function (boundaryCount) {
+	get interfaces_() {
+		return [];
+	}
+}
+class Mod2BoundaryNodeRule {
+	constructor() {
+		Mod2BoundaryNodeRule.constructor_.apply(this, arguments);
+	}
+	isInBoundary(boundaryCount) {
 		return boundaryCount % 2 === 1;
-	},
-	interfaces_: function () {
-		return [BoundaryNodeRule];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Mod2BoundaryNodeRule;
 	}
-});
-function EndPointBoundaryNodeRule() {}
-extend(EndPointBoundaryNodeRule.prototype, {
-	isInBoundary: function (boundaryCount) {
-		return boundaryCount > 0;
-	},
-	interfaces_: function () {
+	get interfaces_() {
 		return [BoundaryNodeRule];
-	},
-	getClass: function () {
+	}
+}
+Mod2BoundaryNodeRule.constructor_ = function () {};
+class EndPointBoundaryNodeRule {
+	constructor() {
+		EndPointBoundaryNodeRule.constructor_.apply(this, arguments);
+	}
+	isInBoundary(boundaryCount) {
+		return boundaryCount > 0;
+	}
+	getClass() {
 		return EndPointBoundaryNodeRule;
 	}
-});
-function MultiValentEndPointBoundaryNodeRule() {}
-extend(MultiValentEndPointBoundaryNodeRule.prototype, {
-	isInBoundary: function (boundaryCount) {
-		return boundaryCount > 1;
-	},
-	interfaces_: function () {
+	get interfaces_() {
 		return [BoundaryNodeRule];
-	},
-	getClass: function () {
+	}
+}
+EndPointBoundaryNodeRule.constructor_ = function () {};
+class MultiValentEndPointBoundaryNodeRule {
+	constructor() {
+		MultiValentEndPointBoundaryNodeRule.constructor_.apply(this, arguments);
+	}
+	isInBoundary(boundaryCount) {
+		return boundaryCount > 1;
+	}
+	getClass() {
 		return MultiValentEndPointBoundaryNodeRule;
 	}
-});
-function MonoValentEndPointBoundaryNodeRule() {}
-extend(MonoValentEndPointBoundaryNodeRule.prototype, {
-	isInBoundary: function (boundaryCount) {
-		return boundaryCount === 1;
-	},
-	interfaces_: function () {
+	get interfaces_() {
 		return [BoundaryNodeRule];
-	},
-	getClass: function () {
+	}
+}
+MultiValentEndPointBoundaryNodeRule.constructor_ = function () {};
+class MonoValentEndPointBoundaryNodeRule {
+	constructor() {
+		MonoValentEndPointBoundaryNodeRule.constructor_.apply(this, arguments);
+	}
+	isInBoundary(boundaryCount) {
+		return boundaryCount === 1;
+	}
+	getClass() {
 		return MonoValentEndPointBoundaryNodeRule;
 	}
-});
+	get interfaces_() {
+		return [BoundaryNodeRule];
+	}
+}
+MonoValentEndPointBoundaryNodeRule.constructor_ = function () {};
 BoundaryNodeRule.Mod2BoundaryNodeRule = Mod2BoundaryNodeRule;
 BoundaryNodeRule.EndPointBoundaryNodeRule = EndPointBoundaryNodeRule;
 BoundaryNodeRule.MultiValentEndPointBoundaryNodeRule = MultiValentEndPointBoundaryNodeRule;
 BoundaryNodeRule.MonoValentEndPointBoundaryNodeRule = MonoValentEndPointBoundaryNodeRule;
+BoundaryNodeRule.constructor_ = function () {};
 BoundaryNodeRule.MOD2_BOUNDARY_RULE = new Mod2BoundaryNodeRule();
 BoundaryNodeRule.ENDPOINT_BOUNDARY_RULE = new EndPointBoundaryNodeRule();
 BoundaryNodeRule.MULTIVALENT_ENDPOINT_BOUNDARY_RULE = new MultiValentEndPointBoundaryNodeRule();

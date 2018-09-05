@@ -4,19 +4,12 @@ import Geometry from '../geom/Geometry';
 import Coordinate from '../geom/Coordinate';
 import GeometryEditor from '../geom/util/GeometryEditor';
 import LinearRing from '../geom/LinearRing';
-import extend from '../../../../extend';
-import inherits from '../../../../inherits';
-export default function PrecisionReducerCoordinateOperation() {
-	GeometryEditor.CoordinateOperation.apply(this);
-	this._targetPM = null;
-	this._removeCollapsed = true;
-	let targetPM = arguments[0], removeCollapsed = arguments[1];
-	this._targetPM = targetPM;
-	this._removeCollapsed = removeCollapsed;
-}
-inherits(PrecisionReducerCoordinateOperation, GeometryEditor.CoordinateOperation);
-extend(PrecisionReducerCoordinateOperation.prototype, {
-	edit: function () {
+export default class PrecisionReducerCoordinateOperation extends GeometryEditor.CoordinateOperation {
+	constructor() {
+		super();
+		PrecisionReducerCoordinateOperation.constructor_.apply(this, arguments);
+	}
+	edit() {
 		if (arguments.length === 2 && (arguments[1] instanceof Geometry && arguments[0] instanceof Array)) {
 			let coordinates = arguments[0], geom = arguments[1];
 			if (coordinates.length === 0) return null;
@@ -37,12 +30,19 @@ extend(PrecisionReducerCoordinateOperation.prototype, {
 				return collapsedCoords;
 			}
 			return noRepeatedCoords;
-		} else return GeometryEditor.CoordinateOperation.prototype.edit.apply(this, arguments);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+		} else return super.edit.apply(this, arguments);
+	}
+	getClass() {
 		return PrecisionReducerCoordinateOperation;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+PrecisionReducerCoordinateOperation.constructor_ = function () {
+	this._targetPM = null;
+	this._removeCollapsed = true;
+	let targetPM = arguments[0], removeCollapsed = arguments[1];
+	this._targetPM = targetPM;
+	this._removeCollapsed = removeCollapsed;
+};

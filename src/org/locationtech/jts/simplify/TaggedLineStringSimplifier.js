@@ -1,36 +1,33 @@
-import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import LineSegmentIndex from './LineSegmentIndex';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
-export default function TaggedLineStringSimplifier() {
-	this._li = new RobustLineIntersector();
-	this._inputIndex = new LineSegmentIndex();
-	this._outputIndex = new LineSegmentIndex();
-	this._line = null;
-	this._linePts = null;
-	this._distanceTolerance = 0.0;
-	let inputIndex = arguments[0], outputIndex = arguments[1];
-	this._inputIndex = inputIndex;
-	this._outputIndex = outputIndex;
-}
-extend(TaggedLineStringSimplifier.prototype, {
-	flatten: function (start, end) {
+export default class TaggedLineStringSimplifier {
+	constructor() {
+		TaggedLineStringSimplifier.constructor_.apply(this, arguments);
+	}
+	static isInLineSection(line, sectionIndex, seg) {
+		if (seg.getParent() !== line.getParent()) return false;
+		var segIndex = seg.getIndex();
+		if (segIndex >= sectionIndex[0] && segIndex < sectionIndex[1]) return true;
+		return false;
+	}
+	flatten(start, end) {
 		var p0 = this._linePts[start];
 		var p1 = this._linePts[end];
 		var newSeg = new LineSegment(p0, p1);
 		this.remove(this._line, start, end);
 		this._outputIndex.add(newSeg);
 		return newSeg;
-	},
-	hasBadIntersection: function (parentLine, sectionIndex, candidateSeg) {
+	}
+	hasBadIntersection(parentLine, sectionIndex, candidateSeg) {
 		if (this.hasBadOutputIntersection(candidateSeg)) return true;
 		if (this.hasBadInputIntersection(parentLine, sectionIndex, candidateSeg)) return true;
 		return false;
-	},
-	setDistanceTolerance: function (distanceTolerance) {
+	}
+	setDistanceTolerance(distanceTolerance) {
 		this._distanceTolerance = distanceTolerance;
-	},
-	simplifySection: function (i, j, depth) {
+	}
+	simplifySection(i, j, depth) {
 		depth += 1;
 		var sectionIndex = new Array(2).fill(null);
 		if (i + 1 === j) {
@@ -59,8 +56,8 @@ extend(TaggedLineStringSimplifier.prototype, {
 		}
 		this.simplifySection(i, furthestPtIndex, depth);
 		this.simplifySection(furthestPtIndex, j, depth);
-	},
-	hasBadOutputIntersection: function (candidateSeg) {
+	}
+	hasBadOutputIntersection(candidateSeg) {
 		var querySegs = this._outputIndex.query(candidateSeg);
 		for (var i = querySegs.iterator(); i.hasNext(); ) {
 			var querySeg = i.next();
@@ -69,8 +66,8 @@ extend(TaggedLineStringSimplifier.prototype, {
 			}
 		}
 		return false;
-	},
-	findFurthestPoint: function (pts, i, j, maxDistance) {
+	}
+	findFurthestPoint(pts, i, j, maxDistance) {
 		var seg = new LineSegment();
 		seg.p0 = pts[i];
 		seg.p1 = pts[j];
@@ -86,23 +83,23 @@ extend(TaggedLineStringSimplifier.prototype, {
 		}
 		maxDistance[0] = maxDist;
 		return maxIndex;
-	},
-	simplify: function (line) {
+	}
+	simplify(line) {
 		this._line = line;
 		this._linePts = line.getParentCoordinates();
 		this.simplifySection(0, this._linePts.length - 1, 0);
-	},
-	remove: function (line, start, end) {
+	}
+	remove(line, start, end) {
 		for (var i = start; i < end; i++) {
 			var seg = line.getSegment(i);
 			this._inputIndex.remove(seg);
 		}
-	},
-	hasInteriorIntersection: function (seg0, seg1) {
+	}
+	hasInteriorIntersection(seg0, seg1) {
 		this._li.computeIntersection(seg0.p0, seg0.p1, seg1.p0, seg1.p1);
 		return this._li.isInteriorIntersection();
-	},
-	hasBadInputIntersection: function (parentLine, sectionIndex, candidateSeg) {
+	}
+	hasBadInputIntersection(parentLine, sectionIndex, candidateSeg) {
 		var querySegs = this._inputIndex.query(candidateSeg);
 		for (var i = querySegs.iterator(); i.hasNext(); ) {
 			var querySeg = i.next();
@@ -112,17 +109,22 @@ extend(TaggedLineStringSimplifier.prototype, {
 			}
 		}
 		return false;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return TaggedLineStringSimplifier;
 	}
-});
-TaggedLineStringSimplifier.isInLineSection = function (line, sectionIndex, seg) {
-	if (seg.getParent() !== line.getParent()) return false;
-	var segIndex = seg.getIndex();
-	if (segIndex >= sectionIndex[0] && segIndex < sectionIndex[1]) return true;
-	return false;
+	get interfaces_() {
+		return [];
+	}
+}
+TaggedLineStringSimplifier.constructor_ = function () {
+	this._li = new RobustLineIntersector();
+	this._inputIndex = new LineSegmentIndex();
+	this._outputIndex = new LineSegmentIndex();
+	this._line = null;
+	this._linePts = null;
+	this._distanceTolerance = 0.0;
+	let inputIndex = arguments[0], outputIndex = arguments[1];
+	this._inputIndex = inputIndex;
+	this._outputIndex = outputIndex;
 };

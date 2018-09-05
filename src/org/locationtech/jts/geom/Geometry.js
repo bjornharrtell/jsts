@@ -1,37 +1,29 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
-import extend from '../../../../extend';
 import GeometryComponentFilter from './GeometryComponentFilter';
 import Comparable from '../../../../java/lang/Comparable';
 import Cloneable from '../../../../java/lang/Cloneable';
 import Serializable from '../../../../java/io/Serializable';
 import Envelope from './Envelope';
-import Assert from '../util/Assert';
-export default function Geometry() {
-	this._envelope = null;
-	this._factory = null;
-	this._SRID = null;
-	this._userData = null;
-	let factory = arguments[0];
-	this._factory = factory;
-	this._SRID = factory.getSRID();
-}
-extend(Geometry.prototype, {
-	isGeometryCollection: function () {
+export default class Geometry {
+	constructor() {
+		Geometry.constructor_.apply(this, arguments);
+	}
+	isGeometryCollection() {
 		return this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION;
-	},
-	getFactory: function () {
+	}
+	getFactory() {
 		return this._factory;
-	},
-	getGeometryN: function (n) {
+	}
+	getGeometryN(n) {
 		return this;
-	},
-	getArea: function () {
+	}
+	getArea() {
 		return 0.0;
-	},
-	isRectangle: function () {
+	}
+	isRectangle() {
 		return false;
-	},
-	equals: function () {
+	}
+	equals() {
 		if (arguments[0] instanceof Geometry) {
 			let g = arguments[0];
 			if (g === null) return false;
@@ -42,27 +34,27 @@ extend(Geometry.prototype, {
 			var g = o;
 			return this.equalsExact(g);
 		}
-	},
-	equalsExact: function (other) {
+	}
+	equalsExact(other) {
 		return this === other || this.equalsExact(other, 0);
-	},
-	geometryChanged: function () {
+	}
+	geometryChanged() {
 		this.apply(Geometry.geometryChangedFilter);
-	},
-	geometryChangedAction: function () {
+	}
+	geometryChangedAction() {
 		this._envelope = null;
-	},
-	equalsNorm: function (g) {
+	}
+	equalsNorm(g) {
 		if (g === null) return false;
 		return this.norm().equalsExact(g.norm());
-	},
-	getLength: function () {
+	}
+	getLength() {
 		return 0.0;
-	},
-	getNumGeometries: function () {
+	}
+	getNumGeometries() {
 		return 1;
-	},
-	compareTo: function () {
+	}
+	compareTo() {
 		if (arguments.length === 1) {
 			let o = arguments[0];
 			var other = o;
@@ -96,48 +88,48 @@ extend(Geometry.prototype, {
 			}
 			return this.compareToSameClass(o, comp);
 		}
-	},
-	getUserData: function () {
+	}
+	getUserData() {
 		return this._userData;
-	},
-	getSRID: function () {
+	}
+	getSRID() {
 		return this._SRID;
-	},
-	getEnvelope: function () {
+	}
+	getEnvelope() {
 		return this.getFactory().toGeometry(this.getEnvelopeInternal());
-	},
-	checkNotGeometryCollection: function (g) {
+	}
+	checkNotGeometryCollection(g) {
 		if (g.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION) {
 			throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
 		}
-	},
-	equal: function (a, b, tolerance) {
+	}
+	equal(a, b, tolerance) {
 		if (tolerance === 0) {
 			return a.equals(b);
 		}
 		return a.distance(b) <= tolerance;
-	},
-	norm: function () {
+	}
+	norm() {
 		var copy = this.copy();
 		copy.normalize();
 		return copy;
-	},
-	getPrecisionModel: function () {
+	}
+	getPrecisionModel() {
 		return this._factory.getPrecisionModel();
-	},
-	getEnvelopeInternal: function () {
+	}
+	getEnvelopeInternal() {
 		if (this._envelope === null) {
 			this._envelope = this.computeEnvelopeInternal();
 		}
 		return new Envelope(this._envelope);
-	},
-	setSRID: function (SRID) {
+	}
+	setSRID(SRID) {
 		this._SRID = SRID;
-	},
-	setUserData: function (userData) {
+	}
+	setUserData(userData) {
 		this._userData = userData;
-	},
-	compare: function (a, b) {
+	}
+	compare(a, b) {
 		var i = a.iterator();
 		var j = b.iterator();
 		while (i.hasNext() && j.hasNext()) {
@@ -155,38 +147,46 @@ extend(Geometry.prototype, {
 			return -1;
 		}
 		return 0;
-	},
-	hashCode: function () {
+	}
+	hashCode() {
 		return this.getEnvelopeInternal().hashCode();
-	},
-	isGeometryCollectionOrDerived: function () {
+	}
+	isGeometryCollectionOrDerived() {
 		if (this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION || this.getTypeCode() === Geometry.TYPECODE_MULTIPOINT || this.getTypeCode() === Geometry.TYPECODE_MULTILINESTRING || this.getTypeCode() === Geometry.TYPECODE_MULTIPOLYGON) {
 			return true;
 		}
 		return false;
-	},
-	interfaces_: function () {
+	}
+	get interfaces_() {
 		return [Cloneable, Comparable, Serializable];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Geometry;
 	}
-});
-Geometry.hasNonEmptyElements = function (geometries) {
-	for (var i = 0; i < geometries.length; i++) {
-		if (!geometries[i].isEmpty()) {
-			return true;
+	static hasNonEmptyElements(geometries) {
+		for (var i = 0; i < geometries.length; i++) {
+			if (!geometries[i].isEmpty()) {
+				return true;
+			}
 		}
+		return false;
 	}
-	return false;
+	static hasNullElements(array) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i] === null) {
+				return true;
+			}
+		}
+		return false;
+	}
 };
-Geometry.hasNullElements = function (array) {
-	for (var i = 0; i < array.length; i++) {
-		if (array[i] === null) {
-			return true;
-		}
-	}
-	return false;
+Geometry.constructor_ = function (factory) {
+	if (!factory)
+		return;
+	this._envelope = null;
+	this._userData = null;
+	this._factory = factory;
+	this._SRID = factory.getSRID();
 };
 Geometry.serialVersionUID = 8763622679187376702;
 Geometry.TYPECODE_POINT = 0;
@@ -206,10 +206,10 @@ Geometry.TYPENAME_POLYGON = "Polygon";
 Geometry.TYPENAME_MULTIPOLYGON = "MultiPolygon";
 Geometry.TYPENAME_GEOMETRYCOLLECTION = "GeometryCollection";
 Geometry.geometryChangedFilter = {
-	interfaces_: function () {
+	get interfaces_() {
 		return [GeometryComponentFilter];
 	},
-	filter: function (geom) {
+	filter(geom) {
 		geom.geometryChangedAction();
 	}
 };

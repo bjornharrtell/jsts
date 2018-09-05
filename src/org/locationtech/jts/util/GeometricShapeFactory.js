@@ -1,24 +1,12 @@
 import GeometryFactory from '../geom/GeometryFactory';
 import Coordinate from '../geom/Coordinate';
 import AffineTransformation from '../geom/util/AffineTransformation';
-import extend from '../../../../extend';
 import Envelope from '../geom/Envelope';
-export default function GeometricShapeFactory() {
-	this._geomFact = null;
-	this._precModel = null;
-	this._dim = new Dimensions();
-	this._nPts = 100;
-	this._rotationAngle = 0.0;
-	if (arguments.length === 0) {
-		GeometricShapeFactory.call(this, new GeometryFactory());
-	} else if (arguments.length === 1) {
-		let geomFact = arguments[0];
-		this._geomFact = geomFact;
-		this._precModel = geomFact.getPrecisionModel();
+export default class GeometricShapeFactory {
+	constructor() {
+		GeometricShapeFactory.constructor_.apply(this, arguments);
 	}
-}
-extend(GeometricShapeFactory.prototype, {
-	createSupercircle: function (power) {
+	createSupercircle(power) {
 		var recipPow = 1.0 / power;
 		var radius = this._dim.getMinSize() / 2;
 		var centre = this._dim.getCentre();
@@ -50,20 +38,20 @@ extend(GeometricShapeFactory.prototype, {
 		var ring = this._geomFact.createLinearRing(pts);
 		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
-	},
-	setNumPoints: function (nPts) {
+	}
+	setNumPoints(nPts) {
 		this._nPts = nPts;
-	},
-	setBase: function (base) {
+	}
+	setBase(base) {
 		this._dim.setBase(base);
-	},
-	setRotation: function (radians) {
+	}
+	setRotation(radians) {
 		this._rotationAngle = radians;
-	},
-	setWidth: function (width) {
+	}
+	setWidth(width) {
 		this._dim.setWidth(width);
-	},
-	createEllipse: function () {
+	}
+	createEllipse() {
 		var env = this._dim.getEnvelope();
 		var xRadius = env.getWidth() / 2.0;
 		var yRadius = env.getHeight() / 2.0;
@@ -81,20 +69,20 @@ extend(GeometricShapeFactory.prototype, {
 		var ring = this._geomFact.createLinearRing(pts);
 		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
-	},
-	coordTrans: function (x, y, trans) {
+	}
+	coordTrans(x, y, trans) {
 		return this.coord(x + trans.x, y + trans.y);
-	},
-	createSquircle: function () {
+	}
+	createSquircle() {
 		return this.createSupercircle(4);
-	},
-	setEnvelope: function (env) {
+	}
+	setEnvelope(env) {
 		this._dim.setEnvelope(env);
-	},
-	setCentre: function (centre) {
+	}
+	setCentre(centre) {
 		this._dim.setCentre(centre);
-	},
-	createArc: function (startAng, angExtent) {
+	}
+	createArc(startAng, angExtent) {
 		var env = this._dim.getEnvelope();
 		var xRadius = env.getWidth() / 2.0;
 		var yRadius = env.getHeight() / 2.0;
@@ -113,20 +101,20 @@ extend(GeometricShapeFactory.prototype, {
 		}
 		var line = this._geomFact.createLineString(pts);
 		return this.rotate(line);
-	},
-	rotate: function (geom) {
+	}
+	rotate(geom) {
 		if (this._rotationAngle !== 0.0) {
 			var trans = AffineTransformation.rotationInstance(this._rotationAngle, this._dim.getCentre().x, this._dim.getCentre().y);
 			geom.apply(trans);
 		}
 		return geom;
-	},
-	coord: function (x, y) {
+	}
+	coord(x, y) {
 		var pt = new Coordinate(x, y);
 		this._precModel.makePrecise(pt);
 		return pt;
-	},
-	createArcPolygon: function (startAng, angExtent) {
+	}
+	createArcPolygon(startAng, angExtent) {
 		var env = this._dim.getEnvelope();
 		var xRadius = env.getWidth() / 2.0;
 		var yRadius = env.getHeight() / 2.0;
@@ -148,8 +136,8 @@ extend(GeometricShapeFactory.prototype, {
 		var ring = this._geomFact.createLinearRing(pts);
 		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
-	},
-	createRectangle: function () {
+	}
+	createRectangle() {
 		var i = null;
 		var ipt = 0;
 		var nSide = Math.trunc(this._nPts / 4);
@@ -182,55 +170,52 @@ extend(GeometricShapeFactory.prototype, {
 		var ring = this._geomFact.createLinearRing(pts);
 		var poly = this._geomFact.createPolygon(ring);
 		return this.rotate(poly);
-	},
-	createCircle: function () {
+	}
+	createCircle() {
 		return this.createEllipse();
-	},
-	setHeight: function (height) {
+	}
+	setHeight(height) {
 		this._dim.setHeight(height);
-	},
-	setSize: function (size) {
+	}
+	setSize(size) {
 		this._dim.setSize(size);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return GeometricShapeFactory;
 	}
-});
-function Dimensions() {
-	this.base = null;
-	this.centre = null;
-	this.width = null;
-	this.height = null;
+	get interfaces_() {
+		return [];
+	}
 }
-extend(Dimensions.prototype, {
-	setBase: function (base) {
+class Dimensions {
+	constructor() {
+		Dimensions.constructor_.apply(this, arguments);
+	}
+	setBase(base) {
 		this.base = base;
-	},
-	setWidth: function (width) {
+	}
+	setWidth(width) {
 		this.width = width;
-	},
-	getBase: function () {
+	}
+	getBase() {
 		return this.base;
-	},
-	getWidth: function () {
+	}
+	getWidth() {
 		return this.width;
-	},
-	setEnvelope: function (env) {
+	}
+	setEnvelope(env) {
 		this.width = env.getWidth();
 		this.height = env.getHeight();
 		this.base = new Coordinate(env.getMinX(), env.getMinY());
 		this.centre = new Coordinate(env.centre());
-	},
-	setCentre: function (centre) {
+	}
+	setCentre(centre) {
 		this.centre = centre;
-	},
-	getMinSize: function () {
+	}
+	getMinSize() {
 		return Math.min(this.width, this.height);
-	},
-	getEnvelope: function () {
+	}
+	getEnvelope() {
 		if (this.base !== null) {
 			return new Envelope(this.base.x, this.base.x + this.width, this.base.y, this.base.y + this.height);
 		}
@@ -238,28 +223,48 @@ extend(Dimensions.prototype, {
 			return new Envelope(this.centre.x - this.width / 2, this.centre.x + this.width / 2, this.centre.y - this.height / 2, this.centre.y + this.height / 2);
 		}
 		return new Envelope(0, this.width, 0, this.height);
-	},
-	getCentre: function () {
+	}
+	getCentre() {
 		if (this.centre === null) {
 			this.centre = new Coordinate(this.base.x + this.width / 2, this.base.y + this.height / 2);
 		}
 		return this.centre;
-	},
-	getHeight: function () {
+	}
+	getHeight() {
 		return this.height;
-	},
-	setHeight: function (height) {
+	}
+	setHeight(height) {
 		this.height = height;
-	},
-	setSize: function (size) {
+	}
+	setSize(size) {
 		this.height = size;
 		this.width = size;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Dimensions;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+Dimensions.constructor_ = function () {
+	this.base = null;
+	this.centre = null;
+	this.width = null;
+	this.height = null;
+};
 GeometricShapeFactory.Dimensions = Dimensions;
+GeometricShapeFactory.constructor_ = function () {
+	this._geomFact = null;
+	this._precModel = null;
+	this._dim = new Dimensions();
+	this._nPts = 100;
+	this._rotationAngle = 0.0;
+	if (arguments.length === 0) {
+		GeometricShapeFactory.constructor_.call(this, new GeometryFactory());
+	} else if (arguments.length === 1) {
+		let geomFact = arguments[0];
+		this._geomFact = geomFact;
+		this._precModel = geomFact.getPrecisionModel();
+	}
+};

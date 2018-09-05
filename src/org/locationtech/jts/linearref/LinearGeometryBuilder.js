@@ -1,26 +1,18 @@
 import CoordinateList from '../geom/CoordinateList';
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException';
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default function LinearGeometryBuilder() {
-	this._geomFact = null;
-	this._lines = new ArrayList();
-	this._coordList = null;
-	this._ignoreInvalidLines = false;
-	this._fixInvalidLines = false;
-	this._lastPt = null;
-	let geomFact = arguments[0];
-	this._geomFact = geomFact;
-}
-extend(LinearGeometryBuilder.prototype, {
-	getGeometry: function () {
+export default class LinearGeometryBuilder {
+	constructor() {
+		LinearGeometryBuilder.constructor_.apply(this, arguments);
+	}
+	getGeometry() {
 		this.endLine();
 		return this._geomFact.buildGeometry(this._lines);
-	},
-	getLastCoordinate: function () {
+	}
+	getLastCoordinate() {
 		return this._lastPt;
-	},
-	endLine: function () {
+	}
+	endLine() {
 		if (this._coordList === null) {
 			return null;
 		}
@@ -41,11 +33,11 @@ extend(LinearGeometryBuilder.prototype, {
 			} else throw ex;
 		} finally {}
 		if (line !== null) this._lines.add(line);
-	},
-	setFixInvalidLines: function (fixInvalidLines) {
+	}
+	setFixInvalidLines(fixInvalidLines) {
 		this._fixInvalidLines = fixInvalidLines;
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments.length === 1) {
 			let pt = arguments[0];
 			this.add(pt, true);
@@ -55,19 +47,29 @@ extend(LinearGeometryBuilder.prototype, {
 			this._coordList.add(pt, allowRepeatedPoints);
 			this._lastPt = pt;
 		}
-	},
-	setIgnoreInvalidLines: function (ignoreInvalidLines) {
+	}
+	setIgnoreInvalidLines(ignoreInvalidLines) {
 		this._ignoreInvalidLines = ignoreInvalidLines;
-	},
-	validCoordinateSequence: function (pts) {
+	}
+	validCoordinateSequence(pts) {
 		if (pts.length >= 2) return pts;
 		var validPts = [pts[0], pts[0]];
 		return validPts;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return LinearGeometryBuilder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+LinearGeometryBuilder.constructor_ = function () {
+	this._geomFact = null;
+	this._lines = new ArrayList();
+	this._coordList = null;
+	this._ignoreInvalidLines = false;
+	this._fixInvalidLines = false;
+	this._lastPt = null;
+	let geomFact = arguments[0];
+	this._geomFact = geomFact;
+};

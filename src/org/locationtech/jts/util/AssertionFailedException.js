@@ -1,20 +1,21 @@
-import extend from '../../../../extend';
 import RuntimeException from '../../../../java/lang/RuntimeException';
-import inherits from '../../../../inherits';
-export default function AssertionFailedException() {
-	if (arguments.length === 0) {
-		RuntimeException.call(this);
-	} else if (arguments.length === 1) {
-		let message = arguments[0];
-		RuntimeException.call(this, message);
+export default class AssertionFailedException extends RuntimeException {
+	constructor() {
+		super();
+		AssertionFailedException.constructor_.apply(this, arguments);
 	}
-}
-inherits(AssertionFailedException, RuntimeException);
-extend(AssertionFailedException.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	getClass() {
 		return AssertionFailedException;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+AssertionFailedException.constructor_ = function () {
+	if (arguments.length === 0) {
+		RuntimeException.constructor_.call(this);
+	} else if (arguments.length === 1) {
+		let message = arguments[0];
+		RuntimeException.constructor_.call(this, message);
+	}
+};

@@ -1,19 +1,21 @@
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
 import DoubleBits from './DoubleBits';
 import Envelope from '../../geom/Envelope';
-export default function Key() {
-	this._pt = new Coordinate();
-	this._level = 0;
-	this._env = null;
-	let itemEnv = arguments[0];
-	this.computeKey(itemEnv);
-}
-extend(Key.prototype, {
-	getLevel: function () {
+export default class Key {
+	constructor() {
+		Key.constructor_.apply(this, arguments);
+	}
+	static computeQuadLevel(env) {
+		var dx = env.getWidth();
+		var dy = env.getHeight();
+		var dMax = dx > dy ? dx : dy;
+		var level = DoubleBits.exponent(dMax) + 1;
+		return level;
+	}
+	getLevel() {
 		return this._level;
-	},
-	computeKey: function () {
+	}
+	computeKey() {
 		if (arguments.length === 1) {
 			let itemEnv = arguments[0];
 			this._level = Key.computeQuadLevel(itemEnv);
@@ -30,27 +32,27 @@ extend(Key.prototype, {
 			this._pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
 			this._env.init(this._pt.x, this._pt.x + quadSize, this._pt.y, this._pt.y + quadSize);
 		}
-	},
-	getEnvelope: function () {
+	}
+	getEnvelope() {
 		return this._env;
-	},
-	getCentre: function () {
+	}
+	getCentre() {
 		return new Coordinate((this._env.getMinX() + this._env.getMaxX()) / 2, (this._env.getMinY() + this._env.getMaxY()) / 2);
-	},
-	getPoint: function () {
+	}
+	getPoint() {
 		return this._pt;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Key;
 	}
-});
-Key.computeQuadLevel = function (env) {
-	var dx = env.getWidth();
-	var dy = env.getHeight();
-	var dMax = dx > dy ? dx : dy;
-	var level = DoubleBits.exponent(dMax) + 1;
-	return level;
+	get interfaces_() {
+		return [];
+	}
+}
+Key.constructor_ = function () {
+	this._pt = new Coordinate();
+	this._level = 0;
+	this._env = null;
+	let itemEnv = arguments[0];
+	this.computeKey(itemEnv);
 };

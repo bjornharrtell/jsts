@@ -1,10 +1,9 @@
-import extend from '../../../../../extend';
 import LineSegment from '../../geom/LineSegment';
-export default function MonotoneChainSelectAction() {
-	this.selectedSegment = new LineSegment();
-}
-extend(MonotoneChainSelectAction.prototype, {
-	select: function () {
+export default class MonotoneChainSelectAction {
+	constructor() {
+		MonotoneChainSelectAction.constructor_.apply(this, arguments);
+	}
+	select() {
 		if (arguments.length === 1) {
 			let seg = arguments[0];
 		} else if (arguments.length === 2) {
@@ -12,11 +11,14 @@ extend(MonotoneChainSelectAction.prototype, {
 			mc.getLineSegment(startIndex, this.selectedSegment);
 			this.select(this.selectedSegment);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MonotoneChainSelectAction;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+MonotoneChainSelectAction.constructor_ = function () {
+	this.selectedSegment = new LineSegment();
+};

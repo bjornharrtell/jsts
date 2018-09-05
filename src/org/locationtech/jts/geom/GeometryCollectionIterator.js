@@ -1,21 +1,14 @@
 import Iterator from '../../../../java/util/Iterator';
 import NoSuchElementException from '../../../../java/util/NoSuchElementException';
-import extend from '../../../../extend';
 import GeometryCollection from './GeometryCollection';
-export default function GeometryCollectionIterator() {
-	this._parent = null;
-	this._atStart = null;
-	this._max = null;
-	this._index = null;
-	this._subcollectionIterator = null;
-	let parent = arguments[0];
-	this._parent = parent;
-	this._atStart = true;
-	this._index = 0;
-	this._max = parent.getNumGeometries();
-}
-extend(GeometryCollectionIterator.prototype, {
-	next: function () {
+export default class GeometryCollectionIterator {
+	constructor() {
+		GeometryCollectionIterator.constructor_.apply(this, arguments);
+	}
+	static isAtomic(geom) {
+		return !(geom instanceof GeometryCollection);
+	}
+	next() {
 		if (this._atStart) {
 			this._atStart = false;
 			if (GeometryCollectionIterator.isAtomic(this._parent)) this._index++;
@@ -37,11 +30,11 @@ extend(GeometryCollectionIterator.prototype, {
 			return this._subcollectionIterator.next();
 		}
 		return obj;
-	},
-	remove: function () {
+	}
+	remove() {
 		throw new UnsupportedOperationException(this.getClass().getName());
-	},
-	hasNext: function () {
+	}
+	hasNext() {
 		if (this._atStart) {
 			return true;
 		}
@@ -55,14 +48,23 @@ extend(GeometryCollectionIterator.prototype, {
 			return false;
 		}
 		return true;
-	},
-	interfaces_: function () {
-		return [Iterator];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return GeometryCollectionIterator;
 	}
-});
-GeometryCollectionIterator.isAtomic = function (geom) {
-	return !(geom instanceof GeometryCollection);
+	get interfaces_() {
+		return [Iterator];
+	}
+}
+GeometryCollectionIterator.constructor_ = function () {
+	this._parent = null;
+	this._atStart = null;
+	this._max = null;
+	this._index = null;
+	this._subcollectionIterator = null;
+	let parent = arguments[0];
+	this._parent = parent;
+	this._atStart = true;
+	this._index = 0;
+	this._max = parent.getNumGeometries();
 };

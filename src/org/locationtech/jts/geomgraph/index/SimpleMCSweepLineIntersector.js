@@ -2,20 +2,16 @@ import hasInterface from '../../../../../hasInterface';
 import MonotoneChain from './MonotoneChain';
 import SweepLineEvent from './SweepLineEvent';
 import EdgeSetIntersector from './EdgeSetIntersector';
-import extend from '../../../../../extend';
 import Collections from '../../../../../java/util/Collections';
 import SegmentIntersector from './SegmentIntersector';
 import ArrayList from '../../../../../java/util/ArrayList';
-import inherits from '../../../../../inherits';
 import List from '../../../../../java/util/List';
-export default function SimpleMCSweepLineIntersector() {
-	EdgeSetIntersector.apply(this);
-	this.events = new ArrayList();
-	this.nOverlaps = null;
-}
-inherits(SimpleMCSweepLineIntersector, EdgeSetIntersector);
-extend(SimpleMCSweepLineIntersector.prototype, {
-	prepareEvents: function () {
+export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
+	constructor() {
+		super();
+		SimpleMCSweepLineIntersector.constructor_.apply(this, arguments);
+	}
+	prepareEvents() {
 		Collections.sort(this.events);
 		for (var i = 0; i < this.events.size(); i++) {
 			var ev = this.events.get(i);
@@ -23,8 +19,8 @@ extend(SimpleMCSweepLineIntersector.prototype, {
 				ev.getInsertEvent().setDeleteEventIndex(i);
 			}
 		}
-	},
-	computeIntersections: function () {
+	}
+	computeIntersections() {
 		if (arguments.length === 1) {
 			let si = arguments[0];
 			this.nOverlaps = 0;
@@ -50,8 +46,8 @@ extend(SimpleMCSweepLineIntersector.prototype, {
 				this.computeIntersections(si);
 			}
 		}
-	},
-	addEdge: function (edge, edgeSet) {
+	}
+	addEdge(edge, edgeSet) {
 		var mce = edge.getMonotoneChainEdge();
 		var startIndex = mce.getStartIndexes();
 		for (var i = 0; i < startIndex.length - 1; i++) {
@@ -60,8 +56,8 @@ extend(SimpleMCSweepLineIntersector.prototype, {
 			this.events.add(insertEvent);
 			this.events.add(new SweepLineEvent(mce.getMaxX(i), insertEvent));
 		}
-	},
-	processOverlaps: function (start, end, ev0, si) {
+	}
+	processOverlaps(start, end, ev0, si) {
 		var mc0 = ev0.getObject();
 		for (var i = start; i < end; i++) {
 			var ev1 = this.events.get(i);
@@ -73,8 +69,8 @@ extend(SimpleMCSweepLineIntersector.prototype, {
 				}
 			}
 		}
-	},
-	addEdges: function () {
+	}
+	addEdges() {
 		if (arguments.length === 1) {
 			let edges = arguments[0];
 			for (var i = edges.iterator(); i.hasNext(); ) {
@@ -88,11 +84,15 @@ extend(SimpleMCSweepLineIntersector.prototype, {
 				this.addEdge(edge, edgeSet);
 			}
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SimpleMCSweepLineIntersector;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SimpleMCSweepLineIntersector.constructor_ = function () {
+	this.events = new ArrayList();
+	this.nOverlaps = null;
+};

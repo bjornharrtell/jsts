@@ -1,16 +1,15 @@
 import Coordinate from '../geom/Coordinate';
-import extend from '../../../../extend';
-export default function SplitSegment() {
-	this._seg = null;
-	this._segLen = null;
-	this._splitPt = null;
-	this._minimumLen = 0.0;
-	let seg = arguments[0];
-	this._seg = seg;
-	this._segLen = seg.getLength();
-}
-extend(SplitSegment.prototype, {
-	splitAt: function () {
+export default class SplitSegment {
+	constructor() {
+		SplitSegment.constructor_.apply(this, arguments);
+	}
+	static pointAlongReverse(seg, segmentLengthFraction) {
+		var coord = new Coordinate();
+		coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x);
+		coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y);
+		return coord;
+	}
+	splitAt() {
 		if (arguments.length === 1) {
 			let pt = arguments[0];
 			var minFrac = this._minimumLen / this._segLen;
@@ -29,27 +28,30 @@ extend(SplitSegment.prototype, {
 			var frac = actualLen / this._segLen;
 			if (endPt.equals2D(this._seg.p0)) this._splitPt = this._seg.pointAlong(frac); else this._splitPt = SplitSegment.pointAlongReverse(this._seg, frac);
 		}
-	},
-	setMinimumLength: function (minLen) {
+	}
+	setMinimumLength(minLen) {
 		this._minimumLen = minLen;
-	},
-	getConstrainedLength: function (len) {
+	}
+	getConstrainedLength(len) {
 		if (len < this._minimumLen) return this._minimumLen;
 		return len;
-	},
-	getSplitPoint: function () {
+	}
+	getSplitPoint() {
 		return this._splitPt;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SplitSegment;
 	}
-});
-SplitSegment.pointAlongReverse = function (seg, segmentLengthFraction) {
-	var coord = new Coordinate();
-	coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x);
-	coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y);
-	return coord;
+	get interfaces_() {
+		return [];
+	}
+}
+SplitSegment.constructor_ = function () {
+	this._seg = null;
+	this._segLen = null;
+	this._splitPt = null;
+	this._minimumLen = 0.0;
+	let seg = arguments[0];
+	this._seg = seg;
+	this._segLen = seg.getLength();
 };

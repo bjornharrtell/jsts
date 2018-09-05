@@ -1,20 +1,21 @@
-import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
-import inherits from '../../../../../inherits';
-export default function NoninvertibleTransformationException() {
-	if (arguments.length === 0) {
-		Exception.call(this);
-	} else if (arguments.length === 1) {
-		let msg = arguments[0];
-		Exception.call(this, msg);
+export default class NoninvertibleTransformationException extends Exception {
+	constructor() {
+		super();
+		NoninvertibleTransformationException.constructor_.apply(this, arguments);
 	}
-}
-inherits(NoninvertibleTransformationException, Exception);
-extend(NoninvertibleTransformationException.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	getClass() {
 		return NoninvertibleTransformationException;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+NoninvertibleTransformationException.constructor_ = function () {
+	if (arguments.length === 0) {
+		Exception.constructor_.call(this);
+	} else if (arguments.length === 1) {
+		let msg = arguments[0];
+		Exception.constructor_.call(this, msg);
+	}
+};

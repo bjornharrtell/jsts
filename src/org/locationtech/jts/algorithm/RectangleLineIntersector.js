@@ -1,23 +1,11 @@
 import Coordinate from '../geom/Coordinate';
-import extend from '../../../../extend';
 import RobustLineIntersector from './RobustLineIntersector';
 import Envelope from '../geom/Envelope';
-export default function RectangleLineIntersector() {
-	this._li = new RobustLineIntersector();
-	this._rectEnv = null;
-	this._diagUp0 = null;
-	this._diagUp1 = null;
-	this._diagDown0 = null;
-	this._diagDown1 = null;
-	let rectEnv = arguments[0];
-	this._rectEnv = rectEnv;
-	this._diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
-	this._diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
-	this._diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
-	this._diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
-}
-extend(RectangleLineIntersector.prototype, {
-	intersects: function (p0, p1) {
+export default class RectangleLineIntersector {
+	constructor() {
+		RectangleLineIntersector.constructor_.apply(this, arguments);
+	}
+	intersects(p0, p1) {
 		var segEnv = new Envelope(p0, p1);
 		if (!this._rectEnv.intersects(segEnv)) return false;
 		if (this._rectEnv.intersects(p0)) return true;
@@ -36,11 +24,25 @@ extend(RectangleLineIntersector.prototype, {
 		}
 		if (this._li.hasIntersection()) return true;
 		return false;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RectangleLineIntersector;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+RectangleLineIntersector.constructor_ = function () {
+	this._li = new RobustLineIntersector();
+	this._rectEnv = null;
+	this._diagUp0 = null;
+	this._diagUp1 = null;
+	this._diagDown0 = null;
+	this._diagDown1 = null;
+	let rectEnv = arguments[0];
+	this._rectEnv = rectEnv;
+	this._diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
+	this._diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
+	this._diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
+	this._diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
+};

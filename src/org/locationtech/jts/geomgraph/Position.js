@@ -1,18 +1,20 @@
-import extend from '../../../../extend';
-export default function Position() {}
-extend(Position.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class Position {
+	constructor() {
+		Position.constructor_.apply(this, arguments);
+	}
+	static opposite(position) {
+		if (position === Position.LEFT) return Position.RIGHT;
+		if (position === Position.RIGHT) return Position.LEFT;
+		return position;
+	}
+	getClass() {
 		return Position;
 	}
-});
-Position.opposite = function (position) {
-	if (position === Position.LEFT) return Position.RIGHT;
-	if (position === Position.RIGHT) return Position.LEFT;
-	return position;
-};
+	get interfaces_() {
+		return [];
+	}
+}
+Position.constructor_ = function () {};
 Position.ON = 0;
 Position.LEFT = 1;
 Position.RIGHT = 2;

@@ -1,13 +1,15 @@
-import extend from '../../../../../extend';
-export default function SimilarityMeasureCombiner() {}
-extend(SimilarityMeasureCombiner.prototype, {
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class SimilarityMeasureCombiner {
+	constructor() {
+		SimilarityMeasureCombiner.constructor_.apply(this, arguments);
+	}
+	static combine(measure1, measure2) {
+		return Math.min(measure1, measure2);
+	}
+	getClass() {
 		return SimilarityMeasureCombiner;
 	}
-});
-SimilarityMeasureCombiner.combine = function (measure1, measure2) {
-	return Math.min(measure1, measure2);
-};
+	get interfaces_() {
+		return [];
+	}
+}
+SimilarityMeasureCombiner.constructor_ = function () {};

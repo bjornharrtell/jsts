@@ -1,25 +1,43 @@
 import NotRepresentableException from './NotRepresentableException';
 import Coordinate from '../geom/Coordinate';
-import extend from '../../../../extend';
 import Orientation from './Orientation';
 import CGAlgorithmsDD from './CGAlgorithmsDD';
 import System from '../../../../java/lang/System';
 import HCoordinate from './HCoordinate';
 import Envelope from '../geom/Envelope';
-import inherits from '../../../../inherits';
 import Distance from './Distance';
 import LineIntersector from './LineIntersector';
-export default function RobustLineIntersector() {
-	LineIntersector.apply(this);
-}
-inherits(RobustLineIntersector, LineIntersector);
-extend(RobustLineIntersector.prototype, {
-	isInSegmentEnvelopes: function (intPt) {
+export default class RobustLineIntersector extends LineIntersector {
+	constructor() {
+		super();
+		RobustLineIntersector.constructor_.apply(this, arguments);
+	}
+	static nearestEndpoint(p1, p2, q1, q2) {
+		var nearestPt = p1;
+		var minDist = Distance.pointToSegment(p1, q1, q2);
+		var dist = Distance.pointToSegment(p2, q1, q2);
+		if (dist < minDist) {
+			minDist = dist;
+			nearestPt = p2;
+		}
+		dist = Distance.pointToSegment(q1, p1, p2);
+		if (dist < minDist) {
+			minDist = dist;
+			nearestPt = q1;
+		}
+		dist = Distance.pointToSegment(q2, p1, p2);
+		if (dist < minDist) {
+			minDist = dist;
+			nearestPt = q2;
+		}
+		return nearestPt;
+	}
+	isInSegmentEnvelopes(intPt) {
 		var env0 = new Envelope(this._inputLines[0][0], this._inputLines[0][1]);
 		var env1 = new Envelope(this._inputLines[1][0], this._inputLines[1][1]);
 		return env0.contains(intPt) && env1.contains(intPt);
-	},
-	computeIntersection: function () {
+	}
+	computeIntersection() {
 		if (arguments.length === 3) {
 			let p = arguments[0], p1 = arguments[1], p2 = arguments[2];
 			this._isProper = false;
@@ -34,9 +52,9 @@ extend(RobustLineIntersector.prototype, {
 				}
 			}
 			this._result = LineIntersector.NO_INTERSECTION;
-		} else return LineIntersector.prototype.computeIntersection.apply(this, arguments);
-	},
-	normalizeToMinimum: function (n1, n2, n3, n4, normPt) {
+		} else return super.computeIntersection.apply(this, arguments);
+	}
+	normalizeToMinimum(n1, n2, n3, n4, normPt) {
 		normPt.x = this.smallestInAbsValue(n1.x, n2.x, n3.x, n4.x);
 		normPt.y = this.smallestInAbsValue(n1.y, n2.y, n3.y, n4.y);
 		n1.x -= normPt.x;
@@ -47,8 +65,8 @@ extend(RobustLineIntersector.prototype, {
 		n3.y -= normPt.y;
 		n4.x -= normPt.x;
 		n4.y -= normPt.y;
-	},
-	safeHCoordinateIntersection: function (p1, p2, q1, q2) {
+	}
+	safeHCoordinateIntersection(p1, p2, q1, q2) {
 		var intPt = null;
 		try {
 			intPt = HCoordinate.intersection(p1, p2, q1, q2);
@@ -58,8 +76,8 @@ extend(RobustLineIntersector.prototype, {
 			} else throw e;
 		} finally {}
 		return intPt;
-	},
-	intersection: function (p1, p2, q1, q2) {
+	}
+	intersection(p1, p2, q1, q2) {
 		var intPt = this.intersectionWithNormalization(p1, p2, q1, q2);
 		if (!this.isInSegmentEnvelopes(intPt)) {
 			intPt = new Coordinate(RobustLineIntersector.nearestEndpoint(p1, p2, q1, q2));
@@ -68,8 +86,8 @@ extend(RobustLineIntersector.prototype, {
 			this._precisionModel.makePrecise(intPt);
 		}
 		return intPt;
-	},
-	smallestInAbsValue: function (x1, x2, x3, x4) {
+	}
+	smallestInAbsValue(x1, x2, x3, x4) {
 		var x = x1;
 		var xabs = Math.abs(x);
 		if (Math.abs(x2) < xabs) {
@@ -84,16 +102,16 @@ extend(RobustLineIntersector.prototype, {
 			x = x4;
 		}
 		return x;
-	},
-	checkDD: function (p1, p2, q1, q2, intPt) {
+	}
+	checkDD(p1, p2, q1, q2, intPt) {
 		var intPtDD = CGAlgorithmsDD.intersection(p1, p2, q1, q2);
 		var isIn = this.isInSegmentEnvelopes(intPtDD);
 		System.out.println("DD in env = " + isIn + "  --------------------- " + intPtDD);
 		if (intPt.distance(intPtDD) > 0.0001) {
 			System.out.println("Distance = " + intPt.distance(intPtDD));
 		}
-	},
-	intersectionWithNormalization: function (p1, p2, q1, q2) {
+	}
+	intersectionWithNormalization(p1, p2, q1, q2) {
 		var n1 = new Coordinate(p1);
 		var n2 = new Coordinate(p2);
 		var n3 = new Coordinate(q1);
@@ -104,8 +122,8 @@ extend(RobustLineIntersector.prototype, {
 		intPt.x += normPt.x;
 		intPt.y += normPt.y;
 		return intPt;
-	},
-	computeCollinearIntersection: function (p1, p2, q1, q2) {
+	}
+	computeCollinearIntersection(p1, p2, q1, q2) {
 		var p1q1p2 = Envelope.intersects(p1, p2, q1);
 		var p1q2p2 = Envelope.intersects(p1, p2, q2);
 		var q1p1q2 = Envelope.intersects(q1, q2, p1);
@@ -141,8 +159,8 @@ extend(RobustLineIntersector.prototype, {
 			return q2.equals(p2) && !p1q1p2 && !q1p1q2 ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
 		}
 		return LineIntersector.NO_INTERSECTION;
-	},
-	normalizeToEnvCentre: function (n00, n01, n10, n11, normPt) {
+	}
+	normalizeToEnvCentre(n00, n01, n10, n11, normPt) {
 		var minX0 = n00.x < n01.x ? n00.x : n01.x;
 		var minY0 = n00.y < n01.y ? n00.y : n01.y;
 		var maxX0 = n00.x > n01.x ? n00.x : n01.x;
@@ -167,8 +185,8 @@ extend(RobustLineIntersector.prototype, {
 		n10.y -= normPt.y;
 		n11.x -= normPt.x;
 		n11.y -= normPt.y;
-	},
-	computeIntersect: function (p1, p2, q1, q2) {
+	}
+	computeIntersect(p1, p2, q1, q2) {
 		this._isProper = false;
 		if (!Envelope.intersects(p1, p2, q1, q2)) return LineIntersector.NO_INTERSECTION;
 		var Pq1 = Orientation.index(p1, p2, q1);
@@ -205,31 +223,12 @@ extend(RobustLineIntersector.prototype, {
 			this._intPt[0] = this.intersection(p1, p2, q1, q2);
 		}
 		return LineIntersector.POINT_INTERSECTION;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RobustLineIntersector;
 	}
-});
-RobustLineIntersector.nearestEndpoint = function (p1, p2, q1, q2) {
-	var nearestPt = p1;
-	var minDist = Distance.pointToSegment(p1, q1, q2);
-	var dist = Distance.pointToSegment(p2, q1, q2);
-	if (dist < minDist) {
-		minDist = dist;
-		nearestPt = p2;
+	get interfaces_() {
+		return [];
 	}
-	dist = Distance.pointToSegment(q1, p1, p2);
-	if (dist < minDist) {
-		minDist = dist;
-		nearestPt = q1;
-	}
-	dist = Distance.pointToSegment(q2, p1, p2);
-	if (dist < minDist) {
-		minDist = dist;
-		nearestPt = q2;
-	}
-	return nearestPt;
-};
+}
+RobustLineIntersector.constructor_ = function () {};

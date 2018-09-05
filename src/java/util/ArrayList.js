@@ -26,7 +26,7 @@ ArrayList.prototype = Object.create(List.prototype)
 ArrayList.prototype.constructor = ArrayList;
 
 ArrayList.prototype.ensureCapacity = function () {}
-ArrayList.prototype.interfaces_ = function () { return [List, Collection] }
+ArrayList.prototype.interfaces_ = [List, Collection]
 
 /**
  * @override

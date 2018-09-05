@@ -1,12 +1,14 @@
-import extend from '../../../../extend';
-export default function Noder() {}
-extend(Noder.prototype, {
-	computeNodes: function (segStrings) {},
-	getNodedSubstrings: function () {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class Noder {
+	constructor() {
+		Noder.constructor_.apply(this, arguments);
+	}
+	computeNodes(segStrings) {}
+	getNodedSubstrings() {}
+	getClass() {
 		return Noder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+Noder.constructor_ = function () {};

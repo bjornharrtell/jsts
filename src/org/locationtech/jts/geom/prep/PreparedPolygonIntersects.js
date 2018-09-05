@@ -1,14 +1,15 @@
-import extend from '../../../../../extend';
 import SegmentStringUtil from '../../noding/SegmentStringUtil';
-import inherits from '../../../../../inherits';
 import PreparedPolygonPredicate from './PreparedPolygonPredicate';
-export default function PreparedPolygonIntersects() {
-	let prepPoly = arguments[0];
-	PreparedPolygonPredicate.call(this, prepPoly);
-}
-inherits(PreparedPolygonIntersects, PreparedPolygonPredicate);
-extend(PreparedPolygonIntersects.prototype, {
-	intersects: function (geom) {
+export default class PreparedPolygonIntersects extends PreparedPolygonPredicate {
+	constructor() {
+		super();
+		PreparedPolygonIntersects.constructor_.apply(this, arguments);
+	}
+	static intersects(prep, geom) {
+		var polyInt = new PreparedPolygonIntersects(prep);
+		return polyInt.intersects(geom);
+	}
+	intersects(geom) {
 		var isInPrepGeomArea = this.isAnyTestComponentInTarget(geom);
 		if (isInPrepGeomArea) return true;
 		if (geom.getDimension() === 0) return false;
@@ -22,15 +23,15 @@ extend(PreparedPolygonIntersects.prototype, {
 			if (isPrepGeomInArea) return true;
 		}
 		return false;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return PreparedPolygonIntersects;
 	}
-});
-PreparedPolygonIntersects.intersects = function (prep, geom) {
-	var polyInt = new PreparedPolygonIntersects(prep);
-	return polyInt.intersects(geom);
+	get interfaces_() {
+		return [];
+	}
+}
+PreparedPolygonIntersects.constructor_ = function () {
+	let prepPoly = arguments[0];
+	PreparedPolygonPredicate.constructor_.call(this, prepPoly);
 };

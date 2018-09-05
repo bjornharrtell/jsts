@@ -1,22 +1,12 @@
-import extend from '../../../../extend';
 import SegmentIntersector from './SegmentIntersector';
-export default function IntersectionAdder() {
-	this._hasIntersection = false;
-	this._hasProper = false;
-	this._hasProperInterior = false;
-	this._hasInterior = false;
-	this._properIntersectionPoint = null;
-	this._li = null;
-	this._isSelfIntersection = null;
-	this.numIntersections = 0;
-	this.numInteriorIntersections = 0;
-	this.numProperIntersections = 0;
-	this.numTests = 0;
-	let li = arguments[0];
-	this._li = li;
-}
-extend(IntersectionAdder.prototype, {
-	isTrivialIntersection: function (e0, segIndex0, e1, segIndex1) {
+export default class IntersectionAdder {
+	constructor() {
+		IntersectionAdder.constructor_.apply(this, arguments);
+	}
+	static isAdjacentSegments(i1, i2) {
+		return Math.abs(i1 - i2) === 1;
+	}
+	isTrivialIntersection(e0, segIndex0, e1, segIndex1) {
 		if (e0 === e1) {
 			if (this._li.getIntersectionNum() === 1) {
 				if (IntersectionAdder.isAdjacentSegments(segIndex0, segIndex1)) return true;
@@ -29,20 +19,20 @@ extend(IntersectionAdder.prototype, {
 			}
 		}
 		return false;
-	},
-	getProperIntersectionPoint: function () {
+	}
+	getProperIntersectionPoint() {
 		return this._properIntersectionPoint;
-	},
-	hasProperInteriorIntersection: function () {
+	}
+	hasProperInteriorIntersection() {
 		return this._hasProperInterior;
-	},
-	getLineIntersector: function () {
+	}
+	getLineIntersector() {
 		return this._li;
-	},
-	hasProperIntersection: function () {
+	}
+	hasProperIntersection() {
 		return this._hasProper;
-	},
-	processIntersections: function (e0, segIndex0, e1, segIndex1) {
+	}
+	processIntersections(e0, segIndex0, e1, segIndex1) {
 		if (e0 === e1 && segIndex0 === segIndex1) return null;
 		this.numTests++;
 		var p00 = e0.getCoordinates()[segIndex0];
@@ -67,23 +57,35 @@ extend(IntersectionAdder.prototype, {
 				}
 			}
 		}
-	},
-	hasIntersection: function () {
+	}
+	hasIntersection() {
 		return this._hasIntersection;
-	},
-	isDone: function () {
+	}
+	isDone() {
 		return false;
-	},
-	hasInteriorIntersection: function () {
+	}
+	hasInteriorIntersection() {
 		return this._hasInterior;
-	},
-	interfaces_: function () {
-		return [SegmentIntersector];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IntersectionAdder;
 	}
-});
-IntersectionAdder.isAdjacentSegments = function (i1, i2) {
-	return Math.abs(i1 - i2) === 1;
+	get interfaces_() {
+		return [SegmentIntersector];
+	}
+}
+IntersectionAdder.constructor_ = function () {
+	this._hasIntersection = false;
+	this._hasProper = false;
+	this._hasProperInterior = false;
+	this._hasInterior = false;
+	this._properIntersectionPoint = null;
+	this._li = null;
+	this._isSelfIntersection = null;
+	this.numIntersections = 0;
+	this.numInteriorIntersections = 0;
+	this.numProperIntersections = 0;
+	this.numTests = 0;
+	let li = arguments[0];
+	this._li = li;
 };

@@ -1,32 +1,24 @@
 import Noder from './Noder';
 import MCIndexNoder from './MCIndexNoder';
 import TopologyException from '../geom/TopologyException';
-import extend from '../../../../extend';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import IntersectionAdder from './IntersectionAdder';
-export default function IteratedNoder() {
-	this._pm = null;
-	this._li = null;
-	this._nodedSegStrings = null;
-	this._maxIter = IteratedNoder.MAX_ITER;
-	let pm = arguments[0];
-	this._li = new RobustLineIntersector();
-	this._pm = pm;
-	this._li.setPrecisionModel(pm);
-}
-extend(IteratedNoder.prototype, {
-	setMaximumIterations: function (maxIter) {
+export default class IteratedNoder {
+	constructor() {
+		IteratedNoder.constructor_.apply(this, arguments);
+	}
+	setMaximumIterations(maxIter) {
 		this._maxIter = maxIter;
-	},
-	node: function (segStrings, numInteriorIntersections) {
+	}
+	node(segStrings, numInteriorIntersections) {
 		var si = new IntersectionAdder(this._li);
 		var noder = new MCIndexNoder();
 		noder.setSegmentIntersector(si);
 		noder.computeNodes(segStrings);
 		this._nodedSegStrings = noder.getNodedSubstrings();
 		numInteriorIntersections[0] = si.numInteriorIntersections;
-	},
-	computeNodes: function (segStrings) {
+	}
+	computeNodes(segStrings) {
 		var numInteriorIntersections = new Array(1).fill(null);
 		this._nodedSegStrings = segStrings;
 		var nodingIterationCount = 0;
@@ -40,15 +32,25 @@ extend(IteratedNoder.prototype, {
 			}
 			lastNodesCreated = nodesCreated;
 		} while (lastNodesCreated > 0);
-	},
-	getNodedSubstrings: function () {
+	}
+	getNodedSubstrings() {
 		return this._nodedSegStrings;
-	},
-	interfaces_: function () {
-		return [Noder];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IteratedNoder;
 	}
-});
+	get interfaces_() {
+		return [Noder];
+	}
+}
+IteratedNoder.constructor_ = function () {
+	this._pm = null;
+	this._li = null;
+	this._nodedSegStrings = null;
+	this._maxIter = IteratedNoder.MAX_ITER;
+	let pm = arguments[0];
+	this._li = new RobustLineIntersector();
+	this._pm = pm;
+	this._li.setPrecisionModel(pm);
+};
 IteratedNoder.MAX_ITER = 5;

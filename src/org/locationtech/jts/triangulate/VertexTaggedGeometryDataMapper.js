@@ -1,14 +1,13 @@
 import Geometry from '../geom/Geometry';
 import hasInterface from '../../../../hasInterface';
 import Collection from '../../../../java/util/Collection';
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
 import TreeMap from '../../../../java/util/TreeMap';
-export default function VertexTaggedGeometryDataMapper() {
-	this._coordDataMap = new TreeMap();
-}
-extend(VertexTaggedGeometryDataMapper.prototype, {
-	loadSourceGeometries: function () {
+export default class VertexTaggedGeometryDataMapper {
+	constructor() {
+		VertexTaggedGeometryDataMapper.constructor_.apply(this, arguments);
+	}
+	loadSourceGeometries() {
 		if (hasInterface(arguments[0], Collection)) {
 			let geoms = arguments[0];
 			for (var i = geoms.iterator(); i.hasNext(); ) {
@@ -22,27 +21,30 @@ extend(VertexTaggedGeometryDataMapper.prototype, {
 				this.loadVertices(geom.getCoordinates(), geom.getUserData());
 			}
 		}
-	},
-	getCoordinates: function () {
+	}
+	getCoordinates() {
 		return new ArrayList(this._coordDataMap.keySet());
-	},
-	transferData: function (targetGeom) {
+	}
+	transferData(targetGeom) {
 		for (var i = 0; i < targetGeom.getNumGeometries(); i++) {
 			var geom = targetGeom.getGeometryN(i);
 			var vertexKey = geom.getUserData();
 			if (vertexKey === null) continue;
 			geom.setUserData(this._coordDataMap.get(vertexKey));
 		}
-	},
-	loadVertices: function (pts, data) {
+	}
+	loadVertices(pts, data) {
 		for (var i = 0; i < pts.length; i++) {
 			this._coordDataMap.put(pts[i], data);
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return VertexTaggedGeometryDataMapper;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+VertexTaggedGeometryDataMapper.constructor_ = function () {
+	this._coordDataMap = new TreeMap();
+};

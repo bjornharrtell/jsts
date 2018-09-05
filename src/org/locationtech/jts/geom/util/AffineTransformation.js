@@ -2,45 +2,73 @@ import NoninvertibleTransformationException from './NoninvertibleTransformationE
 import hasInterface from '../../../../../hasInterface';
 import Coordinate from '../Coordinate';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
-import extend from '../../../../../extend';
 import Exception from '../../../../../java/lang/Exception';
 import CoordinateSequence from '../CoordinateSequence';
 import Cloneable from '../../../../../java/lang/Cloneable';
 import CoordinateSequenceFilter from '../CoordinateSequenceFilter';
 import Assert from '../../util/Assert';
-export default function AffineTransformation() {
-	this._m00 = null;
-	this._m01 = null;
-	this._m02 = null;
-	this._m10 = null;
-	this._m11 = null;
-	this._m12 = null;
-	if (arguments.length === 0) {
-		this.setToIdentity();
-	} else if (arguments.length === 1) {
-		if (arguments[0] instanceof Array) {
-			let matrix = arguments[0];
-			this._m00 = matrix[0];
-			this._m01 = matrix[1];
-			this._m02 = matrix[2];
-			this._m10 = matrix[3];
-			this._m11 = matrix[4];
-			this._m12 = matrix[5];
-		} else if (arguments[0] instanceof AffineTransformation) {
-			let trans = arguments[0];
-			this.setTransformation(trans);
-		}
-	} else if (arguments.length === 6) {
-		if (typeof arguments[0] === "number") {
-			let m00 = arguments[0], m01 = arguments[1], m02 = arguments[2], m10 = arguments[3], m11 = arguments[4], m12 = arguments[5];
-			this.setTransformation(m00, m01, m02, m10, m11, m12);
-		} else if (arguments[0] instanceof Coordinate) {
-			let src0 = arguments[0], src1 = arguments[1], src2 = arguments[2], dest0 = arguments[3], dest1 = arguments[4], dest2 = arguments[5];
+export default class AffineTransformation {
+	constructor() {
+		AffineTransformation.constructor_.apply(this, arguments);
+	}
+	static translationInstance(x, y) {
+		var trans = new AffineTransformation();
+		trans.setToTranslation(x, y);
+		return trans;
+	}
+	static shearInstance(xShear, yShear) {
+		var trans = new AffineTransformation();
+		trans.setToShear(xShear, yShear);
+		return trans;
+	}
+	static reflectionInstance() {
+		if (arguments.length === 2) {
+			let x = arguments[0], y = arguments[1];
+			var trans = new AffineTransformation();
+			trans.setToReflection(x, y);
+			return trans;
+		} else if (arguments.length === 4) {
+			let x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3];
+			var trans = new AffineTransformation();
+			trans.setToReflection(x0, y0, x1, y1);
+			return trans;
 		}
 	}
-}
-extend(AffineTransformation.prototype, {
-	setToReflectionBasic: function (x0, y0, x1, y1) {
+	static rotationInstance() {
+		if (arguments.length === 1) {
+			let theta = arguments[0];
+			return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta));
+		} else if (arguments.length === 2) {
+			let sinTheta = arguments[0], cosTheta = arguments[1];
+			var trans = new AffineTransformation();
+			trans.setToRotation(sinTheta, cosTheta);
+			return trans;
+		} else if (arguments.length === 3) {
+			let theta = arguments[0], x = arguments[1], y = arguments[2];
+			return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta), x, y);
+		} else if (arguments.length === 4) {
+			let sinTheta = arguments[0], cosTheta = arguments[1], x = arguments[2], y = arguments[3];
+			var trans = new AffineTransformation();
+			trans.setToRotation(sinTheta, cosTheta, x, y);
+			return trans;
+		}
+	}
+	static scaleInstance() {
+		if (arguments.length === 2) {
+			let xScale = arguments[0], yScale = arguments[1];
+			var trans = new AffineTransformation();
+			trans.setToScale(xScale, yScale);
+			return trans;
+		} else if (arguments.length === 4) {
+			let xScale = arguments[0], yScale = arguments[1], x = arguments[2], y = arguments[3];
+			var trans = new AffineTransformation();
+			trans.translate(-x, -y);
+			trans.scale(xScale, yScale);
+			trans.translate(x, y);
+			return trans;
+		}
+	}
+	setToReflectionBasic(x0, y0, x1, y1) {
 		if (x0 === x1 && y0 === y1) {
 			throw new IllegalArgumentException("Reflection line points must be distinct");
 		}
@@ -58,8 +86,8 @@ extend(AffineTransformation.prototype, {
 		this._m11 = -c2s2;
 		this._m12 = 0.0;
 		return this;
-	},
-	getInverse: function () {
+	}
+	getInverse() {
 		var det = this.getDeterminant();
 		if (det === 0) throw new NoninvertibleTransformationException("Transformation is non-invertible");
 		var im00 = this._m11 / det;
@@ -69,8 +97,8 @@ extend(AffineTransformation.prototype, {
 		var im02 = (this._m01 * this._m12 - this._m02 * this._m11) / det;
 		var im12 = (-this._m00 * this._m12 + this._m10 * this._m02) / det;
 		return new AffineTransformation(im00, im01, im02, im10, im11, im12);
-	},
-	compose: function (trans) {
+	}
+	compose(trans) {
 		var mp00 = trans._m00 * this._m00 + trans._m01 * this._m10;
 		var mp01 = trans._m00 * this._m01 + trans._m01 * this._m11;
 		var mp02 = trans._m00 * this._m02 + trans._m01 * this._m12 + trans._m02;
@@ -84,14 +112,14 @@ extend(AffineTransformation.prototype, {
 		this._m11 = mp11;
 		this._m12 = mp12;
 		return this;
-	},
-	equals: function (obj) {
+	}
+	equals(obj) {
 		if (obj === null) return false;
 		if (!(obj instanceof AffineTransformation)) return false;
 		var trans = obj;
 		return this._m00 === trans._m00 && this._m01 === trans._m01 && this._m02 === trans._m02 && this._m10 === trans._m10 && this._m11 === trans._m11 && this._m12 === trans._m12;
-	},
-	setToScale: function (xScale, yScale) {
+	}
+	setToScale(xScale, yScale) {
 		this._m00 = xScale;
 		this._m01 = 0.0;
 		this._m02 = 0.0;
@@ -99,15 +127,15 @@ extend(AffineTransformation.prototype, {
 		this._m11 = yScale;
 		this._m12 = 0.0;
 		return this;
-	},
-	isIdentity: function () {
+	}
+	isIdentity() {
 		return this._m00 === 1 && this._m01 === 0 && this._m02 === 0 && this._m10 === 0 && this._m11 === 1 && this._m12 === 0;
-	},
-	scale: function (xScale, yScale) {
+	}
+	scale(xScale, yScale) {
 		this.compose(AffineTransformation.scaleInstance(xScale, yScale));
 		return this;
-	},
-	setToIdentity: function () {
+	}
+	setToIdentity() {
 		this._m00 = 1.0;
 		this._m01 = 0.0;
 		this._m02 = 0.0;
@@ -115,11 +143,11 @@ extend(AffineTransformation.prototype, {
 		this._m11 = 1.0;
 		this._m12 = 0.0;
 		return this;
-	},
-	isGeometryChanged: function () {
+	}
+	isGeometryChanged() {
 		return true;
-	},
-	setTransformation: function () {
+	}
+	setTransformation() {
 		if (arguments.length === 1) {
 			let trans = arguments[0];
 			this._m00 = trans._m00;
@@ -139,8 +167,8 @@ extend(AffineTransformation.prototype, {
 			this._m12 = m12;
 			return this;
 		}
-	},
-	setToRotation: function () {
+	}
+	setToRotation() {
 		if (arguments.length === 1) {
 			let theta = arguments[0];
 			this.setToRotation(Math.sin(theta), Math.cos(theta));
@@ -168,14 +196,14 @@ extend(AffineTransformation.prototype, {
 			this._m12 = y - x * sinTheta - y * cosTheta;
 			return this;
 		}
-	},
-	getMatrixEntries: function () {
+	}
+	getMatrixEntries() {
 		return [this._m00, this._m01, this._m02, this._m10, this._m11, this._m12];
-	},
-	filter: function (seq, i) {
+	}
+	filter(seq, i) {
 		this.transform(seq, i);
-	},
-	rotate: function () {
+	}
+	rotate() {
 		if (arguments.length === 1) {
 			let theta = arguments[0];
 			this.compose(AffineTransformation.rotationInstance(theta));
@@ -193,11 +221,11 @@ extend(AffineTransformation.prototype, {
 			this.compose(AffineTransformation.rotationInstance(sinTheta, cosTheta));
 			return this;
 		}
-	},
-	getDeterminant: function () {
+	}
+	getDeterminant() {
 		return this._m00 * this._m11 - this._m01 * this._m10;
-	},
-	composeBefore: function (trans) {
+	}
+	composeBefore(trans) {
 		var mp00 = this._m00 * trans._m00 + this._m01 * trans._m10;
 		var mp01 = this._m00 * trans._m01 + this._m01 * trans._m11;
 		var mp02 = this._m00 * trans._m02 + this._m01 * trans._m12 + this._m02;
@@ -211,8 +239,8 @@ extend(AffineTransformation.prototype, {
 		this._m11 = mp11;
 		this._m12 = mp12;
 		return this;
-	},
-	setToShear: function (xShear, yShear) {
+	}
+	setToShear(xShear, yShear) {
 		this._m00 = 1.0;
 		this._m01 = xShear;
 		this._m02 = 0.0;
@@ -220,11 +248,11 @@ extend(AffineTransformation.prototype, {
 		this._m11 = 1.0;
 		this._m12 = 0.0;
 		return this;
-	},
-	isDone: function () {
+	}
+	isDone() {
 		return false;
-	},
-	clone: function () {
+	}
+	clone() {
 		try {
 			return null;
 		} catch (ex) {
@@ -233,12 +261,12 @@ extend(AffineTransformation.prototype, {
 			} else throw ex;
 		} finally {}
 		return null;
-	},
-	translate: function (x, y) {
+	}
+	translate(x, y) {
 		this.compose(AffineTransformation.translationInstance(x, y));
 		return this;
-	},
-	setToReflection: function () {
+	}
+	setToReflection() {
 		if (arguments.length === 2) {
 			let x = arguments[0], y = arguments[1];
 			if (x === 0.0 && y === 0.0) {
@@ -277,11 +305,11 @@ extend(AffineTransformation.prototype, {
 			this.translate(x0, y0);
 			return this;
 		}
-	},
-	toString: function () {
+	}
+	toString() {
 		return "AffineTransformation[[" + this._m00 + ", " + this._m01 + ", " + this._m02 + "], [" + this._m10 + ", " + this._m11 + ", " + this._m12 + "]]";
-	},
-	setToTranslation: function (dx, dy) {
+	}
+	setToTranslation(dx, dy) {
 		this._m00 = 1.0;
 		this._m01 = 0.0;
 		this._m02 = dx;
@@ -289,12 +317,12 @@ extend(AffineTransformation.prototype, {
 		this._m11 = 1.0;
 		this._m12 = dy;
 		return this;
-	},
-	shear: function (xShear, yShear) {
+	}
+	shear(xShear, yShear) {
 		this.compose(AffineTransformation.shearInstance(xShear, yShear));
 		return this;
-	},
-	transform: function () {
+	}
+	transform() {
 		if (arguments.length === 1) {
 			let g = arguments[0];
 			var g2 = g.copy();
@@ -316,8 +344,8 @@ extend(AffineTransformation.prototype, {
 				seq.setOrdinate(i, 1, yp);
 			}
 		}
-	},
-	reflect: function () {
+	}
+	reflect() {
 		if (arguments.length === 2) {
 			let x = arguments[0], y = arguments[1];
 			this.compose(AffineTransformation.reflectionInstance(x, y));
@@ -327,68 +355,42 @@ extend(AffineTransformation.prototype, {
 			this.compose(AffineTransformation.reflectionInstance(x0, y0, x1, y1));
 			return this;
 		}
-	},
-	interfaces_: function () {
-		return [Cloneable, CoordinateSequenceFilter];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return AffineTransformation;
 	}
-});
-AffineTransformation.translationInstance = function (x, y) {
-	var trans = new AffineTransformation();
-	trans.setToTranslation(x, y);
-	return trans;
-};
-AffineTransformation.shearInstance = function (xShear, yShear) {
-	var trans = new AffineTransformation();
-	trans.setToShear(xShear, yShear);
-	return trans;
-};
-AffineTransformation.reflectionInstance = function () {
-	if (arguments.length === 2) {
-		let x = arguments[0], y = arguments[1];
-		var trans = new AffineTransformation();
-		trans.setToReflection(x, y);
-		return trans;
-	} else if (arguments.length === 4) {
-		let x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3];
-		var trans = new AffineTransformation();
-		trans.setToReflection(x0, y0, x1, y1);
-		return trans;
+	get interfaces_() {
+		return [Cloneable, CoordinateSequenceFilter];
 	}
-};
-AffineTransformation.rotationInstance = function () {
-	if (arguments.length === 1) {
-		let theta = arguments[0];
-		return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta));
-	} else if (arguments.length === 2) {
-		let sinTheta = arguments[0], cosTheta = arguments[1];
-		var trans = new AffineTransformation();
-		trans.setToRotation(sinTheta, cosTheta);
-		return trans;
-	} else if (arguments.length === 3) {
-		let theta = arguments[0], x = arguments[1], y = arguments[2];
-		return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta), x, y);
-	} else if (arguments.length === 4) {
-		let sinTheta = arguments[0], cosTheta = arguments[1], x = arguments[2], y = arguments[3];
-		var trans = new AffineTransformation();
-		trans.setToRotation(sinTheta, cosTheta, x, y);
-		return trans;
-	}
-};
-AffineTransformation.scaleInstance = function () {
-	if (arguments.length === 2) {
-		let xScale = arguments[0], yScale = arguments[1];
-		var trans = new AffineTransformation();
-		trans.setToScale(xScale, yScale);
-		return trans;
-	} else if (arguments.length === 4) {
-		let xScale = arguments[0], yScale = arguments[1], x = arguments[2], y = arguments[3];
-		var trans = new AffineTransformation();
-		trans.translate(-x, -y);
-		trans.scale(xScale, yScale);
-		trans.translate(x, y);
-		return trans;
+}
+AffineTransformation.constructor_ = function () {
+	this._m00 = null;
+	this._m01 = null;
+	this._m02 = null;
+	this._m10 = null;
+	this._m11 = null;
+	this._m12 = null;
+	if (arguments.length === 0) {
+		this.setToIdentity();
+	} else if (arguments.length === 1) {
+		if (arguments[0] instanceof Array) {
+			let matrix = arguments[0];
+			this._m00 = matrix[0];
+			this._m01 = matrix[1];
+			this._m02 = matrix[2];
+			this._m10 = matrix[3];
+			this._m11 = matrix[4];
+			this._m12 = matrix[5];
+		} else if (arguments[0] instanceof AffineTransformation) {
+			let trans = arguments[0];
+			this.setTransformation(trans);
+		}
+	} else if (arguments.length === 6) {
+		if (typeof arguments[0] === "number") {
+			let m00 = arguments[0], m01 = arguments[1], m02 = arguments[2], m10 = arguments[3], m11 = arguments[4], m12 = arguments[5];
+			this.setTransformation(m00, m01, m02, m10, m11, m12);
+		} else if (arguments[0] instanceof Coordinate) {
+			let src0 = arguments[0], src1 = arguments[1], src2 = arguments[2], dest0 = arguments[3], dest1 = arguments[4], dest2 = arguments[5];
+		}
 	}
 };

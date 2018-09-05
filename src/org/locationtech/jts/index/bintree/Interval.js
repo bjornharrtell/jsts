@@ -1,27 +1,15 @@
-import extend from '../../../../../extend';
-export default function Interval() {
-	this.min = null;
-	this.max = null;
-	if (arguments.length === 0) {
-		this.min = 0.0;
-		this.max = 0.0;
-	} else if (arguments.length === 1) {
-		let interval = arguments[0];
-		this.init(interval.min, interval.max);
-	} else if (arguments.length === 2) {
-		let min = arguments[0], max = arguments[1];
-		this.init(min, max);
+export default class Interval {
+	constructor() {
+		Interval.constructor_.apply(this, arguments);
 	}
-}
-extend(Interval.prototype, {
-	expandToInclude: function (interval) {
+	expandToInclude(interval) {
 		if (interval.max > this.max) this.max = interval.max;
 		if (interval.min < this.min) this.min = interval.min;
-	},
-	getWidth: function () {
+	}
+	getWidth() {
 		return this.max - this.min;
-	},
-	overlaps: function () {
+	}
+	overlaps() {
 		if (arguments.length === 1) {
 			let interval = arguments[0];
 			return this.overlaps(interval.min, interval.max);
@@ -30,14 +18,14 @@ extend(Interval.prototype, {
 			if (this.min > max || this.max < min) return false;
 			return true;
 		}
-	},
-	getMin: function () {
+	}
+	getMin() {
 		return this.min;
-	},
-	toString: function () {
+	}
+	toString() {
 		return "[" + this.min + ", " + this.max + "]";
-	},
-	contains: function () {
+	}
+	contains() {
 		if (arguments.length === 1) {
 			if (arguments[0] instanceof Interval) {
 				let interval = arguments[0];
@@ -50,22 +38,36 @@ extend(Interval.prototype, {
 			let min = arguments[0], max = arguments[1];
 			return min >= this.min && max <= this.max;
 		}
-	},
-	init: function (min, max) {
+	}
+	init(min, max) {
 		this.min = min;
 		this.max = max;
 		if (min > max) {
 			this.min = max;
 			this.max = min;
 		}
-	},
-	getMax: function () {
+	}
+	getMax() {
 		return this.max;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Interval;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+Interval.constructor_ = function () {
+	this.min = null;
+	this.max = null;
+	if (arguments.length === 0) {
+		this.min = 0.0;
+		this.max = 0.0;
+	} else if (arguments.length === 1) {
+		let interval = arguments[0];
+		this.init(interval.min, interval.max);
+	} else if (arguments.length === 2) {
+		let min = arguments[0], max = arguments[1];
+		this.init(min, max);
+	}
+};

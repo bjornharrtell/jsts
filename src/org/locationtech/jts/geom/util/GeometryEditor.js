@@ -3,33 +3,27 @@ import Point from '../Point';
 import Polygon from '../Polygon';
 import MultiPoint from '../MultiPoint';
 import LinearRing from '../LinearRing';
-import extend from '../../../../../extend';
 import MultiPolygon from '../MultiPolygon';
 import GeometryCollection from '../GeometryCollection';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import MultiLineString from '../MultiLineString';
-export default function GeometryEditor() {
-	this._factory = null;
-	this._isUserDataCopied = false;
-	if (arguments.length === 0) {} else if (arguments.length === 1) {
-		let factory = arguments[0];
-		this._factory = factory;
+export default class GeometryEditor {
+	constructor() {
+		GeometryEditor.constructor_.apply(this, arguments);
 	}
-}
-extend(GeometryEditor.prototype, {
-	setCopyUserData: function (isUserDataCopied) {
+	setCopyUserData(isUserDataCopied) {
 		this._isUserDataCopied = isUserDataCopied;
-	},
-	edit: function (geometry, operation) {
+	}
+	edit(geometry, operation) {
 		if (geometry === null) return null;
 		var result = this.editInternal(geometry, operation);
 		if (this._isUserDataCopied) {
 			result.setUserData(geometry.getUserData());
 		}
 		return result;
-	},
-	editInternal: function (geometry, operation) {
+	}
+	editInternal(geometry, operation) {
 		if (this._factory === null) this._factory = geometry.getFactory();
 		if (geometry instanceof GeometryCollection) {
 			return this.editGeometryCollection(geometry, operation);
@@ -45,8 +39,8 @@ extend(GeometryEditor.prototype, {
 		}
 		Assert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
 		return null;
-	},
-	editGeometryCollection: function (collection, operation) {
+	}
+	editGeometryCollection(collection, operation) {
 		var collectionForType = operation.edit(collection, this._factory);
 		var geometries = new ArrayList();
 		for (var i = 0; i < collectionForType.getNumGeometries(); i++) {
@@ -66,8 +60,8 @@ extend(GeometryEditor.prototype, {
 			return this._factory.createMultiPolygon(geometries.toArray([]));
 		}
 		return this._factory.createGeometryCollection(geometries.toArray([]));
-	},
-	editPolygon: function (polygon, operation) {
+	}
+	editPolygon(polygon, operation) {
 		var newPolygon = operation.edit(polygon, this._factory);
 		if (newPolygon === null) newPolygon = this._factory.createPolygon();
 		if (newPolygon.isEmpty()) {
@@ -86,31 +80,36 @@ extend(GeometryEditor.prototype, {
 			holes.add(hole);
 		}
 		return this._factory.createPolygon(shell, holes.toArray([]));
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return GeometryEditor;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
 function GeometryEditorOperation() {}
 GeometryEditor.GeometryEditorOperation = GeometryEditorOperation;
-function NoOpGeometryOperation() {}
-extend(NoOpGeometryOperation.prototype, {
-	edit: function (geometry, factory) {
+class NoOpGeometryOperation {
+	constructor() {
+		NoOpGeometryOperation.constructor_.apply(this, arguments);
+	}
+	edit(geometry, factory) {
 		return geometry;
-	},
-	interfaces_: function () {
-		return [GeometryEditorOperation];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return NoOpGeometryOperation;
 	}
-});
-function CoordinateOperation() {}
-extend(CoordinateOperation.prototype, {
-	edit: function (geometry, factory) {
+	get interfaces_() {
+		return [GeometryEditorOperation];
+	}
+}
+NoOpGeometryOperation.constructor_ = function () {};
+class CoordinateOperation {
+	constructor() {
+		CoordinateOperation.constructor_.apply(this, arguments);
+	}
+	edit(geometry, factory) {
 		var coordinates = this.edit(geometry.getCoordinates(), geometry);
 		if (geometry instanceof LinearRing) {
 			if (coordinates === null) return factory.createLinearRing(); else return factory.createLinearRing(coordinates);
@@ -122,17 +121,20 @@ extend(CoordinateOperation.prototype, {
 			if (coordinates === null || coordinates.length === 0) return factory.createPoint(); else return factory.createPoint(coordinates[0]);
 		}
 		return geometry;
-	},
-	interfaces_: function () {
-		return [GeometryEditorOperation];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return CoordinateOperation;
 	}
-});
-function CoordinateSequenceOperation() {}
-extend(CoordinateSequenceOperation.prototype, {
-	edit: function (geometry, factory) {
+	get interfaces_() {
+		return [GeometryEditorOperation];
+	}
+}
+CoordinateOperation.constructor_ = function () {};
+class CoordinateSequenceOperation {
+	constructor() {
+		CoordinateSequenceOperation.constructor_.apply(this, arguments);
+	}
+	edit(geometry, factory) {
 		if (geometry instanceof LinearRing) {
 			return factory.createLinearRing(this.edit(geometry.getCoordinateSequence(), geometry));
 		}
@@ -143,14 +145,23 @@ extend(CoordinateSequenceOperation.prototype, {
 			return factory.createPoint(this.edit(geometry.getCoordinateSequence(), geometry));
 		}
 		return geometry;
-	},
-	interfaces_: function () {
-		return [GeometryEditorOperation];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return CoordinateSequenceOperation;
 	}
-});
+	get interfaces_() {
+		return [GeometryEditorOperation];
+	}
+}
+CoordinateSequenceOperation.constructor_ = function () {};
 GeometryEditor.NoOpGeometryOperation = NoOpGeometryOperation;
 GeometryEditor.CoordinateOperation = CoordinateOperation;
 GeometryEditor.CoordinateSequenceOperation = CoordinateSequenceOperation;
+GeometryEditor.constructor_ = function () {
+	this._factory = null;
+	this._isUserDataCopied = false;
+	if (arguments.length === 0) {} else if (arguments.length === 1) {
+		let factory = arguments[0];
+		this._factory = factory;
+	}
+};

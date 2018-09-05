@@ -1,15 +1,19 @@
 import CoordinateSequenceFactory from '../CoordinateSequenceFactory';
 import hasInterface from '../../../../../hasInterface';
 import CoordinateArraySequence from './CoordinateArraySequence';
-import extend from '../../../../../extend';
 import CoordinateSequence from '../CoordinateSequence';
 import Serializable from '../../../../../java/io/Serializable';
-export default function CoordinateArraySequenceFactory() {}
-extend(CoordinateArraySequenceFactory.prototype, {
-	readResolve: function () {
+export default class CoordinateArraySequenceFactory {
+	constructor() {
+		CoordinateArraySequenceFactory.constructor_.apply(this, arguments);
+	}
+	static instance() {
+		return CoordinateArraySequenceFactory.instanceObject;
+	}
+	readResolve() {
 		return CoordinateArraySequenceFactory.instance();
-	},
-	create: function () {
+	}
+	create() {
 		if (arguments.length === 1) {
 			if (arguments[0] instanceof Array) {
 				let coordinates = arguments[0];
@@ -24,16 +28,14 @@ extend(CoordinateArraySequenceFactory.prototype, {
 			if (dimension < 2) return new CoordinateArraySequence(size);
 			return new CoordinateArraySequence(size, dimension);
 		}
-	},
-	interfaces_: function () {
-		return [CoordinateSequenceFactory, Serializable];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return CoordinateArraySequenceFactory;
 	}
-});
-CoordinateArraySequenceFactory.instance = function () {
-	return CoordinateArraySequenceFactory.instanceObject;
-};
+	get interfaces_() {
+		return [CoordinateSequenceFactory, Serializable];
+	}
+}
+CoordinateArraySequenceFactory.constructor_ = function () {};
 CoordinateArraySequenceFactory.serialVersionUID = -4099577099607551657;
 CoordinateArraySequenceFactory.instanceObject = new CoordinateArraySequenceFactory();

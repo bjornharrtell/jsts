@@ -1,35 +1,23 @@
 import NotRepresentableException from '../algorithm/NotRepresentableException';
 import Coordinate from './Coordinate';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import Orientation from '../algorithm/Orientation';
 import Comparable from '../../../../java/lang/Comparable';
 import RobustLineIntersector from '../algorithm/RobustLineIntersector';
 import HCoordinate from '../algorithm/HCoordinate';
 import Serializable from '../../../../java/io/Serializable';
 import Distance from '../algorithm/Distance';
-export default function LineSegment() {
-	this.p0 = null;
-	this.p1 = null;
-	if (arguments.length === 0) {
-		LineSegment.call(this, new Coordinate(), new Coordinate());
-	} else if (arguments.length === 1) {
-		let ls = arguments[0];
-		LineSegment.call(this, ls.p0, ls.p1);
-	} else if (arguments.length === 2) {
-		let p0 = arguments[0], p1 = arguments[1];
-		this.p0 = p0;
-		this.p1 = p1;
-	} else if (arguments.length === 4) {
-		let x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3];
-		LineSegment.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
+export default class LineSegment {
+	constructor() {
+		LineSegment.constructor_.apply(this, arguments);
 	}
-}
-extend(LineSegment.prototype, {
-	minX: function () {
+	static midPoint(p0, p1) {
+		return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
+	}
+	minX() {
 		return Math.min(this.p0.x, this.p1.x);
-	},
-	orientationIndex: function () {
+	}
+	orientationIndex() {
 		if (arguments[0] instanceof LineSegment) {
 			let seg = arguments[0];
 			var orient0 = Orientation.index(this.p0, this.p1, seg.p0);
@@ -41,27 +29,27 @@ extend(LineSegment.prototype, {
 			let p = arguments[0];
 			return Orientation.index(this.p0, this.p1, p);
 		}
-	},
-	toGeometry: function (geomFactory) {
+	}
+	toGeometry(geomFactory) {
 		return geomFactory.createLineString([this.p0, this.p1]);
-	},
-	isVertical: function () {
+	}
+	isVertical() {
 		return this.p0.x === this.p1.x;
-	},
-	equals: function (o) {
+	}
+	equals(o) {
 		if (!(o instanceof LineSegment)) {
 			return false;
 		}
 		var other = o;
 		return this.p0.equals(other.p0) && this.p1.equals(other.p1);
-	},
-	intersection: function (line) {
+	}
+	intersection(line) {
 		var li = new RobustLineIntersector();
 		li.computeIntersection(this.p0, this.p1, line.p0, line.p1);
 		if (li.hasIntersection()) return li.getIntersection(0);
 		return null;
-	},
-	project: function () {
+	}
+	project() {
 		if (arguments[0] instanceof Coordinate) {
 			let p = arguments[0];
 			if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p);
@@ -84,27 +72,27 @@ extend(LineSegment.prototype, {
 			if (pf1 > 1.0) newp1 = this.p1;
 			return new LineSegment(newp0, newp1);
 		}
-	},
-	normalize: function () {
+	}
+	normalize() {
 		if (this.p1.compareTo(this.p0) < 0) this.reverse();
-	},
-	angle: function () {
+	}
+	angle() {
 		return Math.atan2(this.p1.y - this.p0.y, this.p1.x - this.p0.x);
-	},
-	getCoordinate: function (i) {
+	}
+	getCoordinate(i) {
 		if (i === 0) return this.p0;
 		return this.p1;
-	},
-	distancePerpendicular: function (p) {
+	}
+	distancePerpendicular(p) {
 		return Distance.pointToLinePerpendicular(p, this.p0, this.p1);
-	},
-	minY: function () {
+	}
+	minY() {
 		return Math.min(this.p0.y, this.p1.y);
-	},
-	midPoint: function () {
+	}
+	midPoint() {
 		return LineSegment.midPoint(this.p0, this.p1);
-	},
-	projectionFactor: function (p) {
+	}
+	projectionFactor(p) {
 		if (p.equals(this.p0)) return 0.0;
 		if (p.equals(this.p1)) return 1.0;
 		var dx = this.p1.x - this.p0.x;
@@ -113,8 +101,8 @@ extend(LineSegment.prototype, {
 		if (len <= 0.0) return Double.NaN;
 		var r = ((p.x - this.p0.x) * dx + (p.y - this.p0.y) * dy) / len;
 		return r;
-	},
-	closestPoints: function (line) {
+	}
+	closestPoints(line) {
 		var intPt = this.intersection(line);
 		if (intPt !== null) {
 			return [intPt, intPt];
@@ -148,8 +136,8 @@ extend(LineSegment.prototype, {
 			closestPt[1] = close11;
 		}
 		return closestPt;
-	},
-	closestPoint: function (p) {
+	}
+	closestPoint(p) {
 		var factor = this.projectionFactor(p);
 		if (factor > 0 && factor < 1) {
 			return this.project(p);
@@ -158,28 +146,28 @@ extend(LineSegment.prototype, {
 		var dist1 = this.p1.distance(p);
 		if (dist0 < dist1) return this.p0;
 		return this.p1;
-	},
-	maxX: function () {
+	}
+	maxX() {
 		return Math.max(this.p0.x, this.p1.x);
-	},
-	getLength: function () {
+	}
+	getLength() {
 		return this.p0.distance(this.p1);
-	},
-	compareTo: function (o) {
+	}
+	compareTo(o) {
 		var other = o;
 		var comp0 = this.p0.compareTo(other.p0);
 		if (comp0 !== 0) return comp0;
 		return this.p1.compareTo(other.p1);
-	},
-	reverse: function () {
+	}
+	reverse() {
 		var temp = this.p0;
 		this.p0 = this.p1;
 		this.p1 = temp;
-	},
-	equalsTopo: function (other) {
+	}
+	equalsTopo(other) {
 		return this.p0.equals(other.p0) && this.p1.equals(other.p1) || this.p0.equals(other.p1) && this.p1.equals(other.p0);
-	},
-	lineIntersection: function (line) {
+	}
+	lineIntersection(line) {
 		try {
 			var intPt = HCoordinate.intersection(this.p0, this.p1, line.p0, line.p1);
 			return intPt;
@@ -187,11 +175,11 @@ extend(LineSegment.prototype, {
 			if (ex instanceof NotRepresentableException) {} else throw ex;
 		} finally {}
 		return null;
-	},
-	maxY: function () {
+	}
+	maxY() {
 		return Math.max(this.p0.y, this.p1.y);
-	},
-	pointAlongOffset: function (segmentLengthFraction, offsetDistance) {
+	}
+	pointAlongOffset(segmentLengthFraction, offsetDistance) {
 		var segx = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x);
 		var segy = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y);
 		var dx = this.p1.x - this.p0.x;
@@ -208,8 +196,8 @@ extend(LineSegment.prototype, {
 		var offsety = segy + ux;
 		var coord = new Coordinate(offsetx, offsety);
 		return coord;
-	},
-	setCoordinates: function () {
+	}
+	setCoordinates() {
 		if (arguments.length === 1) {
 			let ls = arguments[0];
 			this.setCoordinates(ls.p0, ls.p1);
@@ -220,19 +208,19 @@ extend(LineSegment.prototype, {
 			this.p1.x = p1.x;
 			this.p1.y = p1.y;
 		}
-	},
-	segmentFraction: function (inputPt) {
+	}
+	segmentFraction(inputPt) {
 		var segFrac = this.projectionFactor(inputPt);
 		if (segFrac < 0.0) segFrac = 0.0; else if (segFrac > 1.0 || Double.isNaN(segFrac)) segFrac = 1.0;
 		return segFrac;
-	},
-	toString: function () {
+	}
+	toString() {
 		return "LINESTRING( " + this.p0.x + " " + this.p0.y + ", " + this.p1.x + " " + this.p1.y + ")";
-	},
-	isHorizontal: function () {
+	}
+	isHorizontal() {
 		return this.p0.y === this.p1.y;
-	},
-	distance: function () {
+	}
+	distance() {
 		if (arguments[0] instanceof LineSegment) {
 			let ls = arguments[0];
 			return Distance.segmentToSegment(this.p0, this.p1, ls.p0, ls.p1);
@@ -240,14 +228,14 @@ extend(LineSegment.prototype, {
 			let p = arguments[0];
 			return Distance.pointToSegment(p, this.p0, this.p1);
 		}
-	},
-	pointAlong: function (segmentLengthFraction) {
+	}
+	pointAlong(segmentLengthFraction) {
 		var coord = new Coordinate();
 		coord.x = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x);
 		coord.y = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y);
 		return coord;
-	},
-	hashCode: function () {
+	}
+	hashCode() {
 		var bits0 = java.lang.Double.doubleToLongBits(this.p0.x);
 		bits0 ^= java.lang.Double.doubleToLongBits(this.p0.y) * 31;
 		var hash0 = Math.trunc(bits0) ^ Math.trunc(bits0 >> 32);
@@ -255,15 +243,29 @@ extend(LineSegment.prototype, {
 		bits1 ^= java.lang.Double.doubleToLongBits(this.p1.y) * 31;
 		var hash1 = Math.trunc(bits1) ^ Math.trunc(bits1 >> 32);
 		return hash0 ^ hash1;
-	},
-	interfaces_: function () {
-		return [Comparable, Serializable];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return LineSegment;
 	}
-});
-LineSegment.midPoint = function (p0, p1) {
-	return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
+	get interfaces_() {
+		return [Comparable, Serializable];
+	}
+}
+LineSegment.constructor_ = function () {
+	this.p0 = null;
+	this.p1 = null;
+	if (arguments.length === 0) {
+		LineSegment.constructor_.call(this, new Coordinate(), new Coordinate());
+	} else if (arguments.length === 1) {
+		let ls = arguments[0];
+		LineSegment.constructor_.call(this, ls.p0, ls.p1);
+	} else if (arguments.length === 2) {
+		let p0 = arguments[0], p1 = arguments[1];
+		this.p0 = p0;
+		this.p1 = p1;
+	} else if (arguments.length === 4) {
+		let x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3];
+		LineSegment.constructor_.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1));
+	}
 };
 LineSegment.serialVersionUID = 3252005833466256227;

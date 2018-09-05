@@ -1,11 +1,13 @@
-import extend from '../../../../../extend';
-export default function SimilarityMeasure() {}
-extend(SimilarityMeasure.prototype, {
-	measure: function (g1, g2) {},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+export default class SimilarityMeasure {
+	constructor() {
+		SimilarityMeasure.constructor_.apply(this, arguments);
+	}
+	measure(g1, g2) {}
+	getClass() {
 		return SimilarityMeasure;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SimilarityMeasure.constructor_ = function () {};

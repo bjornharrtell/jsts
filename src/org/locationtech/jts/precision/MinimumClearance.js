@@ -2,25 +2,28 @@ import ItemBoundable from '../index/strtree/ItemBoundable';
 import FacetSequence from '../operation/distance/FacetSequence';
 import Coordinate from '../geom/Coordinate';
 import Double from '../../../../java/lang/Double';
-import extend from '../../../../extend';
 import LineSegment from '../geom/LineSegment';
 import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBuilder';
 import Distance from '../algorithm/Distance';
 import ItemDistance from '../index/strtree/ItemDistance';
-export default function MinimumClearance() {
-	this._inputGeom = null;
-	this._minClearance = null;
-	this._minClearancePts = null;
-	let geom = arguments[0];
-	this._inputGeom = geom;
-}
-extend(MinimumClearance.prototype, {
-	getLine: function () {
+export default class MinimumClearance {
+	constructor() {
+		MinimumClearance.constructor_.apply(this, arguments);
+	}
+	static getLine(g) {
+		var rp = new MinimumClearance(g);
+		return rp.getLine();
+	}
+	static getDistance(g) {
+		var rp = new MinimumClearance(g);
+		return rp.getDistance();
+	}
+	getLine() {
 		this.compute();
 		if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString();
 		return this._inputGeom.getFactory().createLineString(this._minClearancePts);
-	},
-	compute: function () {
+	}
+	compute() {
 		if (this._minClearancePts !== null) return null;
 		this._minClearancePts = new Array(2).fill(null);
 		this._minClearance = Double.MAX_VALUE;
@@ -32,32 +35,23 @@ extend(MinimumClearance.prototype, {
 		var mcd = new MinClearanceDistance();
 		this._minClearance = mcd.distance(nearest[0], nearest[1]);
 		this._minClearancePts = mcd.getCoordinates();
-	},
-	getDistance: function () {
+	}
+	getDistance() {
 		this.compute();
 		return this._minClearance;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MinimumClearance;
 	}
-});
-MinimumClearance.getLine = function (g) {
-	var rp = new MinimumClearance(g);
-	return rp.getLine();
-};
-MinimumClearance.getDistance = function (g) {
-	var rp = new MinimumClearance(g);
-	return rp.getDistance();
-};
-function MinClearanceDistance() {
-	this._minDist = Double.MAX_VALUE;
-	this._minPts = new Array(2).fill(null);
+	get interfaces_() {
+		return [];
+	}
 }
-extend(MinClearanceDistance.prototype, {
-	vertexDistance: function (fs1, fs2) {
+class MinClearanceDistance {
+	constructor() {
+		MinClearanceDistance.constructor_.apply(this, arguments);
+	}
+	vertexDistance(fs1, fs2) {
 		for (var i1 = 0; i1 < fs1.size(); i1++) {
 			for (var i2 = 0; i2 < fs2.size(); i2++) {
 				var p1 = fs1.getCoordinate(i1);
@@ -74,11 +68,11 @@ extend(MinClearanceDistance.prototype, {
 			}
 		}
 		return this._minDist;
-	},
-	getCoordinates: function () {
+	}
+	getCoordinates() {
 		return this._minPts;
-	},
-	segmentDistance: function (fs1, fs2) {
+	}
+	segmentDistance(fs1, fs2) {
 		for (var i1 = 0; i1 < fs1.size(); i1++) {
 			for (var i2 = 1; i2 < fs2.size(); i2++) {
 				var p = fs1.getCoordinate(i1);
@@ -95,8 +89,8 @@ extend(MinClearanceDistance.prototype, {
 			}
 		}
 		return this._minDist;
-	},
-	distance: function () {
+	}
+	distance() {
 		if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
 			let b1 = arguments[0], b2 = arguments[1];
 			var fs1 = b1.getItem();
@@ -113,17 +107,28 @@ extend(MinClearanceDistance.prototype, {
 			this.segmentDistance(fs2, fs1);
 			return this._minDist;
 		}
-	},
-	updatePts: function (p, seg0, seg1) {
+	}
+	updatePts(p, seg0, seg1) {
 		this._minPts[0] = p;
 		var seg = new LineSegment(seg0, seg1);
 		this._minPts[1] = new Coordinate(seg.closestPoint(p));
-	},
-	interfaces_: function () {
-		return [ItemDistance];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return MinClearanceDistance;
 	}
-});
+	get interfaces_() {
+		return [ItemDistance];
+	}
+}
+MinClearanceDistance.constructor_ = function () {
+	this._minDist = Double.MAX_VALUE;
+	this._minPts = new Array(2).fill(null);
+};
 MinimumClearance.MinClearanceDistance = MinClearanceDistance;
+MinimumClearance.constructor_ = function () {
+	this._inputGeom = null;
+	this._minClearance = null;
+	this._minClearancePts = null;
+	let geom = arguments[0];
+	this._inputGeom = geom;
+};

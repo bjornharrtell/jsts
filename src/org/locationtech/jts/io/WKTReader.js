@@ -3,9 +3,7 @@
  */
 
 import GeometryFactory from '../geom/GeometryFactory'
-import PrecisionModel from '../geom/PrecisionModel'
 import WKTParser from './WKTParser'
-import extend from '../../../../extend'
 
 /**
  * Converts a geometry in Well-Known Text format to a {@link Geometry}.
@@ -16,19 +14,17 @@ import extend from '../../../../extend'
  * in other data formats (e.g. XML).
  */
 
-/**
- * A <code>WKTReader</code> is parameterized by a <code>GeometryFactory</code>,
- * to allow it to create <code>Geometry</code> objects of the appropriate
- * implementation. In particular, the <code>GeometryFactory</code> determines
- * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
- * @param {GeometryFactory} geometryFactory
- * @constructor
- */
-export default function WKTReader (geometryFactory) {
-  this.parser = new WKTParser(geometryFactory || new GeometryFactory())
-}
-
-extend(WKTReader.prototype, {
+export default class WKTReader {
+  /**
+   * A <code>WKTReader</code> is parameterized by a <code>GeometryFactory</code>,
+   * to allow it to create <code>Geometry</code> objects of the appropriate
+   * implementation. In particular, the <code>GeometryFactory</code> determines
+   * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
+   * @param {GeometryFactory} geometryFactory
+   */
+  constructor(geometryFactory) {
+    this.parser = new WKTParser(geometryFactory || new GeometryFactory())
+  }
   /**
    * Reads a Well-Known Text representation of a {@link Geometry}
    *
@@ -43,4 +39,4 @@ extend(WKTReader.prototype, {
     var geometry = this.parser.read(wkt)
     return geometry
   }
-})
+}

@@ -1,6 +1,49 @@
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
-export default function KdNode() {
+export default class KdNode {
+	constructor() {
+		KdNode.constructor_.apply(this, arguments);
+	}
+	isRepeated() {
+		return this._count > 1;
+	}
+	getRight() {
+		return this._right;
+	}
+	getCoordinate() {
+		return this._p;
+	}
+	setLeft(_left) {
+		this._left = _left;
+	}
+	getX() {
+		return this._p.x;
+	}
+	getData() {
+		return this._data;
+	}
+	getCount() {
+		return this._count;
+	}
+	getLeft() {
+		return this._left;
+	}
+	getY() {
+		return this._p.y;
+	}
+	increment() {
+		this._count = this._count + 1;
+	}
+	setRight(_right) {
+		this._right = _right;
+	}
+	getClass() {
+		return KdNode;
+	}
+	get interfaces_() {
+		return [];
+	}
+}
+KdNode.constructor_ = function () {
 	this._p = null;
 	this._data = null;
 	this._left = null;
@@ -21,45 +64,4 @@ export default function KdNode() {
 		this._count = 1;
 		this._data = data;
 	}
-}
-extend(KdNode.prototype, {
-	isRepeated: function () {
-		return this._count > 1;
-	},
-	getRight: function () {
-		return this._right;
-	},
-	getCoordinate: function () {
-		return this._p;
-	},
-	setLeft: function (_left) {
-		this._left = _left;
-	},
-	getX: function () {
-		return this._p.x;
-	},
-	getData: function () {
-		return this._data;
-	},
-	getCount: function () {
-		return this._count;
-	},
-	getLeft: function () {
-		return this._left;
-	},
-	getY: function () {
-		return this._p.y;
-	},
-	increment: function () {
-		this._count = this._count + 1;
-	},
-	setRight: function (_right) {
-		this._right = _right;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
-		return KdNode;
-	}
-});
+};

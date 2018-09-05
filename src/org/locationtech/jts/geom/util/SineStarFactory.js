@@ -1,26 +1,17 @@
 import Coordinate from '../Coordinate';
-import extend from '../../../../../extend';
-import inherits from '../../../../../inherits';
 import GeometricShapeFactory from '../../util/GeometricShapeFactory';
-export default function SineStarFactory() {
-	this._numArms = 8;
-	this._armLengthRatio = 0.5;
-	if (arguments.length === 0) {
-		GeometricShapeFactory.call(this);
-	} else if (arguments.length === 1) {
-		let geomFact = arguments[0];
-		GeometricShapeFactory.call(this, geomFact);
+export default class SineStarFactory extends GeometricShapeFactory {
+	constructor() {
+		super();
+		SineStarFactory.constructor_.apply(this, arguments);
 	}
-}
-inherits(SineStarFactory, GeometricShapeFactory);
-extend(SineStarFactory.prototype, {
-	setNumArms: function (numArms) {
+	setNumArms(numArms) {
 		this._numArms = numArms;
-	},
-	setArmLengthRatio: function (armLengthRatio) {
+	}
+	setArmLengthRatio(armLengthRatio) {
 		this._armLengthRatio = armLengthRatio;
-	},
-	createSineStar: function () {
+	}
+	createSineStar() {
 		var env = this._dim.getEnvelope();
 		var radius = env.getWidth() / 2.0;
 		var armRatio = this._armLengthRatio;
@@ -47,11 +38,21 @@ extend(SineStarFactory.prototype, {
 		var ring = this._geomFact.createLinearRing(pts);
 		var poly = this._geomFact.createPolygon(ring);
 		return poly;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SineStarFactory;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SineStarFactory.constructor_ = function () {
+	this._numArms = 8;
+	this._armLengthRatio = 0.5;
+	if (arguments.length === 0) {
+		GeometricShapeFactory.constructor_.call(this);
+	} else if (arguments.length === 1) {
+		let geomFact = arguments[0];
+		GeometricShapeFactory.constructor_.call(this, geomFact);
+	}
+};

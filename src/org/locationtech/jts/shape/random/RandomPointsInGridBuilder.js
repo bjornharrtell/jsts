@@ -1,28 +1,31 @@
 import GeometryFactory from '../../geom/GeometryFactory';
 import Coordinate from '../../geom/Coordinate';
-import extend from '../../../../../extend';
 import MathUtil from '../../math/MathUtil';
-import inherits from '../../../../../inherits';
 import GeometricShapeBuilder from '../GeometricShapeBuilder';
-export default function RandomPointsInGridBuilder() {
-	this._isConstrainedToCircle = false;
-	this._gutterFraction = 0;
-	if (arguments.length === 0) {
-		GeometricShapeBuilder.call(this, new GeometryFactory());
-	} else if (arguments.length === 1) {
-		let geomFact = arguments[0];
-		GeometricShapeBuilder.call(this, geomFact);
+export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
+	constructor() {
+		super();
+		RandomPointsInGridBuilder.constructor_.apply(this, arguments);
 	}
-}
-inherits(RandomPointsInGridBuilder, GeometricShapeBuilder);
-extend(RandomPointsInGridBuilder.prototype, {
-	randomPointInCell: function (orgX, orgY, xLen, yLen) {
+	static randomPointInCircle(orgX, orgY, width, height) {
+		var centreX = orgX + width / 2;
+		var centreY = orgY + height / 2;
+		var rndAng = 2 * Math.PI * Math.random();
+		var rndRadius = Math.random();
+		var rndRadius2 = Math.sqrt(rndRadius);
+		var rndX = width / 2 * rndRadius2 * Math.cos(rndAng);
+		var rndY = height / 2 * rndRadius2 * Math.sin(rndAng);
+		var x0 = centreX + rndX;
+		var y0 = centreY + rndY;
+		return new Coordinate(x0, y0);
+	}
+	randomPointInCell(orgX, orgY, xLen, yLen) {
 		if (this._isConstrainedToCircle) {
 			return RandomPointsInGridBuilder.randomPointInCircle(orgX, orgY, xLen, yLen);
 		}
 		return this.randomPointInGridCell(orgX, orgY, xLen, yLen);
-	},
-	getGeometry: function () {
+	}
+	getGeometry() {
 		var nCells = Math.trunc(Math.sqrt(this._numPts));
 		if (nCells * nCells < this._numPts) nCells += 1;
 		var gridDX = this.getExtent().getWidth() / nCells;
@@ -43,34 +46,32 @@ extend(RandomPointsInGridBuilder.prototype, {
 			}
 		}
 		return this._geomFactory.createMultiPointFromCoords(pts);
-	},
-	setConstrainedToCircle: function (isConstrainedToCircle) {
+	}
+	setConstrainedToCircle(isConstrainedToCircle) {
 		this._isConstrainedToCircle = isConstrainedToCircle;
-	},
-	setGutterFraction: function (gutterFraction) {
+	}
+	setGutterFraction(gutterFraction) {
 		this._gutterFraction = gutterFraction;
-	},
-	randomPointInGridCell: function (orgX, orgY, xLen, yLen) {
+	}
+	randomPointInGridCell(orgX, orgY, xLen, yLen) {
 		var x = orgX + xLen * Math.random();
 		var y = orgY + yLen * Math.random();
 		return this.createCoord(x, y);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return RandomPointsInGridBuilder;
 	}
-});
-RandomPointsInGridBuilder.randomPointInCircle = function (orgX, orgY, width, height) {
-	var centreX = orgX + width / 2;
-	var centreY = orgY + height / 2;
-	var rndAng = 2 * Math.PI * Math.random();
-	var rndRadius = Math.random();
-	var rndRadius2 = Math.sqrt(rndRadius);
-	var rndX = width / 2 * rndRadius2 * Math.cos(rndAng);
-	var rndY = height / 2 * rndRadius2 * Math.sin(rndAng);
-	var x0 = centreX + rndX;
-	var y0 = centreY + rndY;
-	return new Coordinate(x0, y0);
+	get interfaces_() {
+		return [];
+	}
+}
+RandomPointsInGridBuilder.constructor_ = function () {
+	this._isConstrainedToCircle = false;
+	this._gutterFraction = 0;
+	if (arguments.length === 0) {
+		GeometricShapeBuilder.constructor_.call(this, new GeometryFactory());
+	} else if (arguments.length === 1) {
+		let geomFact = arguments[0];
+		GeometricShapeBuilder.constructor_.call(this, geomFact);
+	}
 };

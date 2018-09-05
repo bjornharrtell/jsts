@@ -1,6 +1,48 @@
-import extend from '../../../../extend';
 import Assert from '../util/Assert';
-export default function GraphComponent() {
+export default class GraphComponent {
+	constructor() {
+		GraphComponent.constructor_.apply(this, arguments);
+	}
+	setVisited(isVisited) {
+		this._isVisited = isVisited;
+	}
+	setInResult(isInResult) {
+		this._isInResult = isInResult;
+	}
+	isCovered() {
+		return this._isCovered;
+	}
+	isCoveredSet() {
+		return this._isCoveredSet;
+	}
+	setLabel(label) {
+		this._label = label;
+	}
+	getLabel() {
+		return this._label;
+	}
+	setCovered(isCovered) {
+		this._isCovered = isCovered;
+		this._isCoveredSet = true;
+	}
+	updateIM(im) {
+		Assert.isTrue(this._label.getGeometryCount() >= 2, "found partial label");
+		this.computeIM(im);
+	}
+	isInResult() {
+		return this._isInResult;
+	}
+	isVisited() {
+		return this._isVisited;
+	}
+	getClass() {
+		return GraphComponent;
+	}
+	get interfaces_() {
+		return [];
+	}
+}
+GraphComponent.constructor_ = function () {
 	this._label = null;
 	this._isInResult = false;
 	this._isCovered = false;
@@ -10,44 +52,4 @@ export default function GraphComponent() {
 		let label = arguments[0];
 		this._label = label;
 	}
-}
-extend(GraphComponent.prototype, {
-	setVisited: function (isVisited) {
-		this._isVisited = isVisited;
-	},
-	setInResult: function (isInResult) {
-		this._isInResult = isInResult;
-	},
-	isCovered: function () {
-		return this._isCovered;
-	},
-	isCoveredSet: function () {
-		return this._isCoveredSet;
-	},
-	setLabel: function (label) {
-		this._label = label;
-	},
-	getLabel: function () {
-		return this._label;
-	},
-	setCovered: function (isCovered) {
-		this._isCovered = isCovered;
-		this._isCoveredSet = true;
-	},
-	updateIM: function (im) {
-		Assert.isTrue(this._label.getGeometryCount() >= 2, "found partial label");
-		this.computeIM(im);
-	},
-	isInResult: function () {
-		return this._isInResult;
-	},
-	isVisited: function () {
-		return this._isVisited;
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
-		return GraphComponent;
-	}
-});
+};

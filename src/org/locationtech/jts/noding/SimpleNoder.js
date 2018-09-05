@@ -1,14 +1,11 @@
 import NodedSegmentString from './NodedSegmentString';
-import extend from '../../../../extend';
-import inherits from '../../../../inherits';
 import SinglePassNoder from './SinglePassNoder';
-export default function SimpleNoder() {
-	SinglePassNoder.apply(this);
-	this._nodedSegStrings = null;
-}
-inherits(SimpleNoder, SinglePassNoder);
-extend(SimpleNoder.prototype, {
-	computeNodes: function (inputSegStrings) {
+export default class SimpleNoder extends SinglePassNoder {
+	constructor() {
+		super();
+		SimpleNoder.constructor_.apply(this, arguments);
+	}
+	computeNodes(inputSegStrings) {
 		this._nodedSegStrings = inputSegStrings;
 		for (var i0 = inputSegStrings.iterator(); i0.hasNext(); ) {
 			var edge0 = i0.next();
@@ -17,8 +14,8 @@ extend(SimpleNoder.prototype, {
 				this.computeIntersects(edge0, edge1);
 			}
 		}
-	},
-	computeIntersects: function (e0, e1) {
+	}
+	computeIntersects(e0, e1) {
 		var pts0 = e0.getCoordinates();
 		var pts1 = e1.getCoordinates();
 		for (var i0 = 0; i0 < pts0.length - 1; i0++) {
@@ -26,14 +23,17 @@ extend(SimpleNoder.prototype, {
 				this._segInt.processIntersections(e0, i0, e1, i1);
 			}
 		}
-	},
-	getNodedSubstrings: function () {
+	}
+	getNodedSubstrings() {
 		return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings);
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SimpleNoder;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SimpleNoder.constructor_ = function () {
+	this._nodedSegStrings = null;
+};

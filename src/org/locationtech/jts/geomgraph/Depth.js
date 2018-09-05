@@ -1,22 +1,21 @@
 import Location from '../geom/Location';
 import Position from './Position';
-import extend from '../../../../extend';
-export default function Depth() {
-	this._depth = Array(2).fill().map(() => Array(3));
-	for (var i = 0; i < 2; i++) {
-		for (var j = 0; j < 3; j++) {
-			this._depth[i][j] = Depth.NULL_VALUE;
-		}
+export default class Depth {
+	constructor() {
+		Depth.constructor_.apply(this, arguments);
 	}
-}
-extend(Depth.prototype, {
-	getDepth: function (geomIndex, posIndex) {
+	static depthAtLocation(location) {
+		if (location === Location.EXTERIOR) return 0;
+		if (location === Location.INTERIOR) return 1;
+		return Depth.NULL_VALUE;
+	}
+	getDepth(geomIndex, posIndex) {
 		return this._depth[geomIndex][posIndex];
-	},
-	setDepth: function (geomIndex, posIndex, depthValue) {
+	}
+	setDepth(geomIndex, posIndex, depthValue) {
 		this._depth[geomIndex][posIndex] = depthValue;
-	},
-	isNull: function () {
+	}
+	isNull() {
 		if (arguments.length === 0) {
 			for (var i = 0; i < 2; i++) {
 				for (var j = 0; j < 3; j++) {
@@ -31,8 +30,8 @@ extend(Depth.prototype, {
 			let geomIndex = arguments[0], posIndex = arguments[1];
 			return this._depth[geomIndex][posIndex] === Depth.NULL_VALUE;
 		}
-	},
-	normalize: function () {
+	}
+	normalize() {
 		for (var i = 0; i < 2; i++) {
 			if (!this.isNull(i)) {
 				var minDepth = this._depth[i][1];
@@ -45,18 +44,18 @@ extend(Depth.prototype, {
 				}
 			}
 		}
-	},
-	getDelta: function (geomIndex) {
+	}
+	getDelta(geomIndex) {
 		return this._depth[geomIndex][Position.RIGHT] - this._depth[geomIndex][Position.LEFT];
-	},
-	getLocation: function (geomIndex, posIndex) {
+	}
+	getLocation(geomIndex, posIndex) {
 		if (this._depth[geomIndex][posIndex] <= 0) return Location.EXTERIOR;
 		return Location.INTERIOR;
-	},
-	toString: function () {
+	}
+	toString() {
 		return "A: " + this._depth[0][1] + "," + this._depth[0][2] + " B: " + this._depth[1][1] + "," + this._depth[1][2];
-	},
-	add: function () {
+	}
+	add() {
 		if (arguments.length === 1) {
 			let lbl = arguments[0];
 			for (var i = 0; i < 2; i++) {
@@ -73,17 +72,20 @@ extend(Depth.prototype, {
 			let geomIndex = arguments[0], posIndex = arguments[1], location = arguments[2];
 			if (location === Location.INTERIOR) this._depth[geomIndex][posIndex]++;
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return Depth;
 	}
-});
-Depth.depthAtLocation = function (location) {
-	if (location === Location.EXTERIOR) return 0;
-	if (location === Location.INTERIOR) return 1;
-	return Depth.NULL_VALUE;
+	get interfaces_() {
+		return [];
+	}
+}
+Depth.constructor_ = function () {
+	this._depth = Array(2).fill().map(() => Array(3));
+	for (var i = 0; i < 2; i++) {
+		for (var j = 0; j < 3; j++) {
+			this._depth[i][j] = Depth.NULL_VALUE;
+		}
+	}
 };
 Depth.NULL_VALUE = -1;

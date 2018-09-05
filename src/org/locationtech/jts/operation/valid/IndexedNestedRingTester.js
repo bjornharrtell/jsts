@@ -1,31 +1,24 @@
 import STRtree from '../../index/strtree/STRtree';
 import IsValidOp from './IsValidOp';
 import PointLocation from '../../algorithm/PointLocation';
-import extend from '../../../../../extend';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Envelope from '../../geom/Envelope';
-export default function IndexedNestedRingTester() {
-	this._graph = null;
-	this._rings = new ArrayList();
-	this._totalEnv = new Envelope();
-	this._index = null;
-	this._nestedPt = null;
-	let graph = arguments[0];
-	this._graph = graph;
-}
-extend(IndexedNestedRingTester.prototype, {
-	buildIndex: function () {
+export default class IndexedNestedRingTester {
+	constructor() {
+		IndexedNestedRingTester.constructor_.apply(this, arguments);
+	}
+	buildIndex() {
 		this._index = new STRtree();
 		for (var i = 0; i < this._rings.size(); i++) {
 			var ring = this._rings.get(i);
 			var env = ring.getEnvelopeInternal();
 			this._index.insert(env, ring);
 		}
-	},
-	getNestedPoint: function () {
+	}
+	getNestedPoint() {
 		return this._nestedPt;
-	},
-	isNonNested: function () {
+	}
+	isNonNested() {
 		this.buildIndex();
 		for (var i = 0; i < this._rings.size(); i++) {
 			var innerRing = this._rings.get(i);
@@ -46,15 +39,24 @@ extend(IndexedNestedRingTester.prototype, {
 			}
 		}
 		return true;
-	},
-	add: function (ring) {
+	}
+	add(ring) {
 		this._rings.add(ring);
 		this._totalEnv.expandToInclude(ring.getEnvelopeInternal());
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return IndexedNestedRingTester;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+IndexedNestedRingTester.constructor_ = function () {
+	this._graph = null;
+	this._rings = new ArrayList();
+	this._totalEnv = new Envelope();
+	this._index = null;
+	this._nestedPt = null;
+	let graph = arguments[0];
+	this._graph = graph;
+};

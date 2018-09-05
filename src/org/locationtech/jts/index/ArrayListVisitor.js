@@ -1,20 +1,22 @@
 import ItemVisitor from './ItemVisitor';
-import extend from '../../../../extend';
 import ArrayList from '../../../../java/util/ArrayList';
-export default function ArrayListVisitor() {
-	this._items = new ArrayList();
-}
-extend(ArrayListVisitor.prototype, {
-	visitItem: function (item) {
+export default class ArrayListVisitor {
+	constructor() {
+		ArrayListVisitor.constructor_.apply(this, arguments);
+	}
+	visitItem(item) {
 		this._items.add(item);
-	},
-	getItems: function () {
+	}
+	getItems() {
 		return this._items;
-	},
-	interfaces_: function () {
-		return [ItemVisitor];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return ArrayListVisitor;
 	}
-});
+	get interfaces_() {
+		return [ItemVisitor];
+	}
+}
+ArrayListVisitor.constructor_ = function () {
+	this._items = new ArrayList();
+};

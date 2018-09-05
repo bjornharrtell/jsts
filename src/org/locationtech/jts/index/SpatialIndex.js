@@ -1,19 +1,21 @@
-import extend from '../../../../extend';
-export default function SpatialIndex() {}
-extend(SpatialIndex.prototype, {
-	insert: function (itemEnv, item) {},
-	remove: function (itemEnv, item) {},
-	query: function () {
+export default class SpatialIndex {
+	constructor() {
+		SpatialIndex.constructor_.apply(this, arguments);
+	}
+	insert(itemEnv, item) {}
+	remove(itemEnv, item) {}
+	query() {
 		if (arguments.length === 1) {
 			let searchEnv = arguments[0];
 		} else if (arguments.length === 2) {
 			let searchEnv = arguments[0], visitor = arguments[1];
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return SpatialIndex;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+SpatialIndex.constructor_ = function () {};

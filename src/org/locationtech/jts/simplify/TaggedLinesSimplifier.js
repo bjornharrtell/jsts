@@ -1,16 +1,13 @@
-import extend from '../../../../extend';
 import TaggedLineStringSimplifier from './TaggedLineStringSimplifier';
 import LineSegmentIndex from './LineSegmentIndex';
-export default function TaggedLinesSimplifier() {
-	this._inputIndex = new LineSegmentIndex();
-	this._outputIndex = new LineSegmentIndex();
-	this._distanceTolerance = 0.0;
-}
-extend(TaggedLinesSimplifier.prototype, {
-	setDistanceTolerance: function (distanceTolerance) {
+export default class TaggedLinesSimplifier {
+	constructor() {
+		TaggedLinesSimplifier.constructor_.apply(this, arguments);
+	}
+	setDistanceTolerance(distanceTolerance) {
 		this._distanceTolerance = distanceTolerance;
-	},
-	simplify: function (taggedLines) {
+	}
+	simplify(taggedLines) {
 		for (var i = taggedLines.iterator(); i.hasNext(); ) {
 			this._inputIndex.add(i.next());
 		}
@@ -19,11 +16,16 @@ extend(TaggedLinesSimplifier.prototype, {
 			tlss.setDistanceTolerance(this._distanceTolerance);
 			tlss.simplify(i.next());
 		}
-	},
-	interfaces_: function () {
-		return [];
-	},
-	getClass: function () {
+	}
+	getClass() {
 		return TaggedLinesSimplifier;
 	}
-});
+	get interfaces_() {
+		return [];
+	}
+}
+TaggedLinesSimplifier.constructor_ = function () {
+	this._inputIndex = new LineSegmentIndex();
+	this._outputIndex = new LineSegmentIndex();
+	this._distanceTolerance = 0.0;
+};
