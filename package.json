@@ -13,6 +13,7 @@
   ],
   "license": "(EDL-1.0 OR EPL-1.0)",
   "devDependencies": {
+    "0x": "4.3.0",
     "@babel/core": "7.0.0",
     "@babel/preset-env": "7.0.0",
     "chai": "4.1.2",
@@ -50,6 +51,7 @@
   "scripts": {
     "test-manual": "NODE_PATH=src mocha --timeout 10s -r esm --recursive test/manual",
     "test": "NODE_PATH=src nyc mocha --timeout 10s -r esm --recursive test/auto/node test/manual",
+    "test-perf": "NODE_PATH=src 0x -- node -r esm $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
