@@ -87,14 +87,16 @@ DirectedEdge.constructor_ = function () {
 	this._edgeDirection = null;
 	this._quadrant = null;
 	this._angle = null;
-	let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
-	this._from = from;
-	this._to = to;
-	this._edgeDirection = edgeDirection;
-	this._p0 = from.getCoordinate();
-	this._p1 = directionPt;
-	var dx = this._p1.x - this._p0.x;
-	var dy = this._p1.y - this._p0.y;
-	this._quadrant = Quadrant.quadrant(dx, dy);
-	this._angle = Math.atan2(dy, dx);
+	if (arguments.length === 0) {} else if (arguments.length === 4) {
+		let from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3];
+		this._from = from;
+		this._to = to;
+		this._edgeDirection = edgeDirection;
+		this._p0 = from.getCoordinate();
+		this._p1 = directionPt;
+		var dx = this._p1.x - this._p0.x;
+		var dy = this._p1.y - this._p0.y;
+		this._quadrant = Quadrant.quadrant(dx, dy);
+		this._angle = Math.atan2(dy, dx);
+	}
 };
