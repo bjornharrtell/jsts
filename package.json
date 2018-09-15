@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -14,7 +14,7 @@
   "license": "(EDL-1.0 OR EPL-1.0)",
   "devDependencies": {
     "0x": "4.3.0",
-    "@babel/core": "7.0.0",
+    "@babel/core": "7.0.1",
     "@babel/preset-env": "7.0.0",
     "chai": "4.1.2",
     "cheerio": "0.22.0",
