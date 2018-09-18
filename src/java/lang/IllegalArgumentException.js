@@ -1,1 +1,3 @@
-export default function IllegalArgumentException () {}
+export default function IllegalArgumentException (message) {
+  this.message = message
+}
