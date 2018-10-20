@@ -5,6 +5,7 @@ import GeometryCollectionMapper from '../../geom/util/GeometryCollectionMapper';
 import PolygonBuilder from './PolygonBuilder';
 import Position from '../../geomgraph/Position';
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException';
+import MapOp from '../../geom/util/MapOp';
 import LineBuilder from './LineBuilder';
 import PointBuilder from './PointBuilder';
 import SnapIfNeededOverlayOp from './snap/SnapIfNeededOverlayOp';
@@ -43,11 +44,10 @@ export default class OverlayOp extends GeometryGraphOperation {
 					return [MapOp];
 				}
 				map(g) {
-					return g.intersection(g2);
+					return OverlayOp.intersection(g, g2);
 				}
 			})());
 		}
-		if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
 		return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.INTERSECTION);
 	}
 	static symDifference(geom, other) {
