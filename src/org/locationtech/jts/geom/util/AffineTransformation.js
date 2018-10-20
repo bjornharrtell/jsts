@@ -386,10 +386,10 @@ AffineTransformation.constructor_ = function () {
 			this.setTransformation(trans);
 		}
 	} else if (arguments.length === 6) {
-		if (typeof arguments[0] === "number") {
+		if (typeof arguments[5] === "number" && (typeof arguments[4] === "number" && (typeof arguments[3] === "number" && (typeof arguments[2] === "number" && (typeof arguments[0] === "number" && typeof arguments[1] === "number"))))) {
 			let m00 = arguments[0], m01 = arguments[1], m02 = arguments[2], m10 = arguments[3], m11 = arguments[4], m12 = arguments[5];
 			this.setTransformation(m00, m01, m02, m10, m11, m12);
-		} else if (arguments[0] instanceof Coordinate) {
+		} else if (arguments[5] instanceof Coordinate && (arguments[4] instanceof Coordinate && (arguments[3] instanceof Coordinate && (arguments[2] instanceof Coordinate && (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate))))) {
 			let src0 = arguments[0], src1 = arguments[1], src2 = arguments[2], dest0 = arguments[3], dest1 = arguments[4], dest2 = arguments[5];
 		}
 	}

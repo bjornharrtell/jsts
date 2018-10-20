@@ -14,11 +14,11 @@ export default class CGAlgorithmsDD {
 		return dx1.selfMultiply(dy2).selfSubtract(dy1.selfMultiply(dx2)).signum();
 	}
 	static signOfDet2x2() {
-		if (arguments[0] instanceof DD) {
+		if (arguments[3] instanceof DD && (arguments[2] instanceof DD && (arguments[0] instanceof DD && arguments[1] instanceof DD))) {
 			let x1 = arguments[0], y1 = arguments[1], x2 = arguments[2], y2 = arguments[3];
 			var det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
 			return det.signum();
-		} else if (typeof arguments[0] === "number") {
+		} else if (typeof arguments[3] === "number" && (typeof arguments[2] === "number" && (typeof arguments[0] === "number" && typeof arguments[1] === "number"))) {
 			let dx1 = arguments[0], dy1 = arguments[1], dx2 = arguments[2], dy2 = arguments[3];
 			var x1 = DD.valueOf(dx1);
 			var y1 = DD.valueOf(dy1);
