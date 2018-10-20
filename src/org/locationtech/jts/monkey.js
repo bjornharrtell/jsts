@@ -1,10 +1,8 @@
 import WKTWriter from './io/WKTWriter';
-import GeometryCollectionMapper from './geom/util/GeometryCollectionMapper';
 import IsValidOp from './operation/valid/IsValidOp';
 import InteriorPointArea from './algorithm/InteriorPointArea';
 import UnaryUnionOp from './operation/union/UnaryUnionOp';
 import UnionOp from './operation/union/UnionOp';
-import SnapIfNeededOverlayOp from './operation/overlay/snap/SnapIfNeededOverlayOp';
 import InteriorPointLine from './algorithm/InteriorPointLine';
 import IsSimpleOp from './operation/IsSimpleOp';
 import BufferOp from './operation/buffer/BufferOp';
@@ -32,19 +30,7 @@ Geometry.prototype.isValid = function() {
 	return IsValidOp.isValid(this);
 }
 Geometry.prototype.intersection = function(other) {
-	if (this.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, this, other, this._factory);
-	if (this.isGeometryCollection()) {
-		var g2 = other;
-		return GeometryCollectionMapper.map(this, {
-			interfaces_: [MapOp],
-			map: function(g) {
-				return g.intersection(g2);
-			}
-		});
-	}
-	this.checkNotGeometryCollection(this);
-	this.checkNotGeometryCollection(other);
-	return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.INTERSECTION);
+	return OverlayOp.intersection(this, other);
 }
 Geometry.prototype.covers = function(g) {
 	return RelateOp.covers(this, g);
@@ -116,14 +102,7 @@ Geometry.prototype.getInteriorPoint = function() {
 	return this.createPointFromInternalCoord(interiorPt, this);
 }
 Geometry.prototype.symDifference = function(other) {
-	if (this.isEmpty() || other.isEmpty()) {
-		if (this.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, this, other, this._factory);
-		if (this.isEmpty()) return other.copy();
-		if (other.isEmpty()) return this.copy();
-	}
-	this.checkNotGeometryCollection(this);
-	this.checkNotGeometryCollection(other);
-	return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.SYMDIFFERENCE);
+	return OverlayOp.symDifference(this, other);
 }
 Geometry.prototype.createPointFromInternalCoord = function(coord, exemplar) {
 	exemplar.getPrecisionModel().makePrecise(coord);
@@ -140,11 +119,7 @@ Geometry.prototype.contains = function(g) {
 	return RelateOp.contains(this, g);
 }
 Geometry.prototype.difference = function(other) {
-	if (this.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, this, other, this._factory);
-	if (other.isEmpty()) return this.copy();
-	this.checkNotGeometryCollection(this);
-	this.checkNotGeometryCollection(other);
-	return SnapIfNeededOverlayOp.overlayOp(this, other, OverlayOp.DIFFERENCE);
+	return OverlayOp.difference(this, other);
 }
 Geometry.prototype.isSimple = function() {
 	var op = new IsSimpleOp(this);
