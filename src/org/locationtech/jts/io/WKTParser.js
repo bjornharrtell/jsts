@@ -99,6 +99,7 @@ export default class WKTParser {
  */
 const extract = {
   coordinate (coordinate) {
+    this.precisionModel.makePrecise(coordinate)
     return coordinate.x + ' ' + coordinate.y
   },
 
