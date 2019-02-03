@@ -4,7 +4,6 @@ import hasInterface from '../../../../../hasInterface';
 import Collection from '../../../../../java/util/Collection';
 import EdgeString from './EdgeString';
 import LineMergeGraph from './LineMergeGraph';
-import GeometryComponentFilter from '../../geom/GeometryComponentFilter';
 import ArrayList from '../../../../../java/util/ArrayList';
 import Assert from '../../util/Assert';
 import GraphComponent from '../../planargraph/GraphComponent';
@@ -62,6 +61,12 @@ export default class LineMerger {
 			this._mergedLineStrings.add(edgeString.toLineString());
 		}
 	}
+	addLineString(lineString) {
+		if (this._factory === null) {
+			this._factory = lineString.getFactory();
+		}
+		this._graph.addEdge(lineString);
+	}
 	buildEdgeStringStartingWith(start) {
 		var edgeString = new EdgeString(this._factory);
 		var current = start;
@@ -75,16 +80,13 @@ export default class LineMerger {
 	add() {
 		if (arguments[0] instanceof Geometry) {
 			let geometry = arguments[0];
-			geometry.apply(new (class {
-				get interfaces_() {
-					return [GeometryComponentFilter];
+			for (var i = 0; i < geometry.getNumGeometries(); i++) {
+				var component = geometry.getGeometryN(i);
+				if (component instanceof LineString) {
+					this.addLineString(component);
 				}
-				filter(component) {
-					if (component instanceof LineString) {
-						this.add(component);
-					}
-				}
-			})());
+			}
+			;
 		} else if (hasInterface(arguments[0], Collection)) {
 			let geometries = arguments[0];
 			this._mergedLineStrings = null;
@@ -92,12 +94,6 @@ export default class LineMerger {
 				var geometry = i.next();
 				this.add(geometry);
 			}
-		} else if (arguments[0] instanceof LineString) {
-			let lineString = arguments[0];
-			if (this._factory === null) {
-				this._factory = lineString.getFactory();
-			}
-			this._graph.addEdge(lineString);
 		}
 	}
 	buildEdgeStringsForIsolatedLoops() {
