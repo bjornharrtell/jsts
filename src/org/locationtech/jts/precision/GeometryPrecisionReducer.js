@@ -26,8 +26,7 @@ export default class GeometryPrecisionReducer {
 		var bufGeom = BufferOp.bufferOp(geomToBuffer, 0);
 		var finalGeom = bufGeom;
 		if (!this._changePrecisionModel) {
-			finalGeom = bufGeom.copy();
-			this.changePM(finalGeom, geom.getPrecisionModel());
+			finalGeom = geom.getFactory().createGeometry(bufGeom);
 		}
 		return finalGeom;
 	}

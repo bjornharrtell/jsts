@@ -180,14 +180,7 @@ export default class GeometryFactory {
 	}
 	createGeometry(g) {
 		var editor = new GeometryEditor(this);
-		return editor.edit(g, new (class {
-			edit() {
-				if (arguments.length === 2 && (arguments[1] instanceof Geometry && hasInterface(arguments[0], CoordinateSequence))) {
-					let coordSeq = arguments[0], geometry = arguments[1];
-					return this._coordinateSequenceFactory.create(coordSeq);
-				}
-			}
-		})());
+		return editor.edit(g, new CloneOp(this._coordinateSequenceFactory));
 	}
 	getPrecisionModel() {
 		return this._precisionModel;
@@ -242,6 +235,30 @@ export default class GeometryFactory {
 		return [Serializable];
 	}
 }
+class CloneOp extends GeometryEditor.CoordinateSequenceOperation {
+	constructor() {
+		super();
+		CloneOp.constructor_.apply(this, arguments);
+	}
+	edit() {
+		if (arguments.length === 2 && (arguments[1] instanceof Geometry && hasInterface(arguments[0], CoordinateSequence))) {
+			let coordSeq = arguments[0], geometry = arguments[1];
+			return this.coordinateSequenceFactory.create(coordSeq);
+		} else return super.edit.apply(this, arguments);
+	}
+	getClass() {
+		return CloneOp;
+	}
+	get interfaces_() {
+		return [];
+	}
+}
+CloneOp.constructor_ = function () {
+	this.coordinateSequenceFactory = null;
+	let coordinateSequenceFactory = arguments[0];
+	this.coordinateSequenceFactory = coordinateSequenceFactory;
+};
+GeometryFactory.CloneOp = CloneOp;
 GeometryFactory.constructor_ = function () {
 	this._precisionModel = null;
 	this._coordinateSequenceFactory = null;
