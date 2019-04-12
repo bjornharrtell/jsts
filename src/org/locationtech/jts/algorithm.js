@@ -14,6 +14,7 @@ import InteriorPointPoint from './algorithm/InteriorPointPoint'
 import Length from './algorithm/Length'
 import Orientation from './algorithm/Orientation'
 import PointLocation from './algorithm/PointLocation'
+import PointLocator from './algorithm/PointLocator'
 import RobustLineIntersector from './algorithm/RobustLineIntersector'
 import MinimumBoundingCircle from './algorithm/MinimumBoundingCircle'
 import MinimumDiameter from './algorithm/MinimumDiameter'
@@ -33,6 +34,7 @@ export {
   Length,
   Orientation,
   PointLocation,
+  PointLocator,
   RobustLineIntersector,
   MinimumBoundingCircle,
   MinimumDiameter
