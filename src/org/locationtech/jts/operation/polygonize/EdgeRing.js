@@ -1,6 +1,7 @@
 import CoordinateList from '../../geom/CoordinateList';
 import WKTWriter from '../../io/WKTWriter';
 import CoordinateArraySequence from '../../geom/impl/CoordinateArraySequence';
+import IsValidOp from '../valid/IsValidOp';
 import PointLocation from '../../algorithm/PointLocation';
 import LinearRing from '../../geom/LinearRing';
 import Exception from '../../../../../java/lang/Exception';
@@ -82,7 +83,7 @@ export default class EdgeRing {
 		this.getCoordinates();
 		if (this._ringPts.length <= 3) return false;
 		this.getRing();
-		return this._ring.isValid();
+		return IsValidOp.isValid(this._ring);
 	}
 	build(startDE) {
 		var de = startDE;
