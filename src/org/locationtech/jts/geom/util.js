@@ -11,7 +11,6 @@ import GeometryTransformer from './util/GeometryTransformer'
 import LineStringExtracter from './util/LineStringExtracter'
 import LinearComponentExtracter from './util/LinearComponentExtracter'
 import MapOp from './util/MapOp'
-import NoninvertibleTransformationException from './util/NoninvertibleTransformationException'
 import PointExtracter from './util/PointExtracter'
 import PolygonExtracter from './util/PolygonExtracter'
 import ShortCircuitedGeometryVisitor from './util/ShortCircuitedGeometryVisitor'
@@ -31,7 +30,6 @@ export {
   LineStringExtracter,
   LinearComponentExtracter,
   MapOp,
-  NoninvertibleTransformationException,
   PointExtracter,
   PolygonExtracter,
   ShortCircuitedGeometryVisitor,
