@@ -17,6 +17,7 @@ import IntersectionMatrix from './geom/IntersectionMatrix'
 import PrecisionModel from './geom/PrecisionModel'
 import Location from './geom/Location'
 import Triangle from './geom/Triangle'
+import * as util from './geom/util'
 
 export {
   Coordinate,
@@ -37,5 +38,6 @@ export {
   IntersectionMatrix,
   PrecisionModel,
   Location,
-  Triangle
+  Triangle,
+  util
 }

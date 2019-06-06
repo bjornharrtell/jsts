@@ -15,6 +15,7 @@ import * as precision from './org/locationtech/jts/precision'
 import * as simplify from './org/locationtech/jts/simplify'
 import * as triangulate from './org/locationtech/jts/triangulate'
 import * as linearref from './org/locationtech/jts/linearref'
+import * as util from './org/locationtech/jts/util'
 
 import './org/locationtech/jts/monkey'
 
@@ -33,5 +34,6 @@ export {
   precision,
   simplify,
   triangulate,
-  linearref
+  linearref,
+  util
 }
