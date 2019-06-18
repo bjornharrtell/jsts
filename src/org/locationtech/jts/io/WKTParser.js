@@ -23,7 +23,7 @@ export default class WKTParser {
    * @return An instance of WKTParser.
    * @private
    */
-  constructor(geometryFactory) {
+  constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
     this.precisionModel = this.geometryFactory.getPrecisionModel()
   }
@@ -220,7 +220,7 @@ const extract = {
  * @private
  */
 const parse = {
-  
+
   coord (str) {
     var coords = str.trim().split(regExes.spaces)
     var coord = new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1]))
@@ -236,8 +236,7 @@ const parse = {
    * @private
    */
   point (str) {
-    if (str === undefined)
-      return this.geometryFactory.createPoint()
+    if (str === undefined) { return this.geometryFactory.createPoint() }
     return this.geometryFactory.createPoint(parse.coord.call(this, str))
   },
 
@@ -249,8 +248,7 @@ const parse = {
    * @private
    */
   multipoint (str) {
-    if (str === undefined)
-      return this.geometryFactory.createMultiPoint()
+    if (str === undefined) { return this.geometryFactory.createMultiPoint() }
     var point
     var points = str.trim().split(',')
     var components = []

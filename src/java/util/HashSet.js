@@ -1,5 +1,4 @@
 import Collection from './Collection'
-import Iterator from './Iterator'
 import NoSuchElementException from './NoSuchElementException'
 import OperationNotSupported from './OperationNotSupported'
 import Set from './Set'
@@ -11,105 +10,95 @@ import Set from './Set'
  * @constructor
  * @private
  */
-export default function HashSet() {
+export default function HashSet () {
   /**
    * @type {Array}
    * @private
   */
-  this.array_ = [];
+  this.array_ = []
 
   if (arguments[0] instanceof Collection) {
-    this.addAll(arguments[0]);
+    this.addAll(arguments[0])
   }
 };
-HashSet.prototype = new Set();
-
+HashSet.prototype = new Set()
 
 /**
  * @override
  */
-HashSet.prototype.contains = function(o) {
+HashSet.prototype.contains = function (o) {
   for (var i = 0, len = this.array_.length; i < len; i++) {
-    var e = this.array_[i];
+    var e = this.array_[i]
     if (e === o) {
-      return true;
+      return true
     }
   }
-  return false;
-};
-
+  return false
+}
 
 /**
  * @override
  */
-HashSet.prototype.add = function(o) {
+HashSet.prototype.add = function (o) {
   if (this.contains(o)) {
-    return false;
+    return false
   }
 
-  this.array_.push(o);
+  this.array_.push(o)
 
-  return true;
-};
-
+  return true
+}
 
 /**
  * @override
  */
-HashSet.prototype.addAll = function(c) {
+HashSet.prototype.addAll = function (c) {
   for (var i = c.iterator(); i.hasNext();) {
-    this.add(i.next());
+    this.add(i.next())
   }
-  return true;
-};
-
-
-/**
- * @override
- */
-HashSet.prototype.remove = function(o) {
-  throw new javascript.util.OperationNotSupported();
-};
-
+  return true
+}
 
 /**
  * @override
  */
-HashSet.prototype.size = function() {
-  return this.array_.length;
-};
-
-
-/**
- * @override
- */
-HashSet.prototype.isEmpty = function() {
-  return this.array_.length === 0;
-};
-
+HashSet.prototype.remove = function (o) {
+  throw new OperationNotSupported()
+}
 
 /**
  * @override
  */
-HashSet.prototype.toArray = function() {
-  var array = [];
+HashSet.prototype.size = function () {
+  return this.array_.length
+}
+
+/**
+ * @override
+ */
+HashSet.prototype.isEmpty = function () {
+  return this.array_.length === 0
+}
+
+/**
+ * @override
+ */
+HashSet.prototype.toArray = function () {
+  var array = []
 
   for (var i = 0, len = this.array_.length; i < len; i++) {
-    array.push(this.array_[i]);
+    array.push(this.array_[i])
   }
 
-  return array;
-};
-
+  return array
+}
 
 /**
  * @override
  */
-HashSet.prototype.iterator = function() {
-  return new Iterator_(this);
-};
-
-
+HashSet.prototype.iterator = function () {
+  return new Iterator_(this)
+}
 
 /**
  * @extends {Iterator}
@@ -117,46 +106,43 @@ HashSet.prototype.iterator = function() {
  * @constructor
  * @private
  */
-var Iterator_ = function(hashSet) {
+var Iterator_ = function (hashSet) {
   /**
    * @type {HashSet}
    * @private
    */
-  this.hashSet_ = hashSet;
+  this.hashSet_ = hashSet
   /**
    * @type {number}
    * @private
    */
-  this.position_ = 0;
-};
-
+  this.position_ = 0
+}
 
 /**
  * @override
  */
-Iterator_.prototype.next = function() {
+Iterator_.prototype.next = function () {
   if (this.position_ === this.hashSet_.size()) {
-    throw new NoSuchElementException();
+    throw new NoSuchElementException()
   }
-  return this.hashSet_.array_[this.position_++];
-};
-
+  return this.hashSet_.array_[this.position_++]
+}
 
 /**
  * @override
  */
-Iterator_.prototype.hasNext = function() {
+Iterator_.prototype.hasNext = function () {
   if (this.position_ < this.hashSet_.size()) {
-    return true;
+    return true
   } else {
-    return false;
+    return false
   }
-};
-
+}
 
 /**
  * @override
  */
-Iterator_.prototype.remove = function() {
-  throw new OperationNotSupported();
-};
+Iterator_.prototype.remove = function () {
+  throw new OperationNotSupported()
+}

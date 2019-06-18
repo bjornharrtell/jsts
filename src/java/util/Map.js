@@ -4,8 +4,7 @@
  * @constructor
  * @private
  */
-export default function Map() {};
-
+export default function Map () {};
 
 /**
  * Returns the value to which the specified key is mapped, or null if this map
@@ -13,8 +12,7 @@ export default function Map() {};
  * @param {Object} key
  * @return {Object}
  */
-Map.prototype.get = function() {};
-
+Map.prototype.get = function () {}
 
 /**
  * Associates the specified value with the specified key in this map (optional
@@ -23,21 +21,19 @@ Map.prototype.get = function() {};
  * @param {Object} value
  * @return {Object}
  */
-Map.prototype.put = function() {};
-
+Map.prototype.put = function () {}
 
 /**
  * Returns the number of key-value mappings in this map.
  * @return {number}
  */
-Map.prototype.size = function() {};
-
+Map.prototype.size = function () {}
 
 /**
  * Returns a Collection view of the values contained in this map.
  * @return {javascript.util.Collection}
  */
-Map.prototype.values = function() {};
+Map.prototype.values = function () {}
 
 /**
  * Returns a {@link Set} view of the mappings contained in this map.
@@ -55,4 +51,4 @@ Map.prototype.values = function() {};
  *
  * @return {Set} a set view of the mappings contained in this map
  */
-Map.prototype.entrySet = function() {};
+Map.prototype.entrySet = function () {}

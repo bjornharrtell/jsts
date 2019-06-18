@@ -22,7 +22,7 @@ export default class WKTReader {
    * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
    * @param {GeometryFactory} geometryFactory
    */
-  constructor(geometryFactory) {
+  constructor (geometryFactory) {
     this.parser = new WKTParser(geometryFactory || new GeometryFactory())
   }
   /**

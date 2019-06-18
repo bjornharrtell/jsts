@@ -4,13 +4,12 @@
  * @constructor
  * @private
  */
-export default function NoSuchElementException(message) {
-  this.message = message || '';
+export default function NoSuchElementException (message) {
+  this.message = message || ''
 };
-NoSuchElementException.prototype = new Error();
-
+NoSuchElementException.prototype = new Error()
 
 /**
  * @type {string}
  */
-NoSuchElementException.prototype.name = 'NoSuchElementException';
+NoSuchElementException.prototype.name = 'NoSuchElementException'

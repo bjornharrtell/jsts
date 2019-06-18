@@ -21,7 +21,7 @@ export default class WKTWriter {
   /**
    * @param {GeometryFactory} geometryFactory
    */
-  constructor(geometryFactory) {
+  constructor (geometryFactory) {
     this.parser = new WKTParser(geometryFactory)
   }
   /**

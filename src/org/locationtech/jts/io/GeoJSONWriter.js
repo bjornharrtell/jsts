@@ -18,7 +18,7 @@ export default class GeoJSONWriter {
    * @param {GeometryFactory} geometryFactory
    * @constructor
    */
-  constructor() {
+  constructor () {
     this.parser = new GeoJSONParser(this.geometryFactory)
   }
 

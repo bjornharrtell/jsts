@@ -1,13 +1,13 @@
 export default class TriangleVisitor {
-	constructor() {
-		TriangleVisitor.constructor_.apply(this, arguments);
-	}
-	visit(triEdges) {}
-	getClass() {
-		return TriangleVisitor;
-	}
-	get interfaces_() {
-		return [];
-	}
+  constructor () {
+    TriangleVisitor.constructor_.apply(this, arguments)
+  }
+  visit (triEdges) {}
+  getClass () {
+    return TriangleVisitor
+  }
+  get interfaces_ () {
+    return []
+  }
 }
-TriangleVisitor.constructor_ = function () {};
+TriangleVisitor.constructor_ = function () {}

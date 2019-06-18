@@ -1,7 +1,3 @@
-import './Array'
-import './Number'
-import './Math'
-
 import * as geom from './org/locationtech/jts/geom'
 import * as algorithm from './org/locationtech/jts/algorithm'
 import * as densify from './org/locationtech/jts/densify'

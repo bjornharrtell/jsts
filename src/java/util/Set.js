@@ -7,9 +7,8 @@ import Collection from './Collection'
  * @constructor
  * @private
  */
-export default function Set() {};
-Set.prototype = new Collection();
-
+export default function Set () {};
+Set.prototype = new Collection()
 
 /**
  * Returns true if this set contains the specified element. More formally,
@@ -18,4 +17,4 @@ Set.prototype = new Collection();
  * @param {Object} e
  * @return {boolean}
  */
-Set.prototype.contains = function() {};
+Set.prototype.contains = function () {}

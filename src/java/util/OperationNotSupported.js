@@ -4,13 +4,12 @@
  * @constructor
  * @private
  */
-export default function OperationNotSupported(message) {
-  this.message = message || '';
+export default function OperationNotSupported (message) {
+  this.message = message || ''
 };
-OperationNotSupported.prototype = new Error();
-
+OperationNotSupported.prototype = new Error()
 
 /**
  * @type {string}
  */
-OperationNotSupported.prototype.name = 'OperationNotSupported';
+OperationNotSupported.prototype.name = 'OperationNotSupported'

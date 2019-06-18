@@ -4,13 +4,12 @@
  * @constructor
  * @private
  */
-export default function EmptyStackException(message) {
-  this.message = message || '';
+export default function EmptyStackException (message) {
+  this.message = message || ''
 };
-EmptyStackException.prototype = new Error();
-
+EmptyStackException.prototype = new Error()
 
 /**
  * @type {string}
  */
-EmptyStackException.prototype.name = 'EmptyStackException';
+EmptyStackException.prototype.name = 'EmptyStackException'

@@ -1,9 +1,6 @@
 import ArrayList from './ArrayList'
 import MapInterface from './Map'
 import HashSet from './HashSet'
-import MapPolyfill from '../../Map'
-
-let MapImpl = typeof Map === 'undefined' || !Map.prototype.values ? MapPolyfill : Map
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/HashMap.html
@@ -17,7 +14,7 @@ export default function HashMap () {
    * @type {Object}
    * @private
   */
-  this.map_ = new MapImpl()
+  this.map_ = new Map()
 }
 HashMap.prototype = new MapInterface()
 

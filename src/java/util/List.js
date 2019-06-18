@@ -7,8 +7,8 @@ import Collection from './Collection'
  * @constructor
  * @private
  */
-export default function List() { };
-List.prototype = Object.create(Collection.prototype);
+export default function List () { };
+List.prototype = Object.create(Collection.prototype)
 List.prototype.constructor = List
 
 /**
@@ -16,8 +16,7 @@ List.prototype.constructor = List
  * @param {number} index
  * @return {Object}
  */
-List.prototype.get = function() { };
-
+List.prototype.get = function () { }
 
 /**
  * Replaces the element at the specified position in this list with the
@@ -26,11 +25,10 @@ List.prototype.get = function() { };
  * @param {Object} e
  * @return {Object}
  */
-List.prototype.set = function() { };
-
+List.prototype.set = function () { }
 
 /**
  * Returns true if this collection contains no elements.
  * @return {boolean}
  */
-List.prototype.isEmpty = function() { };
+List.prototype.isEmpty = function () { }

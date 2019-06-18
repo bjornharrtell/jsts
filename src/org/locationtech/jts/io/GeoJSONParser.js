@@ -17,7 +17,7 @@ const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', '
  * @private
  */
 export default class GeoJSONParser {
-  constructor(geometryFactory) {
+  constructor (geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
   }
 
@@ -31,20 +31,13 @@ export default class GeoJSONParser {
    */
   read (json) {
     let obj
-    if (typeof json === 'string')
-      obj = JSON.parse(json)
-    else
-      obj = json
+    if (typeof json === 'string') { obj = JSON.parse(json) } else { obj = json }
 
     const type = obj.type
 
-    if (!parse[type])
-      throw new Error('Unknown GeoJSON type: ' + obj.type)
+    if (!parse[type]) { throw new Error('Unknown GeoJSON type: ' + obj.type) }
 
-    if (geometryTypes.indexOf(type) !== -1)
-      return parse[type].call(this, obj.coordinates)
-    else if (type === 'GeometryCollection')
-      return parse[type].call(this, obj.geometries)
+    if (geometryTypes.indexOf(type) !== -1) { return parse[type].call(this, obj.coordinates) } else if (type === 'GeometryCollection') { return parse[type].call(this, obj.geometries) }
 
     // feature or feature collection
     return parse[type].call(this, obj)
@@ -61,12 +54,11 @@ export default class GeoJSONParser {
   write (geometry) {
     const type = geometry.getGeometryType()
 
-    if (!extract[type])
-      throw new Error('Geometry is not supported')
+    if (!extract[type]) { throw new Error('Geometry is not supported') }
 
     return extract[type].call(this, geometry)
   }
-} 
+}
 
 const parse = {
   /**
@@ -80,18 +72,15 @@ const parse = {
   Feature: function (obj) {
     const feature = {}
 
-    for (let key in obj)
-      feature[key] = obj[key]
+    for (let key in obj) { feature[key] = obj[key] }
 
     if (obj.geometry) {
       const type = obj.geometry.type
-      if (!parse[type])
-        throw new Error('Unknown GeoJSON type: ' + obj.type)
+      if (!parse[type]) { throw new Error('Unknown GeoJSON type: ' + obj.type) }
       feature.geometry = this.read(obj.geometry)
     }
 
-    if (obj.bbox)
-      feature.bbox = parse.bbox.call(this, obj.bbox)
+    if (obj.bbox) { feature.bbox = parse.bbox.call(this, obj.bbox) }
 
     return feature
   },
@@ -110,12 +99,10 @@ const parse = {
     if (obj.features) {
       featureCollection.features = []
 
-      for (let i = 0; i < obj.features.length; ++i)
-        featureCollection.features.push(this.read(obj.features[i]))
+      for (let i = 0; i < obj.features.length; ++i) { featureCollection.features.push(this.read(obj.features[i])) }
     }
 
-    if (obj.bbox)
-      featureCollection.bbox = this.parse.bbox.call(this, obj.bbox)
+    if (obj.bbox) { featureCollection.bbox = this.parse.bbox.call(this, obj.bbox) }
 
     return featureCollection
   },
@@ -178,8 +165,7 @@ const parse = {
    */
   MultiPoint: function (array) {
     const points = []
-    for (let i = 0; i < array.length; ++i)
-      points.push(parse.Point.call(this, array[i]))
+    for (let i = 0; i < array.length; ++i) { points.push(parse.Point.call(this, array[i])) }
     return this.geometryFactory.createMultiPoint(points)
   },
 
@@ -206,8 +192,7 @@ const parse = {
    */
   MultiLineString: function (array) {
     const lineStrings = []
-    for (let i = 0; i < array.length; ++i)
-      lineStrings.push(parse.LineString.call(this, array[i]))
+    for (let i = 0; i < array.length; ++i) { lineStrings.push(parse.LineString.call(this, array[i])) }
     return this.geometryFactory.createMultiLineString(lineStrings)
   },
 

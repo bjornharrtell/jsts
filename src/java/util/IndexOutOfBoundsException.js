@@ -4,12 +4,12 @@
  * @constructor
  * @private
  */
-export default function IndexOutOfBoundsException(message) {
-  this.message = message || '';
+export default function IndexOutOfBoundsException (message) {
+  this.message = message || ''
 };
-IndexOutOfBoundsException.prototype = new Error();
+IndexOutOfBoundsException.prototype = new Error()
 
 /**
  * @type {string}
  */
-IndexOutOfBoundsException.prototype.name = 'IndexOutOfBoundsException';
+IndexOutOfBoundsException.prototype.name = 'IndexOutOfBoundsException'

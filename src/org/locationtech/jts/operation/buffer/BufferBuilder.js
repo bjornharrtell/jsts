@@ -1,154 +1,154 @@
-import Location from '../../geom/Location';
-import BufferSubgraph from './BufferSubgraph';
-import PolygonBuilder from '../overlay/PolygonBuilder';
-import GeometryFactory from '../../geom/GeometryFactory';
-import Position from '../../geomgraph/Position';
-import MCIndexNoder from '../../noding/MCIndexNoder';
-import OffsetCurveBuilder from './OffsetCurveBuilder';
-import Collections from '../../../../../java/util/Collections';
-import SubgraphDepthLocater from './SubgraphDepthLocater';
-import OffsetCurveSetBuilder from './OffsetCurveSetBuilder';
-import Label from '../../geomgraph/Label';
-import OverlayNodeFactory from '../overlay/OverlayNodeFactory';
-import EdgeList from '../../geomgraph/EdgeList';
-import ArrayList from '../../../../../java/util/ArrayList';
-import RobustLineIntersector from '../../algorithm/RobustLineIntersector';
-import IntersectionAdder from '../../noding/IntersectionAdder';
-import Edge from '../../geomgraph/Edge';
-import PlanarGraph from '../../geomgraph/PlanarGraph';
+import Location from '../../geom/Location'
+import BufferSubgraph from './BufferSubgraph'
+import PolygonBuilder from '../overlay/PolygonBuilder'
+import GeometryFactory from '../../geom/GeometryFactory'
+import Position from '../../geomgraph/Position'
+import MCIndexNoder from '../../noding/MCIndexNoder'
+import OffsetCurveBuilder from './OffsetCurveBuilder'
+import Collections from '../../../../../java/util/Collections'
+import SubgraphDepthLocater from './SubgraphDepthLocater'
+import OffsetCurveSetBuilder from './OffsetCurveSetBuilder'
+import Label from '../../geomgraph/Label'
+import OverlayNodeFactory from '../overlay/OverlayNodeFactory'
+import EdgeList from '../../geomgraph/EdgeList'
+import ArrayList from '../../../../../java/util/ArrayList'
+import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
+import IntersectionAdder from '../../noding/IntersectionAdder'
+import Edge from '../../geomgraph/Edge'
+import PlanarGraph from '../../geomgraph/PlanarGraph'
 export default class BufferBuilder {
-	constructor() {
-		BufferBuilder.constructor_.apply(this, arguments);
-	}
-	static depthDelta(label) {
-		var lLoc = label.getLocation(0, Position.LEFT);
-		var rLoc = label.getLocation(0, Position.RIGHT);
-		if (lLoc === Location.INTERIOR && rLoc === Location.EXTERIOR) return 1; else if (lLoc === Location.EXTERIOR && rLoc === Location.INTERIOR) return -1;
-		return 0;
-	}
-	static convertSegStrings(it) {
-		var fact = new GeometryFactory();
-		var lines = new ArrayList();
-		while (it.hasNext()) {
-			var ss = it.next();
-			var line = fact.createLineString(ss.getCoordinates());
-			lines.add(line);
-		}
-		return fact.buildGeometry(lines);
-	}
-	setWorkingPrecisionModel(pm) {
-		this._workingPrecisionModel = pm;
-	}
-	insertUniqueEdge(e) {
-		var existingEdge = this._edgeList.findEqualEdge(e);
-		if (existingEdge !== null) {
-			var existingLabel = existingEdge.getLabel();
-			var labelToMerge = e.getLabel();
-			if (!existingEdge.isPointwiseEqual(e)) {
-				labelToMerge = new Label(e.getLabel());
-				labelToMerge.flip();
-			}
-			existingLabel.merge(labelToMerge);
-			var mergeDelta = BufferBuilder.depthDelta(labelToMerge);
-			var existingDelta = existingEdge.getDepthDelta();
-			var newDelta = existingDelta + mergeDelta;
-			existingEdge.setDepthDelta(newDelta);
-		} else {
-			this._edgeList.add(e);
-			e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()));
-		}
-	}
-	buildSubgraphs(subgraphList, polyBuilder) {
-		var processedGraphs = new ArrayList();
-		for (var i = subgraphList.iterator(); i.hasNext(); ) {
-			var subgraph = i.next();
-			var p = subgraph.getRightmostCoordinate();
-			var locater = new SubgraphDepthLocater(processedGraphs);
-			var outsideDepth = locater.getDepth(p);
-			subgraph.computeDepth(outsideDepth);
-			subgraph.findResultEdges();
-			processedGraphs.add(subgraph);
-			polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes());
-		}
-	}
-	createSubgraphs(graph) {
-		var subgraphList = new ArrayList();
-		for (var i = graph.getNodes().iterator(); i.hasNext(); ) {
-			var node = i.next();
-			if (!node.isVisited()) {
-				var subgraph = new BufferSubgraph();
-				subgraph.create(node);
-				subgraphList.add(subgraph);
-			}
-		}
-		Collections.sort(subgraphList, Collections.reverseOrder());
-		return subgraphList;
-	}
-	createEmptyResultGeometry() {
-		var emptyGeom = this._geomFact.createPolygon();
-		return emptyGeom;
-	}
-	getNoder(precisionModel) {
-		if (this._workingNoder !== null) return this._workingNoder;
-		var noder = new MCIndexNoder();
-		var li = new RobustLineIntersector();
-		li.setPrecisionModel(precisionModel);
-		noder.setSegmentIntersector(new IntersectionAdder(li));
-		return noder;
-	}
-	buffer(g, distance) {
-		var precisionModel = this._workingPrecisionModel;
-		if (precisionModel === null) precisionModel = g.getPrecisionModel();
-		this._geomFact = g.getFactory();
-		var curveBuilder = new OffsetCurveBuilder(precisionModel, this._bufParams);
-		var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
-		var bufferSegStrList = curveSetBuilder.getCurves();
-		if (bufferSegStrList.size() <= 0) {
-			return this.createEmptyResultGeometry();
-		}
-		this.computeNodedEdges(bufferSegStrList, precisionModel);
-		this._graph = new PlanarGraph(new OverlayNodeFactory());
-		this._graph.addEdges(this._edgeList.getEdges());
-		var subgraphList = this.createSubgraphs(this._graph);
-		var polyBuilder = new PolygonBuilder(this._geomFact);
-		this.buildSubgraphs(subgraphList, polyBuilder);
-		var resultPolyList = polyBuilder.getPolygons();
-		if (resultPolyList.size() <= 0) {
-			return this.createEmptyResultGeometry();
-		}
-		var resultGeom = this._geomFact.buildGeometry(resultPolyList);
-		return resultGeom;
-	}
-	computeNodedEdges(bufferSegStrList, precisionModel) {
-		var noder = this.getNoder(precisionModel);
-		noder.computeNodes(bufferSegStrList);
-		var nodedSegStrings = noder.getNodedSubstrings();
-		for (var i = nodedSegStrings.iterator(); i.hasNext(); ) {
-			var segStr = i.next();
-			var pts = segStr.getCoordinates();
-			if (pts.length === 2 && pts[0].equals2D(pts[1])) continue;
-			var oldLabel = segStr.getData();
-			var edge = new Edge(segStr.getCoordinates(), new Label(oldLabel));
-			this.insertUniqueEdge(edge);
-		}
-	}
-	setNoder(noder) {
-		this._workingNoder = noder;
-	}
-	getClass() {
-		return BufferBuilder;
-	}
-	get interfaces_() {
-		return [];
-	}
+  constructor () {
+    BufferBuilder.constructor_.apply(this, arguments)
+  }
+  static depthDelta (label) {
+    var lLoc = label.getLocation(0, Position.LEFT)
+    var rLoc = label.getLocation(0, Position.RIGHT)
+    if (lLoc === Location.INTERIOR && rLoc === Location.EXTERIOR) return 1; else if (lLoc === Location.EXTERIOR && rLoc === Location.INTERIOR) return -1
+    return 0
+  }
+  static convertSegStrings (it) {
+    var fact = new GeometryFactory()
+    var lines = new ArrayList()
+    while (it.hasNext()) {
+      var ss = it.next()
+      var line = fact.createLineString(ss.getCoordinates())
+      lines.add(line)
+    }
+    return fact.buildGeometry(lines)
+  }
+  setWorkingPrecisionModel (pm) {
+    this._workingPrecisionModel = pm
+  }
+  insertUniqueEdge (e) {
+    var existingEdge = this._edgeList.findEqualEdge(e)
+    if (existingEdge !== null) {
+      var existingLabel = existingEdge.getLabel()
+      var labelToMerge = e.getLabel()
+      if (!existingEdge.isPointwiseEqual(e)) {
+        labelToMerge = new Label(e.getLabel())
+        labelToMerge.flip()
+      }
+      existingLabel.merge(labelToMerge)
+      var mergeDelta = BufferBuilder.depthDelta(labelToMerge)
+      var existingDelta = existingEdge.getDepthDelta()
+      var newDelta = existingDelta + mergeDelta
+      existingEdge.setDepthDelta(newDelta)
+    } else {
+      this._edgeList.add(e)
+      e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()))
+    }
+  }
+  buildSubgraphs (subgraphList, polyBuilder) {
+    var processedGraphs = new ArrayList()
+    for (var i = subgraphList.iterator(); i.hasNext();) {
+      var subgraph = i.next()
+      var p = subgraph.getRightmostCoordinate()
+      var locater = new SubgraphDepthLocater(processedGraphs)
+      var outsideDepth = locater.getDepth(p)
+      subgraph.computeDepth(outsideDepth)
+      subgraph.findResultEdges()
+      processedGraphs.add(subgraph)
+      polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes())
+    }
+  }
+  createSubgraphs (graph) {
+    var subgraphList = new ArrayList()
+    for (var i = graph.getNodes().iterator(); i.hasNext();) {
+      var node = i.next()
+      if (!node.isVisited()) {
+        var subgraph = new BufferSubgraph()
+        subgraph.create(node)
+        subgraphList.add(subgraph)
+      }
+    }
+    Collections.sort(subgraphList, Collections.reverseOrder())
+    return subgraphList
+  }
+  createEmptyResultGeometry () {
+    var emptyGeom = this._geomFact.createPolygon()
+    return emptyGeom
+  }
+  getNoder (precisionModel) {
+    if (this._workingNoder !== null) return this._workingNoder
+    var noder = new MCIndexNoder()
+    var li = new RobustLineIntersector()
+    li.setPrecisionModel(precisionModel)
+    noder.setSegmentIntersector(new IntersectionAdder(li))
+    return noder
+  }
+  buffer (g, distance) {
+    var precisionModel = this._workingPrecisionModel
+    if (precisionModel === null) precisionModel = g.getPrecisionModel()
+    this._geomFact = g.getFactory()
+    var curveBuilder = new OffsetCurveBuilder(precisionModel, this._bufParams)
+    var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder)
+    var bufferSegStrList = curveSetBuilder.getCurves()
+    if (bufferSegStrList.size() <= 0) {
+      return this.createEmptyResultGeometry()
+    }
+    this.computeNodedEdges(bufferSegStrList, precisionModel)
+    this._graph = new PlanarGraph(new OverlayNodeFactory())
+    this._graph.addEdges(this._edgeList.getEdges())
+    var subgraphList = this.createSubgraphs(this._graph)
+    var polyBuilder = new PolygonBuilder(this._geomFact)
+    this.buildSubgraphs(subgraphList, polyBuilder)
+    var resultPolyList = polyBuilder.getPolygons()
+    if (resultPolyList.size() <= 0) {
+      return this.createEmptyResultGeometry()
+    }
+    var resultGeom = this._geomFact.buildGeometry(resultPolyList)
+    return resultGeom
+  }
+  computeNodedEdges (bufferSegStrList, precisionModel) {
+    var noder = this.getNoder(precisionModel)
+    noder.computeNodes(bufferSegStrList)
+    var nodedSegStrings = noder.getNodedSubstrings()
+    for (var i = nodedSegStrings.iterator(); i.hasNext();) {
+      var segStr = i.next()
+      var pts = segStr.getCoordinates()
+      if (pts.length === 2 && pts[0].equals2D(pts[1])) continue
+      var oldLabel = segStr.getData()
+      var edge = new Edge(segStr.getCoordinates(), new Label(oldLabel))
+      this.insertUniqueEdge(edge)
+    }
+  }
+  setNoder (noder) {
+    this._workingNoder = noder
+  }
+  getClass () {
+    return BufferBuilder
+  }
+  get interfaces_ () {
+    return []
+  }
 }
 BufferBuilder.constructor_ = function () {
-	this._bufParams = null;
-	this._workingPrecisionModel = null;
-	this._workingNoder = null;
-	this._geomFact = null;
-	this._graph = null;
-	this._edgeList = new EdgeList();
-	let bufParams = arguments[0];
-	this._bufParams = bufParams;
-};
+  this._bufParams = null
+  this._workingPrecisionModel = null
+  this._workingNoder = null
+  this._geomFact = null
+  this._graph = null
+  this._edgeList = new EdgeList()
+  let bufParams = arguments[0]
+  this._bufParams = bufParams
+}

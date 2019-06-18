@@ -1,4 +1,4 @@
-/*eslint-disable no-undef */
+/* eslint-disable no-undef */
 
 /**
  * @module org/locationtech/jts/io/OL3Parser
@@ -13,9 +13,9 @@ export default class OL3Parser {
   /**
    * OpenLayers Geometry parser and writer
    * @param {GeometryFactory} geometryFactory
-   * @param {ol} olReference 
+   * @param {ol} olReference
    */
-  constructor(geometryFactory, olReference) {
+  constructor (geometryFactory, olReference) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
     this.ol = olReference || (typeof ol !== 'undefined' && ol)
   }
@@ -23,7 +23,7 @@ export default class OL3Parser {
   /**
    * Inject OpenLayers geom classes
    */
-  inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection) {
+  inject (Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection) {
     this.ol = {
       geom: {
         Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
@@ -193,4 +193,4 @@ export default class OL3Parser {
     }
     return new this.ol.geom.GeometryCollection(geometries)
   }
-} 
+}
