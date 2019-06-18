@@ -107,7 +107,6 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 		if (arguments.length === 1) {
 			let de = arguments[0];
 			var edgeIndex = this.findIndex(de);
-			var label = de.getLabel();
 			var startDepth = de.getDepth(Position.LEFT);
 			var targetLastDepth = de.getDepth(Position.RIGHT);
 			var nextDepth = this.computeDepths(edgeIndex + 1, this._edgeList.size(), startDepth);
@@ -118,7 +117,6 @@ export default class DirectedEdgeStar extends EdgeEndStar {
 			var currDepth = startDepth;
 			for (var i = startIndex; i < endIndex; i++) {
 				var nextDe = this._edgeList.get(i);
-				var label = nextDe.getLabel();
 				nextDe.setEdgeDepths(Position.RIGHT, currDepth);
 				currDepth = nextDe.getDepth(Position.LEFT);
 			}
