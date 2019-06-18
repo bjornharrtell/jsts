@@ -1,3 +1,5 @@
+/* eslint no-unused-expressions: "off" */
+
 import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
@@ -32,7 +34,6 @@ function fail (r, e, i) {
  * Translate JTS XML testcase document to Mocha suites
  */
 export default function (doc, title, suite) {
-
   const cases = $('case', doc)
   const geometryFactory = createGeometryFactory($('precisionModel', doc))
   const reader = new WKTReader(geometryFactory)

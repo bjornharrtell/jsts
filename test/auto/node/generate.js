@@ -1,3 +1,5 @@
+/* eslint no-unused-expressions: "off" */
+
 import $ from 'cheerio'
 import { expect } from 'chai'
 

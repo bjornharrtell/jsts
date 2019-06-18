@@ -36,13 +36,13 @@ suites.forEach(xml => {
   fetch(fileName)  // eslint-disable-line
     .then(response =>
       response.text()
-    .then(text => {
-      generate(parser.parseFromString(text, 'application/xml'), xml, suite)
-      count--
-      if (count === 0) {
-        mocha.checkLeaks()
-        mocha.globals(['jQuery'])
-        mocha.run()
-      }
-    }))
+        .then(text => {
+          generate(parser.parseFromString(text, 'application/xml'), xml, suite)
+          count--
+          if (count === 0) {
+            mocha.checkLeaks()
+            mocha.globals(['jQuery'])
+            mocha.run()
+          }
+        }))
 })

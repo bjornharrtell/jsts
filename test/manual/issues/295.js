@@ -2,9 +2,6 @@ import expect from 'expect.js'
 
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import GeometryPrecisionReducer from 'org/locationtech/jts/precision/GeometryPrecisionReducer'
 
 describe('Test (#295)', function () {
   const reader = new WKTReader()

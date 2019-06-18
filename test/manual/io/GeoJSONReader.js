@@ -1,5 +1,3 @@
-import expect from 'expect.js'
-
 import GeoJSONReader from 'org/locationtech/jts/io/GeoJSONReader'
 
 const reader = new GeoJSONReader()
@@ -20,7 +18,7 @@ describe('GeoJSONReader', function () {
         'name': 'Dinagat Islands'
       }
     }
-    const geometry = reader.read(feature)
+    reader.read(feature)
   })
 
   it('should be able to read a LineString', function () {
@@ -30,7 +28,7 @@ describe('GeoJSONReader', function () {
         [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
       ]
     }
-    const geometry = reader.read(lineString)
+    reader.read(lineString)
   })
 
   it('should be able to read a Polygon', function () {
@@ -39,8 +37,8 @@ describe('GeoJSONReader', function () {
       'coordinates': [
         [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
           [100.0, 1.0], [100.0, 0.0] ]
-        ]
+      ]
     }
-    const geometry = reader.read(polygon)
+    reader.read(polygon)
   })
 })

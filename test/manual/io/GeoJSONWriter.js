@@ -27,10 +27,11 @@ describe('GeoJSONWriter', function () {
     const gc = reader.read('GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))')
     const writer = new GeoJSONWriter()
     const geojson = writer.write(gc)
-    expect(geojson).to.eql({ type: 'GeometryCollection', geometries: [ {
-      type: 'Point', coordinates: [4, 6]
-    }, {
-      type: 'LineString', coordinates: [[4, 6], [7, 10]] }
-    ] })
+    expect(geojson).to.eql({ type: 'GeometryCollection',
+      geometries: [ {
+        type: 'Point', coordinates: [4, 6]
+      }, {
+        type: 'LineString', coordinates: [[4, 6], [7, 10]] }
+      ] })
   })
 })
