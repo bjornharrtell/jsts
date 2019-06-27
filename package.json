@@ -54,6 +54,7 @@
     ]
   },
   "scripts": {
+    "lint": "eslint src",
     "test-manual": "NODE_PATH=src mocha --timeout 10s -r esm --recursive test/manual",
     "test": "NODE_PATH=src nyc mocha --timeout 10s -r esm --recursive test/auto/node test/manual",
     "test-perf": "NODE_PATH=src 0x -- node -r esm $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
