@@ -5,9 +5,11 @@ export default class RightmostEdgeFinder {
   constructor () {
     RightmostEdgeFinder.constructor_.apply(this, arguments)
   }
+
   getCoordinate () {
     return this._minCoord
   }
+
   getRightmostSide (de, index) {
     var side = this.getRightmostSideOfSegment(de, index)
     if (side < 0) side = this.getRightmostSideOfSegment(de, index - 1)
@@ -17,6 +19,7 @@ export default class RightmostEdgeFinder {
     }
     return side
   }
+
   findRightmostEdgeAtVertex () {
     var pts = this._minDe.getEdge().getCoordinates()
     Assert.isTrue(this._minIndex > 0 && this._minIndex < pts.length, 'rightmost point expected to be interior vertex of edge')
@@ -33,6 +36,7 @@ export default class RightmostEdgeFinder {
       this._minIndex = this._minIndex - 1
     }
   }
+
   getRightmostSideOfSegment (de, i) {
     var e = de.getEdge()
     var coord = e.getCoordinates()
@@ -42,9 +46,11 @@ export default class RightmostEdgeFinder {
     if (coord[i].y < coord[i + 1].y) pos = Position.RIGHT
     return pos
   }
+
   getEdge () {
     return this._orientedDe
   }
+
   checkForRightmostCoordinate (de) {
     var coord = de.getEdge().getCoordinates()
     for (var i = 0; i < coord.length - 1; i++) {
@@ -55,6 +61,7 @@ export default class RightmostEdgeFinder {
       }
     }
   }
+
   findRightmostEdgeAtNode () {
     var node = this._minDe.getNode()
     var star = node.getEdges()
@@ -64,6 +71,7 @@ export default class RightmostEdgeFinder {
       this._minIndex = this._minDe.getEdge().getCoordinates().length - 1
     }
   }
+
   findEdge (dirEdgeList) {
     for (var i = dirEdgeList.iterator(); i.hasNext();) {
       var de = i.next()
@@ -82,9 +90,11 @@ export default class RightmostEdgeFinder {
       this._orientedDe = this._minDe.getSym()
     }
   }
+
   getClass () {
     return RightmostEdgeFinder
   }
+
   get interfaces_ () {
     return []
   }

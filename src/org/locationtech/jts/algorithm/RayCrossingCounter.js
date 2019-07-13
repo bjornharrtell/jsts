@@ -7,9 +7,10 @@ export default class RayCrossingCounter {
   constructor () {
     RayCrossingCounter.constructor_.apply(this, arguments)
   }
+
   static locatePointInRing () {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
-      let p = arguments[0]; let ring = arguments[1]
+      const p = arguments[0]; const ring = arguments[1]
       var counter = new RayCrossingCounter(p)
       var p1 = new Coordinate()
       var p2 = new Coordinate()
@@ -21,7 +22,7 @@ export default class RayCrossingCounter {
       }
       return counter.getLocation()
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
-      let p = arguments[0]; let ring = arguments[1]
+      const p = arguments[0]; const ring = arguments[1]
       var counter = new RayCrossingCounter(p)
       for (var i = 1; i < ring.length; i++) {
         var p1 = ring[i]
@@ -32,6 +33,7 @@ export default class RayCrossingCounter {
       return counter.getLocation()
     }
   }
+
   countSegment (p1, p2) {
     if (p1.x < this._p.x && p2.x < this._p.x) return null
     if (this._p.x === p2.x && this._p.y === p2.y) {
@@ -64,9 +66,11 @@ export default class RayCrossingCounter {
       }
     }
   }
+
   isPointInPolygon () {
     return this.getLocation() !== Location.EXTERIOR
   }
+
   getLocation () {
     if (this._isPointOnSegment) return Location.BOUNDARY
     if (this._crossingCount % 2 === 1) {
@@ -74,12 +78,15 @@ export default class RayCrossingCounter {
     }
     return Location.EXTERIOR
   }
+
   isOnSegment () {
     return this._isPointOnSegment
   }
+
   getClass () {
     return RayCrossingCounter
   }
+
   get interfaces_ () {
     return []
   }
@@ -88,6 +95,6 @@ RayCrossingCounter.constructor_ = function () {
   this._p = null
   this._crossingCount = 0
   this._isPointOnSegment = false
-  let p = arguments[0]
+  const p = arguments[0]
   this._p = p
 }

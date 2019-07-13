@@ -12,6 +12,7 @@ export default class SimpleSnapRounder {
   constructor () {
     SimpleSnapRounder.constructor_.apply(this, arguments)
   }
+
   checkCorrectness (inputSegmentStrings) {
     var resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings)
     var nv = new NodingValidator(resultSegStrings)
@@ -23,14 +24,17 @@ export default class SimpleSnapRounder {
       } else throw ex
     } finally {}
   }
+
   getNodedSubstrings () {
     return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings)
   }
+
   snapRound (segStrings, li) {
     var intersections = this.findInteriorIntersections(segStrings, li)
     this.computeSnaps(segStrings, intersections)
     this.computeVertexSnaps(segStrings)
   }
+
   findInteriorIntersections (segStrings, li) {
     var intFinderAdder = new InteriorIntersectionFinderAdder(li)
     var noder = new MCIndexNoder()
@@ -38,9 +42,10 @@ export default class SimpleSnapRounder {
     noder.computeNodes(segStrings)
     return intFinderAdder.getInteriorIntersections()
   }
+
   computeVertexSnaps () {
     if (arguments.length === 1) {
-      let edges = arguments[0]
+      const edges = arguments[0]
       for (var i0 = edges.iterator(); i0.hasNext();) {
         var edge0 = i0.next()
         for (var i1 = edges.iterator(); i1.hasNext();) {
@@ -49,7 +54,7 @@ export default class SimpleSnapRounder {
         }
       }
     } else if (arguments.length === 2) {
-      let e0 = arguments[0]; let e1 = arguments[1]
+      const e0 = arguments[0]; const e1 = arguments[1]
       var pts0 = e0.getCoordinates()
       var pts1 = e1.getCoordinates()
       for (var i0 = 0; i0 < pts0.length - 1; i0++) {
@@ -66,19 +71,21 @@ export default class SimpleSnapRounder {
       }
     }
   }
+
   computeNodes (inputSegmentStrings) {
     this._nodedSegStrings = inputSegmentStrings
     this.snapRound(inputSegmentStrings, this._li)
   }
+
   computeSnaps () {
     if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection)) {
-      let segStrings = arguments[0]; let snapPts = arguments[1]
+      const segStrings = arguments[0]; const snapPts = arguments[1]
       for (var i0 = segStrings.iterator(); i0.hasNext();) {
         var ss = i0.next()
         this.computeSnaps(ss, snapPts)
       }
     } else if (arguments[0] instanceof NodedSegmentString && hasInterface(arguments[1], Collection)) {
-      let ss = arguments[0]; let snapPts = arguments[1]
+      const ss = arguments[0]; const snapPts = arguments[1]
       for (var it = snapPts.iterator(); it.hasNext();) {
         var snapPt = it.next()
         var hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li)
@@ -88,9 +95,11 @@ export default class SimpleSnapRounder {
       }
     }
   }
+
   getClass () {
     return SimpleSnapRounder
   }
+
   get interfaces_ () {
     return [Noder]
   }
@@ -100,7 +109,7 @@ SimpleSnapRounder.constructor_ = function () {
   this._li = null
   this._scaleFactor = null
   this._nodedSegStrings = null
-  let pm = arguments[0]
+  const pm = arguments[0]
   this._pm = pm
   this._li = new RobustLineIntersector()
   this._li.setPrecisionModel(pm)

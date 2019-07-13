@@ -16,9 +16,11 @@ export default class Polygon extends Geometry {
     super()
     Polygon.constructor_.apply(this, arguments)
   }
+
   computeEnvelopeInternal () {
     return this._shell.getEnvelopeInternal()
   }
+
   getCoordinates () {
     if (this.isEmpty()) {
       return []
@@ -39,6 +41,7 @@ export default class Polygon extends Geometry {
     }
     return coordinates
   }
+
   getArea () {
     var area = 0.0
     area += Area.ofRing(this._shell.getCoordinateSequence())
@@ -47,6 +50,7 @@ export default class Polygon extends Geometry {
     }
     return area
   }
+
   isRectangle () {
     if (this.getNumInteriorRing() !== 0) return false
     if (this._shell === null) return false
@@ -72,9 +76,10 @@ export default class Polygon extends Geometry {
     }
     return true
   }
+
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      let other = arguments[0]; let tolerance = arguments[1]
+      const other = arguments[0]; const tolerance = arguments[1]
       if (!this.isEquivalentClass(other)) {
         return false
       }
@@ -95,6 +100,7 @@ export default class Polygon extends Geometry {
       return true
     } else return super.equalsExact.apply(this, arguments)
   }
+
   normalize () {
     if (arguments.length === 0) {
       this.normalize(this._shell, true)
@@ -103,7 +109,7 @@ export default class Polygon extends Geometry {
       }
       Arrays.sort(this._holes)
     } else if (arguments.length === 2) {
-      let ring = arguments[0]; let clockwise = arguments[1]
+      const ring = arguments[0]; const clockwise = arguments[1]
       if (ring.isEmpty()) {
         return null
       }
@@ -118,21 +124,27 @@ export default class Polygon extends Geometry {
       }
     }
   }
+
   getCoordinate () {
     return this._shell.getCoordinate()
   }
+
   getNumInteriorRing () {
     return this._holes.length
   }
+
   getBoundaryDimension () {
     return 1
   }
+
   getTypeCode () {
     return Geometry.TYPECODE_POLYGON
   }
+
   getDimension () {
     return 2
   }
+
   getLength () {
     var len = 0.0
     len += this._shell.getLength()
@@ -141,6 +153,7 @@ export default class Polygon extends Geometry {
     }
     return len
   }
+
   getNumPoints () {
     var numPoints = this._shell.getNumPoints()
     for (var i = 0; i < this._holes.length; i++) {
@@ -148,6 +161,7 @@ export default class Polygon extends Geometry {
     }
     return numPoints
   }
+
   reverse () {
     var poly = this.copy()
     poly._shell = this._shell.copy().reverse()
@@ -157,17 +171,19 @@ export default class Polygon extends Geometry {
     }
     return poly
   }
+
   convexHull () {
     return this.getExteriorRing().convexHull()
   }
+
   compareToSameClass () {
     if (arguments.length === 1) {
-      let o = arguments[0]
+      const o = arguments[0]
       var thisShell = this._shell
       var otherShell = o._shell
       return thisShell.compareToSameClass(otherShell)
     } else if (arguments.length === 2) {
-      let o = arguments[0]; let comp = arguments[1]
+      const o = arguments[0]; const comp = arguments[1]
       var poly = o
       var thisShell = this._shell
       var otherShell = poly._shell
@@ -188,15 +204,16 @@ export default class Polygon extends Geometry {
       return 0
     }
   }
+
   apply () {
     if (hasInterface(arguments[0], CoordinateFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       this._shell.apply(filter)
       for (var i = 0; i < this._holes.length; i++) {
         this._holes[i].apply(filter)
       }
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       this._shell.apply(filter)
       if (!filter.isDone()) {
         for (var i = 0; i < this._holes.length; i++) {
@@ -206,10 +223,10 @@ export default class Polygon extends Geometry {
       }
       if (filter.isGeometryChanged()) this.geometryChanged()
     } else if (hasInterface(arguments[0], GeometryFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       filter.filter(this)
     } else if (hasInterface(arguments[0], GeometryComponentFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       filter.filter(this)
       this._shell.apply(filter)
       for (var i = 0; i < this._holes.length; i++) {
@@ -217,6 +234,7 @@ export default class Polygon extends Geometry {
       }
     }
   }
+
   getBoundary () {
     if (this.isEmpty()) {
       return this.getFactory().createMultiLineString()
@@ -229,9 +247,11 @@ export default class Polygon extends Geometry {
     if (rings.length <= 1) return this.getFactory().createLinearRing(rings[0].getCoordinateSequence())
     return this.getFactory().createMultiLineString(rings)
   }
+
   getGeometryType () {
     return Geometry.TYPENAME_POLYGON
   }
+
   copy () {
     var shellCopy = this._shell.copy()
     var holeCopies = new Array(this._holes.length).fill(null)
@@ -240,18 +260,23 @@ export default class Polygon extends Geometry {
     }
     return new Polygon(shellCopy, holeCopies, this._factory)
   }
+
   getExteriorRing () {
     return this._shell
   }
+
   isEmpty () {
     return this._shell.isEmpty()
   }
+
   getInteriorRingN (n) {
     return this._holes[n]
   }
+
   getClass () {
     return Polygon
   }
+
   get interfaces_ () {
     return [Polygonal]
   }
@@ -259,7 +284,7 @@ export default class Polygon extends Geometry {
 Polygon.constructor_ = function () {
   this._shell = null
   this._holes = null
-  let shell = arguments[0]; let holes = arguments[1]; let factory = arguments[2]
+  let shell = arguments[0]; let holes = arguments[1]; const factory = arguments[2]
   Geometry.constructor_.call(this, factory)
   if (shell === null) {
     shell = this.getFactory().createLinearRing()

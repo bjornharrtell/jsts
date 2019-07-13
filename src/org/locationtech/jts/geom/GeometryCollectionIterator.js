@@ -5,9 +5,11 @@ export default class GeometryCollectionIterator {
   constructor () {
     GeometryCollectionIterator.constructor_.apply(this, arguments)
   }
+
   static isAtomic (geom) {
     return !(geom instanceof GeometryCollection)
   }
+
   next () {
     if (this._atStart) {
       this._atStart = false
@@ -31,9 +33,11 @@ export default class GeometryCollectionIterator {
     }
     return obj
   }
+
   remove () {
     throw new UnsupportedOperationException(this.getClass().getName())
   }
+
   hasNext () {
     if (this._atStart) {
       return true
@@ -49,9 +53,11 @@ export default class GeometryCollectionIterator {
     }
     return true
   }
+
   getClass () {
     return GeometryCollectionIterator
   }
+
   get interfaces_ () {
     return [Iterator]
   }
@@ -62,7 +68,7 @@ GeometryCollectionIterator.constructor_ = function () {
   this._max = null
   this._index = null
   this._subcollectionIterator = null
-  let parent = arguments[0]
+  const parent = arguments[0]
   this._parent = parent
   this._atStart = true
   this._index = 0

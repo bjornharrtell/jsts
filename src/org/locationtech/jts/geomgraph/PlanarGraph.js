@@ -12,12 +12,14 @@ export default class PlanarGraph {
   constructor () {
     PlanarGraph.constructor_.apply(this, arguments)
   }
+
   static linkResultDirectedEdges (nodes) {
     for (var nodeit = nodes.iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
       node.getEdges().linkResultDirectedEdges()
     }
   }
+
   printEdges (out) {
     out.println('Edges:')
     for (var i = 0; i < this._edges.size(); i++) {
@@ -27,30 +29,36 @@ export default class PlanarGraph {
       e.eiList.print(out)
     }
   }
+
   find (coord) {
     return this._nodes.find(coord)
   }
+
   addNode () {
     if (arguments[0] instanceof Node) {
-      let node = arguments[0]
+      const node = arguments[0]
       return this._nodes.addNode(node)
     } else if (arguments[0] instanceof Coordinate) {
-      let coord = arguments[0]
+      const coord = arguments[0]
       return this._nodes.addNode(coord)
     }
   }
+
   getNodeIterator () {
     return this._nodes.iterator()
   }
+
   linkResultDirectedEdges () {
     for (var nodeit = this._nodes.iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
       node.getEdges().linkResultDirectedEdges()
     }
   }
+
   debugPrintln (o) {
     System.out.println(o)
   }
+
   isBoundaryNode (geomIndex, coord) {
     var node = this._nodes.find(coord)
     if (node === null) return false
@@ -58,26 +66,32 @@ export default class PlanarGraph {
     if (label !== null && label.getLocation(geomIndex) === Location.BOUNDARY) return true
     return false
   }
+
   linkAllDirectedEdges () {
     for (var nodeit = this._nodes.iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
       node.getEdges().linkAllDirectedEdges()
     }
   }
+
   matchInSameDirection (p0, p1, ep0, ep1) {
     if (!p0.equals(ep0)) return false
     if (Orientation.index(p0, p1, ep1) === Orientation.COLLINEAR && Quadrant.quadrant(p0, p1) === Quadrant.quadrant(ep0, ep1)) return true
     return false
   }
+
   getEdgeEnds () {
     return this._edgeEndList
   }
+
   debugPrint (o) {
     System.out.print(o)
   }
+
   getEdgeIterator () {
     return this._edges.iterator()
   }
+
   findEdgeInSameDirection (p0, p1) {
     for (var i = 0; i < this._edges.size(); i++) {
       var e = this._edges.get(i)
@@ -87,9 +101,11 @@ export default class PlanarGraph {
     }
     return null
   }
+
   insertEdge (e) {
     this._edges.add(e)
   }
+
   findEdgeEnd (e) {
     for (var i = this.getEdgeEnds().iterator(); i.hasNext();) {
       var ee = i.next()
@@ -97,6 +113,7 @@ export default class PlanarGraph {
     }
     return null
   }
+
   addEdges (edgesToAdd) {
     for (var it = edgesToAdd.iterator(); it.hasNext();) {
       var e = it.next()
@@ -109,13 +126,16 @@ export default class PlanarGraph {
       this.add(de2)
     }
   }
+
   add (e) {
     this._nodes.add(e)
     this._edgeEndList.add(e)
   }
+
   getNodes () {
     return this._nodes.values()
   }
+
   findEdge (p0, p1) {
     for (var i = 0; i < this._edges.size(); i++) {
       var e = this._edges.get(i)
@@ -124,9 +144,11 @@ export default class PlanarGraph {
     }
     return null
   }
+
   getClass () {
     return PlanarGraph
   }
+
   get interfaces_ () {
     return []
   }
@@ -138,7 +160,7 @@ PlanarGraph.constructor_ = function () {
   if (arguments.length === 0) {
     this._nodes = new NodeMap(new NodeFactory())
   } else if (arguments.length === 1) {
-    let nodeFact = arguments[0]
+    const nodeFact = arguments[0]
     this._nodes = new NodeMap(nodeFact)
   }
 }

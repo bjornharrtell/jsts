@@ -9,12 +9,13 @@ export default class KdTree {
   constructor () {
     KdTree.constructor_.apply(this, arguments)
   }
+
   static toCoordinates () {
     if (arguments.length === 1) {
-      let kdnodes = arguments[0]
+      const kdnodes = arguments[0]
       return KdTree.toCoordinates(kdnodes, false)
     } else if (arguments.length === 2) {
-      let kdnodes = arguments[0]; let includeRepeated = arguments[1]
+      const kdnodes = arguments[0]; const includeRepeated = arguments[1]
       var coord = new CoordinateList()
       for (var it = kdnodes.iterator(); it.hasNext();) {
         var node = it.next()
@@ -26,12 +27,13 @@ export default class KdTree {
       return coord.toCoordinateArray()
     }
   }
+
   insert () {
     if (arguments.length === 1) {
-      let p = arguments[0]
+      const p = arguments[0]
       return this.insert(p, null)
     } else if (arguments.length === 2) {
-      let p = arguments[0]; let data = arguments[1]
+      const p = arguments[0]; const data = arguments[1]
       if (this._root === null) {
         this._root = new KdNode(p, data)
         return this._root
@@ -46,29 +48,32 @@ export default class KdTree {
       return this.insertExact(p, data)
     }
   }
+
   query () {
     if (arguments.length === 1) {
-      let queryEnv = arguments[0]
+      const queryEnv = arguments[0]
       var result = new ArrayList()
       this.query(queryEnv, result)
       return result
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Envelope && hasInterface(arguments[1], List)) {
-        let queryEnv = arguments[0]; let result = arguments[1]
+        const queryEnv = arguments[0]; const result = arguments[1]
         this.queryNode(this._root, queryEnv, true, new (class {
           get interfaces_ () {
             return [KdNodeVisitor]
           }
+
           visit (node) {
             result.add(node)
           }
         })())
       } else if (arguments[0] instanceof Envelope && hasInterface(arguments[1], KdNodeVisitor)) {
-        let queryEnv = arguments[0]; let visitor = arguments[1]
+        const queryEnv = arguments[0]; const visitor = arguments[1]
         this.queryNode(this._root, queryEnv, true, visitor)
       }
     }
   }
+
   queryNode (currentNode, queryEnv, odd, visitor) {
     if (currentNode === null) return null
     var min = null
@@ -95,15 +100,18 @@ export default class KdTree {
       this.queryNode(currentNode.getRight(), queryEnv, !odd, visitor)
     }
   }
+
   findBestMatchNode (p) {
     var visitor = new BestMatchVisitor(p, this._tolerance)
     this.query(visitor.queryEnvelope(), visitor)
     return visitor.getNode()
   }
+
   isEmpty () {
     if (this._root === null) return true
     return false
   }
+
   insertExact (p, data) {
     var currentNode = this._root
     var leafNode = this._root
@@ -139,9 +147,11 @@ export default class KdTree {
     }
     return node
   }
+
   getClass () {
     return KdTree
   }
+
   get interfaces_ () {
     return []
   }
@@ -150,6 +160,7 @@ class BestMatchVisitor {
   constructor () {
     BestMatchVisitor.constructor_.apply(this, arguments)
   }
+
   visit (node) {
     var dist = this._p.distance(node.getCoordinate())
     var isInTolerance = dist <= this._tolerance
@@ -161,17 +172,21 @@ class BestMatchVisitor {
       this._matchDist = dist
     }
   }
+
   queryEnvelope () {
     var queryEnv = new Envelope(this._p)
     queryEnv.expandBy(this._tolerance)
     return queryEnv
   }
+
   getNode () {
     return this._matchNode
   }
+
   getClass () {
     return BestMatchVisitor
   }
+
   get interfaces_ () {
     return [KdNodeVisitor]
   }
@@ -181,7 +196,7 @@ BestMatchVisitor.constructor_ = function () {
   this._matchNode = null
   this._matchDist = 0.0
   this._p = null
-  let p = arguments[0]; let tolerance = arguments[1]
+  const p = arguments[0]; const tolerance = arguments[1]
   this._p = p
   this._tolerance = tolerance
 }
@@ -193,7 +208,7 @@ KdTree.constructor_ = function () {
   if (arguments.length === 0) {
     KdTree.constructor_.call(this, 0.0)
   } else if (arguments.length === 1) {
-    let tolerance = arguments[0]
+    const tolerance = arguments[0]
     this._tolerance = tolerance
   }
 }

@@ -5,6 +5,7 @@ export default class Plane3D {
   constructor () {
     Plane3D.constructor_.apply(this, arguments)
   }
+
   closestAxisPlane () {
     var xmag = Math.abs(this._normal.getX())
     var ymag = Math.abs(this._normal.getY())
@@ -16,6 +17,7 @@ export default class Plane3D {
     }
     return Plane3D.XZ_PLANE
   }
+
   orientedDistance (p) {
     var pb = new Vector3D(p, this._basePt)
     var pbdDotNormal = pb.dot(this._normal)
@@ -23,9 +25,11 @@ export default class Plane3D {
     var d = pbdDotNormal / this._normal.length()
     return d
   }
+
   getClass () {
     return Plane3D
   }
+
   get interfaces_ () {
     return []
   }
@@ -33,7 +37,7 @@ export default class Plane3D {
 Plane3D.constructor_ = function () {
   this._normal = null
   this._basePt = null
-  let normal = arguments[0]; let basePt = arguments[1]
+  const normal = arguments[0]; const basePt = arguments[1]
   this._normal = normal
   this._basePt = basePt
 }

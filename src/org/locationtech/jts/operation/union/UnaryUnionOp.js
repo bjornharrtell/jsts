@@ -11,48 +11,53 @@ export default class UnaryUnionOp {
   constructor () {
     UnaryUnionOp.constructor_.apply(this, arguments)
   }
+
   static union () {
     if (arguments.length === 1) {
       if (hasInterface(arguments[0], Collection)) {
-        let geoms = arguments[0]
+        const geoms = arguments[0]
         var op = new UnaryUnionOp(geoms)
         return op.union()
       } else if (arguments[0] instanceof Geometry) {
-        let geom = arguments[0]
+        const geom = arguments[0]
         var op = new UnaryUnionOp(geom)
         return op.union()
       }
     } else if (arguments.length === 2) {
-      let geoms = arguments[0]; let geomFact = arguments[1]
+      const geoms = arguments[0]; const geomFact = arguments[1]
       var op = new UnaryUnionOp(geoms, geomFact)
       return op.union()
     }
   }
+
   unionNoOpt (g0) {
     var empty = this._geomFact.createPoint()
     return SnapIfNeededOverlayOp.overlayOp(g0, empty, OverlayOp.UNION)
   }
+
   unionWithNull (g0, g1) {
     if (g0 === null && g1 === null) return null
     if (g1 === null) return g0
     if (g0 === null) return g1
     return g0.union(g1)
   }
+
   extract () {
     if (hasInterface(arguments[0], Collection)) {
-      let geoms = arguments[0]
+      const geoms = arguments[0]
       for (var i = geoms.iterator(); i.hasNext();) {
         var geom = i.next()
         this.extract(geom)
       }
     } else if (arguments[0] instanceof Geometry) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       if (this._geomFact === null) this._geomFact = geom.getFactory()
       GeometryExtracter.extract(geom, Geometry.TYPENAME_POLYGON, this._polygons)
       GeometryExtracter.extract(geom, Geometry.TYPENAME_LINESTRING, this._lines)
       GeometryExtracter.extract(geom, Geometry.TYPENAME_POINT, this._points)
     }
   }
+
   union () {
     if (this._geomFact === null) {
       return null
@@ -77,9 +82,11 @@ export default class UnaryUnionOp {
     if (union === null) return this._geomFact.createGeometryCollection()
     return union
   }
+
   getClass () {
     return UnaryUnionOp
   }
+
   get interfaces_ () {
     return []
   }
@@ -91,14 +98,14 @@ UnaryUnionOp.constructor_ = function () {
   this._geomFact = null
   if (arguments.length === 1) {
     if (hasInterface(arguments[0], Collection)) {
-      let geoms = arguments[0]
+      const geoms = arguments[0]
       this.extract(geoms)
     } else if (arguments[0] instanceof Geometry) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       this.extract(geom)
     }
   } else if (arguments.length === 2) {
-    let geoms = arguments[0]; let geomFact = arguments[1]
+    const geoms = arguments[0]; const geomFact = arguments[1]
     this._geomFact = geomFact
     this.extract(geoms)
   }

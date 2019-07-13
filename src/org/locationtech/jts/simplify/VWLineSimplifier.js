@@ -6,10 +6,12 @@ export default class VWLineSimplifier {
   constructor () {
     VWLineSimplifier.constructor_.apply(this, arguments)
   }
+
   static simplify (pts, distanceTolerance) {
     var simp = new VWLineSimplifier(pts, distanceTolerance)
     return simp.simplify()
   }
+
   simplifyVertex (vwLine) {
     var curr = vwLine
     var minArea = curr.getArea()
@@ -28,6 +30,7 @@ export default class VWLineSimplifier {
     if (!vwLine.isLive()) return -1
     return minArea
   }
+
   simplify () {
     var vwLine = VWVertex.buildLine(this._pts)
     var minArea = this._tolerance
@@ -40,9 +43,11 @@ export default class VWLineSimplifier {
     }
     return simp
   }
+
   getClass () {
     return VWLineSimplifier
   }
+
   get interfaces_ () {
     return []
   }
@@ -51,6 +56,7 @@ class VWVertex {
   constructor () {
     VWVertex.constructor_.apply(this, arguments)
   }
+
   static buildLine (pts) {
     var first = null
     var prev = null
@@ -66,6 +72,7 @@ class VWVertex {
     }
     return first
   }
+
   getCoordinates () {
     var coords = new CoordinateList()
     var curr = this
@@ -75,9 +82,11 @@ class VWVertex {
     } while (curr !== null)
     return coords.toCoordinateArray()
   }
+
   getArea () {
     return this._area
   }
+
   updateArea () {
     if (this._prev === null || this._next === null) {
       this._area = VWVertex.MAX_AREA
@@ -85,6 +94,7 @@ class VWVertex {
     }
     this._area = Math.abs(Triangle.area(this._prev._pt, this._pt, this._next._pt))
   }
+
   remove () {
     var tmpPrev = this._prev
     var tmpNext = this._next
@@ -102,18 +112,23 @@ class VWVertex {
     this._isLive = false
     return result
   }
+
   isLive () {
     return this._isLive
   }
+
   setPrev (prev) {
     this._prev = prev
   }
+
   setNext (next) {
     this._next = next
   }
+
   getClass () {
     return VWVertex
   }
+
   get interfaces_ () {
     return []
   }
@@ -124,7 +139,7 @@ VWVertex.constructor_ = function () {
   this._next = null
   this._area = VWVertex.MAX_AREA
   this._isLive = true
-  let pt = arguments[0]
+  const pt = arguments[0]
   this._pt = pt
 }
 VWVertex.MAX_AREA = Double.MAX_VALUE
@@ -132,7 +147,7 @@ VWLineSimplifier.VWVertex = VWVertex
 VWLineSimplifier.constructor_ = function () {
   this._pts = null
   this._tolerance = null
-  let pts = arguments[0]; let distanceTolerance = arguments[1]
+  const pts = arguments[0]; const distanceTolerance = arguments[1]
   this._pts = pts
   this._tolerance = distanceTolerance * distanceTolerance
 }

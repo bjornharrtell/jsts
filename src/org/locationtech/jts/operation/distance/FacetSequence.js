@@ -7,9 +7,11 @@ export default class FacetSequence {
   constructor () {
     FacetSequence.constructor_.apply(this, arguments)
   }
+
   size () {
     return this._end - this._start
   }
+
   computeLineLineDistance (facetSeq) {
     var minDistance = Double.MAX_VALUE
     for (var i = this._start; i < this._end - 1; i++) {
@@ -27,9 +29,11 @@ export default class FacetSequence {
     }
     return minDistance
   }
+
   getCoordinate (index) {
     return this._pts.getCoordinate(this._start + index)
   }
+
   getEnvelope () {
     var env = new Envelope()
     for (var i = this._start; i < this._end; i++) {
@@ -37,6 +41,7 @@ export default class FacetSequence {
     }
     return env
   }
+
   computePointLineDistance (pt, facetSeq) {
     var minDistance = Double.MAX_VALUE
     for (var i = facetSeq._start; i < facetSeq._end - 1; i++) {
@@ -50,6 +55,7 @@ export default class FacetSequence {
     }
     return minDistance
   }
+
   toString () {
     var buf = new StringBuffer()
     buf.append('LINESTRING ( ')
@@ -62,9 +68,11 @@ export default class FacetSequence {
     buf.append(' )')
     return buf.toString()
   }
+
   isPoint () {
     return this._end - this._start === 1
   }
+
   distance (facetSeq) {
     var isPoint = this.isPoint()
     var isPointOther = facetSeq.isPoint()
@@ -81,9 +89,11 @@ export default class FacetSequence {
     }
     return this.computeLineLineDistance(facetSeq)
   }
+
   getClass () {
     return FacetSequence
   }
+
   get interfaces_ () {
     return []
   }
@@ -99,12 +109,12 @@ FacetSequence.constructor_ = function () {
   this._q0 = new Coordinate()
   this._q1 = new Coordinate()
   if (arguments.length === 2) {
-    let pts = arguments[0]; let start = arguments[1]
+    const pts = arguments[0]; const start = arguments[1]
     this._pts = pts
     this._start = start
     this._end = start + 1
   } else if (arguments.length === 3) {
-    let pts = arguments[0]; let start = arguments[1]; let end = arguments[2]
+    const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]
     this._pts = pts
     this._start = start
     this._end = end

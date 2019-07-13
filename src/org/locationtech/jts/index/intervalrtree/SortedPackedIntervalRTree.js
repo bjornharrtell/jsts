@@ -10,6 +10,7 @@ export default class SortedPackedIntervalRTree {
   constructor () {
     SortedPackedIntervalRTree.constructor_.apply(this, arguments)
   }
+
   buildTree () {
     Collections.sort(this._leaves, new IntervalRTreeNode.NodeComparator())
     var src = this._leaves
@@ -23,25 +24,31 @@ export default class SortedPackedIntervalRTree {
       dest = temp
     }
   }
+
   insert (min, max, item) {
     if (this._root !== null) throw new IllegalStateException('Index cannot be added to once it has been queried')
     this._leaves.add(new IntervalRTreeLeafNode(min, max, item))
   }
+
   query (min, max, visitor) {
     this.init()
     this._root.query(min, max, visitor)
   }
+
   buildRoot () {
     if (this._root !== null) return null
     this._root = this.buildTree()
   }
+
   printNode (node) {
     System.out.println(WKTWriter.toLineString(new Coordinate(node._min, this._level), new Coordinate(node._max, this._level)))
   }
+
   init () {
     if (this._root !== null) return null
     this.buildRoot()
   }
+
   buildLevel (src, dest) {
     this._level++
     dest.clear()
@@ -56,9 +63,11 @@ export default class SortedPackedIntervalRTree {
       }
     }
   }
+
   getClass () {
     return SortedPackedIntervalRTree
   }
+
   get interfaces_ () {
     return []
   }

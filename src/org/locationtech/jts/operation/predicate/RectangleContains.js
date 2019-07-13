@@ -6,10 +6,12 @@ export default class RectangleContains {
   constructor () {
     RectangleContains.constructor_.apply(this, arguments)
   }
+
   static contains (rectangle, b) {
     var rc = new RectangleContains(rectangle)
     return rc.contains(b)
   }
+
   isContainedInBoundary (geom) {
     if (geom instanceof Polygon) return false
     if (geom instanceof Point) return this.isPointContainedInBoundary(geom)
@@ -20,6 +22,7 @@ export default class RectangleContains {
     }
     return true
   }
+
   isLineSegmentContainedInBoundary (p0, p1) {
     if (p0.equals(p1)) return this.isPointContainedInBoundary(p0)
     if (p0.x === p1.x) {
@@ -29,6 +32,7 @@ export default class RectangleContains {
     }
     return false
   }
+
   isLineStringContainedInBoundary (line) {
     var seq = line.getCoordinateSequence()
     var p0 = new Coordinate()
@@ -40,29 +44,33 @@ export default class RectangleContains {
     }
     return true
   }
+
   isPointContainedInBoundary () {
     if (arguments[0] instanceof Point) {
-      let point = arguments[0]
+      const point = arguments[0]
       return this.isPointContainedInBoundary(point.getCoordinate())
     } else if (arguments[0] instanceof Coordinate) {
-      let pt = arguments[0]
+      const pt = arguments[0]
       return pt.x === this._rectEnv.getMinX() || pt.x === this._rectEnv.getMaxX() || pt.y === this._rectEnv.getMinY() || pt.y === this._rectEnv.getMaxY()
     }
   }
+
   contains (geom) {
     if (!this._rectEnv.contains(geom.getEnvelopeInternal())) return false
     if (this.isContainedInBoundary(geom)) return false
     return true
   }
+
   getClass () {
     return RectangleContains
   }
+
   get interfaces_ () {
     return []
   }
 }
 RectangleContains.constructor_ = function () {
   this._rectEnv = null
-  let rectangle = arguments[0]
+  const rectangle = arguments[0]
   this._rectEnv = rectangle.getEnvelopeInternal()
 }

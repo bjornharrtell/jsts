@@ -6,12 +6,15 @@ export default class RelateNodeFactory extends NodeFactory {
     super()
     RelateNodeFactory.constructor_.apply(this, arguments)
   }
+
   createNode (coord) {
     return new RelateNode(coord, new EdgeEndBundleStar())
   }
+
   getClass () {
     return RelateNodeFactory
   }
+
   get interfaces_ () {
     return []
   }

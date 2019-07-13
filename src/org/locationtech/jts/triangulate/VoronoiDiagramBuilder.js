@@ -11,6 +11,7 @@ export default class VoronoiDiagramBuilder {
   constructor () {
     VoronoiDiagramBuilder.constructor_.apply(this, arguments)
   }
+
   static clipGeometryCollection (geom, clipEnv) {
     var clipPoly = geom.getFactory().toGeometry(clipEnv)
     var clipped = new ArrayList()
@@ -27,6 +28,7 @@ export default class VoronoiDiagramBuilder {
     }
     return geom.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(clipped))
   }
+
   create () {
     if (this._subdiv !== null) return null
     var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
@@ -39,33 +41,40 @@ export default class VoronoiDiagramBuilder {
     var triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
+
   getDiagram (geomFact) {
     this.create()
     var polys = this._subdiv.getVoronoiDiagram(geomFact)
     return VoronoiDiagramBuilder.clipGeometryCollection(polys, this._diagramEnv)
   }
+
   setTolerance (tolerance) {
     this._tolerance = tolerance
   }
+
   setSites () {
     if (arguments[0] instanceof Geometry) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom)
     } else if (hasInterface(arguments[0], Collection)) {
-      let coords = arguments[0]
+      const coords = arguments[0]
       this._siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords))
     }
   }
+
   setClipEnvelope (clipEnv) {
     this._clipEnv = clipEnv
   }
+
   getSubdivision () {
     this.create()
     return this._subdiv
   }
+
   getClass () {
     return VoronoiDiagramBuilder
   }
+
   get interfaces_ () {
     return []
   }

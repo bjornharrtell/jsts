@@ -2,10 +2,13 @@ export default class BoundaryNodeRule {
   constructor () {
     BoundaryNodeRule.constructor_.apply(this, arguments)
   }
+
   isInBoundary (boundaryCount) {}
+
   getClass () {
     return BoundaryNodeRule
   }
+
   get interfaces_ () {
     return []
   }
@@ -14,12 +17,15 @@ class Mod2BoundaryNodeRule {
   constructor () {
     Mod2BoundaryNodeRule.constructor_.apply(this, arguments)
   }
+
   isInBoundary (boundaryCount) {
     return boundaryCount % 2 === 1
   }
+
   getClass () {
     return Mod2BoundaryNodeRule
   }
+
   get interfaces_ () {
     return [BoundaryNodeRule]
   }
@@ -29,12 +35,15 @@ class EndPointBoundaryNodeRule {
   constructor () {
     EndPointBoundaryNodeRule.constructor_.apply(this, arguments)
   }
+
   isInBoundary (boundaryCount) {
     return boundaryCount > 0
   }
+
   getClass () {
     return EndPointBoundaryNodeRule
   }
+
   get interfaces_ () {
     return [BoundaryNodeRule]
   }
@@ -44,12 +53,15 @@ class MultiValentEndPointBoundaryNodeRule {
   constructor () {
     MultiValentEndPointBoundaryNodeRule.constructor_.apply(this, arguments)
   }
+
   isInBoundary (boundaryCount) {
     return boundaryCount > 1
   }
+
   getClass () {
     return MultiValentEndPointBoundaryNodeRule
   }
+
   get interfaces_ () {
     return [BoundaryNodeRule]
   }
@@ -59,12 +71,15 @@ class MonoValentEndPointBoundaryNodeRule {
   constructor () {
     MonoValentEndPointBoundaryNodeRule.constructor_.apply(this, arguments)
   }
+
   isInBoundary (boundaryCount) {
     return boundaryCount === 1
   }
+
   getClass () {
     return MonoValentEndPointBoundaryNodeRule
   }
+
   get interfaces_ () {
     return [BoundaryNodeRule]
   }

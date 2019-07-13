@@ -5,6 +5,7 @@ export default class LineMergeDirectedEdge extends DirectedEdge {
     super()
     LineMergeDirectedEdge.constructor_.apply(this, arguments)
   }
+
   getNext () {
     if (this.getToNode().getDegree() !== 2) {
       return null
@@ -15,14 +16,16 @@ export default class LineMergeDirectedEdge extends DirectedEdge {
     Assert.isTrue(this.getToNode().getOutEdges().getEdges().get(1) === this.getSym())
     return this.getToNode().getOutEdges().getEdges().get(0)
   }
+
   getClass () {
     return LineMergeDirectedEdge
   }
+
   get interfaces_ () {
     return []
   }
 }
 LineMergeDirectedEdge.constructor_ = function () {
-  let from = arguments[0]; let to = arguments[1]; let directionPt = arguments[2]; let edgeDirection = arguments[3]
+  const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
   DirectedEdge.constructor_.call(this, from, to, directionPt, edgeDirection)
 }

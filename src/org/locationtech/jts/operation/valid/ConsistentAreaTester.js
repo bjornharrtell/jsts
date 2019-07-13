@@ -4,6 +4,7 @@ export default class ConsistentAreaTester {
   constructor () {
     ConsistentAreaTester.constructor_.apply(this, arguments)
   }
+
   isNodeEdgeAreaLabelsConsistent () {
     for (var nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
       var node = nodeIt.next()
@@ -14,9 +15,11 @@ export default class ConsistentAreaTester {
     }
     return true
   }
+
   getInvalidPoint () {
     return this._invalidPoint
   }
+
   hasDuplicateRings () {
     for (var nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
       var node = nodeIt.next()
@@ -30,6 +33,7 @@ export default class ConsistentAreaTester {
     }
     return false
   }
+
   isNodeConsistentArea () {
     var intersector = this._geomGraph.computeSelfNodes(this._li, true, true)
     if (intersector.hasProperIntersection()) {
@@ -39,9 +43,11 @@ export default class ConsistentAreaTester {
     this._nodeGraph.build(this._geomGraph)
     return this.isNodeEdgeAreaLabelsConsistent()
   }
+
   getClass () {
     return ConsistentAreaTester
   }
+
   get interfaces_ () {
     return []
   }
@@ -51,6 +57,6 @@ ConsistentAreaTester.constructor_ = function () {
   this._geomGraph = null
   this._nodeGraph = new RelateNodeGraph()
   this._invalidPoint = null
-  let geomGraph = arguments[0]
+  const geomGraph = arguments[0]
   this._geomGraph = geomGraph
 }

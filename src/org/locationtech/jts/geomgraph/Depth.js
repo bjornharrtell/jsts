@@ -4,17 +4,21 @@ export default class Depth {
   constructor () {
     Depth.constructor_.apply(this, arguments)
   }
+
   static depthAtLocation (location) {
     if (location === Location.EXTERIOR) return 0
     if (location === Location.INTERIOR) return 1
     return Depth.NULL_VALUE
   }
+
   getDepth (geomIndex, posIndex) {
     return this._depth[geomIndex][posIndex]
   }
+
   setDepth (geomIndex, posIndex, depthValue) {
     this._depth[geomIndex][posIndex] = depthValue
   }
+
   isNull () {
     if (arguments.length === 0) {
       for (var i = 0; i < 2; i++) {
@@ -24,13 +28,14 @@ export default class Depth {
       }
       return true
     } else if (arguments.length === 1) {
-      let geomIndex = arguments[0]
+      const geomIndex = arguments[0]
       return this._depth[geomIndex][1] === Depth.NULL_VALUE
     } else if (arguments.length === 2) {
-      let geomIndex = arguments[0]; let posIndex = arguments[1]
+      const geomIndex = arguments[0]; const posIndex = arguments[1]
       return this._depth[geomIndex][posIndex] === Depth.NULL_VALUE
     }
   }
+
   normalize () {
     for (var i = 0; i < 2; i++) {
       if (!this.isNull(i)) {
@@ -45,19 +50,23 @@ export default class Depth {
       }
     }
   }
+
   getDelta (geomIndex) {
     return this._depth[geomIndex][Position.RIGHT] - this._depth[geomIndex][Position.LEFT]
   }
+
   getLocation (geomIndex, posIndex) {
     if (this._depth[geomIndex][posIndex] <= 0) return Location.EXTERIOR
     return Location.INTERIOR
   }
+
   toString () {
     return 'A: ' + this._depth[0][1] + ',' + this._depth[0][2] + ' B: ' + this._depth[1][1] + ',' + this._depth[1][2]
   }
+
   add () {
     if (arguments.length === 1) {
-      let lbl = arguments[0]
+      const lbl = arguments[0]
       for (var i = 0; i < 2; i++) {
         for (var j = 1; j < 3; j++) {
           var loc = lbl.getLocation(i, j)
@@ -69,13 +78,15 @@ export default class Depth {
         }
       }
     } else if (arguments.length === 3) {
-      let geomIndex = arguments[0]; let posIndex = arguments[1]; let location = arguments[2]
+      const geomIndex = arguments[0]; const posIndex = arguments[1]; const location = arguments[2]
       if (location === Location.INTERIOR) this._depth[geomIndex][posIndex]++
     }
   }
+
   getClass () {
     return Depth
   }
+
   get interfaces_ () {
     return []
   }

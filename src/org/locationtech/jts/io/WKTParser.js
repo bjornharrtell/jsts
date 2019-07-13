@@ -2,12 +2,12 @@ import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
 
 const regExes = {
-  'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
-  'emptyTypeStr': /^\s*(\w+)\s*EMPTY\s*$/,
-  'spaces': /\s+/,
-  'parenComma': /\)\s*,\s*\(/,
-  'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/, // can't use {2} here
-  'trimParens': /^\s*\(?(.*?)\)?\s*$/
+  typeStr: /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
+  emptyTypeStr: /^\s*(\w+)\s*EMPTY\s*$/,
+  spaces: /\s+/,
+  parenComma: /\)\s*,\s*\(/,
+  doubleParenComma: /\)\s*\)\s*,\s*\(\s*\(/, // can't use {2} here
+  trimParens: /^\s*\(?(.*?)\)?\s*$/
 }
 
 /**

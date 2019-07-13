@@ -12,6 +12,7 @@ export default class Polygonizer {
   constructor () {
     Polygonizer.constructor_.apply(this, arguments)
   }
+
   static findOuterShells (shellList) {
     for (var i = shellList.iterator(); i.hasNext();) {
       var er = i.next()
@@ -22,6 +23,7 @@ export default class Polygonizer {
       }
     }
   }
+
   static extractPolygons (shellList, includeAll) {
     var polyList = new ArrayList()
     for (var i = shellList.iterator(); i.hasNext();) {
@@ -32,18 +34,21 @@ export default class Polygonizer {
     }
     return polyList
   }
+
   static assignHolesToShells (holeList, shellList) {
     for (var i = holeList.iterator(); i.hasNext();) {
       var holeER = i.next()
       Polygonizer.assignHoleToShell(holeER, shellList)
     }
   }
+
   static assignHoleToShell (holeER, shellList) {
     var shell = EdgeRing.findEdgeRingContaining(holeER, shellList)
     if (shell !== null) {
       shell.addHole(holeER)
     }
   }
+
   static findDisjointShells (shellList) {
     Polygonizer.findOuterShells(shellList)
     var isMoreToScan = null
@@ -59,6 +64,7 @@ export default class Polygonizer {
       }
     } while (isMoreToScan)
   }
+
   getGeometry () {
     if (this._geomFactory === null) this._geomFactory = new GeometryFactory()
     this.polygonize()
@@ -67,16 +73,19 @@ export default class Polygonizer {
     }
     return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this._polyList))
   }
+
   getInvalidRingLines () {
     this.polygonize()
     return this._invalidRingLines
   }
+
   findValidRings (edgeRingList, validEdgeRingList, invalidRingList) {
     for (var i = edgeRingList.iterator(); i.hasNext();) {
       var er = i.next()
       if (er.isValid()) validEdgeRingList.add(er); else invalidRingList.add(er.getLineString())
     }
   }
+
   polygonize () {
     if (this._polyList !== null) return null
     this._polyList = new ArrayList()
@@ -101,38 +110,44 @@ export default class Polygonizer {
     }
     this._polyList = Polygonizer.extractPolygons(this._shellList, includeAll)
   }
+
   getDangles () {
     this.polygonize()
     return this._dangles
   }
+
   getCutEdges () {
     this.polygonize()
     return this._cutEdges
   }
+
   getPolygons () {
     this.polygonize()
     return this._polyList
   }
+
   add () {
     if (hasInterface(arguments[0], Collection)) {
-      let geomList = arguments[0]
+      const geomList = arguments[0]
       for (var i = geomList.iterator(); i.hasNext();) {
         var geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof LineString) {
-      let line = arguments[0]
+      const line = arguments[0]
       this._geomFactory = line.getFactory()
       if (this._graph === null) this._graph = new PolygonizeGraph(this._geomFactory)
       this._graph.addEdge(line)
     } else if (arguments[0] instanceof Geometry) {
-      let g = arguments[0]
+      const g = arguments[0]
       g.apply(this._lineStringAdder)
     }
   }
+
   setCheckRingsValid (isCheckingRingsValid) {
     this._isCheckingRingsValid = isCheckingRingsValid
   }
+
   findShellsAndHoles (edgeRingList) {
     this._holeList = new ArrayList()
     this._shellList = new ArrayList()
@@ -142,9 +157,11 @@ export default class Polygonizer {
       if (er.isHole()) this._holeList.add(er); else this._shellList.add(er)
     }
   }
+
   getClass () {
     return Polygonizer
   }
+
   get interfaces_ () {
     return []
   }
@@ -153,19 +170,22 @@ class LineStringAdder {
   constructor () {
     LineStringAdder.constructor_.apply(this, arguments)
   }
+
   filter (g) {
     if (g instanceof LineString) this.p.add(g)
   }
+
   getClass () {
     return LineStringAdder
   }
+
   get interfaces_ () {
     return [GeometryComponentFilter]
   }
 }
 LineStringAdder.constructor_ = function () {
   this.p = null
-  let p = arguments[0]
+  const p = arguments[0]
   this.p = p
 }
 Polygonizer.LineStringAdder = LineStringAdder
@@ -184,7 +204,7 @@ Polygonizer.constructor_ = function () {
   if (arguments.length === 0) {
     Polygonizer.constructor_.call(this, false)
   } else if (arguments.length === 1) {
-    let extractOnlyPolygonal = arguments[0]
+    const extractOnlyPolygonal = arguments[0]
     this._extractOnlyPolygonal = extractOnlyPolygonal
   }
 }

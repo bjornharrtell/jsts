@@ -7,6 +7,7 @@ export default class RelateOp extends GeometryGraphOperation {
     super()
     RelateOp.constructor_.apply(this, arguments)
   }
+
   static covers (g1, g2) {
     if (g2.getDimension() === 2 && g1.getDimension() < 2) {
       return false
@@ -20,6 +21,7 @@ export default class RelateOp extends GeometryGraphOperation {
     }
     return new RelateOp(g1, g2).getIntersectionMatrix().isCovers()
   }
+
   static intersects (g1, g2) {
     if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
     if (g1.isRectangle()) {
@@ -41,31 +43,36 @@ export default class RelateOp extends GeometryGraphOperation {
     }
     return new RelateOp(g1, g2).getIntersectionMatrix().isIntersects()
   }
+
   static touches (g1, g2) {
     if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
     return new RelateOp(g1, g2).getIntersectionMatrix().isTouches(g1.getDimension(), g2.getDimension())
   }
+
   static relate () {
     if (arguments.length === 2) {
-      let a = arguments[0]; let b = arguments[1]
+      const a = arguments[0]; const b = arguments[1]
       var relOp = new RelateOp(a, b)
       var im = relOp.getIntersectionMatrix()
       return im
     } else if (arguments.length === 3) {
-      let a = arguments[0]; let b = arguments[1]; let boundaryNodeRule = arguments[2]
+      const a = arguments[0]; const b = arguments[1]; const boundaryNodeRule = arguments[2]
       var relOp = new RelateOp(a, b, boundaryNodeRule)
       var im = relOp.getIntersectionMatrix()
       return im
     }
   }
+
   static overlaps (g1, g2) {
     if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
     return new RelateOp(g1, g2).getIntersectionMatrix().isOverlaps(g1.getDimension(), g2.getDimension())
   }
+
   static crosses (g1, g2) {
     if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
     return new RelateOp(g1, g2).getIntersectionMatrix().isCrosses(g1.getDimension(), g2.getDimension())
   }
+
   static contains (g1, g2) {
     if (g2.getDimension() === 2 && g1.getDimension() < 2) {
       return false
@@ -79,12 +86,15 @@ export default class RelateOp extends GeometryGraphOperation {
     }
     return new RelateOp(g1, g2).getIntersectionMatrix().isContains()
   }
+
   getIntersectionMatrix () {
     return this._relate.computeIM()
   }
+
   getClass () {
     return RelateOp
   }
+
   get interfaces_ () {
     return []
   }
@@ -92,11 +102,11 @@ export default class RelateOp extends GeometryGraphOperation {
 RelateOp.constructor_ = function () {
   this._relate = null
   if (arguments.length === 2) {
-    let g0 = arguments[0]; let g1 = arguments[1]
+    const g0 = arguments[0]; const g1 = arguments[1]
     GeometryGraphOperation.constructor_.call(this, g0, g1)
     this._relate = new RelateComputer(this._arg)
   } else if (arguments.length === 3) {
-    let g0 = arguments[0]; let g1 = arguments[1]; let boundaryNodeRule = arguments[2]
+    const g0 = arguments[0]; const g1 = arguments[1]; const boundaryNodeRule = arguments[2]
     GeometryGraphOperation.constructor_.call(this, g0, g1, boundaryNodeRule)
     this._relate = new RelateComputer(this._arg)
   }

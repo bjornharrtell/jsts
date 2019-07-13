@@ -12,9 +12,11 @@ export default class GeometryEditor {
   constructor () {
     GeometryEditor.constructor_.apply(this, arguments)
   }
+
   setCopyUserData (isUserDataCopied) {
     this._isUserDataCopied = isUserDataCopied
   }
+
   edit (geometry, operation) {
     if (geometry === null) return null
     var result = this.editInternal(geometry, operation)
@@ -23,6 +25,7 @@ export default class GeometryEditor {
     }
     return result
   }
+
   editInternal (geometry, operation) {
     if (this._factory === null) this._factory = geometry.getFactory()
     if (geometry instanceof GeometryCollection) {
@@ -40,6 +43,7 @@ export default class GeometryEditor {
     Assert.shouldNeverReachHere('Unsupported Geometry class: ' + geometry.getClass().getName())
     return null
   }
+
   editGeometryCollection (collection, operation) {
     var collectionForType = operation.edit(collection, this._factory)
     var geometries = new ArrayList()
@@ -61,6 +65,7 @@ export default class GeometryEditor {
     }
     return this._factory.createGeometryCollection(geometries.toArray([]))
   }
+
   editPolygon (polygon, operation) {
     var newPolygon = operation.edit(polygon, this._factory)
     if (newPolygon === null) newPolygon = this._factory.createPolygon()
@@ -81,9 +86,11 @@ export default class GeometryEditor {
     }
     return this._factory.createPolygon(shell, holes.toArray([]))
   }
+
   getClass () {
     return GeometryEditor
   }
+
   get interfaces_ () {
     return []
   }
@@ -94,12 +101,15 @@ class NoOpGeometryOperation {
   constructor () {
     NoOpGeometryOperation.constructor_.apply(this, arguments)
   }
+
   edit (geometry, factory) {
     return geometry
   }
+
   getClass () {
     return NoOpGeometryOperation
   }
+
   get interfaces_ () {
     return [GeometryEditorOperation]
   }
@@ -109,6 +119,7 @@ class CoordinateOperation {
   constructor () {
     CoordinateOperation.constructor_.apply(this, arguments)
   }
+
   edit (geometry, factory) {
     var coordinates = this.edit(geometry.getCoordinates(), geometry)
     if (geometry instanceof LinearRing) {
@@ -122,9 +133,11 @@ class CoordinateOperation {
     }
     return geometry
   }
+
   getClass () {
     return CoordinateOperation
   }
+
   get interfaces_ () {
     return [GeometryEditorOperation]
   }
@@ -134,6 +147,7 @@ class CoordinateSequenceOperation {
   constructor () {
     CoordinateSequenceOperation.constructor_.apply(this, arguments)
   }
+
   edit (geometry, factory) {
     if (geometry instanceof LinearRing) {
       return factory.createLinearRing(this.edit(geometry.getCoordinateSequence(), geometry))
@@ -146,9 +160,11 @@ class CoordinateSequenceOperation {
     }
     return geometry
   }
+
   getClass () {
     return CoordinateSequenceOperation
   }
+
   get interfaces_ () {
     return [GeometryEditorOperation]
   }
@@ -161,7 +177,7 @@ GeometryEditor.constructor_ = function () {
   this._factory = null
   this._isUserDataCopied = false
   if (arguments.length === 0) {} else if (arguments.length === 1) {
-    let factory = arguments[0]
+    const factory = arguments[0]
     this._factory = factory
   }
 }

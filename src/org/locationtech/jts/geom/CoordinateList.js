@@ -7,12 +7,14 @@ export default class CoordinateList extends ArrayList {
     super()
     CoordinateList.constructor_.apply(this, arguments)
   }
+
   getCoordinate (i) {
     return this.get(i)
   }
+
   addAll () {
     if (arguments.length === 2 && (typeof arguments[1] === 'boolean' && hasInterface(arguments[0], Collection))) {
-      let coll = arguments[0]; let allowRepeated = arguments[1]
+      const coll = arguments[0]; const allowRepeated = arguments[1]
       var isChanged = false
       for (var i = coll.iterator(); i.hasNext();) {
         this.add(i.next(), allowRepeated)
@@ -21,6 +23,7 @@ export default class CoordinateList extends ArrayList {
       return isChanged
     } else return super.addAll.apply(this, arguments)
   }
+
   clone () {
     var clone = super.clone.call(this)
     for (var i = 0; i < this.size(); i++) {
@@ -28,20 +31,22 @@ export default class CoordinateList extends ArrayList {
     }
     return clone
   }
+
   toCoordinateArray () {
     return this.toArray(CoordinateList.coordArrayType)
   }
+
   add () {
     if (arguments.length === 1) {
-      let coord = arguments[0]
+      const coord = arguments[0]
       super.add.call(this, coord)
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Array && typeof arguments[1] === 'boolean') {
-        let coord = arguments[0]; let allowRepeated = arguments[1]
+        const coord = arguments[0]; const allowRepeated = arguments[1]
         this.add(coord, allowRepeated, true)
         return true
       } else if (arguments[0] instanceof Coordinate && typeof arguments[1] === 'boolean') {
-        let coord = arguments[0]; let allowRepeated = arguments[1]
+        const coord = arguments[0]; const allowRepeated = arguments[1]
         if (!allowRepeated) {
           if (this.size() >= 1) {
             var last = this.get(this.size() - 1)
@@ -50,13 +55,13 @@ export default class CoordinateList extends ArrayList {
         }
         super.add.call(this, coord)
       } else if (arguments[0] instanceof Object && typeof arguments[1] === 'boolean') {
-        let obj = arguments[0]; let allowRepeated = arguments[1]
+        const obj = arguments[0]; const allowRepeated = arguments[1]
         this.add(obj, allowRepeated)
         return true
       }
     } else if (arguments.length === 3) {
       if (typeof arguments[2] === 'boolean' && (arguments[0] instanceof Array && typeof arguments[1] === 'boolean')) {
-        let coord = arguments[0]; let allowRepeated = arguments[1]; let direction = arguments[2]
+        const coord = arguments[0]; const allowRepeated = arguments[1]; const direction = arguments[2]
         if (direction) {
           for (var i = 0; i < coord.length; i++) {
             this.add(coord[i], allowRepeated)
@@ -68,7 +73,7 @@ export default class CoordinateList extends ArrayList {
         }
         return true
       } else if (typeof arguments[2] === 'boolean' && (Number.isInteger(arguments[0]) && arguments[1] instanceof Coordinate)) {
-        let i = arguments[0]; let coord = arguments[1]; let allowRepeated = arguments[2]
+        const i = arguments[0]; const coord = arguments[1]; const allowRepeated = arguments[2]
         if (!allowRepeated) {
           var size = this.size()
           if (size > 0) {
@@ -85,7 +90,7 @@ export default class CoordinateList extends ArrayList {
         super.add.call(this, i, coord)
       }
     } else if (arguments.length === 4) {
-      let coord = arguments[0]; let allowRepeated = arguments[1]; let start = arguments[2]; let end = arguments[3]
+      const coord = arguments[0]; const allowRepeated = arguments[1]; const start = arguments[2]; const end = arguments[3]
       var inc = 1
       if (start > end) inc = -1
       for (var i = start; i !== end; i += inc) {
@@ -94,23 +99,26 @@ export default class CoordinateList extends ArrayList {
       return true
     }
   }
+
   closeRing () {
     if (this.size() > 0) this.add(new Coordinate(this.get(0)), false)
   }
+
   getClass () {
     return CoordinateList
   }
+
   get interfaces_ () {
     return []
   }
 }
 CoordinateList.constructor_ = function () {
   if (arguments.length === 0) {} else if (arguments.length === 1) {
-    let coord = arguments[0]
+    const coord = arguments[0]
     this.ensureCapacity(coord.length)
     this.add(coord, true)
   } else if (arguments.length === 2) {
-    let coord = arguments[0]; let allowRepeated = arguments[1]
+    const coord = arguments[0]; const allowRepeated = arguments[1]
     this.ensureCapacity(coord.length)
     this.add(coord, allowRepeated)
   }

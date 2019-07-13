@@ -5,15 +5,16 @@ export default class Envelope {
   constructor () {
     Envelope.constructor_.apply(this, arguments)
   }
+
   static intersects () {
     if (arguments.length === 3) {
-      let p1 = arguments[0]; let p2 = arguments[1]; let q = arguments[2]
+      const p1 = arguments[0]; const p2 = arguments[1]; const q = arguments[2]
       if (q.x >= (p1.x < p2.x ? p1.x : p2.x) && q.x <= (p1.x > p2.x ? p1.x : p2.x) && (q.y >= (p1.y < p2.y ? p1.y : p2.y) && q.y <= (p1.y > p2.y ? p1.y : p2.y))) {
         return true
       }
       return false
     } else if (arguments.length === 4) {
-      let p1 = arguments[0]; let p2 = arguments[1]; let q1 = arguments[2]; let q2 = arguments[3]
+      const p1 = arguments[0]; const p2 = arguments[1]; const q1 = arguments[2]; const q2 = arguments[3]
       var minq = Math.min(q1.x, q2.x)
       var maxq = Math.max(q1.x, q2.x)
       var minp = Math.min(p1.x, p2.x)
@@ -29,9 +30,11 @@ export default class Envelope {
       return true
     }
   }
+
   getArea () {
     return this.getWidth() * this.getHeight()
   }
+
   equals (other) {
     if (!(other instanceof Envelope)) {
       return false
@@ -42,6 +45,7 @@ export default class Envelope {
     }
     return this._maxx === otherEnvelope.getMaxX() && this._maxy === otherEnvelope.getMaxY() && this._minx === otherEnvelope.getMinX() && this._miny === otherEnvelope.getMinY()
   }
+
   intersection (env) {
     if (this.isNull() || env.isNull() || !this.intersects(env)) return new Envelope()
     var intMinX = this._minx > env._minx ? this._minx : env._minx
@@ -50,45 +54,49 @@ export default class Envelope {
     var intMaxY = this._maxy < env._maxy ? this._maxy : env._maxy
     return new Envelope(intMinX, intMaxX, intMinY, intMaxY)
   }
+
   isNull () {
     return this._maxx < this._minx
   }
+
   getMaxX () {
     return this._maxx
   }
+
   covers () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Coordinate) {
-        let p = arguments[0]
+        const p = arguments[0]
         return this.covers(p.x, p.y)
       } else if (arguments[0] instanceof Envelope) {
-        let other = arguments[0]
+        const other = arguments[0]
         if (this.isNull() || other.isNull()) {
           return false
         }
         return other.getMinX() >= this._minx && other.getMaxX() <= this._maxx && other.getMinY() >= this._miny && other.getMaxY() <= this._maxy
       }
     } else if (arguments.length === 2) {
-      let x = arguments[0]; let y = arguments[1]
+      const x = arguments[0]; const y = arguments[1]
       if (this.isNull()) return false
       return x >= this._minx && x <= this._maxx && y >= this._miny && y <= this._maxy
     }
   }
+
   intersects () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Envelope) {
-        let other = arguments[0]
+        const other = arguments[0]
         if (this.isNull() || other.isNull()) {
           return false
         }
         return !(other._minx > this._maxx || other._maxx < this._minx || other._miny > this._maxy || other._maxy < this._miny)
       } else if (arguments[0] instanceof Coordinate) {
-        let p = arguments[0]
+        const p = arguments[0]
         return this.intersects(p.x, p.y)
       }
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
-        let a = arguments[0]; let b = arguments[1]
+        const a = arguments[0]; const b = arguments[1]
         if (this.isNull()) {
           return false
         }
@@ -102,25 +110,28 @@ export default class Envelope {
         if (envmaxy < this._miny) return false
         return true
       } else if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
-        let x = arguments[0]; let y = arguments[1]
+        const x = arguments[0]; const y = arguments[1]
         if (this.isNull()) return false
         return !(x > this._maxx || x < this._minx || y > this._maxy || y < this._miny)
       }
     }
   }
+
   getMinY () {
     return this._miny
   }
+
   getMinX () {
     return this._minx
   }
+
   expandToInclude () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Coordinate) {
-        let p = arguments[0]
+        const p = arguments[0]
         this.expandToInclude(p.x, p.y)
       } else if (arguments[0] instanceof Envelope) {
-        let other = arguments[0]
+        const other = arguments[0]
         if (other.isNull()) {
           return null
         }
@@ -145,7 +156,7 @@ export default class Envelope {
         }
       }
     } else if (arguments.length === 2) {
-      let x = arguments[0]; let y = arguments[1]
+      const x = arguments[0]; const y = arguments[1]
       if (this.isNull()) {
         this._minx = x
         this._maxx = x
@@ -167,6 +178,7 @@ export default class Envelope {
       }
     }
   }
+
   minExtent () {
     if (this.isNull()) return 0.0
     var w = this.getWidth()
@@ -174,12 +186,14 @@ export default class Envelope {
     if (w < h) return w
     return h
   }
+
   getWidth () {
     if (this.isNull()) {
       return 0
     }
     return this._maxx - this._minx
   }
+
   compareTo (o) {
     var env = o
     if (this.isNull()) {
@@ -198,27 +212,32 @@ export default class Envelope {
     if (this._maxy > env._maxy) return 1
     return 0
   }
+
   translate (transX, transY) {
     if (this.isNull()) {
       return null
     }
     this.init(this.getMinX() + transX, this.getMaxX() + transX, this.getMinY() + transY, this.getMaxY() + transY)
   }
+
   toString () {
     return 'Env[' + this._minx + ' : ' + this._maxx + ', ' + this._miny + ' : ' + this._maxy + ']'
   }
+
   setToNull () {
     this._minx = 0
     this._maxx = -1
     this._miny = 0
     this._maxy = -1
   }
+
   getHeight () {
     if (this.isNull()) {
       return 0
     }
     return this._maxy - this._miny
   }
+
   maxExtent () {
     if (this.isNull()) return 0.0
     var w = this.getWidth()
@@ -226,12 +245,13 @@ export default class Envelope {
     if (w > h) return w
     return h
   }
+
   expandBy () {
     if (arguments.length === 1) {
-      let distance = arguments[0]
+      const distance = arguments[0]
       this.expandBy(distance, distance)
     } else if (arguments.length === 2) {
-      let deltaX = arguments[0]; let deltaY = arguments[1]
+      const deltaX = arguments[0]; const deltaY = arguments[1]
       if (this.isNull()) return null
       this._minx -= deltaX
       this._maxx += deltaX
@@ -240,43 +260,46 @@ export default class Envelope {
       if (this._minx > this._maxx || this._miny > this._maxy) this.setToNull()
     }
   }
+
   contains () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Envelope) {
-        let other = arguments[0]
+        const other = arguments[0]
         return this.covers(other)
       } else if (arguments[0] instanceof Coordinate) {
-        let p = arguments[0]
+        const p = arguments[0]
         return this.covers(p)
       }
     } else if (arguments.length === 2) {
-      let x = arguments[0]; let y = arguments[1]
+      const x = arguments[0]; const y = arguments[1]
       return this.covers(x, y)
     }
   }
+
   centre () {
     if (this.isNull()) return null
     return new Coordinate((this.getMinX() + this.getMaxX()) / 2.0, (this.getMinY() + this.getMaxY()) / 2.0)
   }
+
   init () {
     if (arguments.length === 0) {
       this.setToNull()
     } else if (arguments.length === 1) {
       if (arguments[0] instanceof Coordinate) {
-        let p = arguments[0]
+        const p = arguments[0]
         this.init(p.x, p.x, p.y, p.y)
       } else if (arguments[0] instanceof Envelope) {
-        let env = arguments[0]
+        const env = arguments[0]
         this._minx = env._minx
         this._maxx = env._maxx
         this._miny = env._miny
         this._maxy = env._maxy
       }
     } else if (arguments.length === 2) {
-      let p1 = arguments[0]; let p2 = arguments[1]
+      const p1 = arguments[0]; const p2 = arguments[1]
       this.init(p1.x, p2.x, p1.y, p2.y)
     } else if (arguments.length === 4) {
-      let x1 = arguments[0]; let x2 = arguments[1]; let y1 = arguments[2]; let y2 = arguments[3]
+      const x1 = arguments[0]; const x2 = arguments[1]; const y1 = arguments[2]; const y2 = arguments[3]
       if (x1 < x2) {
         this._minx = x1
         this._maxx = x2
@@ -293,9 +316,11 @@ export default class Envelope {
       }
     }
   }
+
   getMaxY () {
     return this._maxy
   }
+
   distance (env) {
     if (this.intersects(env)) return 0
     var dx = 0.0
@@ -306,6 +331,7 @@ export default class Envelope {
     if (dy === 0.0) return dx
     return Math.sqrt(dx * dx + dy * dy)
   }
+
   hashCode () {
     var result = 17
     result = 37 * result + Coordinate.hashCode(this._minx)
@@ -314,9 +340,11 @@ export default class Envelope {
     result = 37 * result + Coordinate.hashCode(this._maxy)
     return result
   }
+
   getClass () {
     return Envelope
   }
+
   get interfaces_ () {
     return [Comparable, Serializable]
   }
@@ -330,17 +358,17 @@ Envelope.constructor_ = function () {
     this.init()
   } else if (arguments.length === 1) {
     if (arguments[0] instanceof Coordinate) {
-      let p = arguments[0]
+      const p = arguments[0]
       this.init(p.x, p.x, p.y, p.y)
     } else if (arguments[0] instanceof Envelope) {
-      let env = arguments[0]
+      const env = arguments[0]
       this.init(env)
     }
   } else if (arguments.length === 2) {
-    let p1 = arguments[0]; let p2 = arguments[1]
+    const p1 = arguments[0]; const p2 = arguments[1]
     this.init(p1.x, p2.x, p1.y, p2.y)
   } else if (arguments.length === 4) {
-    let x1 = arguments[0]; let x2 = arguments[1]; let y1 = arguments[2]; let y2 = arguments[3]
+    const x1 = arguments[0]; const x2 = arguments[1]; const y1 = arguments[2]; const y2 = arguments[3]
     this.init(x1, x2, y1, y2)
   }
 }

@@ -22,7 +22,7 @@ Geometry.prototype.union = function () {
   if (arguments.length === 0) {
     return UnaryUnionOp.union(this)
   } else if (arguments.length === 1) {
-    let other = arguments[0]
+    const other = arguments[0]
     return UnionOp.union(this, other)
   }
 }
@@ -58,13 +58,13 @@ Geometry.prototype.crosses = function (g) {
 }
 Geometry.prototype.buffer = function () {
   if (arguments.length === 1) {
-    let distance = arguments[0]
+    const distance = arguments[0]
     return BufferOp.bufferOp(this, distance)
   } else if (arguments.length === 2) {
-    let distance = arguments[0]; let quadrantSegments = arguments[1]
+    const distance = arguments[0]; const quadrantSegments = arguments[1]
     return BufferOp.bufferOp(this, distance, quadrantSegments)
   } else if (arguments.length === 3) {
-    let distance = arguments[0]; let quadrantSegments = arguments[1]; let endCapStyle = arguments[2]
+    const distance = arguments[0]; const quadrantSegments = arguments[1]; const endCapStyle = arguments[2]
     return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle)
   }
 }
@@ -73,10 +73,10 @@ Geometry.prototype.convexHull = function () {
 }
 Geometry.prototype.relate = function (...args) {
   if (arguments.length === 1) {
-    let geometry = arguments[0]
+    const geometry = arguments[0]
     return RelateOp.relate(this, geometry)
   } else if (arguments.length === 2) {
-    let geometry = arguments[0]; let intersectionPattern = arguments[1]
+    const geometry = arguments[0]; const intersectionPattern = arguments[1]
     return RelateOp.relate(this, geometry).matches(intersectionPattern)
   }
 }

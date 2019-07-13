@@ -6,6 +6,7 @@ export default class GeometricShapeFactory {
   constructor () {
     GeometricShapeFactory.constructor_.apply(this, arguments)
   }
+
   createSupercircle (power) {
     var recipPow = 1.0 / power
     var radius = this._dim.getMinSize() / 2
@@ -39,18 +40,23 @@ export default class GeometricShapeFactory {
     var poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
+
   setNumPoints (nPts) {
     this._nPts = nPts
   }
+
   setBase (base) {
     this._dim.setBase(base)
   }
+
   setRotation (radians) {
     this._rotationAngle = radians
   }
+
   setWidth (width) {
     this._dim.setWidth(width)
   }
+
   createEllipse () {
     var env = this._dim.getEnvelope()
     var xRadius = env.getWidth() / 2.0
@@ -70,18 +76,23 @@ export default class GeometricShapeFactory {
     var poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
+
   coordTrans (x, y, trans) {
     return this.coord(x + trans.x, y + trans.y)
   }
+
   createSquircle () {
     return this.createSupercircle(4)
   }
+
   setEnvelope (env) {
     this._dim.setEnvelope(env)
   }
+
   setCentre (centre) {
     this._dim.setCentre(centre)
   }
+
   createArc (startAng, angExtent) {
     var env = this._dim.getEnvelope()
     var xRadius = env.getWidth() / 2.0
@@ -102,6 +113,7 @@ export default class GeometricShapeFactory {
     var line = this._geomFact.createLineString(pts)
     return this.rotate(line)
   }
+
   rotate (geom) {
     if (this._rotationAngle !== 0.0) {
       var trans = AffineTransformation.rotationInstance(this._rotationAngle, this._dim.getCentre().x, this._dim.getCentre().y)
@@ -109,11 +121,13 @@ export default class GeometricShapeFactory {
     }
     return geom
   }
+
   coord (x, y) {
     var pt = new Coordinate(x, y)
     this._precModel.makePrecise(pt)
     return pt
   }
+
   createArcPolygon (startAng, angExtent) {
     var env = this._dim.getEnvelope()
     var xRadius = env.getWidth() / 2.0
@@ -137,6 +151,7 @@ export default class GeometricShapeFactory {
     var poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
+
   createRectangle () {
     var i = null
     var ipt = 0
@@ -171,18 +186,23 @@ export default class GeometricShapeFactory {
     var poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
+
   createCircle () {
     return this.createEllipse()
   }
+
   setHeight (height) {
     this._dim.setHeight(height)
   }
+
   setSize (size) {
     this._dim.setSize(size)
   }
+
   getClass () {
     return GeometricShapeFactory
   }
+
   get interfaces_ () {
     return []
   }
@@ -191,30 +211,38 @@ class Dimensions {
   constructor () {
     Dimensions.constructor_.apply(this, arguments)
   }
+
   setBase (base) {
     this.base = base
   }
+
   setWidth (width) {
     this.width = width
   }
+
   getBase () {
     return this.base
   }
+
   getWidth () {
     return this.width
   }
+
   setEnvelope (env) {
     this.width = env.getWidth()
     this.height = env.getHeight()
     this.base = new Coordinate(env.getMinX(), env.getMinY())
     this.centre = new Coordinate(env.centre())
   }
+
   setCentre (centre) {
     this.centre = centre
   }
+
   getMinSize () {
     return Math.min(this.width, this.height)
   }
+
   getEnvelope () {
     if (this.base !== null) {
       return new Envelope(this.base.x, this.base.x + this.width, this.base.y, this.base.y + this.height)
@@ -224,25 +252,31 @@ class Dimensions {
     }
     return new Envelope(0, this.width, 0, this.height)
   }
+
   getCentre () {
     if (this.centre === null) {
       this.centre = new Coordinate(this.base.x + this.width / 2, this.base.y + this.height / 2)
     }
     return this.centre
   }
+
   getHeight () {
     return this.height
   }
+
   setHeight (height) {
     this.height = height
   }
+
   setSize (size) {
     this.height = size
     this.width = size
   }
+
   getClass () {
     return Dimensions
   }
+
   get interfaces_ () {
     return []
   }
@@ -263,7 +297,7 @@ GeometricShapeFactory.constructor_ = function () {
   if (arguments.length === 0) {
     GeometricShapeFactory.constructor_.call(this, new GeometryFactory())
   } else if (arguments.length === 1) {
-    let geomFact = arguments[0]
+    const geomFact = arguments[0]
     this._geomFact = geomFact
     this._precModel = geomFact.getPrecisionModel()
   }

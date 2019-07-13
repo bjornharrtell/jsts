@@ -5,6 +5,7 @@ export default class SweepLineIndex {
   constructor () {
     SweepLineIndex.constructor_.apply(this, arguments)
   }
+
   computeOverlaps (action) {
     this._nOverlaps = 0
     this.buildIndex()
@@ -15,6 +16,7 @@ export default class SweepLineIndex {
       }
     }
   }
+
   processOverlaps (start, end, s0, action) {
     for (var i = start; i < end; i++) {
       var ev = this.events.get(i)
@@ -25,6 +27,7 @@ export default class SweepLineIndex {
       }
     }
   }
+
   buildIndex () {
     if (this._indexBuilt) return null
     Collections.sort(this.events)
@@ -36,14 +39,17 @@ export default class SweepLineIndex {
     }
     this._indexBuilt = true
   }
+
   add (sweepInt) {
     var insertEvent = new SweepLineEvent(sweepInt.getMin(), null, sweepInt)
     this.events.add(insertEvent)
     this.events.add(new SweepLineEvent(sweepInt.getMax(), insertEvent, sweepInt))
   }
+
   getClass () {
     return SweepLineIndex
   }
+
   get interfaces_ () {
     return []
   }

@@ -10,19 +10,23 @@ export default class MinimumClearance {
   constructor () {
     MinimumClearance.constructor_.apply(this, arguments)
   }
+
   static getLine (g) {
     var rp = new MinimumClearance(g)
     return rp.getLine()
   }
+
   static getDistance (g) {
     var rp = new MinimumClearance(g)
     return rp.getDistance()
   }
+
   getLine () {
     this.compute()
     if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString()
     return this._inputGeom.getFactory().createLineString(this._minClearancePts)
   }
+
   compute () {
     if (this._minClearancePts !== null) return null
     this._minClearancePts = new Array(2).fill(null)
@@ -36,13 +40,16 @@ export default class MinimumClearance {
     this._minClearance = mcd.distance(nearest[0], nearest[1])
     this._minClearancePts = mcd.getCoordinates()
   }
+
   getDistance () {
     this.compute()
     return this._minClearance
   }
+
   getClass () {
     return MinimumClearance
   }
+
   get interfaces_ () {
     return []
   }
@@ -51,6 +58,7 @@ class MinClearanceDistance {
   constructor () {
     MinClearanceDistance.constructor_.apply(this, arguments)
   }
+
   vertexDistance (fs1, fs2) {
     for (var i1 = 0; i1 < fs1.size(); i1++) {
       for (var i2 = 0; i2 < fs2.size(); i2++) {
@@ -69,9 +77,11 @@ class MinClearanceDistance {
     }
     return this._minDist
   }
+
   getCoordinates () {
     return this._minPts
   }
+
   segmentDistance (fs1, fs2) {
     for (var i1 = 0; i1 < fs1.size(); i1++) {
       for (var i2 = 1; i2 < fs2.size(); i2++) {
@@ -90,15 +100,16 @@ class MinClearanceDistance {
     }
     return this._minDist
   }
+
   distance () {
     if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
-      let b1 = arguments[0]; let b2 = arguments[1]
+      const b1 = arguments[0]; const b2 = arguments[1]
       var fs1 = b1.getItem()
       var fs2 = b2.getItem()
       this._minDist = Double.MAX_VALUE
       return this.distance(fs1, fs2)
     } else if (arguments[0] instanceof FacetSequence && arguments[1] instanceof FacetSequence) {
-      let fs1 = arguments[0]; let fs2 = arguments[1]
+      const fs1 = arguments[0]; const fs2 = arguments[1]
       this.vertexDistance(fs1, fs2)
       if (fs1.size() === 1 && fs2.size() === 1) return this._minDist
       if (this._minDist <= 0.0) return this._minDist
@@ -108,14 +119,17 @@ class MinClearanceDistance {
       return this._minDist
     }
   }
+
   updatePts (p, seg0, seg1) {
     this._minPts[0] = p
     var seg = new LineSegment(seg0, seg1)
     this._minPts[1] = new Coordinate(seg.closestPoint(p))
   }
+
   getClass () {
     return MinClearanceDistance
   }
+
   get interfaces_ () {
     return [ItemDistance]
   }
@@ -129,6 +143,6 @@ MinimumClearance.constructor_ = function () {
   this._inputGeom = null
   this._minClearance = null
   this._minClearancePts = null
-  let geom = arguments[0]
+  const geom = arguments[0]
   this._inputGeom = geom
 }

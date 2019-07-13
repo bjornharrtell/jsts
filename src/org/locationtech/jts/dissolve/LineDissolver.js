@@ -12,14 +12,17 @@ export default class LineDissolver {
   constructor () {
     LineDissolver.constructor_.apply(this, arguments)
   }
+
   static dissolve (g) {
     var d = new LineDissolver()
     d.add(g)
     return d.getResult()
   }
+
   addLine (line) {
     this._lines.add(this._factory.createLineString(line.toCoordinateArray()))
   }
+
   updateRingStartEdge (e) {
     if (!e.isStart()) {
       e = e.sym()
@@ -33,16 +36,19 @@ export default class LineDissolver {
       this._ringStartEdge = e
     }
   }
+
   getResult () {
     if (this._result === null) this.computeResult()
     return this._result
   }
+
   process (e) {
     var eNode = e.prevNode()
     if (eNode === null) eNode = e
     this.stackEdges(eNode)
     this.buildLines()
   }
+
   buildRing (eStartRing) {
     var line = new CoordinateList()
     var e = eStartRing
@@ -56,6 +62,7 @@ export default class LineDissolver {
     line.add(e.dest().copy(), false)
     this.addLine(line)
   }
+
   buildLine (eStart) {
     var line = new CoordinateList()
     var e = eStart
@@ -77,6 +84,7 @@ export default class LineDissolver {
     this.stackEdges(e.sym())
     this.addLine(line)
   }
+
   stackEdges (node) {
     var e = node
     do {
@@ -84,6 +92,7 @@ export default class LineDissolver {
       e = e.oNext()
     } while (e !== node)
   }
+
   computeResult () {
     var edges = this._graph.getVertexEdges()
     for (var i = edges.iterator(); i.hasNext();) {
@@ -93,6 +102,7 @@ export default class LineDissolver {
     }
     this._result = this._factory.buildGeometry(this._lines)
   }
+
   buildLines () {
     while (!this._nodeEdgeStack.empty()) {
       var e = this._nodeEdgeStack.pop()
@@ -100,13 +110,15 @@ export default class LineDissolver {
       this.buildLine(e)
     }
   }
+
   add () {
     if (arguments[0] instanceof Geometry) {
-      let geometry = arguments[0]
+      const geometry = arguments[0]
       geometry.apply(new (class {
         get interfaces_ () {
           return [GeometryComponentFilter]
         }
+
         filter (component) {
           if (component instanceof LineString) {
             this.add(component)
@@ -114,13 +126,13 @@ export default class LineDissolver {
         }
       })())
     } else if (hasInterface(arguments[0], Collection)) {
-      let geometries = arguments[0]
+      const geometries = arguments[0]
       for (var i = geometries.iterator(); i.hasNext();) {
         var geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof LineString) {
-      let lineString = arguments[0]
+      const lineString = arguments[0]
       if (this._factory === null) {
         this._factory = lineString.getFactory()
       }
@@ -136,9 +148,11 @@ export default class LineDissolver {
       }
     }
   }
+
   getClass () {
     return LineDissolver
   }
+
   get interfaces_ () {
     return []
   }

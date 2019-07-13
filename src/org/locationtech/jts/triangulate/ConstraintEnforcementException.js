@@ -6,16 +6,20 @@ export default class ConstraintEnforcementException extends RuntimeException {
     super()
     ConstraintEnforcementException.constructor_.apply(this, arguments)
   }
+
   static msgWithCoord (msg, pt) {
     if (pt !== null) return msg + ' [ ' + WKTWriter.toPoint(pt) + ' ]'
     return msg
   }
+
   getCoordinate () {
     return this._pt
   }
+
   getClass () {
     return ConstraintEnforcementException
   }
+
   get interfaces_ () {
     return []
   }
@@ -23,10 +27,10 @@ export default class ConstraintEnforcementException extends RuntimeException {
 ConstraintEnforcementException.constructor_ = function () {
   this._pt = null
   if (arguments.length === 1) {
-    let msg = arguments[0]
+    const msg = arguments[0]
     RuntimeException.constructor_.call(this, msg)
   } else if (arguments.length === 2) {
-    let msg = arguments[0]; let pt = arguments[1]
+    const msg = arguments[0]; const pt = arguments[1]
     RuntimeException.constructor_.call(this, ConstraintEnforcementException.msgWithCoord(msg, pt))
     this._pt = new Coordinate(pt)
   }

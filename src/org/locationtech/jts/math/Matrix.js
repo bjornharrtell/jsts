@@ -3,6 +3,7 @@ export default class Matrix {
   constructor () {
     Matrix.constructor_.apply(this, arguments)
   }
+
   static solve (a, b) {
     var n = b.length
     if (a.length !== n || a[0].length !== n) throw new IllegalArgumentException('Matrix A is incorrectly sized')
@@ -26,9 +27,10 @@ export default class Matrix {
     }
     return solution
   }
+
   static swapRows () {
     if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-      let m = arguments[0]; let i = arguments[1]; let j = arguments[2]
+      const m = arguments[0]; const i = arguments[1]; const j = arguments[2]
       if (i === j) return null
       for (var col = 0; col < m[0].length; col++) {
         var temp = m[i][col]
@@ -36,16 +38,18 @@ export default class Matrix {
         m[j][col] = temp
       }
     } else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-      let m = arguments[0]; let i = arguments[1]; let j = arguments[2]
+      const m = arguments[0]; const i = arguments[1]; const j = arguments[2]
       if (i === j) return null
       var temp = m[i]
       m[i] = m[j]
       m[j] = temp
     }
   }
+
   getClass () {
     return Matrix
   }
+
   get interfaces_ () {
     return []
   }

@@ -5,12 +5,14 @@ export default class EdgeEndBundleStar extends EdgeEndStar {
     super()
     EdgeEndBundleStar.constructor_.apply(this, arguments)
   }
+
   updateIM (im) {
     for (var it = this.iterator(); it.hasNext();) {
       var esb = it.next()
       esb.updateIM(im)
     }
   }
+
   insert (e) {
     var eb = this._edgeMap.get(e)
     if (eb === null) {
@@ -20,9 +22,11 @@ export default class EdgeEndBundleStar extends EdgeEndStar {
       eb.insert(e)
     }
   }
+
   getClass () {
     return EdgeEndBundleStar
   }
+
   get interfaces_ () {
     return []
   }

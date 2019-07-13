@@ -5,6 +5,7 @@ export default class EdgeEndBuilder {
   constructor () {
     EdgeEndBuilder.constructor_.apply(this, arguments)
   }
+
   createEdgeEndForNext (edge, l, eiCurr, eiNext) {
     var iNext = eiCurr.segmentIndex + 1
     if (iNext >= edge.getNumPoints() && eiNext === null) return null
@@ -13,6 +14,7 @@ export default class EdgeEndBuilder {
     var e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()))
     l.add(e)
   }
+
   createEdgeEndForPrev (edge, l, eiCurr, eiPrev) {
     var iPrev = eiCurr.segmentIndex
     if (eiCurr.dist === 0.0) {
@@ -26,9 +28,10 @@ export default class EdgeEndBuilder {
     var e = new EdgeEnd(edge, eiCurr.coord, pPrev, label)
     l.add(e)
   }
+
   computeEdgeEnds () {
     if (arguments.length === 1) {
-      let edges = arguments[0]
+      const edges = arguments[0]
       var l = new ArrayList()
       for (var i = edges; i.hasNext();) {
         var e = i.next()
@@ -36,7 +39,7 @@ export default class EdgeEndBuilder {
       }
       return l
     } else if (arguments.length === 2) {
-      let edge = arguments[0]; let l = arguments[1]
+      const edge = arguments[0]; const l = arguments[1]
       var eiList = edge.getEdgeIntersectionList()
       eiList.addEndpoints()
       var it = eiList.iterator()
@@ -56,9 +59,11 @@ export default class EdgeEndBuilder {
       } while (eiCurr !== null)
     }
   }
+
   getClass () {
     return EdgeEndBuilder
   }
+
   get interfaces_ () {
     return []
   }

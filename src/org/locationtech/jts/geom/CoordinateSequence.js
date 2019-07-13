@@ -3,26 +3,39 @@ export default class CoordinateSequence {
   constructor () {
     CoordinateSequence.constructor_.apply(this, arguments)
   }
+
   setOrdinate (index, ordinateIndex, value) {}
+
   size () {}
+
   getOrdinate (index, ordinateIndex) {}
+
   getCoordinate () {
     if (arguments.length === 1) {
-      let i = arguments[0]
+      const i = arguments[0]
     } else if (arguments.length === 2) {
-      let index = arguments[0]; let coord = arguments[1]
+      const index = arguments[0]; const coord = arguments[1]
     }
   }
+
   getCoordinateCopy (i) {}
+
   getDimension () {}
+
   getX (index) {}
+
   expandEnvelope (env) {}
+
   copy () {}
+
   getY (index) {}
+
   toCoordinateArray () {}
+
   getClass () {
     return CoordinateSequence
   }
+
   get interfaces_ () {
     return [Cloneable]
   }

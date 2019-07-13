@@ -13,11 +13,13 @@ export default class DelaunayTriangulationBuilder {
   constructor () {
     DelaunayTriangulationBuilder.constructor_.apply(this, arguments)
   }
+
   static extractUniqueCoordinates (geom) {
     if (geom === null) return new CoordinateList()
     var coords = geom.getCoordinates()
     return DelaunayTriangulationBuilder.unique(coords)
   }
+
   static envelope (coords) {
     var env = new Envelope()
     for (var i = coords.iterator(); i.hasNext();) {
@@ -26,12 +28,14 @@ export default class DelaunayTriangulationBuilder {
     }
     return env
   }
+
   static unique (coords) {
     var coordsCopy = CoordinateArrays.copyDeep(coords)
     Arrays.sort(coordsCopy)
     var coordList = new CoordinateList(coordsCopy, false)
     return coordList
   }
+
   static toVertices (coords) {
     var verts = new ArrayList()
     for (var i = coords.iterator(); i.hasNext();) {
@@ -40,6 +44,7 @@ export default class DelaunayTriangulationBuilder {
     }
     return verts
   }
+
   create () {
     if (this._subdiv !== null) return null
     var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
@@ -48,33 +53,40 @@ export default class DelaunayTriangulationBuilder {
     var triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
+
   setTolerance (tolerance) {
     this._tolerance = tolerance
   }
+
   setSites () {
     if (arguments[0] instanceof Geometry) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom)
     } else if (hasInterface(arguments[0], Collection)) {
-      let coords = arguments[0]
+      const coords = arguments[0]
       this._siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords))
     }
   }
+
   getEdges (geomFact) {
     this.create()
     return this._subdiv.getEdges(geomFact)
   }
+
   getSubdivision () {
     this.create()
     return this._subdiv
   }
+
   getTriangles (geomFact) {
     this.create()
     return this._subdiv.getTriangles(geomFact)
   }
+
   getClass () {
     return DelaunayTriangulationBuilder
   }
+
   get interfaces_ () {
     return []
   }

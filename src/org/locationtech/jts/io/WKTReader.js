@@ -25,6 +25,7 @@ export default class WKTReader {
   constructor (geometryFactory) {
     this.parser = new WKTParser(geometryFactory || new GeometryFactory())
   }
+
   /**
    * Reads a Well-Known Text representation of a {@link Geometry}
    *

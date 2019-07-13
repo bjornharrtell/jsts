@@ -9,26 +9,32 @@ export default class Centroid {
   constructor () {
     Centroid.constructor_.apply(this, arguments)
   }
+
   static area2 (p1, p2, p3) {
     return (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y)
   }
+
   static centroid3 (p1, p2, p3, c) {
     c.x = p1.x + p2.x + p3.x
     c.y = p1.y + p2.y + p3.y
     return null
   }
+
   static getCentroid (geom) {
     var cent = new Centroid(geom)
     return cent.getCentroid()
   }
+
   setAreaBasePoint (basePt) {
     this._areaBasePt = basePt
   }
+
   addPoint (pt) {
     this._ptCount += 1
     this._ptCentSum.x += pt.x
     this._ptCentSum.y += pt.y
   }
+
   addLineSegments (pts) {
     var lineLen = 0.0
     for (var i = 0; i < pts.length - 1; i++) {
@@ -43,6 +49,7 @@ export default class Centroid {
     this._totalLength += lineLen
     if (lineLen === 0.0 && pts.length > 0) this.addPoint(pts[0])
   }
+
   addHole (pts) {
     var isPositiveArea = Orientation.isCCW(pts)
     for (var i = 0; i < pts.length - 1; i++) {
@@ -50,6 +57,7 @@ export default class Centroid {
     }
     this.addLineSegments(pts)
   }
+
   getCentroid () {
     var cent = new Coordinate()
     if (Math.abs(this._areasum2) > 0.0) {
@@ -66,6 +74,7 @@ export default class Centroid {
     }
     return cent
   }
+
   addShell (pts) {
     if (pts.length > 0) this.setAreaBasePoint(pts[0])
     var isPositiveArea = !Orientation.isCCW(pts)
@@ -74,6 +83,7 @@ export default class Centroid {
     }
     this.addLineSegments(pts)
   }
+
   addTriangle (p0, p1, p2, isPositiveArea) {
     var sign = isPositiveArea ? 1.0 : -1.0
     Centroid.centroid3(p0, p1, p2, this._triangleCent3)
@@ -82,15 +92,16 @@ export default class Centroid {
     this._cg3.y += sign * area2 * this._triangleCent3.y
     this._areasum2 += sign * area2
   }
+
   add () {
     if (arguments[0] instanceof Polygon) {
-      let poly = arguments[0]
+      const poly = arguments[0]
       this.addShell(poly.getExteriorRing().getCoordinates())
       for (var i = 0; i < poly.getNumInteriorRing(); i++) {
         this.addHole(poly.getInteriorRingN(i).getCoordinates())
       }
     } else if (arguments[0] instanceof Geometry) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       if (geom.isEmpty()) return null
       if (geom instanceof Point) {
         this.addPoint(geom.getCoordinate())
@@ -107,9 +118,11 @@ export default class Centroid {
       }
     }
   }
+
   getClass () {
     return Centroid
   }
+
   get interfaces_ () {
     return []
   }
@@ -123,7 +136,7 @@ Centroid.constructor_ = function () {
   this._totalLength = 0.0
   this._ptCount = 0
   this._ptCentSum = new Coordinate()
-  let geom = arguments[0]
+  const geom = arguments[0]
   this._areaBasePt = null
   this.add(geom)
 }

@@ -7,6 +7,7 @@ export default class MCIndexSegmentSetMutualIntersector {
   constructor () {
     MCIndexSegmentSetMutualIntersector.constructor_.apply(this, arguments)
   }
+
   addToIndex (segStr) {
     var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
     for (var i = segChains.iterator(); i.hasNext();) {
@@ -14,6 +15,7 @@ export default class MCIndexSegmentSetMutualIntersector {
       this._index.insert(mc.getEnvelope(), mc)
     }
   }
+
   addToMonoChains (segStr, monoChains) {
     var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
     for (var i = segChains.iterator(); i.hasNext();) {
@@ -21,6 +23,7 @@ export default class MCIndexSegmentSetMutualIntersector {
       monoChains.add(mc)
     }
   }
+
   process (segStrings, segInt) {
     var monoChains = new ArrayList()
     for (var i = segStrings.iterator(); i.hasNext();) {
@@ -28,15 +31,18 @@ export default class MCIndexSegmentSetMutualIntersector {
     }
     this.intersectChains(monoChains, segInt)
   }
+
   initBaseSegments (segStrings) {
     for (var i = segStrings.iterator(); i.hasNext();) {
       this.addToIndex(i.next())
     }
     this._index.build()
   }
+
   getIndex () {
     return this._index
   }
+
   intersectChains (monoChains, segInt) {
     var overlapAction = new SegmentOverlapAction(segInt)
     for (var i = monoChains.iterator(); i.hasNext();) {
@@ -49,9 +55,11 @@ export default class MCIndexSegmentSetMutualIntersector {
       }
     }
   }
+
   getClass () {
     return MCIndexSegmentSetMutualIntersector
   }
+
   get interfaces_ () {
     return [SegmentSetMutualIntersector]
   }
@@ -61,29 +69,32 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
     super()
     SegmentOverlapAction.constructor_.apply(this, arguments)
   }
+
   overlap () {
     if (arguments.length === 4) {
-      let mc1 = arguments[0]; let start1 = arguments[1]; let mc2 = arguments[2]; let start2 = arguments[3]
+      const mc1 = arguments[0]; const start1 = arguments[1]; const mc2 = arguments[2]; const start2 = arguments[3]
       var ss1 = mc1.getContext()
       var ss2 = mc2.getContext()
       this._si.processIntersections(ss1, start1, ss2, start2)
     } else return super.overlap.apply(this, arguments)
   }
+
   getClass () {
     return SegmentOverlapAction
   }
+
   get interfaces_ () {
     return []
   }
 }
 SegmentOverlapAction.constructor_ = function () {
   this._si = null
-  let si = arguments[0]
+  const si = arguments[0]
   this._si = si
 }
 MCIndexSegmentSetMutualIntersector.SegmentOverlapAction = SegmentOverlapAction
 MCIndexSegmentSetMutualIntersector.constructor_ = function () {
   this._index = new STRtree()
-  let baseSegStrings = arguments[0]
+  const baseSegStrings = arguments[0]
   this.initBaseSegments(baseSegStrings)
 }

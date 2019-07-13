@@ -21,11 +21,13 @@ export default class OverlayOp extends GeometryGraphOperation {
     super()
     OverlayOp.constructor_.apply(this, arguments)
   }
+
   static overlayOp (geom0, geom1, opCode) {
     var gov = new OverlayOp(geom0, geom1)
     var geomOv = gov.getResultGeometry(opCode)
     return geomOv
   }
+
   static union (geom, other) {
     if (geom.isEmpty() || other.isEmpty()) {
       if (geom.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, geom, other, geom.getFactory())
@@ -35,6 +37,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
     return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.UNION)
   }
+
   static intersection (geom, other) {
     if (geom.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, geom, other, geom.getFactory())
     if (geom.isGeometryCollection()) {
@@ -43,6 +46,7 @@ export default class OverlayOp extends GeometryGraphOperation {
         get interfaces_ () {
           return [MapOp]
         }
+
         map (g) {
           return OverlayOp.intersection(g, g2)
         }
@@ -50,6 +54,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     }
     return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.INTERSECTION)
   }
+
   static symDifference (geom, other) {
     if (geom.isEmpty() || other.isEmpty()) {
       if (geom.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, geom, other, geom.getFactory())
@@ -59,6 +64,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
     return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.SYMDIFFERENCE)
   }
+
   static resultDimension (opCode, g0, g1) {
     var dim0 = g0.getDimension()
     var dim1 = g1.getDimension()
@@ -79,6 +85,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     }
     return resultDimension
   }
+
   static createEmptyResult (overlayOpCode, a, b, geomFact) {
     var result = null
     switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
@@ -97,20 +104,22 @@ export default class OverlayOp extends GeometryGraphOperation {
     }
     return result
   }
+
   static difference (geom, other) {
     if (geom.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, geom, other, geom.getFactory())
     if (other.isEmpty()) return geom.copy()
     if (geom.isGeometryCollection() || other.isGeometryCollection()) throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
     return SnapIfNeededOverlayOp.overlayOp(geom, other, OverlayOp.DIFFERENCE)
   }
+
   static isResultOfOp () {
     if (arguments.length === 2) {
-      let label = arguments[0]; let opCode = arguments[1]
+      const label = arguments[0]; const opCode = arguments[1]
       var loc0 = label.getLocation(0)
       var loc1 = label.getLocation(1)
       return OverlayOp.isResultOfOp(loc0, loc1, opCode)
     } else if (arguments.length === 3) {
-      let loc0 = arguments[0]; let loc1 = arguments[1]; let overlayOpCode = arguments[2]
+      let loc0 = arguments[0]; let loc1 = arguments[1]; const overlayOpCode = arguments[2]
       if (loc0 === Location.BOUNDARY) loc0 = Location.INTERIOR
       if (loc1 === Location.BOUNDARY) loc1 = Location.INTERIOR
       switch (overlayOpCode) {
@@ -126,6 +135,7 @@ export default class OverlayOp extends GeometryGraphOperation {
       return false
     }
   }
+
   insertUniqueEdge (e) {
     var existingEdge = this._edgeList.findEqualEdge(e)
     if (existingEdge !== null) {
@@ -145,9 +155,11 @@ export default class OverlayOp extends GeometryGraphOperation {
       this._edgeList.add(e)
     }
   }
+
   getGraph () {
     return this._graph
   }
+
   cancelDuplicateResultEdges () {
     for (var it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next()
@@ -158,11 +170,13 @@ export default class OverlayOp extends GeometryGraphOperation {
       }
     }
   }
+
   isCoveredByLA (coord) {
     if (this.isCovered(coord, this._resultLineList)) return true
     if (this.isCovered(coord, this._resultPolyList)) return true
     return false
   }
+
   computeGeometry (resultPointList, resultLineList, resultPolyList, opcode) {
     var geomList = new ArrayList()
     geomList.addAll(resultPointList)
@@ -171,12 +185,14 @@ export default class OverlayOp extends GeometryGraphOperation {
     if (geomList.isEmpty()) return OverlayOp.createEmptyResult(opcode, this._arg[0].getGeometry(), this._arg[1].getGeometry(), this._geomFact)
     return this._geomFact.buildGeometry(geomList)
   }
+
   mergeSymLabels () {
     for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
       node.getEdges().mergeSymLabels()
     }
   }
+
   isCovered (coord, geomList) {
     for (var it = geomList.iterator(); it.hasNext();) {
       var geom = it.next()
@@ -185,6 +201,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     }
     return false
   }
+
   replaceCollapsedEdges () {
     var newEdges = new ArrayList()
     for (var it = this._edgeList.iterator(); it.hasNext();) {
@@ -196,6 +213,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     }
     this._edgeList.addAll(newEdges)
   }
+
   updateNodeLabelling () {
     for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
@@ -203,16 +221,19 @@ export default class OverlayOp extends GeometryGraphOperation {
       node.getLabel().merge(lbl)
     }
   }
+
   getResultGeometry (overlayOpCode) {
     this.computeOverlay(overlayOpCode)
     return this._resultGeom
   }
+
   insertUniqueEdges (edges) {
     for (var i = edges.iterator(); i.hasNext();) {
       var e = i.next()
       this.insertUniqueEdge(e)
     }
   }
+
   computeOverlay (opCode) {
     this.copyPoints(0)
     this.copyPoints(1)
@@ -241,10 +262,12 @@ export default class OverlayOp extends GeometryGraphOperation {
     this._resultPointList = pointBuilder.build(opCode)
     this._resultGeom = this.computeGeometry(this._resultPointList, this._resultLineList, this._resultPolyList, opCode)
   }
+
   labelIncompleteNode (n, targetIndex) {
     var loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
     n.getLabel().setLocation(targetIndex, loc)
   }
+
   copyPoints (argIndex) {
     for (var i = this._arg[argIndex].getNodeIterator(); i.hasNext();) {
       var graphNode = i.next()
@@ -252,6 +275,7 @@ export default class OverlayOp extends GeometryGraphOperation {
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex))
     }
   }
+
   findResultAreaEdges (opCode) {
     for (var it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next()
@@ -261,6 +285,7 @@ export default class OverlayOp extends GeometryGraphOperation {
       }
     }
   }
+
   computeLabelsFromDepths () {
     for (var it = this._edgeList.iterator(); it.hasNext();) {
       var e = it.next()
@@ -283,6 +308,7 @@ export default class OverlayOp extends GeometryGraphOperation {
       }
     }
   }
+
   computeLabelling () {
     for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
@@ -291,6 +317,7 @@ export default class OverlayOp extends GeometryGraphOperation {
     this.mergeSymLabels()
     this.updateNodeLabelling()
   }
+
   labelIncompleteNodes () {
     var nodeCount = 0
     for (var ni = this._graph.getNodes().iterator(); ni.hasNext();) {
@@ -303,13 +330,16 @@ export default class OverlayOp extends GeometryGraphOperation {
       n.getEdges().updateLabelling(label)
     }
   }
+
   isCoveredByA (coord) {
     if (this.isCovered(coord, this._resultPolyList)) return true
     return false
   }
+
   getClass () {
     return OverlayOp
   }
+
   get interfaces_ () {
     return []
   }
@@ -323,7 +353,7 @@ OverlayOp.constructor_ = function () {
   this._resultPolyList = new ArrayList()
   this._resultLineList = new ArrayList()
   this._resultPointList = new ArrayList()
-  let g0 = arguments[0]; let g1 = arguments[1]
+  const g0 = arguments[0]; const g1 = arguments[1]
   GeometryGraphOperation.constructor_.call(this, g0, g1)
   this._graph = new PlanarGraph(new OverlayNodeFactory())
   this._geomFact = g0.getFactory()

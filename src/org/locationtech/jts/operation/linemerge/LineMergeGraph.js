@@ -8,6 +8,7 @@ export default class LineMergeGraph extends PlanarGraph {
     super()
     LineMergeGraph.constructor_.apply(this, arguments)
   }
+
   addEdge (lineString) {
     if (lineString.isEmpty()) {
       return null
@@ -24,6 +25,7 @@ export default class LineMergeGraph extends PlanarGraph {
     edge.setDirectedEdges(directedEdge0, directedEdge1)
     this.add(edge)
   }
+
   getNode (coordinate) {
     var node = this.findNode(coordinate)
     if (node === null) {
@@ -32,9 +34,11 @@ export default class LineMergeGraph extends PlanarGraph {
     }
     return node
   }
+
   getClass () {
     return LineMergeGraph
   }
+
   get interfaces_ () {
     return []
   }

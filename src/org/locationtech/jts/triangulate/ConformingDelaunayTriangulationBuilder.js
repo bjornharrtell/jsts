@@ -9,9 +9,10 @@ export default class ConformingDelaunayTriangulationBuilder {
   constructor () {
     ConformingDelaunayTriangulationBuilder.constructor_.apply(this, arguments)
   }
+
   static createConstraintSegments () {
     if (arguments.length === 1) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       var lines = LinearComponentExtracter.getLines(geom)
       var constraintSegs = new ArrayList()
       for (var i = lines.iterator(); i.hasNext();) {
@@ -20,13 +21,14 @@ export default class ConformingDelaunayTriangulationBuilder {
       }
       return constraintSegs
     } else if (arguments.length === 2) {
-      let line = arguments[0]; let constraintSegs = arguments[1]
+      const line = arguments[0]; const constraintSegs = arguments[1]
       var coords = line.getCoordinates()
       for (var i = 1; i < coords.length; i++) {
         constraintSegs.add(new Segment(coords[i - 1], coords[i]))
       }
     }
   }
+
   createSiteVertices (coords) {
     var verts = new ArrayList()
     for (var i = coords.iterator(); i.hasNext();) {
@@ -36,6 +38,7 @@ export default class ConformingDelaunayTriangulationBuilder {
     }
     return verts
   }
+
   create () {
     if (this._subdiv !== null) return null
     var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
@@ -52,27 +55,34 @@ export default class ConformingDelaunayTriangulationBuilder {
     cdt.enforceConstraints()
     this._subdiv = cdt.getSubdivision()
   }
+
   setTolerance (tolerance) {
     this._tolerance = tolerance
   }
+
   setConstraints (constraintLines) {
     this._constraintLines = constraintLines
   }
+
   setSites (geom) {
     this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom)
   }
+
   getEdges (geomFact) {
     this.create()
     return this._subdiv.getEdges(geomFact)
   }
+
   getSubdivision () {
     this.create()
     return this._subdiv
   }
+
   getTriangles (geomFact) {
     this.create()
     return this._subdiv.getTriangles(geomFact)
   }
+
   createVertices (geom) {
     var coords = geom.getCoordinates()
     for (var i = 0; i < coords.length; i++) {
@@ -80,9 +90,11 @@ export default class ConformingDelaunayTriangulationBuilder {
       this._constraintVertexMap.put(coords[i], v)
     }
   }
+
   getClass () {
     return ConformingDelaunayTriangulationBuilder
   }
+
   get interfaces_ () {
     return []
   }

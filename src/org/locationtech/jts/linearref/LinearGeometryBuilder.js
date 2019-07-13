@@ -5,13 +5,16 @@ export default class LinearGeometryBuilder {
   constructor () {
     LinearGeometryBuilder.constructor_.apply(this, arguments)
   }
+
   getGeometry () {
     this.endLine()
     return this._geomFact.buildGeometry(this._lines)
   }
+
   getLastCoordinate () {
     return this._lastPt
   }
+
   endLine () {
     if (this._coordList === null) {
       return null
@@ -34,31 +37,37 @@ export default class LinearGeometryBuilder {
     } finally {}
     if (line !== null) this._lines.add(line)
   }
+
   setFixInvalidLines (fixInvalidLines) {
     this._fixInvalidLines = fixInvalidLines
   }
+
   add () {
     if (arguments.length === 1) {
-      let pt = arguments[0]
+      const pt = arguments[0]
       this.add(pt, true)
     } else if (arguments.length === 2) {
-      let pt = arguments[0]; let allowRepeatedPoints = arguments[1]
+      const pt = arguments[0]; const allowRepeatedPoints = arguments[1]
       if (this._coordList === null) this._coordList = new CoordinateList()
       this._coordList.add(pt, allowRepeatedPoints)
       this._lastPt = pt
     }
   }
+
   setIgnoreInvalidLines (ignoreInvalidLines) {
     this._ignoreInvalidLines = ignoreInvalidLines
   }
+
   validCoordinateSequence (pts) {
     if (pts.length >= 2) return pts
     var validPts = [pts[0], pts[0]]
     return validPts
   }
+
   getClass () {
     return LinearGeometryBuilder
   }
+
   get interfaces_ () {
     return []
   }
@@ -70,6 +79,6 @@ LinearGeometryBuilder.constructor_ = function () {
   this._ignoreInvalidLines = false
   this._fixInvalidLines = false
   this._lastPt = null
-  let geomFact = arguments[0]
+  const geomFact = arguments[0]
   this._geomFact = geomFact
 }

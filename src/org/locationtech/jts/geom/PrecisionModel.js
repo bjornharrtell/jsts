@@ -8,10 +8,12 @@ export default class PrecisionModel {
   constructor () {
     PrecisionModel.constructor_.apply(this, arguments)
   }
+
   static mostPrecise (pm1, pm2) {
     if (pm1.compareTo(pm2) >= 0) return pm1
     return pm2
   }
+
   equals (other) {
     if (!(other instanceof PrecisionModel)) {
       return false
@@ -19,21 +21,26 @@ export default class PrecisionModel {
     var otherPrecisionModel = other
     return this._modelType === otherPrecisionModel._modelType && this._scale === otherPrecisionModel._scale
   }
+
   compareTo (o) {
     var other = o
     var sigDigits = this.getMaximumSignificantDigits()
     var otherSigDigits = other.getMaximumSignificantDigits()
     return new Integer(sigDigits).compareTo(new Integer(otherSigDigits))
   }
+
   getScale () {
     return this._scale
   }
+
   isFloating () {
     return this._modelType === PrecisionModel.FLOATING || this._modelType === PrecisionModel.FLOATING_SINGLE
   }
+
   getType () {
     return this._modelType
   }
+
   toString () {
     var description = 'UNKNOWN'
     if (this._modelType === PrecisionModel.FLOATING) {
@@ -45,9 +52,10 @@ export default class PrecisionModel {
     }
     return description
   }
+
   makePrecise () {
     if (typeof arguments[0] === 'number') {
-      let val = arguments[0]
+      const val = arguments[0]
       if (Double.isNaN(val)) return val
       if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
         var floatSingleVal = val
@@ -58,12 +66,13 @@ export default class PrecisionModel {
       }
       return val
     } else if (arguments[0] instanceof Coordinate) {
-      let coord = arguments[0]
+      const coord = arguments[0]
       if (this._modelType === PrecisionModel.FLOATING) return null
       coord.x = this.makePrecise(coord.x)
       coord.y = this.makePrecise(coord.y)
     }
   }
+
   getMaximumSignificantDigits () {
     var maxSigDigits = 16
     if (this._modelType === PrecisionModel.FLOATING) {
@@ -75,12 +84,15 @@ export default class PrecisionModel {
     }
     return maxSigDigits
   }
+
   setScale (scale) {
     this._scale = Math.abs(scale)
   }
+
   getClass () {
     return PrecisionModel
   }
+
   get interfaces_ () {
     return [Serializable, Comparable]
   }
@@ -89,22 +101,26 @@ class Type {
   constructor () {
     Type.constructor_.apply(this, arguments)
   }
+
   readResolve () {
     return Type.nameToTypeMap.get(this._name)
   }
+
   toString () {
     return this._name
   }
+
   getClass () {
     return Type
   }
+
   get interfaces_ () {
     return [Serializable]
   }
 }
 Type.constructor_ = function () {
   this._name = null
-  let name = arguments[0]
+  const name = arguments[0]
   this._name = name
   Type.nameToTypeMap.put(name, this)
 }
@@ -118,17 +134,17 @@ PrecisionModel.constructor_ = function () {
     this._modelType = PrecisionModel.FLOATING
   } else if (arguments.length === 1) {
     if (arguments[0] instanceof Type) {
-      let modelType = arguments[0]
+      const modelType = arguments[0]
       this._modelType = modelType
       if (modelType === PrecisionModel.FIXED) {
         this.setScale(1.0)
       }
     } else if (typeof arguments[0] === 'number') {
-      let scale = arguments[0]
+      const scale = arguments[0]
       this._modelType = PrecisionModel.FIXED
       this.setScale(scale)
     } else if (arguments[0] instanceof PrecisionModel) {
-      let pm = arguments[0]
+      const pm = arguments[0]
       this._modelType = pm._modelType
       this._scale = pm._scale
     }

@@ -8,6 +8,7 @@ export default class SimplePointInAreaLocator {
   constructor () {
     SimplePointInAreaLocator.constructor_.apply(this, arguments)
   }
+
   static locatePointInPolygon (p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
     var shell = poly.getExteriorRing()
@@ -21,13 +22,16 @@ export default class SimplePointInAreaLocator {
     }
     return Location.INTERIOR
   }
+
   static locatePointInRing (p, ring) {
     if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return PointLocation.locateInRing(p, ring.getCoordinates())
   }
+
   static containsPointInPolygon (p, poly) {
     return Location.EXTERIOR !== SimplePointInAreaLocator.locatePointInPolygon(p, poly)
   }
+
   static locateInGeometry (p, geom) {
     if (geom instanceof Polygon) {
       return SimplePointInAreaLocator.locatePointInPolygon(p, geom)
@@ -43,22 +47,26 @@ export default class SimplePointInAreaLocator {
     }
     return Location.EXTERIOR
   }
+
   static locate (p, geom) {
     if (geom.isEmpty()) return Location.EXTERIOR
     return SimplePointInAreaLocator.locateInGeometry(p, geom)
   }
+
   locate (p) {
     return SimplePointInAreaLocator.locate(p, this._geom)
   }
+
   getClass () {
     return SimplePointInAreaLocator
   }
+
   get interfaces_ () {
     return [PointOnGeometryLocator]
   }
 }
 SimplePointInAreaLocator.constructor_ = function () {
   this._geom = null
-  let geom = arguments[0]
+  const geom = arguments[0]
   this._geom = geom
 }

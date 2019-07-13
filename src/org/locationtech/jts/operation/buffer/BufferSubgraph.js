@@ -11,15 +11,18 @@ export default class BufferSubgraph {
   constructor () {
     BufferSubgraph.constructor_.apply(this, arguments)
   }
+
   clearVisitedEdges () {
     for (var it = this._dirEdgeList.iterator(); it.hasNext();) {
       var de = it.next()
       de.setVisited(false)
     }
   }
+
   getRightmostCoordinate () {
     return this._rightMostCoord
   }
+
   computeNodeDepth (n) {
     var startEdge = null
     for (var i = n.getEdges().iterator(); i.hasNext();) {
@@ -37,6 +40,7 @@ export default class BufferSubgraph {
       this.copySymDepths(de)
     }
   }
+
   computeDepth (outsideDepth) {
     this.clearVisitedEdges()
     var de = this._finder.getEdge()
@@ -46,11 +50,13 @@ export default class BufferSubgraph {
     this.copySymDepths(de)
     this.computeDepths(de)
   }
+
   create (node) {
     this.addReachable(node)
     this._finder.findEdge(this._dirEdgeList)
     this._rightMostCoord = this._finder.getCoordinate()
   }
+
   findResultEdges () {
     for (var it = this._dirEdgeList.iterator(); it.hasNext();) {
       var de = it.next()
@@ -59,6 +65,7 @@ export default class BufferSubgraph {
       }
     }
   }
+
   computeDepths (startEdge) {
     var nodesVisited = new HashSet()
     var nodeQueue = new LinkedList()
@@ -82,6 +89,7 @@ export default class BufferSubgraph {
       }
     }
   }
+
   compareTo (o) {
     var graph = o
     if (this._rightMostCoord.x < graph._rightMostCoord.x) {
@@ -92,6 +100,7 @@ export default class BufferSubgraph {
     }
     return 0
   }
+
   getEnvelope () {
     if (this._env === null) {
       var edgeEnv = new Envelope()
@@ -106,6 +115,7 @@ export default class BufferSubgraph {
     }
     return this._env
   }
+
   addReachable (startNode) {
     var nodeStack = new Stack()
     nodeStack.add(startNode)
@@ -114,11 +124,13 @@ export default class BufferSubgraph {
       this.add(node, nodeStack)
     }
   }
+
   copySymDepths (de) {
     var sym = de.getSym()
     sym.setDepth(Position.LEFT, de.getDepth(Position.RIGHT))
     sym.setDepth(Position.RIGHT, de.getDepth(Position.LEFT))
   }
+
   add (node, nodeStack) {
     node.setVisited(true)
     this._nodes.add(node)
@@ -130,15 +142,19 @@ export default class BufferSubgraph {
       if (!symNode.isVisited()) nodeStack.push(symNode)
     }
   }
+
   getNodes () {
     return this._nodes
   }
+
   getDirectedEdges () {
     return this._dirEdgeList
   }
+
   getClass () {
     return BufferSubgraph
   }
+
   get interfaces_ () {
     return [Comparable]
   }

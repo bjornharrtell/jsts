@@ -4,6 +4,7 @@ export default class CGAlgorithmsDD {
   constructor () {
     CGAlgorithmsDD.constructor_.apply(this, arguments)
   }
+
   static orientationIndex (p1, p2, q) {
     var index = CGAlgorithmsDD.orientationIndexFilter(p1, p2, q)
     if (index <= 1) return index
@@ -13,13 +14,14 @@ export default class CGAlgorithmsDD {
     var dy2 = DD.valueOf(q.y).selfAdd(-p2.y)
     return dx1.selfMultiply(dy2).selfSubtract(dy1.selfMultiply(dx2)).signum()
   }
+
   static signOfDet2x2 () {
     if (arguments[3] instanceof DD && (arguments[2] instanceof DD && (arguments[0] instanceof DD && arguments[1] instanceof DD))) {
-      let x1 = arguments[0]; let y1 = arguments[1]; let x2 = arguments[2]; let y2 = arguments[3]
+      const x1 = arguments[0]; const y1 = arguments[1]; const x2 = arguments[2]; const y2 = arguments[3]
       var det = x1.multiply(y2).selfSubtract(y1.multiply(x2))
       return det.signum()
     } else if (typeof arguments[3] === 'number' && (typeof arguments[2] === 'number' && (typeof arguments[0] === 'number' && typeof arguments[1] === 'number'))) {
-      let dx1 = arguments[0]; let dy1 = arguments[1]; let dx2 = arguments[2]; let dy2 = arguments[3]
+      const dx1 = arguments[0]; const dy1 = arguments[1]; const dx2 = arguments[2]; const dy2 = arguments[3]
       var x1 = DD.valueOf(dx1)
       var y1 = DD.valueOf(dy1)
       var x2 = DD.valueOf(dx2)
@@ -28,6 +30,7 @@ export default class CGAlgorithmsDD {
       return det.signum()
     }
   }
+
   static intersection (p1, p2, q1, q2) {
     var denom1 = DD.valueOf(q2.y).selfSubtract(q1.y).selfMultiply(DD.valueOf(p2.x).selfSubtract(p1.x))
     var denom2 = DD.valueOf(q2.x).selfSubtract(q1.x).selfMultiply(DD.valueOf(p2.y).selfSubtract(p1.y))
@@ -44,6 +47,7 @@ export default class CGAlgorithmsDD {
     var y = DD.valueOf(q1.y).selfAdd(DD.valueOf(q2.y).selfSubtract(q1.y).selfMultiply(fracQ)).doubleValue()
     return new Coordinate(x, y)
   }
+
   static orientationIndexFilter (pa, pb, pc) {
     var detsum = null
     var detleft = (pa.x - pc.x) * (pb.y - pc.y)
@@ -70,14 +74,17 @@ export default class CGAlgorithmsDD {
     }
     return 2
   }
+
   static signum (x) {
     if (x > 0) return 1
     if (x < 0) return -1
     return 0
   }
+
   getClass () {
     return CGAlgorithmsDD
   }
+
   get interfaces_ () {
     return []
   }

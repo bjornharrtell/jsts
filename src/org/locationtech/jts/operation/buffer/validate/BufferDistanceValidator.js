@@ -12,6 +12,7 @@ export default class BufferDistanceValidator {
   constructor () {
     BufferDistanceValidator.constructor_.apply(this, arguments)
   }
+
   checkMaximumDistance (input, bufCurve, maxDist) {
     var haus = new DiscreteHausdorffDistance(bufCurve, input)
     haus.setDensifyFraction(0.25)
@@ -24,6 +25,7 @@ export default class BufferDistanceValidator {
       this._errMsg = 'Distance between buffer curve and input is too large ' + '(' + this._maxDistanceFound + ' at ' + WKTWriter.toLineString(pts[0], pts[1]) + ')'
     }
   }
+
   isValid () {
     var posDistance = Math.abs(this._bufDistance)
     var distDelta = BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC * posDistance
@@ -40,6 +42,7 @@ export default class BufferDistanceValidator {
     }
     return this._isValid
   }
+
   checkNegativeValid () {
     if (!(this._input instanceof Polygon || this._input instanceof MultiPolygon || this._input instanceof GeometryCollection)) {
       return null
@@ -49,9 +52,11 @@ export default class BufferDistanceValidator {
     if (!this._isValid) return null
     this.checkMaximumDistance(inputCurve, this._result, this._maxValidDistance)
   }
+
   getErrorIndicator () {
     return this._errorIndicator
   }
+
   checkMinimumDistance (g1, g2, minDist) {
     var distOp = new DistanceOp(g1, g2, minDist)
     this._minDistanceFound = distOp.distance()
@@ -63,15 +68,18 @@ export default class BufferDistanceValidator {
       this._errMsg = 'Distance between buffer curve and input is too small ' + '(' + this._minDistanceFound + ' at ' + WKTWriter.toLineString(pts[0], pts[1]) + ' )'
     }
   }
+
   checkPositiveValid () {
     var bufCurve = this._result.getBoundary()
     this.checkMinimumDistance(this._input, bufCurve, this._minValidDistance)
     if (!this._isValid) return null
     this.checkMaximumDistance(this._input, bufCurve, this._maxValidDistance)
   }
+
   getErrorLocation () {
     return this._errorLocation
   }
+
   getPolygonLines (g) {
     var lines = new ArrayList()
     var lineExtracter = new LinearComponentExtracter(lines)
@@ -82,12 +90,15 @@ export default class BufferDistanceValidator {
     }
     return g.getFactory().buildGeometry(lines)
   }
+
   getErrorMessage () {
     return this._errMsg
   }
+
   getClass () {
     return BufferDistanceValidator
   }
+
   get interfaces_ () {
     return []
   }
@@ -104,7 +115,7 @@ BufferDistanceValidator.constructor_ = function () {
   this._errMsg = null
   this._errorLocation = null
   this._errorIndicator = null
-  let input = arguments[0]; let bufDistance = arguments[1]; let result = arguments[2]
+  const input = arguments[0]; const bufDistance = arguments[1]; const result = arguments[2]
   this._input = input
   this._bufDistance = bufDistance
   this._result = result

@@ -13,17 +13,21 @@ export default class PointLocator {
   constructor () {
     PointLocator.constructor_.apply(this, arguments)
   }
+
   locateInPolygonRing (p, ring) {
     if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return PointLocation.locateInRing(p, ring.getCoordinates())
   }
+
   intersects (p, geom) {
     return this.locate(p, geom) !== Location.EXTERIOR
   }
+
   updateLocationInfo (loc) {
     if (loc === Location.INTERIOR) this._isIn = true
     if (loc === Location.BOUNDARY) this._numBoundaries++
   }
+
   computeLocation (p, geom) {
     if (geom instanceof Point) {
       this.updateLocationInfo(this.locateOnPoint(p, geom))
@@ -52,11 +56,13 @@ export default class PointLocator {
       }
     }
   }
+
   locateOnPoint (p, pt) {
     var ptCoord = pt.getCoordinate()
     if (ptCoord.equals2D(p)) return Location.INTERIOR
     return Location.EXTERIOR
   }
+
   locateOnLineString (p, l) {
     if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     var seq = l.getCoordinateSequence()
@@ -70,6 +76,7 @@ export default class PointLocator {
     }
     return Location.EXTERIOR
   }
+
   locateInPolygon (p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
     var shell = poly.getExteriorRing()
@@ -84,6 +91,7 @@ export default class PointLocator {
     }
     return Location.INTERIOR
   }
+
   locate (p, geom) {
     if (geom.isEmpty()) return Location.EXTERIOR
     if (geom instanceof LineString) {
@@ -98,9 +106,11 @@ export default class PointLocator {
     if (this._numBoundaries > 0 || this._isIn) return Location.INTERIOR
     return Location.EXTERIOR
   }
+
   getClass () {
     return PointLocator
   }
+
   get interfaces_ () {
     return []
   }
@@ -110,7 +120,7 @@ PointLocator.constructor_ = function () {
   this._isIn = null
   this._numBoundaries = null
   if (arguments.length === 0) {} else if (arguments.length === 1) {
-    let boundaryRule = arguments[0]
+    const boundaryRule = arguments[0]
     if (boundaryRule === null) throw new IllegalArgumentException('Rule must be non-null')
     this._boundaryRule = boundaryRule
   }

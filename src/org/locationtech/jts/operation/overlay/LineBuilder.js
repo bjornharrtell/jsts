@@ -5,6 +5,7 @@ export default class LineBuilder {
   constructor () {
     LineBuilder.constructor_.apply(this, arguments)
   }
+
   collectLines (opCode) {
     for (var it = this._op.getGraph().getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next()
@@ -12,16 +13,19 @@ export default class LineBuilder {
       this.collectBoundaryTouchEdge(de, opCode, this._lineEdgesList)
     }
   }
+
   labelIsolatedLine (e, targetIndex) {
     var loc = this._ptLocator.locate(e.getCoordinate(), this._op.getArgGeometry(targetIndex))
     e.getLabel().setLocation(targetIndex, loc)
   }
+
   build (opCode) {
     this.findCoveredLineEdges()
     this.collectLines(opCode)
     this.buildLines(opCode)
     return this._resultLineList
   }
+
   collectLineEdge (de, opCode, edges) {
     var label = de.getLabel()
     var e = de.getEdge()
@@ -32,6 +36,7 @@ export default class LineBuilder {
       }
     }
   }
+
   findCoveredLineEdges () {
     for (var nodeit = this._op.getGraph().getNodes().iterator(); nodeit.hasNext();) {
       var node = nodeit.next()
@@ -46,6 +51,7 @@ export default class LineBuilder {
       }
     }
   }
+
   labelIsolatedLines (edgesList) {
     for (var it = edgesList.iterator(); it.hasNext();) {
       var e = it.next()
@@ -55,6 +61,7 @@ export default class LineBuilder {
       }
     }
   }
+
   buildLines (opCode) {
     for (var it = this._lineEdgesList.iterator(); it.hasNext();) {
       var e = it.next()
@@ -64,6 +71,7 @@ export default class LineBuilder {
       e.setInResult(true)
     }
   }
+
   collectBoundaryTouchEdge (de, opCode, edges) {
     var label = de.getLabel()
     if (de.isLineEdge()) return null
@@ -76,9 +84,11 @@ export default class LineBuilder {
       de.setVisitedEdge(true)
     }
   }
+
   getClass () {
     return LineBuilder
   }
+
   get interfaces_ () {
     return []
   }
@@ -89,7 +99,7 @@ LineBuilder.constructor_ = function () {
   this._ptLocator = null
   this._lineEdgesList = new ArrayList()
   this._resultLineList = new ArrayList()
-  let op = arguments[0]; let geometryFactory = arguments[1]; let ptLocator = arguments[2]
+  const op = arguments[0]; const geometryFactory = arguments[1]; const ptLocator = arguments[2]
   this._op = op
   this._geometryFactory = geometryFactory
   this._ptLocator = ptLocator

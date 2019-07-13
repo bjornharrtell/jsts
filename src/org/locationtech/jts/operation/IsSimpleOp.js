@@ -13,17 +13,19 @@ export default class IsSimpleOp {
   constructor () {
     IsSimpleOp.constructor_.apply(this, arguments)
   }
+
   static isSimple () {
     if (arguments.length === 1) {
-      let geom = arguments[0]
+      const geom = arguments[0]
       var op = new IsSimpleOp(geom)
       return op.isSimple()
     } else if (arguments.length === 2) {
-      let geom = arguments[0]; let boundaryNodeRule = arguments[1]
+      const geom = arguments[0]; const boundaryNodeRule = arguments[1]
       var op = new IsSimpleOp(geom, boundaryNodeRule)
       return op.isSimple()
     }
   }
+
   isSimpleMultiPoint (mp) {
     if (mp.isEmpty()) return true
     var points = new TreeSet()
@@ -38,6 +40,7 @@ export default class IsSimpleOp {
     }
     return true
   }
+
   isSimplePolygonal (geom) {
     var rings = LinearComponentExtracter.getLines(geom)
     for (var i = rings.iterator(); i.hasNext();) {
@@ -46,6 +49,7 @@ export default class IsSimpleOp {
     }
     return true
   }
+
   hasClosedEndpointIntersection (graph) {
     var endPoints = new TreeMap()
     for (var i = graph.getEdgeIterator(); i.hasNext();) {
@@ -66,9 +70,11 @@ export default class IsSimpleOp {
     }
     return false
   }
+
   getNonSimpleLocation () {
     return this._nonSimpleLocation
   }
+
   isSimpleLinearGeometry (geom) {
     if (geom.isEmpty()) return true
     var graph = new GeometryGraph(0, geom)
@@ -85,6 +91,7 @@ export default class IsSimpleOp {
     }
     return true
   }
+
   hasNonEndpointIntersection (graph) {
     for (var i = graph.getEdgeIterator(); i.hasNext();) {
       var e = i.next()
@@ -99,6 +106,7 @@ export default class IsSimpleOp {
     }
     return false
   }
+
   addEndpoint (endPoints, p, isClosed) {
     var eiInfo = endPoints.get(p)
     if (eiInfo === null) {
@@ -107,6 +115,7 @@ export default class IsSimpleOp {
     }
     eiInfo.addEndpoint(isClosed)
   }
+
   computeSimple (geom) {
     this._nonSimpleLocation = null
     if (geom.isEmpty()) return true
@@ -117,10 +126,12 @@ export default class IsSimpleOp {
     if (geom instanceof GeometryCollection) return this.isSimpleGeometryCollection(geom)
     return true
   }
+
   isSimple () {
     this._nonSimpleLocation = null
     return this.computeSimple(this._inputGeom)
   }
+
   isSimpleGeometryCollection (geom) {
     for (var i = 0; i < geom.getNumGeometries(); i++) {
       var comp = geom.getGeometryN(i)
@@ -128,9 +139,11 @@ export default class IsSimpleOp {
     }
     return true
   }
+
   getClass () {
     return IsSimpleOp
   }
+
   get interfaces_ () {
     return []
   }
@@ -139,16 +152,20 @@ class EndpointInfo {
   constructor () {
     EndpointInfo.constructor_.apply(this, arguments)
   }
+
   addEndpoint (isClosed) {
     this.degree++
     this.isClosed |= isClosed
   }
+
   getCoordinate () {
     return this.pt
   }
+
   getClass () {
     return EndpointInfo
   }
+
   get interfaces_ () {
     return []
   }
@@ -157,7 +174,7 @@ EndpointInfo.constructor_ = function () {
   this.pt = null
   this.isClosed = null
   this.degree = null
-  let pt = arguments[0]
+  const pt = arguments[0]
   this.pt = pt
   this.isClosed = false
   this.degree = 0
@@ -168,10 +185,10 @@ IsSimpleOp.constructor_ = function () {
   this._isClosedEndpointsInInterior = true
   this._nonSimpleLocation = null
   if (arguments.length === 1) {
-    let geom = arguments[0]
+    const geom = arguments[0]
     this._inputGeom = geom
   } else if (arguments.length === 2) {
-    let geom = arguments[0]; let boundaryNodeRule = arguments[1]
+    const geom = arguments[0]; const boundaryNodeRule = arguments[1]
     this._inputGeom = geom
     this._isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2)
   }

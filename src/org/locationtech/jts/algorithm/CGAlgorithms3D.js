@@ -6,6 +6,7 @@ export default class CGAlgorithms3D {
   constructor () {
     CGAlgorithms3D.constructor_.apply(this, arguments)
   }
+
   static distanceSegmentSegment (A, B, C, D) {
     if (A.equals3D(B)) return CGAlgorithms3D.distancePointSegment(A, C, D)
     if (C.equals3D(B)) return CGAlgorithms3D.distancePointSegment(C, A, B)
@@ -36,6 +37,7 @@ export default class CGAlgorithms3D {
     var z2 = C.z + t * (D.z - C.z)
     return CGAlgorithms3D.distance(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
   }
+
   static distance (p0, p1) {
     if (Double.isNaN(p0.z) || Double.isNaN(p1.z)) return p0.distance(p1)
     var dx = p0.x - p1.x
@@ -43,6 +45,7 @@ export default class CGAlgorithms3D {
     var dz = p0.z - p1.z
     return Math.sqrt(dx * dx + dy * dy + dz * dz)
   }
+
   static distancePointSegment (p, A, B) {
     if (A.equals3D(B)) return CGAlgorithms3D.distance(p, A)
     var len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.z - A.z) * (B.z - A.z)
@@ -58,9 +61,11 @@ export default class CGAlgorithms3D {
     var dz = p.z - qz
     return Math.sqrt(dx * dx + dy * dy + dz * dz)
   }
+
   getClass () {
     return CGAlgorithms3D
   }
+
   get interfaces_ () {
     return []
   }

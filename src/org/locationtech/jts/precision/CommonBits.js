@@ -7,9 +7,11 @@ export default class CommonBits {
     this._commonBits = new Long()
     this._commonSignExp = null
   }
+
   getCommon () {
     return Double.longBitsToDouble(this._commonBits)
   }
+
   add (num) {
     var numBits = Double.doubleToLongBits(num)
     if (this._isFirst) {
@@ -27,9 +29,10 @@ export default class CommonBits {
     this._commonMantissaBitsCount = CommonBits.numCommonMostSigMantissaBits(this._commonBits, numBits)
     this._commonBits = CommonBits.zeroLowerBits(this._commonBits, 64 - (12 + this._commonMantissaBitsCount))
   }
+
   toString () {
     if (arguments.length === 1) {
-      let bits = arguments[0]
+      const bits = arguments[0]
       var x = Double.longBitsToDouble(bits)
       var numStr = Long.toBinaryString(bits)
       var padStr = '0000000000000000000000000000000000000000000000000000000000000000' + numStr
@@ -38,12 +41,15 @@ export default class CommonBits {
       return str
     }
   }
+
   getClass () {
     return CommonBits
   }
+
   get interfaces_ () {
     return []
   }
+
   static getBit (bits, i) {
     var mask = (1 << (i % 32))
     if (i < 32) {
@@ -51,9 +57,11 @@ export default class CommonBits {
     }
     return (bits.high & mask) !== 0 ? 1 : 0
   }
+
   static signExpBits (num) {
     return num.high >>> 20
   }
+
   static zeroLowerBits (bits, nBits) {
     var prop = 'low'
     if (nBits > 32) {
@@ -67,6 +75,7 @@ export default class CommonBits {
     }
     return bits
   }
+
   static numCommonMostSigMantissaBits (num1, num2) {
     var count = 0
     for (var i = 52; i >= 0; i--) {

@@ -7,9 +7,11 @@ export default class IteratedNoder {
   constructor () {
     IteratedNoder.constructor_.apply(this, arguments)
   }
+
   setMaximumIterations (maxIter) {
     this._maxIter = maxIter
   }
+
   node (segStrings, numInteriorIntersections) {
     var si = new IntersectionAdder(this._li)
     var noder = new MCIndexNoder()
@@ -18,6 +20,7 @@ export default class IteratedNoder {
     this._nodedSegStrings = noder.getNodedSubstrings()
     numInteriorIntersections[0] = si.numInteriorIntersections
   }
+
   computeNodes (segStrings) {
     var numInteriorIntersections = new Array(1).fill(null)
     this._nodedSegStrings = segStrings
@@ -33,12 +36,15 @@ export default class IteratedNoder {
       lastNodesCreated = nodesCreated
     } while (lastNodesCreated > 0)
   }
+
   getNodedSubstrings () {
     return this._nodedSegStrings
   }
+
   getClass () {
     return IteratedNoder
   }
+
   get interfaces_ () {
     return [Noder]
   }
@@ -48,7 +54,7 @@ IteratedNoder.constructor_ = function () {
   this._li = null
   this._nodedSegStrings = null
   this._maxIter = IteratedNoder.MAX_ITER
-  let pm = arguments[0]
+  const pm = arguments[0]
   this._li = new RobustLineIntersector()
   this._pm = pm
   this._li.setPrecisionModel(pm)

@@ -7,16 +7,17 @@ export default class Vertex {
   constructor () {
     Vertex.constructor_.apply(this, arguments)
   }
+
   static interpolateZ () {
     if (arguments.length === 3) {
-      let p = arguments[0]; let p0 = arguments[1]; let p1 = arguments[2]
+      const p = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
       var segLen = p0.distance(p1)
       var ptLen = p.distance(p0)
       var dz = p1.z - p0.z
       var pz = p0.z + dz * (ptLen / segLen)
       return pz
     } else if (arguments.length === 4) {
-      let p = arguments[0]; let v0 = arguments[1]; let v1 = arguments[2]; let v2 = arguments[3]
+      const p = arguments[0]; const v0 = arguments[1]; const v1 = arguments[2]; const v2 = arguments[3]
       var x0 = v0.x
       var y0 = v0.y
       var a = v1.x - x0
@@ -32,6 +33,7 @@ export default class Vertex {
       return z
     }
   }
+
   circleCenter (b, c) {
     var a = new Vertex(this.getX(), this.getY())
     var cab = this.bisector(a, b)
@@ -48,15 +50,19 @@ export default class Vertex {
     } finally {}
     return cc
   }
+
   dot (v) {
     return this._p.x * v.getX() + this._p.y * v.getY()
   }
+
   magn () {
     return Math.sqrt(this._p.x * this._p.x + this._p.y * this._p.y)
   }
+
   getZ () {
     return this._p.z
   }
+
   bisector (a, b) {
     var dx = b.getX() - a.getX()
     var dy = b.getY() - a.getY()
@@ -64,16 +70,17 @@ export default class Vertex {
     var l2 = new HCoordinate(a.getX() - dy + dx / 2.0, a.getY() + dx + dy / 2.0, 1.0)
     return new HCoordinate(l1, l2)
   }
+
   equals () {
     if (arguments.length === 1) {
-      let _x = arguments[0]
+      const _x = arguments[0]
       if (this._p.x === _x.getX() && this._p.y === _x.getY()) {
         return true
       } else {
         return false
       }
     } else if (arguments.length === 2) {
-      let _x = arguments[0]; let tolerance = arguments[1]
+      const _x = arguments[0]; const tolerance = arguments[1]
       if (this._p.distance(_x.getCoordinate()) < tolerance) {
         return true
       } else {
@@ -81,12 +88,15 @@ export default class Vertex {
       }
     }
   }
+
   getCoordinate () {
     return this._p
   }
+
   isInCircle (a, b, c) {
     return TrianglePredicate.isInCircleRobust(a._p, b._p, c._p, this._p)
   }
+
   interpolateZValue (v0, v1, v2) {
     var x0 = v0.getX()
     var y0 = v0.getY()
@@ -102,45 +112,58 @@ export default class Vertex {
     var z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ())
     return z
   }
+
   midPoint (a) {
     var xm = (this._p.x + a.getX()) / 2.0
     var ym = (this._p.y + a.getY()) / 2.0
     var zm = (this._p.z + a.getZ()) / 2.0
     return new Vertex(xm, ym, zm)
   }
+
   rightOf (e) {
     return this.isCCW(e.dest(), e.orig())
   }
+
   isCCW (b, c) {
     return (b._p.x - this._p.x) * (c._p.y - this._p.y) - (b._p.y - this._p.y) * (c._p.x - this._p.x) > 0
   }
+
   getX () {
     return this._p.x
   }
+
   crossProduct (v) {
     return this._p.x * v.getY() - this._p.y * v.getX()
   }
+
   setZ (_z) {
     this._p.z = _z
   }
+
   times (c) {
     return new Vertex(c * this._p.x, c * this._p.y)
   }
+
   cross () {
     return new Vertex(this._p.y, -this._p.x)
   }
+
   leftOf (e) {
     return this.isCCW(e.orig(), e.dest())
   }
+
   toString () {
     return 'POINT (' + this._p.x + ' ' + this._p.y + ')'
   }
+
   sub (v) {
     return new Vertex(this._p.x - v.getX(), this._p.y - v.getY())
   }
+
   getY () {
     return this._p.y
   }
+
   classify (p0, p1) {
     var p2 = this
     var a = p1.sub(p0)
@@ -154,12 +177,15 @@ export default class Vertex {
     if (p1.equals(p2)) return Vertex.DESTINATION
     return Vertex.BETWEEN
   }
+
   sum (v) {
     return new Vertex(this._p.x + v.getX(), this._p.y + v.getY())
   }
+
   distance (v1, v2) {
     return Math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0) + Math.pow(v2.getY() - v1.getY(), 2.0))
   }
+
   circumRadiusRatio (b, c) {
     var x = this.circleCenter(b, c)
     var radius = this.distance(x, b)
@@ -174,9 +200,11 @@ export default class Vertex {
     }
     return radius / edgeLength
   }
+
   getClass () {
     return Vertex
   }
+
   get interfaces_ () {
     return []
   }
@@ -184,13 +212,13 @@ export default class Vertex {
 Vertex.constructor_ = function () {
   this._p = null
   if (arguments.length === 1) {
-    let _p = arguments[0]
+    const _p = arguments[0]
     this._p = new Coordinate(_p)
   } else if (arguments.length === 2) {
-    let _x = arguments[0]; let _y = arguments[1]
+    const _x = arguments[0]; const _y = arguments[1]
     this._p = new Coordinate(_x, _y)
   } else if (arguments.length === 3) {
-    let _x = arguments[0]; let _y = arguments[1]; let _z = arguments[2]
+    const _x = arguments[0]; const _y = arguments[1]; const _z = arguments[2]
     this._p = new Coordinate(_x, _y, _z)
   }
 }

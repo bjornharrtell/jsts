@@ -15,6 +15,7 @@ export default class GeometryCollection extends Geometry {
     super()
     GeometryCollection.constructor_.apply(this, arguments)
   }
+
   computeEnvelopeInternal () {
     var envelope = new Envelope()
     for (var i = 0; i < this._geometries.length; i++) {
@@ -22,9 +23,11 @@ export default class GeometryCollection extends Geometry {
     }
     return envelope
   }
+
   getGeometryN (n) {
     return this._geometries[n]
   }
+
   getCoordinates () {
     var coordinates = new Array(this.getNumPoints()).fill(null)
     var k = -1
@@ -37,6 +40,7 @@ export default class GeometryCollection extends Geometry {
     }
     return coordinates
   }
+
   getArea () {
     var area = 0.0
     for (var i = 0; i < this._geometries.length; i++) {
@@ -44,9 +48,10 @@ export default class GeometryCollection extends Geometry {
     }
     return area
   }
+
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      let other = arguments[0]; let tolerance = arguments[1]
+      const other = arguments[0]; const tolerance = arguments[1]
       if (!this.isEquivalentClass(other)) {
         return false
       }
@@ -62,16 +67,19 @@ export default class GeometryCollection extends Geometry {
       return true
     } else return super.equalsExact.apply(this, arguments)
   }
+
   normalize () {
     for (var i = 0; i < this._geometries.length; i++) {
       this._geometries[i].normalize()
     }
     Arrays.sort(this._geometries)
   }
+
   getCoordinate () {
     if (this.isEmpty()) return null
     return this._geometries[0].getCoordinate()
   }
+
   getBoundaryDimension () {
     var dimension = Dimension.FALSE
     for (var i = 0; i < this._geometries.length; i++) {
@@ -79,9 +87,11 @@ export default class GeometryCollection extends Geometry {
     }
     return dimension
   }
+
   getTypeCode () {
     return Geometry.TYPECODE_GEOMETRYCOLLECTION
   }
+
   getDimension () {
     var dimension = Dimension.FALSE
     for (var i = 0; i < this._geometries.length; i++) {
@@ -89,6 +99,7 @@ export default class GeometryCollection extends Geometry {
     }
     return dimension
   }
+
   getLength () {
     var sum = 0.0
     for (var i = 0; i < this._geometries.length; i++) {
@@ -96,6 +107,7 @@ export default class GeometryCollection extends Geometry {
     }
     return sum
   }
+
   getNumPoints () {
     var numPoints = 0
     for (var i = 0; i < this._geometries.length; i++) {
@@ -103,9 +115,11 @@ export default class GeometryCollection extends Geometry {
     }
     return numPoints
   }
+
   getNumGeometries () {
     return this._geometries.length
   }
+
   reverse () {
     var n = this._geometries.length
     var revGeoms = new Array(n).fill(null)
@@ -114,14 +128,15 @@ export default class GeometryCollection extends Geometry {
     }
     return this.getFactory().createGeometryCollection(revGeoms)
   }
+
   compareToSameClass () {
     if (arguments.length === 1) {
-      let o = arguments[0]
+      const o = arguments[0]
       var theseElements = new TreeSet(Arrays.asList(this._geometries))
       var otherElements = new TreeSet(Arrays.asList(o._geometries))
       return this.compare(theseElements, otherElements)
     } else if (arguments.length === 2) {
-      let o = arguments[0]; let comp = arguments[1]
+      const o = arguments[0]; const comp = arguments[1]
       var gc = o
       var n1 = this.getNumGeometries()
       var n2 = gc.getNumGeometries()
@@ -138,14 +153,15 @@ export default class GeometryCollection extends Geometry {
       return 0
     }
   }
+
   apply () {
     if (hasInterface(arguments[0], CoordinateFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       for (var i = 0; i < this._geometries.length; i++) {
         this._geometries[i].apply(filter)
       }
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       if (this._geometries.length === 0) return null
       for (var i = 0; i < this._geometries.length; i++) {
         this._geometries[i].apply(filter)
@@ -155,27 +171,30 @@ export default class GeometryCollection extends Geometry {
       }
       if (filter.isGeometryChanged()) this.geometryChanged()
     } else if (hasInterface(arguments[0], GeometryFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       filter.filter(this)
       for (var i = 0; i < this._geometries.length; i++) {
         this._geometries[i].apply(filter)
       }
     } else if (hasInterface(arguments[0], GeometryComponentFilter)) {
-      let filter = arguments[0]
+      const filter = arguments[0]
       filter.filter(this)
       for (var i = 0; i < this._geometries.length; i++) {
         this._geometries[i].apply(filter)
       }
     }
   }
+
   getBoundary () {
     this.checkNotGeometryCollection(this)
     Assert.shouldNeverReachHere()
     return null
   }
+
   getGeometryType () {
     return Geometry.TYPENAME_GEOMETRYCOLLECTION
   }
+
   copy () {
     var geometries = new Array(this._geometries.length).fill(null)
     for (var i = 0; i < geometries.length; i++) {
@@ -183,6 +202,7 @@ export default class GeometryCollection extends Geometry {
     }
     return new GeometryCollection(geometries, this._factory)
   }
+
   isEmpty () {
     for (var i = 0; i < this._geometries.length; i++) {
       if (!this._geometries[i].isEmpty()) {
@@ -191,9 +211,11 @@ export default class GeometryCollection extends Geometry {
     }
     return true
   }
+
   getClass () {
     return GeometryCollection
   }
+
   get interfaces_ () {
     return []
   }
@@ -201,7 +223,7 @@ export default class GeometryCollection extends Geometry {
 GeometryCollection.constructor_ = function () {
   this._geometries = null
   if (arguments.length === 0) {} else if (arguments.length === 2) {
-    let geometries = arguments[0]; let factory = arguments[1]
+    let geometries = arguments[0]; const factory = arguments[1]
     Geometry.constructor_.call(this, factory)
     if (geometries === null) {
       geometries = []

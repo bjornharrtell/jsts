@@ -3,6 +3,7 @@ export default class IncrementalDelaunayTriangulator {
   constructor () {
     IncrementalDelaunayTriangulator.constructor_.apply(this, arguments)
   }
+
   insertSite (v) {
     var e = this._subdiv.locate(v)
     if (this._subdiv.isVertexOfEdge(e, v)) {
@@ -30,15 +31,18 @@ export default class IncrementalDelaunayTriangulator {
       }
     } while (true)
   }
+
   insertSites (vertices) {
     for (var i = vertices.iterator(); i.hasNext();) {
       var v = i.next()
       this.insertSite(v)
     }
   }
+
   getClass () {
     return IncrementalDelaunayTriangulator
   }
+
   get interfaces_ () {
     return []
   }
@@ -46,7 +50,7 @@ export default class IncrementalDelaunayTriangulator {
 IncrementalDelaunayTriangulator.constructor_ = function () {
   this._subdiv = null
   this._isUsingTolerance = false
-  let subdiv = arguments[0]
+  const subdiv = arguments[0]
   this._subdiv = subdiv
   this._isUsingTolerance = subdiv.getTolerance() > 0.0
 }

@@ -3,34 +3,37 @@ export default class GeometryCombiner {
   constructor () {
     GeometryCombiner.constructor_.apply(this, arguments)
   }
+
   static combine () {
     if (arguments.length === 1) {
-      let geoms = arguments[0]
+      const geoms = arguments[0]
       var combiner = new GeometryCombiner(geoms)
       return combiner.combine()
     } else if (arguments.length === 2) {
-      let g0 = arguments[0]; let g1 = arguments[1]
+      const g0 = arguments[0]; const g1 = arguments[1]
       var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1))
       return combiner.combine()
     } else if (arguments.length === 3) {
-      let g0 = arguments[0]; let g1 = arguments[1]; let g2 = arguments[2]
+      const g0 = arguments[0]; const g1 = arguments[1]; const g2 = arguments[2]
       var combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1, g2))
       return combiner.combine()
     }
   }
+
   static extractFactory (geoms) {
     if (geoms.isEmpty()) return null
     return geoms.iterator().next().getFactory()
   }
+
   static createList () {
     if (arguments.length === 2) {
-      let obj0 = arguments[0]; let obj1 = arguments[1]
+      const obj0 = arguments[0]; const obj1 = arguments[1]
       var list = new ArrayList()
       list.add(obj0)
       list.add(obj1)
       return list
     } else if (arguments.length === 3) {
-      let obj0 = arguments[0]; let obj1 = arguments[1]; let obj2 = arguments[2]
+      const obj0 = arguments[0]; const obj1 = arguments[1]; const obj2 = arguments[2]
       var list = new ArrayList()
       list.add(obj0)
       list.add(obj1)
@@ -38,6 +41,7 @@ export default class GeometryCombiner {
       return list
     }
   }
+
   extractElements (geom, elems) {
     if (geom === null) return null
     for (var i = 0; i < geom.getNumGeometries(); i++) {
@@ -46,6 +50,7 @@ export default class GeometryCombiner {
       elems.add(elemGeom)
     }
   }
+
   combine () {
     var elems = new ArrayList()
     for (var i = this._inputGeoms.iterator(); i.hasNext();) {
@@ -60,9 +65,11 @@ export default class GeometryCombiner {
     }
     return this._geomFactory.buildGeometry(elems)
   }
+
   getClass () {
     return GeometryCombiner
   }
+
   get interfaces_ () {
     return []
   }
@@ -71,7 +78,7 @@ GeometryCombiner.constructor_ = function () {
   this._geomFactory = null
   this._skipEmpty = false
   this._inputGeoms = null
-  let geoms = arguments[0]
+  const geoms = arguments[0]
   this._geomFactory = GeometryCombiner.extractFactory(geoms)
   this._inputGeoms = geoms
 }

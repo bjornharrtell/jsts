@@ -12,6 +12,7 @@ export default class OffsetSegmentGenerator {
   constructor () {
     OffsetSegmentGenerator.constructor_.apply(this, arguments)
   }
+
   addNextSegment (p, addStartPoint) {
     this._s0 = this._s1
     this._s1 = this._s2
@@ -31,6 +32,7 @@ export default class OffsetSegmentGenerator {
       this.addInsideTurn(orientation, addStartPoint)
     }
   }
+
   addLineEndCap (p0, p1) {
     var seg = new LineSegment(p0, p1)
     var offsetL = new LineSegment()
@@ -61,10 +63,12 @@ export default class OffsetSegmentGenerator {
         break
     }
   }
+
   getCoordinates () {
     var pts = this._segList.getCoordinates()
     return pts
   }
+
   addMitreJoin (p, offset0, offset1, distance) {
     var isMitreWithinLimit = true
     var intPt = null
@@ -84,6 +88,7 @@ export default class OffsetSegmentGenerator {
       this.addLimitedMitreJoin(offset0, offset1, distance, this._bufParams.getMitreLimit())
     }
   }
+
   addOutsideTurn (orientation, addStartPoint) {
     if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
       this._segList.addPt(this._offset0.p1)
@@ -99,6 +104,7 @@ export default class OffsetSegmentGenerator {
       this._segList.addPt(this._offset1.p0)
     }
   }
+
   createSquare (p) {
     this._segList.addPt(new Coordinate(p.x + this._distance, p.y + this._distance))
     this._segList.addPt(new Coordinate(p.x + this._distance, p.y - this._distance))
@@ -106,12 +112,15 @@ export default class OffsetSegmentGenerator {
     this._segList.addPt(new Coordinate(p.x - this._distance, p.y + this._distance))
     this._segList.closeRing()
   }
+
   addSegments (pt, isForward) {
     this._segList.addPts(pt, isForward)
   }
+
   addFirstSegment () {
     this._segList.addPt(this._offset1.p0)
   }
+
   addCornerFillet (p, p0, p1, direction, radius) {
     var dx0 = p0.x - p.x
     var dy0 = p0.y - p.y
@@ -128,9 +137,11 @@ export default class OffsetSegmentGenerator {
     this.addDirectedFillet(p, startAngle, endAngle, direction, radius)
     this._segList.addPt(p1)
   }
+
   addLastSegment () {
     this._segList.addPt(this._offset1.p1)
   }
+
   initSideSegments (s1, s2, side) {
     this._s1 = s1
     this._s2 = s2
@@ -138,6 +149,7 @@ export default class OffsetSegmentGenerator {
     this._seg1.setCoordinates(s1, s2)
     this.computeOffsetSegment(this._seg1, side, this._distance, this._offset1)
   }
+
   addLimitedMitreJoin (offset0, offset1, distance, mitreLimit) {
     var basePt = this._seg0.p1
     var ang0 = Angle.angle(basePt, this._seg0.p0)
@@ -163,6 +175,7 @@ export default class OffsetSegmentGenerator {
       this._segList.addPt(bevelEndLeft)
     }
   }
+
   addDirectedFillet (p, startAngle, endAngle, direction, radius) {
     var directionFactor = direction === Orientation.CLOCKWISE ? -1 : 1
     var totalAngle = Math.abs(startAngle - endAngle)
@@ -181,6 +194,7 @@ export default class OffsetSegmentGenerator {
       currAngle += currAngleInc
     }
   }
+
   computeOffsetSegment (seg, side, distance, offset) {
     var sideSign = side === Position.LEFT ? 1 : -1
     var dx = seg.p1.x - seg.p0.x
@@ -193,6 +207,7 @@ export default class OffsetSegmentGenerator {
     offset.p1.x = seg.p1.x - uy
     offset.p1.y = seg.p1.y + ux
   }
+
   addInsideTurn (orientation, addStartPoint) {
     this._li.computeIntersection(this._offset0.p0, this._offset0.p1, this._offset1.p0, this._offset1.p1)
     if (this._li.hasIntersection()) {
@@ -215,16 +230,19 @@ export default class OffsetSegmentGenerator {
       }
     }
   }
+
   createCircle (p) {
     var pt = new Coordinate(p.x + this._distance, p.y)
     this._segList.addPt(pt)
     this.addDirectedFillet(p, 0.0, 2.0 * Math.PI, -1, this._distance)
     this._segList.closeRing()
   }
+
   addBevelJoin (offset0, offset1) {
     this._segList.addPt(offset0.p1)
     this._segList.addPt(offset1.p0)
   }
+
   init (distance) {
     this._distance = distance
     this._maxCurveSegmentError = distance * (1 - Math.cos(this._filletAngleQuantum / 2.0))
@@ -232,6 +250,7 @@ export default class OffsetSegmentGenerator {
     this._segList.setPrecisionModel(this._precisionModel)
     this._segList.setMinimumVertexDistance(distance * OffsetSegmentGenerator.CURVE_VERTEX_SNAP_DISTANCE_FACTOR)
   }
+
   addCollinear (addStartPoint) {
     this._li.computeIntersection(this._s0, this._s1, this._s1, this._s2)
     var numInt = this._li.getIntersectionNum()
@@ -244,15 +263,19 @@ export default class OffsetSegmentGenerator {
       }
     }
   }
+
   closeRing () {
     this._segList.closeRing()
   }
+
   hasNarrowConcaveAngle () {
     return this._hasNarrowConcaveAngle
   }
+
   getClass () {
     return OffsetSegmentGenerator
   }
+
   get interfaces_ () {
     return []
   }
@@ -275,7 +298,7 @@ OffsetSegmentGenerator.constructor_ = function () {
   this._offset1 = new LineSegment()
   this._side = 0
   this._hasNarrowConcaveAngle = false
-  let precisionModel = arguments[0]; let bufParams = arguments[1]; let distance = arguments[2]
+  const precisionModel = arguments[0]; const bufParams = arguments[1]; const distance = arguments[2]
   this._precisionModel = precisionModel
   this._bufParams = bufParams
   this._li = new RobustLineIntersector()

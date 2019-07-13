@@ -4,6 +4,7 @@ export default class EnhancedPrecisionOp {
   constructor () {
     EnhancedPrecisionOp.constructor_.apply(this, arguments)
   }
+
   static union (geom0, geom1) {
     var originalEx = null
     try {
@@ -25,6 +26,7 @@ export default class EnhancedPrecisionOp {
       } else throw ex2
     } finally {}
   }
+
   static intersection (geom0, geom1) {
     var originalEx = null
     try {
@@ -46,6 +48,7 @@ export default class EnhancedPrecisionOp {
       } else throw ex2
     } finally {}
   }
+
   static buffer (geom, distance) {
     var originalEx = null
     try {
@@ -67,6 +70,7 @@ export default class EnhancedPrecisionOp {
       } else throw ex2
     } finally {}
   }
+
   static symDifference (geom0, geom1) {
     var originalEx = null
     try {
@@ -88,6 +92,7 @@ export default class EnhancedPrecisionOp {
       } else throw ex2
     } finally {}
   }
+
   static difference (geom0, geom1) {
     var originalEx = null
     try {
@@ -109,9 +114,11 @@ export default class EnhancedPrecisionOp {
       } else throw ex2
     } finally {}
   }
+
   getClass () {
     return EnhancedPrecisionOp
   }
+
   get interfaces_ () {
     return []
   }

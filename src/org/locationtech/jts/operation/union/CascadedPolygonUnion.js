@@ -11,6 +11,7 @@ export default class CascadedPolygonUnion {
   constructor () {
     CascadedPolygonUnion.constructor_.apply(this, arguments)
   }
+
   static restrictToPolygons (g) {
     if (hasInterface(g, Polygonal)) {
       return g
@@ -19,14 +20,17 @@ export default class CascadedPolygonUnion {
     if (polygons.size() === 1) return polygons.get(0)
     return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons))
   }
+
   static getGeometry (list, index) {
     if (index >= list.size()) return null
     return list.get(index)
   }
+
   static union (polys) {
     var op = new CascadedPolygonUnion(polys)
     return op.union()
   }
+
   reduceToGeometries (geomTree) {
     var geoms = new ArrayList()
     for (var i = geomTree.iterator(); i.hasNext();) {
@@ -41,6 +45,7 @@ export default class CascadedPolygonUnion {
     }
     return geoms
   }
+
   extractByEnvelope (env, geom, disjointGeoms) {
     var intersectingGeoms = new ArrayList()
     for (var i = 0; i < geom.getNumGeometries(); i++) {
@@ -49,6 +54,7 @@ export default class CascadedPolygonUnion {
     }
     return this._geomFactory.buildGeometry(intersectingGeoms)
   }
+
   unionOptimized (g0, g1) {
     var g0Env = g0.getEnvelopeInternal()
     var g1Env = g1.getEnvelopeInternal()
@@ -60,6 +66,7 @@ export default class CascadedPolygonUnion {
     var commonEnv = g0Env.intersection(g1Env)
     return this.unionUsingEnvelopeIntersection(g0, g1, commonEnv)
   }
+
   union () {
     if (this._inputPolys === null) throw new IllegalStateException('union() method cannot be called twice')
     if (this._inputPolys.isEmpty()) return null
@@ -74,12 +81,13 @@ export default class CascadedPolygonUnion {
     var unionAll = this.unionTree(itemTree)
     return unionAll
   }
+
   binaryUnion () {
     if (arguments.length === 1) {
-      let geoms = arguments[0]
+      const geoms = arguments[0]
       return this.binaryUnion(geoms, 0, geoms.size())
     } else if (arguments.length === 3) {
-      let geoms = arguments[0]; let start = arguments[1]; let end = arguments[2]
+      const geoms = arguments[0]; const start = arguments[1]; const end = arguments[2]
       if (end - start <= 1) {
         var g0 = CascadedPolygonUnion.getGeometry(geoms, start)
         return this.unionSafe(g0, null)
@@ -93,6 +101,7 @@ export default class CascadedPolygonUnion {
       }
     }
   }
+
   repeatedUnion (geoms) {
     var union = null
     for (var i = geoms.iterator(); i.hasNext();) {
@@ -101,20 +110,24 @@ export default class CascadedPolygonUnion {
     }
     return union
   }
+
   unionSafe (g0, g1) {
     if (g0 === null && g1 === null) return null
     if (g0 === null) return g1.copy()
     if (g1 === null) return g0.copy()
     return this.unionOptimized(g0, g1)
   }
+
   unionActual (g0, g1) {
     return CascadedPolygonUnion.restrictToPolygons(g0.union(g1))
   }
+
   unionTree (geomTree) {
     var geoms = this.reduceToGeometries(geomTree)
     var union = this.binaryUnion(geoms)
     return union
   }
+
   unionUsingEnvelopeIntersection (g0, g1, common) {
     var disjointPolys = new ArrayList()
     var g0Int = this.extractByEnvelope(common, g0, disjointPolys)
@@ -124,24 +137,27 @@ export default class CascadedPolygonUnion {
     var overallUnion = GeometryCombiner.combine(disjointPolys)
     return overallUnion
   }
+
   bufferUnion () {
     if (arguments.length === 1) {
-      let geoms = arguments[0]
+      const geoms = arguments[0]
       var factory = geoms.get(0).getFactory()
       var gColl = factory.buildGeometry(geoms)
       var unionAll = gColl.buffer(0.0)
       return unionAll
     } else if (arguments.length === 2) {
-      let g0 = arguments[0]; let g1 = arguments[1]
+      const g0 = arguments[0]; const g1 = arguments[1]
       var factory = g0.getFactory()
       var gColl = factory.createGeometryCollection([g0, g1])
       var unionAll = gColl.buffer(0.0)
       return unionAll
     }
   }
+
   getClass () {
     return CascadedPolygonUnion
   }
+
   get interfaces_ () {
     return []
   }
@@ -149,7 +165,7 @@ export default class CascadedPolygonUnion {
 CascadedPolygonUnion.constructor_ = function () {
   this._inputPolys = null
   this._geomFactory = null
-  let polys = arguments[0]
+  const polys = arguments[0]
   this._inputPolys = polys
   if (this._inputPolys === null) this._inputPolys = new ArrayList()
 }

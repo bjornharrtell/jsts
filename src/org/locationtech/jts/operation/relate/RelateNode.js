@@ -4,20 +4,24 @@ export default class RelateNode extends Node {
     super()
     RelateNode.constructor_.apply(this, arguments)
   }
+
   updateIMFromEdges (im) {
     this._edges.updateIM(im)
   }
+
   computeIM (im) {
     im.setAtLeastIfValid(this._label.getLocation(0), this._label.getLocation(1), 0)
   }
+
   getClass () {
     return RelateNode
   }
+
   get interfaces_ () {
     return []
   }
 }
 RelateNode.constructor_ = function () {
-  let coord = arguments[0]; let edges = arguments[1]
+  const coord = arguments[0]; const edges = arguments[1]
   Node.constructor_.call(this, coord, edges)
 }

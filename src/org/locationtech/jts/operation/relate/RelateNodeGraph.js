@@ -6,15 +6,18 @@ export default class RelateNodeGraph {
   constructor () {
     RelateNodeGraph.constructor_.apply(this, arguments)
   }
+
   insertEdgeEnds (ee) {
     for (var i = ee.iterator(); i.hasNext();) {
       var e = i.next()
       this._nodes.add(e)
     }
   }
+
   getNodeIterator () {
     return this._nodes.iterator()
   }
+
   copyNodesAndLabels (geomGraph, argIndex) {
     for (var nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext();) {
       var graphNode = nodeIt.next()
@@ -22,6 +25,7 @@ export default class RelateNodeGraph {
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex))
     }
   }
+
   build (geomGraph) {
     this.computeIntersectionNodes(geomGraph, 0)
     this.copyNodesAndLabels(geomGraph, 0)
@@ -29,6 +33,7 @@ export default class RelateNodeGraph {
     var eeList = eeBuilder.computeEdgeEnds(geomGraph.getEdgeIterator())
     this.insertEdgeEnds(eeList)
   }
+
   computeIntersectionNodes (geomGraph, argIndex) {
     for (var edgeIt = geomGraph.getEdgeIterator(); edgeIt.hasNext();) {
       var e = edgeIt.next()
@@ -42,9 +47,11 @@ export default class RelateNodeGraph {
       }
     }
   }
+
   getClass () {
     return RelateNodeGraph
   }
+
   get interfaces_ () {
     return []
   }

@@ -7,20 +7,25 @@ export default class MinimumDiameter {
   constructor () {
     MinimumDiameter.constructor_.apply(this, arguments)
   }
+
   static nextIndex (pts, index) {
     index++
     if (index >= pts.length) index = 0
     return index
   }
+
   static computeC (a, b, p) {
     return a * p.y - b * p.x
   }
+
   static getMinimumDiameter (geom) {
     return new MinimumDiameter(geom).getDiameter()
   }
+
   static getMinimumRectangle (geom) {
     return new MinimumDiameter(geom).getMinimumRectangle()
   }
+
   static computeSegmentForLine (a, b, c) {
     var p0 = null
     var p1 = null
@@ -33,20 +38,24 @@ export default class MinimumDiameter {
     }
     return new LineSegment(p0, p1)
   }
+
   getWidthCoordinate () {
     this.computeMinimumDiameter()
     return this._minWidthPt
   }
+
   getSupportingSegment () {
     this.computeMinimumDiameter()
     return this._inputGeom.getFactory().createLineString([this._minBaseSeg.p0, this._minBaseSeg.p1])
   }
+
   getDiameter () {
     this.computeMinimumDiameter()
     if (this._minWidthPt === null) return this._inputGeom.getFactory().createLineString()
     var basePt = this._minBaseSeg.project(this._minWidthPt)
     return this._inputGeom.getFactory().createLineString([basePt, this._minWidthPt])
   }
+
   computeWidthConvex (convexGeom) {
     if (convexGeom instanceof Polygon) this._convexHullPts = convexGeom.getExteriorRing().getCoordinates(); else this._convexHullPts = convexGeom.getCoordinates()
     if (this._convexHullPts.length === 0) {
@@ -65,6 +74,7 @@ export default class MinimumDiameter {
       this._minBaseSeg.p1 = this._convexHullPts[1]
     } else this.computeConvexRingMinDiameter(this._convexHullPts)
   }
+
   computeConvexRingMinDiameter (pts) {
     this._minWidth = Double.MAX_VALUE
     var currMaxIndex = 1
@@ -75,6 +85,7 @@ export default class MinimumDiameter {
       currMaxIndex = this.findMaxPerpDistance(pts, seg, currMaxIndex)
     }
   }
+
   computeMinimumDiameter () {
     if (this._minWidthPt !== null) return null
     if (this._isConvex) this.computeWidthConvex(this._inputGeom); else {
@@ -82,10 +93,12 @@ export default class MinimumDiameter {
       this.computeWidthConvex(convexGeom)
     }
   }
+
   getLength () {
     this.computeMinimumDiameter()
     return this._minWidth
   }
+
   findMaxPerpDistance (pts, seg, startIndex) {
     var maxPerpDistance = seg.distancePerpendicular(pts[startIndex])
     var nextPerpDistance = maxPerpDistance
@@ -105,6 +118,7 @@ export default class MinimumDiameter {
     }
     return maxIndex
   }
+
   getMinimumRectangle () {
     this.computeMinimumDiameter()
     if (this._minWidth === 0.0) {
@@ -138,9 +152,11 @@ export default class MinimumDiameter {
     var shell = this._inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0])
     return this._inputGeom.getFactory().createPolygon(shell)
   }
+
   getClass () {
     return MinimumDiameter
   }
+
   get interfaces_ () {
     return []
   }
@@ -154,10 +170,10 @@ MinimumDiameter.constructor_ = function () {
   this._minPtIndex = null
   this._minWidth = 0.0
   if (arguments.length === 1) {
-    let inputGeom = arguments[0]
+    const inputGeom = arguments[0]
     MinimumDiameter.constructor_.call(this, inputGeom, false)
   } else if (arguments.length === 2) {
-    let inputGeom = arguments[0]; let isConvex = arguments[1]
+    const inputGeom = arguments[0]; const isConvex = arguments[1]
     this._inputGeom = inputGeom
     this._isConvex = isConvex
   }

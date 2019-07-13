@@ -8,9 +8,10 @@ export default class PointLocation {
   constructor () {
     PointLocation.constructor_.apply(this, arguments)
   }
+
   static isOnLine () {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
-      let p = arguments[0]; let line = arguments[1]
+      const p = arguments[0]; const line = arguments[1]
       var lineIntersector = new RobustLineIntersector()
       var p0 = new Coordinate()
       var p1 = new Coordinate()
@@ -25,7 +26,7 @@ export default class PointLocation {
       }
       return false
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
-      let p = arguments[0]; let line = arguments[1]
+      const p = arguments[0]; const line = arguments[1]
       var lineIntersector = new RobustLineIntersector()
       for (var i = 1; i < line.length; i++) {
         var p0 = line[i - 1]
@@ -38,15 +39,19 @@ export default class PointLocation {
       return false
     }
   }
+
   static locateInRing (p, ring) {
     return RayCrossingCounter.locatePointInRing(p, ring)
   }
+
   static isInRing (p, ring) {
     return PointLocation.locateInRing(p, ring) !== Location.EXTERIOR
   }
+
   getClass () {
     return PointLocation
   }
+
   get interfaces_ () {
     return []
   }

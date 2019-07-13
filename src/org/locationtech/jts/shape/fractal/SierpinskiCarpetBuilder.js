@@ -8,11 +8,13 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     super()
     SierpinskiCarpetBuilder.constructor_.apply(this, arguments)
   }
+
   static recursionLevelForSize (numPts) {
     var pow4 = Math.trunc(numPts / 3)
     var exp = Math.log(pow4) / Math.log(4)
     return Math.trunc(exp)
   }
+
   addHoles (n, originX, originY, width, holeList) {
     if (n < 0) return null
     var n2 = n - 1
@@ -29,15 +31,18 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     this.addHoles(n2, originX + 2 * widthThird, originY + 2 * widthThird, widthThird, holeList)
     holeList.add(this.createSquareHole(originX + widthThird, originY + widthThird, widthThird))
   }
+
   getHoles (n, originX, originY, width) {
     var holeList = new ArrayList()
     this.addHoles(n, originX, originY, width, holeList)
     return GeometryFactory.toLinearRingArray(holeList)
   }
+
   createSquareHole (x, y, width) {
     var pts = [new Coordinate(x, y), new Coordinate(x + width, y), new Coordinate(x + width, y + width), new Coordinate(x, y + width), new Coordinate(x, y)]
     return this._geomFactory.createLinearRing(pts)
   }
+
   getGeometry () {
     var level = SierpinskiCarpetBuilder.recursionLevelForSize(this._numPts)
     var baseLine = this.getSquareBaseLine()
@@ -46,15 +51,17 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     var shell = this._geomFactory.toGeometry(this.getSquareExtent()).getExteriorRing()
     return this._geomFactory.createPolygon(shell, holes)
   }
+
   getClass () {
     return SierpinskiCarpetBuilder
   }
+
   get interfaces_ () {
     return []
   }
 }
 SierpinskiCarpetBuilder.constructor_ = function () {
   this._coordList = new CoordinateList()
-  let geomFactory = arguments[0]
+  const geomFactory = arguments[0]
   GeometricShapeBuilder.constructor_.call(this, geomFactory)
 }

@@ -18,20 +18,24 @@ export default class DistanceOp {
   constructor () {
     DistanceOp.constructor_.apply(this, arguments)
   }
+
   static distance (g0, g1) {
     var distOp = new DistanceOp(g0, g1)
     return distOp.distance()
   }
+
   static isWithinDistance (g0, g1, distance) {
     var envDist = g0.getEnvelopeInternal().distance(g1.getEnvelopeInternal())
     if (envDist > distance) return false
     var distOp = new DistanceOp(g0, g1, distance)
     return distOp.distance() <= distance
   }
+
   static nearestPoints (g0, g1) {
     var distOp = new DistanceOp(g0, g1)
     return distOp.nearestPoints()
   }
+
   computeContainmentDistance () {
     if (arguments.length === 0) {
       var locPtPoly = new Array(2).fill(null)
@@ -39,7 +43,7 @@ export default class DistanceOp {
       if (this._minDistance <= this._terminateDistance) return null
       this.computeContainmentDistance(1, locPtPoly)
     } else if (arguments.length === 2) {
-      let polyGeomIndex = arguments[0]; let locPtPoly = arguments[1]
+      const polyGeomIndex = arguments[0]; const locPtPoly = arguments[1]
       var polyGeom = this._geom[polyGeomIndex]
       if (polyGeom.getDimension() < 2) return null
       var locationsIndex = 1 - polyGeomIndex
@@ -55,7 +59,7 @@ export default class DistanceOp {
       }
     } else if (arguments.length === 3) {
       if (arguments[2] instanceof Array && (hasInterface(arguments[0], List) && hasInterface(arguments[1], List))) {
-        let locs = arguments[0]; let polys = arguments[1]; let locPtPoly = arguments[2]
+        const locs = arguments[0]; const polys = arguments[1]; const locPtPoly = arguments[2]
         for (var i = 0; i < locs.size(); i++) {
           var loc = locs.get(i)
           for (var j = 0; j < polys.size(); j++) {
@@ -64,7 +68,7 @@ export default class DistanceOp {
           }
         }
       } else if (arguments[2] instanceof Array && (arguments[0] instanceof GeometryLocation && arguments[1] instanceof Polygon)) {
-        let ptLoc = arguments[0]; let poly = arguments[1]; let locPtPoly = arguments[2]
+        const ptLoc = arguments[0]; const poly = arguments[1]; const locPtPoly = arguments[2]
         var pt = ptLoc.getCoordinate()
         if (Location.EXTERIOR !== this._ptLocator.locate(pt, poly)) {
           this._minDistance = 0.0
@@ -76,6 +80,7 @@ export default class DistanceOp {
       }
     }
   }
+
   computeMinDistanceLinesPoints (lines, points, locGeom) {
     for (var i = 0; i < lines.size(); i++) {
       var line = lines.get(i)
@@ -86,6 +91,7 @@ export default class DistanceOp {
       }
     }
   }
+
   computeFacetDistance () {
     var locGeom = new Array(2).fill(null)
     var lines0 = LinearComponentExtracter.getLines(this._geom[0])
@@ -110,10 +116,12 @@ export default class DistanceOp {
     this.computeMinDistancePoints(pts0, pts1, locGeom)
     this.updateMinDistance(locGeom, false)
   }
+
   nearestLocations () {
     this.computeMinDistance()
     return this._minDistanceLocation
   }
+
   updateMinDistance (locGeom, flip) {
     if (locGeom[0] === null) return null
     if (flip) {
@@ -124,11 +132,13 @@ export default class DistanceOp {
       this._minDistanceLocation[1] = locGeom[1]
     }
   }
+
   nearestPoints () {
     this.computeMinDistance()
     var nearestPts = [this._minDistanceLocation[0].getCoordinate(), this._minDistanceLocation[1].getCoordinate()]
     return nearestPts
   }
+
   computeMinDistance () {
     if (arguments.length === 0) {
       if (this._minDistanceLocation !== null) return null
@@ -138,7 +148,7 @@ export default class DistanceOp {
       this.computeFacetDistance()
     } else if (arguments.length === 3) {
       if (arguments[2] instanceof Array && (arguments[0] instanceof LineString && arguments[1] instanceof Point)) {
-        let line = arguments[0]; let pt = arguments[1]; let locGeom = arguments[2]
+        const line = arguments[0]; const pt = arguments[1]; const locGeom = arguments[2]
         if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal()) > this._minDistance) return null
         var coord0 = line.getCoordinates()
         var coord = pt.getCoordinate()
@@ -154,7 +164,7 @@ export default class DistanceOp {
           if (this._minDistance <= this._terminateDistance) return null
         }
       } else if (arguments[2] instanceof Array && (arguments[0] instanceof LineString && arguments[1] instanceof LineString)) {
-        let line0 = arguments[0]; let line1 = arguments[1]; let locGeom = arguments[2]
+        const line0 = arguments[0]; const line1 = arguments[1]; const locGeom = arguments[2]
         if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal()) > this._minDistance) return null
         var coord0 = line0.getCoordinates()
         var coord1 = line1.getCoordinates()
@@ -175,6 +185,7 @@ export default class DistanceOp {
       }
     }
   }
+
   computeMinDistancePoints (points0, points1, locGeom) {
     for (var i = 0; i < points0.size(); i++) {
       var pt0 = points0.get(i)
@@ -190,12 +201,14 @@ export default class DistanceOp {
       }
     }
   }
+
   distance () {
     if (this._geom[0] === null || this._geom[1] === null) throw new IllegalArgumentException('null geometries are not supported')
     if (this._geom[0].isEmpty() || this._geom[1].isEmpty()) return 0.0
     this.computeMinDistance()
     return this._minDistance
   }
+
   computeMinDistanceLines (lines0, lines1, locGeom) {
     for (var i = 0; i < lines0.size(); i++) {
       var line0 = lines0.get(i)
@@ -206,9 +219,11 @@ export default class DistanceOp {
       }
     }
   }
+
   getClass () {
     return DistanceOp
   }
+
   get interfaces_ () {
     return []
   }
@@ -220,10 +235,10 @@ DistanceOp.constructor_ = function () {
   this._minDistanceLocation = null
   this._minDistance = Double.MAX_VALUE
   if (arguments.length === 2) {
-    let g0 = arguments[0]; let g1 = arguments[1]
+    const g0 = arguments[0]; const g1 = arguments[1]
     DistanceOp.constructor_.call(this, g0, g1, 0.0)
   } else if (arguments.length === 3) {
-    let g0 = arguments[0]; let g1 = arguments[1]; let terminateDistance = arguments[2]
+    const g0 = arguments[0]; const g1 = arguments[1]; const terminateDistance = arguments[2]
     this._geom = new Array(2).fill(null)
     this._geom[0] = g0
     this._geom[1] = g1

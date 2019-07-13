@@ -8,17 +8,19 @@ export default class BoundaryOp {
   constructor () {
     BoundaryOp.constructor_.apply(this, arguments)
   }
+
   static getBoundary () {
     if (arguments.length === 1) {
-      let g = arguments[0]
+      const g = arguments[0]
       var bop = new BoundaryOp(g)
       return bop.getBoundary()
     } else if (arguments.length === 2) {
-      let g = arguments[0]; let bnRule = arguments[1]
+      const g = arguments[0]; const bnRule = arguments[1]
       var bop = new BoundaryOp(g, bnRule)
       return bop.getBoundary()
     }
   }
+
   boundaryMultiLineString (mLine) {
     if (this._geom.isEmpty()) {
       return this.getEmptyMultiPoint()
@@ -29,11 +31,13 @@ export default class BoundaryOp {
     }
     return this._geomFact.createMultiPointFromCoords(bdyPts)
   }
+
   getBoundary () {
     if (this._geom instanceof LineString) return this.boundaryLineString(this._geom)
     if (this._geom instanceof MultiLineString) return this.boundaryMultiLineString(this._geom)
     return this._geom.getBoundary()
   }
+
   boundaryLineString (line) {
     if (this._geom.isEmpty()) {
       return this.getEmptyMultiPoint()
@@ -48,9 +52,11 @@ export default class BoundaryOp {
     }
     return this._geomFact.createMultiPoint([line.getStartPoint(), line.getEndPoint()])
   }
+
   getEmptyMultiPoint () {
     return this._geomFact.createMultiPoint()
   }
+
   computeBoundaryCoordinates (mLine) {
     var bdyPts = new ArrayList()
     this._endpointMap = new TreeMap()
@@ -70,6 +76,7 @@ export default class BoundaryOp {
     }
     return CoordinateArrays.toCoordinateArray(bdyPts)
   }
+
   addEndpoint (pt) {
     var counter = this._endpointMap.get(pt)
     if (counter === null) {
@@ -78,9 +85,11 @@ export default class BoundaryOp {
     }
     counter.count++
   }
+
   getClass () {
     return BoundaryOp
   }
+
   get interfaces_ () {
     return []
   }
@@ -91,10 +100,10 @@ BoundaryOp.constructor_ = function () {
   this._bnRule = null
   this._endpointMap = null
   if (arguments.length === 1) {
-    let geom = arguments[0]
+    const geom = arguments[0]
     BoundaryOp.constructor_.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE)
   } else if (arguments.length === 2) {
-    let geom = arguments[0]; let bnRule = arguments[1]
+    const geom = arguments[0]; const bnRule = arguments[1]
     this._geom = geom
     this._geomFact = geom.getFactory()
     this._bnRule = bnRule
@@ -104,9 +113,11 @@ class Counter {
   constructor () {
     Counter.constructor_.apply(this, arguments)
   }
+
   getClass () {
     return Counter
   }
+
   get interfaces_ () {
     return []
   }

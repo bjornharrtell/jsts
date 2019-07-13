@@ -19,12 +19,14 @@ export default class OffsetCurveSetBuilder {
   constructor () {
     OffsetCurveSetBuilder.constructor_.apply(this, arguments)
   }
+
   addPoint (p) {
     if (this._distance <= 0.0) return null
     var coord = p.getCoordinates()
     var curve = this._curveBuilder.getLineCurve(coord, this._distance)
     this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR)
   }
+
   addPolygon (p) {
     var offsetDistance = this._distance
     var offsetSide = Position.LEFT
@@ -44,27 +46,32 @@ export default class OffsetCurveSetBuilder {
       this.addPolygonRing(holeCoord, offsetDistance, Position.opposite(offsetSide), Location.INTERIOR, Location.EXTERIOR)
     }
   }
+
   isTriangleErodedCompletely (triangleCoord, bufferDistance) {
     var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2])
     var inCentre = tri.inCentre()
     var distToCentre = Distance.pointToSegment(inCentre, tri.p0, tri.p1)
     return distToCentre < Math.abs(bufferDistance)
   }
+
   addLineString (line) {
     if (this._distance <= 0.0 && !this._curveBuilder.getBufferParameters().isSingleSided()) return null
     var coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates())
     var curve = this._curveBuilder.getLineCurve(coord, this._distance)
     this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR)
   }
+
   addCurve (coord, leftLoc, rightLoc) {
     if (coord === null || coord.length < 2) return null
     var e = new NodedSegmentString(coord, new Label(0, Location.BOUNDARY, leftLoc, rightLoc))
     this._curveList.add(e)
   }
+
   getCurves () {
     this.add(this._inputGeom)
     return this._curveList
   }
+
   addPolygonRing (coord, offsetDistance, side, cwLeftLoc, cwRightLoc) {
     if (offsetDistance === 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) return null
     var leftLoc = cwLeftLoc
@@ -77,10 +84,12 @@ export default class OffsetCurveSetBuilder {
     var curve = this._curveBuilder.getRingCurve(coord, side, offsetDistance)
     this.addCurve(curve, leftLoc, rightLoc)
   }
+
   add (g) {
     if (g.isEmpty()) return null
     if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getClass().getName())
   }
+
   isErodedCompletely (ring, bufferDistance) {
     var ringCoord = ring.getCoordinates()
     var minDiam = 0.0
@@ -91,15 +100,18 @@ export default class OffsetCurveSetBuilder {
     if (bufferDistance < 0.0 && 2 * Math.abs(bufferDistance) > envMinDimension) return true
     return false
   }
+
   addCollection (gc) {
     for (var i = 0; i < gc.getNumGeometries(); i++) {
       var g = gc.getGeometryN(i)
       this.add(g)
     }
   }
+
   getClass () {
     return OffsetCurveSetBuilder
   }
+
   get interfaces_ () {
     return []
   }
@@ -109,7 +121,7 @@ OffsetCurveSetBuilder.constructor_ = function () {
   this._distance = null
   this._curveBuilder = null
   this._curveList = new ArrayList()
-  let inputGeom = arguments[0]; let distance = arguments[1]; let curveBuilder = arguments[2]
+  const inputGeom = arguments[0]; const distance = arguments[1]; const curveBuilder = arguments[2]
   this._inputGeom = inputGeom
   this._distance = distance
   this._curveBuilder = curveBuilder

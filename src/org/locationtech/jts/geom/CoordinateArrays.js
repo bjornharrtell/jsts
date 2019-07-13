@@ -8,11 +8,13 @@ export default class CoordinateArrays {
   constructor () {
     CoordinateArrays.constructor_.apply(this, arguments)
   }
+
   static isRing (pts) {
     if (pts.length < 4) return false
     if (!pts[0].equals2D(pts[pts.length - 1])) return false
     return true
   }
+
   static ptNotInList (testPts, pts) {
     for (var i = 0; i < testPts.length; i++) {
       var testPt = testPts[i]
@@ -20,6 +22,7 @@ export default class CoordinateArrays {
     }
     return null
   }
+
   static scroll (coordinates, firstCoordinate) {
     var i = CoordinateArrays.indexOf(firstCoordinate, coordinates)
     if (i < 0) return null
@@ -28,9 +31,10 @@ export default class CoordinateArrays {
     System.arraycopy(coordinates, 0, newCoordinates, coordinates.length - i, i)
     System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length)
   }
+
   static equals () {
     if (arguments.length === 2) {
-      let coord1 = arguments[0]; let coord2 = arguments[1]
+      const coord1 = arguments[0]; const coord2 = arguments[1]
       if (coord1 === coord2) return true
       if (coord1 === null || coord2 === null) return false
       if (coord1.length !== coord2.length) return false
@@ -39,7 +43,7 @@ export default class CoordinateArrays {
       }
       return true
     } else if (arguments.length === 3) {
-      let coord1 = arguments[0]; let coord2 = arguments[1]; let coordinateComparator = arguments[2]
+      const coord1 = arguments[0]; const coord2 = arguments[1]; const coordinateComparator = arguments[2]
       if (coord1 === coord2) return true
       if (coord1 === null || coord2 === null) return false
       if (coord1.length !== coord2.length) return false
@@ -49,6 +53,7 @@ export default class CoordinateArrays {
       return true
     }
   }
+
   static intersection (coordinates, env) {
     var coordList = new CoordinateList()
     for (var i = 0; i < coordinates.length; i++) {
@@ -56,6 +61,7 @@ export default class CoordinateArrays {
     }
     return coordList.toCoordinateArray()
   }
+
   static hasRepeatedPoints (coord) {
     for (var i = 1; i < coord.length; i++) {
       if (coord[i - 1].equals(coord[i])) {
@@ -64,11 +70,13 @@ export default class CoordinateArrays {
     }
     return false
   }
+
   static removeRepeatedPoints (coord) {
     if (!CoordinateArrays.hasRepeatedPoints(coord)) return coord
     var coordList = new CoordinateList(coord, false)
     return coordList.toCoordinateArray()
   }
+
   static reverse (coord) {
     var last = coord.length - 1
     var mid = Math.trunc(last / 2)
@@ -78,6 +86,7 @@ export default class CoordinateArrays {
       coord[last - i] = tmp
     }
   }
+
   static removeNull (coord) {
     var nonNull = 0
     for (var i = 0; i < coord.length; i++) {
@@ -91,21 +100,23 @@ export default class CoordinateArrays {
     }
     return newCoord
   }
+
   static copyDeep () {
     if (arguments.length === 1) {
-      let coordinates = arguments[0]
+      const coordinates = arguments[0]
       var copy = new Array(coordinates.length).fill(null)
       for (var i = 0; i < coordinates.length; i++) {
         copy[i] = new Coordinate(coordinates[i])
       }
       return copy
     } else if (arguments.length === 5) {
-      let src = arguments[0]; let srcStart = arguments[1]; let dest = arguments[2]; let destStart = arguments[3]; let length = arguments[4]
+      const src = arguments[0]; const srcStart = arguments[1]; const dest = arguments[2]; const destStart = arguments[3]; const length = arguments[4]
       for (var i = 0; i < length; i++) {
         dest[destStart + i] = new Coordinate(src[srcStart + i])
       }
     }
   }
+
   static isEqualReversed (pts1, pts2) {
     for (var i = 0; i < pts1.length; i++) {
       var p1 = pts1[i]
@@ -114,6 +125,7 @@ export default class CoordinateArrays {
     }
     return true
   }
+
   static envelope (coordinates) {
     var env = new Envelope()
     for (var i = 0; i < coordinates.length; i++) {
@@ -121,12 +133,15 @@ export default class CoordinateArrays {
     }
     return env
   }
+
   static toCoordinateArray (coordList) {
     return coordList.toArray(CoordinateArrays.coordArrayType)
   }
+
   static atLeastNCoordinatesOrNothing (n, c) {
     return c.length >= n ? c : []
   }
+
   static indexOf (coordinate, coordinates) {
     for (var i = 0; i < coordinates.length; i++) {
       if (coordinate.equals(coordinates[i])) {
@@ -135,6 +150,7 @@ export default class CoordinateArrays {
     }
     return -1
   }
+
   static increasingDirection (pts) {
     for (var i = 0; i < Math.trunc(pts.length / 2); i++) {
       var j = pts.length - 1 - i
@@ -143,6 +159,7 @@ export default class CoordinateArrays {
     }
     return 1
   }
+
   static compare (pts1, pts2) {
     var i = 0
     while (i < pts1.length && i < pts2.length) {
@@ -154,6 +171,7 @@ export default class CoordinateArrays {
     if (i < pts1.length) return 1
     return 0
   }
+
   static minCoordinate (coordinates) {
     var minCoord = null
     for (var i = 0; i < coordinates.length; i++) {
@@ -163,6 +181,7 @@ export default class CoordinateArrays {
     }
     return minCoord
   }
+
   static extract (pts, start, end) {
     start = MathUtil.clamp(start, 0, pts.length)
     end = MathUtil.clamp(end, -1, pts.length)
@@ -178,9 +197,11 @@ export default class CoordinateArrays {
     }
     return extractPts
   }
+
   getClass () {
     return CoordinateArrays
   }
+
   get interfaces_ () {
     return []
   }
@@ -189,14 +210,17 @@ class ForwardComparator {
   constructor () {
     ForwardComparator.constructor_.apply(this, arguments)
   }
+
   compare (o1, o2) {
     var pts1 = o1
     var pts2 = o2
     return CoordinateArrays.compare(pts1, pts2)
   }
+
   getClass () {
     return ForwardComparator
   }
+
   get interfaces_ () {
     return [Comparator]
   }
@@ -206,6 +230,7 @@ class BidirectionalComparator {
   constructor () {
     BidirectionalComparator.constructor_.apply(this, arguments)
   }
+
   compare (o1, o2) {
     var pts1 = o1
     var pts2 = o2
@@ -217,6 +242,7 @@ class BidirectionalComparator {
     if (isEqualRev) return 0
     return forwardComp
   }
+
   OLDcompare (o1, o2) {
     var pts1 = o1
     var pts2 = o2
@@ -235,9 +261,11 @@ class BidirectionalComparator {
     }
     return 0
   }
+
   getClass () {
     return BidirectionalComparator
   }
+
   get interfaces_ () {
     return [Comparator]
   }

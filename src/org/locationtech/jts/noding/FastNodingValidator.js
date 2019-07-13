@@ -7,26 +7,32 @@ export default class FastNodingValidator {
   constructor () {
     FastNodingValidator.constructor_.apply(this, arguments)
   }
+
   static computeIntersections (segStrings) {
     var nv = new FastNodingValidator(segStrings)
     nv.setFindAllIntersections(true)
     nv.isValid()
     return nv.getIntersections()
   }
+
   execute () {
     if (this._segInt !== null) return null
     this.checkInteriorIntersections()
   }
+
   getIntersections () {
     return this._segInt.getIntersections()
   }
+
   isValid () {
     this.execute()
     return this._isValid
   }
+
   setFindAllIntersections (findAllIntersections) {
     this._findAllIntersections = findAllIntersections
   }
+
   checkInteriorIntersections () {
     this._isValid = true
     this._segInt = new InteriorIntersectionFinder(this._li)
@@ -39,18 +45,22 @@ export default class FastNodingValidator {
       return null
     }
   }
+
   checkValid () {
     this.execute()
     if (!this._isValid) throw new TopologyException(this.getErrorMessage(), this._segInt.getInteriorIntersection())
   }
+
   getErrorMessage () {
     if (this._isValid) return 'no intersections found'
     var intSegs = this._segInt.getIntersectionSegments()
     return 'found non-noded intersection between ' + WKTWriter.toLineString(intSegs[0], intSegs[1]) + ' and ' + WKTWriter.toLineString(intSegs[2], intSegs[3])
   }
+
   getClass () {
     return FastNodingValidator
   }
+
   get interfaces_ () {
     return []
   }
@@ -61,6 +71,6 @@ FastNodingValidator.constructor_ = function () {
   this._findAllIntersections = false
   this._segInt = null
   this._isValid = true
-  let segStrings = arguments[0]
+  const segStrings = arguments[0]
   this._segStrings = segStrings
 }

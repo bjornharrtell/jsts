@@ -5,6 +5,7 @@ export default class SimpleNoder extends SinglePassNoder {
     super()
     SimpleNoder.constructor_.apply(this, arguments)
   }
+
   computeNodes (inputSegStrings) {
     this._nodedSegStrings = inputSegStrings
     for (var i0 = inputSegStrings.iterator(); i0.hasNext();) {
@@ -15,6 +16,7 @@ export default class SimpleNoder extends SinglePassNoder {
       }
     }
   }
+
   computeIntersects (e0, e1) {
     var pts0 = e0.getCoordinates()
     var pts1 = e1.getCoordinates()
@@ -24,12 +26,15 @@ export default class SimpleNoder extends SinglePassNoder {
       }
     }
   }
+
   getNodedSubstrings () {
     return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings)
   }
+
   getClass () {
     return SimpleNoder
   }
+
   get interfaces_ () {
     return []
   }

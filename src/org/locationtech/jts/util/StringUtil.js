@@ -11,6 +11,7 @@ export default class StringUtil {
   constructor () {
     StringUtil.constructor_.apply(this, arguments)
   }
+
   static chars (c, n) {
     var ch = new Array(n).fill(null)
     for (var i = 0; i < n; i++) {
@@ -18,15 +19,16 @@ export default class StringUtil {
     }
     return new String(ch)
   }
+
   static getStackTrace () {
     if (arguments.length === 1) {
-      let t = arguments[0]
+      const t = arguments[0]
       var os = new ByteArrayOutputStream()
       var ps = new PrintStream(os)
       t.printStackTrace(ps)
       return os.toString()
     } else if (arguments.length === 2) {
-      let t = arguments[0]; let depth = arguments[1]
+      const t = arguments[0]; const depth = arguments[1]
       var stackTrace = ''
       var stringReader = new StringReader(StringUtil.getStackTrace(t))
       var lineNumberReader = new LineNumberReader(stringReader)
@@ -42,6 +44,7 @@ export default class StringUtil {
       return stackTrace
     }
   }
+
   static split (s, separator) {
     var separatorlen = separator.length
     var tokenList = new ArrayList()
@@ -60,18 +63,22 @@ export default class StringUtil {
     }
     return res
   }
+
   static toString () {
     if (arguments.length === 1 && typeof arguments[0] === 'number') {
-      let d = arguments[0]
+      const d = arguments[0]
       return StringUtil.SIMPLE_ORDINATE_FORMAT.format(d)
     }
   }
+
   static spaces (n) {
     return StringUtil.chars(' ', n)
   }
+
   getClass () {
     return StringUtil
   }
+
   get interfaces_ () {
     return []
   }

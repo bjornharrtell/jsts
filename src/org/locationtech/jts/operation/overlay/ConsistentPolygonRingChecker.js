@@ -6,6 +6,7 @@ export default class ConsistentPolygonRingChecker {
   constructor () {
     ConsistentPolygonRingChecker.constructor_.apply(this, arguments)
   }
+
   testLinkResultDirectedEdges (deStar, opCode) {
     var ringEdges = this.getPotentialResultAreaEdges(deStar, opCode)
     var firstOut = null
@@ -32,6 +33,7 @@ export default class ConsistentPolygonRingChecker {
       if (firstOut === null) throw new TopologyException('no outgoing dirEdge found', deStar.getCoordinate())
     }
   }
+
   getPotentialResultAreaEdges (deStar, opCode) {
     var resultAreaEdgeList = new ArrayList()
     for (var it = deStar.iterator(); it.hasNext();) {
@@ -40,18 +42,21 @@ export default class ConsistentPolygonRingChecker {
     }
     return resultAreaEdgeList
   }
+
   checkAll () {
     this.check(OverlayOp.INTERSECTION)
     this.check(OverlayOp.DIFFERENCE)
     this.check(OverlayOp.UNION)
     this.check(OverlayOp.SYMDIFFERENCE)
   }
+
   check (opCode) {
     for (var nodeit = this._graph.getNodeIterator(); nodeit.hasNext();) {
       var node = nodeit.next()
       this.testLinkResultDirectedEdges(node.getEdges(), opCode)
     }
   }
+
   isPotentialResultAreaEdge (de, opCode) {
     var label = de.getLabel()
     if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
@@ -59,9 +64,11 @@ export default class ConsistentPolygonRingChecker {
     }
     return false
   }
+
   getClass () {
     return ConsistentPolygonRingChecker
   }
+
   get interfaces_ () {
     return []
   }
@@ -70,6 +77,6 @@ ConsistentPolygonRingChecker.constructor_ = function () {
   this._graph = null
   this._SCANNING_FOR_INCOMING = 1
   this._LINKING_TO_OUTGOING = 2
-  let graph = arguments[0]
+  const graph = arguments[0]
   this._graph = graph
 }

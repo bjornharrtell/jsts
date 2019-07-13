@@ -8,23 +8,27 @@ export default class ConnectedElementLocationFilter {
   constructor () {
     ConnectedElementLocationFilter.constructor_.apply(this, arguments)
   }
+
   static getLocations (geom) {
     var locations = new ArrayList()
     geom.apply(new ConnectedElementLocationFilter(locations))
     return locations
   }
+
   filter (geom) {
     if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this._locations.add(new GeometryLocation(geom, 0, geom.getCoordinate()))
   }
+
   getClass () {
     return ConnectedElementLocationFilter
   }
+
   get interfaces_ () {
     return [GeometryFilter]
   }
 }
 ConnectedElementLocationFilter.constructor_ = function () {
   this._locations = null
-  let locations = arguments[0]
+  const locations = arguments[0]
   this._locations = locations
 }

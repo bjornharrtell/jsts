@@ -5,12 +5,15 @@ export default class BoundablePair {
   constructor () {
     BoundablePair.constructor_.apply(this, arguments)
   }
+
   static area (b) {
     return b.getBounds().getArea()
   }
+
   static isComposite (item) {
     return item instanceof AbstractNode
   }
+
   expandToQueue (priQ, minDistance) {
     var isComp1 = BoundablePair.isComposite(this._boundable1)
     var isComp2 = BoundablePair.isComposite(this._boundable2)
@@ -31,15 +34,18 @@ export default class BoundablePair {
     }
     throw new IllegalArgumentException('neither boundable is composite')
   }
+
   isLeaves () {
     return !(BoundablePair.isComposite(this._boundable1) || BoundablePair.isComposite(this._boundable2))
   }
+
   compareTo (o) {
     var nd = o
     if (this._distance < nd._distance) return -1
     if (this._distance > nd._distance) return 1
     return 0
   }
+
   expand (bndComposite, bndOther, priQ, minDistance) {
     var children = bndComposite.getChildBoundables()
     for (var i = children.iterator(); i.hasNext();) {
@@ -50,22 +56,27 @@ export default class BoundablePair {
       }
     }
   }
+
   getBoundable (i) {
     if (i === 0) return this._boundable1
     return this._boundable2
   }
+
   getDistance () {
     return this._distance
   }
+
   distance () {
     if (this.isLeaves()) {
       return this._itemDistance.distance(this._boundable1, this._boundable2)
     }
     return this._boundable1.getBounds().distance(this._boundable2.getBounds())
   }
+
   getClass () {
     return BoundablePair
   }
+
   get interfaces_ () {
     return [Comparable]
   }
@@ -75,7 +86,7 @@ BoundablePair.constructor_ = function () {
   this._boundable2 = null
   this._distance = null
   this._itemDistance = null
-  let boundable1 = arguments[0]; let boundable2 = arguments[1]; let itemDistance = arguments[2]
+  const boundable1 = arguments[0]; const boundable2 = arguments[1]; const itemDistance = arguments[2]
   this._boundable1 = boundable1
   this._boundable2 = boundable2
   this._itemDistance = itemDistance

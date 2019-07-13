@@ -3,9 +3,11 @@ export default class IntersectionAdder {
   constructor () {
     IntersectionAdder.constructor_.apply(this, arguments)
   }
+
   static isAdjacentSegments (i1, i2) {
     return Math.abs(i1 - i2) === 1
   }
+
   isTrivialIntersection (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1) {
       if (this._li.getIntersectionNum() === 1) {
@@ -20,18 +22,23 @@ export default class IntersectionAdder {
     }
     return false
   }
+
   getProperIntersectionPoint () {
     return this._properIntersectionPoint
   }
+
   hasProperInteriorIntersection () {
     return this._hasProperInterior
   }
+
   getLineIntersector () {
     return this._li
   }
+
   hasProperIntersection () {
     return this._hasProper
   }
+
   processIntersections (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     this.numTests++
@@ -58,18 +65,23 @@ export default class IntersectionAdder {
       }
     }
   }
+
   hasIntersection () {
     return this._hasIntersection
   }
+
   isDone () {
     return false
   }
+
   hasInteriorIntersection () {
     return this._hasInterior
   }
+
   getClass () {
     return IntersectionAdder
   }
+
   get interfaces_ () {
     return [SegmentIntersector]
   }
@@ -86,6 +98,6 @@ IntersectionAdder.constructor_ = function () {
   this.numInteriorIntersections = 0
   this.numProperIntersections = 0
   this.numTests = 0
-  let li = arguments[0]
+  const li = arguments[0]
   this._li = li
 }

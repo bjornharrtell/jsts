@@ -4,20 +4,23 @@ export default class CoordinateSequenceFactory {
   constructor () {
     CoordinateSequenceFactory.constructor_.apply(this, arguments)
   }
+
   create () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Array) {
-        let coordinates = arguments[0]
+        const coordinates = arguments[0]
       } else if (hasInterface(arguments[0], CoordinateSequence)) {
-        let coordSeq = arguments[0]
+        const coordSeq = arguments[0]
       }
     } else if (arguments.length === 2) {
-      let size = arguments[0]; let dimension = arguments[1]
+      const size = arguments[0]; const dimension = arguments[1]
     }
   }
+
   getClass () {
     return CoordinateSequenceFactory
   }
+
   get interfaces_ () {
     return []
   }

@@ -7,11 +7,13 @@ export default class Node extends NodeBase {
     super()
     Node.constructor_.apply(this, arguments)
   }
+
   static createNode (itemInterval) {
     var key = new Key(itemInterval)
     var node = new Node(key.getInterval(), key.getLevel())
     return node
   }
+
   static createExpanded (node, addInterval) {
     var expandInt = new Interval(addInterval)
     if (node !== null) expandInt.expandToInclude(node._interval)
@@ -19,9 +21,11 @@ export default class Node extends NodeBase {
     if (node !== null) largerNode.insert(node)
     return largerNode
   }
+
   getInterval () {
     return this._interval
   }
+
   find (searchInterval) {
     var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
     if (subnodeIndex === -1) return this
@@ -31,6 +35,7 @@ export default class Node extends NodeBase {
     }
     return this
   }
+
   insert (node) {
     Assert.isTrue(this._interval === null || this._interval.contains(node._interval))
     var index = NodeBase.getSubnodeIndex(node._interval, this._centre)
@@ -42,15 +47,18 @@ export default class Node extends NodeBase {
       this._subnode[index] = childNode
     }
   }
+
   isSearchMatch (itemInterval) {
     return itemInterval.overlaps(this._interval)
   }
+
   getSubnode (index) {
     if (this._subnode[index] === null) {
       this._subnode[index] = this.createSubnode(index)
     }
     return this._subnode[index]
   }
+
   getNode (searchInterval) {
     var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
     if (subnodeIndex !== -1) {
@@ -60,6 +68,7 @@ export default class Node extends NodeBase {
       return this
     }
   }
+
   createSubnode (index) {
     var min = 0.0
     var max = 0.0
@@ -77,9 +86,11 @@ export default class Node extends NodeBase {
     var node = new Node(subInt, this._level - 1)
     return node
   }
+
   getClass () {
     return Node
   }
+
   get interfaces_ () {
     return []
   }
@@ -88,7 +99,7 @@ Node.constructor_ = function () {
   this._interval = null
   this._centre = null
   this._level = null
-  let interval = arguments[0]; let level = arguments[1]
+  const interval = arguments[0]; const level = arguments[1]
   this._interval = interval
   this._level = level
   this._centre = (interval.getMin() + interval.getMax()) / 2

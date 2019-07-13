@@ -4,11 +4,13 @@ export default class NonEncroachingSplitPointFinder {
   constructor () {
     NonEncroachingSplitPointFinder.constructor_.apply(this, arguments)
   }
+
   static projectedSplitPoint (seg, encroachPt) {
     var lineSeg = seg.getLineSegment()
     var projPt = lineSeg.project(encroachPt)
     return projPt
   }
+
   findSplitPoint (seg, encroachPt) {
     var lineSeg = seg.getLineSegment()
     var segLen = lineSeg.getLength()
@@ -24,9 +26,11 @@ export default class NonEncroachingSplitPointFinder {
     splitSeg.splitAt(projPt)
     return splitSeg.getSplitPoint()
   }
+
   getClass () {
     return NonEncroachingSplitPointFinder
   }
+
   get interfaces_ () {
     return [ConstraintSplitPointFinder]
   }

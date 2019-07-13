@@ -7,9 +7,11 @@ export default class TrianglePredicate {
   constructor () {
     TrianglePredicate.constructor_.apply(this, arguments)
   }
+
   static triArea (a, b, c) {
     return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
   }
+
   static isInCircleDDNormalized (a, b, c, p) {
     var adx = DD.valueOf(a.x).selfSubtract(p.x)
     var ady = DD.valueOf(a.y).selfSubtract(p.y)
@@ -27,6 +29,7 @@ export default class TrianglePredicate {
     var isInCircle = sum.doubleValue() > 0
     return isInCircle
   }
+
   static checkRobustInCircle (a, b, c, p) {
     var nonRobustInCircle = TrianglePredicate.isInCircleNonRobust(a, b, c, p)
     var isInCircleDD = TrianglePredicate.isInCircleDDSlow(a, b, c, p)
@@ -43,6 +46,7 @@ export default class TrianglePredicate {
       System.out.println()
     }
   }
+
   static isInCircleDDFast (a, b, c, p) {
     var aTerm = DD.sqr(a.x).selfAdd(DD.sqr(a.y)).selfMultiply(TrianglePredicate.triAreaDDFast(b, c, p))
     var bTerm = DD.sqr(b.x).selfAdd(DD.sqr(b.y)).selfMultiply(TrianglePredicate.triAreaDDFast(a, c, p))
@@ -52,12 +56,14 @@ export default class TrianglePredicate {
     var isInCircle = sum.doubleValue() > 0
     return isInCircle
   }
+
   static isInCircleCC (a, b, c, p) {
     var cc = Triangle.circumcentre(a, b, c)
     var ccRadius = a.distance(cc)
     var pRadiusDiff = p.distance(cc) - ccRadius
     return pRadiusDiff <= 0
   }
+
   static isInCircleNormalized (a, b, c, p) {
     var adx = a.x - p.x
     var ady = a.y - p.y
@@ -74,6 +80,7 @@ export default class TrianglePredicate {
     var disc = alift * bcdet + blift * cadet + clift * abdet
     return disc > 0
   }
+
   static isInCircleDDSlow (a, b, c, p) {
     var px = DD.valueOf(p.x)
     var py = DD.valueOf(p.y)
@@ -91,24 +98,30 @@ export default class TrianglePredicate {
     var isInCircle = sum.doubleValue() > 0
     return isInCircle
   }
+
   static isInCircleNonRobust (a, b, c, p) {
     var isInCircle = (a.x * a.x + a.y * a.y) * TrianglePredicate.triArea(b, c, p) - (b.x * b.x + b.y * b.y) * TrianglePredicate.triArea(a, c, p) + (c.x * c.x + c.y * c.y) * TrianglePredicate.triArea(a, b, p) - (p.x * p.x + p.y * p.y) * TrianglePredicate.triArea(a, b, c) > 0
     return isInCircle
   }
+
   static isInCircleRobust (a, b, c, p) {
     return TrianglePredicate.isInCircleNormalized(a, b, c, p)
   }
+
   static triAreaDDSlow (ax, ay, bx, by, cx, cy) {
     return bx.subtract(ax).multiply(cy.subtract(ay)).subtract(by.subtract(ay).multiply(cx.subtract(ax)))
   }
+
   static triAreaDDFast (a, b, c) {
     var t1 = DD.valueOf(b.x).selfSubtract(a.x).selfMultiply(DD.valueOf(c.y).selfSubtract(a.y))
     var t2 = DD.valueOf(b.y).selfSubtract(a.y).selfMultiply(DD.valueOf(c.x).selfSubtract(a.x))
     return t1.selfSubtract(t2)
   }
+
   getClass () {
     return TrianglePredicate
   }
+
   get interfaces_ () {
     return []
   }

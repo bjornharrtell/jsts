@@ -12,6 +12,7 @@ export default class SegmentNodeList {
   constructor () {
     SegmentNodeList.constructor_.apply(this, arguments)
   }
+
   getSplitCoordinates () {
     var coordList = new CoordinateList()
     this.addEndpoints()
@@ -24,6 +25,7 @@ export default class SegmentNodeList {
     }
     return coordList.toCoordinateArray()
   }
+
   addCollapsedNodes () {
     var collapsedVertexIndexes = new ArrayList()
     this.findCollapsesFromInsertedNodes(collapsedVertexIndexes)
@@ -33,6 +35,7 @@ export default class SegmentNodeList {
       this.add(this._edge.getCoordinate(vertexIndex), vertexIndex)
     }
   }
+
   print (out) {
     out.println('Intersections:')
     for (var it = this.iterator(); it.hasNext();) {
@@ -40,6 +43,7 @@ export default class SegmentNodeList {
       ei.print(out)
     }
   }
+
   findCollapsesFromExistingVertices (collapsedVertexIndexes) {
     for (var i = 0; i < this._edge.size() - 2; i++) {
       var p0 = this._edge.getCoordinate(i)
@@ -50,6 +54,7 @@ export default class SegmentNodeList {
       }
     }
   }
+
   addEdgeCoordinates (ei0, ei1, coordList) {
     var npts = ei1.segmentIndex - ei0.segmentIndex + 2
     var lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
@@ -66,9 +71,11 @@ export default class SegmentNodeList {
       coordList.add(new Coordinate(ei1.coord))
     }
   }
+
   iterator () {
     return this._nodeMap.values().iterator()
   }
+
   addSplitEdges (edgeList) {
     this.addEndpoints()
     this.addCollapsedNodes()
@@ -81,6 +88,7 @@ export default class SegmentNodeList {
       eiPrev = ei
     }
   }
+
   findCollapseIndex (ei0, ei1, collapsedVertexIndex) {
     if (!ei0.coord.equals2D(ei1.coord)) return false
     var numVerticesBetween = ei1.segmentIndex - ei0.segmentIndex
@@ -93,6 +101,7 @@ export default class SegmentNodeList {
     }
     return false
   }
+
   findCollapsesFromInsertedNodes (collapsedVertexIndexes) {
     var collapsedVertexIndex = new Array(1).fill(null)
     var it = this.iterator()
@@ -104,14 +113,17 @@ export default class SegmentNodeList {
       eiPrev = ei
     }
   }
+
   getEdge () {
     return this._edge
   }
+
   addEndpoints () {
     var maxSegIndex = this._edge.size() - 1
     this.add(this._edge.getCoordinate(0), 0)
     this.add(this._edge.getCoordinate(maxSegIndex), maxSegIndex)
   }
+
   createSplitEdge (ei0, ei1) {
     var npts = ei1.segmentIndex - ei0.segmentIndex + 2
     var lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
@@ -128,6 +140,7 @@ export default class SegmentNodeList {
     if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord)
     return new NodedSegmentString(pts, this._edge.getData())
   }
+
   add (intPt, segmentIndex) {
     var eiNew = new SegmentNode(this._edge, intPt, segmentIndex, this._edge.getSegmentOctant(segmentIndex))
     var ei = this._nodeMap.get(eiNew)
@@ -138,6 +151,7 @@ export default class SegmentNodeList {
     this._nodeMap.put(eiNew, eiNew)
     return eiNew
   }
+
   checkSplitEdgesCorrectness (splitEdges) {
     var edgePts = this._edge.getCoordinates()
     var split0 = splitEdges.get(0)
@@ -148,9 +162,11 @@ export default class SegmentNodeList {
     var ptn = splitnPts[splitnPts.length - 1]
     if (!ptn.equals2D(edgePts[edgePts.length - 1])) throw new RuntimeException('bad split edge end point at ' + ptn)
   }
+
   getClass () {
     return SegmentNodeList
   }
+
   get interfaces_ () {
     return []
   }
@@ -158,13 +174,14 @@ export default class SegmentNodeList {
 SegmentNodeList.constructor_ = function () {
   this._nodeMap = new TreeMap()
   this._edge = null
-  let edge = arguments[0]
+  const edge = arguments[0]
   this._edge = edge
 }
 class NodeVertexIterator {
   constructor () {
     NodeVertexIterator.constructor_.apply(this, arguments)
   }
+
   next () {
     if (this._currNode === null) {
       this._currNode = this._nextNode
@@ -182,19 +199,24 @@ class NodeVertexIterator {
     if (this._nextNode.segmentIndex > this._currNode.segmentIndex) {}
     return null
   }
+
   remove () {
     throw new UnsupportedOperationException(this.getClass().getName())
   }
+
   hasNext () {
     if (this._nextNode === null) return false
     return true
   }
+
   readNextNode () {
     if (this._nodeIt.hasNext()) this._nextNode = this._nodeIt.next(); else this._nextNode = null
   }
+
   getClass () {
     return NodeVertexIterator
   }
+
   get interfaces_ () {
     return [Iterator]
   }
@@ -206,7 +228,7 @@ NodeVertexIterator.constructor_ = function () {
   this._currNode = null
   this._nextNode = null
   this._currSegIndex = 0
-  let nodeList = arguments[0]
+  const nodeList = arguments[0]
   this._nodeList = nodeList
   this._edge = nodeList.getEdge()
   this._nodeIt = nodeList.iterator()

@@ -7,31 +7,36 @@ export default class CoordinateArraySequenceFactory {
   constructor () {
     CoordinateArraySequenceFactory.constructor_.apply(this, arguments)
   }
+
   static instance () {
     return CoordinateArraySequenceFactory.instanceObject
   }
+
   readResolve () {
     return CoordinateArraySequenceFactory.instance()
   }
+
   create () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Array) {
-        let coordinates = arguments[0]
+        const coordinates = arguments[0]
         return new CoordinateArraySequence(coordinates)
       } else if (hasInterface(arguments[0], CoordinateSequence)) {
-        let coordSeq = arguments[0]
+        const coordSeq = arguments[0]
         return new CoordinateArraySequence(coordSeq)
       }
     } else if (arguments.length === 2) {
-      let size = arguments[0]; let dimension = arguments[1]
+      const size = arguments[0]; let dimension = arguments[1]
       if (dimension > 3) dimension = 3
       if (dimension < 2) return new CoordinateArraySequence(size)
       return new CoordinateArraySequence(size, dimension)
     }
   }
+
   getClass () {
     return CoordinateArraySequenceFactory
   }
+
   get interfaces_ () {
     return [CoordinateSequenceFactory, Serializable]
   }

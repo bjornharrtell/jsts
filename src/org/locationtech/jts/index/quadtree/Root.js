@@ -8,6 +8,7 @@ export default class Root extends NodeBase {
     super()
     Root.constructor_.apply(this, arguments)
   }
+
   insert (itemEnv, item) {
     var index = NodeBase.getSubnodeIndex(itemEnv, Root.origin.x, Root.origin.y)
     if (index === -1) {
@@ -21,9 +22,11 @@ export default class Root extends NodeBase {
     }
     this.insertContained(this._subnode[index], itemEnv, item)
   }
+
   isSearchMatch (searchEnv) {
     return true
   }
+
   insertContained (tree, itemEnv, item) {
     Assert.isTrue(tree.getEnvelope().contains(itemEnv))
     var isZeroX = IntervalSize.isZeroWidth(itemEnv.getMinX(), itemEnv.getMaxX())
@@ -32,9 +35,11 @@ export default class Root extends NodeBase {
     if (isZeroX || isZeroY) node = tree.find(itemEnv); else node = tree.getNode(itemEnv)
     node.add(item)
   }
+
   getClass () {
     return Root
   }
+
   get interfaces_ () {
     return []
   }

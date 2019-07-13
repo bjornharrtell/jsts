@@ -3,6 +3,7 @@ export default class QuadEdgeUtil {
   constructor () {
     QuadEdgeUtil.constructor_.apply(this, arguments)
   }
+
   static findEdgesIncidentOnOrigin (start) {
     var incEdge = new ArrayList()
     var qe = start
@@ -12,9 +13,11 @@ export default class QuadEdgeUtil {
     } while (qe !== start)
     return incEdge
   }
+
   getClass () {
     return QuadEdgeUtil
   }
+
   get interfaces_ () {
     return []
   }

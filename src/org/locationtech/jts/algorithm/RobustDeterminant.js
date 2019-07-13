@@ -2,6 +2,7 @@ export default class RobustDeterminant {
   constructor () {
     RobustDeterminant.constructor_.apply(this, arguments)
   }
+
   static orientationIndex (p1, p2, q) {
     var dx1 = p2.x - p1.x
     var dy1 = p2.y - p1.y
@@ -9,6 +10,7 @@ export default class RobustDeterminant {
     var dy2 = q.y - p2.y
     return RobustDeterminant.signOfDet2x2(dx1, dy1, dx2, dy2)
   }
+
   static signOfDet2x2 (x1, y1, x2, y2) {
     var sign = null
     var swap = null
@@ -196,9 +198,11 @@ export default class RobustDeterminant {
       }
     }
   }
+
   getClass () {
     return RobustDeterminant
   }
+
   get interfaces_ () {
     return []
   }

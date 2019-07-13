@@ -8,6 +8,7 @@ export default class SegmentStringUtil {
   constructor () {
     SegmentStringUtil.constructor_.apply(this, arguments)
   }
+
   static toGeometry (segStrings, geomFact) {
     var lines = new Array(segStrings.size()).fill(null)
     var index = 0
@@ -19,6 +20,7 @@ export default class SegmentStringUtil {
     if (lines.length === 1) return lines[0]
     return geomFact.createMultiLineString(lines)
   }
+
   static extractNodedSegmentStrings (geom) {
     var segStr = new ArrayList()
     var lines = LinearComponentExtracter.getLines(geom)
@@ -29,12 +31,14 @@ export default class SegmentStringUtil {
     }
     return segStr
   }
+
   static extractSegmentStrings (geom) {
     return SegmentStringUtil.extractNodedSegmentStrings(geom)
   }
+
   static toString () {
     if (arguments.length === 1 && hasInterface(arguments[0], List)) {
-      let segStrings = arguments[0]
+      const segStrings = arguments[0]
       var buf = new StringBuffer()
       for (var i = segStrings.iterator(); i.hasNext();) {
         var segStr = i.next()
@@ -44,9 +48,11 @@ export default class SegmentStringUtil {
       return buf.toString()
     }
   }
+
   getClass () {
     return SegmentStringUtil
   }
+
   get interfaces_ () {
     return []
   }

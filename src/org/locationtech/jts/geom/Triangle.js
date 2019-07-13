@@ -6,15 +6,19 @@ export default class Triangle {
   constructor () {
     Triangle.constructor_.apply(this, arguments)
   }
+
   static area (a, b, c) {
     return Math.abs(((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2)
   }
+
   static signedArea (a, b, c) {
     return ((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2
   }
+
   static det (m00, m01, m10, m11) {
     return m00 * m11 - m01 * m10
   }
+
   static interpolateZ (p, v0, v1, v2) {
     var x0 = v0.x
     var y0 = v0.y
@@ -30,6 +34,7 @@ export default class Triangle {
     var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z)
     return z
   }
+
   static longestSideLength (a, b, c) {
     var lenAB = a.distance(b)
     var lenBC = b.distance(c)
@@ -39,12 +44,14 @@ export default class Triangle {
     if (lenCA > maxLen) maxLen = lenCA
     return maxLen
   }
+
   static isAcute (a, b, c) {
     if (!Angle.isAcute(a, b, c)) return false
     if (!Angle.isAcute(b, c, a)) return false
     if (!Angle.isAcute(c, a, b)) return false
     return true
   }
+
   static circumcentre (a, b, c) {
     var cx = c.x
     var cy = c.y
@@ -59,6 +66,7 @@ export default class Triangle {
     var ccy = cy + numy / denom
     return new Coordinate(ccx, ccy)
   }
+
   static perpendicularBisector (a, b) {
     var dx = b.x - a.x
     var dy = b.y - a.y
@@ -66,6 +74,7 @@ export default class Triangle {
     var l2 = new HCoordinate(a.x - dy + dx / 2.0, a.y + dx + dy / 2.0, 1.0)
     return new HCoordinate(l1, l2)
   }
+
   static angleBisector (a, b, c) {
     var len0 = b.distance(a)
     var len2 = b.distance(c)
@@ -75,6 +84,7 @@ export default class Triangle {
     var splitPt = new Coordinate(a.x + frac * dx, a.y + frac * dy)
     return splitPt
   }
+
   static area3D (a, b, c) {
     var ux = b.x - a.x
     var uy = b.y - a.y
@@ -89,11 +99,13 @@ export default class Triangle {
     var area3D = Math.sqrt(absSq) / 2
     return area3D
   }
+
   static centroid (a, b, c) {
     var x = (a.x + b.x + c.x) / 3
     var y = (a.y + b.y + c.y) / 3
     return new Coordinate(x, y)
   }
+
   static inCentre (a, b, c) {
     var len0 = b.distance(c)
     var len1 = a.distance(c)
@@ -103,37 +115,48 @@ export default class Triangle {
     var inCentreY = (len0 * a.y + len1 * b.y + len2 * c.y) / circum
     return new Coordinate(inCentreX, inCentreY)
   }
+
   area () {
     return Triangle.area(this.p0, this.p1, this.p2)
   }
+
   signedArea () {
     return Triangle.signedArea(this.p0, this.p1, this.p2)
   }
+
   interpolateZ (p) {
     if (p === null) throw new IllegalArgumentException('Supplied point is null.')
     return Triangle.interpolateZ(p, this.p0, this.p1, this.p2)
   }
+
   longestSideLength () {
     return Triangle.longestSideLength(this.p0, this.p1, this.p2)
   }
+
   isAcute () {
     return Triangle.isAcute(this.p0, this.p1, this.p2)
   }
+
   circumcentre () {
     return Triangle.circumcentre(this.p0, this.p1, this.p2)
   }
+
   area3D () {
     return Triangle.area3D(this.p0, this.p1, this.p2)
   }
+
   centroid () {
     return Triangle.centroid(this.p0, this.p1, this.p2)
   }
+
   inCentre () {
     return Triangle.inCentre(this.p0, this.p1, this.p2)
   }
+
   getClass () {
     return Triangle
   }
+
   get interfaces_ () {
     return []
   }
@@ -142,7 +165,7 @@ Triangle.constructor_ = function () {
   this.p0 = null
   this.p1 = null
   this.p2 = null
-  let p0 = arguments[0]; let p1 = arguments[1]; let p2 = arguments[2]
+  const p0 = arguments[0]; const p1 = arguments[1]; const p2 = arguments[2]
   this.p0 = p0
   this.p1 = p1
   this.p2 = p2

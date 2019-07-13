@@ -10,9 +10,11 @@ export default class EdgeEndBundle extends EdgeEnd {
     super()
     EdgeEndBundle.constructor_.apply(this, arguments)
   }
+
   insert (e) {
     this._edgeEnds.add(e)
   }
+
   print (out) {
     out.println('EdgeEndBundle--> Label: ' + this._label)
     for (var it = this.iterator(); it.hasNext();) {
@@ -21,12 +23,15 @@ export default class EdgeEndBundle extends EdgeEnd {
       out.println()
     }
   }
+
   iterator () {
     return this._edgeEnds.iterator()
   }
+
   getEdgeEnds () {
     return this._edgeEnds
   }
+
   computeLabelOn (geomIndex, boundaryNodeRule) {
     var boundaryCount = 0
     var foundInterior = false
@@ -43,6 +48,7 @@ export default class EdgeEndBundle extends EdgeEnd {
     }
     this._label.setLocation(geomIndex, loc)
   }
+
   computeLabelSide (geomIndex, side) {
     for (var it = this.iterator(); it.hasNext();) {
       var e = it.next()
@@ -55,16 +61,20 @@ export default class EdgeEndBundle extends EdgeEnd {
       }
     }
   }
+
   getLabel () {
     return this._label
   }
+
   computeLabelSides (geomIndex) {
     this.computeLabelSide(geomIndex, Position.LEFT)
     this.computeLabelSide(geomIndex, Position.RIGHT)
   }
+
   updateIM (im) {
     Edge.updateIM(this._label, im)
   }
+
   computeLabel (boundaryNodeRule) {
     var isArea = false
     for (var it = this.iterator(); it.hasNext();) {
@@ -77,9 +87,11 @@ export default class EdgeEndBundle extends EdgeEnd {
       if (isArea) this.computeLabelSides(i)
     }
   }
+
   getClass () {
     return EdgeEndBundle
   }
+
   get interfaces_ () {
     return []
   }
@@ -87,10 +99,10 @@ export default class EdgeEndBundle extends EdgeEnd {
 EdgeEndBundle.constructor_ = function () {
   this._edgeEnds = new ArrayList()
   if (arguments.length === 1) {
-    let e = arguments[0]
+    const e = arguments[0]
     EdgeEndBundle.constructor_.call(this, null, e)
   } else if (arguments.length === 2) {
-    let boundaryNodeRule = arguments[0]; let e = arguments[1]
+    const boundaryNodeRule = arguments[0]; const e = arguments[1]
     EdgeEnd.constructor_.call(this, e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()))
     this.insert(e)
   }

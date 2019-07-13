@@ -2,23 +2,29 @@ export default class TopologyValidationError {
   constructor () {
     TopologyValidationError.constructor_.apply(this, arguments)
   }
+
   getErrorType () {
     return this._errorType
   }
+
   getMessage () {
     return TopologyValidationError.errMsg[this._errorType]
   }
+
   getCoordinate () {
     return this._pt
   }
+
   toString () {
     var locStr = ''
     if (this._pt !== null) locStr = ' at or near point ' + this._pt
     return this.getMessage() + locStr
   }
+
   getClass () {
     return TopologyValidationError
   }
+
   get interfaces_ () {
     return []
   }
@@ -27,10 +33,10 @@ TopologyValidationError.constructor_ = function () {
   this._errorType = null
   this._pt = null
   if (arguments.length === 1) {
-    let errorType = arguments[0]
+    const errorType = arguments[0]
     TopologyValidationError.constructor_.call(this, errorType, null)
   } else if (arguments.length === 2) {
-    let errorType = arguments[0]; let pt = arguments[1]
+    const errorType = arguments[0]; const pt = arguments[1]
     this._errorType = errorType
     if (pt !== null) this._pt = pt.copy()
   }

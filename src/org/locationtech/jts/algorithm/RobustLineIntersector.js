@@ -12,6 +12,7 @@ export default class RobustLineIntersector extends LineIntersector {
     super()
     RobustLineIntersector.constructor_.apply(this, arguments)
   }
+
   static nearestEndpoint (p1, p2, q1, q2) {
     var nearestPt = p1
     var minDist = Distance.pointToSegment(p1, q1, q2)
@@ -32,14 +33,16 @@ export default class RobustLineIntersector extends LineIntersector {
     }
     return nearestPt
   }
+
   isInSegmentEnvelopes (intPt) {
     var env0 = new Envelope(this._inputLines[0][0], this._inputLines[0][1])
     var env1 = new Envelope(this._inputLines[1][0], this._inputLines[1][1])
     return env0.contains(intPt) && env1.contains(intPt)
   }
+
   computeIntersection () {
     if (arguments.length === 3) {
-      let p = arguments[0]; let p1 = arguments[1]; let p2 = arguments[2]
+      const p = arguments[0]; const p1 = arguments[1]; const p2 = arguments[2]
       this._isProper = false
       if (Envelope.intersects(p1, p2, p)) {
         if (Orientation.index(p1, p2, p) === 0 && Orientation.index(p2, p1, p) === 0) {
@@ -54,6 +57,7 @@ export default class RobustLineIntersector extends LineIntersector {
       this._result = LineIntersector.NO_INTERSECTION
     } else return super.computeIntersection.apply(this, arguments)
   }
+
   normalizeToMinimum (n1, n2, n3, n4, normPt) {
     normPt.x = this.smallestInAbsValue(n1.x, n2.x, n3.x, n4.x)
     normPt.y = this.smallestInAbsValue(n1.y, n2.y, n3.y, n4.y)
@@ -66,6 +70,7 @@ export default class RobustLineIntersector extends LineIntersector {
     n4.x -= normPt.x
     n4.y -= normPt.y
   }
+
   safeHCoordinateIntersection (p1, p2, q1, q2) {
     var intPt = null
     try {
@@ -77,6 +82,7 @@ export default class RobustLineIntersector extends LineIntersector {
     } finally {}
     return intPt
   }
+
   intersection (p1, p2, q1, q2) {
     var intPt = this.intersectionWithNormalization(p1, p2, q1, q2)
     if (!this.isInSegmentEnvelopes(intPt)) {
@@ -87,6 +93,7 @@ export default class RobustLineIntersector extends LineIntersector {
     }
     return intPt
   }
+
   smallestInAbsValue (x1, x2, x3, x4) {
     var x = x1
     var xabs = Math.abs(x)
@@ -103,6 +110,7 @@ export default class RobustLineIntersector extends LineIntersector {
     }
     return x
   }
+
   checkDD (p1, p2, q1, q2, intPt) {
     var intPtDD = CGAlgorithmsDD.intersection(p1, p2, q1, q2)
     var isIn = this.isInSegmentEnvelopes(intPtDD)
@@ -111,6 +119,7 @@ export default class RobustLineIntersector extends LineIntersector {
       System.out.println('Distance = ' + intPt.distance(intPtDD))
     }
   }
+
   intersectionWithNormalization (p1, p2, q1, q2) {
     var n1 = new Coordinate(p1)
     var n2 = new Coordinate(p2)
@@ -123,6 +132,7 @@ export default class RobustLineIntersector extends LineIntersector {
     intPt.y += normPt.y
     return intPt
   }
+
   computeCollinearIntersection (p1, p2, q1, q2) {
     var p1q1p2 = Envelope.intersects(p1, p2, q1)
     var p1q2p2 = Envelope.intersects(p1, p2, q2)
@@ -160,6 +170,7 @@ export default class RobustLineIntersector extends LineIntersector {
     }
     return LineIntersector.NO_INTERSECTION
   }
+
   normalizeToEnvCentre (n00, n01, n10, n11, normPt) {
     var minX0 = n00.x < n01.x ? n00.x : n01.x
     var minY0 = n00.y < n01.y ? n00.y : n01.y
@@ -186,6 +197,7 @@ export default class RobustLineIntersector extends LineIntersector {
     n11.x -= normPt.x
     n11.y -= normPt.y
   }
+
   computeIntersect (p1, p2, q1, q2) {
     this._isProper = false
     if (!Envelope.intersects(p1, p2, q1, q2)) return LineIntersector.NO_INTERSECTION
@@ -224,9 +236,11 @@ export default class RobustLineIntersector extends LineIntersector {
     }
     return LineIntersector.POINT_INTERSECTION
   }
+
   getClass () {
     return RobustLineIntersector
   }
+
   get interfaces_ () {
     return []
   }

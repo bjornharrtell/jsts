@@ -8,10 +8,12 @@ export default class RectangleIntersects {
   constructor () {
     RectangleIntersects.constructor_.apply(this, arguments)
   }
+
   static intersects (rectangle, b) {
     var rp = new RectangleIntersects(rectangle)
     return rp.intersects(b)
   }
+
   intersects (geom) {
     if (!this._rectEnv.intersects(geom.getEnvelopeInternal())) return false
     var visitor = new EnvelopeIntersectsVisitor(this._rectEnv)
@@ -25,9 +27,11 @@ export default class RectangleIntersects {
     if (riVisitor.intersects()) return true
     return false
   }
+
   getClass () {
     return RectangleIntersects
   }
+
   get interfaces_ () {
     return []
   }
@@ -35,7 +39,7 @@ export default class RectangleIntersects {
 RectangleIntersects.constructor_ = function () {
   this._rectangle = null
   this._rectEnv = null
-  let rectangle = arguments[0]
+  const rectangle = arguments[0]
   this._rectangle = rectangle
   this._rectEnv = rectangle.getEnvelopeInternal()
 }
@@ -44,9 +48,11 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
     super()
     EnvelopeIntersectsVisitor.constructor_.apply(this, arguments)
   }
+
   isDone () {
     return this._intersects === true
   }
+
   visit (element) {
     var elementEnv = element.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) {
@@ -65,12 +71,15 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
       return null
     }
   }
+
   intersects () {
     return this._intersects
   }
+
   getClass () {
     return EnvelopeIntersectsVisitor
   }
+
   get interfaces_ () {
     return []
   }
@@ -78,7 +87,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 EnvelopeIntersectsVisitor.constructor_ = function () {
   this._rectEnv = null
   this._intersects = false
-  let rectEnv = arguments[0]
+  const rectEnv = arguments[0]
   this._rectEnv = rectEnv
 }
 class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
@@ -86,9 +95,11 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
     super()
     GeometryContainsPointVisitor.constructor_.apply(this, arguments)
   }
+
   isDone () {
     return this._containsPoint === true
   }
+
   visit (geom) {
     if (!(geom instanceof Polygon)) return null
     var elementEnv = geom.getEnvelopeInternal()
@@ -103,12 +114,15 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
       }
     }
   }
+
   containsPoint () {
     return this._containsPoint
   }
+
   getClass () {
     return GeometryContainsPointVisitor
   }
+
   get interfaces_ () {
     return []
   }
@@ -117,7 +131,7 @@ GeometryContainsPointVisitor.constructor_ = function () {
   this._rectSeq = null
   this._rectEnv = null
   this._containsPoint = false
-  let rectangle = arguments[0]
+  const rectangle = arguments[0]
   this._rectSeq = rectangle.getExteriorRing().getCoordinateSequence()
   this._rectEnv = rectangle.getEnvelopeInternal()
 }
@@ -126,18 +140,22 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
     super()
     RectangleIntersectsSegmentVisitor.constructor_.apply(this, arguments)
   }
+
   intersects () {
     return this._hasIntersection
   }
+
   isDone () {
     return this._hasIntersection === true
   }
+
   visit (geom) {
     var elementEnv = geom.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) return null
     var lines = LinearComponentExtracter.getLines(geom)
     this.checkIntersectionWithLineStrings(lines)
   }
+
   checkIntersectionWithLineStrings (lines) {
     for (var i = lines.iterator(); i.hasNext();) {
       var testLine = i.next()
@@ -145,6 +163,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
       if (this._hasIntersection) return null
     }
   }
+
   checkIntersectionWithSegments (testLine) {
     var seq1 = testLine.getCoordinateSequence()
     for (var j = 1; j < seq1.size(); j++) {
@@ -156,9 +175,11 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
       }
     }
   }
+
   getClass () {
     return RectangleIntersectsSegmentVisitor
   }
+
   get interfaces_ () {
     return []
   }
@@ -169,7 +190,7 @@ RectangleIntersectsSegmentVisitor.constructor_ = function () {
   this._hasIntersection = false
   this._p0 = new Coordinate()
   this._p1 = new Coordinate()
-  let rectangle = arguments[0]
+  const rectangle = arguments[0]
   this._rectEnv = rectangle.getEnvelopeInternal()
   this._rectIntersector = new RectangleLineIntersector(this._rectEnv)
 }

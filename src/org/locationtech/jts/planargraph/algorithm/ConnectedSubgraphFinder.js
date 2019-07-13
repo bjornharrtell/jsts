@@ -6,6 +6,7 @@ export default class ConnectedSubgraphFinder {
   constructor () {
     ConnectedSubgraphFinder.constructor_.apply(this, arguments)
   }
+
   addReachable (startNode, subgraph) {
     var nodeStack = new Stack()
     nodeStack.add(startNode)
@@ -14,11 +15,13 @@ export default class ConnectedSubgraphFinder {
       this.addEdges(node, nodeStack, subgraph)
     }
   }
+
   findSubgraph (node) {
     var subgraph = new Subgraph(this._graph)
     this.addReachable(node, subgraph)
     return subgraph
   }
+
   getConnectedSubgraphs () {
     var subgraphs = new ArrayList()
     GraphComponent.setVisited(this._graph.nodeIterator(), false)
@@ -31,6 +34,7 @@ export default class ConnectedSubgraphFinder {
     }
     return subgraphs
   }
+
   addEdges (node, nodeStack, subgraph) {
     node.setVisited(true)
     for (var i = node.getOutEdges().iterator(); i.hasNext();) {
@@ -40,15 +44,17 @@ export default class ConnectedSubgraphFinder {
       if (!toNode.isVisited()) nodeStack.push(toNode)
     }
   }
+
   getClass () {
     return ConnectedSubgraphFinder
   }
+
   get interfaces_ () {
     return []
   }
 }
 ConnectedSubgraphFinder.constructor_ = function () {
   this._graph = null
-  let graph = arguments[0]
+  const graph = arguments[0]
   this._graph = graph
 }

@@ -3,6 +3,7 @@ export default class PriorityQueue {
   constructor () {
     PriorityQueue.constructor_.apply(this, arguments)
   }
+
   poll () {
     if (this.isEmpty()) return null
     var minItem = this._items.get(1)
@@ -11,9 +12,11 @@ export default class PriorityQueue {
     this.reorder(1)
     return minItem
   }
+
   size () {
     return this._size
   }
+
   reorder (hole) {
     var child = null
     var tmp = this._items.get(hole)
@@ -24,18 +27,22 @@ export default class PriorityQueue {
     }
     this._items.set(hole, tmp)
   }
+
   clear () {
     this._size = 0
     this._items.clear()
   }
+
   peek () {
     if (this.isEmpty()) return null
     var minItem = this._items.get(1)
     return minItem
   }
+
   isEmpty () {
     return this._size === 0
   }
+
   add (x) {
     this._items.add(null)
     this._size += 1
@@ -46,9 +53,11 @@ export default class PriorityQueue {
     }
     this._items.set(hole, x)
   }
+
   getClass () {
     return PriorityQueue
   }
+
   get interfaces_ () {
     return []
   }

@@ -3,10 +3,12 @@ export default class LocationIndexOfLine {
   constructor () {
     LocationIndexOfLine.constructor_.apply(this, arguments)
   }
+
   static indicesOf (linearGeom, subLine) {
     var locater = new LocationIndexOfLine(linearGeom)
     return locater.indicesOf(subLine)
   }
+
   indicesOf (subLine) {
     var startPt = subLine.getGeometryN(0).getCoordinateN(0)
     var lastLine = subLine.getGeometryN(subLine.getNumGeometries() - 1)
@@ -21,15 +23,17 @@ export default class LocationIndexOfLine {
     }
     return subLineLoc
   }
+
   getClass () {
     return LocationIndexOfLine
   }
+
   get interfaces_ () {
     return []
   }
 }
 LocationIndexOfLine.constructor_ = function () {
   this._linearGeom = null
-  let linearGeom = arguments[0]
+  const linearGeom = arguments[0]
   this._linearGeom = linearGeom
 }

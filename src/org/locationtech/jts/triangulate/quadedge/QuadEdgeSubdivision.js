@@ -19,34 +19,40 @@ export default class QuadEdgeSubdivision {
   constructor () {
     QuadEdgeSubdivision.constructor_.apply(this, arguments)
   }
+
   static getTriangleEdges (startQE, triEdge) {
     triEdge[0] = startQE
     triEdge[1] = triEdge[0].lNext()
     triEdge[2] = triEdge[1].lNext()
     if (triEdge[2].lNext() !== triEdge[0]) throw new IllegalArgumentException('Edges do not form a triangle')
   }
+
   getTriangleVertices (includeFrame) {
     var visitor = new TriangleVertexListVisitor()
     this.visitTriangles(visitor, includeFrame)
     return visitor.getTriangleVertices()
   }
+
   isFrameVertex (v) {
     if (v.equals(this._frameVertex[0])) return true
     if (v.equals(this._frameVertex[1])) return true
     if (v.equals(this._frameVertex[2])) return true
     return false
   }
+
   isVertexOfEdge (e, v) {
     if (v.equals(e.orig(), this._tolerance) || v.equals(e.dest(), this._tolerance)) {
       return true
     }
     return false
   }
+
   connect (a, b) {
     var q = QuadEdge.connect(a, b)
     this._quadEdges.add(q)
     return q
   }
+
   getVoronoiCellPolygon (qe, geomFact) {
     var cellPts = new ArrayList()
     var startQE = qe
@@ -68,9 +74,11 @@ export default class QuadEdgeSubdivision {
     cellPoly.setUserData(v.getCoordinate())
     return cellPoly
   }
+
   setLocator (locator) {
     this._locator = locator
   }
+
   initSubdiv () {
     var ea = this.makeEdge(this._frameVertex[0], this._frameVertex[1])
     var eb = this.makeEdge(this._frameVertex[1], this._frameVertex[2])
@@ -80,6 +88,7 @@ export default class QuadEdgeSubdivision {
     QuadEdge.splice(ec.sym(), ea)
     return ea
   }
+
   isFrameBorderEdge (e) {
     var leftTri = new Array(3).fill(null)
     QuadEdgeSubdivision.getTriangleEdges(e, leftTri)
@@ -91,11 +100,13 @@ export default class QuadEdgeSubdivision {
     if (this.isFrameVertex(vRightTriOther)) return true
     return false
   }
+
   makeEdge (o, d) {
     var q = QuadEdge.makeEdge(o, d)
     this._quadEdges.add(q)
     return q
   }
+
   visitTriangles (triVisitor, includeFrame) {
     this._visitedKey++
     var edgeStack = new Stack()
@@ -109,18 +120,22 @@ export default class QuadEdgeSubdivision {
       }
     }
   }
+
   isFrameEdge (e) {
     if (this.isFrameVertex(e.orig()) || this.isFrameVertex(e.dest())) return true
     return false
   }
+
   isOnEdge (e, p) {
     this._seg.setCoordinates(e.orig().getCoordinate(), e.dest().getCoordinate())
     var dist = this._seg.distance(p)
     return dist < this._edgeCoincidenceTolerance
   }
+
   getEnvelope () {
     return new Envelope(this._frameEnv)
   }
+
   createFrame (env) {
     var deltaX = env.getWidth()
     var deltaY = env.getHeight()
@@ -136,11 +151,13 @@ export default class QuadEdgeSubdivision {
     this._frameEnv = new Envelope(this._frameVertex[0].getCoordinate(), this._frameVertex[1].getCoordinate())
     this._frameEnv.expandToInclude(this._frameVertex[2].getCoordinate())
   }
+
   getTriangleCoordinates (includeFrame) {
     var visitor = new TriangleCoordinatesVisitor()
     this.visitTriangles(visitor, includeFrame)
     return visitor.getTriangles()
   }
+
   getVertices (includeFrame) {
     var vertices = new HashSet()
     for (var i = this._quadEdges.iterator(); i.hasNext();) {
@@ -152,6 +169,7 @@ export default class QuadEdgeSubdivision {
     }
     return vertices
   }
+
   fetchTriangleToVisit (edge, edgeStack, includeFrame, visitedEdges) {
     var curr = edge
     var edgeCount = 0
@@ -168,11 +186,12 @@ export default class QuadEdgeSubdivision {
     if (isFrame && !includeFrame) return null
     return this._triEdges
   }
+
   getEdges () {
     if (arguments.length === 0) {
       return this._quadEdges
     } else if (arguments.length === 1) {
-      let geomFact = arguments[0]
+      const geomFact = arguments[0]
       var quadEdges = this.getPrimaryEdges(false)
       var edges = new Array(quadEdges.size()).fill(null)
       var i = 0
@@ -183,6 +202,7 @@ export default class QuadEdgeSubdivision {
       return geomFact.createMultiLineString(edges)
     }
   }
+
   getVertexUniqueEdges (includeFrame) {
     var edges = new ArrayList()
     var visitedVertices = new HashSet()
@@ -206,11 +226,13 @@ export default class QuadEdgeSubdivision {
     }
     return edges
   }
+
   getTriangleEdges (includeFrame) {
     var visitor = new TriangleEdgesListVisitor()
     this.visitTriangles(visitor, includeFrame)
     return visitor.getTriangleEdges()
   }
+
   getPrimaryEdges (includeFrame) {
     this._visitedKey++
     var edges = new ArrayList()
@@ -230,6 +252,7 @@ export default class QuadEdgeSubdivision {
     }
     return edges
   }
+
   delete (e) {
     QuadEdge.splice(e, e.oPrev())
     QuadEdge.splice(e.sym(), e.sym().oPrev())
@@ -245,6 +268,7 @@ export default class QuadEdgeSubdivision {
     eRot.delete()
     eRotSym.delete()
   }
+
   locateFromEdge (v, startEdge) {
     var iter = 0
     var maxIter = this._quadEdges.size()
@@ -268,9 +292,11 @@ export default class QuadEdgeSubdivision {
     }
     return e
   }
+
   getTolerance () {
     return this._tolerance
   }
+
   getVoronoiCellPolygons (geomFact) {
     this.visitTriangles(new TriangleCircumcentreVisitor(), true)
     var cells = new ArrayList()
@@ -281,10 +307,12 @@ export default class QuadEdgeSubdivision {
     }
     return cells
   }
+
   getVoronoiDiagram (geomFact) {
     var vorCells = this.getVoronoiCellPolygons(geomFact)
     return geomFact.createGeometryCollection(GeometryFactory.toGeometryArray(vorCells))
   }
+
   getTriangles (geomFact) {
     var triPtsList = this.getTriangleCoordinates(false)
     var tris = new Array(triPtsList.size()).fill(null)
@@ -295,6 +323,7 @@ export default class QuadEdgeSubdivision {
     }
     return geomFact.createGeometryCollection(tris)
   }
+
   insertSite (v) {
     var e = this.locate(v)
     if (v.equals(e.orig(), this._tolerance) || v.equals(e.dest(), this._tolerance)) {
@@ -309,17 +338,18 @@ export default class QuadEdgeSubdivision {
     } while (e.lNext() !== startEdge)
     return startEdge
   }
+
   locate () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Vertex) {
-        let v = arguments[0]
+        const v = arguments[0]
         return this._locator.locate(v)
       } else if (arguments[0] instanceof Coordinate) {
-        let p = arguments[0]
+        const p = arguments[0]
         return this._locator.locate(new Vertex(p))
       }
     } else if (arguments.length === 2) {
-      let p0 = arguments[0]; let p1 = arguments[1]
+      const p0 = arguments[0]; const p1 = arguments[1]
       var e = this._locator.locate(new Vertex(p0))
       if (e === null) return null
       var base = e
@@ -332,9 +362,11 @@ export default class QuadEdgeSubdivision {
       return null
     }
   }
+
   getClass () {
     return QuadEdgeSubdivision
   }
+
   get interfaces_ () {
     return []
   }
@@ -343,6 +375,7 @@ class TriangleCircumcentreVisitor {
   constructor () {
     TriangleCircumcentreVisitor.constructor_.apply(this, arguments)
   }
+
   visit (triEdges) {
     var a = triEdges[0].orig().getCoordinate()
     var b = triEdges[1].orig().getCoordinate()
@@ -353,9 +386,11 @@ class TriangleCircumcentreVisitor {
       triEdges[i].rot().setOrig(ccVertex)
     }
   }
+
   getClass () {
     return TriangleCircumcentreVisitor
   }
+
   get interfaces_ () {
     return [TriangleVisitor]
   }
@@ -365,15 +400,19 @@ class TriangleEdgesListVisitor {
   constructor () {
     TriangleEdgesListVisitor.constructor_.apply(this, arguments)
   }
+
   getTriangleEdges () {
     return this._triList
   }
+
   visit (triEdges) {
     this._triList.add(triEdges)
   }
+
   getClass () {
     return TriangleEdgesListVisitor
   }
+
   get interfaces_ () {
     return [TriangleVisitor]
   }
@@ -385,15 +424,19 @@ class TriangleVertexListVisitor {
   constructor () {
     TriangleVertexListVisitor.constructor_.apply(this, arguments)
   }
+
   visit (triEdges) {
     this._triList.add([triEdges[0].orig(), triEdges[1].orig(), triEdges[2].orig()])
   }
+
   getTriangleVertices () {
     return this._triList
   }
+
   getClass () {
     return TriangleVertexListVisitor
   }
+
   get interfaces_ () {
     return [TriangleVisitor]
   }
@@ -405,12 +448,14 @@ class TriangleCoordinatesVisitor {
   constructor () {
     TriangleCoordinatesVisitor.constructor_.apply(this, arguments)
   }
+
   checkTriangleSize (pts) {
     var loc = ''
     if (pts.length >= 2) loc = WKTWriter.toLineString(pts[0], pts[1]); else {
       if (pts.length >= 1) loc = WKTWriter.toPoint(pts[0])
     }
   }
+
   visit (triEdges) {
     this._coordList.clear()
     for (var i = 0; i < 3; i++) {
@@ -426,12 +471,15 @@ class TriangleCoordinatesVisitor {
       this._triCoords.add(pts)
     }
   }
+
   getTriangles () {
     return this._triCoords
   }
+
   getClass () {
     return TriangleCoordinatesVisitor
   }
+
   get interfaces_ () {
     return [TriangleVisitor]
   }
@@ -455,7 +503,7 @@ QuadEdgeSubdivision.constructor_ = function () {
   this._locator = null
   this._seg = new LineSegment()
   this._triEdges = new Array(3).fill(null)
-  let env = arguments[0]; let tolerance = arguments[1]
+  const env = arguments[0]; const tolerance = arguments[1]
   this._tolerance = tolerance
   this._edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR
   this.createFrame(env)

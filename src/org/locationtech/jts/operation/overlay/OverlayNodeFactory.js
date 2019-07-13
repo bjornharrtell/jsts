@@ -6,12 +6,15 @@ export default class OverlayNodeFactory extends NodeFactory {
     super()
     OverlayNodeFactory.constructor_.apply(this, arguments)
   }
+
   createNode (coord) {
     return new Node(coord, new DirectedEdgeStar())
   }
+
   getClass () {
     return OverlayNodeFactory
   }
+
   get interfaces_ () {
     return []
   }

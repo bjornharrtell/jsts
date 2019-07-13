@@ -9,9 +9,10 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
     super()
     PrecisionReducerCoordinateOperation.constructor_.apply(this, arguments)
   }
+
   edit () {
     if (arguments.length === 2 && (arguments[1] instanceof Geometry && arguments[0] instanceof Array)) {
-      let coordinates = arguments[0]; let geom = arguments[1]
+      const coordinates = arguments[0]; const geom = arguments[1]
       if (coordinates.length === 0) return null
       var reducedCoords = new Array(coordinates.length).fill(null)
       for (var i = 0; i < coordinates.length; i++) {
@@ -32,9 +33,11 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
       return noRepeatedCoords
     } else return super.edit.apply(this, arguments)
   }
+
   getClass () {
     return PrecisionReducerCoordinateOperation
   }
+
   get interfaces_ () {
     return []
   }
@@ -42,7 +45,7 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
 PrecisionReducerCoordinateOperation.constructor_ = function () {
   this._targetPM = null
   this._removeCollapsed = true
-  let targetPM = arguments[0]; let removeCollapsed = arguments[1]
+  const targetPM = arguments[0]; const removeCollapsed = arguments[1]
   this._targetPM = targetPM
   this._removeCollapsed = removeCollapsed
 }

@@ -6,6 +6,7 @@ export default class LineIntersector {
   constructor () {
     LineIntersector.constructor_.apply(this, arguments)
   }
+
   static computeEdgeDistance (p, p0, p1) {
     var dx = Math.abs(p1.x - p0.x)
     var dy = Math.abs(p1.y - p0.y)
@@ -25,6 +26,7 @@ export default class LineIntersector {
     Assert.isTrue(!(dist === 0.0 && !p.equals(p0)), 'Bad distance calculation')
     return dist
   }
+
   static nonRobustComputeEdgeDistance (p, p1, p2) {
     var dx = p.x - p1.x
     var dy = p.y - p1.y
@@ -32,10 +34,12 @@ export default class LineIntersector {
     Assert.isTrue(!(dist === 0.0 && !p.equals(p1)), 'Invalid distance calculation')
     return dist
   }
+
   getIndexAlongSegment (segmentIndex, intIndex) {
     this.computeIntLineIndex()
     return this._intLineIndex[segmentIndex][intIndex]
   }
+
   getTopologySummary () {
     var catBuilder = new StringBuilder()
     if (this.isEndPoint()) catBuilder.append(' endpoint')
@@ -43,6 +47,7 @@ export default class LineIntersector {
     if (this.isCollinear()) catBuilder.append(' collinear')
     return catBuilder.toString()
   }
+
   computeIntersection (p1, p2, p3, p4) {
     this._inputLines[0][0] = p1
     this._inputLines[0][1] = p2
@@ -50,9 +55,11 @@ export default class LineIntersector {
     this._inputLines[1][1] = p4
     this._result = this.computeIntersect(p1, p2, p3, p4)
   }
+
   getIntersectionNum () {
     return this._result
   }
+
   computeIntLineIndex () {
     if (arguments.length === 0) {
       if (this._intLineIndex === null) {
@@ -61,7 +68,7 @@ export default class LineIntersector {
         this.computeIntLineIndex(1)
       }
     } else if (arguments.length === 1) {
-      let segmentIndex = arguments[0]
+      const segmentIndex = arguments[0]
       var dist0 = this.getEdgeDistance(segmentIndex, 0)
       var dist1 = this.getEdgeDistance(segmentIndex, 1)
       if (dist0 > dist1) {
@@ -73,19 +80,22 @@ export default class LineIntersector {
       }
     }
   }
+
   isProper () {
     return this.hasIntersection() && this._isProper
   }
+
   setPrecisionModel (precisionModel) {
     this._precisionModel = precisionModel
   }
+
   isInteriorIntersection () {
     if (arguments.length === 0) {
       if (this.isInteriorIntersection(0)) return true
       if (this.isInteriorIntersection(1)) return true
       return false
     } else if (arguments.length === 1) {
-      let inputLineIndex = arguments[0]
+      const inputLineIndex = arguments[0]
       for (var i = 0; i < this._result; i++) {
         if (!(this._intPt[i].equals2D(this._inputLines[inputLineIndex][0]) || this._intPt[i].equals2D(this._inputLines[inputLineIndex][1]))) {
           return true
@@ -94,28 +104,36 @@ export default class LineIntersector {
       return false
     }
   }
+
   getIntersection (intIndex) {
     return this._intPt[intIndex]
   }
+
   isEndPoint () {
     return this.hasIntersection() && !this._isProper
   }
+
   hasIntersection () {
     return this._result !== LineIntersector.NO_INTERSECTION
   }
+
   getEdgeDistance (segmentIndex, intIndex) {
     var dist = LineIntersector.computeEdgeDistance(this._intPt[intIndex], this._inputLines[segmentIndex][0], this._inputLines[segmentIndex][1])
     return dist
   }
+
   isCollinear () {
     return this._result === LineIntersector.COLLINEAR_INTERSECTION
   }
+
   toString () {
     return WKTWriter.toLineString(this._inputLines[0][0], this._inputLines[0][1]) + ' - ' + WKTWriter.toLineString(this._inputLines[1][0], this._inputLines[1][1]) + this.getTopologySummary()
   }
+
   getEndpoint (segmentIndex, ptIndex) {
     return this._inputLines[segmentIndex][ptIndex]
   }
+
   isIntersection (pt) {
     for (var i = 0; i < this._result; i++) {
       if (this._intPt[i].equals2D(pt)) {
@@ -124,13 +142,16 @@ export default class LineIntersector {
     }
     return false
   }
+
   getIntersectionAlongSegment (segmentIndex, intIndex) {
     this.computeIntLineIndex()
     return this._intPt[this._intLineIndex[segmentIndex][intIndex]]
   }
+
   getClass () {
     return LineIntersector
   }
+
   get interfaces_ () {
     return []
   }

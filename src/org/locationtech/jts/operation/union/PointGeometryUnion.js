@@ -7,10 +7,12 @@ export default class PointGeometryUnion {
   constructor () {
     PointGeometryUnion.constructor_.apply(this, arguments)
   }
+
   static union (pointGeom, otherGeom) {
     var unioner = new PointGeometryUnion(pointGeom, otherGeom)
     return unioner.union()
   }
+
   union () {
     var locater = new PointLocator()
     var exteriorCoords = new TreeSet()
@@ -30,9 +32,11 @@ export default class PointGeometryUnion {
     }
     return GeometryCombiner.combine(ptComp, this._otherGeom)
   }
+
   getClass () {
     return PointGeometryUnion
   }
+
   get interfaces_ () {
     return []
   }
@@ -41,7 +45,7 @@ PointGeometryUnion.constructor_ = function () {
   this._pointGeom = null
   this._otherGeom = null
   this._geomFact = null
-  let pointGeom = arguments[0]; let otherGeom = arguments[1]
+  const pointGeom = arguments[0]; const otherGeom = arguments[1]
   this._pointGeom = pointGeom
   this._otherGeom = otherGeom
   this._geomFact = otherGeom.getFactory()

@@ -9,6 +9,7 @@ export default class CoordinateArraySequence {
   constructor () {
     CoordinateArraySequence.constructor_.apply(this, arguments)
   }
+
   setOrdinate (index, ordinateIndex, value) {
     switch (ordinateIndex) {
       case CoordinateSequence.X:
@@ -24,9 +25,11 @@ export default class CoordinateArraySequence {
         throw new IllegalArgumentException('invalid ordinateIndex')
     }
   }
+
   size () {
     return this._coordinates.length
   }
+
   getOrdinate (index, ordinateIndex) {
     switch (ordinateIndex) {
       case CoordinateSequence.X:
@@ -38,32 +41,38 @@ export default class CoordinateArraySequence {
     }
     return Double.NaN
   }
+
   getCoordinate () {
     if (arguments.length === 1) {
-      let i = arguments[0]
+      const i = arguments[0]
       return this._coordinates[i]
     } else if (arguments.length === 2) {
-      let index = arguments[0]; let coord = arguments[1]
+      const index = arguments[0]; const coord = arguments[1]
       coord.x = this._coordinates[index].x
       coord.y = this._coordinates[index].y
       coord.z = this._coordinates[index].z
     }
   }
+
   getCoordinateCopy (i) {
     return new Coordinate(this._coordinates[i])
   }
+
   getDimension () {
     return this._dimension
   }
+
   getX (index) {
     return this._coordinates[index].x
   }
+
   expandEnvelope (env) {
     for (var i = 0; i < this._coordinates.length; i++) {
       env.expandToInclude(this._coordinates[i])
     }
     return env
   }
+
   copy () {
     var cloneCoordinates = new Array(this.size()).fill(null)
     for (var i = 0; i < this._coordinates.length; i++) {
@@ -71,6 +80,7 @@ export default class CoordinateArraySequence {
     }
     return new CoordinateArraySequence(cloneCoordinates, this._dimension)
   }
+
   toString () {
     if (this._coordinates.length > 0) {
       var strBuilder = new StringBuilder(17 * this._coordinates.length)
@@ -86,15 +96,19 @@ export default class CoordinateArraySequence {
       return '()'
     }
   }
+
   getY (index) {
     return this._coordinates[index].y
   }
+
   toCoordinateArray () {
     return this._coordinates
   }
+
   getClass () {
     return CoordinateArraySequence
   }
+
   get interfaces_ () {
     return [CoordinateSequence, Serializable]
   }
@@ -104,16 +118,16 @@ CoordinateArraySequence.constructor_ = function () {
   this._coordinates = null
   if (arguments.length === 1) {
     if (arguments[0] instanceof Array) {
-      let coordinates = arguments[0]
+      const coordinates = arguments[0]
       CoordinateArraySequence.constructor_.call(this, coordinates, 3)
     } else if (Number.isInteger(arguments[0])) {
-      let size = arguments[0]
+      const size = arguments[0]
       this._coordinates = new Array(size).fill(null)
       for (var i = 0; i < size; i++) {
         this._coordinates[i] = new Coordinate()
       }
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
-      let coordSeq = arguments[0]
+      const coordSeq = arguments[0]
       if (coordSeq === null) {
         this._coordinates = new Array(0).fill(null)
         return null
@@ -126,12 +140,12 @@ CoordinateArraySequence.constructor_ = function () {
     }
   } else if (arguments.length === 2) {
     if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
-      let coordinates = arguments[0]; let dimension = arguments[1]
+      const coordinates = arguments[0]; const dimension = arguments[1]
       this._coordinates = coordinates
       this._dimension = dimension
       if (coordinates === null) this._coordinates = new Array(0).fill(null)
     } else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
-      let size = arguments[0]; let dimension = arguments[1]
+      const size = arguments[0]; const dimension = arguments[1]
       this._coordinates = new Array(size).fill(null)
       this._dimension = dimension
       for (var i = 0; i < size; i++) {

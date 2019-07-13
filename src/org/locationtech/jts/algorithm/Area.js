@@ -5,18 +5,20 @@ export default class Area {
   constructor () {
     Area.constructor_.apply(this, arguments)
   }
+
   static ofRing () {
     if (arguments[0] instanceof Array) {
-      let ring = arguments[0]
+      const ring = arguments[0]
       return Math.abs(Area.ofRingSigned(ring))
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
-      let ring = arguments[0]
+      const ring = arguments[0]
       return Math.abs(Area.ofRingSigned(ring))
     }
   }
+
   static ofRingSigned () {
     if (arguments[0] instanceof Array) {
-      let ring = arguments[0]
+      const ring = arguments[0]
       if (ring.length < 3) return 0.0
       var sum = 0.0
       var x0 = ring[0].x
@@ -28,7 +30,7 @@ export default class Area {
       }
       return sum / 2.0
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
-      let ring = arguments[0]
+      const ring = arguments[0]
       var n = ring.size()
       if (n < 3) return 0.0
       var p0 = new Coordinate()
@@ -50,9 +52,11 @@ export default class Area {
       return sum / 2.0
     }
   }
+
   getClass () {
     return Area
   }
+
   get interfaces_ () {
     return []
   }

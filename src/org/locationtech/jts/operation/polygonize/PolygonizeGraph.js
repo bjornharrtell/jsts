@@ -13,6 +13,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     super()
     PolygonizeGraph.constructor_.apply(this, arguments)
   }
+
   static findLabeledEdgeRings (dirEdges) {
     var edgeRingStarts = new ArrayList()
     var currLabel = 1
@@ -27,6 +28,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return edgeRingStarts
   }
+
   static getDegreeNonDeleted (node) {
     var edges = node.getOutEdges().getEdges()
     var degree = 0
@@ -36,6 +38,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return degree
   }
+
   static deleteAllEdges (node) {
     var edges = node.getOutEdges().getEdges()
     for (var i = edges.iterator(); i.hasNext();) {
@@ -45,12 +48,14 @@ export default class PolygonizeGraph extends PlanarGraph {
       if (sym !== null) sym.setMarked(true)
     }
   }
+
   static label (dirEdges, label) {
     for (var i = dirEdges.iterator(); i.hasNext();) {
       var de = i.next()
       de.setLabel(label)
     }
   }
+
   static computeNextCWEdges (node) {
     var deStar = node.getOutEdges()
     var startDE = null
@@ -70,6 +75,7 @@ export default class PolygonizeGraph extends PlanarGraph {
       sym.setNext(startDE)
     }
   }
+
   static computeNextCCWEdges (node, label) {
     var deStar = node.getOutEdges()
     var firstOutDE = null
@@ -99,6 +105,7 @@ export default class PolygonizeGraph extends PlanarGraph {
       prevInDE.setNext(firstOutDE)
     }
   }
+
   static getDegree (node, label) {
     var edges = node.getOutEdges().getEdges()
     var degree = 0
@@ -108,6 +115,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return degree
   }
+
   static findIntersectionNodes (startDE, label) {
     var de = startDE
     var intNodes = null
@@ -123,11 +131,13 @@ export default class PolygonizeGraph extends PlanarGraph {
     } while (de !== startDE)
     return intNodes
   }
+
   findEdgeRing (startDE) {
     var er = new EdgeRing(this._factory)
     er.build(startDE)
     return er
   }
+
   computeDepthParity () {
     if (arguments.length === 0) {
       while (true) {
@@ -136,15 +146,17 @@ export default class PolygonizeGraph extends PlanarGraph {
         this.computeDepthParity(de)
       }
     } else if (arguments.length === 1) {
-      let de = arguments[0]
+      const de = arguments[0]
     }
   }
+
   computeNextCWEdges () {
     for (var iNode = this.nodeIterator(); iNode.hasNext();) {
       var node = iNode.next()
       PolygonizeGraph.computeNextCWEdges(node)
     }
   }
+
   addEdge (line) {
     if (line.isEmpty()) {
       return null
@@ -163,6 +175,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     edge.setDirectedEdges(de0, de1)
     this.add(edge)
   }
+
   deleteCutEdges () {
     this.computeNextCWEdges()
     PolygonizeGraph.findLabeledEdgeRings(this._dirEdges)
@@ -180,6 +193,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return cutLines
   }
+
   getEdgeRings () {
     this.computeNextCWEdges()
     PolygonizeGraph.label(this._dirEdges, -1)
@@ -195,6 +209,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return edgeRingList
   }
+
   getNode (pt) {
     var node = this.findNode(pt)
     if (node === null) {
@@ -203,6 +218,7 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return node
   }
+
   convertMaximalToMinimalEdgeRings (ringEdges) {
     for (var i = ringEdges.iterator(); i.hasNext();) {
       var de = i.next()
@@ -215,6 +231,7 @@ export default class PolygonizeGraph extends PlanarGraph {
       }
     }
   }
+
   deleteDangles () {
     var nodesToRemove = this.findNodesOfDegree(1)
     var dangleLines = new HashSet()
@@ -239,15 +256,17 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return dangleLines
   }
+
   getClass () {
     return PolygonizeGraph
   }
+
   get interfaces_ () {
     return []
   }
 }
 PolygonizeGraph.constructor_ = function () {
   this._factory = null
-  let factory = arguments[0]
+  const factory = arguments[0]
   this._factory = factory
 }

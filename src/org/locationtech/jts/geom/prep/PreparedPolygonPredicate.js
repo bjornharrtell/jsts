@@ -5,6 +5,7 @@ export default class PreparedPolygonPredicate {
   constructor () {
     PreparedPolygonPredicate.constructor_.apply(this, arguments)
   }
+
   isAnyTargetComponentInAreaTest (testGeom, targetRepPts) {
     var piaLoc = new SimplePointInAreaLocator(testGeom)
     for (var i = targetRepPts.iterator(); i.hasNext();) {
@@ -14,6 +15,7 @@ export default class PreparedPolygonPredicate {
     }
     return false
   }
+
   isAllTestComponentsInTarget (testGeom) {
     var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
     for (var i = coords.iterator(); i.hasNext();) {
@@ -23,6 +25,7 @@ export default class PreparedPolygonPredicate {
     }
     return true
   }
+
   isAnyTestComponentInTargetInterior (testGeom) {
     var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
     for (var i = coords.iterator(); i.hasNext();) {
@@ -32,6 +35,7 @@ export default class PreparedPolygonPredicate {
     }
     return false
   }
+
   isAllTestComponentsInTargetInterior (testGeom) {
     var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
     for (var i = coords.iterator(); i.hasNext();) {
@@ -41,6 +45,7 @@ export default class PreparedPolygonPredicate {
     }
     return true
   }
+
   isAnyTestComponentInTarget (testGeom) {
     var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
     for (var i = coords.iterator(); i.hasNext();) {
@@ -50,9 +55,11 @@ export default class PreparedPolygonPredicate {
     }
     return false
   }
+
   getClass () {
     return PreparedPolygonPredicate
   }
+
   get interfaces_ () {
     return []
   }
@@ -60,7 +67,7 @@ export default class PreparedPolygonPredicate {
 PreparedPolygonPredicate.constructor_ = function () {
   this._prepPoly = null
   this._targetPointLocator = null
-  let prepPoly = arguments[0]
+  const prepPoly = arguments[0]
   this._prepPoly = prepPoly
   this._targetPointLocator = prepPoly.getPointLocator()
 }

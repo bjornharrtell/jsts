@@ -2,9 +2,11 @@ export default class SegmentIntersector {
   constructor () {
     SegmentIntersector.constructor_.apply(this, arguments)
   }
+
   static isAdjacentSegments (i1, i2) {
     return Math.abs(i1 - i2) === 1
   }
+
   isTrivialIntersection (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1) {
       if (this._li.getIntersectionNum() === 1) {
@@ -19,15 +21,19 @@ export default class SegmentIntersector {
     }
     return false
   }
+
   getProperIntersectionPoint () {
     return this._properIntersectionPoint
   }
+
   setIsDoneIfProperInt (isDoneWhenProperInt) {
     this._isDoneWhenProperInt = isDoneWhenProperInt
   }
+
   hasProperInteriorIntersection () {
     return this._hasProperInterior
   }
+
   isBoundaryPointInternal (li, bdyNodes) {
     for (var i = bdyNodes.iterator(); i.hasNext();) {
       var node = i.next()
@@ -36,26 +42,32 @@ export default class SegmentIntersector {
     }
     return false
   }
+
   hasProperIntersection () {
     return this._hasProper
   }
+
   hasIntersection () {
     return this._hasIntersection
   }
+
   isDone () {
     return this._isDone
   }
+
   isBoundaryPoint (li, bdyNodes) {
     if (bdyNodes === null) return false
     if (this.isBoundaryPointInternal(li, bdyNodes[0])) return true
     if (this.isBoundaryPointInternal(li, bdyNodes[1])) return true
     return false
   }
+
   setBoundaryNodes (bdyNodes0, bdyNodes1) {
     this._bdyNodes = new Array(2).fill(null)
     this._bdyNodes[0] = bdyNodes0
     this._bdyNodes[1] = bdyNodes1
   }
+
   addIntersections (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     this.numTests++
@@ -87,9 +99,11 @@ export default class SegmentIntersector {
       }
     }
   }
+
   getClass () {
     return SegmentIntersector
   }
+
   get interfaces_ () {
     return []
   }
@@ -108,7 +122,7 @@ SegmentIntersector.constructor_ = function () {
   this._bdyNodes = null
   this._isDone = false
   this._isDoneWhenProperInt = false
-  let li = arguments[0]; let includeProper = arguments[1]; let recordIsolated = arguments[2]
+  const li = arguments[0]; const includeProper = arguments[1]; const recordIsolated = arguments[2]
   this._li = li
   this._includeProper = includeProper
   this._recordIsolated = recordIsolated

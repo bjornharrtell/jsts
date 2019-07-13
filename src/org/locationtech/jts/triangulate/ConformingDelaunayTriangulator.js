@@ -15,6 +15,7 @@ export default class ConformingDelaunayTriangulator {
   constructor () {
     ConformingDelaunayTriangulator.constructor_.apply(this, arguments)
   }
+
   static computeVertexEnvelope (vertices) {
     var env = new Envelope()
     for (var i = vertices.iterator(); i.hasNext();) {
@@ -23,12 +24,15 @@ export default class ConformingDelaunayTriangulator {
     }
     return env
   }
+
   getInitialVertices () {
     return this._initialVertices
   }
+
   getKDT () {
     return this._kdt
   }
+
   enforceConstraints () {
     this.addConstraintVertices()
     var count = 0
@@ -38,15 +42,18 @@ export default class ConformingDelaunayTriangulator {
       count++
     } while (splits > 0 && count < ConformingDelaunayTriangulator.MAX_SPLIT_ITER)
   }
+
   insertSites (vertices) {
     for (var i = vertices.iterator(); i.hasNext();) {
       var v = i.next()
       this.insertSite(v)
     }
   }
+
   getVertexFactory () {
     return this._vertexFactory
   }
+
   getPointArray () {
     var pts = new Array(this._initialVertices.size() + this._segVertices.size()).fill(null)
     var index = 0
@@ -60,20 +67,24 @@ export default class ConformingDelaunayTriangulator {
     }
     return pts
   }
+
   setConstraints (segments, segVertices) {
     this._segments = segments
     this._segVertices = segVertices
   }
+
   computeConvexHull () {
     var fact = new GeometryFactory()
     var coords = this.getPointArray()
     var hull = new ConvexHull(coords, fact)
     this._convexHull = hull.getConvexHull()
   }
+
   addConstraintVertices () {
     this.computeConvexHull()
     this.insertSites(this._segVertices)
   }
+
   findNonGabrielPoint (seg) {
     var p = seg.getStart()
     var q = seg.getEnd()
@@ -99,18 +110,23 @@ export default class ConformingDelaunayTriangulator {
     }
     return closestNonGabriel
   }
+
   getConstraintSegments () {
     return this._segments
   }
+
   setSplitPointFinder (splitFinder) {
     this._splitFinder = splitFinder
   }
+
   getConvexHull () {
     return this._convexHull
   }
+
   getTolerance () {
     return this._tolerance
   }
+
   enforceGabriel (segsToInsert) {
     var newSegments = new ArrayList()
     var splits = 0
@@ -134,23 +150,26 @@ export default class ConformingDelaunayTriangulator {
     segsToInsert.addAll(newSegments)
     return splits
   }
+
   createVertex () {
     if (arguments.length === 1) {
-      let p = arguments[0]
+      const p = arguments[0]
       var v = null
       if (this._vertexFactory !== null) v = this._vertexFactory.createVertex(p, null); else v = new ConstraintVertex(p)
       return v
     } else if (arguments.length === 2) {
-      let p = arguments[0]; let seg = arguments[1]
+      const p = arguments[0]; const seg = arguments[1]
       var v = null
       if (this._vertexFactory !== null) v = this._vertexFactory.createVertex(p, seg); else v = new ConstraintVertex(p)
       v.setOnConstraint(true)
       return v
     }
   }
+
   getSubdivision () {
     return this._subdiv
   }
+
   computeBoundingBox () {
     var vertexEnv = ConformingDelaunayTriangulator.computeVertexEnvelope(this._initialVertices)
     var segEnv = ConformingDelaunayTriangulator.computeVertexEnvelope(this._segVertices)
@@ -162,9 +181,11 @@ export default class ConformingDelaunayTriangulator {
     this._computeAreaEnv = new Envelope(allPointsEnv)
     this._computeAreaEnv.expandBy(delta)
   }
+
   setVertexFactory (vertexFactory) {
     this._vertexFactory = vertexFactory
   }
+
   formInitialDelaunay () {
     this.computeBoundingBox()
     this._subdiv = new QuadEdgeSubdivision(this._computeAreaEnv, this._tolerance)
@@ -172,9 +193,10 @@ export default class ConformingDelaunayTriangulator {
     this._incDel = new IncrementalDelaunayTriangulator(this._subdiv)
     this.insertSites(this._initialVertices)
   }
+
   insertSite () {
     if (arguments[0] instanceof ConstraintVertex) {
-      let v = arguments[0]
+      const v = arguments[0]
       var kdnode = this._kdt.insert(v.getCoordinate(), v)
       if (!kdnode.isRepeated()) {
         this._incDel.insertSite(v)
@@ -185,13 +207,15 @@ export default class ConformingDelaunayTriangulator {
       }
       return v
     } else if (arguments[0] instanceof Coordinate) {
-      let p = arguments[0]
+      const p = arguments[0]
       this.insertSite(this.createVertex(p))
     }
   }
+
   getClass () {
     return ConformingDelaunayTriangulator
   }
+
   get interfaces_ () {
     return []
   }
@@ -209,7 +233,7 @@ ConformingDelaunayTriangulator.constructor_ = function () {
   this._computeAreaEnv = null
   this._splitPt = null
   this._tolerance = null
-  let initialVertices = arguments[0]; let tolerance = arguments[1]
+  const initialVertices = arguments[0]; const tolerance = arguments[1]
   this._initialVertices = new ArrayList(initialVertices)
   this._tolerance = tolerance
   this._kdt = new KdTree(tolerance)

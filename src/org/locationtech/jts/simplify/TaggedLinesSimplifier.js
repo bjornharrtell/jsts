@@ -4,9 +4,11 @@ export default class TaggedLinesSimplifier {
   constructor () {
     TaggedLinesSimplifier.constructor_.apply(this, arguments)
   }
+
   setDistanceTolerance (distanceTolerance) {
     this._distanceTolerance = distanceTolerance
   }
+
   simplify (taggedLines) {
     for (var i = taggedLines.iterator(); i.hasNext();) {
       this._inputIndex.add(i.next())
@@ -17,9 +19,11 @@ export default class TaggedLinesSimplifier {
       tlss.simplify(i.next())
     }
   }
+
   getClass () {
     return TaggedLinesSimplifier
   }
+
   get interfaces_ () {
     return []
   }

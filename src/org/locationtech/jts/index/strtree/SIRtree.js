@@ -6,6 +6,7 @@ export default class SIRtree extends AbstractSTRtree {
     super()
     SIRtree.constructor_.apply(this, arguments)
   }
+
   createNode (level) {
     return new (class {
       computeBounds () {
@@ -22,30 +23,36 @@ export default class SIRtree extends AbstractSTRtree {
       }
     })(level)
   }
+
   insert () {
     if (arguments.length === 3) {
-      let x1 = arguments[0]; let x2 = arguments[1]; let item = arguments[2]
+      const x1 = arguments[0]; const x2 = arguments[1]; const item = arguments[2]
       super.insert.call(this, new Interval(Math.min(x1, x2), Math.max(x1, x2)), item)
     } else return super.insert.apply(this, arguments)
   }
+
   getIntersectsOp () {
     return this._intersectsOp
   }
+
   query () {
     if (arguments.length === 1) {
-      let x = arguments[0]
+      const x = arguments[0]
       return this.query(x, x)
     } else if (arguments.length === 2) {
-      let x1 = arguments[0]; let x2 = arguments[1]
+      const x1 = arguments[0]; const x2 = arguments[1]
       return super.query.call(this, new Interval(Math.min(x1, x2), Math.max(x1, x2)))
     }
   }
+
   getComparator () {
     return this._comparator
   }
+
   getClass () {
     return SIRtree
   }
+
   get interfaces_ () {
     return []
   }
@@ -55,6 +62,7 @@ SIRtree.constructor_ = function () {
     get interfaces_ () {
       return [Comparator]
     }
+
     compare (o1, o2) {
       return AbstractSTRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre())
     }
@@ -63,6 +71,7 @@ SIRtree.constructor_ = function () {
     get interfaces_ () {
       return [IntersectsOp]
     }
+
     intersects (aBounds, bBounds) {
       return aBounds.intersects(bBounds)
     }
@@ -70,7 +79,7 @@ SIRtree.constructor_ = function () {
   if (arguments.length === 0) {
     SIRtree.constructor_.call(this, 10)
   } else if (arguments.length === 1) {
-    let nodeCapacity = arguments[0]
+    const nodeCapacity = arguments[0]
     AbstractSTRtree.constructor_.call(this, nodeCapacity)
   }
 }

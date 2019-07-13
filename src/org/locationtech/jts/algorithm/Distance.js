@@ -5,6 +5,7 @@ export default class Distance {
   constructor () {
     Distance.constructor_.apply(this, arguments)
   }
+
   static segmentToSegment (A, B, C, D) {
     if (A.equals(B)) return Distance.pointToSegment(A, C, D)
     if (C.equals(D)) return Distance.pointToSegment(D, A, B)
@@ -30,6 +31,7 @@ export default class Distance {
     }
     return 0.0
   }
+
   static pointToSegment (p, A, B) {
     if (A.x === B.x && A.y === B.y) return p.distance(A)
     var len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y)
@@ -39,11 +41,13 @@ export default class Distance {
     var s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2
     return Math.abs(s) * Math.sqrt(len2)
   }
+
   static pointToLinePerpendicular (p, A, B) {
     var len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y)
     var s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2
     return Math.abs(s) * Math.sqrt(len2)
   }
+
   static pointToSegmentString (p, line) {
     if (line.length === 0) throw new IllegalArgumentException('Line array must contain at least one vertex')
     var minDistance = p.distance(line[0])
@@ -55,9 +59,11 @@ export default class Distance {
     }
     return minDistance
   }
+
   getClass () {
     return Distance
   }
+
   get interfaces_ () {
     return []
   }

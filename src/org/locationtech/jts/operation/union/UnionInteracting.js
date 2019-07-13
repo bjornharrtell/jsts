@@ -5,10 +5,12 @@ export default class UnionInteracting {
   constructor () {
     UnionInteracting.constructor_.apply(this, arguments)
   }
+
   static union (g0, g1) {
     var uue = new UnionInteracting(g0, g1)
     return uue.union()
   }
+
   extractElements (geom, interacts, isInteracting) {
     var extractedGeoms = new ArrayList()
     for (var i = 0; i < geom.getNumGeometries(); i++) {
@@ -17,6 +19,7 @@ export default class UnionInteracting {
     }
     return this._geomFactory.buildGeometry(extractedGeoms)
   }
+
   computeInteracting () {
     if (arguments.length === 0) {
       for (var i = 0; i < this._g0.getNumGeometries(); i++) {
@@ -24,7 +27,7 @@ export default class UnionInteracting {
         this._interacts0[i] = this.computeInteracting(elem)
       }
     } else if (arguments.length === 1) {
-      let elem0 = arguments[0]
+      const elem0 = arguments[0]
       var interactsWithAny = false
       for (var i = 0; i < this._g1.getNumGeometries(); i++) {
         var elem1 = this._g1.getGeometryN(i)
@@ -35,6 +38,7 @@ export default class UnionInteracting {
       return interactsWithAny
     }
   }
+
   union () {
     this.computeInteracting()
     var int0 = this.extractElements(this._g0, this._interacts0, true)
@@ -48,15 +52,18 @@ export default class UnionInteracting {
     var overallUnion = GeometryCombiner.combine(union, disjoint0, disjoint1)
     return overallUnion
   }
+
   bufferUnion (g0, g1) {
     var factory = g0.getFactory()
     var gColl = factory.createGeometryCollection([g0, g1])
     var unionAll = gColl.buffer(0.0)
     return unionAll
   }
+
   getClass () {
     return UnionInteracting
   }
+
   get interfaces_ () {
     return []
   }
@@ -67,7 +74,7 @@ UnionInteracting.constructor_ = function () {
   this._g1 = null
   this._interacts0 = null
   this._interacts1 = null
-  let g0 = arguments[0]; let g1 = arguments[1]
+  const g0 = arguments[0]; const g1 = arguments[1]
   this._g0 = g0
   this._g1 = g1
   this._geomFactory = g0.getFactory()

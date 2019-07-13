@@ -7,24 +7,29 @@ export default class MultiPolygon extends GeometryCollection {
     super()
     MultiPolygon.constructor_.apply(this, arguments)
   }
+
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      let other = arguments[0]; let tolerance = arguments[1]
+      const other = arguments[0]; const tolerance = arguments[1]
       if (!this.isEquivalentClass(other)) {
         return false
       }
       return super.equalsExact.call(this, other, tolerance)
     } else return super.equalsExact.apply(this, arguments)
   }
+
   getBoundaryDimension () {
     return 1
   }
+
   getTypeCode () {
     return Geometry.TYPECODE_MULTIPOLYGON
   }
+
   getDimension () {
     return 2
   }
+
   reverse () {
     var n = this._geometries.length
     var revGeoms = new Array(n).fill(null)
@@ -33,6 +38,7 @@ export default class MultiPolygon extends GeometryCollection {
     }
     return this.getFactory().createMultiPolygon(revGeoms)
   }
+
   getBoundary () {
     if (this.isEmpty()) {
       return this.getFactory().createMultiLineString()
@@ -48,9 +54,11 @@ export default class MultiPolygon extends GeometryCollection {
     var allRingsArray = new Array(allRings.size()).fill(null)
     return this.getFactory().createMultiLineString(allRings.toArray(allRingsArray))
   }
+
   getGeometryType () {
     return Geometry.TYPENAME_MULTIPOLYGON
   }
+
   copy () {
     var polygons = new Array(this._geometries.length).fill(null)
     for (var i = 0; i < polygons.length; i++) {
@@ -58,15 +66,17 @@ export default class MultiPolygon extends GeometryCollection {
     }
     return new MultiPolygon(polygons, this._factory)
   }
+
   getClass () {
     return MultiPolygon
   }
+
   get interfaces_ () {
     return [Polygonal]
   }
 }
 MultiPolygon.constructor_ = function () {
-  let polygons = arguments[0]; let factory = arguments[1]
+  const polygons = arguments[0]; const factory = arguments[1]
   GeometryCollection.constructor_.call(this, polygons, factory)
 }
 MultiPolygon.serialVersionUID = -551033529766975875

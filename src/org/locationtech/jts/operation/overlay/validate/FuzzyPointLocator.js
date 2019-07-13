@@ -9,6 +9,7 @@ export default class FuzzyPointLocator {
   constructor () {
     FuzzyPointLocator.constructor_.apply(this, arguments)
   }
+
   isWithinToleranceOfBoundary (pt) {
     for (var i = 0; i < this._linework.getNumGeometries(); i++) {
       var line = this._linework.getGeometryN(i)
@@ -22,10 +23,12 @@ export default class FuzzyPointLocator {
     }
     return false
   }
+
   getLocation (pt) {
     if (this.isWithinToleranceOfBoundary(pt)) return Location.BOUNDARY
     return this._ptLocator.locate(pt, this._g)
   }
+
   extractLinework (g) {
     var extracter = new PolygonalLineworkExtracter()
     g.apply(extracter)
@@ -33,9 +36,11 @@ export default class FuzzyPointLocator {
     var lines = GeometryFactory.toLineStringArray(linework)
     return g.getFactory().createMultiLineString(lines)
   }
+
   getClass () {
     return FuzzyPointLocator
   }
+
   get interfaces_ () {
     return []
   }
@@ -46,7 +51,7 @@ FuzzyPointLocator.constructor_ = function () {
   this._linework = null
   this._ptLocator = new PointLocator()
   this._seg = new LineSegment()
-  let g = arguments[0]; let boundaryDistanceTolerance = arguments[1]
+  const g = arguments[0]; const boundaryDistanceTolerance = arguments[1]
   this._g = g
   this._boundaryDistanceTolerance = boundaryDistanceTolerance
   this._linework = this.extractLinework(g)
@@ -55,9 +60,11 @@ class PolygonalLineworkExtracter {
   constructor () {
     PolygonalLineworkExtracter.constructor_.apply(this, arguments)
   }
+
   getLinework () {
     return this._linework
   }
+
   filter (g) {
     if (g instanceof Polygon) {
       var poly = g
@@ -67,9 +74,11 @@ class PolygonalLineworkExtracter {
       }
     }
   }
+
   getClass () {
     return PolygonalLineworkExtracter
   }
+
   get interfaces_ () {
     return [GeometryFilter]
   }

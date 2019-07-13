@@ -13,14 +13,17 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     super()
     PreparedPolygon.constructor_.apply(this, arguments)
   }
+
   containsProperly (g) {
     if (!this.envelopeCovers(g)) return false
     return PreparedPolygonContainsProperly.containsProperly(this, g)
   }
+
   getPointLocator () {
     if (this._pia === null) this._pia = new IndexedPointInAreaLocator(this.getGeometry())
     return this._pia
   }
+
   covers (g) {
     if (!this.envelopeCovers(g)) return false
     if (this._isRectangle) {
@@ -28,6 +31,7 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     }
     return PreparedPolygonCovers.covers(this, g)
   }
+
   intersects (g) {
     if (!this.envelopesIntersect(g)) return false
     if (this._isRectangle) {
@@ -35,6 +39,7 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     }
     return PreparedPolygonIntersects.intersects(this, g)
   }
+
   contains (g) {
     if (!this.envelopeCovers(g)) return false
     if (this._isRectangle) {
@@ -42,13 +47,16 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     }
     return PreparedPolygonContains.contains(this, g)
   }
+
   getIntersectionFinder () {
     if (this._segIntFinder === null) this._segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.extractSegmentStrings(this.getGeometry()))
     return this._segIntFinder
   }
+
   getClass () {
     return PreparedPolygon
   }
+
   get interfaces_ () {
     return []
   }
@@ -57,7 +65,7 @@ PreparedPolygon.constructor_ = function () {
   this._isRectangle = null
   this._segIntFinder = null
   this._pia = null
-  let poly = arguments[0]
+  const poly = arguments[0]
   BasicPreparedGeometry.constructor_.call(this, poly)
   this._isRectangle = this.getGeometry().isRectangle()
 }

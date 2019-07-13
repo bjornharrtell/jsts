@@ -5,12 +5,15 @@ export default class SineStarFactory extends GeometricShapeFactory {
     super()
     SineStarFactory.constructor_.apply(this, arguments)
   }
+
   setNumArms (numArms) {
     this._numArms = numArms
   }
+
   setArmLengthRatio (armLengthRatio) {
     this._armLengthRatio = armLengthRatio
   }
+
   createSineStar () {
     var env = this._dim.getEnvelope()
     var radius = env.getWidth() / 2.0
@@ -39,9 +42,11 @@ export default class SineStarFactory extends GeometricShapeFactory {
     var poly = this._geomFact.createPolygon(ring)
     return poly
   }
+
   getClass () {
     return SineStarFactory
   }
+
   get interfaces_ () {
     return []
   }
@@ -52,7 +57,7 @@ SineStarFactory.constructor_ = function () {
   if (arguments.length === 0) {
     GeometricShapeFactory.constructor_.call(this)
   } else if (arguments.length === 1) {
-    let geomFact = arguments[0]
+    const geomFact = arguments[0]
     GeometricShapeFactory.constructor_.call(this, geomFact)
   }
 }

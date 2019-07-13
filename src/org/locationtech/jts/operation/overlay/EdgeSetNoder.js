@@ -5,9 +5,11 @@ export default class EdgeSetNoder {
   constructor () {
     EdgeSetNoder.constructor_.apply(this, arguments)
   }
+
   addEdges (edges) {
     this._inputEdges.addAll(edges)
   }
+
   getNodedEdges () {
     var esi = new SimpleMCSweepLineIntersector()
     var si = new SegmentIntersector(this._li, true, false)
@@ -19,9 +21,11 @@ export default class EdgeSetNoder {
     }
     return splitEdges
   }
+
   getClass () {
     return EdgeSetNoder
   }
+
   get interfaces_ () {
     return []
   }
@@ -29,6 +33,6 @@ export default class EdgeSetNoder {
 EdgeSetNoder.constructor_ = function () {
   this._li = null
   this._inputEdges = new ArrayList()
-  let li = arguments[0]
+  const li = arguments[0]
   this._li = li
 }

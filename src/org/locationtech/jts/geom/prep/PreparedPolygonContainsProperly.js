@@ -7,10 +7,12 @@ export default class PreparedPolygonContainsProperly extends PreparedPolygonPred
     super()
     PreparedPolygonContainsProperly.constructor_.apply(this, arguments)
   }
+
   static containsProperly (prep, geom) {
     var polyInt = new PreparedPolygonContainsProperly(prep)
     return polyInt.containsProperly(geom)
   }
+
   containsProperly (geom) {
     var isAllInPrepGeomAreaInterior = this.isAllTestComponentsInTargetInterior(geom)
     if (!isAllInPrepGeomAreaInterior) return false
@@ -23,14 +25,16 @@ export default class PreparedPolygonContainsProperly extends PreparedPolygonPred
     }
     return true
   }
+
   getClass () {
     return PreparedPolygonContainsProperly
   }
+
   get interfaces_ () {
     return []
   }
 }
 PreparedPolygonContainsProperly.constructor_ = function () {
-  let prepPoly = arguments[0]
+  const prepPoly = arguments[0]
   PreparedPolygonPredicate.constructor_.call(this, prepPoly)
 }

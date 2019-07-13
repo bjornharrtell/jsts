@@ -4,20 +4,24 @@ export default class MinimalEdgeRing extends EdgeRing {
     super()
     MinimalEdgeRing.constructor_.apply(this, arguments)
   }
+
   setEdgeRing (de, er) {
     de.setMinEdgeRing(er)
   }
+
   getNext (de) {
     return de.getNextMin()
   }
+
   getClass () {
     return MinimalEdgeRing
   }
+
   get interfaces_ () {
     return []
   }
 }
 MinimalEdgeRing.constructor_ = function () {
-  let start = arguments[0]; let geometryFactory = arguments[1]
+  const start = arguments[0]; const geometryFactory = arguments[1]
   EdgeRing.constructor_.call(this, start, geometryFactory)
 }

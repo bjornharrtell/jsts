@@ -5,6 +5,7 @@ export default class NodingValidator {
   constructor () {
     NodingValidator.constructor_.apply(this, arguments)
   }
+
   checkEndPtVertexIntersections () {
     if (arguments.length === 0) {
       for (var i = this._segStrings.iterator(); i.hasNext();) {
@@ -14,7 +15,7 @@ export default class NodingValidator {
         this.checkEndPtVertexIntersections(pts[pts.length - 1], this._segStrings)
       }
     } else if (arguments.length === 2) {
-      let testPt = arguments[0]; let segStrings = arguments[1]
+      const testPt = arguments[0]; const segStrings = arguments[1]
       for (var i = segStrings.iterator(); i.hasNext();) {
         var ss = i.next()
         var pts = ss.getCoordinates()
@@ -24,6 +25,7 @@ export default class NodingValidator {
       }
     }
   }
+
   checkInteriorIntersections () {
     if (arguments.length === 0) {
       for (var i = this._segStrings.iterator(); i.hasNext();) {
@@ -34,7 +36,7 @@ export default class NodingValidator {
         }
       }
     } else if (arguments.length === 2) {
-      let ss0 = arguments[0]; let ss1 = arguments[1]
+      const ss0 = arguments[0]; const ss1 = arguments[1]
       var pts0 = ss0.getCoordinates()
       var pts1 = ss1.getCoordinates()
       for (var i0 = 0; i0 < pts0.length - 1; i0++) {
@@ -43,7 +45,7 @@ export default class NodingValidator {
         }
       }
     } else if (arguments.length === 4) {
-      let e0 = arguments[0]; let segIndex0 = arguments[1]; let e1 = arguments[2]; let segIndex1 = arguments[3]
+      const e0 = arguments[0]; const segIndex0 = arguments[1]; const e1 = arguments[2]; const segIndex1 = arguments[3]
       if (e0 === e1 && segIndex0 === segIndex1) return null
       var p00 = e0.getCoordinates()[segIndex0]
       var p01 = e0.getCoordinates()[segIndex0 + 1]
@@ -57,11 +59,13 @@ export default class NodingValidator {
       }
     }
   }
+
   checkValid () {
     this.checkEndPtVertexIntersections()
     this.checkInteriorIntersections()
     this.checkCollapses()
   }
+
   checkCollapses () {
     if (arguments.length === 0) {
       for (var i = this._segStrings.iterator(); i.hasNext();) {
@@ -69,13 +73,14 @@ export default class NodingValidator {
         this.checkCollapses(ss)
       }
     } else if (arguments.length === 1) {
-      let ss = arguments[0]
+      const ss = arguments[0]
       var pts = ss.getCoordinates()
       for (var i = 0; i < pts.length - 2; i++) {
         this.checkCollapse(pts[i], pts[i + 1], pts[i + 2])
       }
     }
   }
+
   hasInteriorIntersection (li, p0, p1) {
     for (var i = 0; i < li.getIntersectionNum(); i++) {
       var intPt = li.getIntersection(i)
@@ -83,12 +88,15 @@ export default class NodingValidator {
     }
     return false
   }
+
   checkCollapse (p0, p1, p2) {
     if (p0.equals(p2)) throw new RuntimeException('found non-noded collapse at ' + NodingValidator.fact.createLineString([p0, p1, p2]))
   }
+
   getClass () {
     return NodingValidator
   }
+
   get interfaces_ () {
     return []
   }
@@ -96,7 +104,7 @@ export default class NodingValidator {
 NodingValidator.constructor_ = function () {
   this._li = new RobustLineIntersector()
   this._segStrings = null
-  let segStrings = arguments[0]
+  const segStrings = arguments[0]
   this._segStrings = segStrings
 }
 NodingValidator.fact = new GeometryFactory()

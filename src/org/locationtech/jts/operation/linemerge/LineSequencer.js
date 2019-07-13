@@ -18,6 +18,7 @@ export default class LineSequencer {
   constructor () {
     LineSequencer.constructor_.apply(this, arguments)
   }
+
   static findUnvisitedBestOrientedDE (node) {
     var wellOrientedDE = null
     var unvisitedDE = null
@@ -31,6 +32,7 @@ export default class LineSequencer {
     if (wellOrientedDE !== null) return wellOrientedDE
     return unvisitedDE
   }
+
   static findLowestDegreeNode (graph) {
     var minDegree = Integer.MAX_VALUE
     var minDegreeNode = null
@@ -43,6 +45,7 @@ export default class LineSequencer {
     }
     return minDegreeNode
   }
+
   static isSequenced (geom) {
     if (!(geom instanceof MultiLineString)) {
       return true
@@ -69,6 +72,7 @@ export default class LineSequencer {
     }
     return true
   }
+
   static reverse (line) {
     var pts = line.getCoordinates()
     var revPts = new Array(pts.length).fill(null)
@@ -78,11 +82,13 @@ export default class LineSequencer {
     }
     return line.getFactory().createLineString(revPts)
   }
+
   static sequence (geom) {
     var sequencer = new LineSequencer()
     sequencer.add(geom)
     return sequencer.getSequencedLineStrings()
   }
+
   addLine (lineString) {
     if (this._factory === null) {
       this._factory = lineString.getFactory()
@@ -90,6 +96,7 @@ export default class LineSequencer {
     this._graph.addEdge(lineString)
     this._lineCount++
   }
+
   hasSequence (graph) {
     var oddDegreeCount = 0
     for (var i = graph.nodeIterator(); i.hasNext();) {
@@ -98,6 +105,7 @@ export default class LineSequencer {
     }
     return oddDegreeCount <= 2
   }
+
   computeSequence () {
     if (this._isRun) {
       return null
@@ -111,6 +119,7 @@ export default class LineSequencer {
     Assert.isTrue(this._lineCount === finalLineCount, 'Lines were missing from result')
     Assert.isTrue(this._sequencedGeometry instanceof LineString || this._sequencedGeometry instanceof MultiLineString, 'Result is not lineal')
   }
+
   findSequences () {
     var sequences = new ArrayList()
     var csFinder = new ConnectedSubgraphFinder(this._graph)
@@ -126,6 +135,7 @@ export default class LineSequencer {
     }
     return sequences
   }
+
   addReverseSubpath (de, lit, expectedClosed) {
     var endNode = de.getToNode()
     var fromNode = null
@@ -141,6 +151,7 @@ export default class LineSequencer {
       Assert.isTrue(fromNode === endNode, 'path not contiguous')
     }
   }
+
   findSequence (graph) {
     GraphComponent.setVisited(graph.edgeIterator(), false)
     var startNode = LineSequencer.findLowestDegreeNode(graph)
@@ -157,6 +168,7 @@ export default class LineSequencer {
     var orientedSeq = this.orient(seq)
     return orientedSeq
   }
+
   reverse (seq) {
     var newSeq = new LinkedList()
     for (var i = seq.iterator(); i.hasNext();) {
@@ -165,6 +177,7 @@ export default class LineSequencer {
     }
     return newSeq
   }
+
   orient (seq) {
     var startEdge = seq.get(0)
     var endEdge = seq.get(seq.size() - 1)
@@ -189,6 +202,7 @@ export default class LineSequencer {
     if (flipSeq) return this.reverse(seq)
     return seq
   }
+
   buildSequencedGeometry (sequences) {
     var lines = new ArrayList()
     for (var i1 = sequences.iterator(); i1.hasNext();) {
@@ -205,27 +219,31 @@ export default class LineSequencer {
     if (lines.size() === 0) return this._factory.createMultiLineString(new Array(0).fill(null))
     return this._factory.buildGeometry(lines)
   }
+
   getSequencedLineStrings () {
     this.computeSequence()
     return this._sequencedGeometry
   }
+
   isSequenceable () {
     this.computeSequence()
     return this._isSequenceable
   }
+
   add () {
     if (hasInterface(arguments[0], Collection)) {
-      let geometries = arguments[0]
+      const geometries = arguments[0]
       for (var i = geometries.iterator(); i.hasNext();) {
         var geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof Geometry) {
-      let geometry = arguments[0]
+      const geometry = arguments[0]
       geometry.apply(new (class {
         get interfaces_ () {
           return [GeometryComponentFilter]
         }
+
         filter (component) {
           if (component instanceof LineString) {
             this.addLine(component)
@@ -234,9 +252,11 @@ export default class LineSequencer {
       })())
     }
   }
+
   getClass () {
     return LineSequencer
   }
+
   get interfaces_ () {
     return []
   }

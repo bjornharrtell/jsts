@@ -7,23 +7,27 @@ export default class PreparedLineString extends BasicPreparedGeometry {
     super()
     PreparedLineString.constructor_.apply(this, arguments)
   }
+
   getIntersectionFinder () {
     if (this._segIntFinder === null) this._segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.extractSegmentStrings(this.getGeometry()))
     return this._segIntFinder
   }
+
   intersects (g) {
     if (!this.envelopesIntersect(g)) return false
     return PreparedLineStringIntersects.intersects(this, g)
   }
+
   getClass () {
     return PreparedLineString
   }
+
   get interfaces_ () {
     return []
   }
 }
 PreparedLineString.constructor_ = function () {
   this._segIntFinder = null
-  let line = arguments[0]
+  const line = arguments[0]
   BasicPreparedGeometry.constructor_.call(this, line)
 }

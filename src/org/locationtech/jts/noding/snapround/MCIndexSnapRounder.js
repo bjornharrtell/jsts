@@ -13,6 +13,7 @@ export default class MCIndexSnapRounder {
   constructor () {
     MCIndexSnapRounder.constructor_.apply(this, arguments)
   }
+
   checkCorrectness (inputSegmentStrings) {
     var resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings)
     var nv = new NodingValidator(resultSegStrings)
@@ -24,29 +25,33 @@ export default class MCIndexSnapRounder {
       } else throw ex
     } finally {}
   }
+
   getNodedSubstrings () {
     return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings)
   }
+
   snapRound (segStrings, li) {
     var intersections = this.findInteriorIntersections(segStrings, li)
     this.computeIntersectionSnaps(intersections)
     this.computeVertexSnaps(segStrings)
   }
+
   findInteriorIntersections (segStrings, li) {
     var intFinderAdder = new InteriorIntersectionFinderAdder(li)
     this._noder.setSegmentIntersector(intFinderAdder)
     this._noder.computeNodes(segStrings)
     return intFinderAdder.getInteriorIntersections()
   }
+
   computeVertexSnaps () {
     if (hasInterface(arguments[0], Collection)) {
-      let edges = arguments[0]
+      const edges = arguments[0]
       for (var i0 = edges.iterator(); i0.hasNext();) {
         var edge0 = i0.next()
         this.computeVertexSnaps(edge0)
       }
     } else if (arguments[0] instanceof NodedSegmentString) {
-      let e = arguments[0]
+      const e = arguments[0]
       var pts0 = e.getCoordinates()
       for (var i = 0; i < pts0.length; i++) {
         var hotPixel = new HotPixel(pts0[i], this._scaleFactor, this._li)
@@ -57,12 +62,14 @@ export default class MCIndexSnapRounder {
       }
     }
   }
+
   computeNodes (inputSegmentStrings) {
     this._nodedSegStrings = inputSegmentStrings
     this._noder = new MCIndexNoder()
     this._pointSnapper = new MCIndexPointSnapper(this._noder.getIndex())
     this.snapRound(inputSegmentStrings, this._li)
   }
+
   computeIntersectionSnaps (snapPts) {
     for (var it = snapPts.iterator(); it.hasNext();) {
       var snapPt = it.next()
@@ -70,9 +77,11 @@ export default class MCIndexSnapRounder {
       this._pointSnapper.snap(hotPixel)
     }
   }
+
   getClass () {
     return MCIndexSnapRounder
   }
+
   get interfaces_ () {
     return [Noder]
   }
@@ -84,7 +93,7 @@ MCIndexSnapRounder.constructor_ = function () {
   this._noder = null
   this._pointSnapper = null
   this._nodedSegStrings = null
-  let pm = arguments[0]
+  const pm = arguments[0]
   this._pm = pm
   this._li = new RobustLineIntersector()
   this._li.setPrecisionModel(pm)

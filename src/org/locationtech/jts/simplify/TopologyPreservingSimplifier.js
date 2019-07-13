@@ -9,11 +9,13 @@ export default class TopologyPreservingSimplifier {
   constructor () {
     TopologyPreservingSimplifier.constructor_.apply(this, arguments)
   }
+
   static simplify (geom, distanceTolerance) {
     var tss = new TopologyPreservingSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
+
   getResultGeometry () {
     if (this._inputGeom.isEmpty()) return this._inputGeom.copy()
     this._linestringMap = new HashMap()
@@ -22,13 +24,16 @@ export default class TopologyPreservingSimplifier {
     var result = new LineStringTransformer(this._linestringMap).transform(this._inputGeom)
     return result
   }
+
   setDistanceTolerance (distanceTolerance) {
     if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
     this._lineSimplifier.setDistanceTolerance(distanceTolerance)
   }
+
   getClass () {
     return TopologyPreservingSimplifier
   }
+
   get interfaces_ () {
     return []
   }
@@ -38,6 +43,7 @@ class LineStringTransformer extends GeometryTransformer {
     super()
     LineStringTransformer.constructor_.apply(this, arguments)
   }
+
   transformCoordinates (coords, parent) {
     if (coords.size() === 0) return null
     if (parent instanceof LineString) {
@@ -46,22 +52,25 @@ class LineStringTransformer extends GeometryTransformer {
     }
     return super.transformCoordinates.call(this, coords, parent)
   }
+
   getClass () {
     return LineStringTransformer
   }
+
   get interfaces_ () {
     return []
   }
 }
 LineStringTransformer.constructor_ = function () {
   this._linestringMap = null
-  let linestringMap = arguments[0]
+  const linestringMap = arguments[0]
   this._linestringMap = linestringMap
 }
 class LineStringMapBuilderFilter {
   constructor () {
     LineStringMapBuilderFilter.constructor_.apply(this, arguments)
   }
+
   filter (geom) {
     if (geom instanceof LineString) {
       var line = geom
@@ -71,16 +80,18 @@ class LineStringMapBuilderFilter {
       this.tps._linestringMap.put(line, taggedLine)
     }
   }
+
   getClass () {
     return LineStringMapBuilderFilter
   }
+
   get interfaces_ () {
     return [GeometryComponentFilter]
   }
 }
 LineStringMapBuilderFilter.constructor_ = function () {
   this.tps = null
-  let tps = arguments[0]
+  const tps = arguments[0]
   this.tps = tps
 }
 TopologyPreservingSimplifier.LineStringTransformer = LineStringTransformer
@@ -89,6 +100,6 @@ TopologyPreservingSimplifier.constructor_ = function () {
   this._inputGeom = null
   this._lineSimplifier = new TaggedLinesSimplifier()
   this._linestringMap = null
-  let inputGeom = arguments[0]
+  const inputGeom = arguments[0]
   this._inputGeom = inputGeom
 }

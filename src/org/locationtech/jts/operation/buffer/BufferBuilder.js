@@ -20,12 +20,14 @@ export default class BufferBuilder {
   constructor () {
     BufferBuilder.constructor_.apply(this, arguments)
   }
+
   static depthDelta (label) {
     var lLoc = label.getLocation(0, Position.LEFT)
     var rLoc = label.getLocation(0, Position.RIGHT)
     if (lLoc === Location.INTERIOR && rLoc === Location.EXTERIOR) return 1; else if (lLoc === Location.EXTERIOR && rLoc === Location.INTERIOR) return -1
     return 0
   }
+
   static convertSegStrings (it) {
     var fact = new GeometryFactory()
     var lines = new ArrayList()
@@ -36,9 +38,11 @@ export default class BufferBuilder {
     }
     return fact.buildGeometry(lines)
   }
+
   setWorkingPrecisionModel (pm) {
     this._workingPrecisionModel = pm
   }
+
   insertUniqueEdge (e) {
     var existingEdge = this._edgeList.findEqualEdge(e)
     if (existingEdge !== null) {
@@ -58,6 +62,7 @@ export default class BufferBuilder {
       e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()))
     }
   }
+
   buildSubgraphs (subgraphList, polyBuilder) {
     var processedGraphs = new ArrayList()
     for (var i = subgraphList.iterator(); i.hasNext();) {
@@ -71,6 +76,7 @@ export default class BufferBuilder {
       polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes())
     }
   }
+
   createSubgraphs (graph) {
     var subgraphList = new ArrayList()
     for (var i = graph.getNodes().iterator(); i.hasNext();) {
@@ -84,10 +90,12 @@ export default class BufferBuilder {
     Collections.sort(subgraphList, Collections.reverseOrder())
     return subgraphList
   }
+
   createEmptyResultGeometry () {
     var emptyGeom = this._geomFact.createPolygon()
     return emptyGeom
   }
+
   getNoder (precisionModel) {
     if (this._workingNoder !== null) return this._workingNoder
     var noder = new MCIndexNoder()
@@ -96,6 +104,7 @@ export default class BufferBuilder {
     noder.setSegmentIntersector(new IntersectionAdder(li))
     return noder
   }
+
   buffer (g, distance) {
     var precisionModel = this._workingPrecisionModel
     if (precisionModel === null) precisionModel = g.getPrecisionModel()
@@ -119,6 +128,7 @@ export default class BufferBuilder {
     var resultGeom = this._geomFact.buildGeometry(resultPolyList)
     return resultGeom
   }
+
   computeNodedEdges (bufferSegStrList, precisionModel) {
     var noder = this.getNoder(precisionModel)
     noder.computeNodes(bufferSegStrList)
@@ -132,12 +142,15 @@ export default class BufferBuilder {
       this.insertUniqueEdge(edge)
     }
   }
+
   setNoder (noder) {
     this._workingNoder = noder
   }
+
   getClass () {
     return BufferBuilder
   }
+
   get interfaces_ () {
     return []
   }
@@ -149,6 +162,6 @@ BufferBuilder.constructor_ = function () {
   this._geomFact = null
   this._graph = null
   this._edgeList = new EdgeList()
-  let bufParams = arguments[0]
+  const bufParams = arguments[0]
   this._bufParams = bufParams
 }

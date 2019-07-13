@@ -7,10 +7,12 @@ export default class LineStringSnapper {
   constructor () {
     LineStringSnapper.constructor_.apply(this, arguments)
   }
+
   static isClosed (pts) {
     if (pts.length <= 1) return false
     return pts[0].equals2D(pts[pts.length - 1])
   }
+
   snapVertices (srcCoords, snapPts) {
     var end = this._isClosed ? srcCoords.size() - 1 : srcCoords.size()
     for (var i = 0; i < end; i++) {
@@ -22,6 +24,7 @@ export default class LineStringSnapper {
       }
     }
   }
+
   findSnapForVertex (pt, snapPts) {
     for (var i = 0; i < snapPts.length; i++) {
       if (pt.equals2D(snapPts[i])) return null
@@ -29,6 +32,7 @@ export default class LineStringSnapper {
     }
     return null
   }
+
   snapTo (snapPts) {
     var coordList = new CoordinateList(this._srcPts)
     this.snapVertices(coordList, snapPts)
@@ -36,6 +40,7 @@ export default class LineStringSnapper {
     var newPts = coordList.toCoordinateArray()
     return newPts
   }
+
   snapSegments (srcCoords, snapPts) {
     if (snapPts.length === 0) return null
     var distinctPtCount = snapPts.length
@@ -48,6 +53,7 @@ export default class LineStringSnapper {
       }
     }
   }
+
   findSegmentIndexToSnap (snapPt, srcCoords) {
     var minDist = Double.MAX_VALUE
     var snapIndex = -1
@@ -65,12 +71,15 @@ export default class LineStringSnapper {
     }
     return snapIndex
   }
+
   setAllowSnappingToSourceVertices (allowSnappingToSourceVertices) {
     this._allowSnappingToSourceVertices = allowSnappingToSourceVertices
   }
+
   getClass () {
     return LineStringSnapper
   }
+
   get interfaces_ () {
     return []
   }
@@ -82,10 +91,10 @@ LineStringSnapper.constructor_ = function () {
   this._allowSnappingToSourceVertices = false
   this._isClosed = false
   if (arguments[0] instanceof LineString && typeof arguments[1] === 'number') {
-    let srcLine = arguments[0]; let snapTolerance = arguments[1]
+    const srcLine = arguments[0]; const snapTolerance = arguments[1]
     LineStringSnapper.constructor_.call(this, srcLine.getCoordinates(), snapTolerance)
   } else if (arguments[0] instanceof Array && typeof arguments[1] === 'number') {
-    let srcPts = arguments[0]; let snapTolerance = arguments[1]
+    const srcPts = arguments[0]; const snapTolerance = arguments[1]
     this._srcPts = srcPts
     this._isClosed = LineStringSnapper.isClosed(srcPts)
     this._snapTolerance = snapTolerance

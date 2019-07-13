@@ -4,41 +4,52 @@ export default class InteriorIntersectionFinder {
   constructor () {
     InteriorIntersectionFinder.constructor_.apply(this, arguments)
   }
+
   static createAllIntersectionsFinder (li) {
     var finder = new InteriorIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     return finder
   }
+
   static createAnyIntersectionFinder (li) {
     return new InteriorIntersectionFinder(li)
   }
+
   static createIntersectionCounter (li) {
     var finder = new InteriorIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     finder.setKeepIntersections(false)
     return finder
   }
+
   getInteriorIntersection () {
     return this._interiorIntersection
   }
+
   setCheckEndSegmentsOnly (isCheckEndSegmentsOnly) {
     this._isCheckEndSegmentsOnly = isCheckEndSegmentsOnly
   }
+
   getIntersectionSegments () {
     return this._intSegments
   }
+
   count () {
     return this._intersectionCount
   }
+
   getIntersections () {
     return this._intersections
   }
+
   setFindAllIntersections (findAllIntersections) {
     this._findAllIntersections = findAllIntersections
   }
+
   setKeepIntersections (keepIntersections) {
     this._keepIntersections = keepIntersections
   }
+
   processIntersections (e0, segIndex0, e1, segIndex1) {
     if (!this._findAllIntersections && this.hasIntersection()) return null
     if (e0 === e1 && segIndex0 === segIndex1) return null
@@ -64,21 +75,26 @@ export default class InteriorIntersectionFinder {
       }
     }
   }
+
   isEndSegment (segStr, index) {
     if (index === 0) return true
     if (index >= segStr.size() - 2) return true
     return false
   }
+
   hasIntersection () {
     return this._interiorIntersection !== null
   }
+
   isDone () {
     if (this._findAllIntersections) return false
     return this._interiorIntersection !== null
   }
+
   getClass () {
     return InteriorIntersectionFinder
   }
+
   get interfaces_ () {
     return [SegmentIntersector]
   }
@@ -92,7 +108,7 @@ InteriorIntersectionFinder.constructor_ = function () {
   this._intersections = new ArrayList()
   this._intersectionCount = 0
   this._keepIntersections = true
-  let li = arguments[0]
+  const li = arguments[0]
   this._li = li
   this._interiorIntersection = null
 }

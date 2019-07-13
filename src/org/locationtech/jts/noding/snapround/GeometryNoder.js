@@ -7,6 +7,7 @@ export default class GeometryNoder {
   constructor () {
     GeometryNoder.constructor_.apply(this, arguments)
   }
+
   extractLines (geoms) {
     var lines = new ArrayList()
     var lce = new LinearComponentExtracter(lines)
@@ -16,9 +17,11 @@ export default class GeometryNoder {
     }
     return lines
   }
+
   setValidate (isValidityChecked) {
     this._isValidityChecked = isValidityChecked
   }
+
   node (geoms) {
     var geom0 = geoms.iterator().next()
     this._geomFact = geom0.getFactory()
@@ -32,6 +35,7 @@ export default class GeometryNoder {
     }
     return this.toLineStrings(nodedLines)
   }
+
   toSegmentStrings (lines) {
     var segStrings = new ArrayList()
     for (var it = lines.iterator(); it.hasNext();) {
@@ -40,6 +44,7 @@ export default class GeometryNoder {
     }
     return segStrings
   }
+
   toLineStrings (segStrings) {
     var lines = new ArrayList()
     for (var it = segStrings.iterator(); it.hasNext();) {
@@ -49,9 +54,11 @@ export default class GeometryNoder {
     }
     return lines
   }
+
   getClass () {
     return GeometryNoder
   }
+
   get interfaces_ () {
     return []
   }
@@ -60,6 +67,6 @@ GeometryNoder.constructor_ = function () {
   this._geomFact = null
   this._pm = null
   this._isValidityChecked = false
-  let pm = arguments[0]
+  const pm = arguments[0]
   this._pm = pm
 }

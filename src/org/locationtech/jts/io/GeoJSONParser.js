@@ -72,7 +72,7 @@ const parse = {
   Feature: function (obj) {
     const feature = {}
 
-    for (let key in obj) { feature[key] = obj[key] }
+    for (const key in obj) { feature[key] = obj[key] }
 
     if (obj.geometry) {
       const type = obj.geometry.type

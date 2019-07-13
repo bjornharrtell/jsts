@@ -24,6 +24,7 @@ export default class WKTWriter {
   constructor (geometryFactory) {
     this.parser = new WKTParser(geometryFactory)
   }
+
   /**
    * Converts a <code>Geometry</code> to its Well-known Text representation.
    *
@@ -35,6 +36,7 @@ export default class WKTWriter {
   write (geometry) {
     return this.parser.write(geometry)
   }
+
   /**
    * Generates the WKT for a <tt>LINESTRING</tt> specified by two
    * {@link Coordinate}s.

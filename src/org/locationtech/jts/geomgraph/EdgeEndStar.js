@@ -11,6 +11,7 @@ export default class EdgeEndStar {
   constructor () {
     EdgeEndStar.constructor_.apply(this, arguments)
   }
+
   getNextCW (ee) {
     this.getEdges()
     var i = this._edgeList.indexOf(ee)
@@ -18,6 +19,7 @@ export default class EdgeEndStar {
     if (i === 0) iNextCW = this._edgeList.size() - 1
     return this._edgeList.get(iNextCW)
   }
+
   propagateSideLabels (geomIndex) {
     var startLoc = Location.NONE
     for (var it = this.iterator(); it.hasNext();) {
@@ -48,12 +50,14 @@ export default class EdgeEndStar {
       }
     }
   }
+
   getCoordinate () {
     var it = this.iterator()
     if (!it.hasNext()) return null
     var e = it.next()
     return e.getCoordinate()
   }
+
   print (out) {
     System.out.println('EdgeEndStar:   ' + this.getCoordinate())
     for (var it = this.iterator(); it.hasNext();) {
@@ -61,10 +65,12 @@ export default class EdgeEndStar {
       e.print(out)
     }
   }
+
   isAreaLabelsConsistent (geomGraph) {
     this.computeEdgeEndLabels(geomGraph.getBoundaryNodeRule())
     return this.checkAreaLabelsConsistent(0)
   }
+
   checkAreaLabelsConsistent (geomIndex) {
     var edges = this.getEdges()
     if (edges.size() <= 0) return true
@@ -89,6 +95,7 @@ export default class EdgeEndStar {
     }
     return true
   }
+
   findIndex (eSearch) {
     this.iterator()
     for (var i = 0; i < this._edgeList.size(); i++) {
@@ -97,21 +104,25 @@ export default class EdgeEndStar {
     }
     return -1
   }
+
   iterator () {
     return this.getEdges().iterator()
   }
+
   getEdges () {
     if (this._edgeList === null) {
       this._edgeList = new ArrayList(this._edgeMap.values())
     }
     return this._edgeList
   }
+
   getLocation (geomIndex, p, geom) {
     if (this._ptInAreaLocation[geomIndex] === Location.NONE) {
       this._ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p, geom[geomIndex].getGeometry())
     }
     return this._ptInAreaLocation[geomIndex]
   }
+
   toString () {
     var buf = new StringBuffer()
     buf.append('EdgeEndStar:   ' + this.getCoordinate())
@@ -123,12 +134,14 @@ export default class EdgeEndStar {
     }
     return buf.toString()
   }
+
   computeEdgeEndLabels (boundaryNodeRule) {
     for (var it = this.iterator(); it.hasNext();) {
       var ee = it.next()
       ee.computeLabel(boundaryNodeRule)
     }
   }
+
   computeLabelling (geomGraph) {
     this.computeEdgeEndLabels(geomGraph[0].getBoundaryNodeRule())
     this.propagateSideLabels(0)
@@ -158,16 +171,20 @@ export default class EdgeEndStar {
       }
     }
   }
+
   getDegree () {
     return this._edgeMap.size()
   }
+
   insertEdgeEnd (e, obj) {
     this._edgeMap.put(e, obj)
     this._edgeList = null
   }
+
   getClass () {
     return EdgeEndStar
   }
+
   get interfaces_ () {
     return []
   }

@@ -3,6 +3,7 @@ export default class Location {
   constructor () {
     Location.constructor_.apply(this, arguments)
   }
+
   static toLocationSymbol (locationValue) {
     switch (locationValue) {
       case Location.EXTERIOR:
@@ -16,9 +17,11 @@ export default class Location {
     }
     throw new IllegalArgumentException('Unknown location value: ' + locationValue)
   }
+
   getClass () {
     return Location
   }
+
   get interfaces_ () {
     return []
   }

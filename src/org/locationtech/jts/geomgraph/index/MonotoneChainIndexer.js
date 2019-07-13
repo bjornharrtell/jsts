@@ -5,6 +5,7 @@ export default class MonotoneChainIndexer {
   constructor () {
     MonotoneChainIndexer.constructor_.apply(this, arguments)
   }
+
   static toIntArray (list) {
     var array = new Array(list.size()).fill(null)
     for (var i = 0; i < array.length; i++) {
@@ -12,6 +13,7 @@ export default class MonotoneChainIndexer {
     }
     return array
   }
+
   getChainStartIndices (pts) {
     var start = 0
     var startIndexList = new ArrayList()
@@ -24,6 +26,7 @@ export default class MonotoneChainIndexer {
     var startIndex = MonotoneChainIndexer.toIntArray(startIndexList)
     return startIndex
   }
+
   findChainEnd (pts, start) {
     var chainQuad = Quadrant.quadrant(pts[start], pts[start + 1])
     var last = start + 1
@@ -34,9 +37,11 @@ export default class MonotoneChainIndexer {
     }
     return last - 1
   }
+
   getClass () {
     return MonotoneChainIndexer
   }
+
   get interfaces_ () {
     return []
   }

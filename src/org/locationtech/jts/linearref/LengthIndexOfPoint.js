@@ -6,17 +6,21 @@ export default class LengthIndexOfPoint {
   constructor () {
     LengthIndexOfPoint.constructor_.apply(this, arguments)
   }
+
   static indexOf (linearGeom, inputPt) {
     var locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOf(inputPt)
   }
+
   static indexOfAfter (linearGeom, inputPt, minIndex) {
     var locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOfAfter(inputPt, minIndex)
   }
+
   indexOf (inputPt) {
     return this.indexOfFromStart(inputPt, -1.0)
   }
+
   indexOfFromStart (inputPt, minIndex) {
     var minDistance = Double.MAX_VALUE
     var ptMeasure = minIndex
@@ -39,6 +43,7 @@ export default class LengthIndexOfPoint {
     }
     return ptMeasure
   }
+
   indexOfAfter (inputPt, minIndex) {
     if (minIndex < 0.0) return this.indexOf(inputPt)
     var endIndex = this._linearGeom.getLength()
@@ -47,21 +52,24 @@ export default class LengthIndexOfPoint {
     Assert.isTrue(closestAfter >= minIndex, 'computed index is before specified minimum index')
     return closestAfter
   }
+
   segmentNearestMeasure (seg, inputPt, segmentStartMeasure) {
     var projFactor = seg.projectionFactor(inputPt)
     if (projFactor <= 0.0) return segmentStartMeasure
     if (projFactor <= 1.0) return segmentStartMeasure + projFactor * seg.getLength()
     return segmentStartMeasure + seg.getLength()
   }
+
   getClass () {
     return LengthIndexOfPoint
   }
+
   get interfaces_ () {
     return []
   }
 }
 LengthIndexOfPoint.constructor_ = function () {
   this._linearGeom = null
-  let linearGeom = arguments[0]
+  const linearGeom = arguments[0]
   this._linearGeom = linearGeom
 }

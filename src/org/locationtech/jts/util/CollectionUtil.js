@@ -3,6 +3,7 @@ export default class CollectionUtil {
   constructor () {
     CollectionUtil.constructor_.apply(this, arguments)
   }
+
   static transform (coll, func) {
     var result = new ArrayList()
     for (var i = coll.iterator(); i.hasNext();) {
@@ -10,6 +11,7 @@ export default class CollectionUtil {
     }
     return result
   }
+
   static select (collection, func) {
     var result = new ArrayList()
     for (var i = collection.iterator(); i.hasNext();) {
@@ -20,14 +22,17 @@ export default class CollectionUtil {
     }
     return result
   }
+
   static apply (coll, func) {
     for (var i = coll.iterator(); i.hasNext();) {
       func.execute(i.next())
     }
   }
+
   getClass () {
     return CollectionUtil
   }
+
   get interfaces_ () {
     return []
   }

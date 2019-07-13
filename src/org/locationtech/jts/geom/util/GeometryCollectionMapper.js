@@ -4,10 +4,12 @@ export default class GeometryCollectionMapper {
   constructor () {
     GeometryCollectionMapper.constructor_.apply(this, arguments)
   }
+
   static map (gc, op) {
     var mapper = new GeometryCollectionMapper(op)
     return mapper.map(gc)
   }
+
   map (gc) {
     var mapped = new ArrayList()
     for (var i = 0; i < gc.getNumGeometries(); i++) {
@@ -16,15 +18,17 @@ export default class GeometryCollectionMapper {
     }
     return gc.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(mapped))
   }
+
   getClass () {
     return GeometryCollectionMapper
   }
+
   get interfaces_ () {
     return []
   }
 }
 GeometryCollectionMapper.constructor_ = function () {
   this._mapOp = null
-  let mapOp = arguments[0]
+  const mapOp = arguments[0]
   this._mapOp = mapOp
 }

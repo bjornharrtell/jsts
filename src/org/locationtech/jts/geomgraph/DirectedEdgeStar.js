@@ -12,6 +12,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     super()
     DirectedEdgeStar.constructor_.apply(this, arguments)
   }
+
   linkResultDirectedEdges () {
     this.getResultAreaEdges()
     var firstOut = null
@@ -41,10 +42,12 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       incoming.setNext(firstOut)
     }
   }
+
   insert (ee) {
     var de = ee
     this.insertEdgeEnd(de, de)
   }
+
   getRightmostEdge () {
     var edges = this.getEdges()
     var size = edges.size()
@@ -61,6 +64,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     Assert.shouldNeverReachHere('found two horizontal edges incident on node')
     return null
   }
+
   print (out) {
     System.out.println('DirectedEdgeStar: ' + this.getCoordinate())
     for (var it = this.iterator(); it.hasNext();) {
@@ -73,6 +77,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       out.println()
     }
   }
+
   getResultAreaEdges () {
     if (this._resultAreaEdgeList !== null) return this._resultAreaEdgeList
     this._resultAreaEdgeList = new ArrayList()
@@ -82,6 +87,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     }
     return this._resultAreaEdgeList
   }
+
   updateLabelling (nodeLabel) {
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next()
@@ -90,6 +96,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       label.setAllLocationsIfNull(1, nodeLabel.getLocation(1))
     }
   }
+
   linkAllDirectedEdges () {
     this.getEdges()
     var prevOut = null
@@ -103,9 +110,10 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     }
     firstIn.setNext(prevOut)
   }
+
   computeDepths () {
     if (arguments.length === 1) {
-      let de = arguments[0]
+      const de = arguments[0]
       var edgeIndex = this.findIndex(de)
       var startDepth = de.getDepth(Position.LEFT)
       var targetLastDepth = de.getDepth(Position.RIGHT)
@@ -113,7 +121,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       var lastDepth = this.computeDepths(0, edgeIndex, nextDepth)
       if (lastDepth !== targetLastDepth) throw new TopologyException('depth mismatch at ' + de.getCoordinate())
     } else if (arguments.length === 3) {
-      let startIndex = arguments[0]; let endIndex = arguments[1]; let startDepth = arguments[2]
+      const startIndex = arguments[0]; const endIndex = arguments[1]; const startDepth = arguments[2]
       var currDepth = startDepth
       for (var i = startIndex; i < endIndex; i++) {
         var nextDe = this._edgeList.get(i)
@@ -123,6 +131,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       return currDepth
     }
   }
+
   mergeSymLabels () {
     for (var it = this.iterator(); it.hasNext();) {
       var de = it.next()
@@ -130,6 +139,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       label.merge(de.getSym().getLabel())
     }
   }
+
   linkMinimalDirectedEdges (er) {
     var firstOut = null
     var incoming = null
@@ -157,6 +167,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       incoming.setNextMin(firstOut)
     }
   }
+
   getOutgoingDegree () {
     if (arguments.length === 0) {
       var degree = 0
@@ -166,7 +177,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       }
       return degree
     } else if (arguments.length === 1) {
-      let er = arguments[0]
+      const er = arguments[0]
       var degree = 0
       for (var it = this.iterator(); it.hasNext();) {
         var de = it.next()
@@ -175,9 +186,11 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       return degree
     }
   }
+
   getLabel () {
     return this._label
   }
+
   findCoveredLineEdges () {
     var startLoc = Location.NONE
     for (var it = this.iterator(); it.hasNext();) {
@@ -207,6 +220,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       }
     }
   }
+
   computeLabelling (geom) {
     super.computeLabelling.call(this, geom)
     this._label = new Label(Location.NONE)
@@ -220,9 +234,11 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       }
     }
   }
+
   getClass () {
     return DirectedEdgeStar
   }
+
   get interfaces_ () {
     return []
   }

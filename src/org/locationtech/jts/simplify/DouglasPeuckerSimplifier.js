@@ -8,25 +8,31 @@ export default class DouglasPeuckerSimplifier {
   constructor () {
     DouglasPeuckerSimplifier.constructor_.apply(this, arguments)
   }
+
   static simplify (geom, distanceTolerance) {
     var tss = new DouglasPeuckerSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
+
   setEnsureValid (isEnsureValidTopology) {
     this._isEnsureValidTopology = isEnsureValidTopology
   }
+
   getResultGeometry () {
     if (this._inputGeom.isEmpty()) return this._inputGeom.copy()
     return new DPTransformer(this._isEnsureValidTopology, this._distanceTolerance).transform(this._inputGeom)
   }
+
   setDistanceTolerance (distanceTolerance) {
     if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
     this._distanceTolerance = distanceTolerance
   }
+
   getClass () {
     return DouglasPeuckerSimplifier
   }
+
   get interfaces_ () {
     return []
   }
@@ -36,6 +42,7 @@ class DPTransformer extends GeometryTransformer {
     super()
     DPTransformer.constructor_.apply(this, arguments)
   }
+
   transformPolygon (geom, parent) {
     if (geom.isEmpty()) return null
     var rawGeom = super.transformPolygon.call(this, geom, parent)
@@ -44,10 +51,12 @@ class DPTransformer extends GeometryTransformer {
     }
     return this.createValidArea(rawGeom)
   }
+
   createValidArea (rawAreaGeom) {
     if (this._isEnsureValidTopology) return rawAreaGeom.buffer(0.0)
     return rawAreaGeom
   }
+
   transformCoordinates (coords, parent) {
     var inputPts = coords.toCoordinateArray()
     var newPts = null
@@ -58,10 +67,12 @@ class DPTransformer extends GeometryTransformer {
     }
     return this._factory.getCoordinateSequenceFactory().create(newPts)
   }
+
   transformMultiPolygon (geom, parent) {
     var rawGeom = super.transformMultiPolygon.call(this, geom, parent)
     return this.createValidArea(rawGeom)
   }
+
   transformLinearRing (geom, parent) {
     var removeDegenerateRings = parent instanceof Polygon
     var simpResult = super.transformLinearRing.call(this, geom, parent)
@@ -69,9 +80,11 @@ class DPTransformer extends GeometryTransformer {
 
     return simpResult
   }
+
   getClass () {
     return DPTransformer
   }
+
   get interfaces_ () {
     return []
   }
@@ -79,7 +92,7 @@ class DPTransformer extends GeometryTransformer {
 DPTransformer.constructor_ = function () {
   this._isEnsureValidTopology = true
   this._distanceTolerance = null
-  let isEnsureValidTopology = arguments[0]; let distanceTolerance = arguments[1]
+  const isEnsureValidTopology = arguments[0]; const distanceTolerance = arguments[1]
   this._isEnsureValidTopology = isEnsureValidTopology
   this._distanceTolerance = distanceTolerance
 }
@@ -88,6 +101,6 @@ DouglasPeuckerSimplifier.constructor_ = function () {
   this._inputGeom = null
   this._distanceTolerance = null
   this._isEnsureValidTopology = true
-  let inputGeom = arguments[0]
+  const inputGeom = arguments[0]
   this._inputGeom = inputGeom
 }

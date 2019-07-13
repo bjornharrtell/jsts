@@ -3,10 +3,12 @@ export default class MonotoneChain {
   constructor () {
     MonotoneChain.constructor_.apply(this, arguments)
   }
+
   getLineSegment (index, ls) {
     ls.p0 = this._pts[index]
     ls.p1 = this._pts[index + 1]
   }
+
   computeSelect (searchEnv, start0, end0, mcs) {
     var p0 = this._pts[start0]
     var p1 = this._pts[end0]
@@ -23,6 +25,7 @@ export default class MonotoneChain {
       this.computeSelect(searchEnv, mid, end0, mcs)
     }
   }
+
   getCoordinates () {
     var coord = new Array(this._end - this._start + 1).fill(null)
     var index = 0
@@ -31,12 +34,13 @@ export default class MonotoneChain {
     }
     return coord
   }
+
   computeOverlaps () {
     if (arguments.length === 2) {
-      let mc = arguments[0]; let mco = arguments[1]
+      const mc = arguments[0]; const mco = arguments[1]
       this.computeOverlaps(this._start, this._end, mc, mc._start, mc._end, mco)
     } else if (arguments.length === 6) {
-      let start0 = arguments[0]; let end0 = arguments[1]; let mc = arguments[2]; let start1 = arguments[3]; let end1 = arguments[4]; let mco = arguments[5]
+      const start0 = arguments[0]; const end0 = arguments[1]; const mc = arguments[2]; const start1 = arguments[3]; const end1 = arguments[4]; const mco = arguments[5]
       if (end0 - start0 === 1 && end1 - start1 === 1) {
         mco.overlap(this, start0, mc, start1)
         return null
@@ -54,12 +58,15 @@ export default class MonotoneChain {
       }
     }
   }
+
   setId (id) {
     this._id = id
   }
+
   select (searchEnv, mcs) {
     this.computeSelect(searchEnv, this._start, this._end, mcs)
   }
+
   getEnvelope () {
     if (this._env === null) {
       var p0 = this._pts[this._start]
@@ -68,24 +75,31 @@ export default class MonotoneChain {
     }
     return this._env
   }
+
   overlaps (start0, end0, mc, start1, end1) {
     return Envelope.intersects(this._pts[start0], this._pts[end0], mc._pts[start1], mc._pts[end1])
   }
+
   getEndIndex () {
     return this._end
   }
+
   getStartIndex () {
     return this._start
   }
+
   getContext () {
     return this._context
   }
+
   getId () {
     return this._id
   }
+
   getClass () {
     return MonotoneChain
   }
+
   get interfaces_ () {
     return []
   }
@@ -97,7 +111,7 @@ MonotoneChain.constructor_ = function () {
   this._env = null
   this._context = null
   this._id = null
-  let pts = arguments[0]; let start = arguments[1]; let end = arguments[2]; let context = arguments[3]
+  const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]; const context = arguments[3]
   this._pts = pts
   this._start = start
   this._end = end

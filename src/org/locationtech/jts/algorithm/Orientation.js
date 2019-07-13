@@ -4,9 +4,11 @@ export default class Orientation {
   constructor () {
     Orientation.constructor_.apply(this, arguments)
   }
+
   static index (p1, p2, q) {
     return CGAlgorithmsDD.orientationIndex(p1, p2, q)
   }
+
   static isCCW (ring) {
     var nPts = ring.length - 1
     if (nPts < 3) throw new IllegalArgumentException('Ring has fewer than 4 points, so orientation cannot be determined')
@@ -40,9 +42,11 @@ export default class Orientation {
     }
     return isCCW
   }
+
   getClass () {
     return Orientation
   }
+
   get interfaces_ () {
     return []
   }

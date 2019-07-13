@@ -6,6 +6,7 @@ export default class Node extends GraphComponent {
     super()
     Node.constructor_.apply(this, arguments)
   }
+
   isIncidentEdgeInResult () {
     for (var it = this.getEdges().getEdges().iterator(); it.hasNext();) {
       var de = it.next()
@@ -13,16 +14,21 @@ export default class Node extends GraphComponent {
     }
     return false
   }
+
   isIsolated () {
     return this._label.getGeometryCount() === 1
   }
+
   getCoordinate () {
     return this._coord
   }
+
   print (out) {
     out.println('node ' + this._coord + ' lbl: ' + this._label)
   }
+
   computeIM (im) {}
+
   computeMergedLocation (label2, eltIndex) {
     var loc = Location.NONE
     loc = this._label.getLocation(eltIndex)
@@ -32,23 +38,26 @@ export default class Node extends GraphComponent {
     }
     return loc
   }
+
   setLabel () {
     if (arguments.length === 2 && (Number.isInteger(arguments[1]) && Number.isInteger(arguments[0]))) {
-      let argIndex = arguments[0]; let onLocation = arguments[1]
+      const argIndex = arguments[0]; const onLocation = arguments[1]
       if (this._label === null) {
         this._label = new Label(argIndex, onLocation)
       } else this._label.setLocation(argIndex, onLocation)
     } else return super.setLabel.apply(this, arguments)
   }
+
   getEdges () {
     return this._edges
   }
+
   mergeLabel () {
     if (arguments[0] instanceof Node) {
-      let n = arguments[0]
+      const n = arguments[0]
       this.mergeLabel(n._label)
     } else if (arguments[0] instanceof Label) {
-      let label2 = arguments[0]
+      const label2 = arguments[0]
       for (var i = 0; i < 2; i++) {
         var loc = this.computeMergedLocation(label2, i)
         var thisLoc = this._label.getLocation(i)
@@ -56,10 +65,12 @@ export default class Node extends GraphComponent {
       }
     }
   }
+
   add (e) {
     this._edges.insert(e)
     e.setNode(this)
   }
+
   setLabelBoundary (argIndex) {
     if (this._label === null) return null
     var loc = Location.NONE
@@ -78,9 +89,11 @@ export default class Node extends GraphComponent {
     }
     this._label.setLocation(argIndex, newLoc)
   }
+
   getClass () {
     return Node
   }
+
   get interfaces_ () {
     return []
   }
@@ -88,7 +101,7 @@ export default class Node extends GraphComponent {
 Node.constructor_ = function () {
   this._coord = null
   this._edges = null
-  let coord = arguments[0]; let edges = arguments[1]
+  const coord = arguments[0]; const edges = arguments[1]
   this._coord = coord
   this._edges = edges
   this._label = new Label(0, Location.NONE)

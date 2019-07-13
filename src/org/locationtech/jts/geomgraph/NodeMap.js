@@ -7,12 +7,14 @@ export default class NodeMap {
   constructor () {
     NodeMap.constructor_.apply(this, arguments)
   }
+
   find (coord) {
     return this.nodeMap.get(coord)
   }
+
   addNode () {
     if (arguments[0] instanceof Coordinate) {
-      let coord = arguments[0]
+      const coord = arguments[0]
       var node = this.nodeMap.get(coord)
       if (node === null) {
         node = this.nodeFact.createNode(coord)
@@ -20,7 +22,7 @@ export default class NodeMap {
       }
       return node
     } else if (arguments[0] instanceof Node) {
-      let n = arguments[0]
+      const n = arguments[0]
       var node = this.nodeMap.get(n.getCoordinate())
       if (node === null) {
         this.nodeMap.put(n.getCoordinate(), n)
@@ -30,18 +32,22 @@ export default class NodeMap {
       return node
     }
   }
+
   print (out) {
     for (var it = this.iterator(); it.hasNext();) {
       var n = it.next()
       n.print(out)
     }
   }
+
   iterator () {
     return this.nodeMap.values().iterator()
   }
+
   values () {
     return this.nodeMap.values()
   }
+
   getBoundaryNodes (geomIndex) {
     var bdyNodes = new ArrayList()
     for (var i = this.iterator(); i.hasNext();) {
@@ -50,14 +56,17 @@ export default class NodeMap {
     }
     return bdyNodes
   }
+
   add (e) {
     var p = e.getCoordinate()
     var n = this.addNode(p)
     n.add(e)
   }
+
   getClass () {
     return NodeMap
   }
+
   get interfaces_ () {
     return []
   }
@@ -65,6 +74,6 @@ export default class NodeMap {
 NodeMap.constructor_ = function () {
   this.nodeMap = new TreeMap()
   this.nodeFact = null
-  let nodeFact = arguments[0]
+  const nodeFact = arguments[0]
   this.nodeFact = nodeFact
 }

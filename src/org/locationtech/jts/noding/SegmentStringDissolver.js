@@ -8,21 +8,24 @@ export default class SegmentStringDissolver {
   constructor () {
     SegmentStringDissolver.constructor_.apply(this, arguments)
   }
+
   findMatching (oca, segString) {
     var matchSS = this._ocaMap.get(oca)
     return matchSS
   }
+
   getDissolved () {
     return this._ocaMap.values()
   }
+
   dissolve () {
     if (hasInterface(arguments[0], Collection)) {
-      let segStrings = arguments[0]
+      const segStrings = arguments[0]
       for (var i = segStrings.iterator(); i.hasNext();) {
         this.dissolve(i.next())
       }
     } else if (hasInterface(arguments[0], SegmentString)) {
-      let segString = arguments[0]
+      const segString = arguments[0]
       var oca = new OrientedCoordinateArray(segString.getCoordinates())
       var existing = this.findMatching(oca, segString)
       if (existing === null) {
@@ -35,12 +38,15 @@ export default class SegmentStringDissolver {
       }
     }
   }
+
   add (oca, segString) {
     this._ocaMap.put(oca, segString)
   }
+
   getClass () {
     return SegmentStringDissolver
   }
+
   get interfaces_ () {
     return []
   }
@@ -53,7 +59,7 @@ SegmentStringDissolver.constructor_ = function () {
   if (arguments.length === 0) {
     SegmentStringDissolver.constructor_.call(this, null)
   } else if (arguments.length === 1) {
-    let merger = arguments[0]
+    const merger = arguments[0]
     this._merger = merger
   }
 }

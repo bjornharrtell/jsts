@@ -4,9 +4,11 @@ export default class NotRepresentableException extends Exception {
     super()
     NotRepresentableException.constructor_.apply(this, arguments)
   }
+
   getClass () {
     return NotRepresentableException
   }
+
   get interfaces_ () {
     return []
   }

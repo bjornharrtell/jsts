@@ -4,9 +4,11 @@ export default class UnionOp {
   get interfaces_ () {
     return []
   }
+
   getClass () {
     return UnionOp
   }
+
   static union (g, other) {
     if (g.isEmpty() || other.isEmpty()) {
       if (g.isEmpty() && other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.UNION, g, other, g.getFactory())

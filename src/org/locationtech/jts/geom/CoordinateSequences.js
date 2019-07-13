@@ -7,18 +7,21 @@ export default class CoordinateSequences {
   constructor () {
     CoordinateSequences.constructor_.apply(this, arguments)
   }
+
   static copyCoord (src, srcPos, dest, destPos) {
     var minDim = Math.min(src.getDimension(), dest.getDimension())
     for (var dim = 0; dim < minDim; dim++) {
       dest.setOrdinate(destPos, dim, src.getOrdinate(srcPos, dim))
     }
   }
+
   static isRing (seq) {
     var n = seq.size()
     if (n === 0) return true
     if (n <= 3) return false
     return seq.getOrdinate(0, CoordinateSequence.X) === seq.getOrdinate(n - 1, CoordinateSequence.X) && seq.getOrdinate(0, CoordinateSequence.Y) === seq.getOrdinate(n - 1, CoordinateSequence.Y)
   }
+
   static isEqual (cs1, cs2) {
     var cs1Size = cs1.size()
     var cs2Size = cs2.size()
@@ -35,6 +38,7 @@ export default class CoordinateSequences {
     }
     return true
   }
+
   static extend (fact, seq, size) {
     var newseq = fact.create(size, seq.getDimension())
     var n = seq.size()
@@ -44,6 +48,7 @@ export default class CoordinateSequences {
     }
     return newseq
   }
+
   static reverse (seq) {
     var last = seq.size() - 1
     var mid = Math.trunc(last / 2)
@@ -51,6 +56,7 @@ export default class CoordinateSequences {
       CoordinateSequences.swap(seq, i, last - i)
     }
   }
+
   static swap (seq, i, j) {
     if (i === j) return null
     for (var dim = 0; dim < seq.getDimension(); dim++) {
@@ -59,14 +65,16 @@ export default class CoordinateSequences {
       seq.setOrdinate(j, dim, tmp)
     }
   }
+
   static copy (src, srcPos, dest, destPos, length) {
     for (var i = 0; i < length; i++) {
       CoordinateSequences.copyCoord(src, srcPos + i, dest, destPos + i)
     }
   }
+
   static toString () {
     if (arguments.length === 1 && hasInterface(arguments[0], CoordinateSequence)) {
-      let cs = arguments[0]
+      const cs = arguments[0]
       var size = cs.size()
       if (size === 0) return '()'
       var dim = cs.getDimension()
@@ -83,6 +91,7 @@ export default class CoordinateSequences {
       return builder.toString()
     }
   }
+
   static ensureValidRing (fact, seq) {
     var n = seq.size()
     if (n === 0) return seq
@@ -91,6 +100,7 @@ export default class CoordinateSequences {
     if (isClosed) return seq
     return CoordinateSequences.createClosedRing(fact, seq, n + 1)
   }
+
   static createClosedRing (fact, seq, size) {
     var newseq = fact.create(size, seq.getDimension())
     var n = seq.size()
@@ -98,9 +108,11 @@ export default class CoordinateSequences {
     for (var i = n; i < size; i++) CoordinateSequences.copy(seq, 0, newseq, i, 1)
     return newseq
   }
+
   getClass () {
     return CoordinateSequences
   }
+
   get interfaces_ () {
     return []
   }

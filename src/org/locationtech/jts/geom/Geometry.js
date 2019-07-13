@@ -8,56 +8,69 @@ export default class Geometry {
   constructor () {
     Geometry.constructor_.apply(this, arguments)
   }
+
   isGeometryCollection () {
     return this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION
   }
+
   getFactory () {
     return this._factory
   }
+
   getGeometryN (n) {
     return this
   }
+
   getArea () {
     return 0.0
   }
+
   isRectangle () {
     return false
   }
+
   equals () {
     if (arguments[0] instanceof Geometry) {
-      let g = arguments[0]
+      const g = arguments[0]
       if (g === null) return false
       return this.equalsTopo(g)
     } else if (arguments[0] instanceof Object) {
-      let o = arguments[0]
+      const o = arguments[0]
       if (!(o instanceof Geometry)) return false
       var g = o
       return this.equalsExact(g)
     }
   }
+
   equalsExact (other) {
     return this === other || this.equalsExact(other, 0)
   }
+
   geometryChanged () {
     this.apply(Geometry.geometryChangedFilter)
   }
+
   geometryChangedAction () {
     this._envelope = null
   }
+
   equalsNorm (g) {
     if (g === null) return false
     return this.norm().equalsExact(g.norm())
   }
+
   getLength () {
     return 0.0
   }
+
   getNumGeometries () {
     return 1
   }
+
   compareTo () {
     let other
     if (arguments.length === 1) {
-      let o = arguments[0]
+      const o = arguments[0]
       other = o
       if (this.getTypeCode() !== other.getTypeCode()) {
         return this.getTypeCode() - other.getTypeCode()
@@ -73,7 +86,7 @@ export default class Geometry {
       }
       return this.compareToSameClass(o)
     } else if (arguments.length === 2) {
-      let o = arguments[0]; let comp = arguments[1]
+      const o = arguments[0]; const comp = arguments[1]
       other = o
       if (this.getTypeCode() !== other.getTypeCode()) {
         return this.getTypeCode() - other.getTypeCode()
@@ -90,46 +103,57 @@ export default class Geometry {
       return this.compareToSameClass(o, comp)
     }
   }
+
   getUserData () {
     return this._userData
   }
+
   getSRID () {
     return this._SRID
   }
+
   getEnvelope () {
     return this.getFactory().toGeometry(this.getEnvelopeInternal())
   }
+
   checkNotGeometryCollection (g) {
     if (g.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION) {
       throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
     }
   }
+
   equal (a, b, tolerance) {
     if (tolerance === 0) {
       return a.equals(b)
     }
     return a.distance(b) <= tolerance
   }
+
   norm () {
     var copy = this.copy()
     copy.normalize()
     return copy
   }
+
   getPrecisionModel () {
     return this._factory.getPrecisionModel()
   }
+
   getEnvelopeInternal () {
     if (this._envelope === null) {
       this._envelope = this.computeEnvelopeInternal()
     }
     return new Envelope(this._envelope)
   }
+
   setSRID (SRID) {
     this._SRID = SRID
   }
+
   setUserData (userData) {
     this._userData = userData
   }
+
   compare (a, b) {
     var i = a.iterator()
     var j = b.iterator()
@@ -149,21 +173,26 @@ export default class Geometry {
     }
     return 0
   }
+
   hashCode () {
     return this.getEnvelopeInternal().hashCode()
   }
+
   isGeometryCollectionOrDerived () {
     if (this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION || this.getTypeCode() === Geometry.TYPECODE_MULTIPOINT || this.getTypeCode() === Geometry.TYPECODE_MULTILINESTRING || this.getTypeCode() === Geometry.TYPECODE_MULTIPOLYGON) {
       return true
     }
     return false
   }
+
   get interfaces_ () {
     return [Cloneable, Comparable, Serializable]
   }
+
   getClass () {
     return Geometry
   }
+
   static hasNonEmptyElements (geometries) {
     for (var i = 0; i < geometries.length; i++) {
       if (!geometries[i].isEmpty()) {
@@ -172,6 +201,7 @@ export default class Geometry {
     }
     return false
   }
+
   static hasNullElements (array) {
     for (var i = 0; i < array.length; i++) {
       if (array[i] === null) {

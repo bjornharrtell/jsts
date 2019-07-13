@@ -4,6 +4,7 @@ export default class QuadEdge {
   constructor () {
     QuadEdge.constructor_.apply(this, arguments)
   }
+
   static makeEdge (o, d) {
     var q0 = new QuadEdge()
     var q1 = new QuadEdge()
@@ -22,6 +23,7 @@ export default class QuadEdge {
     base.setDest(d)
     return base
   }
+
   static swap (e) {
     var a = e.oPrev()
     var b = e.sym().oPrev()
@@ -32,6 +34,7 @@ export default class QuadEdge {
     e.setOrig(a.dest())
     e.setDest(b.dest())
   }
+
   static splice (a, b) {
     var alpha = a.oNext().rot()
     var beta = b.oNext().rot()
@@ -44,98 +47,127 @@ export default class QuadEdge {
     alpha.setNext(t3)
     beta.setNext(t4)
   }
+
   static connect (a, b) {
     var e = QuadEdge.makeEdge(a.dest(), b.orig())
     QuadEdge.splice(e, a.lNext())
     QuadEdge.splice(e.sym(), b)
     return e
   }
+
   equalsNonOriented (qe) {
     if (this.equalsOriented(qe)) return true
     if (this.equalsOriented(qe.sym())) return true
     return false
   }
+
   toLineSegment () {
     return new LineSegment(this._vertex.getCoordinate(), this.dest().getCoordinate())
   }
+
   dest () {
     return this.sym().orig()
   }
+
   oNext () {
     return this._next
   }
+
   equalsOriented (qe) {
     if (this.orig().getCoordinate().equals2D(qe.orig().getCoordinate()) && this.dest().getCoordinate().equals2D(qe.dest().getCoordinate())) return true
     return false
   }
+
   dNext () {
     return this.sym().oNext().sym()
   }
+
   lPrev () {
     return this._next.sym()
   }
+
   rPrev () {
     return this.sym().oNext()
   }
+
   rot () {
     return this._rot
   }
+
   oPrev () {
     return this._rot._next._rot
   }
+
   sym () {
     return this._rot._rot
   }
+
   setOrig (o) {
     this._vertex = o
   }
+
   lNext () {
     return this.invRot().oNext().rot()
   }
+
   getLength () {
     return this.orig().getCoordinate().distance(this.dest().getCoordinate())
   }
+
   invRot () {
     return this._rot.sym()
   }
+
   setDest (d) {
     this.sym().setOrig(d)
   }
+
   setData (data) {
     this._data = data
   }
+
   getData () {
     return this._data
   }
+
   delete () {
     this._rot = null
   }
+
   orig () {
     return this._vertex
   }
+
   rNext () {
     return this._rot._next.invRot()
   }
+
   toString () {
     var p0 = this._vertex.getCoordinate()
     var p1 = this.dest().getCoordinate()
     return WKTWriter.toLineString(p0, p1)
   }
+
   isLive () {
     return this._rot !== null
   }
+
   getPrimary () {
     if (this.orig().getCoordinate().compareTo(this.dest().getCoordinate()) <= 0) return this; else return this.sym()
   }
+
   dPrev () {
     return this.invRot().oNext().invRot()
   }
+
   setNext (next) {
     this._next = next
   }
+
   getClass () {
     return QuadEdge
   }
+
   get interfaces_ () {
     return []
   }

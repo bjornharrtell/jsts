@@ -9,21 +9,25 @@ export default class DD {
   constructor () {
     DD.constructor_.apply(this, arguments)
   }
+
   static sqr (x) {
     return DD.valueOf(x).selfMultiply(x)
   }
+
   static valueOf () {
     if (typeof arguments[0] === 'string') {
-      let str = arguments[0]
+      const str = arguments[0]
       return DD.parse(str)
     } else if (typeof arguments[0] === 'number') {
-      let x = arguments[0]
+      const x = arguments[0]
       return new DD(x)
     }
   }
+
   static sqrt (x) {
     return DD.valueOf(x).sqrt()
   }
+
   static parse (str) {
     var i = 0
     var strlen = str.length
@@ -84,12 +88,15 @@ export default class DD {
     }
     return val2
   }
+
   static createNaN () {
     return new DD(Double.NaN, Double.NaN)
   }
+
   static copy (dd) {
     return new DD(dd)
   }
+
   static magnitude (x) {
     var xAbs = Math.abs(x)
     var xLog10 = Math.log(xAbs) / Math.log(10)
@@ -98,6 +105,7 @@ export default class DD {
     if (xApprox * 10 <= xAbs) xMag += 1
     return xMag
   }
+
   static stringOfChar (ch, len) {
     var buf = new StringBuffer()
     for (var i = 0; i < len; i++) {
@@ -105,9 +113,11 @@ export default class DD {
     }
     return buf.toString()
   }
+
   le (y) {
     return this._hi < y._hi || this._hi === y._hi && this._lo <= y._lo
   }
+
   extractSignificantDigits (insertDecimalPoint, magnitude) {
     var y = this.abs()
     var mag = DD.magnitude(y._hi)
@@ -151,46 +161,54 @@ export default class DD {
     magnitude[0] = mag
     return buf.toString()
   }
+
   sqr () {
     return this.multiply(this)
   }
+
   doubleValue () {
     return this._hi + this._lo
   }
+
   subtract () {
     if (arguments[0] instanceof DD) {
-      let y = arguments[0]
+      const y = arguments[0]
       return this.add(y.negate())
     } else if (typeof arguments[0] === 'number') {
-      let y = arguments[0]
+      const y = arguments[0]
       return this.add(-y)
     }
   }
+
   equals () {
     if (arguments.length === 1 && arguments[0] instanceof DD) {
-      let y = arguments[0]
+      const y = arguments[0]
       return this._hi === y._hi && this._lo === y._lo
     }
   }
+
   isZero () {
     return this._hi === 0.0 && this._lo === 0.0
   }
+
   selfSubtract () {
     if (arguments[0] instanceof DD) {
-      let y = arguments[0]
+      const y = arguments[0]
       if (this.isNaN()) return this
       return this.selfAdd(-y._hi, -y._lo)
     } else if (typeof arguments[0] === 'number') {
-      let y = arguments[0]
+      const y = arguments[0]
       if (this.isNaN()) return this
       return this.selfAdd(-y, 0.0)
     }
   }
+
   getSpecialNumberString () {
     if (this.isZero()) return '0.0'
     if (this.isNaN()) return 'NaN '
     return null
   }
+
   min (x) {
     if (this.le(x)) {
       return this
@@ -198,17 +216,18 @@ export default class DD {
       return x
     }
   }
+
   selfDivide () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof DD) {
-        let y = arguments[0]
+        const y = arguments[0]
         return this.selfDivide(y._hi, y._lo)
       } else if (typeof arguments[0] === 'number') {
-        let y = arguments[0]
+        const y = arguments[0]
         return this.selfDivide(y, 0.0)
       }
     } else if (arguments.length === 2) {
-      let yhi = arguments[0]; let ylo = arguments[1]
+      const yhi = arguments[0]; const ylo = arguments[1]
       var hc = null; var tc = null; var hy = null; var ty = null; var C = null; var c = null; var U = null; var u = null
       C = this._hi / yhi
       c = DD.SPLIT * C
@@ -228,12 +247,14 @@ export default class DD {
       return this
     }
   }
+
   dump () {
     return 'DD<' + this._hi + ', ' + this._lo + '>'
   }
+
   divide () {
     if (arguments[0] instanceof DD) {
-      let y = arguments[0]
+      const y = arguments[0]
       var hc = null; var tc = null; var hy = null; var ty = null; var C = null; var c = null; var U = null; var u = null
       C = this._hi / y._hi
       c = DD.SPLIT * C
@@ -252,14 +273,16 @@ export default class DD {
       var zlo = C - u + c
       return new DD(zhi, zlo)
     } else if (typeof arguments[0] === 'number') {
-      let y = arguments[0]
+      const y = arguments[0]
       if (Double.isNaN(y)) return DD.createNaN()
       return DD.copy(this).selfDivide(y, 0.0)
     }
   }
+
   ge (y) {
     return this._hi > y._hi || this._hi === y._hi && this._lo >= y._lo
   }
+
   pow (exp) {
     if (exp === 0.0) return DD.valueOf(1.0)
     var r = new DD(this)
@@ -279,6 +302,7 @@ export default class DD {
     if (exp < 0) return s.reciprocal()
     return s
   }
+
   ceil () {
     if (this.isNaN()) return DD.NaN
     var fhi = Math.ceil(this._hi)
@@ -288,6 +312,7 @@ export default class DD {
     }
     return new DD(fhi, flo)
   }
+
   compareTo (o) {
     var other = o
     if (this._hi < other._hi) return -1
@@ -296,22 +321,25 @@ export default class DD {
     if (this._lo > other._lo) return 1
     return 0
   }
+
   rint () {
     if (this.isNaN()) return this
     var plus5 = this.add(0.5)
     return plus5.floor()
   }
+
   setValue () {
     if (arguments[0] instanceof DD) {
-      let value = arguments[0]
+      const value = arguments[0]
       this.init(value)
       return this
     } else if (typeof arguments[0] === 'number') {
-      let value = arguments[0]
+      const value = arguments[0]
       this.init(value)
       return this
     }
   }
+
   max (x) {
     if (this.ge(x)) {
       return this
@@ -319,6 +347,7 @@ export default class DD {
       return x
     }
   }
+
   sqrt () {
     if (this.isZero()) return DD.valueOf(0.0)
     if (this.isNegative()) {
@@ -331,13 +360,14 @@ export default class DD {
     var d2 = diffSq._hi * (x * 0.5)
     return axdd.add(d2)
   }
+
   selfAdd () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof DD) {
-        let y = arguments[0]
+        const y = arguments[0]
         return this.selfAdd(y._hi, y._lo)
       } else if (typeof arguments[0] === 'number') {
-        let y = arguments[0]
+        const y = arguments[0]
         var H = null; var h = null; var S = null; var s = null; var e = null; var f = null
         S = this._hi + y
         e = S - this._hi
@@ -351,7 +381,7 @@ export default class DD {
         return this
       }
     } else if (arguments.length === 2) {
-      let yhi = arguments[0]; let ylo = arguments[1]
+      const yhi = arguments[0]; const ylo = arguments[1]
       var H = null; var h = null; var T = null; var t = null; var S = null; var s = null; var e = null; var f = null
       S = this._hi + yhi
       T = this._lo + ylo
@@ -372,17 +402,18 @@ export default class DD {
       return this
     }
   }
+
   selfMultiply () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof DD) {
-        let y = arguments[0]
+        const y = arguments[0]
         return this.selfMultiply(y._hi, y._lo)
       } else if (typeof arguments[0] === 'number') {
-        let y = arguments[0]
+        const y = arguments[0]
         return this.selfMultiply(y, 0.0)
       }
     } else if (arguments.length === 2) {
-      let yhi = arguments[0]; let ylo = arguments[1]
+      const yhi = arguments[0]; const ylo = arguments[1]
       var hx = null; var tx = null; var hy = null; var ty = null; var C = null; var c = null
       C = DD.SPLIT * this._hi
       hx = C - this._hi
@@ -402,9 +433,11 @@ export default class DD {
       return this
     }
   }
+
   selfSqr () {
     return this.selfMultiply(this)
   }
+
   floor () {
     if (this.isNaN()) return DD.NaN
     var fhi = Math.floor(this._hi)
@@ -414,10 +447,12 @@ export default class DD {
     }
     return new DD(fhi, flo)
   }
+
   negate () {
     if (this.isNaN()) return this
     return new DD(-this._hi, -this._lo)
   }
+
   clone () {
     try {
       return null
@@ -427,28 +462,33 @@ export default class DD {
       } else throw ex
     } finally {}
   }
+
   multiply () {
     if (arguments[0] instanceof DD) {
-      let y = arguments[0]
+      const y = arguments[0]
       if (y.isNaN()) return DD.createNaN()
       return DD.copy(this).selfMultiply(y)
     } else if (typeof arguments[0] === 'number') {
-      let y = arguments[0]
+      const y = arguments[0]
       if (Double.isNaN(y)) return DD.createNaN()
       return DD.copy(this).selfMultiply(y, 0.0)
     }
   }
+
   isNaN () {
     return Double.isNaN(this._hi)
   }
+
   intValue () {
     return Math.trunc(this._hi)
   }
+
   toString () {
     var mag = DD.magnitude(this._hi)
     if (mag >= -3 && mag <= 20) return this.toStandardNotation()
     return this.toSciNotation()
   }
+
   toStandardNotation () {
     var specialStr = this.getSpecialNumberString()
     if (specialStr !== null) return specialStr
@@ -468,6 +508,7 @@ export default class DD {
     if (this.isNegative()) return '-' + num
     return num
   }
+
   reciprocal () {
     var hc = null; var tc = null; var hy = null; var ty = null; var C = null; var c = null; var U = null; var u = null
     C = 1.0 / this._hi
@@ -486,6 +527,7 @@ export default class DD {
     var zlo = C - zhi + c
     return new DD(zhi, zlo)
   }
+
   toSciNotation () {
     if (this.isZero()) return DD.SCI_NOT_ZERO
     var specialStr = this.getSpecialNumberString()
@@ -502,53 +544,62 @@ export default class DD {
     if (this.isNegative()) return '-' + digitsWithDecimal + expStr
     return digitsWithDecimal + expStr
   }
+
   abs () {
     if (this.isNaN()) return DD.NaN
     if (this.isNegative()) return this.negate()
     return new DD(this)
   }
+
   isPositive () {
     return this._hi > 0.0 || this._hi === 0.0 && this._lo > 0.0
   }
+
   lt (y) {
     return this._hi < y._hi || this._hi === y._hi && this._lo < y._lo
   }
+
   add () {
     if (arguments[0] instanceof DD) {
-      let y = arguments[0]
+      const y = arguments[0]
       return DD.copy(this).selfAdd(y)
     } else if (typeof arguments[0] === 'number') {
-      let y = arguments[0]
+      const y = arguments[0]
       return DD.copy(this).selfAdd(y)
     }
   }
+
   init () {
     if (arguments.length === 1) {
       if (typeof arguments[0] === 'number') {
-        let x = arguments[0]
+        const x = arguments[0]
         this._hi = x
         this._lo = 0.0
       } else if (arguments[0] instanceof DD) {
-        let dd = arguments[0]
+        const dd = arguments[0]
         this._hi = dd._hi
         this._lo = dd._lo
       }
     } else if (arguments.length === 2) {
-      let hi = arguments[0]; let lo = arguments[1]
+      const hi = arguments[0]; const lo = arguments[1]
       this._hi = hi
       this._lo = lo
     }
   }
+
   gt (y) {
     return this._hi > y._hi || this._hi === y._hi && this._lo > y._lo
   }
+
   isNegative () {
     return this._hi < 0.0 || this._hi === 0.0 && this._lo < 0.0
   }
+
   trunc () {
     if (this.isNaN()) return DD.NaN
     if (this.isPositive()) return this.floor(); else return this.ceil()
   }
+
   signum () {
     if (this._hi > 0) return 1
     if (this._hi < 0) return -1
@@ -556,9 +607,11 @@ export default class DD {
     if (this._lo < 0) return -1
     return 0
   }
+
   getClass () {
     return DD
   }
+
   get interfaces_ () {
     return [Serializable, Comparable, Cloneable]
   }
@@ -570,17 +623,17 @@ DD.constructor_ = function () {
     this.init(0.0)
   } else if (arguments.length === 1) {
     if (typeof arguments[0] === 'number') {
-      let x = arguments[0]
+      const x = arguments[0]
       this.init(x)
     } else if (arguments[0] instanceof DD) {
-      let dd = arguments[0]
+      const dd = arguments[0]
       this.init(dd)
     } else if (typeof arguments[0] === 'string') {
-      let str = arguments[0]
+      const str = arguments[0]
       DD.constructor_.call(this, DD.parse(str))
     }
   } else if (arguments.length === 2) {
-    let hi = arguments[0]; let lo = arguments[1]
+    const hi = arguments[0]; const lo = arguments[1]
     this.init(hi, lo)
   }
 }

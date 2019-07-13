@@ -11,6 +11,7 @@ export default class LineMerger {
   constructor () {
     LineMerger.constructor_.apply(this, arguments)
   }
+
   buildEdgeStringsForUnprocessedNodes () {
     for (var i = this._graph.getNodes().iterator(); i.hasNext();) {
       var node = i.next()
@@ -21,6 +22,7 @@ export default class LineMerger {
       }
     }
   }
+
   buildEdgeStringsForNonDegree2Nodes () {
     for (var i = this._graph.getNodes().iterator(); i.hasNext();) {
       var node = i.next()
@@ -30,13 +32,16 @@ export default class LineMerger {
       }
     }
   }
+
   buildEdgeStringsForObviousStartNodes () {
     this.buildEdgeStringsForNonDegree2Nodes()
   }
+
   getMergedLineStrings () {
     this.merge()
     return this._mergedLineStrings
   }
+
   buildEdgeStringsStartingAt (node) {
     for (var i = node.getOutEdges().iterator(); i.hasNext();) {
       var directedEdge = i.next()
@@ -46,6 +51,7 @@ export default class LineMerger {
       this._edgeStrings.add(this.buildEdgeStringStartingWith(directedEdge))
     }
   }
+
   merge () {
     if (this._mergedLineStrings !== null) {
       return null
@@ -61,12 +67,14 @@ export default class LineMerger {
       this._mergedLineStrings.add(edgeString.toLineString())
     }
   }
+
   addLineString (lineString) {
     if (this._factory === null) {
       this._factory = lineString.getFactory()
     }
     this._graph.addEdge(lineString)
   }
+
   buildEdgeStringStartingWith (start) {
     var edgeString = new EdgeString(this._factory)
     var current = start
@@ -77,9 +85,10 @@ export default class LineMerger {
     } while (current !== null && current !== start)
     return edgeString
   }
+
   add () {
     if (arguments[0] instanceof Geometry) {
-      let geometry = arguments[0]
+      const geometry = arguments[0]
       for (var i = 0; i < geometry.getNumGeometries(); i++) {
         var component = geometry.getGeometryN(i)
         if (component instanceof LineString) {
@@ -88,7 +97,7 @@ export default class LineMerger {
       }
       ;
     } else if (hasInterface(arguments[0], Collection)) {
-      let geometries = arguments[0]
+      const geometries = arguments[0]
       this._mergedLineStrings = null
       for (var i = geometries.iterator(); i.hasNext();) {
         var geometry = i.next()
@@ -96,12 +105,15 @@ export default class LineMerger {
       }
     }
   }
+
   buildEdgeStringsForIsolatedLoops () {
     this.buildEdgeStringsForUnprocessedNodes()
   }
+
   getClass () {
     return LineMerger
   }
+
   get interfaces_ () {
     return []
   }

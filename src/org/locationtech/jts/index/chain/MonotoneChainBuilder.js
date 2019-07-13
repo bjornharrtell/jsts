@@ -6,6 +6,7 @@ export default class MonotoneChainBuilder {
   constructor () {
     MonotoneChainBuilder.constructor_.apply(this, arguments)
   }
+
   static getChainStartIndices (pts) {
     var start = 0
     var startIndexList = new ArrayList()
@@ -18,6 +19,7 @@ export default class MonotoneChainBuilder {
     var startIndex = MonotoneChainBuilder.toIntArray(startIndexList)
     return startIndex
   }
+
   static findChainEnd (pts, start) {
     var safeStart = start
     while (safeStart < pts.length - 1 && pts[safeStart].equals2D(pts[safeStart + 1])) {
@@ -37,12 +39,13 @@ export default class MonotoneChainBuilder {
     }
     return last - 1
   }
+
   static getChains () {
     if (arguments.length === 1) {
-      let pts = arguments[0]
+      const pts = arguments[0]
       return MonotoneChainBuilder.getChains(pts, null)
     } else if (arguments.length === 2) {
-      let pts = arguments[0]; let context = arguments[1]
+      const pts = arguments[0]; const context = arguments[1]
       var mcList = new ArrayList()
       var startIndex = MonotoneChainBuilder.getChainStartIndices(pts)
       for (var i = 0; i < startIndex.length - 1; i++) {
@@ -52,6 +55,7 @@ export default class MonotoneChainBuilder {
       return mcList
     }
   }
+
   static toIntArray (list) {
     var array = new Array(list.size()).fill(null)
     for (var i = 0; i < array.length; i++) {
@@ -59,9 +63,11 @@ export default class MonotoneChainBuilder {
     }
     return array
   }
+
   getClass () {
     return MonotoneChainBuilder
   }
+
   get interfaces_ () {
     return []
   }

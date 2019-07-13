@@ -8,10 +8,12 @@ export default class ExtractLineByLocation {
   constructor () {
     ExtractLineByLocation.constructor_.apply(this, arguments)
   }
+
   static extract (line, start, end) {
     var ls = new ExtractLineByLocation(line)
     return ls.extract(start, end)
   }
+
   computeLinear (start, end) {
     var builder = new LinearGeometryBuilder(this._line.getFactory())
     builder.setFixInvalidLines(true)
@@ -25,6 +27,7 @@ export default class ExtractLineByLocation {
     if (!end.isVertex()) builder.add(end.getCoordinate(this._line))
     return builder.getGeometry()
   }
+
   computeLine (start, end) {
     var coordinates = this._line.getCoordinates()
     var newCoordinates = new CoordinateList()
@@ -45,27 +48,31 @@ export default class ExtractLineByLocation {
     }
     return this._line.getFactory().createLineString(newCoordinateArray)
   }
+
   extract (start, end) {
     if (end.compareTo(start) < 0) {
       return this.reverse(this.computeLinear(end, start))
     }
     return this.computeLinear(start, end)
   }
+
   reverse (linear) {
     if (linear instanceof LineString) return linear.reverse()
     if (linear instanceof MultiLineString) return linear.reverse()
     Assert.shouldNeverReachHere('non-linear geometry encountered')
     return null
   }
+
   getClass () {
     return ExtractLineByLocation
   }
+
   get interfaces_ () {
     return []
   }
 }
 ExtractLineByLocation.constructor_ = function () {
   this._line = null
-  let line = arguments[0]
+  const line = arguments[0]
   this._line = line
 }

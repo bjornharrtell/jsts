@@ -5,10 +5,12 @@ export default class PreparedLineStringIntersects {
   constructor () {
     PreparedLineStringIntersects.constructor_.apply(this, arguments)
   }
+
   static intersects (prep, geom) {
     var op = new PreparedLineStringIntersects(prep)
     return op.intersects(geom)
   }
+
   isAnyTestPointInTarget (testGeom) {
     var locator = new PointLocator()
     var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
@@ -18,6 +20,7 @@ export default class PreparedLineStringIntersects {
     }
     return false
   }
+
   intersects (geom) {
     var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
     if (lineSegStr.size() > 0) {
@@ -29,15 +32,17 @@ export default class PreparedLineStringIntersects {
     if (geom.getDimension() === 0) return this.isAnyTestPointInTarget(geom)
     return false
   }
+
   getClass () {
     return PreparedLineStringIntersects
   }
+
   get interfaces_ () {
     return []
   }
 }
 PreparedLineStringIntersects.constructor_ = function () {
   this._prepLine = null
-  let prepLine = arguments[0]
+  const prepLine = arguments[0]
   this._prepLine = prepLine
 }

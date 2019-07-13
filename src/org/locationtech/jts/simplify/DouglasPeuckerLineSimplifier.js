@@ -5,11 +5,13 @@ export default class DouglasPeuckerLineSimplifier {
   constructor () {
     DouglasPeuckerLineSimplifier.constructor_.apply(this, arguments)
   }
+
   static simplify (pts, distanceTolerance) {
     var simp = new DouglasPeuckerLineSimplifier(pts)
     simp.setDistanceTolerance(distanceTolerance)
     return simp.simplify()
   }
+
   simplifySection (i, j) {
     if (i + 1 === j) {
       return null
@@ -34,9 +36,11 @@ export default class DouglasPeuckerLineSimplifier {
       this.simplifySection(maxIndex, j)
     }
   }
+
   setDistanceTolerance (distanceTolerance) {
     this._distanceTolerance = distanceTolerance
   }
+
   simplify () {
     this._usePt = new Array(this._pts.length).fill(null)
     for (var i = 0; i < this._pts.length; i++) {
@@ -49,9 +53,11 @@ export default class DouglasPeuckerLineSimplifier {
     }
     return coordList.toCoordinateArray()
   }
+
   getClass () {
     return DouglasPeuckerLineSimplifier
   }
+
   get interfaces_ () {
     return []
   }
@@ -61,6 +67,6 @@ DouglasPeuckerLineSimplifier.constructor_ = function () {
   this._usePt = null
   this._distanceTolerance = null
   this._seg = new LineSegment()
-  let pts = arguments[0]
+  const pts = arguments[0]
   this._pts = pts
 }

@@ -10,9 +10,10 @@ export default class PlanarPolygon3D {
   constructor () {
     PlanarPolygon3D.constructor_.apply(this, arguments)
   }
+
   static project () {
     if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
-      let seq = arguments[0]; let facingPlane = arguments[1]
+      const seq = arguments[0]; const facingPlane = arguments[1]
       switch (facingPlane) {
         case Plane3D.XY_PLANE:
           return AxisPlaneCoordinateSequence.projectToXY(seq)
@@ -22,7 +23,7 @@ export default class PlanarPolygon3D {
           return AxisPlaneCoordinateSequence.projectToYZ(seq)
       }
     } else if (arguments[0] instanceof Coordinate && Number.isInteger(arguments[1])) {
-      let p = arguments[0]; let facingPlane = arguments[1]
+      const p = arguments[0]; const facingPlane = arguments[1]
       switch (facingPlane) {
         case Plane3D.XY_PLANE:
           return new Coordinate(p.x, p.y)
@@ -33,22 +34,24 @@ export default class PlanarPolygon3D {
       }
     }
   }
+
   intersects () {
     if (arguments.length === 1) {
-      let intPt = arguments[0]
+      const intPt = arguments[0]
       if (Location.EXTERIOR === this.locate(intPt, this._poly.getExteriorRing())) return false
       for (var i = 0; i < this._poly.getNumInteriorRing(); i++) {
         if (Location.INTERIOR === this.locate(intPt, this._poly.getInteriorRingN(i))) return false
       }
       return true
     } else if (arguments.length === 2) {
-      let pt = arguments[0]; let ring = arguments[1]
+      const pt = arguments[0]; const ring = arguments[1]
       var seq = ring.getCoordinateSequence()
       var seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
       var ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
       return Location.EXTERIOR !== RayCrossingCounter.locatePointInRing(ptProj, seqProj)
     }
   }
+
   averagePoint (seq) {
     var a = new Coordinate(0, 0, 0)
     var n = seq.size()
@@ -62,18 +65,22 @@ export default class PlanarPolygon3D {
     a.z /= n
     return a
   }
+
   getPolygon () {
     return this._poly
   }
+
   getPlane () {
     return this._plane
   }
+
   findBestFitPlane (poly) {
     var seq = poly.getExteriorRing().getCoordinateSequence()
     var basePt = this.averagePoint(seq)
     var normal = this.averageNormal(seq)
     return new Plane3D(normal, basePt)
   }
+
   averageNormal (seq) {
     var n = seq.size()
     var sum = new Coordinate(0, 0, 0)
@@ -92,15 +99,18 @@ export default class PlanarPolygon3D {
     var norm = Vector3D.create(sum).normalize()
     return norm
   }
+
   locate (pt, ring) {
     var seq = ring.getCoordinateSequence()
     var seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
     var ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
     return RayCrossingCounter.locatePointInRing(ptProj, seqProj)
   }
+
   getClass () {
     return PlanarPolygon3D
   }
+
   get interfaces_ () {
     return []
   }
@@ -109,7 +119,7 @@ PlanarPolygon3D.constructor_ = function () {
   this._plane = null
   this._poly = null
   this._facingPlane = -1
-  let poly = arguments[0]
+  const poly = arguments[0]
   this._poly = poly
   this._plane = this.findBestFitPlane(poly)
   this._facingPlane = this._plane.closestAxisPlane()

@@ -12,12 +12,14 @@ export default class ConnectedInteriorTester {
   constructor () {
     ConnectedInteriorTester.constructor_.apply(this, arguments)
   }
+
   static findDifferentPoint (coord, pt) {
     for (var i = 0; i < coord.length; i++) {
       if (!coord[i].equals(pt)) return coord[i]
     }
     return null
   }
+
   visitInteriorRing (ring, graph) {
     var pts = ring.getCoordinates()
     var pt0 = pts[0]
@@ -33,6 +35,7 @@ export default class ConnectedInteriorTester {
     Assert.isTrue(intDe !== null, 'unable to find dirEdge with Interior on RHS')
     this.visitLinkedDirectedEdges(intDe)
   }
+
   visitShellInteriors (g, graph) {
     if (g instanceof Polygon) {
       var p = g
@@ -46,9 +49,11 @@ export default class ConnectedInteriorTester {
       }
     }
   }
+
   getCoordinate () {
     return this._disconnectedRingcoord
   }
+
   setInteriorEdgesInResult (graph) {
     for (var it = graph.getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next()
@@ -57,6 +62,7 @@ export default class ConnectedInteriorTester {
       }
     }
   }
+
   visitLinkedDirectedEdges (start) {
     var startDe = start
     var de = start
@@ -66,6 +72,7 @@ export default class ConnectedInteriorTester {
       de = de.getNext()
     } while (de !== startDe)
   }
+
   buildEdgeRings (dirEdges) {
     var edgeRings = new ArrayList()
     for (var it = dirEdges.iterator(); it.hasNext();) {
@@ -79,6 +86,7 @@ export default class ConnectedInteriorTester {
     }
     return edgeRings
   }
+
   hasUnvisitedShellEdge (edgeRings) {
     for (var i = 0; i < edgeRings.size(); i++) {
       var er = edgeRings.get(i)
@@ -96,6 +104,7 @@ export default class ConnectedInteriorTester {
     }
     return false
   }
+
   isInteriorsConnected () {
     var splitEdges = new ArrayList()
     this._geomGraph.computeSplitEdges(splitEdges)
@@ -107,9 +116,11 @@ export default class ConnectedInteriorTester {
     this.visitShellInteriors(this._geomGraph.getGeometry(), graph)
     return !this.hasUnvisitedShellEdge(edgeRings)
   }
+
   getClass () {
     return ConnectedInteriorTester
   }
+
   get interfaces_ () {
     return []
   }
@@ -118,6 +129,6 @@ ConnectedInteriorTester.constructor_ = function () {
   this._geometryFactory = new GeometryFactory()
   this._geomGraph = null
   this._disconnectedRingcoord = null
-  let geomGraph = arguments[0]
+  const geomGraph = arguments[0]
   this._geomGraph = geomGraph
 }

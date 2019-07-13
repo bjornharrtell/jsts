@@ -5,6 +5,7 @@ export default class CoordinateSequenceComparator {
   constructor () {
     CoordinateSequenceComparator.constructor_.apply(this, arguments)
   }
+
   static compare (a, b) {
     if (a < b) return -1
     if (a > b) return 1
@@ -15,6 +16,7 @@ export default class CoordinateSequenceComparator {
     if (Double.isNaN(b)) return 1
     return 0
   }
+
   compare (o1, o2) {
     var s1 = o1
     var s2 = o2
@@ -43,6 +45,7 @@ export default class CoordinateSequenceComparator {
     if (i < size2) return -1
     return 0
   }
+
   compareCoordinate (s1, s2, i, dimension) {
     for (var d = 0; d < dimension; d++) {
       var ord1 = s1.getOrdinate(i, d)
@@ -52,9 +55,11 @@ export default class CoordinateSequenceComparator {
     }
     return 0
   }
+
   getClass () {
     return CoordinateSequenceComparator
   }
+
   get interfaces_ () {
     return [Comparator]
   }
@@ -64,7 +69,7 @@ CoordinateSequenceComparator.constructor_ = function () {
   if (arguments.length === 0) {
     this._dimensionLimit = Integer.MAX_VALUE
   } else if (arguments.length === 1) {
-    let dimensionLimit = arguments[0]
+    const dimensionLimit = arguments[0]
     this._dimensionLimit = dimensionLimit
   }
 }

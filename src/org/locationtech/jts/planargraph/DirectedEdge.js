@@ -8,6 +8,7 @@ export default class DirectedEdge extends GraphComponent {
     super()
     DirectedEdge.constructor_.apply(this, arguments)
   }
+
   static toEdges (dirEdges) {
     var edges = new ArrayList()
     for (var i = dirEdges.iterator(); i.hasNext();) {
@@ -15,64 +16,82 @@ export default class DirectedEdge extends GraphComponent {
     }
     return edges
   }
+
   isRemoved () {
     return this._parentEdge === null
   }
+
   compareDirection (e) {
     if (this._quadrant > e._quadrant) return 1
     if (this._quadrant < e._quadrant) return -1
     return Orientation.index(e._p0, e._p1, this._p1)
   }
+
   getCoordinate () {
     return this._from.getCoordinate()
   }
+
   print (out) {
     var className = this.getClass().getName()
     var lastDotPos = className.lastIndexOf('.')
     var name = className.substring(lastDotPos + 1)
     out.print('  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + this._angle)
   }
+
   getDirectionPt () {
     return this._p1
   }
+
   getAngle () {
     return this._angle
   }
+
   compareTo (obj) {
     var de = obj
     return this.compareDirection(de)
   }
+
   getFromNode () {
     return this._from
   }
+
   getSym () {
     return this._sym
   }
+
   setEdge (parentEdge) {
     this._parentEdge = parentEdge
   }
+
   remove () {
     this._sym = null
     this._parentEdge = null
   }
+
   getEdge () {
     return this._parentEdge
   }
+
   getQuadrant () {
     return this._quadrant
   }
+
   setSym (sym) {
     this._sym = sym
   }
+
   getToNode () {
     return this._to
   }
+
   getEdgeDirection () {
     return this._edgeDirection
   }
+
   getClass () {
     return DirectedEdge
   }
+
   get interfaces_ () {
     return [Comparable]
   }
@@ -88,7 +107,7 @@ DirectedEdge.constructor_ = function () {
   this._quadrant = null
   this._angle = null
   if (arguments.length === 0) {} else if (arguments.length === 4) {
-    let from = arguments[0]; let to = arguments[1]; let directionPt = arguments[2]; let edgeDirection = arguments[3]
+    const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
     this._from = from
     this._to = to
     this._edgeDirection = edgeDirection

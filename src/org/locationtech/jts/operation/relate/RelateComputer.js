@@ -11,12 +11,14 @@ export default class RelateComputer {
   constructor () {
     RelateComputer.constructor_.apply(this, arguments)
   }
+
   insertEdgeEnds (ee) {
     for (var i = ee.iterator(); i.hasNext();) {
       var e = i.next()
       this._nodes.add(e)
     }
   }
+
   computeProperIntersectionIM (intersector, im) {
     var dimA = this._arg[0].getGeometry().getDimension()
     var dimB = this._arg[1].getGeometry().getDimension()
@@ -34,6 +36,7 @@ export default class RelateComputer {
       if (hasProperInterior) im.setAtLeast('0FFFFFFFF')
     }
   }
+
   labelIsolatedEdges (thisIndex, targetIndex) {
     for (var ei = this._arg[thisIndex].getEdgeIterator(); ei.hasNext();) {
       var e = ei.next()
@@ -43,6 +46,7 @@ export default class RelateComputer {
       }
     }
   }
+
   labelIsolatedEdge (e, targetIndex, target) {
     if (target.getDimension() > 0) {
       var loc = this._ptLocator.locate(e.getCoordinate(), target)
@@ -51,6 +55,7 @@ export default class RelateComputer {
       e.getLabel().setAllLocations(targetIndex, Location.EXTERIOR)
     }
   }
+
   computeIM () {
     var im = new IntersectionMatrix()
     im.set(Location.EXTERIOR, Location.EXTERIOR, 2)
@@ -78,12 +83,14 @@ export default class RelateComputer {
     this.updateIM(im)
     return im
   }
+
   labelNodeEdges () {
     for (var ni = this._nodes.iterator(); ni.hasNext();) {
       var node = ni.next()
       node.getEdges().computeLabelling(this._arg)
     }
   }
+
   copyNodesAndLabels (argIndex) {
     for (var i = this._arg[argIndex].getNodeIterator(); i.hasNext();) {
       var graphNode = i.next()
@@ -91,6 +98,7 @@ export default class RelateComputer {
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex))
     }
   }
+
   labelIntersectionNodes (argIndex) {
     for (var i = this._arg[argIndex].getEdgeIterator(); i.hasNext();) {
       var e = i.next()
@@ -104,10 +112,12 @@ export default class RelateComputer {
       }
     }
   }
+
   labelIsolatedNode (n, targetIndex) {
     var loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
     n.getLabel().setAllLocations(targetIndex, loc)
   }
+
   computeIntersectionNodes (argIndex) {
     for (var i = this._arg[argIndex].getEdgeIterator(); i.hasNext();) {
       var e = i.next()
@@ -121,6 +131,7 @@ export default class RelateComputer {
       }
     }
   }
+
   labelIsolatedNodes () {
     for (var ni = this._nodes.iterator(); ni.hasNext();) {
       var n = ni.next()
@@ -131,6 +142,7 @@ export default class RelateComputer {
       }
     }
   }
+
   updateIM (im) {
     for (var ei = this._isolatedEdges.iterator(); ei.hasNext();) {
       var e = ei.next()
@@ -142,6 +154,7 @@ export default class RelateComputer {
       node.updateIMFromEdges(im)
     }
   }
+
   computeDisjointIM (im) {
     var ga = this._arg[0].getGeometry()
     if (!ga.isEmpty()) {
@@ -154,9 +167,11 @@ export default class RelateComputer {
       im.set(Location.EXTERIOR, Location.BOUNDARY, gb.getBoundaryDimension())
     }
   }
+
   getClass () {
     return RelateComputer
   }
+
   get interfaces_ () {
     return []
   }
@@ -169,6 +184,6 @@ RelateComputer.constructor_ = function () {
   this._im = null
   this._isolatedEdges = new ArrayList()
   this._invalidPoint = null
-  let arg = arguments[0]
+  const arg = arguments[0]
   this._arg = arg
 }

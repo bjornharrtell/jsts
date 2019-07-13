@@ -7,9 +7,10 @@ export default class GeometryMapper {
   constructor () {
     GeometryMapper.constructor_.apply(this, arguments)
   }
+
   static map () {
     if (arguments[0] instanceof Geometry && hasInterface(arguments[1], MapOp)) {
-      let geom = arguments[0]; let op = arguments[1]
+      const geom = arguments[0]; const op = arguments[1]
       var mapped = new ArrayList()
       for (var i = 0; i < geom.getNumGeometries(); i++) {
         var g = op.map(geom.getGeometryN(i))
@@ -17,7 +18,7 @@ export default class GeometryMapper {
       }
       return geom.getFactory().buildGeometry(mapped)
     } else if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], MapOp)) {
-      let geoms = arguments[0]; let op = arguments[1]
+      const geoms = arguments[0]; const op = arguments[1]
       var mapped = new ArrayList()
       for (var i = geoms.iterator(); i.hasNext();) {
         var g = i.next()
@@ -27,9 +28,11 @@ export default class GeometryMapper {
       return mapped
     }
   }
+
   getClass () {
     return GeometryMapper
   }
+
   get interfaces_ () {
     return []
   }

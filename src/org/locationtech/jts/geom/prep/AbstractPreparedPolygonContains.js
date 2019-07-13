@@ -8,6 +8,7 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     super()
     AbstractPreparedPolygonContains.constructor_.apply(this, arguments)
   }
+
   eval (geom) {
     var isAllInTargetArea = this.isAllTestComponentsInTarget(geom)
     if (!isAllInTargetArea) return false
@@ -28,6 +29,7 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     }
     return true
   }
+
   findAndClassifyIntersections (geom) {
     var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
     var intDetector = new SegmentIntersectionDetector()
@@ -37,11 +39,13 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     this._hasProperIntersection = intDetector.hasProperIntersection()
     this._hasNonProperIntersection = intDetector.hasNonProperIntersection()
   }
+
   isProperIntersectionImpliesNotContainedSituation (testGeom) {
     if (hasInterface(testGeom, Polygonal)) return true
     if (this.isSingleShell(this._prepPoly.getGeometry())) return true
     return false
   }
+
   isSingleShell (geom) {
     if (geom.getNumGeometries() !== 1) return false
     var poly = geom.getGeometryN(0)
@@ -49,9 +53,11 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     if (numHoles === 0) return true
     return false
   }
+
   getClass () {
     return AbstractPreparedPolygonContains
   }
+
   get interfaces_ () {
     return []
   }
@@ -61,6 +67,6 @@ AbstractPreparedPolygonContains.constructor_ = function () {
   this._hasSegmentIntersection = false
   this._hasProperIntersection = false
   this._hasNonProperIntersection = false
-  let prepPoly = arguments[0]
+  const prepPoly = arguments[0]
   PreparedPolygonPredicate.constructor_.call(this, prepPoly)
 }

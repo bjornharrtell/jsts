@@ -4,6 +4,7 @@ export default class Dimension {
   constructor () {
     Dimension.constructor_.apply(this, arguments)
   }
+
   static toDimensionSymbol (dimensionValue) {
     switch (dimensionValue) {
       case Dimension.FALSE:
@@ -21,6 +22,7 @@ export default class Dimension {
     }
     throw new IllegalArgumentException('Unknown dimension value: ' + dimensionValue)
   }
+
   static toDimensionValue (dimensionSymbol) {
     switch (Character.toUpperCase(dimensionSymbol)) {
       case Dimension.SYM_FALSE:
@@ -38,9 +40,11 @@ export default class Dimension {
     }
     throw new IllegalArgumentException('Unknown dimension symbol: ' + dimensionSymbol)
   }
+
   getClass () {
     return Dimension
   }
+
   get interfaces_ () {
     return []
   }

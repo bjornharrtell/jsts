@@ -10,15 +10,16 @@ export default class ScaledNoder {
   constructor () {
     ScaledNoder.constructor_.apply(this, arguments)
   }
+
   rescale () {
     if (hasInterface(arguments[0], Collection)) {
-      let segStrings = arguments[0]
+      const segStrings = arguments[0]
       for (var i = segStrings.iterator(); i.hasNext();) {
         var ss = i.next()
         this.rescale(ss.getCoordinates())
       }
     } else if (arguments[0] instanceof Array) {
-      let pts = arguments[0]
+      const pts = arguments[0]
       var p0 = null
       var p1 = null
       if (pts.length === 2) {
@@ -34,9 +35,10 @@ export default class ScaledNoder {
       }
     }
   }
+
   scale () {
     if (hasInterface(arguments[0], Collection)) {
-      let segStrings = arguments[0]
+      const segStrings = arguments[0]
       var nodedSegmentStrings = new ArrayList(segStrings.size())
       for (var i = segStrings.iterator(); i.hasNext();) {
         var ss = i.next()
@@ -44,7 +46,7 @@ export default class ScaledNoder {
       }
       return nodedSegmentStrings
     } else if (arguments[0] instanceof Array) {
-      let pts = arguments[0]
+      const pts = arguments[0]
       var roundPts = new Array(pts.length).fill(null)
       for (var i = 0; i < pts.length; i++) {
         roundPts[i] = new Coordinate(Math.round((pts[i].x - this._offsetX) * this._scaleFactor), Math.round((pts[i].y - this._offsetY) * this._scaleFactor), pts[i].z)
@@ -53,22 +55,27 @@ export default class ScaledNoder {
       return roundPtsNoDup
     }
   }
+
   isIntegerPrecision () {
     return this._scaleFactor === 1.0
   }
+
   getNodedSubstrings () {
     var splitSS = this._noder.getNodedSubstrings()
     if (this._isScaled) this.rescale(splitSS)
     return splitSS
   }
+
   computeNodes (inputSegStrings) {
     var intSegStrings = inputSegStrings
     if (this._isScaled) intSegStrings = this.scale(inputSegStrings)
     this._noder.computeNodes(intSegStrings)
   }
+
   getClass () {
     return ScaledNoder
   }
+
   get interfaces_ () {
     return [Noder]
   }
@@ -80,10 +87,10 @@ ScaledNoder.constructor_ = function () {
   this._offsetY = null
   this._isScaled = false
   if (arguments.length === 2) {
-    let noder = arguments[0]; let scaleFactor = arguments[1]
+    const noder = arguments[0]; const scaleFactor = arguments[1]
     ScaledNoder.constructor_.call(this, noder, scaleFactor, 0, 0)
   } else if (arguments.length === 4) {
-    let noder = arguments[0]; let scaleFactor = arguments[1]; let offsetX = arguments[2]; let offsetY = arguments[3]
+    const noder = arguments[0]; const scaleFactor = arguments[1]; const offsetX = arguments[2]; const offsetY = arguments[3]
     this._noder = noder
     this._scaleFactor = scaleFactor
     this._isScaled = !this.isIntegerPrecision()

@@ -3,11 +3,13 @@ export default class SegmentPointComparator {
   constructor () {
     SegmentPointComparator.constructor_.apply(this, arguments)
   }
+
   static relativeSign (x0, x1) {
     if (x0 < x1) return -1
     if (x0 > x1) return 1
     return 0
   }
+
   static compare (octant, p0, p1) {
     if (p0.equals2D(p1)) return 0
     var xSign = SegmentPointComparator.relativeSign(p0.x, p1.x)
@@ -33,6 +35,7 @@ export default class SegmentPointComparator {
     Assert.shouldNeverReachHere('invalid octant value')
     return 0
   }
+
   static compareValue (compareSign0, compareSign1) {
     if (compareSign0 < 0) return -1
     if (compareSign0 > 0) return 1
@@ -40,9 +43,11 @@ export default class SegmentPointComparator {
     if (compareSign1 > 0) return 1
     return 0
   }
+
   getClass () {
     return SegmentPointComparator
   }
+
   get interfaces_ () {
     return []
   }

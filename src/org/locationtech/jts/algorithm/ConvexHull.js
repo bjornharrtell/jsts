@@ -13,11 +13,13 @@ export default class ConvexHull {
   constructor () {
     ConvexHull.constructor_.apply(this, arguments)
   }
+
   static extractCoordinates (geom) {
     var filter = new UniqueCoordinateArrayFilter()
     geom.apply(filter)
     return filter.getCoordinates()
   }
+
   preSort (pts) {
     var t = null
     for (var i = 1; i < pts.length; i++) {
@@ -30,6 +32,7 @@ export default class ConvexHull {
     Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]))
     return pts
   }
+
   computeOctRing (inputPts) {
     var octPts = this.computeOctPts(inputPts)
     var coordList = new CoordinateList()
@@ -40,6 +43,7 @@ export default class ConvexHull {
     coordList.closeRing()
     return coordList.toCoordinateArray()
   }
+
   lineOrPolygon (coordinates) {
     coordinates = this.cleanRing(coordinates)
     if (coordinates.length === 3) {
@@ -48,6 +52,7 @@ export default class ConvexHull {
     var linearRing = this._geomFactory.createLinearRing(coordinates)
     return this._geomFactory.createPolygon(linearRing)
   }
+
   cleanRing (original) {
     Assert.equals(original[0], original[original.length - 1])
     var cleanedRing = new ArrayList()
@@ -68,6 +73,7 @@ export default class ConvexHull {
     var cleanedRingCoordinates = new Array(cleanedRing.size()).fill(null)
     return cleanedRing.toArray(cleanedRingCoordinates)
   }
+
   isBetween (c1, c2, c3) {
     if (Orientation.index(c1, c2, c3) !== 0) {
       return false
@@ -90,6 +96,7 @@ export default class ConvexHull {
     }
     return false
   }
+
   reduce (inputPts) {
     var polyPts = this.computeOctRing(inputPts)
     if (polyPts === null) return inputPts
@@ -106,6 +113,7 @@ export default class ConvexHull {
     if (reducedPts.length < 3) return this.padArray3(reducedPts)
     return reducedPts
   }
+
   getConvexHull () {
     if (this._inputPts.length === 0) {
       return this._geomFactory.createGeometryCollection()
@@ -125,6 +133,7 @@ export default class ConvexHull {
     var cH = this.toCoordinateArray(cHS)
     return this.lineOrPolygon(cH)
   }
+
   padArray3 (pts) {
     var pad = new Array(3).fill(null)
     for (var i = 0; i < pad.length; i++) {
@@ -134,6 +143,7 @@ export default class ConvexHull {
     }
     return pad
   }
+
   computeOctPts (inputPts) {
     var pts = new Array(8).fill(null)
     for (var j = 0; j < pts.length; j++) {
@@ -167,6 +177,7 @@ export default class ConvexHull {
     }
     return pts
   }
+
   toCoordinateArray (stack) {
     var coordinates = new Array(stack.size()).fill(null)
     for (var i = 0; i < stack.size(); i++) {
@@ -175,6 +186,7 @@ export default class ConvexHull {
     }
     return coordinates
   }
+
   grahamScan (c) {
     var p = null
     var ps = new Stack()
@@ -192,9 +204,11 @@ export default class ConvexHull {
     ps.push(c[0])
     return ps
   }
+
   getClass () {
     return ConvexHull
   }
+
   get interfaces_ () {
     return []
   }
@@ -203,6 +217,7 @@ class RadialComparator {
   constructor () {
     RadialComparator.constructor_.apply(this, arguments)
   }
+
   static polarCompare (o, p, q) {
     var dxp = p.x - o.x
     var dyp = p.y - o.y
@@ -221,21 +236,24 @@ class RadialComparator {
     }
     return 0
   }
+
   compare (o1, o2) {
     var p1 = o1
     var p2 = o2
     return RadialComparator.polarCompare(this._origin, p1, p2)
   }
+
   getClass () {
     return RadialComparator
   }
+
   get interfaces_ () {
     return [Comparator]
   }
 }
 RadialComparator.constructor_ = function () {
   this._origin = null
-  let origin = arguments[0]
+  const origin = arguments[0]
   this._origin = origin
 }
 ConvexHull.RadialComparator = RadialComparator
@@ -243,10 +261,10 @@ ConvexHull.constructor_ = function () {
   this._geomFactory = null
   this._inputPts = null
   if (arguments.length === 1) {
-    let geometry = arguments[0]
+    const geometry = arguments[0]
     ConvexHull.constructor_.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory())
   } else if (arguments.length === 2) {
-    let pts = arguments[0]; let geomFactory = arguments[1]
+    const pts = arguments[0]; const geomFactory = arguments[1]
     this._inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts)
     this._geomFactory = geomFactory
   }

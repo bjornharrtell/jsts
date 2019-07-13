@@ -4,6 +4,7 @@ export default class NodeBase {
   constructor () {
     NodeBase.constructor_.apply(this, arguments)
   }
+
   static getSubnodeIndex (env, centrex, centrey) {
     var subnodeIndex = -1
     if (env.getMinX() >= centrex) {
@@ -16,15 +17,18 @@ export default class NodeBase {
     }
     return subnodeIndex
   }
+
   hasChildren () {
     for (var i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) return true
     }
     return false
   }
+
   isPrunable () {
     return !(this.hasChildren() || this.hasItems())
   }
+
   addAllItems (resultItems) {
     resultItems.addAll(this._items)
     for (var i = 0; i < 4; i++) {
@@ -34,6 +38,7 @@ export default class NodeBase {
     }
     return resultItems
   }
+
   getNodeCount () {
     var subSize = 0
     for (var i = 0; i < 4; i++) {
@@ -43,6 +48,7 @@ export default class NodeBase {
     }
     return subSize + 1
   }
+
   size () {
     var subSize = 0
     for (var i = 0; i < 4; i++) {
@@ -52,6 +58,7 @@ export default class NodeBase {
     }
     return subSize + this._items.size()
   }
+
   addAllItemsFromOverlapping (searchEnv, resultItems) {
     if (!this.isSearchMatch(searchEnv)) return null
     resultItems.addAll(this._items)
@@ -61,14 +68,17 @@ export default class NodeBase {
       }
     }
   }
+
   visitItems (searchEnv, visitor) {
     for (var i = this._items.iterator(); i.hasNext();) {
       visitor.visitItem(i.next())
     }
   }
+
   hasItems () {
     return !this._items.isEmpty()
   }
+
   remove (itemEnv, item) {
     if (!this.isSearchMatch(itemEnv)) return false
     var found = false
@@ -85,6 +95,7 @@ export default class NodeBase {
     found = this._items.remove(item)
     return found
   }
+
   visit (searchEnv, visitor) {
     if (!this.isSearchMatch(searchEnv)) return null
     this.visitItems(searchEnv, visitor)
@@ -94,9 +105,11 @@ export default class NodeBase {
       }
     }
   }
+
   getItems () {
     return this._items
   }
+
   depth () {
     var maxSubDepth = 0
     for (var i = 0; i < 4; i++) {
@@ -107,6 +120,7 @@ export default class NodeBase {
     }
     return maxSubDepth + 1
   }
+
   isEmpty () {
     var isEmpty = true
     if (!this._items.isEmpty()) isEmpty = false; else {
@@ -121,12 +135,15 @@ export default class NodeBase {
     }
     return isEmpty
   }
+
   add (item) {
     this._items.add(item)
   }
+
   getClass () {
     return NodeBase
   }
+
   get interfaces_ () {
     return [Serializable]
   }
