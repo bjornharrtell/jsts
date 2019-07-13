@@ -82,23 +82,21 @@ Geometry.prototype.relate = function (...args) {
 }
 Geometry.prototype.getCentroid = function () {
   if (this.isEmpty()) return this._factory.createPoint()
-  var centPt = Centroid.getCentroid(this)
+  const centPt = Centroid.getCentroid(this)
   return this.createPointFromInternalCoord(centPt, this)
 }
 Geometry.prototype.getInteriorPoint = function () {
   if (this.isEmpty()) return this._factory.createPoint()
-  var interiorPt = null
-  var dim = this.getDimension()
+  let intPt = null
+  const dim = this.getDimension()
   if (dim === 0) {
-    var intPt = new InteriorPointPoint(this)
-    interiorPt = intPt.getInteriorPoint()
+    intPt = new InteriorPointPoint(this)
   } else if (dim === 1) {
-    var intPt = new InteriorPointLine(this)
-    interiorPt = intPt.getInteriorPoint()
+    intPt = new InteriorPointLine(this)
   } else {
-    var intPt = new InteriorPointArea(this)
-    interiorPt = intPt.getInteriorPoint()
+    intPt = new InteriorPointArea(this)
   }
+  const interiorPt = intPt.getInteriorPoint()
   return this.createPointFromInternalCoord(interiorPt, this)
 }
 Geometry.prototype.symDifference = function (other) {
@@ -109,7 +107,7 @@ Geometry.prototype.createPointFromInternalCoord = function (coord, exemplar) {
   return exemplar.getFactory().createPoint(coord)
 }
 Geometry.prototype.toText = function () {
-  var writer = new WKTWriter()
+  const writer = new WKTWriter()
   return writer.write(this)
 }
 Geometry.prototype.toString = function () {
@@ -122,11 +120,11 @@ Geometry.prototype.difference = function (other) {
   return OverlayOp.difference(this, other)
 }
 Geometry.prototype.isSimple = function () {
-  var op = new IsSimpleOp(this)
+  const op = new IsSimpleOp(this)
   return op.isSimple()
 }
 Geometry.prototype.isWithinDistance = function (geom, distance) {
-  var envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal())
+  const envDist = this.getEnvelopeInternal().distance(geom.getEnvelopeInternal())
   if (envDist > distance) return false
   return DistanceOp.isWithinDistance(this, geom, distance)
 }
