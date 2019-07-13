@@ -7,7 +7,7 @@ export default class LinearLocation {
   }
 
   static getEndLocation (linear) {
-    var loc = new LinearLocation()
+    const loc = new LinearLocation()
     loc.setToEnd(linear)
     return loc
   }
@@ -15,9 +15,9 @@ export default class LinearLocation {
   static pointAlongSegmentByFraction (p0, p1, frac) {
     if (frac <= 0.0) return p0
     if (frac >= 1.0) return p1
-    var x = (p1.x - p0.x) * frac + p0.x
-    var y = (p1.y - p0.y) * frac + p0.y
-    var z = (p1.z - p0.z) * frac + p0.z
+    const x = (p1.x - p0.x) * frac + p0.x
+    const y = (p1.y - p0.y) * frac + p0.y
+    const z = (p1.z - p0.z) * frac + p0.z
     return new Coordinate(x, y, z)
   }
 
@@ -40,14 +40,14 @@ export default class LinearLocation {
   }
 
   isEndpoint (linearGeom) {
-    var lineComp = linearGeom.getGeometryN(this._componentIndex)
-    var nseg = lineComp.getNumPoints() - 1
+    const lineComp = linearGeom.getGeometryN(this._componentIndex)
+    const nseg = lineComp.getNumPoints() - 1
     return this._segmentIndex >= nseg || this._segmentIndex === nseg && this._segmentFraction >= 1.0
   }
 
   isValid (linearGeom) {
     if (this._componentIndex < 0 || this._componentIndex >= linearGeom.getNumGeometries()) return false
-    var lineComp = linearGeom.getGeometryN(this._componentIndex)
+    const lineComp = linearGeom.getGeometryN(this._componentIndex)
     if (this._segmentIndex < 0 || this._segmentIndex > lineComp.getNumPoints()) return false
     if (this._segmentIndex === lineComp.getNumPoints() && this._segmentFraction !== 0.0) return false
     if (this._segmentFraction < 0.0 || this._segmentFraction > 1.0) return false
@@ -77,17 +77,17 @@ export default class LinearLocation {
   }
 
   toLowest (linearGeom) {
-    var lineComp = linearGeom.getGeometryN(this._componentIndex)
-    var nseg = lineComp.getNumPoints() - 1
+    const lineComp = linearGeom.getGeometryN(this._componentIndex)
+    const nseg = lineComp.getNumPoints() - 1
     if (this._segmentIndex < nseg) return this
     return new LinearLocation(this._componentIndex, nseg, 1.0, false)
   }
 
   getCoordinate (linearGeom) {
-    var lineComp = linearGeom.getGeometryN(this._componentIndex)
-    var p0 = lineComp.getCoordinateN(this._segmentIndex)
+    const lineComp = linearGeom.getGeometryN(this._componentIndex)
+    const p0 = lineComp.getCoordinateN(this._segmentIndex)
     if (this._segmentIndex >= lineComp.getNumPoints() - 1) return p0
-    var p1 = lineComp.getCoordinateN(this._segmentIndex + 1)
+    const p1 = lineComp.getCoordinateN(this._segmentIndex + 1)
     return LinearLocation.pointAlongSegmentByFraction(p0, p1, this._segmentFraction)
   }
 
@@ -96,13 +96,13 @@ export default class LinearLocation {
   }
 
   getSegment (linearGeom) {
-    var lineComp = linearGeom.getGeometryN(this._componentIndex)
-    var p0 = lineComp.getCoordinateN(this._segmentIndex)
+    const lineComp = linearGeom.getGeometryN(this._componentIndex)
+    const p0 = lineComp.getCoordinateN(this._segmentIndex)
     if (this._segmentIndex >= lineComp.getNumPoints() - 1) {
-      var prev = lineComp.getCoordinateN(lineComp.getNumPoints() - 2)
+      const prev = lineComp.getCoordinateN(lineComp.getNumPoints() - 2)
       return new LineSegment(prev, p0)
     }
-    var p1 = lineComp.getCoordinateN(this._segmentIndex + 1)
+    const p1 = lineComp.getCoordinateN(this._segmentIndex + 1)
     return new LineSegment(p0, p1)
   }
 
@@ -112,7 +112,7 @@ export default class LinearLocation {
       return null
     }
     if (this._segmentIndex >= linear.getNumPoints()) {
-      var line = linear.getGeometryN(this._componentIndex)
+      const line = linear.getGeometryN(this._componentIndex)
       this._segmentIndex = line.getNumPoints() - 1
       this._segmentFraction = 1.0
     }
@@ -120,13 +120,13 @@ export default class LinearLocation {
 
   setToEnd (linear) {
     this._componentIndex = linear.getNumGeometries() - 1
-    var lastLine = linear.getGeometryN(this._componentIndex)
+    const lastLine = linear.getGeometryN(this._componentIndex)
     this._segmentIndex = lastLine.getNumPoints() - 1
     this._segmentFraction = 1.0
   }
 
   compareTo (o) {
-    var other = o
+    const other = o
     if (this._componentIndex < other._componentIndex) return -1
     if (this._componentIndex > other._componentIndex) return 1
     if (this._segmentIndex < other._segmentIndex) return -1
@@ -154,9 +154,9 @@ export default class LinearLocation {
 
   snapToVertex (linearGeom, minDistance) {
     if (this._segmentFraction <= 0.0 || this._segmentFraction >= 1.0) return null
-    var segLen = this.getSegmentLength(linearGeom)
-    var lenToStart = this._segmentFraction * segLen
-    var lenToEnd = segLen - lenToStart
+    const segLen = this.getSegmentLength(linearGeom)
+    const lenToStart = this._segmentFraction * segLen
+    const lenToEnd = segLen - lenToStart
     if (lenToStart <= lenToEnd && lenToStart < minDistance) {
       this._segmentFraction = 0.0
     } else if (lenToEnd <= lenToStart && lenToEnd < minDistance) {
@@ -175,11 +175,11 @@ export default class LinearLocation {
   }
 
   getSegmentLength (linearGeom) {
-    var lineComp = linearGeom.getGeometryN(this._componentIndex)
-    var segIndex = this._segmentIndex
+    const lineComp = linearGeom.getGeometryN(this._componentIndex)
+    let segIndex = this._segmentIndex
     if (this._segmentIndex >= lineComp.getNumPoints() - 1) segIndex = lineComp.getNumPoints() - 2
-    var p0 = lineComp.getCoordinateN(segIndex)
-    var p1 = lineComp.getCoordinateN(segIndex + 1)
+    const p0 = lineComp.getCoordinateN(segIndex)
+    const p1 = lineComp.getCoordinateN(segIndex + 1)
     return p0.distance(p1)
   }
 

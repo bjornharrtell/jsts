@@ -13,8 +13,8 @@ export default class BufferSubgraph {
   }
 
   clearVisitedEdges () {
-    for (var it = this._dirEdgeList.iterator(); it.hasNext();) {
-      var de = it.next()
+    for (let it = this._dirEdgeList.iterator(); it.hasNext();) {
+      const de = it.next()
       de.setVisited(false)
     }
   }
@@ -24,9 +24,9 @@ export default class BufferSubgraph {
   }
 
   computeNodeDepth (n) {
-    var startEdge = null
-    for (var i = n.getEdges().iterator(); i.hasNext();) {
-      var de = i.next()
+    let startEdge = null
+    for (let i = n.getEdges().iterator(); i.hasNext();) {
+      const de = i.next()
       if (de.isVisited() || de.getSym().isVisited()) {
         startEdge = de
         break
@@ -34,8 +34,8 @@ export default class BufferSubgraph {
     }
     if (startEdge === null) throw new TopologyException('unable to find edge to compute depths at ' + n.getCoordinate())
     n.getEdges().computeDepths(startEdge)
-    for (var i = n.getEdges().iterator(); i.hasNext();) {
-      var de = i.next()
+    for (let i = n.getEdges().iterator(); i.hasNext();) {
+      const de = i.next()
       de.setVisited(true)
       this.copySymDepths(de)
     }
@@ -43,9 +43,9 @@ export default class BufferSubgraph {
 
   computeDepth (outsideDepth) {
     this.clearVisitedEdges()
-    var de = this._finder.getEdge()
-    var n = de.getNode()
-    var label = de.getLabel()
+    const de = this._finder.getEdge()
+    const n = de.getNode()
+    const label = de.getLabel()
     de.setEdgeDepths(Position.RIGHT, outsideDepth)
     this.copySymDepths(de)
     this.computeDepths(de)
@@ -58,8 +58,8 @@ export default class BufferSubgraph {
   }
 
   findResultEdges () {
-    for (var it = this._dirEdgeList.iterator(); it.hasNext();) {
-      var de = it.next()
+    for (let it = this._dirEdgeList.iterator(); it.hasNext();) {
+      const de = it.next()
       if (de.getDepth(Position.RIGHT) >= 1 && de.getDepth(Position.LEFT) <= 0 && !de.isInteriorAreaEdge()) {
         de.setInResult(true)
       }
@@ -67,21 +67,21 @@ export default class BufferSubgraph {
   }
 
   computeDepths (startEdge) {
-    var nodesVisited = new HashSet()
-    var nodeQueue = new LinkedList()
-    var startNode = startEdge.getNode()
+    const nodesVisited = new HashSet()
+    const nodeQueue = new LinkedList()
+    const startNode = startEdge.getNode()
     nodeQueue.addLast(startNode)
     nodesVisited.add(startNode)
     startEdge.setVisited(true)
     while (!nodeQueue.isEmpty()) {
-      var n = nodeQueue.removeFirst()
+      const n = nodeQueue.removeFirst()
       nodesVisited.add(n)
       this.computeNodeDepth(n)
-      for (var i = n.getEdges().iterator(); i.hasNext();) {
-        var de = i.next()
-        var sym = de.getSym()
+      for (let i = n.getEdges().iterator(); i.hasNext();) {
+        const de = i.next()
+        const sym = de.getSym()
         if (sym.isVisited()) continue
-        var adjNode = sym.getNode()
+        const adjNode = sym.getNode()
         if (!nodesVisited.contains(adjNode)) {
           nodeQueue.addLast(adjNode)
           nodesVisited.add(adjNode)
@@ -91,7 +91,7 @@ export default class BufferSubgraph {
   }
 
   compareTo (o) {
-    var graph = o
+    const graph = o
     if (this._rightMostCoord.x < graph._rightMostCoord.x) {
       return -1
     }
@@ -103,11 +103,11 @@ export default class BufferSubgraph {
 
   getEnvelope () {
     if (this._env === null) {
-      var edgeEnv = new Envelope()
-      for (var it = this._dirEdgeList.iterator(); it.hasNext();) {
-        var dirEdge = it.next()
-        var pts = dirEdge.getEdge().getCoordinates()
-        for (var i = 0; i < pts.length - 1; i++) {
+      const edgeEnv = new Envelope()
+      for (let it = this._dirEdgeList.iterator(); it.hasNext();) {
+        const dirEdge = it.next()
+        const pts = dirEdge.getEdge().getCoordinates()
+        for (let i = 0; i < pts.length - 1; i++) {
           edgeEnv.expandToInclude(pts[i])
         }
       }
@@ -117,16 +117,16 @@ export default class BufferSubgraph {
   }
 
   addReachable (startNode) {
-    var nodeStack = new Stack()
+    const nodeStack = new Stack()
     nodeStack.add(startNode)
     while (!nodeStack.empty()) {
-      var node = nodeStack.pop()
+      const node = nodeStack.pop()
       this.add(node, nodeStack)
     }
   }
 
   copySymDepths (de) {
-    var sym = de.getSym()
+    const sym = de.getSym()
     sym.setDepth(Position.LEFT, de.getDepth(Position.RIGHT))
     sym.setDepth(Position.RIGHT, de.getDepth(Position.LEFT))
   }
@@ -134,11 +134,11 @@ export default class BufferSubgraph {
   add (node, nodeStack) {
     node.setVisited(true)
     this._nodes.add(node)
-    for (var i = node.getEdges().iterator(); i.hasNext();) {
-      var de = i.next()
+    for (let i = node.getEdges().iterator(); i.hasNext();) {
+      const de = i.next()
       this._dirEdgeList.add(de)
-      var sym = de.getSym()
-      var symNode = sym.getNode()
+      const sym = de.getSym()
+      const symNode = sym.getNode()
       if (!symNode.isVisited()) nodeStack.push(symNode)
     }
   }

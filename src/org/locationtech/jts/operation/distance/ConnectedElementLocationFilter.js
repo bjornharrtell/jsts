@@ -10,7 +10,7 @@ export default class ConnectedElementLocationFilter {
   }
 
   static getLocations (geom) {
-    var locations = new ArrayList()
+    const locations = new ArrayList()
     geom.apply(new ConnectedElementLocationFilter(locations))
     return locations
   }

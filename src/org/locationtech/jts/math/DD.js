@@ -29,27 +29,27 @@ export default class DD {
   }
 
   static parse (str) {
-    var i = 0
-    var strlen = str.length
+    let i = 0
+    const strlen = str.length
     while (Character.isWhitespace(str.charAt(i))) i++
-    var isNegative = false
+    let isNegative = false
     if (i < strlen) {
-      var signCh = str.charAt(i)
+      const signCh = str.charAt(i)
       if (signCh === '-' || signCh === '+') {
         i++
         if (signCh === '-') isNegative = true
       }
     }
-    var val = new DD()
-    var numDigits = 0
-    var numBeforeDec = 0
-    var exp = 0
+    const val = new DD()
+    let numDigits = 0
+    let numBeforeDec = 0
+    let exp = 0
     while (true) {
       if (i >= strlen) break
-      var ch = str.charAt(i)
+      const ch = str.charAt(i)
       i++
       if (Character.isDigit(ch)) {
-        var d = ch - '0'
+        const d = ch - '0'
         val.selfMultiply(DD.TEN)
         val.selfAdd(d)
         numDigits++
@@ -60,7 +60,7 @@ export default class DD {
         continue
       }
       if (ch === 'e' || ch === 'E') {
-        var expStr = str.substring(i)
+        const expStr = str.substring(i)
         try {
           exp = Integer.parseInt(expStr)
         } catch (ex) {
@@ -72,15 +72,15 @@ export default class DD {
       }
       throw new NumberFormatException("Unexpected character '" + ch + "' at position " + i + ' in string ' + str)
     }
-    var val2 = val
-    var numDecPlaces = numDigits - numBeforeDec - exp
+    let val2 = val
+    const numDecPlaces = numDigits - numBeforeDec - exp
     if (numDecPlaces === 0) {
       val2 = val
     } else if (numDecPlaces > 0) {
-      var scale = DD.TEN.pow(numDecPlaces)
+      const scale = DD.TEN.pow(numDecPlaces)
       val2 = val.divide(scale)
     } else if (numDecPlaces < 0) {
-      var scale = DD.TEN.pow(-numDecPlaces)
+      const scale = DD.TEN.pow(-numDecPlaces)
       val2 = val.multiply(scale)
     }
     if (isNegative) {
@@ -98,17 +98,17 @@ export default class DD {
   }
 
   static magnitude (x) {
-    var xAbs = Math.abs(x)
-    var xLog10 = Math.log(xAbs) / Math.log(10)
-    var xMag = Math.trunc(Math.floor(xLog10))
-    var xApprox = Math.pow(10, xMag)
+    const xAbs = Math.abs(x)
+    const xLog10 = Math.log(xAbs) / Math.log(10)
+    let xMag = Math.trunc(Math.floor(xLog10))
+    const xApprox = Math.pow(10, xMag)
     if (xApprox * 10 <= xAbs) xMag += 1
     return xMag
   }
 
   static stringOfChar (ch, len) {
-    var buf = new StringBuffer()
-    for (var i = 0; i < len; i++) {
+    const buf = new StringBuffer()
+    for (let i = 0; i < len; i++) {
       buf.append(ch)
     }
     return buf.toString()
@@ -119,9 +119,9 @@ export default class DD {
   }
 
   extractSignificantDigits (insertDecimalPoint, magnitude) {
-    var y = this.abs()
-    var mag = DD.magnitude(y._hi)
-    var scale = DD.TEN.pow(mag)
+    let y = this.abs()
+    let mag = DD.magnitude(y._hi)
+    const scale = DD.TEN.pow(mag)
     y = y.divide(scale)
     if (y.gt(DD.TEN)) {
       y = y.divide(DD.TEN)
@@ -130,20 +130,20 @@ export default class DD {
       y = y.multiply(DD.TEN)
       mag -= 1
     }
-    var decimalPointPos = mag + 1
-    var buf = new StringBuffer()
-    var numDigits = DD.MAX_PRINT_DIGITS - 1
-    for (var i = 0; i <= numDigits; i++) {
+    const decimalPointPos = mag + 1
+    const buf = new StringBuffer()
+    const numDigits = DD.MAX_PRINT_DIGITS - 1
+    for (let i = 0; i <= numDigits; i++) {
       if (insertDecimalPoint && i === decimalPointPos) {
         buf.append('.')
       }
-      var digit = Math.trunc(y._hi)
+      const digit = Math.trunc(y._hi)
       if (digit < 0 || digit > 9) {}
       if (digit < 0) {
         break
       }
-      var rebiasBy10 = false
-      var digitChar = 0
+      let rebiasBy10 = false
+      let digitChar = 0
       if (digit > 9) {
         rebiasBy10 = true
         digitChar = '9'
@@ -153,8 +153,8 @@ export default class DD {
       buf.append(digitChar)
       y = y.subtract(DD.valueOf(digit)).multiply(DD.TEN)
       if (rebiasBy10) y.selfAdd(DD.TEN)
-      var continueExtractingDigits = true
-      var remMag = DD.magnitude(y._hi)
+      let continueExtractingDigits = true
+      const remMag = DD.magnitude(y._hi)
       if (remMag < 0 && Math.abs(remMag) >= numDigits - i) continueExtractingDigits = false
       if (!continueExtractingDigits) break
     }
@@ -228,7 +228,7 @@ export default class DD {
       }
     } else if (arguments.length === 2) {
       const yhi = arguments[0]; const ylo = arguments[1]
-      var hc = null; var tc = null; var hy = null; var ty = null; var C = null; var c = null; var U = null; var u = null
+      let hc = null; let tc = null; let hy = null; let ty = null; let C = null; let c = null; let U = null; let u = null
       C = this._hi / yhi
       c = DD.SPLIT * C
       hc = c - C
@@ -255,7 +255,7 @@ export default class DD {
   divide () {
     if (arguments[0] instanceof DD) {
       const y = arguments[0]
-      var hc = null; var tc = null; var hy = null; var ty = null; var C = null; var c = null; var U = null; var u = null
+      let hc = null; let tc = null; let hy = null; let ty = null; let C = null; let c = null; let U = null; let u = null
       C = this._hi / y._hi
       c = DD.SPLIT * C
       hc = c - C
@@ -269,8 +269,8 @@ export default class DD {
       u = hc * hy - U + hc * ty + tc * hy + tc * ty
       c = (this._hi - U - u + this._lo - C * y._lo) / y._hi
       u = C + c
-      var zhi = u
-      var zlo = C - u + c
+      const zhi = u
+      const zlo = C - u + c
       return new DD(zhi, zlo)
     } else if (typeof arguments[0] === 'number') {
       const y = arguments[0]
@@ -285,9 +285,9 @@ export default class DD {
 
   pow (exp) {
     if (exp === 0.0) return DD.valueOf(1.0)
-    var r = new DD(this)
-    var s = DD.valueOf(1.0)
-    var n = Math.abs(exp)
+    let r = new DD(this)
+    let s = DD.valueOf(1.0)
+    let n = Math.abs(exp)
     if (n > 1) {
       while (n > 0) {
         if (n % 2 === 1) {
@@ -305,8 +305,8 @@ export default class DD {
 
   ceil () {
     if (this.isNaN()) return DD.NaN
-    var fhi = Math.ceil(this._hi)
-    var flo = 0.0
+    const fhi = Math.ceil(this._hi)
+    let flo = 0.0
     if (fhi === this._hi) {
       flo = Math.ceil(this._lo)
     }
@@ -314,7 +314,7 @@ export default class DD {
   }
 
   compareTo (o) {
-    var other = o
+    const other = o
     if (this._hi < other._hi) return -1
     if (this._hi > other._hi) return 1
     if (this._lo < other._lo) return -1
@@ -324,7 +324,7 @@ export default class DD {
 
   rint () {
     if (this.isNaN()) return this
-    var plus5 = this.add(0.5)
+    const plus5 = this.add(0.5)
     return plus5.floor()
   }
 
@@ -353,11 +353,11 @@ export default class DD {
     if (this.isNegative()) {
       return DD.NaN
     }
-    var x = 1.0 / Math.sqrt(this._hi)
-    var ax = this._hi * x
-    var axdd = DD.valueOf(ax)
-    var diffSq = this.subtract(axdd.sqr())
-    var d2 = diffSq._hi * (x * 0.5)
+    const x = 1.0 / Math.sqrt(this._hi)
+    const ax = this._hi * x
+    const axdd = DD.valueOf(ax)
+    const diffSq = this.subtract(axdd.sqr())
+    const d2 = diffSq._hi * (x * 0.5)
     return axdd.add(d2)
   }
 
@@ -368,7 +368,7 @@ export default class DD {
         return this.selfAdd(y._hi, y._lo)
       } else if (typeof arguments[0] === 'number') {
         const y = arguments[0]
-        var H = null; var h = null; var S = null; var s = null; var e = null; var f = null
+        let H = null; let h = null; let S = null; let s = null; let e = null; let f = null
         S = this._hi + y
         e = S - this._hi
         s = S - e
@@ -382,7 +382,7 @@ export default class DD {
       }
     } else if (arguments.length === 2) {
       const yhi = arguments[0]; const ylo = arguments[1]
-      var H = null; var h = null; var T = null; var t = null; var S = null; var s = null; var e = null; var f = null
+      let H = null; let h = null; let T = null; let t = null; let S = null; let s = null; let e = null; let f = null
       S = this._hi + yhi
       T = this._lo + ylo
       e = S - this._hi
@@ -395,8 +395,8 @@ export default class DD {
       H = S + e
       h = e + (S - H)
       e = t + h
-      var zhi = H + e
-      var zlo = e + (H - zhi)
+      const zhi = H + e
+      const zlo = e + (H - zhi)
       this._hi = zhi
       this._lo = zlo
       return this
@@ -414,7 +414,7 @@ export default class DD {
       }
     } else if (arguments.length === 2) {
       const yhi = arguments[0]; const ylo = arguments[1]
-      var hx = null; var tx = null; var hy = null; var ty = null; var C = null; var c = null
+      let hx = null; let tx = null; let hy = null; let ty = null; let C = null; let c = null
       C = DD.SPLIT * this._hi
       hx = C - this._hi
       c = DD.SPLIT * yhi
@@ -425,9 +425,9 @@ export default class DD {
       hy = c - hy
       ty = yhi - hy
       c = hx * hy - C + hx * ty + tx * hy + tx * ty + (this._hi * ylo + this._lo * yhi)
-      var zhi = C + c
+      const zhi = C + c
       hx = C - zhi
-      var zlo = c + hx
+      const zlo = c + hx
       this._hi = zhi
       this._lo = zlo
       return this
@@ -440,8 +440,8 @@ export default class DD {
 
   floor () {
     if (this.isNaN()) return DD.NaN
-    var fhi = Math.floor(this._hi)
-    var flo = 0.0
+    const fhi = Math.floor(this._hi)
+    let flo = 0.0
     if (fhi === this._hi) {
       flo = Math.floor(this._lo)
     }
@@ -484,25 +484,25 @@ export default class DD {
   }
 
   toString () {
-    var mag = DD.magnitude(this._hi)
+    const mag = DD.magnitude(this._hi)
     if (mag >= -3 && mag <= 20) return this.toStandardNotation()
     return this.toSciNotation()
   }
 
   toStandardNotation () {
-    var specialStr = this.getSpecialNumberString()
+    const specialStr = this.getSpecialNumberString()
     if (specialStr !== null) return specialStr
-    var magnitude = new Array(1).fill(null)
-    var sigDigits = this.extractSignificantDigits(true, magnitude)
-    var decimalPointPos = magnitude[0] + 1
-    var num = sigDigits
+    const magnitude = new Array(1).fill(null)
+    const sigDigits = this.extractSignificantDigits(true, magnitude)
+    const decimalPointPos = magnitude[0] + 1
+    let num = sigDigits
     if (sigDigits.charAt(0) === '.') {
       num = '0' + sigDigits
     } else if (decimalPointPos < 0) {
       num = '0.' + DD.stringOfChar('0', -decimalPointPos) + sigDigits
     } else if (sigDigits.indexOf('.') === -1) {
-      var numZeroes = decimalPointPos - sigDigits.length
-      var zeroes = DD.stringOfChar('0', numZeroes)
+      const numZeroes = decimalPointPos - sigDigits.length
+      const zeroes = DD.stringOfChar('0', numZeroes)
       num = sigDigits + zeroes + '.0'
     }
     if (this.isNegative()) return '-' + num
@@ -510,7 +510,7 @@ export default class DD {
   }
 
   reciprocal () {
-    var hc = null; var tc = null; var hy = null; var ty = null; var C = null; var c = null; var U = null; var u = null
+    let hc = null; let tc = null; let hy = null; let ty = null; let C = null; let c = null; let U = null; let u = null
     C = 1.0 / this._hi
     c = DD.SPLIT * C
     hc = c - C
@@ -523,24 +523,24 @@ export default class DD {
     ty = this._hi - hy
     u = hc * hy - U + hc * ty + tc * hy + tc * ty
     c = (1.0 - U - u - C * this._lo) / this._hi
-    var zhi = C + c
-    var zlo = C - zhi + c
+    const zhi = C + c
+    const zlo = C - zhi + c
     return new DD(zhi, zlo)
   }
 
   toSciNotation () {
     if (this.isZero()) return DD.SCI_NOT_ZERO
-    var specialStr = this.getSpecialNumberString()
+    const specialStr = this.getSpecialNumberString()
     if (specialStr !== null) return specialStr
-    var magnitude = new Array(1).fill(null)
-    var digits = this.extractSignificantDigits(false, magnitude)
-    var expStr = DD.SCI_NOT_EXPONENT_CHAR + magnitude[0]
+    const magnitude = new Array(1).fill(null)
+    const digits = this.extractSignificantDigits(false, magnitude)
+    const expStr = DD.SCI_NOT_EXPONENT_CHAR + magnitude[0]
     if (digits.charAt(0) === '0') {
       throw new IllegalStateException('Found leading zero: ' + digits)
     }
-    var trailingDigits = ''
+    let trailingDigits = ''
     if (digits.length > 1) trailingDigits = digits.substring(1)
-    var digitsWithDecimal = digits.charAt(0) + '.' + trailingDigits
+    const digitsWithDecimal = digits.charAt(0) + '.' + trailingDigits
     if (this.isNegative()) return '-' + digitsWithDecimal + expStr
     return digitsWithDecimal + expStr
   }

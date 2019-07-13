@@ -6,8 +6,8 @@ export default class ConsistentAreaTester {
   }
 
   isNodeEdgeAreaLabelsConsistent () {
-    for (var nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
-      var node = nodeIt.next()
+    for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
+      const node = nodeIt.next()
       if (!node.getEdges().isAreaLabelsConsistent(this._geomGraph)) {
         this._invalidPoint = node.getCoordinate().copy()
         return false
@@ -21,10 +21,10 @@ export default class ConsistentAreaTester {
   }
 
   hasDuplicateRings () {
-    for (var nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
-      var node = nodeIt.next()
-      for (var i = node.getEdges().iterator(); i.hasNext();) {
-        var eeb = i.next()
+    for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
+      const node = nodeIt.next()
+      for (let i = node.getEdges().iterator(); i.hasNext();) {
+        const eeb = i.next()
         if (eeb.getEdgeEnds().size() > 1) {
           this._invalidPoint = eeb.getEdge().getCoordinate(0)
           return true
@@ -35,7 +35,7 @@ export default class ConsistentAreaTester {
   }
 
   isNodeConsistentArea () {
-    var intersector = this._geomGraph.computeSelfNodes(this._li, true, true)
+    const intersector = this._geomGraph.computeSelfNodes(this._li, true, true)
     if (intersector.hasProperIntersection()) {
       this._invalidPoint = intersector.getProperIntersectionPoint()
       return false

@@ -8,17 +8,17 @@ export default class HausdorffSimilarityMeasure {
 
   static diagonalSize (env) {
     if (env.isNull()) return 0.0
-    var width = env.getWidth()
-    var hgt = env.getHeight()
+    const width = env.getWidth()
+    const hgt = env.getHeight()
     return Math.sqrt(width * width + hgt * hgt)
   }
 
   measure (g1, g2) {
-    var distance = DiscreteHausdorffDistance.distance(g1, g2, HausdorffSimilarityMeasure.DENSIFY_FRACTION)
-    var env = new Envelope(g1.getEnvelopeInternal())
+    const distance = DiscreteHausdorffDistance.distance(g1, g2, HausdorffSimilarityMeasure.DENSIFY_FRACTION)
+    const env = new Envelope(g1.getEnvelopeInternal())
     env.expandToInclude(g2.getEnvelopeInternal())
-    var envSize = HausdorffSimilarityMeasure.diagonalSize(env)
-    var measure = 1 - distance / envSize
+    const envSize = HausdorffSimilarityMeasure.diagonalSize(env)
+    const measure = 1 - distance / envSize
     return measure
   }
 

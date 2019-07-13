@@ -14,18 +14,18 @@ export default class Vector3D {
       return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z
     } else if (arguments.length === 4) {
       const A = arguments[0]; const B = arguments[1]; const C = arguments[2]; const D = arguments[3]
-      var ABx = B.x - A.x
-      var ABy = B.y - A.y
-      var ABz = B.z - A.z
-      var CDx = D.x - C.x
-      var CDy = D.y - C.y
-      var CDz = D.z - C.z
+      const ABx = B.x - A.x
+      const ABy = B.y - A.y
+      const ABz = B.z - A.z
+      const CDx = D.x - C.x
+      const CDy = D.y - C.y
+      const CDz = D.z - C.z
       return ABx * CDx + ABy * CDy + ABz * CDz
     }
   }
 
   static normalize (v) {
-    var len = Vector3D.length(v)
+    const len = Vector3D.length(v)
     return new Coordinate(v.x / len, v.y / len, v.z / len)
   }
 
@@ -48,7 +48,7 @@ export default class Vector3D {
   }
 
   normalize () {
-    var length = this.length()
+    const length = this.length()
     if (length > 0.0) return this.divide(this.length())
     return Vector3D.create(0.0, 0.0, 0.0)
   }

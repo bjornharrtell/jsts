@@ -23,7 +23,7 @@ export default class PointPairDistance {
         this.initialize(p0, p1)
         return null
       }
-      var dist = p0.distance(p1)
+      const dist = p0.distance(p1)
       if (dist < this._distance) this.initialize(p0, p1, dist)
     }
   }
@@ -60,7 +60,7 @@ export default class PointPairDistance {
         this.initialize(p0, p1)
         return null
       }
-      var dist = p0.distance(p1)
+      const dist = p0.distance(p1)
       if (dist > this._distance) this.initialize(p0, p1, dist)
     }
   }

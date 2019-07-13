@@ -8,12 +8,12 @@ export default class LengthIndexOfPoint {
   }
 
   static indexOf (linearGeom, inputPt) {
-    var locater = new LengthIndexOfPoint(linearGeom)
+    const locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOf(inputPt)
   }
 
   static indexOfAfter (linearGeom, inputPt, minIndex) {
-    var locater = new LengthIndexOfPoint(linearGeom)
+    const locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOfAfter(inputPt, minIndex)
   }
 
@@ -22,17 +22,17 @@ export default class LengthIndexOfPoint {
   }
 
   indexOfFromStart (inputPt, minIndex) {
-    var minDistance = Double.MAX_VALUE
-    var ptMeasure = minIndex
-    var segmentStartMeasure = 0.0
-    var seg = new LineSegment()
-    var it = new LinearIterator(this._linearGeom)
+    let minDistance = Double.MAX_VALUE
+    let ptMeasure = minIndex
+    let segmentStartMeasure = 0.0
+    const seg = new LineSegment()
+    const it = new LinearIterator(this._linearGeom)
     while (it.hasNext()) {
       if (!it.isEndOfLine()) {
         seg.p0 = it.getSegmentStart()
         seg.p1 = it.getSegmentEnd()
-        var segDistance = seg.distance(inputPt)
-        var segMeasureToPt = this.segmentNearestMeasure(seg, inputPt, segmentStartMeasure)
+        const segDistance = seg.distance(inputPt)
+        const segMeasureToPt = this.segmentNearestMeasure(seg, inputPt, segmentStartMeasure)
         if (segDistance < minDistance && segMeasureToPt > minIndex) {
           ptMeasure = segMeasureToPt
           minDistance = segDistance
@@ -46,15 +46,15 @@ export default class LengthIndexOfPoint {
 
   indexOfAfter (inputPt, minIndex) {
     if (minIndex < 0.0) return this.indexOf(inputPt)
-    var endIndex = this._linearGeom.getLength()
+    const endIndex = this._linearGeom.getLength()
     if (endIndex < minIndex) return endIndex
-    var closestAfter = this.indexOfFromStart(inputPt, minIndex)
+    const closestAfter = this.indexOfFromStart(inputPt, minIndex)
     Assert.isTrue(closestAfter >= minIndex, 'computed index is before specified minimum index')
     return closestAfter
   }
 
   segmentNearestMeasure (seg, inputPt, segmentStartMeasure) {
-    var projFactor = seg.projectionFactor(inputPt)
+    const projFactor = seg.projectionFactor(inputPt)
     if (projFactor <= 0.0) return segmentStartMeasure
     if (projFactor <= 1.0) return segmentStartMeasure + projFactor * seg.getLength()
     return segmentStartMeasure + seg.getLength()

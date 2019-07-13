@@ -8,7 +8,7 @@ export default class SnapOverlayOp {
   }
 
   static overlayOp (g0, g1, opCode) {
-    var op = new SnapOverlayOp(g0, g1)
+    const op = new SnapOverlayOp(g0, g1)
     return op.getResultGeometry(opCode)
   }
 
@@ -29,8 +29,8 @@ export default class SnapOverlayOp {
   }
 
   selfSnap (geom) {
-    var snapper0 = new GeometrySnapper(geom)
-    var snapGeom = snapper0.snapTo(geom, this._snapTolerance)
+    const snapper0 = new GeometrySnapper(geom)
+    const snapGeom = snapper0.snapTo(geom, this._snapTolerance)
     return snapGeom
   }
 
@@ -38,7 +38,7 @@ export default class SnapOverlayOp {
     this._cbr = new CommonBitsRemover()
     this._cbr.add(geom[0])
     this._cbr.add(geom[1])
-    var remGeom = new Array(2).fill(null)
+    const remGeom = new Array(2).fill(null)
     remGeom[0] = this._cbr.removeCommonBits(geom[0].copy())
     remGeom[1] = this._cbr.removeCommonBits(geom[1].copy())
     return remGeom
@@ -50,8 +50,8 @@ export default class SnapOverlayOp {
   }
 
   getResultGeometry (opCode) {
-    var prepGeom = this.snap(this._geom)
-    var result = OverlayOp.overlayOp(prepGeom[0], prepGeom[1], opCode)
+    const prepGeom = this.snap(this._geom)
+    const result = OverlayOp.overlayOp(prepGeom[0], prepGeom[1], opCode)
     return this.prepareResult(result)
   }
 
@@ -66,8 +66,8 @@ export default class SnapOverlayOp {
   }
 
   snap (geom) {
-    var remGeom = this.removeCommonBits(geom)
-    var snapGeom = GeometrySnapper.snap(remGeom[0], remGeom[1], this._snapTolerance)
+    const remGeom = this.removeCommonBits(geom)
+    const snapGeom = GeometrySnapper.snap(remGeom[0], remGeom[1], this._snapTolerance)
     return snapGeom
   }
 

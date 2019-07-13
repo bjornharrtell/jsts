@@ -10,8 +10,8 @@ export default class DirectedEdge extends GraphComponent {
   }
 
   static toEdges (dirEdges) {
-    var edges = new ArrayList()
-    for (var i = dirEdges.iterator(); i.hasNext();) {
+    const edges = new ArrayList()
+    for (let i = dirEdges.iterator(); i.hasNext();) {
       edges.add(i.next()._parentEdge)
     }
     return edges
@@ -32,9 +32,9 @@ export default class DirectedEdge extends GraphComponent {
   }
 
   print (out) {
-    var className = this.getClass().getName()
-    var lastDotPos = className.lastIndexOf('.')
-    var name = className.substring(lastDotPos + 1)
+    const className = this.getClass().getName()
+    const lastDotPos = className.lastIndexOf('.')
+    const name = className.substring(lastDotPos + 1)
     out.print('  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + this._angle)
   }
 
@@ -47,7 +47,7 @@ export default class DirectedEdge extends GraphComponent {
   }
 
   compareTo (obj) {
-    var de = obj
+    const de = obj
     return this.compareDirection(de)
   }
 
@@ -113,8 +113,8 @@ DirectedEdge.constructor_ = function () {
     this._edgeDirection = edgeDirection
     this._p0 = from.getCoordinate()
     this._p1 = directionPt
-    var dx = this._p1.x - this._p0.x
-    var dy = this._p1.y - this._p0.y
+    const dx = this._p1.x - this._p0.x
+    const dy = this._p1.y - this._p0.y
     this._quadrant = Quadrant.quadrant(dx, dy)
     this._angle = Math.atan2(dy, dx)
   }

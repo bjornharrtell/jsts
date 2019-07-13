@@ -19,8 +19,8 @@ export default class EdgeConnectedTriangleTraversal {
 
   process (currTri, visitor) {
     currTri.getNeighbours()
-    for (var i = 0; i < 3; i++) {
-      var neighTri = currTri.getEdge(i).sym().getData()
+    for (let i = 0; i < 3; i++) {
+      const neighTri = currTri.getEdge(i).sym().getData()
       if (neighTri === null) continue
       if (visitor.visit(currTri, i, neighTri)) this._triQueue.addLast(neighTri)
     }
@@ -28,7 +28,7 @@ export default class EdgeConnectedTriangleTraversal {
 
   visitAll (visitor) {
     while (!this._triQueue.isEmpty()) {
-      var tri = this._triQueue.removeFirst()
+      const tri = this._triQueue.removeFirst()
       this.process(tri, visitor)
     }
   }

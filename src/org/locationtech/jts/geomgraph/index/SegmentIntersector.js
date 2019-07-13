@@ -12,7 +12,7 @@ export default class SegmentIntersector {
       if (this._li.getIntersectionNum() === 1) {
         if (SegmentIntersector.isAdjacentSegments(segIndex0, segIndex1)) return true
         if (e0.isClosed()) {
-          var maxSegIndex = e0.getNumPoints() - 1
+          const maxSegIndex = e0.getNumPoints() - 1
           if (segIndex0 === 0 && segIndex1 === maxSegIndex || segIndex1 === 0 && segIndex0 === maxSegIndex) {
             return true
           }
@@ -35,9 +35,9 @@ export default class SegmentIntersector {
   }
 
   isBoundaryPointInternal (li, bdyNodes) {
-    for (var i = bdyNodes.iterator(); i.hasNext();) {
-      var node = i.next()
-      var pt = node.getCoordinate()
+    for (let i = bdyNodes.iterator(); i.hasNext();) {
+      const node = i.next()
+      const pt = node.getCoordinate()
       if (li.isIntersection(pt)) return true
     }
     return false
@@ -71,10 +71,10 @@ export default class SegmentIntersector {
   addIntersections (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     this.numTests++
-    var p00 = e0.getCoordinates()[segIndex0]
-    var p01 = e0.getCoordinates()[segIndex0 + 1]
-    var p10 = e1.getCoordinates()[segIndex1]
-    var p11 = e1.getCoordinates()[segIndex1 + 1]
+    const p00 = e0.getCoordinates()[segIndex0]
+    const p01 = e0.getCoordinates()[segIndex0 + 1]
+    const p10 = e1.getCoordinates()[segIndex1]
+    const p11 = e1.getCoordinates()[segIndex1 + 1]
     this._li.computeIntersection(p00, p01, p10, p11)
     if (this._li.hasIntersection()) {
       if (this._recordIsolated) {

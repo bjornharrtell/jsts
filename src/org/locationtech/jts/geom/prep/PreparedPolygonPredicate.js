@@ -7,50 +7,50 @@ export default class PreparedPolygonPredicate {
   }
 
   isAnyTargetComponentInAreaTest (testGeom, targetRepPts) {
-    var piaLoc = new SimplePointInAreaLocator(testGeom)
-    for (var i = targetRepPts.iterator(); i.hasNext();) {
-      var p = i.next()
-      var loc = piaLoc.locate(p)
+    const piaLoc = new SimplePointInAreaLocator(testGeom)
+    for (let i = targetRepPts.iterator(); i.hasNext();) {
+      const p = i.next()
+      const loc = piaLoc.locate(p)
       if (loc !== Location.EXTERIOR) return true
     }
     return false
   }
 
   isAllTestComponentsInTarget (testGeom) {
-    var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
-    for (var i = coords.iterator(); i.hasNext();) {
-      var p = i.next()
-      var loc = this._targetPointLocator.locate(p)
+    const coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
+    for (let i = coords.iterator(); i.hasNext();) {
+      const p = i.next()
+      const loc = this._targetPointLocator.locate(p)
       if (loc === Location.EXTERIOR) return false
     }
     return true
   }
 
   isAnyTestComponentInTargetInterior (testGeom) {
-    var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
-    for (var i = coords.iterator(); i.hasNext();) {
-      var p = i.next()
-      var loc = this._targetPointLocator.locate(p)
+    const coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
+    for (let i = coords.iterator(); i.hasNext();) {
+      const p = i.next()
+      const loc = this._targetPointLocator.locate(p)
       if (loc === Location.INTERIOR) return true
     }
     return false
   }
 
   isAllTestComponentsInTargetInterior (testGeom) {
-    var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
-    for (var i = coords.iterator(); i.hasNext();) {
-      var p = i.next()
-      var loc = this._targetPointLocator.locate(p)
+    const coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
+    for (let i = coords.iterator(); i.hasNext();) {
+      const p = i.next()
+      const loc = this._targetPointLocator.locate(p)
       if (loc !== Location.INTERIOR) return false
     }
     return true
   }
 
   isAnyTestComponentInTarget (testGeom) {
-    var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
-    for (var i = coords.iterator(); i.hasNext();) {
-      var p = i.next()
-      var loc = this._targetPointLocator.locate(p)
+    const coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
+    for (let i = coords.iterator(); i.hasNext();) {
+      const p = i.next()
+      const loc = this._targetPointLocator.locate(p)
       if (loc !== Location.EXTERIOR) return true
     }
     return false

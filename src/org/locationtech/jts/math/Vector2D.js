@@ -48,12 +48,12 @@ export default class Vector2D {
     if (!(o instanceof Vector2D)) {
       return false
     }
-    var v = o
+    const v = o
     return this._x === v._x && this._y === v._y
   }
 
   normalize () {
-    var length = this.length()
+    const length = this.length()
     if (length > 0.0) return this.divide(length)
     return Vector2D.create(0.0, 0.0)
   }
@@ -76,7 +76,7 @@ export default class Vector2D {
   }
 
   rotateByQuarterCircle (numQuarters) {
-    var nQuad = numQuarters % 4
+    let nQuad = numQuarters % 4
     if (numQuarters < 0 && nQuad !== 0) {
       nQuad = nQuad + 4
     }
@@ -95,15 +95,15 @@ export default class Vector2D {
   }
 
   rotate (angle) {
-    var cos = Math.cos(angle)
-    var sin = Math.sin(angle)
+    const cos = Math.cos(angle)
+    const sin = Math.sin(angle)
     return Vector2D.create(this._x * cos - this._y * sin, this._x * sin + this._y * cos)
   }
 
   angleTo (v) {
-    var a1 = this.angle()
-    var a2 = v.angle()
-    var angDel = a2 - a1
+    const a1 = this.angle()
+    const a2 = v.angle()
+    const angDel = a2 - a1
     if (angDel <= -Math.PI) return angDel + Angle.PI_TIMES_2
     if (angDel > Math.PI) return angDel - Angle.PI_TIMES_2
     return angDel
@@ -158,13 +158,13 @@ export default class Vector2D {
   }
 
   distance (v) {
-    var delx = v._x - this._x
-    var dely = v._y - this._y
+    const delx = v._x - this._x
+    const dely = v._y - this._y
     return Math.sqrt(delx * delx + dely * dely)
   }
 
   hashCode () {
-    var result = 17
+    let result = 17
     result = 37 * result + Coordinate.hashCode(this._x)
     result = 37 * result + Coordinate.hashCode(this._y)
     return result

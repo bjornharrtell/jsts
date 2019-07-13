@@ -14,9 +14,9 @@ export default class Polygonizer {
   }
 
   static findOuterShells (shellList) {
-    for (var i = shellList.iterator(); i.hasNext();) {
-      var er = i.next()
-      var outerHoleER = er.getOuterHole()
+    for (let i = shellList.iterator(); i.hasNext();) {
+      const er = i.next()
+      const outerHoleER = er.getOuterHole()
       if (outerHoleER !== null && !outerHoleER.isProcessed()) {
         er.setIncluded(true)
         outerHoleER.setProcessed(true)
@@ -25,9 +25,9 @@ export default class Polygonizer {
   }
 
   static extractPolygons (shellList, includeAll) {
-    var polyList = new ArrayList()
-    for (var i = shellList.iterator(); i.hasNext();) {
-      var er = i.next()
+    const polyList = new ArrayList()
+    for (let i = shellList.iterator(); i.hasNext();) {
+      const er = i.next()
       if (includeAll || er.isIncluded()) {
         polyList.add(er.getPolygon())
       }
@@ -36,14 +36,14 @@ export default class Polygonizer {
   }
 
   static assignHolesToShells (holeList, shellList) {
-    for (var i = holeList.iterator(); i.hasNext();) {
-      var holeER = i.next()
+    for (let i = holeList.iterator(); i.hasNext();) {
+      const holeER = i.next()
       Polygonizer.assignHoleToShell(holeER, shellList)
     }
   }
 
   static assignHoleToShell (holeER, shellList) {
-    var shell = EdgeRing.findEdgeRingContaining(holeER, shellList)
+    const shell = EdgeRing.findEdgeRingContaining(holeER, shellList)
     if (shell !== null) {
       shell.addHole(holeER)
     }
@@ -51,11 +51,11 @@ export default class Polygonizer {
 
   static findDisjointShells (shellList) {
     Polygonizer.findOuterShells(shellList)
-    var isMoreToScan = null
+    let isMoreToScan = null
     do {
       isMoreToScan = false
-      for (var i = shellList.iterator(); i.hasNext();) {
-        var er = i.next()
+      for (let i = shellList.iterator(); i.hasNext();) {
+        const er = i.next()
         if (er.isIncludedSet()) continue
         er.updateIncluded()
         if (!er.isIncludedSet()) {
@@ -80,8 +80,8 @@ export default class Polygonizer {
   }
 
   findValidRings (edgeRingList, validEdgeRingList, invalidRingList) {
-    for (var i = edgeRingList.iterator(); i.hasNext();) {
-      var er = i.next()
+    for (let i = edgeRingList.iterator(); i.hasNext();) {
+      const er = i.next()
       if (er.isValid()) validEdgeRingList.add(er); else invalidRingList.add(er.getLineString())
     }
   }
@@ -92,8 +92,8 @@ export default class Polygonizer {
     if (this._graph === null) return null
     this._dangles = this._graph.deleteDangles()
     this._cutEdges = this._graph.deleteCutEdges()
-    var edgeRingList = this._graph.getEdgeRings()
-    var validEdgeRingList = new ArrayList()
+    const edgeRingList = this._graph.getEdgeRings()
+    let validEdgeRingList = new ArrayList()
     this._invalidRingLines = new ArrayList()
     if (this._isCheckingRingsValid) {
       this.findValidRings(edgeRingList, validEdgeRingList, this._invalidRingLines)
@@ -103,7 +103,7 @@ export default class Polygonizer {
     this.findShellsAndHoles(validEdgeRingList)
     Polygonizer.assignHolesToShells(this._holeList, this._shellList)
     Collections.sort(this._shellList, new EdgeRing.EnvelopeComparator())
-    var includeAll = true
+    let includeAll = true
     if (this._extractOnlyPolygonal) {
       Polygonizer.findDisjointShells(this._shellList)
       includeAll = false
@@ -129,8 +129,8 @@ export default class Polygonizer {
   add () {
     if (hasInterface(arguments[0], Collection)) {
       const geomList = arguments[0]
-      for (var i = geomList.iterator(); i.hasNext();) {
-        var geometry = i.next()
+      for (let i = geomList.iterator(); i.hasNext();) {
+        const geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof LineString) {
@@ -151,8 +151,8 @@ export default class Polygonizer {
   findShellsAndHoles (edgeRingList) {
     this._holeList = new ArrayList()
     this._shellList = new ArrayList()
-    for (var i = edgeRingList.iterator(); i.hasNext();) {
-      var er = i.next()
+    for (let i = edgeRingList.iterator(); i.hasNext();) {
+      const er = i.next()
       er.computeHole()
       if (er.isHole()) this._holeList.add(er); else this._shellList.add(er)
     }

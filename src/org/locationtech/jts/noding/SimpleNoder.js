@@ -8,20 +8,20 @@ export default class SimpleNoder extends SinglePassNoder {
 
   computeNodes (inputSegStrings) {
     this._nodedSegStrings = inputSegStrings
-    for (var i0 = inputSegStrings.iterator(); i0.hasNext();) {
-      var edge0 = i0.next()
-      for (var i1 = inputSegStrings.iterator(); i1.hasNext();) {
-        var edge1 = i1.next()
+    for (let i0 = inputSegStrings.iterator(); i0.hasNext();) {
+      const edge0 = i0.next()
+      for (let i1 = inputSegStrings.iterator(); i1.hasNext();) {
+        const edge1 = i1.next()
         this.computeIntersects(edge0, edge1)
       }
     }
   }
 
   computeIntersects (e0, e1) {
-    var pts0 = e0.getCoordinates()
-    var pts1 = e1.getCoordinates()
-    for (var i0 = 0; i0 < pts0.length - 1; i0++) {
-      for (var i1 = 0; i1 < pts1.length - 1; i1++) {
+    const pts0 = e0.getCoordinates()
+    const pts1 = e1.getCoordinates()
+    for (let i0 = 0; i0 < pts0.length - 1; i0++) {
+      for (let i1 = 0; i1 < pts1.length - 1; i1++) {
         this._segInt.processIntersections(e0, i0, e1, i1)
       }
     }

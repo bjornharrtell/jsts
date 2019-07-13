@@ -10,11 +10,11 @@ export default class SegmentStringUtil {
   }
 
   static toGeometry (segStrings, geomFact) {
-    var lines = new Array(segStrings.size()).fill(null)
-    var index = 0
-    for (var i = segStrings.iterator(); i.hasNext();) {
-      var ss = i.next()
-      var line = geomFact.createLineString(ss.getCoordinates())
+    const lines = new Array(segStrings.size()).fill(null)
+    let index = 0
+    for (let i = segStrings.iterator(); i.hasNext();) {
+      const ss = i.next()
+      const line = geomFact.createLineString(ss.getCoordinates())
       lines[index++] = line
     }
     if (lines.length === 1) return lines[0]
@@ -22,11 +22,11 @@ export default class SegmentStringUtil {
   }
 
   static extractNodedSegmentStrings (geom) {
-    var segStr = new ArrayList()
-    var lines = LinearComponentExtracter.getLines(geom)
-    for (var i = lines.iterator(); i.hasNext();) {
-      var line = i.next()
-      var pts = line.getCoordinates()
+    const segStr = new ArrayList()
+    const lines = LinearComponentExtracter.getLines(geom)
+    for (let i = lines.iterator(); i.hasNext();) {
+      const line = i.next()
+      const pts = line.getCoordinates()
       segStr.add(new NodedSegmentString(pts, geom))
     }
     return segStr
@@ -39,9 +39,9 @@ export default class SegmentStringUtil {
   static toString () {
     if (arguments.length === 1 && hasInterface(arguments[0], List)) {
       const segStrings = arguments[0]
-      var buf = new StringBuffer()
-      for (var i = segStrings.iterator(); i.hasNext();) {
-        var segStr = i.next()
+      const buf = new StringBuffer()
+      for (let i = segStrings.iterator(); i.hasNext();) {
+        const segStr = i.next()
         buf.append(segStr.toString())
         buf.append('\n')
       }

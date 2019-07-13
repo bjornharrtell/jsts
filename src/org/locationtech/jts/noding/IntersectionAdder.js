@@ -13,7 +13,7 @@ export default class IntersectionAdder {
       if (this._li.getIntersectionNum() === 1) {
         if (IntersectionAdder.isAdjacentSegments(segIndex0, segIndex1)) return true
         if (e0.isClosed()) {
-          var maxSegIndex = e0.size() - 1
+          const maxSegIndex = e0.size() - 1
           if (segIndex0 === 0 && segIndex1 === maxSegIndex || segIndex1 === 0 && segIndex0 === maxSegIndex) {
             return true
           }
@@ -42,10 +42,10 @@ export default class IntersectionAdder {
   processIntersections (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     this.numTests++
-    var p00 = e0.getCoordinates()[segIndex0]
-    var p01 = e0.getCoordinates()[segIndex0 + 1]
-    var p10 = e1.getCoordinates()[segIndex1]
-    var p11 = e1.getCoordinates()[segIndex1 + 1]
+    const p00 = e0.getCoordinates()[segIndex0]
+    const p01 = e0.getCoordinates()[segIndex0 + 1]
+    const p10 = e1.getCoordinates()[segIndex1]
+    const p11 = e1.getCoordinates()[segIndex1 + 1]
     this._li.computeIntersection(p00, p01, p10, p11)
     if (this._li.hasIntersection()) {
       this.numIntersections++

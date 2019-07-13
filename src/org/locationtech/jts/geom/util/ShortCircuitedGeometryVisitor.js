@@ -5,8 +5,8 @@ export default class ShortCircuitedGeometryVisitor {
   }
 
   applyTo (geom) {
-    for (var i = 0; i < geom.getNumGeometries() && !this._isDone; i++) {
-      var element = geom.getGeometryN(i)
+    for (let i = 0; i < geom.getNumGeometries() && !this._isDone; i++) {
+      const element = geom.getGeometryN(i)
       if (!(element instanceof GeometryCollection)) {
         this.visit(element)
         if (this.isDone()) {

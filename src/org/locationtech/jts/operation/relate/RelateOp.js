@@ -31,9 +31,9 @@ export default class RelateOp extends GeometryGraphOperation {
       return RectangleIntersects.intersects(g2, g1)
     }
     if (g1.isGeometryCollection() || g2.isGeometryCollection()) {
-      var r = false
-      for (var i = 0; i < g1.getNumGeometries(); i++) {
-        for (var j = 0; j < g2.getNumGeometries(); j++) {
+      const r = false
+      for (let i = 0; i < g1.getNumGeometries(); i++) {
+        for (let j = 0; j < g2.getNumGeometries(); j++) {
           if (g1.getGeometryN(i).intersects(g2.getGeometryN(j))) {
             return true
           }
@@ -52,13 +52,13 @@ export default class RelateOp extends GeometryGraphOperation {
   static relate () {
     if (arguments.length === 2) {
       const a = arguments[0]; const b = arguments[1]
-      var relOp = new RelateOp(a, b)
-      var im = relOp.getIntersectionMatrix()
+      const relOp = new RelateOp(a, b)
+      const im = relOp.getIntersectionMatrix()
       return im
     } else if (arguments.length === 3) {
       const a = arguments[0]; const b = arguments[1]; const boundaryNodeRule = arguments[2]
-      var relOp = new RelateOp(a, b, boundaryNodeRule)
-      var im = relOp.getIntersectionMatrix()
+      const relOp = new RelateOp(a, b, boundaryNodeRule)
+      const im = relOp.getIntersectionMatrix()
       return im
     }
   }

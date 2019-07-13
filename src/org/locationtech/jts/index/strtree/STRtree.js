@@ -28,10 +28,10 @@ export default class STRtree extends AbstractSTRtree {
   }
 
   static getItems (kNearestNeighbors) {
-    var items = new Array(kNearestNeighbors.size()).fill(null)
-    var count = 0
+    const items = new Array(kNearestNeighbors.size()).fill(null)
+    let count = 0
     while (!kNearestNeighbors.isEmpty()) {
-      var bp = kNearestNeighbors.poll()
+      const bp = kNearestNeighbors.poll()
       items[count] = bp.getBoundable(0).getItem()
       count++
     }
@@ -44,8 +44,8 @@ export default class STRtree extends AbstractSTRtree {
 
   createParentBoundablesFromVerticalSlices (verticalSlices, newLevel) {
     Assert.isTrue(verticalSlices.length > 0)
-    var parentBoundables = new ArrayList()
-    for (var i = 0; i < verticalSlices.length; i++) {
+    const parentBoundables = new ArrayList()
+    for (let i = 0; i < verticalSlices.length; i++) {
       parentBoundables.addAll(this.createParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel))
     }
     return parentBoundables
@@ -76,14 +76,14 @@ export default class STRtree extends AbstractSTRtree {
   }
 
   verticalSlices (childBoundables, sliceCount) {
-    var sliceCapacity = Math.trunc(Math.ceil(childBoundables.size() / sliceCount))
-    var slices = new Array(sliceCount).fill(null)
-    var i = childBoundables.iterator()
-    for (var j = 0; j < sliceCount; j++) {
+    const sliceCapacity = Math.trunc(Math.ceil(childBoundables.size() / sliceCount))
+    const slices = new Array(sliceCount).fill(null)
+    const i = childBoundables.iterator()
+    for (let j = 0; j < sliceCount; j++) {
       slices[j] = new ArrayList()
-      var boundablesAddedToSlice = 0
+      let boundablesAddedToSlice = 0
       while (i.hasNext() && boundablesAddedToSlice < sliceCapacity) {
-        var childBoundable = i.next()
+        const childBoundable = i.next()
         slices[j].add(childBoundable)
         boundablesAddedToSlice++
       }
@@ -124,10 +124,10 @@ export default class STRtree extends AbstractSTRtree {
 
   createParentBoundables (childBoundables, newLevel) {
     Assert.isTrue(!childBoundables.isEmpty())
-    var minLeafCount = Math.trunc(Math.ceil(childBoundables.size() / this.getNodeCapacity()))
-    var sortedChildBoundables = new ArrayList(childBoundables)
+    const minLeafCount = Math.trunc(Math.ceil(childBoundables.size() / this.getNodeCapacity()))
+    const sortedChildBoundables = new ArrayList(childBoundables)
     Collections.sort(sortedChildBoundables, STRtree.xComparator)
-    var verticalSlices = this.verticalSlices(sortedChildBoundables, Math.trunc(Math.ceil(Math.sqrt(minLeafCount))))
+    const verticalSlices = this.verticalSlices(sortedChildBoundables, Math.trunc(Math.ceil(Math.sqrt(minLeafCount))))
     return this.createParentBoundablesFromVerticalSlices(verticalSlices, newLevel)
   }
 
@@ -135,7 +135,7 @@ export default class STRtree extends AbstractSTRtree {
     if (arguments.length === 1) {
       if (hasInterface(arguments[0], ItemDistance)) {
         const itemDist = arguments[0]
-        var bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist)
+        const bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist)
         return this.nearestNeighbour(bp)
       } else if (arguments[0] instanceof BoundablePair) {
         const initBndPair = arguments[0]
@@ -144,17 +144,17 @@ export default class STRtree extends AbstractSTRtree {
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof STRtree && hasInterface(arguments[1], ItemDistance)) {
         const tree = arguments[0]; const itemDist = arguments[1]
-        var bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
+        const bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
         return this.nearestNeighbour(bp)
       } else if (arguments[0] instanceof BoundablePair && typeof arguments[1] === 'number') {
         const initBndPair = arguments[0]; const maxDistance = arguments[1]
-        var distanceLowerBound = maxDistance
-        var minPair = null
-        var priQ = new PriorityQueue()
+        let distanceLowerBound = maxDistance
+        let minPair = null
+        const priQ = new PriorityQueue()
         priQ.add(initBndPair)
         while (!priQ.isEmpty() && distanceLowerBound > 0.0) {
-          var bndPair = priQ.poll()
-          var currentDistance = bndPair.getDistance()
+          const bndPair = priQ.poll()
+          const currentDistance = bndPair.getDistance()
           if (currentDistance >= distanceLowerBound) break
           if (bndPair.isLeaves()) {
             distanceLowerBound = currentDistance
@@ -171,18 +171,18 @@ export default class STRtree extends AbstractSTRtree {
     } else if (arguments.length === 3) {
       if (hasInterface(arguments[2], ItemDistance) && (arguments[0] instanceof Envelope && arguments[1] instanceof Object)) {
         const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]
-        var bnd = new ItemBoundable(env, item)
-        var bp = new BoundablePair(this.getRoot(), bnd, itemDist)
+        const bnd = new ItemBoundable(env, item)
+        const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
         return this.nearestNeighbour(bp)[0]
       } else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof BoundablePair && typeof arguments[1] === 'number')) {
         const initBndPair = arguments[0]; const maxDistance = arguments[1]; const k = arguments[2]
-        var distanceLowerBound = maxDistance
-        var priQ = new PriorityQueue()
+        let distanceLowerBound = maxDistance
+        const priQ = new PriorityQueue()
         priQ.add(initBndPair)
-        var kNearestNeighbors = new PriorityQueue()
+        const kNearestNeighbors = new PriorityQueue()
         while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
-          var bndPair = priQ.poll()
-          var currentDistance = bndPair.getDistance()
+          const bndPair = priQ.poll()
+          const currentDistance = bndPair.getDistance()
           if (currentDistance >= distanceLowerBound) {
             break
           }
@@ -190,12 +190,12 @@ export default class STRtree extends AbstractSTRtree {
             if (kNearestNeighbors.size() < k) {
               kNearestNeighbors.add(bndPair)
             } else {
-              var bp1 = kNearestNeighbors.peek()
+              const bp1 = kNearestNeighbors.peek()
               if (bp1.getDistance() > currentDistance) {
                 kNearestNeighbors.poll()
                 kNearestNeighbors.add(bndPair)
               }
-              var bp2 = kNearestNeighbors.peek()
+              const bp2 = kNearestNeighbors.peek()
               distanceLowerBound = bp2.getDistance()
             }
           } else {
@@ -206,8 +206,8 @@ export default class STRtree extends AbstractSTRtree {
       }
     } else if (arguments.length === 4) {
       const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]; const k = arguments[3]
-      var bnd = new ItemBoundable(env, item)
-      var bp = new BoundablePair(this.getRoot(), bnd, itemDist)
+      const bnd = new ItemBoundable(env, item)
+      const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
       return this.nearestNeighbour(bp, k)
     }
   }
@@ -227,9 +227,9 @@ class STRtreeNode extends AbstractNode {
   }
 
   computeBounds () {
-    var bounds = null
-    for (var i = this.getChildBoundables().iterator(); i.hasNext();) {
-      var childBoundable = i.next()
+    let bounds = null
+    for (let i = this.getChildBoundables().iterator(); i.hasNext();) {
+      const childBoundable = i.next()
       if (bounds === null) {
         bounds = new Envelope(childBoundable.getBounds())
       } else {

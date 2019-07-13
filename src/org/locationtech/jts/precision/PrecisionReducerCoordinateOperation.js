@@ -14,18 +14,18 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
     if (arguments.length === 2 && (arguments[1] instanceof Geometry && arguments[0] instanceof Array)) {
       const coordinates = arguments[0]; const geom = arguments[1]
       if (coordinates.length === 0) return null
-      var reducedCoords = new Array(coordinates.length).fill(null)
-      for (var i = 0; i < coordinates.length; i++) {
-        var coord = new Coordinate(coordinates[i])
+      const reducedCoords = new Array(coordinates.length).fill(null)
+      for (let i = 0; i < coordinates.length; i++) {
+        const coord = new Coordinate(coordinates[i])
         this._targetPM.makePrecise(coord)
         reducedCoords[i] = coord
       }
-      var noRepeatedCoordList = new CoordinateList(reducedCoords, false)
-      var noRepeatedCoords = noRepeatedCoordList.toCoordinateArray()
-      var minLength = 0
+      const noRepeatedCoordList = new CoordinateList(reducedCoords, false)
+      const noRepeatedCoords = noRepeatedCoordList.toCoordinateArray()
+      let minLength = 0
       if (geom instanceof LineString) minLength = 2
       if (geom instanceof LinearRing) minLength = 4
-      var collapsedCoords = reducedCoords
+      let collapsedCoords = reducedCoords
       if (this._removeCollapsed) collapsedCoords = null
       if (noRepeatedCoords.length < minLength) {
         return collapsedCoords

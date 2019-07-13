@@ -8,7 +8,7 @@ export default class ComponentCoordinateExtracter {
   }
 
   static getCoordinates (geom) {
-    var coords = new ArrayList()
+    const coords = new ArrayList()
     geom.apply(new ComponentCoordinateExtracter(coords))
     return coords
   }

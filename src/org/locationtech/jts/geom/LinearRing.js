@@ -28,9 +28,9 @@ export default class LinearRing extends LineString {
   }
 
   reverse () {
-    var seq = this._points.copy()
+    const seq = this._points.copy()
     CoordinateSequences.reverse(seq)
-    var rev = this.getFactory().createLinearRing(seq)
+    const rev = this.getFactory().createLinearRing(seq)
     return rev
   }
 

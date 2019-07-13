@@ -9,15 +9,15 @@ export default class Node extends NodeBase {
   }
 
   static createNode (itemInterval) {
-    var key = new Key(itemInterval)
-    var node = new Node(key.getInterval(), key.getLevel())
+    const key = new Key(itemInterval)
+    const node = new Node(key.getInterval(), key.getLevel())
     return node
   }
 
   static createExpanded (node, addInterval) {
-    var expandInt = new Interval(addInterval)
+    const expandInt = new Interval(addInterval)
     if (node !== null) expandInt.expandToInclude(node._interval)
-    var largerNode = Node.createNode(expandInt)
+    const largerNode = Node.createNode(expandInt)
     if (node !== null) largerNode.insert(node)
     return largerNode
   }
@@ -27,10 +27,10 @@ export default class Node extends NodeBase {
   }
 
   find (searchInterval) {
-    var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
+    const subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
     if (subnodeIndex === -1) return this
     if (this._subnode[subnodeIndex] !== null) {
-      var node = this._subnode[subnodeIndex]
+      const node = this._subnode[subnodeIndex]
       return node.find(searchInterval)
     }
     return this
@@ -38,11 +38,11 @@ export default class Node extends NodeBase {
 
   insert (node) {
     Assert.isTrue(this._interval === null || this._interval.contains(node._interval))
-    var index = NodeBase.getSubnodeIndex(node._interval, this._centre)
+    const index = NodeBase.getSubnodeIndex(node._interval, this._centre)
     if (node._level === this._level - 1) {
       this._subnode[index] = node
     } else {
-      var childNode = this.createSubnode(index)
+      const childNode = this.createSubnode(index)
       childNode.insert(node)
       this._subnode[index] = childNode
     }
@@ -60,9 +60,9 @@ export default class Node extends NodeBase {
   }
 
   getNode (searchInterval) {
-    var subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
+    const subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
     if (subnodeIndex !== -1) {
-      var node = this.getSubnode(subnodeIndex)
+      const node = this.getSubnode(subnodeIndex)
       return node.getNode(searchInterval)
     } else {
       return this
@@ -70,8 +70,8 @@ export default class Node extends NodeBase {
   }
 
   createSubnode (index) {
-    var min = 0.0
-    var max = 0.0
+    let min = 0.0
+    let max = 0.0
     switch (index) {
       case 0:
         min = this._interval.getMin()
@@ -82,8 +82,8 @@ export default class Node extends NodeBase {
         max = this._interval.getMax()
         break
     }
-    var subInt = new Interval(min, max)
-    var node = new Node(subInt, this._level - 1)
+    const subInt = new Interval(min, max)
+    const node = new Node(subInt, this._level - 1)
     return node
   }
 

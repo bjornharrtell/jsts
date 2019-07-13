@@ -10,19 +10,19 @@ export default class RectangleIntersects {
   }
 
   static intersects (rectangle, b) {
-    var rp = new RectangleIntersects(rectangle)
+    const rp = new RectangleIntersects(rectangle)
     return rp.intersects(b)
   }
 
   intersects (geom) {
     if (!this._rectEnv.intersects(geom.getEnvelopeInternal())) return false
-    var visitor = new EnvelopeIntersectsVisitor(this._rectEnv)
+    const visitor = new EnvelopeIntersectsVisitor(this._rectEnv)
     visitor.applyTo(geom)
     if (visitor.intersects()) return true
-    var ecpVisitor = new GeometryContainsPointVisitor(this._rectangle)
+    const ecpVisitor = new GeometryContainsPointVisitor(this._rectangle)
     ecpVisitor.applyTo(geom)
     if (ecpVisitor.containsPoint()) return true
-    var riVisitor = new RectangleIntersectsSegmentVisitor(this._rectangle)
+    const riVisitor = new RectangleIntersectsSegmentVisitor(this._rectangle)
     riVisitor.applyTo(geom)
     if (riVisitor.intersects()) return true
     return false
@@ -54,7 +54,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
   }
 
   visit (element) {
-    var elementEnv = element.getEnvelopeInternal()
+    const elementEnv = element.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) {
       return null
     }
@@ -102,10 +102,10 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
 
   visit (geom) {
     if (!(geom instanceof Polygon)) return null
-    var elementEnv = geom.getEnvelopeInternal()
+    const elementEnv = geom.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) return null
-    var rectPt = new Coordinate()
-    for (var i = 0; i < 4; i++) {
+    const rectPt = new Coordinate()
+    for (let i = 0; i < 4; i++) {
       this._rectSeq.getCoordinate(i, rectPt)
       if (!elementEnv.contains(rectPt)) continue
       if (SimplePointInAreaLocator.containsPointInPolygon(rectPt, geom)) {
@@ -150,23 +150,23 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
   }
 
   visit (geom) {
-    var elementEnv = geom.getEnvelopeInternal()
+    const elementEnv = geom.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) return null
-    var lines = LinearComponentExtracter.getLines(geom)
+    const lines = LinearComponentExtracter.getLines(geom)
     this.checkIntersectionWithLineStrings(lines)
   }
 
   checkIntersectionWithLineStrings (lines) {
-    for (var i = lines.iterator(); i.hasNext();) {
-      var testLine = i.next()
+    for (let i = lines.iterator(); i.hasNext();) {
+      const testLine = i.next()
       this.checkIntersectionWithSegments(testLine)
       if (this._hasIntersection) return null
     }
   }
 
   checkIntersectionWithSegments (testLine) {
-    var seq1 = testLine.getCoordinateSequence()
-    for (var j = 1; j < seq1.size(); j++) {
+    const seq1 = testLine.getCoordinateSequence()
+    for (let j = 1; j < seq1.size(); j++) {
       seq1.getCoordinate(j - 1, this._p0)
       seq1.getCoordinate(j, this._p1)
       if (this._rectIntersector.intersects(this._p0, this._p1)) {

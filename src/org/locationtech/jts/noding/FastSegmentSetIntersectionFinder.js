@@ -12,7 +12,7 @@ export default class FastSegmentSetIntersectionFinder {
   intersects () {
     if (arguments.length === 1) {
       const segStrings = arguments[0]
-      var intFinder = new SegmentIntersectionDetector()
+      const intFinder = new SegmentIntersectionDetector()
       return this.intersects(segStrings, intFinder)
     } else if (arguments.length === 2) {
       const segStrings = arguments[0]; const intDetector = arguments[1]

@@ -7,14 +7,14 @@ export default class EdgeEndBundleStar extends EdgeEndStar {
   }
 
   updateIM (im) {
-    for (var it = this.iterator(); it.hasNext();) {
-      var esb = it.next()
+    for (let it = this.iterator(); it.hasNext();) {
+      const esb = it.next()
       esb.updateIM(im)
     }
   }
 
   insert (e) {
-    var eb = this._edgeMap.get(e)
+    let eb = this._edgeMap.get(e)
     if (eb === null) {
       eb = new EdgeEndBundle(e)
       this.insertEdgeEnd(e, eb)

@@ -13,8 +13,8 @@ export default class StringUtil {
   }
 
   static chars (c, n) {
-    var ch = new Array(n).fill(null)
-    for (var i = 0; i < n; i++) {
+    const ch = new Array(n).fill(null)
+    for (let i = 0; i < n; i++) {
       ch[i] = c
     }
     return new String(ch)
@@ -23,16 +23,16 @@ export default class StringUtil {
   static getStackTrace () {
     if (arguments.length === 1) {
       const t = arguments[0]
-      var os = new ByteArrayOutputStream()
-      var ps = new PrintStream(os)
+      const os = new ByteArrayOutputStream()
+      const ps = new PrintStream(os)
       t.printStackTrace(ps)
       return os.toString()
     } else if (arguments.length === 2) {
       const t = arguments[0]; const depth = arguments[1]
-      var stackTrace = ''
-      var stringReader = new StringReader(StringUtil.getStackTrace(t))
-      var lineNumberReader = new LineNumberReader(stringReader)
-      for (var i = 0; i < depth; i++) {
+      let stackTrace = ''
+      const stringReader = new StringReader(StringUtil.getStackTrace(t))
+      const lineNumberReader = new LineNumberReader(stringReader)
+      for (let i = 0; i < depth; i++) {
         try {
           stackTrace += lineNumberReader.readLine() + StringUtil.NEWLINE
         } catch (e) {
@@ -46,19 +46,19 @@ export default class StringUtil {
   }
 
   static split (s, separator) {
-    var separatorlen = separator.length
-    var tokenList = new ArrayList()
-    var tmpString = '' + s
-    var pos = tmpString.indexOf(separator)
+    const separatorlen = separator.length
+    const tokenList = new ArrayList()
+    let tmpString = '' + s
+    let pos = tmpString.indexOf(separator)
     while (pos >= 0) {
-      var token = tmpString.substring(0, pos)
+      const token = tmpString.substring(0, pos)
       tokenList.add(token)
       tmpString = tmpString.substring(pos + separatorlen)
       pos = tmpString.indexOf(separator)
     }
     if (tmpString.length > 0) tokenList.add(tmpString)
-    var res = new Array(tokenList.size()).fill(null)
-    for (var i = 0; i < res.length; i++) {
+    const res = new Array(tokenList.size()).fill(null)
+    for (let i = 0; i < res.length; i++) {
       res[i] = tokenList.get(i)
     }
     return res

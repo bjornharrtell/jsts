@@ -6,7 +6,7 @@ export default class InteriorIntersectionFinder {
   }
 
   static createAllIntersectionsFinder (li) {
-    var finder = new InteriorIntersectionFinder(li)
+    const finder = new InteriorIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     return finder
   }
@@ -16,7 +16,7 @@ export default class InteriorIntersectionFinder {
   }
 
   static createIntersectionCounter (li) {
-    var finder = new InteriorIntersectionFinder(li)
+    const finder = new InteriorIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     finder.setKeepIntersections(false)
     return finder
@@ -54,13 +54,13 @@ export default class InteriorIntersectionFinder {
     if (!this._findAllIntersections && this.hasIntersection()) return null
     if (e0 === e1 && segIndex0 === segIndex1) return null
     if (this._isCheckEndSegmentsOnly) {
-      var isEndSegPresent = this.isEndSegment(e0, segIndex0) || this.isEndSegment(e1, segIndex1)
+      const isEndSegPresent = this.isEndSegment(e0, segIndex0) || this.isEndSegment(e1, segIndex1)
       if (!isEndSegPresent) return null
     }
-    var p00 = e0.getCoordinates()[segIndex0]
-    var p01 = e0.getCoordinates()[segIndex0 + 1]
-    var p10 = e1.getCoordinates()[segIndex1]
-    var p11 = e1.getCoordinates()[segIndex1 + 1]
+    const p00 = e0.getCoordinates()[segIndex0]
+    const p01 = e0.getCoordinates()[segIndex0 + 1]
+    const p10 = e1.getCoordinates()[segIndex1]
+    const p11 = e1.getCoordinates()[segIndex1 + 1]
     this._li.computeIntersection(p00, p01, p10, p11)
     if (this._li.hasIntersection()) {
       if (this._li.isInteriorIntersection()) {

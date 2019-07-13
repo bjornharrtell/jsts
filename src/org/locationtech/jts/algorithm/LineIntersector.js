@@ -8,16 +8,16 @@ export default class LineIntersector {
   }
 
   static computeEdgeDistance (p, p0, p1) {
-    var dx = Math.abs(p1.x - p0.x)
-    var dy = Math.abs(p1.y - p0.y)
-    var dist = -1.0
+    const dx = Math.abs(p1.x - p0.x)
+    const dy = Math.abs(p1.y - p0.y)
+    let dist = -1.0
     if (p.equals(p0)) {
       dist = 0.0
     } else if (p.equals(p1)) {
       if (dx > dy) dist = dx; else dist = dy
     } else {
-      var pdx = Math.abs(p.x - p0.x)
-      var pdy = Math.abs(p.y - p0.y)
+      const pdx = Math.abs(p.x - p0.x)
+      const pdy = Math.abs(p.y - p0.y)
       if (dx > dy) dist = pdx; else dist = pdy
       if (dist === 0.0 && !p.equals(p0)) {
         dist = Math.max(pdx, pdy)
@@ -28,9 +28,9 @@ export default class LineIntersector {
   }
 
   static nonRobustComputeEdgeDistance (p, p1, p2) {
-    var dx = p.x - p1.x
-    var dy = p.y - p1.y
-    var dist = Math.sqrt(dx * dx + dy * dy)
+    const dx = p.x - p1.x
+    const dy = p.y - p1.y
+    const dist = Math.sqrt(dx * dx + dy * dy)
     Assert.isTrue(!(dist === 0.0 && !p.equals(p1)), 'Invalid distance calculation')
     return dist
   }
@@ -41,7 +41,7 @@ export default class LineIntersector {
   }
 
   getTopologySummary () {
-    var catBuilder = new StringBuilder()
+    const catBuilder = new StringBuilder()
     if (this.isEndPoint()) catBuilder.append(' endpoint')
     if (this._isProper) catBuilder.append(' proper')
     if (this.isCollinear()) catBuilder.append(' collinear')
@@ -69,8 +69,8 @@ export default class LineIntersector {
       }
     } else if (arguments.length === 1) {
       const segmentIndex = arguments[0]
-      var dist0 = this.getEdgeDistance(segmentIndex, 0)
-      var dist1 = this.getEdgeDistance(segmentIndex, 1)
+      const dist0 = this.getEdgeDistance(segmentIndex, 0)
+      const dist1 = this.getEdgeDistance(segmentIndex, 1)
       if (dist0 > dist1) {
         this._intLineIndex[segmentIndex][0] = 0
         this._intLineIndex[segmentIndex][1] = 1
@@ -96,7 +96,7 @@ export default class LineIntersector {
       return false
     } else if (arguments.length === 1) {
       const inputLineIndex = arguments[0]
-      for (var i = 0; i < this._result; i++) {
+      for (let i = 0; i < this._result; i++) {
         if (!(this._intPt[i].equals2D(this._inputLines[inputLineIndex][0]) || this._intPt[i].equals2D(this._inputLines[inputLineIndex][1]))) {
           return true
         }
@@ -118,7 +118,7 @@ export default class LineIntersector {
   }
 
   getEdgeDistance (segmentIndex, intIndex) {
-    var dist = LineIntersector.computeEdgeDistance(this._intPt[intIndex], this._inputLines[segmentIndex][0], this._inputLines[segmentIndex][1])
+    const dist = LineIntersector.computeEdgeDistance(this._intPt[intIndex], this._inputLines[segmentIndex][0], this._inputLines[segmentIndex][1])
     return dist
   }
 
@@ -135,7 +135,7 @@ export default class LineIntersector {
   }
 
   isIntersection (pt) {
-    for (var i = 0; i < this._result; i++) {
+    for (let i = 0; i < this._result; i++) {
       if (this._intPt[i].equals2D(pt)) {
         return true
       }

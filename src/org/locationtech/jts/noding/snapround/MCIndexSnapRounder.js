@@ -15,8 +15,8 @@ export default class MCIndexSnapRounder {
   }
 
   checkCorrectness (inputSegmentStrings) {
-    var resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings)
-    var nv = new NodingValidator(resultSegStrings)
+    const resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings)
+    const nv = new NodingValidator(resultSegStrings)
     try {
       nv.checkValid()
     } catch (ex) {
@@ -31,13 +31,13 @@ export default class MCIndexSnapRounder {
   }
 
   snapRound (segStrings, li) {
-    var intersections = this.findInteriorIntersections(segStrings, li)
+    const intersections = this.findInteriorIntersections(segStrings, li)
     this.computeIntersectionSnaps(intersections)
     this.computeVertexSnaps(segStrings)
   }
 
   findInteriorIntersections (segStrings, li) {
-    var intFinderAdder = new InteriorIntersectionFinderAdder(li)
+    const intFinderAdder = new InteriorIntersectionFinderAdder(li)
     this._noder.setSegmentIntersector(intFinderAdder)
     this._noder.computeNodes(segStrings)
     return intFinderAdder.getInteriorIntersections()
@@ -46,16 +46,16 @@ export default class MCIndexSnapRounder {
   computeVertexSnaps () {
     if (hasInterface(arguments[0], Collection)) {
       const edges = arguments[0]
-      for (var i0 = edges.iterator(); i0.hasNext();) {
-        var edge0 = i0.next()
+      for (let i0 = edges.iterator(); i0.hasNext();) {
+        const edge0 = i0.next()
         this.computeVertexSnaps(edge0)
       }
     } else if (arguments[0] instanceof NodedSegmentString) {
       const e = arguments[0]
-      var pts0 = e.getCoordinates()
-      for (var i = 0; i < pts0.length; i++) {
-        var hotPixel = new HotPixel(pts0[i], this._scaleFactor, this._li)
-        var isNodeAdded = this._pointSnapper.snap(hotPixel, e, i)
+      const pts0 = e.getCoordinates()
+      for (let i = 0; i < pts0.length; i++) {
+        const hotPixel = new HotPixel(pts0[i], this._scaleFactor, this._li)
+        const isNodeAdded = this._pointSnapper.snap(hotPixel, e, i)
         if (isNodeAdded) {
           e.addIntersection(pts0[i], i)
         }
@@ -71,9 +71,9 @@ export default class MCIndexSnapRounder {
   }
 
   computeIntersectionSnaps (snapPts) {
-    for (var it = snapPts.iterator(); it.hasNext();) {
-      var snapPt = it.next()
-      var hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li)
+    for (let it = snapPts.iterator(); it.hasNext();) {
+      const snapPt = it.next()
+      const hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li)
       this._pointSnapper.snap(hotPixel)
     }
   }

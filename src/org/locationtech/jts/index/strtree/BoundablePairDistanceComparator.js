@@ -6,8 +6,8 @@ export default class BoundablePairDistanceComparator {
   }
 
   compare (p1, p2) {
-    var distance1 = p1.getDistance()
-    var distance2 = p2.getDistance()
+    const distance1 = p1.getDistance()
+    const distance2 = p2.getDistance()
     if (this.normalOrder) {
       if (distance1 > distance2) {
         return 1

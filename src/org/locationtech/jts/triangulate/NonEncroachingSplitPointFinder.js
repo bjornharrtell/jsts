@@ -6,19 +6,19 @@ export default class NonEncroachingSplitPointFinder {
   }
 
   static projectedSplitPoint (seg, encroachPt) {
-    var lineSeg = seg.getLineSegment()
-    var projPt = lineSeg.project(encroachPt)
+    const lineSeg = seg.getLineSegment()
+    const projPt = lineSeg.project(encroachPt)
     return projPt
   }
 
   findSplitPoint (seg, encroachPt) {
-    var lineSeg = seg.getLineSegment()
-    var segLen = lineSeg.getLength()
-    var midPtLen = segLen / 2
-    var splitSeg = new SplitSegment(lineSeg)
-    var projPt = NonEncroachingSplitPointFinder.projectedSplitPoint(seg, encroachPt)
-    var nonEncroachDiam = projPt.distance(encroachPt) * 2 * 0.8
-    var maxSplitLen = nonEncroachDiam
+    const lineSeg = seg.getLineSegment()
+    const segLen = lineSeg.getLength()
+    const midPtLen = segLen / 2
+    const splitSeg = new SplitSegment(lineSeg)
+    const projPt = NonEncroachingSplitPointFinder.projectedSplitPoint(seg, encroachPt)
+    const nonEncroachDiam = projPt.distance(encroachPt) * 2 * 0.8
+    let maxSplitLen = nonEncroachDiam
     if (maxSplitLen > midPtLen) {
       maxSplitLen = midPtLen
     }

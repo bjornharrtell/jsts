@@ -15,10 +15,10 @@ export default class Envelope {
       return false
     } else if (arguments.length === 4) {
       const p1 = arguments[0]; const p2 = arguments[1]; const q1 = arguments[2]; const q2 = arguments[3]
-      var minq = Math.min(q1.x, q2.x)
-      var maxq = Math.max(q1.x, q2.x)
-      var minp = Math.min(p1.x, p2.x)
-      var maxp = Math.max(p1.x, p2.x)
+      let minq = Math.min(q1.x, q2.x)
+      let maxq = Math.max(q1.x, q2.x)
+      let minp = Math.min(p1.x, p2.x)
+      let maxp = Math.max(p1.x, p2.x)
       if (minp > maxq) return false
       if (maxp < minq) return false
       minq = Math.min(q1.y, q2.y)
@@ -39,7 +39,7 @@ export default class Envelope {
     if (!(other instanceof Envelope)) {
       return false
     }
-    var otherEnvelope = other
+    const otherEnvelope = other
     if (this.isNull()) {
       return otherEnvelope.isNull()
     }
@@ -48,10 +48,10 @@ export default class Envelope {
 
   intersection (env) {
     if (this.isNull() || env.isNull() || !this.intersects(env)) return new Envelope()
-    var intMinX = this._minx > env._minx ? this._minx : env._minx
-    var intMinY = this._miny > env._miny ? this._miny : env._miny
-    var intMaxX = this._maxx < env._maxx ? this._maxx : env._maxx
-    var intMaxY = this._maxy < env._maxy ? this._maxy : env._maxy
+    const intMinX = this._minx > env._minx ? this._minx : env._minx
+    const intMinY = this._miny > env._miny ? this._miny : env._miny
+    const intMaxX = this._maxx < env._maxx ? this._maxx : env._maxx
+    const intMaxY = this._maxy < env._maxy ? this._maxy : env._maxy
     return new Envelope(intMinX, intMaxX, intMinY, intMaxY)
   }
 
@@ -100,13 +100,13 @@ export default class Envelope {
         if (this.isNull()) {
           return false
         }
-        var envminx = a.x < b.x ? a.x : b.x
+        const envminx = a.x < b.x ? a.x : b.x
         if (envminx > this._maxx) return false
-        var envmaxx = a.x > b.x ? a.x : b.x
+        const envmaxx = a.x > b.x ? a.x : b.x
         if (envmaxx < this._minx) return false
-        var envminy = a.y < b.y ? a.y : b.y
+        const envminy = a.y < b.y ? a.y : b.y
         if (envminy > this._maxy) return false
-        var envmaxy = a.y > b.y ? a.y : b.y
+        const envmaxy = a.y > b.y ? a.y : b.y
         if (envmaxy < this._miny) return false
         return true
       } else if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
@@ -181,8 +181,8 @@ export default class Envelope {
 
   minExtent () {
     if (this.isNull()) return 0.0
-    var w = this.getWidth()
-    var h = this.getHeight()
+    const w = this.getWidth()
+    const h = this.getHeight()
     if (w < h) return w
     return h
   }
@@ -195,7 +195,7 @@ export default class Envelope {
   }
 
   compareTo (o) {
-    var env = o
+    const env = o
     if (this.isNull()) {
       if (env.isNull()) return 0
       return -1
@@ -240,8 +240,8 @@ export default class Envelope {
 
   maxExtent () {
     if (this.isNull()) return 0.0
-    var w = this.getWidth()
-    var h = this.getHeight()
+    const w = this.getWidth()
+    const h = this.getHeight()
     if (w > h) return w
     return h
   }
@@ -323,9 +323,9 @@ export default class Envelope {
 
   distance (env) {
     if (this.intersects(env)) return 0
-    var dx = 0.0
+    let dx = 0.0
     if (this._maxx < env._minx) dx = env._minx - this._maxx; else if (this._minx > env._maxx) dx = this._minx - env._maxx
-    var dy = 0.0
+    let dy = 0.0
     if (this._maxy < env._miny) dy = env._miny - this._maxy; else if (this._miny > env._maxy) dy = this._miny - env._maxy
     if (dx === 0.0) return dy
     if (dy === 0.0) return dx
@@ -333,7 +333,7 @@ export default class Envelope {
   }
 
   hashCode () {
-    var result = 17
+    let result = 17
     result = 37 * result + Coordinate.hashCode(this._minx)
     result = 37 * result + Coordinate.hashCode(this._maxx)
     result = 37 * result + Coordinate.hashCode(this._miny)

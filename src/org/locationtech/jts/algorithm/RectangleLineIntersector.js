@@ -7,16 +7,16 @@ export default class RectangleLineIntersector {
   }
 
   intersects (p0, p1) {
-    var segEnv = new Envelope(p0, p1)
+    const segEnv = new Envelope(p0, p1)
     if (!this._rectEnv.intersects(segEnv)) return false
     if (this._rectEnv.intersects(p0)) return true
     if (this._rectEnv.intersects(p1)) return true
     if (p0.compareTo(p1) > 0) {
-      var tmp = p0
+      const tmp = p0
       p0 = p1
       p1 = tmp
     }
-    var isSegUpwards = false
+    let isSegUpwards = false
     if (p1.y > p0.y) isSegUpwards = true
     if (isSegUpwards) {
       this._li.computeIntersection(p0, p1, this._diagDown0, this._diagDown1)

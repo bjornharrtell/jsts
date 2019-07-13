@@ -14,10 +14,10 @@ export default class LineStringSnapper {
   }
 
   snapVertices (srcCoords, snapPts) {
-    var end = this._isClosed ? srcCoords.size() - 1 : srcCoords.size()
-    for (var i = 0; i < end; i++) {
-      var srcPt = srcCoords.get(i)
-      var snapVert = this.findSnapForVertex(srcPt, snapPts)
+    const end = this._isClosed ? srcCoords.size() - 1 : srcCoords.size()
+    for (let i = 0; i < end; i++) {
+      const srcPt = srcCoords.get(i)
+      const snapVert = this.findSnapForVertex(srcPt, snapPts)
       if (snapVert !== null) {
         srcCoords.set(i, new Coordinate(snapVert))
         if (i === 0 && this._isClosed) srcCoords.set(srcCoords.size() - 1, new Coordinate(snapVert))
@@ -26,7 +26,7 @@ export default class LineStringSnapper {
   }
 
   findSnapForVertex (pt, snapPts) {
-    for (var i = 0; i < snapPts.length; i++) {
+    for (let i = 0; i < snapPts.length; i++) {
       if (pt.equals2D(snapPts[i])) return null
       if (pt.distance(snapPts[i]) < this._snapTolerance) return snapPts[i]
     }
@@ -34,20 +34,20 @@ export default class LineStringSnapper {
   }
 
   snapTo (snapPts) {
-    var coordList = new CoordinateList(this._srcPts)
+    const coordList = new CoordinateList(this._srcPts)
     this.snapVertices(coordList, snapPts)
     this.snapSegments(coordList, snapPts)
-    var newPts = coordList.toCoordinateArray()
+    const newPts = coordList.toCoordinateArray()
     return newPts
   }
 
   snapSegments (srcCoords, snapPts) {
     if (snapPts.length === 0) return null
-    var distinctPtCount = snapPts.length
+    let distinctPtCount = snapPts.length
     if (snapPts[0].equals2D(snapPts[snapPts.length - 1])) distinctPtCount = snapPts.length - 1
-    for (var i = 0; i < distinctPtCount; i++) {
-      var snapPt = snapPts[i]
-      var index = this.findSegmentIndexToSnap(snapPt, srcCoords)
+    for (let i = 0; i < distinctPtCount; i++) {
+      const snapPt = snapPts[i]
+      const index = this.findSegmentIndexToSnap(snapPt, srcCoords)
       if (index >= 0) {
         srcCoords.add(index + 1, new Coordinate(snapPt), false)
       }
@@ -55,15 +55,15 @@ export default class LineStringSnapper {
   }
 
   findSegmentIndexToSnap (snapPt, srcCoords) {
-    var minDist = Double.MAX_VALUE
-    var snapIndex = -1
-    for (var i = 0; i < srcCoords.size() - 1; i++) {
+    let minDist = Double.MAX_VALUE
+    let snapIndex = -1
+    for (let i = 0; i < srcCoords.size() - 1; i++) {
       this._seg.p0 = srcCoords.get(i)
       this._seg.p1 = srcCoords.get(i + 1)
       if (this._seg.p0.equals2D(snapPt) || this._seg.p1.equals2D(snapPt)) {
         if (this._allowSnappingToSourceVertices) continue; else return -1
       }
-      var dist = this._seg.distance(snapPt)
+      const dist = this._seg.distance(snapPt)
       if (dist < this._snapTolerance && dist < minDist) {
         minDist = dist
         snapIndex = i

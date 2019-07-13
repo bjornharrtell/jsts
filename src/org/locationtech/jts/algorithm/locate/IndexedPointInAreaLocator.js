@@ -15,8 +15,8 @@ export default class IndexedPointInAreaLocator {
   }
 
   locate (p) {
-    var rcc = new RayCrossingCounter(p)
-    var visitor = new SegmentVisitor(rcc)
+    const rcc = new RayCrossingCounter(p)
+    const visitor = new SegmentVisitor(rcc)
     this._index.query(p.y, p.y, visitor)
     return rcc.getLocation()
   }
@@ -35,7 +35,7 @@ class SegmentVisitor {
   }
 
   visitItem (item) {
-    var seg = item
+    const seg = item
     this._counter.countSegment(seg.getCoordinate(0), seg.getCoordinate(1))
   }
 
@@ -58,19 +58,19 @@ class IntervalIndexedGeometry {
   }
 
   init (geom) {
-    var lines = LinearComponentExtracter.getLines(geom)
-    for (var i = lines.iterator(); i.hasNext();) {
-      var line = i.next()
-      var pts = line.getCoordinates()
+    const lines = LinearComponentExtracter.getLines(geom)
+    for (let i = lines.iterator(); i.hasNext();) {
+      const line = i.next()
+      const pts = line.getCoordinates()
       this.addLine(pts)
     }
   }
 
   addLine (pts) {
-    for (var i = 1; i < pts.length; i++) {
-      var seg = new LineSegment(pts[i - 1], pts[i])
-      var min = Math.min(seg.p0.y, seg.p1.y)
-      var max = Math.max(seg.p0.y, seg.p1.y)
+    for (let i = 1; i < pts.length; i++) {
+      const seg = new LineSegment(pts[i - 1], pts[i])
+      const min = Math.min(seg.p0.y, seg.p1.y)
+      const max = Math.max(seg.p0.y, seg.p1.y)
       this._index.insert(min, max, seg)
     }
   }
@@ -78,7 +78,7 @@ class IntervalIndexedGeometry {
   query () {
     if (arguments.length === 2) {
       const min = arguments[0]; const max = arguments[1]
-      var visitor = new ArrayListVisitor()
+      const visitor = new ArrayListVisitor()
       this._index.query(min, max, visitor)
       return visitor.getItems()
     } else if (arguments.length === 3) {

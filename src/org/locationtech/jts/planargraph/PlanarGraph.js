@@ -10,9 +10,9 @@ export default class PlanarGraph {
   }
 
   findNodesOfDegree (degree) {
-    var nodesFound = new ArrayList()
-    for (var i = this.nodeIterator(); i.hasNext();) {
-      var node = i.next()
+    const nodesFound = new ArrayList()
+    for (let i = this.nodeIterator(); i.hasNext();) {
+      const node = i.next()
       if (node.getDegree() === degree) nodesFound.add(node)
     }
     return nodesFound
@@ -35,20 +35,20 @@ export default class PlanarGraph {
       edge.remove()
     } else if (arguments[0] instanceof DirectedEdge) {
       const de = arguments[0]
-      var sym = de.getSym()
+      const sym = de.getSym()
       if (sym !== null) sym.setSym(null)
       de.getFromNode().remove(de)
       de.remove()
       this._dirEdges.remove(de)
     } else if (arguments[0] instanceof Node) {
       const node = arguments[0]
-      var outEdges = node.getOutEdges().getEdges()
-      for (var i = outEdges.iterator(); i.hasNext();) {
-        var de = i.next()
-        var sym = de.getSym()
+      const outEdges = node.getOutEdges().getEdges()
+      for (let i = outEdges.iterator(); i.hasNext();) {
+        const de = i.next()
+        const sym = de.getSym()
         if (sym !== null) this.remove(sym)
         this._dirEdges.remove(de)
-        var edge = de.getEdge()
+        const edge = de.getEdge()
         if (edge !== null) {
           this._edges.remove(edge)
         }

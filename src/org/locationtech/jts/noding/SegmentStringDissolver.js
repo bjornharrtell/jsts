@@ -10,7 +10,7 @@ export default class SegmentStringDissolver {
   }
 
   findMatching (oca, segString) {
-    var matchSS = this._ocaMap.get(oca)
+    const matchSS = this._ocaMap.get(oca)
     return matchSS
   }
 
@@ -21,18 +21,18 @@ export default class SegmentStringDissolver {
   dissolve () {
     if (hasInterface(arguments[0], Collection)) {
       const segStrings = arguments[0]
-      for (var i = segStrings.iterator(); i.hasNext();) {
+      for (let i = segStrings.iterator(); i.hasNext();) {
         this.dissolve(i.next())
       }
     } else if (hasInterface(arguments[0], SegmentString)) {
       const segString = arguments[0]
-      var oca = new OrientedCoordinateArray(segString.getCoordinates())
-      var existing = this.findMatching(oca, segString)
+      const oca = new OrientedCoordinateArray(segString.getCoordinates())
+      const existing = this.findMatching(oca, segString)
       if (existing === null) {
         this.add(oca, segString)
       } else {
         if (this._merger !== null) {
-          var isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates())
+          const isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates())
           this._merger.merge(existing, segString, isSameOrientation)
         }
       }

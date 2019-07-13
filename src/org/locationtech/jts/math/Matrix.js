@@ -5,24 +5,24 @@ export default class Matrix {
   }
 
   static solve (a, b) {
-    var n = b.length
+    const n = b.length
     if (a.length !== n || a[0].length !== n) throw new IllegalArgumentException('Matrix A is incorrectly sized')
-    for (var i = 0; i < n; i++) {
-      var maxElementRow = i
-      for (var j = i + 1; j < n; j++) if (Math.abs(a[j][i]) > Math.abs(a[maxElementRow][i])) maxElementRow = j
+    for (let i = 0; i < n; i++) {
+      let maxElementRow = i
+      for (let j = i + 1; j < n; j++) if (Math.abs(a[j][i]) > Math.abs(a[maxElementRow][i])) maxElementRow = j
       if (a[maxElementRow][i] === 0.0) return null
       Matrix.swapRows(a, i, maxElementRow)
       Matrix.swapRows(b, i, maxElementRow)
-      for (var j = i + 1; j < n; j++) {
-        var rowFactor = a[j][i] / a[i][i]
-        for (var k = n - 1; k >= i; k--) a[j][k] -= a[i][k] * rowFactor
+      for (let j = i + 1; j < n; j++) {
+        const rowFactor = a[j][i] / a[i][i]
+        for (let k = n - 1; k >= i; k--) a[j][k] -= a[i][k] * rowFactor
         b[j] -= b[i] * rowFactor
       }
     }
-    var solution = new Array(n).fill(null)
-    for (var j = n - 1; j >= 0; j--) {
-      var t = 0.0
-      for (var k = j + 1; k < n; k++) t += a[j][k] * solution[k]
+    const solution = new Array(n).fill(null)
+    for (let j = n - 1; j >= 0; j--) {
+      let t = 0.0
+      for (let k = j + 1; k < n; k++) t += a[j][k] * solution[k]
       solution[j] = (b[j] - t) / a[j][j]
     }
     return solution
@@ -32,15 +32,15 @@ export default class Matrix {
     if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
       const m = arguments[0]; const i = arguments[1]; const j = arguments[2]
       if (i === j) return null
-      for (var col = 0; col < m[0].length; col++) {
-        var temp = m[i][col]
+      for (let col = 0; col < m[0].length; col++) {
+        const temp = m[i][col]
         m[i][col] = m[j][col]
         m[j][col] = temp
       }
     } else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
       const m = arguments[0]; const i = arguments[1]; const j = arguments[2]
       if (i === j) return null
-      var temp = m[i]
+      const temp = m[i]
       m[i] = m[j]
       m[j] = temp
     }

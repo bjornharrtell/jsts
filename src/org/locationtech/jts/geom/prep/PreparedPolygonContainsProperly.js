@@ -9,18 +9,18 @@ export default class PreparedPolygonContainsProperly extends PreparedPolygonPred
   }
 
   static containsProperly (prep, geom) {
-    var polyInt = new PreparedPolygonContainsProperly(prep)
+    const polyInt = new PreparedPolygonContainsProperly(prep)
     return polyInt.containsProperly(geom)
   }
 
   containsProperly (geom) {
-    var isAllInPrepGeomAreaInterior = this.isAllTestComponentsInTargetInterior(geom)
+    const isAllInPrepGeomAreaInterior = this.isAllTestComponentsInTargetInterior(geom)
     if (!isAllInPrepGeomAreaInterior) return false
-    var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
-    var segsIntersect = this._prepPoly.getIntersectionFinder().intersects(lineSegStr)
+    const lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
+    const segsIntersect = this._prepPoly.getIntersectionFinder().intersects(lineSegStr)
     if (segsIntersect) return false
     if (hasInterface(geom, Polygonal)) {
-      var isTargetGeomInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
+      const isTargetGeomInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
       if (isTargetGeomInTestArea) return false
     }
     return true

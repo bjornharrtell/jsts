@@ -6,9 +6,9 @@ export default class EnhancedPrecisionOp {
   }
 
   static union (geom0, geom1) {
-    var originalEx = null
+    let originalEx = null
     try {
-      var result = geom0.union(geom1)
+      const result = geom0.union(geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) {
@@ -16,8 +16,8 @@ export default class EnhancedPrecisionOp {
       } else throw ex
     } finally {}
     try {
-      var cbo = new CommonBitsOp(true)
-      var resultEP = cbo.union(geom0, geom1)
+      const cbo = new CommonBitsOp(true)
+      const resultEP = cbo.union(geom0, geom1)
       if (!resultEP.isValid()) throw originalEx
       return resultEP
     } catch (ex2) {
@@ -28,9 +28,9 @@ export default class EnhancedPrecisionOp {
   }
 
   static intersection (geom0, geom1) {
-    var originalEx = null
+    let originalEx = null
     try {
-      var result = geom0.intersection(geom1)
+      const result = geom0.intersection(geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) {
@@ -38,8 +38,8 @@ export default class EnhancedPrecisionOp {
       } else throw ex
     } finally {}
     try {
-      var cbo = new CommonBitsOp(true)
-      var resultEP = cbo.intersection(geom0, geom1)
+      const cbo = new CommonBitsOp(true)
+      const resultEP = cbo.intersection(geom0, geom1)
       if (!resultEP.isValid()) throw originalEx
       return resultEP
     } catch (ex2) {
@@ -50,9 +50,9 @@ export default class EnhancedPrecisionOp {
   }
 
   static buffer (geom, distance) {
-    var originalEx = null
+    let originalEx = null
     try {
-      var result = geom.buffer(distance)
+      const result = geom.buffer(distance)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) {
@@ -60,8 +60,8 @@ export default class EnhancedPrecisionOp {
       } else throw ex
     } finally {}
     try {
-      var cbo = new CommonBitsOp(true)
-      var resultEP = cbo.buffer(geom, distance)
+      const cbo = new CommonBitsOp(true)
+      const resultEP = cbo.buffer(geom, distance)
       if (!resultEP.isValid()) throw originalEx
       return resultEP
     } catch (ex2) {
@@ -72,9 +72,9 @@ export default class EnhancedPrecisionOp {
   }
 
   static symDifference (geom0, geom1) {
-    var originalEx = null
+    let originalEx = null
     try {
-      var result = geom0.symDifference(geom1)
+      const result = geom0.symDifference(geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) {
@@ -82,8 +82,8 @@ export default class EnhancedPrecisionOp {
       } else throw ex
     } finally {}
     try {
-      var cbo = new CommonBitsOp(true)
-      var resultEP = cbo.symDifference(geom0, geom1)
+      const cbo = new CommonBitsOp(true)
+      const resultEP = cbo.symDifference(geom0, geom1)
       if (!resultEP.isValid()) throw originalEx
       return resultEP
     } catch (ex2) {
@@ -94,9 +94,9 @@ export default class EnhancedPrecisionOp {
   }
 
   static difference (geom0, geom1) {
-    var originalEx = null
+    let originalEx = null
     try {
-      var result = geom0.difference(geom1)
+      const result = geom0.difference(geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) {
@@ -104,8 +104,8 @@ export default class EnhancedPrecisionOp {
       } else throw ex
     } finally {}
     try {
-      var cbo = new CommonBitsOp(true)
-      var resultEP = cbo.difference(geom0, geom1)
+      const cbo = new CommonBitsOp(true)
+      const resultEP = cbo.difference(geom0, geom1)
       if (!resultEP.isValid()) throw originalEx
       return resultEP
     } catch (ex2) {

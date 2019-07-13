@@ -13,11 +13,11 @@ export default class VoronoiDiagramBuilder {
   }
 
   static clipGeometryCollection (geom, clipEnv) {
-    var clipPoly = geom.getFactory().toGeometry(clipEnv)
-    var clipped = new ArrayList()
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var g = geom.getGeometryN(i)
-      var result = null
+    const clipPoly = geom.getFactory().toGeometry(clipEnv)
+    const clipped = new ArrayList()
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const g = geom.getGeometryN(i)
+      let result = null
       if (clipEnv.contains(g.getEnvelopeInternal())) result = g; else if (clipEnv.intersects(g.getEnvelopeInternal())) {
         result = clipPoly.intersection(g)
         result.setUserData(g.getUserData())
@@ -31,20 +31,20 @@ export default class VoronoiDiagramBuilder {
 
   create () {
     if (this._subdiv !== null) return null
-    var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
+    const siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
     this._diagramEnv = siteEnv
-    var expandBy = Math.max(this._diagramEnv.getWidth(), this._diagramEnv.getHeight())
+    const expandBy = Math.max(this._diagramEnv.getWidth(), this._diagramEnv.getHeight())
     this._diagramEnv.expandBy(expandBy)
     if (this._clipEnv !== null) this._diagramEnv.expandToInclude(this._clipEnv)
-    var vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords)
+    const vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords)
     this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance)
-    var triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
+    const triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
 
   getDiagram (geomFact) {
     this.create()
-    var polys = this._subdiv.getVoronoiDiagram(geomFact)
+    const polys = this._subdiv.getVoronoiDiagram(geomFact)
     return VoronoiDiagramBuilder.clipGeometryCollection(polys, this._diagramEnv)
   }
 

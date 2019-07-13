@@ -5,22 +5,22 @@ export default class IncrementalDelaunayTriangulator {
   }
 
   insertSite (v) {
-    var e = this._subdiv.locate(v)
+    let e = this._subdiv.locate(v)
     if (this._subdiv.isVertexOfEdge(e, v)) {
       return e
     } else if (this._subdiv.isOnEdge(e, v.getCoordinate())) {
       e = e.oPrev()
       this._subdiv.delete(e.oNext())
     }
-    var base = this._subdiv.makeEdge(e.orig(), v)
+    let base = this._subdiv.makeEdge(e.orig(), v)
     QuadEdge.splice(base, e)
-    var startEdge = base
+    const startEdge = base
     do {
       base = this._subdiv.connect(e, base.sym())
       e = base.oPrev()
     } while (e.lNext() !== startEdge)
     do {
-      var t = e.oPrev()
+      const t = e.oPrev()
       if (t.dest().rightOf(e) && v.isInCircle(e.orig(), t.dest(), e.dest())) {
         QuadEdge.swap(e)
         e = e.oPrev()
@@ -33,8 +33,8 @@ export default class IncrementalDelaunayTriangulator {
   }
 
   insertSites (vertices) {
-    for (var i = vertices.iterator(); i.hasNext();) {
-      var v = i.next()
+    for (let i = vertices.iterator(); i.hasNext();) {
+      const v = i.next()
       this.insertSite(v)
     }
   }

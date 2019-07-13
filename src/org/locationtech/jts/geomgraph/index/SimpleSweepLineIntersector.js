@@ -14,11 +14,11 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
   }
 
   processOverlaps (start, end, ev0, si) {
-    var ss0 = ev0.getObject()
-    for (var i = start; i < end; i++) {
-      var ev1 = this.events.get(i)
+    const ss0 = ev0.getObject()
+    for (let i = start; i < end; i++) {
+      const ev1 = this.events.get(i)
       if (ev1.isInsert()) {
-        var ss1 = ev1.getObject()
+        const ss1 = ev1.getObject()
         if (!ev0.isSameLabel(ev1)) {
           ss0.computeIntersections(ss1, si)
           this.nOverlaps++
@@ -29,8 +29,8 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
 
   prepareEvents () {
     Collections.sort(this.events)
-    for (var i = 0; i < this.events.size(); i++) {
-      var ev = this.events.get(i)
+    for (let i = 0; i < this.events.size(); i++) {
+      const ev = this.events.get(i)
       if (ev.isDelete()) {
         ev.getInsertEvent().setDeleteEventIndex(i)
       }
@@ -42,8 +42,8 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
       const si = arguments[0]
       this.nOverlaps = 0
       this.prepareEvents()
-      for (var i = 0; i < this.events.size(); i++) {
-        var ev = this.events.get(i)
+      for (let i = 0; i < this.events.size(); i++) {
+        const ev = this.events.get(i)
         if (ev.isInsert()) {
           this.processOverlaps(i, ev.getDeleteEventIndex(), ev, si)
         }
@@ -65,23 +65,23 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
   add () {
     if (arguments.length === 1) {
       const edges = arguments[0]
-      for (var i = edges.iterator(); i.hasNext();) {
-        var edge = i.next()
+      for (let i = edges.iterator(); i.hasNext();) {
+        const edge = i.next()
         this.add(edge, edge)
       }
     } else if (arguments.length === 2) {
       if (hasInterface(arguments[0], List) && arguments[1] instanceof Object) {
         const edges = arguments[0]; const edgeSet = arguments[1]
-        for (var i = edges.iterator(); i.hasNext();) {
-          var edge = i.next()
+        for (let i = edges.iterator(); i.hasNext();) {
+          const edge = i.next()
           this.add(edge, edgeSet)
         }
       } else if (arguments[0] instanceof Edge && arguments[1] instanceof Object) {
         const edge = arguments[0]; const edgeSet = arguments[1]
-        var pts = edge.getCoordinates()
-        for (var i = 0; i < pts.length - 1; i++) {
-          var ss = new SweepLineSegment(edge, i)
-          var insertEvent = new SweepLineEvent(edgeSet, ss.getMinX(), null)
+        const pts = edge.getCoordinates()
+        for (let i = 0; i < pts.length - 1; i++) {
+          const ss = new SweepLineSegment(edge, i)
+          const insertEvent = new SweepLineEvent(edgeSet, ss.getMinX(), null)
           this.events.add(insertEvent)
           this.events.add(new SweepLineEvent(ss.getMaxX(), insertEvent))
         }

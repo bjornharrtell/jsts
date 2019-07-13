@@ -10,19 +10,19 @@ export default class Densifier {
   }
 
   static densifyPoints (pts, distanceTolerance, precModel) {
-    var seg = new LineSegment()
-    var coordList = new CoordinateList()
-    for (var i = 0; i < pts.length - 1; i++) {
+    const seg = new LineSegment()
+    const coordList = new CoordinateList()
+    for (let i = 0; i < pts.length - 1; i++) {
       seg.p0 = pts[i]
       seg.p1 = pts[i + 1]
       coordList.add(seg.p0, false)
-      var len = seg.getLength()
-      var densifiedSegCount = Math.trunc(len / distanceTolerance) + 1
+      const len = seg.getLength()
+      const densifiedSegCount = Math.trunc(len / distanceTolerance) + 1
       if (densifiedSegCount > 1) {
-        var densifiedSegLen = len / densifiedSegCount
-        for (var j = 1; j < densifiedSegCount; j++) {
-          var segFract = j * densifiedSegLen / len
-          var p = seg.pointAlong(segFract)
+        const densifiedSegLen = len / densifiedSegCount
+        for (let j = 1; j < densifiedSegCount; j++) {
+          const segFract = j * densifiedSegLen / len
+          const p = seg.pointAlong(segFract)
           precModel.makePrecise(p)
           coordList.add(p, false)
         }
@@ -33,7 +33,7 @@ export default class Densifier {
   }
 
   static densify (geom, distanceTolerance) {
-    var densifier = new Densifier(geom)
+    const densifier = new Densifier(geom)
     densifier.setDistanceTolerance(distanceTolerance)
     return densifier.getResultGeometry()
   }
@@ -62,12 +62,12 @@ class DensifyTransformer extends GeometryTransformer {
   }
 
   transformMultiPolygon (geom, parent) {
-    var roughGeom = super.transformMultiPolygon.call(this, geom, parent)
+    const roughGeom = super.transformMultiPolygon.call(this, geom, parent)
     return this.createValidArea(roughGeom)
   }
 
   transformPolygon (geom, parent) {
-    var roughGeom = super.transformPolygon.call(this, geom, parent)
+    const roughGeom = super.transformPolygon.call(this, geom, parent)
     if (parent instanceof MultiPolygon) {
       return roughGeom
     }
@@ -75,8 +75,8 @@ class DensifyTransformer extends GeometryTransformer {
   }
 
   transformCoordinates (coords, parent) {
-    var inputPts = coords.toCoordinateArray()
-    var newPts = Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel())
+    const inputPts = coords.toCoordinateArray()
+    let newPts = Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel())
     if (parent instanceof LineString && newPts.length === 1) {
       newPts = new Array(0).fill(null)
     }

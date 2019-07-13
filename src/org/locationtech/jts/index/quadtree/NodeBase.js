@@ -6,7 +6,7 @@ export default class NodeBase {
   }
 
   static getSubnodeIndex (env, centrex, centrey) {
-    var subnodeIndex = -1
+    let subnodeIndex = -1
     if (env.getMinX() >= centrex) {
       if (env.getMinY() >= centrey) subnodeIndex = 3
       if (env.getMaxY() <= centrey) subnodeIndex = 1
@@ -19,7 +19,7 @@ export default class NodeBase {
   }
 
   hasChildren () {
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) return true
     }
     return false
@@ -31,7 +31,7 @@ export default class NodeBase {
 
   addAllItems (resultItems) {
     resultItems.addAll(this._items)
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
         this._subnode[i].addAllItems(resultItems)
       }
@@ -40,8 +40,8 @@ export default class NodeBase {
   }
 
   getNodeCount () {
-    var subSize = 0
-    for (var i = 0; i < 4; i++) {
+    let subSize = 0
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
         subSize += this._subnode[i].size()
       }
@@ -50,8 +50,8 @@ export default class NodeBase {
   }
 
   size () {
-    var subSize = 0
-    for (var i = 0; i < 4; i++) {
+    let subSize = 0
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
         subSize += this._subnode[i].size()
       }
@@ -62,7 +62,7 @@ export default class NodeBase {
   addAllItemsFromOverlapping (searchEnv, resultItems) {
     if (!this.isSearchMatch(searchEnv)) return null
     resultItems.addAll(this._items)
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
         this._subnode[i].addAllItemsFromOverlapping(searchEnv, resultItems)
       }
@@ -70,7 +70,7 @@ export default class NodeBase {
   }
 
   visitItems (searchEnv, visitor) {
-    for (var i = this._items.iterator(); i.hasNext();) {
+    for (let i = this._items.iterator(); i.hasNext();) {
       visitor.visitItem(i.next())
     }
   }
@@ -81,8 +81,8 @@ export default class NodeBase {
 
   remove (itemEnv, item) {
     if (!this.isSearchMatch(itemEnv)) return false
-    var found = false
-    for (var i = 0; i < 4; i++) {
+    let found = false
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
         found = this._subnode[i].remove(itemEnv, item)
         if (found) {
@@ -99,7 +99,7 @@ export default class NodeBase {
   visit (searchEnv, visitor) {
     if (!this.isSearchMatch(searchEnv)) return null
     this.visitItems(searchEnv, visitor)
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
         this._subnode[i].visit(searchEnv, visitor)
       }
@@ -111,10 +111,10 @@ export default class NodeBase {
   }
 
   depth () {
-    var maxSubDepth = 0
-    for (var i = 0; i < 4; i++) {
+    let maxSubDepth = 0
+    for (let i = 0; i < 4; i++) {
       if (this._subnode[i] !== null) {
-        var sqd = this._subnode[i].depth()
+        const sqd = this._subnode[i].depth()
         if (sqd > maxSubDepth) maxSubDepth = sqd
       }
     }
@@ -122,9 +122,9 @@ export default class NodeBase {
   }
 
   isEmpty () {
-    var isEmpty = true
+    let isEmpty = true
     if (!this._items.isEmpty()) isEmpty = false; else {
-      for (var i = 0; i < 4; i++) {
+      for (let i = 0; i < 4; i++) {
         if (this._subnode[i] !== null) {
           if (!this._subnode[i].isEmpty()) {
             isEmpty = false

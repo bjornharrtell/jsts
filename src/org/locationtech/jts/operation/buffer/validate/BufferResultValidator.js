@@ -9,13 +9,13 @@ export default class BufferResultValidator {
   }
 
   static isValidMsg (g, distance, result) {
-    var validator = new BufferResultValidator(g, distance, result)
+    const validator = new BufferResultValidator(g, distance, result)
     if (!validator.isValid()) return validator.getErrorMessage()
     return null
   }
 
   static isValid (g, distance, result) {
-    var validator = new BufferResultValidator(g, distance, result)
+    const validator = new BufferResultValidator(g, distance, result)
     if (validator.isValid()) return true
     return false
   }
@@ -35,11 +35,11 @@ export default class BufferResultValidator {
 
   checkEnvelope () {
     if (this._distance < 0.0) return null
-    var padding = this._distance * BufferResultValidator.MAX_ENV_DIFF_FRAC
+    let padding = this._distance * BufferResultValidator.MAX_ENV_DIFF_FRAC
     if (padding === 0.0) padding = 0.001
-    var expectedEnv = new Envelope(this._input.getEnvelopeInternal())
+    const expectedEnv = new Envelope(this._input.getEnvelopeInternal())
     expectedEnv.expandBy(this._distance)
-    var bufEnv = new Envelope(this._result.getEnvelopeInternal())
+    const bufEnv = new Envelope(this._result.getEnvelopeInternal())
     bufEnv.expandBy(padding)
     if (!bufEnv.contains(expectedEnv)) {
       this._isValid = false
@@ -50,7 +50,7 @@ export default class BufferResultValidator {
   }
 
   checkDistance () {
-    var distValid = new BufferDistanceValidator(this._input, this._distance, this._result)
+    const distValid = new BufferDistanceValidator(this._input, this._distance, this._result)
     if (!distValid.isValid()) {
       this._isValid = false
       this._errorMsg = distValid.getErrorMessage()
@@ -61,8 +61,8 @@ export default class BufferResultValidator {
   }
 
   checkArea () {
-    var inputArea = this._input.getArea()
-    var resultArea = this._result.getArea()
+    const inputArea = this._input.getArea()
+    const resultArea = this._result.getArea()
     if (this._distance > 0.0 && inputArea > resultArea) {
       this._isValid = false
       this._errorMsg = 'Area of positive buffer is smaller than input'

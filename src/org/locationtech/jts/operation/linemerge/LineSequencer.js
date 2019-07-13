@@ -20,10 +20,10 @@ export default class LineSequencer {
   }
 
   static findUnvisitedBestOrientedDE (node) {
-    var wellOrientedDE = null
-    var unvisitedDE = null
-    for (var i = node.getOutEdges().iterator(); i.hasNext();) {
-      var de = i.next()
+    let wellOrientedDE = null
+    let unvisitedDE = null
+    for (let i = node.getOutEdges().iterator(); i.hasNext();) {
+      const de = i.next()
       if (!de.getEdge().isVisited()) {
         unvisitedDE = de
         if (de.getEdgeDirection()) wellOrientedDE = de
@@ -34,10 +34,10 @@ export default class LineSequencer {
   }
 
   static findLowestDegreeNode (graph) {
-    var minDegree = Integer.MAX_VALUE
-    var minDegreeNode = null
-    for (var i = graph.nodeIterator(); i.hasNext();) {
-      var node = i.next()
+    let minDegree = Integer.MAX_VALUE
+    let minDegreeNode = null
+    for (let i = graph.nodeIterator(); i.hasNext();) {
+      const node = i.next()
       if (minDegreeNode === null || node.getDegree() < minDegree) {
         minDegree = node.getDegree()
         minDegreeNode = node
@@ -50,14 +50,14 @@ export default class LineSequencer {
     if (!(geom instanceof MultiLineString)) {
       return true
     }
-    var mls = geom
-    var prevSubgraphNodes = new TreeSet()
-    var lastNode = null
-    var currNodes = new ArrayList()
-    for (var i = 0; i < mls.getNumGeometries(); i++) {
-      var line = mls.getGeometryN(i)
-      var startNode = line.getCoordinateN(0)
-      var endNode = line.getCoordinateN(line.getNumPoints() - 1)
+    const mls = geom
+    const prevSubgraphNodes = new TreeSet()
+    let lastNode = null
+    const currNodes = new ArrayList()
+    for (let i = 0; i < mls.getNumGeometries(); i++) {
+      const line = mls.getGeometryN(i)
+      const startNode = line.getCoordinateN(0)
+      const endNode = line.getCoordinateN(line.getNumPoints() - 1)
       if (prevSubgraphNodes.contains(startNode)) return false
       if (prevSubgraphNodes.contains(endNode)) return false
       if (lastNode !== null) {
@@ -74,17 +74,17 @@ export default class LineSequencer {
   }
 
   static reverse (line) {
-    var pts = line.getCoordinates()
-    var revPts = new Array(pts.length).fill(null)
-    var len = pts.length
-    for (var i = 0; i < len; i++) {
+    const pts = line.getCoordinates()
+    const revPts = new Array(pts.length).fill(null)
+    const len = pts.length
+    for (let i = 0; i < len; i++) {
       revPts[len - 1 - i] = new Coordinate(pts[i])
     }
     return line.getFactory().createLineString(revPts)
   }
 
   static sequence (geom) {
-    var sequencer = new LineSequencer()
+    const sequencer = new LineSequencer()
     sequencer.add(geom)
     return sequencer.getSequencedLineStrings()
   }
@@ -98,9 +98,9 @@ export default class LineSequencer {
   }
 
   hasSequence (graph) {
-    var oddDegreeCount = 0
-    for (var i = graph.nodeIterator(); i.hasNext();) {
-      var node = i.next()
+    let oddDegreeCount = 0
+    for (let i = graph.nodeIterator(); i.hasNext();) {
+      const node = i.next()
       if (node.getDegree() % 2 === 1) oddDegreeCount++
     }
     return oddDegreeCount <= 2
@@ -111,23 +111,23 @@ export default class LineSequencer {
       return null
     }
     this._isRun = true
-    var sequences = this.findSequences()
+    const sequences = this.findSequences()
     if (sequences === null) return null
     this._sequencedGeometry = this.buildSequencedGeometry(sequences)
     this._isSequenceable = true
-    var finalLineCount = this._sequencedGeometry.getNumGeometries()
+    const finalLineCount = this._sequencedGeometry.getNumGeometries()
     Assert.isTrue(this._lineCount === finalLineCount, 'Lines were missing from result')
     Assert.isTrue(this._sequencedGeometry instanceof LineString || this._sequencedGeometry instanceof MultiLineString, 'Result is not lineal')
   }
 
   findSequences () {
-    var sequences = new ArrayList()
-    var csFinder = new ConnectedSubgraphFinder(this._graph)
-    var subgraphs = csFinder.getConnectedSubgraphs()
-    for (var i = subgraphs.iterator(); i.hasNext();) {
-      var subgraph = i.next()
+    const sequences = new ArrayList()
+    const csFinder = new ConnectedSubgraphFinder(this._graph)
+    const subgraphs = csFinder.getConnectedSubgraphs()
+    for (let i = subgraphs.iterator(); i.hasNext();) {
+      const subgraph = i.next()
       if (this.hasSequence(subgraph)) {
-        var seq = this.findSequence(subgraph)
+        const seq = this.findSequence(subgraph)
         sequences.add(seq)
       } else {
         return null
@@ -137,13 +137,13 @@ export default class LineSequencer {
   }
 
   addReverseSubpath (de, lit, expectedClosed) {
-    var endNode = de.getToNode()
-    var fromNode = null
+    const endNode = de.getToNode()
+    let fromNode = null
     while (true) {
       lit.add(de.getSym())
       de.getEdge().setVisited(true)
       fromNode = de.getFromNode()
-      var unvisitedOutDE = LineSequencer.findUnvisitedBestOrientedDE(fromNode)
+      const unvisitedOutDE = LineSequencer.findUnvisitedBestOrientedDE(fromNode)
       if (unvisitedOutDE === null) break
       de = unvisitedOutDE.getSym()
     }
@@ -154,39 +154,39 @@ export default class LineSequencer {
 
   findSequence (graph) {
     GraphComponent.setVisited(graph.edgeIterator(), false)
-    var startNode = LineSequencer.findLowestDegreeNode(graph)
-    var startDE = startNode.getOutEdges().iterator().next()
-    var startDESym = startDE.getSym()
-    var seq = new LinkedList()
-    var lit = seq.listIterator()
+    const startNode = LineSequencer.findLowestDegreeNode(graph)
+    const startDE = startNode.getOutEdges().iterator().next()
+    const startDESym = startDE.getSym()
+    const seq = new LinkedList()
+    const lit = seq.listIterator()
     this.addReverseSubpath(startDESym, lit, false)
     while (lit.hasPrevious()) {
-      var prev = lit.previous()
-      var unvisitedOutDE = LineSequencer.findUnvisitedBestOrientedDE(prev.getFromNode())
+      const prev = lit.previous()
+      const unvisitedOutDE = LineSequencer.findUnvisitedBestOrientedDE(prev.getFromNode())
       if (unvisitedOutDE !== null) this.addReverseSubpath(unvisitedOutDE.getSym(), lit, true)
     }
-    var orientedSeq = this.orient(seq)
+    const orientedSeq = this.orient(seq)
     return orientedSeq
   }
 
   reverse (seq) {
-    var newSeq = new LinkedList()
-    for (var i = seq.iterator(); i.hasNext();) {
-      var de = i.next()
+    const newSeq = new LinkedList()
+    for (let i = seq.iterator(); i.hasNext();) {
+      const de = i.next()
       newSeq.addFirst(de.getSym())
     }
     return newSeq
   }
 
   orient (seq) {
-    var startEdge = seq.get(0)
-    var endEdge = seq.get(seq.size() - 1)
-    var startNode = startEdge.getFromNode()
-    var endNode = endEdge.getToNode()
-    var flipSeq = false
-    var hasDegree1Node = startNode.getDegree() === 1 || endNode.getDegree() === 1
+    const startEdge = seq.get(0)
+    const endEdge = seq.get(seq.size() - 1)
+    const startNode = startEdge.getFromNode()
+    const endNode = endEdge.getToNode()
+    let flipSeq = false
+    const hasDegree1Node = startNode.getDegree() === 1 || endNode.getDegree() === 1
     if (hasDegree1Node) {
-      var hasObviousStartNode = false
+      let hasObviousStartNode = false
       if (endEdge.getToNode().getDegree() === 1 && endEdge.getEdgeDirection() === false) {
         hasObviousStartNode = true
         flipSeq = true
@@ -204,14 +204,14 @@ export default class LineSequencer {
   }
 
   buildSequencedGeometry (sequences) {
-    var lines = new ArrayList()
-    for (var i1 = sequences.iterator(); i1.hasNext();) {
-      var seq = i1.next()
-      for (var i2 = seq.iterator(); i2.hasNext();) {
-        var de = i2.next()
-        var e = de.getEdge()
-        var line = e.getLine()
-        var lineToAdd = line
+    const lines = new ArrayList()
+    for (let i1 = sequences.iterator(); i1.hasNext();) {
+      const seq = i1.next()
+      for (let i2 = seq.iterator(); i2.hasNext();) {
+        const de = i2.next()
+        const e = de.getEdge()
+        const line = e.getLine()
+        let lineToAdd = line
         if (!de.getEdgeDirection() && !line.isClosed()) lineToAdd = LineSequencer.reverse(line)
         lines.add(lineToAdd)
       }
@@ -233,8 +233,8 @@ export default class LineSequencer {
   add () {
     if (hasInterface(arguments[0], Collection)) {
       const geometries = arguments[0]
-      for (var i = geometries.iterator(); i.hasNext();) {
-        var geometry = i.next()
+      for (let i = geometries.iterator(); i.hasNext();) {
+        const geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof Geometry) {

@@ -9,19 +9,19 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
   }
 
   static recursionLevelForSize (numPts) {
-    var pow4 = Math.trunc(numPts / 3)
-    var exp = Math.log(pow4) / Math.log(4)
+    const pow4 = Math.trunc(numPts / 3)
+    const exp = Math.log(pow4) / Math.log(4)
     return Math.trunc(exp)
   }
 
   getBoundary (level, origin, width) {
-    var y = origin.y
+    let y = origin.y
     if (level > 0) {
       y += KochSnowflakeBuilder.THIRD_HEIGHT * width
     }
-    var p0 = new Coordinate(origin.x, y)
-    var p1 = new Coordinate(origin.x + width / 2, y + width * KochSnowflakeBuilder.HEIGHT_FACTOR)
-    var p2 = new Coordinate(origin.x + width, y)
+    const p0 = new Coordinate(origin.x, y)
+    const p1 = new Coordinate(origin.x + width / 2, y + width * KochSnowflakeBuilder.HEIGHT_FACTOR)
+    const p2 = new Coordinate(origin.x + width, y)
     this.addSide(level, p0, p1)
     this.addSide(level, p1, p2)
     this.addSide(level, p2, p0)
@@ -30,9 +30,9 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
   }
 
   getGeometry () {
-    var level = KochSnowflakeBuilder.recursionLevelForSize(this._numPts)
-    var baseLine = this.getSquareBaseLine()
-    var pts = this.getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength())
+    const level = KochSnowflakeBuilder.recursionLevelForSize(this._numPts)
+    const baseLine = this.getSquareBaseLine()
+    const pts = this.getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength())
     return this._geomFactory.createPolygon(this._geomFactory.createLinearRing(pts), null)
   }
 
@@ -42,14 +42,14 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
 
   addSide (level, p0, p1) {
     if (level === 0) this.addSegment(p0, p1); else {
-      var base = Vector2D.create(p0, p1)
-      var midPt = base.multiply(0.5).translate(p0)
-      var heightVec = base.multiply(KochSnowflakeBuilder.THIRD_HEIGHT)
-      var offsetVec = heightVec.rotateByQuarterCircle(1)
-      var offsetPt = offsetVec.translate(midPt)
-      var n2 = level - 1
-      var thirdPt = base.multiply(KochSnowflakeBuilder.ONE_THIRD).translate(p0)
-      var twoThirdPt = base.multiply(KochSnowflakeBuilder.TWO_THIRDS).translate(p0)
+      const base = Vector2D.create(p0, p1)
+      const midPt = base.multiply(0.5).translate(p0)
+      const heightVec = base.multiply(KochSnowflakeBuilder.THIRD_HEIGHT)
+      const offsetVec = heightVec.rotateByQuarterCircle(1)
+      const offsetPt = offsetVec.translate(midPt)
+      const n2 = level - 1
+      const thirdPt = base.multiply(KochSnowflakeBuilder.ONE_THIRD).translate(p0)
+      const twoThirdPt = base.multiply(KochSnowflakeBuilder.TWO_THIRDS).translate(p0)
       this.addSide(n2, p0, thirdPt)
       this.addSide(n2, thirdPt, offsetPt)
       this.addSide(n2, offsetPt, twoThirdPt)

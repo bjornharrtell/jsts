@@ -15,46 +15,46 @@ export default class BufferOp {
   static bufferOp () {
     if (arguments.length === 2) {
       const g = arguments[0]; const distance = arguments[1]
-      var gBuf = new BufferOp(g)
-      var geomBuf = gBuf.getResultGeometry(distance)
+      const gBuf = new BufferOp(g)
+      const geomBuf = gBuf.getResultGeometry(distance)
       return geomBuf
     } else if (arguments.length === 3) {
       if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Geometry && typeof arguments[1] === 'number')) {
         const g = arguments[0]; const distance = arguments[1]; const quadrantSegments = arguments[2]
-        var bufOp = new BufferOp(g)
+        const bufOp = new BufferOp(g)
         bufOp.setQuadrantSegments(quadrantSegments)
-        var geomBuf = bufOp.getResultGeometry(distance)
+        const geomBuf = bufOp.getResultGeometry(distance)
         return geomBuf
       } else if (arguments[2] instanceof BufferParameters && (arguments[0] instanceof Geometry && typeof arguments[1] === 'number')) {
         const g = arguments[0]; const distance = arguments[1]; const params = arguments[2]
-        var bufOp = new BufferOp(g, params)
-        var geomBuf = bufOp.getResultGeometry(distance)
+        const bufOp = new BufferOp(g, params)
+        const geomBuf = bufOp.getResultGeometry(distance)
         return geomBuf
       }
     } else if (arguments.length === 4) {
       const g = arguments[0]; const distance = arguments[1]; const quadrantSegments = arguments[2]; const endCapStyle = arguments[3]
-      var bufOp = new BufferOp(g)
+      const bufOp = new BufferOp(g)
       bufOp.setQuadrantSegments(quadrantSegments)
       bufOp.setEndCapStyle(endCapStyle)
-      var geomBuf = bufOp.getResultGeometry(distance)
+      const geomBuf = bufOp.getResultGeometry(distance)
       return geomBuf
     }
   }
 
   static precisionScaleFactor (g, distance, maxPrecisionDigits) {
-    var env = g.getEnvelopeInternal()
-    var envMax = MathUtil.max(Math.abs(env.getMaxX()), Math.abs(env.getMaxY()), Math.abs(env.getMinX()), Math.abs(env.getMinY()))
-    var expandByDistance = distance > 0.0 ? distance : 0.0
-    var bufEnvMax = envMax + 2 * expandByDistance
-    var bufEnvPrecisionDigits = Math.trunc(Math.log(bufEnvMax) / Math.log(10) + 1.0)
-    var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits
-    var scaleFactor = Math.pow(10.0, minUnitLog10)
+    const env = g.getEnvelopeInternal()
+    const envMax = MathUtil.max(Math.abs(env.getMaxX()), Math.abs(env.getMaxY()), Math.abs(env.getMinX()), Math.abs(env.getMinY()))
+    const expandByDistance = distance > 0.0 ? distance : 0.0
+    const bufEnvMax = envMax + 2 * expandByDistance
+    const bufEnvPrecisionDigits = Math.trunc(Math.log(bufEnvMax) / Math.log(10) + 1.0)
+    const minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits
+    const scaleFactor = Math.pow(10.0, minUnitLog10)
     return scaleFactor
   }
 
   bufferFixedPrecision (fixedPM) {
-    var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.getScale())
-    var bufBuilder = new BufferBuilder(this._bufParams)
+    const noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.getScale())
+    const bufBuilder = new BufferBuilder(this._bufParams)
     bufBuilder.setWorkingPrecisionModel(fixedPM)
     bufBuilder.setNoder(noder)
     this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance)
@@ -62,7 +62,7 @@ export default class BufferOp {
 
   bufferReducedPrecision () {
     if (arguments.length === 0) {
-      for (var precDigits = BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
+      for (let precDigits = BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
         try {
           this.bufferReducedPrecision(precDigits)
         } catch (ex) {
@@ -75,8 +75,8 @@ export default class BufferOp {
       throw this._saveException
     } else if (arguments.length === 1) {
       const precisionDigits = arguments[0]
-      var sizeBasedScaleFactor = BufferOp.precisionScaleFactor(this._argGeom, this._distance, precisionDigits)
-      var fixedPM = new PrecisionModel(sizeBasedScaleFactor)
+      const sizeBasedScaleFactor = BufferOp.precisionScaleFactor(this._argGeom, this._distance, precisionDigits)
+      const fixedPM = new PrecisionModel(sizeBasedScaleFactor)
       this.bufferFixedPrecision(fixedPM)
     }
   }
@@ -84,7 +84,7 @@ export default class BufferOp {
   computeGeometry () {
     this.bufferOriginalPrecision()
     if (this._resultGeometry !== null) return null
-    var argPM = this._argGeom.getFactory().getPrecisionModel()
+    const argPM = this._argGeom.getFactory().getPrecisionModel()
     if (argPM.getType() === PrecisionModel.FIXED) this.bufferFixedPrecision(argPM); else this.bufferReducedPrecision()
   }
 
@@ -94,7 +94,7 @@ export default class BufferOp {
 
   bufferOriginalPrecision () {
     try {
-      var bufBuilder = new BufferBuilder(this._bufParams)
+      const bufBuilder = new BufferBuilder(this._bufParams)
       this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance)
     } catch (ex) {
       if (ex instanceof RuntimeException) {

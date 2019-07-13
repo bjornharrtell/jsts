@@ -4,14 +4,14 @@ export default class SweepLineSegment {
   }
 
   getMaxX () {
-    var x1 = this.pts[this.ptIndex].x
-    var x2 = this.pts[this.ptIndex + 1].x
+    const x1 = this.pts[this.ptIndex].x
+    const x2 = this.pts[this.ptIndex + 1].x
     return x1 > x2 ? x1 : x2
   }
 
   getMinX () {
-    var x1 = this.pts[this.ptIndex].x
-    var x2 = this.pts[this.ptIndex + 1].x
+    const x1 = this.pts[this.ptIndex].x
+    const x2 = this.pts[this.ptIndex + 1].x
     return x1 < x2 ? x1 : x2
   }
 

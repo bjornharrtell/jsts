@@ -15,14 +15,14 @@ export default class ConvexHull {
   }
 
   static extractCoordinates (geom) {
-    var filter = new UniqueCoordinateArrayFilter()
+    const filter = new UniqueCoordinateArrayFilter()
     geom.apply(filter)
     return filter.getCoordinates()
   }
 
   preSort (pts) {
-    var t = null
-    for (var i = 1; i < pts.length; i++) {
+    let t = null
+    for (let i = 1; i < pts.length; i++) {
       if (pts[i].y < pts[0].y || pts[i].y === pts[0].y && pts[i].x < pts[0].x) {
         t = pts[0]
         pts[0] = pts[i]
@@ -34,8 +34,8 @@ export default class ConvexHull {
   }
 
   computeOctRing (inputPts) {
-    var octPts = this.computeOctPts(inputPts)
-    var coordList = new CoordinateList()
+    const octPts = this.computeOctPts(inputPts)
+    const coordList = new CoordinateList()
     coordList.add(octPts, false)
     if (coordList.size() < 3) {
       return null
@@ -49,17 +49,17 @@ export default class ConvexHull {
     if (coordinates.length === 3) {
       return this._geomFactory.createLineString([coordinates[0], coordinates[1]])
     }
-    var linearRing = this._geomFactory.createLinearRing(coordinates)
+    const linearRing = this._geomFactory.createLinearRing(coordinates)
     return this._geomFactory.createPolygon(linearRing)
   }
 
   cleanRing (original) {
     Assert.equals(original[0], original[original.length - 1])
-    var cleanedRing = new ArrayList()
-    var previousDistinctCoordinate = null
-    for (var i = 0; i <= original.length - 2; i++) {
-      var currentCoordinate = original[i]
-      var nextCoordinate = original[i + 1]
+    const cleanedRing = new ArrayList()
+    let previousDistinctCoordinate = null
+    for (let i = 0; i <= original.length - 2; i++) {
+      const currentCoordinate = original[i]
+      const nextCoordinate = original[i + 1]
       if (currentCoordinate.equals(nextCoordinate)) {
         continue
       }
@@ -70,7 +70,7 @@ export default class ConvexHull {
       previousDistinctCoordinate = currentCoordinate
     }
     cleanedRing.add(original[original.length - 1])
-    var cleanedRingCoordinates = new Array(cleanedRing.size()).fill(null)
+    const cleanedRingCoordinates = new Array(cleanedRing.size()).fill(null)
     return cleanedRing.toArray(cleanedRingCoordinates)
   }
 
@@ -98,18 +98,18 @@ export default class ConvexHull {
   }
 
   reduce (inputPts) {
-    var polyPts = this.computeOctRing(inputPts)
+    const polyPts = this.computeOctRing(inputPts)
     if (polyPts === null) return inputPts
-    var reducedSet = new TreeSet()
-    for (var i = 0; i < polyPts.length; i++) {
+    const reducedSet = new TreeSet()
+    for (let i = 0; i < polyPts.length; i++) {
       reducedSet.add(polyPts[i])
     }
-    for (var i = 0; i < inputPts.length; i++) {
+    for (let i = 0; i < inputPts.length; i++) {
       if (!PointLocation.isInRing(inputPts[i], polyPts)) {
         reducedSet.add(inputPts[i])
       }
     }
-    var reducedPts = CoordinateArrays.toCoordinateArray(reducedSet)
+    const reducedPts = CoordinateArrays.toCoordinateArray(reducedSet)
     if (reducedPts.length < 3) return this.padArray3(reducedPts)
     return reducedPts
   }
@@ -124,19 +124,19 @@ export default class ConvexHull {
     if (this._inputPts.length === 2) {
       return this._geomFactory.createLineString(this._inputPts)
     }
-    var reducedPts = this._inputPts
+    let reducedPts = this._inputPts
     if (this._inputPts.length > 50) {
       reducedPts = this.reduce(this._inputPts)
     }
-    var sortedPts = this.preSort(reducedPts)
-    var cHS = this.grahamScan(sortedPts)
-    var cH = this.toCoordinateArray(cHS)
+    const sortedPts = this.preSort(reducedPts)
+    const cHS = this.grahamScan(sortedPts)
+    const cH = this.toCoordinateArray(cHS)
     return this.lineOrPolygon(cH)
   }
 
   padArray3 (pts) {
-    var pad = new Array(3).fill(null)
-    for (var i = 0; i < pad.length; i++) {
+    const pad = new Array(3).fill(null)
+    for (let i = 0; i < pad.length; i++) {
       if (i < pts.length) {
         pad[i] = pts[i]
       } else pad[i] = pts[0]
@@ -145,11 +145,11 @@ export default class ConvexHull {
   }
 
   computeOctPts (inputPts) {
-    var pts = new Array(8).fill(null)
-    for (var j = 0; j < pts.length; j++) {
+    const pts = new Array(8).fill(null)
+    for (let j = 0; j < pts.length; j++) {
       pts[j] = inputPts[0]
     }
-    for (var i = 1; i < inputPts.length; i++) {
+    for (let i = 1; i < inputPts.length; i++) {
       if (inputPts[i].x < pts[0].x) {
         pts[0] = inputPts[i]
       }
@@ -179,21 +179,21 @@ export default class ConvexHull {
   }
 
   toCoordinateArray (stack) {
-    var coordinates = new Array(stack.size()).fill(null)
-    for (var i = 0; i < stack.size(); i++) {
-      var coordinate = stack.get(i)
+    const coordinates = new Array(stack.size()).fill(null)
+    for (let i = 0; i < stack.size(); i++) {
+      const coordinate = stack.get(i)
       coordinates[i] = coordinate
     }
     return coordinates
   }
 
   grahamScan (c) {
-    var p = null
-    var ps = new Stack()
+    let p = null
+    const ps = new Stack()
     ps.push(c[0])
     ps.push(c[1])
     ps.push(c[2])
-    for (var i = 3; i < c.length; i++) {
+    for (let i = 3; i < c.length; i++) {
       p = ps.pop()
       while (!ps.empty() && Orientation.index(ps.peek(), p, c[i]) > 0) {
         p = ps.pop()
@@ -219,15 +219,15 @@ class RadialComparator {
   }
 
   static polarCompare (o, p, q) {
-    var dxp = p.x - o.x
-    var dyp = p.y - o.y
-    var dxq = q.x - o.x
-    var dyq = q.y - o.y
-    var orient = Orientation.index(o, p, q)
+    const dxp = p.x - o.x
+    const dyp = p.y - o.y
+    const dxq = q.x - o.x
+    const dyq = q.y - o.y
+    const orient = Orientation.index(o, p, q)
     if (orient === Orientation.COUNTERCLOCKWISE) return 1
     if (orient === Orientation.CLOCKWISE) return -1
-    var op = dxp * dxp + dyp * dyp
-    var oq = dxq * dxq + dyq * dyq
+    const op = dxp * dxp + dyp * dyp
+    const oq = dxq * dxq + dyq * dyq
     if (op < oq) {
       return -1
     }
@@ -238,8 +238,8 @@ class RadialComparator {
   }
 
   compare (o1, o2) {
-    var p1 = o1
-    var p2 = o2
+    const p1 = o1
+    const p2 = o2
     return RadialComparator.polarCompare(this._origin, p1, p2)
   }
 

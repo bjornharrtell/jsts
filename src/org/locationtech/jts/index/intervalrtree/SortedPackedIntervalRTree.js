@@ -13,9 +13,9 @@ export default class SortedPackedIntervalRTree {
 
   buildTree () {
     Collections.sort(this._leaves, new IntervalRTreeNode.NodeComparator())
-    var src = this._leaves
-    var temp = null
-    var dest = new ArrayList()
+    let src = this._leaves
+    let temp = null
+    let dest = new ArrayList()
     while (true) {
       this.buildLevel(src, dest)
       if (dest.size() === 1) return dest.get(0)
@@ -52,13 +52,13 @@ export default class SortedPackedIntervalRTree {
   buildLevel (src, dest) {
     this._level++
     dest.clear()
-    for (var i = 0; i < src.size(); i += 2) {
-      var n1 = src.get(i)
-      var n2 = i + 1 < src.size() ? src.get(i) : null
+    for (let i = 0; i < src.size(); i += 2) {
+      const n1 = src.get(i)
+      const n2 = i + 1 < src.size() ? src.get(i) : null
       if (n2 === null) {
         dest.add(n1)
       } else {
-        var node = new IntervalRTreeBranchNode(src.get(i), src.get(i + 1))
+        const node = new IntervalRTreeBranchNode(src.get(i), src.get(i + 1))
         dest.add(node)
       }
     }

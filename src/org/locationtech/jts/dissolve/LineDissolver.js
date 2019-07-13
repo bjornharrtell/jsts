@@ -14,7 +14,7 @@ export default class LineDissolver {
   }
 
   static dissolve (g) {
-    var d = new LineDissolver()
+    const d = new LineDissolver()
     d.add(g)
     return d.getResult()
   }
@@ -43,18 +43,18 @@ export default class LineDissolver {
   }
 
   process (e) {
-    var eNode = e.prevNode()
+    let eNode = e.prevNode()
     if (eNode === null) eNode = e
     this.stackEdges(eNode)
     this.buildLines()
   }
 
   buildRing (eStartRing) {
-    var line = new CoordinateList()
-    var e = eStartRing
+    const line = new CoordinateList()
+    let e = eStartRing
     line.add(e.orig().copy(), false)
     while (e.sym().degree() === 2) {
-      var eNext = e.next()
+      const eNext = e.next()
       if (eNext === eStartRing) break
       line.add(eNext.orig().copy(), false)
       e = eNext
@@ -64,14 +64,14 @@ export default class LineDissolver {
   }
 
   buildLine (eStart) {
-    var line = new CoordinateList()
-    var e = eStart
+    const line = new CoordinateList()
+    let e = eStart
     this._ringStartEdge = null
     MarkHalfEdge.markBoth(e)
     line.add(e.orig().copy(), false)
     while (e.sym().degree() === 2) {
       this.updateRingStartEdge(e)
-      var eNext = e.next()
+      const eNext = e.next()
       if (eNext === eStart) {
         this.buildRing(this._ringStartEdge)
         return null
@@ -86,7 +86,7 @@ export default class LineDissolver {
   }
 
   stackEdges (node) {
-    var e = node
+    let e = node
     do {
       if (!MarkHalfEdge.isMarked(e)) this._nodeEdgeStack.add(e)
       e = e.oNext()
@@ -94,9 +94,9 @@ export default class LineDissolver {
   }
 
   computeResult () {
-    var edges = this._graph.getVertexEdges()
-    for (var i = edges.iterator(); i.hasNext();) {
-      var e = i.next()
+    const edges = this._graph.getVertexEdges()
+    for (let i = edges.iterator(); i.hasNext();) {
+      const e = i.next()
       if (MarkHalfEdge.isMarked(e)) continue
       this.process(e)
     }
@@ -105,7 +105,7 @@ export default class LineDissolver {
 
   buildLines () {
     while (!this._nodeEdgeStack.empty()) {
-      var e = this._nodeEdgeStack.pop()
+      const e = this._nodeEdgeStack.pop()
       if (MarkHalfEdge.isMarked(e)) continue
       this.buildLine(e)
     }
@@ -127,8 +127,8 @@ export default class LineDissolver {
       })())
     } else if (hasInterface(arguments[0], Collection)) {
       const geometries = arguments[0]
-      for (var i = geometries.iterator(); i.hasNext();) {
-        var geometry = i.next()
+      for (let i = geometries.iterator(); i.hasNext();) {
+        const geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof LineString) {
@@ -136,10 +136,10 @@ export default class LineDissolver {
       if (this._factory === null) {
         this._factory = lineString.getFactory()
       }
-      var seq = lineString.getCoordinateSequence()
-      var doneStart = false
-      for (var i = 1; i < seq.size(); i++) {
-        var e = this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i))
+      const seq = lineString.getCoordinateSequence()
+      let doneStart = false
+      for (let i = 1; i < seq.size(); i++) {
+        const e = this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i))
         if (e === null) continue
         if (!doneStart) {
           e.setStart()

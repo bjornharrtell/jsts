@@ -10,8 +10,8 @@ export default class OffsetCurveBuilder {
   }
 
   static copyCoordinates (pts) {
-    var copy = new Array(pts.length).fill(null)
-    for (var i = 0; i < copy.length; i++) {
+    const copy = new Array(pts.length).fill(null)
+    for (let i = 0; i < copy.length; i++) {
       copy[i] = new Coordinate(pts[i])
     }
     return copy
@@ -20,37 +20,37 @@ export default class OffsetCurveBuilder {
   getOffsetCurve (inputPts, distance) {
     this._distance = distance
     if (distance === 0.0) return null
-    var isRightSide = distance < 0.0
-    var posDistance = Math.abs(distance)
-    var segGen = this.getSegGen(posDistance)
+    const isRightSide = distance < 0.0
+    const posDistance = Math.abs(distance)
+    const segGen = this.getSegGen(posDistance)
     if (inputPts.length <= 1) {
       this.computePointCurve(inputPts[0], segGen)
     } else {
       this.computeOffsetCurve(inputPts, isRightSide, segGen)
     }
-    var curvePts = segGen.getCoordinates()
+    const curvePts = segGen.getCoordinates()
     if (isRightSide) CoordinateArrays.reverse(curvePts)
     return curvePts
   }
 
   computeSingleSidedBufferCurve (inputPts, isRightSide, segGen) {
-    var distTol = this.simplifyTolerance(this._distance)
+    const distTol = this.simplifyTolerance(this._distance)
     if (isRightSide) {
       segGen.addSegments(inputPts, true)
-      var simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
-      var n2 = simp2.length - 1
+      const simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
+      const n2 = simp2.length - 1
       segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT)
       segGen.addFirstSegment()
-      for (var i = n2 - 2; i >= 0; i--) {
+      for (let i = n2 - 2; i >= 0; i--) {
         segGen.addNextSegment(simp2[i], true)
       }
     } else {
       segGen.addSegments(inputPts, false)
-      var simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
-      var n1 = simp1.length - 1
+      const simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
+      const n1 = simp1.length - 1
       segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT)
       segGen.addFirstSegment()
-      for (var i = 2; i <= n1; i++) {
+      for (let i = 2; i <= n1; i++) {
         segGen.addNextSegment(simp1[i], true)
       }
     }
@@ -59,32 +59,32 @@ export default class OffsetCurveBuilder {
   }
 
   computeRingBufferCurve (inputPts, side, segGen) {
-    var distTol = this.simplifyTolerance(this._distance)
+    let distTol = this.simplifyTolerance(this._distance)
     if (side === Position.RIGHT) distTol = -distTol
-    var simp = BufferInputLineSimplifier.simplify(inputPts, distTol)
-    var n = simp.length - 1
+    const simp = BufferInputLineSimplifier.simplify(inputPts, distTol)
+    const n = simp.length - 1
     segGen.initSideSegments(simp[n - 1], simp[0], side)
-    for (var i = 1; i <= n; i++) {
-      var addStartPoint = i !== 1
+    for (let i = 1; i <= n; i++) {
+      const addStartPoint = i !== 1
       segGen.addNextSegment(simp[i], addStartPoint)
     }
     segGen.closeRing()
   }
 
   computeLineBufferCurve (inputPts, segGen) {
-    var distTol = this.simplifyTolerance(this._distance)
-    var simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
-    var n1 = simp1.length - 1
+    const distTol = this.simplifyTolerance(this._distance)
+    const simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
+    const n1 = simp1.length - 1
     segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT)
-    for (var i = 2; i <= n1; i++) {
+    for (let i = 2; i <= n1; i++) {
       segGen.addNextSegment(simp1[i], true)
     }
     segGen.addLastSegment()
     segGen.addLineEndCap(simp1[n1 - 1], simp1[n1])
-    var simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
-    var n2 = simp2.length - 1
+    const simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
+    const n2 = simp2.length - 1
     segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT)
-    for (var i = n2 - 2; i >= 0; i--) {
+    for (let i = n2 - 2; i >= 0; i--) {
       segGen.addNextSegment(simp2[i], true)
     }
     segGen.addLastSegment()
@@ -107,17 +107,17 @@ export default class OffsetCurveBuilder {
     this._distance = distance
     if (distance < 0.0 && !this._bufParams.isSingleSided()) return null
     if (distance === 0.0) return null
-    var posDistance = Math.abs(distance)
-    var segGen = this.getSegGen(posDistance)
+    const posDistance = Math.abs(distance)
+    const segGen = this.getSegGen(posDistance)
     if (inputPts.length <= 1) {
       this.computePointCurve(inputPts[0], segGen)
     } else {
       if (this._bufParams.isSingleSided()) {
-        var isRightSide = distance < 0.0
+        const isRightSide = distance < 0.0
         this.computeSingleSidedBufferCurve(inputPts, isRightSide, segGen)
       } else this.computeLineBufferCurve(inputPts, segGen)
     }
-    var lineCoord = segGen.getCoordinates()
+    const lineCoord = segGen.getCoordinates()
     return lineCoord
   }
 
@@ -135,27 +135,27 @@ export default class OffsetCurveBuilder {
     if (distance === 0.0) {
       return OffsetCurveBuilder.copyCoordinates(inputPts)
     }
-    var segGen = this.getSegGen(distance)
+    const segGen = this.getSegGen(distance)
     this.computeRingBufferCurve(inputPts, side, segGen)
     return segGen.getCoordinates()
   }
 
   computeOffsetCurve (inputPts, isRightSide, segGen) {
-    var distTol = this.simplifyTolerance(this._distance)
+    const distTol = this.simplifyTolerance(this._distance)
     if (isRightSide) {
-      var simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
-      var n2 = simp2.length - 1
+      const simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
+      const n2 = simp2.length - 1
       segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT)
       segGen.addFirstSegment()
-      for (var i = n2 - 2; i >= 0; i--) {
+      for (let i = n2 - 2; i >= 0; i--) {
         segGen.addNextSegment(simp2[i], true)
       }
     } else {
-      var simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
-      var n1 = simp1.length - 1
+      const simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
+      const n1 = simp1.length - 1
       segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT)
       segGen.addFirstSegment()
-      for (var i = 2; i <= n1; i++) {
+      for (let i = 2; i <= n1; i++) {
         segGen.addNextSegment(simp1[i], true)
       }
     }

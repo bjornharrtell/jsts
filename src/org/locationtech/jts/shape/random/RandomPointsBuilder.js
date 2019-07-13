@@ -14,10 +14,10 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
   }
 
   getGeometry () {
-    var pts = new Array(this._numPts).fill(null)
-    var i = 0
+    const pts = new Array(this._numPts).fill(null)
+    let i = 0
     while (i < this._numPts) {
-      var p = this.createRandomCoord(this.getExtent())
+      const p = this.createRandomCoord(this.getExtent())
       if (this._extentLocator !== null && !this.isInExtent(p)) continue
       pts[i++] = p
     }
@@ -25,8 +25,8 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
   }
 
   createRandomCoord (env) {
-    var x = env.getMinX() + env.getWidth() * Math.random()
-    var y = env.getMinY() + env.getHeight() * Math.random()
+    const x = env.getMinX() + env.getWidth() * Math.random()
+    const y = env.getMinY() + env.getHeight() * Math.random()
     return this.createCoord(x, y)
   }
 
@@ -46,7 +46,7 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
   }
 
   createCoord (x, y) {
-    var pt = new Coordinate(x, y)
+    const pt = new Coordinate(x, y)
     this._geomFactory.getPrecisionModel().makePrecise(pt)
     return pt
   }

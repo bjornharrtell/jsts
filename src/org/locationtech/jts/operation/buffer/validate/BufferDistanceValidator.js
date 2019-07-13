@@ -14,12 +14,12 @@ export default class BufferDistanceValidator {
   }
 
   checkMaximumDistance (input, bufCurve, maxDist) {
-    var haus = new DiscreteHausdorffDistance(bufCurve, input)
+    const haus = new DiscreteHausdorffDistance(bufCurve, input)
     haus.setDensifyFraction(0.25)
     this._maxDistanceFound = haus.orientedDistance()
     if (this._maxDistanceFound > maxDist) {
       this._isValid = false
-      var pts = haus.getCoordinates()
+      const pts = haus.getCoordinates()
       this._errorLocation = pts[1]
       this._errorIndicator = input.getFactory().createLineString(pts)
       this._errMsg = 'Distance between buffer curve and input is too large ' + '(' + this._maxDistanceFound + ' at ' + WKTWriter.toLineString(pts[0], pts[1]) + ')'
@@ -27,8 +27,8 @@ export default class BufferDistanceValidator {
   }
 
   isValid () {
-    var posDistance = Math.abs(this._bufDistance)
-    var distDelta = BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC * posDistance
+    const posDistance = Math.abs(this._bufDistance)
+    const distDelta = BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC * posDistance
     this._minValidDistance = posDistance - distDelta
     this._maxValidDistance = posDistance + distDelta
     if (this._input.isEmpty() || this._result.isEmpty()) return true
@@ -47,7 +47,7 @@ export default class BufferDistanceValidator {
     if (!(this._input instanceof Polygon || this._input instanceof MultiPolygon || this._input instanceof GeometryCollection)) {
       return null
     }
-    var inputCurve = this.getPolygonLines(this._input)
+    const inputCurve = this.getPolygonLines(this._input)
     this.checkMinimumDistance(inputCurve, this._result, this._minValidDistance)
     if (!this._isValid) return null
     this.checkMaximumDistance(inputCurve, this._result, this._maxValidDistance)
@@ -58,11 +58,11 @@ export default class BufferDistanceValidator {
   }
 
   checkMinimumDistance (g1, g2, minDist) {
-    var distOp = new DistanceOp(g1, g2, minDist)
+    const distOp = new DistanceOp(g1, g2, minDist)
     this._minDistanceFound = distOp.distance()
     if (this._minDistanceFound < minDist) {
       this._isValid = false
-      var pts = distOp.nearestPoints()
+      const pts = distOp.nearestPoints()
       this._errorLocation = distOp.nearestPoints()[1]
       this._errorIndicator = g1.getFactory().createLineString(pts)
       this._errMsg = 'Distance between buffer curve and input is too small ' + '(' + this._minDistanceFound + ' at ' + WKTWriter.toLineString(pts[0], pts[1]) + ' )'
@@ -70,7 +70,7 @@ export default class BufferDistanceValidator {
   }
 
   checkPositiveValid () {
-    var bufCurve = this._result.getBoundary()
+    const bufCurve = this._result.getBoundary()
     this.checkMinimumDistance(this._input, bufCurve, this._minValidDistance)
     if (!this._isValid) return null
     this.checkMaximumDistance(this._input, bufCurve, this._maxValidDistance)
@@ -81,11 +81,11 @@ export default class BufferDistanceValidator {
   }
 
   getPolygonLines (g) {
-    var lines = new ArrayList()
-    var lineExtracter = new LinearComponentExtracter(lines)
-    var polys = PolygonExtracter.getPolygons(g)
-    for (var i = polys.iterator(); i.hasNext();) {
-      var poly = i.next()
+    const lines = new ArrayList()
+    const lineExtracter = new LinearComponentExtracter(lines)
+    const polys = PolygonExtracter.getPolygons(g)
+    for (let i = polys.iterator(); i.hasNext();) {
+      const poly = i.next()
       poly.apply(lineExtracter)
     }
     return g.getFactory().buildGeometry(lines)

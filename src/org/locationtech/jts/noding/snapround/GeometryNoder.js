@@ -9,10 +9,10 @@ export default class GeometryNoder {
   }
 
   extractLines (geoms) {
-    var lines = new ArrayList()
-    var lce = new LinearComponentExtracter(lines)
-    for (var it = geoms.iterator(); it.hasNext();) {
-      var geom = it.next()
+    const lines = new ArrayList()
+    const lce = new LinearComponentExtracter(lines)
+    for (let it = geoms.iterator(); it.hasNext();) {
+      const geom = it.next()
       geom.apply(lce)
     }
     return lines
@@ -23,32 +23,32 @@ export default class GeometryNoder {
   }
 
   node (geoms) {
-    var geom0 = geoms.iterator().next()
+    const geom0 = geoms.iterator().next()
     this._geomFact = geom0.getFactory()
-    var segStrings = this.toSegmentStrings(this.extractLines(geoms))
-    var sr = new MCIndexSnapRounder(this._pm)
+    const segStrings = this.toSegmentStrings(this.extractLines(geoms))
+    const sr = new MCIndexSnapRounder(this._pm)
     sr.computeNodes(segStrings)
-    var nodedLines = sr.getNodedSubstrings()
+    const nodedLines = sr.getNodedSubstrings()
     if (this._isValidityChecked) {
-      var nv = new NodingValidator(nodedLines)
+      const nv = new NodingValidator(nodedLines)
       nv.checkValid()
     }
     return this.toLineStrings(nodedLines)
   }
 
   toSegmentStrings (lines) {
-    var segStrings = new ArrayList()
-    for (var it = lines.iterator(); it.hasNext();) {
-      var line = it.next()
+    const segStrings = new ArrayList()
+    for (let it = lines.iterator(); it.hasNext();) {
+      const line = it.next()
       segStrings.add(new NodedSegmentString(line.getCoordinates(), null))
     }
     return segStrings
   }
 
   toLineStrings (segStrings) {
-    var lines = new ArrayList()
-    for (var it = segStrings.iterator(); it.hasNext();) {
-      var ss = it.next()
+    const lines = new ArrayList()
+    for (let it = segStrings.iterator(); it.hasNext();) {
+      const ss = it.next()
       if (ss.size() < 2) continue
       lines.add(this._geomFact.createLineString(ss.getCoordinates()))
     }

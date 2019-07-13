@@ -10,16 +10,16 @@ export default class MinimumBoundingCircle {
   }
 
   static pointWitMinAngleWithX (pts, P) {
-    var minSin = Double.MAX_VALUE
-    var minAngPt = null
-    for (var i = 0; i < pts.length; i++) {
-      var p = pts[i]
+    let minSin = Double.MAX_VALUE
+    let minAngPt = null
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i]
       if (p === P) continue
-      var dx = p.x - P.x
-      var dy = p.y - P.y
+      const dx = p.x - P.x
+      let dy = p.y - P.y
       if (dy < 0) dy = -dy
-      var len = Math.sqrt(dx * dx + dy * dy)
-      var sin = dy / len
+      const len = Math.sqrt(dx * dx + dy * dy)
+      const sin = dy / len
       if (sin < minSin) {
         minSin = sin
         minAngPt = p
@@ -29,21 +29,21 @@ export default class MinimumBoundingCircle {
   }
 
   static lowestPoint (pts) {
-    var min = pts[0]
-    for (var i = 1; i < pts.length; i++) {
+    let min = pts[0]
+    for (let i = 1; i < pts.length; i++) {
       if (pts[i].y < min.y) min = pts[i]
     }
     return min
   }
 
   static pointWithMinAngleWithSegment (pts, P, Q) {
-    var minAng = Double.MAX_VALUE
-    var minAngPt = null
-    for (var i = 0; i < pts.length; i++) {
-      var p = pts[i]
+    let minAng = Double.MAX_VALUE
+    let minAngPt = null
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i]
       if (p === P) continue
       if (p === Q) continue
-      var ang = Angle.angleBetween(P, p, Q)
+      const ang = Angle.angleBetween(P, p, Q)
       if (ang < minAng) {
         minAng = ang
         minAngPt = p
@@ -65,8 +65,8 @@ export default class MinimumBoundingCircle {
       case 1:
         return this._input.getFactory().createPoint(this._centre)
     }
-    var p0 = this._extremalPts[0]
-    var p1 = this._extremalPts[1]
+    const p0 = this._extremalPts[0]
+    const p1 = this._extremalPts[1]
     return this._input.getFactory().createLineString([p0, p1])
   }
 
@@ -81,13 +81,13 @@ export default class MinimumBoundingCircle {
       return null
     }
     if (this._input.getNumPoints() === 1) {
-      var pts = this._input.getCoordinates()
+      const pts = this._input.getCoordinates()
       this._extremalPts = [new Coordinate(pts[0])]
       return null
     }
-    var convexHull = this._input.convexHull()
-    var hullPts = convexHull.getCoordinates()
-    var pts = hullPts
+    const convexHull = this._input.convexHull()
+    const hullPts = convexHull.getCoordinates()
+    let pts = hullPts
     if (hullPts[0].equals2D(hullPts[hullPts.length - 1])) {
       pts = new Array(hullPts.length - 1).fill(null)
       CoordinateArrays.copyDeep(hullPts, 0, pts, 0, hullPts.length - 1)
@@ -96,10 +96,10 @@ export default class MinimumBoundingCircle {
       this._extremalPts = CoordinateArrays.copyDeep(pts)
       return null
     }
-    var P = MinimumBoundingCircle.lowestPoint(pts)
-    var Q = MinimumBoundingCircle.pointWitMinAngleWithX(pts, P)
-    for (var i = 0; i < pts.length; i++) {
-      var R = MinimumBoundingCircle.pointWithMinAngleWithSegment(pts, P, Q)
+    let P = MinimumBoundingCircle.lowestPoint(pts)
+    let Q = MinimumBoundingCircle.pointWitMinAngleWithX(pts, P)
+    for (let i = 0; i < pts.length; i++) {
+      const R = MinimumBoundingCircle.pointWithMinAngleWithSegment(pts, P, Q)
       if (Angle.isObtuse(P, R, Q)) {
         this._extremalPts = [new Coordinate(P), new Coordinate(Q)]
         return null
@@ -133,15 +133,15 @@ export default class MinimumBoundingCircle {
       case 1:
         return this._input.getFactory().createPoint(this._centre)
     }
-    var p0 = this._extremalPts[0]
-    var p1 = this._extremalPts[this._extremalPts.length - 1]
+    const p0 = this._extremalPts[0]
+    const p1 = this._extremalPts[this._extremalPts.length - 1]
     return this._input.getFactory().createLineString([p0, p1])
   }
 
   getCircle () {
     this.compute()
     if (this._centre === null) return this._input.getFactory().createPolygon()
-    var centrePoint = this._input.getFactory().createPoint(this._centre)
+    const centrePoint = this._input.getFactory().createPoint(this._centre)
     if (this._radius === 0.0) return centrePoint
     return centrePoint.buffer(this._radius)
   }

@@ -12,15 +12,15 @@ export default class MCIndexPointSnapper {
       return this.snap(hotPixel, null, -1)
     } else if (arguments.length === 3) {
       const hotPixel = arguments[0]; const parentEdge = arguments[1]; const hotPixelVertexIndex = arguments[2]
-      var pixelEnv = hotPixel.getSafeEnvelope()
-      var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex)
+      const pixelEnv = hotPixel.getSafeEnvelope()
+      const hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex)
       this._index.query(pixelEnv, new (class {
         get interfaces_ () {
           return [ItemVisitor]
         }
 
         visitItem (item) {
-          var testChain = item
+          const testChain = item
           testChain.select(pixelEnv, hotPixelSnapAction)
         }
       })())
@@ -49,7 +49,7 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
   select () {
     if (arguments.length === 2 && (Number.isInteger(arguments[1]) && arguments[0] instanceof MonotoneChain)) {
       const mc = arguments[0]; const startIndex = arguments[1]
-      var ss = mc.getContext()
+      const ss = mc.getContext()
       if (this._parentEdge !== null) {
         if (ss === this._parentEdge && startIndex === this._hotPixelVertexIndex) return null
       }

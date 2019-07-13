@@ -16,30 +16,30 @@ export default class DelaunayTriangulationBuilder {
 
   static extractUniqueCoordinates (geom) {
     if (geom === null) return new CoordinateList()
-    var coords = geom.getCoordinates()
+    const coords = geom.getCoordinates()
     return DelaunayTriangulationBuilder.unique(coords)
   }
 
   static envelope (coords) {
-    var env = new Envelope()
-    for (var i = coords.iterator(); i.hasNext();) {
-      var coord = i.next()
+    const env = new Envelope()
+    for (let i = coords.iterator(); i.hasNext();) {
+      const coord = i.next()
       env.expandToInclude(coord)
     }
     return env
   }
 
   static unique (coords) {
-    var coordsCopy = CoordinateArrays.copyDeep(coords)
+    const coordsCopy = CoordinateArrays.copyDeep(coords)
     Arrays.sort(coordsCopy)
-    var coordList = new CoordinateList(coordsCopy, false)
+    const coordList = new CoordinateList(coordsCopy, false)
     return coordList
   }
 
   static toVertices (coords) {
-    var verts = new ArrayList()
-    for (var i = coords.iterator(); i.hasNext();) {
-      var coord = i.next()
+    const verts = new ArrayList()
+    for (let i = coords.iterator(); i.hasNext();) {
+      const coord = i.next()
       verts.add(new Vertex(coord))
     }
     return verts
@@ -47,10 +47,10 @@ export default class DelaunayTriangulationBuilder {
 
   create () {
     if (this._subdiv !== null) return null
-    var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
-    var vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords)
+    const siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
+    const vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords)
     this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance)
-    var triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
+    const triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
 

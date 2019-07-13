@@ -14,7 +14,7 @@ export default class Coordinate {
   static hashCode () {
     if (arguments.length === 1 && typeof arguments[0] === 'number') {
       const x = arguments[0]
-      var f = Double.doubleToLongBits(x)
+      const f = Double.doubleToLongBits(x)
       return Math.trunc(f ^ f >>> 32)
     }
   }
@@ -85,7 +85,7 @@ export default class Coordinate {
   }
 
   compareTo (o) {
-    var other = o
+    const other = o
     if (this.x < other.x) return -1
     if (this.x > other.x) return 1
     if (this.y < other.y) return -1
@@ -95,7 +95,7 @@ export default class Coordinate {
 
   clone () {
     try {
-      var coord = null
+      const coord = null
       return coord
     } catch (e) {
       if (e instanceof CloneNotSupportedException) {
@@ -114,20 +114,20 @@ export default class Coordinate {
   }
 
   distance3D (c) {
-    var dx = this.x - c.x
-    var dy = this.y - c.y
-    var dz = this.z - c.z
+    const dx = this.x - c.x
+    const dy = this.y - c.y
+    const dz = this.z - c.z
     return Math.sqrt(dx * dx + dy * dy + dz * dz)
   }
 
   distance (c) {
-    var dx = this.x - c.x
-    var dy = this.y - c.y
+    const dx = this.x - c.x
+    const dy = this.y - c.y
     return Math.sqrt(dx * dx + dy * dy)
   }
 
   hashCode () {
-    var result = 17
+    let result = 17
     result = 37 * result + Coordinate.hashCode(this.x)
     result = 37 * result + Coordinate.hashCode(this.y)
     return result
@@ -164,14 +164,14 @@ class DimensionalComparator {
   }
 
   compare (o1, o2) {
-    var c1 = o1
-    var c2 = o2
-    var compX = DimensionalComparator.compare(c1.x, c2.x)
+    const c1 = o1
+    const c2 = o2
+    const compX = DimensionalComparator.compare(c1.x, c2.x)
     if (compX !== 0) return compX
-    var compY = DimensionalComparator.compare(c1.y, c2.y)
+    const compY = DimensionalComparator.compare(c1.y, c2.y)
     if (compY !== 0) return compY
     if (this._dimensionsToTest <= 2) return 0
-    var compZ = DimensionalComparator.compare(c1.z, c2.z)
+    const compZ = DimensionalComparator.compare(c1.z, c2.z)
     return compZ
   }
 

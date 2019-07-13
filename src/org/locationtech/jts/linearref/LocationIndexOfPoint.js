@@ -9,12 +9,12 @@ export default class LocationIndexOfPoint {
   }
 
   static indexOf (linearGeom, inputPt) {
-    var locater = new LocationIndexOfPoint(linearGeom)
+    const locater = new LocationIndexOfPoint(linearGeom)
     return locater.indexOf(inputPt)
   }
 
   static indexOfAfter (linearGeom, inputPt, minIndex) {
-    var locater = new LocationIndexOfPoint(linearGeom)
+    const locater = new LocationIndexOfPoint(linearGeom)
     return locater.indexOfAfter(inputPt, minIndex)
   }
 
@@ -23,19 +23,19 @@ export default class LocationIndexOfPoint {
   }
 
   indexOfFromStart (inputPt, minIndex) {
-    var minDistance = Double.MAX_VALUE
-    var minComponentIndex = 0
-    var minSegmentIndex = 0
-    var minFrac = -1.0
-    var seg = new LineSegment()
-    for (var it = new LinearIterator(this._linearGeom); it.hasNext(); it.next()) {
+    let minDistance = Double.MAX_VALUE
+    let minComponentIndex = 0
+    let minSegmentIndex = 0
+    let minFrac = -1.0
+    const seg = new LineSegment()
+    for (let it = new LinearIterator(this._linearGeom); it.hasNext(); it.next()) {
       if (!it.isEndOfLine()) {
         seg.p0 = it.getSegmentStart()
         seg.p1 = it.getSegmentEnd()
-        var segDistance = seg.distance(inputPt)
-        var segFrac = seg.segmentFraction(inputPt)
-        var candidateComponentIndex = it.getComponentIndex()
-        var candidateSegmentIndex = it.getVertexIndex()
+        const segDistance = seg.distance(inputPt)
+        const segFrac = seg.segmentFraction(inputPt)
+        const candidateComponentIndex = it.getComponentIndex()
+        const candidateSegmentIndex = it.getVertexIndex()
         if (segDistance < minDistance) {
           if (minIndex === null || minIndex.compareLocationValues(candidateComponentIndex, candidateSegmentIndex, segFrac) < 0) {
             minComponentIndex = candidateComponentIndex
@@ -49,15 +49,15 @@ export default class LocationIndexOfPoint {
     if (minDistance === Double.MAX_VALUE) {
       return new LinearLocation(minIndex)
     }
-    var loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac)
+    const loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac)
     return loc
   }
 
   indexOfAfter (inputPt, minIndex) {
     if (minIndex === null) return this.indexOf(inputPt)
-    var endLoc = LinearLocation.getEndLocation(this._linearGeom)
+    const endLoc = LinearLocation.getEndLocation(this._linearGeom)
     if (endLoc.compareTo(minIndex) <= 0) return endLoc
-    var closestAfter = this.indexOfFromStart(inputPt, minIndex)
+    const closestAfter = this.indexOfFromStart(inputPt, minIndex)
     Assert.isTrue(closestAfter.compareTo(minIndex) >= 0, 'computed location is before specified minimum location')
     return closestAfter
   }

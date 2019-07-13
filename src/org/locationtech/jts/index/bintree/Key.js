@@ -6,8 +6,8 @@ export default class Key {
   }
 
   static computeLevel (interval) {
-    var dx = interval.getWidth()
-    var level = DoubleBits.exponent(dx) + 1
+    const dx = interval.getWidth()
+    const level = DoubleBits.exponent(dx) + 1
     return level
   }
 
@@ -30,7 +30,7 @@ export default class Key {
   }
 
   computeInterval (level, itemInterval) {
-    var size = DoubleBits.powerOf2(level)
+    const size = DoubleBits.powerOf2(level)
     this._pt = Math.floor(itemInterval.getMin() / size) * size
     this._interval.init(this._pt, this._pt + size)
   }

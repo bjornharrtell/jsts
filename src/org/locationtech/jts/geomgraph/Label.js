@@ -8,15 +8,15 @@ export default class Label {
   }
 
   static toLineLabel (label) {
-    var lineLabel = new Label(Location.NONE)
-    for (var i = 0; i < 2; i++) {
+    const lineLabel = new Label(Location.NONE)
+    for (let i = 0; i < 2; i++) {
       lineLabel.setLocation(i, label.getLocation(i))
     }
     return lineLabel
   }
 
   getGeometryCount () {
-    var count = 0
+    let count = 0
     if (!this.elt[0].isNull()) count++
     if (!this.elt[1].isNull()) count++
     return count
@@ -46,7 +46,7 @@ export default class Label {
   }
 
   merge (lbl) {
-    for (var i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
       if (this.elt[i] === null && lbl.elt[i] !== null) {
         this.elt[i] = new TopologyLocation(lbl.elt[i])
       } else {
@@ -71,7 +71,7 @@ export default class Label {
   }
 
   toString () {
-    var buf = new StringBuffer()
+    const buf = new StringBuffer()
     if (this.elt[0] !== null) {
       buf.append('A:')
       buf.append(this.elt[0].toString())

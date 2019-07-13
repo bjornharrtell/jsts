@@ -15,7 +15,7 @@ export default class NodeMap {
   addNode () {
     if (arguments[0] instanceof Coordinate) {
       const coord = arguments[0]
-      var node = this.nodeMap.get(coord)
+      let node = this.nodeMap.get(coord)
       if (node === null) {
         node = this.nodeFact.createNode(coord)
         this.nodeMap.put(coord, node)
@@ -23,7 +23,7 @@ export default class NodeMap {
       return node
     } else if (arguments[0] instanceof Node) {
       const n = arguments[0]
-      var node = this.nodeMap.get(n.getCoordinate())
+      const node = this.nodeMap.get(n.getCoordinate())
       if (node === null) {
         this.nodeMap.put(n.getCoordinate(), n)
         return n
@@ -34,8 +34,8 @@ export default class NodeMap {
   }
 
   print (out) {
-    for (var it = this.iterator(); it.hasNext();) {
-      var n = it.next()
+    for (let it = this.iterator(); it.hasNext();) {
+      const n = it.next()
       n.print(out)
     }
   }
@@ -49,17 +49,17 @@ export default class NodeMap {
   }
 
   getBoundaryNodes (geomIndex) {
-    var bdyNodes = new ArrayList()
-    for (var i = this.iterator(); i.hasNext();) {
-      var node = i.next()
+    const bdyNodes = new ArrayList()
+    for (let i = this.iterator(); i.hasNext();) {
+      const node = i.next()
       if (node.getLabel().getLocation(geomIndex) === Location.BOUNDARY) bdyNodes.add(node)
     }
     return bdyNodes
   }
 
   add (e) {
-    var p = e.getCoordinate()
-    var n = this.addNode(p)
+    const p = e.getCoordinate()
+    const n = this.addNode(p)
     n.add(e)
   }
 

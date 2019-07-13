@@ -10,14 +10,14 @@ export default class MonotoneChain {
   }
 
   computeSelect (searchEnv, start0, end0, mcs) {
-    var p0 = this._pts[start0]
-    var p1 = this._pts[end0]
+    const p0 = this._pts[start0]
+    const p1 = this._pts[end0]
     if (end0 - start0 === 1) {
       mcs.select(this, start0)
       return null
     }
     if (!searchEnv.intersects(p0, p1)) return null
-    var mid = Math.trunc((start0 + end0) / 2)
+    const mid = Math.trunc((start0 + end0) / 2)
     if (start0 < mid) {
       this.computeSelect(searchEnv, start0, mid, mcs)
     }
@@ -27,9 +27,9 @@ export default class MonotoneChain {
   }
 
   getCoordinates () {
-    var coord = new Array(this._end - this._start + 1).fill(null)
-    var index = 0
-    for (var i = this._start; i <= this._end; i++) {
+    const coord = new Array(this._end - this._start + 1).fill(null)
+    let index = 0
+    for (let i = this._start; i <= this._end; i++) {
       coord[index++] = this._pts[i]
     }
     return coord
@@ -46,8 +46,8 @@ export default class MonotoneChain {
         return null
       }
       if (!this.overlaps(start0, end0, mc, start1, end1)) return null
-      var mid0 = Math.trunc((start0 + end0) / 2)
-      var mid1 = Math.trunc((start1 + end1) / 2)
+      const mid0 = Math.trunc((start0 + end0) / 2)
+      const mid1 = Math.trunc((start1 + end1) / 2)
       if (start0 < mid0) {
         if (start1 < mid1) this.computeOverlaps(start0, mid0, mc, start1, mid1, mco)
         if (mid1 < end1) this.computeOverlaps(start0, mid0, mc, mid1, end1, mco)
@@ -69,8 +69,8 @@ export default class MonotoneChain {
 
   getEnvelope () {
     if (this._env === null) {
-      var p0 = this._pts[this._start]
-      var p1 = this._pts[this._end]
+      const p0 = this._pts[this._start]
+      const p1 = this._pts[this._end]
       this._env = new Envelope(p0, p1)
     }
     return this._env

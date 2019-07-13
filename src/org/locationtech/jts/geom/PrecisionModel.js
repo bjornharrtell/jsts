@@ -18,14 +18,14 @@ export default class PrecisionModel {
     if (!(other instanceof PrecisionModel)) {
       return false
     }
-    var otherPrecisionModel = other
+    const otherPrecisionModel = other
     return this._modelType === otherPrecisionModel._modelType && this._scale === otherPrecisionModel._scale
   }
 
   compareTo (o) {
-    var other = o
-    var sigDigits = this.getMaximumSignificantDigits()
-    var otherSigDigits = other.getMaximumSignificantDigits()
+    const other = o
+    const sigDigits = this.getMaximumSignificantDigits()
+    const otherSigDigits = other.getMaximumSignificantDigits()
     return new Integer(sigDigits).compareTo(new Integer(otherSigDigits))
   }
 
@@ -42,7 +42,7 @@ export default class PrecisionModel {
   }
 
   toString () {
-    var description = 'UNKNOWN'
+    let description = 'UNKNOWN'
     if (this._modelType === PrecisionModel.FLOATING) {
       description = 'Floating'
     } else if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
@@ -58,7 +58,7 @@ export default class PrecisionModel {
       const val = arguments[0]
       if (Double.isNaN(val)) return val
       if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
-        var floatSingleVal = val
+        const floatSingleVal = val
         return floatSingleVal
       }
       if (this._modelType === PrecisionModel.FIXED) {
@@ -74,7 +74,7 @@ export default class PrecisionModel {
   }
 
   getMaximumSignificantDigits () {
-    var maxSigDigits = 16
+    let maxSigDigits = 16
     if (this._modelType === PrecisionModel.FLOATING) {
       maxSigDigits = 16
     } else if (this._modelType === PrecisionModel.FLOATING_SINGLE) {

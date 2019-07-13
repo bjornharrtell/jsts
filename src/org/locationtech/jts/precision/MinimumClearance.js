@@ -12,12 +12,12 @@ export default class MinimumClearance {
   }
 
   static getLine (g) {
-    var rp = new MinimumClearance(g)
+    const rp = new MinimumClearance(g)
     return rp.getLine()
   }
 
   static getDistance (g) {
-    var rp = new MinimumClearance(g)
+    const rp = new MinimumClearance(g)
     return rp.getDistance()
   }
 
@@ -34,9 +34,9 @@ export default class MinimumClearance {
     if (this._inputGeom.isEmpty()) {
       return null
     }
-    var geomTree = FacetSequenceTreeBuilder.build(this._inputGeom)
-    var nearest = geomTree.nearestNeighbour(new MinClearanceDistance())
-    var mcd = new MinClearanceDistance()
+    const geomTree = FacetSequenceTreeBuilder.build(this._inputGeom)
+    const nearest = geomTree.nearestNeighbour(new MinClearanceDistance())
+    const mcd = new MinClearanceDistance()
     this._minClearance = mcd.distance(nearest[0], nearest[1])
     this._minClearancePts = mcd.getCoordinates()
   }
@@ -60,12 +60,12 @@ class MinClearanceDistance {
   }
 
   vertexDistance (fs1, fs2) {
-    for (var i1 = 0; i1 < fs1.size(); i1++) {
-      for (var i2 = 0; i2 < fs2.size(); i2++) {
-        var p1 = fs1.getCoordinate(i1)
-        var p2 = fs2.getCoordinate(i2)
+    for (let i1 = 0; i1 < fs1.size(); i1++) {
+      for (let i2 = 0; i2 < fs2.size(); i2++) {
+        const p1 = fs1.getCoordinate(i1)
+        const p2 = fs2.getCoordinate(i2)
         if (!p1.equals2D(p2)) {
-          var d = p1.distance(p2)
+          const d = p1.distance(p2)
           if (d < this._minDist) {
             this._minDist = d
             this._minPts[0] = p1
@@ -83,13 +83,13 @@ class MinClearanceDistance {
   }
 
   segmentDistance (fs1, fs2) {
-    for (var i1 = 0; i1 < fs1.size(); i1++) {
-      for (var i2 = 1; i2 < fs2.size(); i2++) {
-        var p = fs1.getCoordinate(i1)
-        var seg0 = fs2.getCoordinate(i2 - 1)
-        var seg1 = fs2.getCoordinate(i2)
+    for (let i1 = 0; i1 < fs1.size(); i1++) {
+      for (let i2 = 1; i2 < fs2.size(); i2++) {
+        const p = fs1.getCoordinate(i1)
+        const seg0 = fs2.getCoordinate(i2 - 1)
+        const seg1 = fs2.getCoordinate(i2)
         if (!(p.equals2D(seg0) || p.equals2D(seg1))) {
-          var d = Distance.pointToSegment(p, seg0, seg1)
+          const d = Distance.pointToSegment(p, seg0, seg1)
           if (d < this._minDist) {
             this._minDist = d
             this.updatePts(p, seg0, seg1)
@@ -104,8 +104,8 @@ class MinClearanceDistance {
   distance () {
     if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
       const b1 = arguments[0]; const b2 = arguments[1]
-      var fs1 = b1.getItem()
-      var fs2 = b2.getItem()
+      const fs1 = b1.getItem()
+      const fs2 = b2.getItem()
       this._minDist = Double.MAX_VALUE
       return this.distance(fs1, fs2)
     } else if (arguments[0] instanceof FacetSequence && arguments[1] instanceof FacetSequence) {
@@ -122,7 +122,7 @@ class MinClearanceDistance {
 
   updatePts (p, seg0, seg1) {
     this._minPts[0] = p
-    var seg = new LineSegment(seg0, seg1)
+    const seg = new LineSegment(seg0, seg1)
     this._minPts[1] = new Coordinate(seg.closestPoint(p))
   }
 

@@ -16,9 +16,9 @@ export default class LineSegmentIndex {
   add () {
     if (arguments[0] instanceof TaggedLineString) {
       const line = arguments[0]
-      var segs = line.getSegments()
-      for (var i = 0; i < segs.length; i++) {
-        var seg = segs[i]
+      const segs = line.getSegments()
+      for (let i = 0; i < segs.length; i++) {
+        const seg = segs[i]
         this.add(seg)
       }
     } else if (arguments[0] instanceof LineSegment) {
@@ -28,10 +28,10 @@ export default class LineSegmentIndex {
   }
 
   query (querySeg) {
-    var env = new Envelope(querySeg.p0, querySeg.p1)
-    var visitor = new LineSegmentVisitor(querySeg)
+    const env = new Envelope(querySeg.p0, querySeg.p1)
+    const visitor = new LineSegmentVisitor(querySeg)
     this._index.query(env, visitor)
-    var itemsFound = visitor.getItems()
+    const itemsFound = visitor.getItems()
     return itemsFound
   }
 
@@ -52,7 +52,7 @@ class LineSegmentVisitor {
   }
 
   visitItem (item) {
-    var seg = item
+    const seg = item
     if (Envelope.intersects(seg.p0, seg.p1, this._querySeg.p0, this._querySeg.p1)) this._items.add(item)
   }
 

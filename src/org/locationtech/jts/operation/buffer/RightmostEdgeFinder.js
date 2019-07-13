@@ -11,7 +11,7 @@ export default class RightmostEdgeFinder {
   }
 
   getRightmostSide (de, index) {
-    var side = this.getRightmostSideOfSegment(de, index)
+    let side = this.getRightmostSideOfSegment(de, index)
     if (side < 0) side = this.getRightmostSideOfSegment(de, index - 1)
     if (side < 0) {
       this._minCoord = null
@@ -21,12 +21,12 @@ export default class RightmostEdgeFinder {
   }
 
   findRightmostEdgeAtVertex () {
-    var pts = this._minDe.getEdge().getCoordinates()
+    const pts = this._minDe.getEdge().getCoordinates()
     Assert.isTrue(this._minIndex > 0 && this._minIndex < pts.length, 'rightmost point expected to be interior vertex of edge')
-    var pPrev = pts[this._minIndex - 1]
-    var pNext = pts[this._minIndex + 1]
-    var orientation = Orientation.index(this._minCoord, pNext, pPrev)
-    var usePrev = false
+    const pPrev = pts[this._minIndex - 1]
+    const pNext = pts[this._minIndex + 1]
+    const orientation = Orientation.index(this._minCoord, pNext, pPrev)
+    let usePrev = false
     if (pPrev.y < this._minCoord.y && pNext.y < this._minCoord.y && orientation === Orientation.COUNTERCLOCKWISE) {
       usePrev = true
     } else if (pPrev.y > this._minCoord.y && pNext.y > this._minCoord.y && orientation === Orientation.CLOCKWISE) {
@@ -38,11 +38,11 @@ export default class RightmostEdgeFinder {
   }
 
   getRightmostSideOfSegment (de, i) {
-    var e = de.getEdge()
-    var coord = e.getCoordinates()
+    const e = de.getEdge()
+    const coord = e.getCoordinates()
     if (i < 0 || i + 1 >= coord.length) return -1
     if (coord[i].y === coord[i + 1].y) return -1
-    var pos = Position.LEFT
+    let pos = Position.LEFT
     if (coord[i].y < coord[i + 1].y) pos = Position.RIGHT
     return pos
   }
@@ -52,8 +52,8 @@ export default class RightmostEdgeFinder {
   }
 
   checkForRightmostCoordinate (de) {
-    var coord = de.getEdge().getCoordinates()
-    for (var i = 0; i < coord.length - 1; i++) {
+    const coord = de.getEdge().getCoordinates()
+    for (let i = 0; i < coord.length - 1; i++) {
       if (this._minCoord === null || coord[i].x > this._minCoord.x) {
         this._minDe = de
         this._minIndex = i
@@ -63,8 +63,8 @@ export default class RightmostEdgeFinder {
   }
 
   findRightmostEdgeAtNode () {
-    var node = this._minDe.getNode()
-    var star = node.getEdges()
+    const node = this._minDe.getNode()
+    const star = node.getEdges()
     this._minDe = star.getRightmostEdge()
     if (!this._minDe.isForward()) {
       this._minDe = this._minDe.getSym()
@@ -73,8 +73,8 @@ export default class RightmostEdgeFinder {
   }
 
   findEdge (dirEdgeList) {
-    for (var i = dirEdgeList.iterator(); i.hasNext();) {
-      var de = i.next()
+    for (let i = dirEdgeList.iterator(); i.hasNext();) {
+      const de = i.next()
       if (!de.isForward()) continue
       this.checkForRightmostCoordinate(de)
     }
@@ -85,7 +85,7 @@ export default class RightmostEdgeFinder {
       this.findRightmostEdgeAtVertex()
     }
     this._orientedDe = this._minDe
-    var rightmostSide = this.getRightmostSide(this._minDe, this._minIndex)
+    const rightmostSide = this.getRightmostSide(this._minDe, this._minIndex)
     if (rightmostSide === Position.LEFT) {
       this._orientedDe = this._minDe.getSym()
     }

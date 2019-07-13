@@ -5,14 +5,14 @@ export default class MathUtil {
   }
 
   static log10 (x) {
-    var ln = Math.log(x)
+    const ln = Math.log(x)
     if (Double.isInfinite(ln)) return ln
     if (Double.isNaN(ln)) return ln
     return ln / MathUtil.LOG_10
   }
 
   static min (v1, v2, v3, v4) {
-    var min = v1
+    let min = v1
     if (v2 < min) min = v2
     if (v3 < min) min = v3
     if (v4 < min) min = v4
@@ -43,13 +43,13 @@ export default class MathUtil {
   static max () {
     if (arguments.length === 3) {
       const v1 = arguments[0]; const v2 = arguments[1]; const v3 = arguments[2]
-      var max = v1
+      let max = v1
       if (v2 > max) max = v2
       if (v3 > max) max = v3
       return max
     } else if (arguments.length === 4) {
       const v1 = arguments[0]; const v2 = arguments[1]; const v3 = arguments[2]; const v4 = arguments[3]
-      var max = v1
+      let max = v1
       if (v2 > max) max = v2
       if (v3 > max) max = v3
       if (v4 > max) max = v4

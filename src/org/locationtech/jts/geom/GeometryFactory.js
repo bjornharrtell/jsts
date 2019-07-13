@@ -23,13 +23,13 @@ export default class GeometryFactory {
   }
 
   static toMultiPolygonArray (multiPolygons) {
-    var multiPolygonArray = new Array(multiPolygons.size()).fill(null)
+    const multiPolygonArray = new Array(multiPolygons.size()).fill(null)
     return multiPolygons.toArray(multiPolygonArray)
   }
 
   static toGeometryArray (geometries) {
     if (geometries === null) return null
-    var geometryArray = new Array(geometries.size()).fill(null)
+    const geometryArray = new Array(geometries.size()).fill(null)
     return geometries.toArray(geometryArray)
   }
 
@@ -38,32 +38,32 @@ export default class GeometryFactory {
   }
 
   static toMultiLineStringArray (multiLineStrings) {
-    var multiLineStringArray = new Array(multiLineStrings.size()).fill(null)
+    const multiLineStringArray = new Array(multiLineStrings.size()).fill(null)
     return multiLineStrings.toArray(multiLineStringArray)
   }
 
   static toLineStringArray (lineStrings) {
-    var lineStringArray = new Array(lineStrings.size()).fill(null)
+    const lineStringArray = new Array(lineStrings.size()).fill(null)
     return lineStrings.toArray(lineStringArray)
   }
 
   static toMultiPointArray (multiPoints) {
-    var multiPointArray = new Array(multiPoints.size()).fill(null)
+    const multiPointArray = new Array(multiPoints.size()).fill(null)
     return multiPoints.toArray(multiPointArray)
   }
 
   static toLinearRingArray (linearRings) {
-    var linearRingArray = new Array(linearRings.size()).fill(null)
+    const linearRingArray = new Array(linearRings.size()).fill(null)
     return linearRings.toArray(linearRingArray)
   }
 
   static toPointArray (points) {
-    var pointArray = new Array(points.size()).fill(null)
+    const pointArray = new Array(points.size()).fill(null)
     return points.toArray(pointArray)
   }
 
   static toPolygonArray (polygons) {
-    var polygonArray = new Array(polygons.size()).fill(null)
+    const polygonArray = new Array(polygons.size()).fill(null)
     return polygons.toArray(polygonArray)
   }
 
@@ -109,12 +109,12 @@ export default class GeometryFactory {
   }
 
   buildGeometry (geomList) {
-    var geomClass = null
-    var isHeterogeneous = false
-    var hasGeometryCollection = false
-    for (var i = geomList.iterator(); i.hasNext();) {
-      var geom = i.next()
-      var partClass = geom.getClass()
+    let geomClass = null
+    let isHeterogeneous = false
+    let hasGeometryCollection = false
+    for (let i = geomList.iterator(); i.hasNext();) {
+      const geom = i.next()
+      const partClass = geom.getClass()
       if (geomClass === null) {
         geomClass = partClass
       }
@@ -129,8 +129,8 @@ export default class GeometryFactory {
     if (isHeterogeneous || hasGeometryCollection) {
       return this.createGeometryCollection(GeometryFactory.toGeometryArray(geomList))
     }
-    var geom0 = geomList.iterator().next()
-    var isCollection = geomList.size() > 1
+    const geom0 = geomList.iterator().next()
+    const isCollection = geomList.size() > 1
     if (isCollection) {
       if (geom0 instanceof Polygon) {
         return this.createMultiPolygon(GeometryFactory.toPolygonArray(geomList))
@@ -200,7 +200,7 @@ export default class GeometryFactory {
   }
 
   createGeometry (g) {
-    var editor = new GeometryEditor(this)
+    const editor = new GeometryEditor(this)
     return editor.edit(g, new CloneOp(this._coordinateSequenceFactory))
   }
 
@@ -243,9 +243,9 @@ export default class GeometryFactory {
         if (coordinates === null) {
           return this.createMultiPoint(new Array(0).fill(null))
         }
-        var points = new Array(coordinates.size()).fill(null)
-        for (var i = 0; i < coordinates.size(); i++) {
-          var ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension())
+        const points = new Array(coordinates.size()).fill(null)
+        for (let i = 0; i < coordinates.size(); i++) {
+          const ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension())
           CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1)
           points[i] = this.createPoint(ptSeq)
         }

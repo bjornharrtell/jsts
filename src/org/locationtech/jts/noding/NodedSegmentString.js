@@ -13,13 +13,13 @@ export default class NodedSegmentString {
   static getNodedSubstrings () {
     if (arguments.length === 1) {
       const segStrings = arguments[0]
-      var resultEdgelist = new ArrayList()
+      const resultEdgelist = new ArrayList()
       NodedSegmentString.getNodedSubstrings(segStrings, resultEdgelist)
       return resultEdgelist
     } else if (arguments.length === 2) {
       const segStrings = arguments[0]; const resultEdgelist = arguments[1]
-      for (var i = segStrings.iterator(); i.hasNext();) {
-        var ss = i.next()
+      for (let i = segStrings.iterator(); i.hasNext();) {
+        const ss = i.next()
         ss.getNodeList().addSplitEdges(resultEdgelist)
       }
     }
@@ -65,7 +65,7 @@ export default class NodedSegmentString {
       this.addIntersectionNode(intPt, segmentIndex)
     } else if (arguments.length === 4) {
       const li = arguments[0]; const segmentIndex = arguments[1]; const geomIndex = arguments[2]; const intIndex = arguments[3]
-      var intPt = new Coordinate(li.getIntersection(intIndex))
+      const intPt = new Coordinate(li.getIntersection(intIndex))
       this.addIntersection(intPt, segmentIndex)
     }
   }
@@ -79,20 +79,20 @@ export default class NodedSegmentString {
   }
 
   addIntersectionNode (intPt, segmentIndex) {
-    var normalizedSegmentIndex = segmentIndex
-    var nextSegIndex = normalizedSegmentIndex + 1
+    let normalizedSegmentIndex = segmentIndex
+    const nextSegIndex = normalizedSegmentIndex + 1
     if (nextSegIndex < this._pts.length) {
-      var nextPt = this._pts[nextSegIndex]
+      const nextPt = this._pts[nextSegIndex]
       if (intPt.equals2D(nextPt)) {
         normalizedSegmentIndex = nextSegIndex
       }
     }
-    var ei = this._nodeList.add(intPt, normalizedSegmentIndex)
+    const ei = this._nodeList.add(intPt, normalizedSegmentIndex)
     return ei
   }
 
   addIntersections (li, segmentIndex, geomIndex) {
-    for (var i = 0; i < li.getIntersectionNum(); i++) {
+    for (let i = 0; i < li.getIntersectionNum(); i++) {
       this.addIntersection(li, segmentIndex, geomIndex, i)
     }
   }

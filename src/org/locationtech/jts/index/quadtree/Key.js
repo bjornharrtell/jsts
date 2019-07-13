@@ -7,10 +7,10 @@ export default class Key {
   }
 
   static computeQuadLevel (env) {
-    var dx = env.getWidth()
-    var dy = env.getHeight()
-    var dMax = dx > dy ? dx : dy
-    var level = DoubleBits.exponent(dMax) + 1
+    const dx = env.getWidth()
+    const dy = env.getHeight()
+    const dMax = dx > dy ? dx : dy
+    const level = DoubleBits.exponent(dMax) + 1
     return level
   }
 
@@ -30,7 +30,7 @@ export default class Key {
       }
     } else if (arguments.length === 2) {
       const level = arguments[0]; const itemEnv = arguments[1]
-      var quadSize = DoubleBits.powerOf2(level)
+      const quadSize = DoubleBits.powerOf2(level)
       this._pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize
       this._pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize
       this._env.init(this._pt.x, this._pt.x + quadSize, this._pt.y, this._pt.y + quadSize)

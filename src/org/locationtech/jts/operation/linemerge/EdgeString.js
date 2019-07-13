@@ -8,11 +8,11 @@ export default class EdgeString {
 
   getCoordinates () {
     if (this._coordinates === null) {
-      var forwardDirectedEdges = 0
-      var reverseDirectedEdges = 0
-      var coordinateList = new CoordinateList()
-      for (var i = this._directedEdges.iterator(); i.hasNext();) {
-        var directedEdge = i.next()
+      let forwardDirectedEdges = 0
+      let reverseDirectedEdges = 0
+      const coordinateList = new CoordinateList()
+      for (let i = this._directedEdges.iterator(); i.hasNext();) {
+        const directedEdge = i.next()
         if (directedEdge.getEdgeDirection()) {
           forwardDirectedEdges++
         } else {

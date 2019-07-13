@@ -9,8 +9,8 @@ export default class Octant {
     if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
       const dx = arguments[0]; const dy = arguments[1]
       if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException('Cannot compute the octant for point ( ' + dx + ', ' + dy + ' )')
-      var adx = Math.abs(dx)
-      var ady = Math.abs(dy)
+      const adx = Math.abs(dx)
+      const ady = Math.abs(dy)
       if (dx >= 0) {
         if (dy >= 0) {
           if (adx >= ady) return 0; else return 1
@@ -26,8 +26,8 @@ export default class Octant {
       }
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
       const p0 = arguments[0]; const p1 = arguments[1]
-      var dx = p1.x - p0.x
-      var dy = p1.y - p0.y
+      const dx = p1.x - p0.x
+      const dy = p1.y - p0.y
       if (dx === 0.0 && dy === 0.0) throw new IllegalArgumentException('Cannot compute the octant for two identical points ' + p0)
       return Octant.octant(dx, dy)
     }

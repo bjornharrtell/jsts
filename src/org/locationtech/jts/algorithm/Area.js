@@ -20,28 +20,28 @@ export default class Area {
     if (arguments[0] instanceof Array) {
       const ring = arguments[0]
       if (ring.length < 3) return 0.0
-      var sum = 0.0
-      var x0 = ring[0].x
-      for (var i = 1; i < ring.length - 1; i++) {
-        var x = ring[i].x - x0
-        var y1 = ring[i + 1].y
-        var y2 = ring[i - 1].y
+      let sum = 0.0
+      const x0 = ring[0].x
+      for (let i = 1; i < ring.length - 1; i++) {
+        const x = ring[i].x - x0
+        const y1 = ring[i + 1].y
+        const y2 = ring[i - 1].y
         sum += x * (y2 - y1)
       }
       return sum / 2.0
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
       const ring = arguments[0]
-      var n = ring.size()
+      const n = ring.size()
       if (n < 3) return 0.0
-      var p0 = new Coordinate()
-      var p1 = new Coordinate()
-      var p2 = new Coordinate()
+      const p0 = new Coordinate()
+      const p1 = new Coordinate()
+      const p2 = new Coordinate()
       ring.getCoordinate(0, p1)
       ring.getCoordinate(1, p2)
-      var x0 = p1.x
+      const x0 = p1.x
       p2.x -= x0
-      var sum = 0.0
-      for (var i = 1; i < n - 1; i++) {
+      let sum = 0.0
+      for (let i = 1; i < n - 1; i++) {
         p0.y = p1.y
         p1.x = p2.x
         p1.y = p2.y

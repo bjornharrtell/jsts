@@ -7,21 +7,21 @@ export default class PreparedPolygonIntersects extends PreparedPolygonPredicate 
   }
 
   static intersects (prep, geom) {
-    var polyInt = new PreparedPolygonIntersects(prep)
+    const polyInt = new PreparedPolygonIntersects(prep)
     return polyInt.intersects(geom)
   }
 
   intersects (geom) {
-    var isInPrepGeomArea = this.isAnyTestComponentInTarget(geom)
+    const isInPrepGeomArea = this.isAnyTestComponentInTarget(geom)
     if (isInPrepGeomArea) return true
     if (geom.getDimension() === 0) return false
-    var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
+    const lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
     if (lineSegStr.size() > 0) {
-      var segsIntersect = this._prepPoly.getIntersectionFinder().intersects(lineSegStr)
+      const segsIntersect = this._prepPoly.getIntersectionFinder().intersects(lineSegStr)
       if (segsIntersect) return true
     }
     if (geom.getDimension() === 2) {
-      var isPrepGeomInArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
+      const isPrepGeomInArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
       if (isPrepGeomInArea) return true
     }
     return false

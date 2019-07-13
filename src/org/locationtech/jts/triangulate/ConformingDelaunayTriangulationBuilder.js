@@ -13,26 +13,26 @@ export default class ConformingDelaunayTriangulationBuilder {
   static createConstraintSegments () {
     if (arguments.length === 1) {
       const geom = arguments[0]
-      var lines = LinearComponentExtracter.getLines(geom)
-      var constraintSegs = new ArrayList()
-      for (var i = lines.iterator(); i.hasNext();) {
-        var line = i.next()
+      const lines = LinearComponentExtracter.getLines(geom)
+      const constraintSegs = new ArrayList()
+      for (let i = lines.iterator(); i.hasNext();) {
+        const line = i.next()
         ConformingDelaunayTriangulationBuilder.createConstraintSegments(line, constraintSegs)
       }
       return constraintSegs
     } else if (arguments.length === 2) {
       const line = arguments[0]; const constraintSegs = arguments[1]
-      var coords = line.getCoordinates()
-      for (var i = 1; i < coords.length; i++) {
+      const coords = line.getCoordinates()
+      for (let i = 1; i < coords.length; i++) {
         constraintSegs.add(new Segment(coords[i - 1], coords[i]))
       }
     }
   }
 
   createSiteVertices (coords) {
-    var verts = new ArrayList()
-    for (var i = coords.iterator(); i.hasNext();) {
-      var coord = i.next()
+    const verts = new ArrayList()
+    for (let i = coords.iterator(); i.hasNext();) {
+      const coord = i.next()
       if (this._constraintVertexMap.containsKey(coord)) continue
       verts.add(new ConstraintVertex(coord))
     }
@@ -41,15 +41,15 @@ export default class ConformingDelaunayTriangulationBuilder {
 
   create () {
     if (this._subdiv !== null) return null
-    var siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
-    var segments = new ArrayList()
+    const siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
+    let segments = new ArrayList()
     if (this._constraintLines !== null) {
       siteEnv.expandToInclude(this._constraintLines.getEnvelopeInternal())
       this.createVertices(this._constraintLines)
       segments = ConformingDelaunayTriangulationBuilder.createConstraintSegments(this._constraintLines)
     }
-    var sites = this.createSiteVertices(this._siteCoords)
-    var cdt = new ConformingDelaunayTriangulator(sites, this._tolerance)
+    const sites = this.createSiteVertices(this._siteCoords)
+    const cdt = new ConformingDelaunayTriangulator(sites, this._tolerance)
     cdt.setConstraints(segments, new ArrayList(this._constraintVertexMap.values()))
     cdt.formInitialDelaunay()
     cdt.enforceConstraints()
@@ -84,9 +84,9 @@ export default class ConformingDelaunayTriangulationBuilder {
   }
 
   createVertices (geom) {
-    var coords = geom.getCoordinates()
-    for (var i = 0; i < coords.length; i++) {
-      var v = new ConstraintVertex(coords[i])
+    const coords = geom.getCoordinates()
+    for (let i = 0; i < coords.length; i++) {
+      const v = new ConstraintVertex(coords[i])
       this._constraintVertexMap.put(coords[i], v)
     }
   }

@@ -6,9 +6,9 @@ export default class TaggedLineString {
   }
 
   static extractCoordinates (segs) {
-    var pts = new Array(segs.size() + 1).fill(null)
-    var seg = null
-    for (var i = 0; i < segs.size(); i++) {
+    const pts = new Array(segs.size() + 1).fill(null)
+    let seg = null
+    for (let i = 0; i < segs.size(); i++) {
       seg = segs.get(i)
       pts[i] = seg.p0
     }
@@ -25,7 +25,7 @@ export default class TaggedLineString {
   }
 
   getResultSize () {
-    var resultSegsSize = this._resultSegs.size()
+    const resultSegsSize = this._resultSegs.size()
     return resultSegsSize === 0 ? 0 : resultSegsSize + 1
   }
 
@@ -54,10 +54,10 @@ export default class TaggedLineString {
   }
 
   init () {
-    var pts = this._parentLine.getCoordinates()
+    const pts = this._parentLine.getCoordinates()
     this._segs = new Array(pts.length - 1).fill(null)
-    for (var i = 0; i < pts.length - 1; i++) {
-      var seg = new TaggedLineSegment(pts[i], pts[i + 1], this._parentLine, i)
+    for (let i = 0; i < pts.length - 1; i++) {
+      const seg = new TaggedLineSegment(pts[i], pts[i + 1], this._parentLine, i)
       this._segs[i] = seg
     }
   }

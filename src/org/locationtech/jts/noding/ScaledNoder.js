@@ -14,19 +14,19 @@ export default class ScaledNoder {
   rescale () {
     if (hasInterface(arguments[0], Collection)) {
       const segStrings = arguments[0]
-      for (var i = segStrings.iterator(); i.hasNext();) {
-        var ss = i.next()
+      for (let i = segStrings.iterator(); i.hasNext();) {
+        const ss = i.next()
         this.rescale(ss.getCoordinates())
       }
     } else if (arguments[0] instanceof Array) {
       const pts = arguments[0]
-      var p0 = null
-      var p1 = null
+      let p0 = null
+      let p1 = null
       if (pts.length === 2) {
         p0 = new Coordinate(pts[0])
         p1 = new Coordinate(pts[1])
       }
-      for (var i = 0; i < pts.length; i++) {
+      for (let i = 0; i < pts.length; i++) {
         pts[i].x = pts[i].x / this._scaleFactor + this._offsetX
         pts[i].y = pts[i].y / this._scaleFactor + this._offsetY
       }
@@ -39,19 +39,19 @@ export default class ScaledNoder {
   scale () {
     if (hasInterface(arguments[0], Collection)) {
       const segStrings = arguments[0]
-      var nodedSegmentStrings = new ArrayList(segStrings.size())
-      for (var i = segStrings.iterator(); i.hasNext();) {
-        var ss = i.next()
+      const nodedSegmentStrings = new ArrayList(segStrings.size())
+      for (let i = segStrings.iterator(); i.hasNext();) {
+        const ss = i.next()
         nodedSegmentStrings.add(new NodedSegmentString(this.scale(ss.getCoordinates()), ss.getData()))
       }
       return nodedSegmentStrings
     } else if (arguments[0] instanceof Array) {
       const pts = arguments[0]
-      var roundPts = new Array(pts.length).fill(null)
-      for (var i = 0; i < pts.length; i++) {
+      const roundPts = new Array(pts.length).fill(null)
+      for (let i = 0; i < pts.length; i++) {
         roundPts[i] = new Coordinate(Math.round((pts[i].x - this._offsetX) * this._scaleFactor), Math.round((pts[i].y - this._offsetY) * this._scaleFactor), pts[i].z)
       }
-      var roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts)
+      const roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts)
       return roundPtsNoDup
     }
   }
@@ -61,13 +61,13 @@ export default class ScaledNoder {
   }
 
   getNodedSubstrings () {
-    var splitSS = this._noder.getNodedSubstrings()
+    const splitSS = this._noder.getNodedSubstrings()
     if (this._isScaled) this.rescale(splitSS)
     return splitSS
   }
 
   computeNodes (inputSegStrings) {
-    var intSegStrings = inputSegStrings
+    let intSegStrings = inputSegStrings
     if (this._isScaled) intSegStrings = this.scale(inputSegStrings)
     this._noder.computeNodes(intSegStrings)
   }

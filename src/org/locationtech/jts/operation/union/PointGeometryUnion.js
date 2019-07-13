@@ -9,22 +9,22 @@ export default class PointGeometryUnion {
   }
 
   static union (pointGeom, otherGeom) {
-    var unioner = new PointGeometryUnion(pointGeom, otherGeom)
+    const unioner = new PointGeometryUnion(pointGeom, otherGeom)
     return unioner.union()
   }
 
   union () {
-    var locater = new PointLocator()
-    var exteriorCoords = new TreeSet()
-    for (var i = 0; i < this._pointGeom.getNumGeometries(); i++) {
-      var point = this._pointGeom.getGeometryN(i)
-      var coord = point.getCoordinate()
-      var loc = locater.locate(coord, this._otherGeom)
+    const locater = new PointLocator()
+    const exteriorCoords = new TreeSet()
+    for (let i = 0; i < this._pointGeom.getNumGeometries(); i++) {
+      const point = this._pointGeom.getGeometryN(i)
+      const coord = point.getCoordinate()
+      const loc = locater.locate(coord, this._otherGeom)
       if (loc === Location.EXTERIOR) exteriorCoords.add(coord)
     }
     if (exteriorCoords.size() === 0) return this._otherGeom
-    var ptComp = null
-    var coords = CoordinateArrays.toCoordinateArray(exteriorCoords)
+    let ptComp = null
+    const coords = CoordinateArrays.toCoordinateArray(exteriorCoords)
     if (coords.length === 1) {
       ptComp = this._geomFact.createPoint(coords[0])
     } else {

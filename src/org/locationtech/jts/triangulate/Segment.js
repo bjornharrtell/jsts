@@ -10,12 +10,12 @@ export default class Segment {
   }
 
   getEndZ () {
-    var p = this._ls.getCoordinate(1)
+    const p = this._ls.getCoordinate(1)
     return p.z
   }
 
   getStartZ () {
-    var p = this._ls.getCoordinate(0)
+    const p = this._ls.getCoordinate(0)
     return p.z
   }
 
@@ -32,12 +32,12 @@ export default class Segment {
   }
 
   getEndY () {
-    var p = this._ls.getCoordinate(1)
+    const p = this._ls.getCoordinate(1)
     return p.y
   }
 
   getStartX () {
-    var p = this._ls.getCoordinate(0)
+    const p = this._ls.getCoordinate(0)
     return p.x
   }
 
@@ -46,7 +46,7 @@ export default class Segment {
   }
 
   getStartY () {
-    var p = this._ls.getCoordinate(0)
+    const p = this._ls.getCoordinate(0)
     return p.y
   }
 
@@ -59,7 +59,7 @@ export default class Segment {
   }
 
   getEndX () {
-    var p = this._ls.getCoordinate(1)
+    const p = this._ls.getCoordinate(1)
     return p.x
   }
 

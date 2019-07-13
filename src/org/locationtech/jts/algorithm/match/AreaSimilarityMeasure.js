@@ -5,8 +5,8 @@ export default class AreaSimilarityMeasure {
   }
 
   measure (g1, g2) {
-    var areaInt = g1.intersection(g2).getArea()
-    var areaUnion = g1.union(g2).getArea()
+    const areaInt = g1.intersection(g2).getArea()
+    const areaUnion = g1.union(g2).getArea()
     return areaInt / areaUnion
   }
 

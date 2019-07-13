@@ -6,7 +6,7 @@ export default class PriorityQueue {
 
   poll () {
     if (this.isEmpty()) return null
-    var minItem = this._items.get(1)
+    const minItem = this._items.get(1)
     this._items.set(1, this._items.get(this._size))
     this._size -= 1
     this.reorder(1)
@@ -18,8 +18,8 @@ export default class PriorityQueue {
   }
 
   reorder (hole) {
-    var child = null
-    var tmp = this._items.get(hole)
+    let child = null
+    const tmp = this._items.get(hole)
     for (; hole * 2 <= this._size; hole = child) {
       child = hole * 2
       if (child !== this._size && this._items.get(child + 1).compareTo(this._items.get(child)) < 0) child++
@@ -35,7 +35,7 @@ export default class PriorityQueue {
 
   peek () {
     if (this.isEmpty()) return null
-    var minItem = this._items.get(1)
+    const minItem = this._items.get(1)
     return minItem
   }
 
@@ -46,7 +46,7 @@ export default class PriorityQueue {
   add (x) {
     this._items.add(null)
     this._size += 1
-    var hole = this._size
+    let hole = this._size
     this._items.set(0, x)
     for (; x.compareTo(this._items.get(Math.trunc(hole / 2))) < 0; hole /= 2) {
       this._items.set(hole, this._items.get(Math.trunc(hole / 2)))

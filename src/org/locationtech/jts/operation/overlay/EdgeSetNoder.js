@@ -11,12 +11,12 @@ export default class EdgeSetNoder {
   }
 
   getNodedEdges () {
-    var esi = new SimpleMCSweepLineIntersector()
-    var si = new SegmentIntersector(this._li, true, false)
+    const esi = new SimpleMCSweepLineIntersector()
+    const si = new SegmentIntersector(this._li, true, false)
     esi.computeIntersections(this._inputEdges, si, true)
-    var splitEdges = new ArrayList()
-    for (var i = this._inputEdges.iterator(); i.hasNext();) {
-      var e = i.next()
+    const splitEdges = new ArrayList()
+    for (let i = this._inputEdges.iterator(); i.hasNext();) {
+      const e = i.next()
       e.getEdgeIntersectionList().addSplitEdges(splitEdges)
     }
     return splitEdges

@@ -8,14 +8,14 @@ export default class DirectedEdgeStar {
   }
 
   getNextEdge (dirEdge) {
-    var i = this.getIndex(dirEdge)
+    const i = this.getIndex(dirEdge)
     return this._outEdges.get(this.getIndex(i + 1))
   }
 
   getCoordinate () {
-    var it = this.iterator()
+    const it = this.iterator()
     if (!it.hasNext()) return null
-    var e = it.next()
+    const e = it.next()
     return e.getCoordinate()
   }
 
@@ -41,7 +41,7 @@ export default class DirectedEdgeStar {
   }
 
   getNextCWEdge (dirEdge) {
-    var i = this.getIndex(dirEdge)
+    const i = this.getIndex(dirEdge)
     return this._outEdges.get(this.getIndex(i - 1))
   }
 
@@ -49,22 +49,22 @@ export default class DirectedEdgeStar {
     if (arguments[0] instanceof Edge) {
       const edge = arguments[0]
       this.sortEdges()
-      for (var i = 0; i < this._outEdges.size(); i++) {
-        var de = this._outEdges.get(i)
+      for (let i = 0; i < this._outEdges.size(); i++) {
+        const de = this._outEdges.get(i)
         if (de.getEdge() === edge) return i
       }
       return -1
     } else if (arguments[0] instanceof DirectedEdge) {
       const dirEdge = arguments[0]
       this.sortEdges()
-      for (var i = 0; i < this._outEdges.size(); i++) {
-        var de = this._outEdges.get(i)
+      for (let i = 0; i < this._outEdges.size(); i++) {
+        const de = this._outEdges.get(i)
         if (de === dirEdge) return i
       }
       return -1
     } else if (Number.isInteger(arguments[0])) {
       const i = arguments[0]
-      var modi = i % this._outEdges.size()
+      let modi = i % this._outEdges.size()
       if (modi < 0) modi += this._outEdges.size()
       return modi
     }

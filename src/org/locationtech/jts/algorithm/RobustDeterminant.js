@@ -4,18 +4,18 @@ export default class RobustDeterminant {
   }
 
   static orientationIndex (p1, p2, q) {
-    var dx1 = p2.x - p1.x
-    var dy1 = p2.y - p1.y
-    var dx2 = q.x - p2.x
-    var dy2 = q.y - p2.y
+    const dx1 = p2.x - p1.x
+    const dy1 = p2.y - p1.y
+    const dx2 = q.x - p2.x
+    const dy2 = q.y - p2.y
     return RobustDeterminant.signOfDet2x2(dx1, dy1, dx2, dy2)
   }
 
   static signOfDet2x2 (x1, y1, x2, y2) {
-    var sign = null
-    var swap = null
-    var k = null
-    var count = 0
+    let sign = null
+    let swap = null
+    let k = null
+    let count = 0
     sign = 1
     if (x1 === 0.0 || y2 === 0.0) {
       if (y1 === 0.0 || x2 === 0.0) {

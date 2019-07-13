@@ -16,7 +16,7 @@ export default class SegmentNode {
   }
 
   compareTo (obj) {
-    var other = obj
+    const other = obj
     if (this.segmentIndex < other.segmentIndex) return -1
     if (this.segmentIndex > other.segmentIndex) return 1
     if (this.coord.equals2D(other.coord)) return 0

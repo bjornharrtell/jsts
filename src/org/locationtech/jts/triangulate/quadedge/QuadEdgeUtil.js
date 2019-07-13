@@ -5,8 +5,8 @@ export default class QuadEdgeUtil {
   }
 
   static findEdgesIncidentOnOrigin (start) {
-    var incEdge = new ArrayList()
-    var qe = start
+    const incEdge = new ArrayList()
+    let qe = start
     do {
       incEdge.add(qe)
       qe = qe.oNext()

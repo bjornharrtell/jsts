@@ -19,10 +19,10 @@ export default class GeometricShapeBuilder {
   }
 
   getSquareBaseLine () {
-    var radius = this.getRadius()
-    var centre = this.getCentre()
-    var p0 = new Coordinate(centre.x - radius, centre.y - radius)
-    var p1 = new Coordinate(centre.x + radius, centre.y - radius)
+    const radius = this.getRadius()
+    const centre = this.getCentre()
+    const p0 = new Coordinate(centre.x - radius, centre.y - radius)
+    const p1 = new Coordinate(centre.x + radius, centre.y - radius)
     return new LineSegment(p0, p1)
   }
 
@@ -39,13 +39,13 @@ export default class GeometricShapeBuilder {
   }
 
   getSquareExtent () {
-    var radius = this.getRadius()
-    var centre = this.getCentre()
+    const radius = this.getRadius()
+    const centre = this.getCentre()
     return new Envelope(centre.x - radius, centre.x + radius, centre.y - radius, centre.y + radius)
   }
 
   createCoord (x, y) {
-    var pt = new Coordinate(x, y)
+    const pt = new Coordinate(x, y)
     this._geomFactory.getPrecisionModel().makePrecise(pt)
     return pt
   }

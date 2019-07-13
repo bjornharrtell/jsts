@@ -27,8 +27,8 @@ export default class MinimumDiameter {
   }
 
   static computeSegmentForLine (a, b, c) {
-    var p0 = null
-    var p1 = null
+    let p0 = null
+    let p1 = null
     if (Math.abs(b) > Math.abs(a)) {
       p0 = new Coordinate(0.0, c / b)
       p1 = new Coordinate(1.0, c / b - a / b)
@@ -52,7 +52,7 @@ export default class MinimumDiameter {
   getDiameter () {
     this.computeMinimumDiameter()
     if (this._minWidthPt === null) return this._inputGeom.getFactory().createLineString()
-    var basePt = this._minBaseSeg.project(this._minWidthPt)
+    const basePt = this._minBaseSeg.project(this._minWidthPt)
     return this._inputGeom.getFactory().createLineString([basePt, this._minWidthPt])
   }
 
@@ -77,9 +77,9 @@ export default class MinimumDiameter {
 
   computeConvexRingMinDiameter (pts) {
     this._minWidth = Double.MAX_VALUE
-    var currMaxIndex = 1
-    var seg = new LineSegment()
-    for (var i = 0; i < pts.length - 1; i++) {
+    let currMaxIndex = 1
+    const seg = new LineSegment()
+    for (let i = 0; i < pts.length - 1; i++) {
       seg.p0 = pts[i]
       seg.p1 = pts[i + 1]
       currMaxIndex = this.findMaxPerpDistance(pts, seg, currMaxIndex)
@@ -89,7 +89,7 @@ export default class MinimumDiameter {
   computeMinimumDiameter () {
     if (this._minWidthPt !== null) return null
     if (this._isConvex) this.computeWidthConvex(this._inputGeom); else {
-      var convexGeom = new ConvexHull(this._inputGeom).getConvexHull()
+      const convexGeom = new ConvexHull(this._inputGeom).getConvexHull()
       this.computeWidthConvex(convexGeom)
     }
   }
@@ -100,10 +100,10 @@ export default class MinimumDiameter {
   }
 
   findMaxPerpDistance (pts, seg, startIndex) {
-    var maxPerpDistance = seg.distancePerpendicular(pts[startIndex])
-    var nextPerpDistance = maxPerpDistance
-    var maxIndex = startIndex
-    var nextIndex = maxIndex
+    let maxPerpDistance = seg.distancePerpendicular(pts[startIndex])
+    let nextPerpDistance = maxPerpDistance
+    let maxIndex = startIndex
+    let nextIndex = maxIndex
     while (nextPerpDistance >= maxPerpDistance) {
       maxPerpDistance = nextPerpDistance
       maxIndex = nextIndex
@@ -127,29 +127,29 @@ export default class MinimumDiameter {
       }
       return this._minBaseSeg.toGeometry(this._inputGeom.getFactory())
     }
-    var dx = this._minBaseSeg.p1.x - this._minBaseSeg.p0.x
-    var dy = this._minBaseSeg.p1.y - this._minBaseSeg.p0.y
-    var minPara = Double.MAX_VALUE
-    var maxPara = -Double.MAX_VALUE
-    var minPerp = Double.MAX_VALUE
-    var maxPerp = -Double.MAX_VALUE
-    for (var i = 0; i < this._convexHullPts.length; i++) {
-      var paraC = MinimumDiameter.computeC(dx, dy, this._convexHullPts[i])
+    const dx = this._minBaseSeg.p1.x - this._minBaseSeg.p0.x
+    const dy = this._minBaseSeg.p1.y - this._minBaseSeg.p0.y
+    let minPara = Double.MAX_VALUE
+    let maxPara = -Double.MAX_VALUE
+    let minPerp = Double.MAX_VALUE
+    let maxPerp = -Double.MAX_VALUE
+    for (let i = 0; i < this._convexHullPts.length; i++) {
+      const paraC = MinimumDiameter.computeC(dx, dy, this._convexHullPts[i])
       if (paraC > maxPara) maxPara = paraC
       if (paraC < minPara) minPara = paraC
-      var perpC = MinimumDiameter.computeC(-dy, dx, this._convexHullPts[i])
+      const perpC = MinimumDiameter.computeC(-dy, dx, this._convexHullPts[i])
       if (perpC > maxPerp) maxPerp = perpC
       if (perpC < minPerp) minPerp = perpC
     }
-    var maxPerpLine = MinimumDiameter.computeSegmentForLine(-dx, -dy, maxPerp)
-    var minPerpLine = MinimumDiameter.computeSegmentForLine(-dx, -dy, minPerp)
-    var maxParaLine = MinimumDiameter.computeSegmentForLine(-dy, dx, maxPara)
-    var minParaLine = MinimumDiameter.computeSegmentForLine(-dy, dx, minPara)
-    var p0 = maxParaLine.lineIntersection(maxPerpLine)
-    var p1 = minParaLine.lineIntersection(maxPerpLine)
-    var p2 = minParaLine.lineIntersection(minPerpLine)
-    var p3 = maxParaLine.lineIntersection(minPerpLine)
-    var shell = this._inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0])
+    const maxPerpLine = MinimumDiameter.computeSegmentForLine(-dx, -dy, maxPerp)
+    const minPerpLine = MinimumDiameter.computeSegmentForLine(-dx, -dy, minPerp)
+    const maxParaLine = MinimumDiameter.computeSegmentForLine(-dy, dx, maxPara)
+    const minParaLine = MinimumDiameter.computeSegmentForLine(-dy, dx, minPara)
+    const p0 = maxParaLine.lineIntersection(maxPerpLine)
+    const p1 = minParaLine.lineIntersection(maxPerpLine)
+    const p2 = minParaLine.lineIntersection(minPerpLine)
+    const p3 = maxParaLine.lineIntersection(minPerpLine)
+    const shell = this._inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0])
     return this._inputGeom.getFactory().createPolygon(shell)
   }
 

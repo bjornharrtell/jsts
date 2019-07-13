@@ -6,12 +6,12 @@ export default class PreparedPolygonCovers extends AbstractPreparedPolygonContai
   }
 
   static covers (prep, geom) {
-    var polyInt = new PreparedPolygonCovers(prep)
+    const polyInt = new PreparedPolygonCovers(prep)
     return polyInt.covers(geom)
   }
 
   fullTopologicalPredicate (geom) {
-    var result = this._prepPoly.getGeometry().covers(geom)
+    const result = this._prepPoly.getGeometry().covers(geom)
     return result
   }
 

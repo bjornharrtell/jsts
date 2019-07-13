@@ -7,17 +7,17 @@ export default class HCoordinate {
   }
 
   static intersection (p1, p2, q1, q2) {
-    var px = p1.y - p2.y
-    var py = p2.x - p1.x
-    var pw = p1.x * p2.y - p2.x * p1.y
-    var qx = q1.y - q2.y
-    var qy = q2.x - q1.x
-    var qw = q1.x * q2.y - q2.x * q1.y
-    var x = py * qw - qy * pw
-    var y = qx * pw - px * qw
-    var w = px * qy - qx * py
-    var xInt = x / w
-    var yInt = y / w
+    const px = p1.y - p2.y
+    const py = p2.x - p1.x
+    const pw = p1.x * p2.y - p2.x * p1.y
+    const qx = q1.y - q2.y
+    const qy = q2.x - q1.x
+    const qw = q1.x * q2.y - q2.x * q1.y
+    const x = py * qw - qy * pw
+    const y = qx * pw - px * qw
+    const w = px * qy - qx * py
+    const xInt = x / w
+    const yInt = y / w
     if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
       throw new NotRepresentableException()
     }
@@ -25,7 +25,7 @@ export default class HCoordinate {
   }
 
   getY () {
-    var a = this.y / this.w
+    const a = this.y / this.w
     if (Double.isNaN(a) || Double.isInfinite(a)) {
       throw new NotRepresentableException()
     }
@@ -33,7 +33,7 @@ export default class HCoordinate {
   }
 
   getX () {
-    var a = this.x / this.w
+    const a = this.x / this.w
     if (Double.isNaN(a) || Double.isInfinite(a)) {
       throw new NotRepresentableException()
     }
@@ -41,7 +41,7 @@ export default class HCoordinate {
   }
 
   getCoordinate () {
-    var p = new Coordinate()
+    const p = new Coordinate()
     p.x = this.getX()
     p.y = this.getY()
     return p
@@ -92,12 +92,12 @@ HCoordinate.constructor_ = function () {
     this.w = _w
   } else if (arguments.length === 4) {
     const p1 = arguments[0]; const p2 = arguments[1]; const q1 = arguments[2]; const q2 = arguments[3]
-    var px = p1.y - p2.y
-    var py = p2.x - p1.x
-    var pw = p1.x * p2.y - p2.x * p1.y
-    var qx = q1.y - q2.y
-    var qy = q2.x - q1.x
-    var qw = q1.x * q2.y - q2.x * q1.y
+    const px = p1.y - p2.y
+    const py = p2.x - p1.x
+    const pw = p1.x * p2.y - p2.x * p1.y
+    const qx = q1.y - q2.y
+    const qy = q2.x - q1.x
+    const qw = q1.x * q2.y - q2.x * q1.y
     this.x = py * qw - qy * pw
     this.y = qx * pw - px * qw
     this.w = px * qy - qx * py

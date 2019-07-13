@@ -17,7 +17,7 @@ export default class SweepLineEvent {
   }
 
   compareTo (o) {
-    var pe = o
+    const pe = o
     if (this._xValue < pe._xValue) return -1
     if (this._xValue > pe._xValue) return 1
     if (this._eventType < pe._eventType) return -1

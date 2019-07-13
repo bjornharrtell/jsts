@@ -13,8 +13,8 @@ export default class LineMerger {
   }
 
   buildEdgeStringsForUnprocessedNodes () {
-    for (var i = this._graph.getNodes().iterator(); i.hasNext();) {
-      var node = i.next()
+    for (let i = this._graph.getNodes().iterator(); i.hasNext();) {
+      const node = i.next()
       if (!node.isMarked()) {
         Assert.isTrue(node.getDegree() === 2)
         this.buildEdgeStringsStartingAt(node)
@@ -24,8 +24,8 @@ export default class LineMerger {
   }
 
   buildEdgeStringsForNonDegree2Nodes () {
-    for (var i = this._graph.getNodes().iterator(); i.hasNext();) {
-      var node = i.next()
+    for (let i = this._graph.getNodes().iterator(); i.hasNext();) {
+      const node = i.next()
       if (node.getDegree() !== 2) {
         this.buildEdgeStringsStartingAt(node)
         node.setMarked(true)
@@ -43,8 +43,8 @@ export default class LineMerger {
   }
 
   buildEdgeStringsStartingAt (node) {
-    for (var i = node.getOutEdges().iterator(); i.hasNext();) {
-      var directedEdge = i.next()
+    for (let i = node.getOutEdges().iterator(); i.hasNext();) {
+      const directedEdge = i.next()
       if (directedEdge.getEdge().isMarked()) {
         continue
       }
@@ -62,8 +62,8 @@ export default class LineMerger {
     this.buildEdgeStringsForObviousStartNodes()
     this.buildEdgeStringsForIsolatedLoops()
     this._mergedLineStrings = new ArrayList()
-    for (var i = this._edgeStrings.iterator(); i.hasNext();) {
-      var edgeString = i.next()
+    for (let i = this._edgeStrings.iterator(); i.hasNext();) {
+      const edgeString = i.next()
       this._mergedLineStrings.add(edgeString.toLineString())
     }
   }
@@ -76,8 +76,8 @@ export default class LineMerger {
   }
 
   buildEdgeStringStartingWith (start) {
-    var edgeString = new EdgeString(this._factory)
-    var current = start
+    const edgeString = new EdgeString(this._factory)
+    let current = start
     do {
       edgeString.add(current)
       current.getEdge().setMarked(true)
@@ -89,8 +89,8 @@ export default class LineMerger {
   add () {
     if (arguments[0] instanceof Geometry) {
       const geometry = arguments[0]
-      for (var i = 0; i < geometry.getNumGeometries(); i++) {
-        var component = geometry.getGeometryN(i)
+      for (let i = 0; i < geometry.getNumGeometries(); i++) {
+        const component = geometry.getGeometryN(i)
         if (component instanceof LineString) {
           this.addLineString(component)
         }
@@ -99,8 +99,8 @@ export default class LineMerger {
     } else if (hasInterface(arguments[0], Collection)) {
       const geometries = arguments[0]
       this._mergedLineStrings = null
-      for (var i = geometries.iterator(); i.hasNext();) {
-        var geometry = i.next()
+      for (let i = geometries.iterator(); i.hasNext();) {
+        const geometry = i.next()
         this.add(geometry)
       }
     }

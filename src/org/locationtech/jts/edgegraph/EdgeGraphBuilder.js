@@ -10,7 +10,7 @@ export default class EdgeGraphBuilder {
   }
 
   static build (geoms) {
-    var builder = new EdgeGraphBuilder()
+    const builder = new EdgeGraphBuilder()
     builder.add(geoms)
     return builder.getGraph()
   }
@@ -31,14 +31,14 @@ export default class EdgeGraphBuilder {
       })())
     } else if (hasInterface(arguments[0], Collection)) {
       const geometries = arguments[0]
-      for (var i = geometries.iterator(); i.hasNext();) {
-        var geometry = i.next()
+      for (let i = geometries.iterator(); i.hasNext();) {
+        const geometry = i.next()
         this.add(geometry)
       }
     } else if (arguments[0] instanceof LineString) {
       const lineString = arguments[0]
-      var seq = lineString.getCoordinateSequence()
-      for (var i = 1; i < seq.size(); i++) {
+      const seq = lineString.getCoordinateSequence()
+      for (let i = 1; i < seq.size(); i++) {
         this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i))
       }
     }

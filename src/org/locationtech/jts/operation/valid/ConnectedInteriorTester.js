@@ -14,19 +14,19 @@ export default class ConnectedInteriorTester {
   }
 
   static findDifferentPoint (coord, pt) {
-    for (var i = 0; i < coord.length; i++) {
+    for (let i = 0; i < coord.length; i++) {
       if (!coord[i].equals(pt)) return coord[i]
     }
     return null
   }
 
   visitInteriorRing (ring, graph) {
-    var pts = ring.getCoordinates()
-    var pt0 = pts[0]
-    var pt1 = ConnectedInteriorTester.findDifferentPoint(pts, pt0)
-    var e = graph.findEdgeInSameDirection(pt0, pt1)
-    var de = graph.findEdgeEnd(e)
-    var intDe = null
+    const pts = ring.getCoordinates()
+    const pt0 = pts[0]
+    const pt1 = ConnectedInteriorTester.findDifferentPoint(pts, pt0)
+    const e = graph.findEdgeInSameDirection(pt0, pt1)
+    const de = graph.findEdgeEnd(e)
+    let intDe = null
     if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
       intDe = de
     } else if (de.getSym().getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
@@ -38,13 +38,13 @@ export default class ConnectedInteriorTester {
 
   visitShellInteriors (g, graph) {
     if (g instanceof Polygon) {
-      var p = g
+      const p = g
       this.visitInteriorRing(p.getExteriorRing(), graph)
     }
     if (g instanceof MultiPolygon) {
-      var mp = g
-      for (var i = 0; i < mp.getNumGeometries(); i++) {
-        var p = mp.getGeometryN(i)
+      const mp = g
+      for (let i = 0; i < mp.getNumGeometries(); i++) {
+        const p = mp.getGeometryN(i)
         this.visitInteriorRing(p.getExteriorRing(), graph)
       }
     }
@@ -55,8 +55,8 @@ export default class ConnectedInteriorTester {
   }
 
   setInteriorEdgesInResult (graph) {
-    for (var it = graph.getEdgeEnds().iterator(); it.hasNext();) {
-      var de = it.next()
+    for (let it = graph.getEdgeEnds().iterator(); it.hasNext();) {
+      const de = it.next()
       if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
         de.setInResult(true)
       }
@@ -64,8 +64,8 @@ export default class ConnectedInteriorTester {
   }
 
   visitLinkedDirectedEdges (start) {
-    var startDe = start
-    var de = start
+    const startDe = start
+    let de = start
     do {
       Assert.isTrue(de !== null, 'found null Directed Edge')
       de.setVisited(true)
@@ -74,13 +74,13 @@ export default class ConnectedInteriorTester {
   }
 
   buildEdgeRings (dirEdges) {
-    var edgeRings = new ArrayList()
-    for (var it = dirEdges.iterator(); it.hasNext();) {
-      var de = it.next()
+    const edgeRings = new ArrayList()
+    for (let it = dirEdges.iterator(); it.hasNext();) {
+      const de = it.next()
       if (de.isInResult() && de.getEdgeRing() === null) {
-        var er = new MaximalEdgeRing(de, this._geometryFactory)
+        const er = new MaximalEdgeRing(de, this._geometryFactory)
         er.linkDirectedEdgesForMinimalEdgeRings()
-        var minEdgeRings = er.buildMinimalRings()
+        const minEdgeRings = er.buildMinimalRings()
         edgeRings.addAll(minEdgeRings)
       }
     }
@@ -88,13 +88,13 @@ export default class ConnectedInteriorTester {
   }
 
   hasUnvisitedShellEdge (edgeRings) {
-    for (var i = 0; i < edgeRings.size(); i++) {
-      var er = edgeRings.get(i)
+    for (let i = 0; i < edgeRings.size(); i++) {
+      const er = edgeRings.get(i)
       if (er.isHole()) continue
-      var edges = er.getEdges()
-      var de = edges.get(0)
+      const edges = er.getEdges()
+      let de = edges.get(0)
       if (de.getLabel().getLocation(0, Position.RIGHT) !== Location.INTERIOR) continue
-      for (var j = 0; j < edges.size(); j++) {
+      for (let j = 0; j < edges.size(); j++) {
         de = edges.get(j)
         if (!de.isVisited()) {
           this._disconnectedRingcoord = de.getCoordinate()
@@ -106,13 +106,13 @@ export default class ConnectedInteriorTester {
   }
 
   isInteriorsConnected () {
-    var splitEdges = new ArrayList()
+    const splitEdges = new ArrayList()
     this._geomGraph.computeSplitEdges(splitEdges)
-    var graph = new PlanarGraph(new OverlayNodeFactory())
+    const graph = new PlanarGraph(new OverlayNodeFactory())
     graph.addEdges(splitEdges)
     this.setInteriorEdgesInResult(graph)
     graph.linkResultDirectedEdges()
-    var edgeRings = this.buildEdgeRings(graph.getEdgeEnds())
+    const edgeRings = this.buildEdgeRings(graph.getEdgeEnds())
     this.visitShellInteriors(this._geomGraph.getGeometry(), graph)
     return !this.hasUnvisitedShellEdge(edgeRings)
   }

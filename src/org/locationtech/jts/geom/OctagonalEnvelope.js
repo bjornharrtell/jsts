@@ -29,15 +29,15 @@ export default class OctagonalEnvelope {
     if (this.isNull()) {
       return geomFactory.createPoint()
     }
-    var px00 = new Coordinate(this._minX, this._minA - this._minX)
-    var px01 = new Coordinate(this._minX, this._minX - this._minB)
-    var px10 = new Coordinate(this._maxX, this._maxX - this._maxB)
-    var px11 = new Coordinate(this._maxX, this._maxA - this._maxX)
-    var py00 = new Coordinate(this._minA - this._minY, this._minY)
-    var py01 = new Coordinate(this._minY + this._maxB, this._minY)
-    var py10 = new Coordinate(this._maxY + this._minB, this._maxY)
-    var py11 = new Coordinate(this._maxA - this._maxY, this._maxY)
-    var pm = geomFactory.getPrecisionModel()
+    const px00 = new Coordinate(this._minX, this._minA - this._minX)
+    const px01 = new Coordinate(this._minX, this._minX - this._minB)
+    const px10 = new Coordinate(this._maxX, this._maxX - this._maxB)
+    const px11 = new Coordinate(this._maxX, this._maxA - this._maxX)
+    const py00 = new Coordinate(this._minA - this._minY, this._minY)
+    const py01 = new Coordinate(this._minY + this._maxB, this._minY)
+    const py10 = new Coordinate(this._maxY + this._minB, this._maxY)
+    const py11 = new Coordinate(this._maxA - this._maxY, this._maxY)
+    const pm = geomFactory.getPrecisionModel()
     pm.makePrecise(px00)
     pm.makePrecise(px01)
     pm.makePrecise(px10)
@@ -46,7 +46,7 @@ export default class OctagonalEnvelope {
     pm.makePrecise(py01)
     pm.makePrecise(py10)
     pm.makePrecise(py11)
-    var coordList = new CoordinateList()
+    const coordList = new CoordinateList()
     coordList.add(px00, false)
     coordList.add(px01, false)
     coordList.add(py10, false)
@@ -59,11 +59,11 @@ export default class OctagonalEnvelope {
       return geomFactory.createPoint(px00)
     }
     if (coordList.size() === 2) {
-      var pts = coordList.toCoordinateArray()
+      const pts = coordList.toCoordinateArray()
       return geomFactory.createLineString(pts)
     }
     coordList.add(px00, false)
-    var pts = coordList.toCoordinateArray()
+    const pts = coordList.toCoordinateArray()
     return geomFactory.createPolygon(geomFactory.createLinearRing(pts))
   }
 
@@ -109,8 +109,8 @@ export default class OctagonalEnvelope {
       if (this._maxX < p.x) return false
       if (this._minY > p.y) return false
       if (this._maxY < p.y) return false
-      var A = OctagonalEnvelope.computeA(p.x, p.y)
-      var B = OctagonalEnvelope.computeB(p.x, p.y)
+      const A = OctagonalEnvelope.computeA(p.x, p.y)
+      const B = OctagonalEnvelope.computeB(p.x, p.y)
       if (this._minA > A) return false
       if (this._maxA < A) return false
       if (this._minB > B) return false
@@ -134,9 +134,9 @@ export default class OctagonalEnvelope {
         g.apply(new BoundingOctagonComponentFilter(this))
       } else if (hasInterface(arguments[0], CoordinateSequence)) {
         const seq = arguments[0]
-        for (var i = 0; i < seq.size(); i++) {
-          var x = seq.getX(i)
-          var y = seq.getY(i)
+        for (let i = 0; i < seq.size(); i++) {
+          const x = seq.getX(i)
+          const y = seq.getY(i)
           this.expandToInclude(x, y)
         }
         return this
@@ -177,8 +177,8 @@ export default class OctagonalEnvelope {
       }
     } else if (arguments.length === 2) {
       const x = arguments[0]; const y = arguments[1]
-      var A = OctagonalEnvelope.computeA(x, y)
-      var B = OctagonalEnvelope.computeB(x, y)
+      const A = OctagonalEnvelope.computeA(x, y)
+      const B = OctagonalEnvelope.computeB(x, y)
       if (this.isNull()) {
         this._minX = x
         this._maxX = x
@@ -212,7 +212,7 @@ export default class OctagonalEnvelope {
 
   expandBy (distance) {
     if (this.isNull()) return null
-    var diagonalDistance = OctagonalEnvelope.SQRT2 * distance
+    const diagonalDistance = OctagonalEnvelope.SQRT2 * distance
     this._minX -= distance
     this._maxX += distance
     this._minY -= distance

@@ -27,15 +27,15 @@ export default class EdgeEnd {
   }
 
   print (out) {
-    var angle = Math.atan2(this._dy, this._dx)
-    var className = this.getClass().getName()
-    var lastDotPos = className.lastIndexOf('.')
-    var name = className.substring(lastDotPos + 1)
+    const angle = Math.atan2(this._dy, this._dx)
+    const className = this.getClass().getName()
+    const lastDotPos = className.lastIndexOf('.')
+    const name = className.substring(lastDotPos + 1)
     out.print('  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + angle + '   ' + this._label)
   }
 
   compareTo (obj) {
-    var e = obj
+    const e = obj
     return this.compareDirection(e)
   }
 
@@ -64,10 +64,10 @@ export default class EdgeEnd {
   }
 
   toString () {
-    var angle = Math.atan2(this._dy, this._dx)
-    var className = this.getClass().getName()
-    var lastDotPos = className.lastIndexOf('.')
-    var name = className.substring(lastDotPos + 1)
+    const angle = Math.atan2(this._dy, this._dx)
+    const className = this.getClass().getName()
+    const lastDotPos = className.lastIndexOf('.')
+    const name = className.substring(lastDotPos + 1)
     return '  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + angle + '   ' + this._label
   }
 

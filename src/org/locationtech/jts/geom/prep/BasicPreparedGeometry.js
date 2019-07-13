@@ -41,9 +41,9 @@ export default class BasicPreparedGeometry {
   }
 
   isAnyTargetComponentInTest (testGeom) {
-    var locator = new PointLocator()
-    for (var i = this._representativePts.iterator(); i.hasNext();) {
-      var p = i.next()
+    const locator = new PointLocator()
+    for (let i = this._representativePts.iterator(); i.hasNext();) {
+      const p = i.next()
       if (locator.intersects(p, testGeom)) return true
     }
     return false

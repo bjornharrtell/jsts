@@ -8,22 +8,22 @@ export default class GeometricShapeFactory {
   }
 
   createSupercircle (power) {
-    var recipPow = 1.0 / power
-    var radius = this._dim.getMinSize() / 2
-    var centre = this._dim.getCentre()
-    var r4 = Math.pow(radius, power)
-    var y0 = radius
-    var xyInt = Math.pow(r4 / 2, recipPow)
-    var nSegsInOct = Math.trunc(this._nPts / 8)
-    var totPts = nSegsInOct * 8 + 1
-    var pts = new Array(totPts).fill(null)
-    var xInc = xyInt / nSegsInOct
-    for (var i = 0; i <= nSegsInOct; i++) {
-      var x = 0.0
-      var y = y0
+    const recipPow = 1.0 / power
+    const radius = this._dim.getMinSize() / 2
+    const centre = this._dim.getCentre()
+    const r4 = Math.pow(radius, power)
+    const y0 = radius
+    const xyInt = Math.pow(r4 / 2, recipPow)
+    const nSegsInOct = Math.trunc(this._nPts / 8)
+    const totPts = nSegsInOct * 8 + 1
+    const pts = new Array(totPts).fill(null)
+    const xInc = xyInt / nSegsInOct
+    for (let i = 0; i <= nSegsInOct; i++) {
+      let x = 0.0
+      let y = y0
       if (i !== 0) {
         x = xInc * i
-        var x4 = Math.pow(x, power)
+        const x4 = Math.pow(x, power)
         y = Math.pow(r4 - x4, recipPow)
       }
       pts[i] = this.coordTrans(x, y, centre)
@@ -36,8 +36,8 @@ export default class GeometricShapeFactory {
       pts[8 * nSegsInOct - i] = this.coordTrans(-x, y, centre)
     }
     pts[pts.length - 1] = new Coordinate(pts[0])
-    var ring = this._geomFact.createLinearRing(pts)
-    var poly = this._geomFact.createPolygon(ring)
+    const ring = this._geomFact.createLinearRing(pts)
+    const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
 
@@ -58,22 +58,22 @@ export default class GeometricShapeFactory {
   }
 
   createEllipse () {
-    var env = this._dim.getEnvelope()
-    var xRadius = env.getWidth() / 2.0
-    var yRadius = env.getHeight() / 2.0
-    var centreX = env.getMinX() + xRadius
-    var centreY = env.getMinY() + yRadius
-    var pts = new Array(this._nPts + 1).fill(null)
-    var iPt = 0
-    for (var i = 0; i < this._nPts; i++) {
-      var ang = i * (2 * Math.PI / this._nPts)
-      var x = xRadius * Math.cos(ang) + centreX
-      var y = yRadius * Math.sin(ang) + centreY
+    const env = this._dim.getEnvelope()
+    const xRadius = env.getWidth() / 2.0
+    const yRadius = env.getHeight() / 2.0
+    const centreX = env.getMinX() + xRadius
+    const centreY = env.getMinY() + yRadius
+    const pts = new Array(this._nPts + 1).fill(null)
+    let iPt = 0
+    for (let i = 0; i < this._nPts; i++) {
+      const ang = i * (2 * Math.PI / this._nPts)
+      const x = xRadius * Math.cos(ang) + centreX
+      const y = yRadius * Math.sin(ang) + centreY
       pts[iPt++] = this.coord(x, y)
     }
     pts[iPt] = new Coordinate(pts[0])
-    var ring = this._geomFact.createLinearRing(pts)
-    var poly = this._geomFact.createPolygon(ring)
+    const ring = this._geomFact.createLinearRing(pts)
+    const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
 
@@ -94,96 +94,96 @@ export default class GeometricShapeFactory {
   }
 
   createArc (startAng, angExtent) {
-    var env = this._dim.getEnvelope()
-    var xRadius = env.getWidth() / 2.0
-    var yRadius = env.getHeight() / 2.0
-    var centreX = env.getMinX() + xRadius
-    var centreY = env.getMinY() + yRadius
-    var angSize = angExtent
+    const env = this._dim.getEnvelope()
+    const xRadius = env.getWidth() / 2.0
+    const yRadius = env.getHeight() / 2.0
+    const centreX = env.getMinX() + xRadius
+    const centreY = env.getMinY() + yRadius
+    let angSize = angExtent
     if (angSize <= 0.0 || angSize > 2 * Math.PI) angSize = 2 * Math.PI
-    var angInc = angSize / (this._nPts - 1)
-    var pts = new Array(this._nPts).fill(null)
-    var iPt = 0
-    for (var i = 0; i < this._nPts; i++) {
-      var ang = startAng + i * angInc
-      var x = xRadius * Math.cos(ang) + centreX
-      var y = yRadius * Math.sin(ang) + centreY
+    const angInc = angSize / (this._nPts - 1)
+    const pts = new Array(this._nPts).fill(null)
+    let iPt = 0
+    for (let i = 0; i < this._nPts; i++) {
+      const ang = startAng + i * angInc
+      const x = xRadius * Math.cos(ang) + centreX
+      const y = yRadius * Math.sin(ang) + centreY
       pts[iPt++] = this.coord(x, y)
     }
-    var line = this._geomFact.createLineString(pts)
+    const line = this._geomFact.createLineString(pts)
     return this.rotate(line)
   }
 
   rotate (geom) {
     if (this._rotationAngle !== 0.0) {
-      var trans = AffineTransformation.rotationInstance(this._rotationAngle, this._dim.getCentre().x, this._dim.getCentre().y)
+      const trans = AffineTransformation.rotationInstance(this._rotationAngle, this._dim.getCentre().x, this._dim.getCentre().y)
       geom.apply(trans)
     }
     return geom
   }
 
   coord (x, y) {
-    var pt = new Coordinate(x, y)
+    const pt = new Coordinate(x, y)
     this._precModel.makePrecise(pt)
     return pt
   }
 
   createArcPolygon (startAng, angExtent) {
-    var env = this._dim.getEnvelope()
-    var xRadius = env.getWidth() / 2.0
-    var yRadius = env.getHeight() / 2.0
-    var centreX = env.getMinX() + xRadius
-    var centreY = env.getMinY() + yRadius
-    var angSize = angExtent
+    const env = this._dim.getEnvelope()
+    const xRadius = env.getWidth() / 2.0
+    const yRadius = env.getHeight() / 2.0
+    const centreX = env.getMinX() + xRadius
+    const centreY = env.getMinY() + yRadius
+    let angSize = angExtent
     if (angSize <= 0.0 || angSize > 2 * Math.PI) angSize = 2 * Math.PI
-    var angInc = angSize / (this._nPts - 1)
-    var pts = new Array(this._nPts + 2).fill(null)
-    var iPt = 0
+    const angInc = angSize / (this._nPts - 1)
+    const pts = new Array(this._nPts + 2).fill(null)
+    let iPt = 0
     pts[iPt++] = this.coord(centreX, centreY)
-    for (var i = 0; i < this._nPts; i++) {
-      var ang = startAng + angInc * i
-      var x = xRadius * Math.cos(ang) + centreX
-      var y = yRadius * Math.sin(ang) + centreY
+    for (let i = 0; i < this._nPts; i++) {
+      const ang = startAng + angInc * i
+      const x = xRadius * Math.cos(ang) + centreX
+      const y = yRadius * Math.sin(ang) + centreY
       pts[iPt++] = this.coord(x, y)
     }
     pts[iPt++] = this.coord(centreX, centreY)
-    var ring = this._geomFact.createLinearRing(pts)
-    var poly = this._geomFact.createPolygon(ring)
+    const ring = this._geomFact.createLinearRing(pts)
+    const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
 
   createRectangle () {
-    var i = null
-    var ipt = 0
-    var nSide = Math.trunc(this._nPts / 4)
+    let i = null
+    let ipt = 0
+    let nSide = Math.trunc(this._nPts / 4)
     if (nSide < 1) nSide = 1
-    var XsegLen = this._dim.getEnvelope().getWidth() / nSide
-    var YsegLen = this._dim.getEnvelope().getHeight() / nSide
-    var pts = new Array(4 * nSide + 1).fill(null)
-    var env = this._dim.getEnvelope()
+    const XsegLen = this._dim.getEnvelope().getWidth() / nSide
+    const YsegLen = this._dim.getEnvelope().getHeight() / nSide
+    const pts = new Array(4 * nSide + 1).fill(null)
+    const env = this._dim.getEnvelope()
     for ((i = 0); i < nSide; i++) {
-      var x = env.getMinX() + i * XsegLen
-      var y = env.getMinY()
+      const x = env.getMinX() + i * XsegLen
+      const y = env.getMinY()
       pts[ipt++] = this.coord(x, y)
     }
     for ((i = 0); i < nSide; i++) {
-      var x = env.getMaxX()
-      var y = env.getMinY() + i * YsegLen
+      const x = env.getMaxX()
+      const y = env.getMinY() + i * YsegLen
       pts[ipt++] = this.coord(x, y)
     }
     for ((i = 0); i < nSide; i++) {
-      var x = env.getMaxX() - i * XsegLen
-      var y = env.getMaxY()
+      const x = env.getMaxX() - i * XsegLen
+      const y = env.getMaxY()
       pts[ipt++] = this.coord(x, y)
     }
     for ((i = 0); i < nSide; i++) {
-      var x = env.getMinX()
-      var y = env.getMaxY() - i * YsegLen
+      const x = env.getMinX()
+      const y = env.getMaxY() - i * YsegLen
       pts[ipt++] = this.coord(x, y)
     }
     pts[ipt++] = new Coordinate(pts[0])
-    var ring = this._geomFact.createLinearRing(pts)
-    var poly = this._geomFact.createPolygon(ring)
+    const ring = this._geomFact.createLinearRing(pts)
+    const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
 

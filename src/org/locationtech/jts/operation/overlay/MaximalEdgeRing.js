@@ -8,11 +8,11 @@ export default class MaximalEdgeRing extends EdgeRing {
   }
 
   buildMinimalRings () {
-    var minEdgeRings = new ArrayList()
-    var de = this._startDe
+    const minEdgeRings = new ArrayList()
+    let de = this._startDe
     do {
       if (de.getMinEdgeRing() === null) {
-        var minEr = new MinimalEdgeRing(de, this._geometryFactory)
+        const minEr = new MinimalEdgeRing(de, this._geometryFactory)
         minEdgeRings.add(minEr)
       }
       de = de.getNext()
@@ -25,9 +25,9 @@ export default class MaximalEdgeRing extends EdgeRing {
   }
 
   linkDirectedEdgesForMinimalEdgeRings () {
-    var de = this._startDe
+    let de = this._startDe
     do {
-      var node = de.getNode()
+      const node = de.getNode()
       node.getEdges().linkMinimalDirectedEdges(this)
       de = de.getNext()
     } while (de !== this._startDe)

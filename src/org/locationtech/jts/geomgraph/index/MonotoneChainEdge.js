@@ -10,14 +10,14 @@ export default class MonotoneChainEdge {
   }
 
   getMaxX (chainIndex) {
-    var x1 = this.pts[this.startIndex[chainIndex]].x
-    var x2 = this.pts[this.startIndex[chainIndex + 1]].x
+    const x1 = this.pts[this.startIndex[chainIndex]].x
+    const x2 = this.pts[this.startIndex[chainIndex + 1]].x
     return x1 > x2 ? x1 : x2
   }
 
   getMinX (chainIndex) {
-    var x1 = this.pts[this.startIndex[chainIndex]].x
-    var x2 = this.pts[this.startIndex[chainIndex + 1]].x
+    const x1 = this.pts[this.startIndex[chainIndex]].x
+    const x2 = this.pts[this.startIndex[chainIndex + 1]].x
     return x1 < x2 ? x1 : x2
   }
 
@@ -32,8 +32,8 @@ export default class MonotoneChainEdge {
         return null
       }
       if (!this.overlaps(start0, end0, mce, start1, end1)) return null
-      var mid0 = Math.trunc((start0 + end0) / 2)
-      var mid1 = Math.trunc((start1 + end1) / 2)
+      const mid0 = Math.trunc((start0 + end0) / 2)
+      const mid1 = Math.trunc((start1 + end1) / 2)
       if (start0 < mid0) {
         if (start1 < mid1) this.computeIntersectsForChain(start0, mid0, mce, start1, mid1, ei)
         if (mid1 < end1) this.computeIntersectsForChain(start0, mid0, mce, mid1, end1, ei)
@@ -54,8 +54,8 @@ export default class MonotoneChainEdge {
   }
 
   computeIntersects (mce, si) {
-    for (var i = 0; i < this.startIndex.length - 1; i++) {
-      for (var j = 0; j < mce.startIndex.length - 1; j++) {
+    for (let i = 0; i < this.startIndex.length - 1; i++) {
+      for (let j = 0; j < mce.startIndex.length - 1; j++) {
         this.computeIntersectsForChain(i, mce, j, si)
       }
     }
@@ -76,6 +76,6 @@ MonotoneChainEdge.constructor_ = function () {
   const e = arguments[0]
   this.e = e
   this.pts = e.getCoordinates()
-  var mcb = new MonotoneChainIndexer()
+  const mcb = new MonotoneChainIndexer()
   this.startIndex = mcb.getChainStartIndices(this.pts)
 }

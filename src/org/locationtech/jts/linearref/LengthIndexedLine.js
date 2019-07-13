@@ -9,10 +9,10 @@ export default class LengthIndexedLine {
   }
 
   clampIndex (index) {
-    var posIndex = this.positiveIndex(index)
-    var startIndex = this.getStartIndex()
+    const posIndex = this.positiveIndex(index)
+    const startIndex = this.getStartIndex()
     if (posIndex < startIndex) return startIndex
-    var endIndex = this.getEndIndex()
+    const endIndex = this.getEndIndex()
     if (posIndex > endIndex) return endIndex
     return posIndex
   }
@@ -39,12 +39,12 @@ export default class LengthIndexedLine {
   extractPoint () {
     if (arguments.length === 1) {
       const index = arguments[0]
-      var loc = LengthLocationMap.getLocation(this._linearGeom, index)
+      const loc = LengthLocationMap.getLocation(this._linearGeom, index)
       return loc.getCoordinate(this._linearGeom)
     } else if (arguments.length === 2) {
       const index = arguments[0]; const offsetDistance = arguments[1]
-      var loc = LengthLocationMap.getLocation(this._linearGeom, index)
-      var locLow = loc.toLowest(this._linearGeom)
+      const loc = LengthLocationMap.getLocation(this._linearGeom, index)
+      const locLow = loc.toLowest(this._linearGeom)
       return locLow.getSegment(this._linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance)
     }
   }
@@ -66,12 +66,12 @@ export default class LengthIndexedLine {
   }
 
   extractLine (startIndex, endIndex) {
-    var lil = new LocationIndexedLine(this._linearGeom)
-    var startIndex2 = this.clampIndex(startIndex)
-    var endIndex2 = this.clampIndex(endIndex)
-    var resolveStartLower = startIndex2 === endIndex2
-    var startLoc = this.locationOf(startIndex2, resolveStartLower)
-    var endLoc = this.locationOf(endIndex2)
+    const lil = new LocationIndexedLine(this._linearGeom)
+    const startIndex2 = this.clampIndex(startIndex)
+    const endIndex2 = this.clampIndex(endIndex)
+    const resolveStartLower = startIndex2 === endIndex2
+    const startLoc = this.locationOf(startIndex2, resolveStartLower)
+    const endLoc = this.locationOf(endIndex2)
     return ExtractLineByLocation.extract(this._linearGeom, startLoc, endLoc)
   }
 
@@ -80,8 +80,8 @@ export default class LengthIndexedLine {
   }
 
   indicesOf (subLine) {
-    var locIndex = LocationIndexOfLine.indicesOf(this._linearGeom, subLine)
-    var index = [LengthLocationMap.getLength(this._linearGeom, locIndex[0]), LengthLocationMap.getLength(this._linearGeom, locIndex[1])]
+    const locIndex = LocationIndexOfLine.indicesOf(this._linearGeom, subLine)
+    const index = [LengthLocationMap.getLength(this._linearGeom, locIndex[0]), LengthLocationMap.getLength(this._linearGeom, locIndex[1])]
     return index
   }
 

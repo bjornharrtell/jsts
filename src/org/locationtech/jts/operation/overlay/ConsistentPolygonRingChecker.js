@@ -8,13 +8,13 @@ export default class ConsistentPolygonRingChecker {
   }
 
   testLinkResultDirectedEdges (deStar, opCode) {
-    var ringEdges = this.getPotentialResultAreaEdges(deStar, opCode)
-    var firstOut = null
-    var incoming = null
-    var state = this._SCANNING_FOR_INCOMING
-    for (var i = 0; i < ringEdges.size(); i++) {
-      var nextOut = ringEdges.get(i)
-      var nextIn = nextOut.getSym()
+    const ringEdges = this.getPotentialResultAreaEdges(deStar, opCode)
+    let firstOut = null
+    let incoming = null
+    let state = this._SCANNING_FOR_INCOMING
+    for (let i = 0; i < ringEdges.size(); i++) {
+      const nextOut = ringEdges.get(i)
+      const nextIn = nextOut.getSym()
       if (!nextOut.getLabel().isArea()) continue
       if (firstOut === null && this.isPotentialResultAreaEdge(nextOut, opCode)) firstOut = nextOut
       switch (state) {
@@ -35,9 +35,9 @@ export default class ConsistentPolygonRingChecker {
   }
 
   getPotentialResultAreaEdges (deStar, opCode) {
-    var resultAreaEdgeList = new ArrayList()
-    for (var it = deStar.iterator(); it.hasNext();) {
-      var de = it.next()
+    const resultAreaEdgeList = new ArrayList()
+    for (let it = deStar.iterator(); it.hasNext();) {
+      const de = it.next()
       if (this.isPotentialResultAreaEdge(de, opCode) || this.isPotentialResultAreaEdge(de.getSym(), opCode)) resultAreaEdgeList.add(de)
     }
     return resultAreaEdgeList
@@ -51,14 +51,14 @@ export default class ConsistentPolygonRingChecker {
   }
 
   check (opCode) {
-    for (var nodeit = this._graph.getNodeIterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
+    for (let nodeit = this._graph.getNodeIterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
       this.testLinkResultDirectedEdges(node.getEdges(), opCode)
     }
   }
 
   isPotentialResultAreaEdge (de, opCode) {
-    var label = de.getLabel()
+    const label = de.getLabel()
     if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
       return true
     }

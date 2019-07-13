@@ -9,13 +9,13 @@ export default class AffineTransformationFactory {
   }
 
   static createFromBaseLines (src0, src1, dest0, dest1) {
-    var rotPt = new Coordinate(src0.x + dest1.x - dest0.x, src0.y + dest1.y - dest0.y)
-    var ang = Angle.angleBetweenOriented(src1, src0, rotPt)
-    var srcDist = src1.distance(src0)
-    var destDist = dest1.distance(dest0)
+    const rotPt = new Coordinate(src0.x + dest1.x - dest0.x, src0.y + dest1.y - dest0.y)
+    const ang = Angle.angleBetweenOriented(src1, src0, rotPt)
+    const srcDist = src1.distance(src0)
+    const destDist = dest1.distance(dest0)
     if (srcDist === 0.0) return new AffineTransformation()
-    var scale = destDist / srcDist
-    var trans = AffineTransformation.translationInstance(-src0.x, -src0.y)
+    const scale = destDist / srcDist
+    const trans = AffineTransformation.translationInstance(-src0.x, -src0.y)
     trans.rotate(ang)
     trans.scale(scale, scale)
     trans.translate(dest0.x, dest0.y)
@@ -26,8 +26,8 @@ export default class AffineTransformationFactory {
     if (arguments.length === 2) {
       if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
         const src0 = arguments[0]; const dest0 = arguments[1]
-        var dx = dest0.x - src0.x
-        var dy = dest0.y - src0.y
+        const dx = dest0.x - src0.x
+        const dy = dest0.y - src0.y
         return AffineTransformation.translationInstance(dx, dy)
       } else if (arguments[0] instanceof Array && arguments[1] instanceof Array) {
         const src = arguments[0]; const dest = arguments[1]
@@ -40,20 +40,20 @@ export default class AffineTransformationFactory {
       }
     } else if (arguments.length === 4) {
       const src0 = arguments[0]; const src1 = arguments[1]; const dest0 = arguments[2]; const dest1 = arguments[3]
-      var rotPt = new Coordinate(dest1.x - dest0.x, dest1.y - dest0.y)
-      var ang = Angle.angleBetweenOriented(src1, src0, rotPt)
-      var srcDist = src1.distance(src0)
-      var destDist = dest1.distance(dest0)
+      const rotPt = new Coordinate(dest1.x - dest0.x, dest1.y - dest0.y)
+      const ang = Angle.angleBetweenOriented(src1, src0, rotPt)
+      const srcDist = src1.distance(src0)
+      const destDist = dest1.distance(dest0)
       if (srcDist === 0.0) return null
-      var scale = destDist / srcDist
-      var trans = AffineTransformation.translationInstance(-src0.x, -src0.y)
+      const scale = destDist / srcDist
+      const trans = AffineTransformation.translationInstance(-src0.x, -src0.y)
       trans.rotate(ang)
       trans.scale(scale, scale)
       trans.translate(dest0.x, dest0.y)
       return trans
     } else if (arguments.length === 6) {
       const src0 = arguments[0]; const src1 = arguments[1]; const src2 = arguments[2]; const dest0 = arguments[3]; const dest1 = arguments[4]; const dest2 = arguments[5]
-      var builder = new AffineTransformationBuilder(src0, src1, src2, dest0, dest1, dest2)
+      const builder = new AffineTransformationBuilder(src0, src1, src2, dest0, dest1, dest2)
       return builder.getTransformation()
     }
   }

@@ -15,8 +15,8 @@ export default class CoordinateList extends ArrayList {
   addAll () {
     if (arguments.length === 2 && (typeof arguments[1] === 'boolean' && hasInterface(arguments[0], Collection))) {
       const coll = arguments[0]; const allowRepeated = arguments[1]
-      var isChanged = false
-      for (var i = coll.iterator(); i.hasNext();) {
+      let isChanged = false
+      for (let i = coll.iterator(); i.hasNext();) {
         this.add(i.next(), allowRepeated)
         isChanged = true
       }
@@ -25,8 +25,8 @@ export default class CoordinateList extends ArrayList {
   }
 
   clone () {
-    var clone = super.clone.call(this)
-    for (var i = 0; i < this.size(); i++) {
+    const clone = super.clone.call(this)
+    for (let i = 0; i < this.size(); i++) {
       clone.add(i, this.get(i).clone())
     }
     return clone
@@ -49,7 +49,7 @@ export default class CoordinateList extends ArrayList {
         const coord = arguments[0]; const allowRepeated = arguments[1]
         if (!allowRepeated) {
           if (this.size() >= 1) {
-            var last = this.get(this.size() - 1)
+            const last = this.get(this.size() - 1)
             if (last.equals2D(coord)) return null
           }
         }
@@ -63,11 +63,11 @@ export default class CoordinateList extends ArrayList {
       if (typeof arguments[2] === 'boolean' && (arguments[0] instanceof Array && typeof arguments[1] === 'boolean')) {
         const coord = arguments[0]; const allowRepeated = arguments[1]; const direction = arguments[2]
         if (direction) {
-          for (var i = 0; i < coord.length; i++) {
+          for (let i = 0; i < coord.length; i++) {
             this.add(coord[i], allowRepeated)
           }
         } else {
-          for (var i = coord.length - 1; i >= 0; i--) {
+          for (let i = coord.length - 1; i >= 0; i--) {
             this.add(coord[i], allowRepeated)
           }
         }
@@ -75,14 +75,14 @@ export default class CoordinateList extends ArrayList {
       } else if (typeof arguments[2] === 'boolean' && (Number.isInteger(arguments[0]) && arguments[1] instanceof Coordinate)) {
         const i = arguments[0]; const coord = arguments[1]; const allowRepeated = arguments[2]
         if (!allowRepeated) {
-          var size = this.size()
+          const size = this.size()
           if (size > 0) {
             if (i > 0) {
-              var prev = this.get(i - 1)
+              const prev = this.get(i - 1)
               if (prev.equals2D(coord)) return null
             }
             if (i < size) {
-              var next = this.get(i)
+              const next = this.get(i)
               if (next.equals2D(coord)) return null
             }
           }
@@ -91,9 +91,9 @@ export default class CoordinateList extends ArrayList {
       }
     } else if (arguments.length === 4) {
       const coord = arguments[0]; const allowRepeated = arguments[1]; const start = arguments[2]; const end = arguments[3]
-      var inc = 1
+      let inc = 1
       if (start > end) inc = -1
-      for (var i = start; i !== end; i += inc) {
+      for (let i = start; i !== end; i += inc) {
         this.add(coord[i], allowRepeated)
       }
       return true

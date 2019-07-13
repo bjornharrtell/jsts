@@ -13,8 +13,8 @@ export default class IteratedNoder {
   }
 
   node (segStrings, numInteriorIntersections) {
-    var si = new IntersectionAdder(this._li)
-    var noder = new MCIndexNoder()
+    const si = new IntersectionAdder(this._li)
+    const noder = new MCIndexNoder()
     noder.setSegmentIntersector(si)
     noder.computeNodes(segStrings)
     this._nodedSegStrings = noder.getNodedSubstrings()
@@ -22,14 +22,14 @@ export default class IteratedNoder {
   }
 
   computeNodes (segStrings) {
-    var numInteriorIntersections = new Array(1).fill(null)
+    const numInteriorIntersections = new Array(1).fill(null)
     this._nodedSegStrings = segStrings
-    var nodingIterationCount = 0
-    var lastNodesCreated = -1
+    let nodingIterationCount = 0
+    let lastNodesCreated = -1
     do {
       this.node(this._nodedSegStrings, numInteriorIntersections)
       nodingIterationCount++
-      var nodesCreated = numInteriorIntersections[0]
+      const nodesCreated = numInteriorIntersections[0]
       if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this._maxIter) {
         throw new TopologyException('Iterated noding failed to converge after ' + nodingIterationCount + ' iterations')
       }

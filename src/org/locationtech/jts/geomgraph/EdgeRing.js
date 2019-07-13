@@ -13,8 +13,8 @@ export default class EdgeRing {
 
   computeRing () {
     if (this._ring !== null) return null
-    var coord = new Array(this._pts.size()).fill(null)
-    for (var i = 0; i < this._pts.size(); i++) {
+    const coord = new Array(this._pts.size()).fill(null)
+    for (let i = 0; i < this._pts.size(); i++) {
       coord[i] = this._pts.get(i)
     }
     this._ring = this._geometryFactory.createLinearRing(coord)
@@ -27,13 +27,13 @@ export default class EdgeRing {
 
   computePoints (start) {
     this._startDe = start
-    var de = start
-    var isFirstEdge = true
+    let de = start
+    let isFirstEdge = true
     do {
       if (de === null) throw new TopologyException('Found null DirectedEdge')
       if (de.getEdgeRing() === this) throw new TopologyException('Directed Edge visited twice during ring-building at ' + de.getCoordinate())
       this._edges.add(de)
-      var label = de.getLabel()
+      const label = de.getLabel()
       Assert.isTrue(label.isArea())
       this.mergeLabel(label)
       this.addPoints(de.getEdge(), de.isForward(), isFirstEdge)
@@ -53,10 +53,10 @@ export default class EdgeRing {
 
   computeMaxNodeDegree () {
     this._maxNodeDegree = 0
-    var de = this._startDe
+    let de = this._startDe
     do {
-      var node = de.getNode()
-      var degree = node.getEdges().getOutgoingDegree(this)
+      const node = de.getNode()
+      const degree = node.getEdges().getOutgoingDegree(this)
       if (degree > this._maxNodeDegree) this._maxNodeDegree = degree
       de = this.getNext(de)
     } while (de !== this._startDe)
@@ -64,17 +64,17 @@ export default class EdgeRing {
   }
 
   addPoints (edge, isForward, isFirstEdge) {
-    var edgePts = edge.getCoordinates()
+    const edgePts = edge.getCoordinates()
     if (isForward) {
-      var startIndex = 1
+      let startIndex = 1
       if (isFirstEdge) startIndex = 0
-      for (var i = startIndex; i < edgePts.length; i++) {
+      for (let i = startIndex; i < edgePts.length; i++) {
         this._pts.add(edgePts[i])
       }
     } else {
-      var startIndex = edgePts.length - 2
+      let startIndex = edgePts.length - 2
       if (isFirstEdge) startIndex = edgePts.length - 1
-      for (var i = startIndex; i >= 0; i--) {
+      for (let i = startIndex; i >= 0; i--) {
         this._pts.add(edgePts[i])
       }
     }
@@ -85,7 +85,7 @@ export default class EdgeRing {
   }
 
   setInResult () {
-    var de = this._startDe
+    let de = this._startDe
     do {
       de.getEdge().setInResult(true)
       de = de.getNext()
@@ -93,12 +93,12 @@ export default class EdgeRing {
   }
 
   containsPoint (p) {
-    var shell = this.getLinearRing()
-    var env = shell.getEnvelopeInternal()
+    const shell = this.getLinearRing()
+    const env = shell.getEnvelopeInternal()
     if (!env.contains(p)) return false
     if (!PointLocation.isInRing(p, shell.getCoordinates())) return false
-    for (var i = this._holes.iterator(); i.hasNext();) {
-      var hole = i.next()
+    for (let i = this._holes.iterator(); i.hasNext();) {
+      const hole = i.next()
       if (hole.containsPoint(p)) return false
     }
     return true
@@ -136,7 +136,7 @@ export default class EdgeRing {
       this.mergeLabel(deLabel, 1)
     } else if (arguments.length === 2) {
       const deLabel = arguments[0]; const geomIndex = arguments[1]
-      var loc = deLabel.getLocation(geomIndex, Position.RIGHT)
+      const loc = deLabel.getLocation(geomIndex, Position.RIGHT)
       if (loc === Location.NONE) return null
       if (this._label.getLocation(geomIndex) === Location.NONE) {
         this._label.setLocation(geomIndex, loc)
@@ -151,11 +151,11 @@ export default class EdgeRing {
   }
 
   toPolygon (geometryFactory) {
-    var holeLR = new Array(this._holes.size()).fill(null)
-    for (var i = 0; i < this._holes.size(); i++) {
+    const holeLR = new Array(this._holes.size()).fill(null)
+    for (let i = 0; i < this._holes.size(); i++) {
       holeLR[i] = this._holes.get(i).getLinearRing()
     }
-    var poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
+    const poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
     return poly
   }
 

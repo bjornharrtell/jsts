@@ -67,15 +67,15 @@ export default class CoordinateArraySequence {
   }
 
   expandEnvelope (env) {
-    for (var i = 0; i < this._coordinates.length; i++) {
+    for (let i = 0; i < this._coordinates.length; i++) {
       env.expandToInclude(this._coordinates[i])
     }
     return env
   }
 
   copy () {
-    var cloneCoordinates = new Array(this.size()).fill(null)
-    for (var i = 0; i < this._coordinates.length; i++) {
+    const cloneCoordinates = new Array(this.size()).fill(null)
+    for (let i = 0; i < this._coordinates.length; i++) {
       cloneCoordinates[i] = this._coordinates[i].copy()
     }
     return new CoordinateArraySequence(cloneCoordinates, this._dimension)
@@ -83,10 +83,10 @@ export default class CoordinateArraySequence {
 
   toString () {
     if (this._coordinates.length > 0) {
-      var strBuilder = new StringBuilder(17 * this._coordinates.length)
+      const strBuilder = new StringBuilder(17 * this._coordinates.length)
       strBuilder.append('(')
       strBuilder.append(this._coordinates[0])
-      for (var i = 1; i < this._coordinates.length; i++) {
+      for (let i = 1; i < this._coordinates.length; i++) {
         strBuilder.append(', ')
         strBuilder.append(this._coordinates[i])
       }
@@ -123,7 +123,7 @@ CoordinateArraySequence.constructor_ = function () {
     } else if (Number.isInteger(arguments[0])) {
       const size = arguments[0]
       this._coordinates = new Array(size).fill(null)
-      for (var i = 0; i < size; i++) {
+      for (let i = 0; i < size; i++) {
         this._coordinates[i] = new Coordinate()
       }
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
@@ -134,7 +134,7 @@ CoordinateArraySequence.constructor_ = function () {
       }
       this._dimension = coordSeq.getDimension()
       this._coordinates = new Array(coordSeq.size()).fill(null)
-      for (var i = 0; i < this._coordinates.length; i++) {
+      for (let i = 0; i < this._coordinates.length; i++) {
         this._coordinates[i] = coordSeq.getCoordinateCopy(i)
       }
     }
@@ -148,7 +148,7 @@ CoordinateArraySequence.constructor_ = function () {
       const size = arguments[0]; const dimension = arguments[1]
       this._coordinates = new Array(size).fill(null)
       this._dimension = dimension
-      for (var i = 0; i < size; i++) {
+      for (let i = 0; i < size; i++) {
         this._coordinates[i] = new Coordinate()
       }
     }

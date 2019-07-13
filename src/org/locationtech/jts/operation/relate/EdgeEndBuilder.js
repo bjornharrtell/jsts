@@ -7,46 +7,46 @@ export default class EdgeEndBuilder {
   }
 
   createEdgeEndForNext (edge, l, eiCurr, eiNext) {
-    var iNext = eiCurr.segmentIndex + 1
+    const iNext = eiCurr.segmentIndex + 1
     if (iNext >= edge.getNumPoints() && eiNext === null) return null
-    var pNext = edge.getCoordinate(iNext)
+    let pNext = edge.getCoordinate(iNext)
     if (eiNext !== null && eiNext.segmentIndex === eiCurr.segmentIndex) pNext = eiNext.coord
-    var e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()))
+    const e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()))
     l.add(e)
   }
 
   createEdgeEndForPrev (edge, l, eiCurr, eiPrev) {
-    var iPrev = eiCurr.segmentIndex
+    let iPrev = eiCurr.segmentIndex
     if (eiCurr.dist === 0.0) {
       if (iPrev === 0) return null
       iPrev--
     }
-    var pPrev = edge.getCoordinate(iPrev)
+    let pPrev = edge.getCoordinate(iPrev)
     if (eiPrev !== null && eiPrev.segmentIndex >= iPrev) pPrev = eiPrev.coord
-    var label = new Label(edge.getLabel())
+    const label = new Label(edge.getLabel())
     label.flip()
-    var e = new EdgeEnd(edge, eiCurr.coord, pPrev, label)
+    const e = new EdgeEnd(edge, eiCurr.coord, pPrev, label)
     l.add(e)
   }
 
   computeEdgeEnds () {
     if (arguments.length === 1) {
       const edges = arguments[0]
-      var l = new ArrayList()
-      for (var i = edges; i.hasNext();) {
-        var e = i.next()
+      const l = new ArrayList()
+      for (let i = edges; i.hasNext();) {
+        const e = i.next()
         this.computeEdgeEnds(e, l)
       }
       return l
     } else if (arguments.length === 2) {
       const edge = arguments[0]; const l = arguments[1]
-      var eiList = edge.getEdgeIntersectionList()
+      const eiList = edge.getEdgeIntersectionList()
       eiList.addEndpoints()
-      var it = eiList.iterator()
-      var eiPrev = null
-      var eiCurr = null
+      const it = eiList.iterator()
+      let eiPrev = null
+      let eiCurr = null
       if (!it.hasNext()) return null
-      var eiNext = it.next()
+      let eiNext = it.next()
       do {
         eiPrev = eiCurr
         eiCurr = eiNext

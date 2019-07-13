@@ -17,8 +17,8 @@ export default class EdgeRing {
   }
 
   static findDirEdgesInRing (startDE) {
-    var de = startDE
-    var edges = new ArrayList()
+    let de = startDE
+    const edges = new ArrayList()
     do {
       edges.add(de)
       de = de.getNext()
@@ -30,30 +30,30 @@ export default class EdgeRing {
 
   static addEdge (coords, isForward, coordList) {
     if (isForward) {
-      for (var i = 0; i < coords.length; i++) {
+      for (let i = 0; i < coords.length; i++) {
         coordList.add(coords[i], false)
       }
     } else {
-      for (var i = coords.length - 1; i >= 0; i--) {
+      for (let i = coords.length - 1; i >= 0; i--) {
         coordList.add(coords[i], false)
       }
     }
   }
 
   static findEdgeRingContaining (testEr, shellList) {
-    var testRing = testEr.getRing()
-    var testEnv = testRing.getEnvelopeInternal()
-    var testPt = testRing.getCoordinateN(0)
-    var minShell = null
-    var minShellEnv = null
-    for (var it = shellList.iterator(); it.hasNext();) {
-      var tryShell = it.next()
-      var tryShellRing = tryShell.getRing()
-      var tryShellEnv = tryShellRing.getEnvelopeInternal()
+    const testRing = testEr.getRing()
+    const testEnv = testRing.getEnvelopeInternal()
+    let testPt = testRing.getCoordinateN(0)
+    let minShell = null
+    let minShellEnv = null
+    for (let it = shellList.iterator(); it.hasNext();) {
+      const tryShell = it.next()
+      const tryShellRing = tryShell.getRing()
+      const tryShellEnv = tryShellRing.getEnvelopeInternal()
       if (tryShellEnv.equals(testEnv)) continue
       if (!tryShellEnv.contains(testEnv)) continue
       testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates())
-      var isContained = false
+      let isContained = false
       if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates())) isContained = true
       if (isContained) {
         if (minShell === null || minShellEnv.contains(tryShellEnv)) {
@@ -71,10 +71,10 @@ export default class EdgeRing {
 
   getCoordinates () {
     if (this._ringPts === null) {
-      var coordList = new CoordinateList()
-      for (var i = this._deList.iterator(); i.hasNext();) {
-        var de = i.next()
-        var edge = de.getEdge()
+      const coordList = new CoordinateList()
+      for (let i = this._deList.iterator(); i.hasNext();) {
+        const de = i.next()
+        const edge = de.getEdge()
         EdgeRing.addEdge(edge.getLine().getCoordinates(), de.getEdgeDirection(), coordList)
       }
       this._ringPts = coordList.toCoordinateArray()
@@ -94,7 +94,7 @@ export default class EdgeRing {
   }
 
   build (startDE) {
-    var de = startDE
+    let de = startDE
     do {
       this.add(de)
       de.setRing(this)
@@ -110,14 +110,14 @@ export default class EdgeRing {
   }
 
   getPolygon () {
-    var holeLR = null
+    let holeLR = null
     if (this._holes !== null) {
       holeLR = new Array(this._holes.size()).fill(null)
-      for (var i = 0; i < this._holes.size(); i++) {
+      for (let i = 0; i < this._holes.size(); i++) {
         holeLR[i] = this._holes.get(i)
       }
     }
-    var poly = this._factory.createPolygon(this._ring, holeLR)
+    const poly = this._factory.createPolygon(this._ring, holeLR)
     return poly
   }
 
@@ -137,7 +137,7 @@ export default class EdgeRing {
     } else if (arguments[0] instanceof EdgeRing) {
       const holeER = arguments[0]
       holeER.setShell(this)
-      var hole = holeER.getRing()
+      const hole = holeER.getRing()
       if (this._holes === null) this._holes = new ArrayList()
       this._holes.add(hole)
     }
@@ -150,16 +150,16 @@ export default class EdgeRing {
 
   getOuterHole () {
     if (this.isHole()) return null
-    for (var i = 0; i < this._deList.size(); i++) {
-      var de = this._deList.get(i)
-      var adjRing = de.getSym().getRing()
+    for (let i = 0; i < this._deList.size(); i++) {
+      const de = this._deList.get(i)
+      const adjRing = de.getSym().getRing()
       if (adjRing.isOuterHole()) return adjRing
     }
     return null
   }
 
   computeHole () {
-    var ring = this.getRing()
+    const ring = this.getRing()
     this._isHole = Orientation.isCCW(ring.getCoordinates())
   }
 
@@ -205,9 +205,9 @@ export default class EdgeRing {
 
   updateIncluded () {
     if (this.isHole()) return null
-    for (var i = 0; i < this._deList.size(); i++) {
-      var de = this._deList.get(i)
-      var adjShell = de.getSym().getRing().getShell()
+    for (let i = 0; i < this._deList.size(); i++) {
+      const de = this._deList.get(i)
+      const adjShell = de.getSym().getRing().getShell()
       if (adjShell !== null && adjShell.isIncludedSet()) {
         this.setIncluded(!adjShell.isIncluded())
         return null
@@ -237,8 +237,8 @@ class EnvelopeComparator {
   }
 
   compare (obj0, obj1) {
-    var r0 = obj0
-    var r1 = obj1
+    const r0 = obj0
+    const r1 = obj1
     return r0.getRing().getEnvelope().compareTo(r1.getRing().getEnvelope())
   }
 

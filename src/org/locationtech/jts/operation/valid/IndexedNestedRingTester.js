@@ -10,9 +10,9 @@ export default class IndexedNestedRingTester {
 
   buildIndex () {
     this._index = new STRtree()
-    for (var i = 0; i < this._rings.size(); i++) {
-      var ring = this._rings.get(i)
-      var env = ring.getEnvelopeInternal()
+    for (let i = 0; i < this._rings.size(); i++) {
+      const ring = this._rings.get(i)
+      const env = ring.getEnvelopeInternal()
       this._index.insert(env, ring)
     }
   }
@@ -23,18 +23,18 @@ export default class IndexedNestedRingTester {
 
   isNonNested () {
     this.buildIndex()
-    for (var i = 0; i < this._rings.size(); i++) {
-      var innerRing = this._rings.get(i)
-      var innerRingPts = innerRing.getCoordinates()
-      var results = this._index.query(innerRing.getEnvelopeInternal())
-      for (var j = 0; j < results.size(); j++) {
-        var searchRing = results.get(j)
-        var searchRingPts = searchRing.getCoordinates()
+    for (let i = 0; i < this._rings.size(); i++) {
+      const innerRing = this._rings.get(i)
+      const innerRingPts = innerRing.getCoordinates()
+      const results = this._index.query(innerRing.getEnvelopeInternal())
+      for (let j = 0; j < results.size(); j++) {
+        const searchRing = results.get(j)
+        const searchRingPts = searchRing.getCoordinates()
         if (innerRing === searchRing) continue
         if (!innerRing.getEnvelopeInternal().intersects(searchRing.getEnvelopeInternal())) continue
-        var innerRingPt = IsValidOp.findPtNotNode(innerRingPts, searchRing, this._graph)
+        const innerRingPt = IsValidOp.findPtNotNode(innerRingPts, searchRing, this._graph)
         if (innerRingPt === null) continue
-        var isInside = PointLocation.isInRing(innerRingPt, searchRingPts)
+        const isInside = PointLocation.isInRing(innerRingPt, searchRingPts)
         if (isInside) {
           this._nestedPt = innerRingPt
           return false

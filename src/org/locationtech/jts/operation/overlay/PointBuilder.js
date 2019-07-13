@@ -6,20 +6,20 @@ export default class PointBuilder {
   }
 
   filterCoveredNodeToPoint (n) {
-    var coord = n.getCoordinate()
+    const coord = n.getCoordinate()
     if (!this._op.isCoveredByLA(coord)) {
-      var pt = this._geometryFactory.createPoint(coord)
+      const pt = this._geometryFactory.createPoint(coord)
       this._resultPointList.add(pt)
     }
   }
 
   extractNonCoveredResultNodes (opCode) {
-    for (var nodeit = this._op.getGraph().getNodes().iterator(); nodeit.hasNext();) {
-      var n = nodeit.next()
+    for (let nodeit = this._op.getGraph().getNodes().iterator(); nodeit.hasNext();) {
+      const n = nodeit.next()
       if (n.isInResult()) continue
       if (n.isIncidentEdgeInResult()) continue
       if (n.getEdges().getDegree() === 0 || opCode === OverlayOp.INTERSECTION) {
-        var label = n.getLabel()
+        const label = n.getLabel()
         if (OverlayOp.isResultOfOp(label, opCode)) {
           this.filterCoveredNodeToPoint(n)
         }

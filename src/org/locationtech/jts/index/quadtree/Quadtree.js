@@ -10,10 +10,10 @@ export default class Quadtree {
   }
 
   static ensureExtent (itemEnv, minExtent) {
-    var minx = itemEnv.getMinX()
-    var maxx = itemEnv.getMaxX()
-    var miny = itemEnv.getMinY()
-    var maxy = itemEnv.getMaxY()
+    let minx = itemEnv.getMinX()
+    let maxx = itemEnv.getMaxX()
+    let miny = itemEnv.getMinY()
+    let maxy = itemEnv.getMaxY()
     if (minx !== maxx && miny !== maxy) return itemEnv
     if (minx === maxx) {
       minx = minx - minExtent / 2.0
@@ -33,14 +33,14 @@ export default class Quadtree {
 
   insert (itemEnv, item) {
     this.collectStats(itemEnv)
-    var insertEnv = Quadtree.ensureExtent(itemEnv, this._minExtent)
+    const insertEnv = Quadtree.ensureExtent(itemEnv, this._minExtent)
     this._root.insert(insertEnv, item)
   }
 
   query () {
     if (arguments.length === 1) {
       const searchEnv = arguments[0]
-      var visitor = new ArrayListVisitor()
+      const visitor = new ArrayListVisitor()
       this.query(searchEnv, visitor)
       return visitor.getItems()
     } else if (arguments.length === 2) {
@@ -50,20 +50,20 @@ export default class Quadtree {
   }
 
   queryAll () {
-    var foundItems = new ArrayList()
+    const foundItems = new ArrayList()
     this._root.addAllItems(foundItems)
     return foundItems
   }
 
   remove (itemEnv, item) {
-    var posEnv = Quadtree.ensureExtent(itemEnv, this._minExtent)
+    const posEnv = Quadtree.ensureExtent(itemEnv, this._minExtent)
     return this._root.remove(posEnv, item)
   }
 
   collectStats (itemEnv) {
-    var delX = itemEnv.getWidth()
+    const delX = itemEnv.getWidth()
     if (delX < this._minExtent && delX > 0.0) this._minExtent = delX
-    var delY = itemEnv.getHeight()
+    const delY = itemEnv.getHeight()
     if (delY < this._minExtent && delY > 0.0) this._minExtent = delY
   }
 

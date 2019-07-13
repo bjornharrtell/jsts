@@ -11,14 +11,14 @@ export default class VertexTaggedGeometryDataMapper {
   loadSourceGeometries () {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
-      for (var i = geoms.iterator(); i.hasNext();) {
-        var geom = i.next()
+      for (let i = geoms.iterator(); i.hasNext();) {
+        const geom = i.next()
         this.loadVertices(geom.getCoordinates(), geom.getUserData())
       }
     } else if (arguments[0] instanceof Geometry) {
       const geomColl = arguments[0]
-      for (var i = 0; i < geomColl.getNumGeometries(); i++) {
-        var geom = geomColl.getGeometryN(i)
+      for (let i = 0; i < geomColl.getNumGeometries(); i++) {
+        const geom = geomColl.getGeometryN(i)
         this.loadVertices(geom.getCoordinates(), geom.getUserData())
       }
     }
@@ -29,16 +29,16 @@ export default class VertexTaggedGeometryDataMapper {
   }
 
   transferData (targetGeom) {
-    for (var i = 0; i < targetGeom.getNumGeometries(); i++) {
-      var geom = targetGeom.getGeometryN(i)
-      var vertexKey = geom.getUserData()
+    for (let i = 0; i < targetGeom.getNumGeometries(); i++) {
+      const geom = targetGeom.getGeometryN(i)
+      const vertexKey = geom.getUserData()
       if (vertexKey === null) continue
       geom.setUserData(this._coordDataMap.get(vertexKey))
     }
   }
 
   loadVertices (pts, data) {
-    for (var i = 0; i < pts.length; i++) {
+    for (let i = 0; i < pts.length; i++) {
       this._coordDataMap.put(pts[i], data)
     }
   }

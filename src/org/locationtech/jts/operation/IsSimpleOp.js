@@ -17,21 +17,21 @@ export default class IsSimpleOp {
   static isSimple () {
     if (arguments.length === 1) {
       const geom = arguments[0]
-      var op = new IsSimpleOp(geom)
+      const op = new IsSimpleOp(geom)
       return op.isSimple()
     } else if (arguments.length === 2) {
       const geom = arguments[0]; const boundaryNodeRule = arguments[1]
-      var op = new IsSimpleOp(geom, boundaryNodeRule)
+      const op = new IsSimpleOp(geom, boundaryNodeRule)
       return op.isSimple()
     }
   }
 
   isSimpleMultiPoint (mp) {
     if (mp.isEmpty()) return true
-    var points = new TreeSet()
-    for (var i = 0; i < mp.getNumGeometries(); i++) {
-      var pt = mp.getGeometryN(i)
-      var p = pt.getCoordinate()
+    const points = new TreeSet()
+    for (let i = 0; i < mp.getNumGeometries(); i++) {
+      const pt = mp.getGeometryN(i)
+      const p = pt.getCoordinate()
       if (points.contains(p)) {
         this._nonSimpleLocation = p
         return false
@@ -42,27 +42,27 @@ export default class IsSimpleOp {
   }
 
   isSimplePolygonal (geom) {
-    var rings = LinearComponentExtracter.getLines(geom)
-    for (var i = rings.iterator(); i.hasNext();) {
-      var ring = i.next()
+    const rings = LinearComponentExtracter.getLines(geom)
+    for (let i = rings.iterator(); i.hasNext();) {
+      const ring = i.next()
       if (!this.isSimpleLinearGeometry(ring)) return false
     }
     return true
   }
 
   hasClosedEndpointIntersection (graph) {
-    var endPoints = new TreeMap()
-    for (var i = graph.getEdgeIterator(); i.hasNext();) {
-      var e = i.next()
-      var maxSegmentIndex = e.getMaximumSegmentIndex()
-      var isClosed = e.isClosed()
-      var p0 = e.getCoordinate(0)
+    const endPoints = new TreeMap()
+    for (let i = graph.getEdgeIterator(); i.hasNext();) {
+      const e = i.next()
+      const maxSegmentIndex = e.getMaximumSegmentIndex()
+      const isClosed = e.isClosed()
+      const p0 = e.getCoordinate(0)
       this.addEndpoint(endPoints, p0, isClosed)
-      var p1 = e.getCoordinate(e.getNumPoints() - 1)
+      const p1 = e.getCoordinate(e.getNumPoints() - 1)
       this.addEndpoint(endPoints, p1, isClosed)
     }
-    for (var i = endPoints.values().iterator(); i.hasNext();) {
-      var eiInfo = i.next()
+    for (let i = endPoints.values().iterator(); i.hasNext();) {
+      const eiInfo = i.next()
       if (eiInfo.isClosed && eiInfo.degree !== 2) {
         this._nonSimpleLocation = eiInfo.getCoordinate()
         return true
@@ -77,9 +77,9 @@ export default class IsSimpleOp {
 
   isSimpleLinearGeometry (geom) {
     if (geom.isEmpty()) return true
-    var graph = new GeometryGraph(0, geom)
-    var li = new RobustLineIntersector()
-    var si = graph.computeSelfNodes(li, true)
+    const graph = new GeometryGraph(0, geom)
+    const li = new RobustLineIntersector()
+    const si = graph.computeSelfNodes(li, true)
     if (!si.hasIntersection()) return true
     if (si.hasProperIntersection()) {
       this._nonSimpleLocation = si.getProperIntersectionPoint()
@@ -93,11 +93,11 @@ export default class IsSimpleOp {
   }
 
   hasNonEndpointIntersection (graph) {
-    for (var i = graph.getEdgeIterator(); i.hasNext();) {
-      var e = i.next()
-      var maxSegmentIndex = e.getMaximumSegmentIndex()
-      for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
-        var ei = eiIt.next()
+    for (let i = graph.getEdgeIterator(); i.hasNext();) {
+      const e = i.next()
+      const maxSegmentIndex = e.getMaximumSegmentIndex()
+      for (let eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
+        const ei = eiIt.next()
         if (!ei.isEndPoint(maxSegmentIndex)) {
           this._nonSimpleLocation = ei.getCoordinate()
           return true
@@ -108,7 +108,7 @@ export default class IsSimpleOp {
   }
 
   addEndpoint (endPoints, p, isClosed) {
-    var eiInfo = endPoints.get(p)
+    let eiInfo = endPoints.get(p)
     if (eiInfo === null) {
       eiInfo = new EndpointInfo(p)
       endPoints.put(p, eiInfo)
@@ -133,8 +133,8 @@ export default class IsSimpleOp {
   }
 
   isSimpleGeometryCollection (geom) {
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var comp = geom.getGeometryN(i)
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const comp = geom.getGeometryN(i)
       if (!this.computeSimple(comp)) return false
     }
     return true

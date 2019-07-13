@@ -11,7 +11,7 @@ export default class OverlayResultValidator {
   }
 
   static hasLocation (location, loc) {
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       if (location[i] === loc) return true
     }
     return false
@@ -22,7 +22,7 @@ export default class OverlayResultValidator {
   }
 
   static isValid (a, b, overlayOp, result) {
-    var validator = new OverlayResultValidator(a, b, result)
+    const validator = new OverlayResultValidator(a, b, result)
     return validator.isValid(overlayOp)
   }
 
@@ -33,15 +33,15 @@ export default class OverlayResultValidator {
   isValid (overlayOp) {
     this.addTestPts(this._geom[0])
     this.addTestPts(this._geom[1])
-    var isValid = this.checkValid(overlayOp)
+    const isValid = this.checkValid(overlayOp)
     return isValid
   }
 
   checkValid () {
     if (arguments.length === 1) {
       const overlayOp = arguments[0]
-      for (var i = 0; i < this._testCoords.size(); i++) {
-        var pt = this._testCoords.get(i)
+      for (let i = 0; i < this._testCoords.size(); i++) {
+        const pt = this._testCoords.get(i)
         if (!this.checkValid(overlayOp, pt)) {
           this._invalidLocation = pt
           return false
@@ -59,14 +59,14 @@ export default class OverlayResultValidator {
   }
 
   addTestPts (g) {
-    var ptGen = new OffsetPointGenerator(g)
+    const ptGen = new OffsetPointGenerator(g)
     this._testCoords.addAll(ptGen.getPoints(5 * this._boundaryDistanceTolerance))
   }
 
   isValidResult (overlayOp, location) {
-    var expectedInterior = OverlayOp.isResultOfOp(location[0], location[1], overlayOp)
-    var resultInInterior = location[2] === Location.INTERIOR
-    var isValid = !(expectedInterior ^ resultInInterior)
+    const expectedInterior = OverlayOp.isResultOfOp(location[0], location[1], overlayOp)
+    const resultInInterior = location[2] === Location.INTERIOR
+    const isValid = !(expectedInterior ^ resultInInterior)
     if (!isValid) this.reportResult(overlayOp, location, expectedInterior)
     return isValid
   }

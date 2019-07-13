@@ -5,17 +5,17 @@ export default class CollectionUtil {
   }
 
   static transform (coll, func) {
-    var result = new ArrayList()
-    for (var i = coll.iterator(); i.hasNext();) {
+    const result = new ArrayList()
+    for (let i = coll.iterator(); i.hasNext();) {
       result.add(func.execute(i.next()))
     }
     return result
   }
 
   static select (collection, func) {
-    var result = new ArrayList()
-    for (var i = collection.iterator(); i.hasNext();) {
-      var item = i.next()
+    const result = new ArrayList()
+    for (let i = collection.iterator(); i.hasNext();) {
+      const item = i.next()
       if (Boolean.TRUE.equals(func.execute(item))) {
         result.add(item)
       }
@@ -24,7 +24,7 @@ export default class CollectionUtil {
   }
 
   static apply (coll, func) {
-    for (var i = coll.iterator(); i.hasNext();) {
+    for (let i = coll.iterator(); i.hasNext();) {
       func.execute(i.next())
     }
   }

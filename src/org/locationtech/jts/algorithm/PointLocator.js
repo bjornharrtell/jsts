@@ -37,35 +37,35 @@ export default class PointLocator {
     } else if (geom instanceof Polygon) {
       this.updateLocationInfo(this.locateInPolygon(p, geom))
     } else if (geom instanceof MultiLineString) {
-      var ml = geom
-      for (var i = 0; i < ml.getNumGeometries(); i++) {
-        var l = ml.getGeometryN(i)
+      const ml = geom
+      for (let i = 0; i < ml.getNumGeometries(); i++) {
+        const l = ml.getGeometryN(i)
         this.updateLocationInfo(this.locateOnLineString(p, l))
       }
     } else if (geom instanceof MultiPolygon) {
-      var mpoly = geom
-      for (var i = 0; i < mpoly.getNumGeometries(); i++) {
-        var poly = mpoly.getGeometryN(i)
+      const mpoly = geom
+      for (let i = 0; i < mpoly.getNumGeometries(); i++) {
+        const poly = mpoly.getGeometryN(i)
         this.updateLocationInfo(this.locateInPolygon(p, poly))
       }
     } else if (geom instanceof GeometryCollection) {
-      var geomi = new GeometryCollectionIterator(geom)
+      const geomi = new GeometryCollectionIterator(geom)
       while (geomi.hasNext()) {
-        var g2 = geomi.next()
+        const g2 = geomi.next()
         if (g2 !== geom) this.computeLocation(p, g2)
       }
     }
   }
 
   locateOnPoint (p, pt) {
-    var ptCoord = pt.getCoordinate()
+    const ptCoord = pt.getCoordinate()
     if (ptCoord.equals2D(p)) return Location.INTERIOR
     return Location.EXTERIOR
   }
 
   locateOnLineString (p, l) {
     if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
-    var seq = l.getCoordinateSequence()
+    const seq = l.getCoordinateSequence()
     if (!l.isClosed()) {
       if (p.equals(seq.getCoordinate(0)) || p.equals(seq.getCoordinate(seq.size() - 1))) {
         return Location.BOUNDARY
@@ -79,13 +79,13 @@ export default class PointLocator {
 
   locateInPolygon (p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
-    var shell = poly.getExteriorRing()
-    var shellLoc = this.locateInPolygonRing(p, shell)
+    const shell = poly.getExteriorRing()
+    const shellLoc = this.locateInPolygonRing(p, shell)
     if (shellLoc === Location.EXTERIOR) return Location.EXTERIOR
     if (shellLoc === Location.BOUNDARY) return Location.BOUNDARY
-    for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-      var hole = poly.getInteriorRingN(i)
-      var holeLoc = this.locateInPolygonRing(p, hole)
+    for (let i = 0; i < poly.getNumInteriorRing(); i++) {
+      const hole = poly.getInteriorRingN(i)
+      const holeLoc = this.locateInPolygonRing(p, hole)
       if (holeLoc === Location.INTERIOR) return Location.EXTERIOR
       if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY
     }

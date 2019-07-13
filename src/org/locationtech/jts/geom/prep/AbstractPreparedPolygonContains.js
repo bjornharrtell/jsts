@@ -10,13 +10,13 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
   }
 
   eval (geom) {
-    var isAllInTargetArea = this.isAllTestComponentsInTarget(geom)
+    const isAllInTargetArea = this.isAllTestComponentsInTarget(geom)
     if (!isAllInTargetArea) return false
     if (this._requireSomePointInInterior && geom.getDimension() === 0) {
-      var isAnyInTargetInterior = this.isAnyTestComponentInTargetInterior(geom)
+      const isAnyInTargetInterior = this.isAnyTestComponentInTargetInterior(geom)
       return isAnyInTargetInterior
     }
-    var properIntersectionImpliesNotContained = this.isProperIntersectionImpliesNotContainedSituation(geom)
+    const properIntersectionImpliesNotContained = this.isProperIntersectionImpliesNotContainedSituation(geom)
     this.findAndClassifyIntersections(geom)
     if (properIntersectionImpliesNotContained && this._hasProperIntersection) return false
     if (this._hasSegmentIntersection && !this._hasNonProperIntersection) return false
@@ -24,15 +24,15 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
       return this.fullTopologicalPredicate(geom)
     }
     if (hasInterface(geom, Polygonal)) {
-      var isTargetInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
+      const isTargetInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
       if (isTargetInTestArea) return false
     }
     return true
   }
 
   findAndClassifyIntersections (geom) {
-    var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
-    var intDetector = new SegmentIntersectionDetector()
+    const lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
+    const intDetector = new SegmentIntersectionDetector()
     intDetector.setFindAllIntersectionTypes(true)
     this._prepPoly.getIntersectionFinder().intersects(lineSegStr, intDetector)
     this._hasSegmentIntersection = intDetector.hasIntersection()
@@ -48,8 +48,8 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
 
   isSingleShell (geom) {
     if (geom.getNumGeometries() !== 1) return false
-    var poly = geom.getGeometryN(0)
-    var numHoles = poly.getNumInteriorRing()
+    const poly = geom.getGeometryN(0)
+    const numHoles = poly.getNumInteriorRing()
     if (numHoles === 0) return true
     return false
   }

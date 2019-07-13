@@ -11,12 +11,12 @@ export default class SimplePointInAreaLocator {
 
   static locatePointInPolygon (p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
-    var shell = poly.getExteriorRing()
-    var shellLoc = SimplePointInAreaLocator.locatePointInRing(p, shell)
+    const shell = poly.getExteriorRing()
+    const shellLoc = SimplePointInAreaLocator.locatePointInRing(p, shell)
     if (shellLoc !== Location.INTERIOR) return shellLoc
-    for (var i = 0; i < poly.getNumInteriorRing(); i++) {
-      var hole = poly.getInteriorRingN(i)
-      var holeLoc = SimplePointInAreaLocator.locatePointInRing(p, hole)
+    for (let i = 0; i < poly.getNumInteriorRing(); i++) {
+      const hole = poly.getInteriorRingN(i)
+      const holeLoc = SimplePointInAreaLocator.locatePointInRing(p, hole)
       if (holeLoc === Location.BOUNDARY) return Location.BOUNDARY
       if (holeLoc === Location.INTERIOR) return Location.EXTERIOR
     }
@@ -36,11 +36,11 @@ export default class SimplePointInAreaLocator {
     if (geom instanceof Polygon) {
       return SimplePointInAreaLocator.locatePointInPolygon(p, geom)
     } else if (geom instanceof GeometryCollection) {
-      var geomi = new GeometryCollectionIterator(geom)
+      const geomi = new GeometryCollectionIterator(geom)
       while (geomi.hasNext()) {
-        var g2 = geomi.next()
+        const g2 = geomi.next()
         if (g2 !== geom) {
-          var loc = SimplePointInAreaLocator.locateInGeometry(p, g2)
+          const loc = SimplePointInAreaLocator.locateInGeometry(p, g2)
           if (loc !== Location.EXTERIOR) return loc
         }
       }

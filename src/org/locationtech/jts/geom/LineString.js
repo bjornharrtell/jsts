@@ -38,11 +38,11 @@ export default class LineString extends Geometry {
       if (!this.isEquivalentClass(other)) {
         return false
       }
-      var otherLineString = other
+      const otherLineString = other
       if (this._points.size() !== otherLineString._points.size()) {
         return false
       }
-      for (var i = 0; i < this._points.size(); i++) {
+      for (let i = 0; i < this._points.size(); i++) {
         if (!this.equal(this._points.getCoordinate(i), otherLineString._points.getCoordinate(i), tolerance)) {
           return false
         }
@@ -52,11 +52,11 @@ export default class LineString extends Geometry {
   }
 
   normalize () {
-    for (var i = 0; i < Math.trunc(this._points.size() / 2); i++) {
-      var j = this._points.size() - 1 - i
+    for (let i = 0; i < Math.trunc(this._points.size() / 2); i++) {
+      const j = this._points.size() - 1 - i
       if (!this._points.getCoordinate(i).equals(this._points.getCoordinate(j))) {
         if (this._points.getCoordinate(i).compareTo(this._points.getCoordinate(j)) > 0) {
-          var copy = this._points.copy()
+          const copy = this._points.copy()
           CoordinateSequences.reverse(copy)
           this._points = copy
         }
@@ -108,20 +108,20 @@ export default class LineString extends Geometry {
   }
 
   reverse () {
-    var seq = this._points.copy()
+    const seq = this._points.copy()
     CoordinateSequences.reverse(seq)
-    var revLine = this.getFactory().createLineString(seq)
+    const revLine = this.getFactory().createLineString(seq)
     return revLine
   }
 
   compareToSameClass () {
     if (arguments.length === 1) {
       const o = arguments[0]
-      var line = o
-      var i = 0
-      var j = 0
+      const line = o
+      let i = 0
+      let j = 0
       while (i < this._points.size() && j < line._points.size()) {
-        var comparison = this._points.getCoordinate(i).compareTo(line._points.getCoordinate(j))
+        const comparison = this._points.getCoordinate(i).compareTo(line._points.getCoordinate(j))
         if (comparison !== 0) {
           return comparison
         }
@@ -137,7 +137,7 @@ export default class LineString extends Geometry {
       return 0
     } else if (arguments.length === 2) {
       const o = arguments[0]; const comp = arguments[1]
-      var line = o
+      const line = o
       return comp.compare(this._points, line._points)
     }
   }
@@ -145,13 +145,13 @@ export default class LineString extends Geometry {
   apply () {
     if (hasInterface(arguments[0], CoordinateFilter)) {
       const filter = arguments[0]
-      for (var i = 0; i < this._points.size(); i++) {
+      for (let i = 0; i < this._points.size(); i++) {
         filter.filter(this._points.getCoordinate(i))
       }
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
       const filter = arguments[0]
       if (this._points.size() === 0) return null
-      for (var i = 0; i < this._points.size(); i++) {
+      for (let i = 0; i < this._points.size(); i++) {
         filter.filter(this._points, i)
         if (filter.isDone()) break
       }
@@ -204,7 +204,7 @@ export default class LineString extends Geometry {
   }
 
   isCoordinate (pt) {
-    for (var i = 0; i < this._points.size(); i++) {
+    for (let i = 0; i < this._points.size(); i++) {
       if (this._points.getCoordinate(i).equals(pt)) {
         return true
       }

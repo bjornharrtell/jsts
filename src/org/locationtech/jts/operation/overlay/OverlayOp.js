@@ -23,8 +23,8 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   static overlayOp (geom0, geom1, opCode) {
-    var gov = new OverlayOp(geom0, geom1)
-    var geomOv = gov.getResultGeometry(opCode)
+    const gov = new OverlayOp(geom0, geom1)
+    const geomOv = gov.getResultGeometry(opCode)
     return geomOv
   }
 
@@ -41,7 +41,7 @@ export default class OverlayOp extends GeometryGraphOperation {
   static intersection (geom, other) {
     if (geom.isEmpty() || other.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, geom, other, geom.getFactory())
     if (geom.isGeometryCollection()) {
-      var g2 = other
+      const g2 = other
       return GeometryCollectionMapper.map(geom, new (class {
         get interfaces_ () {
           return [MapOp]
@@ -66,9 +66,9 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   static resultDimension (opCode, g0, g1) {
-    var dim0 = g0.getDimension()
-    var dim1 = g1.getDimension()
-    var resultDimension = -1
+    const dim0 = g0.getDimension()
+    const dim1 = g1.getDimension()
+    let resultDimension = -1
     switch (opCode) {
       case OverlayOp.INTERSECTION:
         resultDimension = Math.min(dim0, dim1)
@@ -87,7 +87,7 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   static createEmptyResult (overlayOpCode, a, b, geomFact) {
-    var result = null
+    let result = null
     switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
       case -1:
         result = geomFact.createGeometryCollection()
@@ -115,8 +115,8 @@ export default class OverlayOp extends GeometryGraphOperation {
   static isResultOfOp () {
     if (arguments.length === 2) {
       const label = arguments[0]; const opCode = arguments[1]
-      var loc0 = label.getLocation(0)
-      var loc1 = label.getLocation(1)
+      const loc0 = label.getLocation(0)
+      const loc1 = label.getLocation(1)
       return OverlayOp.isResultOfOp(loc0, loc1, opCode)
     } else if (arguments.length === 3) {
       let loc0 = arguments[0]; let loc1 = arguments[1]; const overlayOpCode = arguments[2]
@@ -137,15 +137,15 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   insertUniqueEdge (e) {
-    var existingEdge = this._edgeList.findEqualEdge(e)
+    const existingEdge = this._edgeList.findEqualEdge(e)
     if (existingEdge !== null) {
-      var existingLabel = existingEdge.getLabel()
-      var labelToMerge = e.getLabel()
+      const existingLabel = existingEdge.getLabel()
+      let labelToMerge = e.getLabel()
       if (!existingEdge.isPointwiseEqual(e)) {
         labelToMerge = new Label(e.getLabel())
         labelToMerge.flip()
       }
-      var depth = existingEdge.getDepth()
+      const depth = existingEdge.getDepth()
       if (depth.isNull()) {
         depth.add(existingLabel)
       }
@@ -161,9 +161,9 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   cancelDuplicateResultEdges () {
-    for (var it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
-      var de = it.next()
-      var sym = de.getSym()
+    for (let it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
+      const de = it.next()
+      const sym = de.getSym()
       if (de.isInResult() && sym.isInResult()) {
         de.setInResult(false)
         sym.setInResult(false)
@@ -178,7 +178,7 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   computeGeometry (resultPointList, resultLineList, resultPolyList, opcode) {
-    var geomList = new ArrayList()
+    const geomList = new ArrayList()
     geomList.addAll(resultPointList)
     geomList.addAll(resultLineList)
     geomList.addAll(resultPolyList)
@@ -187,25 +187,25 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   mergeSymLabels () {
-    for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
+    for (let nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
       node.getEdges().mergeSymLabels()
     }
   }
 
   isCovered (coord, geomList) {
-    for (var it = geomList.iterator(); it.hasNext();) {
-      var geom = it.next()
-      var loc = this._ptLocator.locate(coord, geom)
+    for (let it = geomList.iterator(); it.hasNext();) {
+      const geom = it.next()
+      const loc = this._ptLocator.locate(coord, geom)
       if (loc !== Location.EXTERIOR) return true
     }
     return false
   }
 
   replaceCollapsedEdges () {
-    var newEdges = new ArrayList()
-    for (var it = this._edgeList.iterator(); it.hasNext();) {
-      var e = it.next()
+    const newEdges = new ArrayList()
+    for (let it = this._edgeList.iterator(); it.hasNext();) {
+      const e = it.next()
       if (e.isCollapsed()) {
         it.remove()
         newEdges.add(e.getCollapsedEdge())
@@ -215,9 +215,9 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   updateNodeLabelling () {
-    for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
-      var lbl = node.getEdges().getLabel()
+    for (let nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
+      const lbl = node.getEdges().getLabel()
       node.getLabel().merge(lbl)
     }
   }
@@ -228,8 +228,8 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   insertUniqueEdges (edges) {
-    for (var i = edges.iterator(); i.hasNext();) {
-      var e = i.next()
+    for (let i = edges.iterator(); i.hasNext();) {
+      const e = i.next()
       this.insertUniqueEdge(e)
     }
   }
@@ -240,10 +240,10 @@ export default class OverlayOp extends GeometryGraphOperation {
     this._arg[0].computeSelfNodes(this._li, false)
     this._arg[1].computeSelfNodes(this._li, false)
     this._arg[0].computeEdgeIntersections(this._arg[1], this._li, true)
-    var baseSplitEdges = new ArrayList()
+    const baseSplitEdges = new ArrayList()
     this._arg[0].computeSplitEdges(baseSplitEdges)
     this._arg[1].computeSplitEdges(baseSplitEdges)
-    var splitEdges = baseSplitEdges
+    const splitEdges = baseSplitEdges
     this.insertUniqueEdges(baseSplitEdges)
     this.computeLabelsFromDepths()
     this.replaceCollapsedEdges()
@@ -253,33 +253,33 @@ export default class OverlayOp extends GeometryGraphOperation {
     this.labelIncompleteNodes()
     this.findResultAreaEdges(opCode)
     this.cancelDuplicateResultEdges()
-    var polyBuilder = new PolygonBuilder(this._geomFact)
+    const polyBuilder = new PolygonBuilder(this._geomFact)
     polyBuilder.add(this._graph)
     this._resultPolyList = polyBuilder.getPolygons()
-    var lineBuilder = new LineBuilder(this, this._geomFact, this._ptLocator)
+    const lineBuilder = new LineBuilder(this, this._geomFact, this._ptLocator)
     this._resultLineList = lineBuilder.build(opCode)
-    var pointBuilder = new PointBuilder(this, this._geomFact, this._ptLocator)
+    const pointBuilder = new PointBuilder(this, this._geomFact, this._ptLocator)
     this._resultPointList = pointBuilder.build(opCode)
     this._resultGeom = this.computeGeometry(this._resultPointList, this._resultLineList, this._resultPolyList, opCode)
   }
 
   labelIncompleteNode (n, targetIndex) {
-    var loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
+    const loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
     n.getLabel().setLocation(targetIndex, loc)
   }
 
   copyPoints (argIndex) {
-    for (var i = this._arg[argIndex].getNodeIterator(); i.hasNext();) {
-      var graphNode = i.next()
-      var newNode = this._graph.addNode(graphNode.getCoordinate())
+    for (let i = this._arg[argIndex].getNodeIterator(); i.hasNext();) {
+      const graphNode = i.next()
+      const newNode = this._graph.addNode(graphNode.getCoordinate())
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex))
     }
   }
 
   findResultAreaEdges (opCode) {
-    for (var it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
-      var de = it.next()
-      var label = de.getLabel()
+    for (let it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
+      const de = it.next()
+      const label = de.getLabel()
       if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
         de.setInResult(true)
       }
@@ -287,13 +287,13 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   computeLabelsFromDepths () {
-    for (var it = this._edgeList.iterator(); it.hasNext();) {
-      var e = it.next()
-      var lbl = e.getLabel()
-      var depth = e.getDepth()
+    for (let it = this._edgeList.iterator(); it.hasNext();) {
+      const e = it.next()
+      const lbl = e.getLabel()
+      const depth = e.getDepth()
       if (!depth.isNull()) {
         depth.normalize()
-        for (var i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
           if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull(i)) {
             if (depth.getDelta(i) === 0) {
               lbl.toLine(i)
@@ -310,8 +310,8 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   computeLabelling () {
-    for (var nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
+    for (let nodeit = this._graph.getNodes().iterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
       node.getEdges().computeLabelling(this._arg)
     }
     this.mergeSymLabels()
@@ -319,10 +319,10 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   labelIncompleteNodes () {
-    var nodeCount = 0
-    for (var ni = this._graph.getNodes().iterator(); ni.hasNext();) {
-      var n = ni.next()
-      var label = n.getLabel()
+    let nodeCount = 0
+    for (let ni = this._graph.getNodes().iterator(); ni.hasNext();) {
+      const n = ni.next()
+      const label = n.getLabel()
       if (n.isIsolated()) {
         nodeCount++
         if (label.isNull(0)) this.labelIncompleteNode(n, 0); else this.labelIncompleteNode(n, 1)

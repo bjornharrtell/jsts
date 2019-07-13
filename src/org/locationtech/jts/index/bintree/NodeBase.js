@@ -5,14 +5,14 @@ export default class NodeBase {
   }
 
   static getSubnodeIndex (interval, centre) {
-    var subnodeIndex = -1
+    let subnodeIndex = -1
     if (interval.min >= centre) subnodeIndex = 1
     if (interval.max <= centre) subnodeIndex = 0
     return subnodeIndex
   }
 
   hasChildren () {
-    for (var i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
       if (this._subnode[i] !== null) return true
     }
     return false
@@ -24,7 +24,7 @@ export default class NodeBase {
 
   addAllItems (items) {
     items.addAll(this._items)
-    for (var i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
       if (this._subnode[i] !== null) {
         this._subnode[i].addAllItems(items)
       }
@@ -33,8 +33,8 @@ export default class NodeBase {
   }
 
   size () {
-    var subSize = 0
-    for (var i = 0; i < 2; i++) {
+    let subSize = 0
+    for (let i = 0; i < 2; i++) {
       if (this._subnode[i] !== null) {
         subSize += this._subnode[i].size()
       }
@@ -55,8 +55,8 @@ export default class NodeBase {
 
   remove (itemInterval, item) {
     if (!this.isSearchMatch(itemInterval)) return false
-    var found = false
-    for (var i = 0; i < 2; i++) {
+    let found = false
+    for (let i = 0; i < 2; i++) {
       if (this._subnode[i] !== null) {
         found = this._subnode[i].remove(itemInterval, item)
         if (found) {
@@ -75,10 +75,10 @@ export default class NodeBase {
   }
 
   depth () {
-    var maxSubDepth = 0
-    for (var i = 0; i < 2; i++) {
+    let maxSubDepth = 0
+    for (let i = 0; i < 2; i++) {
       if (this._subnode[i] !== null) {
-        var sqd = this._subnode[i].depth()
+        const sqd = this._subnode[i].depth()
         if (sqd > maxSubDepth) maxSubDepth = sqd
       }
     }
@@ -86,8 +86,8 @@ export default class NodeBase {
   }
 
   nodeSize () {
-    var subSize = 0
-    for (var i = 0; i < 2; i++) {
+    let subSize = 0
+    for (let i = 0; i < 2; i++) {
       if (this._subnode[i] !== null) {
         subSize += this._subnode[i].nodeSize()
       }

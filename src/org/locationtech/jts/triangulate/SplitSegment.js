@@ -5,7 +5,7 @@ export default class SplitSegment {
   }
 
   static pointAlongReverse (seg, segmentLengthFraction) {
-    var coord = new Coordinate()
+    const coord = new Coordinate()
     coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x)
     coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y)
     return coord
@@ -14,7 +14,7 @@ export default class SplitSegment {
   splitAt () {
     if (arguments.length === 1) {
       const pt = arguments[0]
-      var minFrac = this._minimumLen / this._segLen
+      const minFrac = this._minimumLen / this._segLen
       if (pt.distance(this._seg.p0) < this._minimumLen) {
         this._splitPt = this._seg.pointAlong(minFrac)
         return null
@@ -26,8 +26,8 @@ export default class SplitSegment {
       this._splitPt = pt
     } else if (arguments.length === 2) {
       const length = arguments[0]; const endPt = arguments[1]
-      var actualLen = this.getConstrainedLength(length)
-      var frac = actualLen / this._segLen
+      const actualLen = this.getConstrainedLength(length)
+      const frac = actualLen / this._segLen
       if (endPt.equals2D(this._seg.p0)) this._splitPt = this._seg.pointAlong(frac); else this._splitPt = SplitSegment.pointAlongReverse(this._seg, frac)
     }
   }

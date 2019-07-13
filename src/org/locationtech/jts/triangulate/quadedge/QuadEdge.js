@@ -6,10 +6,10 @@ export default class QuadEdge {
   }
 
   static makeEdge (o, d) {
-    var q0 = new QuadEdge()
-    var q1 = new QuadEdge()
-    var q2 = new QuadEdge()
-    var q3 = new QuadEdge()
+    const q0 = new QuadEdge()
+    const q1 = new QuadEdge()
+    const q2 = new QuadEdge()
+    const q3 = new QuadEdge()
     q0._rot = q1
     q1._rot = q2
     q2._rot = q3
@@ -18,15 +18,15 @@ export default class QuadEdge {
     q1.setNext(q3)
     q2.setNext(q2)
     q3.setNext(q1)
-    var base = q0
+    const base = q0
     base.setOrig(o)
     base.setDest(d)
     return base
   }
 
   static swap (e) {
-    var a = e.oPrev()
-    var b = e.sym().oPrev()
+    const a = e.oPrev()
+    const b = e.sym().oPrev()
     QuadEdge.splice(e, a)
     QuadEdge.splice(e.sym(), b)
     QuadEdge.splice(e, a.lNext())
@@ -36,12 +36,12 @@ export default class QuadEdge {
   }
 
   static splice (a, b) {
-    var alpha = a.oNext().rot()
-    var beta = b.oNext().rot()
-    var t1 = b.oNext()
-    var t2 = a.oNext()
-    var t3 = beta.oNext()
-    var t4 = alpha.oNext()
+    const alpha = a.oNext().rot()
+    const beta = b.oNext().rot()
+    const t1 = b.oNext()
+    const t2 = a.oNext()
+    const t3 = beta.oNext()
+    const t4 = alpha.oNext()
     a.setNext(t1)
     b.setNext(t2)
     alpha.setNext(t3)
@@ -49,7 +49,7 @@ export default class QuadEdge {
   }
 
   static connect (a, b) {
-    var e = QuadEdge.makeEdge(a.dest(), b.orig())
+    const e = QuadEdge.makeEdge(a.dest(), b.orig())
     QuadEdge.splice(e, a.lNext())
     QuadEdge.splice(e.sym(), b)
     return e
@@ -143,8 +143,8 @@ export default class QuadEdge {
   }
 
   toString () {
-    var p0 = this._vertex.getCoordinate()
-    var p1 = this.dest().getCoordinate()
+    const p0 = this._vertex.getCoordinate()
+    const p1 = this.dest().getCoordinate()
     return WKTWriter.toLineString(p0, p1)
   }
 

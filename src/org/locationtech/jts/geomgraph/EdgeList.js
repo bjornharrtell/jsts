@@ -8,12 +8,12 @@ export default class EdgeList {
 
   print (out) {
     out.print('MULTILINESTRING ( ')
-    for (var j = 0; j < this._edges.size(); j++) {
-      var e = this._edges.get(j)
+    for (let j = 0; j < this._edges.size(); j++) {
+      const e = this._edges.get(j)
       if (j > 0) out.print(',')
       out.print('(')
-      var pts = e.getCoordinates()
-      for (var i = 0; i < pts.length; i++) {
+      const pts = e.getCoordinates()
+      for (let i = 0; i < pts.length; i++) {
         if (i > 0) out.print(',')
         out.print(pts[i].x + ' ' + pts[i].y)
       }
@@ -23,13 +23,13 @@ export default class EdgeList {
   }
 
   addAll (edgeColl) {
-    for (var i = edgeColl.iterator(); i.hasNext();) {
+    for (let i = edgeColl.iterator(); i.hasNext();) {
       this.add(i.next())
     }
   }
 
   findEdgeIndex (e) {
-    for (var i = 0; i < this._edges.size(); i++) {
+    for (let i = 0; i < this._edges.size(); i++) {
       if (this._edges.get(i).equals(e)) return i
     }
     return -1
@@ -48,14 +48,14 @@ export default class EdgeList {
   }
 
   findEqualEdge (e) {
-    var oca = new OrientedCoordinateArray(e.getCoordinates())
-    var matchEdge = this._ocaMap.get(oca)
+    const oca = new OrientedCoordinateArray(e.getCoordinates())
+    const matchEdge = this._ocaMap.get(oca)
     return matchEdge
   }
 
   add (e) {
     this._edges.add(e)
-    var oca = new OrientedCoordinateArray(e.getCoordinates())
+    const oca = new OrientedCoordinateArray(e.getCoordinates())
     this._ocaMap.put(oca, e)
   }
 

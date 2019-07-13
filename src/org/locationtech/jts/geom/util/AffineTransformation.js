@@ -13,13 +13,13 @@ export default class AffineTransformation {
   }
 
   static translationInstance (x, y) {
-    var trans = new AffineTransformation()
+    const trans = new AffineTransformation()
     trans.setToTranslation(x, y)
     return trans
   }
 
   static shearInstance (xShear, yShear) {
-    var trans = new AffineTransformation()
+    const trans = new AffineTransformation()
     trans.setToShear(xShear, yShear)
     return trans
   }
@@ -27,12 +27,12 @@ export default class AffineTransformation {
   static reflectionInstance () {
     if (arguments.length === 2) {
       const x = arguments[0]; const y = arguments[1]
-      var trans = new AffineTransformation()
+      const trans = new AffineTransformation()
       trans.setToReflection(x, y)
       return trans
     } else if (arguments.length === 4) {
       const x0 = arguments[0]; const y0 = arguments[1]; const x1 = arguments[2]; const y1 = arguments[3]
-      var trans = new AffineTransformation()
+      const trans = new AffineTransformation()
       trans.setToReflection(x0, y0, x1, y1)
       return trans
     }
@@ -44,7 +44,7 @@ export default class AffineTransformation {
       return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta))
     } else if (arguments.length === 2) {
       const sinTheta = arguments[0]; const cosTheta = arguments[1]
-      var trans = new AffineTransformation()
+      const trans = new AffineTransformation()
       trans.setToRotation(sinTheta, cosTheta)
       return trans
     } else if (arguments.length === 3) {
@@ -52,7 +52,7 @@ export default class AffineTransformation {
       return AffineTransformation.rotationInstance(Math.sin(theta), Math.cos(theta), x, y)
     } else if (arguments.length === 4) {
       const sinTheta = arguments[0]; const cosTheta = arguments[1]; const x = arguments[2]; const y = arguments[3]
-      var trans = new AffineTransformation()
+      const trans = new AffineTransformation()
       trans.setToRotation(sinTheta, cosTheta, x, y)
       return trans
     }
@@ -61,12 +61,12 @@ export default class AffineTransformation {
   static scaleInstance () {
     if (arguments.length === 2) {
       const xScale = arguments[0]; const yScale = arguments[1]
-      var trans = new AffineTransformation()
+      const trans = new AffineTransformation()
       trans.setToScale(xScale, yScale)
       return trans
     } else if (arguments.length === 4) {
       const xScale = arguments[0]; const yScale = arguments[1]; const x = arguments[2]; const y = arguments[3]
-      var trans = new AffineTransformation()
+      const trans = new AffineTransformation()
       trans.translate(-x, -y)
       trans.scale(xScale, yScale)
       trans.translate(x, y)
@@ -78,13 +78,13 @@ export default class AffineTransformation {
     if (x0 === x1 && y0 === y1) {
       throw new IllegalArgumentException('Reflection line points must be distinct')
     }
-    var dx = x1 - x0
-    var dy = y1 - y0
-    var d = Math.sqrt(dx * dx + dy * dy)
-    var sin = dy / d
-    var cos = dx / d
-    var cs2 = 2 * sin * cos
-    var c2s2 = cos * cos - sin * sin
+    const dx = x1 - x0
+    const dy = y1 - y0
+    const d = Math.sqrt(dx * dx + dy * dy)
+    const sin = dy / d
+    const cos = dx / d
+    const cs2 = 2 * sin * cos
+    const c2s2 = cos * cos - sin * sin
     this._m00 = c2s2
     this._m01 = cs2
     this._m02 = 0.0
@@ -95,24 +95,24 @@ export default class AffineTransformation {
   }
 
   getInverse () {
-    var det = this.getDeterminant()
+    const det = this.getDeterminant()
     if (det === 0) throw new NoninvertibleTransformationException('Transformation is non-invertible')
-    var im00 = this._m11 / det
-    var im10 = -this._m10 / det
-    var im01 = -this._m01 / det
-    var im11 = this._m00 / det
-    var im02 = (this._m01 * this._m12 - this._m02 * this._m11) / det
-    var im12 = (-this._m00 * this._m12 + this._m10 * this._m02) / det
+    const im00 = this._m11 / det
+    const im10 = -this._m10 / det
+    const im01 = -this._m01 / det
+    const im11 = this._m00 / det
+    const im02 = (this._m01 * this._m12 - this._m02 * this._m11) / det
+    const im12 = (-this._m00 * this._m12 + this._m10 * this._m02) / det
     return new AffineTransformation(im00, im01, im02, im10, im11, im12)
   }
 
   compose (trans) {
-    var mp00 = trans._m00 * this._m00 + trans._m01 * this._m10
-    var mp01 = trans._m00 * this._m01 + trans._m01 * this._m11
-    var mp02 = trans._m00 * this._m02 + trans._m01 * this._m12 + trans._m02
-    var mp10 = trans._m10 * this._m00 + trans._m11 * this._m10
-    var mp11 = trans._m10 * this._m01 + trans._m11 * this._m11
-    var mp12 = trans._m10 * this._m02 + trans._m11 * this._m12 + trans._m12
+    const mp00 = trans._m00 * this._m00 + trans._m01 * this._m10
+    const mp01 = trans._m00 * this._m01 + trans._m01 * this._m11
+    const mp02 = trans._m00 * this._m02 + trans._m01 * this._m12 + trans._m02
+    const mp10 = trans._m10 * this._m00 + trans._m11 * this._m10
+    const mp11 = trans._m10 * this._m01 + trans._m11 * this._m11
+    const mp12 = trans._m10 * this._m02 + trans._m11 * this._m12 + trans._m12
     this._m00 = mp00
     this._m01 = mp01
     this._m02 = mp02
@@ -125,7 +125,7 @@ export default class AffineTransformation {
   equals (obj) {
     if (obj === null) return false
     if (!(obj instanceof AffineTransformation)) return false
-    var trans = obj
+    const trans = obj
     return this._m00 === trans._m00 && this._m01 === trans._m01 && this._m02 === trans._m02 && this._m10 === trans._m10 && this._m11 === trans._m11 && this._m12 === trans._m12
   }
 
@@ -247,12 +247,12 @@ export default class AffineTransformation {
   }
 
   composeBefore (trans) {
-    var mp00 = this._m00 * trans._m00 + this._m01 * trans._m10
-    var mp01 = this._m00 * trans._m01 + this._m01 * trans._m11
-    var mp02 = this._m00 * trans._m02 + this._m01 * trans._m12 + this._m02
-    var mp10 = this._m10 * trans._m00 + this._m11 * trans._m10
-    var mp11 = this._m10 * trans._m01 + this._m11 * trans._m11
-    var mp12 = this._m10 * trans._m02 + this._m11 * trans._m12 + this._m12
+    const mp00 = this._m00 * trans._m00 + this._m01 * trans._m10
+    const mp01 = this._m00 * trans._m01 + this._m01 * trans._m11
+    const mp02 = this._m00 * trans._m02 + this._m01 * trans._m12 + this._m02
+    const mp10 = this._m10 * trans._m00 + this._m11 * trans._m10
+    const mp11 = this._m10 * trans._m01 + this._m11 * trans._m11
+    const mp12 = this._m10 * trans._m02 + this._m11 * trans._m12 + this._m12
     this._m00 = mp00
     this._m01 = mp01
     this._m02 = mp02
@@ -307,9 +307,9 @@ export default class AffineTransformation {
         this._m12 = 0.0
         return this
       }
-      var d = Math.sqrt(x * x + y * y)
-      var sin = y / d
-      var cos = x / d
+      const d = Math.sqrt(x * x + y * y)
+      const sin = y / d
+      const cos = x / d
       this.rotate(-sin, cos)
       this.scale(1, -1)
       this.rotate(sin, cos)
@@ -320,11 +320,11 @@ export default class AffineTransformation {
         throw new IllegalArgumentException('Reflection line points must be distinct')
       }
       this.setToTranslation(-x0, -y0)
-      var dx = x1 - x0
-      var dy = y1 - y0
-      var d = Math.sqrt(dx * dx + dy * dy)
-      var sin = dy / d
-      var cos = dx / d
+      const dx = x1 - x0
+      const dy = y1 - y0
+      const d = Math.sqrt(dx * dx + dy * dy)
+      const sin = dy / d
+      const cos = dx / d
       this.rotate(-sin, cos)
       this.scale(1, -1)
       this.rotate(sin, cos)
@@ -355,21 +355,21 @@ export default class AffineTransformation {
   transform () {
     if (arguments.length === 1) {
       const g = arguments[0]
-      var g2 = g.copy()
+      const g2 = g.copy()
       g2.apply(this)
       return g2
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
         const src = arguments[0]; const dest = arguments[1]
-        var xp = this._m00 * src.x + this._m01 * src.y + this._m02
-        var yp = this._m10 * src.x + this._m11 * src.y + this._m12
+        const xp = this._m00 * src.x + this._m01 * src.y + this._m02
+        const yp = this._m10 * src.x + this._m11 * src.y + this._m12
         dest.x = xp
         dest.y = yp
         return dest
       } else if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
         const seq = arguments[0]; const i = arguments[1]
-        var xp = this._m00 * seq.getOrdinate(i, 0) + this._m01 * seq.getOrdinate(i, 1) + this._m02
-        var yp = this._m10 * seq.getOrdinate(i, 0) + this._m11 * seq.getOrdinate(i, 1) + this._m12
+        const xp = this._m00 * seq.getOrdinate(i, 0) + this._m01 * seq.getOrdinate(i, 1) + this._m02
+        const yp = this._m10 * seq.getOrdinate(i, 0) + this._m11 * seq.getOrdinate(i, 1) + this._m12
         seq.setOrdinate(i, 0, xp)
         seq.setOrdinate(i, 1, yp)
       }

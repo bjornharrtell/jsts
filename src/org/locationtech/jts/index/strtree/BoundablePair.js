@@ -15,8 +15,8 @@ export default class BoundablePair {
   }
 
   expandToQueue (priQ, minDistance) {
-    var isComp1 = BoundablePair.isComposite(this._boundable1)
-    var isComp2 = BoundablePair.isComposite(this._boundable2)
+    const isComp1 = BoundablePair.isComposite(this._boundable1)
+    const isComp2 = BoundablePair.isComposite(this._boundable2)
     if (isComp1 && isComp2) {
       if (BoundablePair.area(this._boundable1) > BoundablePair.area(this._boundable2)) {
         this.expand(this._boundable1, this._boundable2, priQ, minDistance)
@@ -40,17 +40,17 @@ export default class BoundablePair {
   }
 
   compareTo (o) {
-    var nd = o
+    const nd = o
     if (this._distance < nd._distance) return -1
     if (this._distance > nd._distance) return 1
     return 0
   }
 
   expand (bndComposite, bndOther, priQ, minDistance) {
-    var children = bndComposite.getChildBoundables()
-    for (var i = children.iterator(); i.hasNext();) {
-      var child = i.next()
-      var bp = new BoundablePair(child, bndOther, this._itemDistance)
+    const children = bndComposite.getChildBoundables()
+    for (let i = children.iterator(); i.hasNext();) {
+      const child = i.next()
+      const bp = new BoundablePair(child, bndOther, this._itemDistance)
       if (bp.getDistance() < minDistance) {
         priQ.add(bp)
       }

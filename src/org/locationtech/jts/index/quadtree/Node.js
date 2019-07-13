@@ -9,24 +9,24 @@ export default class Node extends NodeBase {
   }
 
   static createNode (env) {
-    var key = new Key(env)
-    var node = new Node(key.getEnvelope(), key.getLevel())
+    const key = new Key(env)
+    const node = new Node(key.getEnvelope(), key.getLevel())
     return node
   }
 
   static createExpanded (node, addEnv) {
-    var expandEnv = new Envelope(addEnv)
+    const expandEnv = new Envelope(addEnv)
     if (node !== null) expandEnv.expandToInclude(node._env)
-    var largerNode = Node.createNode(expandEnv)
+    const largerNode = Node.createNode(expandEnv)
     if (node !== null) largerNode.insertNode(node)
     return largerNode
   }
 
   find (searchEnv) {
-    var subnodeIndex = NodeBase.getSubnodeIndex(searchEnv, this._centrex, this._centrey)
+    const subnodeIndex = NodeBase.getSubnodeIndex(searchEnv, this._centrex, this._centrey)
     if (subnodeIndex === -1) return this
     if (this._subnode[subnodeIndex] !== null) {
-      var node = this._subnode[subnodeIndex]
+      const node = this._subnode[subnodeIndex]
       return node.find(searchEnv)
     }
     return this
@@ -49,9 +49,9 @@ export default class Node extends NodeBase {
   }
 
   getNode (searchEnv) {
-    var subnodeIndex = NodeBase.getSubnodeIndex(searchEnv, this._centrex, this._centrey)
+    const subnodeIndex = NodeBase.getSubnodeIndex(searchEnv, this._centrex, this._centrey)
     if (subnodeIndex !== -1) {
-      var node = this.getSubnode(subnodeIndex)
+      const node = this.getSubnode(subnodeIndex)
       return node.getNode(searchEnv)
     } else {
       return this
@@ -59,10 +59,10 @@ export default class Node extends NodeBase {
   }
 
   createSubnode (index) {
-    var minx = 0.0
-    var maxx = 0.0
-    var miny = 0.0
-    var maxy = 0.0
+    let minx = 0.0
+    let maxx = 0.0
+    let miny = 0.0
+    let maxy = 0.0
     switch (index) {
       case 0:
         minx = this._env.getMinX()
@@ -89,18 +89,18 @@ export default class Node extends NodeBase {
         maxy = this._env.getMaxY()
         break
     }
-    var sqEnv = new Envelope(minx, maxx, miny, maxy)
-    var node = new Node(sqEnv, this._level - 1)
+    const sqEnv = new Envelope(minx, maxx, miny, maxy)
+    const node = new Node(sqEnv, this._level - 1)
     return node
   }
 
   insertNode (node) {
     Assert.isTrue(this._env === null || this._env.contains(node._env))
-    var index = NodeBase.getSubnodeIndex(node._env, this._centrex, this._centrey)
+    const index = NodeBase.getSubnodeIndex(node._env, this._centrex, this._centrey)
     if (node._level === this._level - 1) {
       this._subnode[index] = node
     } else {
-      var childNode = this.createSubnode(index)
+      const childNode = this.createSubnode(index)
       childNode.insertNode(node)
       this._subnode[index] = childNode
     }

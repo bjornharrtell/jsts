@@ -8,17 +8,17 @@ export default class CommonBitsRemover {
   }
 
   addCommonBits (geom) {
-    var trans = new Translater(this._commonCoord)
+    const trans = new Translater(this._commonCoord)
     geom.apply(trans)
     geom.geometryChanged()
   }
 
   removeCommonBits (geom) {
     if (this._commonCoord.x === 0.0 && this._commonCoord.y === 0.0) return geom
-    var invCoord = new Coordinate(this._commonCoord)
+    const invCoord = new Coordinate(this._commonCoord)
     invCoord.x = -invCoord.x
     invCoord.y = -invCoord.y
-    var trans = new Translater(invCoord)
+    const trans = new Translater(invCoord)
     geom.apply(trans)
     geom.geometryChanged()
     return geom
@@ -73,8 +73,8 @@ class Translater {
   }
 
   filter (seq, i) {
-    var xp = seq.getOrdinate(i, 0) + this.trans.x
-    var yp = seq.getOrdinate(i, 1) + this.trans.y
+    const xp = seq.getOrdinate(i, 0) + this.trans.x
+    const yp = seq.getOrdinate(i, 1) + this.trans.y
     seq.setOrdinate(i, 0, xp)
     seq.setOrdinate(i, 1, yp)
   }

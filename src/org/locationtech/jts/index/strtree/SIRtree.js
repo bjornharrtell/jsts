@@ -10,9 +10,9 @@ export default class SIRtree extends AbstractSTRtree {
   createNode (level) {
     return new (class {
       computeBounds () {
-        var bounds = null
-        for (var i = this.getChildBoundables().iterator(); i.hasNext();) {
-          var childBoundable = i.next()
+        let bounds = null
+        for (let i = this.getChildBoundables().iterator(); i.hasNext();) {
+          const childBoundable = i.next()
           if (bounds === null) {
             bounds = new Interval(childBoundable.getBounds())
           } else {

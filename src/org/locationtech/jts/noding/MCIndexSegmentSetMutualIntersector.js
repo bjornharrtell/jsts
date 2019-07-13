@@ -9,31 +9,31 @@ export default class MCIndexSegmentSetMutualIntersector {
   }
 
   addToIndex (segStr) {
-    var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
-    for (var i = segChains.iterator(); i.hasNext();) {
-      var mc = i.next()
+    const segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
+    for (let i = segChains.iterator(); i.hasNext();) {
+      const mc = i.next()
       this._index.insert(mc.getEnvelope(), mc)
     }
   }
 
   addToMonoChains (segStr, monoChains) {
-    var segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
-    for (var i = segChains.iterator(); i.hasNext();) {
-      var mc = i.next()
+    const segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
+    for (let i = segChains.iterator(); i.hasNext();) {
+      const mc = i.next()
       monoChains.add(mc)
     }
   }
 
   process (segStrings, segInt) {
-    var monoChains = new ArrayList()
-    for (var i = segStrings.iterator(); i.hasNext();) {
+    const monoChains = new ArrayList()
+    for (let i = segStrings.iterator(); i.hasNext();) {
       this.addToMonoChains(i.next(), monoChains)
     }
     this.intersectChains(monoChains, segInt)
   }
 
   initBaseSegments (segStrings) {
-    for (var i = segStrings.iterator(); i.hasNext();) {
+    for (let i = segStrings.iterator(); i.hasNext();) {
       this.addToIndex(i.next())
     }
     this._index.build()
@@ -44,12 +44,12 @@ export default class MCIndexSegmentSetMutualIntersector {
   }
 
   intersectChains (monoChains, segInt) {
-    var overlapAction = new SegmentOverlapAction(segInt)
-    for (var i = monoChains.iterator(); i.hasNext();) {
-      var queryChain = i.next()
-      var overlapChains = this._index.query(queryChain.getEnvelope())
-      for (var j = overlapChains.iterator(); j.hasNext();) {
-        var testChain = j.next()
+    const overlapAction = new SegmentOverlapAction(segInt)
+    for (let i = monoChains.iterator(); i.hasNext();) {
+      const queryChain = i.next()
+      const overlapChains = this._index.query(queryChain.getEnvelope())
+      for (let j = overlapChains.iterator(); j.hasNext();) {
+        const testChain = j.next()
         queryChain.computeOverlaps(testChain, overlapAction)
         if (segInt.isDone()) return null
       }
@@ -73,8 +73,8 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
   overlap () {
     if (arguments.length === 4) {
       const mc1 = arguments[0]; const start1 = arguments[1]; const mc2 = arguments[2]; const start2 = arguments[3]
-      var ss1 = mc1.getContext()
-      var ss2 = mc2.getContext()
+      const ss1 = mc1.getContext()
+      const ss2 = mc2.getContext()
       this._si.processIntersections(ss1, start1, ss2, start2)
     } else return super.overlap.apply(this, arguments)
   }

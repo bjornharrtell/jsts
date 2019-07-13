@@ -14,17 +14,17 @@ export default class PlanarGraph {
   }
 
   static linkResultDirectedEdges (nodes) {
-    for (var nodeit = nodes.iterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
+    for (let nodeit = nodes.iterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
       node.getEdges().linkResultDirectedEdges()
     }
   }
 
   printEdges (out) {
     out.println('Edges:')
-    for (var i = 0; i < this._edges.size(); i++) {
+    for (let i = 0; i < this._edges.size(); i++) {
       out.println('edge ' + i + ':')
-      var e = this._edges.get(i)
+      const e = this._edges.get(i)
       e.print(out)
       e.eiList.print(out)
     }
@@ -49,8 +49,8 @@ export default class PlanarGraph {
   }
 
   linkResultDirectedEdges () {
-    for (var nodeit = this._nodes.iterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
+    for (let nodeit = this._nodes.iterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
       node.getEdges().linkResultDirectedEdges()
     }
   }
@@ -60,16 +60,16 @@ export default class PlanarGraph {
   }
 
   isBoundaryNode (geomIndex, coord) {
-    var node = this._nodes.find(coord)
+    const node = this._nodes.find(coord)
     if (node === null) return false
-    var label = node.getLabel()
+    const label = node.getLabel()
     if (label !== null && label.getLocation(geomIndex) === Location.BOUNDARY) return true
     return false
   }
 
   linkAllDirectedEdges () {
-    for (var nodeit = this._nodes.iterator(); nodeit.hasNext();) {
-      var node = nodeit.next()
+    for (let nodeit = this._nodes.iterator(); nodeit.hasNext();) {
+      const node = nodeit.next()
       node.getEdges().linkAllDirectedEdges()
     }
   }
@@ -93,9 +93,9 @@ export default class PlanarGraph {
   }
 
   findEdgeInSameDirection (p0, p1) {
-    for (var i = 0; i < this._edges.size(); i++) {
-      var e = this._edges.get(i)
-      var eCoord = e.getCoordinates()
+    for (let i = 0; i < this._edges.size(); i++) {
+      const e = this._edges.get(i)
+      const eCoord = e.getCoordinates()
       if (this.matchInSameDirection(p0, p1, eCoord[0], eCoord[1])) return e
       if (this.matchInSameDirection(p0, p1, eCoord[eCoord.length - 1], eCoord[eCoord.length - 2])) return e
     }
@@ -107,19 +107,19 @@ export default class PlanarGraph {
   }
 
   findEdgeEnd (e) {
-    for (var i = this.getEdgeEnds().iterator(); i.hasNext();) {
-      var ee = i.next()
+    for (let i = this.getEdgeEnds().iterator(); i.hasNext();) {
+      const ee = i.next()
       if (ee.getEdge() === e) return ee
     }
     return null
   }
 
   addEdges (edgesToAdd) {
-    for (var it = edgesToAdd.iterator(); it.hasNext();) {
-      var e = it.next()
+    for (let it = edgesToAdd.iterator(); it.hasNext();) {
+      const e = it.next()
       this._edges.add(e)
-      var de1 = new DirectedEdge(e, true)
-      var de2 = new DirectedEdge(e, false)
+      const de1 = new DirectedEdge(e, true)
+      const de2 = new DirectedEdge(e, false)
       de1.setSym(de2)
       de2.setSym(de1)
       this.add(de1)
@@ -137,9 +137,9 @@ export default class PlanarGraph {
   }
 
   findEdge (p0, p1) {
-    for (var i = 0; i < this._edges.size(); i++) {
-      var e = this._edges.get(i)
-      var eCoord = e.getCoordinates()
+    for (let i = 0; i < this._edges.size(); i++) {
+      const e = this._edges.get(i)
+      const eCoord = e.getCoordinates()
       if (p0.equals(eCoord[0]) && p1.equals(eCoord[1])) return e
     }
     return null

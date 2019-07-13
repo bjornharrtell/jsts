@@ -10,20 +10,20 @@ export default class OrientedCoordinateArray {
   }
 
   static compareOriented (pts1, orientation1, pts2, orientation2) {
-    var dir1 = orientation1 ? 1 : -1
-    var dir2 = orientation2 ? 1 : -1
-    var limit1 = orientation1 ? pts1.length : -1
-    var limit2 = orientation2 ? pts2.length : -1
-    var i1 = orientation1 ? 0 : pts1.length - 1
-    var i2 = orientation2 ? 0 : pts2.length - 1
-    var comp = 0
+    const dir1 = orientation1 ? 1 : -1
+    const dir2 = orientation2 ? 1 : -1
+    const limit1 = orientation1 ? pts1.length : -1
+    const limit2 = orientation2 ? pts2.length : -1
+    let i1 = orientation1 ? 0 : pts1.length - 1
+    let i2 = orientation2 ? 0 : pts2.length - 1
+    const comp = 0
     while (true) {
-      var compPt = pts1[i1].compareTo(pts2[i2])
+      const compPt = pts1[i1].compareTo(pts2[i2])
       if (compPt !== 0) return compPt
       i1 += dir1
       i2 += dir2
-      var done1 = i1 === limit1
-      var done2 = i2 === limit2
+      const done1 = i1 === limit1
+      const done2 = i2 === limit2
       if (done1 && !done2) return -1
       if (!done1 && done2) return 1
       if (done1 && done2) return 0
@@ -31,8 +31,8 @@ export default class OrientedCoordinateArray {
   }
 
   compareTo (o1) {
-    var oca = o1
-    var comp = OrientedCoordinateArray.compareOriented(this._pts, this._orientation, oca._pts, oca._orientation)
+    const oca = o1
+    const comp = OrientedCoordinateArray.compareOriented(this._pts, this._orientation, oca._pts, oca._orientation)
     return comp
   }
 

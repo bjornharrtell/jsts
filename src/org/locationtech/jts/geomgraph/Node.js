@@ -8,8 +8,8 @@ export default class Node extends GraphComponent {
   }
 
   isIncidentEdgeInResult () {
-    for (var it = this.getEdges().getEdges().iterator(); it.hasNext();) {
-      var de = it.next()
+    for (let it = this.getEdges().getEdges().iterator(); it.hasNext();) {
+      const de = it.next()
       if (de.getEdge().isInResult()) return true
     }
     return false
@@ -30,10 +30,10 @@ export default class Node extends GraphComponent {
   computeIM (im) {}
 
   computeMergedLocation (label2, eltIndex) {
-    var loc = Location.NONE
+    let loc = Location.NONE
     loc = this._label.getLocation(eltIndex)
     if (!label2.isNull(eltIndex)) {
-      var nLoc = label2.getLocation(eltIndex)
+      const nLoc = label2.getLocation(eltIndex)
       if (loc !== Location.BOUNDARY) loc = nLoc
     }
     return loc
@@ -58,9 +58,9 @@ export default class Node extends GraphComponent {
       this.mergeLabel(n._label)
     } else if (arguments[0] instanceof Label) {
       const label2 = arguments[0]
-      for (var i = 0; i < 2; i++) {
-        var loc = this.computeMergedLocation(label2, i)
-        var thisLoc = this._label.getLocation(i)
+      for (let i = 0; i < 2; i++) {
+        const loc = this.computeMergedLocation(label2, i)
+        const thisLoc = this._label.getLocation(i)
         if (thisLoc === Location.NONE) this._label.setLocation(i, loc)
       }
     }
@@ -73,9 +73,9 @@ export default class Node extends GraphComponent {
 
   setLabelBoundary (argIndex) {
     if (this._label === null) return null
-    var loc = Location.NONE
+    let loc = Location.NONE
     if (this._label !== null) loc = this._label.getLocation(argIndex)
-    var newLoc = null
+    let newLoc = null
     switch (loc) {
       case Location.BOUNDARY:
         newLoc = Location.INTERIOR

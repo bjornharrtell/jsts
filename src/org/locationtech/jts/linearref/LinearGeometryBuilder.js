@@ -23,11 +23,11 @@ export default class LinearGeometryBuilder {
       this._coordList = null
       return null
     }
-    var rawPts = this._coordList.toCoordinateArray()
-    var pts = rawPts
+    const rawPts = this._coordList.toCoordinateArray()
+    let pts = rawPts
     if (this._fixInvalidLines) pts = this.validCoordinateSequence(rawPts)
     this._coordList = null
-    var line = null
+    let line = null
     try {
       line = this._geomFact.createLineString(pts)
     } catch (ex) {
@@ -60,7 +60,7 @@ export default class LinearGeometryBuilder {
 
   validCoordinateSequence (pts) {
     if (pts.length >= 2) return pts
-    var validPts = [pts[0], pts[0]]
+    const validPts = [pts[0], pts[0]]
     return validPts
   }
 

@@ -9,9 +9,9 @@ export default class Node extends GraphComponent {
   }
 
   static getEdgesBetween (node0, node1) {
-    var edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges())
-    var commonEdges = new HashSet(edges0)
-    var edges1 = DirectedEdge.toEdges(node1.getOutEdges().getEdges())
+    const edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges())
+    const commonEdges = new HashSet(edges0)
+    const edges1 = DirectedEdge.toEdges(node1.getOutEdges().getEdges())
     commonEdges.retainAll(edges1)
     return commonEdges
   }

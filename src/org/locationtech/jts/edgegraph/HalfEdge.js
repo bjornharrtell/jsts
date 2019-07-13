@@ -14,14 +14,14 @@ export default class HalfEdge {
   }
 
   static create (p0, p1) {
-    var e0 = new HalfEdge(p0)
-    var e1 = new HalfEdge(p1)
+    const e0 = new HalfEdge(p0)
+    const e1 = new HalfEdge(p1)
     e0.init(e1)
     return e0
   }
 
   find (dest) {
-    var oNext = this
+    let oNext = this
     do {
       if (oNext === null) return null
       if (oNext.dest().equals2D(dest)) return oNext
@@ -43,11 +43,11 @@ export default class HalfEdge {
       this.insertAfter(e)
       return null
     }
-    var ecmp = this.compareTo(e)
-    var ePrev = this
+    const ecmp = this.compareTo(e)
+    let ePrev = this
     do {
-      var oNext = ePrev.oNext()
-      var cmp = oNext.compareTo(e)
+      const oNext = ePrev.oNext()
+      const cmp = oNext.compareTo(e)
       if (cmp !== ecmp || oNext === this) {
         ePrev.insertAfter(e)
         return null
@@ -59,14 +59,14 @@ export default class HalfEdge {
 
   insertAfter (e) {
     Assert.equals(this._orig, e.orig())
-    var save = this.oNext()
+    const save = this.oNext()
     this._sym.setNext(e)
     e.sym().setNext(save)
   }
 
   degree () {
-    var degree = 0
-    var e = this
+    let degree = 0
+    let e = this
     do {
       degree++
       e = e.oNext()
@@ -94,20 +94,20 @@ export default class HalfEdge {
   }
 
   compareAngularDirection (e) {
-    var dx = this.deltaX()
-    var dy = this.deltaY()
-    var dx2 = e.deltaX()
-    var dy2 = e.deltaY()
+    const dx = this.deltaX()
+    const dy = this.deltaY()
+    const dx2 = e.deltaX()
+    const dy2 = e.deltaY()
     if (dx === dx2 && dy === dy2) return 0
-    var quadrant = Quadrant.quadrant(dx, dy)
-    var quadrant2 = Quadrant.quadrant(dx2, dy2)
+    const quadrant = Quadrant.quadrant(dx, dy)
+    const quadrant2 = Quadrant.quadrant(dx2, dy2)
     if (quadrant > quadrant2) return 1
     if (quadrant < quadrant2) return -1
     return Orientation.index(e._orig, e.dest(), this.dest())
   }
 
   prevNode () {
-    var e = this
+    let e = this
     while (e.degree() === 2) {
       e = e.prev()
       if (e === this) return null
@@ -116,8 +116,8 @@ export default class HalfEdge {
   }
 
   compareTo (obj) {
-    var e = obj
-    var comp = this.compareAngularDirection(e)
+    const e = obj
+    const comp = this.compareAngularDirection(e)
     return comp
   }
 

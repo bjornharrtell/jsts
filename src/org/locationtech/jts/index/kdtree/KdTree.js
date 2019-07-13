@@ -16,11 +16,11 @@ export default class KdTree {
       return KdTree.toCoordinates(kdnodes, false)
     } else if (arguments.length === 2) {
       const kdnodes = arguments[0]; const includeRepeated = arguments[1]
-      var coord = new CoordinateList()
-      for (var it = kdnodes.iterator(); it.hasNext();) {
-        var node = it.next()
-        var count = includeRepeated ? node.getCount() : 1
-        for (var i = 0; i < count; i++) {
+      const coord = new CoordinateList()
+      for (let it = kdnodes.iterator(); it.hasNext();) {
+        const node = it.next()
+        const count = includeRepeated ? node.getCount() : 1
+        for (let i = 0; i < count; i++) {
           coord.add(node.getCoordinate(), true)
         }
       }
@@ -39,7 +39,7 @@ export default class KdTree {
         return this._root
       }
       if (this._tolerance > 0) {
-        var matchNode = this.findBestMatchNode(p)
+        const matchNode = this.findBestMatchNode(p)
         if (matchNode !== null) {
           matchNode.increment()
           return matchNode
@@ -52,7 +52,7 @@ export default class KdTree {
   query () {
     if (arguments.length === 1) {
       const queryEnv = arguments[0]
-      var result = new ArrayList()
+      const result = new ArrayList()
       this.query(queryEnv, result)
       return result
     } else if (arguments.length === 2) {
@@ -76,9 +76,9 @@ export default class KdTree {
 
   queryNode (currentNode, queryEnv, odd, visitor) {
     if (currentNode === null) return null
-    var min = null
-    var max = null
-    var discriminant = null
+    let min = null
+    let max = null
+    let discriminant = null
     if (odd) {
       min = queryEnv.getMinX()
       max = queryEnv.getMaxX()
@@ -88,8 +88,8 @@ export default class KdTree {
       max = queryEnv.getMaxY()
       discriminant = currentNode.getY()
     }
-    var searchLeft = min < discriminant
-    var searchRight = discriminant <= max
+    const searchLeft = min < discriminant
+    const searchRight = discriminant <= max
     if (searchLeft) {
       this.queryNode(currentNode.getLeft(), queryEnv, !odd, visitor)
     }
@@ -102,7 +102,7 @@ export default class KdTree {
   }
 
   findBestMatchNode (p) {
-    var visitor = new BestMatchVisitor(p, this._tolerance)
+    const visitor = new BestMatchVisitor(p, this._tolerance)
     this.query(visitor.queryEnvelope(), visitor)
     return visitor.getNode()
   }
@@ -113,13 +113,13 @@ export default class KdTree {
   }
 
   insertExact (p, data) {
-    var currentNode = this._root
-    var leafNode = this._root
-    var isOddLevel = true
-    var isLessThan = true
+    let currentNode = this._root
+    let leafNode = this._root
+    let isOddLevel = true
+    let isLessThan = true
     while (currentNode !== null) {
       if (currentNode !== null) {
-        var isInTolerance = p.distance(currentNode.getCoordinate()) <= this._tolerance
+        const isInTolerance = p.distance(currentNode.getCoordinate()) <= this._tolerance
         if (isInTolerance) {
           currentNode.increment()
           return currentNode
@@ -139,7 +139,7 @@ export default class KdTree {
       isOddLevel = !isOddLevel
     }
     this._numberOfNodes = this._numberOfNodes + 1
-    var node = new KdNode(p, data)
+    const node = new KdNode(p, data)
     if (isLessThan) {
       leafNode.setLeft(node)
     } else {
@@ -162,10 +162,10 @@ class BestMatchVisitor {
   }
 
   visit (node) {
-    var dist = this._p.distance(node.getCoordinate())
-    var isInTolerance = dist <= this._tolerance
+    const dist = this._p.distance(node.getCoordinate())
+    const isInTolerance = dist <= this._tolerance
     if (!isInTolerance) return null
-    var update = false
+    let update = false
     if (this._matchNode === null || dist < this._matchDist || this._matchNode !== null && dist === this._matchDist && node.getCoordinate().compareTo(this._matchNode.getCoordinate()) < 1) update = true
     if (update) {
       this._matchNode = node
@@ -174,7 +174,7 @@ class BestMatchVisitor {
   }
 
   queryEnvelope () {
-    var queryEnv = new Envelope(this._p)
+    const queryEnv = new Envelope(this._p)
     queryEnv.expandBy(this._tolerance)
     return queryEnv
   }

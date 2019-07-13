@@ -11,7 +11,7 @@ export default class TopologyPreservingSimplifier {
   }
 
   static simplify (geom, distanceTolerance) {
-    var tss = new TopologyPreservingSimplifier(geom)
+    const tss = new TopologyPreservingSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
@@ -21,7 +21,7 @@ export default class TopologyPreservingSimplifier {
     this._linestringMap = new HashMap()
     this._inputGeom.apply(new LineStringMapBuilderFilter(this))
     this._lineSimplifier.simplify(this._linestringMap.values())
-    var result = new LineStringTransformer(this._linestringMap).transform(this._inputGeom)
+    const result = new LineStringTransformer(this._linestringMap).transform(this._inputGeom)
     return result
   }
 
@@ -47,7 +47,7 @@ class LineStringTransformer extends GeometryTransformer {
   transformCoordinates (coords, parent) {
     if (coords.size() === 0) return null
     if (parent instanceof LineString) {
-      var taggedLine = this._linestringMap.get(parent)
+      const taggedLine = this._linestringMap.get(parent)
       return this.createCoordinateSequence(taggedLine.getResultCoordinates())
     }
     return super.transformCoordinates.call(this, coords, parent)
@@ -73,10 +73,10 @@ class LineStringMapBuilderFilter {
 
   filter (geom) {
     if (geom instanceof LineString) {
-      var line = geom
+      const line = geom
       if (line.isEmpty()) return null
-      var minSize = line.isClosed() ? 4 : 2
-      var taggedLine = new TaggedLineString(line, minSize)
+      const minSize = line.isClosed() ? 4 : 2
+      const taggedLine = new TaggedLineString(line, minSize)
       this.tps._linestringMap.put(line, taggedLine)
     }
   }

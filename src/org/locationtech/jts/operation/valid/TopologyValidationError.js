@@ -16,7 +16,7 @@ export default class TopologyValidationError {
   }
 
   toString () {
-    var locStr = ''
+    let locStr = ''
     if (this._pt !== null) locStr = ' at or near point ' + this._pt
     return this.getMessage() + locStr
   }

@@ -7,24 +7,24 @@ export default class PreparedLineStringIntersects {
   }
 
   static intersects (prep, geom) {
-    var op = new PreparedLineStringIntersects(prep)
+    const op = new PreparedLineStringIntersects(prep)
     return op.intersects(geom)
   }
 
   isAnyTestPointInTarget (testGeom) {
-    var locator = new PointLocator()
-    var coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
-    for (var i = coords.iterator(); i.hasNext();) {
-      var p = i.next()
+    const locator = new PointLocator()
+    const coords = ComponentCoordinateExtracter.getCoordinates(testGeom)
+    for (let i = coords.iterator(); i.hasNext();) {
+      const p = i.next()
       if (locator.intersects(p, this._prepLine.getGeometry())) return true
     }
     return false
   }
 
   intersects (geom) {
-    var lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
+    const lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
     if (lineSegStr.size() > 0) {
-      var segsIntersect = this._prepLine.getIntersectionFinder().intersects(lineSegStr)
+      const segsIntersect = this._prepLine.getIntersectionFinder().intersects(lineSegStr)
       if (segsIntersect) return true
     }
     if (geom.getDimension() === 1) return false

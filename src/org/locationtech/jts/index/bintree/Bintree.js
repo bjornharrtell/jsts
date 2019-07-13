@@ -7,8 +7,8 @@ export default class Bintree {
   }
 
   static ensureExtent (itemInterval, minExtent) {
-    var min = itemInterval.getMin()
-    var max = itemInterval.getMax()
+    let min = itemInterval.getMin()
+    let max = itemInterval.getMax()
     if (min !== max) return itemInterval
     if (min === max) {
       min = min - minExtent / 2.0
@@ -24,7 +24,7 @@ export default class Bintree {
 
   insert (itemInterval, item) {
     this.collectStats(itemInterval)
-    var insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent)
+    const insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent)
     this._root.insert(insertInterval, item)
   }
 
@@ -35,7 +35,7 @@ export default class Bintree {
         return this.query(new Interval(x, x))
       } else if (arguments[0] instanceof Interval) {
         const interval = arguments[0]
-        var foundItems = new ArrayList()
+        const foundItems = new ArrayList()
         this.query(interval, foundItems)
         return foundItems
       }
@@ -46,18 +46,18 @@ export default class Bintree {
   }
 
   iterator () {
-    var foundItems = new ArrayList()
+    const foundItems = new ArrayList()
     this._root.addAllItems(foundItems)
     return foundItems.iterator()
   }
 
   remove (itemInterval, item) {
-    var insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent)
+    const insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent)
     return this._root.remove(insertInterval, item)
   }
 
   collectStats (interval) {
-    var del = interval.getWidth()
+    const del = interval.getWidth()
     if (del < this._minExtent && del > 0.0) this._minExtent = del
   }
 

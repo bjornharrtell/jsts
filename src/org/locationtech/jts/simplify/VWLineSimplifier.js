@@ -8,16 +8,16 @@ export default class VWLineSimplifier {
   }
 
   static simplify (pts, distanceTolerance) {
-    var simp = new VWLineSimplifier(pts, distanceTolerance)
+    const simp = new VWLineSimplifier(pts, distanceTolerance)
     return simp.simplify()
   }
 
   simplifyVertex (vwLine) {
-    var curr = vwLine
-    var minArea = curr.getArea()
-    var minVertex = null
+    let curr = vwLine
+    let minArea = curr.getArea()
+    let minVertex = null
     while (curr !== null) {
-      var area = curr.getArea()
+      const area = curr.getArea()
       if (area < minArea) {
         minArea = area
         minVertex = curr
@@ -32,12 +32,12 @@ export default class VWLineSimplifier {
   }
 
   simplify () {
-    var vwLine = VWVertex.buildLine(this._pts)
-    var minArea = this._tolerance
+    const vwLine = VWVertex.buildLine(this._pts)
+    let minArea = this._tolerance
     do {
       minArea = this.simplifyVertex(vwLine)
     } while (minArea < this._tolerance)
-    var simp = vwLine.getCoordinates()
+    const simp = vwLine.getCoordinates()
     if (simp.length < 2) {
       return [simp[0], new Coordinate(simp[0])]
     }
@@ -58,10 +58,10 @@ class VWVertex {
   }
 
   static buildLine (pts) {
-    var first = null
-    var prev = null
-    for (var i = 0; i < pts.length; i++) {
-      var v = new VWVertex(pts[i])
+    let first = null
+    let prev = null
+    for (let i = 0; i < pts.length; i++) {
+      const v = new VWVertex(pts[i])
       if (first === null) first = v
       v.setPrev(prev)
       if (prev !== null) {
@@ -74,8 +74,8 @@ class VWVertex {
   }
 
   getCoordinates () {
-    var coords = new CoordinateList()
-    var curr = this
+    const coords = new CoordinateList()
+    let curr = this
     do {
       coords.add(curr._pt, false)
       curr = curr._next
@@ -96,9 +96,9 @@ class VWVertex {
   }
 
   remove () {
-    var tmpPrev = this._prev
-    var tmpNext = this._next
-    var result = null
+    const tmpPrev = this._prev
+    const tmpNext = this._next
+    let result = null
     if (this._prev !== null) {
       this._prev.setNext(tmpNext)
       this._prev.updateArea()

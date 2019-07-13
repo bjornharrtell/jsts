@@ -13,17 +13,17 @@ export default class RelateComputer {
   }
 
   insertEdgeEnds (ee) {
-    for (var i = ee.iterator(); i.hasNext();) {
-      var e = i.next()
+    for (let i = ee.iterator(); i.hasNext();) {
+      const e = i.next()
       this._nodes.add(e)
     }
   }
 
   computeProperIntersectionIM (intersector, im) {
-    var dimA = this._arg[0].getGeometry().getDimension()
-    var dimB = this._arg[1].getGeometry().getDimension()
-    var hasProper = intersector.hasProperIntersection()
-    var hasProperInterior = intersector.hasProperInteriorIntersection()
+    const dimA = this._arg[0].getGeometry().getDimension()
+    const dimB = this._arg[1].getGeometry().getDimension()
+    const hasProper = intersector.hasProperIntersection()
+    const hasProperInterior = intersector.hasProperInteriorIntersection()
     if (dimA === 2 && dimB === 2) {
       if (hasProper) im.setAtLeast('212101212')
     } else if (dimA === 2 && dimB === 1) {
@@ -38,8 +38,8 @@ export default class RelateComputer {
   }
 
   labelIsolatedEdges (thisIndex, targetIndex) {
-    for (var ei = this._arg[thisIndex].getEdgeIterator(); ei.hasNext();) {
-      var e = ei.next()
+    for (let ei = this._arg[thisIndex].getEdgeIterator(); ei.hasNext();) {
+      const e = ei.next()
       if (e.isIsolated()) {
         this.labelIsolatedEdge(e, targetIndex, this._arg[targetIndex].getGeometry())
         this._isolatedEdges.add(e)
@@ -49,7 +49,7 @@ export default class RelateComputer {
 
   labelIsolatedEdge (e, targetIndex, target) {
     if (target.getDimension() > 0) {
-      var loc = this._ptLocator.locate(e.getCoordinate(), target)
+      const loc = this._ptLocator.locate(e.getCoordinate(), target)
       e.getLabel().setAllLocations(targetIndex, loc)
     } else {
       e.getLabel().setAllLocations(targetIndex, Location.EXTERIOR)
@@ -57,7 +57,7 @@ export default class RelateComputer {
   }
 
   computeIM () {
-    var im = new IntersectionMatrix()
+    const im = new IntersectionMatrix()
     im.set(Location.EXTERIOR, Location.EXTERIOR, 2)
     if (!this._arg[0].getGeometry().getEnvelopeInternal().intersects(this._arg[1].getGeometry().getEnvelopeInternal())) {
       this.computeDisjointIM(im)
@@ -65,17 +65,17 @@ export default class RelateComputer {
     }
     this._arg[0].computeSelfNodes(this._li, false)
     this._arg[1].computeSelfNodes(this._li, false)
-    var intersector = this._arg[0].computeEdgeIntersections(this._arg[1], this._li, false)
+    const intersector = this._arg[0].computeEdgeIntersections(this._arg[1], this._li, false)
     this.computeIntersectionNodes(0)
     this.computeIntersectionNodes(1)
     this.copyNodesAndLabels(0)
     this.copyNodesAndLabels(1)
     this.labelIsolatedNodes()
     this.computeProperIntersectionIM(intersector, im)
-    var eeBuilder = new EdgeEndBuilder()
-    var ee0 = eeBuilder.computeEdgeEnds(this._arg[0].getEdgeIterator())
+    const eeBuilder = new EdgeEndBuilder()
+    const ee0 = eeBuilder.computeEdgeEnds(this._arg[0].getEdgeIterator())
     this.insertEdgeEnds(ee0)
-    var ee1 = eeBuilder.computeEdgeEnds(this._arg[1].getEdgeIterator())
+    const ee1 = eeBuilder.computeEdgeEnds(this._arg[1].getEdgeIterator())
     this.insertEdgeEnds(ee1)
     this.labelNodeEdges()
     this.labelIsolatedEdges(0, 1)
@@ -85,27 +85,27 @@ export default class RelateComputer {
   }
 
   labelNodeEdges () {
-    for (var ni = this._nodes.iterator(); ni.hasNext();) {
-      var node = ni.next()
+    for (let ni = this._nodes.iterator(); ni.hasNext();) {
+      const node = ni.next()
       node.getEdges().computeLabelling(this._arg)
     }
   }
 
   copyNodesAndLabels (argIndex) {
-    for (var i = this._arg[argIndex].getNodeIterator(); i.hasNext();) {
-      var graphNode = i.next()
-      var newNode = this._nodes.addNode(graphNode.getCoordinate())
+    for (let i = this._arg[argIndex].getNodeIterator(); i.hasNext();) {
+      const graphNode = i.next()
+      const newNode = this._nodes.addNode(graphNode.getCoordinate())
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex))
     }
   }
 
   labelIntersectionNodes (argIndex) {
-    for (var i = this._arg[argIndex].getEdgeIterator(); i.hasNext();) {
-      var e = i.next()
-      var eLoc = e.getLabel().getLocation(argIndex)
-      for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
-        var ei = eiIt.next()
-        var n = this._nodes.find(ei.coord)
+    for (let i = this._arg[argIndex].getEdgeIterator(); i.hasNext();) {
+      const e = i.next()
+      const eLoc = e.getLabel().getLocation(argIndex)
+      for (let eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
+        const ei = eiIt.next()
+        const n = this._nodes.find(ei.coord)
         if (n.getLabel().isNull(argIndex)) {
           if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else n.setLabel(argIndex, Location.INTERIOR)
         }
@@ -114,17 +114,17 @@ export default class RelateComputer {
   }
 
   labelIsolatedNode (n, targetIndex) {
-    var loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
+    const loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
     n.getLabel().setAllLocations(targetIndex, loc)
   }
 
   computeIntersectionNodes (argIndex) {
-    for (var i = this._arg[argIndex].getEdgeIterator(); i.hasNext();) {
-      var e = i.next()
-      var eLoc = e.getLabel().getLocation(argIndex)
-      for (var eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
-        var ei = eiIt.next()
-        var n = this._nodes.addNode(ei.coord)
+    for (let i = this._arg[argIndex].getEdgeIterator(); i.hasNext();) {
+      const e = i.next()
+      const eLoc = e.getLabel().getLocation(argIndex)
+      for (let eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
+        const ei = eiIt.next()
+        const n = this._nodes.addNode(ei.coord)
         if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else {
           if (n.getLabel().isNull(argIndex)) n.setLabel(argIndex, Location.INTERIOR)
         }
@@ -133,9 +133,9 @@ export default class RelateComputer {
   }
 
   labelIsolatedNodes () {
-    for (var ni = this._nodes.iterator(); ni.hasNext();) {
-      var n = ni.next()
-      var label = n.getLabel()
+    for (let ni = this._nodes.iterator(); ni.hasNext();) {
+      const n = ni.next()
+      const label = n.getLabel()
       Assert.isTrue(label.getGeometryCount() > 0, 'node with empty label found')
       if (n.isIsolated()) {
         if (label.isNull(0)) this.labelIsolatedNode(n, 0); else this.labelIsolatedNode(n, 1)
@@ -144,24 +144,24 @@ export default class RelateComputer {
   }
 
   updateIM (im) {
-    for (var ei = this._isolatedEdges.iterator(); ei.hasNext();) {
-      var e = ei.next()
+    for (let ei = this._isolatedEdges.iterator(); ei.hasNext();) {
+      const e = ei.next()
       e.updateIM(im)
     }
-    for (var ni = this._nodes.iterator(); ni.hasNext();) {
-      var node = ni.next()
+    for (let ni = this._nodes.iterator(); ni.hasNext();) {
+      const node = ni.next()
       node.updateIM(im)
       node.updateIMFromEdges(im)
     }
   }
 
   computeDisjointIM (im) {
-    var ga = this._arg[0].getGeometry()
+    const ga = this._arg[0].getGeometry()
     if (!ga.isEmpty()) {
       im.set(Location.INTERIOR, Location.EXTERIOR, ga.getDimension())
       im.set(Location.BOUNDARY, Location.EXTERIOR, ga.getBoundaryDimension())
     }
-    var gb = this._arg[1].getGeometry()
+    const gb = this._arg[1].getGeometry()
     if (!gb.isEmpty()) {
       im.set(Location.EXTERIOR, Location.INTERIOR, gb.getDimension())
       im.set(Location.EXTERIOR, Location.BOUNDARY, gb.getBoundaryDimension())

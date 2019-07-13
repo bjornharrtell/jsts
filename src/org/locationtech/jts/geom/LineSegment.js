@@ -23,8 +23,8 @@ export default class LineSegment {
   orientationIndex () {
     if (arguments[0] instanceof LineSegment) {
       const seg = arguments[0]
-      var orient0 = Orientation.index(this.p0, this.p1, seg.p0)
-      var orient1 = Orientation.index(this.p0, this.p1, seg.p1)
+      const orient0 = Orientation.index(this.p0, this.p1, seg.p0)
+      const orient1 = Orientation.index(this.p0, this.p1, seg.p1)
       if (orient0 >= 0 && orient1 >= 0) return Math.max(orient0, orient1)
       if (orient0 <= 0 && orient1 <= 0) return Math.max(orient0, orient1)
       return 0
@@ -46,12 +46,12 @@ export default class LineSegment {
     if (!(o instanceof LineSegment)) {
       return false
     }
-    var other = o
+    const other = o
     return this.p0.equals(other.p0) && this.p1.equals(other.p1)
   }
 
   intersection (line) {
-    var li = new RobustLineIntersector()
+    const li = new RobustLineIntersector()
     li.computeIntersection(this.p0, this.p1, line.p0, line.p1)
     if (li.hasIntersection()) return li.getIntersection(0)
     return null
@@ -61,21 +61,21 @@ export default class LineSegment {
     if (arguments[0] instanceof Coordinate) {
       const p = arguments[0]
       if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p)
-      var r = this.projectionFactor(p)
-      var coord = new Coordinate()
+      const r = this.projectionFactor(p)
+      const coord = new Coordinate()
       coord.x = this.p0.x + r * (this.p1.x - this.p0.x)
       coord.y = this.p0.y + r * (this.p1.y - this.p0.y)
       return coord
     } else if (arguments[0] instanceof LineSegment) {
       const seg = arguments[0]
-      var pf0 = this.projectionFactor(seg.p0)
-      var pf1 = this.projectionFactor(seg.p1)
+      const pf0 = this.projectionFactor(seg.p0)
+      const pf1 = this.projectionFactor(seg.p1)
       if (pf0 >= 1.0 && pf1 >= 1.0) return null
       if (pf0 <= 0.0 && pf1 <= 0.0) return null
-      var newp0 = this.project(seg.p0)
+      let newp0 = this.project(seg.p0)
       if (pf0 < 0.0) newp0 = this.p0
       if (pf0 > 1.0) newp0 = this.p1
-      var newp1 = this.project(seg.p1)
+      let newp1 = this.project(seg.p1)
       if (pf1 < 0.0) newp1 = this.p0
       if (pf1 > 1.0) newp1 = this.p1
       return new LineSegment(newp0, newp1)
@@ -110,41 +110,41 @@ export default class LineSegment {
   projectionFactor (p) {
     if (p.equals(this.p0)) return 0.0
     if (p.equals(this.p1)) return 1.0
-    var dx = this.p1.x - this.p0.x
-    var dy = this.p1.y - this.p0.y
-    var len = dx * dx + dy * dy
+    const dx = this.p1.x - this.p0.x
+    const dy = this.p1.y - this.p0.y
+    const len = dx * dx + dy * dy
     if (len <= 0.0) return Double.NaN
-    var r = ((p.x - this.p0.x) * dx + (p.y - this.p0.y) * dy) / len
+    const r = ((p.x - this.p0.x) * dx + (p.y - this.p0.y) * dy) / len
     return r
   }
 
   closestPoints (line) {
-    var intPt = this.intersection(line)
+    const intPt = this.intersection(line)
     if (intPt !== null) {
       return [intPt, intPt]
     }
-    var closestPt = new Array(2).fill(null)
-    var minDistance = Double.MAX_VALUE
-    var dist = null
-    var close00 = this.closestPoint(line.p0)
+    const closestPt = new Array(2).fill(null)
+    let minDistance = Double.MAX_VALUE
+    let dist = null
+    const close00 = this.closestPoint(line.p0)
     minDistance = close00.distance(line.p0)
     closestPt[0] = close00
     closestPt[1] = line.p0
-    var close01 = this.closestPoint(line.p1)
+    const close01 = this.closestPoint(line.p1)
     dist = close01.distance(line.p1)
     if (dist < minDistance) {
       minDistance = dist
       closestPt[0] = close01
       closestPt[1] = line.p1
     }
-    var close10 = line.closestPoint(this.p0)
+    const close10 = line.closestPoint(this.p0)
     dist = close10.distance(this.p0)
     if (dist < minDistance) {
       minDistance = dist
       closestPt[0] = this.p0
       closestPt[1] = close10
     }
-    var close11 = line.closestPoint(this.p1)
+    const close11 = line.closestPoint(this.p1)
     dist = close11.distance(this.p1)
     if (dist < minDistance) {
       minDistance = dist
@@ -155,12 +155,12 @@ export default class LineSegment {
   }
 
   closestPoint (p) {
-    var factor = this.projectionFactor(p)
+    const factor = this.projectionFactor(p)
     if (factor > 0 && factor < 1) {
       return this.project(p)
     }
-    var dist0 = this.p0.distance(p)
-    var dist1 = this.p1.distance(p)
+    const dist0 = this.p0.distance(p)
+    const dist1 = this.p1.distance(p)
     if (dist0 < dist1) return this.p0
     return this.p1
   }
@@ -174,14 +174,14 @@ export default class LineSegment {
   }
 
   compareTo (o) {
-    var other = o
-    var comp0 = this.p0.compareTo(other.p0)
+    const other = o
+    const comp0 = this.p0.compareTo(other.p0)
     if (comp0 !== 0) return comp0
     return this.p1.compareTo(other.p1)
   }
 
   reverse () {
-    var temp = this.p0
+    const temp = this.p0
     this.p0 = this.p1
     this.p1 = temp
   }
@@ -192,7 +192,7 @@ export default class LineSegment {
 
   lineIntersection (line) {
     try {
-      var intPt = HCoordinate.intersection(this.p0, this.p1, line.p0, line.p1)
+      const intPt = HCoordinate.intersection(this.p0, this.p1, line.p0, line.p1)
       return intPt
     } catch (ex) {
       if (ex instanceof NotRepresentableException) {} else throw ex
@@ -205,21 +205,21 @@ export default class LineSegment {
   }
 
   pointAlongOffset (segmentLengthFraction, offsetDistance) {
-    var segx = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x)
-    var segy = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y)
-    var dx = this.p1.x - this.p0.x
-    var dy = this.p1.y - this.p0.y
-    var len = Math.sqrt(dx * dx + dy * dy)
-    var ux = 0.0
-    var uy = 0.0
+    const segx = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x)
+    const segy = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y)
+    const dx = this.p1.x - this.p0.x
+    const dy = this.p1.y - this.p0.y
+    const len = Math.sqrt(dx * dx + dy * dy)
+    let ux = 0.0
+    let uy = 0.0
     if (offsetDistance !== 0.0) {
       if (len <= 0.0) throw new IllegalStateException('Cannot compute offset from zero-length line segment')
       ux = offsetDistance * dx / len
       uy = offsetDistance * dy / len
     }
-    var offsetx = segx - uy
-    var offsety = segy + ux
-    var coord = new Coordinate(offsetx, offsety)
+    const offsetx = segx - uy
+    const offsety = segy + ux
+    const coord = new Coordinate(offsetx, offsety)
     return coord
   }
 
@@ -237,7 +237,7 @@ export default class LineSegment {
   }
 
   segmentFraction (inputPt) {
-    var segFrac = this.projectionFactor(inputPt)
+    let segFrac = this.projectionFactor(inputPt)
     if (segFrac < 0.0) segFrac = 0.0; else if (segFrac > 1.0 || Double.isNaN(segFrac)) segFrac = 1.0
     return segFrac
   }
@@ -261,19 +261,19 @@ export default class LineSegment {
   }
 
   pointAlong (segmentLengthFraction) {
-    var coord = new Coordinate()
+    const coord = new Coordinate()
     coord.x = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x)
     coord.y = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y)
     return coord
   }
 
   hashCode () {
-    var bits0 = java.lang.Double.doubleToLongBits(this.p0.x)
+    let bits0 = java.lang.Double.doubleToLongBits(this.p0.x)
     bits0 ^= java.lang.Double.doubleToLongBits(this.p0.y) * 31
-    var hash0 = Math.trunc(bits0) ^ Math.trunc(bits0 >> 32)
-    var bits1 = java.lang.Double.doubleToLongBits(this.p1.x)
+    const hash0 = Math.trunc(bits0) ^ Math.trunc(bits0 >> 32)
+    let bits1 = java.lang.Double.doubleToLongBits(this.p1.x)
     bits1 ^= java.lang.Double.doubleToLongBits(this.p1.y) * 31
-    var hash1 = Math.trunc(bits1) ^ Math.trunc(bits1 >> 32)
+    const hash1 = Math.trunc(bits1) ^ Math.trunc(bits1 >> 32)
     return hash0 ^ hash1
   }
 

@@ -21,7 +21,7 @@ export default class Centroid {
   }
 
   static getCentroid (geom) {
-    var cent = new Centroid(geom)
+    const cent = new Centroid(geom)
     return cent.getCentroid()
   }
 
@@ -36,14 +36,14 @@ export default class Centroid {
   }
 
   addLineSegments (pts) {
-    var lineLen = 0.0
-    for (var i = 0; i < pts.length - 1; i++) {
-      var segmentLen = pts[i].distance(pts[i + 1])
+    let lineLen = 0.0
+    for (let i = 0; i < pts.length - 1; i++) {
+      const segmentLen = pts[i].distance(pts[i + 1])
       if (segmentLen === 0.0) continue
       lineLen += segmentLen
-      var midx = (pts[i].x + pts[i + 1].x) / 2
+      const midx = (pts[i].x + pts[i + 1].x) / 2
       this._lineCentSum.x += segmentLen * midx
-      var midy = (pts[i].y + pts[i + 1].y) / 2
+      const midy = (pts[i].y + pts[i + 1].y) / 2
       this._lineCentSum.y += segmentLen * midy
     }
     this._totalLength += lineLen
@@ -51,15 +51,15 @@ export default class Centroid {
   }
 
   addHole (pts) {
-    var isPositiveArea = Orientation.isCCW(pts)
-    for (var i = 0; i < pts.length - 1; i++) {
+    const isPositiveArea = Orientation.isCCW(pts)
+    for (let i = 0; i < pts.length - 1; i++) {
       this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea)
     }
     this.addLineSegments(pts)
   }
 
   getCentroid () {
-    var cent = new Coordinate()
+    const cent = new Coordinate()
     if (Math.abs(this._areasum2) > 0.0) {
       cent.x = this._cg3.x / 3 / this._areasum2
       cent.y = this._cg3.y / 3 / this._areasum2
@@ -77,17 +77,17 @@ export default class Centroid {
 
   addShell (pts) {
     if (pts.length > 0) this.setAreaBasePoint(pts[0])
-    var isPositiveArea = !Orientation.isCCW(pts)
-    for (var i = 0; i < pts.length - 1; i++) {
+    const isPositiveArea = !Orientation.isCCW(pts)
+    for (let i = 0; i < pts.length - 1; i++) {
       this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea)
     }
     this.addLineSegments(pts)
   }
 
   addTriangle (p0, p1, p2, isPositiveArea) {
-    var sign = isPositiveArea ? 1.0 : -1.0
+    const sign = isPositiveArea ? 1.0 : -1.0
     Centroid.centroid3(p0, p1, p2, this._triangleCent3)
-    var area2 = Centroid.area2(p0, p1, p2)
+    const area2 = Centroid.area2(p0, p1, p2)
     this._cg3.x += sign * area2 * this._triangleCent3.x
     this._cg3.y += sign * area2 * this._triangleCent3.y
     this._areasum2 += sign * area2
@@ -97,7 +97,7 @@ export default class Centroid {
     if (arguments[0] instanceof Polygon) {
       const poly = arguments[0]
       this.addShell(poly.getExteriorRing().getCoordinates())
-      for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < poly.getNumInteriorRing(); i++) {
         this.addHole(poly.getInteriorRingN(i).getCoordinates())
       }
     } else if (arguments[0] instanceof Geometry) {
@@ -108,11 +108,11 @@ export default class Centroid {
       } else if (geom instanceof LineString) {
         this.addLineSegments(geom.getCoordinates())
       } else if (geom instanceof Polygon) {
-        var poly = geom
+        const poly = geom
         this.add(poly)
       } else if (geom instanceof GeometryCollection) {
-        var gc = geom
-        for (var i = 0; i < gc.getNumGeometries(); i++) {
+        const gc = geom
+        for (let i = 0; i < gc.getNumGeometries(); i++) {
           this.add(gc.getGeometryN(i))
         }
       }

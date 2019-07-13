@@ -10,31 +10,31 @@ export default class Orientation {
   }
 
   static isCCW (ring) {
-    var nPts = ring.length - 1
+    const nPts = ring.length - 1
     if (nPts < 3) throw new IllegalArgumentException('Ring has fewer than 4 points, so orientation cannot be determined')
-    var hiPt = ring[0]
-    var hiIndex = 0
-    for (var i = 1; i <= nPts; i++) {
-      var p = ring[i]
+    let hiPt = ring[0]
+    let hiIndex = 0
+    for (let i = 1; i <= nPts; i++) {
+      const p = ring[i]
       if (p.y > hiPt.y) {
         hiPt = p
         hiIndex = i
       }
     }
-    var iPrev = hiIndex
+    let iPrev = hiIndex
     do {
       iPrev = iPrev - 1
       if (iPrev < 0) iPrev = nPts
     } while (ring[iPrev].equals2D(hiPt) && iPrev !== hiIndex)
-    var iNext = hiIndex
+    let iNext = hiIndex
     do {
       iNext = (iNext + 1) % nPts
     } while (ring[iNext].equals2D(hiPt) && iNext !== hiIndex)
-    var prev = ring[iPrev]
-    var next = ring[iNext]
+    const prev = ring[iPrev]
+    const next = ring[iNext]
     if (prev.equals2D(hiPt) || next.equals2D(hiPt) || prev.equals2D(next)) return false
-    var disc = Orientation.index(prev, hiPt, next)
-    var isCCW = null
+    const disc = Orientation.index(prev, hiPt, next)
+    let isCCW = null
     if (disc === 0) {
       isCCW = prev.x > next.x
     } else {

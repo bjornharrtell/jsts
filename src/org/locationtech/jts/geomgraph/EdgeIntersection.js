@@ -20,7 +20,7 @@ export default class EdgeIntersection {
   }
 
   compareTo (obj) {
-    var other = obj
+    const other = obj
     return this.compare(other.segmentIndex, other.dist)
   }
 

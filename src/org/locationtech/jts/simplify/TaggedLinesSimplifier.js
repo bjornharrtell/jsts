@@ -10,11 +10,11 @@ export default class TaggedLinesSimplifier {
   }
 
   simplify (taggedLines) {
-    for (var i = taggedLines.iterator(); i.hasNext();) {
+    for (let i = taggedLines.iterator(); i.hasNext();) {
       this._inputIndex.add(i.next())
     }
-    for (var i = taggedLines.iterator(); i.hasNext();) {
-      var tlss = new TaggedLineStringSimplifier(this._inputIndex, this._outputIndex)
+    for (let i = taggedLines.iterator(); i.hasNext();) {
+      const tlss = new TaggedLineStringSimplifier(this._inputIndex, this._outputIndex)
       tlss.setDistanceTolerance(this._distanceTolerance)
       tlss.simplify(i.next())
     }

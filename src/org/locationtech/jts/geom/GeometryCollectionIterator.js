@@ -26,7 +26,7 @@ export default class GeometryCollectionIterator {
     if (this._index >= this._max) {
       throw new NoSuchElementException()
     }
-    var obj = this._parent.getGeometryN(this._index++)
+    const obj = this._parent.getGeometryN(this._index++)
     if (obj instanceof GeometryCollection) {
       this._subcollectionIterator = new GeometryCollectionIterator(obj)
       return this._subcollectionIterator.next()

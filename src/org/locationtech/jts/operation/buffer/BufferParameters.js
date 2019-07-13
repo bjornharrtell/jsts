@@ -4,7 +4,7 @@ export default class BufferParameters {
   }
 
   static bufferDistanceError (quadSegs) {
-    var alpha = Math.PI / 2.0 / quadSegs
+    const alpha = Math.PI / 2.0 / quadSegs
     return 1 - Math.cos(alpha / 2.0)
   }
 

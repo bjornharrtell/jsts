@@ -8,7 +8,7 @@ export default class RectangleContains {
   }
 
   static contains (rectangle, b) {
-    var rc = new RectangleContains(rectangle)
+    const rc = new RectangleContains(rectangle)
     return rc.contains(b)
   }
 
@@ -16,8 +16,8 @@ export default class RectangleContains {
     if (geom instanceof Polygon) return false
     if (geom instanceof Point) return this.isPointContainedInBoundary(geom)
     if (geom instanceof LineString) return this.isLineStringContainedInBoundary(geom)
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var comp = geom.getGeometryN(i)
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const comp = geom.getGeometryN(i)
       if (!this.isContainedInBoundary(comp)) return false
     }
     return true
@@ -34,10 +34,10 @@ export default class RectangleContains {
   }
 
   isLineStringContainedInBoundary (line) {
-    var seq = line.getCoordinateSequence()
-    var p0 = new Coordinate()
-    var p1 = new Coordinate()
-    for (var i = 0; i < seq.size() - 1; i++) {
+    const seq = line.getCoordinateSequence()
+    const p0 = new Coordinate()
+    const p1 = new Coordinate()
+    for (let i = 0; i < seq.size() - 1; i++) {
       seq.getCoordinate(i, p0)
       seq.getCoordinate(i + 1, p1)
       if (!this.isLineSegmentContainedInBoundary(p0, p1)) return false

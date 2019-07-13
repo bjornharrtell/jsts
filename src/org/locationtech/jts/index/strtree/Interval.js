@@ -22,7 +22,7 @@ export default class Interval {
     if (!(o instanceof Interval)) {
       return false
     }
-    var other = o
+    const other = o
     return this._min === other._min && this._max === other._max
   }
 

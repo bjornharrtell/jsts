@@ -9,15 +9,15 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
   }
 
   static randomPointInCircle (orgX, orgY, width, height) {
-    var centreX = orgX + width / 2
-    var centreY = orgY + height / 2
-    var rndAng = 2 * Math.PI * Math.random()
-    var rndRadius = Math.random()
-    var rndRadius2 = Math.sqrt(rndRadius)
-    var rndX = width / 2 * rndRadius2 * Math.cos(rndAng)
-    var rndY = height / 2 * rndRadius2 * Math.sin(rndAng)
-    var x0 = centreX + rndX
-    var y0 = centreY + rndY
+    const centreX = orgX + width / 2
+    const centreY = orgY + height / 2
+    const rndAng = 2 * Math.PI * Math.random()
+    const rndRadius = Math.random()
+    const rndRadius2 = Math.sqrt(rndRadius)
+    const rndX = width / 2 * rndRadius2 * Math.cos(rndAng)
+    const rndY = height / 2 * rndRadius2 * Math.sin(rndAng)
+    const x0 = centreX + rndX
+    const y0 = centreY + rndY
     return new Coordinate(x0, y0)
   }
 
@@ -29,22 +29,22 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
   }
 
   getGeometry () {
-    var nCells = Math.trunc(Math.sqrt(this._numPts))
+    let nCells = Math.trunc(Math.sqrt(this._numPts))
     if (nCells * nCells < this._numPts) nCells += 1
-    var gridDX = this.getExtent().getWidth() / nCells
-    var gridDY = this.getExtent().getHeight() / nCells
-    var gutterFrac = MathUtil.clamp(this._gutterFraction, 0.0, 1.0)
-    var gutterOffsetX = gridDX * gutterFrac / 2
-    var gutterOffsetY = gridDY * gutterFrac / 2
-    var cellFrac = 1.0 - gutterFrac
-    var cellDX = cellFrac * gridDX
-    var cellDY = cellFrac * gridDY
-    var pts = new Array(nCells * nCells).fill(null)
-    var index = 0
-    for (var i = 0; i < nCells; i++) {
-      for (var j = 0; j < nCells; j++) {
-        var orgX = this.getExtent().getMinX() + i * gridDX + gutterOffsetX
-        var orgY = this.getExtent().getMinY() + j * gridDY + gutterOffsetY
+    const gridDX = this.getExtent().getWidth() / nCells
+    const gridDY = this.getExtent().getHeight() / nCells
+    const gutterFrac = MathUtil.clamp(this._gutterFraction, 0.0, 1.0)
+    const gutterOffsetX = gridDX * gutterFrac / 2
+    const gutterOffsetY = gridDY * gutterFrac / 2
+    const cellFrac = 1.0 - gutterFrac
+    const cellDX = cellFrac * gridDX
+    const cellDY = cellFrac * gridDY
+    const pts = new Array(nCells * nCells).fill(null)
+    let index = 0
+    for (let i = 0; i < nCells; i++) {
+      for (let j = 0; j < nCells; j++) {
+        const orgX = this.getExtent().getMinX() + i * gridDX + gutterOffsetX
+        const orgY = this.getExtent().getMinY() + j * gridDY + gutterOffsetY
         pts[index++] = this.randomPointInCell(orgX, orgY, cellDX, cellDY)
       }
     }
@@ -60,8 +60,8 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
   }
 
   randomPointInGridCell (orgX, orgY, xLen, yLen) {
-    var x = orgX + xLen * Math.random()
-    var y = orgY + yLen * Math.random()
+    const x = orgX + xLen * Math.random()
+    const y = orgY + yLen * Math.random()
     return this.createCoord(x, y)
   }
 

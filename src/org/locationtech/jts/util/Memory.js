@@ -4,7 +4,7 @@ export default class Memory {
   }
 
   static used () {
-    var runtime = Runtime.getRuntime()
+    const runtime = Runtime.getRuntime()
     return runtime.totalMemory() - runtime.freeMemory()
   }
 
@@ -20,7 +20,7 @@ export default class Memory {
   }
 
   static total () {
-    var runtime = Runtime.getRuntime()
+    const runtime = Runtime.getRuntime()
     return runtime.totalMemory()
   }
 
@@ -45,7 +45,7 @@ export default class Memory {
   }
 
   static free () {
-    var runtime = Runtime.getRuntime()
+    const runtime = Runtime.getRuntime()
     return runtime.freeMemory()
   }
 

@@ -11,10 +11,10 @@ export default class RayCrossingCounter {
   static locatePointInRing () {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
       const p = arguments[0]; const ring = arguments[1]
-      var counter = new RayCrossingCounter(p)
-      var p1 = new Coordinate()
-      var p2 = new Coordinate()
-      for (var i = 1; i < ring.size(); i++) {
+      const counter = new RayCrossingCounter(p)
+      const p1 = new Coordinate()
+      const p2 = new Coordinate()
+      for (let i = 1; i < ring.size(); i++) {
         ring.getCoordinate(i, p1)
         ring.getCoordinate(i - 1, p2)
         counter.countSegment(p1, p2)
@@ -23,10 +23,10 @@ export default class RayCrossingCounter {
       return counter.getLocation()
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
       const p = arguments[0]; const ring = arguments[1]
-      var counter = new RayCrossingCounter(p)
-      for (var i = 1; i < ring.length; i++) {
-        var p1 = ring[i]
-        var p2 = ring[i - 1]
+      const counter = new RayCrossingCounter(p)
+      for (let i = 1; i < ring.length; i++) {
+        const p1 = ring[i]
+        const p2 = ring[i - 1]
         counter.countSegment(p1, p2)
         if (counter.isOnSegment()) return counter.getLocation()
       }
@@ -41,8 +41,8 @@ export default class RayCrossingCounter {
       return null
     }
     if (p1.y === this._p.y && p2.y === this._p.y) {
-      var minx = p1.x
-      var maxx = p2.x
+      let minx = p1.x
+      let maxx = p2.x
       if (minx > maxx) {
         minx = p2.x
         maxx = p1.x
@@ -53,7 +53,7 @@ export default class RayCrossingCounter {
       return null
     }
     if (p1.y > this._p.y && p2.y <= this._p.y || p2.y > this._p.y && p1.y <= this._p.y) {
-      var orient = Orientation.index(p1, p2, this._p)
+      let orient = Orientation.index(p1, p2, this._p)
       if (orient === Orientation.COLLINEAR) {
         this._isPointOnSegment = true
         return null

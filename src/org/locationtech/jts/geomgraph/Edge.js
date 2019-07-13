@@ -30,10 +30,10 @@ export default class Edge extends GraphComponent {
   }
 
   getCollapsedEdge () {
-    var newPts = new Array(2).fill(null)
+    const newPts = new Array(2).fill(null)
     newPts[0] = this.pts[0]
     newPts[1] = this.pts[1]
-    var newe = new Edge(newPts, Label.toLineLabel(this._label))
+    const newe = new Edge(newPts, Label.toLineLabel(this._label))
     return newe
   }
 
@@ -55,12 +55,12 @@ export default class Edge extends GraphComponent {
 
   equals (o) {
     if (!(o instanceof Edge)) return false
-    var e = o
+    const e = o
     if (this.pts.length !== e.pts.length) return false
-    var isEqualForward = true
-    var isEqualReverse = true
-    var iRev = this.pts.length
-    for (var i = 0; i < this.pts.length; i++) {
+    let isEqualForward = true
+    let isEqualReverse = true
+    let iRev = this.pts.length
+    for (let i = 0; i < this.pts.length; i++) {
       if (!this.pts[i].equals2D(e.pts[i])) {
         isEqualForward = false
       }
@@ -85,7 +85,7 @@ export default class Edge extends GraphComponent {
   print (out) {
     out.print('edge ' + this._name + ': ')
     out.print('LINESTRING (')
-    for (var i = 0; i < this.pts.length; i++) {
+    for (let i = 0; i < this.pts.length; i++) {
       if (i > 0) out.print(',')
       out.print(this.pts[i].x + ' ' + this.pts[i].y)
     }
@@ -121,7 +121,7 @@ export default class Edge extends GraphComponent {
 
   printReverse (out) {
     out.print('edge ' + this._name + ': ')
-    for (var i = this.pts.length - 1; i >= 0; i--) {
+    for (let i = this.pts.length - 1; i >= 0; i--) {
       out.print(this.pts[i] + ' ')
     }
     out.println('')
@@ -135,7 +135,7 @@ export default class Edge extends GraphComponent {
   getEnvelope () {
     if (this._env === null) {
       this._env = new Envelope()
-      for (var i = 0; i < this.pts.length; i++) {
+      for (let i = 0; i < this.pts.length; i++) {
         this._env.expandToInclude(this.pts[i])
       }
     }
@@ -143,25 +143,25 @@ export default class Edge extends GraphComponent {
   }
 
   addIntersection (li, segmentIndex, geomIndex, intIndex) {
-    var intPt = new Coordinate(li.getIntersection(intIndex))
-    var normalizedSegmentIndex = segmentIndex
-    var dist = li.getEdgeDistance(geomIndex, intIndex)
-    var nextSegIndex = normalizedSegmentIndex + 1
+    const intPt = new Coordinate(li.getIntersection(intIndex))
+    let normalizedSegmentIndex = segmentIndex
+    let dist = li.getEdgeDistance(geomIndex, intIndex)
+    const nextSegIndex = normalizedSegmentIndex + 1
     if (nextSegIndex < this.pts.length) {
-      var nextPt = this.pts[nextSegIndex]
+      const nextPt = this.pts[nextSegIndex]
       if (intPt.equals2D(nextPt)) {
         normalizedSegmentIndex = nextSegIndex
         dist = 0.0
       }
     }
-    var ei = this.eiList.add(intPt, normalizedSegmentIndex, dist)
+    const ei = this.eiList.add(intPt, normalizedSegmentIndex, dist)
   }
 
   toString () {
-    var builder = new StringBuilder()
+    const builder = new StringBuilder()
     builder.append('edge ' + this._name + ': ')
     builder.append('LINESTRING (')
-    for (var i = 0; i < this.pts.length; i++) {
+    for (let i = 0; i < this.pts.length; i++) {
       if (i > 0) builder.append(',')
       builder.append(this.pts[i].x + ' ' + this.pts[i].y)
     }
@@ -171,7 +171,7 @@ export default class Edge extends GraphComponent {
 
   isPointwiseEqual (e) {
     if (this.pts.length !== e.pts.length) return false
-    for (var i = 0; i < this.pts.length; i++) {
+    for (let i = 0; i < this.pts.length; i++) {
       if (!this.pts[i].equals2D(e.pts[i])) {
         return false
       }
@@ -188,7 +188,7 @@ export default class Edge extends GraphComponent {
   }
 
   addIntersections (li, segmentIndex, geomIndex) {
-    for (var i = 0; i < li.getIntersectionNum(); i++) {
+    for (let i = 0; i < li.getIntersectionNum(); i++) {
       this.addIntersection(li, segmentIndex, geomIndex, i)
     }
   }

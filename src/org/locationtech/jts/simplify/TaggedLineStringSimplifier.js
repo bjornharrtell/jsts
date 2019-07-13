@@ -8,15 +8,15 @@ export default class TaggedLineStringSimplifier {
 
   static isInLineSection (line, sectionIndex, seg) {
     if (seg.getParent() !== line.getParent()) return false
-    var segIndex = seg.getIndex()
+    const segIndex = seg.getIndex()
     if (segIndex >= sectionIndex[0] && segIndex < sectionIndex[1]) return true
     return false
   }
 
   flatten (start, end) {
-    var p0 = this._linePts[start]
-    var p1 = this._linePts[end]
-    var newSeg = new LineSegment(p0, p1)
+    const p0 = this._linePts[start]
+    const p1 = this._linePts[end]
+    const newSeg = new LineSegment(p0, p1)
     this.remove(this._line, start, end)
     this._outputIndex.add(newSeg)
     return newSeg
@@ -34,28 +34,28 @@ export default class TaggedLineStringSimplifier {
 
   simplifySection (i, j, depth) {
     depth += 1
-    var sectionIndex = new Array(2).fill(null)
+    const sectionIndex = new Array(2).fill(null)
     if (i + 1 === j) {
-      var newSeg = this._line.getSegment(i)
+      const newSeg = this._line.getSegment(i)
       this._line.addToResult(newSeg)
       return null
     }
-    var isValidToSimplify = true
+    let isValidToSimplify = true
     if (this._line.getResultSize() < this._line.getMinimumSize()) {
-      var worstCaseSize = depth + 1
+      const worstCaseSize = depth + 1
       if (worstCaseSize < this._line.getMinimumSize()) isValidToSimplify = false
     }
-    var distance = new Array(1).fill(null)
-    var furthestPtIndex = this.findFurthestPoint(this._linePts, i, j, distance)
+    const distance = new Array(1).fill(null)
+    const furthestPtIndex = this.findFurthestPoint(this._linePts, i, j, distance)
     if (distance[0] > this._distanceTolerance) isValidToSimplify = false
-    var candidateSeg = new LineSegment()
+    const candidateSeg = new LineSegment()
     candidateSeg.p0 = this._linePts[i]
     candidateSeg.p1 = this._linePts[j]
     sectionIndex[0] = i
     sectionIndex[1] = j
     if (this.hasBadIntersection(this._line, sectionIndex, candidateSeg)) isValidToSimplify = false
     if (isValidToSimplify) {
-      var newSeg = this.flatten(i, j)
+      const newSeg = this.flatten(i, j)
       this._line.addToResult(newSeg)
       return null
     }
@@ -64,9 +64,9 @@ export default class TaggedLineStringSimplifier {
   }
 
   hasBadOutputIntersection (candidateSeg) {
-    var querySegs = this._outputIndex.query(candidateSeg)
-    for (var i = querySegs.iterator(); i.hasNext();) {
-      var querySeg = i.next()
+    const querySegs = this._outputIndex.query(candidateSeg)
+    for (let i = querySegs.iterator(); i.hasNext();) {
+      const querySeg = i.next()
       if (this.hasInteriorIntersection(querySeg, candidateSeg)) {
         return true
       }
@@ -75,14 +75,14 @@ export default class TaggedLineStringSimplifier {
   }
 
   findFurthestPoint (pts, i, j, maxDistance) {
-    var seg = new LineSegment()
+    const seg = new LineSegment()
     seg.p0 = pts[i]
     seg.p1 = pts[j]
-    var maxDist = -1.0
-    var maxIndex = i
-    for (var k = i + 1; k < j; k++) {
-      var midPt = pts[k]
-      var distance = seg.distance(midPt)
+    let maxDist = -1.0
+    let maxIndex = i
+    for (let k = i + 1; k < j; k++) {
+      const midPt = pts[k]
+      const distance = seg.distance(midPt)
       if (distance > maxDist) {
         maxDist = distance
         maxIndex = k
@@ -99,8 +99,8 @@ export default class TaggedLineStringSimplifier {
   }
 
   remove (line, start, end) {
-    for (var i = start; i < end; i++) {
-      var seg = line.getSegment(i)
+    for (let i = start; i < end; i++) {
+      const seg = line.getSegment(i)
       this._inputIndex.remove(seg)
     }
   }
@@ -111,9 +111,9 @@ export default class TaggedLineStringSimplifier {
   }
 
   hasBadInputIntersection (parentLine, sectionIndex, candidateSeg) {
-    var querySegs = this._inputIndex.query(candidateSeg)
-    for (var i = querySegs.iterator(); i.hasNext();) {
-      var querySeg = i.next()
+    const querySegs = this._inputIndex.query(candidateSeg)
+    for (let i = querySegs.iterator(); i.hasNext();) {
+      const querySeg = i.next()
       if (this.hasInteriorIntersection(querySeg, candidateSeg)) {
         if (TaggedLineStringSimplifier.isInLineSection(parentLine, sectionIndex, querySeg)) continue
         return true

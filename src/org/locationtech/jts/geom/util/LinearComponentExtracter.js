@@ -27,14 +27,14 @@ export default class LinearComponentExtracter {
     } else if (arguments.length === 2) {
       if (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection)) {
         const geoms = arguments[0]; const lines = arguments[1]
-        for (var i = geoms.iterator(); i.hasNext();) {
-          var g = i.next()
+        for (let i = geoms.iterator(); i.hasNext();) {
+          const g = i.next()
           LinearComponentExtracter.getLines(g, lines)
         }
         return lines
       } else if (arguments[0] instanceof Geometry && typeof arguments[1] === 'boolean') {
         const geom = arguments[0]; const forceToLineString = arguments[1]
-        var lines = new ArrayList()
+        const lines = new ArrayList()
         geom.apply(new LinearComponentExtracter(lines, forceToLineString))
         return lines
       } else if (arguments[0] instanceof Geometry && hasInterface(arguments[1], Collection)) {
@@ -49,8 +49,8 @@ export default class LinearComponentExtracter {
     } else if (arguments.length === 3) {
       if (typeof arguments[2] === 'boolean' && (hasInterface(arguments[0], Collection) && hasInterface(arguments[1], Collection))) {
         const geoms = arguments[0]; const lines = arguments[1]; const forceToLineString = arguments[2]
-        for (var i = geoms.iterator(); i.hasNext();) {
-          var g = i.next()
+        for (let i = geoms.iterator(); i.hasNext();) {
+          const g = i.next()
           LinearComponentExtracter.getLines(g, lines, forceToLineString)
         }
         return lines
@@ -64,7 +64,7 @@ export default class LinearComponentExtracter {
 
   filter (geom) {
     if (this._isForcedToLineString && geom instanceof LinearRing) {
-      var line = geom.getFactory().createLineString(geom.getCoordinateSequence())
+      const line = geom.getFactory().createLineString(geom.getCoordinateSequence())
       this._lines.add(line)
       return null
     }

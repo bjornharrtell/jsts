@@ -9,13 +9,13 @@ export default class BufferCurveMaximumDistanceFinder {
   }
 
   computeMaxMidpointDistance (curve) {
-    var distFilter = new MaxMidpointDistanceFilter(this._inputGeom)
+    const distFilter = new MaxMidpointDistanceFilter(this._inputGeom)
     curve.apply(distFilter)
     this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
   }
 
   computeMaxVertexDistance (curve) {
-    var distFilter = new MaxPointDistanceFilter(this._inputGeom)
+    const distFilter = new MaxPointDistanceFilter(this._inputGeom)
     curve.apply(distFilter)
     this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
   }
@@ -75,9 +75,9 @@ class MaxMidpointDistanceFilter {
 
   filter (seq, index) {
     if (index === 0) return null
-    var p0 = seq.getCoordinate(index - 1)
-    var p1 = seq.getCoordinate(index)
-    var midPt = new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2)
+    const p0 = seq.getCoordinate(index - 1)
+    const p1 = seq.getCoordinate(index)
+    const midPt = new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2)
     this._minPtDist.initialize()
     DistanceToPointFinder.computeDistance(this._geom, midPt, this._minPtDist)
     this._maxPtDist.setMaximum(this._minPtDist)

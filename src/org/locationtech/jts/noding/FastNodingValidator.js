@@ -9,7 +9,7 @@ export default class FastNodingValidator {
   }
 
   static computeIntersections (segStrings) {
-    var nv = new FastNodingValidator(segStrings)
+    const nv = new FastNodingValidator(segStrings)
     nv.setFindAllIntersections(true)
     nv.isValid()
     return nv.getIntersections()
@@ -37,7 +37,7 @@ export default class FastNodingValidator {
     this._isValid = true
     this._segInt = new InteriorIntersectionFinder(this._li)
     this._segInt.setFindAllIntersections(this._findAllIntersections)
-    var noder = new MCIndexNoder()
+    const noder = new MCIndexNoder()
     noder.setSegmentIntersector(this._segInt)
     noder.computeNodes(this._segStrings)
     if (this._segInt.hasIntersection()) {
@@ -53,7 +53,7 @@ export default class FastNodingValidator {
 
   getErrorMessage () {
     if (this._isValid) return 'no intersections found'
-    var intSegs = this._segInt.getIntersectionSegments()
+    const intSegs = this._segInt.getIntersectionSegments()
     return 'found non-noded intersection between ' + WKTWriter.toLineString(intSegs[0], intSegs[1]) + ' and ' + WKTWriter.toLineString(intSegs[2], intSegs[3])
   }
 

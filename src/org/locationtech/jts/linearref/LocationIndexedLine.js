@@ -11,7 +11,7 @@ export default class LocationIndexedLine {
   }
 
   clampIndex (index) {
-    var loc = index.copy()
+    const loc = index.copy()
     loc.clamp(this._linearGeom)
     return loc
   }
@@ -30,7 +30,7 @@ export default class LocationIndexedLine {
       return index.getCoordinate(this._linearGeom)
     } else if (arguments.length === 2) {
       const index = arguments[0]; const offsetDistance = arguments[1]
-      var indexLow = index.toLowest(this._linearGeom)
+      const indexLow = index.toLowest(this._linearGeom)
       return indexLow.getSegment(this._linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance)
     }
   }

@@ -6,14 +6,14 @@ export default class GeometryCollectionMapper {
   }
 
   static map (gc, op) {
-    var mapper = new GeometryCollectionMapper(op)
+    const mapper = new GeometryCollectionMapper(op)
     return mapper.map(gc)
   }
 
   map (gc) {
-    var mapped = new ArrayList()
-    for (var i = 0; i < gc.getNumGeometries(); i++) {
-      var g = this._mapOp.map(gc.getGeometryN(i))
+    const mapped = new ArrayList()
+    for (let i = 0; i < gc.getNumGeometries(); i++) {
+      const g = this._mapOp.map(gc.getGeometryN(i))
       if (!g.isEmpty()) mapped.add(g)
     }
     return gc.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(mapped))

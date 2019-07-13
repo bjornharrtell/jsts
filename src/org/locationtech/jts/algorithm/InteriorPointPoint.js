@@ -18,14 +18,14 @@ export default class InteriorPointPoint {
       if (geom instanceof Point) {
         this.add(geom.getCoordinate())
       } else if (geom instanceof GeometryCollection) {
-        var gc = geom
-        for (var i = 0; i < gc.getNumGeometries(); i++) {
+        const gc = geom
+        for (let i = 0; i < gc.getNumGeometries(); i++) {
           this.add(gc.getGeometryN(i))
         }
       }
     } else if (arguments[0] instanceof Coordinate) {
       const point = arguments[0]
-      var dist = point.distance(this._centroid)
+      const dist = point.distance(this._centroid)
       if (dist < this._minDistance) {
         this._interiorPoint = new Coordinate(point)
         this._minDistance = dist

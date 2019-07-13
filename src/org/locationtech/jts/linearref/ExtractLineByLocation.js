@@ -10,17 +10,17 @@ export default class ExtractLineByLocation {
   }
 
   static extract (line, start, end) {
-    var ls = new ExtractLineByLocation(line)
+    const ls = new ExtractLineByLocation(line)
     return ls.extract(start, end)
   }
 
   computeLinear (start, end) {
-    var builder = new LinearGeometryBuilder(this._line.getFactory())
+    const builder = new LinearGeometryBuilder(this._line.getFactory())
     builder.setFixInvalidLines(true)
     if (!start.isVertex()) builder.add(start.getCoordinate(this._line))
-    for (var it = new LinearIterator(this._line, start); it.hasNext(); it.next()) {
+    for (let it = new LinearIterator(this._line, start); it.hasNext(); it.next()) {
       if (end.compareLocationValues(it.getComponentIndex(), it.getVertexIndex(), 0.0) < 0) break
-      var pt = it.getSegmentStart()
+      const pt = it.getSegmentStart()
       builder.add(pt)
       if (it.isEndOfLine()) builder.endLine()
     }
@@ -29,20 +29,20 @@ export default class ExtractLineByLocation {
   }
 
   computeLine (start, end) {
-    var coordinates = this._line.getCoordinates()
-    var newCoordinates = new CoordinateList()
-    var startSegmentIndex = start.getSegmentIndex()
+    const coordinates = this._line.getCoordinates()
+    const newCoordinates = new CoordinateList()
+    let startSegmentIndex = start.getSegmentIndex()
     if (start.getSegmentFraction() > 0.0) startSegmentIndex += 1
-    var lastSegmentIndex = end.getSegmentIndex()
+    let lastSegmentIndex = end.getSegmentIndex()
     if (end.getSegmentFraction() === 1.0) lastSegmentIndex += 1
     if (lastSegmentIndex >= coordinates.length) lastSegmentIndex = coordinates.length - 1
     if (!start.isVertex()) newCoordinates.add(start.getCoordinate(this._line))
-    for (var i = startSegmentIndex; i <= lastSegmentIndex; i++) {
+    for (let i = startSegmentIndex; i <= lastSegmentIndex; i++) {
       newCoordinates.add(coordinates[i])
     }
     if (!end.isVertex()) newCoordinates.add(end.getCoordinate(this._line))
     if (newCoordinates.size() <= 0) newCoordinates.add(start.getCoordinate(this._line))
-    var newCoordinateArray = newCoordinates.toCoordinateArray()
+    let newCoordinateArray = newCoordinates.toCoordinateArray()
     if (newCoordinateArray.length <= 1) {
       newCoordinateArray = [newCoordinateArray[0], newCoordinateArray[0]]
     }

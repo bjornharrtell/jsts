@@ -13,14 +13,14 @@ export default class FacetSequence {
   }
 
   computeLineLineDistance (facetSeq) {
-    var minDistance = Double.MAX_VALUE
-    for (var i = this._start; i < this._end - 1; i++) {
-      for (var j = facetSeq._start; j < facetSeq._end - 1; j++) {
+    let minDistance = Double.MAX_VALUE
+    for (let i = this._start; i < this._end - 1; i++) {
+      for (let j = facetSeq._start; j < facetSeq._end - 1; j++) {
         this._pts.getCoordinate(i, this._p0)
         this._pts.getCoordinate(i + 1, this._p1)
         facetSeq._pts.getCoordinate(j, this._q0)
         facetSeq._pts.getCoordinate(j + 1, this._q1)
-        var dist = Distance.segmentToSegment(this._p0, this._p1, this._q0, this._q1)
+        const dist = Distance.segmentToSegment(this._p0, this._p1, this._q0, this._q1)
         if (dist === 0.0) return 0.0
         if (dist < minDistance) {
           minDistance = dist
@@ -35,19 +35,19 @@ export default class FacetSequence {
   }
 
   getEnvelope () {
-    var env = new Envelope()
-    for (var i = this._start; i < this._end; i++) {
+    const env = new Envelope()
+    for (let i = this._start; i < this._end; i++) {
       env.expandToInclude(this._pts.getX(i), this._pts.getY(i))
     }
     return env
   }
 
   computePointLineDistance (pt, facetSeq) {
-    var minDistance = Double.MAX_VALUE
-    for (var i = facetSeq._start; i < facetSeq._end - 1; i++) {
+    let minDistance = Double.MAX_VALUE
+    for (let i = facetSeq._start; i < facetSeq._end - 1; i++) {
       facetSeq._pts.getCoordinate(i, this._q0)
       facetSeq._pts.getCoordinate(i + 1, this._q1)
-      var dist = Distance.pointToSegment(pt, this._q0, this._q1)
+      const dist = Distance.pointToSegment(pt, this._q0, this._q1)
       if (dist === 0.0) return 0.0
       if (dist < minDistance) {
         minDistance = dist
@@ -57,10 +57,10 @@ export default class FacetSequence {
   }
 
   toString () {
-    var buf = new StringBuffer()
+    const buf = new StringBuffer()
     buf.append('LINESTRING ( ')
-    var p = new Coordinate()
-    for (var i = this._start; i < this._end; i++) {
+    const p = new Coordinate()
+    for (let i = this._start; i < this._end; i++) {
       if (i > this._start) buf.append(', ')
       this._pts.getCoordinate(i, p)
       buf.append(p.x + ' ' + p.y)
@@ -74,8 +74,8 @@ export default class FacetSequence {
   }
 
   distance (facetSeq) {
-    var isPoint = this.isPoint()
-    var isPointOther = facetSeq.isPoint()
+    const isPoint = this.isPoint()
+    const isPointOther = facetSeq.isPoint()
     if (isPoint && isPointOther) {
       this._pts.getCoordinate(this._start, this._pt)
       facetSeq._pts.getCoordinate(facetSeq._start, this._seqPt)

@@ -38,10 +38,10 @@ class NodeComparator {
   }
 
   compare (o1, o2) {
-    var n1 = o1
-    var n2 = o2
-    var mid1 = (n1._min + n1._max) / 2
-    var mid2 = (n2._min + n2._max) / 2
+    const n1 = o1
+    const n2 = o2
+    const mid1 = (n1._min + n1._max) / 2
+    const mid2 = (n2._min + n2._max) / 2
     if (mid1 < mid2) return -1
     if (mid1 > mid2) return 1
     return 0

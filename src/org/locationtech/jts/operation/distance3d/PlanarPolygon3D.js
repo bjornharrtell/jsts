@@ -39,23 +39,23 @@ export default class PlanarPolygon3D {
     if (arguments.length === 1) {
       const intPt = arguments[0]
       if (Location.EXTERIOR === this.locate(intPt, this._poly.getExteriorRing())) return false
-      for (var i = 0; i < this._poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < this._poly.getNumInteriorRing(); i++) {
         if (Location.INTERIOR === this.locate(intPt, this._poly.getInteriorRingN(i))) return false
       }
       return true
     } else if (arguments.length === 2) {
       const pt = arguments[0]; const ring = arguments[1]
-      var seq = ring.getCoordinateSequence()
-      var seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
-      var ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
+      const seq = ring.getCoordinateSequence()
+      const seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
+      const ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
       return Location.EXTERIOR !== RayCrossingCounter.locatePointInRing(ptProj, seqProj)
     }
   }
 
   averagePoint (seq) {
-    var a = new Coordinate(0, 0, 0)
-    var n = seq.size()
-    for (var i = 0; i < n; i++) {
+    const a = new Coordinate(0, 0, 0)
+    const n = seq.size()
+    for (let i = 0; i < n; i++) {
       a.x += seq.getOrdinate(i, CoordinateSequence.X)
       a.y += seq.getOrdinate(i, CoordinateSequence.Y)
       a.z += seq.getOrdinate(i, CoordinateSequence.Z)
@@ -75,18 +75,18 @@ export default class PlanarPolygon3D {
   }
 
   findBestFitPlane (poly) {
-    var seq = poly.getExteriorRing().getCoordinateSequence()
-    var basePt = this.averagePoint(seq)
-    var normal = this.averageNormal(seq)
+    const seq = poly.getExteriorRing().getCoordinateSequence()
+    const basePt = this.averagePoint(seq)
+    const normal = this.averageNormal(seq)
     return new Plane3D(normal, basePt)
   }
 
   averageNormal (seq) {
-    var n = seq.size()
-    var sum = new Coordinate(0, 0, 0)
-    var p1 = new Coordinate(0, 0, 0)
-    var p2 = new Coordinate(0, 0, 0)
-    for (var i = 0; i < n - 1; i++) {
+    const n = seq.size()
+    const sum = new Coordinate(0, 0, 0)
+    const p1 = new Coordinate(0, 0, 0)
+    const p2 = new Coordinate(0, 0, 0)
+    for (let i = 0; i < n - 1; i++) {
       seq.getCoordinate(i, p1)
       seq.getCoordinate(i + 1, p2)
       sum.x += (p1.y - p2.y) * (p1.z + p2.z)
@@ -96,14 +96,14 @@ export default class PlanarPolygon3D {
     sum.x /= n
     sum.y /= n
     sum.z /= n
-    var norm = Vector3D.create(sum).normalize()
+    const norm = Vector3D.create(sum).normalize()
     return norm
   }
 
   locate (pt, ring) {
-    var seq = ring.getCoordinateSequence()
-    var seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
-    var ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
+    const seq = ring.getCoordinateSequence()
+    const seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
+    const ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
     return RayCrossingCounter.locatePointInRing(ptProj, seqProj)
   }
 

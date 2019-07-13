@@ -11,35 +11,35 @@ export default class Vertex {
   static interpolateZ () {
     if (arguments.length === 3) {
       const p = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
-      var segLen = p0.distance(p1)
-      var ptLen = p.distance(p0)
-      var dz = p1.z - p0.z
-      var pz = p0.z + dz * (ptLen / segLen)
+      const segLen = p0.distance(p1)
+      const ptLen = p.distance(p0)
+      const dz = p1.z - p0.z
+      const pz = p0.z + dz * (ptLen / segLen)
       return pz
     } else if (arguments.length === 4) {
       const p = arguments[0]; const v0 = arguments[1]; const v1 = arguments[2]; const v2 = arguments[3]
-      var x0 = v0.x
-      var y0 = v0.y
-      var a = v1.x - x0
-      var b = v2.x - x0
-      var c = v1.y - y0
-      var d = v2.y - y0
-      var det = a * d - b * c
-      var dx = p.x - x0
-      var dy = p.y - y0
-      var t = (d * dx - b * dy) / det
-      var u = (-c * dx + a * dy) / det
-      var z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z)
+      const x0 = v0.x
+      const y0 = v0.y
+      const a = v1.x - x0
+      const b = v2.x - x0
+      const c = v1.y - y0
+      const d = v2.y - y0
+      const det = a * d - b * c
+      const dx = p.x - x0
+      const dy = p.y - y0
+      const t = (d * dx - b * dy) / det
+      const u = (-c * dx + a * dy) / det
+      const z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z)
       return z
     }
   }
 
   circleCenter (b, c) {
-    var a = new Vertex(this.getX(), this.getY())
-    var cab = this.bisector(a, b)
-    var cbc = this.bisector(b, c)
-    var hcc = new HCoordinate(cab, cbc)
-    var cc = null
+    const a = new Vertex(this.getX(), this.getY())
+    const cab = this.bisector(a, b)
+    const cbc = this.bisector(b, c)
+    const hcc = new HCoordinate(cab, cbc)
+    let cc = null
     try {
       cc = new Vertex(hcc.getX(), hcc.getY())
     } catch (nre) {
@@ -64,10 +64,10 @@ export default class Vertex {
   }
 
   bisector (a, b) {
-    var dx = b.getX() - a.getX()
-    var dy = b.getY() - a.getY()
-    var l1 = new HCoordinate(a.getX() + dx / 2.0, a.getY() + dy / 2.0, 1.0)
-    var l2 = new HCoordinate(a.getX() - dy + dx / 2.0, a.getY() + dx + dy / 2.0, 1.0)
+    const dx = b.getX() - a.getX()
+    const dy = b.getY() - a.getY()
+    const l1 = new HCoordinate(a.getX() + dx / 2.0, a.getY() + dy / 2.0, 1.0)
+    const l2 = new HCoordinate(a.getX() - dy + dx / 2.0, a.getY() + dx + dy / 2.0, 1.0)
     return new HCoordinate(l1, l2)
   }
 
@@ -98,25 +98,25 @@ export default class Vertex {
   }
 
   interpolateZValue (v0, v1, v2) {
-    var x0 = v0.getX()
-    var y0 = v0.getY()
-    var a = v1.getX() - x0
-    var b = v2.getX() - x0
-    var c = v1.getY() - y0
-    var d = v2.getY() - y0
-    var det = a * d - b * c
-    var dx = this.getX() - x0
-    var dy = this.getY() - y0
-    var t = (d * dx - b * dy) / det
-    var u = (-c * dx + a * dy) / det
-    var z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ())
+    const x0 = v0.getX()
+    const y0 = v0.getY()
+    const a = v1.getX() - x0
+    const b = v2.getX() - x0
+    const c = v1.getY() - y0
+    const d = v2.getY() - y0
+    const det = a * d - b * c
+    const dx = this.getX() - x0
+    const dy = this.getY() - y0
+    const t = (d * dx - b * dy) / det
+    const u = (-c * dx + a * dy) / det
+    const z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ())
     return z
   }
 
   midPoint (a) {
-    var xm = (this._p.x + a.getX()) / 2.0
-    var ym = (this._p.y + a.getY()) / 2.0
-    var zm = (this._p.z + a.getZ()) / 2.0
+    const xm = (this._p.x + a.getX()) / 2.0
+    const ym = (this._p.y + a.getY()) / 2.0
+    const zm = (this._p.z + a.getZ()) / 2.0
     return new Vertex(xm, ym, zm)
   }
 
@@ -165,10 +165,10 @@ export default class Vertex {
   }
 
   classify (p0, p1) {
-    var p2 = this
-    var a = p1.sub(p0)
-    var b = p2.sub(p0)
-    var sa = a.crossProduct(b)
+    const p2 = this
+    const a = p1.sub(p0)
+    const b = p2.sub(p0)
+    const sa = a.crossProduct(b)
     if (sa > 0.0) return Vertex.LEFT
     if (sa < 0.0) return Vertex.RIGHT
     if (a.getX() * b.getX() < 0.0 || a.getY() * b.getY() < 0.0) return Vertex.BEHIND
@@ -187,10 +187,10 @@ export default class Vertex {
   }
 
   circumRadiusRatio (b, c) {
-    var x = this.circleCenter(b, c)
-    var radius = this.distance(x, b)
-    var edgeLength = this.distance(this, b)
-    var el = this.distance(b, c)
+    const x = this.circleCenter(b, c)
+    const radius = this.distance(x, b)
+    let edgeLength = this.distance(this, b)
+    let el = this.distance(b, c)
     if (el < edgeLength) {
       edgeLength = el
     }

@@ -19,7 +19,7 @@ export default class GeometryEditor {
 
   edit (geometry, operation) {
     if (geometry === null) return null
-    var result = this.editInternal(geometry, operation)
+    const result = this.editInternal(geometry, operation)
     if (this._isUserDataCopied) {
       result.setUserData(geometry.getUserData())
     }
@@ -45,10 +45,10 @@ export default class GeometryEditor {
   }
 
   editGeometryCollection (collection, operation) {
-    var collectionForType = operation.edit(collection, this._factory)
-    var geometries = new ArrayList()
-    for (var i = 0; i < collectionForType.getNumGeometries(); i++) {
-      var geometry = this.edit(collectionForType.getGeometryN(i), operation)
+    const collectionForType = operation.edit(collection, this._factory)
+    const geometries = new ArrayList()
+    for (let i = 0; i < collectionForType.getNumGeometries(); i++) {
+      const geometry = this.edit(collectionForType.getGeometryN(i), operation)
       if (geometry === null || geometry.isEmpty()) {
         continue
       }
@@ -67,18 +67,18 @@ export default class GeometryEditor {
   }
 
   editPolygon (polygon, operation) {
-    var newPolygon = operation.edit(polygon, this._factory)
+    let newPolygon = operation.edit(polygon, this._factory)
     if (newPolygon === null) newPolygon = this._factory.createPolygon()
     if (newPolygon.isEmpty()) {
       return newPolygon
     }
-    var shell = this.edit(newPolygon.getExteriorRing(), operation)
+    const shell = this.edit(newPolygon.getExteriorRing(), operation)
     if (shell === null || shell.isEmpty()) {
       return this._factory.createPolygon()
     }
-    var holes = new ArrayList()
-    for (var i = 0; i < newPolygon.getNumInteriorRing(); i++) {
-      var hole = this.edit(newPolygon.getInteriorRingN(i), operation)
+    const holes = new ArrayList()
+    for (let i = 0; i < newPolygon.getNumInteriorRing(); i++) {
+      const hole = this.edit(newPolygon.getInteriorRingN(i), operation)
       if (hole === null || hole.isEmpty()) {
         continue
       }
@@ -121,7 +121,7 @@ class CoordinateOperation {
   }
 
   edit (geometry, factory) {
-    var coordinates = this.edit(geometry.getCoordinates(), geometry)
+    const coordinates = this.edit(geometry.getCoordinates(), geometry)
     if (geometry instanceof LinearRing) {
       if (coordinates === null) return factory.createLinearRing(); else return factory.createLinearRing(coordinates)
     }

@@ -10,26 +10,26 @@ export default class FacetSequenceTreeBuilder {
   }
 
   static addFacetSequences (pts, sections) {
-    var i = 0
-    var size = pts.size()
+    let i = 0
+    const size = pts.size()
     while (i <= size - 1) {
-      var end = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE + 1
+      let end = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE + 1
       if (end >= size - 1) end = size
-      var sect = new FacetSequence(pts, i, end)
+      const sect = new FacetSequence(pts, i, end)
       sections.add(sect)
       i = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE
     }
   }
 
   static computeFacetSequences (g) {
-    var sections = new ArrayList()
+    const sections = new ArrayList()
     g.apply(new (class {
       get interfaces_ () {
         return [GeometryComponentFilter]
       }
 
       filter (geom) {
-        var seq = null
+        let seq = null
         if (geom instanceof LineString) {
           seq = geom.getCoordinateSequence()
           FacetSequenceTreeBuilder.addFacetSequences(seq, sections)
@@ -43,10 +43,10 @@ export default class FacetSequenceTreeBuilder {
   }
 
   static build (g) {
-    var tree = new STRtree(FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY)
-    var sections = FacetSequenceTreeBuilder.computeFacetSequences(g)
-    for (var i = sections.iterator(); i.hasNext();) {
-      var section = i.next()
+    const tree = new STRtree(FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY)
+    const sections = FacetSequenceTreeBuilder.computeFacetSequences(g)
+    for (let i = sections.iterator(); i.hasNext();) {
+      const section = i.next()
       tree.insert(section.getEnvelope(), section)
     }
     tree.build()

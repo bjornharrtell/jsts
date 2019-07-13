@@ -18,7 +18,7 @@ export default class Point extends Geometry {
     if (this.isEmpty()) {
       return new Envelope()
     }
-    var env = new Envelope()
+    const env = new Envelope()
     env.expandToInclude(this._coordinates.getX(0), this._coordinates.getY(0))
     return env
   }
@@ -79,11 +79,11 @@ export default class Point extends Geometry {
   compareToSameClass () {
     if (arguments.length === 1) {
       const other = arguments[0]
-      var point = other
+      const point = other
       return this.getCoordinate().compareTo(point.getCoordinate())
     } else if (arguments.length === 2) {
       const other = arguments[0]; const comp = arguments[1]
-      var point = other
+      const point = other
       return comp.compare(this._coordinates, point._coordinates)
     }
   }

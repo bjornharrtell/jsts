@@ -14,8 +14,8 @@ export default class InteriorPointLine {
       if (geom instanceof LineString) {
         this.addEndpoints(geom.getCoordinates())
       } else if (geom instanceof GeometryCollection) {
-        var gc = geom
-        for (var i = 0; i < gc.getNumGeometries(); i++) {
+        const gc = geom
+        for (let i = 0; i < gc.getNumGeometries(); i++) {
           this.addEndpoints(gc.getGeometryN(i))
         }
       }
@@ -36,21 +36,21 @@ export default class InteriorPointLine {
       if (geom instanceof LineString) {
         this.addInterior(geom.getCoordinates())
       } else if (geom instanceof GeometryCollection) {
-        var gc = geom
-        for (var i = 0; i < gc.getNumGeometries(); i++) {
+        const gc = geom
+        for (let i = 0; i < gc.getNumGeometries(); i++) {
           this.addInterior(gc.getGeometryN(i))
         }
       }
     } else if (arguments[0] instanceof Array) {
       const pts = arguments[0]
-      for (var i = 1; i < pts.length - 1; i++) {
+      for (let i = 1; i < pts.length - 1; i++) {
         this.add(pts[i])
       }
     }
   }
 
   add (point) {
-    var dist = point.distance(this._centroid)
+    const dist = point.distance(this._centroid)
     if (dist < this._minDistance) {
       this._interiorPoint = new Coordinate(point)
       this._minDistance = dist

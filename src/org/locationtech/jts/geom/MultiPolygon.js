@@ -31,9 +31,9 @@ export default class MultiPolygon extends GeometryCollection {
   }
 
   reverse () {
-    var n = this._geometries.length
-    var revGeoms = new Array(n).fill(null)
-    for (var i = 0; i < this._geometries.length; i++) {
+    const n = this._geometries.length
+    const revGeoms = new Array(n).fill(null)
+    for (let i = 0; i < this._geometries.length; i++) {
       revGeoms[i] = this._geometries[i].reverse()
     }
     return this.getFactory().createMultiPolygon(revGeoms)
@@ -43,15 +43,15 @@ export default class MultiPolygon extends GeometryCollection {
     if (this.isEmpty()) {
       return this.getFactory().createMultiLineString()
     }
-    var allRings = new ArrayList()
-    for (var i = 0; i < this._geometries.length; i++) {
-      var polygon = this._geometries[i]
-      var rings = polygon.getBoundary()
-      for (var j = 0; j < rings.getNumGeometries(); j++) {
+    const allRings = new ArrayList()
+    for (let i = 0; i < this._geometries.length; i++) {
+      const polygon = this._geometries[i]
+      const rings = polygon.getBoundary()
+      for (let j = 0; j < rings.getNumGeometries(); j++) {
         allRings.add(rings.getGeometryN(j))
       }
     }
-    var allRingsArray = new Array(allRings.size()).fill(null)
+    const allRingsArray = new Array(allRings.size()).fill(null)
     return this.getFactory().createMultiLineString(allRings.toArray(allRingsArray))
   }
 
@@ -60,8 +60,8 @@ export default class MultiPolygon extends GeometryCollection {
   }
 
   copy () {
-    var polygons = new Array(this._geometries.length).fill(null)
-    for (var i = 0; i < polygons.length; i++) {
+    const polygons = new Array(this._geometries.length).fill(null)
+    for (let i = 0; i < polygons.length; i++) {
       polygons[i] = this._geometries[i].copy()
     }
     return new MultiPolygon(polygons, this._factory)

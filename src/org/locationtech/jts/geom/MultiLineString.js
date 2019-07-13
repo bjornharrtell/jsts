@@ -30,7 +30,7 @@ export default class MultiLineString extends GeometryCollection {
     if (this.isEmpty()) {
       return false
     }
-    for (var i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++) {
       if (!this._geometries[i].isClosed()) {
         return false
       }
@@ -47,9 +47,9 @@ export default class MultiLineString extends GeometryCollection {
   }
 
   reverse () {
-    var nLines = this._geometries.length
-    var revLines = new Array(nLines).fill(null)
-    for (var i = 0; i < this._geometries.length; i++) {
+    const nLines = this._geometries.length
+    const revLines = new Array(nLines).fill(null)
+    for (let i = 0; i < this._geometries.length; i++) {
       revLines[nLines - 1 - i] = this._geometries[i].reverse()
     }
     return this.getFactory().createMultiLineString(revLines)
@@ -64,8 +64,8 @@ export default class MultiLineString extends GeometryCollection {
   }
 
   copy () {
-    var lineStrings = new Array(this._geometries.length).fill(null)
-    for (var i = 0; i < lineStrings.length; i++) {
+    const lineStrings = new Array(this._geometries.length).fill(null)
+    for (let i = 0; i < lineStrings.length; i++) {
       lineStrings[i] = this._geometries[i].copy()
     }
     return new MultiLineString(lineStrings, this._factory)

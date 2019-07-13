@@ -9,14 +9,14 @@ export default class Root extends NodeBase {
   }
 
   insert (itemInterval, item) {
-    var index = NodeBase.getSubnodeIndex(itemInterval, Root.origin)
+    const index = NodeBase.getSubnodeIndex(itemInterval, Root.origin)
     if (index === -1) {
       this.add(item)
       return null
     }
-    var node = this._subnode[index]
+    const node = this._subnode[index]
     if (node === null || !node.getInterval().contains(itemInterval)) {
-      var largerNode = Node.createExpanded(node, itemInterval)
+      const largerNode = Node.createExpanded(node, itemInterval)
       this._subnode[index] = largerNode
     }
     this.insertContained(this._subnode[index], itemInterval, item)
@@ -28,8 +28,8 @@ export default class Root extends NodeBase {
 
   insertContained (tree, itemInterval, item) {
     Assert.isTrue(tree.getInterval().contains(itemInterval))
-    var isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax())
-    var node = null
+    const isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax())
+    let node = null
     if (isZeroArea) node = tree.find(itemInterval); else node = tree.getNode(itemInterval)
     node.add(item)
   }

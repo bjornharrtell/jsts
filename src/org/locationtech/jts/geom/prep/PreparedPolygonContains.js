@@ -6,12 +6,12 @@ export default class PreparedPolygonContains extends AbstractPreparedPolygonCont
   }
 
   static contains (prep, geom) {
-    var polyInt = new PreparedPolygonContains(prep)
+    const polyInt = new PreparedPolygonContains(prep)
     return polyInt.contains(geom)
   }
 
   fullTopologicalPredicate (geom) {
-    var isContained = this._prepPoly.getGeometry().contains(geom)
+    const isContained = this._prepPoly.getGeometry().contains(geom)
     return isContained
   }
 

@@ -12,13 +12,13 @@ export default class LastFoundQuadEdgeLocator {
     if (!this._lastEdge.isLive()) {
       this.init()
     }
-    var e = this._subdiv.locateFromEdge(v, this._lastEdge)
+    const e = this._subdiv.locateFromEdge(v, this._lastEdge)
     this._lastEdge = e
     return e
   }
 
   findEdge () {
-    var edges = this._subdiv.getEdges()
+    const edges = this._subdiv.getEdges()
     return edges.iterator().next()
   }
 

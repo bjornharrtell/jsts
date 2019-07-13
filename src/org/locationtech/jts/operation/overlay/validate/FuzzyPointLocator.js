@@ -11,13 +11,13 @@ export default class FuzzyPointLocator {
   }
 
   isWithinToleranceOfBoundary (pt) {
-    for (var i = 0; i < this._linework.getNumGeometries(); i++) {
-      var line = this._linework.getGeometryN(i)
-      var seq = line.getCoordinateSequence()
-      for (var j = 0; j < seq.size() - 1; j++) {
+    for (let i = 0; i < this._linework.getNumGeometries(); i++) {
+      const line = this._linework.getGeometryN(i)
+      const seq = line.getCoordinateSequence()
+      for (let j = 0; j < seq.size() - 1; j++) {
         seq.getCoordinate(j, this._seg.p0)
         seq.getCoordinate(j + 1, this._seg.p1)
-        var dist = this._seg.distance(pt)
+        const dist = this._seg.distance(pt)
         if (dist <= this._boundaryDistanceTolerance) return true
       }
     }
@@ -30,10 +30,10 @@ export default class FuzzyPointLocator {
   }
 
   extractLinework (g) {
-    var extracter = new PolygonalLineworkExtracter()
+    const extracter = new PolygonalLineworkExtracter()
     g.apply(extracter)
-    var linework = extracter.getLinework()
-    var lines = GeometryFactory.toLineStringArray(linework)
+    const linework = extracter.getLinework()
+    const lines = GeometryFactory.toLineStringArray(linework)
     return g.getFactory().createMultiLineString(lines)
   }
 
@@ -67,9 +67,9 @@ class PolygonalLineworkExtracter {
 
   filter (g) {
     if (g instanceof Polygon) {
-      var poly = g
+      const poly = g
       this._linework.add(poly.getExteriorRing())
-      for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < poly.getNumInteriorRing(); i++) {
         this._linework.add(poly.getInteriorRingN(i))
       }
     }

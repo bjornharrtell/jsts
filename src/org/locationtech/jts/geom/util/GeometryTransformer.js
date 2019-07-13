@@ -19,12 +19,12 @@ export default class GeometryTransformer {
   }
 
   transformPolygon (geom, parent) {
-    var isAllValidLinearRings = true
-    var shell = this.transformLinearRing(geom.getExteriorRing(), geom)
+    let isAllValidLinearRings = true
+    const shell = this.transformLinearRing(geom.getExteriorRing(), geom)
     if (shell === null || !(shell instanceof LinearRing) || shell.isEmpty()) isAllValidLinearRings = false
-    var holes = new ArrayList()
-    for (var i = 0; i < geom.getNumInteriorRing(); i++) {
-      var hole = this.transformLinearRing(geom.getInteriorRingN(i), geom)
+    const holes = new ArrayList()
+    for (let i = 0; i < geom.getNumInteriorRing(); i++) {
+      const hole = this.transformLinearRing(geom.getInteriorRingN(i), geom)
       if (hole === null || hole.isEmpty()) {
         continue
       }
@@ -32,7 +32,7 @@ export default class GeometryTransformer {
       holes.add(hole)
     }
     if (isAllValidLinearRings) return this._factory.createPolygon(shell, holes.toArray([])); else {
-      var components = new ArrayList()
+      const components = new ArrayList()
       if (shell !== null) components.add(shell)
       components.addAll(holes)
       return this._factory.buildGeometry(components)
@@ -48,9 +48,9 @@ export default class GeometryTransformer {
   }
 
   transformMultiLineString (geom, parent) {
-    var transGeomList = new ArrayList()
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var transformGeom = this.transformLineString(geom.getGeometryN(i), geom)
+    const transGeomList = new ArrayList()
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const transformGeom = this.transformLineString(geom.getGeometryN(i), geom)
       if (transformGeom === null) continue
       if (transformGeom.isEmpty()) continue
       transGeomList.add(transformGeom)
@@ -67,9 +67,9 @@ export default class GeometryTransformer {
   }
 
   transformMultiPoint (geom, parent) {
-    var transGeomList = new ArrayList()
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var transformGeom = this.transformPoint(geom.getGeometryN(i), geom)
+    const transGeomList = new ArrayList()
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const transformGeom = this.transformPoint(geom.getGeometryN(i), geom)
       if (transformGeom === null) continue
       if (transformGeom.isEmpty()) continue
       transGeomList.add(transformGeom)
@@ -78,9 +78,9 @@ export default class GeometryTransformer {
   }
 
   transformMultiPolygon (geom, parent) {
-    var transGeomList = new ArrayList()
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var transformGeom = this.transformPolygon(geom.getGeometryN(i), geom)
+    const transGeomList = new ArrayList()
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const transformGeom = this.transformPolygon(geom.getGeometryN(i), geom)
       if (transformGeom === null) continue
       if (transformGeom.isEmpty()) continue
       transGeomList.add(transformGeom)
@@ -93,9 +93,9 @@ export default class GeometryTransformer {
   }
 
   transformGeometryCollection (geom, parent) {
-    var transGeomList = new ArrayList()
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var transformGeom = this.transform(geom.getGeometryN(i))
+    const transGeomList = new ArrayList()
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const transformGeom = this.transform(geom.getGeometryN(i))
       if (transformGeom === null) continue
       if (this._pruneEmptyGeometry && transformGeom.isEmpty()) continue
       transGeomList.add(transformGeom)
@@ -119,9 +119,9 @@ export default class GeometryTransformer {
   }
 
   transformLinearRing (geom, parent) {
-    var seq = this.transformCoordinates(geom.getCoordinateSequence(), geom)
+    const seq = this.transformCoordinates(geom.getCoordinateSequence(), geom)
     if (seq === null) return this._factory.createLinearRing(null)
-    var seqSize = seq.size()
+    const seqSize = seq.size()
     if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this._factory.createLineString(seq)
     return this._factory.createLinearRing(seq)
   }

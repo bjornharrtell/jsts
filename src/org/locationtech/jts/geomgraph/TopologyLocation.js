@@ -7,20 +7,20 @@ export default class TopologyLocation {
   }
 
   setAllLocations (locValue) {
-    for (var i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++) {
       this.location[i] = locValue
     }
   }
 
   isNull () {
-    for (var i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++) {
       if (this.location[i] !== Location.NONE) return false
     }
     return true
   }
 
   setAllLocationsIfNull (locValue) {
-    for (var i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++) {
       if (this.location[i] === Location.NONE) this.location[i] = locValue
     }
   }
@@ -31,13 +31,13 @@ export default class TopologyLocation {
 
   merge (gl) {
     if (gl.location.length > this.location.length) {
-      var newLoc = new Array(3).fill(null)
+      const newLoc = new Array(3).fill(null)
       newLoc[Position.ON] = this.location[Position.ON]
       newLoc[Position.LEFT] = Location.NONE
       newLoc[Position.RIGHT] = Location.NONE
       this.location = newLoc
     }
-    for (var i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++) {
       if (this.location[i] === Location.NONE && i < gl.location.length) this.location[i] = gl.location[i]
     }
   }
@@ -48,13 +48,13 @@ export default class TopologyLocation {
 
   flip () {
     if (this.location.length <= 1) return null
-    var temp = this.location[Position.LEFT]
+    const temp = this.location[Position.LEFT]
     this.location[Position.LEFT] = this.location[Position.RIGHT]
     this.location[Position.RIGHT] = temp
   }
 
   toString () {
-    var buf = new StringBuffer()
+    const buf = new StringBuffer()
     if (this.location.length > 1) buf.append(Location.toLocationSymbol(this.location[Position.LEFT]))
     buf.append(Location.toLocationSymbol(this.location[Position.ON]))
     if (this.location.length > 1) buf.append(Location.toLocationSymbol(this.location[Position.RIGHT]))
@@ -77,7 +77,7 @@ export default class TopologyLocation {
   }
 
   isAnyNull () {
-    for (var i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++) {
       if (this.location[i] === Location.NONE) return true
     }
     return false
@@ -103,7 +103,7 @@ export default class TopologyLocation {
   }
 
   allPositionsEqual (loc) {
-    for (var i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++) {
       if (this.location[i] !== loc) return false
     }
     return true
@@ -131,7 +131,7 @@ TopologyLocation.constructor_ = function () {
       const gl = arguments[0]
       this.init(gl.location.length)
       if (gl !== null) {
-        for (var i = 0; i < this.location.length; i++) {
+        for (let i = 0; i < this.location.length; i++) {
           this.location[i] = gl.location[i]
         }
       }

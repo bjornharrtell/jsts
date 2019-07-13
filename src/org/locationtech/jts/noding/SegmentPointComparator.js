@@ -12,8 +12,8 @@ export default class SegmentPointComparator {
 
   static compare (octant, p0, p1) {
     if (p0.equals2D(p1)) return 0
-    var xSign = SegmentPointComparator.relativeSign(p0.x, p1.x)
-    var ySign = SegmentPointComparator.relativeSign(p0.y, p1.y)
+    const xSign = SegmentPointComparator.relativeSign(p0.x, p1.x)
+    const ySign = SegmentPointComparator.relativeSign(p0.y, p1.y)
     switch (octant) {
       case 0:
         return SegmentPointComparator.compareValue(xSign, ySign)

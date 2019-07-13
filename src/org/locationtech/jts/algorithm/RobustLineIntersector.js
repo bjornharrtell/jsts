@@ -14,9 +14,9 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   static nearestEndpoint (p1, p2, q1, q2) {
-    var nearestPt = p1
-    var minDist = Distance.pointToSegment(p1, q1, q2)
-    var dist = Distance.pointToSegment(p2, q1, q2)
+    let nearestPt = p1
+    let minDist = Distance.pointToSegment(p1, q1, q2)
+    let dist = Distance.pointToSegment(p2, q1, q2)
     if (dist < minDist) {
       minDist = dist
       nearestPt = p2
@@ -35,8 +35,8 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   isInSegmentEnvelopes (intPt) {
-    var env0 = new Envelope(this._inputLines[0][0], this._inputLines[0][1])
-    var env1 = new Envelope(this._inputLines[1][0], this._inputLines[1][1])
+    const env0 = new Envelope(this._inputLines[0][0], this._inputLines[0][1])
+    const env1 = new Envelope(this._inputLines[1][0], this._inputLines[1][1])
     return env0.contains(intPt) && env1.contains(intPt)
   }
 
@@ -72,7 +72,7 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   safeHCoordinateIntersection (p1, p2, q1, q2) {
-    var intPt = null
+    let intPt = null
     try {
       intPt = HCoordinate.intersection(p1, p2, q1, q2)
     } catch (e) {
@@ -84,7 +84,7 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   intersection (p1, p2, q1, q2) {
-    var intPt = this.intersectionWithNormalization(p1, p2, q1, q2)
+    let intPt = this.intersectionWithNormalization(p1, p2, q1, q2)
     if (!this.isInSegmentEnvelopes(intPt)) {
       intPt = new Coordinate(RobustLineIntersector.nearestEndpoint(p1, p2, q1, q2))
     }
@@ -95,8 +95,8 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   smallestInAbsValue (x1, x2, x3, x4) {
-    var x = x1
-    var xabs = Math.abs(x)
+    let x = x1
+    let xabs = Math.abs(x)
     if (Math.abs(x2) < xabs) {
       x = x2
       xabs = Math.abs(x2)
@@ -112,8 +112,8 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   checkDD (p1, p2, q1, q2, intPt) {
-    var intPtDD = CGAlgorithmsDD.intersection(p1, p2, q1, q2)
-    var isIn = this.isInSegmentEnvelopes(intPtDD)
+    const intPtDD = CGAlgorithmsDD.intersection(p1, p2, q1, q2)
+    const isIn = this.isInSegmentEnvelopes(intPtDD)
     System.out.println('DD in env = ' + isIn + '  --------------------- ' + intPtDD)
     if (intPt.distance(intPtDD) > 0.0001) {
       System.out.println('Distance = ' + intPt.distance(intPtDD))
@@ -121,23 +121,23 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   intersectionWithNormalization (p1, p2, q1, q2) {
-    var n1 = new Coordinate(p1)
-    var n2 = new Coordinate(p2)
-    var n3 = new Coordinate(q1)
-    var n4 = new Coordinate(q2)
-    var normPt = new Coordinate()
+    const n1 = new Coordinate(p1)
+    const n2 = new Coordinate(p2)
+    const n3 = new Coordinate(q1)
+    const n4 = new Coordinate(q2)
+    const normPt = new Coordinate()
     this.normalizeToEnvCentre(n1, n2, n3, n4, normPt)
-    var intPt = this.safeHCoordinateIntersection(n1, n2, n3, n4)
+    const intPt = this.safeHCoordinateIntersection(n1, n2, n3, n4)
     intPt.x += normPt.x
     intPt.y += normPt.y
     return intPt
   }
 
   computeCollinearIntersection (p1, p2, q1, q2) {
-    var p1q1p2 = Envelope.intersects(p1, p2, q1)
-    var p1q2p2 = Envelope.intersects(p1, p2, q2)
-    var q1p1q2 = Envelope.intersects(q1, q2, p1)
-    var q1p2q2 = Envelope.intersects(q1, q2, p2)
+    const p1q1p2 = Envelope.intersects(p1, p2, q1)
+    const p1q2p2 = Envelope.intersects(p1, p2, q2)
+    const q1p1q2 = Envelope.intersects(q1, q2, p1)
+    const q1p2q2 = Envelope.intersects(q1, q2, p2)
     if (p1q1p2 && p1q2p2) {
       this._intPt[0] = q1
       this._intPt[1] = q2
@@ -172,20 +172,20 @@ export default class RobustLineIntersector extends LineIntersector {
   }
 
   normalizeToEnvCentre (n00, n01, n10, n11, normPt) {
-    var minX0 = n00.x < n01.x ? n00.x : n01.x
-    var minY0 = n00.y < n01.y ? n00.y : n01.y
-    var maxX0 = n00.x > n01.x ? n00.x : n01.x
-    var maxY0 = n00.y > n01.y ? n00.y : n01.y
-    var minX1 = n10.x < n11.x ? n10.x : n11.x
-    var minY1 = n10.y < n11.y ? n10.y : n11.y
-    var maxX1 = n10.x > n11.x ? n10.x : n11.x
-    var maxY1 = n10.y > n11.y ? n10.y : n11.y
-    var intMinX = minX0 > minX1 ? minX0 : minX1
-    var intMaxX = maxX0 < maxX1 ? maxX0 : maxX1
-    var intMinY = minY0 > minY1 ? minY0 : minY1
-    var intMaxY = maxY0 < maxY1 ? maxY0 : maxY1
-    var intMidX = (intMinX + intMaxX) / 2.0
-    var intMidY = (intMinY + intMaxY) / 2.0
+    const minX0 = n00.x < n01.x ? n00.x : n01.x
+    const minY0 = n00.y < n01.y ? n00.y : n01.y
+    const maxX0 = n00.x > n01.x ? n00.x : n01.x
+    const maxY0 = n00.y > n01.y ? n00.y : n01.y
+    const minX1 = n10.x < n11.x ? n10.x : n11.x
+    const minY1 = n10.y < n11.y ? n10.y : n11.y
+    const maxX1 = n10.x > n11.x ? n10.x : n11.x
+    const maxY1 = n10.y > n11.y ? n10.y : n11.y
+    const intMinX = minX0 > minX1 ? minX0 : minX1
+    const intMaxX = maxX0 < maxX1 ? maxX0 : maxX1
+    const intMinY = minY0 > minY1 ? minY0 : minY1
+    const intMaxY = maxY0 < maxY1 ? maxY0 : maxY1
+    const intMidX = (intMinX + intMaxX) / 2.0
+    const intMidY = (intMinY + intMaxY) / 2.0
     normPt.x = intMidX
     normPt.y = intMidY
     n00.x -= normPt.x
@@ -201,17 +201,17 @@ export default class RobustLineIntersector extends LineIntersector {
   computeIntersect (p1, p2, q1, q2) {
     this._isProper = false
     if (!Envelope.intersects(p1, p2, q1, q2)) return LineIntersector.NO_INTERSECTION
-    var Pq1 = Orientation.index(p1, p2, q1)
-    var Pq2 = Orientation.index(p1, p2, q2)
+    const Pq1 = Orientation.index(p1, p2, q1)
+    const Pq2 = Orientation.index(p1, p2, q2)
     if (Pq1 > 0 && Pq2 > 0 || Pq1 < 0 && Pq2 < 0) {
       return LineIntersector.NO_INTERSECTION
     }
-    var Qp1 = Orientation.index(q1, q2, p1)
-    var Qp2 = Orientation.index(q1, q2, p2)
+    const Qp1 = Orientation.index(q1, q2, p1)
+    const Qp2 = Orientation.index(q1, q2, p2)
     if (Qp1 > 0 && Qp2 > 0 || Qp1 < 0 && Qp2 < 0) {
       return LineIntersector.NO_INTERSECTION
     }
-    var collinear = Pq1 === 0 && Pq2 === 0 && Qp1 === 0 && Qp2 === 0
+    const collinear = Pq1 === 0 && Pq2 === 0 && Qp1 === 0 && Qp2 === 0
     if (collinear) {
       return this.computeCollinearIntersection(p1, p2, q1, q2)
     }

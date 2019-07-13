@@ -10,7 +10,7 @@ export default class DouglasPeuckerSimplifier {
   }
 
   static simplify (geom, distanceTolerance) {
-    var tss = new DouglasPeuckerSimplifier(geom)
+    const tss = new DouglasPeuckerSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
@@ -45,7 +45,7 @@ class DPTransformer extends GeometryTransformer {
 
   transformPolygon (geom, parent) {
     if (geom.isEmpty()) return null
-    var rawGeom = super.transformPolygon.call(this, geom, parent)
+    const rawGeom = super.transformPolygon.call(this, geom, parent)
     if (parent instanceof MultiPolygon) {
       return rawGeom
     }
@@ -58,8 +58,8 @@ class DPTransformer extends GeometryTransformer {
   }
 
   transformCoordinates (coords, parent) {
-    var inputPts = coords.toCoordinateArray()
-    var newPts = null
+    const inputPts = coords.toCoordinateArray()
+    let newPts = null
     if (inputPts.length === 0) {
       newPts = new Array(0).fill(null)
     } else {
@@ -69,13 +69,13 @@ class DPTransformer extends GeometryTransformer {
   }
 
   transformMultiPolygon (geom, parent) {
-    var rawGeom = super.transformMultiPolygon.call(this, geom, parent)
+    const rawGeom = super.transformMultiPolygon.call(this, geom, parent)
     return this.createValidArea(rawGeom)
   }
 
   transformLinearRing (geom, parent) {
-    var removeDegenerateRings = parent instanceof Polygon
-    var simpResult = super.transformLinearRing.call(this, geom, parent)
+    const removeDegenerateRings = parent instanceof Polygon
+    const simpResult = super.transformLinearRing.call(this, geom, parent)
     if (removeDegenerateRings && !(simpResult instanceof LinearRing)) return null
 
     return simpResult

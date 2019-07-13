@@ -21,8 +21,8 @@ export default class Depth {
 
   isNull () {
     if (arguments.length === 0) {
-      for (var i = 0; i < 2; i++) {
-        for (var j = 0; j < 3; j++) {
+      for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 3; j++) {
           if (this._depth[i][j] !== Depth.NULL_VALUE) return false
         }
       }
@@ -37,13 +37,13 @@ export default class Depth {
   }
 
   normalize () {
-    for (var i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
       if (!this.isNull(i)) {
-        var minDepth = this._depth[i][1]
+        let minDepth = this._depth[i][1]
         if (this._depth[i][2] < minDepth) minDepth = this._depth[i][2]
         if (minDepth < 0) minDepth = 0
-        for (var j = 1; j < 3; j++) {
-          var newValue = 0
+        for (let j = 1; j < 3; j++) {
+          let newValue = 0
           if (this._depth[i][j] > minDepth) newValue = 1
           this._depth[i][j] = newValue
         }
@@ -67,9 +67,9 @@ export default class Depth {
   add () {
     if (arguments.length === 1) {
       const lbl = arguments[0]
-      for (var i = 0; i < 2; i++) {
-        for (var j = 1; j < 3; j++) {
-          var loc = lbl.getLocation(i, j)
+      for (let i = 0; i < 2; i++) {
+        for (let j = 1; j < 3; j++) {
+          const loc = lbl.getLocation(i, j)
           if (loc === Location.EXTERIOR || loc === Location.INTERIOR) {
             if (this.isNull(i, j)) {
               this._depth[i][j] = Depth.depthAtLocation(loc)
@@ -93,8 +93,8 @@ export default class Depth {
 }
 Depth.constructor_ = function () {
   this._depth = Array(2).fill().map(() => Array(3))
-  for (var i = 0; i < 2; i++) {
-    for (var j = 0; j < 3; j++) {
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 3; j++) {
       this._depth[i][j] = Depth.NULL_VALUE
     }
   }

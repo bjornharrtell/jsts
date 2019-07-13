@@ -12,11 +12,11 @@ export default class DiscreteHausdorffDistance {
   static distance () {
     if (arguments.length === 2) {
       const g0 = arguments[0]; const g1 = arguments[1]
-      var dist = new DiscreteHausdorffDistance(g0, g1)
+      const dist = new DiscreteHausdorffDistance(g0, g1)
       return dist.distance()
     } else if (arguments.length === 3) {
       const g0 = arguments[0]; const g1 = arguments[1]; const densifyFrac = arguments[2]
-      var dist = new DiscreteHausdorffDistance(g0, g1)
+      const dist = new DiscreteHausdorffDistance(g0, g1)
       dist.setDensifyFraction(densifyFrac)
       return dist.distance()
     }
@@ -42,11 +42,11 @@ export default class DiscreteHausdorffDistance {
   }
 
   computeOrientedDistance (discreteGeom, geom, ptDist) {
-    var distFilter = new MaxPointDistanceFilter(geom)
+    const distFilter = new MaxPointDistanceFilter(geom)
     discreteGeom.apply(distFilter)
     ptDist.setMaximum(distFilter.getMaxPointDistance())
     if (this._densifyFrac > 0) {
-      var fracFilter = new MaxDensifiedByFractionDistanceFilter(geom, this._densifyFrac)
+      const fracFilter = new MaxDensifiedByFractionDistanceFilter(geom, this._densifyFrac)
       discreteGeom.apply(fracFilter)
       ptDist.setMaximum(fracFilter.getMaxPointDistance())
     }
@@ -103,14 +103,14 @@ class MaxDensifiedByFractionDistanceFilter {
 
   filter (seq, index) {
     if (index === 0) return null
-    var p0 = seq.getCoordinate(index - 1)
-    var p1 = seq.getCoordinate(index)
-    var delx = (p1.x - p0.x) / this._numSubSegs
-    var dely = (p1.y - p0.y) / this._numSubSegs
-    for (var i = 0; i < this._numSubSegs; i++) {
-      var x = p0.x + i * delx
-      var y = p0.y + i * dely
-      var pt = new Coordinate(x, y)
+    const p0 = seq.getCoordinate(index - 1)
+    const p1 = seq.getCoordinate(index)
+    const delx = (p1.x - p0.x) / this._numSubSegs
+    const dely = (p1.y - p0.y) / this._numSubSegs
+    for (let i = 0; i < this._numSubSegs; i++) {
+      const x = p0.x + i * delx
+      const y = p0.y + i * dely
+      const pt = new Coordinate(x, y)
       this._minPtDist.initialize()
       DistanceToPoint.computeDistance(this._geom, pt, this._minPtDist)
       this._maxPtDist.setMaximum(this._minPtDist)

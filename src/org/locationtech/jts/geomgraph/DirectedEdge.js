@@ -43,8 +43,8 @@ export default class DirectedEdge extends EdgeEnd {
   }
 
   isInteriorAreaEdge () {
-    var isInteriorAreaEdge = true
-    for (var i = 0; i < 2; i++) {
+    let isInteriorAreaEdge = true
+    for (let i = 0; i < 2; i++) {
       if (!(this._label.isArea(i) && this._label.getLocation(i, Position.LEFT) === Location.INTERIOR && this._label.getLocation(i, Position.RIGHT) === Location.INTERIOR)) {
         isInteriorAreaEdge = false
       }
@@ -68,9 +68,9 @@ export default class DirectedEdge extends EdgeEnd {
   }
 
   isLineEdge () {
-    var isLine = this._label.isLine(0) || this._label.isLine(1)
-    var isExteriorIfArea0 = !this._label.isArea(0) || this._label.allPositionsEqual(0, Location.EXTERIOR)
-    var isExteriorIfArea1 = !this._label.isArea(1) || this._label.allPositionsEqual(1, Location.EXTERIOR)
+    const isLine = this._label.isLine(0) || this._label.isLine(1)
+    const isExteriorIfArea0 = !this._label.isArea(0) || this._label.allPositionsEqual(0, Location.EXTERIOR)
+    const isExteriorIfArea1 = !this._label.isArea(1) || this._label.allPositionsEqual(1, Location.EXTERIOR)
     return isLine && isExteriorIfArea0 && isExteriorIfArea1
   }
 
@@ -83,7 +83,7 @@ export default class DirectedEdge extends EdgeEnd {
   }
 
   getDepthDelta () {
-    var depthDelta = this._edge.getDepthDelta()
+    let depthDelta = this._edge.getDepthDelta()
     if (!this._isForward) depthDelta = -depthDelta
     return depthDelta
   }
@@ -120,13 +120,13 @@ export default class DirectedEdge extends EdgeEnd {
   }
 
   setEdgeDepths (position, depth) {
-    var depthDelta = this.getEdge().getDepthDelta()
+    let depthDelta = this.getEdge().getDepthDelta()
     if (!this._isForward) depthDelta = -depthDelta
-    var directionFactor = 1
+    let directionFactor = 1
     if (position === Position.LEFT) directionFactor = -1
-    var oppositePos = Position.opposite(position)
-    var delta = depthDelta * directionFactor
-    var oppositeDepth = depth + delta
+    const oppositePos = Position.opposite(position)
+    const delta = depthDelta * directionFactor
+    const oppositeDepth = depth + delta
     this.setDepth(position, depth)
     this.setDepth(oppositePos, oppositeDepth)
   }
@@ -171,7 +171,7 @@ DirectedEdge.constructor_ = function () {
   if (isForward) {
     this.init(edge.getCoordinate(0), edge.getCoordinate(1))
   } else {
-    var n = edge.getNumPoints() - 1
+    const n = edge.getNumPoints() - 1
     this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1))
   }
   this.computeDirectedLabel()

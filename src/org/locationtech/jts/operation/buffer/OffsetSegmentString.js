@@ -7,7 +7,7 @@ export default class OffsetSegmentString {
   }
 
   getCoordinates () {
-    var coord = this._ptList.toArray(OffsetSegmentString.COORDINATE_ARRAY_TYPE)
+    const coord = this._ptList.toArray(OffsetSegmentString.COORDINATE_ARRAY_TYPE)
     return coord
   }
 
@@ -16,7 +16,7 @@ export default class OffsetSegmentString {
   }
 
   addPt (pt) {
-    var bufPt = new Coordinate(pt)
+    const bufPt = new Coordinate(pt)
     this._precisionModel.makePrecise(bufPt)
     if (this.isRedundant(bufPt)) return null
     this._ptList.add(bufPt)
@@ -26,11 +26,11 @@ export default class OffsetSegmentString {
 
   addPts (pt, isForward) {
     if (isForward) {
-      for (var i = 0; i < pt.length; i++) {
+      for (let i = 0; i < pt.length; i++) {
         this.addPt(pt[i])
       }
     } else {
-      for (var i = pt.length - 1; i >= 0; i--) {
+      for (let i = pt.length - 1; i >= 0; i--) {
         this.addPt(pt[i])
       }
     }
@@ -38,23 +38,23 @@ export default class OffsetSegmentString {
 
   isRedundant (pt) {
     if (this._ptList.size() < 1) return false
-    var lastPt = this._ptList.get(this._ptList.size() - 1)
-    var ptDist = pt.distance(lastPt)
+    const lastPt = this._ptList.get(this._ptList.size() - 1)
+    const ptDist = pt.distance(lastPt)
     if (ptDist < this._minimimVertexDistance) return true
     return false
   }
 
   toString () {
-    var fact = new GeometryFactory()
-    var line = fact.createLineString(this.getCoordinates())
+    const fact = new GeometryFactory()
+    const line = fact.createLineString(this.getCoordinates())
     return line.toString()
   }
 
   closeRing () {
     if (this._ptList.size() < 1) return null
-    var startPt = new Coordinate(this._ptList.get(0))
-    var lastPt = this._ptList.get(this._ptList.size() - 1)
-    var last2Pt = null
+    const startPt = new Coordinate(this._ptList.get(0))
+    const lastPt = this._ptList.get(this._ptList.size() - 1)
+    let last2Pt = null
     if (this._ptList.size() >= 2) last2Pt = this._ptList.get(this._ptList.size() - 2)
     if (startPt.equals(lastPt)) return null
     this._ptList.add(startPt)

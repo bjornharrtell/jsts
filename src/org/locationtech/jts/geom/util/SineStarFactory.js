@@ -15,31 +15,31 @@ export default class SineStarFactory extends GeometricShapeFactory {
   }
 
   createSineStar () {
-    var env = this._dim.getEnvelope()
-    var radius = env.getWidth() / 2.0
-    var armRatio = this._armLengthRatio
+    const env = this._dim.getEnvelope()
+    const radius = env.getWidth() / 2.0
+    let armRatio = this._armLengthRatio
     if (armRatio < 0.0) armRatio = 0.0
     if (armRatio > 1.0) armRatio = 1.0
-    var armMaxLen = armRatio * radius
-    var insideRadius = (1 - armRatio) * radius
-    var centreX = env.getMinX() + radius
-    var centreY = env.getMinY() + radius
-    var pts = new Array(this._nPts + 1).fill(null)
-    var iPt = 0
-    for (var i = 0; i < this._nPts; i++) {
-      var ptArcFrac = i / this._nPts * this._numArms
-      var armAngFrac = ptArcFrac - Math.floor(ptArcFrac)
-      var armAng = 2 * Math.PI * armAngFrac
-      var armLenFrac = (Math.cos(armAng) + 1.0) / 2.0
-      var curveRadius = insideRadius + armMaxLen * armLenFrac
-      var ang = i * (2 * Math.PI / this._nPts)
-      var x = curveRadius * Math.cos(ang) + centreX
-      var y = curveRadius * Math.sin(ang) + centreY
+    const armMaxLen = armRatio * radius
+    const insideRadius = (1 - armRatio) * radius
+    const centreX = env.getMinX() + radius
+    const centreY = env.getMinY() + radius
+    const pts = new Array(this._nPts + 1).fill(null)
+    let iPt = 0
+    for (let i = 0; i < this._nPts; i++) {
+      const ptArcFrac = i / this._nPts * this._numArms
+      const armAngFrac = ptArcFrac - Math.floor(ptArcFrac)
+      const armAng = 2 * Math.PI * armAngFrac
+      const armLenFrac = (Math.cos(armAng) + 1.0) / 2.0
+      const curveRadius = insideRadius + armMaxLen * armLenFrac
+      const ang = i * (2 * Math.PI / this._nPts)
+      const x = curveRadius * Math.cos(ang) + centreX
+      const y = curveRadius * Math.sin(ang) + centreY
       pts[iPt++] = this.coord(x, y)
     }
     pts[iPt] = new Coordinate(pts[0])
-    var ring = this._geomFact.createLinearRing(pts)
-    var poly = this._geomFact.createPolygon(ring)
+    const ring = this._geomFact.createLinearRing(pts)
+    const poly = this._geomFact.createPolygon(ring)
     return poly
   }
 

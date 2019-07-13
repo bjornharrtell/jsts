@@ -8,19 +8,19 @@ export default class HotPixel {
   }
 
   intersectsScaled (p0, p1) {
-    var segMinx = Math.min(p0.x, p1.x)
-    var segMaxx = Math.max(p0.x, p1.x)
-    var segMiny = Math.min(p0.y, p1.y)
-    var segMaxy = Math.max(p0.y, p1.y)
-    var isOutsidePixelEnv = this._maxx < segMinx || this._minx > segMaxx || this._maxy < segMiny || this._miny > segMaxy
+    const segMinx = Math.min(p0.x, p1.x)
+    const segMaxx = Math.max(p0.x, p1.x)
+    const segMiny = Math.min(p0.y, p1.y)
+    const segMaxy = Math.max(p0.y, p1.y)
+    const isOutsidePixelEnv = this._maxx < segMinx || this._minx > segMaxx || this._maxy < segMiny || this._miny > segMaxy
     if (isOutsidePixelEnv) return false
-    var intersects = this.intersectsToleranceSquare(p0, p1)
+    const intersects = this.intersectsToleranceSquare(p0, p1)
     Assert.isTrue(!(isOutsidePixelEnv && intersects), 'Found bad envelope test')
     return intersects
   }
 
   initCorners (pt) {
-    var tolerance = 0.5
+    const tolerance = 0.5
     this._minx = pt.x - tolerance
     this._maxx = pt.x + tolerance
     this._miny = pt.y - tolerance
@@ -53,7 +53,7 @@ export default class HotPixel {
 
   getSafeEnvelope () {
     if (this._safeEnv === null) {
-      var safeTolerance = HotPixel.SAFE_ENV_EXPANSION_FACTOR / this._scaleFactor
+      const safeTolerance = HotPixel.SAFE_ENV_EXPANSION_FACTOR / this._scaleFactor
       this._safeEnv = new Envelope(this._originalPt.x - safeTolerance, this._originalPt.x + safeTolerance, this._originalPt.y - safeTolerance, this._originalPt.y + safeTolerance)
     }
     return this._safeEnv
@@ -72,8 +72,8 @@ export default class HotPixel {
   }
 
   intersectsToleranceSquare (p0, p1) {
-    var intersectsLeft = false
-    var intersectsBottom = false
+    let intersectsLeft = false
+    let intersectsBottom = false
     this._li.computeIntersection(p0, p1, this._corner[0], this._corner[1])
     if (this._li.isProper()) return true
     this._li.computeIntersection(p0, p1, this._corner[1], this._corner[2])
@@ -91,8 +91,8 @@ export default class HotPixel {
   }
 
   addSnappedNode (segStr, segIndex) {
-    var p0 = segStr.getCoordinate(segIndex)
-    var p1 = segStr.getCoordinate(segIndex + 1)
+    const p0 = segStr.getCoordinate(segIndex)
+    const p1 = segStr.getCoordinate(segIndex + 1)
     if (this.intersects(p0, p1)) {
       segStr.addIntersection(this.getCoordinate(), segIndex)
       return true

@@ -10,12 +10,12 @@ export default class SimpleMinimumClearance {
   }
 
   static getLine (g) {
-    var rp = new SimpleMinimumClearance(g)
+    const rp = new SimpleMinimumClearance(g)
     return rp.getLine()
   }
 
   static getDistance (g) {
-    var rp = new SimpleMinimumClearance(g)
+    const rp = new SimpleMinimumClearance(g)
     return rp.getDistance()
   }
 
@@ -37,7 +37,7 @@ export default class SimpleMinimumClearance {
       if (candidateValue < this._minClearance) {
         this._minClearance = candidateValue
         this._minClearancePts[0] = new Coordinate(p)
-        var seg = new LineSegment(seg0, seg1)
+        const seg = new LineSegment(seg0, seg1)
         this._minClearancePts[1] = new Coordinate(seg.closestPoint(p))
       }
     }
@@ -95,7 +95,7 @@ class ComputeMCCoordinateSequenceFilter {
   }
 
   checkVertexDistance (vertex) {
-    var vertexDist = vertex.distance(this._queryPt)
+    const vertexDist = vertex.distance(this._queryPt)
     if (vertexDist > 0) {
       this.smc.updateClearance(vertexDist, this._queryPt, vertex)
     }
@@ -110,7 +110,7 @@ class ComputeMCCoordinateSequenceFilter {
 
   checkSegmentDistance (seg0, seg1) {
     if (this._queryPt.equals2D(seg0) || this._queryPt.equals2D(seg1)) return null
-    var segDist = Distance.pointToSegment(this._queryPt, seg1, seg0)
+    const segDist = Distance.pointToSegment(this._queryPt, seg1, seg0)
     if (segDist > 0) this.smc.updateClearance(segDist, this._queryPt, seg1, seg0)
   }
 

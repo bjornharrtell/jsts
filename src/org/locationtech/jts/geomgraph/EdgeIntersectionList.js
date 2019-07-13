@@ -10,8 +10,8 @@ export default class EdgeIntersectionList {
 
   print (out) {
     out.println('Intersections:')
-    for (var it = this.iterator(); it.hasNext();) {
-      var ei = it.next()
+    for (let it = this.iterator(); it.hasNext();) {
+      const ei = it.next()
       ei.print(out)
     }
   }
@@ -22,33 +22,33 @@ export default class EdgeIntersectionList {
 
   addSplitEdges (edgeList) {
     this.addEndpoints()
-    var it = this.iterator()
-    var eiPrev = it.next()
+    const it = this.iterator()
+    let eiPrev = it.next()
     while (it.hasNext()) {
-      var ei = it.next()
-      var newEdge = this.createSplitEdge(eiPrev, ei)
+      const ei = it.next()
+      const newEdge = this.createSplitEdge(eiPrev, ei)
       edgeList.add(newEdge)
       eiPrev = ei
     }
   }
 
   addEndpoints () {
-    var maxSegIndex = this.edge.pts.length - 1
+    const maxSegIndex = this.edge.pts.length - 1
     this.add(this.edge.pts[0], 0, 0.0)
     this.add(this.edge.pts[maxSegIndex], maxSegIndex, 0.0)
   }
 
   createSplitEdge (ei0, ei1) {
-    var npts = ei1.segmentIndex - ei0.segmentIndex + 2
-    var lastSegStartPt = this.edge.pts[ei1.segmentIndex]
-    var useIntPt1 = ei1.dist > 0.0 || !ei1.coord.equals2D(lastSegStartPt)
+    let npts = ei1.segmentIndex - ei0.segmentIndex + 2
+    const lastSegStartPt = this.edge.pts[ei1.segmentIndex]
+    const useIntPt1 = ei1.dist > 0.0 || !ei1.coord.equals2D(lastSegStartPt)
     if (!useIntPt1) {
       npts--
     }
-    var pts = new Array(npts).fill(null)
-    var ipt = 0
+    const pts = new Array(npts).fill(null)
+    let ipt = 0
     pts[ipt++] = new Coordinate(ei0.coord)
-    for (var i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
+    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
       pts[ipt++] = this.edge.pts[i]
     }
     if (useIntPt1) pts[ipt] = ei1.coord
@@ -56,8 +56,8 @@ export default class EdgeIntersectionList {
   }
 
   add (intPt, segmentIndex, dist) {
-    var eiNew = new EdgeIntersection(intPt, segmentIndex, dist)
-    var ei = this._nodeMap.get(eiNew)
+    const eiNew = new EdgeIntersection(intPt, segmentIndex, dist)
+    const ei = this._nodeMap.get(eiNew)
     if (ei !== null) {
       return ei
     }
@@ -66,8 +66,8 @@ export default class EdgeIntersectionList {
   }
 
   isIntersection (pt) {
-    for (var it = this.iterator(); it.hasNext();) {
-      var ei = it.next()
+    for (let it = this.iterator(); it.hasNext();) {
+      const ei = it.next()
       if (ei.coord.equals(pt)) return true
     }
     return false

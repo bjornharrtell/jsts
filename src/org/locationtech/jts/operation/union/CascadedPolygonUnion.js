@@ -16,7 +16,7 @@ export default class CascadedPolygonUnion {
     if (hasInterface(g, Polygonal)) {
       return g
     }
-    var polygons = PolygonExtracter.getPolygons(g)
+    const polygons = PolygonExtracter.getPolygons(g)
     if (polygons.size() === 1) return polygons.get(0)
     return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons))
   }
@@ -27,15 +27,15 @@ export default class CascadedPolygonUnion {
   }
 
   static union (polys) {
-    var op = new CascadedPolygonUnion(polys)
+    const op = new CascadedPolygonUnion(polys)
     return op.union()
   }
 
   reduceToGeometries (geomTree) {
-    var geoms = new ArrayList()
-    for (var i = geomTree.iterator(); i.hasNext();) {
-      var o = i.next()
-      var geom = null
+    const geoms = new ArrayList()
+    for (let i = geomTree.iterator(); i.hasNext();) {
+      const o = i.next()
+      let geom = null
       if (hasInterface(o, List)) {
         geom = this.unionTree(o)
       } else if (o instanceof Geometry) {
@@ -47,23 +47,23 @@ export default class CascadedPolygonUnion {
   }
 
   extractByEnvelope (env, geom, disjointGeoms) {
-    var intersectingGeoms = new ArrayList()
-    for (var i = 0; i < geom.getNumGeometries(); i++) {
-      var elem = geom.getGeometryN(i)
+    const intersectingGeoms = new ArrayList()
+    for (let i = 0; i < geom.getNumGeometries(); i++) {
+      const elem = geom.getGeometryN(i)
       if (elem.getEnvelopeInternal().intersects(env)) intersectingGeoms.add(elem); else disjointGeoms.add(elem)
     }
     return this._geomFactory.buildGeometry(intersectingGeoms)
   }
 
   unionOptimized (g0, g1) {
-    var g0Env = g0.getEnvelopeInternal()
-    var g1Env = g1.getEnvelopeInternal()
+    const g0Env = g0.getEnvelopeInternal()
+    const g1Env = g1.getEnvelopeInternal()
     if (!g0Env.intersects(g1Env)) {
-      var combo = GeometryCombiner.combine(g0, g1)
+      const combo = GeometryCombiner.combine(g0, g1)
       return combo
     }
     if (g0.getNumGeometries() <= 1 && g1.getNumGeometries() <= 1) return this.unionActual(g0, g1)
-    var commonEnv = g0Env.intersection(g1Env)
+    const commonEnv = g0Env.intersection(g1Env)
     return this.unionUsingEnvelopeIntersection(g0, g1, commonEnv)
   }
 
@@ -71,14 +71,14 @@ export default class CascadedPolygonUnion {
     if (this._inputPolys === null) throw new IllegalStateException('union() method cannot be called twice')
     if (this._inputPolys.isEmpty()) return null
     this._geomFactory = this._inputPolys.iterator().next().getFactory()
-    var index = new STRtree(CascadedPolygonUnion.STRTREE_NODE_CAPACITY)
-    for (var i = this._inputPolys.iterator(); i.hasNext();) {
-      var item = i.next()
+    const index = new STRtree(CascadedPolygonUnion.STRTREE_NODE_CAPACITY)
+    for (let i = this._inputPolys.iterator(); i.hasNext();) {
+      const item = i.next()
       index.insert(item.getEnvelopeInternal(), item)
     }
     this._inputPolys = null
-    var itemTree = index.itemsTree()
-    var unionAll = this.unionTree(itemTree)
+    const itemTree = index.itemsTree()
+    const unionAll = this.unionTree(itemTree)
     return unionAll
   }
 
@@ -89,23 +89,23 @@ export default class CascadedPolygonUnion {
     } else if (arguments.length === 3) {
       const geoms = arguments[0]; const start = arguments[1]; const end = arguments[2]
       if (end - start <= 1) {
-        var g0 = CascadedPolygonUnion.getGeometry(geoms, start)
+        const g0 = CascadedPolygonUnion.getGeometry(geoms, start)
         return this.unionSafe(g0, null)
       } else if (end - start === 2) {
         return this.unionSafe(CascadedPolygonUnion.getGeometry(geoms, start), CascadedPolygonUnion.getGeometry(geoms, start + 1))
       } else {
-        var mid = Math.trunc((end + start) / 2)
-        var g0 = this.binaryUnion(geoms, start, mid)
-        var g1 = this.binaryUnion(geoms, mid, end)
+        const mid = Math.trunc((end + start) / 2)
+        const g0 = this.binaryUnion(geoms, start, mid)
+        const g1 = this.binaryUnion(geoms, mid, end)
         return this.unionSafe(g0, g1)
       }
     }
   }
 
   repeatedUnion (geoms) {
-    var union = null
-    for (var i = geoms.iterator(); i.hasNext();) {
-      var g = i.next()
+    let union = null
+    for (let i = geoms.iterator(); i.hasNext();) {
+      const g = i.next()
       if (union === null) union = g.copy(); else union = union.union(g)
     }
     return union
@@ -123,33 +123,33 @@ export default class CascadedPolygonUnion {
   }
 
   unionTree (geomTree) {
-    var geoms = this.reduceToGeometries(geomTree)
-    var union = this.binaryUnion(geoms)
+    const geoms = this.reduceToGeometries(geomTree)
+    const union = this.binaryUnion(geoms)
     return union
   }
 
   unionUsingEnvelopeIntersection (g0, g1, common) {
-    var disjointPolys = new ArrayList()
-    var g0Int = this.extractByEnvelope(common, g0, disjointPolys)
-    var g1Int = this.extractByEnvelope(common, g1, disjointPolys)
-    var union = this.unionActual(g0Int, g1Int)
+    const disjointPolys = new ArrayList()
+    const g0Int = this.extractByEnvelope(common, g0, disjointPolys)
+    const g1Int = this.extractByEnvelope(common, g1, disjointPolys)
+    const union = this.unionActual(g0Int, g1Int)
     disjointPolys.add(union)
-    var overallUnion = GeometryCombiner.combine(disjointPolys)
+    const overallUnion = GeometryCombiner.combine(disjointPolys)
     return overallUnion
   }
 
   bufferUnion () {
     if (arguments.length === 1) {
       const geoms = arguments[0]
-      var factory = geoms.get(0).getFactory()
-      var gColl = factory.buildGeometry(geoms)
-      var unionAll = gColl.buffer(0.0)
+      const factory = geoms.get(0).getFactory()
+      const gColl = factory.buildGeometry(geoms)
+      const unionAll = gColl.buffer(0.0)
       return unionAll
     } else if (arguments.length === 2) {
       const g0 = arguments[0]; const g1 = arguments[1]
-      var factory = g0.getFactory()
-      var gColl = factory.createGeometryCollection([g0, g1])
-      var unionAll = gColl.buffer(0.0)
+      const factory = g0.getFactory()
+      const gColl = factory.createGeometryCollection([g0, g1])
+      const unionAll = gColl.buffer(0.0)
       return unionAll
     }
   }

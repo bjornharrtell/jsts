@@ -7,7 +7,7 @@ export default class SnapIfNeededOverlayOp {
   }
 
   static overlayOp (g0, g1, opCode) {
-    var op = new SnapIfNeededOverlayOp(g0, g1)
+    const op = new SnapIfNeededOverlayOp(g0, g1)
     return op.getResultGeometry(opCode)
   }
 
@@ -28,12 +28,12 @@ export default class SnapIfNeededOverlayOp {
   }
 
   getResultGeometry (opCode) {
-    var result = null
-    var isSuccess = false
-    var savedException = null
+    let result = null
+    let isSuccess = false
+    let savedException = null
     try {
       result = OverlayOp.overlayOp(this._geom[0], this._geom[1], opCode)
-      var isValid = true
+      const isValid = true
       if (isValid) isSuccess = true
     } catch (ex) {
       if (ex instanceof RuntimeException) {

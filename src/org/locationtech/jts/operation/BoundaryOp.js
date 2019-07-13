@@ -12,11 +12,11 @@ export default class BoundaryOp {
   static getBoundary () {
     if (arguments.length === 1) {
       const g = arguments[0]
-      var bop = new BoundaryOp(g)
+      const bop = new BoundaryOp(g)
       return bop.getBoundary()
     } else if (arguments.length === 2) {
       const g = arguments[0]; const bnRule = arguments[1]
-      var bop = new BoundaryOp(g, bnRule)
+      const bop = new BoundaryOp(g, bnRule)
       return bop.getBoundary()
     }
   }
@@ -25,7 +25,7 @@ export default class BoundaryOp {
     if (this._geom.isEmpty()) {
       return this.getEmptyMultiPoint()
     }
-    var bdyPts = this.computeBoundaryCoordinates(mLine)
+    const bdyPts = this.computeBoundaryCoordinates(mLine)
     if (bdyPts.length === 1) {
       return this._geomFact.createPoint(bdyPts[0])
     }
@@ -43,7 +43,7 @@ export default class BoundaryOp {
       return this.getEmptyMultiPoint()
     }
     if (line.isClosed()) {
-      var closedEndpointOnBoundary = this._bnRule.isInBoundary(2)
+      const closedEndpointOnBoundary = this._bnRule.isInBoundary(2)
       if (closedEndpointOnBoundary) {
         return line.getStartPoint()
       } else {
@@ -58,18 +58,18 @@ export default class BoundaryOp {
   }
 
   computeBoundaryCoordinates (mLine) {
-    var bdyPts = new ArrayList()
+    const bdyPts = new ArrayList()
     this._endpointMap = new TreeMap()
-    for (var i = 0; i < mLine.getNumGeometries(); i++) {
-      var line = mLine.getGeometryN(i)
+    for (let i = 0; i < mLine.getNumGeometries(); i++) {
+      const line = mLine.getGeometryN(i)
       if (line.getNumPoints() === 0) continue
       this.addEndpoint(line.getCoordinateN(0))
       this.addEndpoint(line.getCoordinateN(line.getNumPoints() - 1))
     }
-    for (var it = this._endpointMap.entrySet().iterator(); it.hasNext();) {
-      var entry = it.next()
-      var counter = entry.getValue()
-      var valence = counter.count
+    for (let it = this._endpointMap.entrySet().iterator(); it.hasNext();) {
+      const entry = it.next()
+      const counter = entry.getValue()
+      const valence = counter.count
       if (this._bnRule.isInBoundary(valence)) {
         bdyPts.add(entry.getKey())
       }
@@ -78,7 +78,7 @@ export default class BoundaryOp {
   }
 
   addEndpoint (pt) {
-    var counter = this._endpointMap.get(pt)
+    let counter = this._endpointMap.get(pt)
     if (counter === null) {
       counter = new Counter()
       this._endpointMap.put(pt, counter)

@@ -7,8 +7,8 @@ export default class UniqueCoordinateArrayFilter {
   }
 
   static filterCoordinates (coords) {
-    var filter = new UniqueCoordinateArrayFilter()
-    for (var i = 0; i < coords.length; i++) {
+    const filter = new UniqueCoordinateArrayFilter()
+    for (let i = 0; i < coords.length; i++) {
       filter.filter(coords[i])
     }
     return filter.getCoordinates()
@@ -22,7 +22,7 @@ export default class UniqueCoordinateArrayFilter {
   }
 
   getCoordinates () {
-    var coordinates = new Array(this.list.size()).fill(null)
+    const coordinates = new Array(this.list.size()).fill(null)
     return this.list.toArray(coordinates)
   }
 

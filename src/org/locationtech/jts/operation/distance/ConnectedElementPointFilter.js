@@ -9,7 +9,7 @@ export default class ConnectedElementPointFilter {
   }
 
   static getCoordinates (geom) {
-    var pts = new ArrayList()
+    const pts = new ArrayList()
     geom.apply(new ConnectedElementPointFilter(pts))
     return pts
   }

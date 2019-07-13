@@ -50,8 +50,8 @@ export default class MultiPoint extends GeometryCollection {
   }
 
   copy () {
-    var points = new Array(this._geometries.length).fill(null)
-    for (var i = 0; i < points.length; i++) {
+    const points = new Array(this._geometries.length).fill(null)
+    for (let i = 0; i < points.length; i++) {
       points[i] = this._geometries[i].copy()
     }
     return new MultiPoint(points, this._factory)

@@ -5,12 +5,12 @@ export default class ObjectCounter {
   }
 
   count (o) {
-    var counter = this._counts.get(o)
+    const counter = this._counts.get(o)
     if (counter === null) return 0; else return counter.count()
   }
 
   add (o) {
-    var counter = this._counts.get(o)
+    const counter = this._counts.get(o)
     if (counter === null) this._counts.put(o, new Counter(1)); else counter.increment()
   }
 

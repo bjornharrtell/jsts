@@ -16,22 +16,22 @@ export default class UnaryUnionOp {
     if (arguments.length === 1) {
       if (hasInterface(arguments[0], Collection)) {
         const geoms = arguments[0]
-        var op = new UnaryUnionOp(geoms)
+        const op = new UnaryUnionOp(geoms)
         return op.union()
       } else if (arguments[0] instanceof Geometry) {
         const geom = arguments[0]
-        var op = new UnaryUnionOp(geom)
+        const op = new UnaryUnionOp(geom)
         return op.union()
       }
     } else if (arguments.length === 2) {
       const geoms = arguments[0]; const geomFact = arguments[1]
-      var op = new UnaryUnionOp(geoms, geomFact)
+      const op = new UnaryUnionOp(geoms, geomFact)
       return op.union()
     }
   }
 
   unionNoOpt (g0) {
-    var empty = this._geomFact.createPoint()
+    const empty = this._geomFact.createPoint()
     return SnapIfNeededOverlayOp.overlayOp(g0, empty, OverlayOp.UNION)
   }
 
@@ -45,8 +45,8 @@ export default class UnaryUnionOp {
   extract () {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
-      for (var i = geoms.iterator(); i.hasNext();) {
-        var geom = i.next()
+      for (let i = geoms.iterator(); i.hasNext();) {
+        const geom = i.next()
         this.extract(geom)
       }
     } else if (arguments[0] instanceof Geometry) {
@@ -62,22 +62,22 @@ export default class UnaryUnionOp {
     if (this._geomFact === null) {
       return null
     }
-    var unionPoints = null
+    let unionPoints = null
     if (this._points.size() > 0) {
-      var ptGeom = this._geomFact.buildGeometry(this._points)
+      const ptGeom = this._geomFact.buildGeometry(this._points)
       unionPoints = this.unionNoOpt(ptGeom)
     }
-    var unionLines = null
+    let unionLines = null
     if (this._lines.size() > 0) {
-      var lineGeom = this._geomFact.buildGeometry(this._lines)
+      const lineGeom = this._geomFact.buildGeometry(this._lines)
       unionLines = this.unionNoOpt(lineGeom)
     }
-    var unionPolygons = null
+    let unionPolygons = null
     if (this._polygons.size() > 0) {
       unionPolygons = CascadedPolygonUnion.union(this._polygons)
     }
-    var unionLA = this.unionWithNull(unionLines, unionPolygons)
-    var union = null
+    const unionLA = this.unionWithNull(unionLines, unionPolygons)
+    let union = null
     if (unionPoints === null) union = unionLA; else if (unionLA === null) union = unionPoints; else union = PointGeometryUnion.union(unionPoints, unionLA)
     if (union === null) return this._geomFact.createGeometryCollection()
     return union

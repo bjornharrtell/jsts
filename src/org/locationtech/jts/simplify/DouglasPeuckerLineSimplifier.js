@@ -7,7 +7,7 @@ export default class DouglasPeuckerLineSimplifier {
   }
 
   static simplify (pts, distanceTolerance) {
-    var simp = new DouglasPeuckerLineSimplifier(pts)
+    const simp = new DouglasPeuckerLineSimplifier(pts)
     simp.setDistanceTolerance(distanceTolerance)
     return simp.simplify()
   }
@@ -18,17 +18,17 @@ export default class DouglasPeuckerLineSimplifier {
     }
     this._seg.p0 = this._pts[i]
     this._seg.p1 = this._pts[j]
-    var maxDistance = -1.0
-    var maxIndex = i
-    for (var k = i + 1; k < j; k++) {
-      var distance = this._seg.distance(this._pts[k])
+    let maxDistance = -1.0
+    let maxIndex = i
+    for (let k = i + 1; k < j; k++) {
+      const distance = this._seg.distance(this._pts[k])
       if (distance > maxDistance) {
         maxDistance = distance
         maxIndex = k
       }
     }
     if (maxDistance <= this._distanceTolerance) {
-      for (var k = i + 1; k < j; k++) {
+      for (let k = i + 1; k < j; k++) {
         this._usePt[k] = false
       }
     } else {
@@ -43,12 +43,12 @@ export default class DouglasPeuckerLineSimplifier {
 
   simplify () {
     this._usePt = new Array(this._pts.length).fill(null)
-    for (var i = 0; i < this._pts.length; i++) {
+    for (let i = 0; i < this._pts.length; i++) {
       this._usePt[i] = true
     }
     this.simplifySection(0, this._pts.length - 1)
-    var coordList = new CoordinateList()
-    for (var i = 0; i < this._pts.length; i++) {
+    const coordList = new CoordinateList()
+    for (let i = 0; i < this._pts.length; i++) {
       if (this._usePt[i]) coordList.add(new Coordinate(this._pts[i]))
     }
     return coordList.toCoordinateArray()

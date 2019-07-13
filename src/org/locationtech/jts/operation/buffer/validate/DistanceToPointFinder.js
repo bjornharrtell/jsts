@@ -13,17 +13,17 @@ export default class DistanceToPointFinder {
   static computeDistance () {
     if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof LineString && arguments[1] instanceof Coordinate)) {
       const line = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
-      var coords = line.getCoordinates()
-      var tempSegment = new LineSegment()
-      for (var i = 0; i < coords.length - 1; i++) {
+      const coords = line.getCoordinates()
+      const tempSegment = new LineSegment()
+      for (let i = 0; i < coords.length - 1; i++) {
         tempSegment.setCoordinates(coords[i], coords[i + 1])
-        var closestPt = tempSegment.closestPoint(pt)
+        const closestPt = tempSegment.closestPoint(pt)
         ptDist.setMinimum(closestPt, pt)
       }
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof Polygon && arguments[1] instanceof Coordinate)) {
       const poly = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
       DistanceToPointFinder.computeDistance(poly.getExteriorRing(), pt, ptDist)
-      for (var i = 0; i < poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < poly.getNumInteriorRing(); i++) {
         DistanceToPointFinder.computeDistance(poly.getInteriorRingN(i), pt, ptDist)
       }
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof Geometry && arguments[1] instanceof Coordinate)) {
@@ -33,9 +33,9 @@ export default class DistanceToPointFinder {
       } else if (geom instanceof Polygon) {
         DistanceToPointFinder.computeDistance(geom, pt, ptDist)
       } else if (geom instanceof GeometryCollection) {
-        var gc = geom
-        for (var i = 0; i < gc.getNumGeometries(); i++) {
-          var g = gc.getGeometryN(i)
+        const gc = geom
+        for (let i = 0; i < gc.getNumGeometries(); i++) {
+          const g = gc.getGeometryN(i)
           DistanceToPointFinder.computeDistance(g, pt, ptDist)
         }
       } else {
@@ -43,7 +43,7 @@ export default class DistanceToPointFinder {
       }
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof LineSegment && arguments[1] instanceof Coordinate)) {
       const segment = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
-      var closestPt = segment.closestPoint(pt)
+      const closestPt = segment.closestPoint(pt)
       ptDist.setMinimum(closestPt, pt)
     }
   }
