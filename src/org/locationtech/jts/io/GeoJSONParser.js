@@ -209,9 +209,9 @@ const parse = {
     const shell = this.geometryFactory.createLinearRing(shellCoordinates)
     const holes = []
     for (let i = 1; i < array.length; ++i) {
-      var hole = array[i]
-      var coordinates = parse.coordinates.call(this, hole)
-      var linearRing = this.geometryFactory.createLinearRing(coordinates)
+      const hole = array[i]
+      const coordinates = parse.coordinates.call(this, hole)
+      const linearRing = this.geometryFactory.createLinearRing(coordinates)
       holes.push(linearRing)
     }
     return this.geometryFactory.createPolygon(shell, holes)

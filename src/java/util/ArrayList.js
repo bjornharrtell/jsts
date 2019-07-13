@@ -46,7 +46,7 @@ ArrayList.prototype.clear = function () {
  * @override
  */
 ArrayList.prototype.addAll = function (c) {
-  for (var i = c.iterator(); i.hasNext();) {
+  for (let i = c.iterator(); i.hasNext();) {
     this.add(i.next())
   }
   return true
@@ -56,7 +56,7 @@ ArrayList.prototype.addAll = function (c) {
  * @override
  */
 ArrayList.prototype.set = function (index, element) {
-  var oldElement = this.array_[index]
+  const oldElement = this.array_[index]
   this.array_[index] = element
   return oldElement
 }
@@ -97,9 +97,9 @@ ArrayList.prototype.size = function () {
  * @override
  */
 ArrayList.prototype.toArray = function () {
-  var array = []
+  const array = []
 
-  for (var i = 0, len = this.array_.length; i < len; i++) {
+  for (let i = 0, len = this.array_.length; i < len; i++) {
     array.push(this.array_[i])
   }
 
@@ -110,9 +110,9 @@ ArrayList.prototype.toArray = function () {
  * @override
  */
 ArrayList.prototype.remove = function (o) {
-  var found = false
+  let found = false
 
-  for (var i = 0, len = this.array_.length; i < len; i++) {
+  for (let i = 0, len = this.array_.length; i < len; i++) {
     if (this.array_[i] === o) {
       this.array_.splice(i, 1)
       found = true
@@ -124,7 +124,7 @@ ArrayList.prototype.remove = function (o) {
 }
 
 ArrayList.prototype.removeAll = function (c) {
-  for (var i = c.iterator(); i.hasNext();) {
+  for (let i = c.iterator(); i.hasNext();) {
     this.remove(i.next())
   }
   return true
@@ -136,7 +136,7 @@ ArrayList.prototype.removeAll = function (c) {
  * @constructor
  * @private
  */
-var Iterator_ = function (arrayList) {
+const Iterator_ = function (arrayList) {
   /**
    * @type {ArrayList}
    * @private

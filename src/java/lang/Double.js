@@ -11,14 +11,14 @@ if (typeof Float64Array === 'function' &&
   // Simple and fast conversion between double and long bits
   // using TypedArrays and ArrayViewBuffers.
   (function () {
-    var EXP_BIT_MASK = 0x7ff00000
-    var SIGNIF_BIT_MASK = 0xFFFFF
-    var f64buf = new Float64Array(1)
-    var i32buf = new Int32Array(f64buf.buffer)
+    const EXP_BIT_MASK = 0x7ff00000
+    const SIGNIF_BIT_MASK = 0xFFFFF
+    const f64buf = new Float64Array(1)
+    const i32buf = new Int32Array(f64buf.buffer)
     Double.doubleToLongBits = function (value) {
       f64buf[0] = value
-      var low = i32buf[0] | 0
-      var high = i32buf[1] | 0
+      let low = i32buf[0] | 0
+      let high = i32buf[1] | 0
       // Check for NaN based on values of bit fields, maximum
       // exponent and nonzero significand.
       if (((high & EXP_BIT_MASK) === EXP_BIT_MASK) &&
@@ -39,13 +39,13 @@ if (typeof Float64Array === 'function' &&
   // More complex and slower fallback implementation using
   // math and the divide-by-two and multiply-by-two algorithms.
   (function () {
-    var BIAS = 1023
-    var log2 = Math.log2
-    var floor = Math.floor
-    var pow = Math.pow
-    var MAX_REL_BITS_INTEGER = (function () {
-      for (var i = 53; i > 0; i--) {
-        var bits = pow(2, i) - 1
+    const BIAS = 1023
+    const log2 = Math.log2
+    const floor = Math.floor
+    const pow = Math.pow
+    const MAX_REL_BITS_INTEGER = (function () {
+      for (let i = 53; i > 0; i--) {
+        const bits = pow(2, i) - 1
         if (floor(log2(bits)) + 1 === i) {
           return bits
         }
@@ -53,8 +53,8 @@ if (typeof Float64Array === 'function' &&
       return 0
     })()
     Double.doubleToLongBits = function (value) {
-      var x, y, f, bits, skip
-      var sign, exp, high, low
+      let x, y, f, bits, skip
+      let sign, exp, high, low
 
       // Get the sign bit and absolute value.
       if (value < 0 || 1 / value === Number.NEGATIVE_INFINITY) {
@@ -249,9 +249,9 @@ if (typeof Float64Array === 'function' &&
     }
     Double.longBitsToDouble = function (bits) {
       let i
-      var x, sign, exp, fract
-      var high = bits.high
-      var low = bits.low
+      let x, sign, exp, fract
+      const high = bits.high
+      const low = bits.low
 
       // Extract the sign.
       sign = (high & (1 << 31)) ? -1 : 1

@@ -13,14 +13,14 @@ export default class CommonBits {
   }
 
   add (num) {
-    var numBits = Double.doubleToLongBits(num)
+    const numBits = Double.doubleToLongBits(num)
     if (this._isFirst) {
       this._commonBits = numBits
       this._commonSignExp = CommonBits.signExpBits(this._commonBits)
       this._isFirst = false
       return null
     }
-    var numSignExp = CommonBits.signExpBits(numBits)
+    const numSignExp = CommonBits.signExpBits(numBits)
     if (numSignExp !== this._commonSignExp) {
       this._commonBits.high = 0 | 0
       this._commonBits.low = 0 | 0
@@ -33,11 +33,11 @@ export default class CommonBits {
   toString () {
     if (arguments.length === 1) {
       const bits = arguments[0]
-      var x = Double.longBitsToDouble(bits)
-      var numStr = Long.toBinaryString(bits)
-      var padStr = '0000000000000000000000000000000000000000000000000000000000000000' + numStr
-      var bitStr = padStr.substring(padStr.length - 64)
-      var str = bitStr.substring(0, 1) + '  ' + bitStr.substring(1, 12) + '(exp) ' + bitStr.substring(12) + ' [ ' + x + ' ]'
+      const x = Double.longBitsToDouble(bits)
+      const numStr = Long.toBinaryString(bits)
+      const padStr = '0000000000000000000000000000000000000000000000000000000000000000' + numStr
+      const bitStr = padStr.substring(padStr.length - 64)
+      const str = bitStr.substring(0, 1) + '  ' + bitStr.substring(1, 12) + '(exp) ' + bitStr.substring(12) + ' [ ' + x + ' ]'
       return str
     }
   }
@@ -51,7 +51,7 @@ export default class CommonBits {
   }
 
   static getBit (bits, i) {
-    var mask = (1 << (i % 32))
+    const mask = (1 << (i % 32))
     if (i < 32) {
       return (bits.low & mask) !== 0 ? 1 : 0
     }
@@ -63,22 +63,22 @@ export default class CommonBits {
   }
 
   static zeroLowerBits (bits, nBits) {
-    var prop = 'low'
+    let prop = 'low'
     if (nBits > 32) {
       bits.low = 0 | 0
       nBits %= 32
       prop = 'high'
     }
     if (nBits > 0) {
-      var mask = (nBits < 32) ? (~((1 << nBits) - 1)) : 0
+      const mask = (nBits < 32) ? (~((1 << nBits) - 1)) : 0
       bits[prop] &= mask
     }
     return bits
   }
 
   static numCommonMostSigMantissaBits (num1, num2) {
-    var count = 0
-    for (var i = 52; i >= 0; i--) {
+    let count = 0
+    for (let i = 52; i >= 0; i--) {
       if (CommonBits.getBit(num1, i) !== CommonBits.getBit(num2, i)) return count
       count++
     }

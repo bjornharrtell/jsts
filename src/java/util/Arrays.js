@@ -11,7 +11,7 @@ export default function Arrays () {};
 /**
  */
 Arrays.sort = function () {
-  var a = arguments[0]; var i; var t; var comparator; var compare
+  const a = arguments[0]; let i; let t; let comparator; let compare
   if (arguments.length === 1) {
     compare = function (a, b) {
       return a.compareTo(b)
@@ -26,7 +26,7 @@ Arrays.sort = function () {
   } else if (arguments.length === 3) {
     t = a.slice(arguments[1], arguments[2])
     t.sort()
-    var r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
+    const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
     a.splice(0, a.length)
     for (i = 0; i < r.length; i++) {
       a.push(r[i])
@@ -38,7 +38,7 @@ Arrays.sort = function () {
       return comparator['compare'](a, b)
     }
     t.sort(compare)
-    r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
+    const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
     a.splice(0, a.length)
     for (i = 0; i < r.length; i++) {
       a.push(r[i])
@@ -51,8 +51,8 @@ Arrays.sort = function () {
  * @return {ArrayList}
  */
 Arrays.asList = function (array) {
-  var arrayList = new ArrayList()
-  for (var i = 0, len = array.length; i < len; i++) {
+  const arrayList = new ArrayList()
+  for (let i = 0, len = array.length; i < len; i++) {
     arrayList.add(array[i])
   }
   return arrayList

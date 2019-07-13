@@ -27,8 +27,8 @@ HashSet.prototype = new Set()
  * @override
  */
 HashSet.prototype.contains = function (o) {
-  for (var i = 0, len = this.array_.length; i < len; i++) {
-    var e = this.array_[i]
+  for (let i = 0, len = this.array_.length; i < len; i++) {
+    const e = this.array_[i]
     if (e === o) {
       return true
     }
@@ -53,7 +53,7 @@ HashSet.prototype.add = function (o) {
  * @override
  */
 HashSet.prototype.addAll = function (c) {
-  for (var i = c.iterator(); i.hasNext();) {
+  for (let i = c.iterator(); i.hasNext();) {
     this.add(i.next())
   }
   return true
@@ -84,9 +84,9 @@ HashSet.prototype.isEmpty = function () {
  * @override
  */
 HashSet.prototype.toArray = function () {
-  var array = []
+  const array = []
 
-  for (var i = 0, len = this.array_.length; i < len; i++) {
+  for (let i = 0, len = this.array_.length; i < len; i++) {
     array.push(this.array_[i])
   }
 
@@ -106,7 +106,7 @@ HashSet.prototype.iterator = function () {
  * @constructor
  * @private
  */
-var Iterator_ = function (hashSet) {
+const Iterator_ = function (hashSet) {
   /**
    * @type {HashSet}
    * @private

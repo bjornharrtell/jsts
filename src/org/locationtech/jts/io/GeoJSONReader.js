@@ -31,7 +31,7 @@ export default class GeoJSONReader {
    * @memberof module:org/locationtech/jts/io/GeoJSONReader#
    */
   read (geoJson) {
-    var geometry = this.parser.read(geoJson)
+    const geometry = this.parser.read(geoJson)
     return geometry
   }
 }

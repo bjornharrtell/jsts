@@ -76,8 +76,8 @@ export default class OL3Parser {
 
   convertFromPolygon (polygon) {
     const linearRings = polygon.getLinearRings()
-    var shell = null
-    var holes = []
+    let shell = null
+    const holes = []
     for (let i = 0; i < linearRings.length; i++) {
       const linearRing = this.convertFromLinearRing(linearRings[i])
       if (i === 0) {
@@ -148,17 +148,17 @@ export default class OL3Parser {
   }
 
   convertToLineString (lineString) {
-    var points = lineString._points._coordinates.map(p2c)
+    const points = lineString._points._coordinates.map(p2c)
     return new this.ol.geom.LineString(points)
   }
 
   convertToLinearRing (linearRing) {
-    var points = linearRing._points._coordinates.map(p2c)
+    const points = linearRing._points._coordinates.map(p2c)
     return new this.ol.geom.LinearRing(points)
   }
 
   convertToPolygon (polygon) {
-    var rings = [polygon._shell._points._coordinates.map(p2c)]
+    const rings = [polygon._shell._points._coordinates.map(p2c)]
     for (let i = 0; i < polygon._holes.length; i++) {
       rings.push(polygon._holes[i]._points._coordinates.map(p2c))
     }
@@ -170,7 +170,7 @@ export default class OL3Parser {
   }
 
   convertToMultiLineString (multiLineString) {
-    var lineStrings = []
+    const lineStrings = []
     for (let i = 0; i < multiLineString._geometries.length; i++) {
       lineStrings.push(this.convertToLineString(multiLineString._geometries[i]).getCoordinates())
     }
@@ -178,7 +178,7 @@ export default class OL3Parser {
   }
 
   convertToMultiPolygon (multiPolygon) {
-    var polygons = []
+    const polygons = []
     for (let i = 0; i < multiPolygon._geometries.length; i++) {
       polygons.push(this.convertToPolygon(multiPolygon._geometries[i]).getCoordinates())
     }
@@ -186,9 +186,9 @@ export default class OL3Parser {
   }
 
   convertToCollection (geometryCollection) {
-    var geometries = []
+    const geometries = []
     for (let i = 0; i < geometryCollection._geometries.length; i++) {
-      var geometry = geometryCollection._geometries[i]
+      const geometry = geometryCollection._geometries[i]
       geometries.push(this.write(geometry))
     }
     return new this.ol.geom.GeometryCollection(geometries)

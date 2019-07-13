@@ -18,11 +18,11 @@ DoubleBits.powerOf2 = function (exp) {
  * @private
  */
 function CVTFWD (NumW, Qty) {
-  var Sign
-  var Expo
-  var Mant
-  var Bin
-  var Inf = {
+  let Sign
+  let Expo
+  let Mant
+  let Bin
+  const Inf = {
     32: {
       d: 0x7F,
       c: 0x80,
@@ -36,7 +36,7 @@ function CVTFWD (NumW, Qty) {
       a: 0
     }
   }
-  var ExW = {
+  const ExW = {
     32: 8,
     64: 11
   }[NumW]

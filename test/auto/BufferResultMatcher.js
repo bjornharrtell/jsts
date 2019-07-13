@@ -46,15 +46,15 @@ export default class BufferResultMatcher {
 
   isSymDiffAreaInTolerance (actualBuffer,
     expectedBuffer) {
-    var area = expectedBuffer.getArea()
-    var diff = actualBuffer.symDifference(expectedBuffer)
-    var areaDiff = diff.getArea()
+    let area = expectedBuffer.getArea()
+    let diff = actualBuffer.symDifference(expectedBuffer)
+    let areaDiff = diff.getArea()
 
     // can't get closer than difference area = 0 ! This also handles case when
     // symDiff is empty
     if (areaDiff <= 0.0) { return true }
 
-    var frac = Number.POSITIVE_INFINITY
+    let frac = Number.POSITIVE_INFINITY
     if (area > 0.0) { frac = areaDiff / area }
 
     return frac < BufferResultMatcher.MAX_RELATIVE_AREA_DIFFERENCE
@@ -62,13 +62,13 @@ export default class BufferResultMatcher {
 
   isBoundaryHausdorffDistanceInTolerance (
     actualBuffer, expectedBuffer, distance) {
-    var actualBdy = actualBuffer.getBoundary()
-    var expectedBdy = expectedBuffer.getBoundary()
+    let actualBdy = actualBuffer.getBoundary()
+    let expectedBdy = expectedBuffer.getBoundary()
 
-    var haus = new DiscreteHausdorffDistance(actualBdy, expectedBdy)
+    let haus = new DiscreteHausdorffDistance(actualBdy, expectedBdy)
     haus.setDensifyFraction(0.25)
-    var maxDistanceFound = haus.orientedDistance()
-    var expectedDistanceTol = Math.abs(distance) /
+    let maxDistanceFound = haus.orientedDistance()
+    let expectedDistanceTol = Math.abs(distance) /
         BufferResultMatcher.MAX_HAUSDORFF_DISTANCE_FACTOR
     if (expectedDistanceTol < BufferResultMatcher.MIN_DISTANCE_TOLERANCE) { expectedDistanceTol = BufferResultMatcher.MIN_DISTANCE_TOLERANCE }
     if (maxDistanceFound > expectedDistanceTol) { return false }

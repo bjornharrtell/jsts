@@ -37,7 +37,7 @@ export default class Geometry {
     } else if (arguments[0] instanceof Object) {
       const o = arguments[0]
       if (!(o instanceof Geometry)) return false
-      var g = o
+      const g = o
       return this.equalsExact(g)
     }
   }
@@ -130,7 +130,7 @@ export default class Geometry {
   }
 
   norm () {
-    var copy = this.copy()
+    const copy = this.copy()
     copy.normalize()
     return copy
   }
@@ -155,12 +155,12 @@ export default class Geometry {
   }
 
   compare (a, b) {
-    var i = a.iterator()
-    var j = b.iterator()
+    const i = a.iterator()
+    const j = b.iterator()
     while (i.hasNext() && j.hasNext()) {
-      var aElement = i.next()
-      var bElement = j.next()
-      var comparison = aElement.compareTo(bElement)
+      const aElement = i.next()
+      const bElement = j.next()
+      const comparison = aElement.compareTo(bElement)
       if (comparison !== 0) {
         return comparison
       }
@@ -194,7 +194,7 @@ export default class Geometry {
   }
 
   static hasNonEmptyElements (geometries) {
-    for (var i = 0; i < geometries.length; i++) {
+    for (let i = 0; i < geometries.length; i++) {
       if (!geometries[i].isEmpty()) {
         return true
       }
@@ -203,7 +203,7 @@ export default class Geometry {
   }
 
   static hasNullElements (array) {
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
       if (array[i] === null) {
         return true
       }
