@@ -11,6 +11,8 @@ export default class TopologyException extends RuntimeException {
       super(TopologyException.msgWithCoord(msg, pt))
       this.name = 'TopologyException'
       this.pt = new Coordinate(pt)
+    } else {
+      throw Error()
     }
   }
 
