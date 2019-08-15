@@ -91,6 +91,11 @@ export default class RelateOp extends GeometryGraphOperation {
     return this._relate.computeIM()
   }
 
+  equalsTopo (g1, g2) {
+    if (!g1.getEnvelopeInternal().equals(g2.getEnvelopeInternal())) return false
+    return RelateOp.relate(g1, g2).isEquals(g1.getDimension(), g2.getDimension())
+  }
+
   getClass () {
     return RelateOp
   }
