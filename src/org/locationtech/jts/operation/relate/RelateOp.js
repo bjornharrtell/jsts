@@ -49,6 +49,11 @@ export default class RelateOp extends GeometryGraphOperation {
     return new RelateOp(g1, g2).getIntersectionMatrix().isTouches(g1.getDimension(), g2.getDimension())
   }
 
+  static equalsTopo (g1, g2) {
+    if (!g1.getEnvelopeInternal().equals(g2.getEnvelopeInternal())) return false
+    return RelateOp.relate(g1, g2).isEquals(g1.getDimension(), g2.getDimension())
+  }
+
   static relate () {
     if (arguments.length === 2) {
       const a = arguments[0]; const b = arguments[1]
@@ -89,11 +94,6 @@ export default class RelateOp extends GeometryGraphOperation {
 
   getIntersectionMatrix () {
     return this._relate.computeIM()
-  }
-
-  equalsTopo (g1, g2) {
-    if (!g1.getEnvelopeInternal().equals(g2.getEnvelopeInternal())) return false
-    return RelateOp.relate(g1, g2).isEquals(g1.getDimension(), g2.getDimension())
   }
 
   getClass () {
