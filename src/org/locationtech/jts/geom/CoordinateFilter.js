@@ -4,7 +4,6 @@ export default class CoordinateFilter {
   }
 
   filter (coord) {}
-
   getClass () {
     return CoordinateFilter
   }

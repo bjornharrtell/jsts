@@ -4,7 +4,6 @@ export default class KdNodeVisitor {
   }
 
   visit (node) {}
-
   getClass () {
     return KdNodeVisitor
   }

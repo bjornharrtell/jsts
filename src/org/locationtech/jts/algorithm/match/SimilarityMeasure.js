@@ -4,7 +4,6 @@ export default class SimilarityMeasure {
   }
 
   measure (g1, g2) {}
-
   getClass () {
     return SimilarityMeasure
   }

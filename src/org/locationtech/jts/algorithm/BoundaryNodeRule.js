@@ -4,7 +4,6 @@ export default class BoundaryNodeRule {
   }
 
   isInBoundary (boundaryCount) {}
-
   getClass () {
     return BoundaryNodeRule
   }

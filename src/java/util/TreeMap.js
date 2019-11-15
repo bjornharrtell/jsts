@@ -37,7 +37,7 @@ TreeMap.prototype = new SortedMap()
 TreeMap.prototype.get = function (key) {
   var p = this.root_
   while (p !== null) {
-    var cmp = key['compareTo'](p.key)
+    var cmp = key.compareTo(p.key)
     if (cmp < 0) {
       p = p.left
     } else if (cmp > 0) {
@@ -70,7 +70,7 @@ TreeMap.prototype.put = function (key, value) {
   var t = this.root_; var parent; var cmp
   do {
     parent = t
-    cmp = key['compareTo'](t.key)
+    cmp = key.compareTo(t.key)
     if (cmp < 0) {
       t = t.left
     } else if (cmp > 0) {
@@ -252,7 +252,7 @@ TreeMap.prototype.size = function () {
 TreeMap.prototype.containsKey = function (key) {
   var p = this.root_
   while (p !== null) {
-    var cmp = key['compareTo'](p.key)
+    var cmp = key.compareTo(p.key)
     if (cmp < 0) {
       p = p.left
     } else if (cmp > 0) {

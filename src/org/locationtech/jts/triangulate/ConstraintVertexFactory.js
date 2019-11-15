@@ -4,7 +4,6 @@ export default class ConstraintVertexFactory {
   }
 
   createVertex (p, constraintSeg) {}
-
   getClass () {
     return ConstraintVertexFactory
   }

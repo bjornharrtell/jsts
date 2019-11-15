@@ -4,7 +4,6 @@ export default class SegmentSetMutualIntersector {
   }
 
   process (segStrings, segInt) {}
-
   getClass () {
     return SegmentSetMutualIntersector
   }

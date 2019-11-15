@@ -4,7 +4,6 @@ export default class MapOp {
   }
 
   map (g) {}
-
   getClass () {
     return MapOp
   }

@@ -29,7 +29,7 @@ TreeSet.prototype = new SortedSet()
 TreeSet.prototype.contains = function (o) {
   for (let i = 0, len = this.array_.length; i < len; i++) {
     const e = this.array_[i]
-    if (e['compareTo'](o) === 0) {
+    if (e.compareTo(o) === 0) {
       return true
     }
   }
@@ -46,7 +46,7 @@ TreeSet.prototype.add = function (o) {
 
   for (let i = 0, len = this.array_.length; i < len; i++) {
     const e = this.array_[i]
-    if (e['compareTo'](o) === 1) {
+    if (e.compareTo(o) === 1) {
       this.array_.splice(i, 0, o)
       return true
     }

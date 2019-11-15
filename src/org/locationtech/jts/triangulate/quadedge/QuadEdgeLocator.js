@@ -4,7 +4,6 @@ export default class QuadEdgeLocator {
   }
 
   locate (v) {}
-
   getClass () {
     return QuadEdgeLocator
   }

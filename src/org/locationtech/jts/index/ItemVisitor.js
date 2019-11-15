@@ -4,7 +4,6 @@ export default class ItemVisitor {
   }
 
   visitItem (item) {}
-
   getClass () {
     return ItemVisitor
   }

@@ -28,7 +28,6 @@ export default class Node extends GraphComponent {
   }
 
   computeIM (im) {}
-
   computeMergedLocation (label2, eltIndex) {
     let loc = Location.NONE
     loc = this._label.getLocation(eltIndex)

@@ -2,6 +2,7 @@ import LineString from '../geom/LineString'
 import Geometry from '../geom/Geometry'
 import Coordinate from '../geom/Coordinate'
 import Double from '../../../../java/lang/Double'
+import Centroid from './Centroid'
 import GeometryCollection from '../geom/GeometryCollection'
 export default class InteriorPointLine {
   constructor () {
@@ -70,7 +71,11 @@ InteriorPointLine.constructor_ = function () {
   this._minDistance = Double.MAX_VALUE
   this._interiorPoint = null
   const g = arguments[0]
-  this._centroid = g.getCentroid().getCoordinate()
+  if (g.isEmpty()) {
+    this._centroid = new Coordinate()
+  } else {
+    this._centroid = Centroid.getCentroid(g)
+  }
   this.addInterior(g)
   if (this._interiorPoint === null) this.addEndpoints(g)
 }

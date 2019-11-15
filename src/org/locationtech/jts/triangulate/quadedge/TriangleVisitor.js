@@ -4,7 +4,6 @@ export default class TriangleVisitor {
   }
 
   visit (triEdges) {}
-
   getClass () {
     return TriangleVisitor
   }

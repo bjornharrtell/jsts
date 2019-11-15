@@ -5,11 +5,8 @@ export default class CoordinateSequence {
   }
 
   setOrdinate (index, ordinateIndex, value) {}
-
   size () {}
-
   getOrdinate (index, ordinateIndex) {}
-
   getCoordinate () {
     if (arguments.length === 1) {
       const i = arguments[0]
@@ -19,19 +16,12 @@ export default class CoordinateSequence {
   }
 
   getCoordinateCopy (i) {}
-
   getDimension () {}
-
   getX (index) {}
-
   expandEnvelope (env) {}
-
   copy () {}
-
   getY (index) {}
-
   toCoordinateArray () {}
-
   getClass () {
     return CoordinateSequence
   }

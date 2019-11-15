@@ -20,7 +20,7 @@ Arrays.sort = function () {
   } else if (arguments.length === 2) {
     comparator = arguments[1]
     compare = function (a, b) {
-      return comparator['compare'](a, b)
+      return comparator.compare(a, b)
     }
     a.sort(compare)
   } else if (arguments.length === 3) {
@@ -35,7 +35,7 @@ Arrays.sort = function () {
     t = a.slice(arguments[1], arguments[2])
     comparator = arguments[3]
     compare = function (a, b) {
-      return comparator['compare'](a, b)
+      return comparator.compare(a, b)
     }
     t.sort(compare)
     const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))

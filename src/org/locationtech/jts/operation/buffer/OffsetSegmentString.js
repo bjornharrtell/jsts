@@ -23,7 +23,6 @@ export default class OffsetSegmentString {
   }
 
   reverse () {}
-
   addPts (pt, isForward) {
     if (isForward) {
       for (let i = 0; i < pt.length; i++) {

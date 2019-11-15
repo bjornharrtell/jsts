@@ -44,7 +44,6 @@ export default class Point extends Geometry {
   }
 
   normalize () {}
-
   getCoordinate () {
     return this._coordinates.size() !== 0 ? this._coordinates.getCoordinate(0) : null
   }

@@ -72,7 +72,6 @@ export default class EdgeEnd {
   }
 
   computeLabel (boundaryNodeRule) {}
-
   init (p0, p1) {
     this._p0 = p0
     this._p1 = p1

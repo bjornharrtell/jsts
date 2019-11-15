@@ -4,7 +4,6 @@ export default class GeometryFilter {
   }
 
   filter (geom) {}
-
   getClass () {
     return GeometryFilter
   }

@@ -4,7 +4,6 @@ export default class Boundable {
   }
 
   getBounds () {}
-
   getClass () {
     return Boundable
   }

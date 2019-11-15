@@ -4,7 +4,6 @@ export default class PointOnGeometryLocator {
   }
 
   locate (p) {}
-
   getClass () {
     return PointOnGeometryLocator
   }
