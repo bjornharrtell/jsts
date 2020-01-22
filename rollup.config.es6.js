@@ -1,21 +1,34 @@
-var pjson = require('./package.json')
+import fs from 'fs'
 import git from 'git-rev-sync'
 import replace from 'rollup-plugin-replace'
-import nodeResolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+import babel from 'rollup-plugin-babel'
+
+const packageJson = JSON.parse(fs.readFileSync('./package.json'))
+const license = fs.readFileSync('./license.txt', { encoding: 'utf8' })
 
 export default {
-  entry: 'src/jsts.js',
-  format: 'es',
-  exports: 'named',
+  input: 'src/jsts.es6.js',
+  output: {
+    file: 'dist/jsts.es6.js',
+    format: 'esm',
+    name: 'jsts',
+    banner: license,
+    sourcemap: true
+  },
   plugins: [
     replace({
-      npm_package_version: pjson.version,
+      npm_package_version: packageJson.version,
       git_hash: git.short()
     }),
-    nodeResolve({}),
-    commonjs({
-      include: 'node_modules/**'
+    babel({
+      exclude: 'node_modules/**',
+      presets: [['@babel/env', {
+        modules: false,
+        targets: {
+          browsers: ['>10%', 'not dead', 'not ie 11']
+        }
+      }]],
+      babelrc: false
     })
   ]
 }
