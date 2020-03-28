@@ -23,7 +23,6 @@ export default {
     babel({
       exclude: 'node_modules/**',
       presets: [['@babel/env', {
-        modules: false,
         targets: {
           browsers: ['>1%', 'not dead', 'not ie 11']
         }
