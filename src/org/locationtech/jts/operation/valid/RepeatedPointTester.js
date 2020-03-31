@@ -4,6 +4,7 @@ import Point from '../../geom/Point'
 import Polygon from '../../geom/Polygon'
 import MultiPoint from '../../geom/MultiPoint'
 import GeometryCollection from '../../geom/GeometryCollection'
+import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException'
 export default class RepeatedPointTester {
   constructor () {
     RepeatedPointTester.constructor_.apply(this, arguments)

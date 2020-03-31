@@ -1,5 +1,6 @@
 import Coordinate from '../../geom/Coordinate'
 import CoordinateSequence from '../../geom/CoordinateSequence'
+import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException'
 export default class AxisPlaneCoordinateSequence {
   constructor () {
     AxisPlaneCoordinateSequence.constructor_.apply(this, arguments)

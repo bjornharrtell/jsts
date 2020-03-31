@@ -1,6 +1,6 @@
 import Collection from './Collection'
 import NoSuchElementException from './NoSuchElementException'
-import OperationNotSupported from './OperationNotSupported'
+import UnsupportedOperationException from '../lang/UnsupportedOperationException'
 import SortedSet from './SortedSet'
 
 /**
@@ -71,7 +71,7 @@ TreeSet.prototype.addAll = function (c) {
  * @override
  */
 TreeSet.prototype.remove = function (e) {
-  throw new OperationNotSupported()
+  throw new UnsupportedOperationException()
 }
 
 /**
@@ -152,5 +152,5 @@ Iterator_.prototype.hasNext = function () {
  * @override
  */
 Iterator_.prototype.remove = function () {
-  throw new OperationNotSupported()
+  throw new UnsupportedOperationException()
 }

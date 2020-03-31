@@ -1,6 +1,7 @@
 import Iterator from '../../../../java/util/Iterator'
 import NoSuchElementException from '../../../../java/util/NoSuchElementException'
 import GeometryCollection from './GeometryCollection'
+import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException'
 export default class GeometryCollectionIterator {
   constructor () {
     GeometryCollectionIterator.constructor_.apply(this, arguments)

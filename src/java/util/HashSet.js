@@ -1,6 +1,6 @@
 import Collection from './Collection'
 import NoSuchElementException from './NoSuchElementException'
-import OperationNotSupported from './OperationNotSupported'
+import UnsupportedOperationException from '../lang/UnsupportedOperationException'
 import Set from './Set'
 
 /**
@@ -63,7 +63,7 @@ HashSet.prototype.addAll = function (c) {
  * @override
  */
 HashSet.prototype.remove = function (o) {
-  throw new OperationNotSupported()
+  throw new UnsupportedOperationException()
 }
 
 /**
@@ -144,5 +144,5 @@ Iterator_.prototype.hasNext = function () {
  * @override
  */
 Iterator_.prototype.remove = function () {
-  throw new OperationNotSupported()
+  throw new UnsupportedOperationException()
 }

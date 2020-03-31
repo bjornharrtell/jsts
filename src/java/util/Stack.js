@@ -1,5 +1,5 @@
 import EmptyStackException from './EmptyStackException'
-import IndexOutOfBoundsException from './IndexOutOfBoundsException'
+import IndexOutOfBoundsException from '../lang/IndexOutOfBoundsException'
 import List from './List'
 
 /**

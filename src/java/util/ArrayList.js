@@ -1,5 +1,5 @@
 import Collection from './Collection'
-import IndexOutOfBoundsException from './IndexOutOfBoundsException'
+import IndexOutOfBoundsException from '../lang/IndexOutOfBoundsException'
 import List from './List'
 import NoSuchElementException from './NoSuchElementException'
 
