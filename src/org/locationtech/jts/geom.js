@@ -1,5 +1,6 @@
 import Coordinate from './geom/Coordinate'
 import CoordinateList from './geom/CoordinateList'
+import CoordinateSequenceFilter from './geom/CoordinateSequenceFilter'
 import Envelope from './geom/Envelope'
 import LineSegment from './geom/LineSegment'
 import GeometryFactory from './geom/GeometryFactory'
@@ -22,6 +23,7 @@ import * as util from './geom/util'
 export {
   Coordinate,
   CoordinateList,
+  CoordinateSequenceFilter,
   Envelope,
   LineSegment,
   GeometryFactory,
