@@ -29,19 +29,6 @@ export default class Geometry {
     return false
   }
 
-  equals () {
-    if (arguments[0] instanceof Geometry) {
-      const g = arguments[0]
-      if (g === null) return false
-      return this.equalsTopo(g)
-    } else if (arguments[0] instanceof Object) {
-      const o = arguments[0]
-      if (!(o instanceof Geometry)) return false
-      const g = o
-      return this.equalsExact(g)
-    }
-  }
-
   equalsExact (other) {
     return this === other || this.equalsExact(other, 0)
   }
@@ -176,6 +163,10 @@ export default class Geometry {
 
   hashCode () {
     return this.getEnvelopeInternal().hashCode()
+  }
+
+  isEquivalentClass (other) {
+    return this.getClass() === other.getClass()
   }
 
   isGeometryCollectionOrDerived () {

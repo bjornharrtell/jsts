@@ -15,8 +15,17 @@ import OverlayOp from './operation/overlay/OverlayOp'
 import Geometry from './geom/Geometry'
 
 Geometry.prototype.equalsTopo = function (g) {
-  if (!this.getEnvelopeInternal().equals(g.getEnvelopeInternal())) return false
-  return RelateOp.relate(this, g).isEquals(this.getDimension(), g.getDimension())
+  return RelateOp.equalsTopo(this, g)
+}
+Geometry.prototype.equals = function(g) {
+  if (g instanceof Geometry) {
+    if (g === null) return false
+    return RelateOp.equalsTopo(this, g)
+  } else if (g instanceof Object) {
+    if (!(g instanceof Geometry)) return false
+    const g = o
+    return this.equalsExact(g)
+  }
 }
 Geometry.prototype.union = function () {
   if (arguments.length === 0) {
@@ -130,7 +139,4 @@ Geometry.prototype.isWithinDistance = function (geom, distance) {
 }
 Geometry.prototype.distance = function (g) {
   return DistanceOp.distance(this, g)
-}
-Geometry.prototype.isEquivalentClass = function (other) {
-  return this.getClass() === other.getClass()
 }

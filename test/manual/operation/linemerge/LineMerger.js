@@ -17,7 +17,6 @@ describe('LineMerger', function () {
     const mergedLineString = mergedLineStrings.get(0)
     const writer = new WKTWriter()
     const result = writer.write(mergedLineString)
-    console.log(result)
     expect(result).to.equal('LINESTRING(0 0,1 1,2 2)')
   })
 })
