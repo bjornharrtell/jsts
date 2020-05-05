@@ -17,7 +17,7 @@ import Geometry from './geom/Geometry'
 Geometry.prototype.equalsTopo = function (g) {
   return RelateOp.equalsTopo(this, g)
 }
-Geometry.prototype.equals = function(g) {
+Geometry.prototype.equals = function (g) {
   if (g instanceof Geometry) {
     if (g === null) return false
     return RelateOp.equalsTopo(this, g)
