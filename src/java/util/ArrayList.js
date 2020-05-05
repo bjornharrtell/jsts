@@ -5,182 +5,121 @@ import NoSuchElementException from './NoSuchElementException'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/ArrayList.html
- *
- * @extends List
- * @private
  */
-export default function ArrayList () {
-  /**
-   * @type {Array}
-   * @private
-  */
-  this.array_ = []
+export default class ArrayList extends List {
+  interfaces_ = [List, Collection]
+  #array = []
 
-  if (arguments[0] instanceof Collection) {
-    this.addAll(arguments[0])
-  }
-};
-ArrayList.prototype = Object.create(List.prototype)
-ArrayList.prototype.constructor = ArrayList
-
-ArrayList.prototype.ensureCapacity = function () {}
-ArrayList.prototype.interfaces_ = [List, Collection]
-
-/**
- * @override
- */
-ArrayList.prototype.add = function (e) {
-  if (arguments.length === 1) {
-    this.array_.push(e)
-  } else {
-    this.array_.splice(arguments[0], 0, arguments[1])
-  }
-  return true
-}
-
-ArrayList.prototype.clear = function () {
-  this.array_ = []
-}
-
-/**
- * @override
- */
-ArrayList.prototype.addAll = function (c) {
-  for (let i = c.iterator(); i.hasNext();) {
-    this.add(i.next())
-  }
-  return true
-}
-
-/**
- * @override
- */
-ArrayList.prototype.set = function (index, element) {
-  const oldElement = this.array_[index]
-  this.array_[index] = element
-  return oldElement
-}
-
-/**
- * @override
- */
-ArrayList.prototype.iterator = function () {
-  return new Iterator_(this)
-}
-
-/**
- * @override
- */
-ArrayList.prototype.get = function (index) {
-  if (index < 0 || index >= this.size()) {
-    throw new IndexOutOfBoundsException()
+  constructor(o) {
+    super()
+    if (o instanceof Collection)
+      this.addAll(o)
   }
 
-  return this.array_[index]
-}
+  ensureCapacity() { }
 
-/**
- * @override
- */
-ArrayList.prototype.isEmpty = function () {
-  return this.array_.length === 0
-}
-
-/**
- * @override
- */
-ArrayList.prototype.size = function () {
-  return this.array_.length
-}
-
-/**
- * @override
- */
-ArrayList.prototype.toArray = function () {
-  const array = []
-
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    array.push(this.array_[i])
-  }
-
-  return array
-}
-
-/**
- * @override
- */
-ArrayList.prototype.remove = function (o) {
-  let found = false
-
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    if (this.array_[i] === o) {
-      this.array_.splice(i, 1)
-      found = true
-      break
+  add(e) {
+    if (arguments.length === 1) {
+      this.#array.push(e)
+    } else {
+      this.#array.splice(arguments[0], 0, arguments[1])
     }
-  }
-
-  return found
-}
-
-ArrayList.prototype.removeAll = function (c) {
-  for (let i = c.iterator(); i.hasNext();) {
-    this.remove(i.next())
-  }
-  return true
-}
-
-/**
- * @extends {Iterator}
- * @param {ArrayList} arrayList
- * @constructor
- * @private
- */
-const Iterator_ = function (arrayList) {
-  /**
-   * @type {ArrayList}
-   * @private
-  */
-  this.arrayList_ = arrayList
-  /**
-   * @type {number}
-   * @private
-  */
-  this.position_ = 0
-}
-
-/**
- * @override
- */
-Iterator_.prototype.next = function () {
-  if (this.position_ === this.arrayList_.size()) {
-    throw new NoSuchElementException()
-  }
-  return this.arrayList_.get(this.position_++)
-}
-
-/**
- * @override
- */
-Iterator_.prototype.hasNext = function () {
-  if (this.position_ < this.arrayList_.size()) {
     return true
-  } else {
-    return false
+  }
+
+  clear() {
+    this.#array = []
+  }
+
+  addAll(c) {
+    for (let i = c.iterator(); i.hasNext();) {
+      this.add(i.next())
+    }
+    return true
+  }
+
+  set(index, element) {
+    const oldElement = this.#array[index]
+    this.#array[index] = element
+    return oldElement
+  }
+
+  iterator() {
+    return new Iterator(this)
+  }
+
+  get(index) {
+    if (index < 0 || index >= this.size()) {
+      throw new IndexOutOfBoundsException()
+    }
+
+    return this.#array[index]
+  }
+
+  isEmpty() {
+    return this.#array.length === 0
+  }
+
+  size() {
+    return this.#array.length
+  }
+
+  toArray() {
+    const array = []
+
+    for (let i = 0, len = this.#array.length; i < len; i++) {
+      array.push(this.#array[i])
+    }
+
+    return array
+  }
+
+  remove(o) {
+    let found = false
+
+    for (let i = 0, len = this.#array.length; i < len; i++) {
+      if (this.#array[i] === o) {
+        this.#array.splice(i, 1)
+        found = true
+        break
+      }
+    }
+
+    return found
+  }
+
+  removeAll(c) {
+    for (let i = c.iterator(); i.hasNext();) {
+      this.remove(i.next())
+    }
+    return true
   }
 }
 
-/**
- * TODO: should be in ListIterator
- * @override
- */
-Iterator_.prototype.set = function (element) {
-  return this.arrayList_.set(this.position_ - 1, element)
-}
+class Iterator {
+  #arrayList
+  #position = 0
 
-/**
- * @override
- */
-Iterator_.prototype.remove = function () {
-  this.arrayList_.remove(this.arrayList_.get(this.position_))
+  constructor(arrayList) {
+    this.#arrayList = arrayList
+  }
+
+  next() {
+    if (this.#position === this.#arrayList.size())
+      throw new NoSuchElementException()
+    return this.#arrayList.get(this.#position++)
+  }
+
+  hasNext() {
+    return this.#position < this.#arrayList.size()
+  }
+
+  // TODO: should be in ListIterator
+  set(element) {
+    return this.#arrayList.set(this.#position - 1, element)
+  }
+
+  remove() {
+    this.#arrayList.remove(this.#arrayList.get(this.#position))
+  }
 }
