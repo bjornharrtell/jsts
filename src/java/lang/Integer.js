@@ -1,14 +1,17 @@
-export default function Integer (value) {
-  this.value = value
+export default class Integer {
+  #value
+  constructor(value) {
+    this.#value = value
+  }
+  intValue () {
+    return this.#value
+  }
+  compareTo (o) {
+    if (this.#value < o) return -1
+    if (this.#value > o) return 1
+    return 0
+  }
+  static isNan(n) {
+    return Number.isNaN(n)
+  }
 }
-
-Integer.prototype.intValue = function () {
-  return this.value
-}
-Integer.prototype.compareTo = function (o) {
-  if (this.value < o) return -1
-  if (this.value > o) return 1
-  return 0
-}
-
-Integer.isNaN = n => Number.isNaN(n)
