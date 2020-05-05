@@ -3,6 +3,7 @@ import Coordinate from '../geom/Coordinate'
 import Polygon from '../geom/Polygon'
 import Double from '../../../../java/lang/Double'
 import GeometryCollection from '../geom/GeometryCollection'
+import OverlayOp from '../operation/overlay/OverlayOp'
 export default class InteriorPointArea {
   constructor () {
     InteriorPointArea.constructor_.apply(this, arguments)
@@ -25,7 +26,7 @@ export default class InteriorPointArea {
       width = 0
       intPt = bisector.getCoordinate()
     } else {
-      const intersections = bisector.intersection(geometry)
+      const intersections = OverlayOp.intersection(bisector, geometry)
       const widestIntersection = this.widestGeometry(intersections)
       width = widestIntersection.getEnvelopeInternal().getWidth()
       intPt = InteriorPointArea.centre(widestIntersection.getEnvelopeInternal())
