@@ -39,6 +39,7 @@ export default class Arrays {
       }
     }
   }
+
   /**
    * @param {Array} array
    * @return {ArrayList}

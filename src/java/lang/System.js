@@ -6,6 +6,7 @@ export default class System {
       c++
     }
   }
+
   static getProperty (name) {
     return {
       'line.separator': '\n'
