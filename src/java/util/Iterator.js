@@ -3,22 +3,22 @@
  * @constructor
  * @private
  */
-export default function Iterator () {};
+export default class Iterator {
+  /**
+     * Returns true if the iteration has more elements.
+     * @return {boolean}
+     */
+  hasNext () {}
 
-/**
- * Returns true if the iteration has more elements.
- * @return {boolean}
- */
-Iterator.prototype.hasNext = function () {}
+  /**
+     * Returns the next element in the iteration.
+     * @return {Object}
+     */
+  next () {}
 
-/**
- * Returns the next element in the iteration.
- * @return {Object}
- */
-Iterator.prototype.next = function () {}
-
-/**
- * Removes from the underlying collection the last element returned by the
- * iterator (optional operation).
- */
-Iterator.prototype.remove = function () {}
+  /**
+     * Removes from the underlying collection the last element returned by the
+     * iterator (optional operation).
+     */
+  remove () {}
+}

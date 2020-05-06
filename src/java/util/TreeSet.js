@@ -5,152 +5,93 @@ import SortedSet from './SortedSet'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/TreeSet.html
- *
- * @extends {SortedSet}
- * @constructor
- * @private
  */
-export default function TreeSet () {
-  /**
-   * @type {Array}
-   * @private
-  */
-  this.array_ = []
+export default class TreeSet extends SortedSet {
+  array_ = []
 
-  if (arguments[0] instanceof Collection) {
-    this.addAll(arguments[0])
+  constructor(o) {
+    super()
+    if (o instanceof Collection)
+      this.addAll(o)
   }
-};
-TreeSet.prototype = new SortedSet()
 
-/**
- * @override
- */
-TreeSet.prototype.contains = function (o) {
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    const e = this.array_[i]
-    if (e.compareTo(o) === 0) {
-      return true
+  contains(o) {
+    for (let i = 0, len = this.array_.length; i < len; i++) {
+      const e = this.array_[i]
+      if (e.compareTo(o) === 0) {
+        return true
+      }
     }
-  }
-  return false
-}
-
-/**
- * @override
- */
-TreeSet.prototype.add = function (o) {
-  if (this.contains(o)) {
     return false
   }
 
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    const e = this.array_[i]
-    if (e.compareTo(o) === 1) {
-      this.array_.splice(i, 0, o)
-      return true
+  add(o) {
+    if (this.contains(o)) {
+      return false
     }
-  }
 
-  this.array_.push(o)
+    for (let i = 0, len = this.array_.length; i < len; i++) {
+      const e = this.array_[i]
+      if (e.compareTo(o) === 1) {
+        this.array_.splice(i, 0, o)
+        return true
+      }
+    }
 
-  return true
-}
+    this.array_.push(o)
 
-/**
- * @override
- */
-TreeSet.prototype.addAll = function (c) {
-  for (let i = c.iterator(); i.hasNext();) {
-    this.add(i.next())
-  }
-  return true
-}
-
-/**
- * @override
- */
-TreeSet.prototype.remove = function (e) {
-  throw new UnsupportedOperationException()
-}
-
-/**
- * @override
- */
-TreeSet.prototype.size = function () {
-  return this.array_.length
-}
-
-/**
- * @override
- */
-TreeSet.prototype.isEmpty = function () {
-  return this.array_.length === 0
-}
-
-/**
- * @override
- */
-TreeSet.prototype.toArray = function () {
-  const array = []
-
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    array.push(this.array_[i])
-  }
-
-  return array
-}
-
-/**
- * @override
- */
-TreeSet.prototype.iterator = function () {
-  return new Iterator_(this)
-}
-
-/**
- * @extends {javascript.util.Iterator}
- * @param {javascript.util.TreeSet} treeSet
- * @constructor
- * @private
- */
-const Iterator_ = function (treeSet) {
-  /**
-   * @type {javascript.util.TreeSet}
-   * @private
-   */
-  this.treeSet_ = treeSet
-  /**
-   * @type {number}
-   * @private
-   */
-  this.position_ = 0
-}
-
-/**
- * @override
- */
-Iterator_.prototype.next = function () {
-  if (this.position_ === this.treeSet_.size()) {
-    throw new NoSuchElementException()
-  }
-  return this.treeSet_.array_[this.position_++]
-}
-
-/**
- * @override
- */
-Iterator_.prototype.hasNext = function () {
-  if (this.position_ < this.treeSet_.size()) {
     return true
-  } else {
-    return false
+  }
+
+  addAll(c) {
+    for (let i = c.iterator(); i.hasNext();) {
+      this.add(i.next())
+    }
+    return true
+  }
+
+  remove(e) {
+    throw new UnsupportedOperationException()
+  }
+
+  size() {
+    return this.array_.length
+  }
+
+  isEmpty() {
+    return this.array_.length === 0
+  }
+
+  toArray() {
+    return this.array_.slice()
+  }
+
+  iterator() {
+    return new Iterator(this)
   }
 }
 
-/**
- * @override
- */
-Iterator_.prototype.remove = function () {
-  throw new UnsupportedOperationException()
+class Iterator {
+  #treeSet
+  #position = 0
+
+  constructor(treeSet) {
+    this.#treeSet = treeSet
+  }
+
+  next() {
+    if (this.#position === this.#treeSet.size())
+      throw new NoSuchElementException()
+    return this.#treeSet.array_[this.#position++]
+  }
+
+  hasNext() {
+    return this.#position < this.#treeSet.size()
+  }
+
+  remove() {
+    throw new UnsupportedOperationException()
+  }
+
 }
+

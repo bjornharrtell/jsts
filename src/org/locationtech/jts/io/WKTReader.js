@@ -37,7 +37,6 @@ export default class WKTReader {
    * @memberof module:org/locationtech/jts/io/WKTReader#
    */
   read (wkt) {
-    var geometry = this.parser.read(wkt)
-    return geometry
+    return this.parser.read(wkt)
   }
 }

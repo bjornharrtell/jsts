@@ -5,144 +5,79 @@ import Set from './Set'
 
 /**
  * @see http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html
- *
- * @extends {javascript.util.Set}
- * @constructor
- * @private
  */
-export default function HashSet () {
-  /**
-   * @type {Array}
-   * @private
-  */
-  this.array_ = []
+export default class HashSet extends Set {
+  array_ = []
 
-  if (arguments[0] instanceof Collection) {
-    this.addAll(arguments[0])
+  constructor(o) {
+    super()
+    if (o instanceof Collection)
+      this.addAll(o)
+  }
+
+  contains(o) {
+    return this.array_.indexOf(o) != -1
+  }
+
+  add(o) {
+    if (this.contains(o))
+      return false
+    this.array_.push(o)
+    return true
+  }
+
+  addAll(c) {
+    for (let i = c.iterator(); i.hasNext();)
+      this.add(i.next())
+    return true
+  }
+
+  remove(o) {
+    throw new UnsupportedOperationException()
+  }
+
+  size() {
+    return this.array_.length
+  }
+
+  isEmpty() {
+    return this.array_.length === 0
+  }
+
+  toArray() {
+    return this.array_.slice()
+  }
+
+  iterator() {
+    return new Iterator(this)
   }
 };
-HashSet.prototype = new Set()
 
-/**
- * @override
- */
-HashSet.prototype.contains = function (o) {
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    const e = this.array_[i]
-    if (e === o) {
+
+class Iterator {
+  #hashSet
+  #position = 0
+
+  constructor(hashSet) {
+    this.#hashSet = hashSet
+  }
+
+  next() {
+    if (this.#position === this.#hashSet.size())
+      throw new NoSuchElementException()
+    return this.#hashSet.array_[this.#position++]
+  }
+
+  hasNext() {
+    if (this.#position < this.#hashSet.size())
       return true
-    }
-  }
-  return false
-}
-
-/**
- * @override
- */
-HashSet.prototype.add = function (o) {
-  if (this.contains(o)) {
-    return false
+    else
+      return false
   }
 
-  this.array_.push(o)
-
-  return true
-}
-
-/**
- * @override
- */
-HashSet.prototype.addAll = function (c) {
-  for (let i = c.iterator(); i.hasNext();) {
-    this.add(i.next())
-  }
-  return true
-}
-
-/**
- * @override
- */
-HashSet.prototype.remove = function (o) {
-  throw new UnsupportedOperationException()
-}
-
-/**
- * @override
- */
-HashSet.prototype.size = function () {
-  return this.array_.length
-}
-
-/**
- * @override
- */
-HashSet.prototype.isEmpty = function () {
-  return this.array_.length === 0
-}
-
-/**
- * @override
- */
-HashSet.prototype.toArray = function () {
-  const array = []
-
-  for (let i = 0, len = this.array_.length; i < len; i++) {
-    array.push(this.array_[i])
+  remove() {
+    throw new UnsupportedOperationException()
   }
 
-  return array
 }
 
-/**
- * @override
- */
-HashSet.prototype.iterator = function () {
-  return new Iterator_(this)
-}
-
-/**
- * @extends {Iterator}
- * @param {HashSet} hashSet
- * @constructor
- * @private
- */
-const Iterator_ = function (hashSet) {
-  /**
-   * @type {HashSet}
-   * @private
-   */
-  this.hashSet_ = hashSet
-  /**
-   * @type {number}
-   * @private
-   */
-  this.position_ = 0
-}
-
-/**
- * @override
- */
-Iterator_.prototype.next = function () {
-  if (this.position_ === this.hashSet_.size()) {
-    throw new NoSuchElementException()
-  }
-  return this.hashSet_.array_[this.position_++]
-}
-
-/**
- * @override
- */
-Iterator_.prototype.hasNext = function () {
-  if (this.position_ < this.hashSet_.size()) {
-    return true
-  } else {
-    return false
-  }
-}
-
-/**
- * @override
- */
-Iterator_.prototype.remove = function () {
-  throw new UnsupportedOperationException()
-}

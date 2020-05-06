@@ -4,61 +4,39 @@ import HashSet from './HashSet'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/HashMap.html
- *
- * @extends {javascript.util.Map}
- * @constructor
- * @private
  */
-export default function HashMap () {
-  /**
-   * @type {Object}
-   * @private
-  */
-  this.map_ = new Map()
-}
-HashMap.prototype = new MapInterface()
+export default class HashMap extends MapInterface {
+  #map = new Map()
 
-/**
- * @override
- */
-HashMap.prototype.get = function (key) {
-  return this.map_.get(key) || null
-}
-
-/**
- * @override
- */
-HashMap.prototype.put = function (key, value) {
-  this.map_.set(key, value)
-  return value
-}
-
-/**
- * @override
- */
-HashMap.prototype.values = function () {
-  const arrayList = new ArrayList()
-  const it = this.map_.values()
-  let o = it.next()
-  while (!o.done) {
-    arrayList.add(o.value)
-    o = it.next()
+  get(key) {
+    return this.#map.get(key) || null
   }
-  return arrayList
+
+  put(key, value) {
+    this.#map.set(key, value)
+    return value
+  }
+
+  values() {
+    const arrayList = new ArrayList()
+    const it = this.#map.values()
+    let o = it.next()
+    while (!o.done) {
+      arrayList.add(o.value)
+      o = it.next()
+    }
+    return arrayList
+  }
+
+  entrySet() {
+    const hashSet = new HashSet()
+    this.#map.entries().forEach(entry => hashSet.add(entry))
+    return hashSet
+  }
+
+  size() {
+    return this.#map.size()
+  }
+
 }
 
-/**
- * @override
- */
-HashMap.prototype.entrySet = function () {
-  const hashSet = new HashSet()
-  this.map_.entries().forEach(entry => hashSet.add(entry))
-  return hashSet
-}
-
-/**
- * @override
- */
-HashMap.prototype.size = function () {
-  return this.map_.size()
-}

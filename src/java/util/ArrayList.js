@@ -19,11 +19,10 @@ export default class ArrayList extends List {
   ensureCapacity() { }
 
   add(e) {
-    if (arguments.length === 1) {
+    if (arguments.length === 1)
       this.#array.push(e)
-    } else {
+    else
       this.#array.splice(arguments[0], 0, arguments[1])
-    }
     return true
   }
 
@@ -32,9 +31,8 @@ export default class ArrayList extends List {
   }
 
   addAll(c) {
-    for (let i = c.iterator(); i.hasNext();) {
+    for (let i = c.iterator(); i.hasNext();)
       this.add(i.next())
-    }
     return true
   }
 
@@ -49,10 +47,8 @@ export default class ArrayList extends List {
   }
 
   get(index) {
-    if (index < 0 || index >= this.size()) {
+    if (index < 0 || index >= this.size())
       throw new IndexOutOfBoundsException()
-    }
-
     return this.#array[index]
   }
 
@@ -65,13 +61,7 @@ export default class ArrayList extends List {
   }
 
   toArray() {
-    const array = []
-
-    for (let i = 0, len = this.#array.length; i < len; i++) {
-      array.push(this.#array[i])
-    }
-
-    return array
+    return this.#array.slice()
   }
 
   remove(o) {
@@ -89,9 +79,8 @@ export default class ArrayList extends List {
   }
 
   removeAll(c) {
-    for (let i = c.iterator(); i.hasNext();) {
+    for (let i = c.iterator(); i.hasNext();)
       this.remove(i.next())
-    }
     return true
   }
 }
