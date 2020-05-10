@@ -77,11 +77,11 @@ export default class WKTParser {
    * @private
    */
   extractGeometry (geometry) {
-    let type = geometry.getGeometryType().toLowerCase()
+    const type = geometry.getGeometryType().toLowerCase()
     if (!extract[type]) {
       return null
     }
-    let wktType = type.toUpperCase()
+    const wktType = type.toUpperCase()
     let data
     if (geometry.isEmpty()) {
       data = wktType + ' EMPTY'
@@ -123,7 +123,7 @@ const extract = {
    *         multipoint.
    */
   multipoint (multipoint) {
-    let array = []
+    const array = []
     for (let i = 0, len = multipoint._geometries.length; i < len; ++i) {
       array.push('(' + extract.point.call(this, multipoint._geometries[i]) + ')')
     }
@@ -137,7 +137,7 @@ const extract = {
    * @return {String} A string of point coordinate strings representing the linestring.
    */
   linestring (linestring) {
-    let array = []
+    const array = []
     for (let i = 0, len = linestring._points._coordinates.length; i < len; ++i) {
       array.push(extract.coordinate.call(this, linestring._points._coordinates[i]))
     }
@@ -145,7 +145,7 @@ const extract = {
   },
 
   linearring (linearring) {
-    let array = []
+    const array = []
     for (let i = 0, len = linearring._points._coordinates.length; i < len; ++i) {
       array.push(extract.coordinate.call(this, linearring._points._coordinates[i]))
     }
@@ -160,7 +160,7 @@ const extract = {
    * @return {String} A string of of linestring strings representing the multilinestring.
    */
   multilinestring (multilinestring) {
-    let array = []
+    const array = []
     for (let i = 0, len = multilinestring._geometries.length; i < len; ++i) {
       array.push('(' +
         extract.linestring.call(this, multilinestring._geometries[i]) +
@@ -176,7 +176,7 @@ const extract = {
    * @return {String} An array of linear ring arrays representing the polygon.
    */
   polygon (polygon) {
-    let array = []
+    const array = []
     array.push('(' + extract.linestring.call(this, polygon._shell) + ')')
     for (let i = 0, len = polygon._holes.length; i < len; ++i) {
       array.push('(' + extract.linestring.call(this, polygon._holes[i]) + ')')
@@ -191,7 +191,7 @@ const extract = {
    * @return {String} An array of polygon arrays representing the multipolygon.
    */
   multipolygon (multipolygon) {
-    let array = []
+    const array = []
     for (let i = 0, len = multipolygon._geometries.length; i < len; ++i) {
       array.push('(' + extract.polygon.call(this, multipolygon._geometries[i]) + ')')
     }
@@ -206,7 +206,7 @@ const extract = {
    * @return {String} internal WKT representation of the collection.
    */
   geometrycollection (collection) {
-    let array = []
+    const array = []
     for (let i = 0, len = collection._geometries.length; i < len; ++i) {
       array.push(this.extractGeometry(collection._geometries[i]))
     }
@@ -222,8 +222,8 @@ const extract = {
 const parse = {
 
   coord (str) {
-    let coords = str.trim().split(regExes.spaces)
-    let coord = new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1]))
+    const coords = str.trim().split(regExes.spaces)
+    const coord = new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1]))
     this.precisionModel.makePrecise(coord)
     return coord
   },
@@ -250,8 +250,8 @@ const parse = {
   multipoint (str) {
     if (str === undefined) { return this.geometryFactory.createMultiPoint() }
     let point
-    let points = str.trim().split(',')
-    let components = []
+    const points = str.trim().split(',')
+    const components = []
     for (let i = 0, len = points.length; i < len; ++i) {
       point = points[i].replace(regExes.trimParens, '$1')
       components.push(parse.point.call(this, point))
@@ -271,8 +271,8 @@ const parse = {
       return this.geometryFactory.createLineString()
     }
 
-    let points = str.trim().split(',')
-    let components = []
+    const points = str.trim().split(',')
+    const components = []
     let coords
     for (let i = 0, len = points.length; i < len; ++i) {
       components.push(parse.coord.call(this, points[i]))
@@ -292,8 +292,8 @@ const parse = {
       return this.geometryFactory.createLinearRing()
     }
 
-    let points = str.trim().split(',')
-    let components = []
+    const points = str.trim().split(',')
+    const components = []
     let coords
     for (let i = 0, len = points.length; i < len; ++i) {
       components.push(parse.coord.call(this, points[i]))
@@ -314,8 +314,8 @@ const parse = {
     }
 
     let line
-    let lines = str.trim().split(regExes.parenComma)
-    let components = []
+    const lines = str.trim().split(regExes.parenComma)
+    const components = []
     for (let i = 0, len = lines.length; i < len; ++i) {
       line = lines[i].replace(regExes.trimParens, '$1')
       components.push(parse.linestring.call(this, line))
@@ -336,9 +336,9 @@ const parse = {
     }
 
     let ring, linestring, linearring
-    let rings = str.trim().split(regExes.parenComma)
+    const rings = str.trim().split(regExes.parenComma)
     let shell
-    let holes = []
+    const holes = []
     for (let i = 0, len = rings.length; i < len; ++i) {
       ring = rings[i].replace(regExes.trimParens, '$1')
       linestring = parse.linestring.call(this, ring)
@@ -365,8 +365,8 @@ const parse = {
     }
 
     let polygon
-    let polygons = str.trim().split(regExes.doubleParenComma)
-    let components = []
+    const polygons = str.trim().split(regExes.doubleParenComma)
+    const components = []
     for (let i = 0, len = polygons.length; i < len; ++i) {
       polygon = polygons[i].replace(regExes.trimParens, '$1')
       components.push(parse.polygon.call(this, polygon))
@@ -388,8 +388,8 @@ const parse = {
 
     // separate components of the collection with |
     str = str.replace(/,\s*([A-Za-z])/g, '|$1')
-    let wktArray = str.trim().split('|')
-    let components = []
+    const wktArray = str.trim().split('|')
+    const components = []
     for (let i = 0, len = wktArray.length; i < len; ++i) {
       components.push(this.read(wktArray[i]))
     }
