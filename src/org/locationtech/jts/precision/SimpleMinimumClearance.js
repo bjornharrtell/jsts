@@ -96,16 +96,14 @@ class ComputeMCCoordinateSequenceFilter {
 
   checkVertexDistance (vertex) {
     const vertexDist = vertex.distance(this._queryPt)
-    if (vertexDist > 0) {
+    if (vertexDist > 0)
       this.smc.updateClearance(vertexDist, this._queryPt, vertex)
-    }
   }
 
   filter (seq, i) {
     this.checkVertexDistance(seq.getCoordinate(i))
-    if (i > 0) {
+    if (i > 0)
       this.checkSegmentDistance(seq.getCoordinate(i - 1), seq.getCoordinate(i))
-    }
   }
 
   checkSegmentDistance (seg0, seg1) {

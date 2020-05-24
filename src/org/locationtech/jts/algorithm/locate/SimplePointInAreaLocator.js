@@ -33,9 +33,9 @@ export default class SimplePointInAreaLocator {
   }
 
   static locateInGeometry (p, geom) {
-    if (geom instanceof Polygon) {
+    if (geom instanceof Polygon)
       return SimplePointInAreaLocator.locatePointInPolygon(p, geom)
-    }
+
     if (geom instanceof GeometryCollection) {
       const geomi = new GeometryCollectionIterator(geom)
       while (geomi.hasNext()) {

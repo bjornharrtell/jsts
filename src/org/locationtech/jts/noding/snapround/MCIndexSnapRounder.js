@@ -20,9 +20,9 @@ export default class MCIndexSnapRounder {
     try {
       nv.checkValid()
     } catch (ex) {
-      if (ex instanceof Exception) {
+      if (ex instanceof Exception)
         ex.printStackTrace()
-      } else throw ex
+      else throw ex
     } finally {}
   }
 
@@ -56,9 +56,8 @@ export default class MCIndexSnapRounder {
       for (let i = 0; i < pts0.length; i++) {
         const hotPixel = new HotPixel(pts0[i], this._scaleFactor, this._li)
         const isNodeAdded = this._pointSnapper.snap(hotPixel, e, i)
-        if (isNodeAdded) {
+        if (isNodeAdded)
           e.addIntersection(pts0[i], i)
-        }
       }
     }
   }

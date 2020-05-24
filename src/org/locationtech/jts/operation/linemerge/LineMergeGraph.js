@@ -10,9 +10,9 @@ export default class LineMergeGraph extends PlanarGraph {
   }
 
   addEdge (lineString) {
-    if (lineString.isEmpty()) {
+    if (lineString.isEmpty())
       return null
-    }
+
     const coordinates = CoordinateArrays.removeRepeatedPoints(lineString.getCoordinates())
     if (coordinates.length <= 1) return null
     const startCoordinate = coordinates[0]

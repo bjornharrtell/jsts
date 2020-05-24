@@ -73,36 +73,36 @@ export default class GeometryFactory {
 
   createEmpty (dimension) {
     switch (dimension) {
-      case -1:
-        return this.createGeometryCollection()
-      case 0:
-        return this.createPoint()
-      case 1:
-        return this.createLineString()
-      case 2:
-        return this.createPolygon()
-      default:
-        throw new IllegalArgumentException('Invalid dimension: ' + dimension)
+    case -1:
+      return this.createGeometryCollection()
+    case 0:
+      return this.createPoint()
+    case 1:
+      return this.createLineString()
+    case 2:
+      return this.createPolygon()
+    default:
+      throw new IllegalArgumentException('Invalid dimension: ' + dimension)
     }
   }
 
   toGeometry (envelope) {
-    if (envelope.isNull()) {
+    if (envelope.isNull())
       return this.createPoint()
-    }
-    if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY()) {
+
+    if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY())
       return this.createPoint(new Coordinate(envelope.getMinX(), envelope.getMinY()))
-    }
-    if (envelope.getMinX() === envelope.getMaxX() || envelope.getMinY() === envelope.getMaxY()) {
+
+    if (envelope.getMinX() === envelope.getMaxX() || envelope.getMinY() === envelope.getMaxY())
       return this.createLineString([new Coordinate(envelope.getMinX(), envelope.getMinY()), new Coordinate(envelope.getMaxX(), envelope.getMaxY())])
-    }
+
     return this.createPolygon(this.createLinearRing([new Coordinate(envelope.getMinX(), envelope.getMinY()), new Coordinate(envelope.getMinX(), envelope.getMaxY()), new Coordinate(envelope.getMaxX(), envelope.getMaxY()), new Coordinate(envelope.getMaxX(), envelope.getMinY()), new Coordinate(envelope.getMinX(), envelope.getMinY())]), null)
   }
 
   createLineString () {
-    if (arguments.length === 0) {
+    if (arguments.length === 0)
       return this.createLineString(this.getCoordinateSequenceFactory().create([]))
-    } else if (arguments.length === 1) {
+    else if (arguments.length === 1)
       if (arguments[0] instanceof Array) {
         const coordinates = arguments[0]
         return this.createLineString(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
@@ -110,7 +110,6 @@ export default class GeometryFactory {
         const coordinates = arguments[0]
         return new LineString(coordinates, this)
       }
-    }
   }
 
   createMultiLineString () {
@@ -129,30 +128,30 @@ export default class GeometryFactory {
     for (let i = geomList.iterator(); i.hasNext();) {
       const geom = i.next()
       const partClass = geom.getClass()
-      if (geomClass === null) {
+      if (geomClass === null)
         geomClass = partClass
-      }
-      if (partClass !== geomClass) {
+
+      if (partClass !== geomClass)
         isHeterogeneous = true
-      }
+
       if (geom instanceof GeometryCollection) hasGeometryCollection = true
     }
-    if (geomClass === null) {
+    if (geomClass === null)
       return this.createGeometryCollection()
-    }
-    if (isHeterogeneous || hasGeometryCollection) {
+
+    if (isHeterogeneous || hasGeometryCollection)
       return this.createGeometryCollection(GeometryFactory.toGeometryArray(geomList))
-    }
+
     const geom0 = geomList.iterator().next()
     const isCollection = geomList.size() > 1
     if (isCollection) {
-      if (geom0 instanceof Polygon) {
+      if (geom0 instanceof Polygon)
         return this.createMultiPolygon(GeometryFactory.toPolygonArray(geomList))
-      } else if (geom0 instanceof LineString) {
+      else if (geom0 instanceof LineString)
         return this.createMultiLineString(GeometryFactory.toLineStringArray(geomList))
-      } else if (geom0 instanceof Point) {
+      else if (geom0 instanceof Point)
         return this.createMultiPoint(GeometryFactory.toPointArray(geomList))
-      }
+
       Assert.shouldNeverReachHere('Unhandled class: ' + geom0.getClass().getName())
     }
     return geom0
@@ -163,9 +162,9 @@ export default class GeometryFactory {
   }
 
   createPoint () {
-    if (arguments.length === 0) {
+    if (arguments.length === 0)
       return this.createPoint(this.getCoordinateSequenceFactory().create([]))
-    } else if (arguments.length === 1) {
+    else if (arguments.length === 1)
       if (arguments[0] instanceof Coordinate) {
         const coordinate = arguments[0]
         return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null)
@@ -173,7 +172,6 @@ export default class GeometryFactory {
         const coordinates = arguments[0]
         return new Point(coordinates, this)
       }
-    }
   }
 
   getCoordinateSequenceFactory () {
@@ -218,9 +216,9 @@ export default class GeometryFactory {
   }
 
   createLinearRing () {
-    if (arguments.length === 0) {
+    if (arguments.length === 0)
       return this.createLinearRing(this.getCoordinateSequenceFactory().create([]))
-    } else if (arguments.length === 1) {
+    else if (arguments.length === 1)
       if (arguments[0] instanceof Array) {
         const coordinates = arguments[0]
         return this.createLinearRing(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
@@ -228,7 +226,6 @@ export default class GeometryFactory {
         const coordinates = arguments[0]
         return new LinearRing(coordinates, this)
       }
-    }
   }
 
   createMultiPolygon () {
@@ -241,17 +238,17 @@ export default class GeometryFactory {
   }
 
   createMultiPoint () {
-    if (arguments.length === 0) {
+    if (arguments.length === 0)
       return new MultiPoint(null, this)
-    } else if (arguments.length === 1) {
+    else if (arguments.length === 1)
       if (arguments[0] instanceof Array) {
         const point = arguments[0]
         return new MultiPoint(point, this)
       } else if (hasInterface(arguments[0], CoordinateSequence)) {
         const coordinates = arguments[0]
-        if (coordinates === null) {
+        if (coordinates === null)
           return this.createMultiPoint(new Array(0).fill(null))
-        }
+
         const points = new Array(coordinates.size()).fill(null)
         for (let i = 0; i < coordinates.size(); i++) {
           const ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension(), coordinates.getMeasures())
@@ -260,7 +257,6 @@ export default class GeometryFactory {
         }
         return this.createMultiPoint(points)
       }
-    }
   }
 
   getClass () {

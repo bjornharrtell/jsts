@@ -21,11 +21,10 @@ export default class Depth {
 
   isNull () {
     if (arguments.length === 0) {
-      for (let i = 0; i < 2; i++) {
-        for (let j = 0; j < 3; j++) {
+      for (let i = 0; i < 2; i++)
+        for (let j = 0; j < 3; j++)
           if (this._depth[i][j] !== Depth.NULL_VALUE) return false
-        }
-      }
+
       return true
     } else if (arguments.length === 1) {
       const geomIndex = arguments[0]
@@ -37,7 +36,7 @@ export default class Depth {
   }
 
   normalize () {
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++)
       if (!this.isNull(i)) {
         let minDepth = this._depth[i][1]
         if (this._depth[i][2] < minDepth) minDepth = this._depth[i][2]
@@ -48,7 +47,6 @@ export default class Depth {
           this._depth[i][j] = newValue
         }
       }
-    }
   }
 
   getDelta (geomIndex) {
@@ -67,16 +65,14 @@ export default class Depth {
   add () {
     if (arguments.length === 1) {
       const lbl = arguments[0]
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 2; i++)
         for (let j = 1; j < 3; j++) {
           const loc = lbl.getLocation(i, j)
-          if (loc === Location.EXTERIOR || loc === Location.INTERIOR) {
+          if (loc === Location.EXTERIOR || loc === Location.INTERIOR)
             if (this.isNull(i, j)) {
               this._depth[i][j] = Depth.depthAtLocation(loc)
             } else this._depth[i][j] += Depth.depthAtLocation(loc)
-          }
         }
-      }
     } else if (arguments.length === 3) {
       const geomIndex = arguments[0]; const posIndex = arguments[1]; const location = arguments[2]
       if (location === Location.INTERIOR) this._depth[geomIndex][posIndex]++
@@ -93,10 +89,8 @@ export default class Depth {
 }
 Depth.constructor_ = function () {
   this._depth = Array(2).fill().map(() => Array(3))
-  for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < 3; j++) {
+  for (let i = 0; i < 2; i++)
+    for (let j = 0; j < 3; j++)
       this._depth[i][j] = Depth.NULL_VALUE
-    }
-  }
 }
 Depth.NULL_VALUE = -1

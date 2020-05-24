@@ -85,9 +85,9 @@ export default class IsSimpleOp {
       return false
     }
     if (this.hasNonEndpointIntersection(graph)) return false
-    if (this._isClosedEndpointsInInterior) {
+    if (this._isClosedEndpointsInInterior)
       if (this.hasClosedEndpointIntersection(graph)) return false
-    }
+
     return true
   }
 

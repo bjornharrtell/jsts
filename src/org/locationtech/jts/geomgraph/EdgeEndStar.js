@@ -38,9 +38,9 @@ export default class EdgeEndStar {
         const rightLoc = label.getLocation(geomIndex, Position.RIGHT)
         if (rightLoc !== Location.NONE) {
           if (rightLoc !== currLoc) throw new TopologyException('side location conflict', e.getCoordinate())
-          if (leftLoc === Location.NONE) {
+          if (leftLoc === Location.NONE)
             Assert.shouldNeverReachHere('found single null side (at ' + e.getCoordinate() + ')')
-          }
+
           currLoc = leftLoc
         } else {
           Assert.isTrue(label.getLocation(geomIndex, Position.LEFT) === Location.NONE, 'found single null side')
@@ -85,12 +85,12 @@ export default class EdgeEndStar {
       Assert.isTrue(label.isArea(geomIndex), 'Found non-area edge')
       const leftLoc = label.getLocation(geomIndex, Position.LEFT)
       const rightLoc = label.getLocation(geomIndex, Position.RIGHT)
-      if (leftLoc === rightLoc) {
+      if (leftLoc === rightLoc)
         return false
-      }
-      if (rightLoc !== currLoc) {
+
+      if (rightLoc !== currLoc)
         return false
-      }
+
       currLoc = leftLoc
     }
     return true
@@ -110,16 +110,16 @@ export default class EdgeEndStar {
   }
 
   getEdges () {
-    if (this._edgeList === null) {
+    if (this._edgeList === null)
       this._edgeList = new ArrayList(this._edgeMap.values())
-    }
+
     return this._edgeList
   }
 
   getLocation (geomIndex, p, geom) {
-    if (this._ptInAreaLocation[geomIndex] === Location.NONE) {
+    if (this._ptInAreaLocation[geomIndex] === Location.NONE)
       this._ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locate(p, geom[geomIndex].getGeometry())
-    }
+
     return this._ptInAreaLocation[geomIndex]
   }
 
@@ -150,14 +150,13 @@ export default class EdgeEndStar {
     for (let it = this.iterator(); it.hasNext();) {
       const e = it.next()
       const label = e.getLabel()
-      for (let geomi = 0; geomi < 2; geomi++) {
+      for (let geomi = 0; geomi < 2; geomi++)
         if (label.isLine(geomi) && label.getLocation(geomi) === Location.BOUNDARY) hasDimensionalCollapseEdge[geomi] = true
-      }
     }
     for (let it = this.iterator(); it.hasNext();) {
       const e = it.next()
       const label = e.getLabel()
-      for (let geomi = 0; geomi < 2; geomi++) {
+      for (let geomi = 0; geomi < 2; geomi++)
         if (label.isAnyNull(geomi)) {
           let loc = Location.NONE
           if (hasDimensionalCollapseEdge[geomi]) {
@@ -168,7 +167,6 @@ export default class EdgeEndStar {
           }
           label.setAllLocationsIfNull(geomi, loc)
         }
-      }
     }
   }
 

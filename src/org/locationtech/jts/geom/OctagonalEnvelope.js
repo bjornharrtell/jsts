@@ -26,9 +26,9 @@ export default class OctagonalEnvelope {
   }
 
   toGeometry (geomFactory) {
-    if (this.isNull()) {
+    if (this.isNull())
       return geomFactory.createPoint()
-    }
+
     const px00 = new Coordinate(this._minX, this._minA - this._minX)
     const px01 = new Coordinate(this._minX, this._minX - this._minB)
     const px10 = new Coordinate(this._maxX, this._maxX - this._maxB)
@@ -55,9 +55,9 @@ export default class OctagonalEnvelope {
     coordList.add(px10, false)
     coordList.add(py01, false)
     coordList.add(py00, false)
-    if (coordList.size() === 1) {
+    if (coordList.size() === 1)
       return geomFactory.createPoint(px00)
-    }
+
     if (coordList.size() === 2) {
       const pts = coordList.toCoordinateArray()
       return geomFactory.createLineString(pts)
@@ -91,9 +91,9 @@ export default class OctagonalEnvelope {
   intersects () {
     if (arguments[0] instanceof OctagonalEnvelope) {
       const other = arguments[0]
-      if (this.isNull() || other.isNull()) {
+      if (this.isNull() || other.isNull())
         return false
-      }
+
       if (this._minX > other._maxX) return false
       if (this._maxX < other._minX) return false
       if (this._minY > other._maxY) return false
@@ -229,9 +229,9 @@ export default class OctagonalEnvelope {
   }
 
   contains (other) {
-    if (this.isNull() || other.isNull()) {
+    if (this.isNull() || other.isNull())
       return false
-    }
+
     return other._minX >= this._minX && other._maxX <= this._maxX && other._minY >= this._minY && other._maxY <= this._maxY && other._minA >= this._minA && other._maxA <= this._maxA && other._minB >= this._minB && other._maxB <= this._maxB
   }
 
@@ -253,11 +253,10 @@ class BoundingOctagonComponentFilter {
   }
 
   filter (geom) {
-    if (geom instanceof LineString) {
+    if (geom instanceof LineString)
       this.oe.expandToInclude(geom.getCoordinateSequence())
-    } else if (geom instanceof Point) {
+    else if (geom instanceof Point)
       this.oe.expandToInclude(geom.getCoordinateSequence())
-    }
   }
 
   getClass () {

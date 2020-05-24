@@ -124,7 +124,7 @@
   </a>
   <test>
     <op name="union" arg1="A">
-    	LINESTRING (40 60, 120 110)
+      LINESTRING (40 60, 120 110)
     </op>
   </test>
 </case>
@@ -139,7 +139,7 @@
   </a>
   <test>
     <op name="union" arg1="A">
-    	GEOMETRYCOLLECTION (POINT (80 50), POINT (100 70), LINESTRING (40 60, 120 110))
+      GEOMETRYCOLLECTION (POINT (80 50), POINT (100 70), LINESTRING (40 60, 120 110))
     </op>
   </test>
 </case>

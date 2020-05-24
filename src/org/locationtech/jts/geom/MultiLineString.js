@@ -11,38 +11,39 @@ export default class MultiLineString extends GeometryCollection {
 
   copyInternal () {
     const lineStrings = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < lineStrings.length; i++) {
+    for (let i = 0; i < lineStrings.length; i++)
       lineStrings[i] = this._geometries[i].copy()
-    }
+
     return new MultiLineString(lineStrings, this._factory)
   }
 
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other)) {
+      if (!this.isEquivalentClass(other))
         return false
-      }
+
       return super.equalsExact.call(this, other, tolerance)
-    } else return super.equalsExact.apply(this, arguments)
+    } else {
+      return super.equalsExact.apply(this, arguments)
+    }
   }
 
   getBoundaryDimension () {
-    if (this.isClosed()) {
+    if (this.isClosed())
       return Dimension.FALSE
-    }
+
     return 0
   }
 
   isClosed () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return false
-    }
-    for (let i = 0; i < this._geometries.length; i++) {
-      if (!this._geometries[i].isClosed()) {
+
+    for (let i = 0; i < this._geometries.length; i++)
+      if (!this._geometries[i].isClosed())
         return false
-      }
-    }
+
     return true
   }
 

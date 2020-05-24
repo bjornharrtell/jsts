@@ -19,9 +19,9 @@ export default class NonEncroachingSplitPointFinder {
     const projPt = NonEncroachingSplitPointFinder.projectedSplitPoint(seg, encroachPt)
     const nonEncroachDiam = projPt.distance(encroachPt) * 2 * 0.8
     let maxSplitLen = nonEncroachDiam
-    if (maxSplitLen > midPtLen) {
+    if (maxSplitLen > midPtLen)
       maxSplitLen = midPtLen
-    }
+
     splitSeg.setMinimumLength(maxSplitLen)
     splitSeg.splitAt(projPt)
     return splitSeg.getSplitPoint()

@@ -13,9 +13,9 @@ export default class StringUtil {
 
   static chars (c, n) {
     const ch = new Array(n).fill(null)
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++)
       ch[i] = c
-    }
+
     return new String(ch)
   }
 
@@ -31,15 +31,15 @@ export default class StringUtil {
       let stackTrace = ''
       const stringReader = new StringReader(StringUtil.getStackTrace(t))
       const lineNumberReader = new LineNumberReader(stringReader)
-      for (let i = 0; i < depth; i++) {
+      for (let i = 0; i < depth; i++)
         try {
           stackTrace += lineNumberReader.readLine() + StringUtil.NEWLINE
         } catch (e) {
-          if (e instanceof IOException) {
+          if (e instanceof IOException)
             Assert.shouldNeverReachHere()
-          } else throw e
+          else throw e
         } finally {}
-      }
+
       return stackTrace
     }
   }
@@ -61,9 +61,9 @@ export default class StringUtil {
     }
     if (tmpString.length > 0) tokenList.add(tmpString)
     const res = new Array(tokenList.size()).fill(null)
-    for (let i = 0; i < res.length; i++) {
+    for (let i = 0; i < res.length; i++)
       res[i] = tokenList.get(i)
-    }
+
     return res
   }
 

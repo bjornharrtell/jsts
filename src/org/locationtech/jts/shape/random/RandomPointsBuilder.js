@@ -42,7 +42,9 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
       this._maskPoly = mask
       this.setExtent(mask.getEnvelopeInternal())
       this._extentLocator = new IndexedPointInAreaLocator(mask)
-    } else return super.setExtent.apply(this, arguments)
+    } else {
+      return super.setExtent.apply(this, arguments)
+    }
   }
 
   createCoord (x, y) {

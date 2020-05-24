@@ -19,9 +19,8 @@ export default class MortonCode {
   }
 
   static checkLevel (level) {
-    if (level > MortonCode.MAX_LEVEL) {
+    if (level > MortonCode.MAX_LEVEL)
       throw new IllegalArgumentException('Level must be in range 0 to ' + MortonCode.MAX_LEVEL)
-    }
   }
 
   static size (level) {

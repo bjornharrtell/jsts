@@ -18,9 +18,9 @@ export default class LineString extends Geometry {
   }
 
   computeEnvelopeInternal () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return new Envelope()
-    }
+
     return this._points.expandEnvelope(new Envelope())
   }
 
@@ -39,20 +39,21 @@ export default class LineString extends Geometry {
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other)) {
+      if (!this.isEquivalentClass(other))
         return false
-      }
+
       const otherLineString = other
-      if (this._points.size() !== otherLineString._points.size()) {
+      if (this._points.size() !== otherLineString._points.size())
         return false
-      }
-      for (let i = 0; i < this._points.size(); i++) {
-        if (!this.equal(this._points.getCoordinate(i), otherLineString._points.getCoordinate(i), tolerance)) {
+
+      for (let i = 0; i < this._points.size(); i++)
+        if (!this.equal(this._points.getCoordinate(i), otherLineString._points.getCoordinate(i), tolerance))
           return false
-        }
-      }
+
       return true
-    } else return super.equalsExact.apply(this, arguments)
+    } else {
+      return super.equalsExact.apply(this, arguments)
+    }
   }
 
   normalize () {
@@ -75,16 +76,16 @@ export default class LineString extends Geometry {
   }
 
   getBoundaryDimension () {
-    if (this.isClosed()) {
+    if (this.isClosed())
       return Dimension.FALSE
-    }
+
     return 0
   }
 
   isClosed () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return false
-    }
+
     return this.getCoordinateN(0).equals2D(this.getCoordinateN(this.getNumPoints() - 1))
   }
 
@@ -95,9 +96,9 @@ export default class LineString extends Geometry {
   }
 
   getEndPoint () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return null
-    }
+
     return this.getPointN(this.getNumPoints() - 1)
   }
 
@@ -125,18 +126,18 @@ export default class LineString extends Geometry {
       let j = 0
       while (i < this._points.size() && j < line._points.size()) {
         const comparison = this._points.getCoordinate(i).compareTo(line._points.getCoordinate(j))
-        if (comparison !== 0) {
+        if (comparison !== 0)
           return comparison
-        }
+
         i++
         j++
       }
-      if (i < this._points.size()) {
+      if (i < this._points.size())
         return 1
-      }
-      if (j < line._points.size()) {
+
+      if (j < line._points.size())
         return -1
-      }
+
       return 0
     } else if (arguments.length === 2) {
       const o = arguments[0]; const comp = arguments[1]
@@ -148,9 +149,8 @@ export default class LineString extends Geometry {
   apply () {
     if (hasInterface(arguments[0], CoordinateFilter)) {
       const filter = arguments[0]
-      for (let i = 0; i < this._points.size(); i++) {
+      for (let i = 0; i < this._points.size(); i++)
         filter.filter(this._points.getCoordinate(i))
-      }
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
       const filter = arguments[0]
       if (this._points.size() === 0) return null
@@ -193,28 +193,27 @@ export default class LineString extends Geometry {
   }
 
   init (points) {
-    if (points === null) {
+    if (points === null)
       points = this.getFactory().getCoordinateSequenceFactory().create([])
-    }
-    if (points.size() === 1) {
+
+    if (points.size() === 1)
       throw new IllegalArgumentException('Invalid number of points in LineString (found ' + points.size() + ' - must be 0 or >= 2)')
-    }
+
     this._points = points
   }
 
   isCoordinate (pt) {
-    for (let i = 0; i < this._points.size(); i++) {
-      if (this._points.getCoordinate(i).equals(pt)) {
+    for (let i = 0; i < this._points.size(); i++)
+      if (this._points.getCoordinate(i).equals(pt))
         return true
-      }
-    }
+
     return false
   }
 
   getStartPoint () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return null
-    }
+
     return this.getPointN(0)
   }
 

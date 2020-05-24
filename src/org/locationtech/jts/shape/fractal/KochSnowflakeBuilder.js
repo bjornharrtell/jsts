@@ -16,9 +16,9 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
 
   getBoundary (level, origin, width) {
     let y = origin.y
-    if (level > 0) {
+    if (level > 0)
       y += KochSnowflakeBuilder.THIRD_HEIGHT * width
-    }
+
     const p0 = new Coordinate(origin.x, y)
     const p1 = new Coordinate(origin.x + width / 2, y + width * KochSnowflakeBuilder.HEIGHT_FACTOR)
     const p2 = new Coordinate(origin.x + width, y)
@@ -41,7 +41,9 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
   }
 
   addSide (level, p0, p1) {
-    if (level === 0) this.addSegment(p0, p1); else {
+    if (level === 0) {
+      this.addSegment(p0, p1)
+    } else {
       const base = Vector2D.create(p0, p1)
       const midPt = base.multiply(0.5).translate(p0)
       const heightVec = base.multiply(KochSnowflakeBuilder.THIRD_HEIGHT)

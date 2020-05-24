@@ -38,9 +38,8 @@ export default class VertexTaggedGeometryDataMapper {
   }
 
   loadVertices (pts, data) {
-    for (let i = 0; i < pts.length; i++) {
+    for (let i = 0; i < pts.length; i++)
       this._coordDataMap.put(pts[i], data)
-    }
   }
 
   getClass () {

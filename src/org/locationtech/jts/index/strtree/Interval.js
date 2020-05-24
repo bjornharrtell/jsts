@@ -19,9 +19,9 @@ export default class Interval {
   }
 
   equals (o) {
-    if (!(o instanceof Interval)) {
+    if (!(o instanceof Interval))
       return false
-    }
+
     const other = o
     return this._min === other._min && this._max === other._max
   }

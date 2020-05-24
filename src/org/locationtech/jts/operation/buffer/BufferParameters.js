@@ -23,12 +23,11 @@ export default class BufferParameters {
       this._joinStyle = BufferParameters.JOIN_MITRE
       this._mitreLimit = Math.abs(this._quadrantSegments)
     }
-    if (quadSegs <= 0) {
+    if (quadSegs <= 0)
       this._quadrantSegments = 1
-    }
-    if (this._joinStyle !== BufferParameters.JOIN_ROUND) {
+
+    if (this._joinStyle !== BufferParameters.JOIN_ROUND)
       this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
-    }
   }
 
   getJoinStyle () {

@@ -46,9 +46,9 @@ class DPTransformer extends GeometryTransformer {
   transformPolygon (geom, parent) {
     if (geom.isEmpty()) return null
     const rawGeom = super.transformPolygon.call(this, geom, parent)
-    if (parent instanceof MultiPolygon) {
+    if (parent instanceof MultiPolygon)
       return rawGeom
-    }
+
     return this.createValidArea(rawGeom)
   }
 
@@ -60,11 +60,11 @@ class DPTransformer extends GeometryTransformer {
   transformCoordinates (coords, parent) {
     const inputPts = coords.toCoordinateArray()
     let newPts = null
-    if (inputPts.length === 0) {
+    if (inputPts.length === 0)
       newPts = new Array(0).fill(null)
-    } else {
+    else
       newPts = DouglasPeuckerLineSimplifier.simplify(inputPts, this._distanceTolerance)
-    }
+
     return this._factory.getCoordinateSequenceFactory().create(newPts)
   }
 

@@ -13,9 +13,9 @@ export default class CascadedPolygonUnion {
   }
 
   static restrictToPolygons (g) {
-    if (hasInterface(g, Polygonal)) {
+    if (hasInterface(g, Polygonal))
       return g
-    }
+
     const polygons = PolygonExtracter.getPolygons(g)
     if (polygons.size() === 1) return polygons.get(0)
     return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons))
@@ -36,11 +36,11 @@ export default class CascadedPolygonUnion {
     for (let i = geomTree.iterator(); i.hasNext();) {
       const o = i.next()
       let geom = null
-      if (hasInterface(o, List)) {
+      if (hasInterface(o, List))
         geom = this.unionTree(o)
-      } else if (o instanceof Geometry) {
+      else if (o instanceof Geometry)
         geom = o
-      }
+
       geoms.add(geom)
     }
     return geoms

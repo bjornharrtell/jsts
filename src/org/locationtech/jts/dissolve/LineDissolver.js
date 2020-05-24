@@ -32,9 +32,8 @@ export default class LineDissolver {
       this._ringStartEdge = e
       return null
     }
-    if (e.orig().compareTo(this._ringStartEdge.orig()) < 0) {
+    if (e.orig().compareTo(this._ringStartEdge.orig()) < 0)
       this._ringStartEdge = e
-    }
   }
 
   getResult () {
@@ -120,9 +119,8 @@ export default class LineDissolver {
         }
 
         filter (component) {
-          if (component instanceof LineString) {
+          if (component instanceof LineString)
             this.add(component)
-          }
         }
       })())
     } else if (hasInterface(arguments[0], Collection)) {
@@ -133,9 +131,9 @@ export default class LineDissolver {
       }
     } else if (arguments[0] instanceof LineString) {
       const lineString = arguments[0]
-      if (this._factory === null) {
+      if (this._factory === null)
         this._factory = lineString.getFactory()
-      }
+
       const seq = lineString.getCoordinateSequence()
       let doneStart = false
       for (let i = 1; i < seq.size(); i++) {

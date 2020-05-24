@@ -14,9 +14,9 @@ export default class ConnectedInteriorTester {
   }
 
   static findDifferentPoint (coord, pt) {
-    for (let i = 0; i < coord.length; i++) {
+    for (let i = 0; i < coord.length; i++)
       if (!coord[i].equals(pt)) return coord[i]
-    }
+
     return null
   }
 
@@ -28,11 +28,11 @@ export default class ConnectedInteriorTester {
     const e = graph.findEdgeInSameDirection(pt0, pt1)
     const de = graph.findEdgeEnd(e)
     let intDe = null
-    if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
+    if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR)
       intDe = de
-    } else if (de.getSym().getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
+    else if (de.getSym().getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR)
       intDe = de.getSym()
-    }
+
     Assert.isTrue(intDe !== null, 'unable to find dirEdge with Interior on RHS')
     this.visitLinkedDirectedEdges(intDe)
   }
@@ -58,9 +58,8 @@ export default class ConnectedInteriorTester {
   setInteriorEdgesInResult (graph) {
     for (let it = graph.getEdgeEnds().iterator(); it.hasNext();) {
       const de = it.next()
-      if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) {
+      if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR)
         de.setInResult(true)
-      }
     }
   }
 

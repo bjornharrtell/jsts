@@ -16,9 +16,8 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
     Collections.sort(this.events)
     for (let i = 0; i < this.events.size(); i++) {
       const ev = this.events.get(i)
-      if (ev.isDelete()) {
+      if (ev.isDelete())
         ev.getInsertEvent().setDeleteEventIndex(i)
-      }
     }
   }
 
@@ -29,12 +28,11 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
       this.prepareEvents()
       for (let i = 0; i < this.events.size(); i++) {
         const ev = this.events.get(i)
-        if (ev.isInsert()) {
+        if (ev.isInsert())
           this.processOverlaps(i, ev.getDeleteEventIndex(), ev, si)
-        }
-        if (si.isDone()) {
+
+        if (si.isDone())
           break
-        }
       }
     } else if (arguments.length === 3) {
       if (arguments[2] instanceof SegmentIntersector && (hasInterface(arguments[0], List) && hasInterface(arguments[1], List))) {

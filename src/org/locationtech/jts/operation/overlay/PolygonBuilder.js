@@ -25,12 +25,11 @@ export default class PolygonBuilder {
       testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates())
       let isContained = false
       if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates())) isContained = true
-      if (isContained) {
+      if (isContained)
         if (minShell === null || minShellEnv.contains(tryShellEnv)) {
           minShell = tryShell
           minShellEnv = minShell.getLinearRing().getEnvelopeInternal()
         }
-      }
     }
     return minShell
   }
@@ -38,11 +37,10 @@ export default class PolygonBuilder {
   sortShellsAndHoles (edgeRings, shellList, freeHoleList) {
     for (let it = edgeRings.iterator(); it.hasNext();) {
       const er = it.next()
-      if (er.isHole()) {
+      if (er.isHole())
         freeHoleList.add(er)
-      } else {
+      else
         shellList.add(er)
-      }
     }
   }
 
@@ -92,13 +90,12 @@ export default class PolygonBuilder {
     const maxEdgeRings = new ArrayList()
     for (let it = dirEdges.iterator(); it.hasNext();) {
       const de = it.next()
-      if (de.isInResult() && de.getLabel().isArea()) {
+      if (de.isInResult() && de.getLabel().isArea())
         if (de.getEdgeRing() === null) {
           const er = new MaximalEdgeRing(de, this._geometryFactory)
           maxEdgeRings.add(er)
           er.setInResult()
         }
-      }
     }
     return maxEdgeRings
   }
@@ -106,9 +103,8 @@ export default class PolygonBuilder {
   placePolygonHoles (shell, minEdgeRings) {
     for (let it = minEdgeRings.iterator(); it.hasNext();) {
       const er = it.next()
-      if (er.isHole()) {
+      if (er.isHole())
         er.setShell(shell)
-      }
     }
   }
 

@@ -15,9 +15,9 @@ export default class NodingIntersectionFinder {
     if (arguments.length === 4) {
       const p0 = arguments[0]; const p1 = arguments[1]; const isEnd0 = arguments[2]; const isEnd1 = arguments[3]
       if (isEnd0 && isEnd1) return false
-      if (p0.equals2D(p1)) {
+      if (p0.equals2D(p1))
         return true
-      }
+
       return false
     } else if (arguments.length === 8) {
       const p00 = arguments[0]; const p01 = arguments[1]; const p10 = arguments[2]; const p11 = arguments[3]; const isEnd00 = arguments[4]; const isEnd01 = arguments[5]; const isEnd10 = arguments[6]; const isEnd11 = arguments[7]

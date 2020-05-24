@@ -20,9 +20,8 @@ export default class PointLocation {
         line.getCoordinate(i - 1, p0)
         line.getCoordinate(i, p1)
         lineIntersector.computeIntersection(p, p0, p1)
-        if (lineIntersector.hasIntersection()) {
+        if (lineIntersector.hasIntersection())
           return true
-        }
       }
       return false
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
@@ -32,9 +31,8 @@ export default class PointLocation {
         const p0 = line[i - 1]
         const p1 = line[i]
         lineIntersector.computeIntersection(p, p0, p1)
-        if (lineIntersector.hasIntersection()) {
+        if (lineIntersector.hasIntersection())
           return true
-        }
       }
       return false
     }

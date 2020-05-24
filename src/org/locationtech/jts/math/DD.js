@@ -77,13 +77,13 @@ export default class DD {
         try {
           exp = Integer.parseInt(expStr)
         } catch (ex) {
-          if (ex instanceof NumberFormatException) {
+          if (ex instanceof NumberFormatException)
             throw new NumberFormatException('Invalid exponent ' + expStr + ' in string ' + str)
-          } else throw ex
+          else throw ex
         } finally {}
         break
       }
-      throw new NumberFormatException("Unexpected character '" + ch + "' at position " + i + ' in string ' + str)
+      throw new NumberFormatException('Unexpected character \'' + ch + '\' at position ' + i + ' in string ' + str)
     }
     let val2 = val
     if (!hasDecimalChar) numBeforeDec = numDigits
@@ -97,9 +97,9 @@ export default class DD {
       const scale = DD.TEN.pow(-numDecPlaces)
       val2 = val.multiply(scale)
     }
-    if (isNegative) {
+    if (isNegative)
       return val2.negate()
-    }
+
     return val2
   }
 
@@ -122,9 +122,9 @@ export default class DD {
 
   static stringOfChar (ch, len) {
     const buf = new StringBuffer()
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++)
       buf.append(ch)
-    }
+
     return buf.toString()
   }
 
@@ -148,14 +148,14 @@ export default class DD {
     const buf = new StringBuffer()
     const numDigits = DD.MAX_PRINT_DIGITS - 1
     for (let i = 0; i <= numDigits; i++) {
-      if (insertDecimalPoint && i === decimalPointPos) {
+      if (insertDecimalPoint && i === decimalPointPos)
         buf.append('.')
-      }
+
       const digit = Math.trunc(y._hi)
       if (digit < 0 || digit > 9) {}
-      if (digit < 0) {
+      if (digit < 0)
         break
-      }
+
       let rebiasBy10 = false
       let digitChar = 0
       if (digit > 9) {
@@ -224,11 +224,10 @@ export default class DD {
   }
 
   min (x) {
-    if (this.le(x)) {
+    if (this.le(x))
       return this
-    } else {
+    else
       return x
-    }
   }
 
   selfDivide () {
@@ -302,17 +301,17 @@ export default class DD {
     let r = new DD(this)
     let s = DD.valueOf(1.0)
     let n = Math.abs(exp)
-    if (n > 1) {
+    if (n > 1)
       while (n > 0) {
-        if (n % 2 === 1) {
+        if (n % 2 === 1)
           s.selfMultiply(r)
-        }
+
         n /= 2
         if (n > 0) r = r.sqr()
       }
-    } else {
+    else
       s = r
-    }
+
     if (exp < 0) return s.reciprocal()
     return s
   }
@@ -321,9 +320,9 @@ export default class DD {
     if (this.isNaN()) return DD.NaN
     const fhi = Math.ceil(this._hi)
     let flo = 0.0
-    if (fhi === this._hi) {
+    if (fhi === this._hi)
       flo = Math.ceil(this._lo)
-    }
+
     return new DD(fhi, flo)
   }
 
@@ -355,18 +354,17 @@ export default class DD {
   }
 
   max (x) {
-    if (this.ge(x)) {
+    if (this.ge(x))
       return this
-    } else {
+    else
       return x
-    }
   }
 
   sqrt () {
     if (this.isZero()) return DD.valueOf(0.0)
-    if (this.isNegative()) {
+    if (this.isNegative())
       return DD.NaN
-    }
+
     const x = 1.0 / Math.sqrt(this._hi)
     const ax = this._hi * x
     const axdd = DD.valueOf(ax)
@@ -456,9 +454,9 @@ export default class DD {
     if (this.isNaN()) return DD.NaN
     const fhi = Math.floor(this._hi)
     let flo = 0.0
-    if (fhi === this._hi) {
+    if (fhi === this._hi)
       flo = Math.floor(this._lo)
-    }
+
     return new DD(fhi, flo)
   }
 
@@ -471,9 +469,9 @@ export default class DD {
     try {
       return null
     } catch (ex) {
-      if (ex instanceof CloneNotSupportedException) {
+      if (ex instanceof CloneNotSupportedException)
         return null
-      } else throw ex
+      else throw ex
     } finally {}
   }
 
@@ -549,9 +547,9 @@ export default class DD {
     const magnitude = new Array(1).fill(null)
     const digits = this.extractSignificantDigits(false, magnitude)
     const expStr = DD.SCI_NOT_EXPONENT_CHAR + magnitude[0]
-    if (digits.charAt(0) === '0') {
+    if (digits.charAt(0) === '0')
       throw new IllegalStateException('Found leading zero: ' + digits)
-    }
+
     let trailingDigits = ''
     if (digits.length > 1) trailingDigits = digits.substring(1)
     const digitsWithDecimal = digits.charAt(0) + '.' + trailingDigits

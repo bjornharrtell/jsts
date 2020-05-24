@@ -12,17 +12,17 @@ export default class EdgeGraph {
 
   insert (orig, dest, eAdj) {
     const e = this.create(orig, dest)
-    if (eAdj !== null) {
+    if (eAdj !== null)
       eAdj.insert(e)
-    } else {
+    else
       this._vertexMap.put(orig, e)
-    }
+
     const eAdjDest = this._vertexMap.get(dest)
-    if (eAdjDest !== null) {
+    if (eAdjDest !== null)
       eAdjDest.insert(e.sym())
-    } else {
+    else
       this._vertexMap.put(dest, e.sym())
-    }
+
     return e
   }
 
@@ -41,12 +41,12 @@ export default class EdgeGraph {
     if (!EdgeGraph.isValidEdge(orig, dest)) return null
     const eAdj = this._vertexMap.get(orig)
     let eSame = null
-    if (eAdj !== null) {
+    if (eAdj !== null)
       eSame = eAdj.find(dest)
-    }
-    if (eSame !== null) {
+
+    if (eSame !== null)
       return eSame
-    }
+
     const e = this.insert(orig, dest, eAdj)
     return e
   }

@@ -21,20 +21,18 @@ export default class SegmentStringDissolver {
   dissolve () {
     if (hasInterface(arguments[0], Collection)) {
       const segStrings = arguments[0]
-      for (let i = segStrings.iterator(); i.hasNext();) {
+      for (let i = segStrings.iterator(); i.hasNext();)
         this.dissolve(i.next())
-      }
     } else if (hasInterface(arguments[0], SegmentString)) {
       const segString = arguments[0]
       const oca = new OrientedCoordinateArray(segString.getCoordinates())
       const existing = this.findMatching(oca, segString)
       if (existing === null) {
         this.add(oca, segString)
-      } else {
-        if (this._merger !== null) {
-          const isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates())
-          this._merger.merge(existing, segString, isSameOrientation)
-        }
+      } else
+      if (this._merger !== null) {
+        const isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates())
+        this._merger.merge(existing, segString, isSameOrientation)
       }
     }
   }

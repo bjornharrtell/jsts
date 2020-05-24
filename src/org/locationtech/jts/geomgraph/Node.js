@@ -41,10 +41,12 @@ export default class Node extends GraphComponent {
   setLabel () {
     if (arguments.length === 2 && (Number.isInteger(arguments[1]) && Number.isInteger(arguments[0]))) {
       const argIndex = arguments[0]; const onLocation = arguments[1]
-      if (this._label === null) {
+      if (this._label === null)
         this._label = new Label(argIndex, onLocation)
-      } else this._label.setLocation(argIndex, onLocation)
-    } else return super.setLabel.apply(this, arguments)
+      else this._label.setLocation(argIndex, onLocation)
+    } else {
+      return super.setLabel.apply(this, arguments)
+    }
   }
 
   getEdges () {
@@ -76,15 +78,15 @@ export default class Node extends GraphComponent {
     if (this._label !== null) loc = this._label.getLocation(argIndex)
     let newLoc = null
     switch (loc) {
-      case Location.BOUNDARY:
-        newLoc = Location.INTERIOR
-        break
-      case Location.INTERIOR:
-        newLoc = Location.BOUNDARY
-        break
-      default:
-        newLoc = Location.BOUNDARY
-        break
+    case Location.BOUNDARY:
+      newLoc = Location.INTERIOR
+      break
+    case Location.INTERIOR:
+      newLoc = Location.BOUNDARY
+      break
+    default:
+      newLoc = Location.BOUNDARY
+      break
     }
     this._label.setLocation(argIndex, newLoc)
   }

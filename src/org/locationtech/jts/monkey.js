@@ -103,13 +103,12 @@ Geometry.prototype.getInteriorPoint = function () {
   if (this.isEmpty()) return this._factory.createPoint()
   let intPt = null
   const dim = this.getDimension()
-  if (dim === 0) {
+  if (dim === 0)
     intPt = new InteriorPointPoint(this)
-  } else if (dim === 1) {
+  else if (dim === 1)
     intPt = new InteriorPointLine(this)
-  } else {
-    intPt = new InteriorPointArea(this)
-  }
+  else intPt = new InteriorPointArea(this)
+
   const interiorPt = intPt.getInteriorPoint()
   return this.createPointFromInternalCoord(interiorPt, this)
 }

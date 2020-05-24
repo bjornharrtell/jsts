@@ -22,13 +22,13 @@ export default class BoundaryOp {
   }
 
   boundaryMultiLineString (mLine) {
-    if (this._geom.isEmpty()) {
+    if (this._geom.isEmpty())
       return this.getEmptyMultiPoint()
-    }
+
     const bdyPts = this.computeBoundaryCoordinates(mLine)
-    if (bdyPts.length === 1) {
+    if (bdyPts.length === 1)
       return this._geomFact.createPoint(bdyPts[0])
-    }
+
     return this._geomFact.createMultiPointFromCoords(bdyPts)
   }
 
@@ -39,16 +39,15 @@ export default class BoundaryOp {
   }
 
   boundaryLineString (line) {
-    if (this._geom.isEmpty()) {
+    if (this._geom.isEmpty())
       return this.getEmptyMultiPoint()
-    }
+
     if (line.isClosed()) {
       const closedEndpointOnBoundary = this._bnRule.isInBoundary(2)
-      if (closedEndpointOnBoundary) {
+      if (closedEndpointOnBoundary)
         return line.getStartPoint()
-      } else {
+      else
         return this._geomFact.createMultiPoint()
-      }
     }
     return this._geomFact.createMultiPoint([line.getStartPoint(), line.getEndPoint()])
   }
@@ -70,9 +69,8 @@ export default class BoundaryOp {
       const entry = it.next()
       const counter = entry.getValue()
       const valence = counter.count
-      if (this._bnRule.isInBoundary(valence)) {
+      if (this._bnRule.isInBoundary(valence))
         bdyPts.add(entry.getKey())
-      }
     }
     return CoordinateArrays.toCoordinateArray(bdyPts)
   }

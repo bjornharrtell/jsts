@@ -8,9 +8,8 @@ export default class OffsetPointGenerator {
 
   extractPoints (line, offsetDistance, offsetPts) {
     const pts = line.getCoordinates()
-    for (let i = 0; i < pts.length - 1; i++) {
+    for (let i = 0; i < pts.length - 1; i++)
       this.computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts)
-    }
   }
 
   setSidesToGenerate (doLeft, doRight) {

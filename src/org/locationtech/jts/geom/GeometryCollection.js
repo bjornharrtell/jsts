@@ -19,9 +19,9 @@ export default class GeometryCollection extends Geometry {
 
   computeEnvelopeInternal () {
     const envelope = new Envelope()
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       envelope.expandToInclude(this._geometries[i].getEnvelopeInternal())
-    }
+
     return envelope
   }
 
@@ -44,43 +44,44 @@ export default class GeometryCollection extends Geometry {
 
   getArea () {
     let area = 0.0
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       area += this._geometries[i].getArea()
-    }
+
     return area
   }
 
   copyInternal () {
     const geometries = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < geometries.length; i++) {
+    for (let i = 0; i < geometries.length; i++)
       geometries[i] = this._geometries[i].copy()
-    }
+
     return new GeometryCollection(geometries, this._factory)
   }
 
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other)) {
+      if (!this.isEquivalentClass(other))
         return false
-      }
+
       const otherCollection = other
-      if (this._geometries.length !== otherCollection._geometries.length) {
+      if (this._geometries.length !== otherCollection._geometries.length)
         return false
-      }
-      for (let i = 0; i < this._geometries.length; i++) {
-        if (!this._geometries[i].equalsExact(otherCollection._geometries[i], tolerance)) {
+
+      for (let i = 0; i < this._geometries.length; i++)
+        if (!this._geometries[i].equalsExact(otherCollection._geometries[i], tolerance))
           return false
-        }
-      }
+
       return true
-    } else return super.equalsExact.apply(this, arguments)
+    } else {
+      return super.equalsExact.apply(this, arguments)
+    }
   }
 
   normalize () {
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       this._geometries[i].normalize()
-    }
+
     Arrays.sort(this._geometries)
   }
 
@@ -91,18 +92,18 @@ export default class GeometryCollection extends Geometry {
 
   getBoundaryDimension () {
     let dimension = Dimension.FALSE
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       dimension = Math.max(dimension, this._geometries[i].getBoundaryDimension())
-    }
+
     return dimension
   }
 
   reverseInternal () {
     const numGeometries = this._geometries.length
     const reversed = new ArrayList(numGeometries)
-    for (let i = 0; i < numGeometries; i++) {
+    for (let i = 0; i < numGeometries; i++)
       reversed.add(this._geometries[i].reverse())
-    }
+
     return this.getFactory().buildGeometry(reversed)
   }
 
@@ -112,25 +113,25 @@ export default class GeometryCollection extends Geometry {
 
   getDimension () {
     let dimension = Dimension.FALSE
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       dimension = Math.max(dimension, this._geometries[i].getDimension())
-    }
+
     return dimension
   }
 
   getLength () {
     let sum = 0.0
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       sum += this._geometries[i].getLength()
-    }
+
     return sum
   }
 
   getNumPoints () {
     let numPoints = 0
-    for (let i = 0; i < this._geometries.length; i++) {
+    for (let i = 0; i < this._geometries.length; i++)
       numPoints += this._geometries[i].getNumPoints()
-    }
+
     return numPoints
   }
 
@@ -166,31 +167,27 @@ export default class GeometryCollection extends Geometry {
   apply () {
     if (hasInterface(arguments[0], CoordinateFilter)) {
       const filter = arguments[0]
-      for (let i = 0; i < this._geometries.length; i++) {
+      for (let i = 0; i < this._geometries.length; i++)
         this._geometries[i].apply(filter)
-      }
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
       const filter = arguments[0]
       if (this._geometries.length === 0) return null
       for (let i = 0; i < this._geometries.length; i++) {
         this._geometries[i].apply(filter)
-        if (filter.isDone()) {
+        if (filter.isDone())
           break
-        }
       }
       if (filter.isGeometryChanged()) this.geometryChanged()
     } else if (hasInterface(arguments[0], GeometryFilter)) {
       const filter = arguments[0]
       filter.filter(this)
-      for (let i = 0; i < this._geometries.length; i++) {
+      for (let i = 0; i < this._geometries.length; i++)
         this._geometries[i].apply(filter)
-      }
     } else if (hasInterface(arguments[0], GeometryComponentFilter)) {
       const filter = arguments[0]
       filter.filter(this)
-      for (let i = 0; i < this._geometries.length; i++) {
+      for (let i = 0; i < this._geometries.length; i++)
         this._geometries[i].apply(filter)
-      }
     }
   }
 
@@ -205,11 +202,10 @@ export default class GeometryCollection extends Geometry {
   }
 
   isEmpty () {
-    for (let i = 0; i < this._geometries.length; i++) {
-      if (!this._geometries[i].isEmpty()) {
+    for (let i = 0; i < this._geometries.length; i++)
+      if (!this._geometries[i].isEmpty())
         return false
-      }
-    }
+
     return true
   }
 
@@ -226,12 +222,12 @@ GeometryCollection.constructor_ = function () {
   if (arguments.length === 0) {} else if (arguments.length === 2) {
     let geometries = arguments[0]; const factory = arguments[1]
     Geometry.constructor_.call(this, factory)
-    if (geometries === null) {
+    if (geometries === null)
       geometries = []
-    }
-    if (Geometry.hasNullElements(geometries)) {
+
+    if (Geometry.hasNullElements(geometries))
       throw new IllegalArgumentException('geometries must not contain null elements')
-    }
+
     this._geometries = geometries
   }
 }

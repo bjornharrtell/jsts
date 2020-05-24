@@ -36,19 +36,19 @@ export default class SnapIfNeededOverlayOp {
       const isValid = true
       if (isValid) isSuccess = true
     } catch (ex) {
-      if (ex instanceof RuntimeException) {
+      if (ex instanceof RuntimeException)
         savedException = ex
-      } else throw ex
+      else throw ex
     } finally {}
-    if (!isSuccess) {
+    if (!isSuccess)
       try {
         result = SnapOverlayOp.overlayOp(this._geom[0], this._geom[1], opCode)
       } catch (ex) {
-        if (ex instanceof RuntimeException) {
+        if (ex instanceof RuntimeException)
           throw savedException
-        } else throw ex
+        else throw ex
       } finally {}
-    }
+
     return result
   }
 

@@ -12,13 +12,15 @@ export default class ArrayList extends List {
 
   constructor (o) {
     super()
-    if (o instanceof Collection) { this.addAll(o) }
+    if (o instanceof Collection) this.addAll(o)
   }
 
   ensureCapacity () { }
 
   add (e) {
-    if (arguments.length === 1) { this.#array.push(e) } else { this.#array.splice(arguments[0], 0, arguments[1]) }
+    if (arguments.length === 1)
+      this.#array.push(e)
+    else this.#array.splice(arguments[0], 0, arguments[1])
     return true
   }
 
@@ -27,7 +29,7 @@ export default class ArrayList extends List {
   }
 
   addAll (c) {
-    for (let i = c.iterator(); i.hasNext();) { this.add(i.next()) }
+    for (let i = c.iterator(); i.hasNext();) this.add(i.next())
     return true
   }
 
@@ -42,7 +44,7 @@ export default class ArrayList extends List {
   }
 
   get (index) {
-    if (index < 0 || index >= this.size()) { throw new IndexOutOfBoundsException() }
+    if (index < 0 || index >= this.size()) throw new IndexOutOfBoundsException()
     return this.#array[index]
   }
 
@@ -51,11 +53,9 @@ export default class ArrayList extends List {
   }
 
   sort (comparator) {
-    if (comparator) {
+    if (comparator)
       this.#array.sort((a, b) => comparator.compare(a, b))
-    } else {
-      this.#array.sort()
-    }
+    else this.#array.sort()
   }
 
   size () {
@@ -69,23 +69,24 @@ export default class ArrayList extends List {
   remove (o) {
     let found = false
 
-    for (let i = 0, len = this.#array.length; i < len; i++) {
+    for (let i = 0, len = this.#array.length; i < len; i++)
       if (this.#array[i] === o) {
         this.#array.splice(i, 1)
         found = true
         break
       }
-    }
 
     return found
   }
 
   removeAll (c) {
-    for (let i = c.iterator(); i.hasNext();) { this.remove(i.next()) }
+    for (let i = c.iterator(); i.hasNext();) this.remove(i.next())
     return true
   }
 
-  [Symbol.iterator] () { return this.#array.values() }
+  [Symbol.iterator] () {
+    return this.#array.values()
+  }
 }
 
 class Iterator {
@@ -97,7 +98,7 @@ class Iterator {
   }
 
   next () {
-    if (this.#position === this.#arrayList.size()) { throw new NoSuchElementException() }
+    if (this.#position === this.#arrayList.size()) throw new NoSuchElementException()
     return this.#arrayList.get(this.#position++)
   }
 

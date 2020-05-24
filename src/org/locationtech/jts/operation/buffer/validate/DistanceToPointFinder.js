@@ -23,9 +23,8 @@ export default class DistanceToPointFinder {
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof Polygon && arguments[1] instanceof Coordinate)) {
       const poly = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
       DistanceToPointFinder.computeDistance(poly.getExteriorRing(), pt, ptDist)
-      for (let i = 0; i < poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < poly.getNumInteriorRing(); i++)
         DistanceToPointFinder.computeDistance(poly.getInteriorRingN(i), pt, ptDist)
-      }
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof Geometry && arguments[1] instanceof Coordinate)) {
       const geom = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
       if (geom instanceof LineString) {

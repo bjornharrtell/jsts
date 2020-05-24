@@ -27,11 +27,13 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
       if (geom instanceof LinearRing) minLength = 4
       let collapsedCoords = reducedCoords
       if (this._removeCollapsed) collapsedCoords = null
-      if (noRepeatedCoords.length < minLength) {
+      if (noRepeatedCoords.length < minLength)
         return collapsedCoords
-      }
+
       return noRepeatedCoords
-    } else return super.edit.apply(this, arguments)
+    } else {
+      return super.edit.apply(this, arguments)
+    }
   }
 
   getClass () {

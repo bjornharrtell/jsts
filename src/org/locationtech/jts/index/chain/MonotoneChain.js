@@ -18,20 +18,19 @@ export default class MonotoneChain {
     }
     if (!searchEnv.intersects(p0, p1)) return null
     const mid = Math.trunc((start0 + end0) / 2)
-    if (start0 < mid) {
+    if (start0 < mid)
       this.computeSelect(searchEnv, start0, mid, mcs)
-    }
-    if (mid < end0) {
+
+    if (mid < end0)
       this.computeSelect(searchEnv, mid, end0, mcs)
-    }
   }
 
   getCoordinates () {
     const coord = new Array(this._end - this._start + 1).fill(null)
     let index = 0
-    for (let i = this._start; i <= this._end; i++) {
+    for (let i = this._start; i <= this._end; i++)
       coord[index++] = this._pts[i]
-    }
+
     return coord
   }
 

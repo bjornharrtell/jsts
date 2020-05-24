@@ -52,9 +52,8 @@ export default class CommonBits {
 
   static getBit (bits, i) {
     const mask = (1 << (i % 32))
-    if (i < 32) {
-      return (bits.low & mask) !== 0 ? 1 : 0
-    }
+    if (i < 32) return (bits.low & mask) !== 0 ? 1 : 0
+
     return (bits.high & mask) !== 0 ? 1 : 0
   }
 

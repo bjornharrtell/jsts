@@ -15,9 +15,9 @@ export default class PrecisionModel {
   }
 
   equals (other) {
-    if (!(other instanceof PrecisionModel)) {
+    if (!(other instanceof PrecisionModel))
       return false
-    }
+
     const otherPrecisionModel = other
     return this._modelType === otherPrecisionModel._modelType && this._scale === otherPrecisionModel._scale
   }
@@ -43,13 +43,13 @@ export default class PrecisionModel {
 
   toString () {
     let description = 'UNKNOWN'
-    if (this._modelType === PrecisionModel.FLOATING) {
+    if (this._modelType === PrecisionModel.FLOATING)
       description = 'Floating'
-    } else if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
+    else if (this._modelType === PrecisionModel.FLOATING_SINGLE)
       description = 'Floating-Single'
-    } else if (this._modelType === PrecisionModel.FIXED) {
+    else if (this._modelType === PrecisionModel.FIXED)
       description = 'Fixed (Scale=' + this.getScale() + ')'
-    }
+
     return description
   }
 
@@ -61,9 +61,9 @@ export default class PrecisionModel {
         const floatSingleVal = val
         return floatSingleVal
       }
-      if (this._modelType === PrecisionModel.FIXED) {
+      if (this._modelType === PrecisionModel.FIXED)
         return Math.round(val * this._scale) / this._scale
-      }
+
       return val
     } else if (arguments[0] instanceof Coordinate) {
       const coord = arguments[0]
@@ -75,13 +75,13 @@ export default class PrecisionModel {
 
   getMaximumSignificantDigits () {
     let maxSigDigits = 16
-    if (this._modelType === PrecisionModel.FLOATING) {
+    if (this._modelType === PrecisionModel.FLOATING)
       maxSigDigits = 16
-    } else if (this._modelType === PrecisionModel.FLOATING_SINGLE) {
+    else if (this._modelType === PrecisionModel.FLOATING_SINGLE)
       maxSigDigits = 6
-    } else if (this._modelType === PrecisionModel.FIXED) {
+    else if (this._modelType === PrecisionModel.FIXED)
       maxSigDigits = 1 + Math.trunc(Math.ceil(Math.log(this.getScale()) / Math.log(10)))
-    }
+
     return maxSigDigits
   }
 
@@ -129,15 +129,14 @@ PrecisionModel.Type = Type
 PrecisionModel.constructor_ = function () {
   this._modelType = null
   this._scale = null
-  if (arguments.length === 0) {
+  if (arguments.length === 0)
     this._modelType = PrecisionModel.FLOATING
-  } else if (arguments.length === 1) {
+  else if (arguments.length === 1)
     if (arguments[0] instanceof Type) {
       const modelType = arguments[0]
       this._modelType = modelType
-      if (modelType === PrecisionModel.FIXED) {
+      if (modelType === PrecisionModel.FIXED)
         this.setScale(1.0)
-      }
     } else if (typeof arguments[0] === 'number') {
       const scale = arguments[0]
       this._modelType = PrecisionModel.FIXED
@@ -147,7 +146,6 @@ PrecisionModel.constructor_ = function () {
       this._modelType = pm._modelType
       this._scale = pm._scale
     }
-  }
 }
 PrecisionModel.FIXED = new Type('FIXED')
 PrecisionModel.FLOATING = new Type('FLOATING')

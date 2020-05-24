@@ -75,9 +75,9 @@ export default class Distance3DOp {
       const d1 = poly.getPlane().orientedDistance(p1)
       if (d0 * d1 > 0) continue
       const intPt = Distance3DOp.segmentPoint(p0, p1, d0, d1)
-      if (poly.intersects(intPt)) {
+      if (poly.intersects(intPt))
         return intPt
-      }
+
       d0 = d1
     }
     return null
@@ -92,9 +92,8 @@ export default class Distance3DOp {
 
   computeMinDistancePointPoint (point0, point1, flip) {
     const dist = CGAlgorithms3D.distance(point0.getCoordinate(), point1.getCoordinate())
-    if (dist < this._minDistance) {
+    if (dist < this._minDistance)
       this.updateDistance(dist, new GeometryLocation(point0, 0, point0.getCoordinate()), new GeometryLocation(point1, 0, point1.getCoordinate()), flip)
-    }
   }
 
   computeMinDistanceMultiMulti (g0, g1, flip) {
@@ -107,9 +106,9 @@ export default class Distance3DOp {
       }
     } else {
       if (g0.isEmpty()) return null
-      if (g0 instanceof Polygon) {
+      if (g0 instanceof Polygon)
         this.computeMinDistanceOneMulti(Distance3DOp.polyPlane(g0), g1, flip)
-      } else this.computeMinDistanceOneMulti(g0, g1, flip)
+      else this.computeMinDistanceOneMulti(g0, g1, flip)
     }
   }
 
@@ -234,7 +233,7 @@ export default class Distance3DOp {
   computeMinDistanceLineLine (line0, line1, flip) {
     const coord0 = line0.getCoordinates()
     const coord1 = line1.getCoordinates()
-    for (let i = 0; i < coord0.length - 1; i++) {
+    for (let i = 0; i < coord0.length - 1; i++)
       for (let j = 0; j < coord1.length - 1; j++) {
         const dist = CGAlgorithms3D.distanceSegmentSegment(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1])
         if (dist < this._minDistance) {
@@ -246,7 +245,6 @@ export default class Distance3DOp {
         }
         if (this._isDone) return null
       }
-    }
   }
 
   computeMinDistancePolygonLine (poly, line, flip) {

@@ -56,14 +56,13 @@ export default class BoundablePair {
     for (let i = children.iterator(); i.hasNext();) {
       const child = i.next()
       let bp = null
-      if (isFlipped) {
+      if (isFlipped)
         bp = new BoundablePair(bndOther, child, this._itemDistance)
-      } else {
+      else
         bp = new BoundablePair(child, bndOther, this._itemDistance)
-      }
-      if (bp.getDistance() < minDistance) {
+
+      if (bp.getDistance() < minDistance)
         priQ.add(bp)
-      }
     }
   }
 
@@ -77,9 +76,9 @@ export default class BoundablePair {
   }
 
   distance () {
-    if (this.isLeaves()) {
+    if (this.isLeaves())
       return this._itemDistance.distance(this._boundable1, this._boundable2)
-    }
+
     return this._boundable1.getBounds().distance(this._boundable2.getBounds())
   }
 

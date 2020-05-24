@@ -33,12 +33,12 @@ export default class CoordinateArraySequenceFactory {
     } else if (arguments.length === 3) {
       const size = arguments[0]; const dimension = arguments[1]; let measures = arguments[2]
       let spatial = dimension - measures
-      if (measures > 1) {
+      if (measures > 1)
         measures = 1
-      }
-      if (spatial > 3) {
+
+      if (spatial > 3)
         spatial = 3
-      }
+
       if (spatial < 2) spatial = 2
       return new CoordinateArraySequence(size, spatial + measures, measures)
     }

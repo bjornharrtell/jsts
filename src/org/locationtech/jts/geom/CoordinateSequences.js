@@ -9,9 +9,8 @@ export default class CoordinateSequences {
 
   static copyCoord (src, srcPos, dest, destPos) {
     const minDim = Math.min(src.getDimension(), dest.getDimension())
-    for (let dim = 0; dim < minDim; dim++) {
+    for (let dim = 0; dim < minDim; dim++)
       dest.setOrdinate(destPos, dim, src.getOrdinate(srcPos, dim))
-    }
   }
 
   static isRing (seq) {
@@ -38,12 +37,11 @@ export default class CoordinateSequences {
       if (i <= 0) return null
       const copy = seq.copy()
       const last = ensureRing ? seq.size() - 1 : seq.size()
-      for (let j = 0; j < last; j++) {
+      for (let j = 0; j < last; j++)
         for (let k = 0; k < seq.getDimension(); k++) seq.setOrdinate(j, k, copy.getOrdinate((indexOfFirstCoordinate + j) % last, k))
-      }
-      if (ensureRing) {
+
+      if (ensureRing)
         for (let k = 0; k < seq.getDimension(); k++) seq.setOrdinate(last, k, seq.getOrdinate(0, k))
-      }
     }
   }
 
@@ -52,7 +50,7 @@ export default class CoordinateSequences {
     const cs2Size = cs2.size()
     if (cs1Size !== cs2Size) return false
     const dim = Math.min(cs1.getDimension(), cs2.getDimension())
-    for (let i = 0; i < cs1Size; i++) {
+    for (let i = 0; i < cs1Size; i++)
       for (let d = 0; d < dim; d++) {
         const v1 = cs1.getOrdinate(i, d)
         const v2 = cs2.getOrdinate(i, d)
@@ -60,7 +58,7 @@ export default class CoordinateSequences {
         if (Double.isNaN(v1) && Double.isNaN(v2)) continue
         return false
       }
-    }
+
     return true
   }
 
@@ -87,18 +85,17 @@ export default class CoordinateSequences {
     const newseq = fact.create(size, seq.getDimension())
     const n = seq.size()
     CoordinateSequences.copy(seq, 0, newseq, 0, n)
-    if (n > 0) {
+    if (n > 0)
       for (let i = n; i < size; i++) CoordinateSequences.copy(seq, n - 1, newseq, i, 1)
-    }
+
     return newseq
   }
 
   static reverse (seq) {
     const last = seq.size() - 1
     const mid = Math.trunc(last / 2)
-    for (let i = 0; i <= mid; i++) {
+    for (let i = 0; i <= mid; i++)
       CoordinateSequences.swap(seq, i, last - i)
-    }
   }
 
   static swap (seq, i, j) {
@@ -111,9 +108,8 @@ export default class CoordinateSequences {
   }
 
   static copy (src, srcPos, dest, destPos, length) {
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++)
       CoordinateSequences.copyCoord(src, srcPos + i, dest, destPos + i)
-    }
   }
 
   static ensureValidRing (fact, seq) {
@@ -126,11 +122,10 @@ export default class CoordinateSequences {
   }
 
   static indexOf (coordinate, seq) {
-    for (let i = 0; i < seq.size(); i++) {
-      if (coordinate.x === seq.getOrdinate(i, CoordinateSequence.X) && coordinate.y === seq.getOrdinate(i, CoordinateSequence.Y)) {
+    for (let i = 0; i < seq.size(); i++)
+      if (coordinate.x === seq.getOrdinate(i, CoordinateSequence.X) && coordinate.y === seq.getOrdinate(i, CoordinateSequence.Y))
         return i
-      }
-    }
+
     return -1
   }
 
@@ -146,9 +141,8 @@ export default class CoordinateSequences {
     let minCoord = null
     for (let i = 0; i < seq.size(); i++) {
       const testCoord = seq.getCoordinate(i)
-      if (minCoord === null || minCoord.compareTo(testCoord) > 0) {
+      if (minCoord === null || minCoord.compareTo(testCoord) > 0)
         minCoord = testCoord
-      }
     }
     return minCoord
   }

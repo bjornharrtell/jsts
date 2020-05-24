@@ -45,17 +45,17 @@ export default class LineMerger {
   buildEdgeStringsStartingAt (node) {
     for (let i = node.getOutEdges().iterator(); i.hasNext();) {
       const directedEdge = i.next()
-      if (directedEdge.getEdge().isMarked()) {
+      if (directedEdge.getEdge().isMarked())
         continue
-      }
+
       this._edgeStrings.add(this.buildEdgeStringStartingWith(directedEdge))
     }
   }
 
   merge () {
-    if (this._mergedLineStrings !== null) {
+    if (this._mergedLineStrings !== null)
       return null
-    }
+
     GraphComponent.setMarked(this._graph.nodeIterator(), false)
     GraphComponent.setMarked(this._graph.edgeIterator(), false)
     this._edgeStrings = new ArrayList()
@@ -69,9 +69,9 @@ export default class LineMerger {
   }
 
   addLineString (lineString) {
-    if (this._factory === null) {
+    if (this._factory === null)
       this._factory = lineString.getFactory()
-    }
+
     this._graph.addEdge(lineString)
   }
 
@@ -91,9 +91,8 @@ export default class LineMerger {
       const geometry = arguments[0]
       for (let i = 0; i < geometry.getNumGeometries(); i++) {
         const component = geometry.getGeometryN(i)
-        if (component instanceof LineString) {
+        if (component instanceof LineString)
           this.addLineString(component)
-        }
       }
       ;
     } else if (hasInterface(arguments[0], Collection)) {

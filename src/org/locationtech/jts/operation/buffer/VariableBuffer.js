@@ -102,9 +102,9 @@ export default class VariableBuffer {
 
   static length (pts, i1, i2) {
     let len = 0
-    for (let i = i1 + 1; i <= i2; i++) {
+    for (let i = i1 + 1; i <= i2; i++)
       len += pts[i].distance(pts[i - 1])
-    }
+
     return len
   }
 
@@ -148,9 +148,9 @@ export default class VariableBuffer {
     const nPts = 4 * this._quadrantSegs
     const pts = new Array(nPts + 1).fill(null)
     const angInc = Math.PI / 2 / this._quadrantSegs
-    for (let i = 0; i < nPts; i++) {
+    for (let i = 0; i < nPts; i++)
       pts[i] = VariableBuffer.projectPolar(center, radius, i * angInc)
-    }
+
     pts[pts.length - 1] = pts[0].copy()
     return this._geomFactory.createPolygon(pts)
   }
@@ -168,9 +168,9 @@ export default class VariableBuffer {
     }
     const partsGeom = this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(parts))
     const buffer = partsGeom.union()
-    if (buffer.isEmpty()) {
+    if (buffer.isEmpty())
       return this._geomFactory.createPolygon()
-    }
+
     return buffer
   }
 
@@ -187,9 +187,9 @@ export default class VariableBuffer {
   }
 
   segmentBuffer (p0, p1, dist0, dist1) {
-    if (dist0 > dist1) {
+    if (dist0 > dist1)
       return this.segmentBuffer(p1, p0, dist1, dist0)
-    }
+
     const tangent = VariableBuffer.outerTangent(p0, dist0, p1, dist1)
     if (tangent === null) {
       let center = p0
@@ -240,8 +240,7 @@ VariableBuffer.constructor_ = function () {
   this._line = line
   this._distance = distance
   this._geomFactory = line.getFactory()
-  if (distance.length !== this._line.getNumPoints()) {
+  if (distance.length !== this._line.getNumPoints())
     throw new IllegalArgumentException('Number of distances is not equal to number of vertices')
-  }
 }
 VariableBuffer.SNAP_TRIG_TOL = 1e-6

@@ -26,16 +26,16 @@ export default class MCIndexSegmentSetMutualIntersector {
 
   process (segStrings, segInt) {
     const monoChains = new ArrayList()
-    for (let i = segStrings.iterator(); i.hasNext();) {
+    for (let i = segStrings.iterator(); i.hasNext();)
       this.addToMonoChains(i.next(), monoChains)
-    }
+
     this.intersectChains(monoChains, segInt)
   }
 
   initBaseSegments (segStrings) {
-    for (let i = segStrings.iterator(); i.hasNext();) {
+    for (let i = segStrings.iterator(); i.hasNext();)
       this.addToIndex(i.next())
-    }
+
     this._index.build()
   }
 
@@ -76,7 +76,9 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
       const ss1 = mc1.getContext()
       const ss2 = mc2.getContext()
       this._si.processIntersections(ss1, start1, ss2, start2)
-    } else return super.overlap.apply(this, arguments)
+    } else {
+      return super.overlap.apply(this, arguments)
+    }
   }
 
   getClass () {

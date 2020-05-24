@@ -13,7 +13,9 @@ export default class ShortCircuitedGeometryVisitor {
           this._isDone = true
           return null
         }
-      } else this.applyTo(element)
+      } else {
+        this.applyTo(element)
+      }
     }
   }
 

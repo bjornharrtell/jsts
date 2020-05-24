@@ -106,9 +106,8 @@ export default class RelateComputer {
       for (let eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
         const ei = eiIt.next()
         const n = this._nodes.find(ei.coord)
-        if (n.getLabel().isNull(argIndex)) {
+        if (n.getLabel().isNull(argIndex))
           if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else n.setLabel(argIndex, Location.INTERIOR)
-        }
       }
     }
   }
@@ -125,9 +124,8 @@ export default class RelateComputer {
       for (let eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext();) {
         const ei = eiIt.next()
         const n = this._nodes.addNode(ei.coord)
-        if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else {
-          if (n.getLabel().isNull(argIndex)) n.setLabel(argIndex, Location.INTERIOR)
-        }
+        if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else
+        if (n.getLabel().isNull(argIndex)) n.setLabel(argIndex, Location.INTERIOR)
       }
     }
   }
@@ -137,9 +135,8 @@ export default class RelateComputer {
       const n = ni.next()
       const label = n.getLabel()
       Assert.isTrue(label.getGeometryCount() > 0, 'node with empty label found')
-      if (n.isIsolated()) {
+      if (n.isIsolated())
         if (label.isNull(0)) this.labelIsolatedNode(n, 0); else this.labelIsolatedNode(n, 1)
-      }
     }
   }
 

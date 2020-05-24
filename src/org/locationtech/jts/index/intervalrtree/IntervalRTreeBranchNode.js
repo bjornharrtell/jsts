@@ -11,9 +11,9 @@ export default class IntervalRTreeBranchNode extends IntervalRTreeNode {
   }
 
   query (queryMin, queryMax, visitor) {
-    if (!this.intersects(queryMin, queryMax)) {
+    if (!this.intersects(queryMin, queryMax))
       return null
-    }
+
     if (this._node1 !== null) this._node1.query(queryMin, queryMax, visitor)
     if (this._node2 !== null) this._node2.query(queryMin, queryMax, visitor)
   }

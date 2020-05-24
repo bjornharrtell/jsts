@@ -7,7 +7,9 @@
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
 
-function p2c (p) { return [p.x, p.y] }
+function p2c (p) {
+  return [p.x, p.y]
+}
 
 export default class OL3Parser {
   /**
@@ -38,23 +40,21 @@ export default class OL3Parser {
    */
   read (geometry) {
     const ol = this.ol
-    if (geometry instanceof ol.geom.Point) {
+    if (geometry instanceof ol.geom.Point)
       return this.convertFromPoint(geometry)
-    } else if (geometry instanceof ol.geom.LineString) {
+    else if (geometry instanceof ol.geom.LineString)
       return this.convertFromLineString(geometry)
-    } else if (geometry instanceof ol.geom.LinearRing) {
+    else if (geometry instanceof ol.geom.LinearRing)
       return this.convertFromLinearRing(geometry)
-    } else if (geometry instanceof ol.geom.Polygon) {
+    else if (geometry instanceof ol.geom.Polygon)
       return this.convertFromPolygon(geometry)
-    } else if (geometry instanceof ol.geom.MultiPoint) {
+    else if (geometry instanceof ol.geom.MultiPoint)
       return this.convertFromMultiPoint(geometry)
-    } else if (geometry instanceof ol.geom.MultiLineString) {
+    else if (geometry instanceof ol.geom.MultiLineString)
       return this.convertFromMultiLineString(geometry)
-    } else if (geometry instanceof ol.geom.MultiPolygon) {
+    else if (geometry instanceof ol.geom.MultiPolygon)
       return this.convertFromMultiPolygon(geometry)
-    } else if (geometry instanceof ol.geom.GeometryCollection) {
-      return this.convertFromCollection(geometry)
-    }
+    else if (geometry instanceof ol.geom.GeometryCollection) return this.convertFromCollection(geometry)
   }
 
   convertFromPoint (point) {
@@ -80,11 +80,9 @@ export default class OL3Parser {
     const holes = []
     for (let i = 0; i < linearRings.length; i++) {
       const linearRing = this.convertFromLinearRing(linearRings[i])
-      if (i === 0) {
+      if (i === 0)
         shell = linearRing
-      } else {
-        holes.push(linearRing)
-      }
+      else holes.push(linearRing)
     }
     return this.geometryFactory.createPolygon(shell, holes)
   }
@@ -124,23 +122,21 @@ export default class OL3Parser {
    * @memberof module:org/locationtech/jts/io/OL3Parser#
    */
   write (geometry) {
-    if (geometry.getGeometryType() === 'Point') {
+    if (geometry.getGeometryType() === 'Point')
       return this.convertToPoint(geometry.getCoordinate())
-    } else if (geometry.getGeometryType() === 'LineString') {
+    else if (geometry.getGeometryType() === 'LineString')
       return this.convertToLineString(geometry)
-    } else if (geometry.getGeometryType() === 'LinearRing') {
+    else if (geometry.getGeometryType() === 'LinearRing')
       return this.convertToLinearRing(geometry)
-    } else if (geometry.getGeometryType() === 'Polygon') {
+    else if (geometry.getGeometryType() === 'Polygon')
       return this.convertToPolygon(geometry)
-    } else if (geometry.getGeometryType() === 'MultiPoint') {
+    else if (geometry.getGeometryType() === 'MultiPoint')
       return this.convertToMultiPoint(geometry)
-    } else if (geometry.getGeometryType() === 'MultiLineString') {
+    else if (geometry.getGeometryType() === 'MultiLineString')
       return this.convertToMultiLineString(geometry)
-    } else if (geometry.getGeometryType() === 'MultiPolygon') {
+    else if (geometry.getGeometryType() === 'MultiPolygon')
       return this.convertToMultiPolygon(geometry)
-    } else if (geometry.getGeometryType() === 'GeometryCollection') {
-      return this.convertToCollection(geometry)
-    }
+    else if (geometry.getGeometryType() === 'GeometryCollection') return this.convertToCollection(geometry)
   }
 
   convertToPoint (coordinate) {
@@ -159,9 +155,8 @@ export default class OL3Parser {
 
   convertToPolygon (polygon) {
     const rings = [polygon._shell._points._coordinates.map(p2c)]
-    for (let i = 0; i < polygon._holes.length; i++) {
-      rings.push(polygon._holes[i]._points._coordinates.map(p2c))
-    }
+    for (let i = 0; i < polygon._holes.length; i++) rings.push(polygon._holes[i]._points._coordinates.map(p2c))
+
     return new this.ol.geom.Polygon(rings)
   }
 
@@ -171,17 +166,15 @@ export default class OL3Parser {
 
   convertToMultiLineString (multiLineString) {
     const lineStrings = []
-    for (let i = 0; i < multiLineString._geometries.length; i++) {
-      lineStrings.push(this.convertToLineString(multiLineString._geometries[i]).getCoordinates())
-    }
+    for (let i = 0; i < multiLineString._geometries.length; i++) lineStrings.push(this.convertToLineString(multiLineString._geometries[i]).getCoordinates())
+
     return new this.ol.geom.MultiLineString(lineStrings)
   }
 
   convertToMultiPolygon (multiPolygon) {
     const polygons = []
-    for (let i = 0; i < multiPolygon._geometries.length; i++) {
-      polygons.push(this.convertToPolygon(multiPolygon._geometries[i]).getCoordinates())
-    }
+    for (let i = 0; i < multiPolygon._geometries.length; i++) polygons.push(this.convertToPolygon(multiPolygon._geometries[i]).getCoordinates())
+
     return new this.ol.geom.MultiPolygon(polygons)
   }
 

@@ -29,9 +29,9 @@ export default class AbstractNode {
   }
 
   getBounds () {
-    if (this._bounds === null) {
+    if (this._bounds === null)
       this._bounds = this.computeBounds()
-    }
+
     return this._bounds
   }
 

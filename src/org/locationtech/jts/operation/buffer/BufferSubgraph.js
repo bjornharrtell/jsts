@@ -60,9 +60,8 @@ export default class BufferSubgraph {
   findResultEdges () {
     for (let it = this._dirEdgeList.iterator(); it.hasNext();) {
       const de = it.next()
-      if (de.getDepth(Position.RIGHT) >= 1 && de.getDepth(Position.LEFT) <= 0 && !de.isInteriorAreaEdge()) {
+      if (de.getDepth(Position.RIGHT) >= 1 && de.getDepth(Position.LEFT) <= 0 && !de.isInteriorAreaEdge())
         de.setInResult(true)
-      }
     }
   }
 
@@ -92,12 +91,12 @@ export default class BufferSubgraph {
 
   compareTo (o) {
     const graph = o
-    if (this._rightMostCoord.x < graph._rightMostCoord.x) {
+    if (this._rightMostCoord.x < graph._rightMostCoord.x)
       return -1
-    }
-    if (this._rightMostCoord.x > graph._rightMostCoord.x) {
+
+    if (this._rightMostCoord.x > graph._rightMostCoord.x)
       return 1
-    }
+
     return 0
   }
 
@@ -107,9 +106,8 @@ export default class BufferSubgraph {
       for (let it = this._dirEdgeList.iterator(); it.hasNext();) {
         const dirEdge = it.next()
         const pts = dirEdge.getEdge().getCoordinates()
-        for (let i = 0; i < pts.length - 1; i++) {
+        for (let i = 0; i < pts.length - 1; i++)
           edgeEnv.expandToInclude(pts[i])
-        }
       }
       this._env = edgeEnv
     }

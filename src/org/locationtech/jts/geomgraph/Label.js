@@ -9,9 +9,9 @@ export default class Label {
 
   static toLineLabel (label) {
     const lineLabel = new Label(Location.NONE)
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++)
       lineLabel.setLocation(i, label.getLocation(i))
-    }
+
     return lineLabel
   }
 
@@ -46,13 +46,11 @@ export default class Label {
   }
 
   merge (lbl) {
-    for (let i = 0; i < 2; i++) {
-      if (this.elt[i] === null && lbl.elt[i] !== null) {
+    for (let i = 0; i < 2; i++)
+      if (this.elt[i] === null && lbl.elt[i] !== null)
         this.elt[i] = new TopologyLocation(lbl.elt[i])
-      } else {
+      else
         this.elt[i].merge(lbl.elt[i])
-      }
-    }
   }
 
   flip () {

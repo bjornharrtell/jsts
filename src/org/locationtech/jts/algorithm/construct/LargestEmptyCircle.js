@@ -41,9 +41,9 @@ export default class LargestEmptyCircle {
     this._farthestCell = this.createCentroidCell(this._obstacles)
     while (!cellQueue.isEmpty()) {
       const cell = cellQueue.remove()
-      if (cell.getDistance() > this._farthestCell.getDistance()) {
+      if (cell.getDistance() > this._farthestCell.getDistance())
         this._farthestCell = cell
-      }
+
       if (this.mayContainCircleCenter(cell)) {
         const h2 = cell.getHSide() / 2
         cellQueue.add(this.createCell(cell.getX() - h2, cell.getY() - h2, h2))
@@ -116,11 +116,9 @@ export default class LargestEmptyCircle {
     const height = env.getHeight()
     const cellSize = Math.min(width, height)
     const hSize = cellSize / 2.0
-    for (let x = minX; x < maxX; x += cellSize) {
-      for (let y = minY; y < maxY; y += cellSize) {
+    for (let x = minX; x < maxX; x += cellSize)
+      for (let y = minY; y < maxY; y += cellSize)
         cellQueue.add(this.createCell(x + hSize, y + hSize, hSize))
-      }
-    }
   }
 
   setBoundary (obstacles) {
@@ -214,9 +212,9 @@ LargestEmptyCircle.constructor_ = function () {
   this._radiusPt = null
   this._radiusPoint = null
   const obstacles = arguments[0]; const tolerance = arguments[1]
-  if (obstacles.isEmpty()) {
+  if (obstacles.isEmpty())
     throw new IllegalArgumentException('Empty obstacles geometry is not supported')
-  }
+
   this._obstacles = obstacles
   this._factory = obstacles.getFactory()
   this._tolerance = tolerance

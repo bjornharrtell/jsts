@@ -54,11 +54,9 @@ export default class MonotoneChainEdge {
   }
 
   computeIntersects (mce, si) {
-    for (let i = 0; i < this.startIndex.length - 1; i++) {
-      for (let j = 0; j < mce.startIndex.length - 1; j++) {
+    for (let i = 0; i < this.startIndex.length - 1; i++)
+      for (let j = 0; j < mce.startIndex.length - 1; j++)
         this.computeIntersectsForChain(i, mce, j, si)
-      }
-    }
   }
 
   getClass () {

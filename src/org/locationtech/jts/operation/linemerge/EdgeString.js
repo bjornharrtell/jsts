@@ -13,17 +13,16 @@ export default class EdgeString {
       const coordinateList = new CoordinateList()
       for (let i = this._directedEdges.iterator(); i.hasNext();) {
         const directedEdge = i.next()
-        if (directedEdge.getEdgeDirection()) {
+        if (directedEdge.getEdgeDirection())
           forwardDirectedEdges++
-        } else {
+        else
           reverseDirectedEdges++
-        }
+
         coordinateList.add(directedEdge.getEdge().getLine().getCoordinates(), false, directedEdge.getEdgeDirection())
       }
       this._coordinates = coordinateList.toCoordinateArray()
-      if (reverseDirectedEdges > forwardDirectedEdges) {
+      if (reverseDirectedEdges > forwardDirectedEdges)
         CoordinateArrays.reverse(this._coordinates)
-      }
     }
     return this._coordinates
   }

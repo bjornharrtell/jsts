@@ -13,11 +13,11 @@ export default class PolygonExtracter {
       return PolygonExtracter.getPolygons(geom, new ArrayList())
     } else if (arguments.length === 2) {
       const geom = arguments[0]; const list = arguments[1]
-      if (geom instanceof Polygon) {
+      if (geom instanceof Polygon)
         list.add(geom)
-      } else if (geom instanceof GeometryCollection) {
+      else if (geom instanceof GeometryCollection)
         geom.apply(new PolygonExtracter(list))
-      }
+
       return list
     }
   }

@@ -94,11 +94,10 @@ export default class OverlapUnion {
   isEqual (segs0, segs1) {
     if (segs0.size() !== segs1.size()) return false
     const segIndex = new HashSet(segs0)
-    for (const seg of segs1) {
-      if (!segIndex.contains(seg)) {
+    for (const seg of segs1)
+      if (!segIndex.contains(seg))
         return false
-      }
-    }
+
     return true
   }
 
@@ -115,11 +114,11 @@ export default class OverlapUnion {
     const unionGeom = this.unionFull(g0Overlap, g1Overlap)
     let result = null
     this._isUnionSafe = this.isBorderSegmentsSame(unionGeom, overlapEnv)
-    if (!this._isUnionSafe) {
+    if (!this._isUnionSafe)
       result = this.unionFull(this._g0, this._g1)
-    } else {
+    else
       result = this.combine(unionGeom, disjointPolys)
-    }
+
     return result
   }
 
@@ -134,9 +133,9 @@ export default class OverlapUnion {
     try {
       return geom0.union(geom1)
     } catch (ex) {
-      if (ex instanceof TopologyException) {
+      if (ex instanceof TopologyException)
         return OverlapUnion.unionBuffer(geom0, geom1)
-      } else throw ex
+      else throw ex
     } finally {}
   }
 

@@ -15,22 +15,22 @@ export default class PlanarPolygon3D {
     if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
       const seq = arguments[0]; const facingPlane = arguments[1]
       switch (facingPlane) {
-        case Plane3D.XY_PLANE:
-          return AxisPlaneCoordinateSequence.projectToXY(seq)
-        case Plane3D.XZ_PLANE:
-          return AxisPlaneCoordinateSequence.projectToXZ(seq)
-        default:
-          return AxisPlaneCoordinateSequence.projectToYZ(seq)
+      case Plane3D.XY_PLANE:
+        return AxisPlaneCoordinateSequence.projectToXY(seq)
+      case Plane3D.XZ_PLANE:
+        return AxisPlaneCoordinateSequence.projectToXZ(seq)
+      default:
+        return AxisPlaneCoordinateSequence.projectToYZ(seq)
       }
     } else if (arguments[0] instanceof Coordinate && Number.isInteger(arguments[1])) {
       const p = arguments[0]; const facingPlane = arguments[1]
       switch (facingPlane) {
-        case Plane3D.XY_PLANE:
-          return new Coordinate(p.x, p.y)
-        case Plane3D.XZ_PLANE:
-          return new Coordinate(p.x, p.getZ())
-        default:
-          return new Coordinate(p.y, p.getZ())
+      case Plane3D.XY_PLANE:
+        return new Coordinate(p.x, p.y)
+      case Plane3D.XZ_PLANE:
+        return new Coordinate(p.x, p.getZ())
+      default:
+        return new Coordinate(p.y, p.getZ())
       }
     }
   }
@@ -39,9 +39,9 @@ export default class PlanarPolygon3D {
     if (arguments.length === 1) {
       const intPt = arguments[0]
       if (Location.EXTERIOR === this.locate(intPt, this._poly.getExteriorRing())) return false
-      for (let i = 0; i < this._poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < this._poly.getNumInteriorRing(); i++)
         if (Location.INTERIOR === this.locate(intPt, this._poly.getInteriorRingN(i))) return false
-      }
+
       return true
     } else if (arguments.length === 2) {
       const pt = arguments[0]; const ring = arguments[1]

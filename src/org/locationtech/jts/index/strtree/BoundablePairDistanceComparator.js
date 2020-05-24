@@ -9,18 +9,18 @@ export default class BoundablePairDistanceComparator {
     const distance1 = p1.getDistance()
     const distance2 = p2.getDistance()
     if (this.normalOrder) {
-      if (distance1 > distance2) {
+      if (distance1 > distance2)
         return 1
-      } else if (distance1 === distance2) {
+      else if (distance1 === distance2)
         return 0
-      }
+
       return -1
     } else {
-      if (distance1 > distance2) {
+      if (distance1 > distance2)
         return -1
-      } else if (distance1 === distance2) {
+      else if (distance1 === distance2)
         return 0
-      }
+
       return 1
     }
   }

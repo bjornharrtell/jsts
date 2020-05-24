@@ -11,11 +11,9 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
   computeIntersects (e0, e1, si) {
     const pts0 = e0.getCoordinates()
     const pts1 = e1.getCoordinates()
-    for (let i0 = 0; i0 < pts0.length - 1; i0++) {
-      for (let i1 = 0; i1 < pts1.length - 1; i1++) {
+    for (let i0 = 0; i0 < pts0.length - 1; i0++)
+      for (let i1 = 0; i1 < pts1.length - 1; i1++)
         si.addIntersections(e0, i0, e1, i1)
-      }
-    }
   }
 
   computeIntersections () {

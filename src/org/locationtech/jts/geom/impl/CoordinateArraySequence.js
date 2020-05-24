@@ -12,32 +12,30 @@ export default class CoordinateArraySequence {
   }
 
   getM (index) {
-    if (this.hasM()) {
+    if (this.hasM())
       return this._coordinates[index].getM()
-    } else {
+    else
       return Double.NaN
-    }
   }
 
   setOrdinate (index, ordinateIndex, value) {
     switch (ordinateIndex) {
-      case CoordinateSequence.X:
-        this._coordinates[index].x = value
-        break
-      case CoordinateSequence.Y:
-        this._coordinates[index].y = value
-        break
-      default:
-        this._coordinates[index].setOrdinate(ordinateIndex, value)
+    case CoordinateSequence.X:
+      this._coordinates[index].x = value
+      break
+    case CoordinateSequence.Y:
+      this._coordinates[index].y = value
+      break
+    default:
+      this._coordinates[index].setOrdinate(ordinateIndex, value)
     }
   }
 
   getZ (index) {
-    if (this.hasZ()) {
+    if (this.hasZ())
       return this._coordinates[index].getZ()
-    } else {
+    else
       return Double.NaN
-    }
   }
 
   size () {
@@ -46,12 +44,12 @@ export default class CoordinateArraySequence {
 
   getOrdinate (index, ordinateIndex) {
     switch (ordinateIndex) {
-      case CoordinateSequence.X:
-        return this._coordinates[index].x
-      case CoordinateSequence.Y:
-        return this._coordinates[index].y
-      default:
-        return this._coordinates[index].getOrdinate(ordinateIndex)
+    case CoordinateSequence.X:
+      return this._coordinates[index].x
+    case CoordinateSequence.Y:
+      return this._coordinates[index].y
+    default:
+      return this._coordinates[index].getOrdinate(ordinateIndex)
     }
   }
 
@@ -88,9 +86,9 @@ export default class CoordinateArraySequence {
   }
 
   expandEnvelope (env) {
-    for (let i = 0; i < this._coordinates.length; i++) {
+    for (let i = 0; i < this._coordinates.length; i++)
       env.expandToInclude(this._coordinates[i])
-    }
+
     return env
   }
 
@@ -147,9 +145,8 @@ CoordinateArraySequence.constructor_ = function () {
     } else if (Number.isInteger(arguments[0])) {
       const size = arguments[0]
       this._coordinates = new Array(size).fill(null)
-      for (let i = 0; i < size; i++) {
+      for (let i = 0; i < size; i++)
         this._coordinates[i] = new Coordinate()
-      }
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
       const coordSeq = arguments[0]
       if (coordSeq === null) {
@@ -159,9 +156,8 @@ CoordinateArraySequence.constructor_ = function () {
       this._dimension = coordSeq.getDimension()
       this._measures = coordSeq.getMeasures()
       this._coordinates = new Array(coordSeq.size()).fill(null)
-      for (let i = 0; i < this._coordinates.length; i++) {
+      for (let i = 0; i < this._coordinates.length; i++)
         this._coordinates[i] = coordSeq.getCoordinateCopy(i)
-      }
     }
   } else if (arguments.length === 2) {
     if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
@@ -171,28 +167,25 @@ CoordinateArraySequence.constructor_ = function () {
       const size = arguments[0]; const dimension = arguments[1]
       this._coordinates = new Array(size).fill(null)
       this._dimension = dimension
-      for (let i = 0; i < size; i++) {
+      for (let i = 0; i < size; i++)
         this._coordinates[i] = Coordinates.create(dimension)
-      }
     }
   } else if (arguments.length === 3) {
     if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
       const coordinates = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
       this._dimension = dimension
       this._measures = measures
-      if (coordinates === null) {
+      if (coordinates === null)
         this._coordinates = new Array(0).fill(null)
-      } else {
+      else
         this._coordinates = coordinates
-      }
     } else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
       const size = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
       this._coordinates = new Array(size).fill(null)
       this._dimension = dimension
       this._measures = measures
-      for (let i = 0; i < size; i++) {
+      for (let i = 0; i < size; i++)
         this._coordinates[i] = this.createCoordinate()
-      }
     }
   }
 }

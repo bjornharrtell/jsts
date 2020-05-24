@@ -20,9 +20,8 @@ export default class PointBuilder {
       if (n.isIncidentEdgeInResult()) continue
       if (n.getEdges().getDegree() === 0 || opCode === OverlayOp.INTERSECTION) {
         const label = n.getLabel()
-        if (OverlayOp.isResultOfOp(label, opCode)) {
+        if (OverlayOp.isResultOfOp(label, opCode))
           this.filterCoveredNodeToPoint(n)
-        }
       }
     }
   }

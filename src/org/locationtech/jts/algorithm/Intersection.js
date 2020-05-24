@@ -39,9 +39,9 @@ export default class Intersection {
     const w = px * qy - qx * py
     const xInt = x / w
     const yInt = y / w
-    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
+    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt))
       return null
-    }
+
     return new Coordinate(xInt + midx, yInt + midy)
   }
 

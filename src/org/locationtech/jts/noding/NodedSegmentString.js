@@ -83,18 +83,16 @@ export default class NodedSegmentString {
     const nextSegIndex = normalizedSegmentIndex + 1
     if (nextSegIndex < this._pts.length) {
       const nextPt = this._pts[nextSegIndex]
-      if (intPt.equals2D(nextPt)) {
+      if (intPt.equals2D(nextPt))
         normalizedSegmentIndex = nextSegIndex
-      }
     }
     const ei = this._nodeList.add(intPt, normalizedSegmentIndex)
     return ei
   }
 
   addIntersections (li, segmentIndex, geomIndex) {
-    for (let i = 0; i < li.getIntersectionNum(); i++) {
+    for (let i = 0; i < li.getIntersectionNum(); i++)
       this.addIntersection(li, segmentIndex, geomIndex, i)
-    }
   }
 
   getClass () {

@@ -42,15 +42,15 @@ export default class EdgeIntersectionList {
     let npts = ei1.segmentIndex - ei0.segmentIndex + 2
     const lastSegStartPt = this.edge.pts[ei1.segmentIndex]
     const useIntPt1 = ei1.dist > 0.0 || !ei1.coord.equals2D(lastSegStartPt)
-    if (!useIntPt1) {
+    if (!useIntPt1)
       npts--
-    }
+
     const pts = new Array(npts).fill(null)
     let ipt = 0
     pts[ipt++] = new Coordinate(ei0.coord)
-    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
+    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++)
       pts[ipt++] = this.edge.pts[i]
-    }
+
     if (useIntPt1) pts[ipt] = ei1.coord
     return new Edge(pts, new Label(this.edge._label))
   }
@@ -58,9 +58,9 @@ export default class EdgeIntersectionList {
   add (intPt, segmentIndex, dist) {
     const eiNew = new EdgeIntersection(intPt, segmentIndex, dist)
     const ei = this._nodeMap.get(eiNew)
-    if (ei !== null) {
+    if (ei !== null)
       return ei
-    }
+
     this._nodeMap.put(eiNew, eiNew)
     return eiNew
   }

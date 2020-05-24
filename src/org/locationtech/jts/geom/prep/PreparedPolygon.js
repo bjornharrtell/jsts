@@ -26,25 +26,25 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
 
   covers (g) {
     if (!this.envelopeCovers(g)) return false
-    if (this._isRectangle) {
+    if (this._isRectangle)
       return true
-    }
+
     return PreparedPolygonCovers.covers(this, g)
   }
 
   intersects (g) {
     if (!this.envelopesIntersect(g)) return false
-    if (this._isRectangle) {
+    if (this._isRectangle)
       return RectangleIntersects.intersects(this.getGeometry(), g)
-    }
+
     return PreparedPolygonIntersects.intersects(this, g)
   }
 
   contains (g) {
     if (!this.envelopeCovers(g)) return false
-    if (this._isRectangle) {
+    if (this._isRectangle)
       return RectangleContains.contains(this.getGeometry(), g)
-    }
+
     return PreparedPolygonContains.contains(this, g)
   }
 

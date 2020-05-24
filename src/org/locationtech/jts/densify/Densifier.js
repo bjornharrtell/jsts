@@ -68,18 +68,18 @@ class DensifyTransformer extends GeometryTransformer {
 
   transformPolygon (geom, parent) {
     const roughGeom = super.transformPolygon.call(this, geom, parent)
-    if (parent instanceof MultiPolygon) {
+    if (parent instanceof MultiPolygon)
       return roughGeom
-    }
+
     return this.createValidArea(roughGeom)
   }
 
   transformCoordinates (coords, parent) {
     const inputPts = coords.toCoordinateArray()
     let newPts = Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel())
-    if (parent instanceof LineString && newPts.length === 1) {
+    if (parent instanceof LineString && newPts.length === 1)
       newPts = new Array(0).fill(null)
-    }
+
     return this._factory.getCoordinateSequenceFactory().create(newPts)
   }
 

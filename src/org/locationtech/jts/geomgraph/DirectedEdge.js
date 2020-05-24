@@ -36,19 +36,18 @@ export default class DirectedEdge extends EdgeEnd {
   }
 
   setDepth (position, depthVal) {
-    if (this._depth[position] !== -999) {
+    if (this._depth[position] !== -999)
       if (this._depth[position] !== depthVal) throw new TopologyException('assigned depths do not match', this.getCoordinate())
-    }
+
     this._depth[position] = depthVal
   }
 
   isInteriorAreaEdge () {
     let isInteriorAreaEdge = true
-    for (let i = 0; i < 2; i++) {
-      if (!(this._label.isArea(i) && this._label.getLocation(i, Position.LEFT) === Location.INTERIOR && this._label.getLocation(i, Position.RIGHT) === Location.INTERIOR)) {
+    for (let i = 0; i < 2; i++)
+      if (!(this._label.isArea(i) && this._label.getLocation(i, Position.LEFT) === Location.INTERIOR && this._label.getLocation(i, Position.RIGHT) === Location.INTERIOR))
         isInteriorAreaEdge = false
-      }
-    }
+
     return isInteriorAreaEdge
   }
 

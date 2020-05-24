@@ -45,9 +45,8 @@ function CVTFWD (NumW, Qty) {
     Sign = Qty < 0 || 1 / Qty < 0 // OK for +-0
     if (!isFinite(Qty)) {
       Bin = Inf[NumW]
-      if (Sign) {
-        Bin.d += 1 << (NumW / 4 - 1)
-      }
+      if (Sign) Bin.d += 1 << (NumW / 4 - 1)
+
       Expo = Math.pow(2, ExW) - 1
       Mant = 0
     }
@@ -67,9 +66,8 @@ function CVTFWD (NumW, Qty) {
       Expo--
       Mant *= 2
     }
-    if (Expo <= 0) {
-      Mant /= 2
-    }
+    if (Expo <= 0) Mant /= 2
+
     if (NumW === 32 && Expo > 254) {
       Bin = {
         d: Sign ? 0xFF : 0x7F,

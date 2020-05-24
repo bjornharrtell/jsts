@@ -19,13 +19,14 @@ export default class VoronoiDiagramBuilder {
     for (let i = 0; i < geom.getNumGeometries(); i++) {
       const g = geom.getGeometryN(i)
       let result = null
-      if (clipEnv.contains(g.getEnvelopeInternal())) result = g; else if (clipEnv.intersects(g.getEnvelopeInternal())) {
+      if (clipEnv.contains(g.getEnvelopeInternal())) {
+        result = g
+      } else if (clipEnv.intersects(g.getEnvelopeInternal())) {
         result = OverlayOp.intersection(clipPoly, g)
         result.setUserData(g.getUserData())
       }
-      if (result !== null && !result.isEmpty()) {
+      if (result !== null && !result.isEmpty())
         clipped.add(result)
-      }
     }
     return geom.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(clipped))
   }

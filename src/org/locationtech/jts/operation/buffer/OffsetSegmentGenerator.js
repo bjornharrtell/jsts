@@ -23,13 +23,12 @@ export default class OffsetSegmentGenerator {
     if (this._s1.equals(this._s2)) return null
     const orientation = Orientation.index(this._s0, this._s1, this._s2)
     const outsideTurn = orientation === Orientation.CLOCKWISE && this._side === Position.LEFT || orientation === Orientation.COUNTERCLOCKWISE && this._side === Position.RIGHT
-    if (orientation === 0) {
+    if (orientation === 0)
       this.addCollinear(addStartPoint)
-    } else if (outsideTurn) {
+    else if (outsideTurn)
       this.addOutsideTurn(orientation, addStartPoint)
-    } else {
+    else
       this.addInsideTurn(orientation, addStartPoint)
-    }
   }
 
   addLineEndCap (p0, p1) {
@@ -42,24 +41,24 @@ export default class OffsetSegmentGenerator {
     const dy = p1.y - p0.y
     const angle = Math.atan2(dy, dx)
     switch (this._bufParams.getEndCapStyle()) {
-      case BufferParameters.CAP_ROUND:
-        this._segList.addPt(offsetL.p1)
-        this.addDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, Orientation.CLOCKWISE, this._distance)
-        this._segList.addPt(offsetR.p1)
-        break
-      case BufferParameters.CAP_FLAT:
-        this._segList.addPt(offsetL.p1)
-        this._segList.addPt(offsetR.p1)
-        break
-      case BufferParameters.CAP_SQUARE:
-        const squareCapSideOffset = new Coordinate()
-        squareCapSideOffset.x = Math.abs(this._distance) * Math.cos(angle)
-        squareCapSideOffset.y = Math.abs(this._distance) * Math.sin(angle)
-        const squareCapLOffset = new Coordinate(offsetL.p1.x + squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y)
-        const squareCapROffset = new Coordinate(offsetR.p1.x + squareCapSideOffset.x, offsetR.p1.y + squareCapSideOffset.y)
-        this._segList.addPt(squareCapLOffset)
-        this._segList.addPt(squareCapROffset)
-        break
+    case BufferParameters.CAP_ROUND:
+      this._segList.addPt(offsetL.p1)
+      this.addDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, Orientation.CLOCKWISE, this._distance)
+      this._segList.addPt(offsetR.p1)
+      break
+    case BufferParameters.CAP_FLAT:
+      this._segList.addPt(offsetL.p1)
+      this._segList.addPt(offsetR.p1)
+      break
+    case BufferParameters.CAP_SQUARE:
+      const squareCapSideOffset = new Coordinate()
+      squareCapSideOffset.x = Math.abs(this._distance) * Math.cos(angle)
+      squareCapSideOffset.y = Math.abs(this._distance) * Math.sin(angle)
+      const squareCapLOffset = new Coordinate(offsetL.p1.x + squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y)
+      const squareCapROffset = new Coordinate(offsetR.p1.x + squareCapSideOffset.x, offsetR.p1.y + squareCapSideOffset.y)
+      this._segList.addPt(squareCapLOffset)
+      this._segList.addPt(squareCapROffset)
+      break
     }
   }
 
@@ -240,14 +239,13 @@ export default class OffsetSegmentGenerator {
   addCollinear (addStartPoint) {
     this._li.computeIntersection(this._s0, this._s1, this._s1, this._s2)
     const numInt = this._li.getIntersectionNum()
-    if (numInt >= 2) {
+    if (numInt >= 2)
       if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL || this._bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
         if (addStartPoint) this._segList.addPt(this._offset0.p1)
         this._segList.addPt(this._offset1.p0)
       } else {
         this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, Orientation.CLOCKWISE, this._distance)
       }
-    }
   }
 
   closeRing () {

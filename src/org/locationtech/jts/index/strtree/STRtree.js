@@ -45,9 +45,9 @@ export default class STRtree extends AbstractSTRtree {
   createParentBoundablesFromVerticalSlices (verticalSlices, newLevel) {
     Assert.isTrue(verticalSlices.length > 0)
     const parentBoundables = new ArrayList()
-    for (let i = 0; i < verticalSlices.length; i++) {
+    for (let i = 0; i < verticalSlices.length; i++)
       parentBoundables.addAll(this.createParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel))
-    }
+
     return parentBoundables
   }
 
@@ -64,10 +64,10 @@ export default class STRtree extends AbstractSTRtree {
       while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
         const bndPair = priQ.poll()
         const pairDistance = bndPair.getDistance()
-        if (pairDistance >= distanceLowerBound) {
+        if (pairDistance >= distanceLowerBound)
           break
-        }
-        if (bndPair.isLeaves()) {
+
+        if (bndPair.isLeaves())
           if (kNearestNeighbors.size() < k) {
             kNearestNeighbors.add(bndPair)
           } else {
@@ -79,9 +79,8 @@ export default class STRtree extends AbstractSTRtree {
             const bp2 = kNearestNeighbors.peek()
             distanceLowerBound = bp2.getDistance()
           }
-        } else {
+        else
           bndPair.expandToQueue(priQ, distanceLowerBound)
-        }
       }
       return STRtree.getItems(kNearestNeighbors)
     }
@@ -92,19 +91,21 @@ export default class STRtree extends AbstractSTRtree {
   }
 
   size () {
-    if (arguments.length === 0) {
+    if (arguments.length === 0)
       return super.size.call(this)
-    } else return super.size.apply(this, arguments)
+    else return super.size.apply(this, arguments)
   }
 
   insert () {
     if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
       const itemEnv = arguments[0]; const item = arguments[1]
-      if (itemEnv.isNull()) {
+      if (itemEnv.isNull())
         return null
-      }
+
       super.insert.call(this, itemEnv, item)
-    } else return super.insert.apply(this, arguments)
+    } else {
+      return super.insert.apply(this, arguments)
+    }
   }
 
   getIntersectsOp () {
@@ -149,13 +150,15 @@ export default class STRtree extends AbstractSTRtree {
     if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
       const itemEnv = arguments[0]; const item = arguments[1]
       return super.remove.call(this, itemEnv, item)
-    } else return super.remove.apply(this, arguments)
+    } else {
+      return super.remove.apply(this, arguments)
+    }
   }
 
   depth () {
-    if (arguments.length === 0) {
+    if (arguments.length === 0)
       return super.depth.call(this)
-    } else return super.depth.apply(this, arguments)
+    else return super.depth.apply(this, arguments)
   }
 
   createParentBoundables (childBoundables, newLevel) {
@@ -256,11 +259,10 @@ class STRtreeNode extends AbstractNode {
     let bounds = null
     for (let i = this.getChildBoundables().iterator(); i.hasNext();) {
       const childBoundable = i.next()
-      if (bounds === null) {
+      if (bounds === null)
         bounds = new Envelope(childBoundable.getBounds())
-      } else {
+      else
         bounds.expandToInclude(childBoundable.getBounds())
-      }
     }
     return bounds
   }

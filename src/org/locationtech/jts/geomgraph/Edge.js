@@ -22,7 +22,9 @@ export default class Edge extends GraphComponent {
         im.setAtLeastIfValid(label.getLocation(0, Position.LEFT), label.getLocation(1, Position.LEFT), 2)
         im.setAtLeastIfValid(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), 2)
       }
-    } else return super.updateIM.apply(this, arguments)
+    } else {
+      return super.updateIM.apply(this, arguments)
+    }
   }
 
   getDepth () {
@@ -61,12 +63,12 @@ export default class Edge extends GraphComponent {
     let isEqualReverse = true
     let iRev = this.pts.length
     for (let i = 0; i < this.pts.length; i++) {
-      if (!this.pts[i].equals2D(e.pts[i])) {
+      if (!this.pts[i].equals2D(e.pts[i]))
         isEqualForward = false
-      }
-      if (!this.pts[i].equals2D(e.pts[--iRev])) {
+
+      if (!this.pts[i].equals2D(e.pts[--iRev]))
         isEqualReverse = false
-      }
+
       if (!isEqualForward && !isEqualReverse) return false
     }
     return true
@@ -121,9 +123,9 @@ export default class Edge extends GraphComponent {
 
   printReverse (out) {
     out.print('edge ' + this._name + ': ')
-    for (let i = this.pts.length - 1; i >= 0; i--) {
+    for (let i = this.pts.length - 1; i >= 0; i--)
       out.print(this.pts[i] + ' ')
-    }
+
     out.println('')
   }
 
@@ -135,9 +137,8 @@ export default class Edge extends GraphComponent {
   getEnvelope () {
     if (this._env === null) {
       this._env = new Envelope()
-      for (let i = 0; i < this.pts.length; i++) {
+      for (let i = 0; i < this.pts.length; i++)
         this._env.expandToInclude(this.pts[i])
-      }
     }
     return this._env
   }
@@ -171,11 +172,10 @@ export default class Edge extends GraphComponent {
 
   isPointwiseEqual (e) {
     if (this.pts.length !== e.pts.length) return false
-    for (let i = 0; i < this.pts.length; i++) {
-      if (!this.pts[i].equals2D(e.pts[i])) {
+    for (let i = 0; i < this.pts.length; i++)
+      if (!this.pts[i].equals2D(e.pts[i]))
         return false
-      }
-    }
+
     return true
   }
 
@@ -188,9 +188,8 @@ export default class Edge extends GraphComponent {
   }
 
   addIntersections (li, segmentIndex, geomIndex) {
-    for (let i = 0; i < li.getIntersectionNum(); i++) {
+    for (let i = 0; i < li.getIntersectionNum(); i++)
       this.addIntersection(li, segmentIndex, geomIndex, i)
-    }
   }
 
   getClass () {

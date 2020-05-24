@@ -53,12 +53,11 @@ export default class IsValidOp {
   checkInvalidCoordinates () {
     if (arguments[0] instanceof Array) {
       const coords = arguments[0]
-      for (let i = 0; i < coords.length; i++) {
+      for (let i = 0; i < coords.length; i++)
         if (!IsValidOp.isValid(coords[i])) {
           this._validErr = new TopologyValidationError(TopologyValidationError.INVALID_COORDINATE, coords[i])
           return null
         }
-      }
     } else if (arguments[0] instanceof Polygon) {
       const poly = arguments[0]
       this.checkInvalidCoordinates(poly.getExteriorRing().getCoordinates())
@@ -79,9 +78,8 @@ export default class IsValidOp {
       nestedTester.add(innerHole)
     }
     const isNonNested = nestedTester.isNonNested()
-    if (!isNonNested) {
+    if (!isNonNested)
       this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_HOLES, nestedTester.getNestedPoint())
-    }
   }
 
   checkConsistentArea (graph) {
@@ -91,9 +89,8 @@ export default class IsValidOp {
       this._validErr = new TopologyValidationError(TopologyValidationError.SELF_INTERSECTION, cat.getInvalidPoint())
       return null
     }
-    if (cat.hasDuplicateRings()) {
+    if (cat.hasDuplicateRings())
       this._validErr = new TopologyValidationError(TopologyValidationError.DUPLICATE_RINGS, cat.getInvalidPoint())
-    }
   }
 
   isValid () {
@@ -107,16 +104,15 @@ export default class IsValidOp {
     const shellPt = IsValidOp.findPtNotNode(shellPts, hole, graph)
     if (shellPt !== null) {
       const insideHole = PointLocation.isInRing(shellPt, holePts)
-      if (!insideHole) {
+      if (!insideHole)
         return shellPt
-      }
     }
     const holePt = IsValidOp.findPtNotNode(holePts, shell, graph)
     if (holePt !== null) {
       const insideShell = PointLocation.isInRing(holePt, shellPts)
-      if (insideShell) {
+      if (insideShell)
         return holePt
-      }
+
       return null
     }
     Assert.shouldNeverReachHere('points in shell and hole appear to be equal')

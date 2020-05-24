@@ -47,9 +47,9 @@ export default class RayCrossingCounter {
         minx = p2.x
         maxx = p1.x
       }
-      if (this._p.x >= minx && this._p.x <= maxx) {
+      if (this._p.x >= minx && this._p.x <= maxx)
         this._isPointOnSegment = true
-      }
+
       return null
     }
     if (p1.y > this._p.y && p2.y <= this._p.y || p2.y > this._p.y && p1.y <= this._p.y) {
@@ -58,12 +58,11 @@ export default class RayCrossingCounter {
         this._isPointOnSegment = true
         return null
       }
-      if (p2.y < p1.y) {
+      if (p2.y < p1.y)
         orient = -orient
-      }
-      if (orient === Orientation.LEFT) {
+
+      if (orient === Orientation.LEFT)
         this._crossingCount++
-      }
     }
   }
 
@@ -73,9 +72,9 @@ export default class RayCrossingCounter {
 
   getLocation () {
     if (this._isPointOnSegment) return Location.BOUNDARY
-    if (this._crossingCount % 2 === 1) {
+    if (this._crossingCount % 2 === 1)
       return Location.INTERIOR
-    }
+
     return Location.EXTERIOR
   }
 

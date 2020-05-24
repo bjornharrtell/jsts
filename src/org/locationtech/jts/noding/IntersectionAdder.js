@@ -9,17 +9,16 @@ export default class IntersectionAdder {
   }
 
   isTrivialIntersection (e0, segIndex0, e1, segIndex1) {
-    if (e0 === e1) {
+    if (e0 === e1)
       if (this._li.getIntersectionNum() === 1) {
         if (IntersectionAdder.isAdjacentSegments(segIndex0, segIndex1)) return true
         if (e0.isClosed()) {
           const maxSegIndex = e0.size() - 1
-          if (segIndex0 === 0 && segIndex1 === maxSegIndex || segIndex1 === 0 && segIndex0 === maxSegIndex) {
+          if (segIndex0 === 0 && segIndex1 === maxSegIndex || segIndex1 === 0 && segIndex0 === maxSegIndex)
             return true
-          }
         }
       }
-    }
+
     return false
   }
 

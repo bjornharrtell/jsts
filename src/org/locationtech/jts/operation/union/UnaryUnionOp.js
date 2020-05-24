@@ -53,12 +53,12 @@ export default class UnaryUnionOp {
 
   union () {
     if (this._geomFact === null) this._geomFact = this._extracter.getFactory()
-    if (this._geomFact === null) {
+    if (this._geomFact === null)
       return null
-    }
-    if (this._extracter.isEmpty()) {
+
+    if (this._extracter.isEmpty())
       return this._geomFact.createEmpty(this._extracter.getDimension())
-    }
+
     const points = this._extracter.getExtract(0)
     const lines = this._extracter.getExtract(1)
     const polygons = this._extracter.getExtract(2)
@@ -73,9 +73,9 @@ export default class UnaryUnionOp {
       unionLines = this.unionNoOpt(lineGeom)
     }
     let unionPolygons = null
-    if (polygons.size() > 0) {
+    if (polygons.size() > 0)
       unionPolygons = CascadedPolygonUnion.union(polygons)
-    }
+
     const unionLA = this.unionWithNull(unionLines, unionPolygons)
     let union = null
     if (unionPoints === null) union = unionLA; else if (unionLA === null) union = unionPoints; else union = PointGeometryUnion.union(unionPoints, unionLA)

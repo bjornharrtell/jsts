@@ -20,9 +20,8 @@ export default class KdTree {
       for (let it = kdnodes.iterator(); it.hasNext();) {
         const node = it.next()
         const count = includeRepeated ? node.getCount() : 1
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++)
           coord.add(node.getCoordinate(), true)
-        }
       }
       return coord.toCoordinateArray()
     }
@@ -90,15 +89,14 @@ export default class KdTree {
     }
     const searchLeft = min < discriminant
     const searchRight = discriminant <= max
-    if (searchLeft) {
+    if (searchLeft)
       this.queryNode(currentNode.getLeft(), queryEnv, !odd, visitor)
-    }
-    if (queryEnv.contains(currentNode.getCoordinate())) {
+
+    if (queryEnv.contains(currentNode.getCoordinate()))
       visitor.visit(currentNode)
-    }
-    if (searchRight) {
+
+    if (searchRight)
       this.queryNode(currentNode.getRight(), queryEnv, !odd, visitor)
-    }
   }
 
   findBestMatchNode (p) {
@@ -125,26 +123,26 @@ export default class KdTree {
           return currentNode
         }
       }
-      if (isOddLevel) {
+      if (isOddLevel)
         isLessThan = p.x < currentNode.getX()
-      } else {
+      else
         isLessThan = p.y < currentNode.getY()
-      }
+
       leafNode = currentNode
-      if (isLessThan) {
+      if (isLessThan)
         currentNode = currentNode.getLeft()
-      } else {
+      else
         currentNode = currentNode.getRight()
-      }
+
       isOddLevel = !isOddLevel
     }
     this._numberOfNodes = this._numberOfNodes + 1
     const node = new KdNode(p, data)
-    if (isLessThan) {
+    if (isLessThan)
       leafNode.setLeft(node)
-    } else {
+    else
       leafNode.setRight(node)
-    }
+
     return node
   }
 

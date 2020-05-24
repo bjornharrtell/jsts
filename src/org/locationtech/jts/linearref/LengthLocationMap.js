@@ -30,9 +30,9 @@ export default class LengthLocationMap {
         const p0 = it.getSegmentStart()
         const p1 = it.getSegmentEnd()
         const segLen = p1.distance(p0)
-        if (loc.getComponentIndex() === it.getComponentIndex() && loc.getSegmentIndex() === it.getVertexIndex()) {
+        if (loc.getComponentIndex() === it.getComponentIndex() && loc.getSegmentIndex() === it.getVertexIndex())
           return totalLength + segLen * loc.getSegmentFraction()
-        }
+
         totalLength += segLen
       }
       it.next()
@@ -44,9 +44,9 @@ export default class LengthLocationMap {
     if (!loc.isEndpoint(this._linearGeom)) return loc
     let compIndex = loc.getComponentIndex()
     if (compIndex >= this._linearGeom.getNumGeometries() - 1) return loc
-    do {
+    do
       compIndex++
-    } while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0)
+    while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0)
     return new LinearLocation(compIndex, 0, 0.0)
   }
 
@@ -62,9 +62,9 @@ export default class LengthLocationMap {
         forwardLength = lineLen + length
       }
       const loc = this.getLocationForward(forwardLength)
-      if (resolveLower) {
+      if (resolveLower)
         return loc
-      }
+
       return this.resolveHigher(loc)
     }
   }

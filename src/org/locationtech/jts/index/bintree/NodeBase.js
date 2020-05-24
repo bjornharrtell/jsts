@@ -12,9 +12,9 @@ export default class NodeBase {
   }
 
   hasChildren () {
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++)
       if (this._subnode[i] !== null) return true
-    }
+
     return false
   }
 
@@ -24,21 +24,19 @@ export default class NodeBase {
 
   addAllItems (items) {
     items.addAll(this._items)
-    for (let i = 0; i < 2; i++) {
-      if (this._subnode[i] !== null) {
+    for (let i = 0; i < 2; i++)
+      if (this._subnode[i] !== null)
         this._subnode[i].addAllItems(items)
-      }
-    }
+
     return items
   }
 
   size () {
     let subSize = 0
-    for (let i = 0; i < 2; i++) {
-      if (this._subnode[i] !== null) {
+    for (let i = 0; i < 2; i++)
+      if (this._subnode[i] !== null)
         subSize += this._subnode[i].size()
-      }
-    }
+
     return subSize + this._items.size()
   }
 
@@ -56,7 +54,7 @@ export default class NodeBase {
   remove (itemInterval, item) {
     if (!this.isSearchMatch(itemInterval)) return false
     let found = false
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++)
       if (this._subnode[i] !== null) {
         found = this._subnode[i].remove(itemInterval, item)
         if (found) {
@@ -64,7 +62,7 @@ export default class NodeBase {
           break
         }
       }
-    }
+
     if (found) return found
     found = this._items.remove(item)
     return found
@@ -76,22 +74,21 @@ export default class NodeBase {
 
   depth () {
     let maxSubDepth = 0
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++)
       if (this._subnode[i] !== null) {
         const sqd = this._subnode[i].depth()
         if (sqd > maxSubDepth) maxSubDepth = sqd
       }
-    }
+
     return maxSubDepth + 1
   }
 
   nodeSize () {
     let subSize = 0
-    for (let i = 0; i < 2; i++) {
-      if (this._subnode[i] !== null) {
+    for (let i = 0; i < 2; i++)
+      if (this._subnode[i] !== null)
         subSize += this._subnode[i].nodeSize()
-      }
-    }
+
     return subSize + 1
   }
 

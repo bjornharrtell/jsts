@@ -41,9 +41,9 @@ export default class QuadEdgeSubdivision {
   }
 
   isVertexOfEdge (e, v) {
-    if (v.equals(e.orig(), this._tolerance) || v.equals(e.dest(), this._tolerance)) {
+    if (v.equals(e.orig(), this._tolerance) || v.equals(e.dest(), this._tolerance))
       return true
-    }
+
     return false
   }
 
@@ -140,11 +140,11 @@ export default class QuadEdgeSubdivision {
     const deltaX = env.getWidth()
     const deltaY = env.getHeight()
     let offset = 0.0
-    if (deltaX > deltaY) {
+    if (deltaX > deltaY)
       offset = deltaX * 10.0
-    } else {
+    else
       offset = deltaY * 10.0
-    }
+
     this._frameVertex[0] = new Vertex((env.getMaxX() + env.getMinX()) / 2.0, env.getMaxY() + offset)
     this._frameVertex[1] = new Vertex(env.getMinX() - offset, env.getMinY() - offset)
     this._frameVertex[2] = new Vertex(env.getMaxX() + offset, env.getMinY() - offset)
@@ -211,17 +211,15 @@ export default class QuadEdgeSubdivision {
       const v = qe.orig()
       if (!visitedVertices.contains(v)) {
         visitedVertices.add(v)
-        if (includeFrame || !this.isFrameVertex(v)) {
+        if (includeFrame || !this.isFrameVertex(v))
           edges.add(qe)
-        }
       }
       const qd = qe.sym()
       const vd = qd.orig()
       if (!visitedVertices.contains(vd)) {
         visitedVertices.add(vd)
-        if (includeFrame || !this.isFrameVertex(vd)) {
+        if (includeFrame || !this.isFrameVertex(vd))
           edges.add(qd)
-        }
       }
     }
     return edges
@@ -275,20 +273,19 @@ export default class QuadEdgeSubdivision {
     let e = startEdge
     while (true) {
       iter++
-      if (iter > maxIter) {
+      if (iter > maxIter)
         throw new LocateFailureException(e.toLineSegment())
-      }
-      if (v.equals(e.orig()) || v.equals(e.dest())) {
+
+      if (v.equals(e.orig()) || v.equals(e.dest()))
         break
-      } else if (v.rightOf(e)) {
+      else if (v.rightOf(e))
         e = e.sym()
-      } else if (!v.rightOf(e.oNext())) {
+      else if (!v.rightOf(e.oNext()))
         e = e.oNext()
-      } else if (!v.rightOf(e.dPrev())) {
+      else if (!v.rightOf(e.dPrev()))
         e = e.dPrev()
-      } else {
+      else
         break
-      }
     }
     return e
   }
@@ -326,9 +323,9 @@ export default class QuadEdgeSubdivision {
 
   insertSite (v) {
     let e = this.locate(v)
-    if (v.equals(e.orig(), this._tolerance) || v.equals(e.dest(), this._tolerance)) {
+    if (v.equals(e.orig(), this._tolerance) || v.equals(e.dest(), this._tolerance))
       return e
-    }
+
     let base = this.makeEdge(e.orig(), v)
     QuadEdge.splice(base, e)
     const startEdge = base
@@ -382,9 +379,8 @@ class TriangleCircumcentreVisitor {
     const c = triEdges[2].orig().getCoordinate()
     const cc = Triangle.circumcentreDD(a, b, c)
     const ccVertex = new Vertex(cc)
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++)
       triEdges[i].rot().setOrig(ccVertex)
-    }
   }
 
   getClass () {
@@ -451,9 +447,8 @@ class TriangleCoordinatesVisitor {
 
   checkTriangleSize (pts) {
     let loc = ''
-    if (pts.length >= 2) loc = WKTWriter.toLineString(pts[0], pts[1]); else {
-      if (pts.length >= 1) loc = WKTWriter.toPoint(pts[0])
-    }
+    if (pts.length >= 2) loc = WKTWriter.toLineString(pts[0], pts[1]); else
+    if (pts.length >= 1) loc = WKTWriter.toPoint(pts[0])
   }
 
   visit (triEdges) {
@@ -465,9 +460,9 @@ class TriangleCoordinatesVisitor {
     if (this._coordList.size() > 0) {
       this._coordList.closeRing()
       const pts = this._coordList.toCoordinateArray()
-      if (pts.length !== 4) {
+      if (pts.length !== 4)
         return null
-      }
+
       this._triCoords.add(pts)
     }
   }

@@ -22,9 +22,7 @@ export default class Arrays {
       t.sort()
       const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
       a.splice(0, a.length)
-      for (i = 0; i < r.length; i++) {
-        a.push(r[i])
-      }
+      for (i = 0; i < r.length; i++) a.push(r[i])
     } else if (arguments.length === 4) {
       t = a.slice(arguments[1], arguments[2])
       comparator = arguments[3]
@@ -34,9 +32,7 @@ export default class Arrays {
       t.sort(compare)
       const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
       a.splice(0, a.length)
-      for (i = 0; i < r.length; i++) {
-        a.push(r[i])
-      }
+      for (i = 0; i < r.length; i++) a.push(r[i])
     }
   }
 
@@ -46,9 +42,8 @@ export default class Arrays {
    */
   static asList (array) {
     const arrayList = new ArrayList()
-    for (let i = 0, len = array.length; i < len; i++) {
-      arrayList.add(array[i])
-    }
+    for (let i = 0, len = array.length; i < len; i++) arrayList.add(array[i])
+
     return arrayList
   }
 

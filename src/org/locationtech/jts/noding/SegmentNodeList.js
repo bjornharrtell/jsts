@@ -42,15 +42,15 @@ export default class SegmentNodeList {
     if (npts === 2) return [new Coordinate(ei0.coord), new Coordinate(ei1.coord)]
     const lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
     const useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt)
-    if (!useIntPt1) {
+    if (!useIntPt1)
       npts--
-    }
+
     const pts = new Array(npts).fill(null)
     let ipt = 0
     pts[ipt++] = new Coordinate(ei0.coord)
-    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
+    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++)
       pts[ipt++] = this._edge.getCoordinate(i)
-    }
+
     if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord)
     return pts
   }
@@ -68,9 +68,8 @@ export default class SegmentNodeList {
       const p0 = this._edge.getCoordinate(i)
       const p1 = this._edge.getCoordinate(i + 1)
       const p2 = this._edge.getCoordinate(i + 2)
-      if (p0.equals2D(p2)) {
+      if (p0.equals2D(p2))
         collapsedVertexIndexes.add(Integer.valueOf(i + 1))
-      }
     }
   }
 
@@ -99,9 +98,9 @@ export default class SegmentNodeList {
   findCollapseIndex (ei0, ei1, collapsedVertexIndex) {
     if (!ei0.coord.equals2D(ei1.coord)) return false
     let numVerticesBetween = ei1.segmentIndex - ei0.segmentIndex
-    if (!ei1.isInterior()) {
+    if (!ei1.isInterior())
       numVerticesBetween--
-    }
+
     if (numVerticesBetween === 1) {
       collapsedVertexIndex[0] = ei0.segmentIndex + 1
       return true

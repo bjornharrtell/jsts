@@ -23,9 +23,8 @@ export default class ConformingDelaunayTriangulationBuilder {
     } else if (arguments.length === 2) {
       const line = arguments[0]; const constraintSegs = arguments[1]
       const coords = line.getCoordinates()
-      for (let i = 1; i < coords.length; i++) {
+      for (let i = 1; i < coords.length; i++)
         constraintSegs.add(new Segment(coords[i - 1], coords[i]))
-      }
     }
   }
 

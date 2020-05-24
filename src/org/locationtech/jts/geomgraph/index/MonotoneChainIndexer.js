@@ -8,9 +8,9 @@ export default class MonotoneChainIndexer {
 
   static toIntArray (list) {
     const array = new Array(list.size()).fill(null)
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++)
       array[i] = list.get(i).intValue()
-    }
+
     return array
   }
 

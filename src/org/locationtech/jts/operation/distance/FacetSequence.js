@@ -70,9 +70,9 @@ export default class FacetSequence {
 
   getEnvelope () {
     const env = new Envelope()
-    for (let i = this._start; i < this._end; i++) {
+    for (let i = this._start; i < this._end; i++)
       env.expandToInclude(this._pts.getX(i), this._pts.getY(i))
-    }
+
     return env
   }
 

@@ -20,9 +20,9 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     this.findAndClassifyIntersections(geom)
     if (properIntersectionImpliesNotContained && this._hasProperIntersection) return false
     if (this._hasSegmentIntersection && !this._hasNonProperIntersection) return false
-    if (this._hasSegmentIntersection) {
+    if (this._hasSegmentIntersection)
       return this.fullTopologicalPredicate(geom)
-    }
+
     if (hasInterface(geom, Polygonal)) {
       const isTargetInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
       if (isTargetInTestArea) return false

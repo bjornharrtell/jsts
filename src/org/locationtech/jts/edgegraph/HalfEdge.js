@@ -37,9 +37,9 @@ export default class HalfEdge {
       const eNext = e.oNext()
       if (eNext === lowest) break
       const isSorted = eNext.compareTo(e) > 0
-      if (!isSorted) {
+      if (!isSorted)
         return false
-      }
+
       e = eNext
     } while (e !== lowest)
     return true
@@ -140,12 +140,12 @@ export default class HalfEdge {
     let ePrev = this
     do {
       const eNext = ePrev.oNext()
-      if (eNext.compareTo(ePrev) > 0 && eAdd.compareTo(ePrev) >= 0 && eAdd.compareTo(eNext) <= 0) {
+      if (eNext.compareTo(ePrev) > 0 && eAdd.compareTo(ePrev) >= 0 && eAdd.compareTo(eNext) <= 0)
         return ePrev
-      }
-      if (eNext.compareTo(ePrev) <= 0 && (eAdd.compareTo(eNext) <= 0 || eAdd.compareTo(ePrev) >= 0)) {
+
+      if (eNext.compareTo(ePrev) <= 0 && (eAdd.compareTo(eNext) <= 0 || eAdd.compareTo(ePrev) >= 0))
         return ePrev
-      }
+
       ePrev = eNext
     } while (ePrev !== this)
     Assert.shouldNeverReachHere()

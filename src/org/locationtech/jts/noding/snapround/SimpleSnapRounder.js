@@ -19,9 +19,9 @@ export default class SimpleSnapRounder {
     try {
       nv.checkValid()
     } catch (ex) {
-      if (ex instanceof Exception) {
+      if (ex instanceof Exception)
         ex.printStackTrace()
-      } else throw ex
+      else throw ex
     } finally {}
   }
 
@@ -60,13 +60,12 @@ export default class SimpleSnapRounder {
       for (let i0 = 0; i0 < pts0.length - 1; i0++) {
         const hotPixel = new HotPixel(pts0[i0], this._scaleFactor, this._li)
         for (let i1 = 0; i1 < pts1.length - 1; i1++) {
-          if (e0 === e1) {
+          if (e0 === e1)
             if (i0 === i1) continue
-          }
+
           const isNodeAdded = hotPixel.addSnappedNode(e1, i1)
-          if (isNodeAdded) {
+          if (isNodeAdded)
             e0.addIntersection(pts0[i0], i0)
-          }
         }
       }
     }
@@ -89,9 +88,8 @@ export default class SimpleSnapRounder {
       for (let it = snapPts.iterator(); it.hasNext();) {
         const snapPt = it.next()
         const hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li)
-        for (let i = 0; i < ss.size() - 1; i++) {
+        for (let i = 0; i < ss.size() - 1; i++)
           hotPixel.addSnappedNode(ss, i)
-        }
       }
     }
   }

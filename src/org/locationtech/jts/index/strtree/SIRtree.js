@@ -13,11 +13,10 @@ export default class SIRtree extends AbstractSTRtree {
         let bounds = null
         for (let i = this.getChildBoundables().iterator(); i.hasNext();) {
           const childBoundable = i.next()
-          if (bounds === null) {
+          if (bounds === null)
             bounds = new Interval(childBoundable.getBounds())
-          } else {
+          else
             bounds.expandToInclude(childBoundable.getBounds())
-          }
         }
         return bounds
       }
@@ -28,7 +27,9 @@ export default class SIRtree extends AbstractSTRtree {
     if (arguments.length === 3) {
       const x1 = arguments[0]; const x2 = arguments[1]; const item = arguments[2]
       super.insert.call(this, new Interval(Math.min(x1, x2), Math.max(x1, x2)), item)
-    } else return super.insert.apply(this, arguments)
+    } else {
+      return super.insert.apply(this, arguments)
+    }
   }
 
   getIntersectsOp () {

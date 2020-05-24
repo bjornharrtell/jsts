@@ -25,13 +25,15 @@ export default class GeometryTransformer {
     const holes = new ArrayList()
     for (let i = 0; i < geom.getNumInteriorRing(); i++) {
       const hole = this.transformLinearRing(geom.getInteriorRingN(i), geom)
-      if (hole === null || hole.isEmpty()) {
+      if (hole === null || hole.isEmpty())
         continue
-      }
+
       if (!(hole instanceof LinearRing)) isAllValidLinearRings = false
       holes.add(hole)
     }
-    if (isAllValidLinearRings) return this._factory.createPolygon(shell, holes.toArray([])); else {
+    if (isAllValidLinearRings) {
+      return this._factory.createPolygon(shell, holes.toArray([]))
+    } else {
       const components = new ArrayList()
       if (shell !== null) components.add(shell)
       components.addAll(holes)

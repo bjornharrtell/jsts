@@ -42,9 +42,9 @@ export default class LineSegment {
   }
 
   equals (o) {
-    if (!(o instanceof LineSegment)) {
+    if (!(o instanceof LineSegment))
       return false
-    }
+
     const other = o
     return this.p0.equals(other.p0) && this.p1.equals(other.p1)
   }
@@ -119,9 +119,9 @@ export default class LineSegment {
 
   closestPoints (line) {
     const intPt = this.intersection(line)
-    if (intPt !== null) {
+    if (intPt !== null)
       return [intPt, intPt]
-    }
+
     const closestPt = new Array(2).fill(null)
     let minDistance = Double.MAX_VALUE
     let dist = null
@@ -155,9 +155,9 @@ export default class LineSegment {
 
   closestPoint (p) {
     const factor = this.projectionFactor(p)
-    if (factor > 0 && factor < 1) {
+    if (factor > 0 && factor < 1)
       return this.project(p)
-    }
+
     const dist0 = this.p0.distance(p)
     const dist1 = this.p1.distance(p)
     if (dist0 < dist1) return this.p0
@@ -275,11 +275,11 @@ export default class LineSegment {
   }
 
   hashCode () {
-    let bits0 = java.lang.Double.doubleToLongBits(this.p0.x)
-    bits0 ^= java.lang.Double.doubleToLongBits(this.p0.y) * 31
+    let bits0 = Double.doubleToLongBits(this.p0.x)
+    bits0 ^= Double.doubleToLongBits(this.p0.y) * 31
     const hash0 = Math.trunc(bits0) ^ Math.trunc(bits0 >> 32)
-    let bits1 = java.lang.Double.doubleToLongBits(this.p1.x)
-    bits1 ^= java.lang.Double.doubleToLongBits(this.p1.y) * 31
+    let bits1 = Double.doubleToLongBits(this.p1.x)
+    bits1 ^= Double.doubleToLongBits(this.p1.y) * 31
     const hash1 = Math.trunc(bits1) ^ Math.trunc(bits1 >> 32)
     return hash0 ^ hash1
   }

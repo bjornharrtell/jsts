@@ -43,9 +43,9 @@ export default class UnionInteracting {
     this.computeInteracting()
     const int0 = this.extractElements(this._g0, this._interacts0, true)
     const int1 = this.extractElements(this._g1, this._interacts1, true)
-    if (int0.isEmpty() || int1.isEmpty()) {
+    if (int0.isEmpty() || int1.isEmpty())
       System.out.println('found empty!')
-    }
+
     const union = int0.union(int1)
     const disjoint0 = this.extractElements(this._g0, this._interacts0, false)
     const disjoint1 = this.extractElements(this._g1, this._interacts1, false)

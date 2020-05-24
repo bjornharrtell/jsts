@@ -8,12 +8,12 @@ export default class MonotoneChainBuilder {
 
   static findChainEnd (pts, start) {
     let safeStart = start
-    while (safeStart < pts.length - 1 && pts[safeStart].equals2D(pts[safeStart + 1])) {
+    while (safeStart < pts.length - 1 && pts[safeStart].equals2D(pts[safeStart + 1]))
       safeStart++
-    }
-    if (safeStart >= pts.length - 1) {
+
+    if (safeStart >= pts.length - 1)
       return pts.length - 1
-    }
+
     const chainQuad = Quadrant.quadrant(pts[safeStart], pts[safeStart + 1])
     let last = start + 1
     while (last < pts.length) {

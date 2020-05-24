@@ -29,9 +29,9 @@ export default class PointLocator {
   }
 
   computeLocation (p, geom) {
-    if (geom instanceof Point) {
+    if (geom instanceof Point)
       this.updateLocationInfo(this.locateOnPoint(p, geom))
-    }
+
     if (geom instanceof LineString) {
       this.updateLocationInfo(this.locateOnLineString(p, geom))
     } else if (geom instanceof Polygon) {
@@ -66,14 +66,14 @@ export default class PointLocator {
   locateOnLineString (p, l) {
     if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     const seq = l.getCoordinateSequence()
-    if (!l.isClosed()) {
+    if (!l.isClosed())
       if (p.equals(seq.getCoordinate(0)) || p.equals(seq.getCoordinate(seq.size() - 1))) {
         return Location.BOUNDARY
       }
-    }
-    if (PointLocation.isOnLine(p, seq)) {
+
+    if (PointLocation.isOnLine(p, seq))
       return Location.INTERIOR
-    }
+
     return Location.EXTERIOR
   }
 
@@ -94,11 +94,11 @@ export default class PointLocator {
 
   locate (p, geom) {
     if (geom.isEmpty()) return Location.EXTERIOR
-    if (geom instanceof LineString) {
+    if (geom instanceof LineString)
       return this.locateOnLineString(p, geom)
-    } else if (geom instanceof Polygon) {
+    else if (geom instanceof Polygon)
       return this.locateInPolygon(p, geom)
-    }
+
     this._isIn = false
     this._numBoundaries = 0
     this.computeLocation(p, geom)

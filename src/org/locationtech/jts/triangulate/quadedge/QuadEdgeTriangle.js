@@ -53,9 +53,9 @@ export default class QuadEdgeTriangle {
 
   getCoordinates () {
     const pts = new Array(4).fill(null)
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++)
       pts[i] = this._edge[i].orig().getCoordinate()
-    }
+
     pts[3] = new Coordinate(pts[0])
     return pts
   }
@@ -66,9 +66,9 @@ export default class QuadEdgeTriangle {
 
   isBorder () {
     if (arguments.length === 0) {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 3; i++)
         if (this.getAdjacentTriangleAcrossEdge(i) === null) return true
-      }
+
       return false
     } else if (arguments.length === 1) {
       const i = arguments[0]
@@ -79,15 +79,15 @@ export default class QuadEdgeTriangle {
   getEdgeIndex () {
     if (arguments[0] instanceof QuadEdge) {
       const e = arguments[0]
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 3; i++)
         if (this._edge[i] === e) return i
-      }
+
       return -1
     } else if (arguments[0] instanceof Vertex) {
       const v = arguments[0]
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 3; i++)
         if (this._edge[i].orig() === v) return i
-      }
+
       return -1
     }
   }
@@ -108,9 +108,9 @@ export default class QuadEdgeTriangle {
     let qe = start
     do {
       const adjTri = qe.getData()
-      if (adjTri !== null) {
+      if (adjTri !== null)
         adjTris.add(adjTri)
-      }
+
       qe = qe.oNext()
     } while (qe !== start)
     return adjTris
@@ -118,9 +118,9 @@ export default class QuadEdgeTriangle {
 
   getNeighbours () {
     const neigh = new Array(3).fill(null)
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++)
       neigh[i] = this.getEdge(i).sym().getData()
-    }
+
     return neigh
   }
 
@@ -142,9 +142,9 @@ export default class QuadEdgeTriangle {
 
   getVertices () {
     const vert = new Array(3).fill(null)
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++)
       vert[i] = this.getVertex(i)
-    }
+
     return vert
   }
 
@@ -217,7 +217,6 @@ QuadEdgeTriangle.constructor_ = function () {
   this._data = null
   const edge = arguments[0]
   this._edge = Arrays.copyOf(edge, edge.length)
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++)
     edge[i].setData(this)
-  }
 }

@@ -10,13 +10,13 @@ export default class InteriorPoint {
     if (geom.isEmpty()) return null
     let interiorPt = null
     const dim = geom.getDimension()
-    if (dim === 0) {
+    if (dim === 0)
       interiorPt = InteriorPointPoint.getInteriorPoint(geom)
-    } else if (dim === 1) {
+    else if (dim === 1)
       interiorPt = InteriorPointLine.getInteriorPoint(geom)
-    } else {
+    else
       interiorPt = InteriorPointArea.getInteriorPoint(geom)
-    }
+
     return interiorPt
   }
 

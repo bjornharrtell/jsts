@@ -39,11 +39,11 @@ export default class LinearComponentExtracter {
         return lines
       } else if (arguments[0] instanceof Geometry && hasInterface(arguments[1], Collection)) {
         const geom = arguments[0]; const lines = arguments[1]
-        if (geom instanceof LineString) {
+        if (geom instanceof LineString)
           lines.add(geom)
-        } else {
+        else
           geom.apply(new LinearComponentExtracter(lines))
-        }
+
         return lines
       }
     } else if (arguments.length === 3) {

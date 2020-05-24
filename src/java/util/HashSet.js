@@ -11,25 +11,23 @@ export default class HashSet extends Set {
 
   constructor (o) {
     super()
-    if (o instanceof Collection) { this.addAll(o) }
+    if (o instanceof Collection) this.addAll(o)
   }
 
   contains (o) {
-    if (o.compareTo) {
+    if (o.compareTo)
       return this.#array.some(v => v.compareTo(o) === 0)
-    } else {
-      return this.#array.includes(o)
-    }
+    else return this.#array.includes(o)
   }
 
   add (o) {
-    if (this.contains(o)) { return false }
+    if (this.contains(o)) return false
     this.#array.push(o)
     return true
   }
 
   addAll (c) {
-    for (let i = c.iterator(); i.hasNext();) { this.add(i.next()) }
+    for (let i = c.iterator(); i.hasNext();) this.add(i.next())
     return true
   }
 
@@ -63,12 +61,14 @@ class Iterator {
   }
 
   next () {
-    if (this.#position === this.#array.length) { throw new NoSuchElementException() }
+    if (this.#position === this.#array.length) throw new NoSuchElementException()
     return this.#array[this.#position++]
   }
 
   hasNext () {
-    if (this.#position < this.#array.length) { return true } else { return false }
+    if (this.#position < this.#array.length)
+      return true
+    else return false
   }
 
   remove () {

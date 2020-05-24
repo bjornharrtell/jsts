@@ -45,9 +45,9 @@ export default class Vector2D {
   }
 
   equals (o) {
-    if (!(o instanceof Vector2D)) {
+    if (!(o instanceof Vector2D))
       return false
-    }
+
     const v = o
     return this._x === v._x && this._y === v._y
   }
@@ -77,18 +77,18 @@ export default class Vector2D {
 
   rotateByQuarterCircle (numQuarters) {
     let nQuad = numQuarters % 4
-    if (numQuarters < 0 && nQuad !== 0) {
+    if (numQuarters < 0 && nQuad !== 0)
       nQuad = nQuad + 4
-    }
+
     switch (nQuad) {
-      case 0:
-        return Vector2D.create(this._x, this._y)
-      case 1:
-        return Vector2D.create(-this._y, this._x)
-      case 2:
-        return Vector2D.create(-this._x, -this._y)
-      case 3:
-        return Vector2D.create(this._y, -this._x)
+    case 0:
+      return Vector2D.create(this._x, this._y)
+    case 1:
+      return Vector2D.create(-this._y, this._x)
+    case 2:
+      return Vector2D.create(-this._x, -this._y)
+    case 3:
+      return Vector2D.create(this._y, -this._x)
     }
     Assert.shouldNeverReachHere()
     return null

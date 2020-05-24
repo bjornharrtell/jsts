@@ -112,9 +112,9 @@ export default class BufferBuilder {
     const curveBuilder = new OffsetCurveBuilder(precisionModel, this._bufParams)
     const curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder)
     const bufferSegStrList = curveSetBuilder.getCurves()
-    if (bufferSegStrList.size() <= 0) {
+    if (bufferSegStrList.size() <= 0)
       return this.createEmptyResultGeometry()
-    }
+
     this.computeNodedEdges(bufferSegStrList, precisionModel)
     this._graph = new PlanarGraph(new OverlayNodeFactory())
     this._graph.addEdges(this._edgeList.getEdges())
@@ -122,9 +122,9 @@ export default class BufferBuilder {
     const polyBuilder = new PolygonBuilder(this._geomFact)
     this.buildSubgraphs(subgraphList, polyBuilder)
     const resultPolyList = polyBuilder.getPolygons()
-    if (resultPolyList.size() <= 0) {
+    if (resultPolyList.size() <= 0)
       return this.createEmptyResultGeometry()
-    }
+
     const resultGeom = this._geomFact.buildGeometry(resultPolyList)
     return resultGeom
   }

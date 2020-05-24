@@ -18,9 +18,9 @@ export default class LinearRing extends LineString {
   }
 
   isClosed () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return true
-    }
+
     return super.isClosed.call(this)
   }
 
@@ -35,12 +35,11 @@ export default class LinearRing extends LineString {
   }
 
   validateConstruction () {
-    if (!this.isEmpty() && !super.isClosed.call(this)) {
+    if (!this.isEmpty() && !super.isClosed.call(this))
       throw new IllegalArgumentException('Points of LinearRing do not form a closed linestring')
-    }
-    if (this.getCoordinateSequence().size() >= 1 && this.getCoordinateSequence().size() < LinearRing.MINIMUM_VALID_SIZE) {
+
+    if (this.getCoordinateSequence().size() >= 1 && this.getCoordinateSequence().size() < LinearRing.MINIMUM_VALID_SIZE)
       throw new IllegalArgumentException('Invalid number of points in LinearRing (found ' + this.getCoordinateSequence().size() + ' - must be 0 or >= 4)')
-    }
   }
 
   getGeometryType () {

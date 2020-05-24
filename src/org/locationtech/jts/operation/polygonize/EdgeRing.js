@@ -30,15 +30,13 @@ export default class EdgeRing {
   }
 
   static addEdge (coords, isForward, coordList) {
-    if (isForward) {
-      for (let i = 0; i < coords.length; i++) {
+    if (isForward)
+      for (let i = 0; i < coords.length; i++)
         coordList.add(coords[i], false)
-      }
-    } else {
-      for (let i = coords.length - 1; i >= 0; i--) {
+
+    else
+      for (let i = coords.length - 1; i >= 0; i--)
         coordList.add(coords[i], false)
-      }
-    }
   }
 
   static findEdgeRingContaining (testEr, erList) {
@@ -55,12 +53,11 @@ export default class EdgeRing {
       if (!tryShellEnv.contains(testEnv)) continue
       testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryEdgeRing.getCoordinates())
       const isContained = tryEdgeRing.isInRing(testPt)
-      if (isContained) {
+      if (isContained)
         if (minRing === null || minRingEnv.contains(tryShellEnv)) {
           minRing = tryEdgeRing
           minRingEnv = minRing.getRing().getEnvelopeInternal()
         }
-      }
     }
     return minRing
   }
@@ -117,9 +114,8 @@ export default class EdgeRing {
     let holeLR = null
     if (this._holes !== null) {
       holeLR = new Array(this._holes.size()).fill(null)
-      for (let i = 0; i < this._holes.size(); i++) {
+      for (let i = 0; i < this._holes.size(); i++)
         holeLR[i] = this._holes.get(i)
-      }
     }
     const poly = this._factory.createPolygon(this._ring, holeLR)
     return poly
@@ -185,9 +181,9 @@ export default class EdgeRing {
   }
 
   getLocator () {
-    if (this._locator === null) {
+    if (this._locator === null)
       this._locator = new IndexedPointInAreaLocator(this.getRing())
-    }
+
     return this._locator
   }
 
@@ -207,9 +203,9 @@ export default class EdgeRing {
     try {
       this._ring = this._factory.createLinearRing(this._ringPts)
     } catch (ex) {
-      if (ex instanceof Exception) {
+      if (ex instanceof Exception)
         System.out.println(this._ringPts)
-      } else throw ex
+      else throw ex
     } finally {}
     return this._ring
   }

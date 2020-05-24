@@ -18,20 +18,19 @@ export default class ConsistentPolygonRingChecker {
       if (!nextOut.getLabel().isArea()) continue
       if (firstOut === null && this.isPotentialResultAreaEdge(nextOut, opCode)) firstOut = nextOut
       switch (state) {
-        case this._SCANNING_FOR_INCOMING:
-          if (!this.isPotentialResultAreaEdge(nextIn, opCode)) continue
-          incoming = nextIn
-          state = this._LINKING_TO_OUTGOING
-          break
-        case this._LINKING_TO_OUTGOING:
-          if (!this.isPotentialResultAreaEdge(nextOut, opCode)) continue
-          state = this._SCANNING_FOR_INCOMING
-          break
+      case this._SCANNING_FOR_INCOMING:
+        if (!this.isPotentialResultAreaEdge(nextIn, opCode)) continue
+        incoming = nextIn
+        state = this._LINKING_TO_OUTGOING
+        break
+      case this._LINKING_TO_OUTGOING:
+        if (!this.isPotentialResultAreaEdge(nextOut, opCode)) continue
+        state = this._SCANNING_FOR_INCOMING
+        break
       }
     }
-    if (state === this._LINKING_TO_OUTGOING) {
+    if (state === this._LINKING_TO_OUTGOING)
       if (firstOut === null) throw new TopologyException('no outgoing dirEdge found', deStar.getCoordinate())
-    }
   }
 
   getPotentialResultAreaEdges (deStar, opCode) {
@@ -59,9 +58,9 @@ export default class ConsistentPolygonRingChecker {
 
   isPotentialResultAreaEdge (de, opCode) {
     const label = de.getLabel()
-    if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
+    if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode))
       return true
-    }
+
     return false
   }
 

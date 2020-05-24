@@ -27,14 +27,13 @@ export default class RightmostEdgeFinder {
     const pNext = pts[this._minIndex + 1]
     const orientation = Orientation.index(this._minCoord, pNext, pPrev)
     let usePrev = false
-    if (pPrev.y < this._minCoord.y && pNext.y < this._minCoord.y && orientation === Orientation.COUNTERCLOCKWISE) {
+    if (pPrev.y < this._minCoord.y && pNext.y < this._minCoord.y && orientation === Orientation.COUNTERCLOCKWISE)
       usePrev = true
-    } else if (pPrev.y > this._minCoord.y && pNext.y > this._minCoord.y && orientation === Orientation.CLOCKWISE) {
+    else if (pPrev.y > this._minCoord.y && pNext.y > this._minCoord.y && orientation === Orientation.CLOCKWISE)
       usePrev = true
-    }
-    if (usePrev) {
+
+    if (usePrev)
       this._minIndex = this._minIndex - 1
-    }
   }
 
   getRightmostSideOfSegment (de, i) {
@@ -53,13 +52,12 @@ export default class RightmostEdgeFinder {
 
   checkForRightmostCoordinate (de) {
     const coord = de.getEdge().getCoordinates()
-    for (let i = 0; i < coord.length - 1; i++) {
+    for (let i = 0; i < coord.length - 1; i++)
       if (this._minCoord === null || coord[i].x > this._minCoord.x) {
         this._minDe = de
         this._minIndex = i
         this._minCoord = coord[i]
       }
-    }
   }
 
   findRightmostEdgeAtNode () {
@@ -79,16 +77,15 @@ export default class RightmostEdgeFinder {
       this.checkForRightmostCoordinate(de)
     }
     Assert.isTrue(this._minIndex !== 0 || this._minCoord.equals(this._minDe.getCoordinate()), 'inconsistency in rightmost processing')
-    if (this._minIndex === 0) {
+    if (this._minIndex === 0)
       this.findRightmostEdgeAtNode()
-    } else {
+    else
       this.findRightmostEdgeAtVertex()
-    }
+
     this._orientedDe = this._minDe
     const rightmostSide = this.getRightmostSide(this._minDe, this._minIndex)
-    if (rightmostSide === Position.LEFT) {
+    if (rightmostSide === Position.LEFT)
       this._orientedDe = this._minDe.getSym()
-    }
   }
 
   getClass () {

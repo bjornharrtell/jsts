@@ -89,9 +89,9 @@ export default class PolygonizeGraph extends PlanarGraph {
       let inDE = null
       if (sym.getLabel() === label) inDE = sym
       if (outDE === null && inDE === null) continue
-      if (inDE !== null) {
+      if (inDE !== null)
         prevInDE = inDE
-      }
+
       if (outDE !== null) {
         if (prevInDE !== null) {
           prevInDE.setNext(outDE)
@@ -158,13 +158,13 @@ export default class PolygonizeGraph extends PlanarGraph {
   }
 
   addEdge (line) {
-    if (line.isEmpty()) {
+    if (line.isEmpty())
       return null
-    }
+
     const linePts = CoordinateArrays.removeRepeatedPoints(line.getCoordinates())
-    if (linePts.length < 2) {
+    if (linePts.length < 2)
       return null
-    }
+
     const startPt = linePts[0]
     const endPt = linePts[linePts.length - 1]
     const nStart = this.getNode(startPt)
@@ -236,9 +236,9 @@ export default class PolygonizeGraph extends PlanarGraph {
     const nodesToRemove = this.findNodesOfDegree(1)
     const dangleLines = new HashSet()
     const nodeStack = new Stack()
-    for (let i = nodesToRemove.iterator(); i.hasNext();) {
+    for (let i = nodesToRemove.iterator(); i.hasNext();)
       nodeStack.push(i.next())
-    }
+
     while (!nodeStack.isEmpty()) {
       const node = nodeStack.pop()
       PolygonizeGraph.deleteAllEdges(node)

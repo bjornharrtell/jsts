@@ -24,15 +24,13 @@ export default class OffsetSegmentString {
 
   reverse () {}
   addPts (pt, isForward) {
-    if (isForward) {
-      for (let i = 0; i < pt.length; i++) {
+    if (isForward)
+      for (let i = 0; i < pt.length; i++)
         this.addPt(pt[i])
-      }
-    } else {
-      for (let i = pt.length - 1; i >= 0; i--) {
+
+    else
+      for (let i = pt.length - 1; i >= 0; i--)
         this.addPt(pt[i])
-      }
-    }
   }
 
   isRedundant (pt) {

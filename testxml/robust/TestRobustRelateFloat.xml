@@ -3,9 +3,9 @@
 
 <case>
   <desc>A/P - Point is on boundary of polygon. 
-  	Orientation algorithms (including CGAlgorithmsDD) fail by incorrectly reporting the point to not be on the boundary.
-  	See https://trac.osgeo.org/geos/ticket/841
-  	</desc>
+    Orientation algorithms (including CGAlgorithmsDD) fail by incorrectly reporting the point to not be on the boundary.
+    See https://trac.osgeo.org/geos/ticket/841
+    </desc>
   <a>
     POLYGON ((0 0, 1 0, 0 1, 0 0))
   </a>
@@ -21,9 +21,9 @@
 
 <case>
   <desc>L/L - Line A contains Line B. 
-  	Fails due to imprecision of computed self-node in A.
-  	See https://trac.osgeo.org/geos/ticket/572
-  	</desc>
+    Fails due to imprecision of computed self-node in A.
+    See https://trac.osgeo.org/geos/ticket/572
+    </desc>
   <a>
     LINESTRING (1 0, 0 2, 0 0, 2 2)
   </a>

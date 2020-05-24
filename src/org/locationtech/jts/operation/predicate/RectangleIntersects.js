@@ -55,9 +55,9 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
 
   visit (element) {
     const elementEnv = element.getEnvelopeInternal()
-    if (!this._rectEnv.intersects(elementEnv)) {
+    if (!this._rectEnv.intersects(elementEnv))
       return null
-    }
+
     if (this._rectEnv.contains(elementEnv)) {
       this._intersects = true
       return null

@@ -19,9 +19,8 @@ export default class HoleAssigner {
 
   buildIndex () {
     this._shellIndex = new STRtree()
-    for (const shell of this._shells) {
+    for (const shell of this._shells)
       this._shellIndex.insert(shell.getRing().getEnvelopeInternal(), shell)
-    }
   }
 
   queryOverlappingShells (ringEnv) {
@@ -36,9 +35,8 @@ export default class HoleAssigner {
 
   assignHoleToShell (holeER) {
     const shell = this.findShellContaining(holeER)
-    if (shell !== null) {
+    if (shell !== null)
       shell.addHole(holeER)
-    }
   }
 
   getClass () {

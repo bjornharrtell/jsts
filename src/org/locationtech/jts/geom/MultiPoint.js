@@ -10,9 +10,9 @@ export default class MultiPoint extends GeometryCollection {
 
   copyInternal () {
     const points = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0; i < points.length; i++)
       points[i] = this._geometries[i].copy()
-    }
+
     return new MultiPoint(points, this._factory)
   }
 
@@ -23,18 +23,22 @@ export default class MultiPoint extends GeometryCollection {
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other)) {
+      if (!this.isEquivalentClass(other))
         return false
-      }
+
       return super.equalsExact.call(this, other, tolerance)
-    } else return super.equalsExact.apply(this, arguments)
+    } else {
+      return super.equalsExact.apply(this, arguments)
+    }
   }
 
   getCoordinate () {
     if (arguments.length === 1 && Number.isInteger(arguments[0])) {
       const n = arguments[0]
       return this._geometries[n].getCoordinate()
-    } else return super.getCoordinate.apply(this, arguments)
+    } else {
+      return super.getCoordinate.apply(this, arguments)
+    }
   }
 
   getBoundaryDimension () {

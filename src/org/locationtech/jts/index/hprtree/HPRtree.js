@@ -60,16 +60,15 @@ export default class HPRtree {
 
   static toIntArray (list) {
     const array = new Array(list.size()).fill(null)
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++)
       array[i] = list.get(i)
-    }
+
     return array
   }
 
   computeLeafNodes (layerSize) {
-    for (let i = 0; i < layerSize; i += HPRtree.ENV_SIZE) {
+    for (let i = 0; i < layerSize; i += HPRtree.ENV_SIZE)
       this.computeLeafNodeBounds(i, Math.trunc(this._nodeCapacity * i / 4))
-    }
   }
 
   size () {
@@ -77,9 +76,9 @@ export default class HPRtree {
   }
 
   insert (itemEnv, item) {
-    if (this._isBuilt) {
+    if (this._isBuilt)
       throw new IllegalStateException('Cannot insert items after tree is built.')
-    }
+
     this._items.add(new Item(itemEnv, item))
     this._totalExtent.expandToInclude(itemEnv)
   }
@@ -101,11 +100,10 @@ export default class HPRtree {
       const searchEnv = arguments[0]; const visitor = arguments[1]
       this.build()
       if (!this._totalExtent.intersects(searchEnv)) return null
-      if (this._layerStartIndex === null) {
+      if (this._layerStartIndex === null)
         this.queryItems(0, searchEnv, visitor)
-      } else {
+      else
         this.queryTopLayer(searchEnv, visitor)
-      }
     }
   }
 
@@ -118,9 +116,8 @@ export default class HPRtree {
     const nodeCount = Math.trunc(this._layerStartIndex[this._layerStartIndex.length - 1] / 4)
     this._nodeBounds = HPRtree.createBoundsArray(nodeCount)
     this.computeLeafNodes(this._layerStartIndex[1])
-    for (let i = 1; i < this._layerStartIndex.length - 1; i++) {
+    for (let i = 1; i < this._layerStartIndex.length - 1; i++)
       this.computeLayerNodes(i)
-    }
   }
 
   getNodeEnvelope (i) {
@@ -167,9 +164,8 @@ export default class HPRtree {
   queryTopLayer (searchEnv, visitor) {
     const layerIndex = this._layerStartIndex.length - 2
     const layerSize = this.layerSize(layerIndex)
-    for (let i = 0; i < layerSize; i += HPRtree.ENV_SIZE) {
+    for (let i = 0; i < layerSize; i += HPRtree.ENV_SIZE)
       this.queryNode(layerIndex, i, searchEnv, visitor)
-    }
   }
 
   queryItems (blockStart, searchEnv, visitor) {
@@ -177,9 +173,8 @@ export default class HPRtree {
       const itemIndex = blockStart + i
       if (itemIndex >= this._items.size()) break
       const item = this._items.get(itemIndex)
-      if (HPRtree.intersects(item.getEnvelope(), searchEnv)) {
+      if (HPRtree.intersects(item.getEnvelope(), searchEnv))
         visitor.visitItem(item.getItem())
-      }
     }
   }
 

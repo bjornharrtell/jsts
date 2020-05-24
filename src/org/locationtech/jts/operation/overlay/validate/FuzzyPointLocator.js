@@ -69,9 +69,8 @@ class PolygonalLineworkExtracter {
     if (g instanceof Polygon) {
       const poly = g
       this._linework.add(poly.getExteriorRing())
-      for (let i = 0; i < poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < poly.getNumInteriorRing(); i++)
         this._linework.add(poly.getInteriorRingN(i))
-      }
     }
   }
 

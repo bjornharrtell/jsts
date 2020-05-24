@@ -18,11 +18,11 @@ export default class RectangleLineIntersector {
     }
     let isSegUpwards = false
     if (p1.y > p0.y) isSegUpwards = true
-    if (isSegUpwards) {
+    if (isSegUpwards)
       this._li.computeIntersection(p0, p1, this._diagDown0, this._diagDown1)
-    } else {
+    else
       this._li.computeIntersection(p0, p1, this._diagUp0, this._diagUp1)
-    }
+
     if (this._li.hasIntersection()) return true
     return false
   }

@@ -53,9 +53,9 @@ export default class Node extends NodeBase {
   }
 
   getSubnode (index) {
-    if (this._subnode[index] === null) {
+    if (this._subnode[index] === null)
       this._subnode[index] = this.createSubnode(index)
-    }
+
     return this._subnode[index]
   }
 
@@ -73,14 +73,14 @@ export default class Node extends NodeBase {
     let min = 0.0
     let max = 0.0
     switch (index) {
-      case 0:
-        min = this._interval.getMin()
-        max = this._centre
-        break
-      case 1:
-        min = this._centre
-        max = this._interval.getMax()
-        break
+    case 0:
+      min = this._interval.getMin()
+      max = this._centre
+      break
+    case 1:
+      min = this._centre
+      max = this._interval.getMax()
+      break
     }
     const subInt = new Interval(min, max)
     const node = new Node(subInt, this._level - 1)

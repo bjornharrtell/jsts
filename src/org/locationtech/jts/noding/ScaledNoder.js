@@ -24,9 +24,8 @@ export default class ScaledNoder {
         pts[i].x = pts[i].x / this._scaleFactor + this._offsetX
         pts[i].y = pts[i].y / this._scaleFactor + this._offsetY
       }
-      if (pts.length === 2 && pts[0].equals2D(pts[1])) {
+      if (pts.length === 2 && pts[0].equals2D(pts[1]))
         System.out.println(pts)
-      }
     }
   }
 
@@ -42,9 +41,9 @@ export default class ScaledNoder {
     } else if (arguments[0] instanceof Array) {
       const pts = arguments[0]
       const roundPts = new Array(pts.length).fill(null)
-      for (let i = 0; i < pts.length; i++) {
+      for (let i = 0; i < pts.length; i++)
         roundPts[i] = new Coordinate(Math.round((pts[i].x - this._offsetX) * this._scaleFactor), Math.round((pts[i].y - this._offsetY) * this._scaleFactor), pts[i].getZ())
-      }
+
       const roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts)
       return roundPtsNoDup
     }

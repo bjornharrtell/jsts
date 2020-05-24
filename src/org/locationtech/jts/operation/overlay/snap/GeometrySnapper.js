@@ -58,9 +58,9 @@ export default class GeometrySnapper {
     const snapTrans = new SnapTransformer(snapTolerance, snapPts, true)
     const snappedGeom = snapTrans.transform(this._srcGeom)
     let result = snappedGeom
-    if (cleanResult && hasInterface(result, Polygonal)) {
+    if (cleanResult && hasInterface(result, Polygonal))
       result = snappedGeom.buffer(0)
-    }
+
     return result
   }
 
@@ -73,9 +73,9 @@ export default class GeometrySnapper {
   extractTargetCoordinates (g) {
     const ptSet = new TreeSet()
     const pts = g.getCoordinates()
-    for (let i = 0; i < pts.length; i++) {
+    for (let i = 0; i < pts.length; i++)
       ptSet.add(pts[i])
-    }
+
     return ptSet.toArray(new Array(0).fill(null))
   }
 

@@ -28,7 +28,7 @@ export default class LocationIndexOfPoint {
     let minSegmentIndex = 0
     let minFrac = -1.0
     const seg = new LineSegment()
-    for (let it = new LinearIterator(this._linearGeom); it.hasNext(); it.next()) {
+    for (let it = new LinearIterator(this._linearGeom); it.hasNext(); it.next())
       if (!it.isEndOfLine()) {
         seg.p0 = it.getSegmentStart()
         seg.p1 = it.getSegmentEnd()
@@ -36,19 +36,18 @@ export default class LocationIndexOfPoint {
         const segFrac = seg.segmentFraction(inputPt)
         const candidateComponentIndex = it.getComponentIndex()
         const candidateSegmentIndex = it.getVertexIndex()
-        if (segDistance < minDistance) {
+        if (segDistance < minDistance)
           if (minIndex === null || minIndex.compareLocationValues(candidateComponentIndex, candidateSegmentIndex, segFrac) < 0) {
             minComponentIndex = candidateComponentIndex
             minSegmentIndex = candidateSegmentIndex
             minFrac = segFrac
             minDistance = segDistance
           }
-        }
       }
-    }
-    if (minDistance === Double.MAX_VALUE) {
+
+    if (minDistance === Double.MAX_VALUE)
       return new LinearLocation(minIndex)
-    }
+
     const loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac)
     return loc
   }

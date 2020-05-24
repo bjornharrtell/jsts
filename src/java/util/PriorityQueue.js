@@ -52,9 +52,8 @@ export default class PriorityQueue {
     this._size += 1
     let hole = this._size
     this._items.set(0, x)
-    for (; x.compareTo(this._items.get(Math.trunc(hole / 2))) < 0; hole /= 2) {
-      this._items.set(hole, this._items.get(Math.trunc(hole / 2)))
-    }
+    for (; x.compareTo(this._items.get(Math.trunc(hole / 2))) < 0; hole /= 2) this._items.set(hole, this._items.get(Math.trunc(hole / 2)))
+
     this._items.set(hole, x)
   }
 

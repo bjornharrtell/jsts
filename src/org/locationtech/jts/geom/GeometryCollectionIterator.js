@@ -17,16 +17,16 @@ export default class GeometryCollectionIterator {
       if (GeometryCollectionIterator.isAtomic(this._parent)) this._index++
       return this._parent
     }
-    if (this._subcollectionIterator !== null) {
+    if (this._subcollectionIterator !== null)
       if (this._subcollectionIterator.hasNext()) {
         return this._subcollectionIterator.next()
       } else {
         this._subcollectionIterator = null
       }
-    }
-    if (this._index >= this._max) {
+
+    if (this._index >= this._max)
       throw new NoSuchElementException()
-    }
+
     const obj = this._parent.getGeometryN(this._index++)
     if (obj instanceof GeometryCollection) {
       this._subcollectionIterator = new GeometryCollectionIterator(obj)
@@ -40,18 +40,18 @@ export default class GeometryCollectionIterator {
   }
 
   hasNext () {
-    if (this._atStart) {
+    if (this._atStart)
       return true
-    }
+
     if (this._subcollectionIterator !== null) {
-      if (this._subcollectionIterator.hasNext()) {
+      if (this._subcollectionIterator.hasNext())
         return true
-      }
+
       this._subcollectionIterator = null
     }
-    if (this._index >= this._max) {
+    if (this._index >= this._max)
       return false
-    }
+
     return true
   }
 

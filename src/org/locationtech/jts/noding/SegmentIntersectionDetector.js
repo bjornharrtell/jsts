@@ -51,12 +51,12 @@ export default class SegmentIntersectionDetector {
   }
 
   isDone () {
-    if (this._findAllTypes) {
+    if (this._findAllTypes)
       return this._hasProperIntersection && this._hasNonProperIntersection
-    }
-    if (this._findProper) {
+
+    if (this._findProper)
       return this._hasProperIntersection
-    }
+
     return this._hasIntersection
   }
 

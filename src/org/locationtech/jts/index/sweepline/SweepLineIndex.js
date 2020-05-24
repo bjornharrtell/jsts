@@ -11,9 +11,8 @@ export default class SweepLineIndex {
     this.buildIndex()
     for (let i = 0; i < this.events.size(); i++) {
       const ev = this.events.get(i)
-      if (ev.isInsert()) {
+      if (ev.isInsert())
         this.processOverlaps(i, ev.getDeleteEventIndex(), ev.getInterval(), action)
-      }
     }
   }
 
@@ -33,9 +32,8 @@ export default class SweepLineIndex {
     Collections.sort(this.events)
     for (let i = 0; i < this.events.size(); i++) {
       const ev = this.events.get(i)
-      if (ev.isDelete()) {
+      if (ev.isDelete())
         ev.getInsertEvent().setDeleteEventIndex(i)
-      }
     }
     this._indexBuilt = true
   }

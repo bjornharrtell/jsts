@@ -25,11 +25,11 @@ export default class PointGeometryUnion {
     if (exteriorCoords.size() === 0) return this._otherGeom
     let ptComp = null
     const coords = CoordinateArrays.toCoordinateArray(exteriorCoords)
-    if (coords.length === 1) {
+    if (coords.length === 1)
       ptComp = this._geomFact.createPoint(coords[0])
-    } else {
+    else
       ptComp = this._geomFact.createMultiPointFromCoords(coords)
-    }
+
     return GeometryCombiner.combine(ptComp, this._otherGeom)
   }
 

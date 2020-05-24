@@ -69,18 +69,18 @@ export default class OverlayOp extends GeometryGraphOperation {
     const dim1 = g1.getDimension()
     let resultDimension = -1
     switch (opCode) {
-      case OverlayOp.INTERSECTION:
-        resultDimension = Math.min(dim0, dim1)
-        break
-      case OverlayOp.UNION:
-        resultDimension = Math.max(dim0, dim1)
-        break
-      case OverlayOp.DIFFERENCE:
-        resultDimension = dim0
-        break
-      case OverlayOp.SYMDIFFERENCE:
-        resultDimension = Math.max(dim0, dim1)
-        break
+    case OverlayOp.INTERSECTION:
+      resultDimension = Math.min(dim0, dim1)
+      break
+    case OverlayOp.UNION:
+      resultDimension = Math.max(dim0, dim1)
+      break
+    case OverlayOp.DIFFERENCE:
+      resultDimension = dim0
+      break
+    case OverlayOp.SYMDIFFERENCE:
+      resultDimension = Math.max(dim0, dim1)
+      break
     }
     return resultDimension
   }
@@ -109,14 +109,14 @@ export default class OverlayOp extends GeometryGraphOperation {
       if (loc0 === Location.BOUNDARY) loc0 = Location.INTERIOR
       if (loc1 === Location.BOUNDARY) loc1 = Location.INTERIOR
       switch (overlayOpCode) {
-        case OverlayOp.INTERSECTION:
-          return loc0 === Location.INTERIOR && loc1 === Location.INTERIOR
-        case OverlayOp.UNION:
-          return loc0 === Location.INTERIOR || loc1 === Location.INTERIOR
-        case OverlayOp.DIFFERENCE:
-          return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR
-        case OverlayOp.SYMDIFFERENCE:
-          return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR || loc0 !== Location.INTERIOR && loc1 === Location.INTERIOR
+      case OverlayOp.INTERSECTION:
+        return loc0 === Location.INTERIOR && loc1 === Location.INTERIOR
+      case OverlayOp.UNION:
+        return loc0 === Location.INTERIOR || loc1 === Location.INTERIOR
+      case OverlayOp.DIFFERENCE:
+        return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR
+      case OverlayOp.SYMDIFFERENCE:
+        return loc0 === Location.INTERIOR && loc1 !== Location.INTERIOR || loc0 !== Location.INTERIOR && loc1 === Location.INTERIOR
       }
       return false
     }
@@ -132,9 +132,9 @@ export default class OverlayOp extends GeometryGraphOperation {
         labelToMerge.flip()
       }
       const depth = existingEdge.getDepth()
-      if (depth.isNull()) {
+      if (depth.isNull())
         depth.add(existingLabel)
-      }
+
       depth.add(labelToMerge)
       existingLabel.merge(labelToMerge)
     } else {
@@ -266,9 +266,8 @@ export default class OverlayOp extends GeometryGraphOperation {
     for (let it = this._graph.getEdgeEnds().iterator(); it.hasNext();) {
       const de = it.next()
       const label = de.getLabel()
-      if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) {
+      if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode))
         de.setInResult(true)
-      }
     }
   }
 
@@ -279,8 +278,8 @@ export default class OverlayOp extends GeometryGraphOperation {
       const depth = e.getDepth()
       if (!depth.isNull()) {
         depth.normalize()
-        for (let i = 0; i < 2; i++) {
-          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull(i)) {
+        for (let i = 0; i < 2; i++)
+          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull(i))
             if (depth.getDelta(i) === 0) {
               lbl.toLine(i)
             } else {
@@ -289,8 +288,6 @@ export default class OverlayOp extends GeometryGraphOperation {
               Assert.isTrue(!depth.isNull(i, Position.RIGHT), 'depth of RIGHT side has not been initialized')
               lbl.setLocation(i, Position.RIGHT, depth.getLocation(i, Position.RIGHT))
             }
-          }
-        }
       }
     }
   }
@@ -308,9 +305,9 @@ export default class OverlayOp extends GeometryGraphOperation {
     for (let ni = this._graph.getNodes().iterator(); ni.hasNext();) {
       const n = ni.next()
       const label = n.getLabel()
-      if (n.isIsolated()) {
+      if (n.isIsolated())
         if (label.isNull(0)) this.labelIncompleteNode(n, 0); else this.labelIncompleteNode(n, 1)
-      }
+
       n.getEdges().updateLabelling(label)
     }
   }

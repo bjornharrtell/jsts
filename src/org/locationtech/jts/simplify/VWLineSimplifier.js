@@ -24,9 +24,9 @@ export default class VWLineSimplifier {
       }
       curr = curr._next
     }
-    if (minVertex !== null && minArea < this._tolerance) {
+    if (minVertex !== null && minArea < this._tolerance)
       minVertex.remove()
-    }
+
     if (!vwLine.isLive()) return -1
     return minArea
   }
@@ -34,13 +34,13 @@ export default class VWLineSimplifier {
   simplify () {
     const vwLine = VWVertex.buildLine(this._pts)
     let minArea = this._tolerance
-    do {
+    do
       minArea = this.simplifyVertex(vwLine)
-    } while (minArea < this._tolerance)
+    while (minArea < this._tolerance)
     const simp = vwLine.getCoordinates()
-    if (simp.length < 2) {
+    if (simp.length < 2)
       return [simp[0], new Coordinate(simp[0])]
-    }
+
     return simp
   }
 

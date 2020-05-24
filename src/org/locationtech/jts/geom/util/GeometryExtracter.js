@@ -19,11 +19,11 @@ export default class GeometryExtracter {
       return GeometryExtracter.extract(geom, geometryType, new ArrayList())
     } else if (arguments.length === 3) {
       const geom = arguments[0]; const geometryType = arguments[1]; const list = arguments[2]
-      if (geom.getGeometryType() === geometryType) {
+      if (geom.getGeometryType() === geometryType)
         list.add(geom)
-      } else if (geom instanceof GeometryCollection) {
+      else if (geom instanceof GeometryCollection)
         geom.apply(new GeometryExtracter(geometryType, list))
-      }
+
       return list
     }
   }

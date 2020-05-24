@@ -31,9 +31,9 @@ export default class MinimumClearance {
     if (this._minClearancePts !== null) return null
     this._minClearancePts = new Array(2).fill(null)
     this._minClearance = Double.MAX_VALUE
-    if (this._inputGeom.isEmpty()) {
+    if (this._inputGeom.isEmpty())
       return null
-    }
+
     const geomTree = FacetSequenceTreeBuilder.build(this._inputGeom)
     const nearest = geomTree.nearestNeighbour(new MinClearanceDistance())
     const mcd = new MinClearanceDistance()
@@ -60,7 +60,7 @@ class MinClearanceDistance {
   }
 
   vertexDistance (fs1, fs2) {
-    for (let i1 = 0; i1 < fs1.size(); i1++) {
+    for (let i1 = 0; i1 < fs1.size(); i1++)
       for (let i2 = 0; i2 < fs2.size(); i2++) {
         const p1 = fs1.getCoordinate(i1)
         const p2 = fs2.getCoordinate(i2)
@@ -74,7 +74,7 @@ class MinClearanceDistance {
           }
         }
       }
-    }
+
     return this._minDist
   }
 
@@ -83,7 +83,7 @@ class MinClearanceDistance {
   }
 
   segmentDistance (fs1, fs2) {
-    for (let i1 = 0; i1 < fs1.size(); i1++) {
+    for (let i1 = 0; i1 < fs1.size(); i1++)
       for (let i2 = 1; i2 < fs2.size(); i2++) {
         const p = fs1.getCoordinate(i1)
         const seg0 = fs2.getCoordinate(i2 - 1)
@@ -97,7 +97,7 @@ class MinClearanceDistance {
           }
         }
       }
-    }
+
     return this._minDist
   }
 

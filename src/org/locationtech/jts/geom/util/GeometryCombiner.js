@@ -58,9 +58,9 @@ export default class GeometryCombiner {
       this.extractElements(g, elems)
     }
     if (elems.size() === 0) {
-      if (this._geomFactory !== null) {
+      if (this._geomFactory !== null)
         return this._geomFactory.createGeometryCollection()
-      }
+
       return null
     }
     return this._geomFactory.buildGeometry(elems)

@@ -23,15 +23,14 @@ export default class EdgeList {
   }
 
   addAll (edgeColl) {
-    for (let i = edgeColl.iterator(); i.hasNext();) {
+    for (let i = edgeColl.iterator(); i.hasNext();)
       this.add(i.next())
-    }
   }
 
   findEdgeIndex (e) {
-    for (let i = 0; i < this._edges.size(); i++) {
+    for (let i = 0; i < this._edges.size(); i++)
       if (this._edges.get(i).equals(e)) return i
-    }
+
     return -1
   }
 

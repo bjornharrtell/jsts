@@ -49,9 +49,8 @@ export default class PlanarGraph {
         if (sym !== null) this.remove(sym)
         this._dirEdges.remove(de)
         const edge = de.getEdge()
-        if (edge !== null) {
+        if (edge !== null)
           this._edges.remove(edge)
-        }
       }
       this._nodeMap.remove(node.getCoordinate())
       node.remove()

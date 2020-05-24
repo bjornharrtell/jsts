@@ -50,9 +50,9 @@ export default class BufferInputLineSimplifier {
   isShallowSampled (p0, p2, i0, i2, distanceTol) {
     let inc = Math.trunc((i2 - i0) / BufferInputLineSimplifier.NUM_PTS_TO_CHECK)
     if (inc <= 0) inc = 1
-    for (let i = i0; i < i2; i += inc) {
+    for (let i = i0; i < i2; i += inc)
       if (!this.isShallow(p0, p2, this._inputLine[i], distanceTol)) return false
-    }
+
     return true
   }
 
@@ -67,9 +67,9 @@ export default class BufferInputLineSimplifier {
     if (distanceTol < 0) this._angleOrientation = Orientation.CLOCKWISE
     this._isDeleted = new Array(this._inputLine.length).fill(null)
     let isChanged = false
-    do {
+    do
       isChanged = this.deleteShallowConcavities()
-    } while (isChanged)
+    while (isChanged)
     return this.collapseLine()
   }
 
@@ -86,9 +86,9 @@ export default class BufferInputLineSimplifier {
 
   collapseLine () {
     const coordList = new CoordinateList()
-    for (let i = 0; i < this._inputLine.length; i++) {
+    for (let i = 0; i < this._inputLine.length; i++)
       if (this._isDeleted[i] !== BufferInputLineSimplifier.DELETE) coordList.add(this._inputLine[i])
-    }
+
     return coordList.toCoordinateArray()
   }
 

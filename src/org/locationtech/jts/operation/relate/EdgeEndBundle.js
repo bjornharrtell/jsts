@@ -43,9 +43,9 @@ export default class EdgeEndBundle extends EdgeEnd {
     }
     let loc = Location.NONE
     if (foundInterior) loc = Location.INTERIOR
-    if (boundaryCount > 0) {
+    if (boundaryCount > 0)
       loc = GeometryGraph.determineBoundary(boundaryNodeRule, boundaryCount)
-    }
+
     this._label.setLocation(geomIndex, loc)
   }
 
@@ -57,7 +57,9 @@ export default class EdgeEndBundle extends EdgeEnd {
         if (loc === Location.INTERIOR) {
           this._label.setLocation(geomIndex, side, Location.INTERIOR)
           return null
-        } else if (loc === Location.EXTERIOR) this._label.setLocation(geomIndex, side, Location.EXTERIOR)
+        } else if (loc === Location.EXTERIOR) {
+          this._label.setLocation(geomIndex, side, Location.EXTERIOR)
+        }
       }
     }
   }

@@ -179,9 +179,9 @@ export default class GeometryGraph extends PlanarGraph {
   insertPoint (argIndex, coord, onLocation) {
     const n = this._nodes.addNode(coord)
     const lbl = n.getLabel()
-    if (lbl === null) {
+    if (lbl === null)
       n._label = new Label(argIndex, onLocation)
-    } else lbl.setLocation(argIndex, onLocation)
+    else lbl.setLocation(argIndex, onLocation)
   }
 
   createEdgeSetIntersector () {
@@ -205,7 +205,9 @@ export default class GeometryGraph extends PlanarGraph {
       if (g.isEmpty()) return null
       if (g instanceof MultiPolygon) this._useBoundaryDeterminationRule = false
       if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getClass().getName())
-    } else return super.add.apply(this, arguments)
+    } else {
+      return super.add.apply(this, arguments)
+    }
   }
 
   addCollection (gc) {
@@ -217,9 +219,9 @@ export default class GeometryGraph extends PlanarGraph {
 
   locate (pt) {
     if (hasInterface(this._parentGeom, Polygonal) && this._parentGeom.getNumGeometries() > 50) {
-      if (this._areaPtLocator === null) {
+      if (this._areaPtLocator === null)
         this._areaPtLocator = new IndexedPointInAreaLocator(this._parentGeom)
-      }
+
       return this._areaPtLocator.locate(pt)
     }
     return this._ptLocator.locate(pt, this._parentGeom)
@@ -229,7 +231,9 @@ export default class GeometryGraph extends PlanarGraph {
     if (arguments.length === 1 && arguments[0] instanceof LineString) {
       const line = arguments[0]
       return this._lineEdgeMap.get(line)
-    } else return super.findEdge.apply(this, arguments)
+    } else {
+      return super.findEdge.apply(this, arguments)
+    }
   }
 
   getClass () {
@@ -259,8 +263,7 @@ GeometryGraph.constructor_ = function () {
     this._argIndex = argIndex
     this._parentGeom = parentGeom
     this._boundaryNodeRule = boundaryNodeRule
-    if (parentGeom !== null) {
+    if (parentGeom !== null)
       this.add(parentGeom)
-    }
   }
 }

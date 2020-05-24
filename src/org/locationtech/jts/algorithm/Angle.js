@@ -69,14 +69,14 @@ export default class Angle {
 
   static diff (ang1, ang2) {
     let delAngle = null
-    if (ang1 < ang2) {
+    if (ang1 < ang2)
       delAngle = ang2 - ang1
-    } else {
+    else
       delAngle = ang1 - ang2
-    }
-    if (delAngle > Math.PI) {
+
+    if (delAngle > Math.PI)
       delAngle = 2 * Math.PI - delAngle
-    }
+
     return delAngle
   }
 
@@ -86,12 +86,12 @@ export default class Angle {
 
   static getTurn (ang1, ang2) {
     const crossproduct = Math.sin(ang2 - ang1)
-    if (crossproduct > 0) {
+    if (crossproduct > 0)
       return Angle.COUNTERCLOCKWISE
-    }
-    if (crossproduct < 0) {
+
+    if (crossproduct < 0)
       return Angle.CLOCKWISE
-    }
+
     return Angle.NONE
   }
 

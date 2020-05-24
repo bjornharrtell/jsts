@@ -11,9 +11,9 @@ export default class OffsetCurveBuilder {
 
   static copyCoordinates (pts) {
     const copy = new Array(pts.length).fill(null)
-    for (let i = 0; i < copy.length; i++) {
+    for (let i = 0; i < copy.length; i++)
       copy[i] = new Coordinate(pts[i])
-    }
+
     return copy
   }
 
@@ -23,11 +23,11 @@ export default class OffsetCurveBuilder {
     const isRightSide = distance < 0.0
     const posDistance = Math.abs(distance)
     const segGen = this.getSegGen(posDistance)
-    if (inputPts.length <= 1) {
+    if (inputPts.length <= 1)
       this.computePointCurve(inputPts[0], segGen)
-    } else {
+    else
       this.computeOffsetCurve(inputPts, isRightSide, segGen)
-    }
+
     const curvePts = segGen.getCoordinates()
     if (isRightSide) CoordinateArrays.reverse(curvePts)
     return curvePts
@@ -41,18 +41,16 @@ export default class OffsetCurveBuilder {
       const n2 = simp2.length - 1
       segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT)
       segGen.addFirstSegment()
-      for (let i = n2 - 2; i >= 0; i--) {
+      for (let i = n2 - 2; i >= 0; i--)
         segGen.addNextSegment(simp2[i], true)
-      }
     } else {
       segGen.addSegments(inputPts, false)
       const simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
       const n1 = simp1.length - 1
       segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT)
       segGen.addFirstSegment()
-      for (let i = 2; i <= n1; i++) {
+      for (let i = 2; i <= n1; i++)
         segGen.addNextSegment(simp1[i], true)
-      }
     }
     segGen.addLastSegment()
     segGen.closeRing()
@@ -76,17 +74,17 @@ export default class OffsetCurveBuilder {
     const simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
     const n1 = simp1.length - 1
     segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT)
-    for (let i = 2; i <= n1; i++) {
+    for (let i = 2; i <= n1; i++)
       segGen.addNextSegment(simp1[i], true)
-    }
+
     segGen.addLastSegment()
     segGen.addLineEndCap(simp1[n1 - 1], simp1[n1])
     const simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol)
     const n2 = simp2.length - 1
     segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT)
-    for (let i = n2 - 2; i >= 0; i--) {
+    for (let i = n2 - 2; i >= 0; i--)
       segGen.addNextSegment(simp2[i], true)
-    }
+
     segGen.addLastSegment()
     segGen.addLineEndCap(simp2[1], simp2[0])
     segGen.closeRing()
@@ -94,12 +92,12 @@ export default class OffsetCurveBuilder {
 
   computePointCurve (pt, segGen) {
     switch (this._bufParams.getEndCapStyle()) {
-      case BufferParameters.CAP_ROUND:
-        segGen.createCircle(pt)
-        break
-      case BufferParameters.CAP_SQUARE:
-        segGen.createSquare(pt)
-        break
+    case BufferParameters.CAP_ROUND:
+      segGen.createCircle(pt)
+      break
+    case BufferParameters.CAP_SQUARE:
+      segGen.createSquare(pt)
+      break
     }
   }
 
@@ -110,12 +108,14 @@ export default class OffsetCurveBuilder {
     const segGen = this.getSegGen(posDistance)
     if (inputPts.length <= 1) {
       this.computePointCurve(inputPts[0], segGen)
+    } else
+    if (this._bufParams.isSingleSided()) {
+      const isRightSide = distance < 0.0
+      this.computeSingleSidedBufferCurve(inputPts, isRightSide, segGen)
     } else {
-      if (this._bufParams.isSingleSided()) {
-        const isRightSide = distance < 0.0
-        this.computeSingleSidedBufferCurve(inputPts, isRightSide, segGen)
-      } else this.computeLineBufferCurve(inputPts, segGen)
+      this.computeLineBufferCurve(inputPts, segGen)
     }
+
     const lineCoord = segGen.getCoordinates()
     return lineCoord
   }
@@ -131,9 +131,9 @@ export default class OffsetCurveBuilder {
   getRingCurve (inputPts, side, distance) {
     this._distance = distance
     if (inputPts.length <= 2) return this.getLineCurve(inputPts, distance)
-    if (distance === 0.0) {
+    if (distance === 0.0)
       return OffsetCurveBuilder.copyCoordinates(inputPts)
-    }
+
     const segGen = this.getSegGen(distance)
     this.computeRingBufferCurve(inputPts, side, segGen)
     return segGen.getCoordinates()
@@ -146,17 +146,15 @@ export default class OffsetCurveBuilder {
       const n2 = simp2.length - 1
       segGen.initSideSegments(simp2[n2], simp2[n2 - 1], Position.LEFT)
       segGen.addFirstSegment()
-      for (let i = n2 - 2; i >= 0; i--) {
+      for (let i = n2 - 2; i >= 0; i--)
         segGen.addNextSegment(simp2[i], true)
-      }
     } else {
       const simp1 = BufferInputLineSimplifier.simplify(inputPts, distTol)
       const n1 = simp1.length - 1
       segGen.initSideSegments(simp1[0], simp1[1], Position.LEFT)
       segGen.addFirstSegment()
-      for (let i = 2; i <= n1; i++) {
+      for (let i = 2; i <= n1; i++)
         segGen.addNextSegment(simp1[i], true)
-      }
     }
     segGen.addLastSegment()
   }

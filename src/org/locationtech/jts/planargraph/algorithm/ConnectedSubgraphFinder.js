@@ -28,9 +28,8 @@ export default class ConnectedSubgraphFinder {
     for (let i = this._graph.edgeIterator(); i.hasNext();) {
       const e = i.next()
       const node = e.getDirEdge(0).getFromNode()
-      if (!node.isVisited()) {
+      if (!node.isVisited())
         subgraphs.add(this.findSubgraph(node))
-      }
     }
     return subgraphs
   }

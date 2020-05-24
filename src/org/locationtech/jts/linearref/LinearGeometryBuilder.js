@@ -16,9 +16,9 @@ export default class LinearGeometryBuilder {
   }
 
   endLine () {
-    if (this._coordList === null) {
+    if (this._coordList === null)
       return null
-    }
+
     if (this._ignoreInvalidLines && this._coordList.size() < 2) {
       this._coordList = null
       return null
@@ -33,7 +33,9 @@ export default class LinearGeometryBuilder {
     } catch (ex) {
       if (ex instanceof IllegalArgumentException) {
         if (!this._ignoreInvalidLines) throw ex
-      } else throw ex
+      } else {
+        throw ex
+      }
     } finally {}
     if (line !== null) this._lines.add(line)
   }

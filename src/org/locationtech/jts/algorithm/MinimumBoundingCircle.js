@@ -13,12 +13,12 @@ export default class MinimumBoundingCircle {
     const dist01 = pts[0].distance(pts[1])
     const dist12 = pts[1].distance(pts[2])
     const dist20 = pts[2].distance(pts[0])
-    if (dist01 >= dist12 && dist01 >= dist20) {
+    if (dist01 >= dist12 && dist01 >= dist20)
       return [pts[0], pts[1]]
-    }
-    if (dist12 >= dist01 && dist12 >= dist20) {
+
+    if (dist12 >= dist01 && dist12 >= dist20)
       return [pts[1], pts[2]]
-    }
+
     return [pts[2], pts[0]]
   }
 
@@ -43,9 +43,9 @@ export default class MinimumBoundingCircle {
 
   static lowestPoint (pts) {
     let min = pts[0]
-    for (let i = 1; i < pts.length; i++) {
+    for (let i = 1; i < pts.length; i++)
       if (pts[i].y < min.y) min = pts[i]
-    }
+
     return min
   }
 
@@ -73,10 +73,10 @@ export default class MinimumBoundingCircle {
   getDiameter () {
     this.compute()
     switch (this._extremalPts.length) {
-      case 0:
-        return this._input.getFactory().createLineString()
-      case 1:
-        return this._input.getFactory().createPoint(this._centre)
+    case 0:
+      return this._input.getFactory().createLineString()
+    case 1:
+      return this._input.getFactory().createPoint(this._centre)
     }
     const p0 = this._extremalPts[0]
     const p1 = this._extremalPts[1]
@@ -154,32 +154,32 @@ export default class MinimumBoundingCircle {
   getMaximumDiameter () {
     this.compute()
     switch (this._extremalPts.length) {
-      case 0:
-        return this._input.getFactory().createLineString()
-      case 1:
-        return this._input.getFactory().createPoint(this._centre)
-      case 2:
-        return this._input.getFactory().createLineString([this._extremalPts[0], this._extremalPts[1]])
-      default:
-        const maxDiameter = MinimumBoundingCircle.farthestPoints(this._extremalPts)
-        return this._input.getFactory().createLineString(maxDiameter)
+    case 0:
+      return this._input.getFactory().createLineString()
+    case 1:
+      return this._input.getFactory().createPoint(this._centre)
+    case 2:
+      return this._input.getFactory().createLineString([this._extremalPts[0], this._extremalPts[1]])
+    default:
+      const maxDiameter = MinimumBoundingCircle.farthestPoints(this._extremalPts)
+      return this._input.getFactory().createLineString(maxDiameter)
     }
   }
 
   computeCentre () {
     switch (this._extremalPts.length) {
-      case 0:
-        this._centre = null
-        break
-      case 1:
-        this._centre = this._extremalPts[0]
-        break
-      case 2:
-        this._centre = new Coordinate((this._extremalPts[0].x + this._extremalPts[1].x) / 2.0, (this._extremalPts[0].y + this._extremalPts[1].y) / 2.0)
-        break
-      case 3:
-        this._centre = Triangle.circumcentre(this._extremalPts[0], this._extremalPts[1], this._extremalPts[2])
-        break
+    case 0:
+      this._centre = null
+      break
+    case 1:
+      this._centre = this._extremalPts[0]
+      break
+    case 2:
+      this._centre = new Coordinate((this._extremalPts[0].x + this._extremalPts[1].x) / 2.0, (this._extremalPts[0].y + this._extremalPts[1].y) / 2.0)
+      break
+    case 3:
+      this._centre = Triangle.circumcentre(this._extremalPts[0], this._extremalPts[1], this._extremalPts[2])
+      break
     }
   }
 

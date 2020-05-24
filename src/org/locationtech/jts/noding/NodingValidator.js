@@ -19,9 +19,8 @@ export default class NodingValidator {
       for (let i = segStrings.iterator(); i.hasNext();) {
         const ss = i.next()
         const pts = ss.getCoordinates()
-        for (let j = 1; j < pts.length - 1; j++) {
+        for (let j = 1; j < pts.length - 1; j++)
           if (pts[j].equals(testPt)) throw new RuntimeException('found endpt/interior pt intersection at index ' + j + ' :pt ' + testPt)
-        }
       }
     }
   }
@@ -39,11 +38,9 @@ export default class NodingValidator {
       const ss0 = arguments[0]; const ss1 = arguments[1]
       const pts0 = ss0.getCoordinates()
       const pts1 = ss1.getCoordinates()
-      for (let i0 = 0; i0 < pts0.length - 1; i0++) {
-        for (let i1 = 0; i1 < pts1.length - 1; i1++) {
+      for (let i0 = 0; i0 < pts0.length - 1; i0++)
+        for (let i1 = 0; i1 < pts1.length - 1; i1++)
           this.checkInteriorIntersections(ss0, i0, ss1, i1)
-        }
-      }
     } else if (arguments.length === 4) {
       const e0 = arguments[0]; const segIndex0 = arguments[1]; const e1 = arguments[2]; const segIndex1 = arguments[3]
       if (e0 === e1 && segIndex0 === segIndex1) return null
@@ -52,11 +49,10 @@ export default class NodingValidator {
       const p10 = e1.getCoordinates()[segIndex1]
       const p11 = e1.getCoordinates()[segIndex1 + 1]
       this._li.computeIntersection(p00, p01, p10, p11)
-      if (this._li.hasIntersection()) {
+      if (this._li.hasIntersection())
         if (this._li.isProper() || this.hasInteriorIntersection(this._li, p00, p01) || this.hasInteriorIntersection(this._li, p10, p11)) {
           throw new RuntimeException('found non-noded intersection at ' + p00 + '-' + p01 + ' and ' + p10 + '-' + p11)
         }
-      }
     }
   }
 
@@ -75,9 +71,8 @@ export default class NodingValidator {
     } else if (arguments.length === 1) {
       const ss = arguments[0]
       const pts = ss.getCoordinates()
-      for (let i = 0; i < pts.length - 2; i++) {
+      for (let i = 0; i < pts.length - 2; i++)
         this.checkCollapse(pts[i], pts[i + 1], pts[i + 2])
-      }
     }
   }
 

@@ -52,9 +52,9 @@ export default class Vector3D {
   }
 
   equals (o) {
-    if (!(o instanceof Vector3D)) {
+    if (!(o instanceof Vector3D))
       return false
-    }
+
     const v = o
     return this._x === v._x && this._y === v._y && this._z === v._z
   }

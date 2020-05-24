@@ -7,12 +7,12 @@ export default class LineMergeDirectedEdge extends DirectedEdge {
   }
 
   getNext () {
-    if (this.getToNode().getDegree() !== 2) {
+    if (this.getToNode().getDegree() !== 2)
       return null
-    }
-    if (this.getToNode().getOutEdges().getEdges().get(0) === this.getSym()) {
+
+    if (this.getToNode().getOutEdges().getEdges().get(0) === this.getSym())
       return this.getToNode().getOutEdges().getEdges().get(1)
-    }
+
     Assert.isTrue(this.getToNode().getOutEdges().getEdges().get(1) === this.getSym())
     return this.getToNode().getOutEdges().getEdges().get(0)
   }

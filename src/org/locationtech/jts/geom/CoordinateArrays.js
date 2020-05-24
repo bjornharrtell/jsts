@@ -38,47 +38,46 @@ export default class CoordinateArrays {
       if (coord1 === coord2) return true
       if (coord1 === null || coord2 === null) return false
       if (coord1.length !== coord2.length) return false
-      for (let i = 0; i < coord1.length; i++) {
+      for (let i = 0; i < coord1.length; i++)
         if (!coord1[i].equals(coord2[i])) return false
-      }
+
       return true
     } else if (arguments.length === 3) {
       const coord1 = arguments[0]; const coord2 = arguments[1]; const coordinateComparator = arguments[2]
       if (coord1 === coord2) return true
       if (coord1 === null || coord2 === null) return false
       if (coord1.length !== coord2.length) return false
-      for (let i = 0; i < coord1.length; i++) {
+      for (let i = 0; i < coord1.length; i++)
         if (coordinateComparator.compare(coord1[i], coord2[i]) !== 0) return false
-      }
+
       return true
     }
   }
 
   static intersection (coordinates, env) {
     const coordList = new CoordinateList()
-    for (let i = 0; i < coordinates.length; i++) {
+    for (let i = 0; i < coordinates.length; i++)
       if (env.intersects(coordinates[i])) coordList.add(coordinates[i], true)
-    }
+
     return coordList.toCoordinateArray()
   }
 
   static measures (pts) {
-    if (pts === null || pts.length === 0) {
+    if (pts === null || pts.length === 0)
       return 0
-    }
+
     let measures = 0
-    for (const coordinate of pts) {
+    for (const coordinate of pts)
       measures = Math.max(measures, Coordinates.measures(coordinate))
-    }
+
     return measures
   }
 
   static hasRepeatedPoints (coord) {
-    for (let i = 1; i < coord.length; i++) {
-      if (coord[i - 1].equals(coord[i])) {
+    for (let i = 1; i < coord.length; i++)
+      if (coord[i - 1].equals(coord[i]))
         return true
-      }
-    }
+
     return false
   }
 
@@ -100,15 +99,15 @@ export default class CoordinateArrays {
 
   static removeNull (coord) {
     let nonNull = 0
-    for (let i = 0; i < coord.length; i++) {
+    for (let i = 0; i < coord.length; i++)
       if (coord[i] !== null) nonNull++
-    }
+
     const newCoord = new Array(nonNull).fill(null)
     if (nonNull === 0) return newCoord
     let j = 0
-    for (let i = 0; i < coord.length; i++) {
+    for (let i = 0; i < coord.length; i++)
       if (coord[i] !== null) newCoord[j++] = coord[i]
-    }
+
     return newCoord
   }
 
@@ -116,15 +115,14 @@ export default class CoordinateArrays {
     if (arguments.length === 1) {
       const coordinates = arguments[0]
       const copy = new Array(coordinates.length).fill(null)
-      for (let i = 0; i < coordinates.length; i++) {
+      for (let i = 0; i < coordinates.length; i++)
         copy[i] = coordinates[i].copy()
-      }
+
       return copy
     } else if (arguments.length === 5) {
       const src = arguments[0]; const srcStart = arguments[1]; const dest = arguments[2]; const destStart = arguments[3]; const length = arguments[4]
-      for (let i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++)
         dest[destStart + i] = src[srcStart + i].copy()
-      }
     }
   }
 
@@ -139,9 +137,9 @@ export default class CoordinateArrays {
 
   static envelope (coordinates) {
     const env = new Envelope()
-    for (let i = 0; i < coordinates.length; i++) {
+    for (let i = 0; i < coordinates.length; i++)
       env.expandToInclude(coordinates[i])
-    }
+
     return env
   }
 
@@ -150,13 +148,13 @@ export default class CoordinateArrays {
   }
 
   static dimension (pts) {
-    if (pts === null || pts.length === 0) {
+    if (pts === null || pts.length === 0)
       return 3
-    }
+
     let dimension = 0
-    for (const coordinate of pts) {
+    for (const coordinate of pts)
       dimension = Math.max(dimension, Coordinates.dimension(coordinate))
-    }
+
     return dimension
   }
 
@@ -165,11 +163,10 @@ export default class CoordinateArrays {
   }
 
   static indexOf (coordinate, coordinates) {
-    for (let i = 0; i < coordinates.length; i++) {
-      if (coordinate.equals(coordinates[i])) {
+    for (let i = 0; i < coordinates.length; i++)
+      if (coordinate.equals(coordinates[i]))
         return i
-      }
-    }
+
     return -1
   }
 
@@ -196,11 +193,10 @@ export default class CoordinateArrays {
 
   static minCoordinate (coordinates) {
     let minCoord = null
-    for (let i = 0; i < coordinates.length; i++) {
-      if (minCoord === null || minCoord.compareTo(coordinates[i]) > 0) {
+    for (let i = 0; i < coordinates.length; i++)
+      if (minCoord === null || minCoord.compareTo(coordinates[i]) > 0)
         minCoord = coordinates[i]
-      }
-    }
+
     return minCoord
   }
 
@@ -214,9 +210,9 @@ export default class CoordinateArrays {
     const extractPts = new Array(npts).fill(null)
     if (npts === 0) return extractPts
     let iPts = 0
-    for (let i = start; i <= end; i++) {
+    for (let i = start; i <= end; i++)
       extractPts[iPts++] = pts[i]
-    }
+
     return extractPts
   }
 

@@ -21,19 +21,19 @@ export default class RepeatedPointTester {
       if (g instanceof Point) return false; else if (g instanceof MultiPoint) return false; else if (g instanceof LineString) return this.hasRepeatedPoint(g.getCoordinates()); else if (g instanceof Polygon) return this.hasRepeatedPoint(g); else if (g instanceof GeometryCollection) return this.hasRepeatedPoint(g); else throw new UnsupportedOperationException(g.getClass().getName())
     } else if (arguments[0] instanceof Array) {
       const coord = arguments[0]
-      for (let i = 1; i < coord.length; i++) {
+      for (let i = 1; i < coord.length; i++)
         if (coord[i - 1].equals(coord[i])) {
           this._repeatedCoord = coord[i]
           return true
         }
-      }
+
       return false
     } else if (arguments[0] instanceof Polygon) {
       const p = arguments[0]
       if (this.hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true
-      for (let i = 0; i < p.getNumInteriorRing(); i++) {
+      for (let i = 0; i < p.getNumInteriorRing(); i++)
         if (this.hasRepeatedPoint(p.getInteriorRingN(i).getCoordinates())) return true
-      }
+
       return false
     } else if (arguments[0] instanceof GeometryCollection) {
       const gc = arguments[0]

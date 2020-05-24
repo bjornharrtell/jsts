@@ -29,12 +29,11 @@ export default class LineBuilder {
   collectLineEdge (de, opCode, edges) {
     const label = de.getLabel()
     const e = de.getEdge()
-    if (de.isLineEdge()) {
+    if (de.isLineEdge())
       if (!de.isVisited() && OverlayOp.isResultOfOp(label, opCode) && !e.isCovered()) {
         edges.add(e)
         de.setVisitedEdge(true)
       }
-    }
   }
 
   findCoveredLineEdges () {
@@ -56,9 +55,8 @@ export default class LineBuilder {
     for (let it = edgesList.iterator(); it.hasNext();) {
       const e = it.next()
       const label = e.getLabel()
-      if (e.isIsolated()) {
+      if (e.isIsolated())
         if (label.isNull(0)) this.labelIsolatedLine(e, 0); else this.labelIsolatedLine(e, 1)
-      }
     }
   }
 

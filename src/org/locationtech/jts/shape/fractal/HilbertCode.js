@@ -65,9 +65,8 @@ export default class HilbertCode {
   }
 
   static checkLevel (level) {
-    if (level > HilbertCode.MAX_LEVEL) {
+    if (level > HilbertCode.MAX_LEVEL)
       throw new IllegalArgumentException('Level must be in range 0 to ' + HilbertCode.MAX_LEVEL)
-    }
   }
 
   static size (level) {

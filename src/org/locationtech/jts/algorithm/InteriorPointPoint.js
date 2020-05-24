@@ -24,9 +24,8 @@ export default class InteriorPointPoint {
         this.add(geom.getCoordinate())
       } else if (geom instanceof GeometryCollection) {
         const gc = geom
-        for (let i = 0; i < gc.getNumGeometries(); i++) {
+        for (let i = 0; i < gc.getNumGeometries(); i++)
           this.add(gc.getGeometryN(i))
-        }
       }
     } else if (arguments[0] instanceof Coordinate) {
       const point = arguments[0]

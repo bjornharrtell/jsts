@@ -56,9 +56,8 @@ export default class SnapOverlayOp {
   }
 
   checkValid (g) {
-    if (!g.isValid()) {
+    if (!g.isValid())
       System.out.println('Snapped geometry is invalid')
-    }
   }
 
   computeSnapTolerance () {

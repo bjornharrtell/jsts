@@ -42,9 +42,9 @@ export default class InputExtracter {
 
   filter (geom) {
     this.recordDimension(geom.getDimension())
-    if (geom instanceof GeometryCollection) {
+    if (geom instanceof GeometryCollection)
       return null
-    }
+
     if (geom.isEmpty()) return null
     if (geom instanceof Polygon) {
       this._polygons.add(geom)
@@ -61,12 +61,12 @@ export default class InputExtracter {
 
   getExtract (dim) {
     switch (dim) {
-      case 0:
-        return this._points
-      case 1:
-        return this._lines
-      case 2:
-        return this._polygons
+    case 0:
+      return this._points
+    case 1:
+      return this._lines
+    case 2:
+      return this._polygons
     }
     Assert.shouldNeverReachHere('Invalid dimension: ' + dim)
     return null
@@ -79,9 +79,8 @@ export default class InputExtracter {
   add () {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
-      for (const geom of geoms) {
+      for (const geom of geoms)
         this.add(geom)
-      }
     } else if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
       if (this._geomFactory === null) this._geomFactory = geom.getFactory()

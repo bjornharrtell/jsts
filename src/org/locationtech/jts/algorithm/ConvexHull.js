@@ -22,13 +22,13 @@ export default class ConvexHull {
 
   preSort (pts) {
     let t = null
-    for (let i = 1; i < pts.length; i++) {
+    for (let i = 1; i < pts.length; i++)
       if (pts[i].y < pts[0].y || pts[i].y === pts[0].y && pts[i].x < pts[0].x) {
         t = pts[0]
         pts[0] = pts[i]
         pts[i] = t
       }
-    }
+
     Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]))
     return pts
   }
@@ -37,18 +37,18 @@ export default class ConvexHull {
     const octPts = this.computeOctPts(inputPts)
     const coordList = new CoordinateList()
     coordList.add(octPts, false)
-    if (coordList.size() < 3) {
+    if (coordList.size() < 3)
       return null
-    }
+
     coordList.closeRing()
     return coordList.toCoordinateArray()
   }
 
   lineOrPolygon (coordinates) {
     coordinates = this.cleanRing(coordinates)
-    if (coordinates.length === 3) {
+    if (coordinates.length === 3)
       return this._geomFactory.createLineString([coordinates[0], coordinates[1]])
-    }
+
     const linearRing = this._geomFactory.createLinearRing(coordinates)
     return this._geomFactory.createPolygon(linearRing)
   }
@@ -60,12 +60,12 @@ export default class ConvexHull {
     for (let i = 0; i <= original.length - 2; i++) {
       const currentCoordinate = original[i]
       const nextCoordinate = original[i + 1]
-      if (currentCoordinate.equals(nextCoordinate)) {
+      if (currentCoordinate.equals(nextCoordinate))
         continue
-      }
-      if (previousDistinctCoordinate !== null && this.isBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate)) {
+
+      if (previousDistinctCoordinate !== null && this.isBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate))
         continue
-      }
+
       cleanedRing.add(currentCoordinate)
       previousDistinctCoordinate = currentCoordinate
     }
@@ -75,24 +75,22 @@ export default class ConvexHull {
   }
 
   isBetween (c1, c2, c3) {
-    if (Orientation.index(c1, c2, c3) !== 0) {
+    if (Orientation.index(c1, c2, c3) !== 0)
       return false
-    }
+
     if (c1.x !== c3.x) {
-      if (c1.x <= c2.x && c2.x <= c3.x) {
+      if (c1.x <= c2.x && c2.x <= c3.x)
         return true
-      }
-      if (c3.x <= c2.x && c2.x <= c1.x) {
+
+      if (c3.x <= c2.x && c2.x <= c1.x)
         return true
-      }
     }
     if (c1.y !== c3.y) {
-      if (c1.y <= c2.y && c2.y <= c3.y) {
+      if (c1.y <= c2.y && c2.y <= c3.y)
         return true
-      }
-      if (c3.y <= c2.y && c2.y <= c1.y) {
+
+      if (c3.y <= c2.y && c2.y <= c1.y)
         return true
-      }
     }
     return false
   }
@@ -101,33 +99,32 @@ export default class ConvexHull {
     const polyPts = this.computeOctRing(inputPts)
     if (polyPts === null) return inputPts
     const reducedSet = new TreeSet()
-    for (let i = 0; i < polyPts.length; i++) {
+    for (let i = 0; i < polyPts.length; i++)
       reducedSet.add(polyPts[i])
-    }
-    for (let i = 0; i < inputPts.length; i++) {
-      if (!PointLocation.isInRing(inputPts[i], polyPts)) {
+
+    for (let i = 0; i < inputPts.length; i++)
+      if (!PointLocation.isInRing(inputPts[i], polyPts))
         reducedSet.add(inputPts[i])
-      }
-    }
+
     const reducedPts = CoordinateArrays.toCoordinateArray(reducedSet)
     if (reducedPts.length < 3) return this.padArray3(reducedPts)
     return reducedPts
   }
 
   getConvexHull () {
-    if (this._inputPts.length === 0) {
+    if (this._inputPts.length === 0)
       return this._geomFactory.createGeometryCollection()
-    }
-    if (this._inputPts.length === 1) {
+
+    if (this._inputPts.length === 1)
       return this._geomFactory.createPoint(this._inputPts[0])
-    }
-    if (this._inputPts.length === 2) {
+
+    if (this._inputPts.length === 2)
       return this._geomFactory.createLineString(this._inputPts)
-    }
+
     let reducedPts = this._inputPts
-    if (this._inputPts.length > 50) {
+    if (this._inputPts.length > 50)
       reducedPts = this.reduce(this._inputPts)
-    }
+
     const sortedPts = this.preSort(reducedPts)
     const cHS = this.grahamScan(sortedPts)
     const cH = this.toCoordinateArray(cHS)
@@ -136,44 +133,43 @@ export default class ConvexHull {
 
   padArray3 (pts) {
     const pad = new Array(3).fill(null)
-    for (let i = 0; i < pad.length; i++) {
-      if (i < pts.length) {
+    for (let i = 0; i < pad.length; i++)
+      if (i < pts.length)
         pad[i] = pts[i]
-      } else pad[i] = pts[0]
-    }
+      else pad[i] = pts[0]
+
     return pad
   }
 
   computeOctPts (inputPts) {
     const pts = new Array(8).fill(null)
-    for (let j = 0; j < pts.length; j++) {
+    for (let j = 0; j < pts.length; j++)
       pts[j] = inputPts[0]
-    }
+
     for (let i = 1; i < inputPts.length; i++) {
-      if (inputPts[i].x < pts[0].x) {
+      if (inputPts[i].x < pts[0].x)
         pts[0] = inputPts[i]
-      }
-      if (inputPts[i].x - inputPts[i].y < pts[1].x - pts[1].y) {
+
+      if (inputPts[i].x - inputPts[i].y < pts[1].x - pts[1].y)
         pts[1] = inputPts[i]
-      }
-      if (inputPts[i].y > pts[2].y) {
+
+      if (inputPts[i].y > pts[2].y)
         pts[2] = inputPts[i]
-      }
-      if (inputPts[i].x + inputPts[i].y > pts[3].x + pts[3].y) {
+
+      if (inputPts[i].x + inputPts[i].y > pts[3].x + pts[3].y)
         pts[3] = inputPts[i]
-      }
-      if (inputPts[i].x > pts[4].x) {
+
+      if (inputPts[i].x > pts[4].x)
         pts[4] = inputPts[i]
-      }
-      if (inputPts[i].x - inputPts[i].y > pts[5].x - pts[5].y) {
+
+      if (inputPts[i].x - inputPts[i].y > pts[5].x - pts[5].y)
         pts[5] = inputPts[i]
-      }
-      if (inputPts[i].y < pts[6].y) {
+
+      if (inputPts[i].y < pts[6].y)
         pts[6] = inputPts[i]
-      }
-      if (inputPts[i].x + inputPts[i].y < pts[7].x + pts[7].y) {
+
+      if (inputPts[i].x + inputPts[i].y < pts[7].x + pts[7].y)
         pts[7] = inputPts[i]
-      }
     }
     return pts
   }
@@ -195,9 +191,9 @@ export default class ConvexHull {
     ps.push(c[2])
     for (let i = 3; i < c.length; i++) {
       p = ps.pop()
-      while (!ps.empty() && Orientation.index(ps.peek(), p, c[i]) > 0) {
+      while (!ps.empty() && Orientation.index(ps.peek(), p, c[i]) > 0)
         p = ps.pop()
-      }
+
       ps.push(p)
       ps.push(c[i])
     }
@@ -228,12 +224,12 @@ class RadialComparator {
     if (orient === Orientation.CLOCKWISE) return -1
     const op = dxp * dxp + dyp * dyp
     const oq = dxq * dxq + dyq * dyq
-    if (op < oq) {
+    if (op < oq)
       return -1
-    }
-    if (op > oq) {
+
+    if (op > oq)
       return 1
-    }
+
     return 0
   }
 

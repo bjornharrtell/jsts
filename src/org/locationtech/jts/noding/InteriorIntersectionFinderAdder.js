@@ -12,15 +12,14 @@ export default class InteriorIntersectionFinderAdder {
     const p10 = e1.getCoordinates()[segIndex1]
     const p11 = e1.getCoordinates()[segIndex1 + 1]
     this._li.computeIntersection(p00, p01, p10, p11)
-    if (this._li.hasIntersection()) {
+    if (this._li.hasIntersection())
       if (this._li.isInteriorIntersection()) {
-        for (let intIndex = 0; intIndex < this._li.getIntersectionNum(); intIndex++) {
+        for (let intIndex = 0; intIndex < this._li.getIntersectionNum(); intIndex++)
           this._interiorIntersections.add(this._li.getIntersection(intIndex))
-        }
+
         e0.addIntersections(this._li, segIndex0, 0)
         e1.addIntersections(this._li, segIndex1, 1)
       }
-    }
   }
 
   isDone () {

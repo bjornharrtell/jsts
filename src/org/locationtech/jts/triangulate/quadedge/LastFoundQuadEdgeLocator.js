@@ -9,9 +9,9 @@ export default class LastFoundQuadEdgeLocator {
   }
 
   locate (v) {
-    if (!this._lastEdge.isLive()) {
+    if (!this._lastEdge.isLive())
       this.init()
-    }
+
     const e = this._subdiv.locateFromEdge(v, this._lastEdge)
     this._lastEdge = e
     return e

@@ -38,9 +38,9 @@ export default class Node extends NodeBase {
   }
 
   getSubnode (index) {
-    if (this._subnode[index] === null) {
+    if (this._subnode[index] === null)
       this._subnode[index] = this.createSubnode(index)
-    }
+
     return this._subnode[index]
   }
 
@@ -64,30 +64,30 @@ export default class Node extends NodeBase {
     let miny = 0.0
     let maxy = 0.0
     switch (index) {
-      case 0:
-        minx = this._env.getMinX()
-        maxx = this._centrex
-        miny = this._env.getMinY()
-        maxy = this._centrey
-        break
-      case 1:
-        minx = this._centrex
-        maxx = this._env.getMaxX()
-        miny = this._env.getMinY()
-        maxy = this._centrey
-        break
-      case 2:
-        minx = this._env.getMinX()
-        maxx = this._centrex
-        miny = this._centrey
-        maxy = this._env.getMaxY()
-        break
-      case 3:
-        minx = this._centrex
-        maxx = this._env.getMaxX()
-        miny = this._centrey
-        maxy = this._env.getMaxY()
-        break
+    case 0:
+      minx = this._env.getMinX()
+      maxx = this._centrex
+      miny = this._env.getMinY()
+      maxy = this._centrey
+      break
+    case 1:
+      minx = this._centrex
+      maxx = this._env.getMaxX()
+      miny = this._env.getMinY()
+      maxy = this._centrey
+      break
+    case 2:
+      minx = this._env.getMinX()
+      maxx = this._centrex
+      miny = this._centrey
+      maxy = this._env.getMaxY()
+      break
+    case 3:
+      minx = this._centrex
+      maxx = this._env.getMaxX()
+      miny = this._centrey
+      maxy = this._env.getMaxY()
+      break
     }
     const sqEnv = new Envelope(minx, maxx, miny, maxy)
     const node = new Node(sqEnv, this._level - 1)

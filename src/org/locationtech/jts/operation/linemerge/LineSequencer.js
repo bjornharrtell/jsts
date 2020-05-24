@@ -47,9 +47,9 @@ export default class LineSequencer {
   }
 
   static isSequenced (geom) {
-    if (!(geom instanceof MultiLineString)) {
+    if (!(geom instanceof MultiLineString))
       return true
-    }
+
     const mls = geom
     const prevSubgraphNodes = new TreeSet()
     let lastNode = null
@@ -60,12 +60,12 @@ export default class LineSequencer {
       const endNode = line.getCoordinateN(line.getNumPoints() - 1)
       if (prevSubgraphNodes.contains(startNode)) return false
       if (prevSubgraphNodes.contains(endNode)) return false
-      if (lastNode !== null) {
+      if (lastNode !== null)
         if (!startNode.equals(lastNode)) {
           prevSubgraphNodes.addAll(currNodes)
           currNodes.clear()
         }
-      }
+
       currNodes.add(startNode)
       currNodes.add(endNode)
       lastNode = endNode
@@ -77,9 +77,9 @@ export default class LineSequencer {
     const pts = line.getCoordinates()
     const revPts = new Array(pts.length).fill(null)
     const len = pts.length
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++)
       revPts[len - 1 - i] = new Coordinate(pts[i])
-    }
+
     return line.getFactory().createLineString(revPts)
   }
 
@@ -90,9 +90,9 @@ export default class LineSequencer {
   }
 
   addLine (lineString) {
-    if (this._factory === null) {
+    if (this._factory === null)
       this._factory = lineString.getFactory()
-    }
+
     this._graph.addEdge(lineString)
     this._lineCount++
   }
@@ -107,9 +107,9 @@ export default class LineSequencer {
   }
 
   computeSequence () {
-    if (this._isRun) {
+    if (this._isRun)
       return null
-    }
+
     this._isRun = true
     const sequences = this.findSequences()
     if (sequences === null) return null
@@ -147,9 +147,8 @@ export default class LineSequencer {
       if (unvisitedOutDE === null) break
       de = unvisitedOutDE.getSym()
     }
-    if (expectedClosed) {
+    if (expectedClosed)
       Assert.isTrue(fromNode === endNode, 'path not contiguous')
-    }
   }
 
   findSequence (graph) {
@@ -195,9 +194,8 @@ export default class LineSequencer {
         hasObviousStartNode = true
         flipSeq = false
       }
-      if (!hasObviousStartNode) {
+      if (!hasObviousStartNode)
         if (startEdge.getFromNode().getDegree() === 1) flipSeq = true
-      }
     }
     if (flipSeq) return this.reverse(seq)
     return seq
@@ -245,9 +243,8 @@ export default class LineSequencer {
         }
 
         filter (component) {
-          if (component instanceof LineString) {
+          if (component instanceof LineString)
             this.addLine(component)
-          }
         }
       })())
     }

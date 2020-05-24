@@ -15,11 +15,10 @@ const Collections = {
   },
   sort: function (l, c) {
     const a = l.toArray()
-    if (c) {
+    if (c)
       Arrays.sort(a, c)
-    } else {
-      Arrays.sort(a)
-    }
+    else Arrays.sort(a)
+
     const i = l.iterator()
     for (let pos = 0, alen = a.length; pos < alen; pos++) {
       i.next()

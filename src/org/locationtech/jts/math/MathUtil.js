@@ -34,9 +34,9 @@ export default class MathUtil {
   }
 
   static wrap (index, max) {
-    if (index < 0) {
+    if (index < 0)
       return max - -index % max
-    }
+
     return index % max
   }
 

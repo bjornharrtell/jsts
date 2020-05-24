@@ -52,9 +52,9 @@ export default class Centroid {
 
   addHole (pts) {
     const isPositiveArea = Orientation.isCCW(pts)
-    for (let i = 0; i < pts.length - 1; i++) {
+    for (let i = 0; i < pts.length - 1; i++)
       this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea)
-    }
+
     this.addLineSegments(pts)
   }
 
@@ -78,9 +78,9 @@ export default class Centroid {
   addShell (pts) {
     if (pts.length > 0) this.setAreaBasePoint(pts[0])
     const isPositiveArea = !Orientation.isCCW(pts)
-    for (let i = 0; i < pts.length - 1; i++) {
+    for (let i = 0; i < pts.length - 1; i++)
       this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea)
-    }
+
     this.addLineSegments(pts)
   }
 
@@ -97,9 +97,8 @@ export default class Centroid {
     if (arguments[0] instanceof Polygon) {
       const poly = arguments[0]
       this.addShell(poly.getExteriorRing().getCoordinates())
-      for (let i = 0; i < poly.getNumInteriorRing(); i++) {
+      for (let i = 0; i < poly.getNumInteriorRing(); i++)
         this.addHole(poly.getInteriorRingN(i).getCoordinates())
-      }
     } else if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
       if (geom.isEmpty()) return null
@@ -112,9 +111,8 @@ export default class Centroid {
         this.add(poly)
       } else if (geom instanceof GeometryCollection) {
         const gc = geom
-        for (let i = 0; i < gc.getNumGeometries(); i++) {
+        for (let i = 0; i < gc.getNumGeometries(); i++)
           this.add(gc.getGeometryN(i))
-        }
       }
     }
   }

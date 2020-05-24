@@ -62,7 +62,7 @@ export default class InteriorIntersectionFinder {
     const p10 = e1.getCoordinates()[segIndex1]
     const p11 = e1.getCoordinates()[segIndex1 + 1]
     this._li.computeIntersection(p00, p01, p10, p11)
-    if (this._li.hasIntersection()) {
+    if (this._li.hasIntersection())
       if (this._li.isInteriorIntersection()) {
         this._intSegments = new Array(4).fill(null)
         this._intSegments[0] = p00
@@ -73,7 +73,6 @@ export default class InteriorIntersectionFinder {
         if (this._keepIntersections) this._intersections.add(this._interiorIntersection)
         this._intersectionCount++
       }
-    }
   }
 
   isEndSegment (segStr, index) {

@@ -48,9 +48,7 @@ export default class WKTParser {
     if (matches) {
       type = matches[1].toLowerCase()
       str = matches[2]
-      if (parse[type]) {
-        geometry = parse[type].call(this, str)
-      }
+      if (parse[type]) geometry = parse[type].call(this, str)
     }
 
     if (geometry === undefined) throw new Error('Could not parse WKT ' + wkt)
@@ -78,16 +76,14 @@ export default class WKTParser {
    */
   extractGeometry (geometry) {
     const type = geometry.getGeometryType().toLowerCase()
-    if (!extract[type]) {
-      return null
-    }
+    if (!extract[type]) return null
+
     const wktType = type.toUpperCase()
     let data
-    if (geometry.isEmpty()) {
+    if (geometry.isEmpty())
       data = wktType + ' EMPTY'
-    } else {
-      data = wktType + '(' + extract[type].call(this, geometry) + ')'
-    }
+    else data = wktType + '(' + extract[type].call(this, geometry) + ')'
+
     return data
   }
 }
@@ -124,9 +120,8 @@ const extract = {
    */
   multipoint (multipoint) {
     const array = []
-    for (let i = 0, len = multipoint._geometries.length; i < len; ++i) {
-      array.push('(' + extract.point.call(this, multipoint._geometries[i]) + ')')
-    }
+    for (let i = 0, len = multipoint._geometries.length; i < len; ++i) array.push('(' + extract.point.call(this, multipoint._geometries[i]) + ')')
+
     return array.join(',')
   },
 
@@ -138,17 +133,15 @@ const extract = {
    */
   linestring (linestring) {
     const array = []
-    for (let i = 0, len = linestring._points._coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.call(this, linestring._points._coordinates[i]))
-    }
+    for (let i = 0, len = linestring._points._coordinates.length; i < len; ++i) array.push(extract.coordinate.call(this, linestring._points._coordinates[i]))
+
     return array.join(',')
   },
 
   linearring (linearring) {
     const array = []
-    for (let i = 0, len = linearring._points._coordinates.length; i < len; ++i) {
-      array.push(extract.coordinate.call(this, linearring._points._coordinates[i]))
-    }
+    for (let i = 0, len = linearring._points._coordinates.length; i < len; ++i) array.push(extract.coordinate.call(this, linearring._points._coordinates[i]))
+
     return array.join(',')
   },
 
@@ -161,11 +154,11 @@ const extract = {
    */
   multilinestring (multilinestring) {
     const array = []
-    for (let i = 0, len = multilinestring._geometries.length; i < len; ++i) {
+    for (let i = 0, len = multilinestring._geometries.length; i < len; ++i)
       array.push('(' +
         extract.linestring.call(this, multilinestring._geometries[i]) +
         ')')
-    }
+
     return array.join(',')
   },
 
@@ -178,9 +171,8 @@ const extract = {
   polygon (polygon) {
     const array = []
     array.push('(' + extract.linestring.call(this, polygon._shell) + ')')
-    for (let i = 0, len = polygon._holes.length; i < len; ++i) {
-      array.push('(' + extract.linestring.call(this, polygon._holes[i]) + ')')
-    }
+    for (let i = 0, len = polygon._holes.length; i < len; ++i) array.push('(' + extract.linestring.call(this, polygon._holes[i]) + ')')
+
     return array.join(',')
   },
 
@@ -192,9 +184,8 @@ const extract = {
    */
   multipolygon (multipolygon) {
     const array = []
-    for (let i = 0, len = multipolygon._geometries.length; i < len; ++i) {
-      array.push('(' + extract.polygon.call(this, multipolygon._geometries[i]) + ')')
-    }
+    for (let i = 0, len = multipolygon._geometries.length; i < len; ++i) array.push('(' + extract.polygon.call(this, multipolygon._geometries[i]) + ')')
+
     return array.join(',')
   },
 
@@ -207,9 +198,8 @@ const extract = {
    */
   geometrycollection (collection) {
     const array = []
-    for (let i = 0, len = collection._geometries.length; i < len; ++i) {
-      array.push(this.extractGeometry(collection._geometries[i]))
-    }
+    for (let i = 0, len = collection._geometries.length; i < len; ++i) array.push(this.extractGeometry(collection._geometries[i]))
+
     return array.join(',')
   }
 }
@@ -236,7 +226,7 @@ const parse = {
    * @private
    */
   point (str) {
-    if (str === undefined) { return this.geometryFactory.createPoint() }
+    if (str === undefined) return this.geometryFactory.createPoint()
     return this.geometryFactory.createPoint(parse.coord.call(this, str))
   },
 
@@ -248,7 +238,7 @@ const parse = {
    * @private
    */
   multipoint (str) {
-    if (str === undefined) { return this.geometryFactory.createMultiPoint() }
+    if (str === undefined) return this.geometryFactory.createMultiPoint()
     let point
     const points = str.trim().split(',')
     const components = []
@@ -267,16 +257,13 @@ const parse = {
    * @private
    */
   linestring (str) {
-    if (str === undefined) {
-      return this.geometryFactory.createLineString()
-    }
+    if (str === undefined) return this.geometryFactory.createLineString()
 
     const points = str.trim().split(',')
     const components = []
     let coords
-    for (let i = 0, len = points.length; i < len; ++i) {
-      components.push(parse.coord.call(this, points[i]))
-    }
+    for (let i = 0, len = points.length; i < len; ++i) components.push(parse.coord.call(this, points[i]))
+
     return this.geometryFactory.createLineString(components)
   },
 
@@ -288,16 +275,13 @@ const parse = {
    * @private
    */
   linearring (str) {
-    if (str === undefined) {
-      return this.geometryFactory.createLinearRing()
-    }
+    if (str === undefined) return this.geometryFactory.createLinearRing()
 
     const points = str.trim().split(',')
     const components = []
     let coords
-    for (let i = 0, len = points.length; i < len; ++i) {
-      components.push(parse.coord.call(this, points[i]))
-    }
+    for (let i = 0, len = points.length; i < len; ++i) components.push(parse.coord.call(this, points[i]))
+
     return this.geometryFactory.createLinearRing(components)
   },
 
@@ -309,9 +293,7 @@ const parse = {
    * @private
    */
   multilinestring (str) {
-    if (str === undefined) {
-      return this.geometryFactory.createMultiLineString()
-    }
+    if (str === undefined) return this.geometryFactory.createMultiLineString()
 
     let line
     const lines = str.trim().split(regExes.parenComma)
@@ -331,9 +313,7 @@ const parse = {
    * @private
    */
   polygon (str) {
-    if (str === undefined) {
-      return this.geometryFactory.createPolygon()
-    }
+    if (str === undefined) return this.geometryFactory.createPolygon()
 
     let ring, linestring, linearring
     const rings = str.trim().split(regExes.parenComma)
@@ -343,11 +323,9 @@ const parse = {
       ring = rings[i].replace(regExes.trimParens, '$1')
       linestring = parse.linestring.call(this, ring)
       linearring = this.geometryFactory.createLinearRing(linestring._points)
-      if (i === 0) {
+      if (i === 0)
         shell = linearring
-      } else {
-        holes.push(linearring)
-      }
+      else holes.push(linearring)
     }
     return this.geometryFactory.createPolygon(shell, holes)
   },
@@ -360,9 +338,7 @@ const parse = {
    * @private
    */
   multipolygon (str) {
-    if (str === undefined) {
-      return this.geometryFactory.createMultiPolygon()
-    }
+    if (str === undefined) return this.geometryFactory.createMultiPolygon()
 
     let polygon
     const polygons = str.trim().split(regExes.doubleParenComma)
@@ -382,17 +358,14 @@ const parse = {
    * @private
    */
   geometrycollection (str) {
-    if (str === undefined) {
-      return this.geometryFactory.createGeometryCollection()
-    }
+    if (str === undefined) return this.geometryFactory.createGeometryCollection()
 
     // separate components of the collection with |
     str = str.replace(/,\s*([A-Za-z])/g, '|$1')
     const wktArray = str.trim().split('|')
     const components = []
-    for (let i = 0, len = wktArray.length; i < len; ++i) {
-      components.push(this.read(wktArray[i]))
-    }
+    for (let i = 0, len = wktArray.length; i < len; ++i) components.push(this.read(wktArray[i]))
+
     return this.geometryFactory.createGeometryCollection(components)
   }
 }

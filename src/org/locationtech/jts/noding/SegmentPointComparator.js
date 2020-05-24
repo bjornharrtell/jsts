@@ -15,22 +15,22 @@ export default class SegmentPointComparator {
     const xSign = SegmentPointComparator.relativeSign(p0.x, p1.x)
     const ySign = SegmentPointComparator.relativeSign(p0.y, p1.y)
     switch (octant) {
-      case 0:
-        return SegmentPointComparator.compareValue(xSign, ySign)
-      case 1:
-        return SegmentPointComparator.compareValue(ySign, xSign)
-      case 2:
-        return SegmentPointComparator.compareValue(ySign, -xSign)
-      case 3:
-        return SegmentPointComparator.compareValue(-xSign, ySign)
-      case 4:
-        return SegmentPointComparator.compareValue(-xSign, -ySign)
-      case 5:
-        return SegmentPointComparator.compareValue(-ySign, -xSign)
-      case 6:
-        return SegmentPointComparator.compareValue(-ySign, xSign)
-      case 7:
-        return SegmentPointComparator.compareValue(xSign, -ySign)
+    case 0:
+      return SegmentPointComparator.compareValue(xSign, ySign)
+    case 1:
+      return SegmentPointComparator.compareValue(ySign, xSign)
+    case 2:
+      return SegmentPointComparator.compareValue(ySign, -xSign)
+    case 3:
+      return SegmentPointComparator.compareValue(-xSign, ySign)
+    case 4:
+      return SegmentPointComparator.compareValue(-xSign, -ySign)
+    case 5:
+      return SegmentPointComparator.compareValue(-ySign, -xSign)
+    case 6:
+      return SegmentPointComparator.compareValue(-ySign, xSign)
+    case 7:
+      return SegmentPointComparator.compareValue(xSign, -ySign)
     }
     Assert.shouldNeverReachHere('invalid octant value')
     return 0

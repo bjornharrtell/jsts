@@ -15,9 +15,9 @@ export default class Point extends Geometry {
   }
 
   computeEnvelopeInternal () {
-    if (this.isEmpty()) {
+    if (this.isEmpty())
       return new Envelope()
-    }
+
     const env = new Envelope()
     env.expandToInclude(this._coordinates.getX(0), this._coordinates.getY(0))
     return env
@@ -34,17 +34,19 @@ export default class Point extends Geometry {
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other)) {
+      if (!this.isEquivalentClass(other))
         return false
-      }
-      if (this.isEmpty() && other.isEmpty()) {
+
+      if (this.isEmpty() && other.isEmpty())
         return true
-      }
-      if (this.isEmpty() !== other.isEmpty()) {
+
+      if (this.isEmpty() !== other.isEmpty())
         return false
-      }
+
       return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance)
-    } else return super.equalsExact.apply(this, arguments)
+    } else {
+      return super.equalsExact.apply(this, arguments)
+    }
   }
 
   normalize () {}
@@ -73,9 +75,9 @@ export default class Point extends Geometry {
   }
 
   getX () {
-    if (this.getCoordinate() === null) {
+    if (this.getCoordinate() === null)
       throw new IllegalStateException('getX called on empty Point')
-    }
+
     return this.getCoordinate().x
   }
 
@@ -94,9 +96,9 @@ export default class Point extends Geometry {
   apply () {
     if (hasInterface(arguments[0], CoordinateFilter)) {
       const filter = arguments[0]
-      if (this.isEmpty()) {
+      if (this.isEmpty())
         return null
-      }
+
       filter.filter(this.getCoordinate())
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
       const filter = arguments[0]
@@ -125,9 +127,9 @@ export default class Point extends Geometry {
   }
 
   getY () {
-    if (this.getCoordinate() === null) {
+    if (this.getCoordinate() === null)
       throw new IllegalStateException('getY called on empty Point')
-    }
+
     return this.getCoordinate().y
   }
 
@@ -136,9 +138,9 @@ export default class Point extends Geometry {
   }
 
   init (coordinates) {
-    if (coordinates === null) {
+    if (coordinates === null)
       coordinates = this.getFactory().getCoordinateSequenceFactory().create([])
-    }
+
     Assert.isTrue(coordinates.size() <= 1)
     this._coordinates = coordinates
   }

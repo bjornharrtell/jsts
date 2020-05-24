@@ -11,7 +11,9 @@ export default class TestBuilderProxy {
     try {
       TestBuilderProxy.methodShowIndicator.invoke(null, geom)
     } catch (e) {
-      if (e instanceof Exception) {} else throw e
+      if (e instanceof Exception) {} else {
+        throw e
+      }
     } finally {}
   }
 
@@ -21,7 +23,9 @@ export default class TestBuilderProxy {
       TestBuilderProxy.tbClass = TestBuilderProxy.getClassLoader().loadClass(TestBuilderProxy.CLASS_FUNCTIONS_UTIL)
       TestBuilderProxy.methodShowIndicator = TestBuilderProxy.tbClass.getMethod('showIndicator', Geometry)
     } catch (ex) {
-      if (ex instanceof Exception) {} else throw ex
+      if (ex instanceof Exception) {} else {
+        throw ex
+      }
     } finally {}
   }
 

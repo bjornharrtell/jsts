@@ -24,9 +24,8 @@ export default class EdgeGraphBuilder {
         }
 
         filter (component) {
-          if (component instanceof LineString) {
+          if (component instanceof LineString)
             this.add(component)
-          }
         }
       })())
     } else if (hasInterface(arguments[0], Collection)) {
@@ -38,9 +37,8 @@ export default class EdgeGraphBuilder {
     } else if (arguments[0] instanceof LineString) {
       const lineString = arguments[0]
       const seq = lineString.getCoordinateSequence()
-      for (let i = 1; i < seq.size(); i++) {
+      for (let i = 1; i < seq.size(); i++)
         this._graph.addEdge(seq.getCoordinate(i - 1), seq.getCoordinate(i))
-      }
     }
   }
 

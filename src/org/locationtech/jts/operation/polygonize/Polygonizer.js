@@ -18,9 +18,8 @@ export default class Polygonizer {
     const polyList = new ArrayList()
     for (let i = shellList.iterator(); i.hasNext();) {
       const er = i.next()
-      if (includeAll || er.isIncluded()) {
+      if (includeAll || er.isIncluded())
         polyList.add(er.getPolygon())
-      }
     }
     return polyList
   }
@@ -45,9 +44,8 @@ export default class Polygonizer {
         const er = i.next()
         if (er.isIncludedSet()) continue
         er.updateIncluded()
-        if (!er.isIncludedSet()) {
+        if (!er.isIncludedSet())
           isMoreToScan = true
-        }
       }
     } while (isMoreToScan)
   }
@@ -55,9 +53,9 @@ export default class Polygonizer {
   getGeometry () {
     if (this._geomFactory === null) this._geomFactory = new GeometryFactory()
     this.polygonize()
-    if (this._extractOnlyPolygonal) {
+    if (this._extractOnlyPolygonal)
       return this._geomFactory.buildGeometry(this._polyList)
-    }
+
     return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this._polyList))
   }
 
@@ -82,11 +80,11 @@ export default class Polygonizer {
     const edgeRingList = this._graph.getEdgeRings()
     let validEdgeRingList = new ArrayList()
     this._invalidRingLines = new ArrayList()
-    if (this._isCheckingRingsValid) {
+    if (this._isCheckingRingsValid)
       this.findValidRings(edgeRingList, validEdgeRingList, this._invalidRingLines)
-    } else {
+    else
       validEdgeRingList = edgeRingList
-    }
+
     this.findShellsAndHoles(validEdgeRingList)
     HoleAssigner.assignHolesToShells(this._holeList, this._shellList)
     Collections.sort(this._shellList, new EdgeRing.EnvelopeComparator())

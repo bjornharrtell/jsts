@@ -66,9 +66,9 @@ export default class BufferOp {
         try {
           this.bufferReducedPrecision(precDigits)
         } catch (ex) {
-          if (ex instanceof TopologyException) {
+          if (ex instanceof TopologyException)
             this._saveException = ex
-          } else throw ex
+          else throw ex
         } finally {}
         if (this._resultGeometry !== null) return null
       }
@@ -97,9 +97,9 @@ export default class BufferOp {
       const bufBuilder = new BufferBuilder(this._bufParams)
       this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance)
     } catch (ex) {
-      if (ex instanceof RuntimeException) {
+      if (ex instanceof RuntimeException)
         this._saveException = ex
-      } else throw ex
+      else throw ex
     } finally {}
   }
 

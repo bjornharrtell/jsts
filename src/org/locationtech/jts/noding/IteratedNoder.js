@@ -30,9 +30,9 @@ export default class IteratedNoder {
       this.node(this._nodedSegStrings, numInteriorIntersections)
       nodingIterationCount++
       const nodesCreated = numInteriorIntersections[0]
-      if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this._maxIter) {
+      if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this._maxIter)
         throw new TopologyException('Iterated noding failed to converge after ' + nodingIterationCount + ' iterations')
-      }
+
       lastNodesCreated = nodesCreated
     } while (lastNodesCreated > 0)
   }

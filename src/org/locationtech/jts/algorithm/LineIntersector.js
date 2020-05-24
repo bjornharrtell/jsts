@@ -19,9 +19,8 @@ export default class LineIntersector {
       const pdx = Math.abs(p.x - p0.x)
       const pdy = Math.abs(p.y - p0.y)
       if (dx > dy) dist = pdx; else dist = pdy
-      if (dist === 0.0 && !p.equals(p0)) {
+      if (dist === 0.0 && !p.equals(p0))
         dist = Math.max(pdx, pdy)
-      }
     }
     Assert.isTrue(!(dist === 0.0 && !p.equals(p0)), 'Bad distance calculation')
     return dist
@@ -96,11 +95,10 @@ export default class LineIntersector {
       return false
     } else if (arguments.length === 1) {
       const inputLineIndex = arguments[0]
-      for (let i = 0; i < this._result; i++) {
-        if (!(this._intPt[i].equals2D(this._inputLines[inputLineIndex][0]) || this._intPt[i].equals2D(this._inputLines[inputLineIndex][1]))) {
+      for (let i = 0; i < this._result; i++)
+        if (!(this._intPt[i].equals2D(this._inputLines[inputLineIndex][0]) || this._intPt[i].equals2D(this._inputLines[inputLineIndex][1])))
           return true
-        }
-      }
+
       return false
     }
   }
@@ -135,11 +133,10 @@ export default class LineIntersector {
   }
 
   isIntersection (pt) {
-    for (let i = 0; i < this._result; i++) {
-      if (this._intPt[i].equals2D(pt)) {
+    for (let i = 0; i < this._result; i++)
+      if (this._intPt[i].equals2D(pt))
         return true
-      }
-    }
+
     return false
   }
 

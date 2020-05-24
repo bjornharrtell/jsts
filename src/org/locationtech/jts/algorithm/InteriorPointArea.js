@@ -29,9 +29,8 @@ export default class InteriorPointArea {
       this.processPolygon(geom)
     } else if (geom instanceof GeometryCollection) {
       const gc = geom
-      for (let i = 0; i < gc.getNumGeometries(); i++) {
+      for (let i = 0; i < gc.getNumGeometries(); i++)
         this.process(gc.getGeometryN(i))
-      }
     }
   }
 
@@ -113,9 +112,9 @@ class InteriorPointPolygon {
     this._interiorPoint = new Coordinate(this._polygon.getCoordinate())
     const crossings = new ArrayList()
     this.scanRing(this._polygon.getExteriorRing(), crossings)
-    for (let i = 0; i < this._polygon.getNumInteriorRing(); i++) {
+    for (let i = 0; i < this._polygon.getNumInteriorRing(); i++)
       this.scanRing(this._polygon.getInteriorRingN(i), crossings)
-    }
+
     this.findBestMidpoint(crossings)
   }
 
@@ -194,17 +193,16 @@ class ScanLineYOrdinateFinder {
     if (y <= this._centreY) {
       if (y > this._loY) this._loY = y
     } else if (y > this._centreY) {
-      if (y < this._hiY) {
+      if (y < this._hiY)
         this._hiY = y
-      }
     }
   }
 
   getScanLineY () {
     this.process(this._poly.getExteriorRing())
-    for (let i = 0; i < this._poly.getNumInteriorRing(); i++) {
+    for (let i = 0; i < this._poly.getNumInteriorRing(); i++)
       this.process(this._poly.getInteriorRingN(i))
-    }
+
     const scanLineY = InteriorPointArea.avg(this._hiY, this._loY)
     return scanLineY
   }

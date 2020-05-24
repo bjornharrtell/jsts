@@ -24,16 +24,16 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       if (!nextOut.getLabel().isArea()) continue
       if (firstOut === null && nextOut.isInResult()) firstOut = nextOut
       switch (state) {
-        case this._SCANNING_FOR_INCOMING:
-          if (!nextIn.isInResult()) continue
-          incoming = nextIn
-          state = this._LINKING_TO_OUTGOING
-          break
-        case this._LINKING_TO_OUTGOING:
-          if (!nextOut.isInResult()) continue
-          incoming.setNext(nextOut)
-          state = this._SCANNING_FOR_INCOMING
-          break
+      case this._SCANNING_FOR_INCOMING:
+        if (!nextIn.isInResult()) continue
+        incoming = nextIn
+        state = this._LINKING_TO_OUTGOING
+        break
+      case this._LINKING_TO_OUTGOING:
+        if (!nextOut.isInResult()) continue
+        incoming.setNext(nextOut)
+        state = this._SCANNING_FOR_INCOMING
+        break
       }
     }
     if (state === this._LINKING_TO_OUTGOING) {
@@ -57,7 +57,11 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     const deLast = edges.get(size - 1)
     const quad0 = de0.getQuadrant()
     const quad1 = deLast.getQuadrant()
-    if (Quadrant.isNorthern(quad0) && Quadrant.isNorthern(quad1)) return de0; else if (!Quadrant.isNorthern(quad0) && !Quadrant.isNorthern(quad1)) return deLast; else {
+    if (Quadrant.isNorthern(quad0) && Quadrant.isNorthern(quad1)) {
+      return de0
+    } else if (!Quadrant.isNorthern(quad0) && !Quadrant.isNorthern(quad1)) {
+      return deLast
+    } else {
       const nonHorizontalEdge = null
       if (de0.getDy() !== 0) return de0; else if (deLast.getDy() !== 0) return deLast
     }
@@ -149,16 +153,16 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       const nextIn = nextOut.getSym()
       if (firstOut === null && nextOut.getEdgeRing() === er) firstOut = nextOut
       switch (state) {
-        case this._SCANNING_FOR_INCOMING:
-          if (nextIn.getEdgeRing() !== er) continue
-          incoming = nextIn
-          state = this._LINKING_TO_OUTGOING
-          break
-        case this._LINKING_TO_OUTGOING:
-          if (nextOut.getEdgeRing() !== er) continue
-          incoming.setNextMin(nextOut)
-          state = this._SCANNING_FOR_INCOMING
-          break
+      case this._SCANNING_FOR_INCOMING:
+        if (nextIn.getEdgeRing() !== er) continue
+        incoming = nextIn
+        state = this._LINKING_TO_OUTGOING
+        break
+      case this._LINKING_TO_OUTGOING:
+        if (nextOut.getEdgeRing() !== er) continue
+        incoming.setNextMin(nextOut)
+        state = this._SCANNING_FOR_INCOMING
+        break
       }
     }
     if (state === this._LINKING_TO_OUTGOING) {

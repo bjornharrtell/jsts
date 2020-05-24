@@ -21,9 +21,8 @@ export default class InteriorPointLine {
         this.addEndpoints(geom.getCoordinates())
       } else if (geom instanceof GeometryCollection) {
         const gc = geom
-        for (let i = 0; i < gc.getNumGeometries(); i++) {
+        for (let i = 0; i < gc.getNumGeometries(); i++)
           this.addEndpoints(gc.getGeometryN(i))
-        }
       }
     } else if (arguments[0] instanceof Array) {
       const pts = arguments[0]
@@ -43,15 +42,13 @@ export default class InteriorPointLine {
         this.addInterior(geom.getCoordinates())
       } else if (geom instanceof GeometryCollection) {
         const gc = geom
-        for (let i = 0; i < gc.getNumGeometries(); i++) {
+        for (let i = 0; i < gc.getNumGeometries(); i++)
           this.addInterior(gc.getGeometryN(i))
-        }
       }
     } else if (arguments[0] instanceof Array) {
       const pts = arguments[0]
-      for (let i = 1; i < pts.length - 1; i++) {
+      for (let i = 1; i < pts.length - 1; i++)
         this.add(pts[i])
-      }
     }
   }
 

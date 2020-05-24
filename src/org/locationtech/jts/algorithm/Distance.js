@@ -21,14 +21,13 @@ export default class Distance {
         const s_num = (A.y - C.y) * (B.x - A.x) - (A.x - C.x) * (B.y - A.y)
         const s = s_num / denom
         const r = r_num / denom
-        if (r < 0 || r > 1 || s < 0 || s > 1) {
+        if (r < 0 || r > 1 || s < 0 || s > 1)
           noIntersection = true
-        }
       }
     }
-    if (noIntersection) {
+    if (noIntersection)
       return MathUtil.min(Distance.pointToSegment(A, C, D), Distance.pointToSegment(B, C, D), Distance.pointToSegment(C, A, B), Distance.pointToSegment(D, A, B))
-    }
+
     return 0.0
   }
 
@@ -53,9 +52,8 @@ export default class Distance {
     let minDistance = p.distance(line[0])
     for (let i = 0; i < line.length - 1; i++) {
       const dist = Distance.pointToSegment(p, line[i], line[i + 1])
-      if (dist < minDistance) {
+      if (dist < minDistance)
         minDistance = dist
-      }
     }
     return minDistance
   }

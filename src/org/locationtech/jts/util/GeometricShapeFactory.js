@@ -244,19 +244,19 @@ class Dimensions {
   }
 
   getEnvelope () {
-    if (this.base !== null) {
+    if (this.base !== null)
       return new Envelope(this.base.x, this.base.x + this.width, this.base.y, this.base.y + this.height)
-    }
-    if (this.centre !== null) {
+
+    if (this.centre !== null)
       return new Envelope(this.centre.x - this.width / 2, this.centre.x + this.width / 2, this.centre.y - this.height / 2, this.centre.y + this.height / 2)
-    }
+
     return new Envelope(0, this.width, 0, this.height)
   }
 
   getCentre () {
-    if (this.centre === null) {
+    if (this.centre === null)
       this.centre = new Coordinate(this.base.x + this.width / 2, this.base.y + this.height / 2)
-    }
+
     return this.centre
   }
 

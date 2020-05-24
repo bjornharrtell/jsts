@@ -22,9 +22,9 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
   }
 
   randomPointInCell (orgX, orgY, xLen, yLen) {
-    if (this._isConstrainedToCircle) {
+    if (this._isConstrainedToCircle)
       return RandomPointsInGridBuilder.randomPointInCircle(orgX, orgY, xLen, yLen)
-    }
+
     return this.randomPointInGridCell(orgX, orgY, xLen, yLen)
   }
 
@@ -41,13 +41,13 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
     const cellDY = cellFrac * gridDY
     const pts = new Array(nCells * nCells).fill(null)
     let index = 0
-    for (let i = 0; i < nCells; i++) {
+    for (let i = 0; i < nCells; i++)
       for (let j = 0; j < nCells; j++) {
         const orgX = this.getExtent().getMinX() + i * gridDX + gutterOffsetX
         const orgY = this.getExtent().getMinY() + j * gridDY + gutterOffsetY
         pts[index++] = this.randomPointInCell(orgX, orgY, cellDX, cellDY)
       }
-    }
+
     return this._geomFactory.createMultiPointFromCoords(pts)
   }
 

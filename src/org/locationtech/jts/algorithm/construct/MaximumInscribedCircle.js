@@ -51,9 +51,9 @@ export default class MaximumInscribedCircle {
     let farthestCell = this.createCentroidCell(this._inputGeom)
     while (!cellQueue.isEmpty()) {
       const cell = cellQueue.remove()
-      if (cell.getDistance() > farthestCell.getDistance()) {
+      if (cell.getDistance() > farthestCell.getDistance())
         farthestCell = cell
-      }
+
       const potentialIncrease = cell.getMaxDistance() - farthestCell.getDistance()
       if (potentialIncrease > this._tolerance) {
         const h2 = cell.getHSide() / 2
@@ -99,11 +99,9 @@ export default class MaximumInscribedCircle {
     const height = env.getHeight()
     const cellSize = Math.min(width, height)
     const hSide = cellSize / 2.0
-    for (let x = minX; x < maxX; x += cellSize) {
-      for (let y = minY; y < maxY; y += cellSize) {
+    for (let x = minX; x < maxX; x += cellSize)
+      for (let y = minY; y < maxY; y += cellSize)
         cellQueue.add(this.createCell(x + hSide, y + hSide, hSide))
-      }
-    }
   }
 
   getClass () {
@@ -182,12 +180,12 @@ MaximumInscribedCircle.constructor_ = function () {
   this._centerPoint = null
   this._radiusPoint = null
   const polygonal = arguments[0]; const tolerance = arguments[1]
-  if (!(polygonal instanceof Polygon || polygonal instanceof MultiPolygon)) {
+  if (!(polygonal instanceof Polygon || polygonal instanceof MultiPolygon))
     throw new IllegalArgumentException('Input geometry must be a Polygon or MultiPolygon')
-  }
-  if (polygonal.isEmpty()) {
+
+  if (polygonal.isEmpty())
     throw new IllegalArgumentException('Empty input geometry is not supported')
-  }
+
   this._inputGeom = polygonal
   this._factory = polygonal.getFactory()
   this._tolerance = tolerance

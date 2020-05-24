@@ -25,38 +25,38 @@ export default class Coordinate {
 
   setOrdinate (ordinateIndex, value) {
     switch (ordinateIndex) {
-      case Coordinate.X:
-        this.x = value
-        break
-      case Coordinate.Y:
-        this.y = value
-        break
-      case Coordinate.Z:
-        this.setZ(value)
-        break
-      default:
-        throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
+    case Coordinate.X:
+      this.x = value
+      break
+    case Coordinate.Y:
+      this.y = value
+      break
+    case Coordinate.Z:
+      this.setZ(value)
+      break
+    default:
+      throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
 
   equals2D () {
     if (arguments.length === 1) {
       const other = arguments[0]
-      if (this.x !== other.x) {
+      if (this.x !== other.x)
         return false
-      }
-      if (this.y !== other.y) {
+
+      if (this.y !== other.y)
         return false
-      }
+
       return true
     } else if (arguments.length === 2) {
       const c = arguments[0]; const tolerance = arguments[1]
-      if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
+      if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance))
         return false
-      }
-      if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
+
+      if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance))
         return false
-      }
+
       return true
     }
   }
@@ -71,12 +71,12 @@ export default class Coordinate {
 
   getOrdinate (ordinateIndex) {
     switch (ordinateIndex) {
-      case Coordinate.X:
-        return this.x
-      case Coordinate.Y:
-        return this.y
-      case Coordinate.Z:
-        return this.getZ()
+    case Coordinate.X:
+      return this.x
+    case Coordinate.Y:
+      return this.y
+    case Coordinate.Z:
+      return this.getZ()
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
@@ -86,9 +86,9 @@ export default class Coordinate {
   }
 
   equals (other) {
-    if (!(other instanceof Coordinate)) {
+    if (!(other instanceof Coordinate))
       return false
-    }
+
     return this.equals2D(other)
   }
 
@@ -123,9 +123,11 @@ export default class Coordinate {
       return coord
     } catch (e) {
       if (e instanceof CloneNotSupportedException) {
-        Assert.shouldNeverReachHere("this shouldn't happen because this class is Cloneable")
+        Assert.shouldNeverReachHere('this shouldn\'t happen because this class is Cloneable')
         return null
-      } else throw e
+      } else {
+        throw e
+      }
     } finally {}
   }
 

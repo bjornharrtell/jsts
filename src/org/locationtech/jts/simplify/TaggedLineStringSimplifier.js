@@ -67,9 +67,8 @@ export default class TaggedLineStringSimplifier {
     const querySegs = this._outputIndex.query(candidateSeg)
     for (let i = querySegs.iterator(); i.hasNext();) {
       const querySeg = i.next()
-      if (this.hasInteriorIntersection(querySeg, candidateSeg)) {
+      if (this.hasInteriorIntersection(querySeg, candidateSeg))
         return true
-      }
     }
     return false
   }

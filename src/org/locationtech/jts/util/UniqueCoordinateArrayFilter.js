@@ -8,16 +8,15 @@ export default class UniqueCoordinateArrayFilter {
 
   static filterCoordinates (coords) {
     const filter = new UniqueCoordinateArrayFilter()
-    for (let i = 0; i < coords.length; i++) {
+    for (let i = 0; i < coords.length; i++)
       filter.filter(coords[i])
-    }
+
     return filter.getCoordinates()
   }
 
   filter (coord) {
-    if (this._coordSet.add(coord)) {
+    if (this._coordSet.add(coord))
       this._list.add(coord)
-    }
   }
 
   getCoordinates () {

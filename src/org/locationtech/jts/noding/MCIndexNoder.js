@@ -34,9 +34,9 @@ export default class MCIndexNoder extends SinglePassNoder {
 
   computeNodes (inputSegStrings) {
     this._nodedSegStrings = inputSegStrings
-    for (let i = inputSegStrings.iterator(); i.hasNext();) {
+    for (let i = inputSegStrings.iterator(); i.hasNext();)
       this.add(i.next())
-    }
+
     this.intersectChains()
   }
 
@@ -76,7 +76,9 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
       const ss1 = mc1.getContext()
       const ss2 = mc2.getContext()
       this._si.processIntersections(ss1, start1, ss2, start2)
-    } else return super.overlap.apply(this, arguments)
+    } else {
+      return super.overlap.apply(this, arguments)
+    }
   }
 
   getClass () {

@@ -61,12 +61,12 @@ export default class LinearLocation {
   }
 
   normalize () {
-    if (this._segmentFraction < 0.0) {
+    if (this._segmentFraction < 0.0)
       this._segmentFraction = 0.0
-    }
-    if (this._segmentFraction > 1.0) {
+
+    if (this._segmentFraction > 1.0)
       this._segmentFraction = 1.0
-    }
+
     if (this._componentIndex < 0) {
       this._componentIndex = 0
       this._segmentIndex = 0
@@ -163,11 +163,10 @@ export default class LinearLocation {
     const segLen = this.getSegmentLength(linearGeom)
     const lenToStart = this._segmentFraction * segLen
     const lenToEnd = segLen - lenToStart
-    if (lenToStart <= lenToEnd && lenToStart < minDistance) {
+    if (lenToStart <= lenToEnd && lenToStart < minDistance)
       this._segmentFraction = 0.0
-    } else if (lenToEnd <= lenToStart && lenToEnd < minDistance) {
+    else if (lenToEnd <= lenToStart && lenToEnd < minDistance)
       this._segmentFraction = 1.0
-    }
   }
 
   compareLocationValues (componentIndex1, segmentIndex1, segmentFraction1) {

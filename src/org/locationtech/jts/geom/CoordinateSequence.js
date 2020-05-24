@@ -16,11 +16,10 @@ export default class CoordinateSequence {
 
   setOrdinate (index, ordinateIndex, value) {}
   getZ (index) {
-    if (this.hasZ()) {
+    if (this.hasZ())
       return this.getOrdinate(index, 2)
-    } else {
+    else
       return Double.NaN
-    }
   }
 
   size () {}

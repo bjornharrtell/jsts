@@ -31,19 +31,19 @@ export default class Orientation {
         if (iPrev < 0) iPrev = nPts
       } while (ring[iPrev].equals2D(hiPt) && iPrev !== hiIndex)
       let iNext = hiIndex
-      do {
+      do
         iNext = (iNext + 1) % nPts
-      } while (ring[iNext].equals2D(hiPt) && iNext !== hiIndex)
+      while (ring[iNext].equals2D(hiPt) && iNext !== hiIndex)
       const prev = ring[iPrev]
       const next = ring[iNext]
       if (prev.equals2D(hiPt) || next.equals2D(hiPt) || prev.equals2D(next)) return false
       const disc = Orientation.index(prev, hiPt, next)
       let isCCW = null
-      if (disc === 0) {
+      if (disc === 0)
         isCCW = prev.x > next.x
-      } else {
+      else
         isCCW = disc > 0
-      }
+
       return isCCW
     } else if (hasInterface(arguments[0], CoordinateSequence)) {
       const ring = arguments[0]
@@ -74,11 +74,11 @@ export default class Orientation {
       if (prev.equals2D(hiPt) || next.equals2D(hiPt) || prev.equals2D(next)) return false
       const disc = Orientation.index(prev, hiPt, next)
       let isCCW = null
-      if (disc === 0) {
+      if (disc === 0)
         isCCW = prev.x > next.x
-      } else {
+      else
         isCCW = disc > 0
-      }
+
       return isCCW
     }
   }

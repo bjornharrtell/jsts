@@ -46,7 +46,9 @@ export default class Vertex {
       if (nre instanceof NotRepresentableException) {
         System.err.println('a: ' + a + '  b: ' + b + '  c: ' + c)
         System.err.println(nre)
-      } else throw nre
+      } else {
+        throw nre
+      }
     } finally {}
     return cc
   }
@@ -74,18 +76,16 @@ export default class Vertex {
   equals () {
     if (arguments.length === 1) {
       const _x = arguments[0]
-      if (this._p.x === _x.getX() && this._p.y === _x.getY()) {
+      if (this._p.x === _x.getX() && this._p.y === _x.getY())
         return true
-      } else {
+      else
         return false
-      }
     } else if (arguments.length === 2) {
       const _x = arguments[0]; const tolerance = arguments[1]
-      if (this._p.distance(_x.getCoordinate()) < tolerance) {
+      if (this._p.distance(_x.getCoordinate()) < tolerance)
         return true
-      } else {
+      else
         return false
-      }
     }
   }
 
@@ -191,13 +191,13 @@ export default class Vertex {
     const radius = this.distance(x, b)
     let edgeLength = this.distance(this, b)
     let el = this.distance(b, c)
-    if (el < edgeLength) {
+    if (el < edgeLength)
       edgeLength = el
-    }
+
     el = this.distance(c, this)
-    if (el < edgeLength) {
+    if (el < edgeLength)
       edgeLength = el
-    }
+
     return radius / edgeLength
   }
 

@@ -75,9 +75,9 @@ export default class AffineTransformation {
   }
 
   setToReflectionBasic (x0, y0, x1, y1) {
-    if (x0 === x1 && y0 === y1) {
+    if (x0 === x1 && y0 === y1)
       throw new IllegalArgumentException('Reflection line points must be distinct')
-    }
+
     const dx = x1 - x0
     const dy = y1 - y0
     const d = Math.sqrt(dx * dx + dy * dy)
@@ -280,9 +280,9 @@ export default class AffineTransformation {
     try {
       return null
     } catch (ex) {
-      if (ex instanceof Exception) {
+      if (ex instanceof Exception)
         Assert.shouldNeverReachHere()
-      } else throw ex
+      else throw ex
     } finally {}
     return null
   }
@@ -295,9 +295,9 @@ export default class AffineTransformation {
   setToReflection () {
     if (arguments.length === 2) {
       const x = arguments[0]; const y = arguments[1]
-      if (x === 0.0 && y === 0.0) {
+      if (x === 0.0 && y === 0.0)
         throw new IllegalArgumentException('Reflection vector must be non-zero')
-      }
+
       if (x === y) {
         this._m00 = 0.0
         this._m01 = 1.0
@@ -316,9 +316,9 @@ export default class AffineTransformation {
       return this
     } else if (arguments.length === 4) {
       const x0 = arguments[0]; const y0 = arguments[1]; const x1 = arguments[2]; const y1 = arguments[3]
-      if (x0 === x1 && y0 === y1) {
+      if (x0 === x1 && y0 === y1)
         throw new IllegalArgumentException('Reflection line points must be distinct')
-      }
+
       this.setToTranslation(-x0, -y0)
       const dx = x1 - x0
       const dy = y1 - y0

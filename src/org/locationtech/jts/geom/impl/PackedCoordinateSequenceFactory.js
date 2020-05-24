@@ -24,20 +24,18 @@ export default class PackedCoordinateSequenceFactory {
           dimension = Coordinates.dimension(first)
           measures = Coordinates.measures(first)
         }
-        if (this._type === PackedCoordinateSequenceFactory.DOUBLE) {
+        if (this._type === PackedCoordinateSequenceFactory.DOUBLE)
           return new PackedCoordinateSequence.Double(coordinates, dimension, measures)
-        } else {
+        else
           return new PackedCoordinateSequence.Float(coordinates, dimension, measures)
-        }
       } else if (hasInterface(arguments[0], CoordinateSequence)) {
         const coordSeq = arguments[0]
         const dimension = coordSeq.getDimension()
         const measures = coordSeq.getMeasures()
-        if (this._type === PackedCoordinateSequenceFactory.DOUBLE) {
+        if (this._type === PackedCoordinateSequenceFactory.DOUBLE)
           return new PackedCoordinateSequence.Double(coordSeq.toCoordinateArray(), dimension, measures)
-        } else {
+        else
           return new PackedCoordinateSequence.Float(coordSeq.toCoordinateArray(), dimension, measures)
-        }
       }
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
@@ -48,34 +46,30 @@ export default class PackedCoordinateSequenceFactory {
         return this.create(packedCoordinates, dimension, PackedCoordinateSequenceFactory.DEFAULT_MEASURES)
       } else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
         const size = arguments[0]; const dimension = arguments[1]
-        if (this._type === PackedCoordinateSequenceFactory.DOUBLE) {
+        if (this._type === PackedCoordinateSequenceFactory.DOUBLE)
           return new PackedCoordinateSequence.Double(size, dimension, PackedCoordinateSequenceFactory.DEFAULT_MEASURES)
-        } else {
+        else
           return new PackedCoordinateSequence.Float(size, dimension, PackedCoordinateSequenceFactory.DEFAULT_MEASURES)
-        }
       }
     } else if (arguments.length === 3) {
       if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
         const packedCoordinates = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
-        if (this._type === PackedCoordinateSequenceFactory.DOUBLE) {
+        if (this._type === PackedCoordinateSequenceFactory.DOUBLE)
           return new PackedCoordinateSequence.Double(packedCoordinates, dimension, measures)
-        } else {
+        else
           return new PackedCoordinateSequence.Float(packedCoordinates, dimension, measures)
-        }
       } else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
         const packedCoordinates = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
-        if (this._type === PackedCoordinateSequenceFactory.DOUBLE) {
+        if (this._type === PackedCoordinateSequenceFactory.DOUBLE)
           return new PackedCoordinateSequence.Double(packedCoordinates, dimension, measures)
-        } else {
+        else
           return new PackedCoordinateSequence.Float(packedCoordinates, dimension, measures)
-        }
       } else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
         const size = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
-        if (this._type === PackedCoordinateSequenceFactory.DOUBLE) {
+        if (this._type === PackedCoordinateSequenceFactory.DOUBLE)
           return new PackedCoordinateSequence.Double(size, dimension, measures)
-        } else {
+        else
           return new PackedCoordinateSequence.Float(size, dimension, measures)
-        }
       }
     }
   }

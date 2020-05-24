@@ -23,9 +23,9 @@ export default class GeometryPrecisionReducer {
 
   fixPolygonalTopology (geom) {
     let geomToBuffer = geom
-    if (!this._changePrecisionModel) {
+    if (!this._changePrecisionModel)
       geomToBuffer = this.changePM(geom, this._targetPM)
-    }
+
     const bufGeom = BufferOp.bufferOp(geomToBuffer, 0)
     return bufGeom
   }
@@ -35,7 +35,9 @@ export default class GeometryPrecisionReducer {
     if (this._changePrecisionModel) {
       const newFactory = this.createFactory(geom.getFactory(), this._targetPM)
       geomEdit = new GeometryEditor(newFactory)
-    } else geomEdit = new GeometryEditor()
+    } else {
+      geomEdit = new GeometryEditor()
+    }
     let finalRemoveCollapsed = this._removeCollapsed
     if (geom.getDimension() >= 2) finalRemoveCollapsed = true
     const reduceGeom = geomEdit.edit(geom, new PrecisionReducerCoordinateOperation(this._targetPM, finalRemoveCollapsed))

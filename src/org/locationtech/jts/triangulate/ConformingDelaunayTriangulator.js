@@ -42,9 +42,8 @@ export default class ConformingDelaunayTriangulator {
       splits = this.enforceGabriel(this._segments)
       count++
     } while (splits > 0 && count < ConformingDelaunayTriangulator.MAX_SPLIT_ITER)
-    if (count === ConformingDelaunayTriangulator.MAX_SPLIT_ITER) {
+    if (count === ConformingDelaunayTriangulator.MAX_SPLIT_ITER)
       throw new ConstraintEnforcementException('Too many splitting iterations while enforcing constraints.  Last split point was at: ', this._splitPt)
-    }
   }
 
   insertSites (vertices) {

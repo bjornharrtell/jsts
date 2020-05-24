@@ -7,22 +7,20 @@ export default class TopologyLocation {
   }
 
   setAllLocations (locValue) {
-    for (let i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++)
       this.location[i] = locValue
-    }
   }
 
   isNull () {
-    for (let i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++)
       if (this.location[i] !== Location.NONE) return false
-    }
+
     return true
   }
 
   setAllLocationsIfNull (locValue) {
-    for (let i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++)
       if (this.location[i] === Location.NONE) this.location[i] = locValue
-    }
   }
 
   isLine () {
@@ -37,9 +35,8 @@ export default class TopologyLocation {
       newLoc[Position.RIGHT] = Location.NONE
       this.location = newLoc
     }
-    for (let i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++)
       if (this.location[i] === Location.NONE && i < gl.location.length) this.location[i] = gl.location[i]
-    }
   }
 
   getLocations () {
@@ -77,9 +74,9 @@ export default class TopologyLocation {
   }
 
   isAnyNull () {
-    for (let i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++)
       if (this.location[i] === Location.NONE) return true
-    }
+
     return false
   }
 
@@ -103,9 +100,9 @@ export default class TopologyLocation {
   }
 
   allPositionsEqual (loc) {
-    for (let i = 0; i < this.location.length; i++) {
+    for (let i = 0; i < this.location.length; i++)
       if (this.location[i] !== loc) return false
-    }
+
     return true
   }
 
@@ -130,11 +127,9 @@ TopologyLocation.constructor_ = function () {
     } else if (arguments[0] instanceof TopologyLocation) {
       const gl = arguments[0]
       this.init(gl.location.length)
-      if (gl !== null) {
-        for (let i = 0; i < this.location.length; i++) {
+      if (gl !== null)
+        for (let i = 0; i < this.location.length; i++)
           this.location[i] = gl.location[i]
-        }
-      }
     }
   } else if (arguments.length === 3) {
     const on = arguments[0]; const left = arguments[1]; const right = arguments[2]

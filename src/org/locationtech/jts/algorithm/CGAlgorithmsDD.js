@@ -44,9 +44,9 @@ export default class CGAlgorithmsDD {
     const w = px.multiply(qy).selfSubtract(qx.multiply(py))
     const xInt = x.selfDivide(w).doubleValue()
     const yInt = y.selfDivide(w).doubleValue()
-    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
+    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt))
       return null
-    }
+
     return new Coordinate(xInt, yInt)
   }
 
@@ -55,25 +55,25 @@ export default class CGAlgorithmsDD {
     const detleft = (pa.x - pc.x) * (pb.y - pc.y)
     const detright = (pa.y - pc.y) * (pb.x - pc.x)
     const det = detleft - detright
-    if (detleft > 0.0) {
+    if (detleft > 0.0)
       if (detright <= 0.0) {
         return CGAlgorithmsDD.signum(det)
       } else {
         detsum = detleft + detright
       }
-    } else if (detleft < 0.0) {
+    else if (detleft < 0.0)
       if (detright >= 0.0) {
         return CGAlgorithmsDD.signum(det)
       } else {
         detsum = -detleft - detright
       }
-    } else {
+    else
       return CGAlgorithmsDD.signum(det)
-    }
+
     const errbound = CGAlgorithmsDD.DP_SAFE_EPSILON * detsum
-    if (det >= errbound || -det >= errbound) {
+    if (det >= errbound || -det >= errbound)
       return CGAlgorithmsDD.signum(det)
-    }
+
     return 2
   }
 

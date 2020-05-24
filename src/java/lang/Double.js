@@ -7,9 +7,10 @@ Double.isInfinite = n => !Number.isFinite(n)
 Double.MAX_VALUE = Number.MAX_VALUE
 
 if (typeof Float64Array === 'function' &&
-  typeof Int32Array === 'function') {
-  // Simple and fast conversion between double and long bits
-  // using TypedArrays and ArrayViewBuffers.
+  typeof Int32Array === 'function')
+// Simple and fast conversion between double and long bits
+// using TypedArrays and ArrayViewBuffers.
+
   (function () {
     const EXP_BIT_MASK = 0x7ff00000
     const SIGNIF_BIT_MASK = 0xFFFFF
@@ -35,9 +36,10 @@ if (typeof Float64Array === 'function' &&
       return f64buf[0]
     }
   })()
-} else {
-  // More complex and slower fallback implementation using
-  // math and the divide-by-two and multiply-by-two algorithms.
+else
+// More complex and slower fallback implementation using
+// math and the divide-by-two and multiply-by-two algorithms.
+
   (function () {
     const BIAS = 1023
     const log2 = Math.log2
@@ -46,9 +48,7 @@ if (typeof Float64Array === 'function' &&
     const MAX_REL_BITS_INTEGER = (function () {
       for (let i = 53; i > 0; i--) {
         const bits = pow(2, i) - 1
-        if (floor(log2(bits)) + 1 === i) {
-          return bits
-        }
+        if (floor(log2(bits)) + 1 === i) return bits
       }
       return 0
     })()
@@ -97,9 +97,10 @@ if (typeof Float64Array === 'function' &&
       // Process the integer part if it's greater than 1. Zero requires
       // no bits at all, 1 represents the implicit (hidden) leading bit,
       // which must not be written as well.
-      if (x > 1) {
-        // If we can reliably determine the number of bits required for
-        // the integer part,
+      if (x > 1)
+      // If we can reliably determine the number of bits required for
+      // the integer part,
+
         if (x <= MAX_REL_BITS_INTEGER) {
           // get the number of bits required to represent it minus 1
           bits = floor(log2(x)) /* + 1 - 1 */
@@ -141,25 +142,23 @@ if (typeof Float64Array === 'function' &&
           while (true) {
             y = f / 2
             f = floor(y)
-            if (f === 0) {
-              // We just found the most signigicant (1-)bit, which
-              // is the implicit bit and so, not stored in the double
-              // value. So, it's time to leave the loop.
+            if (f === 0)
+            // We just found the most signigicant (1-)bit, which
+            // is the implicit bit and so, not stored in the double
+            // value. So, it's time to leave the loop.
               break
-            }
+
             // Count this bit, shift low and carry bit #0 from high.
             bits++
             low >>>= 1
             low |= (high & 0x1) << 31
             // Shift high.
             high >>>= 1
-            if (y !== f) {
-              // Copy the new bit into bit #19 in high (only required if 1).
+            if (y !== f)
+            // Copy the new bit into bit #19 in high (only required if 1).
               high |= 0x80000
-            }
           }
         }
-      }
 
       // Bias the exponent.
       exp = bits + BIAS
@@ -231,11 +230,10 @@ if (typeof Float64Array === 'function' &&
             // When y is exactly 1, there is no remainder and the process
             // is complete (the number is finite). Copy the bits from
             // 'buffer' f into either low or high and exit the loop.
-            if (bits < 20) {
+            if (bits < 20)
               high |= (f << (20 - bits))
-            } else if (bits < 52) {
-              low |= (f << (52 - bits))
-            }
+            else if (bits < 52) low |= (f << (52 - bits))
+
             break
           }
         }
@@ -264,33 +262,31 @@ if (typeof Float64Array === 'function' &&
       fract = 0
       x = (1 << 19)
       for (i = 1; i <= 20; i++) {
-        if (high & x) {
-          fract += pow(2, -i)
-        }
+        if (high & x) fract += pow(2, -i)
+
         x >>>= 1
       }
       // Continue with all 32 bits from the low word.
       x = (1 << 31)
       for (i = 21; i <= 52; i++) {
-        if (low & x) {
-          fract += pow(2, -i)
-        }
+        if (low & x) fract += pow(2, -i)
+
         x >>>= 1
       }
 
       // Handle special values.
       // Check for zero and subnormal values.
       if (exp === -BIAS) {
-        if (fract === 0) {
-          // +/-1.0 * 0.0 => +/-0.0
+        if (fract === 0)
+        // +/-1.0 * 0.0 => +/-0.0
           return sign * 0
-        }
+
         exp = -1022
       } else if (exp === BIAS + 1) { // Check for +/-Infinity or NaN.
-        if (fract === 0) {
-          // +/-1.0 / 0.0 => +/-Infinity
+        if (fract === 0)
+        // +/-1.0 / 0.0 => +/-Infinity
           return sign / 0
-        }
+
         return NaN
       } else { // Nothing special? Seems to be a normal number.
         // Add the implicit leading bit (1*2^0).
@@ -300,4 +296,3 @@ if (typeof Float64Array === 'function' &&
       return sign * fract * pow(2, exp)
     }
   })()
-}

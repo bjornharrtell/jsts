@@ -8,17 +8,17 @@ export default class HCoordinate {
 
   getY () {
     const a = this.y / this.w
-    if (Double.isNaN(a) || Double.isInfinite(a)) {
+    if (Double.isNaN(a) || Double.isInfinite(a))
       throw new NotRepresentableException()
-    }
+
     return a
   }
 
   getX () {
     const a = this.x / this.w
-    if (Double.isNaN(a) || Double.isInfinite(a)) {
+    if (Double.isNaN(a) || Double.isInfinite(a))
       throw new NotRepresentableException()
-    }
+
     return a
   }
 

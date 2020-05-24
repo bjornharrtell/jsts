@@ -26,9 +26,9 @@ export default class CGAlgorithms3D {
       s = (b * e - c * d) / denom
       t = (a * e - b * d) / denom
     }
-    if (s < 0) return CGAlgorithms3D.distancePointSegment(A, C, D); else if (s > 1) return CGAlgorithms3D.distancePointSegment(B, C, D); else if (t < 0) return CGAlgorithms3D.distancePointSegment(C, A, B); else if (t > 1) {
+    if (s < 0) return CGAlgorithms3D.distancePointSegment(A, C, D); else if (s > 1) return CGAlgorithms3D.distancePointSegment(B, C, D); else if (t < 0) return CGAlgorithms3D.distancePointSegment(C, A, B); else if (t > 1)
       return CGAlgorithms3D.distancePointSegment(D, A, B)
-    }
+
     const x1 = A.x + s * (B.x - A.x)
     const y1 = A.y + s * (B.y - A.y)
     const z1 = A.getZ() + s * (B.getZ() - A.getZ())

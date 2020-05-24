@@ -11,9 +11,9 @@ export default class OverlayResultValidator {
   }
 
   static hasLocation (location, loc) {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++)
       if (location[i] === loc) return true
-    }
+
     return false
   }
 

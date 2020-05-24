@@ -59,34 +59,26 @@ export default class Geometry {
     if (arguments.length === 1) {
       const o = arguments[0]
       other = o
-      if (this.getTypeCode() !== other.getTypeCode()) {
-        return this.getTypeCode() - other.getTypeCode()
-      }
-      if (this.isEmpty() && other.isEmpty()) {
-        return 0
-      }
-      if (this.isEmpty()) {
-        return -1
-      }
-      if (other.isEmpty()) {
-        return 1
-      }
+      if (this.getTypeCode() !== other.getTypeCode()) return this.getTypeCode() - other.getTypeCode()
+
+      if (this.isEmpty() && other.isEmpty()) return 0
+
+      if (this.isEmpty()) return -1
+
+      if (other.isEmpty()) return 1
+
       return this.compareToSameClass(o)
     } else if (arguments.length === 2) {
       const o = arguments[0]; const comp = arguments[1]
       other = o
-      if (this.getTypeCode() !== other.getTypeCode()) {
-        return this.getTypeCode() - other.getTypeCode()
-      }
-      if (this.isEmpty() && other.isEmpty()) {
-        return 0
-      }
-      if (this.isEmpty()) {
-        return -1
-      }
-      if (other.isEmpty()) {
-        return 1
-      }
+      if (this.getTypeCode() !== other.getTypeCode()) return this.getTypeCode() - other.getTypeCode()
+
+      if (this.isEmpty() && other.isEmpty()) return 0
+
+      if (this.isEmpty()) return -1
+
+      if (other.isEmpty()) return 1
+
       return this.compareToSameClass(o, comp)
     }
   }
@@ -104,15 +96,12 @@ export default class Geometry {
   }
 
   checkNotGeometryCollection (g) {
-    if (g.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION) {
-      throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
-    }
+    if (g.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION) throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
   }
 
   equal (a, b, tolerance) {
-    if (tolerance === 0) {
-      return a.equals(b)
-    }
+    if (tolerance === 0) return a.equals(b)
+
     return a.distance(b) <= tolerance
   }
 
@@ -124,9 +113,8 @@ export default class Geometry {
 
   reverse () {
     const res = this.reverseInternal()
-    if (this.envelope != null) {
-      res.envelope = this.envelope.copy()
-    }
+    if (this.envelope != null) res.envelope = this.envelope.copy()
+
     res.setSRID(this.getSRID())
     return res
   }
@@ -144,9 +132,8 @@ export default class Geometry {
   }
 
   getEnvelopeInternal () {
-    if (this._envelope === null) {
-      this._envelope = this.computeEnvelopeInternal()
-    }
+    if (this._envelope === null) this._envelope = this.computeEnvelopeInternal()
+
     return new Envelope(this._envelope)
   }
 
@@ -165,16 +152,12 @@ export default class Geometry {
       const aElement = i.next()
       const bElement = j.next()
       const comparison = aElement.compareTo(bElement)
-      if (comparison !== 0) {
-        return comparison
-      }
+      if (comparison !== 0) return comparison
     }
-    if (i.hasNext()) {
-      return 1
-    }
-    if (j.hasNext()) {
-      return -1
-    }
+    if (i.hasNext()) return 1
+
+    if (j.hasNext()) return -1
+
     return 0
   }
 
@@ -187,9 +170,8 @@ export default class Geometry {
   }
 
   isGeometryCollectionOrDerived () {
-    if (this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION || this.getTypeCode() === Geometry.TYPECODE_MULTIPOINT || this.getTypeCode() === Geometry.TYPECODE_MULTILINESTRING || this.getTypeCode() === Geometry.TYPECODE_MULTIPOLYGON) {
-      return true
-    }
+    if (this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION || this.getTypeCode() === Geometry.TYPECODE_MULTIPOINT || this.getTypeCode() === Geometry.TYPECODE_MULTILINESTRING || this.getTypeCode() === Geometry.TYPECODE_MULTIPOLYGON) return true
+
     return false
   }
 
@@ -202,25 +184,21 @@ export default class Geometry {
   }
 
   static hasNonEmptyElements (geometries) {
-    for (let i = 0; i < geometries.length; i++) {
-      if (!geometries[i].isEmpty()) {
-        return true
-      }
-    }
+    for (let i = 0; i < geometries.length; i++)
+      if (!geometries[i].isEmpty()) return true
+
     return false
   }
 
   static hasNullElements (array) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i] === null) {
-        return true
-      }
-    }
+    for (let i = 0; i < array.length; i++)
+      if (array[i] === null) return true
+
     return false
   }
 };
 Geometry.constructor_ = function (factory) {
-  if (!factory) { return }
+  if (!factory) return
   this._envelope = null
   this._userData = null
   this._factory = factory

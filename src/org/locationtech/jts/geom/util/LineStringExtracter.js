@@ -17,11 +17,11 @@ export default class LineStringExtracter {
       return LineStringExtracter.getLines(geom, new ArrayList())
     } else if (arguments.length === 2) {
       const geom = arguments[0]; const lines = arguments[1]
-      if (geom instanceof LineString) {
+      if (geom instanceof LineString)
         lines.add(geom)
-      } else if (geom instanceof GeometryCollection) {
+      else if (geom instanceof GeometryCollection)
         geom.apply(new LineStringExtracter(lines))
-      }
+
       return lines
     }
   }

@@ -48,9 +48,8 @@ export default class LineStringSnapper {
     for (let i = 0; i < distinctPtCount; i++) {
       const snapPt = snapPts[i]
       const index = this.findSegmentIndexToSnap(snapPt, srcCoords)
-      if (index >= 0) {
+      if (index >= 0)
         srcCoords.add(index + 1, new Coordinate(snapPt), false)
-      }
     }
   }
 
@@ -60,9 +59,9 @@ export default class LineStringSnapper {
     for (let i = 0; i < srcCoords.size() - 1; i++) {
       this._seg.p0 = srcCoords.get(i)
       this._seg.p1 = srcCoords.get(i + 1)
-      if (this._seg.p0.equals2D(snapPt) || this._seg.p1.equals2D(snapPt)) {
+      if (this._seg.p0.equals2D(snapPt) || this._seg.p1.equals2D(snapPt))
         if (this._allowSnappingToSourceVertices) continue; else return -1
-      }
+
       const dist = this._seg.distance(snapPt)
       if (dist < this._snapTolerance && dist < minDist) {
         minDist = dist

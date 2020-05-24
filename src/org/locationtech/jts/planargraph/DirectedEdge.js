@@ -11,9 +11,9 @@ export default class DirectedEdge extends GraphComponent {
 
   static toEdges (dirEdges) {
     const edges = new ArrayList()
-    for (let i = dirEdges.iterator(); i.hasNext();) {
+    for (let i = dirEdges.iterator(); i.hasNext();)
       edges.add(i.next()._parentEdge)
-    }
+
     return edges
   }
 

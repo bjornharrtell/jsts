@@ -32,21 +32,21 @@ export default class BufferDistanceValidator {
     this._minValidDistance = posDistance - distDelta
     this._maxValidDistance = posDistance + distDelta
     if (this._input.isEmpty() || this._result.isEmpty()) return true
-    if (this._bufDistance > 0.0) {
+    if (this._bufDistance > 0.0)
       this.checkPositiveValid()
-    } else {
+    else
       this.checkNegativeValid()
-    }
-    if (BufferDistanceValidator.VERBOSE) {
+
+    if (BufferDistanceValidator.VERBOSE)
       System.out.println('Min Dist= ' + this._minDistanceFound + '  err= ' + (1.0 - this._minDistanceFound / this._bufDistance) + '  Max Dist= ' + this._maxDistanceFound + '  err= ' + (this._maxDistanceFound / this._bufDistance - 1.0))
-    }
+
     return this._isValid
   }
 
   checkNegativeValid () {
-    if (!(this._input instanceof Polygon || this._input instanceof MultiPolygon || this._input instanceof GeometryCollection)) {
+    if (!(this._input instanceof Polygon || this._input instanceof MultiPolygon || this._input instanceof GeometryCollection))
       return null
-    }
+
     const inputCurve = this.getPolygonLines(this._input)
     this.checkMinimumDistance(inputCurve, this._result, this._minValidDistance)
     if (!this._isValid) return null

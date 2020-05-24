@@ -10,11 +10,11 @@ export default class Plane3D {
     const xmag = Math.abs(this._normal.getX())
     const ymag = Math.abs(this._normal.getY())
     const zmag = Math.abs(this._normal.getZ())
-    if (xmag > ymag) {
+    if (xmag > ymag)
       if (xmag > zmag) return Plane3D.YZ_PLANE; else return Plane3D.XY_PLANE
-    } else if (zmag > ymag) {
+    else if (zmag > ymag)
       return Plane3D.XY_PLANE
-    }
+
     return Plane3D.XZ_PLANE
   }
 

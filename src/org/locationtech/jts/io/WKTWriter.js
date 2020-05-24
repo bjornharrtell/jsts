@@ -48,9 +48,7 @@ export default class WKTWriter {
    * @private
    */
   static toLineString (p0, p1) {
-    if (arguments.length !== 2) {
-      throw new Error('Not implemented')
-    }
+    if (arguments.length !== 2) throw new Error('Not implemented')
 
     return 'LINESTRING ( ' + p0.x + ' ' + p0.y + ', ' + p1.x + ' ' + p1.y + ' )'
   }

@@ -14,9 +14,9 @@ export default class EdgeRing {
   computeRing () {
     if (this._ring !== null) return null
     const coord = new Array(this._pts.size()).fill(null)
-    for (let i = 0; i < this._pts.size(); i++) {
+    for (let i = 0; i < this._pts.size(); i++)
       coord[i] = this._pts.get(i)
-    }
+
     this._ring = this._geometryFactory.createLinearRing(coord)
     this._isHole = Orientation.isCCW(this._ring.getCoordinates())
   }
@@ -68,15 +68,13 @@ export default class EdgeRing {
     if (isForward) {
       let startIndex = 1
       if (isFirstEdge) startIndex = 0
-      for (let i = startIndex; i < edgePts.length; i++) {
+      for (let i = startIndex; i < edgePts.length; i++)
         this._pts.add(edgePts[i])
-      }
     } else {
       let startIndex = edgePts.length - 2
       if (isFirstEdge) startIndex = edgePts.length - 1
-      for (let i = startIndex; i >= 0; i--) {
+      for (let i = startIndex; i >= 0; i--)
         this._pts.add(edgePts[i])
-      }
     }
   }
 
@@ -152,9 +150,9 @@ export default class EdgeRing {
 
   toPolygon (geometryFactory) {
     const holeLR = new Array(this._holes.size()).fill(null)
-    for (let i = 0; i < this._holes.size(); i++) {
+    for (let i = 0; i < this._holes.size(); i++)
       holeLR[i] = this._holes.get(i).getLinearRing()
-    }
+
     const poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
     return poly
   }

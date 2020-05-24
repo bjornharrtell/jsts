@@ -72,7 +72,9 @@ export default class MinimumDiameter {
       this._minWidthPt = this._convexHullPts[0]
       this._minBaseSeg.p0 = this._convexHullPts[0]
       this._minBaseSeg.p1 = this._convexHullPts[1]
-    } else this.computeConvexRingMinDiameter(this._convexHullPts)
+    } else {
+      this.computeConvexRingMinDiameter(this._convexHullPts)
+    }
   }
 
   computeConvexRingMinDiameter (pts) {
@@ -88,7 +90,9 @@ export default class MinimumDiameter {
 
   computeMinimumDiameter () {
     if (this._minWidthPt !== null) return null
-    if (this._isConvex) this.computeWidthConvex(this._inputGeom); else {
+    if (this._isConvex) {
+      this.computeWidthConvex(this._inputGeom)
+    } else {
       const convexGeom = new ConvexHull(this._inputGeom).getConvexHull()
       this.computeWidthConvex(convexGeom)
     }
@@ -122,9 +126,9 @@ export default class MinimumDiameter {
   getMinimumRectangle () {
     this.computeMinimumDiameter()
     if (this._minWidth === 0.0) {
-      if (this._minBaseSeg.p0.equals2D(this._minBaseSeg.p1)) {
+      if (this._minBaseSeg.p0.equals2D(this._minBaseSeg.p1))
         return this._inputGeom.getFactory().createPoint(this._minBaseSeg.p0)
-      }
+
       return this._minBaseSeg.toGeometry(this._inputGeom.getFactory())
     }
     const dx = this._minBaseSeg.p1.x - this._minBaseSeg.p0.x
