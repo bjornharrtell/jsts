@@ -21,6 +21,7 @@ export default class ConnectedInteriorTester {
   }
 
   visitInteriorRing (ring, graph) {
+    if (ring.isEmpty()) return null
     const pts = ring.getCoordinates()
     const pt0 = pts[0]
     const pt1 = ConnectedInteriorTester.findDifferentPoint(pts, pt0)

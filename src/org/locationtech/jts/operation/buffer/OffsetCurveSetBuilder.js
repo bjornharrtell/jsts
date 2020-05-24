@@ -21,6 +21,24 @@ export default class OffsetCurveSetBuilder {
     OffsetCurveSetBuilder.constructor_.apply(this, arguments)
   }
 
+  addRingSide (coord, offsetDistance, side, cwLeftLoc, cwRightLoc) {
+    if (offsetDistance === 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) return null
+    let leftLoc = cwLeftLoc
+    let rightLoc = cwRightLoc
+    if (coord.length >= LinearRing.MINIMUM_VALID_SIZE && Orientation.isCCW(coord)) {
+      leftLoc = cwRightLoc
+      rightLoc = cwLeftLoc
+      side = Position.opposite(side)
+    }
+    const curve = this._curveBuilder.getRingCurve(coord, side, offsetDistance)
+    this.addCurve(curve, leftLoc, rightLoc)
+  }
+
+  addRingBothSides (coord, distance) {
+    this.addRingSide(coord, distance, Position.LEFT, Location.EXTERIOR, Location.INTERIOR)
+    this.addRingSide(coord, distance, Position.RIGHT, Location.INTERIOR, Location.EXTERIOR)
+  }
+
   addPoint (p) {
     if (this._distance <= 0.0) return null
     const coord = p.getCoordinates()
@@ -39,12 +57,12 @@ export default class OffsetCurveSetBuilder {
     const shellCoord = CoordinateArrays.removeRepeatedPoints(shell.getCoordinates())
     if (this._distance < 0.0 && this.isErodedCompletely(shell, this._distance)) return null
     if (this._distance <= 0.0 && shellCoord.length < 3) return null
-    this.addPolygonRing(shellCoord, offsetDistance, offsetSide, Location.EXTERIOR, Location.INTERIOR)
+    this.addRingSide(shellCoord, offsetDistance, offsetSide, Location.EXTERIOR, Location.INTERIOR)
     for (let i = 0; i < p.getNumInteriorRing(); i++) {
       const hole = p.getInteriorRingN(i)
       const holeCoord = CoordinateArrays.removeRepeatedPoints(hole.getCoordinates())
       if (this._distance > 0.0 && this.isErodedCompletely(hole, -this._distance)) continue
-      this.addPolygonRing(holeCoord, offsetDistance, Position.opposite(offsetSide), Location.INTERIOR, Location.EXTERIOR)
+      this.addRingSide(holeCoord, offsetDistance, Position.opposite(offsetSide), Location.INTERIOR, Location.EXTERIOR)
     }
   }
 
@@ -56,10 +74,14 @@ export default class OffsetCurveSetBuilder {
   }
 
   addLineString (line) {
-    if (this._distance <= 0.0 && !this._curveBuilder.getBufferParameters().isSingleSided()) return null
+    if (this._curveBuilder.isLineOffsetEmpty(this._distance)) return null
     const coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates())
-    const curve = this._curveBuilder.getLineCurve(coord, this._distance)
-    this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR)
+    if (CoordinateArrays.isRing(coord) && !this._curveBuilder.getBufferParameters().isSingleSided()) {
+      this.addRingBothSides(coord, this._distance)
+    } else {
+      const curve = this._curveBuilder.getLineCurve(coord, this._distance)
+      this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR)
+    }
   }
 
   addCurve (coord, leftLoc, rightLoc) {
@@ -73,19 +95,6 @@ export default class OffsetCurveSetBuilder {
     return this._curveList
   }
 
-  addPolygonRing (coord, offsetDistance, side, cwLeftLoc, cwRightLoc) {
-    if (offsetDistance === 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) return null
-    let leftLoc = cwLeftLoc
-    let rightLoc = cwRightLoc
-    if (coord.length >= LinearRing.MINIMUM_VALID_SIZE && Orientation.isCCW(coord)) {
-      leftLoc = cwRightLoc
-      rightLoc = cwLeftLoc
-      side = Position.opposite(side)
-    }
-    const curve = this._curveBuilder.getRingCurve(coord, side, offsetDistance)
-    this.addCurve(curve, leftLoc, rightLoc)
-  }
-
   add (g) {
     if (g.isEmpty()) return null
     if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getClass().getName())
@@ -93,7 +102,6 @@ export default class OffsetCurveSetBuilder {
 
   isErodedCompletely (ring, bufferDistance) {
     const ringCoord = ring.getCoordinates()
-    const minDiam = 0.0
     if (ringCoord.length < 4) return bufferDistance < 0
     if (ringCoord.length === 4) return this.isTriangleErodedCompletely(ringCoord, bufferDistance)
     const env = ring.getEnvelopeInternal()

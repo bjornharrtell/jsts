@@ -32,6 +32,7 @@ export default class SortedPackedIntervalRTree {
 
   query (min, max, visitor) {
     this.init()
+    if (this._root === null) return null
     this._root.query(min, max, visitor)
   }
 
@@ -46,6 +47,7 @@ export default class SortedPackedIntervalRTree {
 
   init () {
     if (this._root !== null) return null
+    if (this._leaves.size() === 0) return null
     this.buildRoot()
   }
 

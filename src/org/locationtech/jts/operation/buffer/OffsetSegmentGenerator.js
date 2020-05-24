@@ -1,13 +1,12 @@
 import BufferParameters from './BufferParameters'
-import NotRepresentableException from '../../algorithm/NotRepresentableException'
 import Position from '../../geomgraph/Position'
 import Coordinate from '../../geom/Coordinate'
 import Orientation from '../../algorithm/Orientation'
+import Intersection from '../../algorithm/Intersection'
 import OffsetSegmentString from './OffsetSegmentString'
 import LineSegment from '../../geom/LineSegment'
 import Angle from '../../algorithm/Angle'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
-import HCoordinate from '../../algorithm/HCoordinate'
 export default class OffsetSegmentGenerator {
   constructor () {
     OffsetSegmentGenerator.constructor_.apply(this, arguments)
@@ -70,23 +69,15 @@ export default class OffsetSegmentGenerator {
   }
 
   addMitreJoin (p, offset0, offset1, distance) {
-    let isMitreWithinLimit = true
-    let intPt = null
-    try {
-      intPt = HCoordinate.intersection(offset0.p0, offset0.p1, offset1.p0, offset1.p1)
+    const intPt = Intersection.intersection(offset0.p0, offset0.p1, offset1.p0, offset1.p1)
+    if (intPt !== null) {
       const mitreRatio = distance <= 0.0 ? 1.0 : intPt.distance(p) / Math.abs(distance)
-      if (mitreRatio > this._bufParams.getMitreLimit()) isMitreWithinLimit = false
-    } catch (ex) {
-      if (ex instanceof NotRepresentableException) {
-        intPt = new Coordinate(0, 0)
-        isMitreWithinLimit = false
-      } else throw ex
-    } finally {}
-    if (isMitreWithinLimit) {
-      this._segList.addPt(intPt)
-    } else {
-      this.addLimitedMitreJoin(offset0, offset1, distance, this._bufParams.getMitreLimit())
+      if (mitreRatio <= this._bufParams.getMitreLimit()) {
+        this._segList.addPt(intPt)
+        return null
+      }
     }
+    this.addLimitedMitreJoin(offset0, offset1, distance, this._bufParams.getMitreLimit())
   }
 
   addOutsideTurn (orientation, addStartPoint) {
@@ -153,7 +144,6 @@ export default class OffsetSegmentGenerator {
   addLimitedMitreJoin (offset0, offset1, distance, mitreLimit) {
     const basePt = this._seg0.p1
     const ang0 = Angle.angle(basePt, this._seg0.p0)
-    const ang1 = Angle.angle(basePt, this._seg1.p1)
     const angDiff = Angle.angleBetweenOriented(this._seg0.p0, basePt, this._seg1.p1)
     const angDiffHalf = angDiff / 2
     const midAng = Angle.normalize(ang0 + angDiffHalf)
@@ -181,17 +171,13 @@ export default class OffsetSegmentGenerator {
     const totalAngle = Math.abs(startAngle - endAngle)
     const nSegs = Math.trunc(totalAngle / this._filletAngleQuantum + 0.5)
     if (nSegs < 1) return null
-    let initAngle = null; let currAngleInc = null
-    initAngle = 0.0
-    currAngleInc = totalAngle / nSegs
-    let currAngle = initAngle
+    const angleInc = totalAngle / nSegs
     const pt = new Coordinate()
-    while (currAngle < totalAngle) {
-      const angle = startAngle + directionFactor * currAngle
+    for (let i = 0; i < nSegs; i++) {
+      const angle = startAngle + directionFactor * i * angleInc
       pt.x = p.x + radius * Math.cos(angle)
       pt.y = p.y + radius * Math.sin(angle)
       this._segList.addPt(pt)
-      currAngle += currAngleInc
     }
   }
 

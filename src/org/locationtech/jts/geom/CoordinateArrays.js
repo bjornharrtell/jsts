@@ -1,5 +1,5 @@
 import CoordinateList from './CoordinateList'
-import Coordinate from './Coordinate'
+import Coordinates from './Coordinates'
 import MathUtil from '../math/MathUtil'
 import System from '../../../../java/lang/System'
 import Comparator from '../../../../java/util/Comparator'
@@ -62,6 +62,17 @@ export default class CoordinateArrays {
     return coordList.toCoordinateArray()
   }
 
+  static measures (pts) {
+    if (pts === null || pts.length === 0) {
+      return 0
+    }
+    let measures = 0
+    for (const coordinate of pts) {
+      measures = Math.max(measures, Coordinates.measures(coordinate))
+    }
+    return measures
+  }
+
   static hasRepeatedPoints (coord) {
     for (let i = 1; i < coord.length; i++) {
       if (coord[i - 1].equals(coord[i])) {
@@ -106,13 +117,13 @@ export default class CoordinateArrays {
       const coordinates = arguments[0]
       const copy = new Array(coordinates.length).fill(null)
       for (let i = 0; i < coordinates.length; i++) {
-        copy[i] = new Coordinate(coordinates[i])
+        copy[i] = coordinates[i].copy()
       }
       return copy
     } else if (arguments.length === 5) {
       const src = arguments[0]; const srcStart = arguments[1]; const dest = arguments[2]; const destStart = arguments[3]; const length = arguments[4]
       for (let i = 0; i < length; i++) {
-        dest[destStart + i] = new Coordinate(src[srcStart + i])
+        dest[destStart + i] = src[srcStart + i].copy()
       }
     }
   }
@@ -136,6 +147,17 @@ export default class CoordinateArrays {
 
   static toCoordinateArray (coordList) {
     return coordList.toArray(CoordinateArrays.coordArrayType)
+  }
+
+  static dimension (pts) {
+    if (pts === null || pts.length === 0) {
+      return 3
+    }
+    let dimension = 0
+    for (const coordinate of pts) {
+      dimension = Math.max(dimension, Coordinates.dimension(coordinate))
+    }
+    return dimension
   }
 
   static atLeastNCoordinatesOrNothing (n, c) {

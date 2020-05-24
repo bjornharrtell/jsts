@@ -6,24 +6,6 @@ export default class HCoordinate {
     HCoordinate.constructor_.apply(this, arguments)
   }
 
-  static intersection (p1, p2, q1, q2) {
-    const px = p1.y - p2.y
-    const py = p2.x - p1.x
-    const pw = p1.x * p2.y - p2.x * p1.y
-    const qx = q1.y - q2.y
-    const qy = q2.x - q1.x
-    const qw = q1.x * q2.y - q2.x * q1.y
-    const x = py * qw - qy * pw
-    const y = qx * pw - px * qw
-    const w = px * qy - qx * py
-    const xInt = x / w
-    const yInt = y / w
-    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
-      throw new NotRepresentableException()
-    }
-    return new Coordinate(xInt, yInt)
-  }
-
   getY () {
     const a = this.y / this.w
     if (Double.isNaN(a) || Double.isInfinite(a)) {

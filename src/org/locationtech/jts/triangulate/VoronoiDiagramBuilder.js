@@ -33,10 +33,12 @@ export default class VoronoiDiagramBuilder {
   create () {
     if (this._subdiv !== null) return null
     const siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
-    this._diagramEnv = siteEnv
-    const expandBy = Math.max(this._diagramEnv.getWidth(), this._diagramEnv.getHeight())
-    this._diagramEnv.expandBy(expandBy)
-    if (this._clipEnv !== null) this._diagramEnv.expandToInclude(this._clipEnv)
+    this._diagramEnv = this._clipEnv
+    if (this._diagramEnv === null) {
+      this._diagramEnv = siteEnv
+      const expandBy = this._diagramEnv.getDiameter()
+      this._diagramEnv.expandBy(expandBy)
+    }
     const vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords)
     this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance)
     const triangulator = new IncrementalDelaunayTriangulator(this._subdiv)

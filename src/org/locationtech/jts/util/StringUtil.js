@@ -1,6 +1,5 @@
 import PrintStream from '../../../../java/io/PrintStream'
 import StringReader from '../../../../java/io/StringReader'
-import DecimalFormat from '../../../../java/text/DecimalFormat'
 import System from '../../../../java/lang/System'
 import ArrayList from '../../../../java/util/ArrayList'
 import ByteArrayOutputStream from '../../../../java/io/ByteArrayOutputStream'
@@ -45,6 +44,10 @@ export default class StringUtil {
     }
   }
 
+  static spaces (n) {
+    return StringUtil.chars(' ', n)
+  }
+
   static split (s, separator) {
     const separatorlen = separator.length
     const tokenList = new ArrayList()
@@ -64,17 +67,6 @@ export default class StringUtil {
     return res
   }
 
-  static toString () {
-    if (arguments.length === 1 && typeof arguments[0] === 'number') {
-      const d = arguments[0]
-      return StringUtil.SIMPLE_ORDINATE_FORMAT.format(d)
-    }
-  }
-
-  static spaces (n) {
-    return StringUtil.chars(' ', n)
-  }
-
   getClass () {
     return StringUtil
   }
@@ -85,4 +77,3 @@ export default class StringUtil {
 }
 StringUtil.constructor_ = function () {}
 StringUtil.NEWLINE = System.getProperty('line.separator')
-StringUtil.SIMPLE_ORDINATE_FORMAT = new DecimalFormat('0.#')

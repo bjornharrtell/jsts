@@ -5,28 +5,28 @@ export default class Vector3D {
   }
 
   static length (v) {
-    return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
+    return Math.sqrt(v.x * v.x + v.y * v.y + v.getZ() * v.getZ())
   }
 
   static dot () {
     if (arguments.length === 2) {
       const v1 = arguments[0]; const v2 = arguments[1]
-      return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z
+      return v1.x * v2.x + v1.y * v2.y + v1.getZ() * v2.getZ()
     } else if (arguments.length === 4) {
       const A = arguments[0]; const B = arguments[1]; const C = arguments[2]; const D = arguments[3]
       const ABx = B.x - A.x
       const ABy = B.y - A.y
-      const ABz = B.z - A.z
+      const ABz = B.getZ() - A.getZ()
       const CDx = D.x - C.x
       const CDy = D.y - C.y
-      const CDz = D.z - C.z
+      const CDz = D.getZ() - C.getZ()
       return ABx * CDx + ABy * CDy + ABz * CDz
     }
   }
 
   static normalize (v) {
     const len = Vector3D.length(v)
-    return new Coordinate(v.x / len, v.y / len, v.z / len)
+    return new Coordinate(v.x / len, v.y / len, v.getZ() / len)
   }
 
   static create () {
@@ -45,6 +45,18 @@ export default class Vector3D {
 
   getZ () {
     return this._z
+  }
+
+  subtract (v) {
+    return Vector3D.create(this._x - v._x, this._y - v._y, this._z - v._z)
+  }
+
+  equals (o) {
+    if (!(o instanceof Vector3D)) {
+      return false
+    }
+    const v = o
+    return this._x === v._x && this._y === v._y && this._z === v._z
   }
 
   normalize () {
@@ -73,6 +85,18 @@ export default class Vector3D {
     return this._y
   }
 
+  add (v) {
+    return Vector3D.create(this._x + v._x, this._y + v._y, this._z + v._z)
+  }
+
+  hashCode () {
+    let result = 17
+    result = 37 * result + Coordinate.hashCode(this._x)
+    result = 37 * result + Coordinate.hashCode(this._y)
+    result = 37 * result + Coordinate.hashCode(this._z)
+    return result
+  }
+
   getClass () {
     return Vector3D
   }
@@ -89,12 +113,12 @@ Vector3D.constructor_ = function () {
     const v = arguments[0]
     this._x = v.x
     this._y = v.y
-    this._z = v.z
+    this._z = v.getZ()
   } else if (arguments.length === 2) {
     const from = arguments[0]; const to = arguments[1]
     this._x = to.x - from.x
     this._y = to.y - from.y
-    this._z = to.z - from.z
+    this._z = to.getZ() - from.getZ()
   } else if (arguments.length === 3) {
     const x = arguments[0]; const y = arguments[1]; const z = arguments[2]
     this._x = x

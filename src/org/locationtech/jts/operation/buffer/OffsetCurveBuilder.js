@@ -105,8 +105,7 @@ export default class OffsetCurveBuilder {
 
   getLineCurve (inputPts, distance) {
     this._distance = distance
-    if (distance < 0.0 && !this._bufParams.isSingleSided()) return null
-    if (distance === 0.0) return null
+    if (this.isLineOffsetEmpty(distance)) return null
     const posDistance = Math.abs(distance)
     const segGen = this.getSegGen(posDistance)
     if (inputPts.length <= 1) {
@@ -160,6 +159,12 @@ export default class OffsetCurveBuilder {
       }
     }
     segGen.addLastSegment()
+  }
+
+  isLineOffsetEmpty (distance) {
+    if (distance === 0.0) return true
+    if (distance < 0.0 && !this._bufParams.isSingleSided()) return true
+    return false
   }
 
   getSegGen (distance) {

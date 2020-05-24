@@ -8,6 +8,14 @@ export default class MultiPoint extends GeometryCollection {
     MultiPoint.constructor_.apply(this, arguments)
   }
 
+  copyInternal () {
+    const points = new Array(this._geometries.length).fill(null)
+    for (let i = 0; i < points.length; i++) {
+      points[i] = this._geometries[i].copy()
+    }
+    return new MultiPoint(points, this._factory)
+  }
+
   isValid () {
     return true
   }
@@ -49,14 +57,6 @@ export default class MultiPoint extends GeometryCollection {
     return Geometry.TYPENAME_MULTIPOINT
   }
 
-  copy () {
-    const points = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < points.length; i++) {
-      points[i] = this._geometries[i].copy()
-    }
-    return new MultiPoint(points, this._factory)
-  }
-
   getClass () {
     return MultiPoint
   }
@@ -69,4 +69,3 @@ MultiPoint.constructor_ = function () {
   const points = arguments[0]; const factory = arguments[1]
   GeometryCollection.constructor_.call(this, points, factory)
 }
-MultiPoint.serialVersionUID = -8048474874175355449

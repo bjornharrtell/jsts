@@ -1,9 +1,7 @@
 import Geometry from '../Geometry'
-import hasInterface from '../../../../../hasInterface'
 import GeometryCollection from '../GeometryCollection'
 import ArrayList from '../../../../../java/util/ArrayList'
 import GeometryFilter from '../GeometryFilter'
-import List from '../../../../../java/util/List'
 export default class GeometryExtracter {
   constructor () {
     GeometryExtracter.constructor_.apply(this, arguments)
@@ -20,18 +18,13 @@ export default class GeometryExtracter {
       const geom = arguments[0]; const geometryType = arguments[1]
       return GeometryExtracter.extract(geom, geometryType, new ArrayList())
     } else if (arguments.length === 3) {
-      if (hasInterface(arguments[2], List) && (arguments[0] instanceof Geometry && typeof arguments[1] === 'string')) {
-        const geom = arguments[0]; const geometryType = arguments[1]; const list = arguments[2]
-        if (geom.getGeometryType() === geometryType) {
-          list.add(geom)
-        } else if (geom instanceof GeometryCollection) {
-          geom.apply(new GeometryExtracter(geometryType, list))
-        }
-        return list
-      } else if (hasInterface(arguments[2], List) && (arguments[0] instanceof Geometry && arguments[1] instanceof Class)) {
-        const geom = arguments[0]; const clz = arguments[1]; const list = arguments[2]
-        return GeometryExtracter.extract(geom, GeometryExtracter.toGeometryType(clz), list)
+      const geom = arguments[0]; const geometryType = arguments[1]; const list = arguments[2]
+      if (geom.getGeometryType() === geometryType) {
+        list.add(geom)
+      } else if (geom instanceof GeometryCollection) {
+        geom.apply(new GeometryExtracter(geometryType, list))
       }
+      return list
     }
   }
 

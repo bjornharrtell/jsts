@@ -9,13 +9,13 @@ export default class FacetSequenceTreeBuilder {
     FacetSequenceTreeBuilder.constructor_.apply(this, arguments)
   }
 
-  static addFacetSequences (pts, sections) {
+  static addFacetSequences (geom, pts, sections) {
     let i = 0
     const size = pts.size()
     while (i <= size - 1) {
       let end = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE + 1
       if (end >= size - 1) end = size
-      const sect = new FacetSequence(pts, i, end)
+      const sect = new FacetSequence(geom, pts, i, end)
       sections.add(sect)
       i = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE
     }
@@ -32,10 +32,10 @@ export default class FacetSequenceTreeBuilder {
         let seq = null
         if (geom instanceof LineString) {
           seq = geom.getCoordinateSequence()
-          FacetSequenceTreeBuilder.addFacetSequences(seq, sections)
+          FacetSequenceTreeBuilder.addFacetSequences(geom, seq, sections)
         } else if (geom instanceof Point) {
           seq = geom.getCoordinateSequence()
-          FacetSequenceTreeBuilder.addFacetSequences(seq, sections)
+          FacetSequenceTreeBuilder.addFacetSequences(geom, seq, sections)
         }
       }
     })())

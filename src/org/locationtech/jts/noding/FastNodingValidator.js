@@ -2,7 +2,7 @@ import WKTWriter from '../io/WKTWriter'
 import MCIndexNoder from './MCIndexNoder'
 import TopologyException from '../geom/TopologyException'
 import RobustLineIntersector from '../algorithm/RobustLineIntersector'
-import InteriorIntersectionFinder from './InteriorIntersectionFinder'
+import NodingIntersectionFinder from './NodingIntersectionFinder'
 export default class FastNodingValidator {
   constructor () {
     FastNodingValidator.constructor_.apply(this, arguments)
@@ -35,7 +35,7 @@ export default class FastNodingValidator {
 
   checkInteriorIntersections () {
     this._isValid = true
-    this._segInt = new InteriorIntersectionFinder(this._li)
+    this._segInt = new NodingIntersectionFinder(this._li)
     this._segInt.setFindAllIntersections(this._findAllIntersections)
     const noder = new MCIndexNoder()
     noder.setSegmentIntersector(this._segInt)
@@ -48,7 +48,7 @@ export default class FastNodingValidator {
 
   checkValid () {
     this.execute()
-    if (!this._isValid) throw new TopologyException(this.getErrorMessage(), this._segInt.getInteriorIntersection())
+    if (!this._isValid) throw new TopologyException(this.getErrorMessage(), this._segInt.getIntersection())
   }
 
   getErrorMessage () {

@@ -1,4 +1,4 @@
-import TreeSet from '../../../../java/util/TreeSet'
+import HashSet from '../../../../java/util/HashSet'
 import CoordinateFilter from '../geom/CoordinateFilter'
 import ArrayList from '../../../../java/util/ArrayList'
 export default class UniqueCoordinateArrayFilter {
@@ -15,15 +15,14 @@ export default class UniqueCoordinateArrayFilter {
   }
 
   filter (coord) {
-    if (!this.treeSet.contains(coord)) {
-      this.list.add(coord)
-      this.treeSet.add(coord)
+    if (this._coordSet.add(coord)) {
+      this._list.add(coord)
     }
   }
 
   getCoordinates () {
-    const coordinates = new Array(this.list.size()).fill(null)
-    return this.list.toArray(coordinates)
+    const coordinates = new Array(this._list.size()).fill(null)
+    return this._list.toArray(coordinates)
   }
 
   getClass () {
@@ -35,6 +34,6 @@ export default class UniqueCoordinateArrayFilter {
   }
 }
 UniqueCoordinateArrayFilter.constructor_ = function () {
-  this.treeSet = new TreeSet()
-  this.list = new ArrayList()
+  this._coordSet = new HashSet()
+  this._list = new ArrayList()
 }

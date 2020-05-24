@@ -1,9 +1,9 @@
-import LineString from '../geom/LineString'
 import CoordinateList from '../geom/CoordinateList'
+import hasInterface from '../../../../hasInterface'
 import LinearIterator from './LinearIterator'
+import Lineal from '../geom/Lineal'
 import Assert from '../util/Assert'
 import LinearGeometryBuilder from './LinearGeometryBuilder'
-import MultiLineString from '../geom/MultiLineString'
 export default class ExtractLineByLocation {
   constructor () {
     ExtractLineByLocation.constructor_.apply(this, arguments)
@@ -57,8 +57,7 @@ export default class ExtractLineByLocation {
   }
 
   reverse (linear) {
-    if (linear instanceof LineString) return linear.reverse()
-    if (linear instanceof MultiLineString) return linear.reverse()
+    if (hasInterface(linear, Lineal)) return linear.reverse()
     Assert.shouldNeverReachHere('non-linear geometry encountered')
     return null
   }

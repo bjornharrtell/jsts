@@ -19,8 +19,6 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     if (n < 0) return null
     const n2 = n - 1
     const widthThird = width / 3.0
-    const widthTwoThirds = width * 2.0 / 3.0
-    const widthNinth = width / 9.0
     this.addHoles(n2, originX, originY, widthThird, holeList)
     this.addHoles(n2, originX + widthThird, originY, widthThird, holeList)
     this.addHoles(n2, originX + 2 * widthThird, originY, widthThird, holeList)

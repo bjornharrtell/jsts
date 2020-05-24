@@ -14,6 +14,9 @@ export default class CoordinateSequenceFactory {
       }
     } else if (arguments.length === 2) {
       const size = arguments[0]; const dimension = arguments[1]
+    } else if (arguments.length === 3) {
+      const size = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
+      return this.create(size, dimension)
     }
   }
 

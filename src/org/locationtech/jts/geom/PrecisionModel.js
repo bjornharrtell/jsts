@@ -26,7 +26,7 @@ export default class PrecisionModel {
     const other = o
     const sigDigits = this.getMaximumSignificantDigits()
     const otherSigDigits = other.getMaximumSignificantDigits()
-    return new Integer(sigDigits).compareTo(new Integer(otherSigDigits))
+    return Integer.compare(sigDigits, otherSigDigits)
   }
 
   getScale () {
@@ -124,7 +124,6 @@ Type.constructor_ = function () {
   this._name = name
   Type.nameToTypeMap.put(name, this)
 }
-Type.serialVersionUID = -5528602631731589822
 Type.nameToTypeMap = new HashMap()
 PrecisionModel.Type = Type
 PrecisionModel.constructor_ = function () {
@@ -150,7 +149,6 @@ PrecisionModel.constructor_ = function () {
     }
   }
 }
-PrecisionModel.serialVersionUID = 7777263578777803835
 PrecisionModel.FIXED = new Type('FIXED')
 PrecisionModel.FLOATING = new Type('FLOATING')
 PrecisionModel.FLOATING_SINGLE = new Type('FLOATING SINGLE')

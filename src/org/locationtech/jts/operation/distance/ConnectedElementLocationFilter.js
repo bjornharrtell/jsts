@@ -16,6 +16,7 @@ export default class ConnectedElementLocationFilter {
   }
 
   filter (geom) {
+    if (geom.isEmpty()) return null
     if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this._locations.add(new GeometryLocation(geom, 0, geom.getCoordinate()))
   }
 

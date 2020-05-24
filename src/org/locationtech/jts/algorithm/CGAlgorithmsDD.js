@@ -1,4 +1,5 @@
 import Coordinate from '../geom/Coordinate'
+import Double from '../../../../java/lang/Double'
 import DD from '../math/DD'
 export default class CGAlgorithmsDD {
   constructor () {
@@ -32,20 +33,21 @@ export default class CGAlgorithmsDD {
   }
 
   static intersection (p1, p2, q1, q2) {
-    const denom1 = DD.valueOf(q2.y).selfSubtract(q1.y).selfMultiply(DD.valueOf(p2.x).selfSubtract(p1.x))
-    const denom2 = DD.valueOf(q2.x).selfSubtract(q1.x).selfMultiply(DD.valueOf(p2.y).selfSubtract(p1.y))
-    const denom = denom1.subtract(denom2)
-    const numx1 = DD.valueOf(q2.x).selfSubtract(q1.x).selfMultiply(DD.valueOf(p1.y).selfSubtract(q1.y))
-    const numx2 = DD.valueOf(q2.y).selfSubtract(q1.y).selfMultiply(DD.valueOf(p1.x).selfSubtract(q1.x))
-    const numx = numx1.subtract(numx2)
-    const fracP = numx.selfDivide(denom).doubleValue()
-    const x = DD.valueOf(p1.x).selfAdd(DD.valueOf(p2.x).selfSubtract(p1.x).selfMultiply(fracP)).doubleValue()
-    const numy1 = DD.valueOf(p2.x).selfSubtract(p1.x).selfMultiply(DD.valueOf(p1.y).selfSubtract(q1.y))
-    const numy2 = DD.valueOf(p2.y).selfSubtract(p1.y).selfMultiply(DD.valueOf(p1.x).selfSubtract(q1.x))
-    const numy = numy1.subtract(numy2)
-    const fracQ = numy.selfDivide(denom).doubleValue()
-    const y = DD.valueOf(q1.y).selfAdd(DD.valueOf(q2.y).selfSubtract(q1.y).selfMultiply(fracQ)).doubleValue()
-    return new Coordinate(x, y)
+    const px = new DD(p1.y).selfSubtract(p2.y)
+    const py = new DD(p2.x).selfSubtract(p1.x)
+    const pw = new DD(p1.x).selfMultiply(p2.y).selfSubtract(new DD(p2.x).selfMultiply(p1.y))
+    const qx = new DD(q1.y).selfSubtract(q2.y)
+    const qy = new DD(q2.x).selfSubtract(q1.x)
+    const qw = new DD(q1.x).selfMultiply(q2.y).selfSubtract(new DD(q2.x).selfMultiply(q1.y))
+    const x = py.multiply(qw).selfSubtract(qy.multiply(pw))
+    const y = qx.multiply(pw).selfSubtract(px.multiply(qw))
+    const w = px.multiply(qy).selfSubtract(qx.multiply(py))
+    const xInt = x.selfDivide(w).doubleValue()
+    const yInt = y.selfDivide(w).doubleValue()
+    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) {
+      return null
+    }
+    return new Coordinate(xInt, yInt)
   }
 
   static orientationIndexFilter (pa, pb, pc) {

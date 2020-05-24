@@ -1,4 +1,5 @@
 import Coordinate from '../../geom/Coordinate'
+import Coordinates from '../../geom/Coordinates'
 import CoordinateSequence from '../../geom/CoordinateSequence'
 import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException'
 export default class AxisPlaneCoordinateSequence {
@@ -43,12 +44,16 @@ export default class AxisPlaneCoordinateSequence {
       const index = arguments[0]; const coord = arguments[1]
       coord.x = this.getOrdinate(index, CoordinateSequence.X)
       coord.y = this.getOrdinate(index, CoordinateSequence.Y)
-      coord.z = this.getOrdinate(index, CoordinateSequence.Z)
+      coord.setZ(this.getOrdinate(index, CoordinateSequence.Z))
     }
   }
 
   getCoordinateCopy (i) {
     return new Coordinate(this.getX(i), this.getY(i), this.getZ(i))
+  }
+
+  createCoordinate () {
+    return Coordinates.create(this.getDimension(), this.getMeasures())
   }
 
   getDimension () {

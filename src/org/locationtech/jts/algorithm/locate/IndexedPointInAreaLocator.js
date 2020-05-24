@@ -6,6 +6,7 @@ import LinearRing from '../../geom/LinearRing'
 import SortedPackedIntervalRTree from '../../index/intervalrtree/SortedPackedIntervalRTree'
 import LineSegment from '../../geom/LineSegment'
 import Polygonal from '../../geom/Polygonal'
+import ArrayList from '../../../../../java/util/ArrayList'
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter'
 import ArrayListVisitor from '../../index/ArrayListVisitor'
 import RayCrossingCounter from '../RayCrossingCounter'
@@ -15,6 +16,10 @@ export default class IndexedPointInAreaLocator {
   }
 
   locate (p) {
+    if (this._index === null) {
+      this._index = new IntervalIndexedGeometry(this._geom)
+      this._geom = null
+    }
     const rcc = new RayCrossingCounter(p)
     const visitor = new SegmentVisitor(rcc)
     this._index.query(p.y, p.y, visitor)
@@ -78,11 +83,13 @@ class IntervalIndexedGeometry {
   query () {
     if (arguments.length === 2) {
       const min = arguments[0]; const max = arguments[1]
+      if (this._isEmpty) return new ArrayList()
       const visitor = new ArrayListVisitor()
       this._index.query(min, max, visitor)
       return visitor.getItems()
     } else if (arguments.length === 3) {
       const min = arguments[0]; const max = arguments[1]; const visitor = arguments[2]
+      if (this._isEmpty) return null
       this._index.query(min, max, visitor)
     }
   }
@@ -96,15 +103,17 @@ class IntervalIndexedGeometry {
   }
 }
 IntervalIndexedGeometry.constructor_ = function () {
+  this._isEmpty = false
   this._index = new SortedPackedIntervalRTree()
   const geom = arguments[0]
-  this.init(geom)
+  if (geom.isEmpty()) this._isEmpty = true; else this.init(geom)
 }
 IndexedPointInAreaLocator.SegmentVisitor = SegmentVisitor
 IndexedPointInAreaLocator.IntervalIndexedGeometry = IntervalIndexedGeometry
 IndexedPointInAreaLocator.constructor_ = function () {
+  this._geom = null
   this._index = null
   const g = arguments[0]
   if (!(hasInterface(g, Polygonal) || g instanceof LinearRing)) throw new IllegalArgumentException('Argument must be Polygonal or LinearRing')
-  this._index = new IntervalIndexedGeometry(g)
+  this._geom = g
 }

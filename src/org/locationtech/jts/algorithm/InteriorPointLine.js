@@ -9,6 +9,11 @@ export default class InteriorPointLine {
     InteriorPointLine.constructor_.apply(this, arguments)
   }
 
+  static getInteriorPoint (geom) {
+    const intPt = new InteriorPointLine(geom)
+    return intPt.getInteriorPoint()
+  }
+
   addEndpoints () {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
@@ -72,9 +77,10 @@ InteriorPointLine.constructor_ = function () {
   this._interiorPoint = null
   const g = arguments[0]
   if (g.isEmpty()) {
-    this._centroid = new Coordinate()
+    this._centroid = null
   } else {
     this._centroid = Centroid.getCentroid(g)
+    g.getPrecisionModel().makePrecise(this._centroid)
   }
   this.addInterior(g)
   if (this._interiorPoint === null) this.addEndpoints(g)

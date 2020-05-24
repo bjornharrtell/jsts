@@ -1,5 +1,6 @@
 import Coordinate from './Coordinate'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
+import DD from '../math/DD'
 import Angle from '../algorithm/Angle'
 import HCoordinate from '../algorithm/HCoordinate'
 export default class Triangle {
@@ -31,7 +32,7 @@ export default class Triangle {
     const dy = p.y - y0
     const t = (d * dx - b * dy) / det
     const u = (-c * dx + a * dy) / det
-    const z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z)
+    const z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ())
     return z
   }
 
@@ -43,6 +44,21 @@ export default class Triangle {
     if (lenBC > maxLen) maxLen = lenBC
     if (lenCA > maxLen) maxLen = lenCA
     return maxLen
+  }
+
+  static circumcentreDD (a, b, c) {
+    const ax = DD.valueOf(a.x).subtract(c.x)
+    const ay = DD.valueOf(a.y).subtract(c.y)
+    const bx = DD.valueOf(b.x).subtract(c.x)
+    const by = DD.valueOf(b.y).subtract(c.y)
+    const denom = DD.determinant(ax, ay, bx, by).multiply(2)
+    const asqr = ax.sqr().add(ay.sqr())
+    const bsqr = bx.sqr().add(by.sqr())
+    const numx = DD.determinant(ay, asqr, by, bsqr)
+    const numy = DD.determinant(ax, asqr, bx, bsqr)
+    const ccx = DD.valueOf(c.x).subtract(numx.divide(denom)).doubleValue()
+    const ccy = DD.valueOf(c.y).add(numy.divide(denom)).doubleValue()
+    return new Coordinate(ccx, ccy)
   }
 
   static isAcute (a, b, c) {
@@ -88,10 +104,10 @@ export default class Triangle {
   static area3D (a, b, c) {
     const ux = b.x - a.x
     const uy = b.y - a.y
-    const uz = b.z - a.z
+    const uz = b.getZ() - a.getZ()
     const vx = c.x - a.x
     const vy = c.y - a.y
-    const vz = c.z - a.z
+    const vz = c.getZ() - a.getZ()
     const crossx = uy * vz - uz * vy
     const crossy = uz * vx - ux * vz
     const crossz = ux * vy - uy * vx

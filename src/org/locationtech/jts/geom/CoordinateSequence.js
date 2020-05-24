@@ -1,10 +1,28 @@
+import Double from '../../../../java/lang/Double'
 import Cloneable from '../../../../java/lang/Cloneable'
 export default class CoordinateSequence {
   constructor () {
     CoordinateSequence.constructor_.apply(this, arguments)
   }
 
+  getM (index) {
+    if (this.hasM()) {
+      const mIndex = this.getDimension() - this.getMeasures()
+      return this.getOrdinate(index, mIndex)
+    } else {
+      return Double.NaN
+    }
+  }
+
   setOrdinate (index, ordinateIndex, value) {}
+  getZ (index) {
+    if (this.hasZ()) {
+      return this.getOrdinate(index, 2)
+    } else {
+      return Double.NaN
+    }
+  }
+
   size () {}
   getOrdinate (index, ordinateIndex) {}
   getCoordinate () {
@@ -16,8 +34,21 @@ export default class CoordinateSequence {
   }
 
   getCoordinateCopy (i) {}
+  createCoordinate () {}
   getDimension () {}
+  hasM () {
+    return this.getMeasures() > 0
+  }
+
   getX (index) {}
+  hasZ () {
+    return this.getDimension() - this.getMeasures() > 2
+  }
+
+  getMeasures () {
+    return 0
+  }
+
   expandEnvelope (env) {}
   copy () {}
   getY (index) {}

@@ -52,4 +52,3 @@ AbstractNode.constructor_ = function () {
     this._level = level
   }
 }
-AbstractNode.serialVersionUID = 6493722185909573708

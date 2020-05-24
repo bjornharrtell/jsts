@@ -65,7 +65,6 @@ export default class LineBuilder {
   buildLines (opCode) {
     for (let it = this._lineEdgesList.iterator(); it.hasNext();) {
       const e = it.next()
-      const label = e.getLabel()
       const line = this._geometryFactory.createLineString(e.getCoordinates())
       this._resultLineList.add(line)
       e.setInResult(true)

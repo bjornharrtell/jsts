@@ -53,8 +53,6 @@ export default class OffsetSegmentString {
     if (this._ptList.size() < 1) return null
     const startPt = new Coordinate(this._ptList.get(0))
     const lastPt = this._ptList.get(this._ptList.size() - 1)
-    let last2Pt = null
-    if (this._ptList.size() >= 2) last2Pt = this._ptList.get(this._ptList.size() - 2)
     if (startPt.equals(lastPt)) return null
     this._ptList.add(startPt)
   }

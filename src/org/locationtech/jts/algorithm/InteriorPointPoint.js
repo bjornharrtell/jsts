@@ -8,6 +8,11 @@ export default class InteriorPointPoint {
     InteriorPointPoint.constructor_.apply(this, arguments)
   }
 
+  static getInteriorPoint (geom) {
+    const intPt = new InteriorPointPoint(geom)
+    return intPt.getInteriorPoint()
+  }
+
   getInteriorPoint () {
     return this._interiorPoint
   }

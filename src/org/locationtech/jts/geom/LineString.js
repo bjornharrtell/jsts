@@ -1,12 +1,12 @@
 import Geometry from './Geometry'
 import CoordinateFilter from './CoordinateFilter'
 import hasInterface from '../../../../hasInterface'
-import BoundaryOp from '../operation/BoundaryOp'
 import Length from '../algorithm/Length'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import Lineal from './Lineal'
 import CoordinateSequences from './CoordinateSequences'
 import GeometryComponentFilter from './GeometryComponentFilter'
+import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException'
 import Dimension from './Dimension'
 import GeometryFilter from './GeometryFilter'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter'
@@ -30,6 +30,10 @@ export default class LineString extends Geometry {
 
   getCoordinates () {
     return this._points.toCoordinateArray()
+  }
+
+  copyInternal () {
+    return new LineString(this._points.copy(), this._factory)
   }
 
   equalsExact () {
@@ -84,6 +88,12 @@ export default class LineString extends Geometry {
     return this.getCoordinateN(0).equals2D(this.getCoordinateN(this.getNumPoints() - 1))
   }
 
+  reverseInternal () {
+    const seq = this._points.copy()
+    CoordinateSequences.reverse(seq)
+    return this.getFactory().createLineString(seq)
+  }
+
   getEndPoint () {
     if (this.isEmpty()) {
       return null
@@ -105,13 +115,6 @@ export default class LineString extends Geometry {
 
   getNumPoints () {
     return this._points.size()
-  }
-
-  reverse () {
-    const seq = this._points.copy()
-    CoordinateSequences.reverse(seq)
-    const revLine = this.getFactory().createLineString(seq)
-    return revLine
   }
 
   compareToSameClass () {
@@ -166,7 +169,7 @@ export default class LineString extends Geometry {
   }
 
   getBoundary () {
-    return new BoundaryOp(this).getBoundary()
+    throw new UnsupportedOperationException()
   }
 
   isEquivalentClass (other) {
@@ -179,10 +182,6 @@ export default class LineString extends Geometry {
 
   getGeometryType () {
     return Geometry.TYPENAME_LINESTRING
-  }
-
-  copy () {
-    return new LineString(this._points.copy(), this._factory)
   }
 
   getCoordinateSequence () {
@@ -239,4 +238,3 @@ LineString.constructor_ = function () {
     this.init(points)
   }
 }
-LineString.serialVersionUID = 3110669828065365560

@@ -22,7 +22,6 @@ export default class BufferInputLineSimplifier {
 
   deleteShallowConcavities () {
     let index = 1
-    const maxIndex = this._inputLine.length - 1
     let midIndex = this.findNextNonDeletedIndex(index)
     let lastIndex = this.findNextNonDeletedIndex(midIndex)
     let isChanged = false

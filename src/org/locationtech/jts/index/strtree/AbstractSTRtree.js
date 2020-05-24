@@ -300,5 +300,4 @@ AbstractSTRtree.constructor_ = function () {
     this._nodeCapacity = nodeCapacity
   }
 }
-AbstractSTRtree.serialVersionUID = -3886435814360241337
 AbstractSTRtree.DEFAULT_NODE_CAPACITY = 10

@@ -1,82 +1,47 @@
-import Geometry from '../geom/Geometry'
 import Coordinate from '../geom/Coordinate'
 import Polygon from '../geom/Polygon'
 import Double from '../../../../java/lang/Double'
 import GeometryCollection from '../geom/GeometryCollection'
-import OverlayOp from '../operation/overlay/OverlayOp'
+import ArrayList from '../../../../java/util/ArrayList'
+import Comparator from '../../../../java/util/Comparator'
+import Assert from '../util/Assert'
 export default class InteriorPointArea {
   constructor () {
     InteriorPointArea.constructor_.apply(this, arguments)
   }
 
-  static centre (envelope) {
-    return new Coordinate(InteriorPointArea.avg(envelope.getMinX(), envelope.getMaxX()), InteriorPointArea.avg(envelope.getMinY(), envelope.getMaxY()))
+  static getInteriorPoint (geom) {
+    const intPt = new InteriorPointArea(geom)
+    return intPt.getInteriorPoint()
   }
 
   static avg (a, b) {
     return (a + b) / 2.0
   }
 
-  addPolygon (geometry) {
-    if (geometry.isEmpty()) return null
-    let intPt = null
-    let width = null
-    const bisector = this.horizontalBisector(geometry)
-    if (bisector.getLength() === 0.0) {
-      width = 0
-      intPt = bisector.getCoordinate()
-    } else {
-      const intersections = OverlayOp.intersection(bisector, geometry)
-      const widestIntersection = this.widestGeometry(intersections)
-      width = widestIntersection.getEnvelopeInternal().getWidth()
-      intPt = InteriorPointArea.centre(widestIntersection.getEnvelopeInternal())
-    }
-    if (this._interiorPoint === null || width > this._maxWidth) {
-      this._interiorPoint = intPt
-      this._maxWidth = width
-    }
-  }
-
   getInteriorPoint () {
     return this._interiorPoint
   }
 
-  widestGeometry () {
-    if (arguments[0] instanceof GeometryCollection) {
-      const gc = arguments[0]
-      if (gc.isEmpty()) {
-        return gc
-      }
-      let widestGeometry = gc.getGeometryN(0)
-      for (let i = 1; i < gc.getNumGeometries(); i++) {
-        if (gc.getGeometryN(i).getEnvelopeInternal().getWidth() > widestGeometry.getEnvelopeInternal().getWidth()) {
-          widestGeometry = gc.getGeometryN(i)
-        }
-      }
-      return widestGeometry
-    } else if (arguments[0] instanceof Geometry) {
-      const geometry = arguments[0]
-      if (!(geometry instanceof GeometryCollection)) {
-        return geometry
-      }
-      return this.widestGeometry(geometry)
-    }
-  }
-
-  horizontalBisector (geometry) {
-    const envelope = geometry.getEnvelopeInternal()
-    const bisectY = SafeBisectorFinder.getBisectorY(geometry)
-    return this._factory.createLineString([new Coordinate(envelope.getMinX(), bisectY), new Coordinate(envelope.getMaxX(), bisectY)])
-  }
-
-  add (geom) {
+  process (geom) {
+    if (geom.isEmpty()) return null
     if (geom instanceof Polygon) {
-      this.addPolygon(geom)
+      this.processPolygon(geom)
     } else if (geom instanceof GeometryCollection) {
       const gc = geom
       for (let i = 0; i < gc.getNumGeometries(); i++) {
-        this.add(gc.getGeometryN(i))
+        this.process(gc.getGeometryN(i))
       }
+    }
+  }
+
+  processPolygon (polygon) {
+    const intPtPoly = new InteriorPointPolygon(polygon)
+    intPtPoly.process()
+    const width = intPtPoly.getWidth()
+    if (width > this._maxWidth) {
+      this._maxWidth = width
+      this._interiorPoint = intPtPoly.getInteriorPoint()
     }
   }
 
@@ -88,14 +53,141 @@ export default class InteriorPointArea {
     return []
   }
 }
-class SafeBisectorFinder {
+class InteriorPointPolygon {
   constructor () {
-    SafeBisectorFinder.constructor_.apply(this, arguments)
+    InteriorPointPolygon.constructor_.apply(this, arguments)
   }
 
-  static getBisectorY (poly) {
-    const finder = new SafeBisectorFinder(poly)
-    return finder.getBisectorY()
+  static isEdgeCrossingCounted (p0, p1, scanY) {
+    const y0 = p0.getY()
+    const y1 = p1.getY()
+    if (y0 === y1) return false
+    if (y0 === scanY && y1 < scanY) return false
+    if (y1 === scanY && y0 < scanY) return false
+    return true
+  }
+
+  static intersectsHorizontalLine () {
+    if (arguments.length === 2) {
+      const env = arguments[0]; const y = arguments[1]
+      if (y < env.getMinY()) return false
+      if (y > env.getMaxY()) return false
+      return true
+    } else if (arguments.length === 3) {
+      const p0 = arguments[0]; const p1 = arguments[1]; const y = arguments[2]
+      if (p0.getY() > y && p1.getY() > y) return false
+      if (p0.getY() < y && p1.getY() < y) return false
+      return true
+    }
+  }
+
+  static intersection (p0, p1, Y) {
+    const x0 = p0.getX()
+    const x1 = p1.getX()
+    if (x0 === x1) return x0
+    const segDX = x1 - x0
+    const segDY = p1.getY() - p0.getY()
+    const m = segDY / segDX
+    const x = x0 + (Y - p0.getY()) / m
+    return x
+  }
+
+  findBestMidpoint (crossings) {
+    if (crossings.size() === 0) return null
+    Assert.isTrue(crossings.size() % 2 === 0, 'Interior Point robustness failure: odd number of scanline crossings')
+    crossings.sort(new DoubleComparator())
+    for (let i = 0; i < crossings.size(); i += 2) {
+      const x1 = crossings.get(i)
+      const x2 = crossings.get(i + 1)
+      const width = x2 - x1
+      if (width > this._interiorSectionWidth) {
+        this._interiorSectionWidth = width
+        const interiorPointX = InteriorPointArea.avg(x1, x2)
+        this._interiorPoint = new Coordinate(interiorPointX, this._interiorPointY)
+      }
+    }
+  }
+
+  process () {
+    if (this._polygon.isEmpty()) return null
+    this._interiorPoint = new Coordinate(this._polygon.getCoordinate())
+    const crossings = new ArrayList()
+    this.scanRing(this._polygon.getExteriorRing(), crossings)
+    for (let i = 0; i < this._polygon.getNumInteriorRing(); i++) {
+      this.scanRing(this._polygon.getInteriorRingN(i), crossings)
+    }
+    this.findBestMidpoint(crossings)
+  }
+
+  scanRing (ring, crossings) {
+    if (!InteriorPointPolygon.intersectsHorizontalLine(ring.getEnvelopeInternal(), this._interiorPointY)) return null
+    const seq = ring.getCoordinateSequence()
+    for (let i = 1; i < seq.size(); i++) {
+      const ptPrev = seq.getCoordinate(i - 1)
+      const pt = seq.getCoordinate(i)
+      this.addEdgeCrossing(ptPrev, pt, this._interiorPointY, crossings)
+    }
+  }
+
+  getWidth () {
+    return this._interiorSectionWidth
+  }
+
+  getInteriorPoint () {
+    return this._interiorPoint
+  }
+
+  addEdgeCrossing (p0, p1, scanY, crossings) {
+    if (!InteriorPointPolygon.intersectsHorizontalLine(p0, p1, scanY)) return null
+    if (!InteriorPointPolygon.isEdgeCrossingCounted(p0, p1, scanY)) return null
+    const xInt = InteriorPointPolygon.intersection(p0, p1, scanY)
+    crossings.add(xInt)
+  }
+
+  getClass () {
+    return InteriorPointPolygon
+  }
+
+  get interfaces_ () {
+    return []
+  }
+}
+class DoubleComparator {
+  constructor () {
+    DoubleComparator.constructor_.apply(this, arguments)
+  }
+
+  compare (v1, v2) {
+    return v1 < v2 ? -1 : v1 > v2 ? +1 : 0
+  }
+
+  getClass () {
+    return DoubleComparator
+  }
+
+  get interfaces_ () {
+    return [Comparator]
+  }
+}
+DoubleComparator.constructor_ = function () {}
+InteriorPointPolygon.DoubleComparator = DoubleComparator
+InteriorPointPolygon.constructor_ = function () {
+  this._polygon = null
+  this._interiorPointY = null
+  this._interiorSectionWidth = 0.0
+  this._interiorPoint = null
+  const polygon = arguments[0]
+  this._polygon = polygon
+  this._interiorPointY = ScanLineYOrdinateFinder.getScanLineY(polygon)
+}
+class ScanLineYOrdinateFinder {
+  constructor () {
+    ScanLineYOrdinateFinder.constructor_.apply(this, arguments)
+  }
+
+  static getScanLineY (poly) {
+    const finder = new ScanLineYOrdinateFinder(poly)
+    return finder.getScanLineY()
   }
 
   updateInterval (y) {
@@ -108,13 +200,13 @@ class SafeBisectorFinder {
     }
   }
 
-  getBisectorY () {
+  getScanLineY () {
     this.process(this._poly.getExteriorRing())
     for (let i = 0; i < this._poly.getNumInteriorRing(); i++) {
       this.process(this._poly.getInteriorRingN(i))
     }
-    const bisectY = InteriorPointArea.avg(this._hiY, this._loY)
-    return bisectY
+    const scanLineY = InteriorPointArea.avg(this._hiY, this._loY)
+    return scanLineY
   }
 
   process (line) {
@@ -126,14 +218,14 @@ class SafeBisectorFinder {
   }
 
   getClass () {
-    return SafeBisectorFinder
+    return ScanLineYOrdinateFinder
   }
 
   get interfaces_ () {
     return []
   }
 }
-SafeBisectorFinder.constructor_ = function () {
+ScanLineYOrdinateFinder.constructor_ = function () {
   this._poly = null
   this._centreY = null
   this._hiY = Double.MAX_VALUE
@@ -144,12 +236,11 @@ SafeBisectorFinder.constructor_ = function () {
   this._loY = poly.getEnvelopeInternal().getMinY()
   this._centreY = InteriorPointArea.avg(this._loY, this._hiY)
 }
-InteriorPointArea.SafeBisectorFinder = SafeBisectorFinder
+InteriorPointArea.InteriorPointPolygon = InteriorPointPolygon
+InteriorPointArea.ScanLineYOrdinateFinder = ScanLineYOrdinateFinder
 InteriorPointArea.constructor_ = function () {
-  this._factory = null
   this._interiorPoint = null
-  this._maxWidth = 0.0
+  this._maxWidth = -1
   const g = arguments[0]
-  this._factory = g.getFactory()
-  this.add(g)
+  this.process(g)
 }

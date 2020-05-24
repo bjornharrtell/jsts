@@ -19,6 +19,10 @@ export default class Coordinate {
     }
   }
 
+  getM () {
+    return Double.NaN
+  }
+
   setOrdinate (ordinateIndex, value) {
     switch (ordinateIndex) {
       case Coordinate.X:
@@ -28,7 +32,7 @@ export default class Coordinate {
         this.y = value
         break
       case Coordinate.Z:
-        this.z = value
+        this.setZ(value)
         break
       default:
         throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
@@ -57,6 +61,14 @@ export default class Coordinate {
     }
   }
 
+  setM (m) {
+    throw new IllegalArgumentException('Invalid ordinate index: ' + Coordinate.M)
+  }
+
+  getZ () {
+    return this.z
+  }
+
   getOrdinate (ordinateIndex) {
     switch (ordinateIndex) {
       case Coordinate.X:
@@ -64,13 +76,13 @@ export default class Coordinate {
       case Coordinate.Y:
         return this.y
       case Coordinate.Z:
-        return this.z
+        return this.getZ()
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
 
   equals3D (other) {
-    return this.x === other.x && this.y === other.y && (this.z === other.z || Double.isNaN(this.z) && Double.isNaN(other.z))
+    return this.x === other.x && this.y === other.y && (this.getZ() === other.getZ() || Double.isNaN(this.getZ()) && Double.isNaN(other.getZ()))
   }
 
   equals (other) {
@@ -81,7 +93,11 @@ export default class Coordinate {
   }
 
   equalInZ (c, tolerance) {
-    return NumberUtil.equalsWithTolerance(this.z, c.z, tolerance)
+    return NumberUtil.equalsWithTolerance(this.getZ(), c.getZ(), tolerance)
+  }
+
+  setX (x) {
+    this.x = x
   }
 
   compareTo (o) {
@@ -91,6 +107,14 @@ export default class Coordinate {
     if (this.y < other.y) return -1
     if (this.y > other.y) return 1
     return 0
+  }
+
+  getX () {
+    return this.x
+  }
+
+  setZ (z) {
+    this.z = z
   }
 
   clone () {
@@ -110,14 +134,22 @@ export default class Coordinate {
   }
 
   toString () {
-    return '(' + this.x + ', ' + this.y + ', ' + this.z + ')'
+    return '(' + this.x + ', ' + this.y + ', ' + this.getZ() + ')'
   }
 
   distance3D (c) {
     const dx = this.x - c.x
     const dy = this.y - c.y
-    const dz = this.z - c.z
+    const dz = this.getZ() - c.getZ()
     return Math.sqrt(dx * dx + dy * dy + dz * dz)
+  }
+
+  getY () {
+    return this.y
+  }
+
+  setY (y) {
+    this.y = y
   }
 
   distance (c) {
@@ -136,7 +168,7 @@ export default class Coordinate {
   setCoordinate (other) {
     this.x = other.x
     this.y = other.y
-    this.z = other.z
+    this.z = other.getZ()
   }
 
   getClass () {
@@ -163,15 +195,13 @@ class DimensionalComparator {
     return 0
   }
 
-  compare (o1, o2) {
-    const c1 = o1
-    const c2 = o2
+  compare (c1, c2) {
     const compX = DimensionalComparator.compare(c1.x, c2.x)
     if (compX !== 0) return compX
     const compY = DimensionalComparator.compare(c1.y, c2.y)
     if (compY !== 0) return compY
     if (this._dimensionsToTest <= 2) return 0
-    const compZ = DimensionalComparator.compare(c1.z, c2.z)
+    const compZ = DimensionalComparator.compare(c1.getZ(), c2.getZ())
     return compZ
   }
 
@@ -202,7 +232,7 @@ Coordinate.constructor_ = function () {
     Coordinate.constructor_.call(this, 0.0, 0.0)
   } else if (arguments.length === 1) {
     const c = arguments[0]
-    Coordinate.constructor_.call(this, c.x, c.y, c.z)
+    Coordinate.constructor_.call(this, c.x, c.y, c.getZ())
   } else if (arguments.length === 2) {
     const x = arguments[0]; const y = arguments[1]
     Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
@@ -213,8 +243,8 @@ Coordinate.constructor_ = function () {
     this.z = z
   }
 }
-Coordinate.serialVersionUID = 6683108902428366910
 Coordinate.NULL_ORDINATE = Double.NaN
 Coordinate.X = 0
 Coordinate.Y = 1
 Coordinate.Z = 2
+Coordinate.M = 3

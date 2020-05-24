@@ -9,6 +9,19 @@ export default class MinimumBoundingCircle {
     MinimumBoundingCircle.constructor_.apply(this, arguments)
   }
 
+  static farthestPoints (pts) {
+    const dist01 = pts[0].distance(pts[1])
+    const dist12 = pts[1].distance(pts[2])
+    const dist20 = pts[2].distance(pts[0])
+    if (dist01 >= dist12 && dist01 >= dist20) {
+      return [pts[0], pts[1]]
+    }
+    if (dist12 >= dist01 && dist12 >= dist20) {
+      return [pts[1], pts[2]]
+    }
+    return [pts[2], pts[0]]
+  }
+
   static pointWitMinAngleWithX (pts, P) {
     let minSin = Double.MAX_VALUE
     let minAngPt = null
@@ -125,19 +138,6 @@ export default class MinimumBoundingCircle {
     if (this._centre !== null) this._radius = this._centre.distance(this._extremalPts[0])
   }
 
-  getFarthestPoints () {
-    this.compute()
-    switch (this._extremalPts.length) {
-      case 0:
-        return this._input.getFactory().createLineString()
-      case 1:
-        return this._input.getFactory().createPoint(this._centre)
-    }
-    const p0 = this._extremalPts[0]
-    const p1 = this._extremalPts[this._extremalPts.length - 1]
-    return this._input.getFactory().createLineString([p0, p1])
-  }
-
   getCircle () {
     this.compute()
     if (this._centre === null) return this._input.getFactory().createPolygon()
@@ -149,6 +149,21 @@ export default class MinimumBoundingCircle {
   getCentre () {
     this.compute()
     return this._centre
+  }
+
+  getMaximumDiameter () {
+    this.compute()
+    switch (this._extremalPts.length) {
+      case 0:
+        return this._input.getFactory().createLineString()
+      case 1:
+        return this._input.getFactory().createPoint(this._centre)
+      case 2:
+        return this._input.getFactory().createLineString([this._extremalPts[0], this._extremalPts[1]])
+      default:
+        const maxDiameter = MinimumBoundingCircle.farthestPoints(this._extremalPts)
+        return this._input.getFactory().createLineString(maxDiameter)
+    }
   }
 
   computeCentre () {

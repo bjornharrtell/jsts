@@ -21,7 +21,7 @@ export default class Distance3DOp {
     const f = Math.abs(d0) / (Math.abs(d0) + Math.abs(d1))
     const intx = p0.x + f * (p1.x - p0.x)
     const inty = p0.y + f * (p1.y - p0.y)
-    const intz = p0.z + f * (p1.z - p0.z)
+    const intz = p0.getZ() + f * (p1.getZ() - p0.getZ())
     return new Coordinate(intx, inty, intz)
   }
 
@@ -182,7 +182,7 @@ export default class Distance3DOp {
       if (this._minDistanceLocation !== null) return null
       this._minDistanceLocation = new Array(2).fill(null)
       const geomIndex = this.mostPolygonalIndex()
-      const flip = geomIndex === 0
+      const flip = geomIndex === 1
       this.computeMinDistanceMultiMulti(this._geom[geomIndex], this._geom[1 - geomIndex], flip)
     } else if (arguments.length === 3) {
       const g0 = arguments[0]; const g1 = arguments[1]; const flip = arguments[2]

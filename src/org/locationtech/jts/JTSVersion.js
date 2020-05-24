@@ -22,7 +22,7 @@ export default class JTSVersion {
 
   toString () {
     const ver = JTSVersion.MAJOR + '.' + JTSVersion.MINOR + '.' + JTSVersion.PATCH
-    if (JTSVersion.releaseInfo !== null && JTSVersion.releaseInfo.length > 0) return ver + ' ' + JTSVersion.releaseInfo
+    if (JTSVersion.RELEASE_INFO !== null && JTSVersion.RELEASE_INFO.length > 0) return ver + ' ' + JTSVersion.RELEASE_INFO
     return ver
   }
 
@@ -37,6 +37,6 @@ export default class JTSVersion {
 JTSVersion.constructor_ = function () {}
 JTSVersion.CURRENT_VERSION = new JTSVersion()
 JTSVersion.MAJOR = 1
-JTSVersion.MINOR = 15
+JTSVersion.MINOR = 17
 JTSVersion.PATCH = 0
-JTSVersion.releaseInfo = ''
+JTSVersion.RELEASE_INFO = 'SNAPSHOT'

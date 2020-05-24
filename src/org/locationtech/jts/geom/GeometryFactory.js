@@ -1,12 +1,11 @@
 import CoordinateSequenceFactory from './CoordinateSequenceFactory'
 import LineString from './LineString'
-import Geometry from './Geometry'
 import hasInterface from '../../../../hasInterface'
 import Coordinate from './Coordinate'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import Point from './Point'
 import Polygon from './Polygon'
 import MultiPoint from './MultiPoint'
-import GeometryEditor from './util/GeometryEditor'
 import LinearRing from './LinearRing'
 import CoordinateArraySequenceFactory from './impl/CoordinateArraySequenceFactory'
 import MultiPolygon from './MultiPolygon'
@@ -70,6 +69,21 @@ export default class GeometryFactory {
   static createPointFromInternalCoord (coord, exemplar) {
     exemplar.getPrecisionModel().makePrecise(coord)
     return exemplar.getFactory().createPoint(coord)
+  }
+
+  createEmpty (dimension) {
+    switch (dimension) {
+      case -1:
+        return this.createGeometryCollection()
+      case 0:
+        return this.createPoint()
+      case 1:
+        return this.createLineString()
+      case 2:
+        return this.createPolygon()
+      default:
+        throw new IllegalArgumentException('Invalid dimension: ' + dimension)
+    }
   }
 
   toGeometry (envelope) {
@@ -199,11 +213,6 @@ export default class GeometryFactory {
     }
   }
 
-  createGeometry (g) {
-    const editor = new GeometryEditor(this)
-    return editor.edit(g, new CloneOp(this._coordinateSequenceFactory))
-  }
-
   getPrecisionModel () {
     return this._precisionModel
   }
@@ -245,7 +254,7 @@ export default class GeometryFactory {
         }
         const points = new Array(coordinates.size()).fill(null)
         for (let i = 0; i < coordinates.size(); i++) {
-          const ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension())
+          const ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension(), coordinates.getMeasures())
           CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1)
           points[i] = this.createPoint(ptSeq)
         }
@@ -262,33 +271,6 @@ export default class GeometryFactory {
     return [Serializable]
   }
 }
-class CloneOp extends GeometryEditor.CoordinateSequenceOperation {
-  constructor () {
-    super()
-    CloneOp.constructor_.apply(this, arguments)
-  }
-
-  edit () {
-    if (arguments.length === 2 && (arguments[1] instanceof Geometry && hasInterface(arguments[0], CoordinateSequence))) {
-      const coordSeq = arguments[0]; const geometry = arguments[1]
-      return this.coordinateSequenceFactory.create(coordSeq)
-    } else return super.edit.apply(this, arguments)
-  }
-
-  getClass () {
-    return CloneOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-CloneOp.constructor_ = function () {
-  this.coordinateSequenceFactory = null
-  const coordinateSequenceFactory = arguments[0]
-  this.coordinateSequenceFactory = coordinateSequenceFactory
-}
-GeometryFactory.CloneOp = CloneOp
 GeometryFactory.constructor_ = function () {
   this._precisionModel = null
   this._coordinateSequenceFactory = null
@@ -313,4 +295,3 @@ GeometryFactory.constructor_ = function () {
     this._SRID = SRID
   }
 }
-GeometryFactory.serialVersionUID = -6820524753094095635

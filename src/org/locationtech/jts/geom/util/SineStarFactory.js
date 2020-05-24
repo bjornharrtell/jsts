@@ -6,6 +6,17 @@ export default class SineStarFactory extends GeometricShapeFactory {
     SineStarFactory.constructor_.apply(this, arguments)
   }
 
+  static create (origin, size, nPts, nArms, armLengthRatio) {
+    const gsf = new SineStarFactory()
+    gsf.setCentre(origin)
+    gsf.setSize(size)
+    gsf.setNumPoints(nPts)
+    gsf.setArmLengthRatio(armLengthRatio)
+    gsf.setNumArms(nArms)
+    const poly = gsf.createSineStar()
+    return poly
+  }
+
   setNumArms (numArms) {
     this._numArms = numArms
   }

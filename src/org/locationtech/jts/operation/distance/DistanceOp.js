@@ -12,6 +12,7 @@ import PointExtracter from '../../geom/util/PointExtracter'
 import ConnectedElementLocationFilter from './ConnectedElementLocationFilter'
 import LineSegment from '../../geom/LineSegment'
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter'
+import Envelope from '../../geom/Envelope'
 import List from '../../../../../java/util/List'
 import Distance from '../../algorithm/Distance'
 export default class DistanceOp {
@@ -169,7 +170,11 @@ export default class DistanceOp {
         const coord0 = line0.getCoordinates()
         const coord1 = line1.getCoordinates()
         for (let i = 0; i < coord0.length - 1; i++) {
+          const segEnv0 = new Envelope(coord0[i], coord0[i + 1])
+          if (segEnv0.distance(line1.getEnvelopeInternal()) > this._minDistance) continue
           for (let j = 0; j < coord1.length - 1; j++) {
+            const segEnv1 = new Envelope(coord1[j], coord1[j + 1])
+            if (segEnv0.distance(segEnv1) > this._minDistance) continue
             const dist = Distance.segmentToSegment(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1])
             if (dist < this._minDistance) {
               this._minDistance = dist

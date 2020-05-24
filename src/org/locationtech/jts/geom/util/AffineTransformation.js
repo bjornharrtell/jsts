@@ -237,7 +237,7 @@ export default class AffineTransformation {
       return this
     } else if (arguments.length === 4) {
       const sinTheta = arguments[0]; const cosTheta = arguments[1]; const x = arguments[2]; const y = arguments[3]
-      this.compose(AffineTransformation.rotationInstance(sinTheta, cosTheta))
+      this.compose(AffineTransformation.rotationInstance(sinTheta, cosTheta, x, y))
       return this
     }
   }

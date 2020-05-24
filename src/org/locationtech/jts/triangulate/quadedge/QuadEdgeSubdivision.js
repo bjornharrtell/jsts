@@ -380,7 +380,7 @@ class TriangleCircumcentreVisitor {
     const a = triEdges[0].orig().getCoordinate()
     const b = triEdges[1].orig().getCoordinate()
     const c = triEdges[2].orig().getCoordinate()
-    const cc = Triangle.circumcentre(a, b, c)
+    const cc = Triangle.circumcentreDD(a, b, c)
     const ccVertex = new Vertex(cc)
     for (let i = 0; i < 3; i++) {
       triEdges[i].rot().setOrig(ccVertex)

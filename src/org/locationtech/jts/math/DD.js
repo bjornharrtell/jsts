@@ -10,6 +10,17 @@ export default class DD {
     DD.constructor_.apply(this, arguments)
   }
 
+  static determinant () {
+    if (typeof arguments[3] === 'number' && (typeof arguments[2] === 'number' && (typeof arguments[0] === 'number' && typeof arguments[1] === 'number'))) {
+      const x1 = arguments[0]; const y1 = arguments[1]; const x2 = arguments[2]; const y2 = arguments[3]
+      return DD.determinant(DD.valueOf(x1), DD.valueOf(y1), DD.valueOf(x2), DD.valueOf(y2))
+    } else if (arguments[3] instanceof DD && (arguments[2] instanceof DD && (arguments[0] instanceof DD && arguments[1] instanceof DD))) {
+      const x1 = arguments[0]; const y1 = arguments[1]; const x2 = arguments[2]; const y2 = arguments[3]
+      const det = x1.multiply(y2).selfSubtract(y1.multiply(x2))
+      return det
+    }
+  }
+
   static sqr (x) {
     return DD.valueOf(x).selfMultiply(x)
   }
@@ -44,6 +55,7 @@ export default class DD {
     let numDigits = 0
     let numBeforeDec = 0
     let exp = 0
+    let hasDecimalChar = false
     while (true) {
       if (i >= strlen) break
       const ch = str.charAt(i)
@@ -57,6 +69,7 @@ export default class DD {
       }
       if (ch === '.') {
         numBeforeDec = numDigits
+        hasDecimalChar = true
         continue
       }
       if (ch === 'e' || ch === 'E') {
@@ -73,6 +86,7 @@ export default class DD {
       throw new NumberFormatException("Unexpected character '" + ch + "' at position " + i + ' in string ' + str)
     }
     let val2 = val
+    if (!hasDecimalChar) numBeforeDec = numDigits
     const numDecPlaces = numDigits - numBeforeDec - exp
     if (numDecPlaces === 0) {
       val2 = val

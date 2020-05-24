@@ -28,8 +28,19 @@ export default class CoordinateArraySequenceFactory {
     } else if (arguments.length === 2) {
       const size = arguments[0]; let dimension = arguments[1]
       if (dimension > 3) dimension = 3
-      if (dimension < 2) return new CoordinateArraySequence(size)
+      if (dimension < 2) dimension = 2
       return new CoordinateArraySequence(size, dimension)
+    } else if (arguments.length === 3) {
+      const size = arguments[0]; const dimension = arguments[1]; let measures = arguments[2]
+      let spatial = dimension - measures
+      if (measures > 1) {
+        measures = 1
+      }
+      if (spatial > 3) {
+        spatial = 3
+      }
+      if (spatial < 2) spatial = 2
+      return new CoordinateArraySequence(size, spatial + measures, measures)
     }
   }
 
@@ -42,5 +53,4 @@ export default class CoordinateArraySequenceFactory {
   }
 }
 CoordinateArraySequenceFactory.constructor_ = function () {}
-CoordinateArraySequenceFactory.serialVersionUID = -4099577099607551657
 CoordinateArraySequenceFactory.instanceObject = new CoordinateArraySequenceFactory()

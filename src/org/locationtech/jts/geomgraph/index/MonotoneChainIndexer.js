@@ -1,4 +1,4 @@
-import Integer from '../../../../../java/lang/Integer'
+import IntArrayList from '../../util/IntArrayList'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Quadrant from '../Quadrant'
 export default class MonotoneChainIndexer {
@@ -16,15 +16,14 @@ export default class MonotoneChainIndexer {
 
   getChainStartIndices (pts) {
     let start = 0
-    const startIndexList = new ArrayList()
-    startIndexList.add(new Integer(start))
+    const startIndexList = new IntArrayList(Math.trunc(pts.length / 2))
+    startIndexList.add(start)
     do {
       const last = this.findChainEnd(pts, start)
-      startIndexList.add(new Integer(last))
+      startIndexList.add(last)
       start = last
     } while (start < pts.length - 1)
-    const startIndex = MonotoneChainIndexer.toIntArray(startIndexList)
-    return startIndex
+    return startIndexList.toArray()
   }
 
   findChainEnd (pts, start) {
@@ -36,6 +35,19 @@ export default class MonotoneChainIndexer {
       last++
     }
     return last - 1
+  }
+
+  OLDgetChainStartIndices (pts) {
+    let start = 0
+    const startIndexList = new ArrayList()
+    startIndexList.add(start)
+    do {
+      const last = this.findChainEnd(pts, start)
+      startIndexList.add(last)
+      start = last
+    } while (start < pts.length - 1)
+    const startIndex = MonotoneChainIndexer.toIntArray(startIndexList)
+    return startIndex
   }
 
   getClass () {

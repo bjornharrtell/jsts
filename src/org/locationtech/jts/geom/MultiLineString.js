@@ -1,12 +1,20 @@
 import Geometry from './Geometry'
-import BoundaryOp from '../operation/BoundaryOp'
 import Lineal from './Lineal'
 import GeometryCollection from './GeometryCollection'
+import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException'
 import Dimension from './Dimension'
 export default class MultiLineString extends GeometryCollection {
   constructor () {
     super()
     MultiLineString.constructor_.apply(this, arguments)
+  }
+
+  copyInternal () {
+    const lineStrings = new Array(this._geometries.length).fill(null)
+    for (let i = 0; i < lineStrings.length; i++) {
+      lineStrings[i] = this._geometries[i].copy()
+    }
+    return new MultiLineString(lineStrings, this._factory)
   }
 
   equalsExact () {
@@ -46,29 +54,12 @@ export default class MultiLineString extends GeometryCollection {
     return 1
   }
 
-  reverse () {
-    const nLines = this._geometries.length
-    const revLines = new Array(nLines).fill(null)
-    for (let i = 0; i < this._geometries.length; i++) {
-      revLines[nLines - 1 - i] = this._geometries[i].reverse()
-    }
-    return this.getFactory().createMultiLineString(revLines)
-  }
-
   getBoundary () {
-    return new BoundaryOp(this).getBoundary()
+    throw new UnsupportedOperationException()
   }
 
   getGeometryType () {
     return Geometry.TYPENAME_MULTILINESTRING
-  }
-
-  copy () {
-    const lineStrings = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < lineStrings.length; i++) {
-      lineStrings[i] = this._geometries[i].copy()
-    }
-    return new MultiLineString(lineStrings, this._factory)
   }
 
   getClass () {
@@ -83,4 +74,3 @@ MultiLineString.constructor_ = function () {
   const lineStrings = arguments[0]; const factory = arguments[1]
   GeometryCollection.constructor_.call(this, lineStrings, factory)
 }
-MultiLineString.serialVersionUID = 8166665132445433741

@@ -1,22 +1,27 @@
+import WKTWriter from '../../io/WKTWriter'
 export default class GeometryLocation {
   constructor () {
     GeometryLocation.constructor_.apply(this, arguments)
   }
 
-  isInsideArea () {
-    return this._segIndex === GeometryLocation.INSIDE_AREA
+  getSegmentIndex () {
+    return this._segIndex
   }
 
   getCoordinate () {
     return this._pt
   }
 
-  getGeometryComponent () {
-    return this._component
+  isInsideArea () {
+    return this._segIndex === GeometryLocation.INSIDE_AREA
   }
 
-  getSegmentIndex () {
-    return this._segIndex
+  toString () {
+    return this._component.getGeometryType() + '[' + this._segIndex + ']' + '-' + WKTWriter.toPoint(this._pt)
+  }
+
+  getGeometryComponent () {
+    return this._component
   }
 
   getClass () {

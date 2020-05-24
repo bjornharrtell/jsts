@@ -5,7 +5,6 @@ import GeometryCollectionMapper from '../../geom/util/GeometryCollectionMapper'
 import PolygonBuilder from './PolygonBuilder'
 import Position from '../../geomgraph/Position'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import MapOp from '../../geom/util/MapOp'
 import LineBuilder from './LineBuilder'
 import PointBuilder from './PointBuilder'
 import SnapIfNeededOverlayOp from './snap/SnapIfNeededOverlayOp'
@@ -88,21 +87,8 @@ export default class OverlayOp extends GeometryGraphOperation {
 
   static createEmptyResult (overlayOpCode, a, b, geomFact) {
     let result = null
-    switch (OverlayOp.resultDimension(overlayOpCode, a, b)) {
-      case -1:
-        result = geomFact.createGeometryCollection()
-        break
-      case 0:
-        result = geomFact.createPoint()
-        break
-      case 1:
-        result = geomFact.createLineString()
-        break
-      case 2:
-        result = geomFact.createPolygon()
-        break
-    }
-    return result
+    const resultDim = OverlayOp.resultDimension(overlayOpCode, a, b)
+    return result = geomFact.createEmpty(resultDim)
   }
 
   static difference (geom, other) {
@@ -319,12 +305,10 @@ export default class OverlayOp extends GeometryGraphOperation {
   }
 
   labelIncompleteNodes () {
-    let nodeCount = 0
     for (let ni = this._graph.getNodes().iterator(); ni.hasNext();) {
       const n = ni.next()
       const label = n.getLabel()
       if (n.isIsolated()) {
-        nodeCount++
         if (label.isNull(0)) this.labelIncompleteNode(n, 0); else this.labelIncompleteNode(n, 1)
       }
       n.getEdges().updateLabelling(label)

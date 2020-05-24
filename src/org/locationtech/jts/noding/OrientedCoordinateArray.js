@@ -16,7 +16,6 @@ export default class OrientedCoordinateArray {
     const limit2 = orientation2 ? pts2.length : -1
     let i1 = orientation1 ? 0 : pts1.length - 1
     let i2 = orientation2 ? 0 : pts2.length - 1
-    const comp = 0
     while (true) {
       const compPt = pts1[i1].compareTo(pts2[i2])
       if (compPt !== 0) return compPt

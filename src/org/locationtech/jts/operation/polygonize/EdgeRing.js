@@ -1,8 +1,8 @@
+import Location from '../../geom/Location'
 import CoordinateList from '../../geom/CoordinateList'
 import WKTWriter from '../../io/WKTWriter'
 import CoordinateArraySequence from '../../geom/impl/CoordinateArraySequence'
 import IsValidOp from '../valid/IsValidOp'
-import PointLocation from '../../algorithm/PointLocation'
 import LinearRing from '../../geom/LinearRing'
 import Exception from '../../../../../java/lang/Exception'
 import Orientation from '../../algorithm/Orientation'
@@ -10,6 +10,7 @@ import System from '../../../../../java/lang/System'
 import CoordinateArrays from '../../geom/CoordinateArrays'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Comparator from '../../../../../java/util/Comparator'
+import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator'
 import Assert from '../../util/Assert'
 export default class EdgeRing {
   constructor () {
@@ -40,29 +41,28 @@ export default class EdgeRing {
     }
   }
 
-  static findEdgeRingContaining (testEr, shellList) {
+  static findEdgeRingContaining (testEr, erList) {
     const testRing = testEr.getRing()
     const testEnv = testRing.getEnvelopeInternal()
     let testPt = testRing.getCoordinateN(0)
-    let minShell = null
-    let minShellEnv = null
-    for (let it = shellList.iterator(); it.hasNext();) {
-      const tryShell = it.next()
-      const tryShellRing = tryShell.getRing()
-      const tryShellEnv = tryShellRing.getEnvelopeInternal()
+    let minRing = null
+    let minRingEnv = null
+    for (let it = erList.iterator(); it.hasNext();) {
+      const tryEdgeRing = it.next()
+      const tryRing = tryEdgeRing.getRing()
+      const tryShellEnv = tryRing.getEnvelopeInternal()
       if (tryShellEnv.equals(testEnv)) continue
       if (!tryShellEnv.contains(testEnv)) continue
-      testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates())
-      let isContained = false
-      if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates())) isContained = true
+      testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryEdgeRing.getCoordinates())
+      const isContained = tryEdgeRing.isInRing(testPt)
       if (isContained) {
-        if (minShell === null || minShellEnv.contains(tryShellEnv)) {
-          minShell = tryShell
-          minShellEnv = minShell.getRing().getEnvelopeInternal()
+        if (minRing === null || minRingEnv.contains(tryShellEnv)) {
+          minRing = tryEdgeRing
+          minRingEnv = minRing.getRing().getEnvelopeInternal()
         }
       }
     }
-    return minShell
+    return minRing
   }
 
   isIncluded () {
@@ -102,6 +102,10 @@ export default class EdgeRing {
       Assert.isTrue(de !== null, 'found null DE in ring')
       Assert.isTrue(de === startDE || !de.isInRing(), 'found DE already in ring')
     } while (de !== startDE)
+  }
+
+  isInRing (pt) {
+    return Location.EXTERIOR !== this.getLocator().locate(pt)
   }
 
   isOuterHole () {
@@ -178,6 +182,13 @@ export default class EdgeRing {
 
   toString () {
     return WKTWriter.toLineString(new CoordinateArraySequence(this.getCoordinates()))
+  }
+
+  getLocator () {
+    if (this._locator === null) {
+      this._locator = new IndexedPointInAreaLocator(this.getRing())
+    }
+    return this._locator
   }
 
   getShell () {
@@ -257,6 +268,7 @@ EdgeRing.constructor_ = function () {
   this._deList = new ArrayList()
   this._lowestEdge = null
   this._ring = null
+  this._locator = null
   this._ringPts = null
   this._holes = null
   this._shell = null

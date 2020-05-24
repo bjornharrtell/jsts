@@ -50,10 +50,10 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
     if (arguments.length === 2 && (Number.isInteger(arguments[1]) && arguments[0] instanceof MonotoneChain)) {
       const mc = arguments[0]; const startIndex = arguments[1]
       const ss = mc.getContext()
-      if (this._parentEdge !== null) {
-        if (ss === this._parentEdge && startIndex === this._hotPixelVertexIndex) return null
+      if (this._parentEdge === ss) {
+        if (startIndex === this._hotPixelVertexIndex || startIndex + 1 === this._hotPixelVertexIndex) return null
       }
-      this._isNodeAdded = this._hotPixel.addSnappedNode(ss, startIndex)
+      this._isNodeAdded |= this._hotPixel.addSnappedNode(ss, startIndex)
     } else return super.select.apply(this, arguments)
   }
 

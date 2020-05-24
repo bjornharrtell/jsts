@@ -29,7 +29,7 @@ export default class EdgeGraph {
   create (p0, p1) {
     const e0 = this.createEdge(p0)
     const e1 = this.createEdge(p1)
-    HalfEdge.init(e0, e1)
+    e0.link(e1)
     return e0
   }
 

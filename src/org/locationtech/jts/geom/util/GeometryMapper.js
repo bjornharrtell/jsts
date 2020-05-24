@@ -1,7 +1,6 @@
 import Geometry from '../Geometry'
 import hasInterface from '../../../../../hasInterface'
 import Collection from '../../../../../java/util/Collection'
-import MapOp from './MapOp'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class GeometryMapper {
   constructor () {
@@ -37,4 +36,6 @@ export default class GeometryMapper {
     return []
   }
 }
+function MapOp () {}
+GeometryMapper.MapOp = MapOp
 GeometryMapper.constructor_ = function () {}

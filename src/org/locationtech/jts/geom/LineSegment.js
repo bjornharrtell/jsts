@@ -1,10 +1,9 @@
-import NotRepresentableException from '../algorithm/NotRepresentableException'
 import Coordinate from './Coordinate'
 import Double from '../../../../java/lang/Double'
 import Orientation from '../algorithm/Orientation'
+import Intersection from '../algorithm/Intersection'
 import Comparable from '../../../../java/lang/Comparable'
 import RobustLineIntersector from '../algorithm/RobustLineIntersector'
-import HCoordinate from '../algorithm/HCoordinate'
 import Serializable from '../../../../java/io/Serializable'
 import Distance from '../algorithm/Distance'
 export default class LineSegment {
@@ -191,13 +190,8 @@ export default class LineSegment {
   }
 
   lineIntersection (line) {
-    try {
-      const intPt = HCoordinate.intersection(this.p0, this.p1, line.p0, line.p1)
-      return intPt
-    } catch (ex) {
-      if (ex instanceof NotRepresentableException) {} else throw ex
-    } finally {}
-    return null
+    const intPt = Intersection.intersection(this.p0, this.p1, line.p0, line.p1)
+    return intPt
   }
 
   maxY () {
@@ -248,6 +242,19 @@ export default class LineSegment {
 
   isHorizontal () {
     return this.p0.y === this.p1.y
+  }
+
+  reflect (p) {
+    const A = this.p1.getY() - this.p0.getY()
+    const B = this.p0.getX() - this.p1.getX()
+    const C = this.p0.getY() * (this.p1.getX() - this.p0.getX()) - this.p0.getX() * (this.p1.getY() - this.p0.getY())
+    const A2plusB2 = A * A + B * B
+    const A2subB2 = A * A - B * B
+    const x = p.getX()
+    const y = p.getY()
+    const rx = (-A2subB2 * x - 2 * A * B * y - 2 * A * C) / A2plusB2
+    const ry = (A2subB2 * y - 2 * A * B * x - 2 * B * C) / A2plusB2
+    return new Coordinate(rx, ry)
   }
 
   distance () {
@@ -302,4 +309,3 @@ LineSegment.constructor_ = function () {
     LineSegment.constructor_.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1))
   }
 }
-LineSegment.serialVersionUID = 3252005833466256227

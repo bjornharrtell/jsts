@@ -35,4 +35,3 @@ ConstraintEnforcementException.constructor_ = function () {
     this._pt = new Coordinate(pt)
   }
 }
-ConstraintEnforcementException.serialVersionUID = 386496846550080140

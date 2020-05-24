@@ -54,7 +54,6 @@ export default class IsSimpleOp {
     const endPoints = new TreeMap()
     for (let i = graph.getEdgeIterator(); i.hasNext();) {
       const e = i.next()
-      const maxSegmentIndex = e.getMaximumSegmentIndex()
       const isClosed = e.isClosed()
       const p0 = e.getCoordinate(0)
       this.addEndpoint(endPoints, p0, isClosed)

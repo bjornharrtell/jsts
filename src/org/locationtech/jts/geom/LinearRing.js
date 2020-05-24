@@ -1,15 +1,16 @@
 import LineString from './LineString'
 import Geometry from './Geometry'
-import hasInterface from '../../../../hasInterface'
-import GeometryFactory from './GeometryFactory'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import CoordinateSequences from './CoordinateSequences'
-import CoordinateSequence from './CoordinateSequence'
 import Dimension from './Dimension'
 export default class LinearRing extends LineString {
   constructor () {
     super()
     LinearRing.constructor_.apply(this, arguments)
+  }
+
+  copyInternal () {
+    return new LinearRing(this._points.copy(), this._factory)
   }
 
   getBoundaryDimension () {
@@ -23,15 +24,14 @@ export default class LinearRing extends LineString {
     return super.isClosed.call(this)
   }
 
-  getTypeCode () {
-    return Geometry.TYPECODE_LINEARRING
-  }
-
-  reverse () {
+  reverseInternal () {
     const seq = this._points.copy()
     CoordinateSequences.reverse(seq)
-    const rev = this.getFactory().createLinearRing(seq)
-    return rev
+    return this.getFactory().createLinearRing(seq)
+  }
+
+  getTypeCode () {
+    return Geometry.TYPECODE_LINEARRING
   }
 
   validateConstruction () {
@@ -47,10 +47,6 @@ export default class LinearRing extends LineString {
     return Geometry.TYPENAME_LINEARRING
   }
 
-  copy () {
-    return new LinearRing(this._points.copy(), this._factory)
-  }
-
   getClass () {
     return LinearRing
   }
@@ -60,14 +56,8 @@ export default class LinearRing extends LineString {
   }
 }
 LinearRing.constructor_ = function () {
-  if (arguments[0] instanceof Array && arguments[1] instanceof GeometryFactory) {
-    const points = arguments[0]; const factory = arguments[1]
-    LinearRing.constructor_.call(this, factory.getCoordinateSequenceFactory().create(points), factory)
-  } else if (hasInterface(arguments[0], CoordinateSequence) && arguments[1] instanceof GeometryFactory) {
-    const points = arguments[0]; const factory = arguments[1]
-    LineString.constructor_.call(this, points, factory)
-    this.validateConstruction()
-  }
+  const points = arguments[0]; const factory = arguments[1]
+  LineString.constructor_.call(this, points, factory)
+  this.validateConstruction()
 }
 LinearRing.MINIMUM_VALID_SIZE = 4
-LinearRing.serialVersionUID = -4261142084085851829

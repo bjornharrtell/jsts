@@ -1,23 +1,9 @@
 import MonotoneChain from './MonotoneChain'
-import Integer from '../../../../../java/lang/Integer'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Quadrant from '../../geomgraph/Quadrant'
 export default class MonotoneChainBuilder {
   constructor () {
     MonotoneChainBuilder.constructor_.apply(this, arguments)
-  }
-
-  static getChainStartIndices (pts) {
-    let start = 0
-    const startIndexList = new ArrayList()
-    startIndexList.add(new Integer(start))
-    do {
-      const last = MonotoneChainBuilder.findChainEnd(pts, start)
-      startIndexList.add(new Integer(last))
-      start = last
-    } while (start < pts.length - 1)
-    const startIndex = MonotoneChainBuilder.toIntArray(startIndexList)
-    return startIndex
   }
 
   static findChainEnd (pts, start) {
@@ -47,21 +33,15 @@ export default class MonotoneChainBuilder {
     } else if (arguments.length === 2) {
       const pts = arguments[0]; const context = arguments[1]
       const mcList = new ArrayList()
-      const startIndex = MonotoneChainBuilder.getChainStartIndices(pts)
-      for (let i = 0; i < startIndex.length - 1; i++) {
-        const mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context)
+      let chainStart = 0
+      do {
+        const chainEnd = MonotoneChainBuilder.findChainEnd(pts, chainStart)
+        const mc = new MonotoneChain(pts, chainStart, chainEnd, context)
         mcList.add(mc)
-      }
+        chainStart = chainEnd
+      } while (chainStart < pts.length - 1)
       return mcList
     }
-  }
-
-  static toIntArray (list) {
-    const array = new Array(list.size()).fill(null)
-    for (let i = 0; i < array.length; i++) {
-      array[i] = list.get(i).intValue()
-    }
-    return array
   }
 
   getClass () {

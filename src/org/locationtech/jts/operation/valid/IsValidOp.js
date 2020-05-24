@@ -71,9 +71,11 @@ export default class IsValidOp {
   }
 
   checkHolesNotNested (p, graph) {
+    if (p.getNumInteriorRing() <= 0) return null
     const nestedTester = new IndexedNestedRingTester(graph)
     for (let i = 0; i < p.getNumInteriorRing(); i++) {
       const innerHole = p.getInteriorRingN(i)
+      if (innerHole.isEmpty()) continue
       nestedTester.add(innerHole)
     }
     const isNonNested = nestedTester.isNonNested()
@@ -153,13 +155,17 @@ export default class IsValidOp {
   }
 
   checkHolesInShell (p, graph) {
+    if (p.getNumInteriorRing() <= 0) return null
     const shell = p.getExteriorRing()
+    const isShellEmpty = shell.isEmpty()
     const pir = new IndexedPointInAreaLocator(shell)
     for (let i = 0; i < p.getNumInteriorRing(); i++) {
       const hole = p.getInteriorRingN(i)
-      const holePt = IsValidOp.findPtNotNode(hole.getCoordinates(), shell, graph)
+      let holePt = null
+      if (hole.isEmpty()) continue
+      holePt = IsValidOp.findPtNotNode(hole.getCoordinates(), shell, graph)
       if (holePt === null) return null
-      const outside = Location.EXTERIOR === pir.locate(holePt)
+      const outside = isShellEmpty || Location.EXTERIOR === pir.locate(holePt)
       if (outside) {
         this._validErr = new TopologyValidationError(TopologyValidationError.HOLE_OUTSIDE_SHELL, holePt)
         return null
@@ -277,6 +283,7 @@ export default class IsValidOp {
   checkShellNotNested (shell, p, graph) {
     const shellPts = shell.getCoordinates()
     const polyShell = p.getExteriorRing()
+    if (polyShell.isEmpty()) return null
     const polyPts = polyShell.getCoordinates()
     const shellPt = IsValidOp.findPtNotNode(shellPts, polyShell, graph)
     if (shellPt === null) return null
@@ -305,6 +312,7 @@ export default class IsValidOp {
   }
 
   checkClosedRing (ring) {
+    if (ring.isEmpty()) return null
     if (!ring.isClosed()) {
       let pt = null
       if (ring.getNumPoints() >= 1) pt = ring.getCoordinateN(0)

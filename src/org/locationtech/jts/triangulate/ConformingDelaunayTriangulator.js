@@ -10,6 +10,7 @@ import Segment from './Segment'
 import ConvexHull from '../algorithm/ConvexHull'
 import KdTree from '../index/kdtree/KdTree'
 import ArrayList from '../../../../java/util/ArrayList'
+import ConstraintEnforcementException from './ConstraintEnforcementException'
 import Envelope from '../geom/Envelope'
 export default class ConformingDelaunayTriangulator {
   constructor () {
@@ -41,6 +42,9 @@ export default class ConformingDelaunayTriangulator {
       splits = this.enforceGabriel(this._segments)
       count++
     } while (splits > 0 && count < ConformingDelaunayTriangulator.MAX_SPLIT_ITER)
+    if (count === ConformingDelaunayTriangulator.MAX_SPLIT_ITER) {
+      throw new ConstraintEnforcementException('Too many splitting iterations while enforcing constraints.  Last split point was at: ', this._splitPt)
+    }
   }
 
   insertSites (vertices) {

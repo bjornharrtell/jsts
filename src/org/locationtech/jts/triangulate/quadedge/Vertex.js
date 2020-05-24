@@ -13,8 +13,8 @@ export default class Vertex {
       const p = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
       const segLen = p0.distance(p1)
       const ptLen = p.distance(p0)
-      const dz = p1.z - p0.z
-      const pz = p0.z + dz * (ptLen / segLen)
+      const dz = p1.getZ() - p0.getZ()
+      const pz = p0.getZ() + dz * (ptLen / segLen)
       return pz
     } else if (arguments.length === 4) {
       const p = arguments[0]; const v0 = arguments[1]; const v1 = arguments[2]; const v2 = arguments[3]
@@ -29,7 +29,7 @@ export default class Vertex {
       const dy = p.y - y0
       const t = (d * dx - b * dy) / det
       const u = (-c * dx + a * dy) / det
-      const z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z)
+      const z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ())
       return z
     }
   }
@@ -60,7 +60,7 @@ export default class Vertex {
   }
 
   getZ () {
-    return this._p.z
+    return this._p.getZ()
   }
 
   bisector (a, b) {
@@ -116,7 +116,7 @@ export default class Vertex {
   midPoint (a) {
     const xm = (this._p.x + a.getX()) / 2.0
     const ym = (this._p.y + a.getY()) / 2.0
-    const zm = (this._p.z + a.getZ()) / 2.0
+    const zm = (this._p.getZ() + a.getZ()) / 2.0
     return new Vertex(xm, ym, zm)
   }
 
@@ -137,7 +137,7 @@ export default class Vertex {
   }
 
   setZ (_z) {
-    this._p.z = _z
+    this._p.setZ(_z)
   }
 
   times (c) {

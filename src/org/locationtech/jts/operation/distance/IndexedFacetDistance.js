@@ -7,19 +7,52 @@ export default class IndexedFacetDistance {
 
   static distance (g1, g2) {
     const dist = new IndexedFacetDistance(g1)
-    return dist.getDistance(g2)
+    return dist.distance(g2)
   }
 
-  static facetDistance (obj) {
-    const o1 = obj[0]
-    const o2 = obj[1]
-    return o1.distance(o2)
+  static isWithinDistance (g1, g2, distance) {
+    const dist = new IndexedFacetDistance(g1)
+    return dist.isWithinDistance(g2, distance)
   }
 
-  getDistance (g) {
+  static nearestPoints (g1, g2) {
+    const dist = new IndexedFacetDistance(g1)
+    return dist.nearestPoints(g2)
+  }
+
+  static toPoints (locations) {
+    if (locations === null) return null
+    const nearestPts = [locations[0].getCoordinate(), locations[1].getCoordinate()]
+    return nearestPts
+  }
+
+  distance (g) {
     const tree2 = FacetSequenceTreeBuilder.build(g)
-    const obj = this._cachedTree.nearestNeighbour(tree2, new FacetSequenceDistance())
-    return IndexedFacetDistance.facetDistance(obj)
+    const obj = this._cachedTree.nearestNeighbour(tree2, IndexedFacetDistance.FACET_SEQ_DIST)
+    const fs1 = obj[0]
+    const fs2 = obj[1]
+    return fs1.distance(fs2)
+  }
+
+  isWithinDistance (g, maxDistance) {
+    const envDist = this._baseGeometry.getEnvelopeInternal().distance(g.getEnvelopeInternal())
+    if (envDist > maxDistance) return false
+    const tree2 = FacetSequenceTreeBuilder.build(g)
+    return this._cachedTree.isWithinDistance(tree2, IndexedFacetDistance.FACET_SEQ_DIST, maxDistance)
+  }
+
+  nearestPoints (g) {
+    const minDistanceLocation = this.nearestLocations(g)
+    const nearestPts = IndexedFacetDistance.toPoints(minDistanceLocation)
+    return nearestPts
+  }
+
+  nearestLocations (g) {
+    const tree2 = FacetSequenceTreeBuilder.build(g)
+    const obj = this._cachedTree.nearestNeighbour(tree2, IndexedFacetDistance.FACET_SEQ_DIST)
+    const fs1 = obj[0]
+    const fs2 = obj[1]
+    return fs1.nearestLocations(fs2)
   }
 
   getClass () {
@@ -53,6 +86,9 @@ FacetSequenceDistance.constructor_ = function () {}
 IndexedFacetDistance.FacetSequenceDistance = FacetSequenceDistance
 IndexedFacetDistance.constructor_ = function () {
   this._cachedTree = null
-  const g1 = arguments[0]
-  this._cachedTree = FacetSequenceTreeBuilder.build(g1)
+  this._baseGeometry = null
+  const geom = arguments[0]
+  this._baseGeometry = geom
+  this._cachedTree = FacetSequenceTreeBuilder.build(geom)
 }
+IndexedFacetDistance.FACET_SEQ_DIST = new FacetSequenceDistance()

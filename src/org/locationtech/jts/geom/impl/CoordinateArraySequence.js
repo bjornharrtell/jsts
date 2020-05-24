@@ -1,13 +1,22 @@
 import hasInterface from '../../../../../hasInterface'
 import Coordinate from '../Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
 import Double from '../../../../../java/lang/Double'
+import Coordinates from '../Coordinates'
 import CoordinateSequence from '../CoordinateSequence'
+import CoordinateArrays from '../CoordinateArrays'
 import Serializable from '../../../../../java/io/Serializable'
 import StringBuilder from '../../../../../java/lang/StringBuilder'
 export default class CoordinateArraySequence {
   constructor () {
     CoordinateArraySequence.constructor_.apply(this, arguments)
+  }
+
+  getM (index) {
+    if (this.hasM()) {
+      return this._coordinates[index].getM()
+    } else {
+      return Double.NaN
+    }
   }
 
   setOrdinate (index, ordinateIndex, value) {
@@ -18,11 +27,16 @@ export default class CoordinateArraySequence {
       case CoordinateSequence.Y:
         this._coordinates[index].y = value
         break
-      case CoordinateSequence.Z:
-        this._coordinates[index].z = value
-        break
       default:
-        throw new IllegalArgumentException('invalid ordinateIndex')
+        this._coordinates[index].setOrdinate(ordinateIndex, value)
+    }
+  }
+
+  getZ (index) {
+    if (this.hasZ()) {
+      return this._coordinates[index].getZ()
+    } else {
+      return Double.NaN
     }
   }
 
@@ -36,10 +50,9 @@ export default class CoordinateArraySequence {
         return this._coordinates[index].x
       case CoordinateSequence.Y:
         return this._coordinates[index].y
-      case CoordinateSequence.Z:
-        return this._coordinates[index].z
+      default:
+        return this._coordinates[index].getOrdinate(ordinateIndex)
     }
-    return Double.NaN
   }
 
   getCoordinate () {
@@ -48,14 +61,18 @@ export default class CoordinateArraySequence {
       return this._coordinates[i]
     } else if (arguments.length === 2) {
       const index = arguments[0]; const coord = arguments[1]
-      coord.x = this._coordinates[index].x
-      coord.y = this._coordinates[index].y
-      coord.z = this._coordinates[index].z
+      coord.setCoordinate(this._coordinates[index])
     }
   }
 
   getCoordinateCopy (i) {
-    return new Coordinate(this._coordinates[i])
+    const copy = this.createCoordinate()
+    copy.setCoordinate(this._coordinates[i])
+    return copy
+  }
+
+  createCoordinate () {
+    return Coordinates.create(this.getDimension(), this.getMeasures())
   }
 
   getDimension () {
@@ -64,6 +81,10 @@ export default class CoordinateArraySequence {
 
   getX (index) {
     return this._coordinates[index].x
+  }
+
+  getMeasures () {
+    return this._measures
   }
 
   expandEnvelope (env) {
@@ -76,9 +97,11 @@ export default class CoordinateArraySequence {
   copy () {
     const cloneCoordinates = new Array(this.size()).fill(null)
     for (let i = 0; i < this._coordinates.length; i++) {
-      cloneCoordinates[i] = this._coordinates[i].copy()
+      const duplicate = this.createCoordinate()
+      duplicate.setCoordinate(this._coordinates[i])
+      cloneCoordinates[i] = duplicate
     }
-    return new CoordinateArraySequence(cloneCoordinates, this._dimension)
+    return new CoordinateArraySequence(cloneCoordinates, this._dimension, this._measures)
   }
 
   toString () {
@@ -115,11 +138,12 @@ export default class CoordinateArraySequence {
 }
 CoordinateArraySequence.constructor_ = function () {
   this._dimension = 3
+  this._measures = 0
   this._coordinates = null
   if (arguments.length === 1) {
     if (arguments[0] instanceof Array) {
       const coordinates = arguments[0]
-      CoordinateArraySequence.constructor_.call(this, coordinates, 3)
+      CoordinateArraySequence.constructor_.call(this, coordinates, CoordinateArrays.dimension(coordinates), CoordinateArrays.measures(coordinates))
     } else if (Number.isInteger(arguments[0])) {
       const size = arguments[0]
       this._coordinates = new Array(size).fill(null)
@@ -133,6 +157,7 @@ CoordinateArraySequence.constructor_ = function () {
         return null
       }
       this._dimension = coordSeq.getDimension()
+      this._measures = coordSeq.getMeasures()
       this._coordinates = new Array(coordSeq.size()).fill(null)
       for (let i = 0; i < this._coordinates.length; i++) {
         this._coordinates[i] = coordSeq.getCoordinateCopy(i)
@@ -141,17 +166,33 @@ CoordinateArraySequence.constructor_ = function () {
   } else if (arguments.length === 2) {
     if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
       const coordinates = arguments[0]; const dimension = arguments[1]
-      this._coordinates = coordinates
-      this._dimension = dimension
-      if (coordinates === null) this._coordinates = new Array(0).fill(null)
+      CoordinateArraySequence.constructor_.call(this, coordinates, dimension, CoordinateArrays.measures(coordinates))
     } else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
       const size = arguments[0]; const dimension = arguments[1]
       this._coordinates = new Array(size).fill(null)
       this._dimension = dimension
       for (let i = 0; i < size; i++) {
-        this._coordinates[i] = new Coordinate()
+        this._coordinates[i] = Coordinates.create(dimension)
+      }
+    }
+  } else if (arguments.length === 3) {
+    if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
+      const coordinates = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
+      this._dimension = dimension
+      this._measures = measures
+      if (coordinates === null) {
+        this._coordinates = new Array(0).fill(null)
+      } else {
+        this._coordinates = coordinates
+      }
+    } else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
+      const size = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
+      this._coordinates = new Array(size).fill(null)
+      this._dimension = dimension
+      this._measures = measures
+      for (let i = 0; i < size; i++) {
+        this._coordinates[i] = this.createCoordinate()
       }
     }
   }
 }
-CoordinateArraySequence.serialVersionUID = -915438501601840650

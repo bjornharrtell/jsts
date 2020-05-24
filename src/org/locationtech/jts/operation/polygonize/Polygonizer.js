@@ -8,20 +8,10 @@ import Collections from '../../../../../java/util/Collections'
 import EdgeRing from './EdgeRing'
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter'
 import ArrayList from '../../../../../java/util/ArrayList'
+import HoleAssigner from './HoleAssigner'
 export default class Polygonizer {
   constructor () {
     Polygonizer.constructor_.apply(this, arguments)
-  }
-
-  static findOuterShells (shellList) {
-    for (let i = shellList.iterator(); i.hasNext();) {
-      const er = i.next()
-      const outerHoleER = er.getOuterHole()
-      if (outerHoleER !== null && !outerHoleER.isProcessed()) {
-        er.setIncluded(true)
-        outerHoleER.setProcessed(true)
-      }
-    }
   }
 
   static extractPolygons (shellList, includeAll) {
@@ -35,17 +25,14 @@ export default class Polygonizer {
     return polyList
   }
 
-  static assignHolesToShells (holeList, shellList) {
-    for (let i = holeList.iterator(); i.hasNext();) {
-      const holeER = i.next()
-      Polygonizer.assignHoleToShell(holeER, shellList)
-    }
-  }
-
-  static assignHoleToShell (holeER, shellList) {
-    const shell = EdgeRing.findEdgeRingContaining(holeER, shellList)
-    if (shell !== null) {
-      shell.addHole(holeER)
+  static findOuterShells (shellList) {
+    for (let i = shellList.iterator(); i.hasNext();) {
+      const er = i.next()
+      const outerHoleER = er.getOuterHole()
+      if (outerHoleER !== null && !outerHoleER.isProcessed()) {
+        er.setIncluded(true)
+        outerHoleER.setProcessed(true)
+      }
     }
   }
 
@@ -101,7 +88,7 @@ export default class Polygonizer {
       validEdgeRingList = edgeRingList
     }
     this.findShellsAndHoles(validEdgeRingList)
-    Polygonizer.assignHolesToShells(this._holeList, this._shellList)
+    HoleAssigner.assignHolesToShells(this._holeList, this._shellList)
     Collections.sort(this._shellList, new EdgeRing.EnvelopeComparator())
     let includeAll = true
     if (this._extractOnlyPolygonal) {

@@ -28,9 +28,9 @@ export default class PlanarPolygon3D {
         case Plane3D.XY_PLANE:
           return new Coordinate(p.x, p.y)
         case Plane3D.XZ_PLANE:
-          return new Coordinate(p.x, p.z)
+          return new Coordinate(p.x, p.getZ())
         default:
-          return new Coordinate(p.y, p.z)
+          return new Coordinate(p.y, p.getZ())
       }
     }
   }
@@ -58,11 +58,11 @@ export default class PlanarPolygon3D {
     for (let i = 0; i < n; i++) {
       a.x += seq.getOrdinate(i, CoordinateSequence.X)
       a.y += seq.getOrdinate(i, CoordinateSequence.Y)
-      a.z += seq.getOrdinate(i, CoordinateSequence.Z)
+      a.setZ(a.getZ() + seq.getOrdinate(i, CoordinateSequence.Z))
     }
     a.x /= n
     a.y /= n
-    a.z /= n
+    a.setZ(a.getZ() / n)
     return a
   }
 
@@ -89,13 +89,13 @@ export default class PlanarPolygon3D {
     for (let i = 0; i < n - 1; i++) {
       seq.getCoordinate(i, p1)
       seq.getCoordinate(i + 1, p2)
-      sum.x += (p1.y - p2.y) * (p1.z + p2.z)
-      sum.y += (p1.z - p2.z) * (p1.x + p2.x)
-      sum.z += (p1.x - p2.x) * (p1.y + p2.y)
+      sum.x += (p1.y - p2.y) * (p1.getZ() + p2.getZ())
+      sum.y += (p1.getZ() - p2.getZ()) * (p1.x + p2.x)
+      sum.setZ(sum.getZ() + (p1.x - p2.x) * (p1.y + p2.y))
     }
     sum.x /= n
     sum.y /= n
-    sum.z /= n
+    sum.setZ(sum.getZ() / n)
     const norm = Vector3D.create(sum).normalize()
     return norm
   }

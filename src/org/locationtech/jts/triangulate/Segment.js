@@ -11,12 +11,12 @@ export default class Segment {
 
   getEndZ () {
     const p = this._ls.getCoordinate(1)
-    return p.z
+    return p.getZ()
   }
 
   getStartZ () {
     const p = this._ls.getCoordinate(0)
-    return p.z
+    return p.getZ()
   }
 
   intersection (s) {

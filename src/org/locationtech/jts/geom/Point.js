@@ -27,6 +27,10 @@ export default class Point extends Geometry {
     return this.isEmpty() ? [] : [this.getCoordinate()]
   }
 
+  copyInternal () {
+    return new Point(this._coordinates.copy(), this._factory)
+  }
+
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
@@ -52,6 +56,10 @@ export default class Point extends Geometry {
     return Dimension.FALSE
   }
 
+  reverseInternal () {
+    return this.getFactory().createPoint(this._coordinates.copy())
+  }
+
   getTypeCode () {
     return Geometry.TYPECODE_POINT
   }
@@ -62,10 +70,6 @@ export default class Point extends Geometry {
 
   getNumPoints () {
     return this.isEmpty() ? 0 : 1
-  }
-
-  reverse () {
-    return this.copy()
   }
 
   getX () {
@@ -116,10 +120,6 @@ export default class Point extends Geometry {
     return Geometry.TYPENAME_POINT
   }
 
-  copy () {
-    return new Point(this._coordinates.copy(), this._factory)
-  }
-
   getCoordinateSequence () {
     return this._coordinates
   }
@@ -161,4 +161,3 @@ Point.constructor_ = function () {
   Geometry.constructor_.call(this, factory)
   this.init(coordinates)
 }
-Point.serialVersionUID = 4902022702746614570

@@ -20,6 +20,8 @@ export default class SegmentNode {
     if (this.segmentIndex < other.segmentIndex) return -1
     if (this.segmentIndex > other.segmentIndex) return 1
     if (this.coord.equals2D(other.coord)) return 0
+    if (!this._isInterior) return -1
+    if (!other._isInterior) return 1
     return SegmentPointComparator.compare(this._segmentOctant, this.coord, other.coord)
   }
 
@@ -27,6 +29,10 @@ export default class SegmentNode {
     if (this.segmentIndex === 0 && !this._isInterior) return true
     if (this.segmentIndex === maxSegmentIndex) return true
     return false
+  }
+
+  toString () {
+    return this.segmentIndex + ':' + this.coord.toString()
   }
 
   isInterior () {

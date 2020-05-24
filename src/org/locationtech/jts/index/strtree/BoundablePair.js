@@ -1,5 +1,6 @@
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
 import AbstractNode from './AbstractNode'
+import EnvelopeDistance from './EnvelopeDistance'
 import Comparable from '../../../../../java/lang/Comparable'
 export default class BoundablePair {
   constructor () {
@@ -14,22 +15,26 @@ export default class BoundablePair {
     return item instanceof AbstractNode
   }
 
+  maximumDistance () {
+    return EnvelopeDistance.maximumDistance(this._boundable1.getBounds(), this._boundable2.getBounds())
+  }
+
   expandToQueue (priQ, minDistance) {
     const isComp1 = BoundablePair.isComposite(this._boundable1)
     const isComp2 = BoundablePair.isComposite(this._boundable2)
     if (isComp1 && isComp2) {
       if (BoundablePair.area(this._boundable1) > BoundablePair.area(this._boundable2)) {
-        this.expand(this._boundable1, this._boundable2, priQ, minDistance)
+        this.expand(this._boundable1, this._boundable2, false, priQ, minDistance)
         return null
       } else {
-        this.expand(this._boundable2, this._boundable1, priQ, minDistance)
+        this.expand(this._boundable2, this._boundable1, true, priQ, minDistance)
         return null
       }
     } else if (isComp1) {
-      this.expand(this._boundable1, this._boundable2, priQ, minDistance)
+      this.expand(this._boundable1, this._boundable2, false, priQ, minDistance)
       return null
     } else if (isComp2) {
-      this.expand(this._boundable2, this._boundable1, priQ, minDistance)
+      this.expand(this._boundable2, this._boundable1, true, priQ, minDistance)
       return null
     }
     throw new IllegalArgumentException('neither boundable is composite')
@@ -46,11 +51,16 @@ export default class BoundablePair {
     return 0
   }
 
-  expand (bndComposite, bndOther, priQ, minDistance) {
+  expand (bndComposite, bndOther, isFlipped, priQ, minDistance) {
     const children = bndComposite.getChildBoundables()
     for (let i = children.iterator(); i.hasNext();) {
       const child = i.next()
-      const bp = new BoundablePair(child, bndOther, this._itemDistance)
+      let bp = null
+      if (isFlipped) {
+        bp = new BoundablePair(bndOther, child, this._itemDistance)
+      } else {
+        bp = new BoundablePair(child, bndOther, this._itemDistance)
+      }
       if (bp.getDistance() < minDistance) {
         priQ.add(bp)
       }

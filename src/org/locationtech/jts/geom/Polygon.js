@@ -5,9 +5,8 @@ import CoordinateFilter from './CoordinateFilter'
 import hasInterface from '../../../../hasInterface'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import Orientation from '../algorithm/Orientation'
-import System from '../../../../java/lang/System'
+import CoordinateSequences from './CoordinateSequences'
 import GeometryComponentFilter from './GeometryComponentFilter'
-import CoordinateArrays from './CoordinateArrays'
 import Polygonal from './Polygonal'
 import GeometryFilter from './GeometryFilter'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter'
@@ -49,6 +48,15 @@ export default class Polygon extends Geometry {
       area -= Area.ofRing(this._holes[i].getCoordinateSequence())
     }
     return area
+  }
+
+  copyInternal () {
+    const shellCopy = this._shell.copy()
+    const holeCopies = new Array(this._holes.length).fill(null)
+    for (let i = 0; i < this._holes.length; i++) {
+      holeCopies[i] = this._holes[i].copy()
+    }
+    return new Polygon(shellCopy, holeCopies, this._factory)
   }
 
   isRectangle () {
@@ -103,9 +111,9 @@ export default class Polygon extends Geometry {
 
   normalize () {
     if (arguments.length === 0) {
-      this.normalize(this._shell, true)
+      this._shell = this.normalized(this._shell, true)
       for (let i = 0; i < this._holes.length; i++) {
-        this.normalize(this._holes[i], false)
+        this._holes[i] = this.normalized(this._holes[i], false)
       }
       Arrays.sort(this._holes)
     } else if (arguments.length === 2) {
@@ -113,15 +121,10 @@ export default class Polygon extends Geometry {
       if (ring.isEmpty()) {
         return null
       }
-      const uniqueCoordinates = new Array(ring.getCoordinates().length - 1).fill(null)
-      System.arraycopy(ring.getCoordinates(), 0, uniqueCoordinates, 0, uniqueCoordinates.length)
-      const minCoordinate = CoordinateArrays.minCoordinate(ring.getCoordinates())
-      CoordinateArrays.scroll(uniqueCoordinates, minCoordinate)
-      System.arraycopy(uniqueCoordinates, 0, ring.getCoordinates(), 0, uniqueCoordinates.length)
-      ring.getCoordinates()[uniqueCoordinates.length] = uniqueCoordinates[0]
-      if (Orientation.isCCW(ring.getCoordinates()) === clockwise) {
-        CoordinateArrays.reverse(ring.getCoordinates())
-      }
+      const seq = ring.getCoordinateSequence()
+      const minCoordinateIndex = CoordinateSequences.minCoordinateIndex(seq, 0, seq.size() - 2)
+      CoordinateSequences.scroll(seq, minCoordinateIndex, true)
+      if (Orientation.isCCW(seq) === clockwise) CoordinateSequences.reverse(seq)
     }
   }
 
@@ -135,6 +138,15 @@ export default class Polygon extends Geometry {
 
   getBoundaryDimension () {
     return 1
+  }
+
+  reverseInternal () {
+    const shell = this.getExteriorRing().reverse()
+    const holes = new Array(this.getNumInteriorRing()).fill(null)
+    for (let i = 0; i < holes.length; i++) {
+      holes[i] = this.getInteriorRingN(i).reverse()
+    }
+    return this.getFactory().createPolygon(shell, holes)
   }
 
   getTypeCode () {
@@ -162,18 +174,14 @@ export default class Polygon extends Geometry {
     return numPoints
   }
 
-  reverse () {
-    const poly = this.copy()
-    poly._shell = this._shell.copy().reverse()
-    poly._holes = new Array(this._holes.length).fill(null)
-    for (let i = 0; i < this._holes.length; i++) {
-      poly._holes[i] = this._holes[i].copy().reverse()
-    }
-    return poly
-  }
-
   convexHull () {
     return this.getExteriorRing().convexHull()
+  }
+
+  normalized (ring, clockwise) {
+    const res = ring.copy()
+    this.normalize(res, clockwise)
+    return res
   }
 
   compareToSameClass () {
@@ -252,15 +260,6 @@ export default class Polygon extends Geometry {
     return Geometry.TYPENAME_POLYGON
   }
 
-  copy () {
-    const shellCopy = this._shell.copy()
-    const holeCopies = new Array(this._holes.length).fill(null)
-    for (let i = 0; i < this._holes.length; i++) {
-      holeCopies[i] = this._holes[i].copy()
-    }
-    return new Polygon(shellCopy, holeCopies, this._factory)
-  }
-
   getExteriorRing () {
     return this._shell
   }
@@ -301,4 +300,3 @@ Polygon.constructor_ = function () {
   this._shell = shell
   this._holes = holes
 }
-Polygon.serialVersionUID = -3494792200821764533

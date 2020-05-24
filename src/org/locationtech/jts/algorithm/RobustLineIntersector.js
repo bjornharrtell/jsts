@@ -1,9 +1,8 @@
-import NotRepresentableException from './NotRepresentableException'
 import Coordinate from '../geom/Coordinate'
 import Orientation from './Orientation'
+import Intersection from './Intersection'
 import CGAlgorithmsDD from './CGAlgorithmsDD'
 import System from '../../../../java/lang/System'
-import HCoordinate from './HCoordinate'
 import Envelope from '../geom/Envelope'
 import Distance from './Distance'
 import LineIntersector from './LineIntersector'
@@ -58,33 +57,8 @@ export default class RobustLineIntersector extends LineIntersector {
     } else return super.computeIntersection.apply(this, arguments)
   }
 
-  normalizeToMinimum (n1, n2, n3, n4, normPt) {
-    normPt.x = this.smallestInAbsValue(n1.x, n2.x, n3.x, n4.x)
-    normPt.y = this.smallestInAbsValue(n1.y, n2.y, n3.y, n4.y)
-    n1.x -= normPt.x
-    n1.y -= normPt.y
-    n2.x -= normPt.x
-    n2.y -= normPt.y
-    n3.x -= normPt.x
-    n3.y -= normPt.y
-    n4.x -= normPt.x
-    n4.y -= normPt.y
-  }
-
-  safeHCoordinateIntersection (p1, p2, q1, q2) {
-    let intPt = null
-    try {
-      intPt = HCoordinate.intersection(p1, p2, q1, q2)
-    } catch (e) {
-      if (e instanceof NotRepresentableException) {
-        intPt = RobustLineIntersector.nearestEndpoint(p1, p2, q1, q2)
-      } else throw e
-    } finally {}
-    return intPt
-  }
-
   intersection (p1, p2, q1, q2) {
-    let intPt = this.intersectionWithNormalization(p1, p2, q1, q2)
+    let intPt = this.intersectionSafe(p1, p2, q1, q2)
     if (!this.isInSegmentEnvelopes(intPt)) {
       intPt = new Coordinate(RobustLineIntersector.nearestEndpoint(p1, p2, q1, q2))
     }
@@ -92,23 +66,6 @@ export default class RobustLineIntersector extends LineIntersector {
       this._precisionModel.makePrecise(intPt)
     }
     return intPt
-  }
-
-  smallestInAbsValue (x1, x2, x3, x4) {
-    let x = x1
-    let xabs = Math.abs(x)
-    if (Math.abs(x2) < xabs) {
-      x = x2
-      xabs = Math.abs(x2)
-    }
-    if (Math.abs(x3) < xabs) {
-      x = x3
-      xabs = Math.abs(x3)
-    }
-    if (Math.abs(x4) < xabs) {
-      x = x4
-    }
-    return x
   }
 
   checkDD (p1, p2, q1, q2, intPt) {
@@ -120,16 +77,9 @@ export default class RobustLineIntersector extends LineIntersector {
     }
   }
 
-  intersectionWithNormalization (p1, p2, q1, q2) {
-    const n1 = new Coordinate(p1)
-    const n2 = new Coordinate(p2)
-    const n3 = new Coordinate(q1)
-    const n4 = new Coordinate(q2)
-    const normPt = new Coordinate()
-    this.normalizeToEnvCentre(n1, n2, n3, n4, normPt)
-    const intPt = this.safeHCoordinateIntersection(n1, n2, n3, n4)
-    intPt.x += normPt.x
-    intPt.y += normPt.y
+  intersectionSafe (p1, p2, q1, q2) {
+    let intPt = Intersection.intersection(p1, p2, q1, q2)
+    if (intPt === null) intPt = RobustLineIntersector.nearestEndpoint(p1, p2, q1, q2)
     return intPt
   }
 
@@ -169,33 +119,6 @@ export default class RobustLineIntersector extends LineIntersector {
       return q2.equals(p2) && !p1q1p2 && !q1p1q2 ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION
     }
     return LineIntersector.NO_INTERSECTION
-  }
-
-  normalizeToEnvCentre (n00, n01, n10, n11, normPt) {
-    const minX0 = n00.x < n01.x ? n00.x : n01.x
-    const minY0 = n00.y < n01.y ? n00.y : n01.y
-    const maxX0 = n00.x > n01.x ? n00.x : n01.x
-    const maxY0 = n00.y > n01.y ? n00.y : n01.y
-    const minX1 = n10.x < n11.x ? n10.x : n11.x
-    const minY1 = n10.y < n11.y ? n10.y : n11.y
-    const maxX1 = n10.x > n11.x ? n10.x : n11.x
-    const maxY1 = n10.y > n11.y ? n10.y : n11.y
-    const intMinX = minX0 > minX1 ? minX0 : minX1
-    const intMaxX = maxX0 < maxX1 ? maxX0 : maxX1
-    const intMinY = minY0 > minY1 ? minY0 : minY1
-    const intMaxY = maxY0 < maxY1 ? maxY0 : maxY1
-    const intMidX = (intMinX + intMaxX) / 2.0
-    const intMidY = (intMinY + intMaxY) / 2.0
-    normPt.x = intMidX
-    normPt.y = intMidY
-    n00.x -= normPt.x
-    n00.y -= normPt.y
-    n01.x -= normPt.x
-    n01.y -= normPt.y
-    n10.x -= normPt.x
-    n10.y -= normPt.y
-    n11.x -= normPt.x
-    n11.y -= normPt.y
   }
 
   computeIntersect (p1, p2, q1, q2) {

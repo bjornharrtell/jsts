@@ -1,22 +1,18 @@
+import WKTWriter from '../io/WKTWriter'
 import Coordinate from '../geom/Coordinate'
 import Orientation from '../algorithm/Orientation'
 import Quadrant from '../geomgraph/Quadrant'
 import Assert from '../util/Assert'
+import StringBuilder from '../../../../java/lang/StringBuilder'
 export default class HalfEdge {
   constructor () {
     HalfEdge.constructor_.apply(this, arguments)
   }
 
-  static init (e0, e1) {
-    if (e0._sym !== null || e1._sym !== null || e0._next !== null || e1._next !== null) throw new IllegalStateException('Edges are already initialized')
-    e0.init(e1)
-    return e0
-  }
-
   static create (p0, p1) {
     const e0 = new HalfEdge(p0)
     const e1 = new HalfEdge(p1)
-    e0.init(e1)
+    e0.link(e1)
     return e0
   }
 
@@ -34,27 +30,36 @@ export default class HalfEdge {
     return this._sym._orig
   }
 
+  isEdgesSorted () {
+    const lowest = this.findLowest()
+    let e = lowest
+    do {
+      const eNext = e.oNext()
+      if (eNext === lowest) break
+      const isSorted = eNext.compareTo(e) > 0
+      if (!isSorted) {
+        return false
+      }
+      e = eNext
+    } while (e !== lowest)
+    return true
+  }
+
   oNext () {
     return this._sym._next
   }
 
-  insert (e) {
+  directionY () {
+    return this.directionPt().getY() - this._orig.getY()
+  }
+
+  insert (eAdd) {
     if (this.oNext() === this) {
-      this.insertAfter(e)
+      this.insertAfter(eAdd)
       return null
     }
-    const ecmp = this.compareTo(e)
-    let ePrev = this
-    do {
-      const oNext = ePrev.oNext()
-      const cmp = oNext.compareTo(e)
-      if (cmp !== ecmp || oNext === this) {
-        ePrev.insertAfter(e)
-        return null
-      }
-      ePrev = oNext
-    } while (ePrev !== this)
-    Assert.shouldNeverReachHere()
+    const ePrev = this.insertionEdge(eAdd)
+    ePrev.insertAfter(eAdd)
   }
 
   insertAfter (e) {
@@ -81,8 +86,18 @@ export default class HalfEdge {
     }
   }
 
-  deltaY () {
-    return this._sym._orig.y - this._orig.y
+  findLowest () {
+    let lowest = this
+    let e = this.oNext()
+    do {
+      if (e.compareTo(lowest) < 0) lowest = e
+      e = e.oNext()
+    } while (e !== this)
+    return lowest
+  }
+
+  directionPt () {
+    return this.dest()
   }
 
   sym () {
@@ -94,16 +109,18 @@ export default class HalfEdge {
   }
 
   compareAngularDirection (e) {
-    const dx = this.deltaX()
-    const dy = this.deltaY()
-    const dx2 = e.deltaX()
-    const dy2 = e.deltaY()
+    const dx = this.directionX()
+    const dy = this.directionY()
+    const dx2 = e.directionX()
+    const dy2 = e.directionY()
     if (dx === dx2 && dy === dy2) return 0
     const quadrant = Quadrant.quadrant(dx, dy)
     const quadrant2 = Quadrant.quadrant(dx2, dy2)
     if (quadrant > quadrant2) return 1
     if (quadrant < quadrant2) return -1
-    return Orientation.index(e._orig, e.dest(), this.dest())
+    const dir1 = this.directionPt()
+    const dir2 = e.directionPt()
+    return Orientation.index(e._orig, dir2, dir1)
   }
 
   prevNode () {
@@ -115,10 +132,51 @@ export default class HalfEdge {
     return e
   }
 
+  directionX () {
+    return this.directionPt().getX() - this._orig.getX()
+  }
+
+  insertionEdge (eAdd) {
+    let ePrev = this
+    do {
+      const eNext = ePrev.oNext()
+      if (eNext.compareTo(ePrev) > 0 && eAdd.compareTo(ePrev) >= 0 && eAdd.compareTo(eNext) <= 0) {
+        return ePrev
+      }
+      if (eNext.compareTo(ePrev) <= 0 && (eAdd.compareTo(eNext) <= 0 || eAdd.compareTo(ePrev) >= 0)) {
+        return ePrev
+      }
+      ePrev = eNext
+    } while (ePrev !== this)
+    Assert.shouldNeverReachHere()
+    return null
+  }
+
   compareTo (obj) {
     const e = obj
     const comp = this.compareAngularDirection(e)
     return comp
+  }
+
+  toStringNode () {
+    const orig = this.orig()
+    const dest = this.dest()
+    const sb = new StringBuilder()
+    sb.append('Node( ' + WKTWriter.format(orig) + ' )' + '\n')
+    let e = this
+    do {
+      sb.append('  -> ' + e)
+      sb.append('\n')
+      e = e.oNext()
+    } while (e !== this)
+    return sb.toString()
+  }
+
+  link (sym) {
+    this.setSym(sym)
+    sym.setSym(this)
+    this.setNext(sym)
+    sym.setNext(this)
   }
 
   next () {
@@ -137,19 +195,12 @@ export default class HalfEdge {
     return 'HE(' + this._orig.x + ' ' + this._orig.y + ', ' + this._sym._orig.x + ' ' + this._sym._orig.y + ')'
   }
 
+  toStringNodeEdge () {
+    return '  -> (' + WKTWriter.format(this.dest())
+  }
+
   setNext (e) {
     this._next = e
-  }
-
-  init (e) {
-    this.setSym(e)
-    e.setSym(this)
-    this.setNext(e)
-    e.setNext(this)
-  }
-
-  deltaX () {
-    return this._sym._orig.x - this._orig.x
   }
 
   getClass () {

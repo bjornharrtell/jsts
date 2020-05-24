@@ -33,13 +33,26 @@ export default class CoordinateList extends ArrayList {
   }
 
   toCoordinateArray () {
-    return this.toArray(CoordinateList.coordArrayType)
+    if (arguments.length === 0) {
+      return this.toArray(CoordinateList.coordArrayType)
+    } else if (arguments.length === 1) {
+      const isForward = arguments[0]
+      if (isForward) {
+        return this.toArray(CoordinateList.coordArrayType)
+      }
+      const size = this.size()
+      const pts = new Array(size).fill(null)
+      for (let i = 0; i < size; i++) {
+        pts[i] = this.get(size - i - 1)
+      }
+      return pts
+    }
   }
 
   add () {
     if (arguments.length === 1) {
       const coord = arguments[0]
-      super.add.call(this, coord)
+      return super.add.call(this, coord)
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Array && typeof arguments[1] === 'boolean') {
         const coord = arguments[0]; const allowRepeated = arguments[1]
@@ -101,7 +114,10 @@ export default class CoordinateList extends ArrayList {
   }
 
   closeRing () {
-    if (this.size() > 0) this.add(new Coordinate(this.get(0)), false)
+    if (this.size() > 0) {
+      const duplicate = this.get(0).copy()
+      this.add(duplicate, false)
+    }
   }
 
   getClass () {

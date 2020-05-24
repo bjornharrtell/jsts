@@ -51,6 +51,42 @@ export default class STRtree extends AbstractSTRtree {
     return parentBoundables
   }
 
+  nearestNeighbourK () {
+    if (arguments.length === 2) {
+      const initBndPair = arguments[0]; const k = arguments[1]
+      return this.nearestNeighbourK(initBndPair, Double.POSITIVE_INFINITY, k)
+    } else if (arguments.length === 3) {
+      const initBndPair = arguments[0]; const maxDistance = arguments[1]; const k = arguments[2]
+      let distanceLowerBound = maxDistance
+      const priQ = new PriorityQueue()
+      priQ.add(initBndPair)
+      const kNearestNeighbors = new PriorityQueue()
+      while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
+        const bndPair = priQ.poll()
+        const pairDistance = bndPair.getDistance()
+        if (pairDistance >= distanceLowerBound) {
+          break
+        }
+        if (bndPair.isLeaves()) {
+          if (kNearestNeighbors.size() < k) {
+            kNearestNeighbors.add(bndPair)
+          } else {
+            const bp1 = kNearestNeighbors.peek()
+            if (bp1.getDistance() > pairDistance) {
+              kNearestNeighbors.poll()
+              kNearestNeighbors.add(bndPair)
+            }
+            const bp2 = kNearestNeighbors.peek()
+            distanceLowerBound = bp2.getDistance()
+          }
+        } else {
+          bndPair.expandToQueue(priQ, distanceLowerBound)
+        }
+      }
+      return STRtree.getItems(kNearestNeighbors)
+    }
+  }
+
   createNode (level) {
     return new STRtreeNode(level)
   }
@@ -135,80 +171,70 @@ export default class STRtree extends AbstractSTRtree {
     if (arguments.length === 1) {
       if (hasInterface(arguments[0], ItemDistance)) {
         const itemDist = arguments[0]
+        if (this.isEmpty()) return null
         const bp = new BoundablePair(this.getRoot(), this.getRoot(), itemDist)
         return this.nearestNeighbour(bp)
       } else if (arguments[0] instanceof BoundablePair) {
         const initBndPair = arguments[0]
-        return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY)
-      }
-    } else if (arguments.length === 2) {
-      if (arguments[0] instanceof STRtree && hasInterface(arguments[1], ItemDistance)) {
-        const tree = arguments[0]; const itemDist = arguments[1]
-        const bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
-        return this.nearestNeighbour(bp)
-      } else if (arguments[0] instanceof BoundablePair && typeof arguments[1] === 'number') {
-        const initBndPair = arguments[0]; const maxDistance = arguments[1]
-        let distanceLowerBound = maxDistance
+        let distanceLowerBound = Double.POSITIVE_INFINITY
         let minPair = null
         const priQ = new PriorityQueue()
         priQ.add(initBndPair)
         while (!priQ.isEmpty() && distanceLowerBound > 0.0) {
           const bndPair = priQ.poll()
-          const currentDistance = bndPair.getDistance()
-          if (currentDistance >= distanceLowerBound) break
+          const pairDistance = bndPair.getDistance()
+          if (pairDistance >= distanceLowerBound) break
           if (bndPair.isLeaves()) {
-            distanceLowerBound = currentDistance
+            distanceLowerBound = pairDistance
             minPair = bndPair
           } else {
             bndPair.expandToQueue(priQ, distanceLowerBound)
           }
         }
+        if (minPair === null) return null
         return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()]
-      } else if (arguments[0] instanceof BoundablePair && Number.isInteger(arguments[1])) {
-        const initBndPair = arguments[0]; const k = arguments[1]
-        return this.nearestNeighbour(initBndPair, Double.POSITIVE_INFINITY, k)
       }
+    } else if (arguments.length === 2) {
+      const tree = arguments[0]; const itemDist = arguments[1]
+      if (this.isEmpty() || tree.isEmpty()) return null
+      const bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
+      return this.nearestNeighbour(bp)
     } else if (arguments.length === 3) {
-      if (hasInterface(arguments[2], ItemDistance) && (arguments[0] instanceof Envelope && arguments[1] instanceof Object)) {
-        const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]
-        const bnd = new ItemBoundable(env, item)
-        const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
-        return this.nearestNeighbour(bp)[0]
-      } else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof BoundablePair && typeof arguments[1] === 'number')) {
-        const initBndPair = arguments[0]; const maxDistance = arguments[1]; const k = arguments[2]
-        let distanceLowerBound = maxDistance
-        const priQ = new PriorityQueue()
-        priQ.add(initBndPair)
-        const kNearestNeighbors = new PriorityQueue()
-        while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
-          const bndPair = priQ.poll()
-          const currentDistance = bndPair.getDistance()
-          if (currentDistance >= distanceLowerBound) {
-            break
-          }
-          if (bndPair.isLeaves()) {
-            if (kNearestNeighbors.size() < k) {
-              kNearestNeighbors.add(bndPair)
-            } else {
-              const bp1 = kNearestNeighbors.peek()
-              if (bp1.getDistance() > currentDistance) {
-                kNearestNeighbors.poll()
-                kNearestNeighbors.add(bndPair)
-              }
-              const bp2 = kNearestNeighbors.peek()
-              distanceLowerBound = bp2.getDistance()
-            }
-          } else {
-            bndPair.expandToQueue(priQ, distanceLowerBound)
-          }
-        }
-        return STRtree.getItems(kNearestNeighbors)
-      }
+      const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]
+      const bnd = new ItemBoundable(env, item)
+      const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
+      return this.nearestNeighbour(bp)[0]
     } else if (arguments.length === 4) {
       const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]; const k = arguments[3]
       const bnd = new ItemBoundable(env, item)
       const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
-      return this.nearestNeighbour(bp, k)
+      return this.nearestNeighbourK(bp, k)
+    }
+  }
+
+  isWithinDistance () {
+    if (arguments.length === 2) {
+      const initBndPair = arguments[0]; const maxDistance = arguments[1]
+      let distanceUpperBound = Double.POSITIVE_INFINITY
+      const priQ = new PriorityQueue()
+      priQ.add(initBndPair)
+      while (!priQ.isEmpty()) {
+        const bndPair = priQ.poll()
+        const pairDistance = bndPair.getDistance()
+        if (pairDistance > maxDistance) return false
+        if (bndPair.maximumDistance() <= maxDistance) return true
+        if (bndPair.isLeaves()) {
+          distanceUpperBound = pairDistance
+          if (distanceUpperBound <= maxDistance) return true
+        } else {
+          bndPair.expandToQueue(priQ, distanceUpperBound)
+        }
+      }
+      return false
+    } else if (arguments.length === 3) {
+      const tree = arguments[0]; const itemDist = arguments[1]; const maxDistance = arguments[2]
+      const bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
+      return this.isWithinDistance(bp, maxDistance)
     }
   }
 
@@ -260,7 +286,6 @@ STRtree.constructor_ = function () {
     AbstractSTRtree.constructor_.call(this, nodeCapacity)
   }
 }
-STRtree.serialVersionUID = 259274702368956900
 STRtree.xComparator = new (class {
   get interfaces_ () {
     return [Comparator]

@@ -121,6 +121,15 @@ export default class Envelope {
     return this._miny
   }
 
+  getDiameter () {
+    if (this.isNull()) {
+      return 0
+    }
+    const w = this.getWidth()
+    const h = this.getHeight()
+    return Math.sqrt(w * w + h * h)
+  }
+
   getMinX () {
     return this._minx
   }
@@ -220,6 +229,10 @@ export default class Envelope {
     this.init(this.getMinX() + transX, this.getMaxX() + transX, this.getMinY() + transY, this.getMaxY() + transY)
   }
 
+  copy () {
+    return new Envelope(this)
+  }
+
   toString () {
     return 'Env[' + this._minx + ' : ' + this._maxx + ', ' + this._miny + ' : ' + this._maxy + ']'
   }
@@ -229,6 +242,13 @@ export default class Envelope {
     this._maxx = -1
     this._miny = 0
     this._maxy = -1
+  }
+
+  disjoint (other) {
+    if (this.isNull() || other.isNull()) {
+      return true
+    }
+    return other._minx > this._maxx || other._maxx < this._minx || other._miny > this._maxy || other._maxy < this._miny
   }
 
   getHeight () {
@@ -372,4 +392,3 @@ Envelope.constructor_ = function () {
     this.init(x1, x2, y1, y2)
   }
 }
-Envelope.serialVersionUID = 5873921885273102420

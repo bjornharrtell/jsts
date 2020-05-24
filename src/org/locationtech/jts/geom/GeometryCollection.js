@@ -6,6 +6,7 @@ import hasInterface from '../../../../hasInterface'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import GeometryComponentFilter from './GeometryComponentFilter'
 import Dimension from './Dimension'
+import ArrayList from '../../../../java/util/ArrayList'
 import GeometryFilter from './GeometryFilter'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter'
 import Envelope from './Envelope'
@@ -49,6 +50,14 @@ export default class GeometryCollection extends Geometry {
     return area
   }
 
+  copyInternal () {
+    const geometries = new Array(this._geometries.length).fill(null)
+    for (let i = 0; i < geometries.length; i++) {
+      geometries[i] = this._geometries[i].copy()
+    }
+    return new GeometryCollection(geometries, this._factory)
+  }
+
   equalsExact () {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
       const other = arguments[0]; const tolerance = arguments[1]
@@ -88,6 +97,15 @@ export default class GeometryCollection extends Geometry {
     return dimension
   }
 
+  reverseInternal () {
+    const numGeometries = this._geometries.length
+    const reversed = new ArrayList(numGeometries)
+    for (let i = 0; i < numGeometries; i++) {
+      reversed.add(this._geometries[i].reverse())
+    }
+    return this.getFactory().buildGeometry(reversed)
+  }
+
   getTypeCode () {
     return Geometry.TYPECODE_GEOMETRYCOLLECTION
   }
@@ -118,15 +136,6 @@ export default class GeometryCollection extends Geometry {
 
   getNumGeometries () {
     return this._geometries.length
-  }
-
-  reverse () {
-    const n = this._geometries.length
-    const revGeoms = new Array(n).fill(null)
-    for (let i = 0; i < this._geometries.length; i++) {
-      revGeoms[i] = this._geometries[i].reverse()
-    }
-    return this.getFactory().createGeometryCollection(revGeoms)
   }
 
   compareToSameClass () {
@@ -186,21 +195,13 @@ export default class GeometryCollection extends Geometry {
   }
 
   getBoundary () {
-    this.checkNotGeometryCollection(this)
+    Geometry.checkNotGeometryCollection(this)
     Assert.shouldNeverReachHere()
     return null
   }
 
   getGeometryType () {
     return Geometry.TYPENAME_GEOMETRYCOLLECTION
-  }
-
-  copy () {
-    const geometries = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < geometries.length; i++) {
-      geometries[i] = this._geometries[i].copy()
-    }
-    return new GeometryCollection(geometries, this._factory)
   }
 
   isEmpty () {
@@ -234,4 +235,3 @@ GeometryCollection.constructor_ = function () {
     this._geometries = geometries
   }
 }
-GeometryCollection.serialVersionUID = -5694727726395021467

@@ -1,12 +1,38 @@
 import PointLocation from '../../algorithm/PointLocation'
 import TopologyException from '../../geom/TopologyException'
 import MaximalEdgeRing from './MaximalEdgeRing'
+import CoordinateArrays from '../../geom/CoordinateArrays'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Assert from '../../util/Assert'
 import PlanarGraph from '../../geomgraph/PlanarGraph'
 export default class PolygonBuilder {
   constructor () {
     PolygonBuilder.constructor_.apply(this, arguments)
+  }
+
+  static findEdgeRingContaining (testEr, shellList) {
+    const testRing = testEr.getLinearRing()
+    const testEnv = testRing.getEnvelopeInternal()
+    let testPt = testRing.getCoordinateN(0)
+    let minShell = null
+    let minShellEnv = null
+    for (let it = shellList.iterator(); it.hasNext();) {
+      const tryShell = it.next()
+      const tryShellRing = tryShell.getLinearRing()
+      const tryShellEnv = tryShellRing.getEnvelopeInternal()
+      if (tryShellEnv.equals(testEnv)) continue
+      if (!tryShellEnv.contains(testEnv)) continue
+      testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates())
+      let isContained = false
+      if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates())) isContained = true
+      if (isContained) {
+        if (minShell === null || minShellEnv.contains(tryShellEnv)) {
+          minShell = tryShell
+          minShellEnv = minShell.getLinearRing().getEnvelopeInternal()
+        }
+      }
+    }
+    return minShell
   }
 
   sortShellsAndHoles (edgeRings, shellList, freeHoleList) {
@@ -34,7 +60,7 @@ export default class PolygonBuilder {
     for (let it = freeHoleList.iterator(); it.hasNext();) {
       const hole = it.next()
       if (hole.getShell() === null) {
-        const shell = this.findEdgeRingContaining(hole, shellList)
+        const shell = PolygonBuilder.findEdgeRingContaining(hole, shellList)
         if (shell === null) throw new TopologyException('unable to assign hole to a shell', hole.getCoordinate(0))
         hole.setShell(shell)
       }
@@ -60,14 +86,6 @@ export default class PolygonBuilder {
       }
     }
     return edgeRings
-  }
-
-  containsPoint (p) {
-    for (let it = this._shellList.iterator(); it.hasNext();) {
-      const er = it.next()
-      if (er.containsPoint(p)) return true
-    }
-    return false
   }
 
   buildMaximalEdgeRings (dirEdges) {
@@ -97,28 +115,6 @@ export default class PolygonBuilder {
   getPolygons () {
     const resultPolyList = this.computePolygons(this._shellList)
     return resultPolyList
-  }
-
-  findEdgeRingContaining (testEr, shellList) {
-    const testRing = testEr.getLinearRing()
-    const testEnv = testRing.getEnvelopeInternal()
-    const testPt = testRing.getCoordinateN(0)
-    let minShell = null
-    let minEnv = null
-    for (let it = shellList.iterator(); it.hasNext();) {
-      const tryShell = it.next()
-      const tryRing = tryShell.getLinearRing()
-      const tryEnv = tryRing.getEnvelopeInternal()
-      if (minShell !== null) minEnv = minShell.getLinearRing().getEnvelopeInternal()
-      let isContained = false
-      if (tryEnv.contains(testEnv) && PointLocation.isInRing(testPt, tryRing.getCoordinates())) isContained = true
-      if (isContained) {
-        if (minShell === null || minEnv.contains(tryEnv)) {
-          minShell = tryShell
-        }
-      }
-    }
-    return minShell
   }
 
   findShell (minEdgeRings) {

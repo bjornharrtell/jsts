@@ -3,8 +3,7 @@ import PointGeometryUnion from './PointGeometryUnion'
 import hasInterface from '../../../../../hasInterface'
 import Collection from '../../../../../java/util/Collection'
 import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometryExtracter from '../../geom/util/GeometryExtracter'
+import InputExtracter from './InputExtracter'
 import OverlayOp from '../overlay/OverlayOp'
 import CascadedPolygonUnion from './CascadedPolygonUnion'
 export default class UnaryUnionOp {
@@ -45,36 +44,37 @@ export default class UnaryUnionOp {
   extract () {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
-      for (let i = geoms.iterator(); i.hasNext();) {
-        const geom = i.next()
-        this.extract(geom)
-      }
+      this._extracter = InputExtracter.extract(geoms)
     } else if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
-      if (this._geomFact === null) this._geomFact = geom.getFactory()
-      GeometryExtracter.extract(geom, Geometry.TYPENAME_POLYGON, this._polygons)
-      GeometryExtracter.extract(geom, Geometry.TYPENAME_LINESTRING, this._lines)
-      GeometryExtracter.extract(geom, Geometry.TYPENAME_POINT, this._points)
+      this._extracter = InputExtracter.extract(geom)
     }
   }
 
   union () {
+    if (this._geomFact === null) this._geomFact = this._extracter.getFactory()
     if (this._geomFact === null) {
       return null
     }
+    if (this._extracter.isEmpty()) {
+      return this._geomFact.createEmpty(this._extracter.getDimension())
+    }
+    const points = this._extracter.getExtract(0)
+    const lines = this._extracter.getExtract(1)
+    const polygons = this._extracter.getExtract(2)
     let unionPoints = null
-    if (this._points.size() > 0) {
-      const ptGeom = this._geomFact.buildGeometry(this._points)
+    if (points.size() > 0) {
+      const ptGeom = this._geomFact.buildGeometry(points)
       unionPoints = this.unionNoOpt(ptGeom)
     }
     let unionLines = null
-    if (this._lines.size() > 0) {
-      const lineGeom = this._geomFact.buildGeometry(this._lines)
+    if (lines.size() > 0) {
+      const lineGeom = this._geomFact.buildGeometry(lines)
       unionLines = this.unionNoOpt(lineGeom)
     }
     let unionPolygons = null
-    if (this._polygons.size() > 0) {
-      unionPolygons = CascadedPolygonUnion.union(this._polygons)
+    if (polygons.size() > 0) {
+      unionPolygons = CascadedPolygonUnion.union(polygons)
     }
     const unionLA = this.unionWithNull(unionLines, unionPolygons)
     let union = null
@@ -92,10 +92,8 @@ export default class UnaryUnionOp {
   }
 }
 UnaryUnionOp.constructor_ = function () {
-  this._polygons = new ArrayList()
-  this._lines = new ArrayList()
-  this._points = new ArrayList()
   this._geomFact = null
+  this._extracter = null
   if (arguments.length === 1) {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]

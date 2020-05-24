@@ -37,6 +37,24 @@ export default class SegmentNodeList {
     }
   }
 
+  createSplitEdgePts (ei0, ei1) {
+    let npts = ei1.segmentIndex - ei0.segmentIndex + 2
+    if (npts === 2) return [new Coordinate(ei0.coord), new Coordinate(ei1.coord)]
+    const lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
+    const useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt)
+    if (!useIntPt1) {
+      npts--
+    }
+    const pts = new Array(npts).fill(null)
+    let ipt = 0
+    pts[ipt++] = new Coordinate(ei0.coord)
+    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
+      pts[ipt++] = this._edge.getCoordinate(i)
+    }
+    if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord)
+    return pts
+  }
+
   print (out) {
     out.println('Intersections:')
     for (let it = this.iterator(); it.hasNext();) {
@@ -51,26 +69,14 @@ export default class SegmentNodeList {
       const p1 = this._edge.getCoordinate(i + 1)
       const p2 = this._edge.getCoordinate(i + 2)
       if (p0.equals2D(p2)) {
-        collapsedVertexIndexes.add(new Integer(i + 1))
+        collapsedVertexIndexes.add(Integer.valueOf(i + 1))
       }
     }
   }
 
   addEdgeCoordinates (ei0, ei1, coordList) {
-    let npts = ei1.segmentIndex - ei0.segmentIndex + 2
-    const lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
-    const useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt)
-    if (!useIntPt1) {
-      npts--
-    }
-    const ipt = 0
-    coordList.add(new Coordinate(ei0.coord), false)
-    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
-      coordList.add(this._edge.getCoordinate(i))
-    }
-    if (useIntPt1) {
-      coordList.add(new Coordinate(ei1.coord))
-    }
+    const pts = this.createSplitEdgePts(ei0, ei1)
+    coordList.add(pts, false)
   }
 
   iterator () {
@@ -110,7 +116,7 @@ export default class SegmentNodeList {
     while (it.hasNext()) {
       const ei = it.next()
       const isCollapsed = this.findCollapseIndex(eiPrev, ei, collapsedVertexIndex)
-      if (isCollapsed) collapsedVertexIndexes.add(new Integer(collapsedVertexIndex[0]))
+      if (isCollapsed) collapsedVertexIndexes.add(Integer.valueOf(collapsedVertexIndex[0]))
       eiPrev = ei
     }
   }
@@ -126,19 +132,7 @@ export default class SegmentNodeList {
   }
 
   createSplitEdge (ei0, ei1) {
-    let npts = ei1.segmentIndex - ei0.segmentIndex + 2
-    const lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
-    const useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt)
-    if (!useIntPt1) {
-      npts--
-    }
-    const pts = new Array(npts).fill(null)
-    let ipt = 0
-    pts[ipt++] = new Coordinate(ei0.coord)
-    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
-      pts[ipt++] = this._edge.getCoordinate(i)
-    }
-    if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord)
+    const pts = this.createSplitEdgePts(ei0, ei1)
     return new NodedSegmentString(pts, this._edge.getData())
   }
 

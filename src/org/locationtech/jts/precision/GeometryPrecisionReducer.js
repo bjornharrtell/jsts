@@ -27,11 +27,7 @@ export default class GeometryPrecisionReducer {
       geomToBuffer = this.changePM(geom, this._targetPM)
     }
     const bufGeom = BufferOp.bufferOp(geomToBuffer, 0)
-    let finalGeom = bufGeom
-    if (!this._changePrecisionModel) {
-      finalGeom = geom.getFactory().createGeometry(bufGeom)
-    }
-    return finalGeom
+    return bufGeom
   }
 
   reducePointwise (geom) {
