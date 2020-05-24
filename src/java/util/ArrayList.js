@@ -84,6 +84,8 @@ export default class ArrayList extends List {
     for (let i = c.iterator(); i.hasNext();) { this.remove(i.next()) }
     return true
   }
+
+  [Symbol.iterator] () { return this.#array.values() }
 }
 
 class Iterator {
