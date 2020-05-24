@@ -12,7 +12,18 @@ import RelateOp from './operation/relate/RelateOp'
 import InteriorPointPoint from './algorithm/InteriorPointPoint'
 import DistanceOp from './operation/distance/DistanceOp'
 import OverlayOp from './operation/overlay/OverlayOp'
+import BoundaryOp from './operation/BoundaryOp'
 import Geometry from './geom/Geometry'
+import LineString from './geom/LineString'
+import MultiLineString from './geom/MultiLineString'
+
+LineString.prototype.getBoundary = function () {
+  return BoundaryOp.getBoundary(this)
+}
+
+MultiLineString.prototype.getBoundary = function () {
+  return BoundaryOp.getBoundary(this)
+}
 
 Geometry.prototype.equalsTopo = function (g) {
   return RelateOp.equalsTopo(this, g)
