@@ -122,6 +122,23 @@ export default class Geometry {
     return copy
   }
 
+  reverse () {
+    const res = this.reverseInternal()
+    if (this.envelope != null) {
+      res.envelope = this.envelope.copy()
+    }
+    res.setSRID(this.getSRID())
+    return res
+  }
+
+  copy () {
+    const copy = this.copyInternal()
+    copy.envelope = this._envelope == null ? null : this._envelope.copy()
+    copy._SRID = this._SRID
+    copy._userData = this._userData
+    return copy
+  }
+
   getPrecisionModel () {
     return this._factory.getPrecisionModel()
   }
@@ -209,7 +226,6 @@ Geometry.constructor_ = function (factory) {
   this._factory = factory
   this._SRID = factory.getSRID()
 }
-Geometry.serialVersionUID = 8763622679187376702
 Geometry.TYPECODE_POINT = 0
 Geometry.TYPECODE_MULTIPOINT = 1
 Geometry.TYPECODE_LINESTRING = 2
