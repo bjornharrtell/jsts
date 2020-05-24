@@ -50,6 +50,14 @@ export default class ArrayList extends List {
     return this.#array.length === 0
   }
 
+  sort (comparator) {
+    if (comparator) {
+      this.#array.sort((a, b) => comparator.compare(a, b))
+    } else {
+      this.#array.sort()
+    }
+  }
+
   size () {
     return this.#array.length
   }
