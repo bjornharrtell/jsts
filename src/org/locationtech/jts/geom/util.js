@@ -10,7 +10,6 @@ import GeometryMapper from './util/GeometryMapper'
 import GeometryTransformer from './util/GeometryTransformer'
 import LineStringExtracter from './util/LineStringExtracter'
 import LinearComponentExtracter from './util/LinearComponentExtracter'
-import MapOp from './util/MapOp'
 import PointExtracter from './util/PointExtracter'
 import PolygonExtracter from './util/PolygonExtracter'
 import ShortCircuitedGeometryVisitor from './util/ShortCircuitedGeometryVisitor'
@@ -29,7 +28,6 @@ export {
   GeometryTransformer,
   LineStringExtracter,
   LinearComponentExtracter,
-  MapOp,
   PointExtracter,
   PolygonExtracter,
   ShortCircuitedGeometryVisitor,
