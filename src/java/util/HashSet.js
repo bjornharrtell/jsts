@@ -9,75 +9,65 @@ import Set from './Set'
 export default class HashSet extends Set {
   array_ = []
 
-  constructor(o) {
+  constructor (o) {
     super()
-    if (o instanceof Collection)
-      this.addAll(o)
+    if (o instanceof Collection) { this.addAll(o) }
   }
 
-  contains(o) {
-    return this.array_.indexOf(o) != -1
+  contains (o) {
+    return this.array_.indexOf(o) !== -1
   }
 
-  add(o) {
-    if (this.contains(o))
-      return false
+  add (o) {
+    if (this.contains(o)) { return false }
     this.array_.push(o)
     return true
   }
 
-  addAll(c) {
-    for (let i = c.iterator(); i.hasNext();)
-      this.add(i.next())
+  addAll (c) {
+    for (let i = c.iterator(); i.hasNext();) { this.add(i.next()) }
     return true
   }
 
-  remove(o) {
+  remove (o) {
     throw new UnsupportedOperationException()
   }
 
-  size() {
+  size () {
     return this.array_.length
   }
 
-  isEmpty() {
+  isEmpty () {
     return this.array_.length === 0
   }
 
-  toArray() {
+  toArray () {
     return this.array_.slice()
   }
 
-  iterator() {
+  iterator () {
     return new Iterator(this)
   }
 };
-
 
 class Iterator {
   #hashSet
   #position = 0
 
-  constructor(hashSet) {
+  constructor (hashSet) {
     this.#hashSet = hashSet
   }
 
-  next() {
-    if (this.#position === this.#hashSet.size())
-      throw new NoSuchElementException()
+  next () {
+    if (this.#position === this.#hashSet.size()) { throw new NoSuchElementException() }
     return this.#hashSet.array_[this.#position++]
   }
 
-  hasNext() {
-    if (this.#position < this.#hashSet.size())
-      return true
-    else
-      return false
+  hasNext () {
+    if (this.#position < this.#hashSet.size()) { return true } else { return false }
   }
 
-  remove() {
+  remove () {
     throw new UnsupportedOperationException()
   }
-
 }
-

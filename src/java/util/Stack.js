@@ -7,15 +7,14 @@ import List from './List'
  */
 export default class Stack extends List {
   #array = []
-  
-  add(e) {
+
+  add (e) {
     this.#array.push(e)
     return true
   }
 
-  get(index) {
-    if (index < 0 || index >= this.size())
-      throw new IndexOutOfBoundsException()
+  get (index) {
+    if (index < 0 || index >= this.size()) { throw new IndexOutOfBoundsException() }
     return this.#array[index]
   }
 
@@ -24,7 +23,7 @@ export default class Stack extends List {
    * @param {Object} e
    * @return {Object}
    */
-  push(e) {
+  push (e) {
     this.#array.push(e)
     return e
   }
@@ -34,9 +33,8 @@ export default class Stack extends List {
    * @param {Object} e
    * @return {Object}
    */
-  pop(e) {
-    if (this.#array.length === 0)
-      throw new EmptyStackException()
+  pop (e) {
+    if (this.#array.length === 0) { throw new EmptyStackException() }
     return this.#array.pop()
   }
 
@@ -45,9 +43,8 @@ export default class Stack extends List {
    * stack.
    * @return {Object}
    */
-  peek() {
-    if (this.#array.length === 0)
-      throw new EmptyStackException()
+  peek () {
+    if (this.#array.length === 0) { throw new EmptyStackException() }
     return this.#array[this.#array.length - 1]
   }
 
@@ -56,14 +53,14 @@ export default class Stack extends List {
    * @return {boolean} true if and only if this stack contains no items; false
    *         otherwise.
    */
-  empty() {
+  empty () {
     return this.#array.length === 0
   }
 
   /**
    * @return {boolean}
    */
-  isEmpty() {
+  isEmpty () {
     return this.empty()
   }
 
@@ -81,23 +78,21 @@ export default class Stack extends List {
    *         object is located; the return value -1 indicates that the object is
    *         not on the stack.
    */
-  search(o) {
+  search (o) {
     return this.#array.indexOf(o)
   }
 
   /**
    * @return {number}
    */
-  size() {
+  size () {
     return this.#array.length
   }
 
   /**
    * @return {Array}
    */
-  toArray() {
+  toArray () {
     return this.#array.slice()
   }
-
 }
-

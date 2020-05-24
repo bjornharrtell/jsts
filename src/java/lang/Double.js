@@ -249,12 +249,12 @@ if (typeof Float64Array === 'function' &&
     }
     Double.longBitsToDouble = function (bits) {
       let i
-      let x, sign, exp, fract
+      let x, exp, fract
       const high = bits.high
       const low = bits.low
 
       // Extract the sign.
-      sign = (high & (1 << 31)) ? -1 : 1
+      const sign = (high & (1 << 31)) ? -1 : 1
 
       // Extract the unbiased exponent.
       exp = ((high & 0x7ff00000) >> 20) - BIAS

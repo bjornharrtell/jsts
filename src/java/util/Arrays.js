@@ -51,4 +51,8 @@ export default class Arrays {
     }
     return arrayList
   }
+
+  static copyOf (original, newLength) {
+    return original.slice(0, newLength)
+  }
 }

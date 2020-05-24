@@ -9,13 +9,12 @@ import SortedSet from './SortedSet'
 export default class TreeSet extends SortedSet {
   array_ = []
 
-  constructor(o) {
+  constructor (o) {
     super()
-    if (o instanceof Collection)
-      this.addAll(o)
+    if (o instanceof Collection) { this.addAll(o) }
   }
 
-  contains(o) {
+  contains (o) {
     for (let i = 0, len = this.array_.length; i < len; i++) {
       const e = this.array_[i]
       if (e.compareTo(o) === 0) {
@@ -25,7 +24,7 @@ export default class TreeSet extends SortedSet {
     return false
   }
 
-  add(o) {
+  add (o) {
     if (this.contains(o)) {
       return false
     }
@@ -43,30 +42,30 @@ export default class TreeSet extends SortedSet {
     return true
   }
 
-  addAll(c) {
+  addAll (c) {
     for (let i = c.iterator(); i.hasNext();) {
       this.add(i.next())
     }
     return true
   }
 
-  remove(e) {
+  remove (e) {
     throw new UnsupportedOperationException()
   }
 
-  size() {
+  size () {
     return this.array_.length
   }
 
-  isEmpty() {
+  isEmpty () {
     return this.array_.length === 0
   }
 
-  toArray() {
+  toArray () {
     return this.array_.slice()
   }
 
-  iterator() {
+  iterator () {
     return new Iterator(this)
   }
 }
@@ -75,23 +74,20 @@ class Iterator {
   #treeSet
   #position = 0
 
-  constructor(treeSet) {
+  constructor (treeSet) {
     this.#treeSet = treeSet
   }
 
-  next() {
-    if (this.#position === this.#treeSet.size())
-      throw new NoSuchElementException()
+  next () {
+    if (this.#position === this.#treeSet.size()) { throw new NoSuchElementException() }
     return this.#treeSet.array_[this.#position++]
   }
 
-  hasNext() {
+  hasNext () {
     return this.#position < this.#treeSet.size()
   }
 
-  remove() {
+  remove () {
     throw new UnsupportedOperationException()
   }
-
 }
-

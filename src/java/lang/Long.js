@@ -5,6 +5,7 @@ export default class Long {
     this.low = low
     this.high = high
   }
+
   static toBinaryString (i) {
     let mask
     let result = ''
