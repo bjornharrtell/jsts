@@ -18,14 +18,8 @@ Geometry.prototype.equalsTopo = function (g) {
   return RelateOp.equalsTopo(this, g)
 }
 Geometry.prototype.equals = function (g) {
-  if (g instanceof Geometry) {
-    if (g === null) return false
-    return RelateOp.equalsTopo(this, g)
-  } else if (g instanceof Object) {
-    if (!(g instanceof Geometry)) return false
-    const g = o
-    return this.equalsExact(g)
-  }
+  if (g === null) return false
+  return RelateOp.equalsTopo(this, g)
 }
 Geometry.prototype.union = function () {
   if (arguments.length === 0) {
@@ -80,7 +74,7 @@ Geometry.prototype.buffer = function () {
 Geometry.prototype.convexHull = function () {
   return new ConvexHull(this).getConvexHull()
 }
-Geometry.prototype.relate = function (...args) {
+Geometry.prototype.relate = function () {
   if (arguments.length === 1) {
     const geometry = arguments[0]
     return RelateOp.relate(this, geometry)
