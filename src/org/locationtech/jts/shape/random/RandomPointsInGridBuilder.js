@@ -8,6 +8,17 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
     RandomPointsInGridBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._isConstrainedToCircle = false
+    this._gutterFraction = 0
+    if (arguments.length === 0) {
+      GeometricShapeBuilder.constructor_.call(this, new GeometryFactory())
+    } else if (arguments.length === 1) {
+      const geomFact = arguments[0]
+      GeometricShapeBuilder.constructor_.call(this, geomFact)
+    }
+  }
+
   static randomPointInCircle (orgX, orgY, width, height) {
     const centreX = orgX + width / 2
     const centreY = orgY + height / 2
@@ -63,23 +74,5 @@ export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
     const x = orgX + xLen * Math.random()
     const y = orgY + yLen * Math.random()
     return this.createCoord(x, y)
-  }
-
-  getClass () {
-    return RandomPointsInGridBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RandomPointsInGridBuilder.constructor_ = function () {
-  this._isConstrainedToCircle = false
-  this._gutterFraction = 0
-  if (arguments.length === 0) {
-    GeometricShapeBuilder.constructor_.call(this, new GeometryFactory())
-  } else if (arguments.length === 1) {
-    const geomFact = arguments[0]
-    GeometricShapeBuilder.constructor_.call(this, geomFact)
   }
 }

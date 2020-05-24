@@ -15,6 +15,24 @@ export default class Distance3DOp {
     Distance3DOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = null
+    this._terminateDistance = 0.0
+    this._minDistanceLocation = null
+    this._minDistance = Double.MAX_VALUE
+    this._isDone = false
+    if (arguments.length === 2) {
+      const g0 = arguments[0]; const g1 = arguments[1]
+      Distance3DOp.constructor_.call(this, g0, g1, 0.0)
+    } else if (arguments.length === 3) {
+      const g0 = arguments[0]; const g1 = arguments[1]; const terminateDistance = arguments[2]
+      this._geom = new Array(2).fill(null)
+      this._geom[0] = g0
+      this._geom[1] = g1
+      this._terminateDistance = terminateDistance
+    }
+  }
+
   static segmentPoint (p0, p1, d0, d1) {
     if (d0 <= 0) return new Coordinate(p0)
     if (d1 <= 0) return new Coordinate(p1)
@@ -297,30 +315,5 @@ export default class Distance3DOp {
     this._minDistanceLocation[index] = loc0
     this._minDistanceLocation[1 - index] = loc1
     if (this._minDistance < this._terminateDistance) this._isDone = true
-  }
-
-  getClass () {
-    return Distance3DOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Distance3DOp.constructor_ = function () {
-  this._geom = null
-  this._terminateDistance = 0.0
-  this._minDistanceLocation = null
-  this._minDistance = Double.MAX_VALUE
-  this._isDone = false
-  if (arguments.length === 2) {
-    const g0 = arguments[0]; const g1 = arguments[1]
-    Distance3DOp.constructor_.call(this, g0, g1, 0.0)
-  } else if (arguments.length === 3) {
-    const g0 = arguments[0]; const g1 = arguments[1]; const terminateDistance = arguments[2]
-    this._geom = new Array(2).fill(null)
-    this._geom[0] = g0
-    this._geom[1] = g1
-    this._terminateDistance = terminateDistance
   }
 }

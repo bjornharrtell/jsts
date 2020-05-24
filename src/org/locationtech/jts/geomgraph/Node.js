@@ -7,6 +7,15 @@ export default class Node extends GraphComponent {
     Node.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._coord = null
+    this._edges = null
+    const coord = arguments[0]; const edges = arguments[1]
+    this._coord = coord
+    this._edges = edges
+    this._label = new Label(0, Location.NONE)
+  }
+
   isIncidentEdgeInResult () {
     for (let it = this.getEdges().getEdges().iterator(); it.hasNext();) {
       const de = it.next()
@@ -90,20 +99,4 @@ export default class Node extends GraphComponent {
     }
     this._label.setLocation(argIndex, newLoc)
   }
-
-  getClass () {
-    return Node
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Node.constructor_ = function () {
-  this._coord = null
-  this._edges = null
-  const coord = arguments[0]; const edges = arguments[1]
-  this._coord = coord
-  this._edges = edges
-  this._label = new Label(0, Location.NONE)
 }

@@ -5,6 +5,17 @@ export default class IntArrayList {
     IntArrayList.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._data = null
+    this._size = 0
+    if (arguments.length === 0) {
+      IntArrayList.constructor_.call(this, 10)
+    } else if (arguments.length === 1) {
+      const initialCapacity = arguments[0]
+      this._data = new Array(initialCapacity).fill(null)
+    }
+  }
+
   size () {
     return this._size
   }
@@ -33,23 +44,5 @@ export default class IntArrayList {
     this.ensureCapacity(this._size + 1)
     this._data[this._size] = value
     ++this._size
-  }
-
-  getClass () {
-    return IntArrayList
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-IntArrayList.constructor_ = function () {
-  this._data = null
-  this._size = 0
-  if (arguments.length === 0) {
-    IntArrayList.constructor_.call(this, 10)
-  } else if (arguments.length === 1) {
-    const initialCapacity = arguments[0]
-    this._data = new Array(initialCapacity).fill(null)
   }
 }

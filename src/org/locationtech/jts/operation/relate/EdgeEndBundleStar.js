@@ -3,7 +3,6 @@ import EdgeEndBundle from './EdgeEndBundle'
 export default class EdgeEndBundleStar extends EdgeEndStar {
   constructor () {
     super()
-    EdgeEndBundleStar.constructor_.apply(this, arguments)
   }
 
   updateIM (im) {
@@ -22,13 +21,4 @@ export default class EdgeEndBundleStar extends EdgeEndStar {
       eb.insert(e)
     }
   }
-
-  getClass () {
-    return EdgeEndBundleStar
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-EdgeEndBundleStar.constructor_ = function () {}

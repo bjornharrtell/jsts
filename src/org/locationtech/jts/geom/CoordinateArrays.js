@@ -5,10 +5,6 @@ import System from '../../../../java/lang/System'
 import Comparator from '../../../../java/util/Comparator'
 import Envelope from './Envelope'
 export default class CoordinateArrays {
-  constructor () {
-    CoordinateArrays.constructor_.apply(this, arguments)
-  }
-
   static isRing (pts) {
     if (pts.length < 4) return false
     if (!pts[0].equals2D(pts[pts.length - 1])) return false
@@ -215,40 +211,19 @@ export default class CoordinateArrays {
 
     return extractPts
   }
-
-  getClass () {
-    return CoordinateArrays
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class ForwardComparator {
-  constructor () {
-    ForwardComparator.constructor_.apply(this, arguments)
-  }
-
   compare (o1, o2) {
     const pts1 = o1
     const pts2 = o2
     return CoordinateArrays.compare(pts1, pts2)
   }
 
-  getClass () {
-    return ForwardComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-ForwardComparator.constructor_ = function () {}
 class BidirectionalComparator {
-  constructor () {
-    BidirectionalComparator.constructor_.apply(this, arguments)
-  }
-
   compare (o1, o2) {
     const pts1 = o1
     const pts2 = o2
@@ -280,16 +255,10 @@ class BidirectionalComparator {
     return 0
   }
 
-  getClass () {
-    return BidirectionalComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-BidirectionalComparator.constructor_ = function () {}
 CoordinateArrays.ForwardComparator = ForwardComparator
 CoordinateArrays.BidirectionalComparator = BidirectionalComparator
-CoordinateArrays.constructor_ = function () {}
 CoordinateArrays.coordArrayType = new Array(0).fill(null)

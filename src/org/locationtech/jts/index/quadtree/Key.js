@@ -6,6 +6,14 @@ export default class Key {
     Key.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pt = new Coordinate()
+    this._level = 0
+    this._env = null
+    const itemEnv = arguments[0]
+    this.computeKey(itemEnv)
+  }
+
   static computeQuadLevel (env) {
     const dx = env.getWidth()
     const dy = env.getHeight()
@@ -48,19 +56,4 @@ export default class Key {
   getPoint () {
     return this._pt
   }
-
-  getClass () {
-    return Key
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Key.constructor_ = function () {
-  this._pt = new Coordinate()
-  this._level = 0
-  this._env = null
-  const itemEnv = arguments[0]
-  this.computeKey(itemEnv)
 }

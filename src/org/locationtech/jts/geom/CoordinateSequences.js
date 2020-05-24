@@ -3,10 +3,6 @@ import Coordinate from './Coordinate'
 import Double from '../../../../java/lang/Double'
 import CoordinateSequence from './CoordinateSequence'
 export default class CoordinateSequences {
-  constructor () {
-    CoordinateSequences.constructor_.apply(this, arguments)
-  }
-
   static copyCoord (src, srcPos, dest, destPos) {
     const minDim = Math.min(src.getDimension(), dest.getDimension())
     for (let dim = 0; dim < minDim; dim++)
@@ -146,13 +142,4 @@ export default class CoordinateSequences {
     }
     return minCoord
   }
-
-  getClass () {
-    return CoordinateSequences
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-CoordinateSequences.constructor_ = function () {}

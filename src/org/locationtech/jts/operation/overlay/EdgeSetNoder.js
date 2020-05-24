@@ -6,6 +6,13 @@ export default class EdgeSetNoder {
     EdgeSetNoder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = null
+    this._inputEdges = new ArrayList()
+    const li = arguments[0]
+    this._li = li
+  }
+
   addEdges (edges) {
     this._inputEdges.addAll(edges)
   }
@@ -21,18 +28,4 @@ export default class EdgeSetNoder {
     }
     return splitEdges
   }
-
-  getClass () {
-    return EdgeSetNoder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeSetNoder.constructor_ = function () {
-  this._li = null
-  this._inputEdges = new ArrayList()
-  const li = arguments[0]
-  this._li = li
 }

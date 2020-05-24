@@ -8,6 +8,12 @@ export default class LocationIndexOfPoint {
     LocationIndexOfPoint.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    const linearGeom = arguments[0]
+    this._linearGeom = linearGeom
+  }
+
   static indexOf (linearGeom, inputPt) {
     const locater = new LocationIndexOfPoint(linearGeom)
     return locater.indexOf(inputPt)
@@ -60,17 +66,4 @@ export default class LocationIndexOfPoint {
     Assert.isTrue(closestAfter.compareTo(minIndex) >= 0, 'computed location is before specified minimum location')
     return closestAfter
   }
-
-  getClass () {
-    return LocationIndexOfPoint
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LocationIndexOfPoint.constructor_ = function () {
-  this._linearGeom = null
-  const linearGeom = arguments[0]
-  this._linearGeom = linearGeom
 }

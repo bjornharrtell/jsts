@@ -5,14 +5,7 @@ export default class NotRepresentableException extends Exception {
     NotRepresentableException.constructor_.apply(this, arguments)
   }
 
-  getClass () {
-    return NotRepresentableException
+  static constructor_ () {
+    Exception.constructor_.call(this, 'Projective point not representable on the Cartesian plane.')
   }
-
-  get interfaces_ () {
-    return []
-  }
-}
-NotRepresentableException.constructor_ = function () {
-  Exception.constructor_.call(this, 'Projective point not representable on the Cartesian plane.')
 }

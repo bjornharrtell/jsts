@@ -7,6 +7,16 @@ export default class SnapOverlayOp {
     SnapOverlayOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = new Array(2).fill(null)
+    this._snapTolerance = null
+    this._cbr = null
+    const g1 = arguments[0]; const g2 = arguments[1]
+    this._geom[0] = g1
+    this._geom[1] = g2
+    this.computeSnapTolerance()
+  }
+
   static overlayOp (g0, g1, opCode) {
     const op = new SnapOverlayOp(g0, g1)
     return op.getResultGeometry(opCode)
@@ -69,21 +79,4 @@ export default class SnapOverlayOp {
     const snapGeom = GeometrySnapper.snap(remGeom[0], remGeom[1], this._snapTolerance)
     return snapGeom
   }
-
-  getClass () {
-    return SnapOverlayOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SnapOverlayOp.constructor_ = function () {
-  this._geom = new Array(2).fill(null)
-  this._snapTolerance = null
-  this._cbr = null
-  const g1 = arguments[0]; const g2 = arguments[1]
-  this._geom[0] = g1
-  this._geom[1] = g2
-  this.computeSnapTolerance()
 }

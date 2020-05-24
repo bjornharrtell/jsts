@@ -14,6 +14,20 @@ export default class MCIndexSnapRounder {
     MCIndexSnapRounder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pm = null
+    this._li = null
+    this._scaleFactor = null
+    this._noder = null
+    this._pointSnapper = null
+    this._nodedSegStrings = null
+    const pm = arguments[0]
+    this._pm = pm
+    this._li = new RobustLineIntersector()
+    this._li.setPrecisionModel(pm)
+    this._scaleFactor = pm.getScale()
+  }
+
   checkCorrectness (inputSegmentStrings) {
     const resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings)
     const nv = new NodingValidator(resultSegStrings)
@@ -77,24 +91,7 @@ export default class MCIndexSnapRounder {
     }
   }
 
-  getClass () {
-    return MCIndexSnapRounder
-  }
-
   get interfaces_ () {
     return [Noder]
   }
-}
-MCIndexSnapRounder.constructor_ = function () {
-  this._pm = null
-  this._li = null
-  this._scaleFactor = null
-  this._noder = null
-  this._pointSnapper = null
-  this._nodedSegStrings = null
-  const pm = arguments[0]
-  this._pm = pm
-  this._li = new RobustLineIntersector()
-  this._li.setPrecisionModel(pm)
-  this._scaleFactor = pm.getScale()
 }

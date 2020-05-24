@@ -5,6 +5,14 @@ export default class PolygonizeDirectedEdge extends DirectedEdge {
     PolygonizeDirectedEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edgeRing = null
+    this._next = null
+    this._label = -1
+    const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
+    DirectedEdge.constructor_.call(this, from, to, directionPt, edgeDirection)
+  }
+
   getNext () {
     return this._next
   }
@@ -32,19 +40,4 @@ export default class PolygonizeDirectedEdge extends DirectedEdge {
   getRing () {
     return this._edgeRing
   }
-
-  getClass () {
-    return PolygonizeDirectedEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PolygonizeDirectedEdge.constructor_ = function () {
-  this._edgeRing = null
-  this._next = null
-  this._label = -1
-  const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
-  DirectedEdge.constructor_.call(this, from, to, directionPt, edgeDirection)
 }

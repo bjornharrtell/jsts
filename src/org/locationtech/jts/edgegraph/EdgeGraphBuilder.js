@@ -9,6 +9,10 @@ export default class EdgeGraphBuilder {
     EdgeGraphBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._graph = new EdgeGraph()
+  }
+
   static build (geoms) {
     const builder = new EdgeGraphBuilder()
     builder.add(geoms)
@@ -45,15 +49,4 @@ export default class EdgeGraphBuilder {
   getGraph () {
     return this._graph
   }
-
-  getClass () {
-    return EdgeGraphBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeGraphBuilder.constructor_ = function () {
-  this._graph = new EdgeGraph()
 }

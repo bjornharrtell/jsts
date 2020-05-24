@@ -7,6 +7,12 @@ export default class MortonCurveBuilder extends GeometricShapeBuilder {
     MortonCurveBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const geomFactory = arguments[0]
+    GeometricShapeBuilder.constructor_.call(this, geomFactory)
+    this._extent = null
+  }
+
   static transform (val, scale, offset) {
     return val * scale + offset
   }
@@ -38,17 +44,4 @@ export default class MortonCurveBuilder extends GeometricShapeBuilder {
   setLevel (level) {
     this._numPts = MortonCode.size(level)
   }
-
-  getClass () {
-    return MortonCurveBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MortonCurveBuilder.constructor_ = function () {
-  const geomFactory = arguments[0]
-  GeometricShapeBuilder.constructor_.call(this, geomFactory)
-  this._extent = null
 }

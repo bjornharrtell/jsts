@@ -7,6 +7,35 @@ export default class Label {
     Label.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.elt = new Array(2).fill(null)
+    if (arguments.length === 1) {
+      if (Number.isInteger(arguments[0])) {
+        const onLoc = arguments[0]
+        this.elt[0] = new TopologyLocation(onLoc)
+        this.elt[1] = new TopologyLocation(onLoc)
+      } else if (arguments[0] instanceof Label) {
+        const lbl = arguments[0]
+        this.elt[0] = new TopologyLocation(lbl.elt[0])
+        this.elt[1] = new TopologyLocation(lbl.elt[1])
+      }
+    } else if (arguments.length === 2) {
+      const geomIndex = arguments[0]; const onLoc = arguments[1]
+      this.elt[0] = new TopologyLocation(Location.NONE)
+      this.elt[1] = new TopologyLocation(Location.NONE)
+      this.elt[geomIndex].setLocation(onLoc)
+    } else if (arguments.length === 3) {
+      const onLoc = arguments[0]; const leftLoc = arguments[1]; const rightLoc = arguments[2]
+      this.elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc)
+      this.elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc)
+    } else if (arguments.length === 4) {
+      const geomIndex = arguments[0]; const onLoc = arguments[1]; const leftLoc = arguments[2]; const rightLoc = arguments[3]
+      this.elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE)
+      this.elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE)
+      this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc)
+    }
+  }
+
   static toLineLabel (label) {
     const lineLabel = new Label(Location.NONE)
     for (let i = 0; i < 2; i++)
@@ -114,41 +143,5 @@ export default class Label {
 
   toLine (geomIndex) {
     if (this.elt[geomIndex].isArea()) this.elt[geomIndex] = new TopologyLocation(this.elt[geomIndex].location[0])
-  }
-
-  getClass () {
-    return Label
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Label.constructor_ = function () {
-  this.elt = new Array(2).fill(null)
-  if (arguments.length === 1) {
-    if (Number.isInteger(arguments[0])) {
-      const onLoc = arguments[0]
-      this.elt[0] = new TopologyLocation(onLoc)
-      this.elt[1] = new TopologyLocation(onLoc)
-    } else if (arguments[0] instanceof Label) {
-      const lbl = arguments[0]
-      this.elt[0] = new TopologyLocation(lbl.elt[0])
-      this.elt[1] = new TopologyLocation(lbl.elt[1])
-    }
-  } else if (arguments.length === 2) {
-    const geomIndex = arguments[0]; const onLoc = arguments[1]
-    this.elt[0] = new TopologyLocation(Location.NONE)
-    this.elt[1] = new TopologyLocation(Location.NONE)
-    this.elt[geomIndex].setLocation(onLoc)
-  } else if (arguments.length === 3) {
-    const onLoc = arguments[0]; const leftLoc = arguments[1]; const rightLoc = arguments[2]
-    this.elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc)
-    this.elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc)
-  } else if (arguments.length === 4) {
-    const geomIndex = arguments[0]; const onLoc = arguments[1]; const leftLoc = arguments[2]; const rightLoc = arguments[3]
-    this.elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE)
-    this.elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE)
-    this.elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc)
   }
 }

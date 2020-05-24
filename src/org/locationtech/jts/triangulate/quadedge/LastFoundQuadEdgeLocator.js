@@ -4,6 +4,14 @@ export default class LastFoundQuadEdgeLocator {
     LastFoundQuadEdgeLocator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._subdiv = null
+    this._lastEdge = null
+    const subdiv = arguments[0]
+    this._subdiv = subdiv
+    this.init()
+  }
+
   init () {
     this._lastEdge = this.findEdge()
   }
@@ -22,18 +30,7 @@ export default class LastFoundQuadEdgeLocator {
     return edges.iterator().next()
   }
 
-  getClass () {
-    return LastFoundQuadEdgeLocator
-  }
-
   get interfaces_ () {
     return [QuadEdgeLocator]
   }
-}
-LastFoundQuadEdgeLocator.constructor_ = function () {
-  this._subdiv = null
-  this._lastEdge = null
-  const subdiv = arguments[0]
-  this._subdiv = subdiv
-  this.init()
 }

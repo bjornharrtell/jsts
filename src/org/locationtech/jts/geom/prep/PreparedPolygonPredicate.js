@@ -6,6 +6,14 @@ export default class PreparedPolygonPredicate {
     PreparedPolygonPredicate.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._prepPoly = null
+    this._targetPointLocator = null
+    const prepPoly = arguments[0]
+    this._prepPoly = prepPoly
+    this._targetPointLocator = prepPoly.getPointLocator()
+  }
+
   isAnyTargetComponentInAreaTest (testGeom, targetRepPts) {
     const piaLoc = new SimplePointInAreaLocator(testGeom)
     for (let i = targetRepPts.iterator(); i.hasNext();) {
@@ -55,19 +63,4 @@ export default class PreparedPolygonPredicate {
     }
     return false
   }
-
-  getClass () {
-    return PreparedPolygonPredicate
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPolygonPredicate.constructor_ = function () {
-  this._prepPoly = null
-  this._targetPointLocator = null
-  const prepPoly = arguments[0]
-  this._prepPoly = prepPoly
-  this._targetPointLocator = prepPoly.getPointLocator()
 }

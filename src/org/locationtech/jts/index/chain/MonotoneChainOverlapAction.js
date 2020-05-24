@@ -4,6 +4,11 @@ export default class MonotoneChainOverlapAction {
     MonotoneChainOverlapAction.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._overlapSeg1 = new LineSegment()
+    this._overlapSeg2 = new LineSegment()
+  }
+
   overlap () {
     if (arguments.length === 2) {
       const seg1 = arguments[0]; const seg2 = arguments[1]
@@ -14,16 +19,4 @@ export default class MonotoneChainOverlapAction {
       this.overlap(this._overlapSeg1, this._overlapSeg2)
     }
   }
-
-  getClass () {
-    return MonotoneChainOverlapAction
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MonotoneChainOverlapAction.constructor_ = function () {
-  this._overlapSeg1 = new LineSegment()
-  this._overlapSeg2 = new LineSegment()
 }

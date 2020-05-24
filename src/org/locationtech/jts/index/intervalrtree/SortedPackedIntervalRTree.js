@@ -11,6 +11,12 @@ export default class SortedPackedIntervalRTree {
     SortedPackedIntervalRTree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._leaves = new ArrayList()
+    this._root = null
+    this._level = 0
+  }
+
   buildTree () {
     Collections.sort(this._leaves, new IntervalRTreeNode.NodeComparator())
     let src = this._leaves
@@ -65,17 +71,4 @@ export default class SortedPackedIntervalRTree {
       }
     }
   }
-
-  getClass () {
-    return SortedPackedIntervalRTree
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SortedPackedIntervalRTree.constructor_ = function () {
-  this._leaves = new ArrayList()
-  this._root = null
-  this._level = 0
 }

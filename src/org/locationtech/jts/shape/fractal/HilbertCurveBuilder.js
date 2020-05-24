@@ -7,6 +7,13 @@ export default class HilbertCurveBuilder extends GeometricShapeBuilder {
     HilbertCurveBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._order = -1
+    const geomFactory = arguments[0]
+    GeometricShapeBuilder.constructor_.call(this, geomFactory)
+    this._extent = null
+  }
+
   static transform (val, scale, offset) {
     return val * scale + offset
   }
@@ -38,18 +45,4 @@ export default class HilbertCurveBuilder extends GeometricShapeBuilder {
   setLevel (level) {
     this._numPts = HilbertCode.size(level)
   }
-
-  getClass () {
-    return HilbertCurveBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-HilbertCurveBuilder.constructor_ = function () {
-  this._order = -1
-  const geomFactory = arguments[0]
-  GeometricShapeBuilder.constructor_.call(this, geomFactory)
-  this._extent = null
 }

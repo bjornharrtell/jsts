@@ -11,6 +11,62 @@ export default class CoordinateArraySequence {
     CoordinateArraySequence.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._dimension = 3
+    this._measures = 0
+    this._coordinates = null
+    if (arguments.length === 1) {
+      if (arguments[0] instanceof Array) {
+        const coordinates = arguments[0]
+        CoordinateArraySequence.constructor_.call(this, coordinates, CoordinateArrays.dimension(coordinates), CoordinateArrays.measures(coordinates))
+      } else if (Number.isInteger(arguments[0])) {
+        const size = arguments[0]
+        this._coordinates = new Array(size).fill(null)
+        for (let i = 0; i < size; i++)
+          this._coordinates[i] = new Coordinate()
+      } else if (hasInterface(arguments[0], CoordinateSequence)) {
+        const coordSeq = arguments[0]
+        if (coordSeq === null) {
+          this._coordinates = new Array(0).fill(null)
+          return null
+        }
+        this._dimension = coordSeq.getDimension()
+        this._measures = coordSeq.getMeasures()
+        this._coordinates = new Array(coordSeq.size()).fill(null)
+        for (let i = 0; i < this._coordinates.length; i++)
+          this._coordinates[i] = coordSeq.getCoordinateCopy(i)
+      }
+    } else if (arguments.length === 2) {
+      if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
+        const coordinates = arguments[0]; const dimension = arguments[1]
+        CoordinateArraySequence.constructor_.call(this, coordinates, dimension, CoordinateArrays.measures(coordinates))
+      } else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
+        const size = arguments[0]; const dimension = arguments[1]
+        this._coordinates = new Array(size).fill(null)
+        this._dimension = dimension
+        for (let i = 0; i < size; i++)
+          this._coordinates[i] = Coordinates.create(dimension)
+      }
+    } else if (arguments.length === 3) {
+      if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
+        const coordinates = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
+        this._dimension = dimension
+        this._measures = measures
+        if (coordinates === null)
+          this._coordinates = new Array(0).fill(null)
+        else
+          this._coordinates = coordinates
+      } else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
+        const size = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
+        this._coordinates = new Array(size).fill(null)
+        this._dimension = dimension
+        this._measures = measures
+        for (let i = 0; i < size; i++)
+          this._coordinates[i] = this.createCoordinate()
+      }
+    }
+  }
+
   getM (index) {
     if (this.hasM())
       return this._coordinates[index].getM()
@@ -126,66 +182,7 @@ export default class CoordinateArraySequence {
     return this._coordinates
   }
 
-  getClass () {
-    return CoordinateArraySequence
-  }
-
   get interfaces_ () {
     return [CoordinateSequence, Serializable]
-  }
-}
-CoordinateArraySequence.constructor_ = function () {
-  this._dimension = 3
-  this._measures = 0
-  this._coordinates = null
-  if (arguments.length === 1) {
-    if (arguments[0] instanceof Array) {
-      const coordinates = arguments[0]
-      CoordinateArraySequence.constructor_.call(this, coordinates, CoordinateArrays.dimension(coordinates), CoordinateArrays.measures(coordinates))
-    } else if (Number.isInteger(arguments[0])) {
-      const size = arguments[0]
-      this._coordinates = new Array(size).fill(null)
-      for (let i = 0; i < size; i++)
-        this._coordinates[i] = new Coordinate()
-    } else if (hasInterface(arguments[0], CoordinateSequence)) {
-      const coordSeq = arguments[0]
-      if (coordSeq === null) {
-        this._coordinates = new Array(0).fill(null)
-        return null
-      }
-      this._dimension = coordSeq.getDimension()
-      this._measures = coordSeq.getMeasures()
-      this._coordinates = new Array(coordSeq.size()).fill(null)
-      for (let i = 0; i < this._coordinates.length; i++)
-        this._coordinates[i] = coordSeq.getCoordinateCopy(i)
-    }
-  } else if (arguments.length === 2) {
-    if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
-      const coordinates = arguments[0]; const dimension = arguments[1]
-      CoordinateArraySequence.constructor_.call(this, coordinates, dimension, CoordinateArrays.measures(coordinates))
-    } else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
-      const size = arguments[0]; const dimension = arguments[1]
-      this._coordinates = new Array(size).fill(null)
-      this._dimension = dimension
-      for (let i = 0; i < size; i++)
-        this._coordinates[i] = Coordinates.create(dimension)
-    }
-  } else if (arguments.length === 3) {
-    if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-      const coordinates = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
-      this._dimension = dimension
-      this._measures = measures
-      if (coordinates === null)
-        this._coordinates = new Array(0).fill(null)
-      else
-        this._coordinates = coordinates
-    } else if (Number.isInteger(arguments[2]) && (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1]))) {
-      const size = arguments[0]; const dimension = arguments[1]; const measures = arguments[2]
-      this._coordinates = new Array(size).fill(null)
-      this._dimension = dimension
-      this._measures = measures
-      for (let i = 0; i < size; i++)
-        this._coordinates[i] = this.createCoordinate()
-    }
   }
 }

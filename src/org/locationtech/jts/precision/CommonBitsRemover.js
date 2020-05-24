@@ -7,6 +7,11 @@ export default class CommonBitsRemover {
     CommonBitsRemover.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._commonCoord = null
+    this._ccFilter = new CommonCoordinateFilter()
+  }
+
   addCommonBits (geom) {
     const trans = new Translater(this._commonCoord)
     geom.apply(trans)
@@ -32,18 +37,15 @@ export default class CommonBitsRemover {
     geom.apply(this._ccFilter)
     this._commonCoord = this._ccFilter.getCommonCoordinate()
   }
-
-  getClass () {
-    return CommonBitsRemover
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class CommonCoordinateFilter {
   constructor () {
     CommonCoordinateFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._commonBitsX = new CommonBits()
+    this._commonBitsY = new CommonBits()
   }
 
   filter (coord) {
@@ -55,21 +57,19 @@ class CommonCoordinateFilter {
     return new Coordinate(this._commonBitsX.getCommon(), this._commonBitsY.getCommon())
   }
 
-  getClass () {
-    return CommonCoordinateFilter
-  }
-
   get interfaces_ () {
     return [CoordinateFilter]
   }
 }
-CommonCoordinateFilter.constructor_ = function () {
-  this._commonBitsX = new CommonBits()
-  this._commonBitsY = new CommonBits()
-}
 class Translater {
   constructor () {
     Translater.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.trans = null
+    const trans = arguments[0]
+    this.trans = trans
   }
 
   filter (seq, i) {
@@ -87,22 +87,9 @@ class Translater {
     return true
   }
 
-  getClass () {
-    return Translater
-  }
-
   get interfaces_ () {
     return [CoordinateSequenceFilter]
   }
 }
-Translater.constructor_ = function () {
-  this.trans = null
-  const trans = arguments[0]
-  this.trans = trans
-}
 CommonBitsRemover.CommonCoordinateFilter = CommonCoordinateFilter
 CommonBitsRemover.Translater = Translater
-CommonBitsRemover.constructor_ = function () {
-  this._commonCoord = null
-  this._ccFilter = new CommonCoordinateFilter()
-}

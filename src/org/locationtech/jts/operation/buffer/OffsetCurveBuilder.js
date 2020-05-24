@@ -9,6 +9,15 @@ export default class OffsetCurveBuilder {
     OffsetCurveBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._distance = 0.0
+    this._precisionModel = null
+    this._bufParams = null
+    const precisionModel = arguments[0]; const bufParams = arguments[1]
+    this._precisionModel = precisionModel
+    this._bufParams = bufParams
+  }
+
   static copyCoordinates (pts) {
     const copy = new Array(pts.length).fill(null)
     for (let i = 0; i < copy.length; i++)
@@ -168,20 +177,4 @@ export default class OffsetCurveBuilder {
   getSegGen (distance) {
     return new OffsetSegmentGenerator(this._precisionModel, this._bufParams, distance)
   }
-
-  getClass () {
-    return OffsetCurveBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OffsetCurveBuilder.constructor_ = function () {
-  this._distance = 0.0
-  this._precisionModel = null
-  this._bufParams = null
-  const precisionModel = arguments[0]; const bufParams = arguments[1]
-  this._precisionModel = precisionModel
-  this._bufParams = bufParams
 }

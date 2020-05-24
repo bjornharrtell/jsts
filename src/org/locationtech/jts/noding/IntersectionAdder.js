@@ -4,6 +4,22 @@ export default class IntersectionAdder {
     IntersectionAdder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._hasIntersection = false
+    this._hasProper = false
+    this._hasProperInterior = false
+    this._hasInterior = false
+    this._properIntersectionPoint = null
+    this._li = null
+    this._isSelfIntersection = null
+    this.numIntersections = 0
+    this.numInteriorIntersections = 0
+    this.numProperIntersections = 0
+    this.numTests = 0
+    const li = arguments[0]
+    this._li = li
+  }
+
   static isAdjacentSegments (i1, i2) {
     return Math.abs(i1 - i2) === 1
   }
@@ -77,26 +93,7 @@ export default class IntersectionAdder {
     return this._hasInterior
   }
 
-  getClass () {
-    return IntersectionAdder
-  }
-
   get interfaces_ () {
     return [SegmentIntersector]
   }
-}
-IntersectionAdder.constructor_ = function () {
-  this._hasIntersection = false
-  this._hasProper = false
-  this._hasProperInterior = false
-  this._hasInterior = false
-  this._properIntersectionPoint = null
-  this._li = null
-  this._isSelfIntersection = null
-  this.numIntersections = 0
-  this.numInteriorIntersections = 0
-  this.numProperIntersections = 0
-  this.numTests = 0
-  const li = arguments[0]
-  this._li = li
 }

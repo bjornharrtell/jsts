@@ -8,6 +8,16 @@ export default class FastNodingValidator {
     FastNodingValidator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = new RobustLineIntersector()
+    this._segStrings = null
+    this._findAllIntersections = false
+    this._segInt = null
+    this._isValid = true
+    const segStrings = arguments[0]
+    this._segStrings = segStrings
+  }
+
   static computeIntersections (segStrings) {
     const nv = new FastNodingValidator(segStrings)
     nv.setFindAllIntersections(true)
@@ -56,21 +66,4 @@ export default class FastNodingValidator {
     const intSegs = this._segInt.getIntersectionSegments()
     return 'found non-noded intersection between ' + WKTWriter.toLineString(intSegs[0], intSegs[1]) + ' and ' + WKTWriter.toLineString(intSegs[2], intSegs[3])
   }
-
-  getClass () {
-    return FastNodingValidator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-FastNodingValidator.constructor_ = function () {
-  this._li = new RobustLineIntersector()
-  this._segStrings = null
-  this._findAllIntersections = false
-  this._segInt = null
-  this._isValid = true
-  const segStrings = arguments[0]
-  this._segStrings = segStrings
 }

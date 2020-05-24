@@ -6,6 +6,14 @@ export default class Plane3D {
     Plane3D.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._normal = null
+    this._basePt = null
+    const normal = arguments[0]; const basePt = arguments[1]
+    this._normal = normal
+    this._basePt = basePt
+  }
+
   closestAxisPlane () {
     const xmag = Math.abs(this._normal.getX())
     const ymag = Math.abs(this._normal.getY())
@@ -25,21 +33,6 @@ export default class Plane3D {
     const d = pbdDotNormal / this._normal.length()
     return d
   }
-
-  getClass () {
-    return Plane3D
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Plane3D.constructor_ = function () {
-  this._normal = null
-  this._basePt = null
-  const normal = arguments[0]; const basePt = arguments[1]
-  this._normal = normal
-  this._basePt = basePt
 }
 Plane3D.XY_PLANE = 1
 Plane3D.YZ_PLANE = 2

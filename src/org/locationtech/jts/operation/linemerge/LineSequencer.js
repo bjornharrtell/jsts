@@ -19,6 +19,15 @@ export default class LineSequencer {
     LineSequencer.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._graph = new LineMergeGraph()
+    this._factory = new GeometryFactory()
+    this._lineCount = 0
+    this._isRun = false
+    this._sequencedGeometry = null
+    this._isSequenceable = false
+  }
+
   static findUnvisitedBestOrientedDE (node) {
     let wellOrientedDE = null
     let unvisitedDE = null
@@ -249,20 +258,4 @@ export default class LineSequencer {
       })())
     }
   }
-
-  getClass () {
-    return LineSequencer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineSequencer.constructor_ = function () {
-  this._graph = new LineMergeGraph()
-  this._factory = new GeometryFactory()
-  this._lineCount = 0
-  this._isRun = false
-  this._sequencedGeometry = null
-  this._isSequenceable = false
 }

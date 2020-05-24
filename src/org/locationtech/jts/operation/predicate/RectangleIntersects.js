@@ -9,6 +9,14 @@ export default class RectangleIntersects {
     RectangleIntersects.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._rectangle = null
+    this._rectEnv = null
+    const rectangle = arguments[0]
+    this._rectangle = rectangle
+    this._rectEnv = rectangle.getEnvelopeInternal()
+  }
+
   static intersects (rectangle, b) {
     const rp = new RectangleIntersects(rectangle)
     return rp.intersects(b)
@@ -27,26 +35,18 @@ export default class RectangleIntersects {
     if (riVisitor.intersects()) return true
     return false
   }
-
-  getClass () {
-    return RectangleIntersects
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RectangleIntersects.constructor_ = function () {
-  this._rectangle = null
-  this._rectEnv = null
-  const rectangle = arguments[0]
-  this._rectangle = rectangle
-  this._rectEnv = rectangle.getEnvelopeInternal()
 }
 class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
   constructor () {
     super()
     EnvelopeIntersectsVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._rectEnv = null
+    this._intersects = false
+    const rectEnv = arguments[0]
+    this._rectEnv = rectEnv
   }
 
   isDone () {
@@ -75,25 +75,20 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
   intersects () {
     return this._intersects
   }
-
-  getClass () {
-    return EnvelopeIntersectsVisitor
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EnvelopeIntersectsVisitor.constructor_ = function () {
-  this._rectEnv = null
-  this._intersects = false
-  const rectEnv = arguments[0]
-  this._rectEnv = rectEnv
 }
 class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
   constructor () {
     super()
     GeometryContainsPointVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._rectSeq = null
+    this._rectEnv = null
+    this._containsPoint = false
+    const rectangle = arguments[0]
+    this._rectSeq = rectangle.getExteriorRing().getCoordinateSequence()
+    this._rectEnv = rectangle.getEnvelopeInternal()
   }
 
   isDone () {
@@ -118,27 +113,22 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
   containsPoint () {
     return this._containsPoint
   }
-
-  getClass () {
-    return GeometryContainsPointVisitor
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryContainsPointVisitor.constructor_ = function () {
-  this._rectSeq = null
-  this._rectEnv = null
-  this._containsPoint = false
-  const rectangle = arguments[0]
-  this._rectSeq = rectangle.getExteriorRing().getCoordinateSequence()
-  this._rectEnv = rectangle.getEnvelopeInternal()
 }
 class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
   constructor () {
     super()
     RectangleIntersectsSegmentVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._rectEnv = null
+    this._rectIntersector = null
+    this._hasIntersection = false
+    this._p0 = new Coordinate()
+    this._p1 = new Coordinate()
+    const rectangle = arguments[0]
+    this._rectEnv = rectangle.getEnvelopeInternal()
+    this._rectIntersector = new RectangleLineIntersector(this._rectEnv)
   }
 
   intersects () {
@@ -175,22 +165,4 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
       }
     }
   }
-
-  getClass () {
-    return RectangleIntersectsSegmentVisitor
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RectangleIntersectsSegmentVisitor.constructor_ = function () {
-  this._rectEnv = null
-  this._rectIntersector = null
-  this._hasIntersection = false
-  this._p0 = new Coordinate()
-  this._p1 = new Coordinate()
-  const rectangle = arguments[0]
-  this._rectEnv = rectangle.getEnvelopeInternal()
-  this._rectIntersector = new RectangleLineIntersector(this._rectEnv)
 }

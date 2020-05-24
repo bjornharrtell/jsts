@@ -6,6 +6,18 @@ export default class LineBuilder {
     LineBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._op = null
+    this._geometryFactory = null
+    this._ptLocator = null
+    this._lineEdgesList = new ArrayList()
+    this._resultLineList = new ArrayList()
+    const op = arguments[0]; const geometryFactory = arguments[1]; const ptLocator = arguments[2]
+    this._op = op
+    this._geometryFactory = geometryFactory
+    this._ptLocator = ptLocator
+  }
+
   collectLines (opCode) {
     for (let it = this._op.getGraph().getEdgeEnds().iterator(); it.hasNext();) {
       const de = it.next()
@@ -81,23 +93,4 @@ export default class LineBuilder {
       de.setVisitedEdge(true)
     }
   }
-
-  getClass () {
-    return LineBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineBuilder.constructor_ = function () {
-  this._op = null
-  this._geometryFactory = null
-  this._ptLocator = null
-  this._lineEdgesList = new ArrayList()
-  this._resultLineList = new ArrayList()
-  const op = arguments[0]; const geometryFactory = arguments[1]; const ptLocator = arguments[2]
-  this._op = op
-  this._geometryFactory = geometryFactory
-  this._ptLocator = ptLocator
 }

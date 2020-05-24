@@ -7,6 +7,14 @@ export default class BasicSegmentString {
     BasicSegmentString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pts = null
+    this._data = null
+    const pts = arguments[0]; const data = arguments[1]
+    this._pts = pts
+    this._data = data
+  }
+
   getCoordinates () {
     return this._pts
   }
@@ -40,18 +48,7 @@ export default class BasicSegmentString {
     return WKTWriter.toLineString(new CoordinateArraySequence(this._pts))
   }
 
-  getClass () {
-    return BasicSegmentString
-  }
-
   get interfaces_ () {
     return [SegmentString]
   }
-}
-BasicSegmentString.constructor_ = function () {
-  this._pts = null
-  this._data = null
-  const pts = arguments[0]; const data = arguments[1]
-  this._pts = pts
-  this._data = data
 }

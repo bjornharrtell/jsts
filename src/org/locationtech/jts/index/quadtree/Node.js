@@ -8,6 +8,18 @@ export default class Node extends NodeBase {
     Node.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._env = null
+    this._centrex = null
+    this._centrey = null
+    this._level = null
+    const env = arguments[0]; const level = arguments[1]
+    this._env = env
+    this._level = level
+    this._centrex = (env.getMinX() + env.getMaxX()) / 2
+    this._centrey = (env.getMinY() + env.getMaxY()) / 2
+  }
+
   static createNode (env) {
     const key = new Key(env)
     const node = new Node(key.getEnvelope(), key.getLevel())
@@ -105,23 +117,4 @@ export default class Node extends NodeBase {
       this._subnode[index] = childNode
     }
   }
-
-  getClass () {
-    return Node
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Node.constructor_ = function () {
-  this._env = null
-  this._centrex = null
-  this._centrey = null
-  this._level = null
-  const env = arguments[0]; const level = arguments[1]
-  this._env = env
-  this._level = level
-  this._centrex = (env.getMinX() + env.getMaxX()) / 2
-  this._centrey = (env.getMinY() + env.getMaxY()) / 2
 }

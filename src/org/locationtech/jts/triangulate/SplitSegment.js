@@ -4,6 +4,16 @@ export default class SplitSegment {
     SplitSegment.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._seg = null
+    this._segLen = null
+    this._splitPt = null
+    this._minimumLen = 0.0
+    const seg = arguments[0]
+    this._seg = seg
+    this._segLen = seg.getLength()
+  }
+
   static pointAlongReverse (seg, segmentLengthFraction) {
     const coord = new Coordinate()
     coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x)
@@ -44,21 +54,4 @@ export default class SplitSegment {
   getSplitPoint () {
     return this._splitPt
   }
-
-  getClass () {
-    return SplitSegment
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SplitSegment.constructor_ = function () {
-  this._seg = null
-  this._segLen = null
-  this._splitPt = null
-  this._minimumLen = 0.0
-  const seg = arguments[0]
-  this._seg = seg
-  this._segLen = seg.getLength()
 }

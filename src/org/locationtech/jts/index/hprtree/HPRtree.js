@@ -15,6 +15,21 @@ export default class HPRtree {
     HPRtree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._items = new ArrayList()
+    this._nodeCapacity = HPRtree.DEFAULT_NODE_CAPACITY
+    this._totalExtent = new Envelope()
+    this._layerStartIndex = null
+    this._nodeBounds = null
+    this._isBuilt = false
+    if (arguments.length === 0) {
+      HPRtree.constructor_.call(this, HPRtree.DEFAULT_NODE_CAPACITY)
+    } else if (arguments.length === 1) {
+      const nodeCapacity = arguments[0]
+      this._nodeCapacity = nodeCapacity
+    }
+  }
+
   static computeLayerIndices (itemSize, nodeCapacity) {
     const layerIndexList = new ArrayList()
     let layerSize = itemSize
@@ -224,10 +239,6 @@ export default class HPRtree {
     return bounds
   }
 
-  getClass () {
-    return HPRtree
-  }
-
   get interfaces_ () {
     return [SpatialIndex]
   }
@@ -237,40 +248,23 @@ class ItemComparator {
     ItemComparator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._encoder = null
+    const encoder = arguments[0]
+    this._encoder = encoder
+  }
+
   compare (item1, item2) {
     const hcode1 = this._encoder.encode(item1.getEnvelope())
     const hcode2 = this._encoder.encode(item2.getEnvelope())
     return Integer.compare(hcode1, hcode2)
   }
 
-  getClass () {
-    return ItemComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-ItemComparator.constructor_ = function () {
-  this._encoder = null
-  const encoder = arguments[0]
-  this._encoder = encoder
-}
 HPRtree.ItemComparator = ItemComparator
-HPRtree.constructor_ = function () {
-  this._items = new ArrayList()
-  this._nodeCapacity = HPRtree.DEFAULT_NODE_CAPACITY
-  this._totalExtent = new Envelope()
-  this._layerStartIndex = null
-  this._nodeBounds = null
-  this._isBuilt = false
-  if (arguments.length === 0) {
-    HPRtree.constructor_.call(this, HPRtree.DEFAULT_NODE_CAPACITY)
-  } else if (arguments.length === 1) {
-    const nodeCapacity = arguments[0]
-    this._nodeCapacity = nodeCapacity
-  }
-}
 HPRtree.ENV_SIZE = 4
 HPRtree.HILBERT_LEVEL = 12
 HPRtree.DEFAULT_NODE_CAPACITY = 16

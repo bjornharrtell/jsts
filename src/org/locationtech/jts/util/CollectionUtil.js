@@ -1,9 +1,5 @@
 import ArrayList from '../../../../java/util/ArrayList'
 export default class CollectionUtil {
-  constructor () {
-    CollectionUtil.constructor_.apply(this, arguments)
-  }
-
   static transform (coll, func) {
     const result = new ArrayList()
     for (let i = coll.iterator(); i.hasNext();)
@@ -26,15 +22,6 @@ export default class CollectionUtil {
     for (let i = coll.iterator(); i.hasNext();)
       func.execute(i.next())
   }
-
-  getClass () {
-    return CollectionUtil
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 function Function () {}
 CollectionUtil.Function = Function
-CollectionUtil.constructor_ = function () {}

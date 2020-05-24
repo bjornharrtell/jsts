@@ -31,6 +31,30 @@ export default class GeometryGraph extends PlanarGraph {
     GeometryGraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._parentGeom = null
+    this._lineEdgeMap = new HashMap()
+    this._boundaryNodeRule = null
+    this._useBoundaryDeterminationRule = true
+    this._argIndex = null
+    this._boundaryNodes = null
+    this._hasTooFewPoints = false
+    this._invalidPoint = null
+    this._areaPtLocator = null
+    this._ptLocator = new PointLocator()
+    if (arguments.length === 2) {
+      const argIndex = arguments[0]; const parentGeom = arguments[1]
+      GeometryGraph.constructor_.call(this, argIndex, parentGeom, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE)
+    } else if (arguments.length === 3) {
+      const argIndex = arguments[0]; const parentGeom = arguments[1]; const boundaryNodeRule = arguments[2]
+      this._argIndex = argIndex
+      this._parentGeom = parentGeom
+      this._boundaryNodeRule = boundaryNodeRule
+      if (parentGeom !== null)
+        this.add(parentGeom)
+    }
+  }
+
   static determineBoundary (boundaryNodeRule, boundaryCount) {
     return boundaryNodeRule.isInBoundary(boundaryCount) ? Location.BOUNDARY : Location.INTERIOR
   }
@@ -204,7 +228,7 @@ export default class GeometryGraph extends PlanarGraph {
       const g = arguments[0]
       if (g.isEmpty()) return null
       if (g instanceof MultiPolygon) this._useBoundaryDeterminationRule = false
-      if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getClass().getName())
+      if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getGeometryType())
     } else {
       return super.add.apply(this, arguments)
     }
@@ -234,36 +258,5 @@ export default class GeometryGraph extends PlanarGraph {
     } else {
       return super.findEdge.apply(this, arguments)
     }
-  }
-
-  getClass () {
-    return GeometryGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryGraph.constructor_ = function () {
-  this._parentGeom = null
-  this._lineEdgeMap = new HashMap()
-  this._boundaryNodeRule = null
-  this._useBoundaryDeterminationRule = true
-  this._argIndex = null
-  this._boundaryNodes = null
-  this._hasTooFewPoints = false
-  this._invalidPoint = null
-  this._areaPtLocator = null
-  this._ptLocator = new PointLocator()
-  if (arguments.length === 2) {
-    const argIndex = arguments[0]; const parentGeom = arguments[1]
-    GeometryGraph.constructor_.call(this, argIndex, parentGeom, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE)
-  } else if (arguments.length === 3) {
-    const argIndex = arguments[0]; const parentGeom = arguments[1]; const boundaryNodeRule = arguments[2]
-    this._argIndex = argIndex
-    this._parentGeom = parentGeom
-    this._boundaryNodeRule = boundaryNodeRule
-    if (parentGeom !== null)
-      this.add(parentGeom)
   }
 }

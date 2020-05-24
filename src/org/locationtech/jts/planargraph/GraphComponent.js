@@ -3,6 +3,12 @@ export default class GraphComponent {
     GraphComponent.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._isMarked = false
+    this._isVisited = false
+    this._data = null
+  }
+
   static getComponentWithVisitedState (i, visitedState) {
     while (i.hasNext()) {
       const comp = i.next()
@@ -56,17 +62,4 @@ export default class GraphComponent {
   setContext (data) {
     this._data = data
   }
-
-  getClass () {
-    return GraphComponent
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GraphComponent.constructor_ = function () {
-  this._isMarked = false
-  this._isVisited = false
-  this._data = null
 }

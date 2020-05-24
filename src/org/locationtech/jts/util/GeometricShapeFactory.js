@@ -7,6 +7,21 @@ export default class GeometricShapeFactory {
     GeometricShapeFactory.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFact = null
+    this._precModel = null
+    this._dim = new Dimensions()
+    this._nPts = 100
+    this._rotationAngle = 0.0
+    if (arguments.length === 0) {
+      GeometricShapeFactory.constructor_.call(this, new GeometryFactory())
+    } else if (arguments.length === 1) {
+      const geomFact = arguments[0]
+      this._geomFact = geomFact
+      this._precModel = geomFact.getPrecisionModel()
+    }
+  }
+
   createSupercircle (power) {
     const recipPow = 1.0 / power
     const radius = this._dim.getMinSize() / 2
@@ -198,18 +213,17 @@ export default class GeometricShapeFactory {
   setSize (size) {
     this._dim.setSize(size)
   }
-
-  getClass () {
-    return GeometricShapeFactory
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class Dimensions {
   constructor () {
     Dimensions.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.base = null
+    this.centre = null
+    this.width = null
+    this.height = null
   }
 
   setBase (base) {
@@ -272,33 +286,5 @@ class Dimensions {
     this.height = size
     this.width = size
   }
-
-  getClass () {
-    return Dimensions
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Dimensions.constructor_ = function () {
-  this.base = null
-  this.centre = null
-  this.width = null
-  this.height = null
 }
 GeometricShapeFactory.Dimensions = Dimensions
-GeometricShapeFactory.constructor_ = function () {
-  this._geomFact = null
-  this._precModel = null
-  this._dim = new Dimensions()
-  this._nPts = 100
-  this._rotationAngle = 0.0
-  if (arguments.length === 0) {
-    GeometricShapeFactory.constructor_.call(this, new GeometryFactory())
-  } else if (arguments.length === 1) {
-    const geomFact = arguments[0]
-    this._geomFact = geomFact
-    this._precModel = geomFact.getPrecisionModel()
-  }
-}

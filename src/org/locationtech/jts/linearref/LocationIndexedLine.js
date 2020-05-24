@@ -10,6 +10,13 @@ export default class LocationIndexedLine {
     LocationIndexedLine.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    const linearGeom = arguments[0]
+    this._linearGeom = linearGeom
+    this.checkGeometryType()
+  }
+
   clampIndex (index) {
     const loc = index.copy()
     loc.clamp(this._linearGeom)
@@ -62,18 +69,4 @@ export default class LocationIndexedLine {
   indicesOf (subLine) {
     return LocationIndexOfLine.indicesOf(this._linearGeom, subLine)
   }
-
-  getClass () {
-    return LocationIndexedLine
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LocationIndexedLine.constructor_ = function () {
-  this._linearGeom = null
-  const linearGeom = arguments[0]
-  this._linearGeom = linearGeom
-  this.checkGeometryType()
 }

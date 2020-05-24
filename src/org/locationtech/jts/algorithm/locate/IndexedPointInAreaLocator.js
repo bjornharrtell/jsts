@@ -15,6 +15,14 @@ export default class IndexedPointInAreaLocator {
     IndexedPointInAreaLocator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = null
+    this._index = null
+    const g = arguments[0]
+    if (!(hasInterface(g, Polygonal) || g instanceof LinearRing)) throw new IllegalArgumentException('Argument must be Polygonal or LinearRing')
+    this._geom = g
+  }
+
   locate (p) {
     if (this._index === null) {
       this._index = new IntervalIndexedGeometry(this._geom)
@@ -26,10 +34,6 @@ export default class IndexedPointInAreaLocator {
     return rcc.getLocation()
   }
 
-  getClass () {
-    return IndexedPointInAreaLocator
-  }
-
   get interfaces_ () {
     return [PointOnGeometryLocator]
   }
@@ -39,27 +43,31 @@ class SegmentVisitor {
     SegmentVisitor.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._counter = null
+    const counter = arguments[0]
+    this._counter = counter
+  }
+
   visitItem (item) {
     const seg = item
     this._counter.countSegment(seg.getCoordinate(0), seg.getCoordinate(1))
-  }
-
-  getClass () {
-    return SegmentVisitor
   }
 
   get interfaces_ () {
     return [ItemVisitor]
   }
 }
-SegmentVisitor.constructor_ = function () {
-  this._counter = null
-  const counter = arguments[0]
-  this._counter = counter
-}
 class IntervalIndexedGeometry {
   constructor () {
     IntervalIndexedGeometry.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._isEmpty = false
+    this._index = new SortedPackedIntervalRTree()
+    const geom = arguments[0]
+    if (geom.isEmpty()) this._isEmpty = true; else this.init(geom)
   }
 
   init (geom) {
@@ -93,27 +101,6 @@ class IntervalIndexedGeometry {
       this._index.query(min, max, visitor)
     }
   }
-
-  getClass () {
-    return IntervalIndexedGeometry
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-IntervalIndexedGeometry.constructor_ = function () {
-  this._isEmpty = false
-  this._index = new SortedPackedIntervalRTree()
-  const geom = arguments[0]
-  if (geom.isEmpty()) this._isEmpty = true; else this.init(geom)
 }
 IndexedPointInAreaLocator.SegmentVisitor = SegmentVisitor
 IndexedPointInAreaLocator.IntervalIndexedGeometry = IntervalIndexedGeometry
-IndexedPointInAreaLocator.constructor_ = function () {
-  this._geom = null
-  this._index = null
-  const g = arguments[0]
-  if (!(hasInterface(g, Polygonal) || g instanceof LinearRing)) throw new IllegalArgumentException('Argument must be Polygonal or LinearRing')
-  this._geom = g
-}

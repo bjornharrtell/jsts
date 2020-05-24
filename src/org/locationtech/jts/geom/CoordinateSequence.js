@@ -1,10 +1,6 @@
 import Double from '../../../../java/lang/Double'
 import Cloneable from '../../../../java/lang/Cloneable'
 export default class CoordinateSequence {
-  constructor () {
-    CoordinateSequence.constructor_.apply(this, arguments)
-  }
-
   getM (index) {
     if (this.hasM()) {
       const mIndex = this.getDimension() - this.getMeasures()
@@ -52,15 +48,10 @@ export default class CoordinateSequence {
   copy () {}
   getY (index) {}
   toCoordinateArray () {}
-  getClass () {
-    return CoordinateSequence
-  }
-
   get interfaces_ () {
     return [Cloneable]
   }
 }
-CoordinateSequence.constructor_ = function () {}
 CoordinateSequence.X = 0
 CoordinateSequence.Y = 1
 CoordinateSequence.Z = 2

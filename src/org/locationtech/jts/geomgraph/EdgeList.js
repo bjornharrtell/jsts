@@ -6,6 +6,11 @@ export default class EdgeList {
     EdgeList.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edges = new ArrayList()
+    this._ocaMap = new TreeMap()
+  }
+
   print (out) {
     out.print('MULTILINESTRING ( ')
     for (let j = 0; j < this._edges.size(); j++) {
@@ -57,16 +62,4 @@ export default class EdgeList {
     const oca = new OrientedCoordinateArray(e.getCoordinates())
     this._ocaMap.put(oca, e)
   }
-
-  getClass () {
-    return EdgeList
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeList.constructor_ = function () {
-  this._edges = new ArrayList()
-  this._ocaMap = new TreeMap()
 }

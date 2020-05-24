@@ -10,6 +10,15 @@ export default class GeometryPrecisionReducer {
     GeometryPrecisionReducer.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._targetPM = null
+    this._removeCollapsed = true
+    this._changePrecisionModel = false
+    this._isPointwise = false
+    const pm = arguments[0]
+    this._targetPM = pm
+  }
+
   static reduce (g, precModel) {
     const reducer = new GeometryPrecisionReducer(precModel)
     return reducer.reduce(g)
@@ -80,20 +89,4 @@ export default class GeometryPrecisionReducer {
     const geomEdit = new GeometryEditor(newFactory)
     return geomEdit
   }
-
-  getClass () {
-    return GeometryPrecisionReducer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryPrecisionReducer.constructor_ = function () {
-  this._targetPM = null
-  this._removeCollapsed = true
-  this._changePrecisionModel = false
-  this._isPointwise = false
-  const pm = arguments[0]
-  this._targetPM = pm
 }

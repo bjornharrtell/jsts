@@ -14,6 +14,13 @@ export default class Point extends Geometry {
     Point.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._coordinates = null
+    const coordinates = arguments[0]; const factory = arguments[1]
+    Geometry.constructor_.call(this, factory)
+    this.init(coordinates)
+  }
+
   computeEnvelopeInternal () {
     if (this.isEmpty())
       return new Envelope()
@@ -149,17 +156,7 @@ export default class Point extends Geometry {
     return true
   }
 
-  getClass () {
-    return Point
-  }
-
   get interfaces_ () {
     return [Puntal]
   }
-}
-Point.constructor_ = function () {
-  this._coordinates = null
-  const coordinates = arguments[0]; const factory = arguments[1]
-  Geometry.constructor_.call(this, factory)
-  this.init(coordinates)
 }

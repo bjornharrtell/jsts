@@ -7,6 +7,34 @@ export default class Vector2D {
     Vector2D.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._x = null
+    this._y = null
+    if (arguments.length === 0) {
+      Vector2D.constructor_.call(this, 0.0, 0.0)
+    } else if (arguments.length === 1) {
+      if (arguments[0] instanceof Vector2D) {
+        const v = arguments[0]
+        this._x = v._x
+        this._y = v._y
+      } else if (arguments[0] instanceof Coordinate) {
+        const v = arguments[0]
+        this._x = v.x
+        this._y = v.y
+      }
+    } else if (arguments.length === 2) {
+      if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
+        const x = arguments[0]; const y = arguments[1]
+        this._x = x
+        this._y = y
+      } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
+        const from = arguments[0]; const to = arguments[1]
+        this._x = to.x - from.x
+        this._y = to.y - from.y
+      }
+    }
+  }
+
   static create () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Vector2D) {
@@ -168,40 +196,5 @@ export default class Vector2D {
     result = 37 * result + Coordinate.hashCode(this._x)
     result = 37 * result + Coordinate.hashCode(this._y)
     return result
-  }
-
-  getClass () {
-    return Vector2D
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Vector2D.constructor_ = function () {
-  this._x = null
-  this._y = null
-  if (arguments.length === 0) {
-    Vector2D.constructor_.call(this, 0.0, 0.0)
-  } else if (arguments.length === 1) {
-    if (arguments[0] instanceof Vector2D) {
-      const v = arguments[0]
-      this._x = v._x
-      this._y = v._y
-    } else if (arguments[0] instanceof Coordinate) {
-      const v = arguments[0]
-      this._x = v.x
-      this._y = v.y
-    }
-  } else if (arguments.length === 2) {
-    if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
-      const x = arguments[0]; const y = arguments[1]
-      this._x = x
-      this._y = y
-    } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
-      const from = arguments[0]; const to = arguments[1]
-      this._x = to.x - from.x
-      this._y = to.y - from.y
-    }
   }
 }

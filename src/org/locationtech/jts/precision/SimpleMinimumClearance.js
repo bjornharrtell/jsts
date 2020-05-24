@@ -9,6 +9,14 @@ export default class SimpleMinimumClearance {
     SimpleMinimumClearance.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._minClearance = null
+    this._minClearancePts = null
+    const geom = arguments[0]
+    this._inputGeom = geom
+  }
+
   static getLine (g) {
     const rp = new SimpleMinimumClearance(g)
     return rp.getLine()
@@ -54,40 +62,37 @@ export default class SimpleMinimumClearance {
     this.compute()
     return this._minClearance
   }
-
-  getClass () {
-    return SimpleMinimumClearance
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class VertexCoordinateFilter {
   constructor () {
     VertexCoordinateFilter.constructor_.apply(this, arguments)
   }
 
-  filter (coord) {
-    this.smc._inputGeom.apply(new ComputeMCCoordinateSequenceFilter(this.smc, coord))
+  static constructor_ () {
+    this.smc = null
+    const smc = arguments[0]
+    this.smc = smc
   }
 
-  getClass () {
-    return VertexCoordinateFilter
+  filter (coord) {
+    this.smc._inputGeom.apply(new ComputeMCCoordinateSequenceFilter(this.smc, coord))
   }
 
   get interfaces_ () {
     return [CoordinateFilter]
   }
 }
-VertexCoordinateFilter.constructor_ = function () {
-  this.smc = null
-  const smc = arguments[0]
-  this.smc = smc
-}
 class ComputeMCCoordinateSequenceFilter {
   constructor () {
     ComputeMCCoordinateSequenceFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.smc = null
+    this._queryPt = null
+    const smc = arguments[0]; const queryPt = arguments[1]
+    this.smc = smc
+    this._queryPt = queryPt
   }
 
   isGeometryChanged () {
@@ -116,27 +121,9 @@ class ComputeMCCoordinateSequenceFilter {
     return false
   }
 
-  getClass () {
-    return ComputeMCCoordinateSequenceFilter
-  }
-
   get interfaces_ () {
     return [CoordinateSequenceFilter]
   }
 }
-ComputeMCCoordinateSequenceFilter.constructor_ = function () {
-  this.smc = null
-  this._queryPt = null
-  const smc = arguments[0]; const queryPt = arguments[1]
-  this.smc = smc
-  this._queryPt = queryPt
-}
 SimpleMinimumClearance.VertexCoordinateFilter = VertexCoordinateFilter
 SimpleMinimumClearance.ComputeMCCoordinateSequenceFilter = ComputeMCCoordinateSequenceFilter
-SimpleMinimumClearance.constructor_ = function () {
-  this._inputGeom = null
-  this._minClearance = null
-  this._minClearancePts = null
-  const geom = arguments[0]
-  this._inputGeom = geom
-}

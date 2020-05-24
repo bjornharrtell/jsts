@@ -2,10 +2,6 @@ import SimilarityMeasure from './SimilarityMeasure'
 import Envelope from '../../geom/Envelope'
 import DiscreteHausdorffDistance from '../distance/DiscreteHausdorffDistance'
 export default class HausdorffSimilarityMeasure {
-  constructor () {
-    HausdorffSimilarityMeasure.constructor_.apply(this, arguments)
-  }
-
   static diagonalSize (env) {
     if (env.isNull()) return 0.0
     const width = env.getWidth()
@@ -22,13 +18,8 @@ export default class HausdorffSimilarityMeasure {
     return measure
   }
 
-  getClass () {
-    return HausdorffSimilarityMeasure
-  }
-
   get interfaces_ () {
     return [SimilarityMeasure]
   }
 }
-HausdorffSimilarityMeasure.constructor_ = function () {}
 HausdorffSimilarityMeasure.DENSIFY_FRACTION = 0.25

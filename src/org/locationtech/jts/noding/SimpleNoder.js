@@ -6,6 +6,10 @@ export default class SimpleNoder extends SinglePassNoder {
     SimpleNoder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nodedSegStrings = null
+  }
+
   computeNodes (inputSegStrings) {
     this._nodedSegStrings = inputSegStrings
     for (let i0 = inputSegStrings.iterator(); i0.hasNext();) {
@@ -28,15 +32,4 @@ export default class SimpleNoder extends SinglePassNoder {
   getNodedSubstrings () {
     return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings)
   }
-
-  getClass () {
-    return SimpleNoder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SimpleNoder.constructor_ = function () {
-  this._nodedSegStrings = null
 }

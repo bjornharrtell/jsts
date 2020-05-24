@@ -6,6 +6,14 @@ export default class EdgeString {
     EdgeString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._factory = null
+    this._directedEdges = new ArrayList()
+    this._coordinates = null
+    const factory = arguments[0]
+    this._factory = factory
+  }
+
   getCoordinates () {
     if (this._coordinates === null) {
       let forwardDirectedEdges = 0
@@ -34,19 +42,4 @@ export default class EdgeString {
   add (directedEdge) {
     this._directedEdges.add(directedEdge)
   }
-
-  getClass () {
-    return EdgeString
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeString.constructor_ = function () {
-  this._factory = null
-  this._directedEdges = new ArrayList()
-  this._coordinates = null
-  const factory = arguments[0]
-  this._factory = factory
 }

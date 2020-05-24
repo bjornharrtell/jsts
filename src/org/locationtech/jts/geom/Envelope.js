@@ -6,6 +6,30 @@ export default class Envelope {
     Envelope.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._minx = null
+    this._maxx = null
+    this._miny = null
+    this._maxy = null
+    if (arguments.length === 0) {
+      this.init()
+    } else if (arguments.length === 1) {
+      if (arguments[0] instanceof Coordinate) {
+        const p = arguments[0]
+        this.init(p.x, p.x, p.y, p.y)
+      } else if (arguments[0] instanceof Envelope) {
+        const env = arguments[0]
+        this.init(env)
+      }
+    } else if (arguments.length === 2) {
+      const p1 = arguments[0]; const p2 = arguments[1]
+      this.init(p1.x, p2.x, p1.y, p2.y)
+    } else if (arguments.length === 4) {
+      const x1 = arguments[0]; const x2 = arguments[1]; const y1 = arguments[2]; const y2 = arguments[3]
+      this.init(x1, x2, y1, y2)
+    }
+  }
+
   static intersects () {
     if (arguments.length === 3) {
       const p1 = arguments[0]; const p2 = arguments[1]; const q = arguments[2]
@@ -359,34 +383,7 @@ export default class Envelope {
     return result
   }
 
-  getClass () {
-    return Envelope
-  }
-
   get interfaces_ () {
     return [Comparable, Serializable]
-  }
-}
-Envelope.constructor_ = function () {
-  this._minx = null
-  this._maxx = null
-  this._miny = null
-  this._maxy = null
-  if (arguments.length === 0) {
-    this.init()
-  } else if (arguments.length === 1) {
-    if (arguments[0] instanceof Coordinate) {
-      const p = arguments[0]
-      this.init(p.x, p.x, p.y, p.y)
-    } else if (arguments[0] instanceof Envelope) {
-      const env = arguments[0]
-      this.init(env)
-    }
-  } else if (arguments.length === 2) {
-    const p1 = arguments[0]; const p2 = arguments[1]
-    this.init(p1.x, p2.x, p1.y, p2.y)
-  } else if (arguments.length === 4) {
-    const x1 = arguments[0]; const x2 = arguments[1]; const y1 = arguments[2]; const y2 = arguments[3]
-    this.init(x1, x2, y1, y2)
   }
 }

@@ -9,6 +9,16 @@ export default class DiscreteHausdorffDistance {
     DiscreteHausdorffDistance.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._g0 = null
+    this._g1 = null
+    this._ptDist = new PointPairDistance()
+    this._densifyFrac = 0.0
+    const g0 = arguments[0]; const g1 = arguments[1]
+    this._g0 = g0
+    this._g1 = g1
+  }
+
   static distance () {
     if (arguments.length === 2) {
       const g0 = arguments[0]; const g1 = arguments[1]
@@ -56,18 +66,19 @@ export default class DiscreteHausdorffDistance {
     this.computeOrientedDistance(this._g0, this._g1, this._ptDist)
     return this._ptDist.getDistance()
   }
-
-  getClass () {
-    return DiscreteHausdorffDistance
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class MaxPointDistanceFilter {
   constructor () {
     MaxPointDistanceFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._maxPtDist = new PointPairDistance()
+    this._minPtDist = new PointPairDistance()
+    this._euclideanDist = new DistanceToPoint()
+    this._geom = null
+    const geom = arguments[0]
+    this._geom = geom
   }
 
   filter (pt) {
@@ -80,25 +91,23 @@ class MaxPointDistanceFilter {
     return this._maxPtDist
   }
 
-  getClass () {
-    return MaxPointDistanceFilter
-  }
-
   get interfaces_ () {
     return [CoordinateFilter]
   }
 }
-MaxPointDistanceFilter.constructor_ = function () {
-  this._maxPtDist = new PointPairDistance()
-  this._minPtDist = new PointPairDistance()
-  this._euclideanDist = new DistanceToPoint()
-  this._geom = null
-  const geom = arguments[0]
-  this._geom = geom
-}
 class MaxDensifiedByFractionDistanceFilter {
   constructor () {
     MaxDensifiedByFractionDistanceFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._maxPtDist = new PointPairDistance()
+    this._minPtDist = new PointPairDistance()
+    this._geom = null
+    this._numSubSegs = 0
+    const geom = arguments[0]; const fraction = arguments[1]
+    this._geom = geom
+    this._numSubSegs = Math.trunc(Math.round(1.0 / fraction))
   }
 
   filter (seq, index) {
@@ -129,31 +138,9 @@ class MaxDensifiedByFractionDistanceFilter {
     return this._maxPtDist
   }
 
-  getClass () {
-    return MaxDensifiedByFractionDistanceFilter
-  }
-
   get interfaces_ () {
     return [CoordinateSequenceFilter]
   }
 }
-MaxDensifiedByFractionDistanceFilter.constructor_ = function () {
-  this._maxPtDist = new PointPairDistance()
-  this._minPtDist = new PointPairDistance()
-  this._geom = null
-  this._numSubSegs = 0
-  const geom = arguments[0]; const fraction = arguments[1]
-  this._geom = geom
-  this._numSubSegs = Math.trunc(Math.round(1.0 / fraction))
-}
 DiscreteHausdorffDistance.MaxPointDistanceFilter = MaxPointDistanceFilter
 DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter = MaxDensifiedByFractionDistanceFilter
-DiscreteHausdorffDistance.constructor_ = function () {
-  this._g0 = null
-  this._g1 = null
-  this._ptDist = new PointPairDistance()
-  this._densifyFrac = 0.0
-  const g0 = arguments[0]; const g1 = arguments[1]
-  this._g0 = g0
-  this._g1 = g1
-}

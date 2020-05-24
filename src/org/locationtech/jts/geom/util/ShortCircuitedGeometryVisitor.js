@@ -4,6 +4,10 @@ export default class ShortCircuitedGeometryVisitor {
     ShortCircuitedGeometryVisitor.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._isDone = false
+  }
+
   applyTo (geom) {
     for (let i = 0; i < geom.getNumGeometries() && !this._isDone; i++) {
       const element = geom.getGeometryN(i)
@@ -18,15 +22,4 @@ export default class ShortCircuitedGeometryVisitor {
       }
     }
   }
-
-  getClass () {
-    return ShortCircuitedGeometryVisitor
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ShortCircuitedGeometryVisitor.constructor_ = function () {
-  this._isDone = false
 }

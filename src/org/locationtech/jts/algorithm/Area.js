@@ -2,10 +2,6 @@ import hasInterface from '../../../../hasInterface'
 import Coordinate from '../geom/Coordinate'
 import CoordinateSequence from '../geom/CoordinateSequence'
 export default class Area {
-  constructor () {
-    Area.constructor_.apply(this, arguments)
-  }
-
   static ofRing () {
     if (arguments[0] instanceof Array) {
       const ring = arguments[0]
@@ -52,13 +48,4 @@ export default class Area {
       return sum / 2.0
     }
   }
-
-  getClass () {
-    return Area
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Area.constructor_ = function () {}

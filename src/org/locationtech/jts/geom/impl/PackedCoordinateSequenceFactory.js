@@ -9,6 +9,16 @@ export default class PackedCoordinateSequenceFactory {
     PackedCoordinateSequenceFactory.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._type = PackedCoordinateSequenceFactory.DOUBLE
+    if (arguments.length === 0) {
+      PackedCoordinateSequenceFactory.constructor_.call(this, PackedCoordinateSequenceFactory.DOUBLE)
+    } else if (arguments.length === 1) {
+      const type = arguments[0]
+      this._type = type
+    }
+  }
+
   getType () {
     return this._type
   }
@@ -74,21 +84,8 @@ export default class PackedCoordinateSequenceFactory {
     }
   }
 
-  getClass () {
-    return PackedCoordinateSequenceFactory
-  }
-
   get interfaces_ () {
     return [CoordinateSequenceFactory, Serializable]
-  }
-}
-PackedCoordinateSequenceFactory.constructor_ = function () {
-  this._type = PackedCoordinateSequenceFactory.DOUBLE
-  if (arguments.length === 0) {
-    PackedCoordinateSequenceFactory.constructor_.call(this, PackedCoordinateSequenceFactory.DOUBLE)
-  } else if (arguments.length === 1) {
-    const type = arguments[0]
-    this._type = type
   }
 }
 PackedCoordinateSequenceFactory.DOUBLE = 0

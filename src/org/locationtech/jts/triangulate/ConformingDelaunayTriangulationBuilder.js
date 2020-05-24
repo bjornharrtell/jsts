@@ -10,6 +10,14 @@ export default class ConformingDelaunayTriangulationBuilder {
     ConformingDelaunayTriangulationBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._siteCoords = null
+    this._constraintLines = null
+    this._tolerance = 0.0
+    this._subdiv = null
+    this._constraintVertexMap = new TreeMap()
+  }
+
   static createConstraintSegments () {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -89,19 +97,4 @@ export default class ConformingDelaunayTriangulationBuilder {
       this._constraintVertexMap.put(coords[i], v)
     }
   }
-
-  getClass () {
-    return ConformingDelaunayTriangulationBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ConformingDelaunayTriangulationBuilder.constructor_ = function () {
-  this._siteCoords = null
-  this._constraintLines = null
-  this._tolerance = 0.0
-  this._subdiv = null
-  this._constraintVertexMap = new TreeMap()
 }

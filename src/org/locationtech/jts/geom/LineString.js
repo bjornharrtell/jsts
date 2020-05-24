@@ -17,6 +17,15 @@ export default class LineString extends Geometry {
     LineString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._points = null
+    if (arguments.length === 0) {} else if (arguments.length === 2) {
+      const points = arguments[0]; const factory = arguments[1]
+      Geometry.constructor_.call(this, factory)
+      this.init(points)
+    }
+  }
+
   computeEnvelopeInternal () {
     if (this.isEmpty())
       return new Envelope()
@@ -221,19 +230,7 @@ export default class LineString extends Geometry {
     return this.getFactory().createPoint(this._points.getCoordinate(n))
   }
 
-  getClass () {
-    return LineString
-  }
-
   get interfaces_ () {
     return [Lineal]
-  }
-}
-LineString.constructor_ = function () {
-  this._points = null
-  if (arguments.length === 0) {} else if (arguments.length === 2) {
-    const points = arguments[0]; const factory = arguments[1]
-    Geometry.constructor_.call(this, factory)
-    this.init(points)
   }
 }

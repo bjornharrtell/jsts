@@ -10,6 +10,28 @@ export default class DD {
     DD.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._hi = 0.0
+    this._lo = 0.0
+    if (arguments.length === 0) {
+      this.init(0.0)
+    } else if (arguments.length === 1) {
+      if (typeof arguments[0] === 'number') {
+        const x = arguments[0]
+        this.init(x)
+      } else if (arguments[0] instanceof DD) {
+        const dd = arguments[0]
+        this.init(dd)
+      } else if (typeof arguments[0] === 'string') {
+        const str = arguments[0]
+        DD.constructor_.call(this, DD.parse(str))
+      }
+    } else if (arguments.length === 2) {
+      const hi = arguments[0]; const lo = arguments[1]
+      this.init(hi, lo)
+    }
+  }
+
   static determinant () {
     if (typeof arguments[3] === 'number' && (typeof arguments[2] === 'number' && (typeof arguments[0] === 'number' && typeof arguments[1] === 'number'))) {
       const x1 = arguments[0]; const y1 = arguments[1]; const x2 = arguments[2]; const y2 = arguments[3]
@@ -620,33 +642,8 @@ export default class DD {
     return 0
   }
 
-  getClass () {
-    return DD
-  }
-
   get interfaces_ () {
     return [Serializable, Comparable, Cloneable]
-  }
-}
-DD.constructor_ = function () {
-  this._hi = 0.0
-  this._lo = 0.0
-  if (arguments.length === 0) {
-    this.init(0.0)
-  } else if (arguments.length === 1) {
-    if (typeof arguments[0] === 'number') {
-      const x = arguments[0]
-      this.init(x)
-    } else if (arguments[0] instanceof DD) {
-      const dd = arguments[0]
-      this.init(dd)
-    } else if (typeof arguments[0] === 'string') {
-      const str = arguments[0]
-      DD.constructor_.call(this, DD.parse(str))
-    }
-  } else if (arguments.length === 2) {
-    const hi = arguments[0]; const lo = arguments[1]
-    this.init(hi, lo)
   }
 }
 DD.PI = new DD(3.141592653589793116e+00, 1.224646799147353207e-16)

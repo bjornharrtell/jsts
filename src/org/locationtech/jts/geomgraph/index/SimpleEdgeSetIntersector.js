@@ -8,6 +8,10 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
     SimpleEdgeSetIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.nOverlaps = null
+  }
+
   computeIntersects (e0, e1, si) {
     const pts0 = e0.getCoordinates()
     const pts1 = e1.getCoordinates()
@@ -39,15 +43,4 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
       }
     }
   }
-
-  getClass () {
-    return SimpleEdgeSetIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SimpleEdgeSetIntersector.constructor_ = function () {
-  this.nOverlaps = null
 }

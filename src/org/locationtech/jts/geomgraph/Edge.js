@@ -14,6 +14,25 @@ export default class Edge extends GraphComponent {
     Edge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.pts = null
+    this._env = null
+    this.eiList = new EdgeIntersectionList(this)
+    this._name = null
+    this._mce = null
+    this._isIsolated = true
+    this._depth = new Depth()
+    this._depthDelta = 0
+    if (arguments.length === 1) {
+      const pts = arguments[0]
+      Edge.constructor_.call(this, pts, null)
+    } else if (arguments.length === 2) {
+      const pts = arguments[0]; const label = arguments[1]
+      this.pts = pts
+      this._label = label
+    }
+  }
+
   static updateIM () {
     if (arguments.length === 2 && (arguments[1] instanceof IntersectionMatrix && arguments[0] instanceof Label)) {
       const label = arguments[0]; const im = arguments[1]
@@ -190,31 +209,5 @@ export default class Edge extends GraphComponent {
   addIntersections (li, segmentIndex, geomIndex) {
     for (let i = 0; i < li.getIntersectionNum(); i++)
       this.addIntersection(li, segmentIndex, geomIndex, i)
-  }
-
-  getClass () {
-    return Edge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Edge.constructor_ = function () {
-  this.pts = null
-  this._env = null
-  this.eiList = new EdgeIntersectionList(this)
-  this._name = null
-  this._mce = null
-  this._isIsolated = true
-  this._depth = new Depth()
-  this._depthDelta = 0
-  if (arguments.length === 1) {
-    const pts = arguments[0]
-    Edge.constructor_.call(this, pts, null)
-  } else if (arguments.length === 2) {
-    const pts = arguments[0]; const label = arguments[1]
-    this.pts = pts
-    this._label = label
   }
 }

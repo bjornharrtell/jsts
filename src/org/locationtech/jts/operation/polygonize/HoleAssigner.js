@@ -5,6 +5,14 @@ export default class HoleAssigner {
     HoleAssigner.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._shells = null
+    this._shellIndex = null
+    const shells = arguments[0]
+    this._shells = shells
+    this.buildIndex()
+  }
+
   static assignHolesToShells (holes, shells) {
     const assigner = new HoleAssigner(shells)
     assigner.assignHolesToShells(holes)
@@ -38,19 +46,4 @@ export default class HoleAssigner {
     if (shell !== null)
       shell.addHole(holeER)
   }
-
-  getClass () {
-    return HoleAssigner
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-HoleAssigner.constructor_ = function () {
-  this._shells = null
-  this._shellIndex = null
-  const shells = arguments[0]
-  this._shells = shells
-  this.buildIndex()
 }

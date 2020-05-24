@@ -5,6 +5,15 @@ export default class PointBuilder {
     PointBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._op = null
+    this._geometryFactory = null
+    this._resultPointList = new ArrayList()
+    const op = arguments[0]; const geometryFactory = arguments[1]; const ptLocator = arguments[2]
+    this._op = op
+    this._geometryFactory = geometryFactory
+  }
+
   filterCoveredNodeToPoint (n) {
     const coord = n.getCoordinate()
     if (!this._op.isCoveredByLA(coord)) {
@@ -30,20 +39,4 @@ export default class PointBuilder {
     this.extractNonCoveredResultNodes(opCode)
     return this._resultPointList
   }
-
-  getClass () {
-    return PointBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PointBuilder.constructor_ = function () {
-  this._op = null
-  this._geometryFactory = null
-  this._resultPointList = new ArrayList()
-  const op = arguments[0]; const geometryFactory = arguments[1]; const ptLocator = arguments[2]
-  this._op = op
-  this._geometryFactory = geometryFactory
 }

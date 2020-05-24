@@ -9,6 +9,22 @@ export default class BoundaryOp {
     BoundaryOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = null
+    this._geomFact = null
+    this._bnRule = null
+    this._endpointMap = null
+    if (arguments.length === 1) {
+      const geom = arguments[0]
+      BoundaryOp.constructor_.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE)
+    } else if (arguments.length === 2) {
+      const geom = arguments[0]; const bnRule = arguments[1]
+      this._geom = geom
+      this._geomFact = geom.getFactory()
+      this._bnRule = bnRule
+    }
+  }
+
   static getBoundary () {
     if (arguments.length === 1) {
       const g = arguments[0]
@@ -83,43 +99,13 @@ export default class BoundaryOp {
     }
     counter.count++
   }
-
-  getClass () {
-    return BoundaryOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BoundaryOp.constructor_ = function () {
-  this._geom = null
-  this._geomFact = null
-  this._bnRule = null
-  this._endpointMap = null
-  if (arguments.length === 1) {
-    const geom = arguments[0]
-    BoundaryOp.constructor_.call(this, geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE)
-  } else if (arguments.length === 2) {
-    const geom = arguments[0]; const bnRule = arguments[1]
-    this._geom = geom
-    this._geomFact = geom.getFactory()
-    this._bnRule = bnRule
-  }
 }
 class Counter {
   constructor () {
     Counter.constructor_.apply(this, arguments)
   }
 
-  getClass () {
-    return Counter
+  static constructor_ () {
+    this.count = null
   }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Counter.constructor_ = function () {
-  this.count = null
 }

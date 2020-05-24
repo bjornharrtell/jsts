@@ -4,6 +4,13 @@ export default class CoordinateArrayFilter {
     CoordinateArrayFilter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.pts = null
+    this.n = 0
+    const size = arguments[0]
+    this.pts = new Array(size).fill(null)
+  }
+
   filter (coord) {
     this.pts[this.n++] = coord
   }
@@ -12,17 +19,7 @@ export default class CoordinateArrayFilter {
     return this.pts
   }
 
-  getClass () {
-    return CoordinateArrayFilter
-  }
-
   get interfaces_ () {
     return [CoordinateFilter]
   }
-}
-CoordinateArrayFilter.constructor_ = function () {
-  this.pts = null
-  this.n = 0
-  const size = arguments[0]
-  this.pts = new Array(size).fill(null)
 }

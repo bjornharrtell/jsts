@@ -7,6 +7,10 @@ export default class RelateNodeGraph {
     RelateNodeGraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nodes = new NodeMap(new RelateNodeFactory())
+  }
+
   insertEdgeEnds (ee) {
     for (let i = ee.iterator(); i.hasNext();) {
       const e = i.next()
@@ -46,15 +50,4 @@ export default class RelateNodeGraph {
       }
     }
   }
-
-  getClass () {
-    return RelateNodeGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RelateNodeGraph.constructor_ = function () {
-  this._nodes = new NodeMap(new RelateNodeFactory())
 }

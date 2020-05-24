@@ -3,6 +3,26 @@ export default class SegmentIntersector {
     SegmentIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._hasIntersection = false
+    this._hasProper = false
+    this._hasProperInterior = false
+    this._properIntersectionPoint = null
+    this._li = null
+    this._includeProper = null
+    this._recordIsolated = null
+    this._isSelfIntersection = null
+    this._numIntersections = 0
+    this.numTests = 0
+    this._bdyNodes = null
+    this._isDone = false
+    this._isDoneWhenProperInt = false
+    const li = arguments[0]; const includeProper = arguments[1]; const recordIsolated = arguments[2]
+    this._li = li
+    this._includeProper = includeProper
+    this._recordIsolated = recordIsolated
+  }
+
   static isAdjacentSegments (i1, i2) {
     return Math.abs(i1 - i2) === 1
   }
@@ -98,31 +118,4 @@ export default class SegmentIntersector {
       }
     }
   }
-
-  getClass () {
-    return SegmentIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SegmentIntersector.constructor_ = function () {
-  this._hasIntersection = false
-  this._hasProper = false
-  this._hasProperInterior = false
-  this._properIntersectionPoint = null
-  this._li = null
-  this._includeProper = null
-  this._recordIsolated = null
-  this._isSelfIntersection = null
-  this._numIntersections = 0
-  this.numTests = 0
-  this._bdyNodes = null
-  this._isDone = false
-  this._isDoneWhenProperInt = false
-  const li = arguments[0]; const includeProper = arguments[1]; const recordIsolated = arguments[2]
-  this._li = li
-  this._includeProper = includeProper
-  this._recordIsolated = recordIsolated
 }

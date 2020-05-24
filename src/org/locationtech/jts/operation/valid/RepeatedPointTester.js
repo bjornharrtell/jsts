@@ -10,6 +10,10 @@ export default class RepeatedPointTester {
     RepeatedPointTester.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._repeatedCoord = null
+  }
+
   getCoordinate () {
     return this._repeatedCoord
   }
@@ -18,7 +22,7 @@ export default class RepeatedPointTester {
     if (arguments[0] instanceof Geometry) {
       const g = arguments[0]
       if (g.isEmpty()) return false
-      if (g instanceof Point) return false; else if (g instanceof MultiPoint) return false; else if (g instanceof LineString) return this.hasRepeatedPoint(g.getCoordinates()); else if (g instanceof Polygon) return this.hasRepeatedPoint(g); else if (g instanceof GeometryCollection) return this.hasRepeatedPoint(g); else throw new UnsupportedOperationException(g.getClass().getName())
+      if (g instanceof Point) return false; else if (g instanceof MultiPoint) return false; else if (g instanceof LineString) return this.hasRepeatedPoint(g.getCoordinates()); else if (g instanceof Polygon) return this.hasRepeatedPoint(g); else if (g instanceof GeometryCollection) return this.hasRepeatedPoint(g); else throw new UnsupportedOperationException(g.getGeometryType())
     } else if (arguments[0] instanceof Array) {
       const coord = arguments[0]
       for (let i = 1; i < coord.length; i++)
@@ -44,15 +48,4 @@ export default class RepeatedPointTester {
       return false
     }
   }
-
-  getClass () {
-    return RepeatedPointTester
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RepeatedPointTester.constructor_ = function () {
-  this._repeatedCoord = null
 }

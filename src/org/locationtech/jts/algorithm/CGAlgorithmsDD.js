@@ -2,10 +2,6 @@ import Coordinate from '../geom/Coordinate'
 import Double from '../../../../java/lang/Double'
 import DD from '../math/DD'
 export default class CGAlgorithmsDD {
-  constructor () {
-    CGAlgorithmsDD.constructor_.apply(this, arguments)
-  }
-
   static orientationIndex (p1, p2, q) {
     const index = CGAlgorithmsDD.orientationIndexFilter(p1, p2, q)
     if (index <= 1) return index
@@ -82,14 +78,5 @@ export default class CGAlgorithmsDD {
     if (x < 0) return -1
     return 0
   }
-
-  getClass () {
-    return CGAlgorithmsDD
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-CGAlgorithmsDD.constructor_ = function () {}
 CGAlgorithmsDD.DP_SAFE_EPSILON = 1e-15

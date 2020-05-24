@@ -1,10 +1,6 @@
 import Coordinate from '../geom/Coordinate'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class Quadrant {
-  constructor () {
-    Quadrant.constructor_.apply(this, arguments)
-  }
-
   static isNorthern (quad) {
     return quad === Quadrant.NE || quad === Quadrant.NW
   }
@@ -50,16 +46,7 @@ export default class Quadrant {
       if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW
     }
   }
-
-  getClass () {
-    return Quadrant
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Quadrant.constructor_ = function () {}
 Quadrant.NE = 0
 Quadrant.NW = 1
 Quadrant.SW = 2

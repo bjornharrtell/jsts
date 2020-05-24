@@ -11,6 +11,24 @@ export default class LineSegment {
     LineSegment.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.p0 = null
+    this.p1 = null
+    if (arguments.length === 0) {
+      LineSegment.constructor_.call(this, new Coordinate(), new Coordinate())
+    } else if (arguments.length === 1) {
+      const ls = arguments[0]
+      LineSegment.constructor_.call(this, ls.p0, ls.p1)
+    } else if (arguments.length === 2) {
+      const p0 = arguments[0]; const p1 = arguments[1]
+      this.p0 = p0
+      this.p1 = p1
+    } else if (arguments.length === 4) {
+      const x0 = arguments[0]; const y0 = arguments[1]; const x1 = arguments[2]; const y1 = arguments[3]
+      LineSegment.constructor_.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1))
+    }
+  }
+
   static midPoint (p0, p1) {
     return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2)
   }
@@ -284,28 +302,7 @@ export default class LineSegment {
     return hash0 ^ hash1
   }
 
-  getClass () {
-    return LineSegment
-  }
-
   get interfaces_ () {
     return [Comparable, Serializable]
-  }
-}
-LineSegment.constructor_ = function () {
-  this.p0 = null
-  this.p1 = null
-  if (arguments.length === 0) {
-    LineSegment.constructor_.call(this, new Coordinate(), new Coordinate())
-  } else if (arguments.length === 1) {
-    const ls = arguments[0]
-    LineSegment.constructor_.call(this, ls.p0, ls.p1)
-  } else if (arguments.length === 2) {
-    const p0 = arguments[0]; const p1 = arguments[1]
-    this.p0 = p0
-    this.p1 = p1
-  } else if (arguments.length === 4) {
-    const x0 = arguments[0]; const y0 = arguments[1]; const x1 = arguments[2]; const y1 = arguments[3]
-    LineSegment.constructor_.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1))
   }
 }

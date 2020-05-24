@@ -2,10 +2,6 @@ import MonotoneChain from './MonotoneChain'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Quadrant from '../../geomgraph/Quadrant'
 export default class MonotoneChainBuilder {
-  constructor () {
-    MonotoneChainBuilder.constructor_.apply(this, arguments)
-  }
-
   static findChainEnd (pts, start) {
     let safeStart = start
     while (safeStart < pts.length - 1 && pts[safeStart].equals2D(pts[safeStart + 1]))
@@ -43,13 +39,4 @@ export default class MonotoneChainBuilder {
       return mcList
     }
   }
-
-  getClass () {
-    return MonotoneChainBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-MonotoneChainBuilder.constructor_ = function () {}

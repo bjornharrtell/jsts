@@ -5,6 +5,12 @@ export default class BoundablePairDistanceComparator {
     BoundablePairDistanceComparator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.normalOrder = null
+    const normalOrder = arguments[0]
+    this.normalOrder = normalOrder
+  }
+
   compare (p1, p2) {
     const distance1 = p1.getDistance()
     const distance2 = p2.getDistance()
@@ -25,16 +31,7 @@ export default class BoundablePairDistanceComparator {
     }
   }
 
-  getClass () {
-    return BoundablePairDistanceComparator
-  }
-
   get interfaces_ () {
     return [Comparator, Serializable]
   }
-}
-BoundablePairDistanceComparator.constructor_ = function () {
-  this.normalOrder = null
-  const normalOrder = arguments[0]
-  this.normalOrder = normalOrder
 }

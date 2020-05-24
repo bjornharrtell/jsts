@@ -1,9 +1,5 @@
 import Coordinate from '../geom/Coordinate'
 export default class Length {
-  constructor () {
-    Length.constructor_.apply(this, arguments)
-  }
-
   static ofLine (pts) {
     const n = pts.size()
     if (n <= 1) return 0.0
@@ -24,13 +20,4 @@ export default class Length {
     }
     return len
   }
-
-  getClass () {
-    return Length
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Length.constructor_ = function () {}

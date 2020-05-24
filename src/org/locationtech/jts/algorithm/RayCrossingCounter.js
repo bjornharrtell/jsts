@@ -8,6 +8,14 @@ export default class RayCrossingCounter {
     RayCrossingCounter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._p = null
+    this._crossingCount = 0
+    this._isPointOnSegment = false
+    const p = arguments[0]
+    this._p = p
+  }
+
   static locatePointInRing () {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
       const p = arguments[0]; const ring = arguments[1]
@@ -81,19 +89,4 @@ export default class RayCrossingCounter {
   isOnSegment () {
     return this._isPointOnSegment
   }
-
-  getClass () {
-    return RayCrossingCounter
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RayCrossingCounter.constructor_ = function () {
-  this._p = null
-  this._crossingCount = 0
-  this._isPointOnSegment = false
-  const p = arguments[0]
-  this._p = p
 }

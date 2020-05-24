@@ -11,6 +11,18 @@ export default class EdgeEndBundle extends EdgeEnd {
     EdgeEndBundle.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edgeEnds = new ArrayList()
+    if (arguments.length === 1) {
+      const e = arguments[0]
+      EdgeEndBundle.constructor_.call(this, null, e)
+    } else if (arguments.length === 2) {
+      const boundaryNodeRule = arguments[0]; const e = arguments[1]
+      EdgeEnd.constructor_.call(this, e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()))
+      this.insert(e)
+    }
+  }
+
   insert (e) {
     this._edgeEnds.add(e)
   }
@@ -88,24 +100,5 @@ export default class EdgeEndBundle extends EdgeEnd {
       this.computeLabelOn(i, boundaryNodeRule)
       if (isArea) this.computeLabelSides(i)
     }
-  }
-
-  getClass () {
-    return EdgeEndBundle
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeEndBundle.constructor_ = function () {
-  this._edgeEnds = new ArrayList()
-  if (arguments.length === 1) {
-    const e = arguments[0]
-    EdgeEndBundle.constructor_.call(this, null, e)
-  } else if (arguments.length === 2) {
-    const boundaryNodeRule = arguments[0]; const e = arguments[1]
-    EdgeEnd.constructor_.call(this, e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()))
-    this.insert(e)
   }
 }

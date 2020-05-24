@@ -6,6 +6,20 @@ export default class SegmentNode {
     SegmentNode.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._segString = null
+    this.coord = null
+    this.segmentIndex = null
+    this._segmentOctant = null
+    this._isInterior = null
+    const segString = arguments[0]; const coord = arguments[1]; const segmentIndex = arguments[2]; const segmentOctant = arguments[3]
+    this._segString = segString
+    this.coord = new Coordinate(coord)
+    this.segmentIndex = segmentIndex
+    this._segmentOctant = segmentOctant
+    this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex))
+  }
+
   getCoordinate () {
     return this.coord
   }
@@ -39,24 +53,7 @@ export default class SegmentNode {
     return this._isInterior
   }
 
-  getClass () {
-    return SegmentNode
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
-}
-SegmentNode.constructor_ = function () {
-  this._segString = null
-  this.coord = null
-  this.segmentIndex = null
-  this._segmentOctant = null
-  this._isInterior = null
-  const segString = arguments[0]; const coord = arguments[1]; const segmentIndex = arguments[2]; const segmentOctant = arguments[3]
-  this._segString = segString
-  this.coord = new Coordinate(coord)
-  this.segmentIndex = segmentIndex
-  this._segmentOctant = segmentOctant
-  this._isInterior = !coord.equals2D(segString.getCoordinate(segmentIndex))
 }

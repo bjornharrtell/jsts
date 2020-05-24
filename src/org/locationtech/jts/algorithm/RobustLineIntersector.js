@@ -9,7 +9,6 @@ import LineIntersector from './LineIntersector'
 export default class RobustLineIntersector extends LineIntersector {
   constructor () {
     super()
-    RobustLineIntersector.constructor_.apply(this, arguments)
   }
 
   static nearestEndpoint (p1, p2, q1, q2) {
@@ -159,13 +158,4 @@ export default class RobustLineIntersector extends LineIntersector {
     }
     return LineIntersector.POINT_INTERSECTION
   }
-
-  getClass () {
-    return RobustLineIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-RobustLineIntersector.constructor_ = function () {}

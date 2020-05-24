@@ -12,6 +12,18 @@ export default class RelateComputer {
     RelateComputer.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = new RobustLineIntersector()
+    this._ptLocator = new PointLocator()
+    this._arg = null
+    this._nodes = new NodeMap(new RelateNodeFactory())
+    this._im = null
+    this._isolatedEdges = new ArrayList()
+    this._invalidPoint = null
+    const arg = arguments[0]
+    this._arg = arg
+  }
+
   insertEdgeEnds (ee) {
     for (let i = ee.iterator(); i.hasNext();) {
       const e = i.next()
@@ -164,23 +176,4 @@ export default class RelateComputer {
       im.set(Location.EXTERIOR, Location.BOUNDARY, gb.getBoundaryDimension())
     }
   }
-
-  getClass () {
-    return RelateComputer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RelateComputer.constructor_ = function () {
-  this._li = new RobustLineIntersector()
-  this._ptLocator = new PointLocator()
-  this._arg = null
-  this._nodes = new NodeMap(new RelateNodeFactory())
-  this._im = null
-  this._isolatedEdges = new ArrayList()
-  this._invalidPoint = null
-  const arg = arguments[0]
-  this._arg = arg
 }

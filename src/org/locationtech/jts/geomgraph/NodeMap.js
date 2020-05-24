@@ -8,6 +8,13 @@ export default class NodeMap {
     NodeMap.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.nodeMap = new TreeMap()
+    this.nodeFact = null
+    const nodeFact = arguments[0]
+    this.nodeFact = nodeFact
+  }
+
   find (coord) {
     return this.nodeMap.get(coord)
   }
@@ -62,18 +69,4 @@ export default class NodeMap {
     const n = this.addNode(p)
     n.add(e)
   }
-
-  getClass () {
-    return NodeMap
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-NodeMap.constructor_ = function () {
-  this.nodeMap = new TreeMap()
-  this.nodeFact = null
-  const nodeFact = arguments[0]
-  this.nodeFact = nodeFact
 }

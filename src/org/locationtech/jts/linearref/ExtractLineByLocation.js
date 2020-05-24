@@ -9,6 +9,12 @@ export default class ExtractLineByLocation {
     ExtractLineByLocation.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._line = null
+    const line = arguments[0]
+    this._line = line
+  }
+
   static extract (line, start, end) {
     const ls = new ExtractLineByLocation(line)
     return ls.extract(start, end)
@@ -61,17 +67,4 @@ export default class ExtractLineByLocation {
     Assert.shouldNeverReachHere('non-linear geometry encountered')
     return null
   }
-
-  getClass () {
-    return ExtractLineByLocation
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ExtractLineByLocation.constructor_ = function () {
-  this._line = null
-  const line = arguments[0]
-  this._line = line
 }

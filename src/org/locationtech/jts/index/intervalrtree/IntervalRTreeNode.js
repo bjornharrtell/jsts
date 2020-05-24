@@ -7,6 +7,11 @@ export default class IntervalRTreeNode {
     IntervalRTreeNode.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._min = Double.POSITIVE_INFINITY
+    this._max = Double.NEGATIVE_INFINITY
+  }
+
   getMin () {
     return this._min
   }
@@ -23,20 +28,8 @@ export default class IntervalRTreeNode {
   toString () {
     return WKTWriter.toLineString(new Coordinate(this._min, 0), new Coordinate(this._max, 0))
   }
-
-  getClass () {
-    return IntervalRTreeNode
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class NodeComparator {
-  constructor () {
-    NodeComparator.constructor_.apply(this, arguments)
-  }
-
   compare (o1, o2) {
     const n1 = o1
     const n2 = o2
@@ -47,17 +40,8 @@ class NodeComparator {
     return 0
   }
 
-  getClass () {
-    return NodeComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-NodeComparator.constructor_ = function () {}
 IntervalRTreeNode.NodeComparator = NodeComparator
-IntervalRTreeNode.constructor_ = function () {
-  this._min = Double.POSITIVE_INFINITY
-  this._max = Double.NEGATIVE_INFINITY
-}

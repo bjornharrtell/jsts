@@ -12,6 +12,15 @@ export default class BufferSubgraph {
     BufferSubgraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._finder = null
+    this._dirEdgeList = new ArrayList()
+    this._nodes = new ArrayList()
+    this._rightMostCoord = null
+    this._env = null
+    this._finder = new RightmostEdgeFinder()
+  }
+
   clearVisitedEdges () {
     for (let it = this._dirEdgeList.iterator(); it.hasNext();) {
       const de = it.next()
@@ -149,19 +158,7 @@ export default class BufferSubgraph {
     return this._dirEdgeList
   }
 
-  getClass () {
-    return BufferSubgraph
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
-}
-BufferSubgraph.constructor_ = function () {
-  this._finder = null
-  this._dirEdgeList = new ArrayList()
-  this._nodes = new ArrayList()
-  this._rightMostCoord = null
-  this._env = null
-  this._finder = new RightmostEdgeFinder()
 }

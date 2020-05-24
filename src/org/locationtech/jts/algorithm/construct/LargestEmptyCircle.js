@@ -10,6 +10,31 @@ export default class LargestEmptyCircle {
     LargestEmptyCircle.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._obstacles = null
+    this._tolerance = null
+    this._factory = null
+    this._boundary = null
+    this._ptLocater = null
+    this._obstacleDistance = null
+    this._boundaryDistance = null
+    this._farthestCell = null
+    this._centerCell = null
+    this._centerPt = null
+    this._centerPoint = null
+    this._radiusPt = null
+    this._radiusPoint = null
+    const obstacles = arguments[0]; const tolerance = arguments[1]
+    if (obstacles.isEmpty())
+      throw new IllegalArgumentException('Empty obstacles geometry is not supported')
+
+    this._obstacles = obstacles
+    this._factory = obstacles.getFactory()
+    this._tolerance = tolerance
+    this._obstacleDistance = new IndexedFacetDistance(obstacles)
+    this.setBoundary(obstacles)
+  }
+
   static getCenter (obstacles, tolerance) {
     const lec = new LargestEmptyCircle(obstacles, tolerance)
     return lec.getCenter()
@@ -128,18 +153,24 @@ export default class LargestEmptyCircle {
       this._boundaryDistance = new IndexedFacetDistance(this._boundary)
     }
   }
-
-  getClass () {
-    return LargestEmptyCircle
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class Cell {
   constructor () {
     Cell.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._x = null
+    this._y = null
+    this._hSide = null
+    this._distance = null
+    this._maxDist = null
+    const x = arguments[0]; const y = arguments[1]; const hSide = arguments[2]; const distanceToConstraints = arguments[3]
+    this._x = x
+    this._y = y
+    this._hSide = hSide
+    this._distance = distanceToConstraints
+    this._maxDist = this._distance + hSide * Cell.SQRT2
   }
 
   getHSide () {
@@ -174,50 +205,9 @@ class Cell {
     return this.getMaxDistance() < 0
   }
 
-  getClass () {
-    return Cell
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
 }
-Cell.constructor_ = function () {
-  this._x = null
-  this._y = null
-  this._hSide = null
-  this._distance = null
-  this._maxDist = null
-  const x = arguments[0]; const y = arguments[1]; const hSide = arguments[2]; const distanceToConstraints = arguments[3]
-  this._x = x
-  this._y = y
-  this._hSide = hSide
-  this._distance = distanceToConstraints
-  this._maxDist = this._distance + hSide * Cell.SQRT2
-}
 Cell.SQRT2 = 1.4142135623730951
 LargestEmptyCircle.Cell = Cell
-LargestEmptyCircle.constructor_ = function () {
-  this._obstacles = null
-  this._tolerance = null
-  this._factory = null
-  this._boundary = null
-  this._ptLocater = null
-  this._obstacleDistance = null
-  this._boundaryDistance = null
-  this._farthestCell = null
-  this._centerCell = null
-  this._centerPt = null
-  this._centerPoint = null
-  this._radiusPt = null
-  this._radiusPoint = null
-  const obstacles = arguments[0]; const tolerance = arguments[1]
-  if (obstacles.isEmpty())
-    throw new IllegalArgumentException('Empty obstacles geometry is not supported')
-
-  this._obstacles = obstacles
-  this._factory = obstacles.getFactory()
-  this._tolerance = tolerance
-  this._obstacleDistance = new IndexedFacetDistance(obstacles)
-  this.setBoundary(obstacles)
-}

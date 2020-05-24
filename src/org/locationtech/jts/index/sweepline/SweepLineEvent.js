@@ -4,6 +4,20 @@ export default class SweepLineEvent {
     SweepLineEvent.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._xValue = null
+    this._eventType = null
+    this._insertEvent = null
+    this._deleteEventIndex = null
+    this.sweepInt = null
+    const x = arguments[0]; const insertEvent = arguments[1]; const sweepInt = arguments[2]
+    this._xValue = x
+    this._insertEvent = insertEvent
+    this._eventType = SweepLineEvent.INSERT
+    if (insertEvent !== null) this._eventType = SweepLineEvent.DELETE
+    this.sweepInt = sweepInt
+  }
+
   getInterval () {
     return this.sweepInt
   }
@@ -37,26 +51,9 @@ export default class SweepLineEvent {
     return this._deleteEventIndex
   }
 
-  getClass () {
-    return SweepLineEvent
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
-}
-SweepLineEvent.constructor_ = function () {
-  this._xValue = null
-  this._eventType = null
-  this._insertEvent = null
-  this._deleteEventIndex = null
-  this.sweepInt = null
-  const x = arguments[0]; const insertEvent = arguments[1]; const sweepInt = arguments[2]
-  this._xValue = x
-  this._insertEvent = insertEvent
-  this._eventType = SweepLineEvent.INSERT
-  if (insertEvent !== null) this._eventType = SweepLineEvent.DELETE
-  this.sweepInt = sweepInt
 }
 SweepLineEvent.INSERT = 1
 SweepLineEvent.DELETE = 2

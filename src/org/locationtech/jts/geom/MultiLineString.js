@@ -9,6 +9,11 @@ export default class MultiLineString extends GeometryCollection {
     MultiLineString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const lineStrings = arguments[0]; const factory = arguments[1]
+    GeometryCollection.constructor_.call(this, lineStrings, factory)
+  }
+
   copyInternal () {
     const lineStrings = new Array(this._geometries.length).fill(null)
     for (let i = 0; i < lineStrings.length; i++)
@@ -63,15 +68,7 @@ export default class MultiLineString extends GeometryCollection {
     return Geometry.TYPENAME_MULTILINESTRING
   }
 
-  getClass () {
-    return MultiLineString
-  }
-
   get interfaces_ () {
     return [Lineal]
   }
-}
-MultiLineString.constructor_ = function () {
-  const lineStrings = arguments[0]; const factory = arguments[1]
-  GeometryCollection.constructor_.call(this, lineStrings, factory)
 }

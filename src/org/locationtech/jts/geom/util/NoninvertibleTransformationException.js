@@ -5,19 +5,12 @@ export default class NoninvertibleTransformationException extends Exception {
     NoninvertibleTransformationException.constructor_.apply(this, arguments)
   }
 
-  getClass () {
-    return NoninvertibleTransformationException
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-NoninvertibleTransformationException.constructor_ = function () {
-  if (arguments.length === 0) {
-    Exception.constructor_.call(this)
-  } else if (arguments.length === 1) {
-    const msg = arguments[0]
-    Exception.constructor_.call(this, msg)
+  static constructor_ () {
+    if (arguments.length === 0) {
+      Exception.constructor_.call(this)
+    } else if (arguments.length === 1) {
+      const msg = arguments[0]
+      Exception.constructor_.call(this, msg)
+    }
   }
 }

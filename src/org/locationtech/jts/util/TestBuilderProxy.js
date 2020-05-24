@@ -1,10 +1,6 @@
 import Geometry from '../geom/Geometry'
 import Exception from '../../../../java/lang/Exception'
 export default class TestBuilderProxy {
-  constructor () {
-    TestBuilderProxy.constructor_.apply(this, arguments)
-  }
-
   static showIndicator (geom) {
     TestBuilderProxy.init()
     if (TestBuilderProxy.methodShowIndicator === null) return null
@@ -33,16 +29,7 @@ export default class TestBuilderProxy {
     TestBuilderProxy.init()
     return TestBuilderProxy.tbClass !== null
   }
-
-  getClass () {
-    return TestBuilderProxy
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-TestBuilderProxy.constructor_ = function () {}
 TestBuilderProxy.CLASS_FUNCTIONS_UTIL = 'org.locationtech.jtstest.function.FunctionsUtil'
 TestBuilderProxy.tbClass = null
 TestBuilderProxy.methodShowIndicator = null

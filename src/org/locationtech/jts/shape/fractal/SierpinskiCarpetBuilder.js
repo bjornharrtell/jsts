@@ -9,6 +9,12 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     SierpinskiCarpetBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._coordList = new CoordinateList()
+    const geomFactory = arguments[0]
+    GeometricShapeBuilder.constructor_.call(this, geomFactory)
+  }
+
   static recursionLevelForSize (numPts) {
     const pow4 = Math.trunc(numPts / 3)
     const exp = Math.log(pow4) / Math.log(4)
@@ -49,17 +55,4 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     const shell = this._geomFactory.toGeometry(this.getSquareExtent()).getExteriorRing()
     return this._geomFactory.createPolygon(shell, holes)
   }
-
-  getClass () {
-    return SierpinskiCarpetBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SierpinskiCarpetBuilder.constructor_ = function () {
-  this._coordList = new CoordinateList()
-  const geomFactory = arguments[0]
-  GeometricShapeBuilder.constructor_.call(this, geomFactory)
 }

@@ -4,6 +4,14 @@ export default class PriorityQueue {
     PriorityQueue.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._size = null
+    this._items = null
+    this._size = 0
+    this._items = new ArrayList()
+    this._items.add(null)
+  }
+
   poll () {
     if (this.isEmpty()) return null
     const minItem = this._items.get(1)
@@ -53,19 +61,4 @@ export default class PriorityQueue {
 
     this._items.set(hole, x)
   }
-
-  getClass () {
-    return PriorityQueue
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PriorityQueue.constructor_ = function () {
-  this._size = null
-  this._items = null
-  this._size = 0
-  this._items = new ArrayList()
-  this._items.add(null)
 }

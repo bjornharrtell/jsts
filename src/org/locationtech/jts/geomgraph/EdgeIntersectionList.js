@@ -8,6 +8,13 @@ export default class EdgeIntersectionList {
     EdgeIntersectionList.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nodeMap = new TreeMap()
+    this.edge = null
+    const edge = arguments[0]
+    this.edge = edge
+  }
+
   print (out) {
     out.println('Intersections:')
     for (let it = this.iterator(); it.hasNext();) {
@@ -72,18 +79,4 @@ export default class EdgeIntersectionList {
     }
     return false
   }
-
-  getClass () {
-    return EdgeIntersectionList
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeIntersectionList.constructor_ = function () {
-  this._nodeMap = new TreeMap()
-  this.edge = null
-  const edge = arguments[0]
-  this.edge = edge
 }

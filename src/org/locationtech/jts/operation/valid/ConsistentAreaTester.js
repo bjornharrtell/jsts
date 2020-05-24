@@ -5,6 +5,15 @@ export default class ConsistentAreaTester {
     ConsistentAreaTester.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = new RobustLineIntersector()
+    this._geomGraph = null
+    this._nodeGraph = new RelateNodeGraph()
+    this._invalidPoint = null
+    const geomGraph = arguments[0]
+    this._geomGraph = geomGraph
+  }
+
   isNodeEdgeAreaLabelsConsistent () {
     for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
       const node = nodeIt.next()
@@ -43,20 +52,4 @@ export default class ConsistentAreaTester {
     this._nodeGraph.build(this._geomGraph)
     return this.isNodeEdgeAreaLabelsConsistent()
   }
-
-  getClass () {
-    return ConsistentAreaTester
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ConsistentAreaTester.constructor_ = function () {
-  this._li = new RobustLineIntersector()
-  this._geomGraph = null
-  this._nodeGraph = new RelateNodeGraph()
-  this._invalidPoint = null
-  const geomGraph = arguments[0]
-  this._geomGraph = geomGraph
 }

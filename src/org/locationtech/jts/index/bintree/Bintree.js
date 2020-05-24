@@ -6,6 +6,12 @@ export default class Bintree {
     Bintree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._root = null
+    this._minExtent = 1.0
+    this._root = new Root()
+  }
+
   static ensureExtent (itemInterval, minExtent) {
     let min = itemInterval.getMin()
     let max = itemInterval.getMax()
@@ -70,17 +76,4 @@ export default class Bintree {
     if (this._root !== null) return this._root.nodeSize()
     return 0
   }
-
-  getClass () {
-    return Bintree
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Bintree.constructor_ = function () {
-  this._root = null
-  this._minExtent = 1.0
-  this._root = new Root()
 }

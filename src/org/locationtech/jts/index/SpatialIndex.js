@@ -1,8 +1,4 @@
 export default class SpatialIndex {
-  constructor () {
-    SpatialIndex.constructor_.apply(this, arguments)
-  }
-
   insert (itemEnv, item) {}
   remove (itemEnv, item) {}
   query () {
@@ -12,13 +8,4 @@ export default class SpatialIndex {
       const searchEnv = arguments[0]; const visitor = arguments[1]
     }
   }
-
-  getClass () {
-    return SpatialIndex
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-SpatialIndex.constructor_ = function () {}

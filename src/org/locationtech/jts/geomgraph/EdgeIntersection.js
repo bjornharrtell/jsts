@@ -5,6 +5,16 @@ export default class EdgeIntersection {
     EdgeIntersection.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.coord = null
+    this.segmentIndex = null
+    this.dist = null
+    const coord = arguments[0]; const segmentIndex = arguments[1]; const dist = arguments[2]
+    this.coord = new Coordinate(coord)
+    this.segmentIndex = segmentIndex
+    this.dist = dist
+  }
+
   getSegmentIndex () {
     return this.segmentIndex
   }
@@ -46,20 +56,7 @@ export default class EdgeIntersection {
     return 0
   }
 
-  getClass () {
-    return EdgeIntersection
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
-}
-EdgeIntersection.constructor_ = function () {
-  this.coord = null
-  this.segmentIndex = null
-  this.dist = null
-  const coord = arguments[0]; const segmentIndex = arguments[1]; const dist = arguments[2]
-  this.coord = new Coordinate(coord)
-  this.segmentIndex = segmentIndex
-  this.dist = dist
 }

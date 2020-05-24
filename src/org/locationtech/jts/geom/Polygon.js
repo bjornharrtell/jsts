@@ -16,6 +16,27 @@ export default class Polygon extends Geometry {
     Polygon.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._shell = null
+    this._holes = null
+    let shell = arguments[0]; let holes = arguments[1]; const factory = arguments[2]
+    Geometry.constructor_.call(this, factory)
+    if (shell === null)
+      shell = this.getFactory().createLinearRing()
+
+    if (holes === null)
+      holes = []
+
+    if (Geometry.hasNullElements(holes))
+      throw new IllegalArgumentException('holes must not contain null elements')
+
+    if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes))
+      throw new IllegalArgumentException('shell is empty but holes are not')
+
+    this._shell = shell
+    this._holes = holes
+  }
+
   computeEnvelopeInternal () {
     return this._shell.getEnvelopeInternal()
   }
@@ -271,31 +292,7 @@ export default class Polygon extends Geometry {
     return this._holes[n]
   }
 
-  getClass () {
-    return Polygon
-  }
-
   get interfaces_ () {
     return [Polygonal]
   }
-}
-Polygon.constructor_ = function () {
-  this._shell = null
-  this._holes = null
-  let shell = arguments[0]; let holes = arguments[1]; const factory = arguments[2]
-  Geometry.constructor_.call(this, factory)
-  if (shell === null)
-    shell = this.getFactory().createLinearRing()
-
-  if (holes === null)
-    holes = []
-
-  if (Geometry.hasNullElements(holes))
-    throw new IllegalArgumentException('holes must not contain null elements')
-
-  if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes))
-    throw new IllegalArgumentException('shell is empty but holes are not')
-
-  this._shell = shell
-  this._holes = holes
 }

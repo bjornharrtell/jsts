@@ -12,6 +12,38 @@ export default class AffineTransformation {
     AffineTransformation.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._m00 = null
+    this._m01 = null
+    this._m02 = null
+    this._m10 = null
+    this._m11 = null
+    this._m12 = null
+    if (arguments.length === 0) {
+      this.setToIdentity()
+    } else if (arguments.length === 1) {
+      if (arguments[0] instanceof Array) {
+        const matrix = arguments[0]
+        this._m00 = matrix[0]
+        this._m01 = matrix[1]
+        this._m02 = matrix[2]
+        this._m10 = matrix[3]
+        this._m11 = matrix[4]
+        this._m12 = matrix[5]
+      } else if (arguments[0] instanceof AffineTransformation) {
+        const trans = arguments[0]
+        this.setTransformation(trans)
+      }
+    } else if (arguments.length === 6) {
+      if (typeof arguments[5] === 'number' && (typeof arguments[4] === 'number' && (typeof arguments[3] === 'number' && (typeof arguments[2] === 'number' && (typeof arguments[0] === 'number' && typeof arguments[1] === 'number'))))) {
+        const m00 = arguments[0]; const m01 = arguments[1]; const m02 = arguments[2]; const m10 = arguments[3]; const m11 = arguments[4]; const m12 = arguments[5]
+        this.setTransformation(m00, m01, m02, m10, m11, m12)
+      } else if (arguments[5] instanceof Coordinate && (arguments[4] instanceof Coordinate && (arguments[3] instanceof Coordinate && (arguments[2] instanceof Coordinate && (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate))))) {
+        const src0 = arguments[0]; const src1 = arguments[1]; const src2 = arguments[2]; const dest0 = arguments[3]; const dest1 = arguments[4]; const dest2 = arguments[5]
+      }
+    }
+  }
+
   static translationInstance (x, y) {
     const trans = new AffineTransformation()
     trans.setToTranslation(x, y)
@@ -388,42 +420,7 @@ export default class AffineTransformation {
     }
   }
 
-  getClass () {
-    return AffineTransformation
-  }
-
   get interfaces_ () {
     return [Cloneable, CoordinateSequenceFilter]
-  }
-}
-AffineTransformation.constructor_ = function () {
-  this._m00 = null
-  this._m01 = null
-  this._m02 = null
-  this._m10 = null
-  this._m11 = null
-  this._m12 = null
-  if (arguments.length === 0) {
-    this.setToIdentity()
-  } else if (arguments.length === 1) {
-    if (arguments[0] instanceof Array) {
-      const matrix = arguments[0]
-      this._m00 = matrix[0]
-      this._m01 = matrix[1]
-      this._m02 = matrix[2]
-      this._m10 = matrix[3]
-      this._m11 = matrix[4]
-      this._m12 = matrix[5]
-    } else if (arguments[0] instanceof AffineTransformation) {
-      const trans = arguments[0]
-      this.setTransformation(trans)
-    }
-  } else if (arguments.length === 6) {
-    if (typeof arguments[5] === 'number' && (typeof arguments[4] === 'number' && (typeof arguments[3] === 'number' && (typeof arguments[2] === 'number' && (typeof arguments[0] === 'number' && typeof arguments[1] === 'number'))))) {
-      const m00 = arguments[0]; const m01 = arguments[1]; const m02 = arguments[2]; const m10 = arguments[3]; const m11 = arguments[4]; const m12 = arguments[5]
-      this.setTransformation(m00, m01, m02, m10, m11, m12)
-    } else if (arguments[5] instanceof Coordinate && (arguments[4] instanceof Coordinate && (arguments[3] instanceof Coordinate && (arguments[2] instanceof Coordinate && (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate))))) {
-      const src0 = arguments[0]; const src1 = arguments[1]; const src2 = arguments[2]; const dest0 = arguments[3]; const dest1 = arguments[4]; const dest2 = arguments[5]
-    }
   }
 }

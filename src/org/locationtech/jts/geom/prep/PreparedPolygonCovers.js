@@ -5,6 +5,12 @@ export default class PreparedPolygonCovers extends AbstractPreparedPolygonContai
     PreparedPolygonCovers.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const prepPoly = arguments[0]
+    AbstractPreparedPolygonContains.constructor_.call(this, prepPoly)
+    this._requireSomePointInInterior = false
+  }
+
   static covers (prep, geom) {
     const polyInt = new PreparedPolygonCovers(prep)
     return polyInt.covers(geom)
@@ -18,17 +24,4 @@ export default class PreparedPolygonCovers extends AbstractPreparedPolygonContai
   covers (geom) {
     return this.eval(geom)
   }
-
-  getClass () {
-    return PreparedPolygonCovers
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPolygonCovers.constructor_ = function () {
-  const prepPoly = arguments[0]
-  AbstractPreparedPolygonContains.constructor_.call(this, prepPoly)
-  this._requireSomePointInInterior = false
 }

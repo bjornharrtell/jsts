@@ -7,6 +7,14 @@ export default class GeometryExtracter {
     GeometryExtracter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geometryType = null
+    this._comps = null
+    const geometryType = arguments[0]; const comps = arguments[1]
+    this._geometryType = geometryType
+    this._comps = comps
+  }
+
   static isOfType (geom, geometryType) {
     if (geom.getGeometryType() === geometryType) return true
     if (geometryType === Geometry.TYPENAME_LINESTRING && geom.getGeometryType() === Geometry.TYPENAME_LINEARRING) return true
@@ -32,18 +40,7 @@ export default class GeometryExtracter {
     if (this._geometryType === null || GeometryExtracter.isOfType(geom, this._geometryType)) this._comps.add(geom)
   }
 
-  getClass () {
-    return GeometryExtracter
-  }
-
   get interfaces_ () {
     return [GeometryFilter]
   }
-}
-GeometryExtracter.constructor_ = function () {
-  this._geometryType = null
-  this._comps = null
-  const geometryType = arguments[0]; const comps = arguments[1]
-  this._geometryType = geometryType
-  this._comps = comps
 }

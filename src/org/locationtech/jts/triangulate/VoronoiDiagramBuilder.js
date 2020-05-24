@@ -13,6 +13,14 @@ export default class VoronoiDiagramBuilder {
     VoronoiDiagramBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._siteCoords = null
+    this._tolerance = 0.0
+    this._subdiv = null
+    this._clipEnv = null
+    this._diagramEnv = null
+  }
+
   static clipGeometryCollection (geom, clipEnv) {
     const clipPoly = geom.getFactory().toGeometry(clipEnv)
     const clipped = new ArrayList()
@@ -74,19 +82,4 @@ export default class VoronoiDiagramBuilder {
     this.create()
     return this._subdiv
   }
-
-  getClass () {
-    return VoronoiDiagramBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-VoronoiDiagramBuilder.constructor_ = function () {
-  this._siteCoords = null
-  this._tolerance = 0.0
-  this._subdiv = null
-  this._clipEnv = null
-  this._diagramEnv = null
 }

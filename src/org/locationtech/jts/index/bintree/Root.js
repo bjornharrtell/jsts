@@ -5,7 +5,6 @@ import Assert from '../../util/Assert'
 export default class Root extends NodeBase {
   constructor () {
     super()
-    Root.constructor_.apply(this, arguments)
   }
 
   insert (itemInterval, item) {
@@ -33,14 +32,5 @@ export default class Root extends NodeBase {
     if (isZeroArea) node = tree.find(itemInterval); else node = tree.getNode(itemInterval)
     node.add(item)
   }
-
-  getClass () {
-    return Root
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Root.constructor_ = function () {}
 Root.origin = 0.0

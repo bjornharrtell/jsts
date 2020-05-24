@@ -13,6 +13,13 @@ export default class SubgraphDepthLocater {
     SubgraphDepthLocater.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._subgraphs = null
+    this._seg = new LineSegment()
+    const subgraphs = arguments[0]
+    this._subgraphs = subgraphs
+  }
+
   findStabbedSegments () {
     if (arguments.length === 1) {
       const stabbingRayLeftPt = arguments[0]
@@ -59,18 +66,18 @@ export default class SubgraphDepthLocater {
     const ds = Collections.min(stabbedSegments)
     return ds._leftDepth
   }
-
-  getClass () {
-    return SubgraphDepthLocater
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class DepthSegment {
   constructor () {
     DepthSegment.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._upwardSeg = null
+    this._leftDepth = null
+    const seg = arguments[0]; const depth = arguments[1]
+    this._upwardSeg = new LineSegment(seg)
+    this._leftDepth = depth
   }
 
   compareTo (obj) {
@@ -94,25 +101,8 @@ class DepthSegment {
     return this._upwardSeg.toString()
   }
 
-  getClass () {
-    return DepthSegment
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
 }
-DepthSegment.constructor_ = function () {
-  this._upwardSeg = null
-  this._leftDepth = null
-  const seg = arguments[0]; const depth = arguments[1]
-  this._upwardSeg = new LineSegment(seg)
-  this._leftDepth = depth
-}
 SubgraphDepthLocater.DepthSegment = DepthSegment
-SubgraphDepthLocater.constructor_ = function () {
-  this._subgraphs = null
-  this._seg = new LineSegment()
-  const subgraphs = arguments[0]
-  this._subgraphs = subgraphs
-}

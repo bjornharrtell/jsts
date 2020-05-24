@@ -14,6 +14,12 @@ export default class PolygonizeGraph extends PlanarGraph {
     PolygonizeGraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._factory = null
+    const factory = arguments[0]
+    this._factory = factory
+  }
+
   static findLabeledEdgeRings (dirEdges) {
     const edgeRingStarts = new ArrayList()
     let currLabel = 1
@@ -256,17 +262,4 @@ export default class PolygonizeGraph extends PlanarGraph {
     }
     return dangleLines
   }
-
-  getClass () {
-    return PolygonizeGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PolygonizeGraph.constructor_ = function () {
-  this._factory = null
-  const factory = arguments[0]
-  this._factory = factory
 }

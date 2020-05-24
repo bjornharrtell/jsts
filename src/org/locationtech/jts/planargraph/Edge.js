@@ -6,6 +6,14 @@ export default class Edge extends GraphComponent {
     Edge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._dirEdge = null
+    if (arguments.length === 0) {} else if (arguments.length === 2) {
+      const de0 = arguments[0]; const de1 = arguments[1]
+      this.setDirectedEdges(de0, de1)
+    }
+  }
+
   isRemoved () {
     return this._dirEdge === null
   }
@@ -40,20 +48,5 @@ export default class Edge extends GraphComponent {
     if (this._dirEdge[0].getFromNode() === node) return this._dirEdge[0].getToNode()
     if (this._dirEdge[1].getFromNode() === node) return this._dirEdge[1].getToNode()
     return null
-  }
-
-  getClass () {
-    return Edge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Edge.constructor_ = function () {
-  this._dirEdge = null
-  if (arguments.length === 0) {} else if (arguments.length === 2) {
-    const de0 = arguments[0]; const de1 = arguments[1]
-    this.setDirectedEdges(de0, de1)
   }
 }

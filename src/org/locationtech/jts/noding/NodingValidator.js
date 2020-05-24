@@ -6,6 +6,13 @@ export default class NodingValidator {
     NodingValidator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = new RobustLineIntersector()
+    this._segStrings = null
+    const segStrings = arguments[0]
+    this._segStrings = segStrings
+  }
+
   checkEndPtVertexIntersections () {
     if (arguments.length === 0) {
       for (let i = this._segStrings.iterator(); i.hasNext();) {
@@ -87,19 +94,5 @@ export default class NodingValidator {
   checkCollapse (p0, p1, p2) {
     if (p0.equals(p2)) throw new RuntimeException('found non-noded collapse at ' + NodingValidator.fact.createLineString([p0, p1, p2]))
   }
-
-  getClass () {
-    return NodingValidator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-NodingValidator.constructor_ = function () {
-  this._li = new RobustLineIntersector()
-  this._segStrings = null
-  const segStrings = arguments[0]
-  this._segStrings = segStrings
 }
 NodingValidator.fact = new GeometryFactory()

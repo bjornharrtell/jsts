@@ -20,6 +20,25 @@ export default class QuadEdgeSubdivision {
     QuadEdgeSubdivision.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._visitedKey = 0
+    this._quadEdges = new ArrayList()
+    this._startingEdge = null
+    this._tolerance = null
+    this._edgeCoincidenceTolerance = null
+    this._frameVertex = new Array(3).fill(null)
+    this._frameEnv = null
+    this._locator = null
+    this._seg = new LineSegment()
+    this._triEdges = new Array(3).fill(null)
+    const env = arguments[0]; const tolerance = arguments[1]
+    this._tolerance = tolerance
+    this._edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR
+    this.createFrame(env)
+    this._startingEdge = this.initSubdiv()
+    this._locator = new LastFoundQuadEdgeLocator(this)
+  }
+
   static getTriangleEdges (startQE, triEdge) {
     triEdge[0] = startQE
     triEdge[1] = triEdge[0].lNext()
@@ -359,20 +378,8 @@ export default class QuadEdgeSubdivision {
       return null
     }
   }
-
-  getClass () {
-    return QuadEdgeSubdivision
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class TriangleCircumcentreVisitor {
-  constructor () {
-    TriangleCircumcentreVisitor.constructor_.apply(this, arguments)
-  }
-
   visit (triEdges) {
     const a = triEdges[0].orig().getCoordinate()
     const b = triEdges[1].orig().getCoordinate()
@@ -383,18 +390,17 @@ class TriangleCircumcentreVisitor {
       triEdges[i].rot().setOrig(ccVertex)
   }
 
-  getClass () {
-    return TriangleCircumcentreVisitor
-  }
-
   get interfaces_ () {
     return [TriangleVisitor]
   }
 }
-TriangleCircumcentreVisitor.constructor_ = function () {}
 class TriangleEdgesListVisitor {
   constructor () {
     TriangleEdgesListVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._triList = new ArrayList()
   }
 
   getTriangleEdges () {
@@ -405,20 +411,17 @@ class TriangleEdgesListVisitor {
     this._triList.add(triEdges)
   }
 
-  getClass () {
-    return TriangleEdgesListVisitor
-  }
-
   get interfaces_ () {
     return [TriangleVisitor]
   }
 }
-TriangleEdgesListVisitor.constructor_ = function () {
-  this._triList = new ArrayList()
-}
 class TriangleVertexListVisitor {
   constructor () {
     TriangleVertexListVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._triList = new ArrayList()
   }
 
   visit (triEdges) {
@@ -429,20 +432,18 @@ class TriangleVertexListVisitor {
     return this._triList
   }
 
-  getClass () {
-    return TriangleVertexListVisitor
-  }
-
   get interfaces_ () {
     return [TriangleVisitor]
   }
 }
-TriangleVertexListVisitor.constructor_ = function () {
-  this._triList = new ArrayList()
-}
 class TriangleCoordinatesVisitor {
   constructor () {
     TriangleCoordinatesVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._coordList = new CoordinateList()
+    this._triCoords = new ArrayList()
   }
 
   checkTriangleSize (pts) {
@@ -471,38 +472,12 @@ class TriangleCoordinatesVisitor {
     return this._triCoords
   }
 
-  getClass () {
-    return TriangleCoordinatesVisitor
-  }
-
   get interfaces_ () {
     return [TriangleVisitor]
   }
-}
-TriangleCoordinatesVisitor.constructor_ = function () {
-  this._coordList = new CoordinateList()
-  this._triCoords = new ArrayList()
 }
 QuadEdgeSubdivision.TriangleCircumcentreVisitor = TriangleCircumcentreVisitor
 QuadEdgeSubdivision.TriangleEdgesListVisitor = TriangleEdgesListVisitor
 QuadEdgeSubdivision.TriangleVertexListVisitor = TriangleVertexListVisitor
 QuadEdgeSubdivision.TriangleCoordinatesVisitor = TriangleCoordinatesVisitor
-QuadEdgeSubdivision.constructor_ = function () {
-  this._visitedKey = 0
-  this._quadEdges = new ArrayList()
-  this._startingEdge = null
-  this._tolerance = null
-  this._edgeCoincidenceTolerance = null
-  this._frameVertex = new Array(3).fill(null)
-  this._frameEnv = null
-  this._locator = null
-  this._seg = new LineSegment()
-  this._triEdges = new Array(3).fill(null)
-  const env = arguments[0]; const tolerance = arguments[1]
-  this._tolerance = tolerance
-  this._edgeCoincidenceTolerance = tolerance / QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR
-  this.createFrame(env)
-  this._startingEdge = this.initSubdiv()
-  this._locator = new LastFoundQuadEdgeLocator(this)
-}
 QuadEdgeSubdivision.EDGE_COINCIDENCE_TOL_FACTOR = 1000

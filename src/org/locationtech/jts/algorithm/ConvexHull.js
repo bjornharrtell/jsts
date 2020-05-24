@@ -14,6 +14,19 @@ export default class ConvexHull {
     ConvexHull.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFactory = null
+    this._inputPts = null
+    if (arguments.length === 1) {
+      const geometry = arguments[0]
+      ConvexHull.constructor_.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory())
+    } else if (arguments.length === 2) {
+      const pts = arguments[0]; const geomFactory = arguments[1]
+      this._inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts)
+      this._geomFactory = geomFactory
+    }
+  }
+
   static extractCoordinates (geom) {
     const filter = new UniqueCoordinateArrayFilter()
     geom.apply(filter)
@@ -200,18 +213,16 @@ export default class ConvexHull {
     ps.push(c[0])
     return ps
   }
-
-  getClass () {
-    return ConvexHull
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class RadialComparator {
   constructor () {
     RadialComparator.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._origin = null
+    const origin = arguments[0]
+    this._origin = origin
   }
 
   static polarCompare (o, p, q) {
@@ -239,29 +250,8 @@ class RadialComparator {
     return RadialComparator.polarCompare(this._origin, p1, p2)
   }
 
-  getClass () {
-    return RadialComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-RadialComparator.constructor_ = function () {
-  this._origin = null
-  const origin = arguments[0]
-  this._origin = origin
-}
 ConvexHull.RadialComparator = RadialComparator
-ConvexHull.constructor_ = function () {
-  this._geomFactory = null
-  this._inputPts = null
-  if (arguments.length === 1) {
-    const geometry = arguments[0]
-    ConvexHull.constructor_.call(this, ConvexHull.extractCoordinates(geometry), geometry.getFactory())
-  } else if (arguments.length === 2) {
-    const pts = arguments[0]; const geomFactory = arguments[1]
-    this._inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts)
-    this._geomFactory = geomFactory
-  }
-}

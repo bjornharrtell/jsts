@@ -11,6 +11,23 @@ export default class ScaledNoder {
     ScaledNoder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._noder = null
+    this._scaleFactor = null
+    this._offsetX = null
+    this._offsetY = null
+    this._isScaled = false
+    if (arguments.length === 2) {
+      const noder = arguments[0]; const scaleFactor = arguments[1]
+      ScaledNoder.constructor_.call(this, noder, scaleFactor, 0, 0)
+    } else if (arguments.length === 4) {
+      const noder = arguments[0]; const scaleFactor = arguments[1]; const offsetX = arguments[2]; const offsetY = arguments[3]
+      this._noder = noder
+      this._scaleFactor = scaleFactor
+      this._isScaled = !this.isIntegerPrecision()
+    }
+  }
+
   rescale () {
     if (hasInterface(arguments[0], Collection)) {
       const segStrings = arguments[0]
@@ -65,27 +82,7 @@ export default class ScaledNoder {
     this._noder.computeNodes(intSegStrings)
   }
 
-  getClass () {
-    return ScaledNoder
-  }
-
   get interfaces_ () {
     return [Noder]
-  }
-}
-ScaledNoder.constructor_ = function () {
-  this._noder = null
-  this._scaleFactor = null
-  this._offsetX = null
-  this._offsetY = null
-  this._isScaled = false
-  if (arguments.length === 2) {
-    const noder = arguments[0]; const scaleFactor = arguments[1]
-    ScaledNoder.constructor_.call(this, noder, scaleFactor, 0, 0)
-  } else if (arguments.length === 4) {
-    const noder = arguments[0]; const scaleFactor = arguments[1]; const offsetX = arguments[2]; const offsetY = arguments[3]
-    this._noder = noder
-    this._scaleFactor = scaleFactor
-    this._isScaled = !this.isIntegerPrecision()
   }
 }

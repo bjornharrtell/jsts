@@ -10,6 +10,13 @@ export default class PolygonBuilder {
     PolygonBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geometryFactory = null
+    this._shellList = new ArrayList()
+    const geometryFactory = arguments[0]
+    this._geometryFactory = geometryFactory
+  }
+
   static findEdgeRingContaining (testEr, shellList) {
     const testRing = testEr.getLinearRing()
     const testEnv = testRing.getEnvelopeInternal()
@@ -141,18 +148,4 @@ export default class PolygonBuilder {
       this.placeFreeHoles(this._shellList, freeHoleList)
     }
   }
-
-  getClass () {
-    return PolygonBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PolygonBuilder.constructor_ = function () {
-  this._geometryFactory = null
-  this._shellList = new ArrayList()
-  const geometryFactory = arguments[0]
-  this._geometryFactory = geometryFactory
 }

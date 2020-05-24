@@ -6,6 +6,12 @@ export default class PointPairDistance {
     PointPairDistance.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pt = [new Coordinate(), new Coordinate()]
+    this._distance = Double.NaN
+    this._isNull = true
+  }
+
   getCoordinates () {
     return this._pt
   }
@@ -69,17 +75,4 @@ export default class PointPairDistance {
       if (dist > this._distance) this.initialize(p0, p1, dist)
     }
   }
-
-  getClass () {
-    return PointPairDistance
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PointPairDistance.constructor_ = function () {
-  this._pt = [new Coordinate(), new Coordinate()]
-  this._distance = Double.NaN
-  this._isNull = true
 }

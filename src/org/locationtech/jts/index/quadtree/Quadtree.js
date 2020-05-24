@@ -9,6 +9,12 @@ export default class Quadtree {
     Quadtree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._root = null
+    this._minExtent = 1.0
+    this._root = new Root()
+  }
+
   static ensureExtent (itemEnv, minExtent) {
     let minx = itemEnv.getMinX()
     let maxx = itemEnv.getMaxX()
@@ -77,16 +83,7 @@ export default class Quadtree {
     return this._root.isEmpty()
   }
 
-  getClass () {
-    return Quadtree
-  }
-
   get interfaces_ () {
     return [SpatialIndex, Serializable]
   }
-}
-Quadtree.constructor_ = function () {
-  this._root = null
-  this._minExtent = 1.0
-  this._root = new Root()
 }

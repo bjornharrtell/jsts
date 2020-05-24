@@ -7,6 +7,12 @@ export default class PolygonExtracter {
     PolygonExtracter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._comps = null
+    const comps = arguments[0]
+    this._comps = comps
+  }
+
   static getPolygons () {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -26,16 +32,7 @@ export default class PolygonExtracter {
     if (geom instanceof Polygon) this._comps.add(geom)
   }
 
-  getClass () {
-    return PolygonExtracter
-  }
-
   get interfaces_ () {
     return [GeometryFilter]
   }
-}
-PolygonExtracter.constructor_ = function () {
-  this._comps = null
-  const comps = arguments[0]
-  this._comps = comps
 }

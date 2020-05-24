@@ -9,6 +9,15 @@ export default class MinimumBoundingCircle {
     MinimumBoundingCircle.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._input = null
+    this._extremalPts = null
+    this._centre = null
+    this._radius = 0.0
+    const geom = arguments[0]
+    this._input = geom
+  }
+
   static farthestPoints (pts) {
     const dist01 = pts[0].distance(pts[1])
     const dist12 = pts[1].distance(pts[2])
@@ -182,20 +191,4 @@ export default class MinimumBoundingCircle {
       break
     }
   }
-
-  getClass () {
-    return MinimumBoundingCircle
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MinimumBoundingCircle.constructor_ = function () {
-  this._input = null
-  this._extremalPts = null
-  this._centre = null
-  this._radius = 0.0
-  const geom = arguments[0]
-  this._input = geom
 }

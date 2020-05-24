@@ -9,6 +9,21 @@ export default class InteriorPointLine {
     InteriorPointLine.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._centroid = null
+    this._minDistance = Double.MAX_VALUE
+    this._interiorPoint = null
+    const g = arguments[0]
+    if (g.isEmpty()) {
+      this._centroid = null
+    } else {
+      this._centroid = Centroid.getCentroid(g)
+      g.getPrecisionModel().makePrecise(this._centroid)
+    }
+    this.addInterior(g)
+    if (this._interiorPoint === null) this.addEndpoints(g)
+  }
+
   static getInteriorPoint (geom) {
     const intPt = new InteriorPointLine(geom)
     return intPt.getInteriorPoint()
@@ -59,26 +74,4 @@ export default class InteriorPointLine {
       this._minDistance = dist
     }
   }
-
-  getClass () {
-    return InteriorPointLine
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-InteriorPointLine.constructor_ = function () {
-  this._centroid = null
-  this._minDistance = Double.MAX_VALUE
-  this._interiorPoint = null
-  const g = arguments[0]
-  if (g.isEmpty()) {
-    this._centroid = null
-  } else {
-    this._centroid = Centroid.getCentroid(g)
-    g.getPrecisionModel().makePrecise(this._centroid)
-  }
-  this.addInterior(g)
-  if (this._interiorPoint === null) this.addEndpoints(g)
 }

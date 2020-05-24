@@ -4,6 +4,14 @@ export default class IncrementalDelaunayTriangulator {
     IncrementalDelaunayTriangulator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._subdiv = null
+    this._isUsingTolerance = false
+    const subdiv = arguments[0]
+    this._subdiv = subdiv
+    this._isUsingTolerance = subdiv.getTolerance() > 0.0
+  }
+
   insertSite (v) {
     let e = this._subdiv.locate(v)
     if (this._subdiv.isVertexOfEdge(e, v)) {
@@ -38,19 +46,4 @@ export default class IncrementalDelaunayTriangulator {
       this.insertSite(v)
     }
   }
-
-  getClass () {
-    return IncrementalDelaunayTriangulator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-IncrementalDelaunayTriangulator.constructor_ = function () {
-  this._subdiv = null
-  this._isUsingTolerance = false
-  const subdiv = arguments[0]
-  this._subdiv = subdiv
-  this._isUsingTolerance = subdiv.getTolerance() > 0.0
 }

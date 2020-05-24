@@ -8,6 +8,24 @@ export default class MinimumDiameter {
     MinimumDiameter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._isConvex = null
+    this._convexHullPts = null
+    this._minBaseSeg = new LineSegment()
+    this._minWidthPt = null
+    this._minPtIndex = null
+    this._minWidth = 0.0
+    if (arguments.length === 1) {
+      const inputGeom = arguments[0]
+      MinimumDiameter.constructor_.call(this, inputGeom, false)
+    } else if (arguments.length === 2) {
+      const inputGeom = arguments[0]; const isConvex = arguments[1]
+      this._inputGeom = inputGeom
+      this._isConvex = isConvex
+    }
+  }
+
   static nextIndex (pts, index) {
     index++
     if (index >= pts.length) index = 0
@@ -155,30 +173,5 @@ export default class MinimumDiameter {
     const p3 = maxParaLine.lineIntersection(minPerpLine)
     const shell = this._inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0])
     return this._inputGeom.getFactory().createPolygon(shell)
-  }
-
-  getClass () {
-    return MinimumDiameter
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MinimumDiameter.constructor_ = function () {
-  this._inputGeom = null
-  this._isConvex = null
-  this._convexHullPts = null
-  this._minBaseSeg = new LineSegment()
-  this._minWidthPt = null
-  this._minPtIndex = null
-  this._minWidth = 0.0
-  if (arguments.length === 1) {
-    const inputGeom = arguments[0]
-    MinimumDiameter.constructor_.call(this, inputGeom, false)
-  } else if (arguments.length === 2) {
-    const inputGeom = arguments[0]; const isConvex = arguments[1]
-    this._inputGeom = inputGeom
-    this._isConvex = isConvex
   }
 }

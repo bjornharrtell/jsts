@@ -13,6 +13,11 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
     SimpleSweepLineIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.events = new ArrayList()
+    this.nOverlaps = null
+  }
+
   processOverlaps (start, end, ev0, si) {
     const ss0 = ev0.getObject()
     for (let i = start; i < end; i++) {
@@ -86,16 +91,4 @@ export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
       }
     }
   }
-
-  getClass () {
-    return SimpleSweepLineIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SimpleSweepLineIntersector.constructor_ = function () {
-  this.events = new ArrayList()
-  this.nOverlaps = null
 }

@@ -11,6 +11,16 @@ export default class PlanarPolygon3D {
     PlanarPolygon3D.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._plane = null
+    this._poly = null
+    this._facingPlane = -1
+    const poly = arguments[0]
+    this._poly = poly
+    this._plane = this.findBestFitPlane(poly)
+    this._facingPlane = this._plane.closestAxisPlane()
+  }
+
   static project () {
     if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
       const seq = arguments[0]; const facingPlane = arguments[1]
@@ -106,21 +116,4 @@ export default class PlanarPolygon3D {
     const ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
     return RayCrossingCounter.locatePointInRing(ptProj, seqProj)
   }
-
-  getClass () {
-    return PlanarPolygon3D
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PlanarPolygon3D.constructor_ = function () {
-  this._plane = null
-  this._poly = null
-  this._facingPlane = -1
-  const poly = arguments[0]
-  this._poly = poly
-  this._plane = this.findBestFitPlane(poly)
-  this._facingPlane = this._plane.closestAxisPlane()
 }

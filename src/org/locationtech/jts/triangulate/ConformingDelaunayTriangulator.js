@@ -17,6 +17,25 @@ export default class ConformingDelaunayTriangulator {
     ConformingDelaunayTriangulator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._initialVertices = null
+    this._segVertices = null
+    this._segments = new ArrayList()
+    this._subdiv = null
+    this._incDel = null
+    this._convexHull = null
+    this._splitFinder = new NonEncroachingSplitPointFinder()
+    this._kdt = null
+    this._vertexFactory = null
+    this._computeAreaEnv = null
+    this._splitPt = null
+    this._tolerance = null
+    const initialVertices = arguments[0]; const tolerance = arguments[1]
+    this._initialVertices = new ArrayList(initialVertices)
+    this._tolerance = tolerance
+    this._kdt = new KdTree(tolerance)
+  }
+
   static computeVertexEnvelope (vertices) {
     const env = new Envelope()
     for (let i = vertices.iterator(); i.hasNext();) {
@@ -214,31 +233,5 @@ export default class ConformingDelaunayTriangulator {
       this.insertSite(this.createVertex(p))
     }
   }
-
-  getClass () {
-    return ConformingDelaunayTriangulator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ConformingDelaunayTriangulator.constructor_ = function () {
-  this._initialVertices = null
-  this._segVertices = null
-  this._segments = new ArrayList()
-  this._subdiv = null
-  this._incDel = null
-  this._convexHull = null
-  this._splitFinder = new NonEncroachingSplitPointFinder()
-  this._kdt = null
-  this._vertexFactory = null
-  this._computeAreaEnv = null
-  this._splitPt = null
-  this._tolerance = null
-  const initialVertices = arguments[0]; const tolerance = arguments[1]
-  this._initialVertices = new ArrayList(initialVertices)
-  this._tolerance = tolerance
-  this._kdt = new KdTree(tolerance)
 }
 ConformingDelaunayTriangulator.MAX_SPLIT_ITER = 99

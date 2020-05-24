@@ -4,6 +4,10 @@ export default class NodeMap {
     NodeMap.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nodeMap = new TreeMap()
+  }
+
   find (coord) {
     return this._nodeMap.get(coord)
   }
@@ -24,15 +28,4 @@ export default class NodeMap {
     this._nodeMap.put(n.getCoordinate(), n)
     return n
   }
-
-  getClass () {
-    return NodeMap
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-NodeMap.constructor_ = function () {
-  this._nodeMap = new TreeMap()
 }

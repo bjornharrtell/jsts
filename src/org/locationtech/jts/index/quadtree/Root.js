@@ -6,7 +6,6 @@ import Assert from '../../util/Assert'
 export default class Root extends NodeBase {
   constructor () {
     super()
-    Root.constructor_.apply(this, arguments)
   }
 
   insert (itemEnv, item) {
@@ -35,14 +34,5 @@ export default class Root extends NodeBase {
     if (isZeroX || isZeroY) node = tree.find(itemEnv); else node = tree.getNode(itemEnv)
     node.add(item)
   }
-
-  getClass () {
-    return Root
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Root.constructor_ = function () {}
 Root.origin = new Coordinate(0.0, 0.0)

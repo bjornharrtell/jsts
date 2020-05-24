@@ -4,6 +4,10 @@ export default class MonotoneChainSelectAction {
     MonotoneChainSelectAction.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.selectedSegment = new LineSegment()
+  }
+
   select () {
     if (arguments.length === 1) {
       const seg = arguments[0]
@@ -13,15 +17,4 @@ export default class MonotoneChainSelectAction {
       this.select(this.selectedSegment)
     }
   }
-
-  getClass () {
-    return MonotoneChainSelectAction
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MonotoneChainSelectAction.constructor_ = function () {
-  this.selectedSegment = new LineSegment()
 }

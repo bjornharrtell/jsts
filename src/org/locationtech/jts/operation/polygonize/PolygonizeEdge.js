@@ -5,20 +5,13 @@ export default class PolygonizeEdge extends Edge {
     PolygonizeEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._line = null
+    const line = arguments[0]
+    this._line = line
+  }
+
   getLine () {
     return this._line
   }
-
-  getClass () {
-    return PolygonizeEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PolygonizeEdge.constructor_ = function () {
-  this._line = null
-  const line = arguments[0]
-  this._line = line
 }

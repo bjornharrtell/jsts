@@ -1,10 +1,6 @@
 import hasInterface from '../../../../hasInterface'
 import CoordinateSequence from './CoordinateSequence'
 export default class CoordinateSequenceFactory {
-  constructor () {
-    CoordinateSequenceFactory.constructor_.apply(this, arguments)
-  }
-
   create () {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Array) {
@@ -19,13 +15,4 @@ export default class CoordinateSequenceFactory {
       return this.create(size, dimension)
     }
   }
-
-  getClass () {
-    return CoordinateSequenceFactory
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-CoordinateSequenceFactory.constructor_ = function () {}

@@ -6,6 +6,12 @@ export default class MCIndexPointSnapper {
     MCIndexPointSnapper.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._index = null
+    const index = arguments[0]
+    this._index = index
+  }
+
   snap () {
     if (arguments.length === 1) {
       const hotPixel = arguments[0]
@@ -27,19 +33,22 @@ export default class MCIndexPointSnapper {
       return hotPixelSnapAction.isNodeAdded()
     }
   }
-
-  getClass () {
-    return MCIndexPointSnapper
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class HotPixelSnapAction extends MonotoneChainSelectAction {
   constructor () {
     super()
     HotPixelSnapAction.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._hotPixel = null
+    this._parentEdge = null
+    this._hotPixelVertexIndex = null
+    this._isNodeAdded = false
+    const hotPixel = arguments[0]; const parentEdge = arguments[1]; const hotPixelVertexIndex = arguments[2]
+    this._hotPixel = hotPixel
+    this._parentEdge = parentEdge
+    this._hotPixelVertexIndex = hotPixelVertexIndex
   }
 
   isNodeAdded () {
@@ -58,28 +67,5 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
       return super.select.apply(this, arguments)
     }
   }
-
-  getClass () {
-    return HotPixelSnapAction
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-HotPixelSnapAction.constructor_ = function () {
-  this._hotPixel = null
-  this._parentEdge = null
-  this._hotPixelVertexIndex = null
-  this._isNodeAdded = false
-  const hotPixel = arguments[0]; const parentEdge = arguments[1]; const hotPixelVertexIndex = arguments[2]
-  this._hotPixel = hotPixel
-  this._parentEdge = parentEdge
-  this._hotPixelVertexIndex = hotPixelVertexIndex
 }
 MCIndexPointSnapper.HotPixelSnapAction = HotPixelSnapAction
-MCIndexPointSnapper.constructor_ = function () {
-  this._index = null
-  const index = arguments[0]
-  this._index = index
-}

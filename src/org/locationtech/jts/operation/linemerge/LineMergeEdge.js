@@ -5,20 +5,13 @@ export default class LineMergeEdge extends Edge {
     LineMergeEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._line = null
+    const line = arguments[0]
+    this._line = line
+  }
+
   getLine () {
     return this._line
   }
-
-  getClass () {
-    return LineMergeEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineMergeEdge.constructor_ = function () {
-  this._line = null
-  const line = arguments[0]
-  this._line = line
 }

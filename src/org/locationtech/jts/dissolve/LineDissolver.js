@@ -13,6 +13,16 @@ export default class LineDissolver {
     LineDissolver.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._result = null
+    this._factory = null
+    this._graph = null
+    this._lines = new ArrayList()
+    this._nodeEdgeStack = new Stack()
+    this._ringStartEdge = null
+    this._graph = new DissolveEdgeGraph()
+  }
+
   static dissolve (g) {
     const d = new LineDissolver()
     d.add(g)
@@ -146,21 +156,4 @@ export default class LineDissolver {
       }
     }
   }
-
-  getClass () {
-    return LineDissolver
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineDissolver.constructor_ = function () {
-  this._result = null
-  this._factory = null
-  this._graph = null
-  this._lines = new ArrayList()
-  this._nodeEdgeStack = new Stack()
-  this._ringStartEdge = null
-  this._graph = new DissolveEdgeGraph()
 }

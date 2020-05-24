@@ -5,6 +5,23 @@ export default class SegmentIntersectionDetector {
     SegmentIntersectionDetector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = null
+    this._findProper = false
+    this._findAllTypes = false
+    this._hasIntersection = false
+    this._hasProperIntersection = false
+    this._hasNonProperIntersection = false
+    this._intPt = null
+    this._intSegments = null
+    if (arguments.length === 0) {
+      SegmentIntersectionDetector.constructor_.call(this, new RobustLineIntersector())
+    } else if (arguments.length === 1) {
+      const li = arguments[0]
+      this._li = li
+    }
+  }
+
   getIntersectionSegments () {
     return this._intSegments
   }
@@ -68,27 +85,7 @@ export default class SegmentIntersectionDetector {
     this._findProper = findProper
   }
 
-  getClass () {
-    return SegmentIntersectionDetector
-  }
-
   get interfaces_ () {
     return [SegmentIntersector]
-  }
-}
-SegmentIntersectionDetector.constructor_ = function () {
-  this._li = null
-  this._findProper = false
-  this._findAllTypes = false
-  this._hasIntersection = false
-  this._hasProperIntersection = false
-  this._hasNonProperIntersection = false
-  this._intPt = null
-  this._intSegments = null
-  if (arguments.length === 0) {
-    SegmentIntersectionDetector.constructor_.call(this, new RobustLineIntersector())
-  } else if (arguments.length === 1) {
-    const li = arguments[0]
-    this._li = li
   }
 }

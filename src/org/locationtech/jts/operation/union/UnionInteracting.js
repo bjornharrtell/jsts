@@ -6,6 +6,20 @@ export default class UnionInteracting {
     UnionInteracting.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFactory = null
+    this._g0 = null
+    this._g1 = null
+    this._interacts0 = null
+    this._interacts1 = null
+    const g0 = arguments[0]; const g1 = arguments[1]
+    this._g0 = g0
+    this._g1 = g1
+    this._geomFactory = g0.getFactory()
+    this._interacts0 = new Array(g0.getNumGeometries()).fill(null)
+    this._interacts1 = new Array(g1.getNumGeometries()).fill(null)
+  }
+
   static union (g0, g1) {
     const uue = new UnionInteracting(g0, g1)
     return uue.union()
@@ -59,25 +73,4 @@ export default class UnionInteracting {
     const unionAll = gColl.buffer(0.0)
     return unionAll
   }
-
-  getClass () {
-    return UnionInteracting
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-UnionInteracting.constructor_ = function () {
-  this._geomFactory = null
-  this._g0 = null
-  this._g1 = null
-  this._interacts0 = null
-  this._interacts1 = null
-  const g0 = arguments[0]; const g1 = arguments[1]
-  this._g0 = g0
-  this._g1 = g1
-  this._geomFactory = g0.getFactory()
-  this._interacts0 = new Array(g0.getNumGeometries()).fill(null)
-  this._interacts1 = new Array(g1.getNumGeometries()).fill(null)
 }

@@ -6,6 +6,15 @@ export default class BufferInputLineSimplifier {
     BufferInputLineSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputLine = null
+    this._distanceTol = null
+    this._isDeleted = null
+    this._angleOrientation = Orientation.COUNTERCLOCKWISE
+    const inputLine = arguments[0]
+    this._inputLine = inputLine
+  }
+
   static simplify (inputLine, distanceTol) {
     const simp = new BufferInputLineSimplifier(inputLine)
     return simp.simplify(distanceTol)
@@ -91,22 +100,6 @@ export default class BufferInputLineSimplifier {
 
     return coordList.toCoordinateArray()
   }
-
-  getClass () {
-    return BufferInputLineSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BufferInputLineSimplifier.constructor_ = function () {
-  this._inputLine = null
-  this._distanceTol = null
-  this._isDeleted = null
-  this._angleOrientation = Orientation.COUNTERCLOCKWISE
-  const inputLine = arguments[0]
-  this._inputLine = inputLine
 }
 BufferInputLineSimplifier.INIT = 0
 BufferInputLineSimplifier.DELETE = 1

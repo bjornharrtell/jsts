@@ -7,6 +7,12 @@ export default class RectangleContains {
     RectangleContains.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._rectEnv = null
+    const rectangle = arguments[0]
+    this._rectEnv = rectangle.getEnvelopeInternal()
+  }
+
   static contains (rectangle, b) {
     const rc = new RectangleContains(rectangle)
     return rc.contains(b)
@@ -60,17 +66,4 @@ export default class RectangleContains {
     if (this.isContainedInBoundary(geom)) return false
     return true
   }
-
-  getClass () {
-    return RectangleContains
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RectangleContains.constructor_ = function () {
-  this._rectEnv = null
-  const rectangle = arguments[0]
-  this._rectEnv = rectangle.getEnvelopeInternal()
 }

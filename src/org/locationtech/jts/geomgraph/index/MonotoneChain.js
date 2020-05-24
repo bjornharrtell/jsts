@@ -3,22 +3,15 @@ export default class MonotoneChain {
     MonotoneChain.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.mce = null
+    this.chainIndex = null
+    const mce = arguments[0]; const chainIndex = arguments[1]
+    this.mce = mce
+    this.chainIndex = chainIndex
+  }
+
   computeIntersections (mc, si) {
     this.mce.computeIntersectsForChain(this.chainIndex, mc.mce, mc.chainIndex, si)
   }
-
-  getClass () {
-    return MonotoneChain
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MonotoneChain.constructor_ = function () {
-  this.mce = null
-  this.chainIndex = null
-  const mce = arguments[0]; const chainIndex = arguments[1]
-  this.mce = mce
-  this.chainIndex = chainIndex
 }

@@ -13,6 +13,24 @@ export default class BufferDistanceValidator {
     BufferDistanceValidator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._input = null
+    this._bufDistance = null
+    this._result = null
+    this._minValidDistance = null
+    this._maxValidDistance = null
+    this._minDistanceFound = null
+    this._maxDistanceFound = null
+    this._isValid = true
+    this._errMsg = null
+    this._errorLocation = null
+    this._errorIndicator = null
+    const input = arguments[0]; const bufDistance = arguments[1]; const result = arguments[2]
+    this._input = input
+    this._bufDistance = bufDistance
+    this._result = result
+  }
+
   checkMaximumDistance (input, bufCurve, maxDist) {
     const haus = new DiscreteHausdorffDistance(bufCurve, input)
     haus.setDensifyFraction(0.25)
@@ -94,31 +112,6 @@ export default class BufferDistanceValidator {
   getErrorMessage () {
     return this._errMsg
   }
-
-  getClass () {
-    return BufferDistanceValidator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BufferDistanceValidator.constructor_ = function () {
-  this._input = null
-  this._bufDistance = null
-  this._result = null
-  this._minValidDistance = null
-  this._maxValidDistance = null
-  this._minDistanceFound = null
-  this._maxDistanceFound = null
-  this._isValid = true
-  this._errMsg = null
-  this._errorLocation = null
-  this._errorIndicator = null
-  const input = arguments[0]; const bufDistance = arguments[1]; const result = arguments[2]
-  this._input = input
-  this._bufDistance = bufDistance
-  this._result = result
 }
 BufferDistanceValidator.VERBOSE = false
 BufferDistanceValidator.MAX_DISTANCE_DIFF_FRAC = 0.012

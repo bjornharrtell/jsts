@@ -7,6 +7,22 @@ export default class LineIntersector {
     LineIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._result = null
+    this._inputLines = Array(2).fill().map(() => Array(2))
+    this._intPt = new Array(2).fill(null)
+    this._intLineIndex = null
+    this._isProper = null
+    this._pa = null
+    this._pb = null
+    this._precisionModel = null
+    this._intPt[0] = new Coordinate()
+    this._intPt[1] = new Coordinate()
+    this._pa = this._intPt[0]
+    this._pb = this._intPt[1]
+    this._result = 0
+  }
+
   static computeEdgeDistance (p, p0, p1) {
     const dx = Math.abs(p1.x - p0.x)
     const dy = Math.abs(p1.y - p0.y)
@@ -144,29 +160,6 @@ export default class LineIntersector {
     this.computeIntLineIndex()
     return this._intPt[this._intLineIndex[segmentIndex][intIndex]]
   }
-
-  getClass () {
-    return LineIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineIntersector.constructor_ = function () {
-  this._result = null
-  this._inputLines = Array(2).fill().map(() => Array(2))
-  this._intPt = new Array(2).fill(null)
-  this._intLineIndex = null
-  this._isProper = null
-  this._pa = null
-  this._pb = null
-  this._precisionModel = null
-  this._intPt[0] = new Coordinate()
-  this._intPt[1] = new Coordinate()
-  this._pa = this._intPt[0]
-  this._pb = this._intPt[1]
-  this._result = 0
 }
 LineIntersector.DONT_INTERSECT = 0
 LineIntersector.DO_INTERSECT = 1

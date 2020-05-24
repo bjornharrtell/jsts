@@ -9,6 +9,14 @@ export default class DouglasPeuckerSimplifier {
     DouglasPeuckerSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._distanceTolerance = null
+    this._isEnsureValidTopology = true
+    const inputGeom = arguments[0]
+    this._inputGeom = inputGeom
+  }
+
   static simplify (geom, distanceTolerance) {
     const tss = new DouglasPeuckerSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
@@ -28,19 +36,19 @@ export default class DouglasPeuckerSimplifier {
     if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
     this._distanceTolerance = distanceTolerance
   }
-
-  getClass () {
-    return DouglasPeuckerSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class DPTransformer extends GeometryTransformer {
   constructor () {
     super()
     DPTransformer.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._isEnsureValidTopology = true
+    this._distanceTolerance = null
+    const isEnsureValidTopology = arguments[0]; const distanceTolerance = arguments[1]
+    this._isEnsureValidTopology = isEnsureValidTopology
+    this._distanceTolerance = distanceTolerance
   }
 
   transformPolygon (geom, parent) {
@@ -80,27 +88,5 @@ class DPTransformer extends GeometryTransformer {
 
     return simpResult
   }
-
-  getClass () {
-    return DPTransformer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-DPTransformer.constructor_ = function () {
-  this._isEnsureValidTopology = true
-  this._distanceTolerance = null
-  const isEnsureValidTopology = arguments[0]; const distanceTolerance = arguments[1]
-  this._isEnsureValidTopology = isEnsureValidTopology
-  this._distanceTolerance = distanceTolerance
 }
 DouglasPeuckerSimplifier.DPTransformer = DPTransformer
-DouglasPeuckerSimplifier.constructor_ = function () {
-  this._inputGeom = null
-  this._distanceTolerance = null
-  this._isEnsureValidTopology = true
-  const inputGeom = arguments[0]
-  this._inputGeom = inputGeom
-}

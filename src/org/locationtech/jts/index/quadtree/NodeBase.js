@@ -5,6 +5,11 @@ export default class NodeBase {
     NodeBase.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._items = new ArrayList()
+    this._subnode = new Array(4).fill(null)
+  }
+
   static getSubnodeIndex (env, centrex, centrey) {
     let subnodeIndex = -1
     if (env.getMinX() >= centrex) {
@@ -130,15 +135,7 @@ export default class NodeBase {
     this._items.add(item)
   }
 
-  getClass () {
-    return NodeBase
-  }
-
   get interfaces_ () {
     return [Serializable]
   }
-}
-NodeBase.constructor_ = function () {
-  this._items = new ArrayList()
-  this._subnode = new Array(4).fill(null)
 }

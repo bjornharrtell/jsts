@@ -12,6 +12,11 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
     SimpleMCSweepLineIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.events = new ArrayList()
+    this.nOverlaps = null
+  }
+
   prepareEvents () {
     Collections.sort(this.events)
     for (let i = 0; i < this.events.size(); i++) {
@@ -88,16 +93,4 @@ export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
       }
     }
   }
-
-  getClass () {
-    return SimpleMCSweepLineIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SimpleMCSweepLineIntersector.constructor_ = function () {
-  this.events = new ArrayList()
-  this.nOverlaps = null
 }

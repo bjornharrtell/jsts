@@ -4,6 +4,10 @@ export default class CoordinateCountFilter {
     CoordinateCountFilter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._n = 0
+  }
+
   filter (coord) {
     this._n++
   }
@@ -12,14 +16,7 @@ export default class CoordinateCountFilter {
     return this._n
   }
 
-  getClass () {
-    return CoordinateCountFilter
-  }
-
   get interfaces_ () {
     return [CoordinateFilter]
   }
-}
-CoordinateCountFilter.constructor_ = function () {
-  this._n = 0
 }

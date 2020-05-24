@@ -12,6 +12,14 @@ export default class CascadedPolygonUnion {
     CascadedPolygonUnion.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputPolys = null
+    this._geomFactory = null
+    const polys = arguments[0]
+    this._inputPolys = polys
+    if (this._inputPolys === null) this._inputPolys = new ArrayList()
+  }
+
   static restrictToPolygons (g) {
     if (hasInterface(g, Polygonal))
       return g
@@ -124,20 +132,5 @@ export default class CascadedPolygonUnion {
       return unionAll
     }
   }
-
-  getClass () {
-    return CascadedPolygonUnion
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-CascadedPolygonUnion.constructor_ = function () {
-  this._inputPolys = null
-  this._geomFactory = null
-  const polys = arguments[0]
-  this._inputPolys = polys
-  if (this._inputPolys === null) this._inputPolys = new ArrayList()
 }
 CascadedPolygonUnion.STRTREE_NODE_CAPACITY = 4

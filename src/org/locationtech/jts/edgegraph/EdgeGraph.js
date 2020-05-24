@@ -5,6 +5,10 @@ export default class EdgeGraph {
     EdgeGraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._vertexMap = new HashMap()
+  }
+
   static isValidEdge (orig, dest) {
     const cmp = dest.compareTo(orig)
     return cmp !== 0
@@ -60,15 +64,4 @@ export default class EdgeGraph {
     if (e === null) return null
     return e.find(dest)
   }
-
-  getClass () {
-    return EdgeGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeGraph.constructor_ = function () {
-  this._vertexMap = new HashMap()
 }

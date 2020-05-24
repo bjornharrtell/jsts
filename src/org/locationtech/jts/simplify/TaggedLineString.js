@@ -5,6 +5,22 @@ export default class TaggedLineString {
     TaggedLineString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._parentLine = null
+    this._segs = null
+    this._resultSegs = new ArrayList()
+    this._minimumSize = null
+    if (arguments.length === 1) {
+      const parentLine = arguments[0]
+      TaggedLineString.constructor_.call(this, parentLine, 2)
+    } else if (arguments.length === 2) {
+      const parentLine = arguments[0]; const minimumSize = arguments[1]
+      this._parentLine = parentLine
+      this._minimumSize = minimumSize
+      this.init()
+    }
+  }
+
   static extractCoordinates (segs) {
     const pts = new Array(segs.size() + 1).fill(null)
     let seg = null
@@ -64,28 +80,5 @@ export default class TaggedLineString {
 
   getResultCoordinates () {
     return TaggedLineString.extractCoordinates(this._resultSegs)
-  }
-
-  getClass () {
-    return TaggedLineString
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-TaggedLineString.constructor_ = function () {
-  this._parentLine = null
-  this._segs = null
-  this._resultSegs = new ArrayList()
-  this._minimumSize = null
-  if (arguments.length === 1) {
-    const parentLine = arguments[0]
-    TaggedLineString.constructor_.call(this, parentLine, 2)
-  } else if (arguments.length === 2) {
-    const parentLine = arguments[0]; const minimumSize = arguments[1]
-    this._parentLine = parentLine
-    this._minimumSize = minimumSize
-    this.init()
   }
 }

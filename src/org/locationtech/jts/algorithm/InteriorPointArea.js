@@ -10,6 +10,13 @@ export default class InteriorPointArea {
     InteriorPointArea.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._interiorPoint = null
+    this._maxWidth = -1
+    const g = arguments[0]
+    this.process(g)
+  }
+
   static getInteriorPoint (geom) {
     const intPt = new InteriorPointArea(geom)
     return intPt.getInteriorPoint()
@@ -43,18 +50,20 @@ export default class InteriorPointArea {
       this._interiorPoint = intPtPoly.getInteriorPoint()
     }
   }
-
-  getClass () {
-    return InteriorPointArea
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class InteriorPointPolygon {
   constructor () {
     InteriorPointPolygon.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._polygon = null
+    this._interiorPointY = null
+    this._interiorSectionWidth = 0.0
+    this._interiorPoint = null
+    const polygon = arguments[0]
+    this._polygon = polygon
+    this._interiorPointY = ScanLineYOrdinateFinder.getScanLineY(polygon)
   }
 
   static isEdgeCrossingCounted (p0, p1, scanY) {
@@ -142,46 +151,32 @@ class InteriorPointPolygon {
     const xInt = InteriorPointPolygon.intersection(p0, p1, scanY)
     crossings.add(xInt)
   }
-
-  getClass () {
-    return InteriorPointPolygon
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class DoubleComparator {
-  constructor () {
-    DoubleComparator.constructor_.apply(this, arguments)
-  }
-
   compare (v1, v2) {
     return v1 < v2 ? -1 : v1 > v2 ? +1 : 0
-  }
-
-  getClass () {
-    return DoubleComparator
   }
 
   get interfaces_ () {
     return [Comparator]
   }
 }
-DoubleComparator.constructor_ = function () {}
 InteriorPointPolygon.DoubleComparator = DoubleComparator
-InteriorPointPolygon.constructor_ = function () {
-  this._polygon = null
-  this._interiorPointY = null
-  this._interiorSectionWidth = 0.0
-  this._interiorPoint = null
-  const polygon = arguments[0]
-  this._polygon = polygon
-  this._interiorPointY = ScanLineYOrdinateFinder.getScanLineY(polygon)
-}
 class ScanLineYOrdinateFinder {
   constructor () {
     ScanLineYOrdinateFinder.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._poly = null
+    this._centreY = null
+    this._hiY = Double.MAX_VALUE
+    this._loY = -Double.MAX_VALUE
+    const poly = arguments[0]
+    this._poly = poly
+    this._hiY = poly.getEnvelopeInternal().getMaxY()
+    this._loY = poly.getEnvelopeInternal().getMinY()
+    this._centreY = InteriorPointArea.avg(this._loY, this._hiY)
   }
 
   static getScanLineY (poly) {
@@ -214,31 +209,6 @@ class ScanLineYOrdinateFinder {
       this.updateInterval(y)
     }
   }
-
-  getClass () {
-    return ScanLineYOrdinateFinder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ScanLineYOrdinateFinder.constructor_ = function () {
-  this._poly = null
-  this._centreY = null
-  this._hiY = Double.MAX_VALUE
-  this._loY = -Double.MAX_VALUE
-  const poly = arguments[0]
-  this._poly = poly
-  this._hiY = poly.getEnvelopeInternal().getMaxY()
-  this._loY = poly.getEnvelopeInternal().getMinY()
-  this._centreY = InteriorPointArea.avg(this._loY, this._hiY)
 }
 InteriorPointArea.InteriorPointPolygon = InteriorPointPolygon
 InteriorPointArea.ScanLineYOrdinateFinder = ScanLineYOrdinateFinder
-InteriorPointArea.constructor_ = function () {
-  this._interiorPoint = null
-  this._maxWidth = -1
-  const g = arguments[0]
-  this.process(g)
-}

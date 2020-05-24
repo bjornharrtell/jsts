@@ -7,6 +7,14 @@ export default class ConsistentPolygonRingChecker {
     ConsistentPolygonRingChecker.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._graph = null
+    this._SCANNING_FOR_INCOMING = 1
+    this._LINKING_TO_OUTGOING = 2
+    const graph = arguments[0]
+    this._graph = graph
+  }
+
   testLinkResultDirectedEdges (deStar, opCode) {
     const ringEdges = this.getPotentialResultAreaEdges(deStar, opCode)
     let firstOut = null
@@ -63,19 +71,4 @@ export default class ConsistentPolygonRingChecker {
 
     return false
   }
-
-  getClass () {
-    return ConsistentPolygonRingChecker
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ConsistentPolygonRingChecker.constructor_ = function () {
-  this._graph = null
-  this._SCANNING_FOR_INCOMING = 1
-  this._LINKING_TO_OUTGOING = 2
-  const graph = arguments[0]
-  this._graph = graph
 }

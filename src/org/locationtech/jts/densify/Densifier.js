@@ -9,6 +9,13 @@ export default class Densifier {
     Densifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._distanceTolerance = null
+    const inputGeom = arguments[0]
+    this._inputGeom = inputGeom
+  }
+
   static densifyPoints (pts, distanceTolerance, precModel) {
     const seg = new LineSegment()
     const coordList = new CoordinateList()
@@ -46,19 +53,17 @@ export default class Densifier {
     if (distanceTolerance <= 0.0) throw new IllegalArgumentException('Tolerance must be positive')
     this._distanceTolerance = distanceTolerance
   }
-
-  getClass () {
-    return Densifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class DensifyTransformer extends GeometryTransformer {
   constructor () {
     super()
     DensifyTransformer.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.distanceTolerance = null
+    const distanceTolerance = arguments[0]
+    this.distanceTolerance = distanceTolerance
   }
 
   transformMultiPolygon (geom, parent) {
@@ -86,24 +91,5 @@ class DensifyTransformer extends GeometryTransformer {
   createValidArea (roughAreaGeom) {
     return roughAreaGeom.buffer(0.0)
   }
-
-  getClass () {
-    return DensifyTransformer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-DensifyTransformer.constructor_ = function () {
-  this.distanceTolerance = null
-  const distanceTolerance = arguments[0]
-  this.distanceTolerance = distanceTolerance
 }
 Densifier.DensifyTransformer = DensifyTransformer
-Densifier.constructor_ = function () {
-  this._inputGeom = null
-  this._distanceTolerance = null
-  const inputGeom = arguments[0]
-  this._inputGeom = inputGeom
-}

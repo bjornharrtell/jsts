@@ -1,8 +1,4 @@
 export default class EnvelopeDistance {
-  constructor () {
-    EnvelopeDistance.constructor_.apply(this, arguments)
-  }
-
   static maxDistance (ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
     let dist = EnvelopeDistance.distance(ax1, ay1, bx1, by1)
     dist = Math.max(dist, EnvelopeDistance.distance(ax1, ay1, bx2, by2))
@@ -52,13 +48,4 @@ export default class EnvelopeDistance {
     dist = Math.min(dist, EnvelopeDistance.maxDistance(amaxx, amaxy, amaxx, aminy, bmaxx, bmaxy, bmaxx, bminy))
     return dist
   }
-
-  getClass () {
-    return EnvelopeDistance
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-EnvelopeDistance.constructor_ = function () {}

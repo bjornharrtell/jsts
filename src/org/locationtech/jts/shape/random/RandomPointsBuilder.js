@@ -13,6 +13,17 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
     RandomPointsBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._maskPoly = null
+    this._extentLocator = null
+    if (arguments.length === 0) {
+      GeometricShapeBuilder.constructor_.call(this, new GeometryFactory())
+    } else if (arguments.length === 1) {
+      const geomFact = arguments[0]
+      GeometricShapeBuilder.constructor_.call(this, geomFact)
+    }
+  }
+
   getGeometry () {
     const pts = new Array(this._numPts).fill(null)
     let i = 0
@@ -51,23 +62,5 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
     const pt = new Coordinate(x, y)
     this._geomFactory.getPrecisionModel().makePrecise(pt)
     return pt
-  }
-
-  getClass () {
-    return RandomPointsBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RandomPointsBuilder.constructor_ = function () {
-  this._maskPoly = null
-  this._extentLocator = null
-  if (arguments.length === 0) {
-    GeometricShapeBuilder.constructor_.call(this, new GeometryFactory())
-  } else if (arguments.length === 1) {
-    const geomFact = arguments[0]
-    GeometricShapeBuilder.constructor_.call(this, geomFact)
   }
 }

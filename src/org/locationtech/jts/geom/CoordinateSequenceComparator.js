@@ -6,6 +6,16 @@ export default class CoordinateSequenceComparator {
     CoordinateSequenceComparator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._dimensionLimit = null
+    if (arguments.length === 0) {
+      this._dimensionLimit = Integer.MAX_VALUE
+    } else if (arguments.length === 1) {
+      const dimensionLimit = arguments[0]
+      this._dimensionLimit = dimensionLimit
+    }
+  }
+
   static compare (a, b) {
     if (a < b) return -1
     if (a > b) return 1
@@ -56,20 +66,7 @@ export default class CoordinateSequenceComparator {
     return 0
   }
 
-  getClass () {
-    return CoordinateSequenceComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
-  }
-}
-CoordinateSequenceComparator.constructor_ = function () {
-  this._dimensionLimit = null
-  if (arguments.length === 0) {
-    this._dimensionLimit = Integer.MAX_VALUE
-  } else if (arguments.length === 1) {
-    const dimensionLimit = arguments[0]
-    this._dimensionLimit = dimensionLimit
   }
 }

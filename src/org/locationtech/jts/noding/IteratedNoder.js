@@ -8,6 +8,17 @@ export default class IteratedNoder {
     IteratedNoder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pm = null
+    this._li = null
+    this._nodedSegStrings = null
+    this._maxIter = IteratedNoder.MAX_ITER
+    const pm = arguments[0]
+    this._li = new RobustLineIntersector()
+    this._pm = pm
+    this._li.setPrecisionModel(pm)
+  }
+
   setMaximumIterations (maxIter) {
     this._maxIter = maxIter
   }
@@ -41,22 +52,8 @@ export default class IteratedNoder {
     return this._nodedSegStrings
   }
 
-  getClass () {
-    return IteratedNoder
-  }
-
   get interfaces_ () {
     return [Noder]
   }
-}
-IteratedNoder.constructor_ = function () {
-  this._pm = null
-  this._li = null
-  this._nodedSegStrings = null
-  this._maxIter = IteratedNoder.MAX_ITER
-  const pm = arguments[0]
-  this._li = new RobustLineIntersector()
-  this._pm = pm
-  this._li.setPrecisionModel(pm)
 }
 IteratedNoder.MAX_ITER = 5

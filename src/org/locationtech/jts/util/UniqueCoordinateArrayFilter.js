@@ -6,6 +6,11 @@ export default class UniqueCoordinateArrayFilter {
     UniqueCoordinateArrayFilter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._coordSet = new HashSet()
+    this._list = new ArrayList()
+  }
+
   static filterCoordinates (coords) {
     const filter = new UniqueCoordinateArrayFilter()
     for (let i = 0; i < coords.length; i++)
@@ -24,15 +29,7 @@ export default class UniqueCoordinateArrayFilter {
     return this._list.toArray(coordinates)
   }
 
-  getClass () {
-    return UniqueCoordinateArrayFilter
-  }
-
   get interfaces_ () {
     return [CoordinateFilter]
   }
-}
-UniqueCoordinateArrayFilter.constructor_ = function () {
-  this._coordSet = new HashSet()
-  this._list = new ArrayList()
 }

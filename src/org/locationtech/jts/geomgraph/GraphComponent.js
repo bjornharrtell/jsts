@@ -4,6 +4,18 @@ export default class GraphComponent {
     GraphComponent.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._label = null
+    this._isInResult = false
+    this._isCovered = false
+    this._isCoveredSet = false
+    this._isVisited = false
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const label = arguments[0]
+      this._label = label
+    }
+  }
+
   setVisited (isVisited) {
     this._isVisited = isVisited
   }
@@ -44,24 +56,5 @@ export default class GraphComponent {
 
   isVisited () {
     return this._isVisited
-  }
-
-  getClass () {
-    return GraphComponent
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GraphComponent.constructor_ = function () {
-  this._label = null
-  this._isInResult = false
-  this._isCovered = false
-  this._isCoveredSet = false
-  this._isVisited = false
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const label = arguments[0]
-    this._label = label
   }
 }

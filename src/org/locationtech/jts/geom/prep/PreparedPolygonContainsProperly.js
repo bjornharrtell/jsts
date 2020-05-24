@@ -8,6 +8,11 @@ export default class PreparedPolygonContainsProperly extends PreparedPolygonPred
     PreparedPolygonContainsProperly.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const prepPoly = arguments[0]
+    PreparedPolygonPredicate.constructor_.call(this, prepPoly)
+  }
+
   static containsProperly (prep, geom) {
     const polyInt = new PreparedPolygonContainsProperly(prep)
     return polyInt.containsProperly(geom)
@@ -25,16 +30,4 @@ export default class PreparedPolygonContainsProperly extends PreparedPolygonPred
     }
     return true
   }
-
-  getClass () {
-    return PreparedPolygonContainsProperly
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPolygonContainsProperly.constructor_ = function () {
-  const prepPoly = arguments[0]
-  PreparedPolygonPredicate.constructor_.call(this, prepPoly)
 }

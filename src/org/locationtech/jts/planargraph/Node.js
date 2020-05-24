@@ -8,6 +8,19 @@ export default class Node extends GraphComponent {
     Node.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pt = null
+    this._deStar = null
+    if (arguments.length === 1) {
+      const pt = arguments[0]
+      Node.constructor_.call(this, pt, new DirectedEdgeStar())
+    } else if (arguments.length === 2) {
+      const pt = arguments[0]; const deStar = arguments[1]
+      this._pt = pt
+      this._deStar = deStar
+    }
+  }
+
   static getEdgesBetween (node0, node1) {
     const edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges())
     const commonEdges = new HashSet(edges0)
@@ -47,25 +60,5 @@ export default class Node extends GraphComponent {
 
   getDegree () {
     return this._deStar.getDegree()
-  }
-
-  getClass () {
-    return Node
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Node.constructor_ = function () {
-  this._pt = null
-  this._deStar = null
-  if (arguments.length === 1) {
-    const pt = arguments[0]
-    Node.constructor_.call(this, pt, new DirectedEdgeStar())
-  } else if (arguments.length === 2) {
-    const pt = arguments[0]; const deStar = arguments[1]
-    this._pt = pt
-    this._deStar = deStar
   }
 }

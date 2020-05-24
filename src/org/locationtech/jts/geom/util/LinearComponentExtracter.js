@@ -10,6 +10,19 @@ export default class LinearComponentExtracter {
     LinearComponentExtracter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._lines = null
+    this._isForcedToLineString = false
+    if (arguments.length === 1) {
+      const lines = arguments[0]
+      this._lines = lines
+    } else if (arguments.length === 2) {
+      const lines = arguments[0]; const isForcedToLineString = arguments[1]
+      this._lines = lines
+      this._isForcedToLineString = isForcedToLineString
+    }
+  }
+
   static getGeometry () {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -75,23 +88,7 @@ export default class LinearComponentExtracter {
     this._isForcedToLineString = isForcedToLineString
   }
 
-  getClass () {
-    return LinearComponentExtracter
-  }
-
   get interfaces_ () {
     return [GeometryComponentFilter]
-  }
-}
-LinearComponentExtracter.constructor_ = function () {
-  this._lines = null
-  this._isForcedToLineString = false
-  if (arguments.length === 1) {
-    const lines = arguments[0]
-    this._lines = lines
-  } else if (arguments.length === 2) {
-    const lines = arguments[0]; const isForcedToLineString = arguments[1]
-    this._lines = lines
-    this._isForcedToLineString = isForcedToLineString
   }
 }

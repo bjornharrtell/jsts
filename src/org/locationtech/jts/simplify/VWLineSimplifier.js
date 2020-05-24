@@ -7,6 +7,14 @@ export default class VWLineSimplifier {
     VWLineSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pts = null
+    this._tolerance = null
+    const pts = arguments[0]; const distanceTolerance = arguments[1]
+    this._pts = pts
+    this._tolerance = distanceTolerance * distanceTolerance
+  }
+
   static simplify (pts, distanceTolerance) {
     const simp = new VWLineSimplifier(pts, distanceTolerance)
     return simp.simplify()
@@ -43,18 +51,20 @@ export default class VWLineSimplifier {
 
     return simp
   }
-
-  getClass () {
-    return VWLineSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class VWVertex {
   constructor () {
     VWVertex.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._pt = null
+    this._prev = null
+    this._next = null
+    this._area = VWVertex.MAX_AREA
+    this._isLive = true
+    const pt = arguments[0]
+    this._pt = pt
   }
 
   static buildLine (pts) {
@@ -124,30 +134,6 @@ class VWVertex {
   setNext (next) {
     this._next = next
   }
-
-  getClass () {
-    return VWVertex
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-VWVertex.constructor_ = function () {
-  this._pt = null
-  this._prev = null
-  this._next = null
-  this._area = VWVertex.MAX_AREA
-  this._isLive = true
-  const pt = arguments[0]
-  this._pt = pt
 }
 VWVertex.MAX_AREA = Double.MAX_VALUE
 VWLineSimplifier.VWVertex = VWVertex
-VWLineSimplifier.constructor_ = function () {
-  this._pts = null
-  this._tolerance = null
-  const pts = arguments[0]; const distanceTolerance = arguments[1]
-  this._pts = pts
-  this._tolerance = distanceTolerance * distanceTolerance
-}

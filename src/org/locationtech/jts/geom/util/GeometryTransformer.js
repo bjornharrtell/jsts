@@ -14,6 +14,15 @@ export default class GeometryTransformer {
     GeometryTransformer.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._factory = null
+    this._pruneEmptyGeometry = true
+    this._preserveGeometryCollectionType = true
+    this._preserveCollections = false
+    this._preserveType = false
+  }
+
   transformPoint (geom, parent) {
     return this._factory.createPoint(this.transformCoordinates(geom.getCoordinateSequence(), geom))
   }
@@ -117,7 +126,7 @@ export default class GeometryTransformer {
     if (inputGeom instanceof Polygon) return this.transformPolygon(inputGeom, null)
     if (inputGeom instanceof MultiPolygon) return this.transformMultiPolygon(inputGeom, null)
     if (inputGeom instanceof GeometryCollection) return this.transformGeometryCollection(inputGeom, null)
-    throw new IllegalArgumentException('Unknown Geometry subtype: ' + inputGeom.getClass().getName())
+    throw new IllegalArgumentException('Unknown Geometry subtype: ' + inputGeom.getGeometryType())
   }
 
   transformLinearRing (geom, parent) {
@@ -127,20 +136,4 @@ export default class GeometryTransformer {
     if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this._factory.createLineString(seq)
     return this._factory.createLinearRing(seq)
   }
-
-  getClass () {
-    return GeometryTransformer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryTransformer.constructor_ = function () {
-  this._inputGeom = null
-  this._factory = null
-  this._pruneEmptyGeometry = true
-  this._preserveGeometryCollectionType = true
-  this._preserveCollections = false
-  this._preserveType = false
 }

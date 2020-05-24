@@ -1,10 +1,6 @@
 import SplitSegment from './SplitSegment'
 import ConstraintSplitPointFinder from './ConstraintSplitPointFinder'
 export default class NonEncroachingSplitPointFinder {
-  constructor () {
-    NonEncroachingSplitPointFinder.constructor_.apply(this, arguments)
-  }
-
   static projectedSplitPoint (seg, encroachPt) {
     const lineSeg = seg.getLineSegment()
     const projPt = lineSeg.project(encroachPt)
@@ -27,12 +23,7 @@ export default class NonEncroachingSplitPointFinder {
     return splitSeg.getSplitPoint()
   }
 
-  getClass () {
-    return NonEncroachingSplitPointFinder
-  }
-
   get interfaces_ () {
     return [ConstraintSplitPointFinder]
   }
 }
-NonEncroachingSplitPointFinder.constructor_ = function () {}

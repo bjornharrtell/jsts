@@ -5,6 +5,12 @@ export default class GeometryCollectionMapper {
     GeometryCollectionMapper.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._mapOp = null
+    const mapOp = arguments[0]
+    this._mapOp = mapOp
+  }
+
   static map (gc, op) {
     const mapper = new GeometryCollectionMapper(op)
     return mapper.map(gc)
@@ -18,17 +24,4 @@ export default class GeometryCollectionMapper {
     }
     return gc.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(mapped))
   }
-
-  getClass () {
-    return GeometryCollectionMapper
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryCollectionMapper.constructor_ = function () {
-  this._mapOp = null
-  const mapOp = arguments[0]
-  this._mapOp = mapOp
 }

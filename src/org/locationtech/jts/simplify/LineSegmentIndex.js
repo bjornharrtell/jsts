@@ -9,6 +9,10 @@ export default class LineSegmentIndex {
     LineSegmentIndex.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._index = new Quadtree()
+  }
+
   remove (seg) {
     this._index.remove(new Envelope(seg.p0, seg.p1), seg)
   }
@@ -34,21 +38,17 @@ export default class LineSegmentIndex {
     const itemsFound = visitor.getItems()
     return itemsFound
   }
-
-  getClass () {
-    return LineSegmentIndex
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineSegmentIndex.constructor_ = function () {
-  this._index = new Quadtree()
 }
 class LineSegmentVisitor {
   constructor () {
     LineSegmentVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._querySeg = null
+    this._items = new ArrayList()
+    const querySeg = arguments[0]
+    this._querySeg = querySeg
   }
 
   visitItem (item) {
@@ -60,17 +60,7 @@ class LineSegmentVisitor {
     return this._items
   }
 
-  getClass () {
-    return LineSegmentVisitor
-  }
-
   get interfaces_ () {
     return [ItemVisitor]
   }
-}
-LineSegmentVisitor.constructor_ = function () {
-  this._querySeg = null
-  this._items = new ArrayList()
-  const querySeg = arguments[0]
-  this._querySeg = querySeg
 }

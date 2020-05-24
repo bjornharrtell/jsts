@@ -2,10 +2,6 @@ import EdgeEnd from '../../geomgraph/EdgeEnd'
 import Label from '../../geomgraph/Label'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class EdgeEndBuilder {
-  constructor () {
-    EdgeEndBuilder.constructor_.apply(this, arguments)
-  }
-
   createEdgeEndForNext (edge, l, eiCurr, eiNext) {
     const iNext = eiCurr.segmentIndex + 1
     if (iNext >= edge.getNumPoints() && eiNext === null) return null
@@ -59,13 +55,4 @@ export default class EdgeEndBuilder {
       } while (eiCurr !== null)
     }
   }
-
-  getClass () {
-    return EdgeEndBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-EdgeEndBuilder.constructor_ = function () {}

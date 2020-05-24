@@ -7,6 +7,14 @@ export default class AxisPlaneCoordinateSequence {
     AxisPlaneCoordinateSequence.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._seq = null
+    this._indexMap = null
+    const seq = arguments[0]; const indexMap = arguments[1]
+    this._seq = seq
+    this._indexMap = indexMap
+  }
+
   static projectToYZ (seq) {
     return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.YZ_INDEX)
   }
@@ -84,20 +92,9 @@ export default class AxisPlaneCoordinateSequence {
     throw new UnsupportedOperationException()
   }
 
-  getClass () {
-    return AxisPlaneCoordinateSequence
-  }
-
   get interfaces_ () {
     return [CoordinateSequence]
   }
-}
-AxisPlaneCoordinateSequence.constructor_ = function () {
-  this._seq = null
-  this._indexMap = null
-  const seq = arguments[0]; const indexMap = arguments[1]
-  this._seq = seq
-  this._indexMap = indexMap
 }
 AxisPlaneCoordinateSequence.XY_INDEX = [0, 1]
 AxisPlaneCoordinateSequence.XZ_INDEX = [0, 2]

@@ -7,6 +7,29 @@ export default class EdgeEnd {
     EdgeEnd.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edge = null
+    this._label = null
+    this._node = null
+    this._p0 = null
+    this._p1 = null
+    this._dx = null
+    this._dy = null
+    this._quadrant = null
+    if (arguments.length === 1) {
+      const edge = arguments[0]
+      this._edge = edge
+    } else if (arguments.length === 3) {
+      const edge = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
+      EdgeEnd.constructor_.call(this, edge, p0, p1, null)
+    } else if (arguments.length === 4) {
+      const edge = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]; const label = arguments[3]
+      EdgeEnd.constructor_.call(this, edge)
+      this.init(p0, p1)
+      this._label = label
+    }
+  }
+
   compareDirection (e) {
     if (this._dx === e._dx && this._dy === e._dy) return 0
     if (this._quadrant > e._quadrant) return 1
@@ -81,33 +104,7 @@ export default class EdgeEnd {
     Assert.isTrue(!(this._dx === 0 && this._dy === 0), 'EdgeEnd with identical endpoints found')
   }
 
-  getClass () {
-    return EdgeEnd
-  }
-
   get interfaces_ () {
     return [Comparable]
-  }
-}
-EdgeEnd.constructor_ = function () {
-  this._edge = null
-  this._label = null
-  this._node = null
-  this._p0 = null
-  this._p1 = null
-  this._dx = null
-  this._dy = null
-  this._quadrant = null
-  if (arguments.length === 1) {
-    const edge = arguments[0]
-    this._edge = edge
-  } else if (arguments.length === 3) {
-    const edge = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
-    EdgeEnd.constructor_.call(this, edge, p0, p1, null)
-  } else if (arguments.length === 4) {
-    const edge = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]; const label = arguments[3]
-    EdgeEnd.constructor_.call(this, edge)
-    this.init(p0, p1)
-    this._label = label
   }
 }

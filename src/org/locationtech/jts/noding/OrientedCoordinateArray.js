@@ -5,6 +5,14 @@ export default class OrientedCoordinateArray {
     OrientedCoordinateArray.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pts = null
+    this._orientation = null
+    const pts = arguments[0]
+    this._pts = pts
+    this._orientation = OrientedCoordinateArray.orientation(pts)
+  }
+
   static orientation (pts) {
     return CoordinateArrays.increasingDirection(pts) === 1
   }
@@ -35,18 +43,7 @@ export default class OrientedCoordinateArray {
     return comp
   }
 
-  getClass () {
-    return OrientedCoordinateArray
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
-}
-OrientedCoordinateArray.constructor_ = function () {
-  this._pts = null
-  this._orientation = null
-  const pts = arguments[0]
-  this._pts = pts
-  this._orientation = OrientedCoordinateArray.orientation(pts)
 }

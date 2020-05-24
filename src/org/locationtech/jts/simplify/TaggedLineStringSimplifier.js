@@ -6,6 +6,18 @@ export default class TaggedLineStringSimplifier {
     TaggedLineStringSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = new RobustLineIntersector()
+    this._inputIndex = new LineSegmentIndex()
+    this._outputIndex = new LineSegmentIndex()
+    this._line = null
+    this._linePts = null
+    this._distanceTolerance = 0.0
+    const inputIndex = arguments[0]; const outputIndex = arguments[1]
+    this._inputIndex = inputIndex
+    this._outputIndex = outputIndex
+  }
+
   static isInLineSection (line, sectionIndex, seg) {
     if (seg.getParent() !== line.getParent()) return false
     const segIndex = seg.getIndex()
@@ -120,23 +132,4 @@ export default class TaggedLineStringSimplifier {
     }
     return false
   }
-
-  getClass () {
-    return TaggedLineStringSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-TaggedLineStringSimplifier.constructor_ = function () {
-  this._li = new RobustLineIntersector()
-  this._inputIndex = new LineSegmentIndex()
-  this._outputIndex = new LineSegmentIndex()
-  this._line = null
-  this._linePts = null
-  this._distanceTolerance = 0.0
-  const inputIndex = arguments[0]; const outputIndex = arguments[1]
-  this._inputIndex = inputIndex
-  this._outputIndex = outputIndex
 }

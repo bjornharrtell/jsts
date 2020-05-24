@@ -14,6 +14,17 @@ export default class PointLocator {
     PointLocator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE
+    this._isIn = null
+    this._numBoundaries = null
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const boundaryRule = arguments[0]
+      if (boundaryRule === null) throw new IllegalArgumentException('Rule must be non-null')
+      this._boundaryRule = boundaryRule
+    }
+  }
+
   locateInPolygonRing (p, ring) {
     if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return PointLocation.locateInRing(p, ring.getCoordinates())
@@ -105,23 +116,5 @@ export default class PointLocator {
     if (this._boundaryRule.isInBoundary(this._numBoundaries)) return Location.BOUNDARY
     if (this._numBoundaries > 0 || this._isIn) return Location.INTERIOR
     return Location.EXTERIOR
-  }
-
-  getClass () {
-    return PointLocator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PointLocator.constructor_ = function () {
-  this._boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE
-  this._isIn = null
-  this._numBoundaries = null
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const boundaryRule = arguments[0]
-    if (boundaryRule === null) throw new IllegalArgumentException('Rule must be non-null')
-    this._boundaryRule = boundaryRule
   }
 }

@@ -3,10 +3,6 @@ import Coordinate from './Coordinate'
 import CoordinateXYM from './CoordinateXYM'
 import CoordinateXYZM from './CoordinateXYZM'
 export default class Coordinates {
-  constructor () {
-    Coordinates.constructor_.apply(this, arguments)
-  }
-
   static measures (coordinate) {
     if (coordinate instanceof CoordinateXY)
       return 0
@@ -51,13 +47,4 @@ export default class Coordinates {
       return new Coordinate()
     }
   }
-
-  getClass () {
-    return Coordinates
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Coordinates.constructor_ = function () {}

@@ -4,6 +4,12 @@ export default class SimpleSegmentSetMutualIntersector {
     SimpleSegmentSetMutualIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._baseSegStrings = null
+    const segStrings = arguments[0]
+    this._baseSegStrings = segStrings
+  }
+
   intersect (ss0, ss1, segInt) {
     const pts0 = ss0.getCoordinates()
     const pts1 = ss1.getCoordinates()
@@ -25,16 +31,7 @@ export default class SimpleSegmentSetMutualIntersector {
     }
   }
 
-  getClass () {
-    return SimpleSegmentSetMutualIntersector
-  }
-
   get interfaces_ () {
     return [SegmentSetMutualIntersector]
   }
-}
-SimpleSegmentSetMutualIntersector.constructor_ = function () {
-  this._baseSegStrings = null
-  const segStrings = arguments[0]
-  this._baseSegStrings = segStrings
 }

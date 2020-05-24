@@ -10,6 +10,12 @@ export default class GeometrySnapper {
     GeometrySnapper.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._srcGeom = null
+    const srcGeom = arguments[0]
+    this._srcGeom = srcGeom
+  }
+
   static snap (g0, g1, snapTolerance) {
     const snapGeom = new Array(2).fill(null)
     const snapper0 = new GeometrySnapper(g0)
@@ -87,25 +93,28 @@ export default class GeometrySnapper {
     }
     return minSegLen
   }
-
-  getClass () {
-    return GeometrySnapper
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometrySnapper.constructor_ = function () {
-  this._srcGeom = null
-  const srcGeom = arguments[0]
-  this._srcGeom = srcGeom
 }
 GeometrySnapper.SNAP_PRECISION_FACTOR = 1e-9
 class SnapTransformer extends GeometryTransformer {
   constructor () {
     super()
     SnapTransformer.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._snapTolerance = null
+    this._snapPts = null
+    this._isSelfSnap = false
+    if (arguments.length === 2) {
+      const snapTolerance = arguments[0]; const snapPts = arguments[1]
+      this._snapTolerance = snapTolerance
+      this._snapPts = snapPts
+    } else if (arguments.length === 3) {
+      const snapTolerance = arguments[0]; const snapPts = arguments[1]; const isSelfSnap = arguments[2]
+      this._snapTolerance = snapTolerance
+      this._snapPts = snapPts
+      this._isSelfSnap = isSelfSnap
+    }
   }
 
   snapLine (srcPts, snapPts) {
@@ -118,28 +127,5 @@ class SnapTransformer extends GeometryTransformer {
     const srcPts = coords.toCoordinateArray()
     const newPts = this.snapLine(srcPts, this._snapPts)
     return this._factory.getCoordinateSequenceFactory().create(newPts)
-  }
-
-  getClass () {
-    return SnapTransformer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SnapTransformer.constructor_ = function () {
-  this._snapTolerance = null
-  this._snapPts = null
-  this._isSelfSnap = false
-  if (arguments.length === 2) {
-    const snapTolerance = arguments[0]; const snapPts = arguments[1]
-    this._snapTolerance = snapTolerance
-    this._snapPts = snapPts
-  } else if (arguments.length === 3) {
-    const snapTolerance = arguments[0]; const snapPts = arguments[1]; const isSelfSnap = arguments[2]
-    this._snapTolerance = snapTolerance
-    this._snapPts = snapPts
-    this._isSelfSnap = isSelfSnap
   }
 }

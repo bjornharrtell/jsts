@@ -7,10 +7,6 @@ import Assert from './Assert'
 import IOException from '../../../../java/io/IOException'
 import LineNumberReader from '../../../../java/io/LineNumberReader'
 export default class StringUtil {
-  constructor () {
-    StringUtil.constructor_.apply(this, arguments)
-  }
-
   static chars (c, n) {
     const ch = new Array(n).fill(null)
     for (let i = 0; i < n; i++)
@@ -66,14 +62,5 @@ export default class StringUtil {
 
     return res
   }
-
-  getClass () {
-    return StringUtil
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-StringUtil.constructor_ = function () {}
 StringUtil.NEWLINE = System.getProperty('line.separator')

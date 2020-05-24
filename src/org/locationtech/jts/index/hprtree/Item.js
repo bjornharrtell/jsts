@@ -3,6 +3,14 @@ export default class Item {
     Item.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._env = null
+    this._item = null
+    const env = arguments[0]; const item = arguments[1]
+    this._env = env
+    this._item = item
+  }
+
   getEnvelope () {
     return this._env
   }
@@ -14,19 +22,4 @@ export default class Item {
   toString () {
     return 'Item: ' + this._env.toString()
   }
-
-  getClass () {
-    return Item
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Item.constructor_ = function () {
-  this._env = null
-  this._item = null
-  const env = arguments[0]; const item = arguments[1]
-  this._env = env
-  this._item = item
 }

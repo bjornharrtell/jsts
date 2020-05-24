@@ -4,6 +4,12 @@ export default class LocationIndexOfLine {
     LocationIndexOfLine.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    const linearGeom = arguments[0]
+    this._linearGeom = linearGeom
+  }
+
   static indicesOf (linearGeom, subLine) {
     const locater = new LocationIndexOfLine(linearGeom)
     return locater.indicesOf(subLine)
@@ -23,17 +29,4 @@ export default class LocationIndexOfLine {
 
     return subLineLoc
   }
-
-  getClass () {
-    return LocationIndexOfLine
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LocationIndexOfLine.constructor_ = function () {
-  this._linearGeom = null
-  const linearGeom = arguments[0]
-  this._linearGeom = linearGeom
 }

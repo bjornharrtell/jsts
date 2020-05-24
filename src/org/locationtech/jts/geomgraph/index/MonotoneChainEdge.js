@@ -5,6 +5,17 @@ export default class MonotoneChainEdge {
     MonotoneChainEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.e = null
+    this.pts = null
+    this.startIndex = null
+    const e = arguments[0]
+    this.e = e
+    this.pts = e.getCoordinates()
+    const mcb = new MonotoneChainIndexer()
+    this.startIndex = mcb.getChainStartIndices(this.pts)
+  }
+
   getCoordinates () {
     return this.pts
   }
@@ -58,22 +69,4 @@ export default class MonotoneChainEdge {
       for (let j = 0; j < mce.startIndex.length - 1; j++)
         this.computeIntersectsForChain(i, mce, j, si)
   }
-
-  getClass () {
-    return MonotoneChainEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MonotoneChainEdge.constructor_ = function () {
-  this.e = null
-  this.pts = null
-  this.startIndex = null
-  const e = arguments[0]
-  this.e = e
-  this.pts = e.getCoordinates()
-  const mcb = new MonotoneChainIndexer()
-  this.startIndex = mcb.getChainStartIndices(this.pts)
 }

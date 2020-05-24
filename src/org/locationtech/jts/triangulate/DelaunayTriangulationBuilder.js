@@ -14,6 +14,12 @@ export default class DelaunayTriangulationBuilder {
     DelaunayTriangulationBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._siteCoords = null
+    this._tolerance = 0.0
+    this._subdiv = null
+  }
+
   static extractUniqueCoordinates (geom) {
     if (geom === null) return new CoordinateList()
     const coords = geom.getCoordinates()
@@ -82,17 +88,4 @@ export default class DelaunayTriangulationBuilder {
     this.create()
     return this._subdiv.getTriangles(geomFact)
   }
-
-  getClass () {
-    return DelaunayTriangulationBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-DelaunayTriangulationBuilder.constructor_ = function () {
-  this._siteCoords = null
-  this._tolerance = 0.0
-  this._subdiv = null
 }

@@ -1,10 +1,6 @@
 import Coordinate from '../../geom/Coordinate'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
 export default class HilbertCode {
-  constructor () {
-    HilbertCode.constructor_.apply(this, arguments)
-  }
-
   static deinterleave (x) {
     x = x & 0x55555555
     x = (x | x >> 1) & 0x33333333
@@ -116,14 +112,5 @@ export default class HilbertCode {
     if (size < numPoints) level += 1
     return level
   }
-
-  getClass () {
-    return HilbertCode
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-HilbertCode.constructor_ = function () {}
 HilbertCode.MAX_LEVEL = 16

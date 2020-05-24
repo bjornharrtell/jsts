@@ -10,6 +10,14 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
     PrecisionReducerCoordinateOperation.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._targetPM = null
+    this._removeCollapsed = true
+    const targetPM = arguments[0]; const removeCollapsed = arguments[1]
+    this._targetPM = targetPM
+    this._removeCollapsed = removeCollapsed
+  }
+
   edit () {
     if (arguments.length === 2 && (arguments[1] instanceof Geometry && arguments[0] instanceof Array)) {
       const coordinates = arguments[0]; const geom = arguments[1]
@@ -35,19 +43,4 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
       return super.edit.apply(this, arguments)
     }
   }
-
-  getClass () {
-    return PrecisionReducerCoordinateOperation
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PrecisionReducerCoordinateOperation.constructor_ = function () {
-  this._targetPM = null
-  this._removeCollapsed = true
-  const targetPM = arguments[0]; const removeCollapsed = arguments[1]
-  this._targetPM = targetPM
-  this._removeCollapsed = removeCollapsed
 }

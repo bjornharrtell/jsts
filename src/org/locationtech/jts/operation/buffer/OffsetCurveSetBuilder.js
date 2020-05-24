@@ -21,6 +21,17 @@ export default class OffsetCurveSetBuilder {
     OffsetCurveSetBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._distance = null
+    this._curveBuilder = null
+    this._curveList = new ArrayList()
+    const inputGeom = arguments[0]; const distance = arguments[1]; const curveBuilder = arguments[2]
+    this._inputGeom = inputGeom
+    this._distance = distance
+    this._curveBuilder = curveBuilder
+  }
+
   addRingSide (coord, offsetDistance, side, cwLeftLoc, cwRightLoc) {
     if (offsetDistance === 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) return null
     let leftLoc = cwLeftLoc
@@ -97,7 +108,7 @@ export default class OffsetCurveSetBuilder {
 
   add (g) {
     if (g.isEmpty()) return null
-    if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getClass().getName())
+    if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getGeometryType())
   }
 
   isErodedCompletely (ring, bufferDistance) {
@@ -116,22 +127,4 @@ export default class OffsetCurveSetBuilder {
       this.add(g)
     }
   }
-
-  getClass () {
-    return OffsetCurveSetBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OffsetCurveSetBuilder.constructor_ = function () {
-  this._inputGeom = null
-  this._distance = null
-  this._curveBuilder = null
-  this._curveList = new ArrayList()
-  const inputGeom = arguments[0]; const distance = arguments[1]; const curveBuilder = arguments[2]
-  this._inputGeom = inputGeom
-  this._distance = distance
-  this._curveBuilder = curveBuilder
 }

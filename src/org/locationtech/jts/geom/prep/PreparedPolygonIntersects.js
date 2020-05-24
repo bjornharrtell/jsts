@@ -6,6 +6,11 @@ export default class PreparedPolygonIntersects extends PreparedPolygonPredicate 
     PreparedPolygonIntersects.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const prepPoly = arguments[0]
+    PreparedPolygonPredicate.constructor_.call(this, prepPoly)
+  }
+
   static intersects (prep, geom) {
     const polyInt = new PreparedPolygonIntersects(prep)
     return polyInt.intersects(geom)
@@ -26,16 +31,4 @@ export default class PreparedPolygonIntersects extends PreparedPolygonPredicate 
     }
     return false
   }
-
-  getClass () {
-    return PreparedPolygonIntersects
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPolygonIntersects.constructor_ = function () {
-  const prepPoly = arguments[0]
-  PreparedPolygonPredicate.constructor_.call(this, prepPoly)
 }

@@ -5,6 +5,12 @@ export default class LengthLocationMap {
     LengthLocationMap.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    const linearGeom = arguments[0]
+    this._linearGeom = linearGeom
+  }
+
   static getLength (linearGeom, loc) {
     const locater = new LengthLocationMap(linearGeom)
     return locater.getLength(loc)
@@ -96,17 +102,4 @@ export default class LengthLocationMap {
     }
     return LinearLocation.getEndLocation(this._linearGeom)
   }
-
-  getClass () {
-    return LengthLocationMap
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LengthLocationMap.constructor_ = function () {
-  this._linearGeom = null
-  const linearGeom = arguments[0]
-  this._linearGeom = linearGeom
 }

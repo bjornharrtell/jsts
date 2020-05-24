@@ -8,6 +8,16 @@ export default class Triangle {
     Triangle.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.p0 = null
+    this.p1 = null
+    this.p2 = null
+    const p0 = arguments[0]; const p1 = arguments[1]; const p2 = arguments[2]
+    this.p0 = p0
+    this.p1 = p1
+    this.p2 = p2
+  }
+
   static area (a, b, c) {
     return Math.abs(((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2)
   }
@@ -168,21 +178,4 @@ export default class Triangle {
   inCentre () {
     return Triangle.inCentre(this.p0, this.p1, this.p2)
   }
-
-  getClass () {
-    return Triangle
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Triangle.constructor_ = function () {
-  this.p0 = null
-  this.p1 = null
-  this.p2 = null
-  const p0 = arguments[0]; const p1 = arguments[1]; const p2 = arguments[2]
-  this.p0 = p0
-  this.p1 = p1
-  this.p2 = p2
 }

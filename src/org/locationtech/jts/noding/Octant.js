@@ -1,10 +1,6 @@
 import Coordinate from '../geom/Coordinate'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class Octant {
-  constructor () {
-    Octant.constructor_.apply(this, arguments)
-  }
-
   static octant () {
     if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
       const dx = arguments[0]; const dy = arguments[1]
@@ -30,13 +26,4 @@ export default class Octant {
       return Octant.octant(dx, dy)
     }
   }
-
-  getClass () {
-    return Octant
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Octant.constructor_ = function () {}

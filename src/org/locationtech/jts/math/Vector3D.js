@@ -4,6 +4,28 @@ export default class Vector3D {
     Vector3D.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._x = null
+    this._y = null
+    this._z = null
+    if (arguments.length === 1) {
+      const v = arguments[0]
+      this._x = v.x
+      this._y = v.y
+      this._z = v.getZ()
+    } else if (arguments.length === 2) {
+      const from = arguments[0]; const to = arguments[1]
+      this._x = to.x - from.x
+      this._y = to.y - from.y
+      this._z = to.getZ() - from.getZ()
+    } else if (arguments.length === 3) {
+      const x = arguments[0]; const y = arguments[1]; const z = arguments[2]
+      this._x = x
+      this._y = y
+      this._z = z
+    }
+  }
+
   static length (v) {
     return Math.sqrt(v.x * v.x + v.y * v.y + v.getZ() * v.getZ())
   }
@@ -95,34 +117,5 @@ export default class Vector3D {
     result = 37 * result + Coordinate.hashCode(this._y)
     result = 37 * result + Coordinate.hashCode(this._z)
     return result
-  }
-
-  getClass () {
-    return Vector3D
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Vector3D.constructor_ = function () {
-  this._x = null
-  this._y = null
-  this._z = null
-  if (arguments.length === 1) {
-    const v = arguments[0]
-    this._x = v.x
-    this._y = v.y
-    this._z = v.getZ()
-  } else if (arguments.length === 2) {
-    const from = arguments[0]; const to = arguments[1]
-    this._x = to.x - from.x
-    this._y = to.y - from.y
-    this._z = to.getZ() - from.getZ()
-  } else if (arguments.length === 3) {
-    const x = arguments[0]; const y = arguments[1]; const z = arguments[2]
-    this._x = x
-    this._y = y
-    this._z = z
   }
 }

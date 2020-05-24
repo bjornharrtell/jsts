@@ -4,10 +4,6 @@ import DD from '../../math/DD'
 import System from '../../../../../java/lang/System'
 import Triangle from '../../geom/Triangle'
 export default class TrianglePredicate {
-  constructor () {
-    TrianglePredicate.constructor_.apply(this, arguments)
-  }
-
   static triArea (a, b, c) {
     return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
   }
@@ -117,13 +113,4 @@ export default class TrianglePredicate {
     const t2 = DD.valueOf(b.y).selfSubtract(a.y).selfMultiply(DD.valueOf(c.x).selfSubtract(a.x))
     return t1.selfSubtract(t2)
   }
-
-  getClass () {
-    return TrianglePredicate
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-TrianglePredicate.constructor_ = function () {}

@@ -8,6 +8,10 @@ export default class VertexTaggedGeometryDataMapper {
     VertexTaggedGeometryDataMapper.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._coordDataMap = new TreeMap()
+  }
+
   loadSourceGeometries () {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
@@ -41,15 +45,4 @@ export default class VertexTaggedGeometryDataMapper {
     for (let i = 0; i < pts.length; i++)
       this._coordDataMap.put(pts[i], data)
   }
-
-  getClass () {
-    return VertexTaggedGeometryDataMapper
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-VertexTaggedGeometryDataMapper.constructor_ = function () {
-  this._coordDataMap = new TreeMap()
 }

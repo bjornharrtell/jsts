@@ -10,6 +10,30 @@ export default class FacetSequence {
     FacetSequence.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = null
+    this._pts = null
+    this._start = null
+    this._end = null
+    if (arguments.length === 2) {
+      const pts = arguments[0]; const start = arguments[1]
+      this._pts = pts
+      this._start = start
+      this._end = start + 1
+    } else if (arguments.length === 3) {
+      const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]
+      this._pts = pts
+      this._start = start
+      this._end = end
+    } else if (arguments.length === 4) {
+      const geom = arguments[0]; const pts = arguments[1]; const start = arguments[2]; const end = arguments[3]
+      this._geom = geom
+      this._pts = pts
+      this._start = start
+      this._end = end
+    }
+  }
+
   computeDistanceLineLine (facetSeq, locs) {
     let minDistance = Double.MAX_VALUE
     for (let i = this._start; i < this._end - 1; i++) {
@@ -134,36 +158,5 @@ export default class FacetSequence {
       distance = this.computeDistanceLineLine(facetSeq, null)
     }
     return distance
-  }
-
-  getClass () {
-    return FacetSequence
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-FacetSequence.constructor_ = function () {
-  this._geom = null
-  this._pts = null
-  this._start = null
-  this._end = null
-  if (arguments.length === 2) {
-    const pts = arguments[0]; const start = arguments[1]
-    this._pts = pts
-    this._start = start
-    this._end = start + 1
-  } else if (arguments.length === 3) {
-    const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]
-    this._pts = pts
-    this._start = start
-    this._end = end
-  } else if (arguments.length === 4) {
-    const geom = arguments[0]; const pts = arguments[1]; const start = arguments[2]; const end = arguments[3]
-    this._geom = geom
-    this._pts = pts
-    this._start = start
-    this._end = end
   }
 }

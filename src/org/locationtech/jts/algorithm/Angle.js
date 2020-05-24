@@ -1,9 +1,5 @@
 import Orientation from './Orientation'
 export default class Angle {
-  constructor () {
-    Angle.constructor_.apply(this, arguments)
-  }
-
   static toDegrees (radians) {
     return radians * 180 / Math.PI
   }
@@ -103,16 +99,7 @@ export default class Angle {
     if (angDel > Math.PI) return angDel - Angle.PI_TIMES_2
     return angDel
   }
-
-  getClass () {
-    return Angle
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Angle.constructor_ = function () {}
 Angle.PI_TIMES_2 = 2.0 * Math.PI
 Angle.PI_OVER_2 = Math.PI / 2.0
 Angle.PI_OVER_4 = Math.PI / 4.0

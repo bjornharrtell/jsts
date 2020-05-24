@@ -12,6 +12,22 @@ export default class BufferOp {
     BufferOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._argGeom = null
+    this._distance = null
+    this._bufParams = new BufferParameters()
+    this._resultGeometry = null
+    this._saveException = null
+    if (arguments.length === 1) {
+      const g = arguments[0]
+      this._argGeom = g
+    } else if (arguments.length === 2) {
+      const g = arguments[0]; const bufParams = arguments[1]
+      this._argGeom = g
+      this._bufParams = bufParams
+    }
+  }
+
   static bufferOp () {
     if (arguments.length === 2) {
       const g = arguments[0]; const distance = arguments[1]
@@ -111,29 +127,6 @@ export default class BufferOp {
 
   setEndCapStyle (endCapStyle) {
     this._bufParams.setEndCapStyle(endCapStyle)
-  }
-
-  getClass () {
-    return BufferOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BufferOp.constructor_ = function () {
-  this._argGeom = null
-  this._distance = null
-  this._bufParams = new BufferParameters()
-  this._resultGeometry = null
-  this._saveException = null
-  if (arguments.length === 1) {
-    const g = arguments[0]
-    this._argGeom = g
-  } else if (arguments.length === 2) {
-    const g = arguments[0]; const bufParams = arguments[1]
-    this._argGeom = g
-    this._bufParams = bufParams
   }
 }
 BufferOp.CAP_ROUND = BufferParameters.CAP_ROUND

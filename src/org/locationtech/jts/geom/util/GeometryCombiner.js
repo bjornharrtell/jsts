@@ -4,6 +4,15 @@ export default class GeometryCombiner {
     GeometryCombiner.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFactory = null
+    this._skipEmpty = false
+    this._inputGeoms = null
+    const geoms = arguments[0]
+    this._geomFactory = GeometryCombiner.extractFactory(geoms)
+    this._inputGeoms = geoms
+  }
+
   static combine () {
     if (arguments.length === 1) {
       const geoms = arguments[0]
@@ -65,20 +74,4 @@ export default class GeometryCombiner {
     }
     return this._geomFactory.buildGeometry(elems)
   }
-
-  getClass () {
-    return GeometryCombiner
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryCombiner.constructor_ = function () {
-  this._geomFactory = null
-  this._skipEmpty = false
-  this._inputGeoms = null
-  const geoms = arguments[0]
-  this._geomFactory = GeometryCombiner.extractFactory(geoms)
-  this._inputGeoms = geoms
 }

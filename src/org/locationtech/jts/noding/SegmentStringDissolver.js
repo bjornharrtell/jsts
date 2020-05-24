@@ -9,6 +9,17 @@ export default class SegmentStringDissolver {
     SegmentStringDissolver.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._merger = null
+    this._ocaMap = new TreeMap()
+    if (arguments.length === 0) {
+      SegmentStringDissolver.constructor_.call(this, null)
+    } else if (arguments.length === 1) {
+      const merger = arguments[0]
+      this._merger = merger
+    }
+  }
+
   findMatching (oca, segString) {
     const matchSS = this._ocaMap.get(oca)
     return matchSS
@@ -40,24 +51,6 @@ export default class SegmentStringDissolver {
   add (oca, segString) {
     this._ocaMap.put(oca, segString)
   }
-
-  getClass () {
-    return SegmentStringDissolver
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 function SegmentStringMerger () {}
 SegmentStringDissolver.SegmentStringMerger = SegmentStringMerger
-SegmentStringDissolver.constructor_ = function () {
-  this._merger = null
-  this._ocaMap = new TreeMap()
-  if (arguments.length === 0) {
-    SegmentStringDissolver.constructor_.call(this, null)
-  } else if (arguments.length === 1) {
-    const merger = arguments[0]
-    this._merger = merger
-  }
-}

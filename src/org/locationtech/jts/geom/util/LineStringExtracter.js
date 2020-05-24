@@ -7,6 +7,12 @@ export default class LineStringExtracter {
     LineStringExtracter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._comps = null
+    const comps = arguments[0]
+    this._comps = comps
+  }
+
   static getGeometry (geom) {
     return geom.getFactory().buildGeometry(LineStringExtracter.getLines(geom))
   }
@@ -30,16 +36,7 @@ export default class LineStringExtracter {
     if (geom instanceof LineString) this._comps.add(geom)
   }
 
-  getClass () {
-    return LineStringExtracter
-  }
-
   get interfaces_ () {
     return [GeometryFilter]
   }
-}
-LineStringExtracter.constructor_ = function () {
-  this._comps = null
-  const comps = arguments[0]
-  this._comps = comps
 }

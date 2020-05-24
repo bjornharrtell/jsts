@@ -6,6 +6,12 @@ export default class SweepLineIndex {
     SweepLineIndex.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.events = new ArrayList()
+    this._indexBuilt = null
+    this._nOverlaps = null
+  }
+
   computeOverlaps (action) {
     this._nOverlaps = 0
     this.buildIndex()
@@ -43,17 +49,4 @@ export default class SweepLineIndex {
     this.events.add(insertEvent)
     this.events.add(new SweepLineEvent(sweepInt.getMax(), insertEvent, sweepInt))
   }
-
-  getClass () {
-    return SweepLineIndex
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SweepLineIndex.constructor_ = function () {
-  this.events = new ArrayList()
-  this._indexBuilt = null
-  this._nOverlaps = null
 }

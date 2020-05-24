@@ -7,6 +7,16 @@ export default class AbstractNode {
     AbstractNode.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._childBoundables = new ArrayList()
+    this._bounds = null
+    this._level = null
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const level = arguments[0]
+      this._level = level
+    }
+  }
+
   getLevel () {
     return this._level
   }
@@ -35,20 +45,7 @@ export default class AbstractNode {
     return this._bounds
   }
 
-  getClass () {
-    return AbstractNode
-  }
-
   get interfaces_ () {
     return [Boundable, Serializable]
-  }
-}
-AbstractNode.constructor_ = function () {
-  this._childBoundables = new ArrayList()
-  this._bounds = null
-  this._level = null
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const level = arguments[0]
-    this._level = level
   }
 }

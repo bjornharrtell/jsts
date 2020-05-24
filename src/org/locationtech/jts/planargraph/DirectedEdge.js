@@ -9,6 +9,30 @@ export default class DirectedEdge extends GraphComponent {
     DirectedEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._parentEdge = null
+    this._from = null
+    this._to = null
+    this._p0 = null
+    this._p1 = null
+    this._sym = null
+    this._edgeDirection = null
+    this._quadrant = null
+    this._angle = null
+    if (arguments.length === 0) {} else if (arguments.length === 4) {
+      const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
+      this._from = from
+      this._to = to
+      this._edgeDirection = edgeDirection
+      this._p0 = from.getCoordinate()
+      this._p1 = directionPt
+      const dx = this._p1.x - this._p0.x
+      const dy = this._p1.y - this._p0.y
+      this._quadrant = Quadrant.quadrant(dx, dy)
+      this._angle = Math.atan2(dy, dx)
+    }
+  }
+
   static toEdges (dirEdges) {
     const edges = new ArrayList()
     for (let i = dirEdges.iterator(); i.hasNext();)
@@ -88,34 +112,7 @@ export default class DirectedEdge extends GraphComponent {
     return this._edgeDirection
   }
 
-  getClass () {
-    return DirectedEdge
-  }
-
   get interfaces_ () {
     return [Comparable]
-  }
-}
-DirectedEdge.constructor_ = function () {
-  this._parentEdge = null
-  this._from = null
-  this._to = null
-  this._p0 = null
-  this._p1 = null
-  this._sym = null
-  this._edgeDirection = null
-  this._quadrant = null
-  this._angle = null
-  if (arguments.length === 0) {} else if (arguments.length === 4) {
-    const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
-    this._from = from
-    this._to = to
-    this._edgeDirection = edgeDirection
-    this._p0 = from.getCoordinate()
-    this._p1 = directionPt
-    const dx = this._p1.x - this._p0.x
-    const dy = this._p1.y - this._p0.y
-    this._quadrant = Quadrant.quadrant(dx, dy)
-    this._angle = Math.atan2(dy, dx)
   }
 }

@@ -5,6 +5,13 @@ export default class Depth {
     Depth.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._depth = Array(2).fill().map(() => Array(3))
+    for (let i = 0; i < 2; i++)
+      for (let j = 0; j < 3; j++)
+        this._depth[i][j] = Depth.NULL_VALUE
+  }
+
   static depthAtLocation (location) {
     if (location === Location.EXTERIOR) return 0
     if (location === Location.INTERIOR) return 1
@@ -78,19 +85,5 @@ export default class Depth {
       if (location === Location.INTERIOR) this._depth[geomIndex][posIndex]++
     }
   }
-
-  getClass () {
-    return Depth
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Depth.constructor_ = function () {
-  this._depth = Array(2).fill().map(() => Array(3))
-  for (let i = 0; i < 2; i++)
-    for (let j = 0; j < 3; j++)
-      this._depth[i][j] = Depth.NULL_VALUE
 }
 Depth.NULL_VALUE = -1

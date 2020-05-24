@@ -10,6 +10,19 @@ export default class OverlayResultValidator {
     OverlayResultValidator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = null
+    this._locFinder = null
+    this._location = new Array(3).fill(null)
+    this._invalidLocation = null
+    this._boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE
+    this._testCoords = new ArrayList()
+    const a = arguments[0]; const b = arguments[1]; const result = arguments[2]
+    this._boundaryDistanceTolerance = OverlayResultValidator.computeBoundaryDistanceTolerance(a, b)
+    this._geom = [a, b, result]
+    this._locFinder = [new FuzzyPointLocator(this._geom[0], this._boundaryDistanceTolerance), new FuzzyPointLocator(this._geom[1], this._boundaryDistanceTolerance), new FuzzyPointLocator(this._geom[2], this._boundaryDistanceTolerance)]
+  }
+
   static hasLocation (location, loc) {
     for (let i = 0; i < 3; i++)
       if (location[i] === loc) return true
@@ -74,25 +87,5 @@ export default class OverlayResultValidator {
   getInvalidLocation () {
     return this._invalidLocation
   }
-
-  getClass () {
-    return OverlayResultValidator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OverlayResultValidator.constructor_ = function () {
-  this._geom = null
-  this._locFinder = null
-  this._location = new Array(3).fill(null)
-  this._invalidLocation = null
-  this._boundaryDistanceTolerance = OverlayResultValidator.TOLERANCE
-  this._testCoords = new ArrayList()
-  const a = arguments[0]; const b = arguments[1]; const result = arguments[2]
-  this._boundaryDistanceTolerance = OverlayResultValidator.computeBoundaryDistanceTolerance(a, b)
-  this._geom = [a, b, result]
-  this._locFinder = [new FuzzyPointLocator(this._geom[0], this._boundaryDistanceTolerance), new FuzzyPointLocator(this._geom[1], this._boundaryDistanceTolerance), new FuzzyPointLocator(this._geom[2], this._boundaryDistanceTolerance)]
 }
 OverlayResultValidator.TOLERANCE = 0.000001

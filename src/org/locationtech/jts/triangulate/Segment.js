@@ -5,6 +5,25 @@ export default class Segment {
     Segment.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._ls = null
+    this._data = null
+    if (arguments.length === 2) {
+      const p0 = arguments[0]; const p1 = arguments[1]
+      this._ls = new LineSegment(p0, p1)
+    } else if (arguments.length === 3) {
+      const p0 = arguments[0]; const p1 = arguments[1]; const data = arguments[2]
+      this._ls = new LineSegment(p0, p1)
+      this._data = data
+    } else if (arguments.length === 6) {
+      const x1 = arguments[0]; const y1 = arguments[1]; const z1 = arguments[2]; const x2 = arguments[3]; const y2 = arguments[4]; const z2 = arguments[5]
+      Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
+    } else if (arguments.length === 7) {
+      const x1 = arguments[0]; const y1 = arguments[1]; const z1 = arguments[2]; const x2 = arguments[3]; const y2 = arguments[4]; const z2 = arguments[5]; const data = arguments[6]
+      Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
+    }
+  }
+
   getLineSegment () {
     return this._ls
   }
@@ -65,31 +84,5 @@ export default class Segment {
 
   toString () {
     return this._ls.toString()
-  }
-
-  getClass () {
-    return Segment
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Segment.constructor_ = function () {
-  this._ls = null
-  this._data = null
-  if (arguments.length === 2) {
-    const p0 = arguments[0]; const p1 = arguments[1]
-    this._ls = new LineSegment(p0, p1)
-  } else if (arguments.length === 3) {
-    const p0 = arguments[0]; const p1 = arguments[1]; const data = arguments[2]
-    this._ls = new LineSegment(p0, p1)
-    this._data = data
-  } else if (arguments.length === 6) {
-    const x1 = arguments[0]; const y1 = arguments[1]; const z1 = arguments[2]; const x2 = arguments[3]; const y2 = arguments[4]; const z2 = arguments[5]
-    Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
-  } else if (arguments.length === 7) {
-    const x1 = arguments[0]; const y1 = arguments[1]; const z1 = arguments[2]; const x2 = arguments[3]; const y2 = arguments[4]; const z2 = arguments[5]; const data = arguments[6]
-    Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
   }
 }

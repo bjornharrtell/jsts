@@ -12,6 +12,13 @@ export default class LineMerger {
     LineMerger.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._graph = new LineMergeGraph()
+    this._mergedLineStrings = null
+    this._factory = null
+    this._edgeStrings = null
+  }
+
   buildEdgeStringsForUnprocessedNodes () {
     for (let i = this._graph.getNodes().iterator(); i.hasNext();) {
       const node = i.next()
@@ -108,18 +115,4 @@ export default class LineMerger {
   buildEdgeStringsForIsolatedLoops () {
     this.buildEdgeStringsForUnprocessedNodes()
   }
-
-  getClass () {
-    return LineMerger
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineMerger.constructor_ = function () {
-  this._graph = new LineMergeGraph()
-  this._mergedLineStrings = null
-  this._factory = null
-  this._edgeStrings = null
 }

@@ -4,6 +4,20 @@ export default class MonotoneChain {
     MonotoneChain.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pts = null
+    this._start = null
+    this._end = null
+    this._env = null
+    this._context = null
+    this._id = null
+    const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]; const context = arguments[3]
+    this._pts = pts
+    this._start = start
+    this._end = end
+    this._context = context
+  }
+
   getLineSegment (index, ls) {
     ls.p0 = this._pts[index]
     ls.p1 = this._pts[index + 1]
@@ -94,25 +108,4 @@ export default class MonotoneChain {
   getId () {
     return this._id
   }
-
-  getClass () {
-    return MonotoneChain
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MonotoneChain.constructor_ = function () {
-  this._pts = null
-  this._start = null
-  this._end = null
-  this._env = null
-  this._context = null
-  this._id = null
-  const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]; const context = arguments[3]
-  this._pts = pts
-  this._start = start
-  this._end = end
-  this._context = context
 }

@@ -8,6 +8,20 @@ export default class BufferResultValidator {
     BufferResultValidator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._input = null
+    this._distance = null
+    this._result = null
+    this._isValid = true
+    this._errorMsg = null
+    this._errorLocation = null
+    this._errorIndicator = null
+    const input = arguments[0]; const distance = arguments[1]; const result = arguments[2]
+    this._input = input
+    this._distance = distance
+    this._result = result
+  }
+
   static isValidMsg (g, distance, result) {
     const validator = new BufferResultValidator(g, distance, result)
     if (!validator.isValid()) return validator.getErrorMessage()
@@ -110,27 +124,6 @@ export default class BufferResultValidator {
   getErrorMessage () {
     return this._errorMsg
   }
-
-  getClass () {
-    return BufferResultValidator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BufferResultValidator.constructor_ = function () {
-  this._input = null
-  this._distance = null
-  this._result = null
-  this._isValid = true
-  this._errorMsg = null
-  this._errorLocation = null
-  this._errorIndicator = null
-  const input = arguments[0]; const distance = arguments[1]; const result = arguments[2]
-  this._input = input
-  this._distance = distance
-  this._result = result
 }
 BufferResultValidator.VERBOSE = false
 BufferResultValidator.MAX_ENV_DIFF_FRAC = 0.012

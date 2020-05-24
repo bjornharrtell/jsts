@@ -4,10 +4,6 @@ import CoordinateArraySequence from './CoordinateArraySequence'
 import CoordinateSequence from '../CoordinateSequence'
 import Serializable from '../../../../../java/io/Serializable'
 export default class CoordinateArraySequenceFactory {
-  constructor () {
-    CoordinateArraySequenceFactory.constructor_.apply(this, arguments)
-  }
-
   static instance () {
     return CoordinateArraySequenceFactory.instanceObject
   }
@@ -44,13 +40,8 @@ export default class CoordinateArraySequenceFactory {
     }
   }
 
-  getClass () {
-    return CoordinateArraySequenceFactory
-  }
-
   get interfaces_ () {
     return [CoordinateSequenceFactory, Serializable]
   }
 }
-CoordinateArraySequenceFactory.constructor_ = function () {}
 CoordinateArraySequenceFactory.instanceObject = new CoordinateArraySequenceFactory()

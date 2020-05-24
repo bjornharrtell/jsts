@@ -9,6 +9,12 @@ export default class PlanarGraph {
     PlanarGraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edges = new HashSet()
+    this._dirEdges = new HashSet()
+    this._nodeMap = new NodeMap()
+  }
+
   findNodesOfDegree (degree) {
     const nodesFound = new ArrayList()
     for (let i = this.nodeIterator(); i.hasNext();) {
@@ -97,17 +103,4 @@ export default class PlanarGraph {
   getNodes () {
     return this._nodeMap.values()
   }
-
-  getClass () {
-    return PlanarGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PlanarGraph.constructor_ = function () {
-  this._edges = new HashSet()
-  this._dirEdges = new HashSet()
-  this._nodeMap = new NodeMap()
 }

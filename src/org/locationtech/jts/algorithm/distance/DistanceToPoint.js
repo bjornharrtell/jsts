@@ -6,10 +6,6 @@ import LineSegment from '../../geom/LineSegment'
 import PointPairDistance from './PointPairDistance'
 import GeometryCollection from '../../geom/GeometryCollection'
 export default class DistanceToPoint {
-  constructor () {
-    DistanceToPoint.constructor_.apply(this, arguments)
-  }
-
   static computeDistance () {
     if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof LineString && arguments[1] instanceof Coordinate)) {
       const line = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
@@ -46,13 +42,4 @@ export default class DistanceToPoint {
       ptDist.setMinimum(closestPt, pt)
     }
   }
-
-  getClass () {
-    return DistanceToPoint
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-DistanceToPoint.constructor_ = function () {}

@@ -8,6 +8,23 @@ export default class LineStringSnapper {
     LineStringSnapper.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._snapTolerance = 0.0
+    this._srcPts = null
+    this._seg = new LineSegment()
+    this._allowSnappingToSourceVertices = false
+    this._isClosed = false
+    if (arguments[0] instanceof LineString && typeof arguments[1] === 'number') {
+      const srcLine = arguments[0]; const snapTolerance = arguments[1]
+      LineStringSnapper.constructor_.call(this, srcLine.getCoordinates(), snapTolerance)
+    } else if (arguments[0] instanceof Array && typeof arguments[1] === 'number') {
+      const srcPts = arguments[0]; const snapTolerance = arguments[1]
+      this._srcPts = srcPts
+      this._isClosed = LineStringSnapper.isClosed(srcPts)
+      this._snapTolerance = snapTolerance
+    }
+  }
+
   static isClosed (pts) {
     if (pts.length <= 1) return false
     return pts[0].equals2D(pts[pts.length - 1])
@@ -73,29 +90,5 @@ export default class LineStringSnapper {
 
   setAllowSnappingToSourceVertices (allowSnappingToSourceVertices) {
     this._allowSnappingToSourceVertices = allowSnappingToSourceVertices
-  }
-
-  getClass () {
-    return LineStringSnapper
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineStringSnapper.constructor_ = function () {
-  this._snapTolerance = 0.0
-  this._srcPts = null
-  this._seg = new LineSegment()
-  this._allowSnappingToSourceVertices = false
-  this._isClosed = false
-  if (arguments[0] instanceof LineString && typeof arguments[1] === 'number') {
-    const srcLine = arguments[0]; const snapTolerance = arguments[1]
-    LineStringSnapper.constructor_.call(this, srcLine.getCoordinates(), snapTolerance)
-  } else if (arguments[0] instanceof Array && typeof arguments[1] === 'number') {
-    const srcPts = arguments[0]; const snapTolerance = arguments[1]
-    this._srcPts = srcPts
-    this._isClosed = LineStringSnapper.isClosed(srcPts)
-    this._snapTolerance = snapTolerance
   }
 }

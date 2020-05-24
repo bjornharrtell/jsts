@@ -8,6 +8,32 @@ export default class IntersectionMatrix {
     IntersectionMatrix.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._matrix = null
+    if (arguments.length === 0) {
+      this._matrix = Array(3).fill().map(() => Array(3))
+      this.setAll(Dimension.FALSE)
+    } else if (arguments.length === 1) {
+      if (typeof arguments[0] === 'string') {
+        const elements = arguments[0]
+        IntersectionMatrix.constructor_.call(this)
+        this.set(elements)
+      } else if (arguments[0] instanceof IntersectionMatrix) {
+        const other = arguments[0]
+        IntersectionMatrix.constructor_.call(this)
+        this._matrix[Location.INTERIOR][Location.INTERIOR] = other._matrix[Location.INTERIOR][Location.INTERIOR]
+        this._matrix[Location.INTERIOR][Location.BOUNDARY] = other._matrix[Location.INTERIOR][Location.BOUNDARY]
+        this._matrix[Location.INTERIOR][Location.EXTERIOR] = other._matrix[Location.INTERIOR][Location.EXTERIOR]
+        this._matrix[Location.BOUNDARY][Location.INTERIOR] = other._matrix[Location.BOUNDARY][Location.INTERIOR]
+        this._matrix[Location.BOUNDARY][Location.BOUNDARY] = other._matrix[Location.BOUNDARY][Location.BOUNDARY]
+        this._matrix[Location.BOUNDARY][Location.EXTERIOR] = other._matrix[Location.BOUNDARY][Location.EXTERIOR]
+        this._matrix[Location.EXTERIOR][Location.INTERIOR] = other._matrix[Location.EXTERIOR][Location.INTERIOR]
+        this._matrix[Location.EXTERIOR][Location.BOUNDARY] = other._matrix[Location.EXTERIOR][Location.BOUNDARY]
+        this._matrix[Location.EXTERIOR][Location.EXTERIOR] = other._matrix[Location.EXTERIOR][Location.EXTERIOR]
+      }
+    }
+  }
+
   static matches () {
     if (Number.isInteger(arguments[0]) && typeof arguments[1] === 'string') {
       const actualDimensionValue = arguments[0]; const requiredDimensionSymbol = arguments[1]
@@ -194,36 +220,7 @@ export default class IntersectionMatrix {
     return false
   }
 
-  getClass () {
-    return IntersectionMatrix
-  }
-
   get interfaces_ () {
     return [Cloneable]
-  }
-}
-IntersectionMatrix.constructor_ = function () {
-  this._matrix = null
-  if (arguments.length === 0) {
-    this._matrix = Array(3).fill().map(() => Array(3))
-    this.setAll(Dimension.FALSE)
-  } else if (arguments.length === 1) {
-    if (typeof arguments[0] === 'string') {
-      const elements = arguments[0]
-      IntersectionMatrix.constructor_.call(this)
-      this.set(elements)
-    } else if (arguments[0] instanceof IntersectionMatrix) {
-      const other = arguments[0]
-      IntersectionMatrix.constructor_.call(this)
-      this._matrix[Location.INTERIOR][Location.INTERIOR] = other._matrix[Location.INTERIOR][Location.INTERIOR]
-      this._matrix[Location.INTERIOR][Location.BOUNDARY] = other._matrix[Location.INTERIOR][Location.BOUNDARY]
-      this._matrix[Location.INTERIOR][Location.EXTERIOR] = other._matrix[Location.INTERIOR][Location.EXTERIOR]
-      this._matrix[Location.BOUNDARY][Location.INTERIOR] = other._matrix[Location.BOUNDARY][Location.INTERIOR]
-      this._matrix[Location.BOUNDARY][Location.BOUNDARY] = other._matrix[Location.BOUNDARY][Location.BOUNDARY]
-      this._matrix[Location.BOUNDARY][Location.EXTERIOR] = other._matrix[Location.BOUNDARY][Location.EXTERIOR]
-      this._matrix[Location.EXTERIOR][Location.INTERIOR] = other._matrix[Location.EXTERIOR][Location.INTERIOR]
-      this._matrix[Location.EXTERIOR][Location.BOUNDARY] = other._matrix[Location.EXTERIOR][Location.BOUNDARY]
-      this._matrix[Location.EXTERIOR][Location.EXTERIOR] = other._matrix[Location.EXTERIOR][Location.EXTERIOR]
-    }
   }
 }

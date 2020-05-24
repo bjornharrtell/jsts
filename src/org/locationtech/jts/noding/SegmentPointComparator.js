@@ -1,9 +1,5 @@
 import Assert from '../util/Assert'
 export default class SegmentPointComparator {
-  constructor () {
-    SegmentPointComparator.constructor_.apply(this, arguments)
-  }
-
   static relativeSign (x0, x1) {
     if (x0 < x1) return -1
     if (x0 > x1) return 1
@@ -43,13 +39,4 @@ export default class SegmentPointComparator {
     if (compareSign1 > 0) return 1
     return 0
   }
-
-  getClass () {
-    return SegmentPointComparator
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-SegmentPointComparator.constructor_ = function () {}

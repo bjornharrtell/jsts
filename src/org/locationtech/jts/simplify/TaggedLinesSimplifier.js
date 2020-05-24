@@ -5,6 +5,12 @@ export default class TaggedLinesSimplifier {
     TaggedLinesSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputIndex = new LineSegmentIndex()
+    this._outputIndex = new LineSegmentIndex()
+    this._distanceTolerance = 0.0
+  }
+
   setDistanceTolerance (distanceTolerance) {
     this._distanceTolerance = distanceTolerance
   }
@@ -19,17 +25,4 @@ export default class TaggedLinesSimplifier {
       tlss.simplify(i.next())
     }
   }
-
-  getClass () {
-    return TaggedLinesSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-TaggedLinesSimplifier.constructor_ = function () {
-  this._inputIndex = new LineSegmentIndex()
-  this._outputIndex = new LineSegmentIndex()
-  this._distanceTolerance = 0.0
 }

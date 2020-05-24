@@ -5,6 +5,14 @@ export default class InteriorIntersectionFinderAdder {
     InteriorIntersectionFinderAdder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = null
+    this._interiorIntersections = null
+    const li = arguments[0]
+    this._li = li
+    this._interiorIntersections = new ArrayList()
+  }
+
   processIntersections (e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     const p00 = e0.getCoordinates()[segIndex0]
@@ -30,18 +38,7 @@ export default class InteriorIntersectionFinderAdder {
     return this._interiorIntersections
   }
 
-  getClass () {
-    return InteriorIntersectionFinderAdder
-  }
-
   get interfaces_ () {
     return [SegmentIntersector]
   }
-}
-InteriorIntersectionFinderAdder.constructor_ = function () {
-  this._li = null
-  this._interiorIntersections = null
-  const li = arguments[0]
-  this._li = li
-  this._interiorIntersections = new ArrayList()
 }

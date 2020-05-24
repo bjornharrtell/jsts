@@ -5,20 +5,13 @@ export default class PreparedPoint extends BasicPreparedGeometry {
     PreparedPoint.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const point = arguments[0]
+    BasicPreparedGeometry.constructor_.call(this, point)
+  }
+
   intersects (g) {
     if (!this.envelopesIntersect(g)) return false
     return this.isAnyTargetComponentInTest(g)
   }
-
-  getClass () {
-    return PreparedPoint
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPoint.constructor_ = function () {
-  const point = arguments[0]
-  BasicPreparedGeometry.constructor_.call(this, point)
 }

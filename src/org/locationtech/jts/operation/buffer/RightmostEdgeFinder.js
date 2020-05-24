@@ -6,6 +6,13 @@ export default class RightmostEdgeFinder {
     RightmostEdgeFinder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._minIndex = -1
+    this._minCoord = null
+    this._minDe = null
+    this._orientedDe = null
+  }
+
   getCoordinate () {
     return this._minCoord
   }
@@ -87,18 +94,4 @@ export default class RightmostEdgeFinder {
     if (rightmostSide === Position.LEFT)
       this._orientedDe = this._minDe.getSym()
   }
-
-  getClass () {
-    return RightmostEdgeFinder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RightmostEdgeFinder.constructor_ = function () {
-  this._minIndex = -1
-  this._minCoord = null
-  this._minDe = null
-  this._orientedDe = null
 }

@@ -7,6 +7,11 @@ export default class DirectedEdgeStar {
     DirectedEdgeStar.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._outEdges = new ArrayList()
+    this._sorted = false
+  }
+
   getNextEdge (dirEdge) {
     const i = this.getIndex(dirEdge)
     return this._outEdges.get(this.getIndex(i + 1))
@@ -78,16 +83,4 @@ export default class DirectedEdgeStar {
   getDegree () {
     return this._outEdges.size()
   }
-
-  getClass () {
-    return DirectedEdgeStar
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-DirectedEdgeStar.constructor_ = function () {
-  this._outEdges = new ArrayList()
-  this._sorted = false
 }

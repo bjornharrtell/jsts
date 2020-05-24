@@ -7,6 +7,12 @@ export default class LengthIndexOfPoint {
     LengthIndexOfPoint.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    const linearGeom = arguments[0]
+    this._linearGeom = linearGeom
+  }
+
   static indexOf (linearGeom, inputPt) {
     const locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOf(inputPt)
@@ -59,17 +65,4 @@ export default class LengthIndexOfPoint {
     if (projFactor <= 1.0) return segmentStartMeasure + projFactor * seg.getLength()
     return segmentStartMeasure + seg.getLength()
   }
-
-  getClass () {
-    return LengthIndexOfPoint
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LengthIndexOfPoint.constructor_ = function () {
-  this._linearGeom = null
-  const linearGeom = arguments[0]
-  this._linearGeom = linearGeom
 }

@@ -1,10 +1,6 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import Character from '../../../../java/lang/Character'
 export default class Dimension {
-  constructor () {
-    Dimension.constructor_.apply(this, arguments)
-  }
-
   static toDimensionSymbol (dimensionValue) {
     switch (dimensionValue) {
     case Dimension.FALSE:
@@ -40,16 +36,7 @@ export default class Dimension {
     }
     throw new IllegalArgumentException('Unknown dimension symbol: ' + dimensionSymbol)
   }
-
-  getClass () {
-    return Dimension
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Dimension.constructor_ = function () {}
 Dimension.P = 0
 Dimension.L = 1
 Dimension.A = 2

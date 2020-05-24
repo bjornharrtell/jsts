@@ -3,10 +3,6 @@ import hasInterface from '../../../../../hasInterface'
 import Collection from '../../../../../java/util/Collection'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class GeometryMapper {
-  constructor () {
-    GeometryMapper.constructor_.apply(this, arguments)
-  }
-
   static map () {
     if (arguments[0] instanceof Geometry && hasInterface(arguments[1], MapOp)) {
       const geom = arguments[0]; const op = arguments[1]
@@ -27,15 +23,6 @@ export default class GeometryMapper {
       return mapped
     }
   }
-
-  getClass () {
-    return GeometryMapper
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 function MapOp () {}
 GeometryMapper.MapOp = MapOp
-GeometryMapper.constructor_ = function () {}

@@ -7,6 +7,18 @@ export default class BoundablePair {
     BoundablePair.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._boundable1 = null
+    this._boundable2 = null
+    this._distance = null
+    this._itemDistance = null
+    const boundable1 = arguments[0]; const boundable2 = arguments[1]; const itemDistance = arguments[2]
+    this._boundable1 = boundable1
+    this._boundable2 = boundable2
+    this._itemDistance = itemDistance
+    this._distance = this.distance()
+  }
+
   static area (b) {
     return b.getBounds().getArea()
   }
@@ -82,22 +94,7 @@ export default class BoundablePair {
     return this._boundable1.getBounds().distance(this._boundable2.getBounds())
   }
 
-  getClass () {
-    return BoundablePair
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
-}
-BoundablePair.constructor_ = function () {
-  this._boundable1 = null
-  this._boundable2 = null
-  this._distance = null
-  this._itemDistance = null
-  const boundable1 = arguments[0]; const boundable2 = arguments[1]; const itemDistance = arguments[2]
-  this._boundable1 = boundable1
-  this._boundable2 = boundable2
-  this._itemDistance = itemDistance
-  this._distance = this.distance()
 }

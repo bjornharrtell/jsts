@@ -7,6 +7,34 @@ export default class HotPixel {
     HotPixel.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = null
+    this._pt = null
+    this._originalPt = null
+    this._ptScaled = null
+    this._p0Scaled = null
+    this._p1Scaled = null
+    this._scaleFactor = null
+    this._minx = null
+    this._maxx = null
+    this._miny = null
+    this._maxy = null
+    this._corner = new Array(4).fill(null)
+    this._safeEnv = null
+    const pt = arguments[0]; const scaleFactor = arguments[1]; const li = arguments[2]
+    this._originalPt = pt
+    this._pt = pt
+    this._scaleFactor = scaleFactor
+    this._li = li
+    if (scaleFactor <= 0) throw new IllegalArgumentException('Scale factor must be non-zero')
+    if (scaleFactor !== 1.0) {
+      this._pt = new Coordinate(this.scale(pt.x), this.scale(pt.y))
+      this._p0Scaled = new Coordinate()
+      this._p1Scaled = new Coordinate()
+    }
+    this.initCorners(this._pt)
+  }
+
   intersectsScaled (p0, p1) {
     const segMinx = Math.min(p0.x, p1.x)
     const segMaxx = Math.max(p0.x, p1.x)
@@ -99,40 +127,5 @@ export default class HotPixel {
     }
     return false
   }
-
-  getClass () {
-    return HotPixel
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-HotPixel.constructor_ = function () {
-  this._li = null
-  this._pt = null
-  this._originalPt = null
-  this._ptScaled = null
-  this._p0Scaled = null
-  this._p1Scaled = null
-  this._scaleFactor = null
-  this._minx = null
-  this._maxx = null
-  this._miny = null
-  this._maxy = null
-  this._corner = new Array(4).fill(null)
-  this._safeEnv = null
-  const pt = arguments[0]; const scaleFactor = arguments[1]; const li = arguments[2]
-  this._originalPt = pt
-  this._pt = pt
-  this._scaleFactor = scaleFactor
-  this._li = li
-  if (scaleFactor <= 0) throw new IllegalArgumentException('Scale factor must be non-zero')
-  if (scaleFactor !== 1.0) {
-    this._pt = new Coordinate(this.scale(pt.x), this.scale(pt.y))
-    this._p0Scaled = new Coordinate()
-    this._p1Scaled = new Coordinate()
-  }
-  this.initCorners(this._pt)
 }
 HotPixel.SAFE_ENV_EXPANSION_FACTOR = 0.75

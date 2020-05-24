@@ -4,6 +4,11 @@ export default class NodeBase {
     NodeBase.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._items = new ArrayList()
+    this._subnode = new Array(2).fill(null)
+  }
+
   static getSubnodeIndex (interval, centre) {
     let subnodeIndex = -1
     if (interval.min >= centre) subnodeIndex = 1
@@ -95,16 +100,4 @@ export default class NodeBase {
   add (item) {
     this._items.add(item)
   }
-
-  getClass () {
-    return NodeBase
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-NodeBase.constructor_ = function () {
-  this._items = new ArrayList()
-  this._subnode = new Array(2).fill(null)
 }

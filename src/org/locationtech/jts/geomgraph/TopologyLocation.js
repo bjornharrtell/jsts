@@ -6,6 +6,32 @@ export default class TopologyLocation {
     TopologyLocation.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.location = null
+    if (arguments.length === 1) {
+      if (arguments[0] instanceof Array) {
+        const location = arguments[0]
+        this.init(location.length)
+      } else if (Number.isInteger(arguments[0])) {
+        const on = arguments[0]
+        this.init(1)
+        this.location[Position.ON] = on
+      } else if (arguments[0] instanceof TopologyLocation) {
+        const gl = arguments[0]
+        this.init(gl.location.length)
+        if (gl !== null)
+          for (let i = 0; i < this.location.length; i++)
+            this.location[i] = gl.location[i]
+      }
+    } else if (arguments.length === 3) {
+      const on = arguments[0]; const left = arguments[1]; const right = arguments[2]
+      this.init(3)
+      this.location[Position.ON] = on
+      this.location[Position.LEFT] = left
+      this.location[Position.RIGHT] = right
+    }
+  }
+
   setAllLocations (locValue) {
     for (let i = 0; i < this.location.length; i++)
       this.location[i] = locValue
@@ -104,38 +130,5 @@ export default class TopologyLocation {
       if (this.location[i] !== loc) return false
 
     return true
-  }
-
-  getClass () {
-    return TopologyLocation
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-TopologyLocation.constructor_ = function () {
-  this.location = null
-  if (arguments.length === 1) {
-    if (arguments[0] instanceof Array) {
-      const location = arguments[0]
-      this.init(location.length)
-    } else if (Number.isInteger(arguments[0])) {
-      const on = arguments[0]
-      this.init(1)
-      this.location[Position.ON] = on
-    } else if (arguments[0] instanceof TopologyLocation) {
-      const gl = arguments[0]
-      this.init(gl.location.length)
-      if (gl !== null)
-        for (let i = 0; i < this.location.length; i++)
-          this.location[i] = gl.location[i]
-    }
-  } else if (arguments.length === 3) {
-    const on = arguments[0]; const left = arguments[1]; const right = arguments[2]
-    this.init(3)
-    this.location[Position.ON] = on
-    this.location[Position.LEFT] = left
-    this.location[Position.RIGHT] = right
   }
 }

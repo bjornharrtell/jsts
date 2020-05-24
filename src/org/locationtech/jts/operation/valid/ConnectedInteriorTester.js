@@ -13,6 +13,14 @@ export default class ConnectedInteriorTester {
     ConnectedInteriorTester.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geometryFactory = new GeometryFactory()
+    this._geomGraph = null
+    this._disconnectedRingcoord = null
+    const geomGraph = arguments[0]
+    this._geomGraph = geomGraph
+  }
+
   static findDifferentPoint (coord, pt) {
     for (let i = 0; i < coord.length; i++)
       if (!coord[i].equals(pt)) return coord[i]
@@ -116,19 +124,4 @@ export default class ConnectedInteriorTester {
     this.visitShellInteriors(this._geomGraph.getGeometry(), graph)
     return !this.hasUnvisitedShellEdge(edgeRings)
   }
-
-  getClass () {
-    return ConnectedInteriorTester
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-ConnectedInteriorTester.constructor_ = function () {
-  this._geometryFactory = new GeometryFactory()
-  this._geomGraph = null
-  this._disconnectedRingcoord = null
-  const geomGraph = arguments[0]
-  this._geomGraph = geomGraph
 }

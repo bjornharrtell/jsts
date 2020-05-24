@@ -1,9 +1,5 @@
 import AssertionFailedException from './AssertionFailedException'
 export default class Assert {
-  constructor () {
-    Assert.constructor_.apply(this, arguments)
-  }
-
   static shouldNeverReachHere () {
     if (arguments.length === 0) {
       Assert.shouldNeverReachHere(null)
@@ -38,13 +34,4 @@ export default class Assert {
         throw new AssertionFailedException('Expected ' + expectedValue + ' but encountered ' + actualValue + (message !== null ? ': ' + message : ''))
     }
   }
-
-  getClass () {
-    return Assert
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Assert.constructor_ = function () {}

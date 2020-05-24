@@ -9,6 +9,28 @@ export default class PrecisionModel {
     PrecisionModel.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._modelType = null
+    this._scale = null
+    if (arguments.length === 0)
+      this._modelType = PrecisionModel.FLOATING
+    else if (arguments.length === 1)
+      if (arguments[0] instanceof Type) {
+        const modelType = arguments[0]
+        this._modelType = modelType
+        if (modelType === PrecisionModel.FIXED)
+          this.setScale(1.0)
+      } else if (typeof arguments[0] === 'number') {
+        const scale = arguments[0]
+        this._modelType = PrecisionModel.FIXED
+        this.setScale(scale)
+      } else if (arguments[0] instanceof PrecisionModel) {
+        const pm = arguments[0]
+        this._modelType = pm._modelType
+        this._scale = pm._scale
+      }
+  }
+
   static mostPrecise (pm1, pm2) {
     if (pm1.compareTo(pm2) >= 0) return pm1
     return pm2
@@ -89,10 +111,6 @@ export default class PrecisionModel {
     this._scale = Math.abs(scale)
   }
 
-  getClass () {
-    return PrecisionModel
-  }
-
   get interfaces_ () {
     return [Serializable, Comparable]
   }
@@ -100,6 +118,13 @@ export default class PrecisionModel {
 class Type {
   constructor () {
     Type.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._name = null
+    const name = arguments[0]
+    this._name = name
+    Type.nameToTypeMap.put(name, this)
   }
 
   readResolve () {
@@ -110,43 +135,12 @@ class Type {
     return this._name
   }
 
-  getClass () {
-    return Type
-  }
-
   get interfaces_ () {
     return [Serializable]
   }
 }
-Type.constructor_ = function () {
-  this._name = null
-  const name = arguments[0]
-  this._name = name
-  Type.nameToTypeMap.put(name, this)
-}
 Type.nameToTypeMap = new HashMap()
 PrecisionModel.Type = Type
-PrecisionModel.constructor_ = function () {
-  this._modelType = null
-  this._scale = null
-  if (arguments.length === 0)
-    this._modelType = PrecisionModel.FLOATING
-  else if (arguments.length === 1)
-    if (arguments[0] instanceof Type) {
-      const modelType = arguments[0]
-      this._modelType = modelType
-      if (modelType === PrecisionModel.FIXED)
-        this.setScale(1.0)
-    } else if (typeof arguments[0] === 'number') {
-      const scale = arguments[0]
-      this._modelType = PrecisionModel.FIXED
-      this.setScale(scale)
-    } else if (arguments[0] instanceof PrecisionModel) {
-      const pm = arguments[0]
-      this._modelType = pm._modelType
-      this._scale = pm._scale
-    }
-}
 PrecisionModel.FIXED = new Type('FIXED')
 PrecisionModel.FLOATING = new Type('FLOATING')
 PrecisionModel.FLOATING_SINGLE = new Type('FLOATING SINGLE')

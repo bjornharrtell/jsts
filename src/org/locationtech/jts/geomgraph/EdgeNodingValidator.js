@@ -6,6 +6,12 @@ export default class EdgeNodingValidator {
     EdgeNodingValidator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nv = null
+    const edges = arguments[0]
+    this._nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges))
+  }
+
   static toSegmentStrings (edges) {
     const segStrings = new ArrayList()
     for (let i = edges.iterator(); i.hasNext();) {
@@ -23,17 +29,4 @@ export default class EdgeNodingValidator {
   checkValid () {
     this._nv.checkValid()
   }
-
-  getClass () {
-    return EdgeNodingValidator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeNodingValidator.constructor_ = function () {
-  this._nv = null
-  const edges = arguments[0]
-  this._nv = new FastNodingValidator(EdgeNodingValidator.toSegmentStrings(edges))
 }

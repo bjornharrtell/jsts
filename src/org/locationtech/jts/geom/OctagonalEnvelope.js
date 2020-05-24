@@ -13,6 +13,36 @@ export default class OctagonalEnvelope {
     OctagonalEnvelope.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._minX = Double.NaN
+    this._maxX = null
+    this._minY = null
+    this._maxY = null
+    this._minA = null
+    this._maxA = null
+    this._minB = null
+    this._maxB = null
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      if (arguments[0] instanceof Coordinate) {
+        const p = arguments[0]
+        this.expandToInclude(p)
+      } else if (arguments[0] instanceof Envelope) {
+        const env = arguments[0]
+        this.expandToInclude(env)
+      } else if (arguments[0] instanceof OctagonalEnvelope) {
+        const oct = arguments[0]
+        this.expandToInclude(oct)
+      } else if (arguments[0] instanceof Geometry) {
+        const geom = arguments[0]
+        this.expandToInclude(geom)
+      }
+    } else if (arguments.length === 2) {
+      const p0 = arguments[0]; const p1 = arguments[1]
+      this.expandToInclude(p0)
+      this.expandToInclude(p1)
+    }
+  }
+
   static octagonalEnvelope (geom) {
     return new OctagonalEnvelope(geom).toGeometry(geom.getFactory())
   }
@@ -238,18 +268,16 @@ export default class OctagonalEnvelope {
   getMaxY () {
     return this._maxY
   }
-
-  getClass () {
-    return OctagonalEnvelope
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class BoundingOctagonComponentFilter {
   constructor () {
     BoundingOctagonComponentFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.oe = null
+    const oe = arguments[0]
+    this.oe = oe
   }
 
   filter (geom) {
@@ -259,47 +287,9 @@ class BoundingOctagonComponentFilter {
       this.oe.expandToInclude(geom.getCoordinateSequence())
   }
 
-  getClass () {
-    return BoundingOctagonComponentFilter
-  }
-
   get interfaces_ () {
     return [GeometryComponentFilter]
   }
 }
-BoundingOctagonComponentFilter.constructor_ = function () {
-  this.oe = null
-  const oe = arguments[0]
-  this.oe = oe
-}
 OctagonalEnvelope.BoundingOctagonComponentFilter = BoundingOctagonComponentFilter
-OctagonalEnvelope.constructor_ = function () {
-  this._minX = Double.NaN
-  this._maxX = null
-  this._minY = null
-  this._maxY = null
-  this._minA = null
-  this._maxA = null
-  this._minB = null
-  this._maxB = null
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    if (arguments[0] instanceof Coordinate) {
-      const p = arguments[0]
-      this.expandToInclude(p)
-    } else if (arguments[0] instanceof Envelope) {
-      const env = arguments[0]
-      this.expandToInclude(env)
-    } else if (arguments[0] instanceof OctagonalEnvelope) {
-      const oct = arguments[0]
-      this.expandToInclude(oct)
-    } else if (arguments[0] instanceof Geometry) {
-      const geom = arguments[0]
-      this.expandToInclude(geom)
-    }
-  } else if (arguments.length === 2) {
-    const p0 = arguments[0]; const p1 = arguments[1]
-    this.expandToInclude(p0)
-    this.expandToInclude(p1)
-  }
-}
 OctagonalEnvelope.SQRT2 = Math.sqrt(2.0)

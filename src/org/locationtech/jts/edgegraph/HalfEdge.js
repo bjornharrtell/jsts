@@ -9,6 +9,14 @@ export default class HalfEdge {
     HalfEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._orig = null
+    this._sym = null
+    this._next = null
+    const orig = arguments[0]
+    this._orig = orig
+  }
+
   static create (p0, p1) {
     const e0 = new HalfEdge(p0)
     const e1 = new HalfEdge(p1)
@@ -202,19 +210,4 @@ export default class HalfEdge {
   setNext (e) {
     this._next = e
   }
-
-  getClass () {
-    return HalfEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-HalfEdge.constructor_ = function () {
-  this._orig = null
-  this._sym = null
-  this._next = null
-  const orig = arguments[0]
-  this._orig = orig
 }

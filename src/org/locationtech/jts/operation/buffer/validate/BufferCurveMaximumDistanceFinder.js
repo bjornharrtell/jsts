@@ -8,6 +8,13 @@ export default class BufferCurveMaximumDistanceFinder {
     BufferCurveMaximumDistanceFinder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._maxPtDist = new PointPairDistance()
+    const inputGeom = arguments[0]
+    this._inputGeom = inputGeom
+  }
+
   computeMaxMidpointDistance (curve) {
     const distFilter = new MaxMidpointDistanceFilter(this._inputGeom)
     curve.apply(distFilter)
@@ -29,18 +36,18 @@ export default class BufferCurveMaximumDistanceFinder {
   getDistancePoints () {
     return this._maxPtDist
   }
-
-  getClass () {
-    return BufferCurveMaximumDistanceFinder
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class MaxPointDistanceFilter {
   constructor () {
     MaxPointDistanceFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._maxPtDist = new PointPairDistance()
+    this._minPtDist = new PointPairDistance()
+    this._geom = null
+    const geom = arguments[0]
+    this._geom = geom
   }
 
   filter (pt) {
@@ -53,24 +60,21 @@ class MaxPointDistanceFilter {
     return this._maxPtDist
   }
 
-  getClass () {
-    return MaxPointDistanceFilter
-  }
-
   get interfaces_ () {
     return [CoordinateFilter]
   }
 }
-MaxPointDistanceFilter.constructor_ = function () {
-  this._maxPtDist = new PointPairDistance()
-  this._minPtDist = new PointPairDistance()
-  this._geom = null
-  const geom = arguments[0]
-  this._geom = geom
-}
 class MaxMidpointDistanceFilter {
   constructor () {
     MaxMidpointDistanceFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._maxPtDist = new PointPairDistance()
+    this._minPtDist = new PointPairDistance()
+    this._geom = null
+    const geom = arguments[0]
+    this._geom = geom
   }
 
   filter (seq, index) {
@@ -95,26 +99,9 @@ class MaxMidpointDistanceFilter {
     return this._maxPtDist
   }
 
-  getClass () {
-    return MaxMidpointDistanceFilter
-  }
-
   get interfaces_ () {
     return [CoordinateSequenceFilter]
   }
 }
-MaxMidpointDistanceFilter.constructor_ = function () {
-  this._maxPtDist = new PointPairDistance()
-  this._minPtDist = new PointPairDistance()
-  this._geom = null
-  const geom = arguments[0]
-  this._geom = geom
-}
 BufferCurveMaximumDistanceFinder.MaxPointDistanceFilter = MaxPointDistanceFilter
 BufferCurveMaximumDistanceFinder.MaxMidpointDistanceFilter = MaxMidpointDistanceFilter
-BufferCurveMaximumDistanceFinder.constructor_ = function () {
-  this._inputGeom = null
-  this._maxPtDist = new PointPairDistance()
-  const inputGeom = arguments[0]
-  this._inputGeom = inputGeom
-}

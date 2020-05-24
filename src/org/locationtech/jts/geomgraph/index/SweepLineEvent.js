@@ -4,6 +4,27 @@ export default class SweepLineEvent {
     SweepLineEvent.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._label = null
+    this._xValue = null
+    this._eventType = null
+    this._insertEvent = null
+    this._deleteEventIndex = null
+    this._obj = null
+    if (arguments.length === 2) {
+      const x = arguments[0]; const insertEvent = arguments[1]
+      this._eventType = SweepLineEvent.DELETE
+      this._xValue = x
+      this._insertEvent = insertEvent
+    } else if (arguments.length === 3) {
+      const label = arguments[0]; const x = arguments[1]; const obj = arguments[2]
+      this._eventType = SweepLineEvent.INSERT
+      this._label = label
+      this._xValue = x
+      this._obj = obj
+    }
+  }
+
   isDelete () {
     return this._eventType === SweepLineEvent.DELETE
   }
@@ -42,32 +63,8 @@ export default class SweepLineEvent {
     return this._deleteEventIndex
   }
 
-  getClass () {
-    return SweepLineEvent
-  }
-
   get interfaces_ () {
     return [Comparable]
-  }
-}
-SweepLineEvent.constructor_ = function () {
-  this._label = null
-  this._xValue = null
-  this._eventType = null
-  this._insertEvent = null
-  this._deleteEventIndex = null
-  this._obj = null
-  if (arguments.length === 2) {
-    const x = arguments[0]; const insertEvent = arguments[1]
-    this._eventType = SweepLineEvent.DELETE
-    this._xValue = x
-    this._insertEvent = insertEvent
-  } else if (arguments.length === 3) {
-    const label = arguments[0]; const x = arguments[1]; const obj = arguments[2]
-    this._eventType = SweepLineEvent.INSERT
-    this._label = label
-    this._xValue = x
-    this._obj = obj
   }
 }
 SweepLineEvent.INSERT = 1

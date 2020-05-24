@@ -9,6 +9,12 @@ export default class SimplePointInAreaLocator {
     SimplePointInAreaLocator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geom = null
+    const geom = arguments[0]
+    this._geom = geom
+  }
+
   static locatePointInPolygon (p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
     const shell = poly.getExteriorRing()
@@ -63,16 +69,7 @@ export default class SimplePointInAreaLocator {
     return SimplePointInAreaLocator.locate(p, this._geom)
   }
 
-  getClass () {
-    return SimplePointInAreaLocator
-  }
-
   get interfaces_ () {
     return [PointOnGeometryLocator]
   }
-}
-SimplePointInAreaLocator.constructor_ = function () {
-  this._geom = null
-  const geom = arguments[0]
-  this._geom = geom
 }

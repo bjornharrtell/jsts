@@ -19,6 +19,15 @@ export default class STRtree extends AbstractSTRtree {
     STRtree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    if (arguments.length === 0) {
+      STRtree.constructor_.call(this, STRtree.DEFAULT_NODE_CAPACITY)
+    } else if (arguments.length === 1) {
+      const nodeCapacity = arguments[0]
+      AbstractSTRtree.constructor_.call(this, nodeCapacity)
+    }
+  }
+
   static centreX (e) {
     return STRtree.avg(e.getMinX(), e.getMaxX())
   }
@@ -241,10 +250,6 @@ export default class STRtree extends AbstractSTRtree {
     }
   }
 
-  getClass () {
-    return STRtree
-  }
-
   get interfaces_ () {
     return [SpatialIndex, Serializable]
   }
@@ -253,6 +258,11 @@ class STRtreeNode extends AbstractNode {
   constructor () {
     super()
     STRtreeNode.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    const level = arguments[0]
+    AbstractNode.constructor_.call(this, level)
   }
 
   computeBounds () {
@@ -266,28 +276,8 @@ class STRtreeNode extends AbstractNode {
     }
     return bounds
   }
-
-  getClass () {
-    return STRtreeNode
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-STRtreeNode.constructor_ = function () {
-  const level = arguments[0]
-  AbstractNode.constructor_.call(this, level)
 }
 STRtree.STRtreeNode = STRtreeNode
-STRtree.constructor_ = function () {
-  if (arguments.length === 0) {
-    STRtree.constructor_.call(this, STRtree.DEFAULT_NODE_CAPACITY)
-  } else if (arguments.length === 1) {
-    const nodeCapacity = arguments[0]
-    AbstractSTRtree.constructor_.call(this, nodeCapacity)
-  }
-}
 STRtree.xComparator = new (class {
   get interfaces_ () {
     return [Comparator]

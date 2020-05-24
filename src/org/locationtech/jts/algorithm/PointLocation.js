@@ -5,10 +5,6 @@ import CoordinateSequence from '../geom/CoordinateSequence'
 import RobustLineIntersector from './RobustLineIntersector'
 import RayCrossingCounter from './RayCrossingCounter'
 export default class PointLocation {
-  constructor () {
-    PointLocation.constructor_.apply(this, arguments)
-  }
-
   static isOnLine () {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
       const p = arguments[0]; const line = arguments[1]
@@ -45,13 +41,4 @@ export default class PointLocation {
   static isInRing (p, ring) {
     return PointLocation.locateInRing(p, ring) !== Location.EXTERIOR
   }
-
-  getClass () {
-    return PointLocation
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-PointLocation.constructor_ = function () {}

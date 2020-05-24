@@ -7,6 +7,10 @@ export default class EdgeConnectedTriangleTraversal {
     EdgeConnectedTriangleTraversal.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._triQueue = new LinkedList()
+  }
+
   init () {
     if (arguments[0] instanceof QuadEdgeTriangle) {
       const tri = arguments[0]
@@ -32,15 +36,4 @@ export default class EdgeConnectedTriangleTraversal {
       this.process(tri, visitor)
     }
   }
-
-  getClass () {
-    return EdgeConnectedTriangleTraversal
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeConnectedTriangleTraversal.constructor_ = function () {
-  this._triQueue = new LinkedList()
 }

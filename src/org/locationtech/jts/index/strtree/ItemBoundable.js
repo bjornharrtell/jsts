@@ -5,6 +5,14 @@ export default class ItemBoundable {
     ItemBoundable.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._bounds = null
+    this._item = null
+    const bounds = arguments[0]; const item = arguments[1]
+    this._bounds = bounds
+    this._item = item
+  }
+
   getItem () {
     return this._item
   }
@@ -13,18 +21,7 @@ export default class ItemBoundable {
     return this._bounds
   }
 
-  getClass () {
-    return ItemBoundable
-  }
-
   get interfaces_ () {
     return [Boundable, Serializable]
   }
-}
-ItemBoundable.constructor_ = function () {
-  this._bounds = null
-  this._item = null
-  const bounds = arguments[0]; const item = arguments[1]
-  this._bounds = bounds
-  this._item = item
 }

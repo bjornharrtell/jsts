@@ -10,6 +10,18 @@ export default class MCIndexNoder extends SinglePassNoder {
     MCIndexNoder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._monoChains = new ArrayList()
+    this._index = new STRtree()
+    this._idCounter = 0
+    this._nodedSegStrings = null
+    this._nOverlaps = 0
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const si = arguments[0]
+      SinglePassNoder.constructor_.call(this, si)
+    }
+  }
+
   getMonotoneChains () {
     return this._monoChains
   }
@@ -55,19 +67,17 @@ export default class MCIndexNoder extends SinglePassNoder {
       }
     }
   }
-
-  getClass () {
-    return MCIndexNoder
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class SegmentOverlapAction extends MonotoneChainOverlapAction {
   constructor () {
     super()
     SegmentOverlapAction.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._si = null
+    const si = arguments[0]
+    this._si = si
   }
 
   overlap () {
@@ -80,29 +90,5 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
       return super.overlap.apply(this, arguments)
     }
   }
-
-  getClass () {
-    return SegmentOverlapAction
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SegmentOverlapAction.constructor_ = function () {
-  this._si = null
-  const si = arguments[0]
-  this._si = si
 }
 MCIndexNoder.SegmentOverlapAction = SegmentOverlapAction
-MCIndexNoder.constructor_ = function () {
-  this._monoChains = new ArrayList()
-  this._index = new STRtree()
-  this._idCounter = 0
-  this._nodedSegStrings = null
-  this._nOverlaps = 0
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const si = arguments[0]
-    SinglePassNoder.constructor_.call(this, si)
-  }
-}

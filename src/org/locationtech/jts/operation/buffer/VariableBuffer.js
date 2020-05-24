@@ -12,6 +12,19 @@ export default class VariableBuffer {
     VariableBuffer.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._line = null
+    this._distance = null
+    this._geomFactory = null
+    this._quadrantSegs = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
+    const line = arguments[0]; const distance = arguments[1]
+    this._line = line
+    this._distance = distance
+    this._geomFactory = line.getFactory()
+    if (distance.length !== this._line.getNumPoints())
+      throw new IllegalArgumentException('Number of distances is not equal to number of vertices')
+  }
+
   static buffer () {
     if (arguments.length === 2) {
       const line = arguments[0]; const distance = arguments[1]
@@ -222,25 +235,5 @@ export default class VariableBuffer {
     const capSegAng = Math.PI / 2 / this._quadrantSegs
     return index * capSegAng
   }
-
-  getClass () {
-    return VariableBuffer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-VariableBuffer.constructor_ = function () {
-  this._line = null
-  this._distance = null
-  this._geomFactory = null
-  this._quadrantSegs = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
-  const line = arguments[0]; const distance = arguments[1]
-  this._line = line
-  this._distance = distance
-  this._geomFactory = line.getFactory()
-  if (distance.length !== this._line.getNumPoints())
-    throw new IllegalArgumentException('Number of distances is not equal to number of vertices')
 }
 VariableBuffer.SNAP_TRIG_TOL = 1e-6

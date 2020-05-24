@@ -6,6 +6,14 @@ export default class BasicPreparedGeometry {
     BasicPreparedGeometry.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._baseGeom = null
+    this._representativePts = null
+    const geom = arguments[0]
+    this._baseGeom = geom
+    this._representativePts = ComponentCoordinateExtracter.getCoordinates(geom)
+  }
+
   getRepresentativePoints () {
     return this._representativePts
   }
@@ -78,18 +86,7 @@ export default class BasicPreparedGeometry {
     return true
   }
 
-  getClass () {
-    return BasicPreparedGeometry
-  }
-
   get interfaces_ () {
     return [PreparedGeometry]
   }
-}
-BasicPreparedGeometry.constructor_ = function () {
-  this._baseGeom = null
-  this._representativePts = null
-  const geom = arguments[0]
-  this._baseGeom = geom
-  this._representativePts = ComponentCoordinateExtracter.getCoordinates(geom)
 }

@@ -6,7 +6,6 @@ import PlanarGraph from '../../planargraph/PlanarGraph'
 export default class LineMergeGraph extends PlanarGraph {
   constructor () {
     super()
-    LineMergeGraph.constructor_.apply(this, arguments)
   }
 
   addEdge (lineString) {
@@ -34,13 +33,4 @@ export default class LineMergeGraph extends PlanarGraph {
     }
     return node
   }
-
-  getClass () {
-    return LineMergeGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-LineMergeGraph.constructor_ = function () {}

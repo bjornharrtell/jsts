@@ -10,6 +10,18 @@ export default class KdTree {
     KdTree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._root = null
+    this._numberOfNodes = null
+    this._tolerance = null
+    if (arguments.length === 0) {
+      KdTree.constructor_.call(this, 0.0)
+    } else if (arguments.length === 1) {
+      const tolerance = arguments[0]
+      this._tolerance = tolerance
+    }
+  }
+
   static toCoordinates () {
     if (arguments.length === 1) {
       const kdnodes = arguments[0]
@@ -145,18 +157,20 @@ export default class KdTree {
 
     return node
   }
-
-  getClass () {
-    return KdTree
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class BestMatchVisitor {
   constructor () {
     BestMatchVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._tolerance = null
+    this._matchNode = null
+    this._matchDist = 0.0
+    this._p = null
+    const p = arguments[0]; const tolerance = arguments[1]
+    this._p = p
+    this._tolerance = tolerance
   }
 
   visit (node) {
@@ -181,32 +195,8 @@ class BestMatchVisitor {
     return this._matchNode
   }
 
-  getClass () {
-    return BestMatchVisitor
-  }
-
   get interfaces_ () {
     return [KdNodeVisitor]
   }
 }
-BestMatchVisitor.constructor_ = function () {
-  this._tolerance = null
-  this._matchNode = null
-  this._matchDist = 0.0
-  this._p = null
-  const p = arguments[0]; const tolerance = arguments[1]
-  this._p = p
-  this._tolerance = tolerance
-}
 KdTree.BestMatchVisitor = BestMatchVisitor
-KdTree.constructor_ = function () {
-  this._root = null
-  this._numberOfNodes = null
-  this._tolerance = null
-  if (arguments.length === 0) {
-    KdTree.constructor_.call(this, 0.0)
-  } else if (arguments.length === 1) {
-    const tolerance = arguments[0]
-    this._tolerance = tolerance
-  }
-}

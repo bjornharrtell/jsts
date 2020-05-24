@@ -5,10 +5,6 @@ import Point from '../../geom/Point'
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class FacetSequenceTreeBuilder {
-  constructor () {
-    FacetSequenceTreeBuilder.constructor_.apply(this, arguments)
-  }
-
   static addFacetSequences (geom, pts, sections) {
     let i = 0
     const size = pts.size()
@@ -52,15 +48,6 @@ export default class FacetSequenceTreeBuilder {
     tree.build()
     return tree
   }
-
-  getClass () {
-    return FacetSequenceTreeBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-FacetSequenceTreeBuilder.constructor_ = function () {}
 FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE = 6
 FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY = 4

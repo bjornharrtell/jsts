@@ -5,6 +5,11 @@ export default class PreparedPolygonContains extends AbstractPreparedPolygonCont
     PreparedPolygonContains.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const prepPoly = arguments[0]
+    AbstractPreparedPolygonContains.constructor_.call(this, prepPoly)
+  }
+
   static contains (prep, geom) {
     const polyInt = new PreparedPolygonContains(prep)
     return polyInt.contains(geom)
@@ -18,16 +23,4 @@ export default class PreparedPolygonContains extends AbstractPreparedPolygonCont
   contains (geom) {
     return this.eval(geom)
   }
-
-  getClass () {
-    return PreparedPolygonContains
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPolygonContains.constructor_ = function () {
-  const prepPoly = arguments[0]
-  AbstractPreparedPolygonContains.constructor_.call(this, prepPoly)
 }

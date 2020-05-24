@@ -6,6 +6,21 @@ export default class RectangleLineIntersector {
     RectangleLineIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._li = new RobustLineIntersector()
+    this._rectEnv = null
+    this._diagUp0 = null
+    this._diagUp1 = null
+    this._diagDown0 = null
+    this._diagDown1 = null
+    const rectEnv = arguments[0]
+    this._rectEnv = rectEnv
+    this._diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY())
+    this._diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY())
+    this._diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY())
+    this._diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY())
+  }
+
   intersects (p0, p1) {
     const segEnv = new Envelope(p0, p1)
     if (!this._rectEnv.intersects(segEnv)) return false
@@ -26,26 +41,4 @@ export default class RectangleLineIntersector {
     if (this._li.hasIntersection()) return true
     return false
   }
-
-  getClass () {
-    return RectangleLineIntersector
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RectangleLineIntersector.constructor_ = function () {
-  this._li = new RobustLineIntersector()
-  this._rectEnv = null
-  this._diagUp0 = null
-  this._diagUp1 = null
-  this._diagDown0 = null
-  this._diagDown1 = null
-  const rectEnv = arguments[0]
-  this._rectEnv = rectEnv
-  this._diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY())
-  this._diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY())
-  this._diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY())
-  this._diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY())
 }

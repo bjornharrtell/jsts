@@ -8,6 +8,12 @@ export default class PointExtracter {
     PointExtracter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pts = null
+    const pts = arguments[0]
+    this._pts = pts
+  }
+
   static getPoints () {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -30,16 +36,7 @@ export default class PointExtracter {
     if (geom instanceof Point) this._pts.add(geom)
   }
 
-  getClass () {
-    return PointExtracter
-  }
-
   get interfaces_ () {
     return [GeometryFilter]
   }
-}
-PointExtracter.constructor_ = function () {
-  this._pts = null
-  const pts = arguments[0]
-  this._pts = pts
 }

@@ -1,9 +1,5 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class Matrix {
-  constructor () {
-    Matrix.constructor_.apply(this, arguments)
-  }
-
   static solve (a, b) {
     const n = b.length
     if (a.length !== n || a[0].length !== n) throw new IllegalArgumentException('Matrix A is incorrectly sized')
@@ -45,13 +41,4 @@ export default class Matrix {
       m[j] = temp
     }
   }
-
-  getClass () {
-    return Matrix
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Matrix.constructor_ = function () {}

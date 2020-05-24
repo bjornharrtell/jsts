@@ -8,6 +8,18 @@ export default class CoordinateList extends ArrayList {
     CoordinateList.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const coord = arguments[0]
+      this.ensureCapacity(coord.length)
+      this.add(coord, true)
+    } else if (arguments.length === 2) {
+      const coord = arguments[0]; const allowRepeated = arguments[1]
+      this.ensureCapacity(coord.length)
+      this.add(coord, allowRepeated)
+    }
+  }
+
   getCoordinate (i) {
     return this.get(i)
   }
@@ -119,25 +131,6 @@ export default class CoordinateList extends ArrayList {
       const duplicate = this.get(0).copy()
       this.add(duplicate, false)
     }
-  }
-
-  getClass () {
-    return CoordinateList
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-CoordinateList.constructor_ = function () {
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const coord = arguments[0]
-    this.ensureCapacity(coord.length)
-    this.add(coord, true)
-  } else if (arguments.length === 2) {
-    const coord = arguments[0]; const allowRepeated = arguments[1]
-    this.ensureCapacity(coord.length)
-    this.add(coord, allowRepeated)
   }
 }
 CoordinateList.coordArrayType = new Array(0).fill(null)

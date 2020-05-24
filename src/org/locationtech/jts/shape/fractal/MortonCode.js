@@ -1,10 +1,6 @@
 import Coordinate from '../../geom/Coordinate'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
 export default class MortonCode {
-  constructor () {
-    MortonCode.constructor_.apply(this, arguments)
-  }
-
   static deinterleave (x) {
     x = x & 0x55555555
     x = (x | x >> 1) & 0x33333333
@@ -55,14 +51,5 @@ export default class MortonCode {
     if (size < numPoints) level += 1
     return level
   }
-
-  getClass () {
-    return MortonCode
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-MortonCode.constructor_ = function () {}
 MortonCode.MAX_LEVEL = 16

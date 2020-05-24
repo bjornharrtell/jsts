@@ -9,6 +9,17 @@ export default class OverlapUnion {
     OverlapUnion.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFactory = null
+    this._g0 = null
+    this._g1 = null
+    this._isUnionSafe = null
+    const g0 = arguments[0]; const g1 = arguments[1]
+    this._g0 = g0
+    this._g1 = g1
+    this._geomFactory = g0.getFactory()
+  }
+
   static containsProperly () {
     if (arguments.length === 2) {
       const env = arguments[0]; const p = arguments[1]
@@ -149,22 +160,4 @@ export default class OverlapUnion {
   isUnionOptimized () {
     return this._isUnionSafe
   }
-
-  getClass () {
-    return OverlapUnion
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OverlapUnion.constructor_ = function () {
-  this._geomFactory = null
-  this._g0 = null
-  this._g1 = null
-  this._isUnionSafe = null
-  const g0 = arguments[0]; const g1 = arguments[1]
-  this._g0 = g0
-  this._g1 = g1
-  this._geomFactory = g0.getFactory()
 }

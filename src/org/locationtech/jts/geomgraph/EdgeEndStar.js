@@ -12,6 +12,12 @@ export default class EdgeEndStar {
     EdgeEndStar.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edgeMap = new TreeMap()
+    this._edgeList = null
+    this._ptInAreaLocation = [Location.NONE, Location.NONE]
+  }
+
   getNextCW (ee) {
     this.getEdges()
     const i = this._edgeList.indexOf(ee)
@@ -178,17 +184,4 @@ export default class EdgeEndStar {
     this._edgeMap.put(e, obj)
     this._edgeList = null
   }
-
-  getClass () {
-    return EdgeEndStar
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeEndStar.constructor_ = function () {
-  this._edgeMap = new TreeMap()
-  this._edgeList = null
-  this._ptInAreaLocation = [Location.NONE, Location.NONE]
 }

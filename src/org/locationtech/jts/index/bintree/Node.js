@@ -8,6 +8,16 @@ export default class Node extends NodeBase {
     Node.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._interval = null
+    this._centre = null
+    this._level = null
+    const interval = arguments[0]; const level = arguments[1]
+    this._interval = interval
+    this._level = level
+    this._centre = (interval.getMin() + interval.getMax()) / 2
+  }
+
   static createNode (itemInterval) {
     const key = new Key(itemInterval)
     const node = new Node(key.getInterval(), key.getLevel())
@@ -86,21 +96,4 @@ export default class Node extends NodeBase {
     const node = new Node(subInt, this._level - 1)
     return node
   }
-
-  getClass () {
-    return Node
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Node.constructor_ = function () {
-  this._interval = null
-  this._centre = null
-  this._level = null
-  const interval = arguments[0]; const level = arguments[1]
-  this._interval = interval
-  this._level = level
-  this._centre = (interval.getMin() + interval.getMax()) / 2
 }

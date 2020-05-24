@@ -1,9 +1,5 @@
 import Double from '../../../../java/lang/Double'
 export default class MathUtil {
-  constructor () {
-    MathUtil.constructor_.apply(this, arguments)
-  }
-
   static log10 (x) {
     const ln = Math.log(x)
     if (Double.isInfinite(ln)) return ln
@@ -60,14 +56,5 @@ export default class MathUtil {
   static average (x1, x2) {
     return (x1 + x2) / 2.0
   }
-
-  getClass () {
-    return MathUtil
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-MathUtil.constructor_ = function () {}
 MathUtil.LOG_10 = Math.log(10)

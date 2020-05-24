@@ -3,10 +3,6 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import Double from '../../../../java/lang/Double'
 import Vector3D from '../math/Vector3D'
 export default class CGAlgorithms3D {
-  constructor () {
-    CGAlgorithms3D.constructor_.apply(this, arguments)
-  }
-
   static distanceSegmentSegment (A, B, C, D) {
     if (A.equals3D(B)) return CGAlgorithms3D.distancePointSegment(A, C, D)
     if (C.equals3D(B)) return CGAlgorithms3D.distancePointSegment(C, A, B)
@@ -61,13 +57,4 @@ export default class CGAlgorithms3D {
     const dz = p.getZ() - qz
     return Math.sqrt(dx * dx + dy * dy + dz * dz)
   }
-
-  getClass () {
-    return CGAlgorithms3D
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-CGAlgorithms3D.constructor_ = function () {}

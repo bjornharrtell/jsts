@@ -6,6 +6,13 @@ export default class OffsetSegmentString {
     OffsetSegmentString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._ptList = null
+    this._precisionModel = null
+    this._minimimVertexDistance = 0.0
+    this._ptList = new ArrayList()
+  }
+
   getCoordinates () {
     const coord = this._ptList.toArray(OffsetSegmentString.COORDINATE_ARRAY_TYPE)
     return coord
@@ -58,19 +65,5 @@ export default class OffsetSegmentString {
   setMinimumVertexDistance (minimimVertexDistance) {
     this._minimimVertexDistance = minimimVertexDistance
   }
-
-  getClass () {
-    return OffsetSegmentString
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OffsetSegmentString.constructor_ = function () {
-  this._ptList = null
-  this._precisionModel = null
-  this._minimimVertexDistance = 0.0
-  this._ptList = new ArrayList()
 }
 OffsetSegmentString.COORDINATE_ARRAY_TYPE = new Array(0).fill(null)

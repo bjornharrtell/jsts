@@ -6,6 +6,14 @@ export default class GeometricShapeBuilder {
     GeometricShapeBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._extent = new Envelope(0, 1, 0, 1)
+    this._numPts = 0
+    this._geomFactory = null
+    const geomFactory = arguments[0]
+    this._geomFactory = geomFactory
+  }
+
   setNumPoints (numPts) {
     this._numPts = numPts
   }
@@ -49,19 +57,4 @@ export default class GeometricShapeBuilder {
     this._geomFactory.getPrecisionModel().makePrecise(pt)
     return pt
   }
-
-  getClass () {
-    return GeometricShapeBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometricShapeBuilder.constructor_ = function () {
-  this._extent = new Envelope(0, 1, 0, 1)
-  this._numPts = 0
-  this._geomFactory = null
-  const geomFactory = arguments[0]
-  this._geomFactory = geomFactory
 }

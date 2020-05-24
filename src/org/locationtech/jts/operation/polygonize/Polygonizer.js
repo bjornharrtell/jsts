@@ -14,6 +14,26 @@ export default class Polygonizer {
     Polygonizer.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._lineStringAdder = new LineStringAdder(this)
+    this._graph = null
+    this._dangles = new ArrayList()
+    this._cutEdges = new ArrayList()
+    this._invalidRingLines = new ArrayList()
+    this._holeList = null
+    this._shellList = null
+    this._polyList = null
+    this._isCheckingRingsValid = true
+    this._extractOnlyPolygonal = null
+    this._geomFactory = null
+    if (arguments.length === 0) {
+      Polygonizer.constructor_.call(this, false)
+    } else if (arguments.length === 1) {
+      const extractOnlyPolygonal = arguments[0]
+      this._extractOnlyPolygonal = extractOnlyPolygonal
+    }
+  }
+
   static extractPolygons (shellList, includeAll) {
     const polyList = new ArrayList()
     for (let i = shellList.iterator(); i.hasNext();) {
@@ -142,54 +162,24 @@ export default class Polygonizer {
       if (er.isHole()) this._holeList.add(er); else this._shellList.add(er)
     }
   }
-
-  getClass () {
-    return Polygonizer
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class LineStringAdder {
   constructor () {
     LineStringAdder.constructor_.apply(this, arguments)
   }
 
-  filter (g) {
-    if (g instanceof LineString) this.p.add(g)
+  static constructor_ () {
+    this.p = null
+    const p = arguments[0]
+    this.p = p
   }
 
-  getClass () {
-    return LineStringAdder
+  filter (g) {
+    if (g instanceof LineString) this.p.add(g)
   }
 
   get interfaces_ () {
     return [GeometryComponentFilter]
   }
 }
-LineStringAdder.constructor_ = function () {
-  this.p = null
-  const p = arguments[0]
-  this.p = p
-}
 Polygonizer.LineStringAdder = LineStringAdder
-Polygonizer.constructor_ = function () {
-  this._lineStringAdder = new LineStringAdder(this)
-  this._graph = null
-  this._dangles = new ArrayList()
-  this._cutEdges = new ArrayList()
-  this._invalidRingLines = new ArrayList()
-  this._holeList = null
-  this._shellList = null
-  this._polyList = null
-  this._isCheckingRingsValid = true
-  this._extractOnlyPolygonal = null
-  this._geomFactory = null
-  if (arguments.length === 0) {
-    Polygonizer.constructor_.call(this, false)
-  } else if (arguments.length === 1) {
-    const extractOnlyPolygonal = arguments[0]
-    this._extractOnlyPolygonal = extractOnlyPolygonal
-  }
-}

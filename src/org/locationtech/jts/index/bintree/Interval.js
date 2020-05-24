@@ -3,6 +3,21 @@ export default class Interval {
     Interval.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.min = null
+    this.max = null
+    if (arguments.length === 0) {
+      this.min = 0.0
+      this.max = 0.0
+    } else if (arguments.length === 1) {
+      const interval = arguments[0]
+      this.init(interval.min, interval.max)
+    } else if (arguments.length === 2) {
+      const min = arguments[0]; const max = arguments[1]
+      this.init(min, max)
+    }
+  }
+
   expandToInclude (interval) {
     if (interval.max > this.max) this.max = interval.max
     if (interval.min < this.min) this.min = interval.min
@@ -57,27 +72,5 @@ export default class Interval {
 
   getMax () {
     return this.max
-  }
-
-  getClass () {
-    return Interval
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Interval.constructor_ = function () {
-  this.min = null
-  this.max = null
-  if (arguments.length === 0) {
-    this.min = 0.0
-    this.max = 0.0
-  } else if (arguments.length === 1) {
-    const interval = arguments[0]
-    this.init(interval.min, interval.max)
-  } else if (arguments.length === 2) {
-    const min = arguments[0]; const max = arguments[1]
-    this.init(min, max)
   }
 }

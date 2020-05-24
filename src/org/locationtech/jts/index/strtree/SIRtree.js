@@ -7,6 +7,33 @@ export default class SIRtree extends AbstractSTRtree {
     SIRtree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._comparator = new (class {
+      get interfaces_ () {
+        return [Comparator]
+      }
+
+      compare (o1, o2) {
+        return AbstractSTRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre())
+      }
+    })()
+    this._intersectsOp = new (class {
+      get interfaces_ () {
+        return [IntersectsOp]
+      }
+
+      intersects (aBounds, bBounds) {
+        return aBounds.intersects(bBounds)
+      }
+    })()
+    if (arguments.length === 0) {
+      SIRtree.constructor_.call(this, 10)
+    } else if (arguments.length === 1) {
+      const nodeCapacity = arguments[0]
+      AbstractSTRtree.constructor_.call(this, nodeCapacity)
+    }
+  }
+
   createNode (level) {
     return new (class {
       computeBounds () {
@@ -48,39 +75,5 @@ export default class SIRtree extends AbstractSTRtree {
 
   getComparator () {
     return this._comparator
-  }
-
-  getClass () {
-    return SIRtree
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SIRtree.constructor_ = function () {
-  this._comparator = new (class {
-    get interfaces_ () {
-      return [Comparator]
-    }
-
-    compare (o1, o2) {
-      return AbstractSTRtree.compareDoubles(o1.getBounds().getCentre(), o2.getBounds().getCentre())
-    }
-  })()
-  this._intersectsOp = new (class {
-    get interfaces_ () {
-      return [IntersectsOp]
-    }
-
-    intersects (aBounds, bBounds) {
-      return aBounds.intersects(bBounds)
-    }
-  })()
-  if (arguments.length === 0) {
-    SIRtree.constructor_.call(this, 10)
-  } else if (arguments.length === 1) {
-    const nodeCapacity = arguments[0]
-    AbstractSTRtree.constructor_.call(this, nodeCapacity)
   }
 }

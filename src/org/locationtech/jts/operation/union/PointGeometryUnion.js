@@ -8,6 +8,16 @@ export default class PointGeometryUnion {
     PointGeometryUnion.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pointGeom = null
+    this._otherGeom = null
+    this._geomFact = null
+    const pointGeom = arguments[0]; const otherGeom = arguments[1]
+    this._pointGeom = pointGeom
+    this._otherGeom = otherGeom
+    this._geomFact = otherGeom.getFactory()
+  }
+
   static union (pointGeom, otherGeom) {
     const unioner = new PointGeometryUnion(pointGeom, otherGeom)
     return unioner.union()
@@ -32,21 +42,4 @@ export default class PointGeometryUnion {
 
     return GeometryCombiner.combine(ptComp, this._otherGeom)
   }
-
-  getClass () {
-    return PointGeometryUnion
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PointGeometryUnion.constructor_ = function () {
-  this._pointGeom = null
-  this._otherGeom = null
-  this._geomFact = null
-  const pointGeom = arguments[0]; const otherGeom = arguments[1]
-  this._pointGeom = pointGeom
-  this._otherGeom = otherGeom
-  this._geomFact = otherGeom.getFactory()
 }

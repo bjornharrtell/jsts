@@ -11,6 +11,25 @@ export default class EdgeRing {
     EdgeRing.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._startDe = null
+    this._maxNodeDegree = -1
+    this._edges = new ArrayList()
+    this._pts = new ArrayList()
+    this._label = new Label(Location.NONE)
+    this._ring = null
+    this._isHole = null
+    this._shell = null
+    this._holes = new ArrayList()
+    this._geometryFactory = null
+    if (arguments.length === 0) {} else if (arguments.length === 2) {
+      const start = arguments[0]; const geometryFactory = arguments[1]
+      this._geometryFactory = geometryFactory
+      this.computePoints(start)
+      this.computeRing()
+    }
+  }
+
   computeRing () {
     if (this._ring !== null) return null
     const coord = new Array(this._pts.size()).fill(null)
@@ -155,31 +174,5 @@ export default class EdgeRing {
 
     const poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
     return poly
-  }
-
-  getClass () {
-    return EdgeRing
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EdgeRing.constructor_ = function () {
-  this._startDe = null
-  this._maxNodeDegree = -1
-  this._edges = new ArrayList()
-  this._pts = new ArrayList()
-  this._label = new Label(Location.NONE)
-  this._ring = null
-  this._isHole = null
-  this._shell = null
-  this._holes = new ArrayList()
-  this._geometryFactory = null
-  if (arguments.length === 0) {} else if (arguments.length === 2) {
-    const start = arguments[0]; const geometryFactory = arguments[1]
-    this._geometryFactory = geometryFactory
-    this.computePoints(start)
-    this.computeRing()
   }
 }

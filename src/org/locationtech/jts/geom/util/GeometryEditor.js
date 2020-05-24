@@ -1,16 +1,23 @@
 import LineString from '../LineString'
+import Geometry from '../Geometry'
 import Point from '../Point'
 import Polygon from '../Polygon'
-import MultiPoint from '../MultiPoint'
 import LinearRing from '../LinearRing'
-import MultiPolygon from '../MultiPolygon'
 import GeometryCollection from '../GeometryCollection'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Assert from '../../util/Assert'
-import MultiLineString from '../MultiLineString'
 export default class GeometryEditor {
   constructor () {
     GeometryEditor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._factory = null
+    this._isUserDataCopied = false
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const factory = arguments[0]
+      this._factory = factory
+    }
   }
 
   setCopyUserData (isUserDataCopied) {
@@ -40,7 +47,7 @@ export default class GeometryEditor {
     if (geometry instanceof LineString)
       return operation.edit(geometry, this._factory)
 
-    Assert.shouldNeverReachHere('Unsupported Geometry class: ' + geometry.getClass().getName())
+    Assert.shouldNeverReachHere('Unsupported Geometry type: ' + geometry.getGeometryType())
     return null
   }
 
@@ -54,13 +61,13 @@ export default class GeometryEditor {
 
       geometries.add(geometry)
     }
-    if (collectionForType.getClass() === MultiPoint)
+    if (collectionForType.getGeometryType() === Geometry.TYPENAME_MULTIPOINT)
       return this._factory.createMultiPoint(geometries.toArray([]))
 
-    if (collectionForType.getClass() === MultiLineString)
+    if (collectionForType.getGeometryType() === Geometry.TYPENAME_MULTILINESTRING)
       return this._factory.createMultiLineString(geometries.toArray([]))
 
-    if (collectionForType.getClass() === MultiPolygon)
+    if (collectionForType.getGeometryType() === Geometry.TYPENAME_MULTIPOLYGON)
       return this._factory.createMultiPolygon(geometries.toArray([]))
 
     return this._factory.createGeometryCollection(geometries.toArray([]))
@@ -86,40 +93,19 @@ export default class GeometryEditor {
     }
     return this._factory.createPolygon(shell, holes.toArray([]))
   }
-
-  getClass () {
-    return GeometryEditor
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 function GeometryEditorOperation () {}
 GeometryEditor.GeometryEditorOperation = GeometryEditorOperation
 class NoOpGeometryOperation {
-  constructor () {
-    NoOpGeometryOperation.constructor_.apply(this, arguments)
-  }
-
   edit (geometry, factory) {
     return geometry
-  }
-
-  getClass () {
-    return NoOpGeometryOperation
   }
 
   get interfaces_ () {
     return [GeometryEditorOperation]
   }
 }
-NoOpGeometryOperation.constructor_ = function () {}
 class CoordinateOperation {
-  constructor () {
-    CoordinateOperation.constructor_.apply(this, arguments)
-  }
-
   edit (geometry, factory) {
     const coordinates = this.edit(geometry.getCoordinates(), geometry)
     if (geometry instanceof LinearRing)
@@ -134,20 +120,11 @@ class CoordinateOperation {
     return geometry
   }
 
-  getClass () {
-    return CoordinateOperation
-  }
-
   get interfaces_ () {
     return [GeometryEditorOperation]
   }
 }
-CoordinateOperation.constructor_ = function () {}
 class CoordinateSequenceOperation {
-  constructor () {
-    CoordinateSequenceOperation.constructor_.apply(this, arguments)
-  }
-
   edit (geometry, factory) {
     if (geometry instanceof LinearRing)
       return factory.createLinearRing(this.edit(geometry.getCoordinateSequence(), geometry))
@@ -161,23 +138,10 @@ class CoordinateSequenceOperation {
     return geometry
   }
 
-  getClass () {
-    return CoordinateSequenceOperation
-  }
-
   get interfaces_ () {
     return [GeometryEditorOperation]
   }
 }
-CoordinateSequenceOperation.constructor_ = function () {}
 GeometryEditor.NoOpGeometryOperation = NoOpGeometryOperation
 GeometryEditor.CoordinateOperation = CoordinateOperation
 GeometryEditor.CoordinateSequenceOperation = CoordinateSequenceOperation
-GeometryEditor.constructor_ = function () {
-  this._factory = null
-  this._isUserDataCopied = false
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const factory = arguments[0]
-    this._factory = factory
-  }
-}

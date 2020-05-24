@@ -17,6 +17,21 @@ export default class GeometryCollection extends Geometry {
     GeometryCollection.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geometries = null
+    if (arguments.length === 0) {} else if (arguments.length === 2) {
+      let geometries = arguments[0]; const factory = arguments[1]
+      Geometry.constructor_.call(this, factory)
+      if (geometries === null)
+        geometries = []
+
+      if (Geometry.hasNullElements(geometries))
+        throw new IllegalArgumentException('geometries must not contain null elements')
+
+      this._geometries = geometries
+    }
+  }
+
   computeEnvelopeInternal () {
     const envelope = new Envelope()
     for (let i = 0; i < this._geometries.length; i++)
@@ -207,27 +222,5 @@ export default class GeometryCollection extends Geometry {
         return false
 
     return true
-  }
-
-  getClass () {
-    return GeometryCollection
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryCollection.constructor_ = function () {
-  this._geometries = null
-  if (arguments.length === 0) {} else if (arguments.length === 2) {
-    let geometries = arguments[0]; const factory = arguments[1]
-    Geometry.constructor_.call(this, factory)
-    if (geometries === null)
-      geometries = []
-
-    if (Geometry.hasNullElements(geometries))
-      throw new IllegalArgumentException('geometries must not contain null elements')
-
-    this._geometries = geometries
   }
 }

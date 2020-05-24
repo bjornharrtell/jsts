@@ -5,6 +5,10 @@ export default class ArrayListVisitor {
     ArrayListVisitor.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._items = new ArrayList()
+  }
+
   visitItem (item) {
     this._items.add(item)
   }
@@ -13,14 +17,7 @@ export default class ArrayListVisitor {
     return this._items
   }
 
-  getClass () {
-    return ArrayListVisitor
-  }
-
   get interfaces_ () {
     return [ItemVisitor]
   }
-}
-ArrayListVisitor.constructor_ = function () {
-  this._items = new ArrayList()
 }

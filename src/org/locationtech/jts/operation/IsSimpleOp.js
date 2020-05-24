@@ -14,6 +14,20 @@ export default class IsSimpleOp {
     IsSimpleOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._isClosedEndpointsInInterior = true
+    this._nonSimpleLocation = null
+    if (arguments.length === 1) {
+      const geom = arguments[0]
+      this._inputGeom = geom
+    } else if (arguments.length === 2) {
+      const geom = arguments[0]; const boundaryNodeRule = arguments[1]
+      this._inputGeom = geom
+      this._isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2)
+    }
+  }
+
   static isSimple () {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -138,18 +152,20 @@ export default class IsSimpleOp {
     }
     return true
   }
-
-  getClass () {
-    return IsSimpleOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class EndpointInfo {
   constructor () {
     EndpointInfo.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.pt = null
+    this.isClosed = null
+    this.degree = null
+    const pt = arguments[0]
+    this.pt = pt
+    this.isClosed = false
+    this.degree = 0
   }
 
   addEndpoint (isClosed) {
@@ -160,35 +176,5 @@ class EndpointInfo {
   getCoordinate () {
     return this.pt
   }
-
-  getClass () {
-    return EndpointInfo
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-EndpointInfo.constructor_ = function () {
-  this.pt = null
-  this.isClosed = null
-  this.degree = null
-  const pt = arguments[0]
-  this.pt = pt
-  this.isClosed = false
-  this.degree = 0
 }
 IsSimpleOp.EndpointInfo = EndpointInfo
-IsSimpleOp.constructor_ = function () {
-  this._inputGeom = null
-  this._isClosedEndpointsInInterior = true
-  this._nonSimpleLocation = null
-  if (arguments.length === 1) {
-    const geom = arguments[0]
-    this._inputGeom = geom
-  } else if (arguments.length === 2) {
-    const geom = arguments[0]; const boundaryNodeRule = arguments[1]
-    this._inputGeom = geom
-    this._isClosedEndpointsInInterior = !boundaryNodeRule.isInBoundary(2)
-  }
-}

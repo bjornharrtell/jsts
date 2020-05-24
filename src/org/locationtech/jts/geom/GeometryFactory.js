@@ -21,6 +21,31 @@ export default class GeometryFactory {
     GeometryFactory.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._precisionModel = null
+    this._coordinateSequenceFactory = null
+    this._SRID = null
+    if (arguments.length === 0) {
+      GeometryFactory.constructor_.call(this, new PrecisionModel(), 0)
+    } else if (arguments.length === 1) {
+      if (hasInterface(arguments[0], CoordinateSequenceFactory)) {
+        const coordinateSequenceFactory = arguments[0]
+        GeometryFactory.constructor_.call(this, new PrecisionModel(), 0, coordinateSequenceFactory)
+      } else if (arguments[0] instanceof PrecisionModel) {
+        const precisionModel = arguments[0]
+        GeometryFactory.constructor_.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory())
+      }
+    } else if (arguments.length === 2) {
+      const precisionModel = arguments[0]; const SRID = arguments[1]
+      GeometryFactory.constructor_.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory())
+    } else if (arguments.length === 3) {
+      const precisionModel = arguments[0]; const SRID = arguments[1]; const coordinateSequenceFactory = arguments[2]
+      this._precisionModel = precisionModel
+      this._coordinateSequenceFactory = coordinateSequenceFactory
+      this._SRID = SRID
+    }
+  }
+
   static toMultiPolygonArray (multiPolygons) {
     const multiPolygonArray = new Array(multiPolygons.size()).fill(null)
     return multiPolygons.toArray(multiPolygonArray)
@@ -122,21 +147,21 @@ export default class GeometryFactory {
   }
 
   buildGeometry (geomList) {
-    let geomClass = null
+    let geomType = null
     let isHeterogeneous = false
     let hasGeometryCollection = false
     for (let i = geomList.iterator(); i.hasNext();) {
       const geom = i.next()
-      const partClass = geom.getClass()
-      if (geomClass === null)
-        geomClass = partClass
+      const partType = geom.getTypeCode()
+      if (geomType === null)
+        geomType = partType
 
-      if (partClass !== geomClass)
+      if (partType !== geomType)
         isHeterogeneous = true
 
       if (geom instanceof GeometryCollection) hasGeometryCollection = true
     }
-    if (geomClass === null)
+    if (geomType === null)
       return this.createGeometryCollection()
 
     if (isHeterogeneous || hasGeometryCollection)
@@ -152,7 +177,7 @@ export default class GeometryFactory {
       else if (geom0 instanceof Point)
         return this.createMultiPoint(GeometryFactory.toPointArray(geomList))
 
-      Assert.shouldNeverReachHere('Unhandled class: ' + geom0.getClass().getName())
+      Assert.shouldNeverReachHere('Unhandled geometry type: ' + geom0.getGeometryType())
     }
     return geom0
   }
@@ -259,35 +284,7 @@ export default class GeometryFactory {
       }
   }
 
-  getClass () {
-    return GeometryFactory
-  }
-
   get interfaces_ () {
     return [Serializable]
-  }
-}
-GeometryFactory.constructor_ = function () {
-  this._precisionModel = null
-  this._coordinateSequenceFactory = null
-  this._SRID = null
-  if (arguments.length === 0) {
-    GeometryFactory.constructor_.call(this, new PrecisionModel(), 0)
-  } else if (arguments.length === 1) {
-    if (hasInterface(arguments[0], CoordinateSequenceFactory)) {
-      const coordinateSequenceFactory = arguments[0]
-      GeometryFactory.constructor_.call(this, new PrecisionModel(), 0, coordinateSequenceFactory)
-    } else if (arguments[0] instanceof PrecisionModel) {
-      const precisionModel = arguments[0]
-      GeometryFactory.constructor_.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory())
-    }
-  } else if (arguments.length === 2) {
-    const precisionModel = arguments[0]; const SRID = arguments[1]
-    GeometryFactory.constructor_.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory())
-  } else if (arguments.length === 3) {
-    const precisionModel = arguments[0]; const SRID = arguments[1]; const coordinateSequenceFactory = arguments[2]
-    this._precisionModel = precisionModel
-    this._coordinateSequenceFactory = coordinateSequenceFactory
-    this._SRID = SRID
   }
 }

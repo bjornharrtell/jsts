@@ -8,6 +8,19 @@ export default class RelateOp extends GeometryGraphOperation {
     RelateOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._relate = null
+    if (arguments.length === 2) {
+      const g0 = arguments[0]; const g1 = arguments[1]
+      GeometryGraphOperation.constructor_.call(this, g0, g1)
+      this._relate = new RelateComputer(this._arg)
+    } else if (arguments.length === 3) {
+      const g0 = arguments[0]; const g1 = arguments[1]; const boundaryNodeRule = arguments[2]
+      GeometryGraphOperation.constructor_.call(this, g0, g1, boundaryNodeRule)
+      this._relate = new RelateComputer(this._arg)
+    }
+  }
+
   static covers (g1, g2) {
     if (g2.getDimension() === 2 && g1.getDimension() < 2)
       return false
@@ -92,25 +105,5 @@ export default class RelateOp extends GeometryGraphOperation {
 
   getIntersectionMatrix () {
     return this._relate.computeIM()
-  }
-
-  getClass () {
-    return RelateOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-RelateOp.constructor_ = function () {
-  this._relate = null
-  if (arguments.length === 2) {
-    const g0 = arguments[0]; const g1 = arguments[1]
-    GeometryGraphOperation.constructor_.call(this, g0, g1)
-    this._relate = new RelateComputer(this._arg)
-  } else if (arguments.length === 3) {
-    const g0 = arguments[0]; const g1 = arguments[1]; const boundaryNodeRule = arguments[2]
-    GeometryGraphOperation.constructor_.call(this, g0, g1, boundaryNodeRule)
-    this._relate = new RelateComputer(this._arg)
   }
 }

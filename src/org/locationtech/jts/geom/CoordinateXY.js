@@ -6,6 +6,23 @@ export default class CoordinateXY extends Coordinate {
     CoordinateXY.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    if (arguments.length === 0) {
+      Coordinate.constructor_.call(this)
+    } else if (arguments.length === 1) {
+      if (arguments[0] instanceof CoordinateXY) {
+        const coord = arguments[0]
+        Coordinate.constructor_.call(this, coord.x, coord.y)
+      } else if (arguments[0] instanceof Coordinate) {
+        const coord = arguments[0]
+        Coordinate.constructor_.call(this, coord.x, coord.y)
+      }
+    } else if (arguments.length === 2) {
+      const x = arguments[0]; const y = arguments[1]
+      Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
+    }
+  }
+
   setOrdinate (ordinateIndex, value) {
     switch (ordinateIndex) {
     case CoordinateXY.X:
@@ -49,30 +66,6 @@ export default class CoordinateXY extends Coordinate {
     this.x = other.x
     this.y = other.y
     this.z = other.getZ()
-  }
-
-  getClass () {
-    return CoordinateXY
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-CoordinateXY.constructor_ = function () {
-  if (arguments.length === 0) {
-    Coordinate.constructor_.call(this)
-  } else if (arguments.length === 1) {
-    if (arguments[0] instanceof CoordinateXY) {
-      const coord = arguments[0]
-      Coordinate.constructor_.call(this, coord.x, coord.y)
-    } else if (arguments[0] instanceof Coordinate) {
-      const coord = arguments[0]
-      Coordinate.constructor_.call(this, coord.x, coord.y)
-    }
-  } else if (arguments.length === 2) {
-    const x = arguments[0]; const y = arguments[1]
-    Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
   }
 }
 CoordinateXY.X = 0

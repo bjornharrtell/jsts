@@ -21,6 +21,21 @@ export default class OverlayOp extends GeometryGraphOperation {
     OverlayOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._ptLocator = new PointLocator()
+    this._geomFact = null
+    this._resultGeom = null
+    this._graph = null
+    this._edgeList = new EdgeList()
+    this._resultPolyList = new ArrayList()
+    this._resultLineList = new ArrayList()
+    this._resultPointList = new ArrayList()
+    const g0 = arguments[0]; const g1 = arguments[1]
+    GeometryGraphOperation.constructor_.call(this, g0, g1)
+    this._graph = new PlanarGraph(new OverlayNodeFactory())
+    this._geomFact = g0.getFactory()
+  }
+
   static overlayOp (geom0, geom1, opCode) {
     const gov = new OverlayOp(geom0, geom1)
     const geomOv = gov.getResultGeometry(opCode)
@@ -316,28 +331,6 @@ export default class OverlayOp extends GeometryGraphOperation {
     if (this.isCovered(coord, this._resultPolyList)) return true
     return false
   }
-
-  getClass () {
-    return OverlayOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OverlayOp.constructor_ = function () {
-  this._ptLocator = new PointLocator()
-  this._geomFact = null
-  this._resultGeom = null
-  this._graph = null
-  this._edgeList = new EdgeList()
-  this._resultPolyList = new ArrayList()
-  this._resultLineList = new ArrayList()
-  this._resultPointList = new ArrayList()
-  const g0 = arguments[0]; const g1 = arguments[1]
-  GeometryGraphOperation.constructor_.call(this, g0, g1)
-  this._graph = new PlanarGraph(new OverlayNodeFactory())
-  this._geomFact = g0.getFactory()
 }
 OverlayOp.INTERSECTION = 1
 OverlayOp.UNION = 2

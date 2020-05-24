@@ -13,6 +13,13 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     DirectedEdgeStar.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._resultAreaEdgeList = null
+    this._label = null
+    this._SCANNING_FOR_INCOMING = 1
+    this._LINKING_TO_OUTGOING = 2
+  }
+
   linkResultDirectedEdges () {
     this.getResultAreaEdges()
     let firstOut = null
@@ -238,18 +245,4 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       }
     }
   }
-
-  getClass () {
-    return DirectedEdgeStar
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-DirectedEdgeStar.constructor_ = function () {
-  this._resultAreaEdgeList = null
-  this._label = null
-  this._SCANNING_FOR_INCOMING = 1
-  this._LINKING_TO_OUTGOING = 2
 }

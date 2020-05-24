@@ -6,6 +6,17 @@ export default class SineStarFactory extends GeometricShapeFactory {
     SineStarFactory.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._numArms = 8
+    this._armLengthRatio = 0.5
+    if (arguments.length === 0) {
+      GeometricShapeFactory.constructor_.call(this)
+    } else if (arguments.length === 1) {
+      const geomFact = arguments[0]
+      GeometricShapeFactory.constructor_.call(this, geomFact)
+    }
+  }
+
   static create (origin, size, nPts, nArms, armLengthRatio) {
     const gsf = new SineStarFactory()
     gsf.setCentre(origin)
@@ -52,23 +63,5 @@ export default class SineStarFactory extends GeometricShapeFactory {
     const ring = this._geomFact.createLinearRing(pts)
     const poly = this._geomFact.createPolygon(ring)
     return poly
-  }
-
-  getClass () {
-    return SineStarFactory
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SineStarFactory.constructor_ = function () {
-  this._numArms = 8
-  this._armLengthRatio = 0.5
-  if (arguments.length === 0) {
-    GeometricShapeFactory.constructor_.call(this)
-  } else if (arguments.length === 1) {
-    const geomFact = arguments[0]
-    GeometricShapeFactory.constructor_.call(this, geomFact)
   }
 }

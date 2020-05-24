@@ -8,6 +8,12 @@ export default class MCIndexSegmentSetMutualIntersector {
     MCIndexSegmentSetMutualIntersector.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._index = new STRtree()
+    const baseSegStrings = arguments[0]
+    this.initBaseSegments(baseSegStrings)
+  }
+
   addToIndex (segStr) {
     const segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr)
     for (let i = segChains.iterator(); i.hasNext();) {
@@ -56,10 +62,6 @@ export default class MCIndexSegmentSetMutualIntersector {
     }
   }
 
-  getClass () {
-    return MCIndexSegmentSetMutualIntersector
-  }
-
   get interfaces_ () {
     return [SegmentSetMutualIntersector]
   }
@@ -68,6 +70,12 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
   constructor () {
     super()
     SegmentOverlapAction.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._si = null
+    const si = arguments[0]
+    this._si = si
   }
 
   overlap () {
@@ -80,23 +88,5 @@ class SegmentOverlapAction extends MonotoneChainOverlapAction {
       return super.overlap.apply(this, arguments)
     }
   }
-
-  getClass () {
-    return SegmentOverlapAction
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SegmentOverlapAction.constructor_ = function () {
-  this._si = null
-  const si = arguments[0]
-  this._si = si
 }
 MCIndexSegmentSetMutualIntersector.SegmentOverlapAction = SegmentOverlapAction
-MCIndexSegmentSetMutualIntersector.constructor_ = function () {
-  this._index = new STRtree()
-  const baseSegStrings = arguments[0]
-  this.initBaseSegments(baseSegStrings)
-}

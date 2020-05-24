@@ -14,6 +14,13 @@ export default class SegmentNodeList {
     SegmentNodeList.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nodeMap = new TreeMap()
+    this._edge = null
+    const edge = arguments[0]
+    this._edge = edge
+  }
+
   getSplitCoordinates () {
     const coordList = new CoordinateList()
     this.addEndpoints()
@@ -156,24 +163,24 @@ export default class SegmentNodeList {
     const ptn = splitnPts[splitnPts.length - 1]
     if (!ptn.equals2D(edgePts[edgePts.length - 1])) throw new RuntimeException('bad split edge end point at ' + ptn)
   }
-
-  getClass () {
-    return SegmentNodeList
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-SegmentNodeList.constructor_ = function () {
-  this._nodeMap = new TreeMap()
-  this._edge = null
-  const edge = arguments[0]
-  this._edge = edge
 }
 class NodeVertexIterator {
   constructor () {
     NodeVertexIterator.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._nodeList = null
+    this._edge = null
+    this._nodeIt = null
+    this._currNode = null
+    this._nextNode = null
+    this._currSegIndex = 0
+    const nodeList = arguments[0]
+    this._nodeList = nodeList
+    this._edge = nodeList.getEdge()
+    this._nodeIt = nodeList.iterator()
+    this.readNextNode()
   }
 
   next () {
@@ -207,24 +214,7 @@ class NodeVertexIterator {
     if (this._nodeIt.hasNext()) this._nextNode = this._nodeIt.next(); else this._nextNode = null
   }
 
-  getClass () {
-    return NodeVertexIterator
-  }
-
   get interfaces_ () {
     return [Iterator]
   }
-}
-NodeVertexIterator.constructor_ = function () {
-  this._nodeList = null
-  this._edge = null
-  this._nodeIt = null
-  this._currNode = null
-  this._nextNode = null
-  this._currSegIndex = 0
-  const nodeList = arguments[0]
-  this._nodeList = nodeList
-  this._edge = nodeList.getEdge()
-  this._nodeIt = nodeList.iterator()
-  this.readNextNode()
 }

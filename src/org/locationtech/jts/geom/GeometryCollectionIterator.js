@@ -7,6 +7,19 @@ export default class GeometryCollectionIterator {
     GeometryCollectionIterator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._parent = null
+    this._atStart = null
+    this._max = null
+    this._index = null
+    this._subcollectionIterator = null
+    const parent = arguments[0]
+    this._parent = parent
+    this._atStart = true
+    this._index = 0
+    this._max = parent.getNumGeometries()
+  }
+
   static isAtomic (geom) {
     return !(geom instanceof GeometryCollection)
   }
@@ -55,23 +68,7 @@ export default class GeometryCollectionIterator {
     return true
   }
 
-  getClass () {
-    return GeometryCollectionIterator
-  }
-
   get interfaces_ () {
     return [Iterator]
   }
-}
-GeometryCollectionIterator.constructor_ = function () {
-  this._parent = null
-  this._atStart = null
-  this._max = null
-  this._index = null
-  this._subcollectionIterator = null
-  const parent = arguments[0]
-  this._parent = parent
-  this._atStart = true
-  this._index = 0
-  this._max = parent.getNumGeometries()
 }

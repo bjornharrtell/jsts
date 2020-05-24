@@ -14,6 +14,14 @@ export default class InputExtracter {
     InputExtracter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFactory = null
+    this._polygons = new ArrayList()
+    this._lines = new ArrayList()
+    this._points = new ArrayList()
+    this._dimension = Dimension.FALSE
+  }
+
   static extract () {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
@@ -88,18 +96,7 @@ export default class InputExtracter {
     }
   }
 
-  getClass () {
-    return InputExtracter
-  }
-
   get interfaces_ () {
     return [GeometryFilter]
   }
-}
-InputExtracter.constructor_ = function () {
-  this._geomFactory = null
-  this._polygons = new ArrayList()
-  this._lines = new ArrayList()
-  this._points = new ArrayList()
-  this._dimension = Dimension.FALSE
 }

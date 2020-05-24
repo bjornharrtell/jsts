@@ -6,6 +6,12 @@ export default class PreparedLineStringIntersects {
     PreparedLineStringIntersects.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._prepLine = null
+    const prepLine = arguments[0]
+    this._prepLine = prepLine
+  }
+
   static intersects (prep, geom) {
     const op = new PreparedLineStringIntersects(prep)
     return op.intersects(geom)
@@ -32,17 +38,4 @@ export default class PreparedLineStringIntersects {
     if (geom.getDimension() === 0) return this.isAnyTestPointInTarget(geom)
     return false
   }
-
-  getClass () {
-    return PreparedLineStringIntersects
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedLineStringIntersects.constructor_ = function () {
-  this._prepLine = null
-  const prepLine = arguments[0]
-  this._prepLine = prepLine
 }

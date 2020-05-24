@@ -2,10 +2,6 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import MathUtil from '../math/MathUtil'
 import Envelope from '../geom/Envelope'
 export default class Distance {
-  constructor () {
-    Distance.constructor_.apply(this, arguments)
-  }
-
   static segmentToSegment (A, B, C, D) {
     if (A.equals(B)) return Distance.pointToSegment(A, C, D)
     if (C.equals(D)) return Distance.pointToSegment(D, A, B)
@@ -57,13 +53,4 @@ export default class Distance {
     }
     return minDistance
   }
-
-  getClass () {
-    return Distance
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Distance.constructor_ = function () {}

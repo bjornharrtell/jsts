@@ -8,6 +8,11 @@ export default class MultiPolygon extends GeometryCollection {
     MultiPolygon.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const polygons = arguments[0]; const factory = arguments[1]
+    GeometryCollection.constructor_.call(this, polygons, factory)
+  }
+
   copyInternal () {
     const polygons = new Array(this._geometries.length).fill(null)
     for (let i = 0; i < polygons.length; i++)
@@ -59,15 +64,7 @@ export default class MultiPolygon extends GeometryCollection {
     return Geometry.TYPENAME_MULTIPOLYGON
   }
 
-  getClass () {
-    return MultiPolygon
-  }
-
   get interfaces_ () {
     return [Polygonal]
   }
-}
-MultiPolygon.constructor_ = function () {
-  const polygons = arguments[0]; const factory = arguments[1]
-  GeometryCollection.constructor_.call(this, polygons, factory)
 }

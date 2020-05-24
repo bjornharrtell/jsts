@@ -5,6 +5,12 @@ export default class FastSegmentSetIntersectionFinder {
     FastSegmentSetIntersectionFinder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._segSetMutInt = null
+    const baseSegStrings = arguments[0]
+    this._segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings)
+  }
+
   getSegmentSetIntersector () {
     return this._segSetMutInt
   }
@@ -20,17 +26,4 @@ export default class FastSegmentSetIntersectionFinder {
       return intDetector.hasIntersection()
     }
   }
-
-  getClass () {
-    return FastSegmentSetIntersectionFinder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-FastSegmentSetIntersectionFinder.constructor_ = function () {
-  this._segSetMutInt = null
-  const baseSegStrings = arguments[0]
-  this._segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings)
 }

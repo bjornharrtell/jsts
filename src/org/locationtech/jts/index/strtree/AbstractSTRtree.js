@@ -12,6 +12,20 @@ export default class AbstractSTRtree {
     AbstractSTRtree.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._root = null
+    this._built = false
+    this._itemBoundables = new ArrayList()
+    this._nodeCapacity = null
+    if (arguments.length === 0) {
+      AbstractSTRtree.constructor_.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY)
+    } else if (arguments.length === 1) {
+      const nodeCapacity = arguments[0]
+      Assert.isTrue(nodeCapacity > 1, 'Node capacity must be greater than 1')
+      this._nodeCapacity = nodeCapacity
+    }
+  }
+
   static compareDoubles (a, b) {
     return a > b ? 1 : a < b ? -1 : 0
   }
@@ -271,27 +285,10 @@ export default class AbstractSTRtree {
     return this._root.isEmpty()
   }
 
-  getClass () {
-    return AbstractSTRtree
-  }
-
   get interfaces_ () {
     return [Serializable]
   }
 }
 function IntersectsOp () {}
 AbstractSTRtree.IntersectsOp = IntersectsOp
-AbstractSTRtree.constructor_ = function () {
-  this._root = null
-  this._built = false
-  this._itemBoundables = new ArrayList()
-  this._nodeCapacity = null
-  if (arguments.length === 0) {
-    AbstractSTRtree.constructor_.call(this, AbstractSTRtree.DEFAULT_NODE_CAPACITY)
-  } else if (arguments.length === 1) {
-    const nodeCapacity = arguments[0]
-    Assert.isTrue(nodeCapacity > 1, 'Node capacity must be greater than 1')
-    this._nodeCapacity = nodeCapacity
-  }
-}
 AbstractSTRtree.DEFAULT_NODE_CAPACITY = 10

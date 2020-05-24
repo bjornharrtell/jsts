@@ -11,6 +11,26 @@ export default class Coordinate {
     Coordinate.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this.x = null
+    this.y = null
+    this.z = null
+    if (arguments.length === 0) {
+      Coordinate.constructor_.call(this, 0.0, 0.0)
+    } else if (arguments.length === 1) {
+      const c = arguments[0]
+      Coordinate.constructor_.call(this, c.x, c.y, c.getZ())
+    } else if (arguments.length === 2) {
+      const x = arguments[0]; const y = arguments[1]
+      Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
+    } else if (arguments.length === 3) {
+      const x = arguments[0]; const y = arguments[1]; const z = arguments[2]
+      this.x = x
+      this.y = y
+      this.z = z
+    }
+  }
+
   static hashCode () {
     if (arguments.length === 1 && typeof arguments[0] === 'number') {
       const x = arguments[0]
@@ -173,10 +193,6 @@ export default class Coordinate {
     this.z = other.getZ()
   }
 
-  getClass () {
-    return Coordinate
-  }
-
   get interfaces_ () {
     return [Comparable, Cloneable, Serializable]
   }
@@ -184,6 +200,17 @@ export default class Coordinate {
 class DimensionalComparator {
   constructor () {
     DimensionalComparator.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._dimensionsToTest = 2
+    if (arguments.length === 0) {
+      DimensionalComparator.constructor_.call(this, 2)
+    } else if (arguments.length === 1) {
+      const dimensionsToTest = arguments[0]
+      if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException('only 2 or 3 dimensions may be specified')
+      this._dimensionsToTest = dimensionsToTest
+    }
   }
 
   static compare (a, b) {
@@ -207,44 +234,11 @@ class DimensionalComparator {
     return compZ
   }
 
-  getClass () {
-    return DimensionalComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-DimensionalComparator.constructor_ = function () {
-  this._dimensionsToTest = 2
-  if (arguments.length === 0) {
-    DimensionalComparator.constructor_.call(this, 2)
-  } else if (arguments.length === 1) {
-    const dimensionsToTest = arguments[0]
-    if (dimensionsToTest !== 2 && dimensionsToTest !== 3) throw new IllegalArgumentException('only 2 or 3 dimensions may be specified')
-    this._dimensionsToTest = dimensionsToTest
-  }
-}
 Coordinate.DimensionalComparator = DimensionalComparator
-Coordinate.constructor_ = function () {
-  this.x = null
-  this.y = null
-  this.z = null
-  if (arguments.length === 0) {
-    Coordinate.constructor_.call(this, 0.0, 0.0)
-  } else if (arguments.length === 1) {
-    const c = arguments[0]
-    Coordinate.constructor_.call(this, c.x, c.y, c.getZ())
-  } else if (arguments.length === 2) {
-    const x = arguments[0]; const y = arguments[1]
-    Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
-  } else if (arguments.length === 3) {
-    const x = arguments[0]; const y = arguments[1]; const z = arguments[2]
-    this.x = x
-    this.y = y
-    this.z = z
-  }
-}
 Coordinate.NULL_ORDINATE = Double.NaN
 Coordinate.X = 0
 Coordinate.Y = 1

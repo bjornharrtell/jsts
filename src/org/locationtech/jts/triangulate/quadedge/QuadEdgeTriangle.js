@@ -11,6 +11,15 @@ export default class QuadEdgeTriangle {
     QuadEdgeTriangle.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edge = null
+    this._data = null
+    const edge = arguments[0]
+    this._edge = Arrays.copyOf(edge, edge.length)
+    for (let i = 0; i < 3; i++)
+      edge[i].setData(this)
+  }
+
   static toPolygon () {
     if (arguments[0] instanceof Array) {
       const v = arguments[0]
@@ -178,18 +187,14 @@ export default class QuadEdgeTriangle {
     const nexti = (i + 1) % 3
     seg.p1 = this._edge[nexti].orig().getCoordinate()
   }
-
-  getClass () {
-    return QuadEdgeTriangle
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class QuadEdgeTriangleBuilderVisitor {
   constructor () {
     QuadEdgeTriangleBuilderVisitor.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._triangles = new ArrayList()
   }
 
   visit (edges) {
@@ -200,23 +205,8 @@ class QuadEdgeTriangleBuilderVisitor {
     return this._triangles
   }
 
-  getClass () {
-    return QuadEdgeTriangleBuilderVisitor
-  }
-
   get interfaces_ () {
     return [TriangleVisitor]
   }
 }
-QuadEdgeTriangleBuilderVisitor.constructor_ = function () {
-  this._triangles = new ArrayList()
-}
 QuadEdgeTriangle.QuadEdgeTriangleBuilderVisitor = QuadEdgeTriangleBuilderVisitor
-QuadEdgeTriangle.constructor_ = function () {
-  this._edge = null
-  this._data = null
-  const edge = arguments[0]
-  this._edge = Arrays.copyOf(edge, edge.length)
-  for (let i = 0; i < 3; i++)
-    edge[i].setData(this)
-}

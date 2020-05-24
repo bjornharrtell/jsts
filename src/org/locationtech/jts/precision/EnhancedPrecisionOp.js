@@ -1,10 +1,6 @@
 import CommonBitsOp from './CommonBitsOp'
 import RuntimeException from '../../../../java/lang/RuntimeException'
 export default class EnhancedPrecisionOp {
-  constructor () {
-    EnhancedPrecisionOp.constructor_.apply(this, arguments)
-  }
-
   static union (geom0, geom1) {
     let originalEx = null
     try {
@@ -114,13 +110,4 @@ export default class EnhancedPrecisionOp {
       else throw ex2
     } finally {}
   }
-
-  getClass () {
-    return EnhancedPrecisionOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-EnhancedPrecisionOp.constructor_ = function () {}

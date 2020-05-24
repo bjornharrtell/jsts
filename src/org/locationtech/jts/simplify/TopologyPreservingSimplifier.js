@@ -10,6 +10,14 @@ export default class TopologyPreservingSimplifier {
     TopologyPreservingSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._lineSimplifier = new TaggedLinesSimplifier()
+    this._linestringMap = null
+    const inputGeom = arguments[0]
+    this._inputGeom = inputGeom
+  }
+
   static simplify (geom, distanceTolerance) {
     const tss = new TopologyPreservingSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
@@ -29,19 +37,17 @@ export default class TopologyPreservingSimplifier {
     if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
     this._lineSimplifier.setDistanceTolerance(distanceTolerance)
   }
-
-  getClass () {
-    return TopologyPreservingSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class LineStringTransformer extends GeometryTransformer {
   constructor () {
     super()
     LineStringTransformer.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._linestringMap = null
+    const linestringMap = arguments[0]
+    this._linestringMap = linestringMap
   }
 
   transformCoordinates (coords, parent) {
@@ -52,23 +58,16 @@ class LineStringTransformer extends GeometryTransformer {
     }
     return super.transformCoordinates.call(this, coords, parent)
   }
-
-  getClass () {
-    return LineStringTransformer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LineStringTransformer.constructor_ = function () {
-  this._linestringMap = null
-  const linestringMap = arguments[0]
-  this._linestringMap = linestringMap
 }
 class LineStringMapBuilderFilter {
   constructor () {
     LineStringMapBuilderFilter.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this.tps = null
+    const tps = arguments[0]
+    this.tps = tps
   }
 
   filter (geom) {
@@ -81,25 +80,9 @@ class LineStringMapBuilderFilter {
     }
   }
 
-  getClass () {
-    return LineStringMapBuilderFilter
-  }
-
   get interfaces_ () {
     return [GeometryComponentFilter]
   }
 }
-LineStringMapBuilderFilter.constructor_ = function () {
-  this.tps = null
-  const tps = arguments[0]
-  this.tps = tps
-}
 TopologyPreservingSimplifier.LineStringTransformer = LineStringTransformer
 TopologyPreservingSimplifier.LineStringMapBuilderFilter = LineStringMapBuilderFilter
-TopologyPreservingSimplifier.constructor_ = function () {
-  this._inputGeom = null
-  this._lineSimplifier = new TaggedLinesSimplifier()
-  this._linestringMap = null
-  const inputGeom = arguments[0]
-  this._inputGeom = inputGeom
-}

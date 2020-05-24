@@ -5,10 +5,6 @@ import ArrayList from '../../../../java/util/ArrayList'
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter'
 import List from '../../../../java/util/List'
 export default class SegmentStringUtil {
-  constructor () {
-    SegmentStringUtil.constructor_.apply(this, arguments)
-  }
-
   static toGeometry (segStrings, geomFact) {
     const lines = new Array(segStrings.size()).fill(null)
     let index = 0
@@ -48,13 +44,4 @@ export default class SegmentStringUtil {
       return buf.toString()
     }
   }
-
-  getClass () {
-    return SegmentStringUtil
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-SegmentStringUtil.constructor_ = function () {}

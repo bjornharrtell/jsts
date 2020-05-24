@@ -4,6 +4,29 @@ export default class KdNode {
     KdNode.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._p = null
+    this._data = null
+    this._left = null
+    this._right = null
+    this._count = null
+    if (arguments.length === 2) {
+      const p = arguments[0]; const data = arguments[1]
+      this._p = new Coordinate(p)
+      this._left = null
+      this._right = null
+      this._count = 1
+      this._data = data
+    } else if (arguments.length === 3) {
+      const _x = arguments[0]; const _y = arguments[1]; const data = arguments[2]
+      this._p = new Coordinate(_x, _y)
+      this._left = null
+      this._right = null
+      this._count = 1
+      this._data = data
+    }
+  }
+
   isRepeated () {
     return this._count > 1
   }
@@ -46,35 +69,5 @@ export default class KdNode {
 
   setRight (_right) {
     this._right = _right
-  }
-
-  getClass () {
-    return KdNode
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-KdNode.constructor_ = function () {
-  this._p = null
-  this._data = null
-  this._left = null
-  this._right = null
-  this._count = null
-  if (arguments.length === 2) {
-    const p = arguments[0]; const data = arguments[1]
-    this._p = new Coordinate(p)
-    this._left = null
-    this._right = null
-    this._count = 1
-    this._data = data
-  } else if (arguments.length === 3) {
-    const _x = arguments[0]; const _y = arguments[1]; const data = arguments[2]
-    this._p = new Coordinate(_x, _y)
-    this._left = null
-    this._right = null
-    this._count = 1
-    this._data = data
   }
 }

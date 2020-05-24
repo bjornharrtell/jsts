@@ -9,6 +9,28 @@ export default class DirectedEdge extends EdgeEnd {
     DirectedEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._isForward = null
+    this._isInResult = false
+    this._isVisited = false
+    this._sym = null
+    this._next = null
+    this._nextMin = null
+    this._edgeRing = null
+    this._minEdgeRing = null
+    this._depth = [0, -999, -999]
+    const edge = arguments[0]; const isForward = arguments[1]
+    EdgeEnd.constructor_.call(this, edge)
+    this._isForward = isForward
+    if (isForward) {
+      this.init(edge.getCoordinate(0), edge.getCoordinate(1))
+    } else {
+      const n = edge.getNumPoints() - 1
+      this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1))
+    }
+    this.computeDirectedLabel()
+  }
+
   static depthFactor (currLocation, nextLocation) {
     if (currLocation === Location.EXTERIOR && nextLocation === Location.INTERIOR) return 1; else if (currLocation === Location.INTERIOR && nextLocation === Location.EXTERIOR) return -1
     return 0
@@ -145,33 +167,4 @@ export default class DirectedEdge extends EdgeEnd {
   isVisited () {
     return this._isVisited
   }
-
-  getClass () {
-    return DirectedEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-DirectedEdge.constructor_ = function () {
-  this._isForward = null
-  this._isInResult = false
-  this._isVisited = false
-  this._sym = null
-  this._next = null
-  this._nextMin = null
-  this._edgeRing = null
-  this._minEdgeRing = null
-  this._depth = [0, -999, -999]
-  const edge = arguments[0]; const isForward = arguments[1]
-  EdgeEnd.constructor_.call(this, edge)
-  this._isForward = isForward
-  if (isForward) {
-    this.init(edge.getCoordinate(0), edge.getCoordinate(1))
-  } else {
-    const n = edge.getNumPoints() - 1
-    this.init(edge.getCoordinate(n), edge.getCoordinate(n - 1))
-  }
-  this.computeDirectedLabel()
 }

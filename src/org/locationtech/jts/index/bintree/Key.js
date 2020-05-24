@@ -5,6 +5,14 @@ export default class Key {
     Key.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pt = 0.0
+    this._level = 0
+    this._interval = null
+    const interval = arguments[0]
+    this.computeKey(interval)
+  }
+
   static computeLevel (interval) {
     const dx = interval.getWidth()
     const level = DoubleBits.exponent(dx) + 1
@@ -38,19 +46,4 @@ export default class Key {
   getPoint () {
     return this._pt
   }
-
-  getClass () {
-    return Key
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Key.constructor_ = function () {
-  this._pt = 0.0
-  this._level = 0
-  this._interval = null
-  const interval = arguments[0]
-  this.computeKey(interval)
 }

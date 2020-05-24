@@ -8,6 +8,14 @@ export default class GeometryNoder {
     GeometryNoder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFact = null
+    this._pm = null
+    this._isValidityChecked = false
+    const pm = arguments[0]
+    this._pm = pm
+  }
+
   extractLines (geoms) {
     const lines = new ArrayList()
     const lce = new LinearComponentExtracter(lines)
@@ -54,19 +62,4 @@ export default class GeometryNoder {
     }
     return lines
   }
-
-  getClass () {
-    return GeometryNoder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryNoder.constructor_ = function () {
-  this._geomFact = null
-  this._pm = null
-  this._isValidityChecked = false
-  const pm = arguments[0]
-  this._pm = pm
 }

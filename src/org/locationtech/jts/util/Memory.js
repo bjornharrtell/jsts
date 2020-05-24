@@ -1,8 +1,4 @@
 export default class Memory {
-  constructor () {
-    Memory.constructor_.apply(this, arguments)
-  }
-
   static used () {
     const runtime = Runtime.getRuntime()
     return runtime.totalMemory() - runtime.freeMemory()
@@ -48,16 +44,7 @@ export default class Memory {
     const runtime = Runtime.getRuntime()
     return runtime.freeMemory()
   }
-
-  getClass () {
-    return Memory
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Memory.constructor_ = function () {}
 Memory.KB = 1024
 Memory.MB = 1048576
 Memory.GB = 1073741824

@@ -4,6 +4,21 @@ export default class GeometryLocation {
     GeometryLocation.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._component = null
+    this._segIndex = null
+    this._pt = null
+    if (arguments.length === 2) {
+      const component = arguments[0]; const pt = arguments[1]
+      GeometryLocation.constructor_.call(this, component, GeometryLocation.INSIDE_AREA, pt)
+    } else if (arguments.length === 3) {
+      const component = arguments[0]; const segIndex = arguments[1]; const pt = arguments[2]
+      this._component = component
+      this._segIndex = segIndex
+      this._pt = pt
+    }
+  }
+
   getSegmentIndex () {
     return this._segIndex
   }
@@ -22,28 +37,6 @@ export default class GeometryLocation {
 
   getGeometryComponent () {
     return this._component
-  }
-
-  getClass () {
-    return GeometryLocation
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-GeometryLocation.constructor_ = function () {
-  this._component = null
-  this._segIndex = null
-  this._pt = null
-  if (arguments.length === 2) {
-    const component = arguments[0]; const pt = arguments[1]
-    GeometryLocation.constructor_.call(this, component, GeometryLocation.INSIDE_AREA, pt)
-  } else if (arguments.length === 3) {
-    const component = arguments[0]; const segIndex = arguments[1]; const pt = arguments[2]
-    this._component = component
-    this._segIndex = segIndex
-    this._pt = pt
   }
 }
 GeometryLocation.INSIDE_AREA = -1

@@ -5,6 +5,28 @@ export default class AffineTransformationBuilder {
     AffineTransformationBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._src0 = null
+    this._src1 = null
+    this._src2 = null
+    this._dest0 = null
+    this._dest1 = null
+    this._dest2 = null
+    this._m00 = null
+    this._m01 = null
+    this._m02 = null
+    this._m10 = null
+    this._m11 = null
+    this._m12 = null
+    const src0 = arguments[0]; const src1 = arguments[1]; const src2 = arguments[2]; const dest0 = arguments[3]; const dest1 = arguments[4]; const dest2 = arguments[5]
+    this._src0 = src0
+    this._src1 = src1
+    this._src2 = src2
+    this._dest0 = dest0
+    this._dest1 = dest1
+    this._dest2 = dest2
+  }
+
   solve (b) {
     const a = [[this._src0.x, this._src0.y, 1], [this._src1.x, this._src1.y, 1], [this._src2.x, this._src2.y, 1]]
     return Matrix.solve(a, b)
@@ -31,33 +53,4 @@ export default class AffineTransformationBuilder {
     if (isSolvable) return new AffineTransformation(this._m00, this._m01, this._m02, this._m10, this._m11, this._m12)
     return null
   }
-
-  getClass () {
-    return AffineTransformationBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-AffineTransformationBuilder.constructor_ = function () {
-  this._src0 = null
-  this._src1 = null
-  this._src2 = null
-  this._dest0 = null
-  this._dest1 = null
-  this._dest2 = null
-  this._m00 = null
-  this._m01 = null
-  this._m02 = null
-  this._m10 = null
-  this._m11 = null
-  this._m12 = null
-  const src0 = arguments[0]; const src1 = arguments[1]; const src2 = arguments[2]; const dest0 = arguments[3]; const dest1 = arguments[4]; const dest2 = arguments[5]
-  this._src0 = src0
-  this._src1 = src1
-  this._src2 = src2
-  this._dest0 = dest0
-  this._dest1 = dest1
-  this._dest2 = dest2
 }

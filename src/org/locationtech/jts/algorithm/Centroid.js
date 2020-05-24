@@ -10,6 +10,20 @@ export default class Centroid {
     Centroid.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._areaBasePt = null
+    this._triangleCent3 = new Coordinate()
+    this._areasum2 = 0
+    this._cg3 = new Coordinate()
+    this._lineCentSum = new Coordinate()
+    this._totalLength = 0.0
+    this._ptCount = 0
+    this._ptCentSum = new Coordinate()
+    const geom = arguments[0]
+    this._areaBasePt = null
+    this.add(geom)
+  }
+
   static area2 (p1, p2, p3) {
     return (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y)
   }
@@ -116,25 +130,4 @@ export default class Centroid {
       }
     }
   }
-
-  getClass () {
-    return Centroid
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Centroid.constructor_ = function () {
-  this._areaBasePt = null
-  this._triangleCent3 = new Coordinate()
-  this._areasum2 = 0
-  this._cg3 = new Coordinate()
-  this._lineCentSum = new Coordinate()
-  this._totalLength = 0.0
-  this._ptCount = 0
-  this._ptCentSum = new Coordinate()
-  const geom = arguments[0]
-  this._areaBasePt = null
-  this.add(geom)
 }

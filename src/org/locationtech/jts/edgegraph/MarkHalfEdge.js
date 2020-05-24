@@ -5,6 +5,12 @@ export default class MarkHalfEdge extends HalfEdge {
     MarkHalfEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._isMarked = false
+    const orig = arguments[0]
+    HalfEdge.constructor_.call(this, orig)
+  }
+
   static setMarkBoth (e, isMarked) {
     e.setMark(isMarked)
     e.sym().setMark(isMarked)
@@ -38,17 +44,4 @@ export default class MarkHalfEdge extends HalfEdge {
   isMarked () {
     return this._isMarked
   }
-
-  getClass () {
-    return MarkHalfEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-MarkHalfEdge.constructor_ = function () {
-  this._isMarked = false
-  const orig = arguments[0]
-  HalfEdge.constructor_.call(this, orig)
 }

@@ -8,6 +8,20 @@ export default class Vertex {
     Vertex.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._p = null
+    if (arguments.length === 1) {
+      const _p = arguments[0]
+      this._p = new Coordinate(_p)
+    } else if (arguments.length === 2) {
+      const _x = arguments[0]; const _y = arguments[1]
+      this._p = new Coordinate(_x, _y)
+    } else if (arguments.length === 3) {
+      const _x = arguments[0]; const _y = arguments[1]; const _z = arguments[2]
+      this._p = new Coordinate(_x, _y, _z)
+    }
+  }
+
   static interpolateZ () {
     if (arguments.length === 3) {
       const p = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
@@ -199,27 +213,6 @@ export default class Vertex {
       edgeLength = el
 
     return radius / edgeLength
-  }
-
-  getClass () {
-    return Vertex
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Vertex.constructor_ = function () {
-  this._p = null
-  if (arguments.length === 1) {
-    const _p = arguments[0]
-    this._p = new Coordinate(_p)
-  } else if (arguments.length === 2) {
-    const _x = arguments[0]; const _y = arguments[1]
-    this._p = new Coordinate(_x, _y)
-  } else if (arguments.length === 3) {
-    const _x = arguments[0]; const _y = arguments[1]; const _z = arguments[2]
-    this._p = new Coordinate(_x, _y, _z)
   }
 }
 Vertex.LEFT = 0

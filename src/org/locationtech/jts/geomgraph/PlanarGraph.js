@@ -13,6 +13,18 @@ export default class PlanarGraph {
     PlanarGraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._edges = new ArrayList()
+    this._nodes = null
+    this._edgeEndList = new ArrayList()
+    if (arguments.length === 0) {
+      this._nodes = new NodeMap(new NodeFactory())
+    } else if (arguments.length === 1) {
+      const nodeFact = arguments[0]
+      this._nodes = new NodeMap(nodeFact)
+    }
+  }
+
   static linkResultDirectedEdges (nodes) {
     for (let nodeit = nodes.iterator(); nodeit.hasNext();) {
       const node = nodeit.next()
@@ -143,24 +155,5 @@ export default class PlanarGraph {
       if (p0.equals(eCoord[0]) && p1.equals(eCoord[1])) return e
     }
     return null
-  }
-
-  getClass () {
-    return PlanarGraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PlanarGraph.constructor_ = function () {
-  this._edges = new ArrayList()
-  this._nodes = null
-  this._edgeEndList = new ArrayList()
-  if (arguments.length === 0) {
-    this._nodes = new NodeMap(new NodeFactory())
-  } else if (arguments.length === 1) {
-    const nodeFact = arguments[0]
-    this._nodes = new NodeMap(nodeFact)
   }
 }

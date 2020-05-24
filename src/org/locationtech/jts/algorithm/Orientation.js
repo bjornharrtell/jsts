@@ -3,10 +3,6 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import CGAlgorithmsDD from './CGAlgorithmsDD'
 import CoordinateSequence from '../geom/CoordinateSequence'
 export default class Orientation {
-  constructor () {
-    Orientation.constructor_.apply(this, arguments)
-  }
-
   static index (p1, p2, q) {
     return CGAlgorithmsDD.orientationIndex(p1, p2, q)
   }
@@ -82,16 +78,7 @@ export default class Orientation {
       return isCCW
     }
   }
-
-  getClass () {
-    return Orientation
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Orientation.constructor_ = function () {}
 Orientation.CLOCKWISE = -1
 Orientation.RIGHT = Orientation.CLOCKWISE
 Orientation.COUNTERCLOCKWISE = 1

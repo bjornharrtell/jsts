@@ -8,6 +8,15 @@ export default class InteriorPointPoint {
     InteriorPointPoint.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._centroid = null
+    this._minDistance = Double.MAX_VALUE
+    this._interiorPoint = null
+    const g = arguments[0]
+    this._centroid = g.getCentroid().getCoordinate()
+    this.add(g)
+  }
+
   static getInteriorPoint (geom) {
     const intPt = new InteriorPointPoint(geom)
     return intPt.getInteriorPoint()
@@ -36,20 +45,4 @@ export default class InteriorPointPoint {
       }
     }
   }
-
-  getClass () {
-    return InteriorPointPoint
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-InteriorPointPoint.constructor_ = function () {
-  this._centroid = null
-  this._minDistance = Double.MAX_VALUE
-  this._interiorPoint = null
-  const g = arguments[0]
-  this._centroid = g.getCentroid().getCoordinate()
-  this.add(g)
 }

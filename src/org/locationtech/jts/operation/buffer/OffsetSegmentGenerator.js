@@ -12,6 +12,33 @@ export default class OffsetSegmentGenerator {
     OffsetSegmentGenerator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._maxCurveSegmentError = 0.0
+    this._filletAngleQuantum = null
+    this._closingSegLengthFactor = 1
+    this._segList = null
+    this._distance = 0.0
+    this._precisionModel = null
+    this._bufParams = null
+    this._li = null
+    this._s0 = null
+    this._s1 = null
+    this._s2 = null
+    this._seg0 = new LineSegment()
+    this._seg1 = new LineSegment()
+    this._offset0 = new LineSegment()
+    this._offset1 = new LineSegment()
+    this._side = 0
+    this._hasNarrowConcaveAngle = false
+    const precisionModel = arguments[0]; const bufParams = arguments[1]; const distance = arguments[2]
+    this._precisionModel = precisionModel
+    this._bufParams = bufParams
+    this._li = new RobustLineIntersector()
+    this._filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments()
+    if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this._closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR
+    this.init(distance)
+  }
+
   addNextSegment (p, addStartPoint) {
     this._s0 = this._s1
     this._s1 = this._s2
@@ -255,40 +282,6 @@ export default class OffsetSegmentGenerator {
   hasNarrowConcaveAngle () {
     return this._hasNarrowConcaveAngle
   }
-
-  getClass () {
-    return OffsetSegmentGenerator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OffsetSegmentGenerator.constructor_ = function () {
-  this._maxCurveSegmentError = 0.0
-  this._filletAngleQuantum = null
-  this._closingSegLengthFactor = 1
-  this._segList = null
-  this._distance = 0.0
-  this._precisionModel = null
-  this._bufParams = null
-  this._li = null
-  this._s0 = null
-  this._s1 = null
-  this._s2 = null
-  this._seg0 = new LineSegment()
-  this._seg1 = new LineSegment()
-  this._offset0 = new LineSegment()
-  this._offset1 = new LineSegment()
-  this._side = 0
-  this._hasNarrowConcaveAngle = false
-  const precisionModel = arguments[0]; const bufParams = arguments[1]; const distance = arguments[2]
-  this._precisionModel = precisionModel
-  this._bufParams = bufParams
-  this._li = new RobustLineIntersector()
-  this._filletAngleQuantum = Math.PI / 2.0 / bufParams.getQuadrantSegments()
-  if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this._closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR
-  this.init(distance)
 }
 OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR = 1.0E-3
 OffsetSegmentGenerator.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3

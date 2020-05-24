@@ -13,6 +13,31 @@ export default class MaximumInscribedCircle {
     MaximumInscribedCircle.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._tolerance = null
+    this._factory = null
+    this._ptLocater = null
+    this._indexedDistance = null
+    this._centerCell = null
+    this._centerPt = null
+    this._radiusPt = null
+    this._centerPoint = null
+    this._radiusPoint = null
+    const polygonal = arguments[0]; const tolerance = arguments[1]
+    if (!(polygonal instanceof Polygon || polygonal instanceof MultiPolygon))
+      throw new IllegalArgumentException('Input geometry must be a Polygon or MultiPolygon')
+
+    if (polygonal.isEmpty())
+      throw new IllegalArgumentException('Empty input geometry is not supported')
+
+    this._inputGeom = polygonal
+    this._factory = polygonal.getFactory()
+    this._tolerance = tolerance
+    this._ptLocater = new IndexedPointInAreaLocator(polygonal)
+    this._indexedDistance = new IndexedFacetDistance(polygonal.getBoundary())
+  }
+
   static getCenter (polygonal, tolerance) {
     const mic = new MaximumInscribedCircle(polygonal, tolerance)
     return mic.getCenter()
@@ -103,18 +128,24 @@ export default class MaximumInscribedCircle {
       for (let y = minY; y < maxY; y += cellSize)
         cellQueue.add(this.createCell(x + hSide, y + hSide, hSide))
   }
-
-  getClass () {
-    return MaximumInscribedCircle
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class Cell {
   constructor () {
     Cell.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._x = null
+    this._y = null
+    this._hSide = null
+    this._distance = null
+    this._maxDist = null
+    const x = arguments[0]; const y = arguments[1]; const hSide = arguments[2]; const distanceToBoundary = arguments[3]
+    this._x = x
+    this._y = y
+    this._hSide = hSide
+    this._distance = distanceToBoundary
+    this._maxDist = this._distance + hSide * Cell.SQRT2
   }
 
   getHSide () {
@@ -145,50 +176,9 @@ class Cell {
     return this._y
   }
 
-  getClass () {
-    return Cell
-  }
-
   get interfaces_ () {
     return [Comparable]
   }
 }
-Cell.constructor_ = function () {
-  this._x = null
-  this._y = null
-  this._hSide = null
-  this._distance = null
-  this._maxDist = null
-  const x = arguments[0]; const y = arguments[1]; const hSide = arguments[2]; const distanceToBoundary = arguments[3]
-  this._x = x
-  this._y = y
-  this._hSide = hSide
-  this._distance = distanceToBoundary
-  this._maxDist = this._distance + hSide * Cell.SQRT2
-}
 Cell.SQRT2 = 1.4142135623730951
 MaximumInscribedCircle.Cell = Cell
-MaximumInscribedCircle.constructor_ = function () {
-  this._inputGeom = null
-  this._tolerance = null
-  this._factory = null
-  this._ptLocater = null
-  this._indexedDistance = null
-  this._centerCell = null
-  this._centerPt = null
-  this._radiusPt = null
-  this._centerPoint = null
-  this._radiusPoint = null
-  const polygonal = arguments[0]; const tolerance = arguments[1]
-  if (!(polygonal instanceof Polygon || polygonal instanceof MultiPolygon))
-    throw new IllegalArgumentException('Input geometry must be a Polygon or MultiPolygon')
-
-  if (polygonal.isEmpty())
-    throw new IllegalArgumentException('Empty input geometry is not supported')
-
-  this._inputGeom = polygonal
-  this._factory = polygonal.getFactory()
-  this._tolerance = tolerance
-  this._ptLocater = new IndexedPointInAreaLocator(polygonal)
-  this._indexedDistance = new IndexedFacetDistance(polygonal.getBoundary())
-}

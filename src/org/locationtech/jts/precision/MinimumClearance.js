@@ -11,6 +11,14 @@ export default class MinimumClearance {
     MinimumClearance.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._minClearance = null
+    this._minClearancePts = null
+    const geom = arguments[0]
+    this._inputGeom = geom
+  }
+
   static getLine (g) {
     const rp = new MinimumClearance(g)
     return rp.getLine()
@@ -45,18 +53,15 @@ export default class MinimumClearance {
     this.compute()
     return this._minClearance
   }
-
-  getClass () {
-    return MinimumClearance
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class MinClearanceDistance {
   constructor () {
     MinClearanceDistance.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._minDist = Double.MAX_VALUE
+    this._minPts = new Array(2).fill(null)
   }
 
   vertexDistance (fs1, fs2) {
@@ -126,23 +131,8 @@ class MinClearanceDistance {
     this._minPts[1] = new Coordinate(seg.closestPoint(p))
   }
 
-  getClass () {
-    return MinClearanceDistance
-  }
-
   get interfaces_ () {
     return [ItemDistance]
   }
 }
-MinClearanceDistance.constructor_ = function () {
-  this._minDist = Double.MAX_VALUE
-  this._minPts = new Array(2).fill(null)
-}
 MinimumClearance.MinClearanceDistance = MinClearanceDistance
-MinimumClearance.constructor_ = function () {
-  this._inputGeom = null
-  this._minClearance = null
-  this._minClearancePts = null
-  const geom = arguments[0]
-  this._inputGeom = geom
-}

@@ -25,6 +25,14 @@ export default class IsValidOp {
     IsValidOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._parentGeometry = null
+    this._isSelfTouchingRingFormingHoleValid = false
+    this._validErr = null
+    const parentGeometry = arguments[0]
+    this._parentGeometry = parentGeometry
+  }
+
   static findPtNotNode (testCoords, searchRing, graph) {
     const searchEdge = graph.findEdge(searchRing)
     const eiList = searchEdge.getEdgeIntersectionList()
@@ -268,7 +276,7 @@ export default class IsValidOp {
       const g = arguments[0]
       this._validErr = null
       if (g.isEmpty()) return null
-      if (g instanceof Point) this.checkValid(g); else if (g instanceof MultiPoint) this.checkValid(g); else if (g instanceof LinearRing) this.checkValid(g); else if (g instanceof LineString) this.checkValid(g); else if (g instanceof Polygon) this.checkValid(g); else if (g instanceof MultiPolygon) this.checkValid(g); else if (g instanceof GeometryCollection) this.checkValid(g); else throw new UnsupportedOperationException(g.getClass().getName())
+      if (g instanceof Point) this.checkValid(g); else if (g instanceof MultiPoint) this.checkValid(g); else if (g instanceof LinearRing) this.checkValid(g); else if (g instanceof LineString) this.checkValid(g); else if (g instanceof Polygon) this.checkValid(g); else if (g instanceof MultiPolygon) this.checkValid(g); else if (g instanceof GeometryCollection) this.checkValid(g); else throw new UnsupportedOperationException(g.getGeometryType())
     }
   }
 
@@ -328,19 +336,4 @@ export default class IsValidOp {
       }
     }
   }
-
-  getClass () {
-    return IsValidOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-IsValidOp.constructor_ = function () {
-  this._parentGeometry = null
-  this._isSelfTouchingRingFormingHoleValid = false
-  this._validErr = null
-  const parentGeometry = arguments[0]
-  this._parentGeometry = parentGeometry
 }

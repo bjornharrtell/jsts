@@ -5,6 +5,13 @@ export default class QuadEdge {
     QuadEdge.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._rot = null
+    this._vertex = null
+    this._next = null
+    this._data = null
+  }
+
   static makeEdge (o, d) {
     const q0 = new QuadEdge()
     const q1 = new QuadEdge()
@@ -163,18 +170,4 @@ export default class QuadEdge {
   setNext (next) {
     this._next = next
   }
-
-  getClass () {
-    return QuadEdge
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-QuadEdge.constructor_ = function () {
-  this._rot = null
-  this._vertex = null
-  this._next = null
-  this._data = null
 }

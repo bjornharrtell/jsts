@@ -6,6 +6,14 @@ export default class OffsetPointGenerator {
     OffsetPointGenerator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._g = null
+    this._doLeft = true
+    this._doRight = true
+    const g = arguments[0]
+    this._g = g
+  }
+
   extractPoints (line, offsetDistance, offsetPts) {
     const pts = line.getCoordinates()
     for (let i = 0; i < pts.length - 1; i++)
@@ -44,19 +52,4 @@ export default class OffsetPointGenerator {
       offsetPts.add(offsetRight)
     }
   }
-
-  getClass () {
-    return OffsetPointGenerator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-OffsetPointGenerator.constructor_ = function () {
-  this._g = null
-  this._doLeft = true
-  this._doRight = true
-  const g = arguments[0]
-  this._g = g
 }

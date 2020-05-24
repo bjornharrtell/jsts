@@ -17,6 +17,23 @@ export default class EdgeRing {
     EdgeRing.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._factory = null
+    this._deList = new ArrayList()
+    this._lowestEdge = null
+    this._ring = null
+    this._locator = null
+    this._ringPts = null
+    this._holes = null
+    this._shell = null
+    this._isHole = null
+    this._isProcessed = false
+    this._isIncludedSet = false
+    this._isIncluded = false
+    const factory = arguments[0]
+    this._factory = factory
+  }
+
   static findDirEdgesInRing (startDE) {
     let de = startDE
     const edges = new ArrayList()
@@ -229,49 +246,16 @@ export default class EdgeRing {
   setProcessed (isProcessed) {
     this._isProcessed = isProcessed
   }
-
-  getClass () {
-    return EdgeRing
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class EnvelopeComparator {
-  constructor () {
-    EnvelopeComparator.constructor_.apply(this, arguments)
-  }
-
   compare (obj0, obj1) {
     const r0 = obj0
     const r1 = obj1
     return r0.getRing().getEnvelope().compareTo(r1.getRing().getEnvelope())
   }
 
-  getClass () {
-    return EnvelopeComparator
-  }
-
   get interfaces_ () {
     return [Comparator]
   }
 }
-EnvelopeComparator.constructor_ = function () {}
 EdgeRing.EnvelopeComparator = EnvelopeComparator
-EdgeRing.constructor_ = function () {
-  this._factory = null
-  this._deList = new ArrayList()
-  this._lowestEdge = null
-  this._ring = null
-  this._locator = null
-  this._ringPts = null
-  this._holes = null
-  this._shell = null
-  this._isHole = null
-  this._isProcessed = false
-  this._isIncludedSet = false
-  this._isIncluded = false
-  const factory = arguments[0]
-  this._factory = factory
-}

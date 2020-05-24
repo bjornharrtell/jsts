@@ -6,6 +6,17 @@ export default class LinearGeometryBuilder {
     LinearGeometryBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFact = null
+    this._lines = new ArrayList()
+    this._coordList = null
+    this._ignoreInvalidLines = false
+    this._fixInvalidLines = false
+    this._lastPt = null
+    const geomFact = arguments[0]
+    this._geomFact = geomFact
+  }
+
   getGeometry () {
     this.endLine()
     return this._geomFact.buildGeometry(this._lines)
@@ -65,22 +76,4 @@ export default class LinearGeometryBuilder {
     const validPts = [pts[0], pts[0]]
     return validPts
   }
-
-  getClass () {
-    return LinearGeometryBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LinearGeometryBuilder.constructor_ = function () {
-  this._geomFact = null
-  this._lines = new ArrayList()
-  this._coordList = null
-  this._ignoreInvalidLines = false
-  this._fixInvalidLines = false
-  this._lastPt = null
-  const geomFact = arguments[0]
-  this._geomFact = geomFact
 }

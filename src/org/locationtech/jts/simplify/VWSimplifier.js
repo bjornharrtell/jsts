@@ -9,6 +9,14 @@ export default class VWSimplifier {
     VWSimplifier.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._inputGeom = null
+    this._distanceTolerance = null
+    this._isEnsureValidTopology = true
+    const inputGeom = arguments[0]
+    this._inputGeom = inputGeom
+  }
+
   static simplify (geom, distanceTolerance) {
     const simp = new VWSimplifier(geom)
     simp.setDistanceTolerance(distanceTolerance)
@@ -28,19 +36,19 @@ export default class VWSimplifier {
     if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
     this._distanceTolerance = distanceTolerance
   }
-
-  getClass () {
-    return VWSimplifier
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
 class VWTransformer extends GeometryTransformer {
   constructor () {
     super()
     VWTransformer.constructor_.apply(this, arguments)
+  }
+
+  static constructor_ () {
+    this._isEnsureValidTopology = true
+    this._distanceTolerance = null
+    const isEnsureValidTopology = arguments[0]; const distanceTolerance = arguments[1]
+    this._isEnsureValidTopology = isEnsureValidTopology
+    this._distanceTolerance = distanceTolerance
   }
 
   transformPolygon (geom, parent) {
@@ -80,27 +88,5 @@ class VWTransformer extends GeometryTransformer {
 
     return simpResult
   }
-
-  getClass () {
-    return VWTransformer
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-VWTransformer.constructor_ = function () {
-  this._isEnsureValidTopology = true
-  this._distanceTolerance = null
-  const isEnsureValidTopology = arguments[0]; const distanceTolerance = arguments[1]
-  this._isEnsureValidTopology = isEnsureValidTopology
-  this._distanceTolerance = distanceTolerance
 }
 VWSimplifier.VWTransformer = VWTransformer
-VWSimplifier.constructor_ = function () {
-  this._inputGeom = null
-  this._distanceTolerance = null
-  this._isEnsureValidTopology = true
-  const inputGeom = arguments[0]
-  this._inputGeom = inputGeom
-}

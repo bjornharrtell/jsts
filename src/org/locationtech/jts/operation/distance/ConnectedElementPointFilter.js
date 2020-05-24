@@ -8,6 +8,12 @@ export default class ConnectedElementPointFilter {
     ConnectedElementPointFilter.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._pts = null
+    const pts = arguments[0]
+    this._pts = pts
+  }
+
   static getCoordinates (geom) {
     const pts = new ArrayList()
     geom.apply(new ConnectedElementPointFilter(pts))
@@ -18,16 +24,7 @@ export default class ConnectedElementPointFilter {
     if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this._pts.add(geom.getCoordinate())
   }
 
-  getClass () {
-    return ConnectedElementPointFilter
-  }
-
   get interfaces_ () {
     return [GeometryFilter]
   }
-}
-ConnectedElementPointFilter.constructor_ = function () {
-  this._pts = null
-  const pts = arguments[0]
-  this._pts = pts
 }

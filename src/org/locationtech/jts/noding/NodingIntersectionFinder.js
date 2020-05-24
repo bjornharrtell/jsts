@@ -5,6 +5,21 @@ export default class NodingIntersectionFinder {
     NodingIntersectionFinder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._findAllIntersections = false
+    this._isCheckEndSegmentsOnly = false
+    this._keepIntersections = true
+    this._isInteriorIntersectionsOnly = false
+    this._li = null
+    this._interiorIntersection = null
+    this._intSegments = null
+    this._intersections = new ArrayList()
+    this._intersectionCount = 0
+    const li = arguments[0]
+    this._li = li
+    this._interiorIntersection = null
+  }
+
   static createAllIntersectionsFinder (li) {
     const finder = new NodingIntersectionFinder(li)
     finder.setFindAllIntersections(true)
@@ -138,25 +153,7 @@ export default class NodingIntersectionFinder {
     this._isInteriorIntersectionsOnly = isInteriorIntersectionsOnly
   }
 
-  getClass () {
-    return NodingIntersectionFinder
-  }
-
   get interfaces_ () {
     return [SegmentIntersector]
   }
-}
-NodingIntersectionFinder.constructor_ = function () {
-  this._findAllIntersections = false
-  this._isCheckEndSegmentsOnly = false
-  this._keepIntersections = true
-  this._isInteriorIntersectionsOnly = false
-  this._li = null
-  this._interiorIntersection = null
-  this._intSegments = null
-  this._intersections = new ArrayList()
-  this._intersectionCount = 0
-  const li = arguments[0]
-  this._li = li
-  this._interiorIntersection = null
 }

@@ -1,10 +1,6 @@
 import Coordinate from '../geom/Coordinate'
 import Double from '../../../../java/lang/Double'
 export default class Intersection {
-  constructor () {
-    Intersection.constructor_.apply(this, arguments)
-  }
-
   static intersection (p1, p2, q1, q2) {
     const minX0 = p1.x < p2.x ? p1.x : p2.x
     const minY0 = p1.y < p2.y ? p1.y : p2.y
@@ -44,13 +40,4 @@ export default class Intersection {
 
     return new Coordinate(xInt + midx, yInt + midy)
   }
-
-  getClass () {
-    return Intersection
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-Intersection.constructor_ = function () {}

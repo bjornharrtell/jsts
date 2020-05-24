@@ -14,6 +14,15 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     PreparedPolygon.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._isRectangle = null
+    this._segIntFinder = null
+    this._pia = null
+    const poly = arguments[0]
+    BasicPreparedGeometry.constructor_.call(this, poly)
+    this._isRectangle = this.getGeometry().isRectangle()
+  }
+
   containsProperly (g) {
     if (!this.envelopeCovers(g)) return false
     return PreparedPolygonContainsProperly.containsProperly(this, g)
@@ -52,20 +61,4 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     if (this._segIntFinder === null) this._segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.extractSegmentStrings(this.getGeometry()))
     return this._segIntFinder
   }
-
-  getClass () {
-    return PreparedPolygon
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-PreparedPolygon.constructor_ = function () {
-  this._isRectangle = null
-  this._segIntFinder = null
-  this._pia = null
-  const poly = arguments[0]
-  BasicPreparedGeometry.constructor_.call(this, poly)
-  this._isRectangle = this.getGeometry().isRectangle()
 }

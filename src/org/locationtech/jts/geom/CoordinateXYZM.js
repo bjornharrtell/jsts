@@ -6,6 +6,28 @@ export default class CoordinateXYZM extends Coordinate {
     CoordinateXYZM.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._m = null
+    if (arguments.length === 0) {
+      Coordinate.constructor_.call(this)
+      this._m = 0.0
+    } else if (arguments.length === 1) {
+      if (arguments[0] instanceof CoordinateXYZM) {
+        const coord = arguments[0]
+        Coordinate.constructor_.call(this, coord)
+        this._m = coord._m
+      } else if (arguments[0] instanceof Coordinate) {
+        const coord = arguments[0]
+        Coordinate.constructor_.call(this, coord)
+        this._m = this.getM()
+      }
+    } else if (arguments.length === 4) {
+      const x = arguments[0]; const y = arguments[1]; const z = arguments[2]; const m = arguments[3]
+      Coordinate.constructor_.call(this, x, y, z)
+      this._m = m
+    }
+  }
+
   getM () {
     return this._m
   }
@@ -60,34 +82,5 @@ export default class CoordinateXYZM extends Coordinate {
     this.y = other.y
     this.z = other.getZ()
     this._m = other.getM()
-  }
-
-  getClass () {
-    return CoordinateXYZM
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-CoordinateXYZM.constructor_ = function () {
-  this._m = null
-  if (arguments.length === 0) {
-    Coordinate.constructor_.call(this)
-    this._m = 0.0
-  } else if (arguments.length === 1) {
-    if (arguments[0] instanceof CoordinateXYZM) {
-      const coord = arguments[0]
-      Coordinate.constructor_.call(this, coord)
-      this._m = coord._m
-    } else if (arguments[0] instanceof Coordinate) {
-      const coord = arguments[0]
-      Coordinate.constructor_.call(this, coord)
-      this._m = this.getM()
-    }
-  } else if (arguments.length === 4) {
-    const x = arguments[0]; const y = arguments[1]; const z = arguments[2]; const m = arguments[3]
-    Coordinate.constructor_.call(this, x, y, z)
-    this._m = m
   }
 }

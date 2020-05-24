@@ -11,6 +11,24 @@ export default class UnaryUnionOp {
     UnaryUnionOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._geomFact = null
+    this._extracter = null
+    if (arguments.length === 1) {
+      if (hasInterface(arguments[0], Collection)) {
+        const geoms = arguments[0]
+        this.extract(geoms)
+      } else if (arguments[0] instanceof Geometry) {
+        const geom = arguments[0]
+        this.extract(geom)
+      }
+    } else if (arguments.length === 2) {
+      const geoms = arguments[0]; const geomFact = arguments[1]
+      this._geomFact = geomFact
+      this.extract(geoms)
+    }
+  }
+
   static union () {
     if (arguments.length === 1) {
       if (hasInterface(arguments[0], Collection)) {
@@ -81,30 +99,5 @@ export default class UnaryUnionOp {
     if (unionPoints === null) union = unionLA; else if (unionLA === null) union = unionPoints; else union = PointGeometryUnion.union(unionPoints, unionLA)
     if (union === null) return this._geomFact.createGeometryCollection()
     return union
-  }
-
-  getClass () {
-    return UnaryUnionOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-UnaryUnionOp.constructor_ = function () {
-  this._geomFact = null
-  this._extracter = null
-  if (arguments.length === 1) {
-    if (hasInterface(arguments[0], Collection)) {
-      const geoms = arguments[0]
-      this.extract(geoms)
-    } else if (arguments[0] instanceof Geometry) {
-      const geom = arguments[0]
-      this.extract(geom)
-    }
-  } else if (arguments.length === 2) {
-    const geoms = arguments[0]; const geomFact = arguments[1]
-    this._geomFact = geomFact
-    this.extract(geoms)
   }
 }

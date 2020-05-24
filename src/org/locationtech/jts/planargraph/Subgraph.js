@@ -6,6 +6,15 @@ export default class Subgraph {
     Subgraph.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._parentGraph = null
+    this._edges = new HashSet()
+    this._dirEdges = new ArrayList()
+    this._nodeMap = new NodeMap()
+    const parentGraph = arguments[0]
+    this._parentGraph = parentGraph
+  }
+
   dirEdgeIterator () {
     return this._dirEdges.iterator()
   }
@@ -34,20 +43,4 @@ export default class Subgraph {
     this._nodeMap.add(e.getDirEdge(0).getFromNode())
     this._nodeMap.add(e.getDirEdge(1).getFromNode())
   }
-
-  getClass () {
-    return Subgraph
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-Subgraph.constructor_ = function () {
-  this._parentGraph = null
-  this._edges = new HashSet()
-  this._dirEdges = new ArrayList()
-  this._nodeMap = new NodeMap()
-  const parentGraph = arguments[0]
-  this._parentGraph = parentGraph
 }

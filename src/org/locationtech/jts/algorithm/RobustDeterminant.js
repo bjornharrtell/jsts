@@ -1,8 +1,4 @@
 export default class RobustDeterminant {
-  constructor () {
-    RobustDeterminant.constructor_.apply(this, arguments)
-  }
-
   static orientationIndex (p1, p2, q) {
     const dx1 = p2.x - p1.x
     const dy1 = p2.y - p1.y
@@ -187,13 +183,4 @@ export default class RobustDeterminant {
         return -sign
     }
   }
-
-  getClass () {
-    return RobustDeterminant
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-RobustDeterminant.constructor_ = function () {}

@@ -3,6 +3,29 @@ export default class BufferParameters {
     BufferParameters.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
+    this._endCapStyle = BufferParameters.CAP_ROUND
+    this._joinStyle = BufferParameters.JOIN_ROUND
+    this._mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT
+    this._isSingleSided = false
+    this._simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const quadrantSegments = arguments[0]
+      this.setQuadrantSegments(quadrantSegments)
+    } else if (arguments.length === 2) {
+      const quadrantSegments = arguments[0]; const endCapStyle = arguments[1]
+      this.setQuadrantSegments(quadrantSegments)
+      this.setEndCapStyle(endCapStyle)
+    } else if (arguments.length === 4) {
+      const quadrantSegments = arguments[0]; const endCapStyle = arguments[1]; const joinStyle = arguments[2]; const mitreLimit = arguments[3]
+      this.setQuadrantSegments(quadrantSegments)
+      this.setEndCapStyle(endCapStyle)
+      this.setJoinStyle(joinStyle)
+      this.setMitreLimit(mitreLimit)
+    }
+  }
+
   static bufferDistanceError (quadSegs) {
     const alpha = Math.PI / 2.0 / quadSegs
     return 1 - Math.cos(alpha / 2.0)
@@ -64,36 +87,6 @@ export default class BufferParameters {
 
   setSingleSided (isSingleSided) {
     this._isSingleSided = isSingleSided
-  }
-
-  getClass () {
-    return BufferParameters
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BufferParameters.constructor_ = function () {
-  this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
-  this._endCapStyle = BufferParameters.CAP_ROUND
-  this._joinStyle = BufferParameters.JOIN_ROUND
-  this._mitreLimit = BufferParameters.DEFAULT_MITRE_LIMIT
-  this._isSingleSided = false
-  this._simplifyFactor = BufferParameters.DEFAULT_SIMPLIFY_FACTOR
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const quadrantSegments = arguments[0]
-    this.setQuadrantSegments(quadrantSegments)
-  } else if (arguments.length === 2) {
-    const quadrantSegments = arguments[0]; const endCapStyle = arguments[1]
-    this.setQuadrantSegments(quadrantSegments)
-    this.setEndCapStyle(endCapStyle)
-  } else if (arguments.length === 4) {
-    const quadrantSegments = arguments[0]; const endCapStyle = arguments[1]; const joinStyle = arguments[2]; const mitreLimit = arguments[3]
-    this.setQuadrantSegments(quadrantSegments)
-    this.setEndCapStyle(endCapStyle)
-    this.setJoinStyle(joinStyle)
-    this.setMitreLimit(mitreLimit)
   }
 }
 BufferParameters.CAP_ROUND = 1

@@ -2,10 +2,6 @@ import IntArrayList from '../../util/IntArrayList'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Quadrant from '../Quadrant'
 export default class MonotoneChainIndexer {
-  constructor () {
-    MonotoneChainIndexer.constructor_.apply(this, arguments)
-  }
-
   static toIntArray (list) {
     const array = new Array(list.size()).fill(null)
     for (let i = 0; i < array.length; i++)
@@ -49,13 +45,4 @@ export default class MonotoneChainIndexer {
     const startIndex = MonotoneChainIndexer.toIntArray(startIndexList)
     return startIndex
   }
-
-  getClass () {
-    return MonotoneChainIndexer
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-MonotoneChainIndexer.constructor_ = function () {}

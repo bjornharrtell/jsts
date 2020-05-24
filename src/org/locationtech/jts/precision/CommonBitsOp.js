@@ -4,6 +4,17 @@ export default class CommonBitsOp {
     CommonBitsOp.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._returnToOriginalPrecision = true
+    this._cbr = null
+    if (arguments.length === 0) {
+      CommonBitsOp.constructor_.call(this, true)
+    } else if (arguments.length === 1) {
+      const returnToOriginalPrecision = arguments[0]
+      this._returnToOriginalPrecision = returnToOriginalPrecision
+    }
+  }
+
   computeResultPrecision (result) {
     if (this._returnToOriginalPrecision) this._cbr.addCommonBits(result)
     return result
@@ -51,23 +62,5 @@ export default class CommonBitsOp {
   difference (geom0, geom1) {
     const geom = this.removeCommonBits(geom0, geom1)
     return this.computeResultPrecision(geom[0].difference(geom[1]))
-  }
-
-  getClass () {
-    return CommonBitsOp
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-CommonBitsOp.constructor_ = function () {
-  this._returnToOriginalPrecision = true
-  this._cbr = null
-  if (arguments.length === 0) {
-    CommonBitsOp.constructor_.call(this, true)
-  } else if (arguments.length === 1) {
-    const returnToOriginalPrecision = arguments[0]
-    this._returnToOriginalPrecision = returnToOriginalPrecision
   }
 }

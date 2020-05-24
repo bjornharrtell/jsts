@@ -7,6 +7,12 @@ export default class LengthIndexedLine {
     LengthIndexedLine.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    const linearGeom = arguments[0]
+    this._linearGeom = linearGeom
+  }
+
   clampIndex (index) {
     const posIndex = this.positiveIndex(index)
     const startIndex = this.getStartIndex()
@@ -82,17 +88,4 @@ export default class LengthIndexedLine {
     const index = [LengthLocationMap.getLength(this._linearGeom, locIndex[0]), LengthLocationMap.getLength(this._linearGeom, locIndex[1])]
     return index
   }
-
-  getClass () {
-    return LengthIndexedLine
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LengthIndexedLine.constructor_ = function () {
-  this._linearGeom = null
-  const linearGeom = arguments[0]
-  this._linearGeom = linearGeom
 }

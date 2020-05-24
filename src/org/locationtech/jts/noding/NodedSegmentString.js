@@ -10,6 +10,15 @@ export default class NodedSegmentString {
     NodedSegmentString.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._nodeList = new SegmentNodeList(this)
+    this._pts = null
+    this._data = null
+    const pts = arguments[0]; const data = arguments[1]
+    this._pts = pts
+    this._data = data
+  }
+
   static getNodedSubstrings () {
     if (arguments.length === 1) {
       const segStrings = arguments[0]
@@ -95,19 +104,7 @@ export default class NodedSegmentString {
       this.addIntersection(li, segmentIndex, geomIndex, i)
   }
 
-  getClass () {
-    return NodedSegmentString
-  }
-
   get interfaces_ () {
     return [NodableSegmentString]
   }
-}
-NodedSegmentString.constructor_ = function () {
-  this._nodeList = new SegmentNodeList(this)
-  this._pts = null
-  this._data = null
-  const pts = arguments[0]; const data = arguments[1]
-  this._pts = pts
-  this._data = data
 }

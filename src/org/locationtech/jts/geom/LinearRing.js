@@ -9,6 +9,12 @@ export default class LinearRing extends LineString {
     LinearRing.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    const points = arguments[0]; const factory = arguments[1]
+    LineString.constructor_.call(this, points, factory)
+    this.validateConstruction()
+  }
+
   copyInternal () {
     return new LinearRing(this._points.copy(), this._factory)
   }
@@ -45,18 +51,5 @@ export default class LinearRing extends LineString {
   getGeometryType () {
     return Geometry.TYPENAME_LINEARRING
   }
-
-  getClass () {
-    return LinearRing
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LinearRing.constructor_ = function () {
-  const points = arguments[0]; const factory = arguments[1]
-  LineString.constructor_.call(this, points, factory)
-  this.validateConstruction()
 }
 LinearRing.MINIMUM_VALID_SIZE = 4

@@ -6,6 +6,29 @@ export default class LinearIterator {
     LinearIterator.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._linearGeom = null
+    this._numLines = null
+    this._currentLine = null
+    this._componentIndex = 0
+    this._vertexIndex = 0
+    if (arguments.length === 1) {
+      const linear = arguments[0]
+      LinearIterator.constructor_.call(this, linear, 0, 0)
+    } else if (arguments.length === 2) {
+      const linear = arguments[0]; const start = arguments[1]
+      LinearIterator.constructor_.call(this, linear, start.getComponentIndex(), LinearIterator.segmentEndVertexIndex(start))
+    } else if (arguments.length === 3) {
+      const linearGeom = arguments[0]; const componentIndex = arguments[1]; const vertexIndex = arguments[2]
+      if (!hasInterface(linearGeom, Lineal)) throw new IllegalArgumentException('Lineal geometry is required')
+      this._linearGeom = linearGeom
+      this._numLines = linearGeom.getNumGeometries()
+      this._componentIndex = componentIndex
+      this._vertexIndex = vertexIndex
+      this.loadCurrentLine()
+    }
+  }
+
   static segmentEndVertexIndex (loc) {
     if (loc.getSegmentFraction() > 0.0) return loc.getSegmentIndex() + 1
     return loc.getSegmentIndex()
@@ -60,35 +83,5 @@ export default class LinearIterator {
     if (this._componentIndex >= this._numLines) return false
     if (this._componentIndex === this._numLines - 1 && this._vertexIndex >= this._currentLine.getNumPoints()) return false
     return true
-  }
-
-  getClass () {
-    return LinearIterator
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-LinearIterator.constructor_ = function () {
-  this._linearGeom = null
-  this._numLines = null
-  this._currentLine = null
-  this._componentIndex = 0
-  this._vertexIndex = 0
-  if (arguments.length === 1) {
-    const linear = arguments[0]
-    LinearIterator.constructor_.call(this, linear, 0, 0)
-  } else if (arguments.length === 2) {
-    const linear = arguments[0]; const start = arguments[1]
-    LinearIterator.constructor_.call(this, linear, start.getComponentIndex(), LinearIterator.segmentEndVertexIndex(start))
-  } else if (arguments.length === 3) {
-    const linearGeom = arguments[0]; const componentIndex = arguments[1]; const vertexIndex = arguments[2]
-    if (!hasInterface(linearGeom, Lineal)) throw new IllegalArgumentException('Lineal geometry is required')
-    this._linearGeom = linearGeom
-    this._numLines = linearGeom.getNumGeometries()
-    this._componentIndex = componentIndex
-    this._vertexIndex = vertexIndex
-    this.loadCurrentLine()
   }
 }

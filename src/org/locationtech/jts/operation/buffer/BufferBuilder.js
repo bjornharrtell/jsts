@@ -21,6 +21,17 @@ export default class BufferBuilder {
     BufferBuilder.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._bufParams = null
+    this._workingPrecisionModel = null
+    this._workingNoder = null
+    this._geomFact = null
+    this._graph = null
+    this._edgeList = new EdgeList()
+    const bufParams = arguments[0]
+    this._bufParams = bufParams
+  }
+
   static depthDelta (label) {
     const lLoc = label.getLocation(0, Position.LEFT)
     const rLoc = label.getLocation(0, Position.RIGHT)
@@ -146,22 +157,4 @@ export default class BufferBuilder {
   setNoder (noder) {
     this._workingNoder = noder
   }
-
-  getClass () {
-    return BufferBuilder
-  }
-
-  get interfaces_ () {
-    return []
-  }
-}
-BufferBuilder.constructor_ = function () {
-  this._bufParams = null
-  this._workingPrecisionModel = null
-  this._workingNoder = null
-  this._geomFact = null
-  this._graph = null
-  this._edgeList = new EdgeList()
-  const bufParams = arguments[0]
-  this._bufParams = bufParams
 }

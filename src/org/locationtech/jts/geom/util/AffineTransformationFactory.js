@@ -4,10 +4,6 @@ import AffineTransformation from './AffineTransformation'
 import AffineTransformationBuilder from './AffineTransformationBuilder'
 import Angle from '../../algorithm/Angle'
 export default class AffineTransformationFactory {
-  constructor () {
-    AffineTransformationFactory.constructor_.apply(this, arguments)
-  }
-
   static createFromBaseLines (src0, src1, dest0, dest1) {
     const rotPt = new Coordinate(src0.x + dest1.x - dest0.x, src0.y + dest1.y - dest0.y)
     const ang = Angle.angleBetweenOriented(src1, src0, rotPt)
@@ -57,13 +53,4 @@ export default class AffineTransformationFactory {
       return builder.getTransformation()
     }
   }
-
-  getClass () {
-    return AffineTransformationFactory
-  }
-
-  get interfaces_ () {
-    return []
-  }
 }
-AffineTransformationFactory.constructor_ = function () {}

@@ -6,6 +6,33 @@ export default class LinearLocation {
     LinearLocation.constructor_.apply(this, arguments)
   }
 
+  static constructor_ () {
+    this._componentIndex = 0
+    this._segmentIndex = 0
+    this._segmentFraction = 0.0
+    if (arguments.length === 0) {} else if (arguments.length === 1) {
+      const loc = arguments[0]
+      this._componentIndex = loc._componentIndex
+      this._segmentIndex = loc._segmentIndex
+      this._segmentFraction = loc._segmentFraction
+    } else if (arguments.length === 2) {
+      const segmentIndex = arguments[0]; const segmentFraction = arguments[1]
+      LinearLocation.constructor_.call(this, 0, segmentIndex, segmentFraction)
+    } else if (arguments.length === 3) {
+      const componentIndex = arguments[0]; const segmentIndex = arguments[1]; const segmentFraction = arguments[2]
+      this._componentIndex = componentIndex
+      this._segmentIndex = segmentIndex
+      this._segmentFraction = segmentFraction
+      this.normalize()
+    } else if (arguments.length === 4) {
+      const componentIndex = arguments[0]; const segmentIndex = arguments[1]; const segmentFraction = arguments[2]; const doNormalize = arguments[3]
+      this._componentIndex = componentIndex
+      this._segmentIndex = segmentIndex
+      this._segmentFraction = segmentFraction
+      if (doNormalize) this.normalize()
+    }
+  }
+
   static getEndLocation (linear) {
     const loc = new LinearLocation()
     loc.setToEnd(linear)
@@ -192,37 +219,7 @@ export default class LinearLocation {
     return this._segmentFraction <= 0.0 || this._segmentFraction >= 1.0
   }
 
-  getClass () {
-    return LinearLocation
-  }
-
   get interfaces_ () {
     return [Comparable]
-  }
-}
-LinearLocation.constructor_ = function () {
-  this._componentIndex = 0
-  this._segmentIndex = 0
-  this._segmentFraction = 0.0
-  if (arguments.length === 0) {} else if (arguments.length === 1) {
-    const loc = arguments[0]
-    this._componentIndex = loc._componentIndex
-    this._segmentIndex = loc._segmentIndex
-    this._segmentFraction = loc._segmentFraction
-  } else if (arguments.length === 2) {
-    const segmentIndex = arguments[0]; const segmentFraction = arguments[1]
-    LinearLocation.constructor_.call(this, 0, segmentIndex, segmentFraction)
-  } else if (arguments.length === 3) {
-    const componentIndex = arguments[0]; const segmentIndex = arguments[1]; const segmentFraction = arguments[2]
-    this._componentIndex = componentIndex
-    this._segmentIndex = segmentIndex
-    this._segmentFraction = segmentFraction
-    this.normalize()
-  } else if (arguments.length === 4) {
-    const componentIndex = arguments[0]; const segmentIndex = arguments[1]; const segmentFraction = arguments[2]; const doNormalize = arguments[3]
-    this._componentIndex = componentIndex
-    this._segmentIndex = segmentIndex
-    this._segmentFraction = segmentFraction
-    if (doNormalize) this.normalize()
   }
 }
