@@ -7,7 +7,7 @@ import SortedSet from './SortedSet'
  * @see http://download.oracle.com/javase/6/docs/api/java/util/TreeSet.html
  */
 export default class TreeSet extends SortedSet {
-  array_ = []
+  #array = []
 
   constructor (o) {
     super()
@@ -15,8 +15,8 @@ export default class TreeSet extends SortedSet {
   }
 
   contains (o) {
-    for (let i = 0, len = this.array_.length; i < len; i++) {
-      const e = this.array_[i]
+    for (let i = 0, len = this.#array.length; i < len; i++) {
+      const e = this.#array[i]
       if (e.compareTo(o) === 0) {
         return true
       }
@@ -29,15 +29,15 @@ export default class TreeSet extends SortedSet {
       return false
     }
 
-    for (let i = 0, len = this.array_.length; i < len; i++) {
-      const e = this.array_[i]
+    for (let i = 0, len = this.#array.length; i < len; i++) {
+      const e = this.#array[i]
       if (e.compareTo(o) === 1) {
-        this.array_.splice(i, 0, o)
+        this.#array.splice(i, 0, o)
         return true
       }
     }
 
-    this.array_.push(o)
+    this.#array.push(o)
 
     return true
   }
@@ -54,37 +54,37 @@ export default class TreeSet extends SortedSet {
   }
 
   size () {
-    return this.array_.length
+    return this.#array.length
   }
 
   isEmpty () {
-    return this.array_.length === 0
+    return this.#array.length === 0
   }
 
   toArray () {
-    return this.array_.slice()
+    return this.#array.slice()
   }
 
   iterator () {
-    return new Iterator(this)
+    return new Iterator(this.#array)
   }
 }
 
 class Iterator {
-  #treeSet
+  #array
   #position = 0
 
-  constructor (treeSet) {
-    this.#treeSet = treeSet
+  constructor (array) {
+    this.#array = array
   }
 
   next () {
-    if (this.#position === this.#treeSet.size()) { throw new NoSuchElementException() }
-    return this.#treeSet.array_[this.#position++]
+    if (this.#position === this.#array.length) { throw new NoSuchElementException() }
+    return this.#array[this.#position++]
   }
 
   hasNext () {
-    return this.#position < this.#treeSet.size()
+    return this.#position < this.#array.length
   }
 
   remove () {

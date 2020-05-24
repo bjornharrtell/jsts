@@ -23,4 +23,8 @@ export default class Integer {
   static isNan (n) {
     return Number.isNaN(n)
   }
+
+  static valueOf (value) {
+    return new Integer(value)
+  }
 }

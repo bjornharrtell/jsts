@@ -7,7 +7,7 @@ import Set from './Set'
  * @see http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html
  */
 export default class HashSet extends Set {
-  array_ = []
+  #array = []
 
   constructor (o) {
     super()
@@ -15,12 +15,16 @@ export default class HashSet extends Set {
   }
 
   contains (o) {
-    return this.array_.indexOf(o) !== -1
+    if (o.compareTo) {
+      return this.#array.some(v => v.compareTo(o) === 0)
+    } else {
+      return this.#array.includes(o)
+    }
   }
 
   add (o) {
     if (this.contains(o)) { return false }
-    this.array_.push(o)
+    this.#array.push(o)
     return true
   }
 
@@ -34,37 +38,37 @@ export default class HashSet extends Set {
   }
 
   size () {
-    return this.array_.length
+    return this.#array.length
   }
 
   isEmpty () {
-    return this.array_.length === 0
+    return this.#array.length === 0
   }
 
   toArray () {
-    return this.array_.slice()
+    return this.#array.slice()
   }
 
   iterator () {
-    return new Iterator(this)
+    return new Iterator(this.#array)
   }
 };
 
 class Iterator {
-  #hashSet
+  #array
   #position = 0
 
-  constructor (hashSet) {
-    this.#hashSet = hashSet
+  constructor (array) {
+    this.#array = array
   }
 
   next () {
-    if (this.#position === this.#hashSet.size()) { throw new NoSuchElementException() }
-    return this.#hashSet.array_[this.#position++]
+    if (this.#position === this.#array.length) { throw new NoSuchElementException() }
+    return this.#array[this.#position++]
   }
 
   hasNext () {
-    if (this.#position < this.#hashSet.size()) { return true } else { return false }
+    if (this.#position < this.#array.length) { return true } else { return false }
   }
 
   remove () {
