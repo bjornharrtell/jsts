@@ -3,11 +3,10 @@ import Comparable from '../../../../java/lang/Comparable'
 import Quadrant from './Quadrant'
 import Assert from '../util/Assert'
 export default class EdgeEnd {
-  constructor () {
+  constructor() {
     EdgeEnd.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._edge = null
     this._label = null
     this._node = null
@@ -20,82 +19,68 @@ export default class EdgeEnd {
       const edge = arguments[0]
       this._edge = edge
     } else if (arguments.length === 3) {
-      const edge = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
+      const edge = arguments[0], p0 = arguments[1], p1 = arguments[2]
       EdgeEnd.constructor_.call(this, edge, p0, p1, null)
     } else if (arguments.length === 4) {
-      const edge = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]; const label = arguments[3]
+      const edge = arguments[0], p0 = arguments[1], p1 = arguments[2], label = arguments[3]
       EdgeEnd.constructor_.call(this, edge)
       this.init(p0, p1)
       this._label = label
     }
   }
-
-  compareDirection (e) {
+  compareDirection(e) {
     if (this._dx === e._dx && this._dy === e._dy) return 0
     if (this._quadrant > e._quadrant) return 1
     if (this._quadrant < e._quadrant) return -1
     return Orientation.index(e._p0, e._p1, this._p1)
   }
-
-  getDy () {
+  getDy() {
     return this._dy
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._p0
   }
-
-  setNode (node) {
+  setNode(node) {
     this._node = node
   }
-
-  print (out) {
+  print(out) {
     const angle = Math.atan2(this._dy, this._dx)
     const className = this.getClass().getName()
     const lastDotPos = className.lastIndexOf('.')
     const name = className.substring(lastDotPos + 1)
     out.print('  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + angle + '   ' + this._label)
   }
-
-  compareTo (obj) {
+  compareTo(obj) {
     const e = obj
     return this.compareDirection(e)
   }
-
-  getDirectedCoordinate () {
+  getDirectedCoordinate() {
     return this._p1
   }
-
-  getDx () {
+  getDx() {
     return this._dx
   }
-
-  getLabel () {
+  getLabel() {
     return this._label
   }
-
-  getEdge () {
+  getEdge() {
     return this._edge
   }
-
-  getQuadrant () {
+  getQuadrant() {
     return this._quadrant
   }
-
-  getNode () {
+  getNode() {
     return this._node
   }
-
-  toString () {
+  toString() {
     const angle = Math.atan2(this._dy, this._dx)
     const className = this.getClass().getName()
     const lastDotPos = className.lastIndexOf('.')
     const name = className.substring(lastDotPos + 1)
     return '  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + angle + '   ' + this._label
   }
-
-  computeLabel (boundaryNodeRule) {}
-  init (p0, p1) {
+  computeLabel(boundaryNodeRule) {}
+  init(p0, p1) {
     this._p0 = p0
     this._p1 = p1
     this._dx = p1.x - p0.x
@@ -103,8 +88,7 @@ export default class EdgeEnd {
     this._quadrant = Quadrant.quadrant(this._dx, this._dy)
     Assert.isTrue(!(this._dx === 0 && this._dy === 0), 'EdgeEnd with identical endpoints found')
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparable]
   }
 }

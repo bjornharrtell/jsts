@@ -1,11 +1,10 @@
 import MonotoneChainIndexer from './MonotoneChainIndexer'
 import Envelope from '../../geom/Envelope'
 export default class MonotoneChainEdge {
-  constructor () {
+  constructor() {
     MonotoneChainEdge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.e = null
     this.pts = null
     this.startIndex = null
@@ -15,29 +14,25 @@ export default class MonotoneChainEdge {
     const mcb = new MonotoneChainIndexer()
     this.startIndex = mcb.getChainStartIndices(this.pts)
   }
-
-  getCoordinates () {
+  getCoordinates() {
     return this.pts
   }
-
-  getMaxX (chainIndex) {
+  getMaxX(chainIndex) {
     const x1 = this.pts[this.startIndex[chainIndex]].x
     const x2 = this.pts[this.startIndex[chainIndex + 1]].x
     return x1 > x2 ? x1 : x2
   }
-
-  getMinX (chainIndex) {
+  getMinX(chainIndex) {
     const x1 = this.pts[this.startIndex[chainIndex]].x
     const x2 = this.pts[this.startIndex[chainIndex + 1]].x
     return x1 < x2 ? x1 : x2
   }
-
-  computeIntersectsForChain () {
+  computeIntersectsForChain() {
     if (arguments.length === 4) {
-      const chainIndex0 = arguments[0]; const mce = arguments[1]; const chainIndex1 = arguments[2]; const si = arguments[3]
+      const chainIndex0 = arguments[0], mce = arguments[1], chainIndex1 = arguments[2], si = arguments[3]
       this.computeIntersectsForChain(this.startIndex[chainIndex0], this.startIndex[chainIndex0 + 1], mce, mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si)
     } else if (arguments.length === 6) {
-      const start0 = arguments[0]; const end0 = arguments[1]; const mce = arguments[2]; const start1 = arguments[3]; const end1 = arguments[4]; const ei = arguments[5]
+      const start0 = arguments[0], end0 = arguments[1], mce = arguments[2], start1 = arguments[3], end1 = arguments[4], ei = arguments[5]
       if (end0 - start0 === 1 && end1 - start1 === 1) {
         ei.addIntersections(this.e, start0, mce.e, start1)
         return null
@@ -55,18 +50,17 @@ export default class MonotoneChainEdge {
       }
     }
   }
-
-  overlaps (start0, end0, mce, start1, end1) {
+  overlaps(start0, end0, mce, start1, end1) {
     return Envelope.intersects(this.pts[start0], this.pts[end0], mce.pts[start1], mce.pts[end1])
   }
-
-  getStartIndexes () {
+  getStartIndexes() {
     return this.startIndex
   }
-
-  computeIntersects (mce, si) {
-    for (let i = 0; i < this.startIndex.length - 1; i++)
-      for (let j = 0; j < mce.startIndex.length - 1; j++)
+  computeIntersects(mce, si) {
+    for (let i = 0; i < this.startIndex.length - 1; i++) 
+      for (let j = 0; j < mce.startIndex.length - 1; j++) 
         this.computeIntersectsForChain(i, mce, j, si)
+      
+    
   }
 }

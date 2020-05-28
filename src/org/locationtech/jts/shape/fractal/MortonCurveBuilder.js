@@ -2,22 +2,19 @@ import Coordinate from '../../geom/Coordinate'
 import MortonCode from './MortonCode'
 import GeometricShapeBuilder from '../GeometricShapeBuilder'
 export default class MortonCurveBuilder extends GeometricShapeBuilder {
-  constructor () {
+  constructor() {
     super()
     MortonCurveBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     const geomFactory = arguments[0]
     GeometricShapeBuilder.constructor_.call(this, geomFactory)
     this._extent = null
   }
-
-  static transform (val, scale, offset) {
+  static transform(val, scale, offset) {
     return val * scale + offset
   }
-
-  getGeometry () {
+  getGeometry() {
     const level = MortonCode.level(this._numPts)
     const nPts = MortonCode.size(level)
     let scale = 1
@@ -40,8 +37,7 @@ export default class MortonCurveBuilder extends GeometricShapeBuilder {
     }
     return this._geomFactory.createLineString(pts)
   }
-
-  setLevel (level) {
+  setLevel(level) {
     this._numPts = MortonCode.size(level)
   }
 }

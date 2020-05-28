@@ -6,7 +6,7 @@
  */
 export default function UnsupportedOperationException (message) {
   this.message = message || ''
-};
+}
 UnsupportedOperationException.prototype = new Error()
 
 /**

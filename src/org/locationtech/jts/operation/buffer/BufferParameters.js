@@ -1,9 +1,8 @@
 export default class BufferParameters {
-  constructor () {
+  constructor() {
     BufferParameters.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
     this._endCapStyle = BufferParameters.CAP_ROUND
     this._joinStyle = BufferParameters.JOIN_ROUND
@@ -14,78 +13,66 @@ export default class BufferParameters {
       const quadrantSegments = arguments[0]
       this.setQuadrantSegments(quadrantSegments)
     } else if (arguments.length === 2) {
-      const quadrantSegments = arguments[0]; const endCapStyle = arguments[1]
+      const quadrantSegments = arguments[0], endCapStyle = arguments[1]
       this.setQuadrantSegments(quadrantSegments)
       this.setEndCapStyle(endCapStyle)
     } else if (arguments.length === 4) {
-      const quadrantSegments = arguments[0]; const endCapStyle = arguments[1]; const joinStyle = arguments[2]; const mitreLimit = arguments[3]
+      const quadrantSegments = arguments[0], endCapStyle = arguments[1], joinStyle = arguments[2], mitreLimit = arguments[3]
       this.setQuadrantSegments(quadrantSegments)
       this.setEndCapStyle(endCapStyle)
       this.setJoinStyle(joinStyle)
       this.setMitreLimit(mitreLimit)
     }
   }
-
-  static bufferDistanceError (quadSegs) {
+  static bufferDistanceError(quadSegs) {
     const alpha = Math.PI / 2.0 / quadSegs
     return 1 - Math.cos(alpha / 2.0)
   }
-
-  getEndCapStyle () {
+  getEndCapStyle() {
     return this._endCapStyle
   }
-
-  isSingleSided () {
+  isSingleSided() {
     return this._isSingleSided
   }
-
-  setQuadrantSegments (quadSegs) {
+  setQuadrantSegments(quadSegs) {
     this._quadrantSegments = quadSegs
     if (this._quadrantSegments === 0) this._joinStyle = BufferParameters.JOIN_BEVEL
     if (this._quadrantSegments < 0) {
       this._joinStyle = BufferParameters.JOIN_MITRE
       this._mitreLimit = Math.abs(this._quadrantSegments)
     }
-    if (quadSegs <= 0)
+    if (quadSegs <= 0) 
       this._quadrantSegments = 1
-
-    if (this._joinStyle !== BufferParameters.JOIN_ROUND)
+    
+    if (this._joinStyle !== BufferParameters.JOIN_ROUND) 
       this._quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS
+    
   }
-
-  getJoinStyle () {
+  getJoinStyle() {
     return this._joinStyle
   }
-
-  setJoinStyle (joinStyle) {
+  setJoinStyle(joinStyle) {
     this._joinStyle = joinStyle
   }
-
-  setSimplifyFactor (simplifyFactor) {
+  setSimplifyFactor(simplifyFactor) {
     this._simplifyFactor = simplifyFactor < 0 ? 0 : simplifyFactor
   }
-
-  getSimplifyFactor () {
+  getSimplifyFactor() {
     return this._simplifyFactor
   }
-
-  getQuadrantSegments () {
+  getQuadrantSegments() {
     return this._quadrantSegments
   }
-
-  setEndCapStyle (endCapStyle) {
+  setEndCapStyle(endCapStyle) {
     this._endCapStyle = endCapStyle
   }
-
-  getMitreLimit () {
+  getMitreLimit() {
     return this._mitreLimit
   }
-
-  setMitreLimit (mitreLimit) {
+  setMitreLimit(mitreLimit) {
     this._mitreLimit = mitreLimit
   }
-
-  setSingleSided (isSingleSided) {
+  setSingleSided(isSingleSided) {
     this._isSingleSided = isSingleSided
   }
 }

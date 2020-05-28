@@ -1,3 +1,3 @@
 export default class GeometryFilter {
-  filter (geom) {}
+  filter(geom) {}
 }

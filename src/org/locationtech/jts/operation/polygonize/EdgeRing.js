@@ -13,11 +13,10 @@ import Comparator from '../../../../../java/util/Comparator'
 import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator'
 import Assert from '../../util/Assert'
 export default class EdgeRing {
-  constructor () {
+  constructor() {
     EdgeRing.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._factory = null
     this._deList = new ArrayList()
     this._lowestEdge = null
@@ -33,8 +32,7 @@ export default class EdgeRing {
     const factory = arguments[0]
     this._factory = factory
   }
-
-  static findDirEdgesInRing (startDE) {
+  static findDirEdgesInRing(startDE) {
     let de = startDE
     const edges = new ArrayList()
     do {
@@ -45,24 +43,24 @@ export default class EdgeRing {
     } while (de !== startDE)
     return edges
   }
-
-  static addEdge (coords, isForward, coordList) {
-    if (isForward)
-      for (let i = 0; i < coords.length; i++)
+  static addEdge(coords, isForward, coordList) {
+    if (isForward) 
+      for (let i = 0; i < coords.length; i++) 
         coordList.add(coords[i], false)
-
-    else
-      for (let i = coords.length - 1; i >= 0; i--)
+      
+    else 
+      for (let i = coords.length - 1; i >= 0; i--) 
         coordList.add(coords[i], false)
+      
+    
   }
-
-  static findEdgeRingContaining (testEr, erList) {
+  static findEdgeRingContaining(testEr, erList) {
     const testRing = testEr.getRing()
     const testEnv = testRing.getEnvelopeInternal()
     let testPt = testRing.getCoordinateN(0)
     let minRing = null
     let minRingEnv = null
-    for (let it = erList.iterator(); it.hasNext();) {
+    for (let it = erList.iterator(); it.hasNext(); ) {
       const tryEdgeRing = it.next()
       const tryRing = tryEdgeRing.getRing()
       const tryShellEnv = tryRing.getEnvelopeInternal()
@@ -70,23 +68,22 @@ export default class EdgeRing {
       if (!tryShellEnv.contains(testEnv)) continue
       testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryEdgeRing.getCoordinates())
       const isContained = tryEdgeRing.isInRing(testPt)
-      if (isContained)
+      if (isContained) 
         if (minRing === null || minRingEnv.contains(tryShellEnv)) {
           minRing = tryEdgeRing
           minRingEnv = minRing.getRing().getEnvelopeInternal()
         }
+      
     }
     return minRing
   }
-
-  isIncluded () {
+  isIncluded() {
     return this._isIncluded
   }
-
-  getCoordinates () {
+  getCoordinates() {
     if (this._ringPts === null) {
       const coordList = new CoordinateList()
-      for (let i = this._deList.iterator(); i.hasNext();) {
+      for (let i = this._deList.iterator(); i.hasNext(); ) {
         const de = i.next()
         const edge = de.getEdge()
         EdgeRing.addEdge(edge.getLine().getCoordinates(), de.getEdgeDirection(), coordList)
@@ -95,19 +92,16 @@ export default class EdgeRing {
     }
     return this._ringPts
   }
-
-  isIncludedSet () {
+  isIncludedSet() {
     return this._isIncludedSet
   }
-
-  isValid () {
+  isValid() {
     this.getCoordinates()
     if (this._ringPts.length <= 3) return false
     this.getRing()
     return IsValidOp.isValid(this._ring)
   }
-
-  build (startDE) {
+  build(startDE) {
     let de = startDE
     do {
       this.add(de)
@@ -117,36 +111,31 @@ export default class EdgeRing {
       Assert.isTrue(de === startDE || !de.isInRing(), 'found DE already in ring')
     } while (de !== startDE)
   }
-
-  isInRing (pt) {
+  isInRing(pt) {
     return Location.EXTERIOR !== this.getLocator().locate(pt)
   }
-
-  isOuterHole () {
+  isOuterHole() {
     if (!this._isHole) return false
     return !this.hasShell()
   }
-
-  getPolygon () {
+  getPolygon() {
     let holeLR = null
     if (this._holes !== null) {
       holeLR = new Array(this._holes.size()).fill(null)
-      for (let i = 0; i < this._holes.size(); i++)
+      for (let i = 0; i < this._holes.size(); i++) 
         holeLR[i] = this._holes.get(i)
+      
     }
     const poly = this._factory.createPolygon(this._ring, holeLR)
     return poly
   }
-
-  isHole () {
+  isHole() {
     return this._isHole
   }
-
-  isProcessed () {
+  isProcessed() {
     return this._isProcessed
   }
-
-  addHole () {
+  addHole() {
     if (arguments[0] instanceof LinearRing) {
       const hole = arguments[0]
       if (this._holes === null) this._holes = new ArrayList()
@@ -159,13 +148,11 @@ export default class EdgeRing {
       this._holes.add(hole)
     }
   }
-
-  setIncluded (isIncluded) {
+  setIncluded(isIncluded) {
     this._isIncluded = isIncluded
     this._isIncludedSet = true
   }
-
-  getOuterHole () {
+  getOuterHole() {
     if (this.isHole()) return null
     for (let i = 0; i < this._deList.size(); i++) {
       const de = this._deList.get(i)
@@ -174,60 +161,50 @@ export default class EdgeRing {
     }
     return null
   }
-
-  computeHole () {
+  computeHole() {
     const ring = this.getRing()
     this._isHole = Orientation.isCCW(ring.getCoordinates())
   }
-
-  hasShell () {
+  hasShell() {
     return this._shell !== null
   }
-
-  isOuterShell () {
+  isOuterShell() {
     return this.getOuterHole() !== null
   }
-
-  getLineString () {
+  getLineString() {
     this.getCoordinates()
     return this._factory.createLineString(this._ringPts)
   }
-
-  toString () {
+  toString() {
     return WKTWriter.toLineString(new CoordinateArraySequence(this.getCoordinates()))
   }
-
-  getLocator () {
-    if (this._locator === null)
+  getLocator() {
+    if (this._locator === null) 
       this._locator = new IndexedPointInAreaLocator(this.getRing())
-
+    
     return this._locator
   }
-
-  getShell () {
+  getShell() {
     if (this.isHole()) return this._shell
     return this
   }
-
-  add (de) {
+  add(de) {
     this._deList.add(de)
   }
-
-  getRing () {
+  getRing() {
     if (this._ring !== null) return this._ring
     this.getCoordinates()
     if (this._ringPts.length < 3) System.out.println(this._ringPts)
     try {
       this._ring = this._factory.createLinearRing(this._ringPts)
     } catch (ex) {
-      if (ex instanceof Exception)
+      if (ex instanceof Exception) 
         System.out.println(this._ringPts)
       else throw ex
     } finally {}
     return this._ring
   }
-
-  updateIncluded () {
+  updateIncluded() {
     if (this.isHole()) return null
     for (let i = 0; i < this._deList.size(); i++) {
       const de = this._deList.get(i)
@@ -238,23 +215,20 @@ export default class EdgeRing {
       }
     }
   }
-
-  setShell (shell) {
+  setShell(shell) {
     this._shell = shell
   }
-
-  setProcessed (isProcessed) {
+  setProcessed(isProcessed) {
     this._isProcessed = isProcessed
   }
 }
 class EnvelopeComparator {
-  compare (obj0, obj1) {
+  compare(obj0, obj1) {
     const r0 = obj0
     const r1 = obj1
     return r0.getRing().getEnvelope().compareTo(r1.getRing().getEnvelope())
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparator]
   }
 }

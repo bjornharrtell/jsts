@@ -3,11 +3,10 @@ import Node from './Node'
 import IntervalSize from '../quadtree/IntervalSize'
 import Assert from '../../util/Assert'
 export default class Root extends NodeBase {
-  constructor () {
+  constructor() {
     super()
   }
-
-  insert (itemInterval, item) {
+  insert(itemInterval, item) {
     const index = NodeBase.getSubnodeIndex(itemInterval, Root.origin)
     if (index === -1) {
       this.add(item)
@@ -20,12 +19,10 @@ export default class Root extends NodeBase {
     }
     this.insertContained(this._subnode[index], itemInterval, item)
   }
-
-  isSearchMatch (interval) {
+  isSearchMatch(interval) {
     return true
   }
-
-  insertContained (tree, itemInterval, item) {
+  insertContained(tree, itemInterval, item) {
     Assert.isTrue(tree.getInterval().contains(itemInterval))
     const isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax())
     let node = null

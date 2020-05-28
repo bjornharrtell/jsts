@@ -2,42 +2,36 @@ import Location from '../geom/Location'
 import Label from './Label'
 import GraphComponent from './GraphComponent'
 export default class Node extends GraphComponent {
-  constructor () {
+  constructor() {
     super()
     Node.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._coord = null
     this._edges = null
-    const coord = arguments[0]; const edges = arguments[1]
+    const coord = arguments[0], edges = arguments[1]
     this._coord = coord
     this._edges = edges
     this._label = new Label(0, Location.NONE)
   }
-
-  isIncidentEdgeInResult () {
-    for (let it = this.getEdges().getEdges().iterator(); it.hasNext();) {
+  isIncidentEdgeInResult() {
+    for (let it = this.getEdges().getEdges().iterator(); it.hasNext(); ) {
       const de = it.next()
       if (de.getEdge().isInResult()) return true
     }
     return false
   }
-
-  isIsolated () {
+  isIsolated() {
     return this._label.getGeometryCount() === 1
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._coord
   }
-
-  print (out) {
+  print(out) {
     out.println('node ' + this._coord + ' lbl: ' + this._label)
   }
-
-  computeIM (im) {}
-  computeMergedLocation (label2, eltIndex) {
+  computeIM(im) {}
+  computeMergedLocation(label2, eltIndex) {
     let loc = Location.NONE
     loc = this._label.getLocation(eltIndex)
     if (!label2.isNull(eltIndex)) {
@@ -46,23 +40,20 @@ export default class Node extends GraphComponent {
     }
     return loc
   }
-
-  setLabel () {
+  setLabel() {
     if (arguments.length === 2 && (Number.isInteger(arguments[1]) && Number.isInteger(arguments[0]))) {
-      const argIndex = arguments[0]; const onLocation = arguments[1]
-      if (this._label === null)
+      const argIndex = arguments[0], onLocation = arguments[1]
+      if (this._label === null) 
         this._label = new Label(argIndex, onLocation)
       else this._label.setLocation(argIndex, onLocation)
     } else {
       return super.setLabel.apply(this, arguments)
     }
   }
-
-  getEdges () {
+  getEdges() {
     return this._edges
   }
-
-  mergeLabel () {
+  mergeLabel() {
     if (arguments[0] instanceof Node) {
       const n = arguments[0]
       this.mergeLabel(n._label)
@@ -75,13 +66,11 @@ export default class Node extends GraphComponent {
       }
     }
   }
-
-  add (e) {
+  add(e) {
     this._edges.insert(e)
     e.setNode(this)
   }
-
-  setLabelBoundary (argIndex) {
+  setLabelBoundary(argIndex) {
     if (this._label === null) return null
     let loc = Location.NONE
     if (this._label !== null) loc = this._label.getLocation(argIndex)

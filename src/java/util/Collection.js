@@ -44,4 +44,4 @@ export default class Collection {
      * @return {boolean}
      */
   remove () { }
-};
+}

@@ -4,12 +4,11 @@ import Position from './Position'
 import TopologyException from '../geom/TopologyException'
 import Label from './Label'
 export default class DirectedEdge extends EdgeEnd {
-  constructor () {
+  constructor() {
     super()
     DirectedEdge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._isForward = null
     this._isInResult = false
     this._isVisited = false
@@ -19,7 +18,7 @@ export default class DirectedEdge extends EdgeEnd {
     this._edgeRing = null
     this._minEdgeRing = null
     this._depth = [0, -999, -999]
-    const edge = arguments[0]; const isForward = arguments[1]
+    const edge = arguments[0], isForward = arguments[1]
     EdgeEnd.constructor_.call(this, edge)
     this._isForward = isForward
     if (isForward) {
@@ -30,117 +29,95 @@ export default class DirectedEdge extends EdgeEnd {
     }
     this.computeDirectedLabel()
   }
-
-  static depthFactor (currLocation, nextLocation) {
+  static depthFactor(currLocation, nextLocation) {
     if (currLocation === Location.EXTERIOR && nextLocation === Location.INTERIOR) return 1; else if (currLocation === Location.INTERIOR && nextLocation === Location.EXTERIOR) return -1
     return 0
   }
-
-  getNextMin () {
+  getNextMin() {
     return this._nextMin
   }
-
-  getDepth (position) {
+  getDepth(position) {
     return this._depth[position]
   }
-
-  setVisited (isVisited) {
+  setVisited(isVisited) {
     this._isVisited = isVisited
   }
-
-  computeDirectedLabel () {
+  computeDirectedLabel() {
     this._label = new Label(this._edge.getLabel())
     if (!this._isForward) this._label.flip()
   }
-
-  getNext () {
+  getNext() {
     return this._next
   }
-
-  setDepth (position, depthVal) {
-    if (this._depth[position] !== -999)
+  setDepth(position, depthVal) {
+    if (this._depth[position] !== -999) 
       if (this._depth[position] !== depthVal) throw new TopologyException('assigned depths do not match', this.getCoordinate())
-
+    
     this._depth[position] = depthVal
   }
-
-  isInteriorAreaEdge () {
+  isInteriorAreaEdge() {
     let isInteriorAreaEdge = true
-    for (let i = 0; i < 2; i++)
-      if (!(this._label.isArea(i) && this._label.getLocation(i, Position.LEFT) === Location.INTERIOR && this._label.getLocation(i, Position.RIGHT) === Location.INTERIOR))
+    for (let i = 0; i < 2; i++) 
+      if (!(this._label.isArea(i) && this._label.getLocation(i, Position.LEFT) === Location.INTERIOR && this._label.getLocation(i, Position.RIGHT) === Location.INTERIOR)) 
         isInteriorAreaEdge = false
-
+      
+    
     return isInteriorAreaEdge
   }
-
-  setNextMin (nextMin) {
+  setNextMin(nextMin) {
     this._nextMin = nextMin
   }
-
-  print (out) {
+  print(out) {
     super.print.call(this, out)
     out.print(' ' + this._depth[Position.LEFT] + '/' + this._depth[Position.RIGHT])
     out.print(' (' + this.getDepthDelta() + ')')
     if (this._isInResult) out.print(' inResult')
   }
-
-  setMinEdgeRing (minEdgeRing) {
+  setMinEdgeRing(minEdgeRing) {
     this._minEdgeRing = minEdgeRing
   }
-
-  isLineEdge () {
+  isLineEdge() {
     const isLine = this._label.isLine(0) || this._label.isLine(1)
     const isExteriorIfArea0 = !this._label.isArea(0) || this._label.allPositionsEqual(0, Location.EXTERIOR)
     const isExteriorIfArea1 = !this._label.isArea(1) || this._label.allPositionsEqual(1, Location.EXTERIOR)
     return isLine && isExteriorIfArea0 && isExteriorIfArea1
   }
-
-  setEdgeRing (edgeRing) {
+  setEdgeRing(edgeRing) {
     this._edgeRing = edgeRing
   }
-
-  getMinEdgeRing () {
+  getMinEdgeRing() {
     return this._minEdgeRing
   }
-
-  getDepthDelta () {
+  getDepthDelta() {
     let depthDelta = this._edge.getDepthDelta()
     if (!this._isForward) depthDelta = -depthDelta
     return depthDelta
   }
-
-  setInResult (isInResult) {
+  setInResult(isInResult) {
     this._isInResult = isInResult
   }
-
-  getSym () {
+  getSym() {
     return this._sym
   }
-
-  isForward () {
+  isForward() {
     return this._isForward
   }
-
-  getEdge () {
+  getEdge() {
     return this._edge
   }
-
-  printEdge (out) {
+  printEdge(out) {
     this.print(out)
     out.print(' ')
     if (this._isForward) this._edge.print(out); else this._edge.printReverse(out)
   }
-
-  setSym (de) {
+  setSym(de) {
     this._sym = de
   }
-
-  setVisitedEdge (isVisited) {
+  setVisitedEdge(isVisited) {
     this.setVisited(isVisited)
     this._sym.setVisited(isVisited)
   }
-
-  setEdgeDepths (position, depth) {
+  setEdgeDepths(position, depth) {
     let depthDelta = this.getEdge().getDepthDelta()
     if (!this._isForward) depthDelta = -depthDelta
     let directionFactor = 1
@@ -151,20 +128,16 @@ export default class DirectedEdge extends EdgeEnd {
     this.setDepth(position, depth)
     this.setDepth(oppositePos, oppositeDepth)
   }
-
-  getEdgeRing () {
+  getEdgeRing() {
     return this._edgeRing
   }
-
-  isInResult () {
+  isInResult() {
     return this._isInResult
   }
-
-  setNext (next) {
+  setNext(next) {
     this._next = next
   }
-
-  isVisited () {
+  isVisited() {
     return this._isVisited
   }
 }

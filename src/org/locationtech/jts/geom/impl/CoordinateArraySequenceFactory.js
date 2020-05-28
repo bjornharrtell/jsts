@@ -4,15 +4,13 @@ import CoordinateArraySequence from './CoordinateArraySequence'
 import CoordinateSequence from '../CoordinateSequence'
 import Serializable from '../../../../../java/io/Serializable'
 export default class CoordinateArraySequenceFactory {
-  static instance () {
+  static instance() {
     return CoordinateArraySequenceFactory.instanceObject
   }
-
-  readResolve () {
+  readResolve() {
     return CoordinateArraySequenceFactory.instance()
   }
-
-  create () {
+  create() {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Array) {
         const coordinates = arguments[0]
@@ -22,25 +20,24 @@ export default class CoordinateArraySequenceFactory {
         return new CoordinateArraySequence(coordSeq)
       }
     } else if (arguments.length === 2) {
-      const size = arguments[0]; let dimension = arguments[1]
+      let size = arguments[0], dimension = arguments[1]
       if (dimension > 3) dimension = 3
       if (dimension < 2) dimension = 2
       return new CoordinateArraySequence(size, dimension)
     } else if (arguments.length === 3) {
-      const size = arguments[0]; const dimension = arguments[1]; let measures = arguments[2]
+      let size = arguments[0], dimension = arguments[1], measures = arguments[2]
       let spatial = dimension - measures
-      if (measures > 1)
+      if (measures > 1) 
         measures = 1
-
-      if (spatial > 3)
+      
+      if (spatial > 3) 
         spatial = 3
-
+      
       if (spatial < 2) spatial = 2
       return new CoordinateArraySequence(size, spatial + measures, measures)
     }
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateSequenceFactory, Serializable]
   }
 }

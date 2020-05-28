@@ -3,31 +3,26 @@ import Double from '../../../../java/lang/Double'
 import LineSegment from '../geom/LineSegment'
 import Assert from '../util/Assert'
 export default class LengthIndexOfPoint {
-  constructor () {
+  constructor() {
     LengthIndexOfPoint.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._linearGeom = null
     const linearGeom = arguments[0]
     this._linearGeom = linearGeom
   }
-
-  static indexOf (linearGeom, inputPt) {
+  static indexOf(linearGeom, inputPt) {
     const locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOf(inputPt)
   }
-
-  static indexOfAfter (linearGeom, inputPt, minIndex) {
+  static indexOfAfter(linearGeom, inputPt, minIndex) {
     const locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOfAfter(inputPt, minIndex)
   }
-
-  indexOf (inputPt) {
+  indexOf(inputPt) {
     return this.indexOfFromStart(inputPt, -1.0)
   }
-
-  indexOfFromStart (inputPt, minIndex) {
+  indexOfFromStart(inputPt, minIndex) {
     let minDistance = Double.MAX_VALUE
     let ptMeasure = minIndex
     let segmentStartMeasure = 0.0
@@ -49,8 +44,7 @@ export default class LengthIndexOfPoint {
     }
     return ptMeasure
   }
-
-  indexOfAfter (inputPt, minIndex) {
+  indexOfAfter(inputPt, minIndex) {
     if (minIndex < 0.0) return this.indexOf(inputPt)
     const endIndex = this._linearGeom.getLength()
     if (endIndex < minIndex) return endIndex
@@ -58,8 +52,7 @@ export default class LengthIndexOfPoint {
     Assert.isTrue(closestAfter >= minIndex, 'computed index is before specified minimum index')
     return closestAfter
   }
-
-  segmentNearestMeasure (seg, inputPt, segmentStartMeasure) {
+  segmentNearestMeasure(seg, inputPt, segmentStartMeasure) {
     const projFactor = seg.projectionFactor(inputPt)
     if (projFactor <= 0.0) return segmentStartMeasure
     if (projFactor <= 1.0) return segmentStartMeasure + projFactor * seg.getLength()

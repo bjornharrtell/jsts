@@ -2,31 +2,28 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import Double from '../../../../java/lang/Double'
 import Vector3D from './Vector3D'
 export default class Plane3D {
-  constructor () {
+  constructor() {
     Plane3D.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._normal = null
     this._basePt = null
-    const normal = arguments[0]; const basePt = arguments[1]
+    const normal = arguments[0], basePt = arguments[1]
     this._normal = normal
     this._basePt = basePt
   }
-
-  closestAxisPlane () {
+  closestAxisPlane() {
     const xmag = Math.abs(this._normal.getX())
     const ymag = Math.abs(this._normal.getY())
     const zmag = Math.abs(this._normal.getZ())
-    if (xmag > ymag)
+    if (xmag > ymag) 
       if (xmag > zmag) return Plane3D.YZ_PLANE; else return Plane3D.XY_PLANE
-    else if (zmag > ymag)
+    else if (zmag > ymag) 
       return Plane3D.XY_PLANE
-
+    
     return Plane3D.XZ_PLANE
   }
-
-  orientedDistance (p) {
+  orientedDistance(p) {
     const pb = new Vector3D(p, this._basePt)
     const pbdDotNormal = pb.dot(this._normal)
     if (Double.isNaN(pbdDotNormal)) throw new IllegalArgumentException('3D Coordinate has NaN ordinate')

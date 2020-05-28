@@ -4,14 +4,13 @@ import CoordinateArrays from '../../geom/CoordinateArrays'
 import LineMergeEdge from './LineMergeEdge'
 import PlanarGraph from '../../planargraph/PlanarGraph'
 export default class LineMergeGraph extends PlanarGraph {
-  constructor () {
+  constructor() {
     super()
   }
-
-  addEdge (lineString) {
-    if (lineString.isEmpty())
+  addEdge(lineString) {
+    if (lineString.isEmpty()) 
       return null
-
+    
     const coordinates = CoordinateArrays.removeRepeatedPoints(lineString.getCoordinates())
     if (coordinates.length <= 1) return null
     const startCoordinate = coordinates[0]
@@ -24,8 +23,7 @@ export default class LineMergeGraph extends PlanarGraph {
     edge.setDirectedEdges(directedEdge0, directedEdge1)
     this.add(edge)
   }
-
-  getNode (coordinate) {
+  getNode(coordinate) {
     let node = this.findNode(coordinate)
     if (node === null) {
       node = new Node(coordinate)

@@ -5,17 +5,15 @@ import PointOnGeometryLocator from './PointOnGeometryLocator'
 import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator'
 import GeometryCollection from '../../geom/GeometryCollection'
 export default class SimplePointInAreaLocator {
-  constructor () {
+  constructor() {
     SimplePointInAreaLocator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._geom = null
     const geom = arguments[0]
     this._geom = geom
   }
-
-  static locatePointInPolygon (p, poly) {
+  static locatePointInPolygon(p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
     const shell = poly.getExteriorRing()
     const shellLoc = SimplePointInAreaLocator.locatePointInRing(p, shell)
@@ -28,20 +26,17 @@ export default class SimplePointInAreaLocator {
     }
     return Location.INTERIOR
   }
-
-  static locatePointInRing (p, ring) {
+  static locatePointInRing(p, ring) {
     if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return PointLocation.locateInRing(p, ring.getCoordinates())
   }
-
-  static containsPointInPolygon (p, poly) {
+  static containsPointInPolygon(p, poly) {
     return Location.EXTERIOR !== SimplePointInAreaLocator.locatePointInPolygon(p, poly)
   }
-
-  static locateInGeometry (p, geom) {
-    if (geom instanceof Polygon)
+  static locateInGeometry(p, geom) {
+    if (geom instanceof Polygon) 
       return SimplePointInAreaLocator.locatePointInPolygon(p, geom)
-
+    
     if (geom instanceof GeometryCollection) {
       const geomi = new GeometryCollectionIterator(geom)
       while (geomi.hasNext()) {
@@ -54,22 +49,18 @@ export default class SimplePointInAreaLocator {
     }
     return Location.EXTERIOR
   }
-
-  static isContained (p, geom) {
+  static isContained(p, geom) {
     return Location.EXTERIOR !== SimplePointInAreaLocator.locate(p, geom)
   }
-
-  static locate (p, geom) {
+  static locate(p, geom) {
     if (geom.isEmpty()) return Location.EXTERIOR
     if (!geom.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return SimplePointInAreaLocator.locateInGeometry(p, geom)
   }
-
-  locate (p) {
+  locate(p) {
     return SimplePointInAreaLocator.locate(p, this._geom)
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [PointOnGeometryLocator]
   }
 }

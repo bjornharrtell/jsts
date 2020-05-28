@@ -9,103 +9,89 @@ import Puntal from './Puntal'
 import Envelope from './Envelope'
 import Assert from '../util/Assert'
 export default class Point extends Geometry {
-  constructor () {
+  constructor() {
     super()
     Point.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._coordinates = null
-    const coordinates = arguments[0]; const factory = arguments[1]
+    const coordinates = arguments[0], factory = arguments[1]
     Geometry.constructor_.call(this, factory)
     this.init(coordinates)
   }
-
-  computeEnvelopeInternal () {
-    if (this.isEmpty())
+  computeEnvelopeInternal() {
+    if (this.isEmpty()) 
       return new Envelope()
-
+    
     const env = new Envelope()
     env.expandToInclude(this._coordinates.getX(0), this._coordinates.getY(0))
     return env
   }
-
-  getCoordinates () {
+  getCoordinates() {
     return this.isEmpty() ? [] : [this.getCoordinate()]
   }
-
-  copyInternal () {
+  copyInternal() {
     return new Point(this._coordinates.copy(), this._factory)
   }
-
-  equalsExact () {
+  equalsExact() {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other))
+      const other = arguments[0], tolerance = arguments[1]
+      if (!this.isEquivalentClass(other)) 
         return false
-
-      if (this.isEmpty() && other.isEmpty())
+      
+      if (this.isEmpty() && other.isEmpty()) 
         return true
-
-      if (this.isEmpty() !== other.isEmpty())
+      
+      if (this.isEmpty() !== other.isEmpty()) 
         return false
-
+      
       return this.equal(other.getCoordinate(), this.getCoordinate(), tolerance)
     } else {
       return super.equalsExact.apply(this, arguments)
     }
   }
-
-  normalize () {}
-  getCoordinate () {
+  normalize() {}
+  getCoordinate() {
     return this._coordinates.size() !== 0 ? this._coordinates.getCoordinate(0) : null
   }
-
-  getBoundaryDimension () {
+  getBoundaryDimension() {
     return Dimension.FALSE
   }
-
-  reverseInternal () {
+  reverseInternal() {
     return this.getFactory().createPoint(this._coordinates.copy())
   }
-
-  getTypeCode () {
+  getTypeCode() {
     return Geometry.TYPECODE_POINT
   }
-
-  getDimension () {
+  getDimension() {
     return 0
   }
-
-  getNumPoints () {
+  getNumPoints() {
     return this.isEmpty() ? 0 : 1
   }
-
-  getX () {
-    if (this.getCoordinate() === null)
+  getX() {
+    if (this.getCoordinate() === null) 
       throw new IllegalStateException('getX called on empty Point')
-
+    
     return this.getCoordinate().x
   }
-
-  compareToSameClass () {
+  compareToSameClass() {
     if (arguments.length === 1) {
       const other = arguments[0]
       const point = other
       return this.getCoordinate().compareTo(point.getCoordinate())
     } else if (arguments.length === 2) {
-      const other = arguments[0]; const comp = arguments[1]
+      const other = arguments[0], comp = arguments[1]
       const point = other
       return comp.compare(this._coordinates, point._coordinates)
     }
   }
-
-  apply () {
+  apply() {
     if (hasInterface(arguments[0], CoordinateFilter)) {
       const filter = arguments[0]
-      if (this.isEmpty())
+      if (this.isEmpty()) 
         return null
-
+      
       filter.filter(this.getCoordinate())
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
       const filter = arguments[0]
@@ -120,43 +106,35 @@ export default class Point extends Geometry {
       filter.filter(this)
     }
   }
-
-  getBoundary () {
+  getBoundary() {
     return this.getFactory().createGeometryCollection()
   }
-
-  getGeometryType () {
+  getGeometryType() {
     return Geometry.TYPENAME_POINT
   }
-
-  getCoordinateSequence () {
+  getCoordinateSequence() {
     return this._coordinates
   }
-
-  getY () {
-    if (this.getCoordinate() === null)
+  getY() {
+    if (this.getCoordinate() === null) 
       throw new IllegalStateException('getY called on empty Point')
-
+    
     return this.getCoordinate().y
   }
-
-  isEmpty () {
+  isEmpty() {
     return this._coordinates.size() === 0
   }
-
-  init (coordinates) {
-    if (coordinates === null)
+  init(coordinates) {
+    if (coordinates === null) 
       coordinates = this.getFactory().getCoordinateSequenceFactory().create([])
-
+    
     Assert.isTrue(coordinates.size() <= 1)
     this._coordinates = coordinates
   }
-
-  isSimple () {
+  isSimple() {
     return true
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Puntal]
   }
 }

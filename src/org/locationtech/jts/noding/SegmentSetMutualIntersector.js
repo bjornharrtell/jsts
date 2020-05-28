@@ -1,3 +1,3 @@
 export default class SegmentSetMutualIntersector {
-  process (segStrings, segInt) {}
+  process(segStrings, segInt) {}
 }

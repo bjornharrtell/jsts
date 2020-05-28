@@ -4,27 +4,23 @@ import Polygon from '../../geom/Polygon'
 import ArrayList from '../../../../../java/util/ArrayList'
 import GeometryFilter from '../../geom/GeometryFilter'
 export default class ConnectedElementPointFilter {
-  constructor () {
+  constructor() {
     ConnectedElementPointFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._pts = null
     const pts = arguments[0]
     this._pts = pts
   }
-
-  static getCoordinates (geom) {
+  static getCoordinates(geom) {
     const pts = new ArrayList()
     geom.apply(new ConnectedElementPointFilter(pts))
     return pts
   }
-
-  filter (geom) {
+  filter(geom) {
     if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) this._pts.add(geom.getCoordinate())
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [GeometryFilter]
   }
 }

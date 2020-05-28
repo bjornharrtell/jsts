@@ -4,11 +4,10 @@ import MultiPolygon from '../../../geom/MultiPolygon'
 import System from '../../../../../../java/lang/System'
 import Envelope from '../../../geom/Envelope'
 export default class BufferResultValidator {
-  constructor () {
+  constructor() {
     BufferResultValidator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._input = null
     this._distance = null
     this._result = null
@@ -16,25 +15,22 @@ export default class BufferResultValidator {
     this._errorMsg = null
     this._errorLocation = null
     this._errorIndicator = null
-    const input = arguments[0]; const distance = arguments[1]; const result = arguments[2]
+    const input = arguments[0], distance = arguments[1], result = arguments[2]
     this._input = input
     this._distance = distance
     this._result = result
   }
-
-  static isValidMsg (g, distance, result) {
+  static isValidMsg(g, distance, result) {
     const validator = new BufferResultValidator(g, distance, result)
     if (!validator.isValid()) return validator.getErrorMessage()
     return null
   }
-
-  static isValid (g, distance, result) {
+  static isValid(g, distance, result) {
     const validator = new BufferResultValidator(g, distance, result)
     if (validator.isValid()) return true
     return false
   }
-
-  isValid () {
+  isValid() {
     this.checkPolygonal()
     if (!this._isValid) return this._isValid
     this.checkExpectedEmpty()
@@ -46,8 +42,7 @@ export default class BufferResultValidator {
     this.checkDistance()
     return this._isValid
   }
-
-  checkEnvelope () {
+  checkEnvelope() {
     if (this._distance < 0.0) return null
     let padding = this._distance * BufferResultValidator.MAX_ENV_DIFF_FRAC
     if (padding === 0.0) padding = 0.001
@@ -62,8 +57,7 @@ export default class BufferResultValidator {
     }
     this.report('Envelope')
   }
-
-  checkDistance () {
+  checkDistance() {
     const distValid = new BufferDistanceValidator(this._input, this._distance, this._result)
     if (!distValid.isValid()) {
       this._isValid = false
@@ -73,8 +67,7 @@ export default class BufferResultValidator {
     }
     this.report('Distance')
   }
-
-  checkArea () {
+  checkArea() {
     const inputArea = this._input.getArea()
     const resultArea = this._result.getArea()
     if (this._distance > 0.0 && inputArea > resultArea) {
@@ -89,23 +82,19 @@ export default class BufferResultValidator {
     }
     this.report('Area')
   }
-
-  checkPolygonal () {
+  checkPolygonal() {
     if (!(this._result instanceof Polygon || this._result instanceof MultiPolygon)) this._isValid = false
     this._errorMsg = 'Result is not polygonal'
     this._errorIndicator = this._result
     this.report('Polygonal')
   }
-
-  getErrorIndicator () {
+  getErrorIndicator() {
     return this._errorIndicator
   }
-
-  getErrorLocation () {
+  getErrorLocation() {
     return this._errorLocation
   }
-
-  checkExpectedEmpty () {
+  checkExpectedEmpty() {
     if (this._input.getDimension() >= 2) return null
     if (this._distance > 0.0) return null
     if (!this._result.isEmpty()) {
@@ -115,15 +104,13 @@ export default class BufferResultValidator {
     }
     this.report('ExpectedEmpty')
   }
-
-  report (checkName) {
+  report(checkName) {
     if (!BufferResultValidator.VERBOSE) return null
     System.out.println('Check ' + checkName + ': ' + (this._isValid ? 'passed' : 'FAILED'))
   }
-
-  getErrorMessage () {
+  getErrorMessage() {
     return this._errorMsg
   }
 }
 BufferResultValidator.VERBOSE = false
-BufferResultValidator.MAX_ENV_DIFF_FRAC = 0.012
+BufferResultValidator.MAX_ENV_DIFF_FRAC = .012

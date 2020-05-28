@@ -3,40 +3,35 @@ import Interval from './Interval'
 import Assert from '../../util/Assert'
 import Key from './Key'
 export default class Node extends NodeBase {
-  constructor () {
+  constructor() {
     super()
     Node.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._interval = null
     this._centre = null
     this._level = null
-    const interval = arguments[0]; const level = arguments[1]
+    const interval = arguments[0], level = arguments[1]
     this._interval = interval
     this._level = level
     this._centre = (interval.getMin() + interval.getMax()) / 2
   }
-
-  static createNode (itemInterval) {
+  static createNode(itemInterval) {
     const key = new Key(itemInterval)
     const node = new Node(key.getInterval(), key.getLevel())
     return node
   }
-
-  static createExpanded (node, addInterval) {
+  static createExpanded(node, addInterval) {
     const expandInt = new Interval(addInterval)
     if (node !== null) expandInt.expandToInclude(node._interval)
     const largerNode = Node.createNode(expandInt)
     if (node !== null) largerNode.insert(node)
     return largerNode
   }
-
-  getInterval () {
+  getInterval() {
     return this._interval
   }
-
-  find (searchInterval) {
+  find(searchInterval) {
     const subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
     if (subnodeIndex === -1) return this
     if (this._subnode[subnodeIndex] !== null) {
@@ -45,8 +40,7 @@ export default class Node extends NodeBase {
     }
     return this
   }
-
-  insert (node) {
+  insert(node) {
     Assert.isTrue(this._interval === null || this._interval.contains(node._interval))
     const index = NodeBase.getSubnodeIndex(node._interval, this._centre)
     if (node._level === this._level - 1) {
@@ -57,19 +51,16 @@ export default class Node extends NodeBase {
       this._subnode[index] = childNode
     }
   }
-
-  isSearchMatch (itemInterval) {
+  isSearchMatch(itemInterval) {
     return itemInterval.overlaps(this._interval)
   }
-
-  getSubnode (index) {
-    if (this._subnode[index] === null)
+  getSubnode(index) {
+    if (this._subnode[index] === null) 
       this._subnode[index] = this.createSubnode(index)
-
+    
     return this._subnode[index]
   }
-
-  getNode (searchInterval) {
+  getNode(searchInterval) {
     const subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, this._centre)
     if (subnodeIndex !== -1) {
       const node = this.getSubnode(subnodeIndex)
@@ -78,8 +69,7 @@ export default class Node extends NodeBase {
       return this
     }
   }
-
-  createSubnode (index) {
+  createSubnode(index) {
     let min = 0.0
     let max = 0.0
     switch (index) {

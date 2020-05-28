@@ -2,23 +2,20 @@ import Coordinate from '../../geom/Coordinate'
 import HilbertCode from './HilbertCode'
 import GeometricShapeBuilder from '../GeometricShapeBuilder'
 export default class HilbertCurveBuilder extends GeometricShapeBuilder {
-  constructor () {
+  constructor() {
     super()
     HilbertCurveBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._order = -1
     const geomFactory = arguments[0]
     GeometricShapeBuilder.constructor_.call(this, geomFactory)
     this._extent = null
   }
-
-  static transform (val, scale, offset) {
+  static transform(val, scale, offset) {
     return val * scale + offset
   }
-
-  getGeometry () {
+  getGeometry() {
     const level = HilbertCode.level(this._numPts)
     const nPts = HilbertCode.size(level)
     let scale = 1
@@ -41,8 +38,7 @@ export default class HilbertCurveBuilder extends GeometricShapeBuilder {
     }
     return this._geomFactory.createLineString(pts)
   }
-
-  setLevel (level) {
+  setLevel(level) {
     this._numPts = HilbertCode.size(level)
   }
 }

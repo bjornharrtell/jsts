@@ -7,11 +7,10 @@ import RobustLineIntersector from '../algorithm/RobustLineIntersector'
 import Serializable from '../../../../java/io/Serializable'
 import Distance from '../algorithm/Distance'
 export default class LineSegment {
-  constructor () {
+  constructor() {
     LineSegment.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.p0 = null
     this.p1 = null
     if (arguments.length === 0) {
@@ -20,24 +19,21 @@ export default class LineSegment {
       const ls = arguments[0]
       LineSegment.constructor_.call(this, ls.p0, ls.p1)
     } else if (arguments.length === 2) {
-      const p0 = arguments[0]; const p1 = arguments[1]
+      const p0 = arguments[0], p1 = arguments[1]
       this.p0 = p0
       this.p1 = p1
     } else if (arguments.length === 4) {
-      const x0 = arguments[0]; const y0 = arguments[1]; const x1 = arguments[2]; const y1 = arguments[3]
+      const x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3]
       LineSegment.constructor_.call(this, new Coordinate(x0, y0), new Coordinate(x1, y1))
     }
   }
-
-  static midPoint (p0, p1) {
+  static midPoint(p0, p1) {
     return new Coordinate((p0.x + p1.x) / 2, (p0.y + p1.y) / 2)
   }
-
-  minX () {
+  minX() {
     return Math.min(this.p0.x, this.p1.x)
   }
-
-  orientationIndex () {
+  orientationIndex() {
     if (arguments[0] instanceof LineSegment) {
       const seg = arguments[0]
       const orient0 = Orientation.index(this.p0, this.p1, seg.p0)
@@ -50,31 +46,26 @@ export default class LineSegment {
       return Orientation.index(this.p0, this.p1, p)
     }
   }
-
-  toGeometry (geomFactory) {
+  toGeometry(geomFactory) {
     return geomFactory.createLineString([this.p0, this.p1])
   }
-
-  isVertical () {
+  isVertical() {
     return this.p0.x === this.p1.x
   }
-
-  equals (o) {
-    if (!(o instanceof LineSegment))
+  equals(o) {
+    if (!(o instanceof LineSegment)) 
       return false
-
+    
     const other = o
     return this.p0.equals(other.p0) && this.p1.equals(other.p1)
   }
-
-  intersection (line) {
+  intersection(line) {
     const li = new RobustLineIntersector()
     li.computeIntersection(this.p0, this.p1, line.p0, line.p1)
     if (li.hasIntersection()) return li.getIntersection(0)
     return null
   }
-
-  project () {
+  project() {
     if (arguments[0] instanceof Coordinate) {
       const p = arguments[0]
       if (p.equals(this.p0) || p.equals(this.p1)) return new Coordinate(p)
@@ -98,33 +89,26 @@ export default class LineSegment {
       return new LineSegment(newp0, newp1)
     }
   }
-
-  normalize () {
+  normalize() {
     if (this.p1.compareTo(this.p0) < 0) this.reverse()
   }
-
-  angle () {
+  angle() {
     return Math.atan2(this.p1.y - this.p0.y, this.p1.x - this.p0.x)
   }
-
-  getCoordinate (i) {
+  getCoordinate(i) {
     if (i === 0) return this.p0
     return this.p1
   }
-
-  distancePerpendicular (p) {
+  distancePerpendicular(p) {
     return Distance.pointToLinePerpendicular(p, this.p0, this.p1)
   }
-
-  minY () {
+  minY() {
     return Math.min(this.p0.y, this.p1.y)
   }
-
-  midPoint () {
+  midPoint() {
     return LineSegment.midPoint(this.p0, this.p1)
   }
-
-  projectionFactor (p) {
+  projectionFactor(p) {
     if (p.equals(this.p0)) return 0.0
     if (p.equals(this.p1)) return 1.0
     const dx = this.p1.x - this.p0.x
@@ -134,12 +118,11 @@ export default class LineSegment {
     const r = ((p.x - this.p0.x) * dx + (p.y - this.p0.y) * dy) / len
     return r
   }
-
-  closestPoints (line) {
+  closestPoints(line) {
     const intPt = this.intersection(line)
-    if (intPt !== null)
+    if (intPt !== null) 
       return [intPt, intPt]
-
+    
     const closestPt = new Array(2).fill(null)
     let minDistance = Double.MAX_VALUE
     let dist = null
@@ -170,53 +153,44 @@ export default class LineSegment {
     }
     return closestPt
   }
-
-  closestPoint (p) {
+  closestPoint(p) {
     const factor = this.projectionFactor(p)
-    if (factor > 0 && factor < 1)
+    if (factor > 0 && factor < 1) 
       return this.project(p)
-
+    
     const dist0 = this.p0.distance(p)
     const dist1 = this.p1.distance(p)
     if (dist0 < dist1) return this.p0
     return this.p1
   }
-
-  maxX () {
+  maxX() {
     return Math.max(this.p0.x, this.p1.x)
   }
-
-  getLength () {
+  getLength() {
     return this.p0.distance(this.p1)
   }
-
-  compareTo (o) {
+  compareTo(o) {
     const other = o
     const comp0 = this.p0.compareTo(other.p0)
     if (comp0 !== 0) return comp0
     return this.p1.compareTo(other.p1)
   }
-
-  reverse () {
+  reverse() {
     const temp = this.p0
     this.p0 = this.p1
     this.p1 = temp
   }
-
-  equalsTopo (other) {
+  equalsTopo(other) {
     return this.p0.equals(other.p0) && this.p1.equals(other.p1) || this.p0.equals(other.p1) && this.p1.equals(other.p0)
   }
-
-  lineIntersection (line) {
+  lineIntersection(line) {
     const intPt = Intersection.intersection(this.p0, this.p1, line.p0, line.p1)
     return intPt
   }
-
-  maxY () {
+  maxY() {
     return Math.max(this.p0.y, this.p1.y)
   }
-
-  pointAlongOffset (segmentLengthFraction, offsetDistance) {
+  pointAlongOffset(segmentLengthFraction, offsetDistance) {
     const segx = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x)
     const segy = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y)
     const dx = this.p1.x - this.p0.x
@@ -234,35 +208,30 @@ export default class LineSegment {
     const coord = new Coordinate(offsetx, offsety)
     return coord
   }
-
-  setCoordinates () {
+  setCoordinates() {
     if (arguments.length === 1) {
       const ls = arguments[0]
       this.setCoordinates(ls.p0, ls.p1)
     } else if (arguments.length === 2) {
-      const p0 = arguments[0]; const p1 = arguments[1]
+      const p0 = arguments[0], p1 = arguments[1]
       this.p0.x = p0.x
       this.p0.y = p0.y
       this.p1.x = p1.x
       this.p1.y = p1.y
     }
   }
-
-  segmentFraction (inputPt) {
+  segmentFraction(inputPt) {
     let segFrac = this.projectionFactor(inputPt)
     if (segFrac < 0.0) segFrac = 0.0; else if (segFrac > 1.0 || Double.isNaN(segFrac)) segFrac = 1.0
     return segFrac
   }
-
-  toString () {
+  toString() {
     return 'LINESTRING( ' + this.p0.x + ' ' + this.p0.y + ', ' + this.p1.x + ' ' + this.p1.y + ')'
   }
-
-  isHorizontal () {
+  isHorizontal() {
     return this.p0.y === this.p1.y
   }
-
-  reflect (p) {
+  reflect(p) {
     const A = this.p1.getY() - this.p0.getY()
     const B = this.p0.getX() - this.p1.getX()
     const C = this.p0.getY() * (this.p1.getX() - this.p0.getX()) - this.p0.getX() * (this.p1.getY() - this.p0.getY())
@@ -274,8 +243,7 @@ export default class LineSegment {
     const ry = (A2subB2 * y - 2 * A * B * x - 2 * B * C) / A2plusB2
     return new Coordinate(rx, ry)
   }
-
-  distance () {
+  distance() {
     if (arguments[0] instanceof LineSegment) {
       const ls = arguments[0]
       return Distance.segmentToSegment(this.p0, this.p1, ls.p0, ls.p1)
@@ -284,15 +252,13 @@ export default class LineSegment {
       return Distance.pointToSegment(p, this.p0, this.p1)
     }
   }
-
-  pointAlong (segmentLengthFraction) {
+  pointAlong(segmentLengthFraction) {
     const coord = new Coordinate()
     coord.x = this.p0.x + segmentLengthFraction * (this.p1.x - this.p0.x)
     coord.y = this.p0.y + segmentLengthFraction * (this.p1.y - this.p0.y)
     return coord
   }
-
-  hashCode () {
+  hashCode() {
     let bits0 = Double.doubleToLongBits(this.p0.x)
     bits0 ^= Double.doubleToLongBits(this.p0.y) * 31
     const hash0 = Math.trunc(bits0) ^ Math.trunc(bits0 >> 32)
@@ -301,8 +267,7 @@ export default class LineSegment {
     const hash1 = Math.trunc(bits1) ^ Math.trunc(bits1 >> 32)
     return hash0 ^ hash1
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparable, Serializable]
   }
 }

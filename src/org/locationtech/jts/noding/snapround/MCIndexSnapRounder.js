@@ -10,11 +10,10 @@ import MCIndexPointSnapper from './MCIndexPointSnapper'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder'
 export default class MCIndexSnapRounder {
-  constructor () {
+  constructor() {
     MCIndexSnapRounder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._pm = null
     this._li = null
     this._scaleFactor = null
@@ -27,40 +26,35 @@ export default class MCIndexSnapRounder {
     this._li.setPrecisionModel(pm)
     this._scaleFactor = pm.getScale()
   }
-
-  checkCorrectness (inputSegmentStrings) {
+  checkCorrectness(inputSegmentStrings) {
     const resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings)
     const nv = new NodingValidator(resultSegStrings)
     try {
       nv.checkValid()
     } catch (ex) {
-      if (ex instanceof Exception)
+      if (ex instanceof Exception) 
         ex.printStackTrace()
       else throw ex
     } finally {}
   }
-
-  getNodedSubstrings () {
+  getNodedSubstrings() {
     return NodedSegmentString.getNodedSubstrings(this._nodedSegStrings)
   }
-
-  snapRound (segStrings, li) {
+  snapRound(segStrings, li) {
     const intersections = this.findInteriorIntersections(segStrings, li)
     this.computeIntersectionSnaps(intersections)
     this.computeVertexSnaps(segStrings)
   }
-
-  findInteriorIntersections (segStrings, li) {
+  findInteriorIntersections(segStrings, li) {
     const intFinderAdder = new InteriorIntersectionFinderAdder(li)
     this._noder.setSegmentIntersector(intFinderAdder)
     this._noder.computeNodes(segStrings)
     return intFinderAdder.getInteriorIntersections()
   }
-
-  computeVertexSnaps () {
+  computeVertexSnaps() {
     if (hasInterface(arguments[0], Collection)) {
       const edges = arguments[0]
-      for (let i0 = edges.iterator(); i0.hasNext();) {
+      for (let i0 = edges.iterator(); i0.hasNext(); ) {
         const edge0 = i0.next()
         this.computeVertexSnaps(edge0)
       }
@@ -70,28 +64,26 @@ export default class MCIndexSnapRounder {
       for (let i = 0; i < pts0.length; i++) {
         const hotPixel = new HotPixel(pts0[i], this._scaleFactor, this._li)
         const isNodeAdded = this._pointSnapper.snap(hotPixel, e, i)
-        if (isNodeAdded)
+        if (isNodeAdded) 
           e.addIntersection(pts0[i], i)
+        
       }
     }
   }
-
-  computeNodes (inputSegmentStrings) {
+  computeNodes(inputSegmentStrings) {
     this._nodedSegStrings = inputSegmentStrings
     this._noder = new MCIndexNoder()
     this._pointSnapper = new MCIndexPointSnapper(this._noder.getIndex())
     this.snapRound(inputSegmentStrings, this._li)
   }
-
-  computeIntersectionSnaps (snapPts) {
-    for (let it = snapPts.iterator(); it.hasNext();) {
+  computeIntersectionSnaps(snapPts) {
+    for (let it = snapPts.iterator(); it.hasNext(); ) {
       const snapPt = it.next()
       const hotPixel = new HotPixel(snapPt, this._scaleFactor, this._li)
       this._pointSnapper.snap(hotPixel)
     }
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Noder]
   }
 }

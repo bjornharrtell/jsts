@@ -6,11 +6,10 @@ import Comparable from '../../../../../java/lang/Comparable'
 import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance'
 import IndexedPointInAreaLocator from '../locate/IndexedPointInAreaLocator'
 export default class LargestEmptyCircle {
-  constructor () {
+  constructor() {
     LargestEmptyCircle.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._obstacles = null
     this._tolerance = null
     this._factory = null
@@ -24,34 +23,30 @@ export default class LargestEmptyCircle {
     this._centerPoint = null
     this._radiusPt = null
     this._radiusPoint = null
-    const obstacles = arguments[0]; const tolerance = arguments[1]
-    if (obstacles.isEmpty())
+    const obstacles = arguments[0], tolerance = arguments[1]
+    if (obstacles.isEmpty()) 
       throw new IllegalArgumentException('Empty obstacles geometry is not supported')
-
+    
     this._obstacles = obstacles
     this._factory = obstacles.getFactory()
     this._tolerance = tolerance
     this._obstacleDistance = new IndexedFacetDistance(obstacles)
     this.setBoundary(obstacles)
   }
-
-  static getCenter (obstacles, tolerance) {
+  static getCenter(obstacles, tolerance) {
     const lec = new LargestEmptyCircle(obstacles, tolerance)
     return lec.getCenter()
   }
-
-  static getRadiusLine (obstacles, tolerance) {
+  static getRadiusLine(obstacles, tolerance) {
     const lec = new LargestEmptyCircle(obstacles, tolerance)
     return lec.getRadiusLine()
   }
-
-  getRadiusLine () {
+  getRadiusLine() {
     this.compute()
     const radiusLine = this._factory.createLineString([this._centerPt.copy(), this._radiusPt.copy()])
     return radiusLine
   }
-
-  compute () {
+  compute() {
     if (this._centerCell !== null) return null
     if (this._ptLocater === null) {
       const pt = this._obstacles.getCoordinate()
@@ -66,9 +61,9 @@ export default class LargestEmptyCircle {
     this._farthestCell = this.createCentroidCell(this._obstacles)
     while (!cellQueue.isEmpty()) {
       const cell = cellQueue.remove()
-      if (cell.getDistance() > this._farthestCell.getDistance())
+      if (cell.getDistance() > this._farthestCell.getDistance()) 
         this._farthestCell = cell
-
+      
       if (this.mayContainCircleCenter(cell)) {
         const h2 = cell.getHSide() / 2
         cellQueue.add(this.createCell(cell.getX() - h2, cell.getY() - h2, h2))
@@ -84,23 +79,19 @@ export default class LargestEmptyCircle {
     this._radiusPt = nearestPts[0].copy()
     this._radiusPoint = this._factory.createPoint(this._radiusPt)
   }
-
-  getRadiusPoint () {
+  getRadiusPoint() {
     this.compute()
     return this._radiusPoint
   }
-
-  createCentroidCell (geom) {
+  createCentroidCell(geom) {
     const p = geom.getCentroid()
     return new Cell(p.getX(), p.getY(), 0, this.distanceToConstraints(p))
   }
-
-  getCenter () {
+  getCenter() {
     this.compute()
     return this._centerPoint
   }
-
-  distanceToConstraints () {
+  distanceToConstraints() {
     if (arguments.length === 1) {
       const p = arguments[0]
       const isOutide = Location.EXTERIOR === this._ptLocater.locate(p.getCoordinate())
@@ -111,14 +102,13 @@ export default class LargestEmptyCircle {
       const dist = this._obstacleDistance.distance(p)
       return dist
     } else if (arguments.length === 2) {
-      const x = arguments[0]; const y = arguments[1]
+      const x = arguments[0], y = arguments[1]
       const coord = new Coordinate(x, y)
       const pt = this._factory.createPoint(coord)
       return this.distanceToConstraints(pt)
     }
   }
-
-  mayContainCircleCenter (cell) {
+  mayContainCircleCenter(cell) {
     if (cell.isFullyOutside()) return false
     if (cell.isOutside()) {
       const isOverlapSignificant = cell.getMaxDistance() > this._tolerance
@@ -127,12 +117,10 @@ export default class LargestEmptyCircle {
     const potentialIncrease = cell.getMaxDistance() - this._farthestCell.getDistance()
     return potentialIncrease > this._tolerance
   }
-
-  createCell (x, y, h) {
+  createCell(x, y, h) {
     return new Cell(x, y, h, this.distanceToConstraints(x, y))
   }
-
-  createInitialGrid (env, cellQueue) {
+  createInitialGrid(env, cellQueue) {
     const minX = env.getMinX()
     const maxX = env.getMaxX()
     const minY = env.getMinY()
@@ -141,12 +129,13 @@ export default class LargestEmptyCircle {
     const height = env.getHeight()
     const cellSize = Math.min(width, height)
     const hSize = cellSize / 2.0
-    for (let x = minX; x < maxX; x += cellSize)
-      for (let y = minY; y < maxY; y += cellSize)
+    for (let x = minX; x < maxX; x += cellSize) 
+      for (let y = minY; y < maxY; y += cellSize) 
         cellQueue.add(this.createCell(x + hSize, y + hSize, hSize))
+      
+    
   }
-
-  setBoundary (obstacles) {
+  setBoundary(obstacles) {
     this._boundary = obstacles.convexHull()
     if (this._boundary.getDimension() >= 2) {
       this._ptLocater = new IndexedPointInAreaLocator(this._boundary)
@@ -155,57 +144,47 @@ export default class LargestEmptyCircle {
   }
 }
 class Cell {
-  constructor () {
+  constructor() {
     Cell.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._x = null
     this._y = null
     this._hSide = null
     this._distance = null
     this._maxDist = null
-    const x = arguments[0]; const y = arguments[1]; const hSide = arguments[2]; const distanceToConstraints = arguments[3]
+    const x = arguments[0], y = arguments[1], hSide = arguments[2], distanceToConstraints = arguments[3]
     this._x = x
     this._y = y
     this._hSide = hSide
     this._distance = distanceToConstraints
     this._maxDist = this._distance + hSide * Cell.SQRT2
   }
-
-  getHSide () {
+  getHSide() {
     return this._hSide
   }
-
-  compareTo (o) {
+  compareTo(o) {
     return Math.trunc(o._maxDist - this._maxDist)
   }
-
-  getX () {
+  getX() {
     return this._x
   }
-
-  getMaxDistance () {
+  getMaxDistance() {
     return this._maxDist
   }
-
-  getDistance () {
+  getDistance() {
     return this._distance
   }
-
-  isOutside () {
+  isOutside() {
     return this._distance < 0
   }
-
-  getY () {
+  getY() {
     return this._y
   }
-
-  isFullyOutside () {
+  isFullyOutside() {
     return this.getMaxDistance() < 0
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparable]
   }
 }

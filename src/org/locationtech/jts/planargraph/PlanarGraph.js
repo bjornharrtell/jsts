@@ -5,34 +5,29 @@ import DirectedEdge from './DirectedEdge'
 import ArrayList from '../../../../java/util/ArrayList'
 import Edge from './Edge'
 export default class PlanarGraph {
-  constructor () {
+  constructor() {
     PlanarGraph.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._edges = new HashSet()
     this._dirEdges = new HashSet()
     this._nodeMap = new NodeMap()
   }
-
-  findNodesOfDegree (degree) {
+  findNodesOfDegree(degree) {
     const nodesFound = new ArrayList()
-    for (let i = this.nodeIterator(); i.hasNext();) {
+    for (let i = this.nodeIterator(); i.hasNext(); ) {
       const node = i.next()
       if (node.getDegree() === degree) nodesFound.add(node)
     }
     return nodesFound
   }
-
-  dirEdgeIterator () {
+  dirEdgeIterator() {
     return this._dirEdges.iterator()
   }
-
-  edgeIterator () {
+  edgeIterator() {
     return this._edges.iterator()
   }
-
-  remove () {
+  remove() {
     if (arguments[0] instanceof Edge) {
       const edge = arguments[0]
       this.remove(edge.getDirEdge(0))
@@ -49,33 +44,30 @@ export default class PlanarGraph {
     } else if (arguments[0] instanceof Node) {
       const node = arguments[0]
       const outEdges = node.getOutEdges().getEdges()
-      for (let i = outEdges.iterator(); i.hasNext();) {
+      for (let i = outEdges.iterator(); i.hasNext(); ) {
         const de = i.next()
         const sym = de.getSym()
         if (sym !== null) this.remove(sym)
         this._dirEdges.remove(de)
         const edge = de.getEdge()
-        if (edge !== null)
+        if (edge !== null) 
           this._edges.remove(edge)
+        
       }
       this._nodeMap.remove(node.getCoordinate())
       node.remove()
     }
   }
-
-  findNode (pt) {
+  findNode(pt) {
     return this._nodeMap.find(pt)
   }
-
-  getEdges () {
+  getEdges() {
     return this._edges
   }
-
-  nodeIterator () {
+  nodeIterator() {
     return this._nodeMap.iterator()
   }
-
-  contains () {
+  contains() {
     if (arguments[0] instanceof Edge) {
       const e = arguments[0]
       return this._edges.contains(e)
@@ -84,8 +76,7 @@ export default class PlanarGraph {
       return this._dirEdges.contains(de)
     }
   }
-
-  add () {
+  add() {
     if (arguments[0] instanceof Node) {
       const node = arguments[0]
       this._nodeMap.add(node)
@@ -99,8 +90,7 @@ export default class PlanarGraph {
       this._dirEdges.add(dirEdge)
     }
   }
-
-  getNodes () {
+  getNodes() {
     return this._nodeMap.values()
   }
 }

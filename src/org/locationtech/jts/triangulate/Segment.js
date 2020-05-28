@@ -1,88 +1,73 @@
 import Coordinate from '../geom/Coordinate'
 import LineSegment from '../geom/LineSegment'
 export default class Segment {
-  constructor () {
+  constructor() {
     Segment.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._ls = null
     this._data = null
     if (arguments.length === 2) {
-      const p0 = arguments[0]; const p1 = arguments[1]
+      const p0 = arguments[0], p1 = arguments[1]
       this._ls = new LineSegment(p0, p1)
     } else if (arguments.length === 3) {
-      const p0 = arguments[0]; const p1 = arguments[1]; const data = arguments[2]
+      const p0 = arguments[0], p1 = arguments[1], data = arguments[2]
       this._ls = new LineSegment(p0, p1)
       this._data = data
     } else if (arguments.length === 6) {
-      const x1 = arguments[0]; const y1 = arguments[1]; const z1 = arguments[2]; const x2 = arguments[3]; const y2 = arguments[4]; const z2 = arguments[5]
+      const x1 = arguments[0], y1 = arguments[1], z1 = arguments[2], x2 = arguments[3], y2 = arguments[4], z2 = arguments[5]
       Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
     } else if (arguments.length === 7) {
-      const x1 = arguments[0]; const y1 = arguments[1]; const z1 = arguments[2]; const x2 = arguments[3]; const y2 = arguments[4]; const z2 = arguments[5]; const data = arguments[6]
+      const x1 = arguments[0], y1 = arguments[1], z1 = arguments[2], x2 = arguments[3], y2 = arguments[4], z2 = arguments[5], data = arguments[6]
       Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
     }
   }
-
-  getLineSegment () {
+  getLineSegment() {
     return this._ls
   }
-
-  getEndZ () {
+  getEndZ() {
     const p = this._ls.getCoordinate(1)
     return p.getZ()
   }
-
-  getStartZ () {
+  getStartZ() {
     const p = this._ls.getCoordinate(0)
     return p.getZ()
   }
-
-  intersection (s) {
+  intersection(s) {
     return this._ls.intersection(s.getLineSegment())
   }
-
-  getStart () {
+  getStart() {
     return this._ls.getCoordinate(0)
   }
-
-  getEnd () {
+  getEnd() {
     return this._ls.getCoordinate(1)
   }
-
-  getEndY () {
+  getEndY() {
     const p = this._ls.getCoordinate(1)
     return p.y
   }
-
-  getStartX () {
+  getStartX() {
     const p = this._ls.getCoordinate(0)
     return p.x
   }
-
-  equalsTopo (s) {
+  equalsTopo(s) {
     return this._ls.equalsTopo(s.getLineSegment())
   }
-
-  getStartY () {
+  getStartY() {
     const p = this._ls.getCoordinate(0)
     return p.y
   }
-
-  setData (data) {
+  setData(data) {
     this._data = data
   }
-
-  getData () {
+  getData() {
     return this._data
   }
-
-  getEndX () {
+  getEndX() {
     const p = this._ls.getCoordinate(1)
     return p.x
   }
-
-  toString () {
+  toString() {
     return this._ls.toString()
   }
 }

@@ -1,3 +1,3 @@
 export default class QuadEdgeLocator {
-  locate (v) {}
+  locate(v) {}
 }

@@ -1,6 +1,6 @@
 import Node from './Node'
 export default class NodeFactory {
-  createNode (coord) {
+  createNode(coord) {
     return new Node(coord, null)
   }
 }

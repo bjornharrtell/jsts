@@ -1,18 +1,16 @@
 import WKTWriter from '../../io/WKTWriter'
 import LineSegment from '../../geom/LineSegment'
 export default class QuadEdge {
-  constructor () {
+  constructor() {
     QuadEdge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._rot = null
     this._vertex = null
     this._next = null
     this._data = null
   }
-
-  static makeEdge (o, d) {
+  static makeEdge(o, d) {
     const q0 = new QuadEdge()
     const q1 = new QuadEdge()
     const q2 = new QuadEdge()
@@ -30,8 +28,7 @@ export default class QuadEdge {
     base.setDest(d)
     return base
   }
-
-  static swap (e) {
+  static swap(e) {
     const a = e.oPrev()
     const b = e.sym().oPrev()
     QuadEdge.splice(e, a)
@@ -41,8 +38,7 @@ export default class QuadEdge {
     e.setOrig(a.dest())
     e.setDest(b.dest())
   }
-
-  static splice (a, b) {
+  static splice(a, b) {
     const alpha = a.oNext().rot()
     const beta = b.oNext().rot()
     const t1 = b.oNext()
@@ -54,120 +50,93 @@ export default class QuadEdge {
     alpha.setNext(t3)
     beta.setNext(t4)
   }
-
-  static connect (a, b) {
+  static connect(a, b) {
     const e = QuadEdge.makeEdge(a.dest(), b.orig())
     QuadEdge.splice(e, a.lNext())
     QuadEdge.splice(e.sym(), b)
     return e
   }
-
-  equalsNonOriented (qe) {
+  equalsNonOriented(qe) {
     if (this.equalsOriented(qe)) return true
     if (this.equalsOriented(qe.sym())) return true
     return false
   }
-
-  toLineSegment () {
+  toLineSegment() {
     return new LineSegment(this._vertex.getCoordinate(), this.dest().getCoordinate())
   }
-
-  dest () {
+  dest() {
     return this.sym().orig()
   }
-
-  oNext () {
+  oNext() {
     return this._next
   }
-
-  equalsOriented (qe) {
+  equalsOriented(qe) {
     if (this.orig().getCoordinate().equals2D(qe.orig().getCoordinate()) && this.dest().getCoordinate().equals2D(qe.dest().getCoordinate())) return true
     return false
   }
-
-  dNext () {
+  dNext() {
     return this.sym().oNext().sym()
   }
-
-  lPrev () {
+  lPrev() {
     return this._next.sym()
   }
-
-  rPrev () {
+  rPrev() {
     return this.sym().oNext()
   }
-
-  rot () {
+  rot() {
     return this._rot
   }
-
-  oPrev () {
+  oPrev() {
     return this._rot._next._rot
   }
-
-  sym () {
+  sym() {
     return this._rot._rot
   }
-
-  setOrig (o) {
+  setOrig(o) {
     this._vertex = o
   }
-
-  lNext () {
+  lNext() {
     return this.invRot().oNext().rot()
   }
-
-  getLength () {
+  getLength() {
     return this.orig().getCoordinate().distance(this.dest().getCoordinate())
   }
-
-  invRot () {
+  invRot() {
     return this._rot.sym()
   }
-
-  setDest (d) {
+  setDest(d) {
     this.sym().setOrig(d)
   }
-
-  setData (data) {
+  setData(data) {
     this._data = data
   }
-
-  getData () {
+  getData() {
     return this._data
   }
-
-  delete () {
+  delete() {
     this._rot = null
   }
-
-  orig () {
+  orig() {
     return this._vertex
   }
-
-  rNext () {
+  rNext() {
     return this._rot._next.invRot()
   }
-
-  toString () {
+  toString() {
     const p0 = this._vertex.getCoordinate()
     const p1 = this.dest().getCoordinate()
     return WKTWriter.toLineString(p0, p1)
   }
-
-  isLive () {
+  isLive() {
     return this._rot !== null
   }
-
-  getPrimary () {
+  getPrimary() {
     if (this.orig().getCoordinate().compareTo(this.dest().getCoordinate()) <= 0) return this; else return this.sym()
   }
-
-  dPrev () {
+  dPrev() {
     return this.invRot().oNext().invRot()
   }
-
-  setNext (next) {
+  setNext(next) {
     this._next = next
   }
 }

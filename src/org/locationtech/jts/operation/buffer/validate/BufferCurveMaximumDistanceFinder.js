@@ -4,80 +4,69 @@ import Coordinate from '../../../geom/Coordinate'
 import PointPairDistance from './PointPairDistance'
 import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter'
 export default class BufferCurveMaximumDistanceFinder {
-  constructor () {
+  constructor() {
     BufferCurveMaximumDistanceFinder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._inputGeom = null
     this._maxPtDist = new PointPairDistance()
     const inputGeom = arguments[0]
     this._inputGeom = inputGeom
   }
-
-  computeMaxMidpointDistance (curve) {
+  computeMaxMidpointDistance(curve) {
     const distFilter = new MaxMidpointDistanceFilter(this._inputGeom)
     curve.apply(distFilter)
     this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
   }
-
-  computeMaxVertexDistance (curve) {
+  computeMaxVertexDistance(curve) {
     const distFilter = new MaxPointDistanceFilter(this._inputGeom)
     curve.apply(distFilter)
     this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
   }
-
-  findDistance (bufferCurve) {
+  findDistance(bufferCurve) {
     this.computeMaxVertexDistance(bufferCurve)
     this.computeMaxMidpointDistance(bufferCurve)
     return this._maxPtDist.getDistance()
   }
-
-  getDistancePoints () {
+  getDistancePoints() {
     return this._maxPtDist
   }
 }
 class MaxPointDistanceFilter {
-  constructor () {
+  constructor() {
     MaxPointDistanceFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._maxPtDist = new PointPairDistance()
     this._minPtDist = new PointPairDistance()
     this._geom = null
     const geom = arguments[0]
     this._geom = geom
   }
-
-  filter (pt) {
+  filter(pt) {
     this._minPtDist.initialize()
     DistanceToPointFinder.computeDistance(this._geom, pt, this._minPtDist)
     this._maxPtDist.setMaximum(this._minPtDist)
   }
-
-  getMaxPointDistance () {
+  getMaxPointDistance() {
     return this._maxPtDist
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateFilter]
   }
 }
 class MaxMidpointDistanceFilter {
-  constructor () {
+  constructor() {
     MaxMidpointDistanceFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._maxPtDist = new PointPairDistance()
     this._minPtDist = new PointPairDistance()
     this._geom = null
     const geom = arguments[0]
     this._geom = geom
   }
-
-  filter (seq, index) {
+  filter(seq, index) {
     if (index === 0) return null
     const p0 = seq.getCoordinate(index - 1)
     const p1 = seq.getCoordinate(index)
@@ -86,20 +75,16 @@ class MaxMidpointDistanceFilter {
     DistanceToPointFinder.computeDistance(this._geom, midPt, this._minPtDist)
     this._maxPtDist.setMaximum(this._minPtDist)
   }
-
-  isDone () {
+  isDone() {
     return false
   }
-
-  isGeometryChanged () {
+  isGeometryChanged() {
     return false
   }
-
-  getMaxPointDistance () {
+  getMaxPointDistance() {
     return this._maxPtDist
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateSequenceFilter]
   }
 }

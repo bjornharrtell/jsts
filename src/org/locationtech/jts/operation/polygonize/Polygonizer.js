@@ -10,11 +10,10 @@ import GeometryComponentFilter from '../../geom/GeometryComponentFilter'
 import ArrayList from '../../../../../java/util/ArrayList'
 import HoleAssigner from './HoleAssigner'
 export default class Polygonizer {
-  constructor () {
+  constructor() {
     Polygonizer.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._lineStringAdder = new LineStringAdder(this)
     this._graph = null
     this._dangles = new ArrayList()
@@ -33,19 +32,18 @@ export default class Polygonizer {
       this._extractOnlyPolygonal = extractOnlyPolygonal
     }
   }
-
-  static extractPolygons (shellList, includeAll) {
+  static extractPolygons(shellList, includeAll) {
     const polyList = new ArrayList()
-    for (let i = shellList.iterator(); i.hasNext();) {
+    for (let i = shellList.iterator(); i.hasNext(); ) {
       const er = i.next()
-      if (includeAll || er.isIncluded())
+      if (includeAll || er.isIncluded()) 
         polyList.add(er.getPolygon())
+      
     }
     return polyList
   }
-
-  static findOuterShells (shellList) {
-    for (let i = shellList.iterator(); i.hasNext();) {
+  static findOuterShells(shellList) {
+    for (let i = shellList.iterator(); i.hasNext(); ) {
       const er = i.next()
       const outerHoleER = er.getOuterHole()
       if (outerHoleER !== null && !outerHoleER.isProcessed()) {
@@ -54,44 +52,40 @@ export default class Polygonizer {
       }
     }
   }
-
-  static findDisjointShells (shellList) {
+  static findDisjointShells(shellList) {
     Polygonizer.findOuterShells(shellList)
     let isMoreToScan = null
     do {
       isMoreToScan = false
-      for (let i = shellList.iterator(); i.hasNext();) {
+      for (let i = shellList.iterator(); i.hasNext(); ) {
         const er = i.next()
         if (er.isIncludedSet()) continue
         er.updateIncluded()
-        if (!er.isIncludedSet())
+        if (!er.isIncludedSet()) 
           isMoreToScan = true
+        
       }
     } while (isMoreToScan)
   }
-
-  getGeometry () {
+  getGeometry() {
     if (this._geomFactory === null) this._geomFactory = new GeometryFactory()
     this.polygonize()
-    if (this._extractOnlyPolygonal)
+    if (this._extractOnlyPolygonal) 
       return this._geomFactory.buildGeometry(this._polyList)
-
+    
     return this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(this._polyList))
   }
-
-  getInvalidRingLines () {
+  getInvalidRingLines() {
     this.polygonize()
     return this._invalidRingLines
   }
-
-  findValidRings (edgeRingList, validEdgeRingList, invalidRingList) {
-    for (let i = edgeRingList.iterator(); i.hasNext();) {
+  findValidRings(edgeRingList, validEdgeRingList, invalidRingList) {
+    for (let i = edgeRingList.iterator(); i.hasNext(); ) {
       const er = i.next()
       if (er.isValid()) validEdgeRingList.add(er); else invalidRingList.add(er.getLineString())
     }
   }
-
-  polygonize () {
+  polygonize() {
     if (this._polyList !== null) return null
     this._polyList = new ArrayList()
     if (this._graph === null) return null
@@ -100,11 +94,11 @@ export default class Polygonizer {
     const edgeRingList = this._graph.getEdgeRings()
     let validEdgeRingList = new ArrayList()
     this._invalidRingLines = new ArrayList()
-    if (this._isCheckingRingsValid)
+    if (this._isCheckingRingsValid) 
       this.findValidRings(edgeRingList, validEdgeRingList, this._invalidRingLines)
-    else
+    else 
       validEdgeRingList = edgeRingList
-
+    
     this.findShellsAndHoles(validEdgeRingList)
     HoleAssigner.assignHolesToShells(this._holeList, this._shellList)
     Collections.sort(this._shellList, new EdgeRing.EnvelopeComparator())
@@ -115,26 +109,22 @@ export default class Polygonizer {
     }
     this._polyList = Polygonizer.extractPolygons(this._shellList, includeAll)
   }
-
-  getDangles () {
+  getDangles() {
     this.polygonize()
     return this._dangles
   }
-
-  getCutEdges () {
+  getCutEdges() {
     this.polygonize()
     return this._cutEdges
   }
-
-  getPolygons () {
+  getPolygons() {
     this.polygonize()
     return this._polyList
   }
-
-  add () {
+  add() {
     if (hasInterface(arguments[0], Collection)) {
       const geomList = arguments[0]
-      for (let i = geomList.iterator(); i.hasNext();) {
+      for (let i = geomList.iterator(); i.hasNext(); ) {
         const geometry = i.next()
         this.add(geometry)
       }
@@ -148,15 +138,13 @@ export default class Polygonizer {
       g.apply(this._lineStringAdder)
     }
   }
-
-  setCheckRingsValid (isCheckingRingsValid) {
+  setCheckRingsValid(isCheckingRingsValid) {
     this._isCheckingRingsValid = isCheckingRingsValid
   }
-
-  findShellsAndHoles (edgeRingList) {
+  findShellsAndHoles(edgeRingList) {
     this._holeList = new ArrayList()
     this._shellList = new ArrayList()
-    for (let i = edgeRingList.iterator(); i.hasNext();) {
+    for (let i = edgeRingList.iterator(); i.hasNext(); ) {
       const er = i.next()
       er.computeHole()
       if (er.isHole()) this._holeList.add(er); else this._shellList.add(er)
@@ -164,21 +152,18 @@ export default class Polygonizer {
   }
 }
 class LineStringAdder {
-  constructor () {
+  constructor() {
     LineStringAdder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.p = null
     const p = arguments[0]
     this.p = p
   }
-
-  filter (g) {
+  filter(g) {
     if (g instanceof LineString) this.p.add(g)
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [GeometryComponentFilter]
   }
 }

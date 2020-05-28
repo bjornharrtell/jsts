@@ -1,11 +1,10 @@
 import RuntimeException from '../../../../java/lang/RuntimeException'
 export default class AssertionFailedException extends RuntimeException {
-  constructor () {
+  constructor() {
     super()
     AssertionFailedException.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     if (arguments.length === 0) {
       RuntimeException.constructor_.call(this)
     } else if (arguments.length === 1) {

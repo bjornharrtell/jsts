@@ -1,6 +1,6 @@
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class QuadEdgeUtil {
-  static findEdgesIncidentOnOrigin (start) {
+  static findEdgesIncidentOnOrigin(start) {
     const incEdge = new ArrayList()
     let qe = start
     do {

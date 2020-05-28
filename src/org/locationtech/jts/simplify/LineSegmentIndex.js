@@ -5,19 +5,16 @@ import ArrayList from '../../../../java/util/ArrayList'
 import Envelope from '../geom/Envelope'
 import TaggedLineString from './TaggedLineString'
 export default class LineSegmentIndex {
-  constructor () {
+  constructor() {
     LineSegmentIndex.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._index = new Quadtree()
   }
-
-  remove (seg) {
+  remove(seg) {
     this._index.remove(new Envelope(seg.p0, seg.p1), seg)
   }
-
-  add () {
+  add() {
     if (arguments[0] instanceof TaggedLineString) {
       const line = arguments[0]
       const segs = line.getSegments()
@@ -30,8 +27,7 @@ export default class LineSegmentIndex {
       this._index.insert(new Envelope(seg.p0, seg.p1), seg)
     }
   }
-
-  query (querySeg) {
+  query(querySeg) {
     const env = new Envelope(querySeg.p0, querySeg.p1)
     const visitor = new LineSegmentVisitor(querySeg)
     this._index.query(env, visitor)
@@ -40,27 +36,23 @@ export default class LineSegmentIndex {
   }
 }
 class LineSegmentVisitor {
-  constructor () {
+  constructor() {
     LineSegmentVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._querySeg = null
     this._items = new ArrayList()
     const querySeg = arguments[0]
     this._querySeg = querySeg
   }
-
-  visitItem (item) {
+  visitItem(item) {
     const seg = item
     if (Envelope.intersects(seg.p0, seg.p1, this._querySeg.p0, this._querySeg.p1)) this._items.add(item)
   }
-
-  getItems () {
+  getItems() {
     return this._items
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [ItemVisitor]
   }
 }

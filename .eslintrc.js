@@ -5,7 +5,7 @@ module.exports = {
     es6: true,
     node: true
   },
-  extends: 'standard',
+  extends: 'eslint:recommended',
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -25,6 +25,7 @@ module.exports = {
     indent: ['error', 2],
     semi: ['error', 'never'],
     curly: ['error', 'multi', 'consistent'],
+    'prefer-const': ['error'],
     'brace-style': ['error', '1tbs'],
     'block-spacing': ['error', 'always'],
     'object-curly-newline': ['error', { consistent: true }],

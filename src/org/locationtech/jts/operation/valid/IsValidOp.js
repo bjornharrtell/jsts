@@ -21,19 +21,17 @@ import TopologyValidationError from './TopologyValidationError'
 import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator'
 import Assert from '../../util/Assert'
 export default class IsValidOp {
-  constructor () {
+  constructor() {
     IsValidOp.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._parentGeometry = null
     this._isSelfTouchingRingFormingHoleValid = false
     this._validErr = null
     const parentGeometry = arguments[0]
     this._parentGeometry = parentGeometry
   }
-
-  static findPtNotNode (testCoords, searchRing, graph) {
+  static findPtNotNode(testCoords, searchRing, graph) {
     const searchEdge = graph.findEdge(searchRing)
     const eiList = searchEdge.getEdgeIntersectionList()
     for (let i = 0; i < testCoords.length; i++) {
@@ -42,8 +40,7 @@ export default class IsValidOp {
     }
     return null
   }
-
-  static isValid () {
+  static isValid() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
       const isValidOp = new IsValidOp(geom)
@@ -57,15 +54,15 @@ export default class IsValidOp {
       return true
     }
   }
-
-  checkInvalidCoordinates () {
+  checkInvalidCoordinates() {
     if (arguments[0] instanceof Array) {
       const coords = arguments[0]
-      for (let i = 0; i < coords.length; i++)
+      for (let i = 0; i < coords.length; i++) 
         if (!IsValidOp.isValid(coords[i])) {
           this._validErr = new TopologyValidationError(TopologyValidationError.INVALID_COORDINATE, coords[i])
           return null
         }
+      
     } else if (arguments[0] instanceof Polygon) {
       const poly = arguments[0]
       this.checkInvalidCoordinates(poly.getExteriorRing().getCoordinates())
@@ -76,8 +73,7 @@ export default class IsValidOp {
       }
     }
   }
-
-  checkHolesNotNested (p, graph) {
+  checkHolesNotNested(p, graph) {
     if (p.getNumInteriorRing() <= 0) return null
     const nestedTester = new IndexedNestedRingTester(graph)
     for (let i = 0; i < p.getNumInteriorRing(); i++) {
@@ -86,64 +82,61 @@ export default class IsValidOp {
       nestedTester.add(innerHole)
     }
     const isNonNested = nestedTester.isNonNested()
-    if (!isNonNested)
+    if (!isNonNested) 
       this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_HOLES, nestedTester.getNestedPoint())
+    
   }
-
-  checkConsistentArea (graph) {
+  checkConsistentArea(graph) {
     const cat = new ConsistentAreaTester(graph)
     const isValidArea = cat.isNodeConsistentArea()
     if (!isValidArea) {
       this._validErr = new TopologyValidationError(TopologyValidationError.SELF_INTERSECTION, cat.getInvalidPoint())
       return null
     }
-    if (cat.hasDuplicateRings())
+    if (cat.hasDuplicateRings()) 
       this._validErr = new TopologyValidationError(TopologyValidationError.DUPLICATE_RINGS, cat.getInvalidPoint())
+    
   }
-
-  isValid () {
+  isValid() {
     this.checkValid(this._parentGeometry)
     return this._validErr === null
   }
-
-  checkShellInsideHole (shell, hole, graph) {
+  checkShellInsideHole(shell, hole, graph) {
     const shellPts = shell.getCoordinates()
     const holePts = hole.getCoordinates()
     const shellPt = IsValidOp.findPtNotNode(shellPts, hole, graph)
     if (shellPt !== null) {
       const insideHole = PointLocation.isInRing(shellPt, holePts)
-      if (!insideHole)
+      if (!insideHole) 
         return shellPt
+      
     }
     const holePt = IsValidOp.findPtNotNode(holePts, shell, graph)
     if (holePt !== null) {
       const insideShell = PointLocation.isInRing(holePt, shellPts)
-      if (insideShell)
+      if (insideShell) 
         return holePt
-
+      
       return null
     }
     Assert.shouldNeverReachHere('points in shell and hole appear to be equal')
     return null
   }
-
-  checkNoSelfIntersectingRings (graph) {
-    for (let i = graph.getEdgeIterator(); i.hasNext();) {
+  checkNoSelfIntersectingRings(graph) {
+    for (let i = graph.getEdgeIterator(); i.hasNext(); ) {
       const e = i.next()
       this.checkNoSelfIntersectingRing(e.getEdgeIntersectionList())
       if (this._validErr !== null) return null
     }
   }
-
-  checkConnectedInteriors (graph) {
+  checkConnectedInteriors(graph) {
     const cit = new ConnectedInteriorTester(graph)
     if (!cit.isInteriorsConnected()) this._validErr = new TopologyValidationError(TopologyValidationError.DISCONNECTED_INTERIOR, cit.getCoordinate())
   }
-
-  checkNoSelfIntersectingRing (eiList) {
+  checkNoSelfIntersectingRing(eiList) {
     const nodeSet = new TreeSet()
     let isFirst = true
-    for (let i = eiList.iterator(); i.hasNext();) {
+    for (let i = eiList.iterator(); i.hasNext(); ) {
       const ei = i.next()
       if (isFirst) {
         isFirst = false
@@ -157,8 +150,7 @@ export default class IsValidOp {
       }
     }
   }
-
-  checkHolesInShell (p, graph) {
+  checkHolesInShell(p, graph) {
     if (p.getNumInteriorRing() <= 0) return null
     const shell = p.getExteriorRing()
     const isShellEmpty = shell.isEmpty()
@@ -176,20 +168,17 @@ export default class IsValidOp {
       }
     }
   }
-
-  checkTooFewPoints (graph) {
+  checkTooFewPoints(graph) {
     if (graph.hasTooFewPoints()) {
       this._validErr = new TopologyValidationError(TopologyValidationError.TOO_FEW_POINTS, graph.getInvalidPoint())
       return null
     }
   }
-
-  getValidationError () {
+  getValidationError() {
     this.checkValid(this._parentGeometry)
     return this._validErr
   }
-
-  checkValid () {
+  checkValid() {
     if (arguments[0] instanceof Point) {
       const g = arguments[0]
       this.checkInvalidCoordinates(g.getCoordinates())
@@ -279,12 +268,10 @@ export default class IsValidOp {
       if (g instanceof Point) this.checkValid(g); else if (g instanceof MultiPoint) this.checkValid(g); else if (g instanceof LinearRing) this.checkValid(g); else if (g instanceof LineString) this.checkValid(g); else if (g instanceof Polygon) this.checkValid(g); else if (g instanceof MultiPolygon) this.checkValid(g); else if (g instanceof GeometryCollection) this.checkValid(g); else throw new UnsupportedOperationException(g.getGeometryType())
     }
   }
-
-  setSelfTouchingRingFormingHoleValid (isValid) {
+  setSelfTouchingRingFormingHoleValid(isValid) {
     this._isSelfTouchingRingFormingHoleValid = isValid
   }
-
-  checkShellNotNested (shell, p, graph) {
+  checkShellNotNested(shell, p, graph) {
     const shellPts = shell.getCoordinates()
     const polyShell = p.getExteriorRing()
     if (polyShell.isEmpty()) return null
@@ -305,8 +292,7 @@ export default class IsValidOp {
     }
     this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, badNestedPt)
   }
-
-  checkClosedRings (poly) {
+  checkClosedRings(poly) {
     this.checkClosedRing(poly.getExteriorRing())
     if (this._validErr !== null) return null
     for (let i = 0; i < poly.getNumInteriorRing(); i++) {
@@ -314,8 +300,7 @@ export default class IsValidOp {
       if (this._validErr !== null) return null
     }
   }
-
-  checkClosedRing (ring) {
+  checkClosedRing(ring) {
     if (ring.isEmpty()) return null
     if (!ring.isClosed()) {
       let pt = null
@@ -323,8 +308,7 @@ export default class IsValidOp {
       this._validErr = new TopologyValidationError(TopologyValidationError.RING_NOT_CLOSED, pt)
     }
   }
-
-  checkShellsNotNested (mp, graph) {
+  checkShellsNotNested(mp, graph) {
     for (let i = 0; i < mp.getNumGeometries(); i++) {
       const p = mp.getGeometryN(i)
       const shell = p.getExteriorRing()

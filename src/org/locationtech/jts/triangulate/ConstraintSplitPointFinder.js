@@ -1,3 +1,3 @@
 export default class ConstraintSplitPointFinder {
-  findSplitPoint (seg, encroachPt) {}
+  findSplitPoint(seg, encroachPt) {}
 }

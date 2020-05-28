@@ -8,11 +8,10 @@ import PrecisionModel from '../../geom/PrecisionModel'
 import RuntimeException from '../../../../../java/lang/RuntimeException'
 import MCIndexSnapRounder from '../../noding/snapround/MCIndexSnapRounder'
 export default class BufferOp {
-  constructor () {
+  constructor() {
     BufferOp.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._argGeom = null
     this._distance = null
     this._bufParams = new BufferParameters()
@@ -22,33 +21,32 @@ export default class BufferOp {
       const g = arguments[0]
       this._argGeom = g
     } else if (arguments.length === 2) {
-      const g = arguments[0]; const bufParams = arguments[1]
+      const g = arguments[0], bufParams = arguments[1]
       this._argGeom = g
       this._bufParams = bufParams
     }
   }
-
-  static bufferOp () {
+  static bufferOp() {
     if (arguments.length === 2) {
-      const g = arguments[0]; const distance = arguments[1]
+      const g = arguments[0], distance = arguments[1]
       const gBuf = new BufferOp(g)
       const geomBuf = gBuf.getResultGeometry(distance)
       return geomBuf
     } else if (arguments.length === 3) {
       if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Geometry && typeof arguments[1] === 'number')) {
-        const g = arguments[0]; const distance = arguments[1]; const quadrantSegments = arguments[2]
+        const g = arguments[0], distance = arguments[1], quadrantSegments = arguments[2]
         const bufOp = new BufferOp(g)
         bufOp.setQuadrantSegments(quadrantSegments)
         const geomBuf = bufOp.getResultGeometry(distance)
         return geomBuf
       } else if (arguments[2] instanceof BufferParameters && (arguments[0] instanceof Geometry && typeof arguments[1] === 'number')) {
-        const g = arguments[0]; const distance = arguments[1]; const params = arguments[2]
+        const g = arguments[0], distance = arguments[1], params = arguments[2]
         const bufOp = new BufferOp(g, params)
         const geomBuf = bufOp.getResultGeometry(distance)
         return geomBuf
       }
     } else if (arguments.length === 4) {
-      const g = arguments[0]; const distance = arguments[1]; const quadrantSegments = arguments[2]; const endCapStyle = arguments[3]
+      const g = arguments[0], distance = arguments[1], quadrantSegments = arguments[2], endCapStyle = arguments[3]
       const bufOp = new BufferOp(g)
       bufOp.setQuadrantSegments(quadrantSegments)
       bufOp.setEndCapStyle(endCapStyle)
@@ -56,8 +54,7 @@ export default class BufferOp {
       return geomBuf
     }
   }
-
-  static precisionScaleFactor (g, distance, maxPrecisionDigits) {
+  static precisionScaleFactor(g, distance, maxPrecisionDigits) {
     const env = g.getEnvelopeInternal()
     const envMax = MathUtil.max(Math.abs(env.getMaxX()), Math.abs(env.getMaxY()), Math.abs(env.getMinX()), Math.abs(env.getMinY()))
     const expandByDistance = distance > 0.0 ? distance : 0.0
@@ -67,22 +64,20 @@ export default class BufferOp {
     const scaleFactor = Math.pow(10.0, minUnitLog10)
     return scaleFactor
   }
-
-  bufferFixedPrecision (fixedPM) {
+  bufferFixedPrecision(fixedPM) {
     const noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.getScale())
     const bufBuilder = new BufferBuilder(this._bufParams)
     bufBuilder.setWorkingPrecisionModel(fixedPM)
     bufBuilder.setNoder(noder)
     this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance)
   }
-
-  bufferReducedPrecision () {
+  bufferReducedPrecision() {
     if (arguments.length === 0) {
       for (let precDigits = BufferOp.MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
         try {
           this.bufferReducedPrecision(precDigits)
         } catch (ex) {
-          if (ex instanceof TopologyException)
+          if (ex instanceof TopologyException) 
             this._saveException = ex
           else throw ex
         } finally {}
@@ -96,36 +91,31 @@ export default class BufferOp {
       this.bufferFixedPrecision(fixedPM)
     }
   }
-
-  computeGeometry () {
+  computeGeometry() {
     this.bufferOriginalPrecision()
     if (this._resultGeometry !== null) return null
     const argPM = this._argGeom.getFactory().getPrecisionModel()
     if (argPM.getType() === PrecisionModel.FIXED) this.bufferFixedPrecision(argPM); else this.bufferReducedPrecision()
   }
-
-  setQuadrantSegments (quadrantSegments) {
+  setQuadrantSegments(quadrantSegments) {
     this._bufParams.setQuadrantSegments(quadrantSegments)
   }
-
-  bufferOriginalPrecision () {
+  bufferOriginalPrecision() {
     try {
       const bufBuilder = new BufferBuilder(this._bufParams)
       this._resultGeometry = bufBuilder.buffer(this._argGeom, this._distance)
     } catch (ex) {
-      if (ex instanceof RuntimeException)
+      if (ex instanceof RuntimeException) 
         this._saveException = ex
       else throw ex
     } finally {}
   }
-
-  getResultGeometry (distance) {
+  getResultGeometry(distance) {
     this._distance = distance
     this.computeGeometry()
     return this._resultGeometry
   }
-
-  setEndCapStyle (endCapStyle) {
+  setEndCapStyle(endCapStyle) {
     this._bufParams.setEndCapStyle(endCapStyle)
   }
 }

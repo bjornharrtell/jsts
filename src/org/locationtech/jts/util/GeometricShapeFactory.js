@@ -3,11 +3,10 @@ import Coordinate from '../geom/Coordinate'
 import AffineTransformation from '../geom/util/AffineTransformation'
 import Envelope from '../geom/Envelope'
 export default class GeometricShapeFactory {
-  constructor () {
+  constructor() {
     GeometricShapeFactory.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._geomFact = null
     this._precModel = null
     this._dim = new Dimensions()
@@ -21,8 +20,7 @@ export default class GeometricShapeFactory {
       this._precModel = geomFact.getPrecisionModel()
     }
   }
-
-  createSupercircle (power) {
+  createSupercircle(power) {
     const recipPow = 1.0 / power
     const radius = this._dim.getMinSize() / 2
     const centre = this._dim.getCentre()
@@ -55,24 +53,19 @@ export default class GeometricShapeFactory {
     const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
-
-  setNumPoints (nPts) {
+  setNumPoints(nPts) {
     this._nPts = nPts
   }
-
-  setBase (base) {
+  setBase(base) {
     this._dim.setBase(base)
   }
-
-  setRotation (radians) {
+  setRotation(radians) {
     this._rotationAngle = radians
   }
-
-  setWidth (width) {
+  setWidth(width) {
     this._dim.setWidth(width)
   }
-
-  createEllipse () {
+  createEllipse() {
     const env = this._dim.getEnvelope()
     const xRadius = env.getWidth() / 2.0
     const yRadius = env.getHeight() / 2.0
@@ -91,24 +84,19 @@ export default class GeometricShapeFactory {
     const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
-
-  coordTrans (x, y, trans) {
+  coordTrans(x, y, trans) {
     return this.coord(x + trans.x, y + trans.y)
   }
-
-  createSquircle () {
+  createSquircle() {
     return this.createSupercircle(4)
   }
-
-  setEnvelope (env) {
+  setEnvelope(env) {
     this._dim.setEnvelope(env)
   }
-
-  setCentre (centre) {
+  setCentre(centre) {
     this._dim.setCentre(centre)
   }
-
-  createArc (startAng, angExtent) {
+  createArc(startAng, angExtent) {
     const env = this._dim.getEnvelope()
     const xRadius = env.getWidth() / 2.0
     const yRadius = env.getHeight() / 2.0
@@ -128,22 +116,19 @@ export default class GeometricShapeFactory {
     const line = this._geomFact.createLineString(pts)
     return this.rotate(line)
   }
-
-  rotate (geom) {
+  rotate(geom) {
     if (this._rotationAngle !== 0.0) {
       const trans = AffineTransformation.rotationInstance(this._rotationAngle, this._dim.getCentre().x, this._dim.getCentre().y)
       geom.apply(trans)
     }
     return geom
   }
-
-  coord (x, y) {
+  coord(x, y) {
     const pt = new Coordinate(x, y)
     this._precModel.makePrecise(pt)
     return pt
   }
-
-  createArcPolygon (startAng, angExtent) {
+  createArcPolygon(startAng, angExtent) {
     const env = this._dim.getEnvelope()
     const xRadius = env.getWidth() / 2.0
     const yRadius = env.getHeight() / 2.0
@@ -166,8 +151,7 @@ export default class GeometricShapeFactory {
     const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
-
-  createRectangle () {
+  createRectangle() {
     let i = null
     let ipt = 0
     let nSide = Math.trunc(this._nPts / 4)
@@ -201,88 +185,72 @@ export default class GeometricShapeFactory {
     const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
   }
-
-  createCircle () {
+  createCircle() {
     return this.createEllipse()
   }
-
-  setHeight (height) {
+  setHeight(height) {
     this._dim.setHeight(height)
   }
-
-  setSize (size) {
+  setSize(size) {
     this._dim.setSize(size)
   }
 }
 class Dimensions {
-  constructor () {
+  constructor() {
     Dimensions.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.base = null
     this.centre = null
     this.width = null
     this.height = null
   }
-
-  setBase (base) {
+  setBase(base) {
     this.base = base
   }
-
-  setWidth (width) {
+  setWidth(width) {
     this.width = width
   }
-
-  getBase () {
+  getBase() {
     return this.base
   }
-
-  getWidth () {
+  getWidth() {
     return this.width
   }
-
-  setEnvelope (env) {
+  setEnvelope(env) {
     this.width = env.getWidth()
     this.height = env.getHeight()
     this.base = new Coordinate(env.getMinX(), env.getMinY())
     this.centre = new Coordinate(env.centre())
   }
-
-  setCentre (centre) {
+  setCentre(centre) {
     this.centre = centre
   }
-
-  getMinSize () {
+  getMinSize() {
     return Math.min(this.width, this.height)
   }
-
-  getEnvelope () {
-    if (this.base !== null)
+  getEnvelope() {
+    if (this.base !== null) 
       return new Envelope(this.base.x, this.base.x + this.width, this.base.y, this.base.y + this.height)
-
-    if (this.centre !== null)
+    
+    if (this.centre !== null) 
       return new Envelope(this.centre.x - this.width / 2, this.centre.x + this.width / 2, this.centre.y - this.height / 2, this.centre.y + this.height / 2)
-
+    
     return new Envelope(0, this.width, 0, this.height)
   }
-
-  getCentre () {
-    if (this.centre === null)
+  getCentre() {
+    if (this.centre === null) 
       this.centre = new Coordinate(this.base.x + this.width / 2, this.base.y + this.height / 2)
-
+    
     return this.centre
   }
-
-  getHeight () {
+  getHeight() {
     return this.height
   }
-
-  setHeight (height) {
+  setHeight(height) {
     this.height = height
   }
-
-  setSize (size) {
+  setSize(size) {
     this.height = size
     this.width = size
   }

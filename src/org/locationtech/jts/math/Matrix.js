@@ -1,6 +1,6 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class Matrix {
-  static solve (a, b) {
+  static solve(a, b) {
     const n = b.length
     if (a.length !== n || a[0].length !== n) throw new IllegalArgumentException('Matrix A is incorrectly sized')
     for (let i = 0; i < n; i++) {
@@ -23,10 +23,9 @@ export default class Matrix {
     }
     return solution
   }
-
-  static swapRows () {
+  static swapRows() {
     if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-      const m = arguments[0]; const i = arguments[1]; const j = arguments[2]
+      const m = arguments[0], i = arguments[1], j = arguments[2]
       if (i === j) return null
       for (let col = 0; col < m[0].length; col++) {
         const temp = m[i][col]
@@ -34,7 +33,7 @@ export default class Matrix {
         m[j][col] = temp
       }
     } else if (Number.isInteger(arguments[2]) && (arguments[0] instanceof Array && Number.isInteger(arguments[1]))) {
-      const m = arguments[0]; const i = arguments[1]; const j = arguments[2]
+      const m = arguments[0], i = arguments[1], j = arguments[2]
       if (i === j) return null
       const temp = m[i]
       m[i] = m[j]

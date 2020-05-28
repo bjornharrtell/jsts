@@ -196,7 +196,7 @@ export default class Geometry {
 
     return false
   }
-};
+}
 Geometry.constructor_ = function (factory) {
   if (!factory) return
   this._envelope = null

@@ -4,39 +4,35 @@ import GeometryCollection from '../GeometryCollection'
 import ArrayList from '../../../../../java/util/ArrayList'
 import GeometryFilter from '../GeometryFilter'
 export default class PointExtracter {
-  constructor () {
+  constructor() {
     PointExtracter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._pts = null
     const pts = arguments[0]
     this._pts = pts
   }
-
-  static getPoints () {
+  static getPoints() {
     if (arguments.length === 1) {
       const geom = arguments[0]
-      if (geom instanceof Point)
+      if (geom instanceof Point) 
         return Collections.singletonList(geom)
-
+      
       return PointExtracter.getPoints(geom, new ArrayList())
     } else if (arguments.length === 2) {
-      const geom = arguments[0]; const list = arguments[1]
-      if (geom instanceof Point)
+      const geom = arguments[0], list = arguments[1]
+      if (geom instanceof Point) 
         list.add(geom)
-      else if (geom instanceof GeometryCollection)
+      else if (geom instanceof GeometryCollection) 
         geom.apply(new PointExtracter(list))
-
+      
       return list
     }
   }
-
-  filter (geom) {
+  filter(geom) {
     if (geom instanceof Point) this._pts.add(geom)
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [GeometryFilter]
   }
 }

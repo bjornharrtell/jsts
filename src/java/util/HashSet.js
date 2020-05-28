@@ -50,7 +50,7 @@ export default class HashSet extends Set {
   iterator () {
     return new Iterator(this.#array)
   }
-};
+}
 
 class Iterator {
   #array

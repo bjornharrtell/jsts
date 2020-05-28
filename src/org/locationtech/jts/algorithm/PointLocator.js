@@ -10,11 +10,10 @@ import GeometryCollectionIterator from '../geom/GeometryCollectionIterator'
 import GeometryCollection from '../geom/GeometryCollection'
 import MultiLineString from '../geom/MultiLineString'
 export default class PointLocator {
-  constructor () {
+  constructor() {
     PointLocator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._boundaryRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE
     this._isIn = null
     this._numBoundaries = null
@@ -24,25 +23,21 @@ export default class PointLocator {
       this._boundaryRule = boundaryRule
     }
   }
-
-  locateInPolygonRing (p, ring) {
+  locateInPolygonRing(p, ring) {
     if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return PointLocation.locateInRing(p, ring.getCoordinates())
   }
-
-  intersects (p, geom) {
+  intersects(p, geom) {
     return this.locate(p, geom) !== Location.EXTERIOR
   }
-
-  updateLocationInfo (loc) {
+  updateLocationInfo(loc) {
     if (loc === Location.INTERIOR) this._isIn = true
     if (loc === Location.BOUNDARY) this._numBoundaries++
   }
-
-  computeLocation (p, geom) {
-    if (geom instanceof Point)
+  computeLocation(p, geom) {
+    if (geom instanceof Point) 
       this.updateLocationInfo(this.locateOnPoint(p, geom))
-
+    
     if (geom instanceof LineString) {
       this.updateLocationInfo(this.locateOnLineString(p, geom))
     } else if (geom instanceof Polygon) {
@@ -67,28 +62,25 @@ export default class PointLocator {
       }
     }
   }
-
-  locateOnPoint (p, pt) {
+  locateOnPoint(p, pt) {
     const ptCoord = pt.getCoordinate()
     if (ptCoord.equals2D(p)) return Location.INTERIOR
     return Location.EXTERIOR
   }
-
-  locateOnLineString (p, l) {
+  locateOnLineString(p, l) {
     if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     const seq = l.getCoordinateSequence()
-    if (!l.isClosed())
+    if (!l.isClosed()) 
       if (p.equals(seq.getCoordinate(0)) || p.equals(seq.getCoordinate(seq.size() - 1))) {
         return Location.BOUNDARY
       }
-
-    if (PointLocation.isOnLine(p, seq))
+    
+    if (PointLocation.isOnLine(p, seq)) 
       return Location.INTERIOR
-
+    
     return Location.EXTERIOR
   }
-
-  locateInPolygon (p, poly) {
+  locateInPolygon(p, poly) {
     if (poly.isEmpty()) return Location.EXTERIOR
     const shell = poly.getExteriorRing()
     const shellLoc = this.locateInPolygonRing(p, shell)
@@ -102,14 +94,13 @@ export default class PointLocator {
     }
     return Location.INTERIOR
   }
-
-  locate (p, geom) {
+  locate(p, geom) {
     if (geom.isEmpty()) return Location.EXTERIOR
-    if (geom instanceof LineString)
+    if (geom instanceof LineString) 
       return this.locateOnLineString(p, geom)
-    else if (geom instanceof Polygon)
+    else if (geom instanceof Polygon) 
       return this.locateInPolygon(p, geom)
-
+    
     this._isIn = false
     this._numBoundaries = 0
     this.computeLocation(p, geom)

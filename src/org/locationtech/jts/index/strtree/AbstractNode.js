@@ -3,11 +3,10 @@ import ArrayList from '../../../../../java/util/ArrayList'
 import Serializable from '../../../../../java/io/Serializable'
 import Assert from '../../util/Assert'
 export default class AbstractNode {
-  constructor () {
+  constructor() {
     AbstractNode.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._childBoundables = new ArrayList()
     this._bounds = null
     this._level = null
@@ -16,36 +15,29 @@ export default class AbstractNode {
       this._level = level
     }
   }
-
-  getLevel () {
+  getLevel() {
     return this._level
   }
-
-  size () {
+  size() {
     return this._childBoundables.size()
   }
-
-  getChildBoundables () {
+  getChildBoundables() {
     return this._childBoundables
   }
-
-  addChildBoundable (childBoundable) {
+  addChildBoundable(childBoundable) {
     Assert.isTrue(this._bounds === null)
     this._childBoundables.add(childBoundable)
   }
-
-  isEmpty () {
+  isEmpty() {
     return this._childBoundables.isEmpty()
   }
-
-  getBounds () {
-    if (this._bounds === null)
+  getBounds() {
+    if (this._bounds === null) 
       this._bounds = this.computeBounds()
-
+    
     return this._bounds
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Boundable, Serializable]
   }
 }

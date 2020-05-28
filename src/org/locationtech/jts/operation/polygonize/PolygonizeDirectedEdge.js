@@ -1,43 +1,35 @@
 import DirectedEdge from '../../planargraph/DirectedEdge'
 export default class PolygonizeDirectedEdge extends DirectedEdge {
-  constructor () {
+  constructor() {
     super()
     PolygonizeDirectedEdge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._edgeRing = null
     this._next = null
     this._label = -1
-    const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
+    const from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3]
     DirectedEdge.constructor_.call(this, from, to, directionPt, edgeDirection)
   }
-
-  getNext () {
+  getNext() {
     return this._next
   }
-
-  isInRing () {
+  isInRing() {
     return this._edgeRing !== null
   }
-
-  setRing (edgeRing) {
+  setRing(edgeRing) {
     this._edgeRing = edgeRing
   }
-
-  setLabel (label) {
+  setLabel(label) {
     this._label = label
   }
-
-  getLabel () {
+  getLabel() {
     return this._label
   }
-
-  setNext (next) {
+  setNext(next) {
     this._next = next
   }
-
-  getRing () {
+  getRing() {
     return this._edgeRing
   }
 }

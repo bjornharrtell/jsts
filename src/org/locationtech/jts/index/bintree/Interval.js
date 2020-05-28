@@ -1,9 +1,8 @@
 export default class Interval {
-  constructor () {
+  constructor() {
     Interval.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.min = null
     this.max = null
     if (arguments.length === 0) {
@@ -13,40 +12,34 @@ export default class Interval {
       const interval = arguments[0]
       this.init(interval.min, interval.max)
     } else if (arguments.length === 2) {
-      const min = arguments[0]; const max = arguments[1]
+      const min = arguments[0], max = arguments[1]
       this.init(min, max)
     }
   }
-
-  expandToInclude (interval) {
+  expandToInclude(interval) {
     if (interval.max > this.max) this.max = interval.max
     if (interval.min < this.min) this.min = interval.min
   }
-
-  getWidth () {
+  getWidth() {
     return this.max - this.min
   }
-
-  overlaps () {
+  overlaps() {
     if (arguments.length === 1) {
       const interval = arguments[0]
       return this.overlaps(interval.min, interval.max)
     } else if (arguments.length === 2) {
-      const min = arguments[0]; const max = arguments[1]
+      const min = arguments[0], max = arguments[1]
       if (this.min > max || this.max < min) return false
       return true
     }
   }
-
-  getMin () {
+  getMin() {
     return this.min
   }
-
-  toString () {
+  toString() {
     return '[' + this.min + ', ' + this.max + ']'
   }
-
-  contains () {
+  contains() {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Interval) {
         const interval = arguments[0]
@@ -56,12 +49,11 @@ export default class Interval {
         return p >= this.min && p <= this.max
       }
     } else if (arguments.length === 2) {
-      const min = arguments[0]; const max = arguments[1]
+      const min = arguments[0], max = arguments[1]
       return min >= this.min && max <= this.max
     }
   }
-
-  init (min, max) {
+  init(min, max) {
     this.min = min
     this.max = max
     if (min > max) {
@@ -69,8 +61,7 @@ export default class Interval {
       this.max = min
     }
   }
-
-  getMax () {
+  getMax() {
     return this.max
   }
 }

@@ -4,51 +4,44 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import CoordinateSequences from './CoordinateSequences'
 import Dimension from './Dimension'
 export default class LinearRing extends LineString {
-  constructor () {
+  constructor() {
     super()
     LinearRing.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
-    const points = arguments[0]; const factory = arguments[1]
+  static constructor_() {
+    const points = arguments[0], factory = arguments[1]
     LineString.constructor_.call(this, points, factory)
     this.validateConstruction()
   }
-
-  copyInternal () {
+  copyInternal() {
     return new LinearRing(this._points.copy(), this._factory)
   }
-
-  getBoundaryDimension () {
+  getBoundaryDimension() {
     return Dimension.FALSE
   }
-
-  isClosed () {
-    if (this.isEmpty())
+  isClosed() {
+    if (this.isEmpty()) 
       return true
-
+    
     return super.isClosed.call(this)
   }
-
-  reverseInternal () {
+  reverseInternal() {
     const seq = this._points.copy()
     CoordinateSequences.reverse(seq)
     return this.getFactory().createLinearRing(seq)
   }
-
-  getTypeCode () {
+  getTypeCode() {
     return Geometry.TYPECODE_LINEARRING
   }
-
-  validateConstruction () {
-    if (!this.isEmpty() && !super.isClosed.call(this))
+  validateConstruction() {
+    if (!this.isEmpty() && !super.isClosed.call(this)) 
       throw new IllegalArgumentException('Points of LinearRing do not form a closed linestring')
-
-    if (this.getCoordinateSequence().size() >= 1 && this.getCoordinateSequence().size() < LinearRing.MINIMUM_VALID_SIZE)
+    
+    if (this.getCoordinateSequence().size() >= 1 && this.getCoordinateSequence().size() < LinearRing.MINIMUM_VALID_SIZE) 
       throw new IllegalArgumentException('Invalid number of points in LinearRing (found ' + this.getCoordinateSequence().size() + ' - must be 0 or >= 4)')
+    
   }
-
-  getGeometryType () {
+  getGeometryType() {
     return Geometry.TYPENAME_LINEARRING
   }
 }

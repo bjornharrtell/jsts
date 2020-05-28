@@ -1,65 +1,53 @@
 export default class GraphComponent {
-  constructor () {
+  constructor() {
     GraphComponent.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._isMarked = false
     this._isVisited = false
     this._data = null
   }
-
-  static getComponentWithVisitedState (i, visitedState) {
+  static getComponentWithVisitedState(i, visitedState) {
     while (i.hasNext()) {
       const comp = i.next()
       if (comp.isVisited() === visitedState) return comp
     }
     return null
   }
-
-  static setVisited (i, visited) {
+  static setVisited(i, visited) {
     while (i.hasNext()) {
       const comp = i.next()
       comp.setVisited(visited)
     }
   }
-
-  static setMarked (i, marked) {
+  static setMarked(i, marked) {
     while (i.hasNext()) {
       const comp = i.next()
       comp.setMarked(marked)
     }
   }
-
-  setVisited (isVisited) {
+  setVisited(isVisited) {
     this._isVisited = isVisited
   }
-
-  isMarked () {
+  isMarked() {
     return this._isMarked
   }
-
-  setData (data) {
+  setData(data) {
     this._data = data
   }
-
-  getData () {
+  getData() {
     return this._data
   }
-
-  setMarked (isMarked) {
+  setMarked(isMarked) {
     this._isMarked = isMarked
   }
-
-  getContext () {
+  getContext() {
     return this._data
   }
-
-  isVisited () {
+  isVisited() {
     return this._isVisited
   }
-
-  setContext (data) {
+  setContext(data) {
     this._data = data
   }
 }

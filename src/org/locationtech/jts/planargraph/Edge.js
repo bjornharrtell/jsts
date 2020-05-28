@@ -1,24 +1,21 @@
 import Node from './Node'
 import GraphComponent from './GraphComponent'
 export default class Edge extends GraphComponent {
-  constructor () {
+  constructor() {
     super()
     Edge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._dirEdge = null
     if (arguments.length === 0) {} else if (arguments.length === 2) {
-      const de0 = arguments[0]; const de1 = arguments[1]
+      const de0 = arguments[0], de1 = arguments[1]
       this.setDirectedEdges(de0, de1)
     }
   }
-
-  isRemoved () {
+  isRemoved() {
     return this._dirEdge === null
   }
-
-  setDirectedEdges (de0, de1) {
+  setDirectedEdges(de0, de1) {
     this._dirEdge = [de0, de1]
     de0.setEdge(this)
     de1.setEdge(this)
@@ -27,8 +24,7 @@ export default class Edge extends GraphComponent {
     de0.getFromNode().addOutEdge(de0)
     de1.getFromNode().addOutEdge(de1)
   }
-
-  getDirEdge () {
+  getDirEdge() {
     if (Number.isInteger(arguments[0])) {
       const i = arguments[0]
       return this._dirEdge[i]
@@ -39,12 +35,10 @@ export default class Edge extends GraphComponent {
       return null
     }
   }
-
-  remove () {
+  remove() {
     this._dirEdge = null
   }
-
-  getOppositeNode (node) {
+  getOppositeNode(node) {
     if (this._dirEdge[0].getFromNode() === node) return this._dirEdge[0].getToNode()
     if (this._dirEdge[1].getFromNode() === node) return this._dirEdge[1].getToNode()
     return null

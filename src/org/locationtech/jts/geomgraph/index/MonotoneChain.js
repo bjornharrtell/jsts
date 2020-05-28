@@ -1,17 +1,15 @@
 export default class MonotoneChain {
-  constructor () {
+  constructor() {
     MonotoneChain.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.mce = null
     this.chainIndex = null
-    const mce = arguments[0]; const chainIndex = arguments[1]
+    const mce = arguments[0], chainIndex = arguments[1]
     this.mce = mce
     this.chainIndex = chainIndex
   }
-
-  computeIntersections (mc, si) {
+  computeIntersections(mc, si) {
     this.mce.computeIntersectsForChain(this.chainIndex, mc.mce, mc.chainIndex, si)
   }
 }

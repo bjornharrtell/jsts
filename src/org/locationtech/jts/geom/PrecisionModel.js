@@ -5,21 +5,21 @@ import Integer from '../../../../java/lang/Integer'
 import Comparable from '../../../../java/lang/Comparable'
 import Serializable from '../../../../java/io/Serializable'
 export default class PrecisionModel {
-  constructor () {
+  constructor() {
     PrecisionModel.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._modelType = null
     this._scale = null
-    if (arguments.length === 0)
+    if (arguments.length === 0) 
       this._modelType = PrecisionModel.FLOATING
-    else if (arguments.length === 1)
+    else if (arguments.length === 1) 
       if (arguments[0] instanceof Type) {
         const modelType = arguments[0]
         this._modelType = modelType
-        if (modelType === PrecisionModel.FIXED)
+        if (modelType === PrecisionModel.FIXED) 
           this.setScale(1.0)
+        
       } else if (typeof arguments[0] === 'number') {
         const scale = arguments[0]
         this._modelType = PrecisionModel.FIXED
@@ -29,53 +29,46 @@ export default class PrecisionModel {
         this._modelType = pm._modelType
         this._scale = pm._scale
       }
+    
   }
-
-  static mostPrecise (pm1, pm2) {
+  static mostPrecise(pm1, pm2) {
     if (pm1.compareTo(pm2) >= 0) return pm1
     return pm2
   }
-
-  equals (other) {
-    if (!(other instanceof PrecisionModel))
+  equals(other) {
+    if (!(other instanceof PrecisionModel)) 
       return false
-
+    
     const otherPrecisionModel = other
     return this._modelType === otherPrecisionModel._modelType && this._scale === otherPrecisionModel._scale
   }
-
-  compareTo (o) {
+  compareTo(o) {
     const other = o
     const sigDigits = this.getMaximumSignificantDigits()
     const otherSigDigits = other.getMaximumSignificantDigits()
     return Integer.compare(sigDigits, otherSigDigits)
   }
-
-  getScale () {
+  getScale() {
     return this._scale
   }
-
-  isFloating () {
+  isFloating() {
     return this._modelType === PrecisionModel.FLOATING || this._modelType === PrecisionModel.FLOATING_SINGLE
   }
-
-  getType () {
+  getType() {
     return this._modelType
   }
-
-  toString () {
+  toString() {
     let description = 'UNKNOWN'
-    if (this._modelType === PrecisionModel.FLOATING)
+    if (this._modelType === PrecisionModel.FLOATING) 
       description = 'Floating'
-    else if (this._modelType === PrecisionModel.FLOATING_SINGLE)
+    else if (this._modelType === PrecisionModel.FLOATING_SINGLE) 
       description = 'Floating-Single'
-    else if (this._modelType === PrecisionModel.FIXED)
+    else if (this._modelType === PrecisionModel.FIXED) 
       description = 'Fixed (Scale=' + this.getScale() + ')'
-
+    
     return description
   }
-
-  makePrecise () {
+  makePrecise() {
     if (typeof arguments[0] === 'number') {
       const val = arguments[0]
       if (Double.isNaN(val)) return val
@@ -83,9 +76,9 @@ export default class PrecisionModel {
         const floatSingleVal = val
         return floatSingleVal
       }
-      if (this._modelType === PrecisionModel.FIXED)
+      if (this._modelType === PrecisionModel.FIXED) 
         return Math.round(val * this._scale) / this._scale
-
+      
       return val
     } else if (arguments[0] instanceof Coordinate) {
       const coord = arguments[0]
@@ -94,48 +87,41 @@ export default class PrecisionModel {
       coord.y = this.makePrecise(coord.y)
     }
   }
-
-  getMaximumSignificantDigits () {
+  getMaximumSignificantDigits() {
     let maxSigDigits = 16
-    if (this._modelType === PrecisionModel.FLOATING)
+    if (this._modelType === PrecisionModel.FLOATING) 
       maxSigDigits = 16
-    else if (this._modelType === PrecisionModel.FLOATING_SINGLE)
+    else if (this._modelType === PrecisionModel.FLOATING_SINGLE) 
       maxSigDigits = 6
-    else if (this._modelType === PrecisionModel.FIXED)
+    else if (this._modelType === PrecisionModel.FIXED) 
       maxSigDigits = 1 + Math.trunc(Math.ceil(Math.log(this.getScale()) / Math.log(10)))
-
+    
     return maxSigDigits
   }
-
-  setScale (scale) {
+  setScale(scale) {
     this._scale = Math.abs(scale)
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Serializable, Comparable]
   }
 }
 class Type {
-  constructor () {
+  constructor() {
     Type.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._name = null
     const name = arguments[0]
     this._name = name
     Type.nameToTypeMap.put(name, this)
   }
-
-  readResolve () {
+  readResolve() {
     return Type.nameToTypeMap.get(this._name)
   }
-
-  toString () {
+  toString() {
     return this._name
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Serializable]
   }
 }

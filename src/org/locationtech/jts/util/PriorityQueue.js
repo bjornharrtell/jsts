@@ -1,18 +1,16 @@
 import ArrayList from '../../../../java/util/ArrayList'
 export default class PriorityQueue {
-  constructor () {
+  constructor() {
     PriorityQueue.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._size = null
     this._items = null
     this._size = 0
     this._items = new ArrayList()
     this._items.add(null)
   }
-
-  poll () {
+  poll() {
     if (this.isEmpty()) return null
     const minItem = this._items.get(1)
     this._items.set(1, this._items.get(this._size))
@@ -20,12 +18,10 @@ export default class PriorityQueue {
     this.reorder(1)
     return minItem
   }
-
-  size () {
+  size() {
     return this._size
   }
-
-  reorder (hole) {
+  reorder(hole) {
     let child = null
     const tmp = this._items.get(hole)
     for (; hole * 2 <= this._size; hole = child) {
@@ -35,30 +31,26 @@ export default class PriorityQueue {
     }
     this._items.set(hole, tmp)
   }
-
-  clear () {
+  clear() {
     this._size = 0
     this._items.clear()
   }
-
-  peek () {
+  peek() {
     if (this.isEmpty()) return null
     const minItem = this._items.get(1)
     return minItem
   }
-
-  isEmpty () {
+  isEmpty() {
     return this._size === 0
   }
-
-  add (x) {
+  add(x) {
     this._items.add(null)
     this._size += 1
     let hole = this._size
     this._items.set(0, x)
-    for (; x.compareTo(this._items.get(Math.trunc(hole / 2))) < 0; hole /= 2)
+    for (; x.compareTo(this._items.get(Math.trunc(hole / 2))) < 0; hole /= 2) 
       this._items.set(hole, this._items.get(Math.trunc(hole / 2)))
-
+    
     this._items.set(hole, x)
   }
 }

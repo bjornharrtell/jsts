@@ -4,11 +4,10 @@ import Node from './Node'
 import IntervalSize from './IntervalSize'
 import Assert from '../../util/Assert'
 export default class Root extends NodeBase {
-  constructor () {
+  constructor() {
     super()
   }
-
-  insert (itemEnv, item) {
+  insert(itemEnv, item) {
     const index = NodeBase.getSubnodeIndex(itemEnv, Root.origin.x, Root.origin.y)
     if (index === -1) {
       this.add(item)
@@ -21,12 +20,10 @@ export default class Root extends NodeBase {
     }
     this.insertContained(this._subnode[index], itemEnv, item)
   }
-
-  isSearchMatch (searchEnv) {
+  isSearchMatch(searchEnv) {
     return true
   }
-
-  insertContained (tree, itemEnv, item) {
+  insertContained(tree, itemEnv, item) {
     Assert.isTrue(tree.getEnvelope().contains(itemEnv))
     const isZeroX = IntervalSize.isZeroWidth(itemEnv.getMinX(), itemEnv.getMaxX())
     const isZeroY = IntervalSize.isZeroWidth(itemEnv.getMinY(), itemEnv.getMaxY())

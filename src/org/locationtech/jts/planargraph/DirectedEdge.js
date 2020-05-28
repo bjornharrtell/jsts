@@ -4,12 +4,11 @@ import ArrayList from '../../../../java/util/ArrayList'
 import Quadrant from '../geomgraph/Quadrant'
 import GraphComponent from './GraphComponent'
 export default class DirectedEdge extends GraphComponent {
-  constructor () {
+  constructor() {
     super()
     DirectedEdge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._parentEdge = null
     this._from = null
     this._to = null
@@ -20,7 +19,7 @@ export default class DirectedEdge extends GraphComponent {
     this._quadrant = null
     this._angle = null
     if (arguments.length === 0) {} else if (arguments.length === 4) {
-      const from = arguments[0]; const to = arguments[1]; const directionPt = arguments[2]; const edgeDirection = arguments[3]
+      const from = arguments[0], to = arguments[1], directionPt = arguments[2], edgeDirection = arguments[3]
       this._from = from
       this._to = to
       this._edgeDirection = edgeDirection
@@ -32,87 +31,69 @@ export default class DirectedEdge extends GraphComponent {
       this._angle = Math.atan2(dy, dx)
     }
   }
-
-  static toEdges (dirEdges) {
+  static toEdges(dirEdges) {
     const edges = new ArrayList()
-    for (let i = dirEdges.iterator(); i.hasNext();)
+    for (let i = dirEdges.iterator(); i.hasNext(); ) 
       edges.add(i.next()._parentEdge)
-
+    
     return edges
   }
-
-  isRemoved () {
+  isRemoved() {
     return this._parentEdge === null
   }
-
-  compareDirection (e) {
+  compareDirection(e) {
     if (this._quadrant > e._quadrant) return 1
     if (this._quadrant < e._quadrant) return -1
     return Orientation.index(e._p0, e._p1, this._p1)
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._from.getCoordinate()
   }
-
-  print (out) {
+  print(out) {
     const className = this.getClass().getName()
     const lastDotPos = className.lastIndexOf('.')
     const name = className.substring(lastDotPos + 1)
     out.print('  ' + name + ': ' + this._p0 + ' - ' + this._p1 + ' ' + this._quadrant + ':' + this._angle)
   }
-
-  getDirectionPt () {
+  getDirectionPt() {
     return this._p1
   }
-
-  getAngle () {
+  getAngle() {
     return this._angle
   }
-
-  compareTo (obj) {
+  compareTo(obj) {
     const de = obj
     return this.compareDirection(de)
   }
-
-  getFromNode () {
+  getFromNode() {
     return this._from
   }
-
-  getSym () {
+  getSym() {
     return this._sym
   }
-
-  setEdge (parentEdge) {
+  setEdge(parentEdge) {
     this._parentEdge = parentEdge
   }
-
-  remove () {
+  remove() {
     this._sym = null
     this._parentEdge = null
   }
-
-  getEdge () {
+  getEdge() {
     return this._parentEdge
   }
-
-  getQuadrant () {
+  getQuadrant() {
     return this._quadrant
   }
-
-  setSym (sym) {
+  setSym(sym) {
     this._sym = sym
   }
-
-  getToNode () {
+  getToNode() {
     return this._to
   }
-
-  getEdgeDirection () {
+  getEdgeDirection() {
     return this._edgeDirection
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparable]
   }
 }

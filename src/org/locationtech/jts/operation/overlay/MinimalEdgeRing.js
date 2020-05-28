@@ -1,20 +1,17 @@
 import EdgeRing from '../../geomgraph/EdgeRing'
 export default class MinimalEdgeRing extends EdgeRing {
-  constructor () {
+  constructor() {
     super()
     MinimalEdgeRing.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
-    const start = arguments[0]; const geometryFactory = arguments[1]
+  static constructor_() {
+    const start = arguments[0], geometryFactory = arguments[1]
     EdgeRing.constructor_.call(this, start, geometryFactory)
   }
-
-  setEdgeRing (de, er) {
+  setEdgeRing(de, er) {
     de.setMinEdgeRing(er)
   }
-
-  getNext (de) {
+  getNext(de) {
     return de.getNextMin()
   }
 }

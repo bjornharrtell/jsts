@@ -1,39 +1,35 @@
 export default class BoundaryNodeRule {
-  isInBoundary (boundaryCount) {}
+  isInBoundary(boundaryCount) {}
 }
 class Mod2BoundaryNodeRule {
-  isInBoundary (boundaryCount) {
+  isInBoundary(boundaryCount) {
     return boundaryCount % 2 === 1
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [BoundaryNodeRule]
   }
 }
 class EndPointBoundaryNodeRule {
-  isInBoundary (boundaryCount) {
+  isInBoundary(boundaryCount) {
     return boundaryCount > 0
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [BoundaryNodeRule]
   }
 }
 class MultiValentEndPointBoundaryNodeRule {
-  isInBoundary (boundaryCount) {
+  isInBoundary(boundaryCount) {
     return boundaryCount > 1
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [BoundaryNodeRule]
   }
 }
 class MonoValentEndPointBoundaryNodeRule {
-  isInBoundary (boundaryCount) {
+  isInBoundary(boundaryCount) {
     return boundaryCount === 1
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [BoundaryNodeRule]
   }
 }

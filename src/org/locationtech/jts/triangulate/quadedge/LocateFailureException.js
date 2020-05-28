@@ -1,12 +1,11 @@
 import LineSegment from '../../geom/LineSegment'
 import RuntimeException from '../../../../../java/lang/RuntimeException'
 export default class LocateFailureException extends RuntimeException {
-  constructor () {
+  constructor() {
     super()
     LocateFailureException.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._seg = null
     if (arguments.length === 1) {
       if (typeof arguments[0] === 'string') {
@@ -18,18 +17,16 @@ export default class LocateFailureException extends RuntimeException {
         this._seg = new LineSegment(seg)
       }
     } else if (arguments.length === 2) {
-      const msg = arguments[0]; const seg = arguments[1]
+      const msg = arguments[0], seg = arguments[1]
       RuntimeException.constructor_.call(this, LocateFailureException.msgWithSpatial(msg, seg))
       this._seg = new LineSegment(seg)
     }
   }
-
-  static msgWithSpatial (msg, seg) {
+  static msgWithSpatial(msg, seg) {
     if (seg !== null) return msg + ' [ ' + seg + ' ]'
     return msg
   }
-
-  getSegment () {
+  getSegment() {
     return this._seg
   }
 }

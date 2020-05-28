@@ -1,7 +1,7 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 import Character from '../../../../java/lang/Character'
 export default class Dimension {
-  static toDimensionSymbol (dimensionValue) {
+  static toDimensionSymbol(dimensionValue) {
     switch (dimensionValue) {
     case Dimension.FALSE:
       return Dimension.SYM_FALSE
@@ -18,8 +18,7 @@ export default class Dimension {
     }
     throw new IllegalArgumentException('Unknown dimension value: ' + dimensionValue)
   }
-
-  static toDimensionValue (dimensionSymbol) {
+  static toDimensionValue(dimensionSymbol) {
     switch (Character.toUpperCase(dimensionSymbol)) {
     case Dimension.SYM_FALSE:
       return Dimension.FALSE

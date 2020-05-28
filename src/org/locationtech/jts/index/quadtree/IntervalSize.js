@@ -1,6 +1,6 @@
 import DoubleBits from './DoubleBits'
 export default class IntervalSize {
-  static isZeroWidth (min, max) {
+  static isZeroWidth(min, max) {
     const width = max - min
     if (width === 0.0) return true
     const maxAbs = Math.max(Math.abs(min), Math.abs(max))

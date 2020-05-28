@@ -4,11 +4,10 @@ import TopologyException from '../geom/TopologyException'
 import RobustLineIntersector from '../algorithm/RobustLineIntersector'
 import NodingIntersectionFinder from './NodingIntersectionFinder'
 export default class FastNodingValidator {
-  constructor () {
+  constructor() {
     FastNodingValidator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._li = new RobustLineIntersector()
     this._segStrings = null
     this._findAllIntersections = false
@@ -17,33 +16,27 @@ export default class FastNodingValidator {
     const segStrings = arguments[0]
     this._segStrings = segStrings
   }
-
-  static computeIntersections (segStrings) {
+  static computeIntersections(segStrings) {
     const nv = new FastNodingValidator(segStrings)
     nv.setFindAllIntersections(true)
     nv.isValid()
     return nv.getIntersections()
   }
-
-  execute () {
+  execute() {
     if (this._segInt !== null) return null
     this.checkInteriorIntersections()
   }
-
-  getIntersections () {
+  getIntersections() {
     return this._segInt.getIntersections()
   }
-
-  isValid () {
+  isValid() {
     this.execute()
     return this._isValid
   }
-
-  setFindAllIntersections (findAllIntersections) {
+  setFindAllIntersections(findAllIntersections) {
     this._findAllIntersections = findAllIntersections
   }
-
-  checkInteriorIntersections () {
+  checkInteriorIntersections() {
     this._isValid = true
     this._segInt = new NodingIntersectionFinder(this._li)
     this._segInt.setFindAllIntersections(this._findAllIntersections)
@@ -55,13 +48,11 @@ export default class FastNodingValidator {
       return null
     }
   }
-
-  checkValid () {
+  checkValid() {
     this.execute()
     if (!this._isValid) throw new TopologyException(this.getErrorMessage(), this._segInt.getIntersection())
   }
-
-  getErrorMessage () {
+  getErrorMessage() {
     if (this._isValid) return 'no intersections found'
     const intSegs = this._segInt.getIntersectionSegments()
     return 'found non-noded intersection between ' + WKTWriter.toLineString(intSegs[0], intSegs[1]) + ' and ' + WKTWriter.toLineString(intSegs[2], intSegs[3])

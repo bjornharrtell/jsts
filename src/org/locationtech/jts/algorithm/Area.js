@@ -2,7 +2,7 @@ import hasInterface from '../../../../hasInterface'
 import Coordinate from '../geom/Coordinate'
 import CoordinateSequence from '../geom/CoordinateSequence'
 export default class Area {
-  static ofRing () {
+  static ofRing() {
     if (arguments[0] instanceof Array) {
       const ring = arguments[0]
       return Math.abs(Area.ofRingSigned(ring))
@@ -11,8 +11,7 @@ export default class Area {
       return Math.abs(Area.ofRingSigned(ring))
     }
   }
-
-  static ofRingSigned () {
+  static ofRingSigned() {
     if (arguments[0] instanceof Array) {
       const ring = arguments[0]
       if (ring.length < 3) return 0.0

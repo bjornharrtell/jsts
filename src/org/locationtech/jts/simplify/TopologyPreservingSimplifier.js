@@ -6,25 +6,22 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import GeometryComponentFilter from '../geom/GeometryComponentFilter'
 import TaggedLineString from './TaggedLineString'
 export default class TopologyPreservingSimplifier {
-  constructor () {
+  constructor() {
     TopologyPreservingSimplifier.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._inputGeom = null
     this._lineSimplifier = new TaggedLinesSimplifier()
     this._linestringMap = null
     const inputGeom = arguments[0]
     this._inputGeom = inputGeom
   }
-
-  static simplify (geom, distanceTolerance) {
+  static simplify(geom, distanceTolerance) {
     const tss = new TopologyPreservingSimplifier(geom)
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
-
-  getResultGeometry () {
+  getResultGeometry() {
     if (this._inputGeom.isEmpty()) return this._inputGeom.copy()
     this._linestringMap = new HashMap()
     this._inputGeom.apply(new LineStringMapBuilderFilter(this))
@@ -32,25 +29,22 @@ export default class TopologyPreservingSimplifier {
     const result = new LineStringTransformer(this._linestringMap).transform(this._inputGeom)
     return result
   }
-
-  setDistanceTolerance (distanceTolerance) {
+  setDistanceTolerance(distanceTolerance) {
     if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
     this._lineSimplifier.setDistanceTolerance(distanceTolerance)
   }
 }
 class LineStringTransformer extends GeometryTransformer {
-  constructor () {
+  constructor() {
     super()
     LineStringTransformer.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._linestringMap = null
     const linestringMap = arguments[0]
     this._linestringMap = linestringMap
   }
-
-  transformCoordinates (coords, parent) {
+  transformCoordinates(coords, parent) {
     if (coords.size() === 0) return null
     if (parent instanceof LineString) {
       const taggedLine = this._linestringMap.get(parent)
@@ -60,17 +54,15 @@ class LineStringTransformer extends GeometryTransformer {
   }
 }
 class LineStringMapBuilderFilter {
-  constructor () {
+  constructor() {
     LineStringMapBuilderFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.tps = null
     const tps = arguments[0]
     this.tps = tps
   }
-
-  filter (geom) {
+  filter(geom) {
     if (geom instanceof LineString) {
       const line = geom
       if (line.isEmpty()) return null
@@ -79,8 +71,7 @@ class LineStringMapBuilderFilter {
       this.tps._linestringMap.put(line, taggedLine)
     }
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [GeometryComponentFilter]
   }
 }

@@ -7,11 +7,10 @@ import Comparator from '../../../../java/util/Comparator'
 import Serializable from '../../../../java/io/Serializable'
 import Assert from '../util/Assert'
 export default class Coordinate {
-  constructor () {
+  constructor() {
     Coordinate.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.x = null
     this.y = null
     this.z = null
@@ -21,29 +20,26 @@ export default class Coordinate {
       const c = arguments[0]
       Coordinate.constructor_.call(this, c.x, c.y, c.getZ())
     } else if (arguments.length === 2) {
-      const x = arguments[0]; const y = arguments[1]
+      const x = arguments[0], y = arguments[1]
       Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
     } else if (arguments.length === 3) {
-      const x = arguments[0]; const y = arguments[1]; const z = arguments[2]
+      const x = arguments[0], y = arguments[1], z = arguments[2]
       this.x = x
       this.y = y
       this.z = z
     }
   }
-
-  static hashCode () {
+  static hashCode() {
     if (arguments.length === 1 && typeof arguments[0] === 'number') {
       const x = arguments[0]
       const f = Double.doubleToLongBits(x)
       return Math.trunc(f ^ f >>> 32)
     }
   }
-
-  getM () {
+  getM() {
     return Double.NaN
   }
-
-  setOrdinate (ordinateIndex, value) {
+  setOrdinate(ordinateIndex, value) {
     switch (ordinateIndex) {
     case Coordinate.X:
       this.x = value
@@ -58,38 +54,34 @@ export default class Coordinate {
       throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
-
-  equals2D () {
+  equals2D() {
     if (arguments.length === 1) {
       const other = arguments[0]
-      if (this.x !== other.x)
+      if (this.x !== other.x) 
         return false
-
-      if (this.y !== other.y)
+      
+      if (this.y !== other.y) 
         return false
-
+      
       return true
     } else if (arguments.length === 2) {
-      const c = arguments[0]; const tolerance = arguments[1]
-      if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance))
+      const c = arguments[0], tolerance = arguments[1]
+      if (!NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) 
         return false
-
-      if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance))
+      
+      if (!NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) 
         return false
-
+      
       return true
     }
   }
-
-  setM (m) {
+  setM(m) {
     throw new IllegalArgumentException('Invalid ordinate index: ' + Coordinate.M)
   }
-
-  getZ () {
+  getZ() {
     return this.z
   }
-
-  getOrdinate (ordinateIndex) {
+  getOrdinate(ordinateIndex) {
     switch (ordinateIndex) {
     case Coordinate.X:
       return this.x
@@ -100,27 +92,22 @@ export default class Coordinate {
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
-
-  equals3D (other) {
+  equals3D(other) {
     return this.x === other.x && this.y === other.y && (this.getZ() === other.getZ() || Double.isNaN(this.getZ()) && Double.isNaN(other.getZ()))
   }
-
-  equals (other) {
-    if (!(other instanceof Coordinate))
+  equals(other) {
+    if (!(other instanceof Coordinate)) 
       return false
-
+    
     return this.equals2D(other)
   }
-
-  equalInZ (c, tolerance) {
+  equalInZ(c, tolerance) {
     return NumberUtil.equalsWithTolerance(this.getZ(), c.getZ(), tolerance)
   }
-
-  setX (x) {
+  setX(x) {
     this.x = x
   }
-
-  compareTo (o) {
+  compareTo(o) {
     const other = o
     if (this.x < other.x) return -1
     if (this.x > other.x) return 1
@@ -128,16 +115,13 @@ export default class Coordinate {
     if (this.y > other.y) return 1
     return 0
   }
-
-  getX () {
+  getX() {
     return this.x
   }
-
-  setZ (z) {
+  setZ(z) {
     this.z = z
   }
-
-  clone () {
+  clone() {
     try {
       const coord = null
       return coord
@@ -150,59 +134,49 @@ export default class Coordinate {
       }
     } finally {}
   }
-
-  copy () {
+  copy() {
     return new Coordinate(this)
   }
-
-  toString () {
+  toString() {
     return '(' + this.x + ', ' + this.y + ', ' + this.getZ() + ')'
   }
-
-  distance3D (c) {
+  distance3D(c) {
     const dx = this.x - c.x
     const dy = this.y - c.y
     const dz = this.getZ() - c.getZ()
     return Math.sqrt(dx * dx + dy * dy + dz * dz)
   }
-
-  getY () {
+  getY() {
     return this.y
   }
-
-  setY (y) {
+  setY(y) {
     this.y = y
   }
-
-  distance (c) {
+  distance(c) {
     const dx = this.x - c.x
     const dy = this.y - c.y
     return Math.sqrt(dx * dx + dy * dy)
   }
-
-  hashCode () {
+  hashCode() {
     let result = 17
     result = 37 * result + Coordinate.hashCode(this.x)
     result = 37 * result + Coordinate.hashCode(this.y)
     return result
   }
-
-  setCoordinate (other) {
+  setCoordinate(other) {
     this.x = other.x
     this.y = other.y
     this.z = other.getZ()
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparable, Cloneable, Serializable]
   }
 }
 class DimensionalComparator {
-  constructor () {
+  constructor() {
     DimensionalComparator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._dimensionsToTest = 2
     if (arguments.length === 0) {
       DimensionalComparator.constructor_.call(this, 2)
@@ -212,8 +186,7 @@ class DimensionalComparator {
       this._dimensionsToTest = dimensionsToTest
     }
   }
-
-  static compare (a, b) {
+  static compare(a, b) {
     if (a < b) return -1
     if (a > b) return 1
     if (Double.isNaN(a)) {
@@ -223,8 +196,7 @@ class DimensionalComparator {
     if (Double.isNaN(b)) return 1
     return 0
   }
-
-  compare (c1, c2) {
+  compare(c1, c2) {
     const compX = DimensionalComparator.compare(c1.x, c2.x)
     if (compX !== 0) return compX
     const compY = DimensionalComparator.compare(c1.y, c2.y)
@@ -233,8 +205,7 @@ class DimensionalComparator {
     const compZ = DimensionalComparator.compare(c1.getZ(), c2.getZ())
     return compZ
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparator]
   }
 }

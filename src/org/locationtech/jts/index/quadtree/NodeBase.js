@@ -1,16 +1,14 @@
 import ArrayList from '../../../../../java/util/ArrayList'
 import Serializable from '../../../../../java/io/Serializable'
 export default class NodeBase {
-  constructor () {
+  constructor() {
     NodeBase.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._items = new ArrayList()
     this._subnode = new Array(4).fill(null)
   }
-
-  static getSubnodeIndex (env, centrex, centrey) {
+  static getSubnodeIndex(env, centrex, centrey) {
     let subnodeIndex = -1
     if (env.getMinX() >= centrex) {
       if (env.getMinY() >= centrey) subnodeIndex = 3
@@ -22,66 +20,63 @@ export default class NodeBase {
     }
     return subnodeIndex
   }
-
-  hasChildren () {
-    for (let i = 0; i < 4; i++)
+  hasChildren() {
+    for (let i = 0; i < 4; i++) 
       if (this._subnode[i] !== null) return true
-
+    
     return false
   }
-
-  isPrunable () {
+  isPrunable() {
     return !(this.hasChildren() || this.hasItems())
   }
-
-  addAllItems (resultItems) {
+  addAllItems(resultItems) {
     resultItems.addAll(this._items)
-    for (let i = 0; i < 4; i++)
-      if (this._subnode[i] !== null)
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
         this._subnode[i].addAllItems(resultItems)
-
+      
+    
     return resultItems
   }
-
-  getNodeCount () {
+  getNodeCount() {
     let subSize = 0
-    for (let i = 0; i < 4; i++)
-      if (this._subnode[i] !== null)
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
         subSize += this._subnode[i].size()
-
+      
+    
     return subSize + 1
   }
-
-  size () {
+  size() {
     let subSize = 0
-    for (let i = 0; i < 4; i++)
-      if (this._subnode[i] !== null)
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
         subSize += this._subnode[i].size()
-
+      
+    
     return subSize + this._items.size()
   }
-
-  addAllItemsFromOverlapping (searchEnv, resultItems) {
+  addAllItemsFromOverlapping(searchEnv, resultItems) {
     if (!this.isSearchMatch(searchEnv)) return null
     resultItems.addAll(this._items)
-    for (let i = 0; i < 4; i++)
-      if (this._subnode[i] !== null)
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
         this._subnode[i].addAllItemsFromOverlapping(searchEnv, resultItems)
+      
+    
   }
-
-  visitItems (searchEnv, visitor) {
-    for (let i = this._items.iterator(); i.hasNext();)
+  visitItems(searchEnv, visitor) {
+    for (let i = this._items.iterator(); i.hasNext(); ) 
       visitor.visitItem(i.next())
+    
   }
-
-  hasItems () {
+  hasItems() {
     return !this._items.isEmpty()
   }
-
-  remove (itemEnv, item) {
+  remove(itemEnv, item) {
     if (!this.isSearchMatch(itemEnv)) return false
     let found = false
-    for (let i = 0; i < 4; i++)
+    for (let i = 0; i < 4; i++) 
       if (this._subnode[i] !== null) {
         found = this._subnode[i].remove(itemEnv, item)
         if (found) {
@@ -89,53 +84,51 @@ export default class NodeBase {
           break
         }
       }
-
+    
     if (found) return found
     found = this._items.remove(item)
     return found
   }
-
-  visit (searchEnv, visitor) {
+  visit(searchEnv, visitor) {
     if (!this.isSearchMatch(searchEnv)) return null
     this.visitItems(searchEnv, visitor)
-    for (let i = 0; i < 4; i++)
-      if (this._subnode[i] !== null)
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
         this._subnode[i].visit(searchEnv, visitor)
+      
+    
   }
-
-  getItems () {
+  getItems() {
     return this._items
   }
-
-  depth () {
+  depth() {
     let maxSubDepth = 0
-    for (let i = 0; i < 4; i++)
+    for (let i = 0; i < 4; i++) 
       if (this._subnode[i] !== null) {
         const sqd = this._subnode[i].depth()
         if (sqd > maxSubDepth) maxSubDepth = sqd
       }
-
+    
     return maxSubDepth + 1
   }
-
-  isEmpty () {
+  isEmpty() {
     let isEmpty = true
-    if (!this._items.isEmpty()) isEmpty = false; else
-      for (let i = 0; i < 4; i++)
-        if (this._subnode[i] !== null)
+    if (!this._items.isEmpty()) isEmpty = false; else 
+      for (let i = 0; i < 4; i++) 
+        if (this._subnode[i] !== null) 
           if (!this._subnode[i].isEmpty()) {
             isEmpty = false
             break
           }
-
+        
+      
+    
     return isEmpty
   }
-
-  add (item) {
+  add(item) {
     this._items.add(item)
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Serializable]
   }
 }

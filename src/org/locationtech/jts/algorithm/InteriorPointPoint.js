@@ -4,11 +4,10 @@ import Point from '../geom/Point'
 import Double from '../../../../java/lang/Double'
 import GeometryCollection from '../geom/GeometryCollection'
 export default class InteriorPointPoint {
-  constructor () {
+  constructor() {
     InteriorPointPoint.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._centroid = null
     this._minDistance = Double.MAX_VALUE
     this._interiorPoint = null
@@ -16,25 +15,23 @@ export default class InteriorPointPoint {
     this._centroid = g.getCentroid().getCoordinate()
     this.add(g)
   }
-
-  static getInteriorPoint (geom) {
+  static getInteriorPoint(geom) {
     const intPt = new InteriorPointPoint(geom)
     return intPt.getInteriorPoint()
   }
-
-  getInteriorPoint () {
+  getInteriorPoint() {
     return this._interiorPoint
   }
-
-  add () {
+  add() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
       if (geom instanceof Point) {
         this.add(geom.getCoordinate())
       } else if (geom instanceof GeometryCollection) {
         const gc = geom
-        for (let i = 0; i < gc.getNumGeometries(); i++)
+        for (let i = 0; i < gc.getNumGeometries(); i++) 
           this.add(gc.getGeometryN(i))
+        
       }
     } else if (arguments[0] instanceof Coordinate) {
       const point = arguments[0]

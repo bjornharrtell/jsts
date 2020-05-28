@@ -1,18 +1,16 @@
 import QuadEdge from './quadedge/QuadEdge'
 export default class IncrementalDelaunayTriangulator {
-  constructor () {
+  constructor() {
     IncrementalDelaunayTriangulator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._subdiv = null
     this._isUsingTolerance = false
     const subdiv = arguments[0]
     this._subdiv = subdiv
     this._isUsingTolerance = subdiv.getTolerance() > 0.0
   }
-
-  insertSite (v) {
+  insertSite(v) {
     let e = this._subdiv.locate(v)
     if (this._subdiv.isVertexOfEdge(e, v)) {
       return e
@@ -39,9 +37,8 @@ export default class IncrementalDelaunayTriangulator {
       }
     } while (true)
   }
-
-  insertSites (vertices) {
-    for (let i = vertices.iterator(); i.hasNext();) {
+  insertSites(vertices) {
+    for (let i = vertices.iterator(); i.hasNext(); ) {
       const v = i.next()
       this.insertSite(v)
     }

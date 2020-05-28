@@ -5,7 +5,7 @@ import Point from '../../geom/Point'
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class FacetSequenceTreeBuilder {
-  static addFacetSequences (geom, pts, sections) {
+  static addFacetSequences(geom, pts, sections) {
     let i = 0
     const size = pts.size()
     while (i <= size - 1) {
@@ -16,15 +16,13 @@ export default class FacetSequenceTreeBuilder {
       i = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE
     }
   }
-
-  static computeFacetSequences (g) {
+  static computeFacetSequences(g) {
     const sections = new ArrayList()
     g.apply(new (class {
-      get interfaces_ () {
+      get interfaces_() {
         return [GeometryComponentFilter]
       }
-
-      filter (geom) {
+      filter(geom) {
         let seq = null
         if (geom instanceof LineString) {
           seq = geom.getCoordinateSequence()
@@ -37,11 +35,10 @@ export default class FacetSequenceTreeBuilder {
     })())
     return sections
   }
-
-  static build (g) {
+  static build(g) {
     const tree = new STRtree(FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY)
     const sections = FacetSequenceTreeBuilder.computeFacetSequences(g)
-    for (let i = sections.iterator(); i.hasNext();) {
+    for (let i = sections.iterator(); i.hasNext(); ) {
       const section = i.next()
       tree.insert(section.getEnvelope(), section)
     }

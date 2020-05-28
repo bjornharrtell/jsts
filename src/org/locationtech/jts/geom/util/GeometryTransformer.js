@@ -10,11 +10,10 @@ import GeometryCollection from '../GeometryCollection'
 import ArrayList from '../../../../../java/util/ArrayList'
 import MultiLineString from '../MultiLineString'
 export default class GeometryTransformer {
-  constructor () {
+  constructor() {
     GeometryTransformer.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._inputGeom = null
     this._factory = null
     this._pruneEmptyGeometry = true
@@ -22,21 +21,19 @@ export default class GeometryTransformer {
     this._preserveCollections = false
     this._preserveType = false
   }
-
-  transformPoint (geom, parent) {
+  transformPoint(geom, parent) {
     return this._factory.createPoint(this.transformCoordinates(geom.getCoordinateSequence(), geom))
   }
-
-  transformPolygon (geom, parent) {
+  transformPolygon(geom, parent) {
     let isAllValidLinearRings = true
     const shell = this.transformLinearRing(geom.getExteriorRing(), geom)
     if (shell === null || !(shell instanceof LinearRing) || shell.isEmpty()) isAllValidLinearRings = false
     const holes = new ArrayList()
     for (let i = 0; i < geom.getNumInteriorRing(); i++) {
       const hole = this.transformLinearRing(geom.getInteriorRingN(i), geom)
-      if (hole === null || hole.isEmpty())
+      if (hole === null || hole.isEmpty()) 
         continue
-
+      
       if (!(hole instanceof LinearRing)) isAllValidLinearRings = false
       holes.add(hole)
     }
@@ -49,16 +46,13 @@ export default class GeometryTransformer {
       return this._factory.buildGeometry(components)
     }
   }
-
-  createCoordinateSequence (coords) {
+  createCoordinateSequence(coords) {
     return this._factory.getCoordinateSequenceFactory().create(coords)
   }
-
-  getInputGeometry () {
+  getInputGeometry() {
     return this._inputGeom
   }
-
-  transformMultiLineString (geom, parent) {
+  transformMultiLineString(geom, parent) {
     const transGeomList = new ArrayList()
     for (let i = 0; i < geom.getNumGeometries(); i++) {
       const transformGeom = this.transformLineString(geom.getGeometryN(i), geom)
@@ -68,16 +62,13 @@ export default class GeometryTransformer {
     }
     return this._factory.buildGeometry(transGeomList)
   }
-
-  transformCoordinates (coords, parent) {
+  transformCoordinates(coords, parent) {
     return this.copy(coords)
   }
-
-  transformLineString (geom, parent) {
+  transformLineString(geom, parent) {
     return this._factory.createLineString(this.transformCoordinates(geom.getCoordinateSequence(), geom))
   }
-
-  transformMultiPoint (geom, parent) {
+  transformMultiPoint(geom, parent) {
     const transGeomList = new ArrayList()
     for (let i = 0; i < geom.getNumGeometries(); i++) {
       const transformGeom = this.transformPoint(geom.getGeometryN(i), geom)
@@ -87,8 +78,7 @@ export default class GeometryTransformer {
     }
     return this._factory.buildGeometry(transGeomList)
   }
-
-  transformMultiPolygon (geom, parent) {
+  transformMultiPolygon(geom, parent) {
     const transGeomList = new ArrayList()
     for (let i = 0; i < geom.getNumGeometries(); i++) {
       const transformGeom = this.transformPolygon(geom.getGeometryN(i), geom)
@@ -98,12 +88,10 @@ export default class GeometryTransformer {
     }
     return this._factory.buildGeometry(transGeomList)
   }
-
-  copy (seq) {
+  copy(seq) {
     return seq.copy()
   }
-
-  transformGeometryCollection (geom, parent) {
+  transformGeometryCollection(geom, parent) {
     const transGeomList = new ArrayList()
     for (let i = 0; i < geom.getNumGeometries(); i++) {
       const transformGeom = this.transform(geom.getGeometryN(i))
@@ -114,8 +102,7 @@ export default class GeometryTransformer {
     if (this._preserveGeometryCollectionType) return this._factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList))
     return this._factory.buildGeometry(transGeomList)
   }
-
-  transform (inputGeom) {
+  transform(inputGeom) {
     this._inputGeom = inputGeom
     this._factory = inputGeom.getFactory()
     if (inputGeom instanceof Point) return this.transformPoint(inputGeom, null)
@@ -128,8 +115,7 @@ export default class GeometryTransformer {
     if (inputGeom instanceof GeometryCollection) return this.transformGeometryCollection(inputGeom, null)
     throw new IllegalArgumentException('Unknown Geometry subtype: ' + inputGeom.getGeometryType())
   }
-
-  transformLinearRing (geom, parent) {
+  transformLinearRing(geom, parent) {
     const seq = this.transformCoordinates(geom.getCoordinateSequence(), geom)
     if (seq === null) return this._factory.createLinearRing(null)
     const seqSize = seq.size()

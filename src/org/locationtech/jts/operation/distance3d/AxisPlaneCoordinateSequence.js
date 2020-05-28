@@ -3,96 +3,77 @@ import Coordinates from '../../geom/Coordinates'
 import CoordinateSequence from '../../geom/CoordinateSequence'
 import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException'
 export default class AxisPlaneCoordinateSequence {
-  constructor () {
+  constructor() {
     AxisPlaneCoordinateSequence.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._seq = null
     this._indexMap = null
-    const seq = arguments[0]; const indexMap = arguments[1]
+    const seq = arguments[0], indexMap = arguments[1]
     this._seq = seq
     this._indexMap = indexMap
   }
-
-  static projectToYZ (seq) {
+  static projectToYZ(seq) {
     return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.YZ_INDEX)
   }
-
-  static projectToXZ (seq) {
+  static projectToXZ(seq) {
     return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XZ_INDEX)
   }
-
-  static projectToXY (seq) {
+  static projectToXY(seq) {
     return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XY_INDEX)
   }
-
-  setOrdinate (index, ordinateIndex, value) {
+  setOrdinate(index, ordinateIndex, value) {
     throw new UnsupportedOperationException()
   }
-
-  getZ (index) {
+  getZ(index) {
     return this.getOrdinate(index, CoordinateSequence.Z)
   }
-
-  size () {
+  size() {
     return this._seq.size()
   }
-
-  getOrdinate (index, ordinateIndex) {
+  getOrdinate(index, ordinateIndex) {
     if (ordinateIndex > 1) return 0
     return this._seq.getOrdinate(index, this._indexMap[ordinateIndex])
   }
-
-  getCoordinate () {
+  getCoordinate() {
     if (arguments.length === 1) {
       const i = arguments[0]
       return this.getCoordinateCopy(i)
     } else if (arguments.length === 2) {
-      const index = arguments[0]; const coord = arguments[1]
+      const index = arguments[0], coord = arguments[1]
       coord.x = this.getOrdinate(index, CoordinateSequence.X)
       coord.y = this.getOrdinate(index, CoordinateSequence.Y)
       coord.setZ(this.getOrdinate(index, CoordinateSequence.Z))
     }
   }
-
-  getCoordinateCopy (i) {
+  getCoordinateCopy(i) {
     return new Coordinate(this.getX(i), this.getY(i), this.getZ(i))
   }
-
-  createCoordinate () {
+  createCoordinate() {
     return Coordinates.create(this.getDimension(), this.getMeasures())
   }
-
-  getDimension () {
+  getDimension() {
     return 2
   }
-
-  getX (index) {
+  getX(index) {
     return this.getOrdinate(index, CoordinateSequence.X)
   }
-
-  clone () {
+  clone() {
     throw new UnsupportedOperationException()
   }
-
-  expandEnvelope (env) {
+  expandEnvelope(env) {
     throw new UnsupportedOperationException()
   }
-
-  copy () {
+  copy() {
     throw new UnsupportedOperationException()
   }
-
-  getY (index) {
+  getY(index) {
     return this.getOrdinate(index, CoordinateSequence.Y)
   }
-
-  toCoordinateArray () {
+  toCoordinateArray() {
     throw new UnsupportedOperationException()
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateSequence]
   }
 }

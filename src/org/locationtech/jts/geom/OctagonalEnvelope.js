@@ -9,11 +9,10 @@ import GeometryComponentFilter from './GeometryComponentFilter'
 import CoordinateSequence from './CoordinateSequence'
 import Envelope from './Envelope'
 export default class OctagonalEnvelope {
-  constructor () {
+  constructor() {
     OctagonalEnvelope.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._minX = Double.NaN
     this._maxX = null
     this._minY = null
@@ -37,28 +36,24 @@ export default class OctagonalEnvelope {
         this.expandToInclude(geom)
       }
     } else if (arguments.length === 2) {
-      const p0 = arguments[0]; const p1 = arguments[1]
+      const p0 = arguments[0], p1 = arguments[1]
       this.expandToInclude(p0)
       this.expandToInclude(p1)
     }
   }
-
-  static octagonalEnvelope (geom) {
+  static octagonalEnvelope(geom) {
     return new OctagonalEnvelope(geom).toGeometry(geom.getFactory())
   }
-
-  static computeB (x, y) {
+  static computeB(x, y) {
     return x - y
   }
-
-  static computeA (x, y) {
+  static computeA(x, y) {
     return x + y
   }
-
-  toGeometry (geomFactory) {
-    if (this.isNull())
+  toGeometry(geomFactory) {
+    if (this.isNull()) 
       return geomFactory.createPoint()
-
+    
     const px00 = new Coordinate(this._minX, this._minA - this._minX)
     const px01 = new Coordinate(this._minX, this._minX - this._minB)
     const px10 = new Coordinate(this._maxX, this._maxX - this._maxB)
@@ -85,9 +80,9 @@ export default class OctagonalEnvelope {
     coordList.add(px10, false)
     coordList.add(py01, false)
     coordList.add(py00, false)
-    if (coordList.size() === 1)
+    if (coordList.size() === 1) 
       return geomFactory.createPoint(px00)
-
+    
     if (coordList.size() === 2) {
       const pts = coordList.toCoordinateArray()
       return geomFactory.createLineString(pts)
@@ -96,34 +91,28 @@ export default class OctagonalEnvelope {
     const pts = coordList.toCoordinateArray()
     return geomFactory.createPolygon(geomFactory.createLinearRing(pts))
   }
-
-  getMinA () {
+  getMinA() {
     return this._minA
   }
-
-  getMaxB () {
+  getMaxB() {
     return this._maxB
   }
-
-  isValid () {
+  isValid() {
     if (this.isNull()) return true
     return this._minX <= this._maxX && this._minY <= this._maxY && this._minA <= this._maxA && this._minB <= this._maxB
   }
-
-  isNull () {
+  isNull() {
     return Double.isNaN(this._minX)
   }
-
-  getMaxX () {
+  getMaxX() {
     return this._maxX
   }
-
-  intersects () {
+  intersects() {
     if (arguments[0] instanceof OctagonalEnvelope) {
       const other = arguments[0]
-      if (this.isNull() || other.isNull())
+      if (this.isNull() || other.isNull()) 
         return false
-
+      
       if (this._minX > other._maxX) return false
       if (this._maxX < other._minX) return false
       if (this._minY > other._maxY) return false
@@ -148,16 +137,13 @@ export default class OctagonalEnvelope {
       return true
     }
   }
-
-  getMinY () {
+  getMinY() {
     return this._minY
   }
-
-  getMinX () {
+  getMinX() {
     return this._minX
   }
-
-  expandToInclude () {
+  expandToInclude() {
     if (arguments.length === 1) {
       if (arguments[0] instanceof Geometry) {
         const g = arguments[0]
@@ -206,7 +192,7 @@ export default class OctagonalEnvelope {
         return this
       }
     } else if (arguments.length === 2) {
-      const x = arguments[0]; const y = arguments[1]
+      const x = arguments[0], y = arguments[1]
       const A = OctagonalEnvelope.computeA(x, y)
       const B = OctagonalEnvelope.computeB(x, y)
       if (this.isNull()) {
@@ -231,16 +217,13 @@ export default class OctagonalEnvelope {
       return this
     }
   }
-
-  getMinB () {
+  getMinB() {
     return this._minB
   }
-
-  setToNull () {
+  setToNull() {
     this._minX = Double.NaN
   }
-
-  expandBy (distance) {
+  expandBy(distance) {
     if (this.isNull()) return null
     const diagonalDistance = OctagonalEnvelope.SQRT2 * distance
     this._minX -= distance
@@ -253,41 +236,36 @@ export default class OctagonalEnvelope {
     this._maxB += diagonalDistance
     if (!this.isValid()) this.setToNull()
   }
-
-  getMaxA () {
+  getMaxA() {
     return this._maxA
   }
-
-  contains (other) {
-    if (this.isNull() || other.isNull())
+  contains(other) {
+    if (this.isNull() || other.isNull()) 
       return false
-
+    
     return other._minX >= this._minX && other._maxX <= this._maxX && other._minY >= this._minY && other._maxY <= this._maxY && other._minA >= this._minA && other._maxA <= this._maxA && other._minB >= this._minB && other._maxB <= this._maxB
   }
-
-  getMaxY () {
+  getMaxY() {
     return this._maxY
   }
 }
 class BoundingOctagonComponentFilter {
-  constructor () {
+  constructor() {
     BoundingOctagonComponentFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.oe = null
     const oe = arguments[0]
     this.oe = oe
   }
-
-  filter (geom) {
-    if (geom instanceof LineString)
+  filter(geom) {
+    if (geom instanceof LineString) 
       this.oe.expandToInclude(geom.getCoordinateSequence())
-    else if (geom instanceof Point)
+    else if (geom instanceof Point) 
       this.oe.expandToInclude(geom.getCoordinateSequence())
+    
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [GeometryComponentFilter]
   }
 }

@@ -1,10 +1,9 @@
 import SegmentIntersector from './SegmentIntersector'
 export default class IntersectionAdder {
-  constructor () {
+  constructor() {
     IntersectionAdder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._hasIntersection = false
     this._hasProper = false
     this._hasProperInterior = false
@@ -19,42 +18,36 @@ export default class IntersectionAdder {
     const li = arguments[0]
     this._li = li
   }
-
-  static isAdjacentSegments (i1, i2) {
+  static isAdjacentSegments(i1, i2) {
     return Math.abs(i1 - i2) === 1
   }
-
-  isTrivialIntersection (e0, segIndex0, e1, segIndex1) {
-    if (e0 === e1)
+  isTrivialIntersection(e0, segIndex0, e1, segIndex1) {
+    if (e0 === e1) 
       if (this._li.getIntersectionNum() === 1) {
         if (IntersectionAdder.isAdjacentSegments(segIndex0, segIndex1)) return true
         if (e0.isClosed()) {
           const maxSegIndex = e0.size() - 1
-          if (segIndex0 === 0 && segIndex1 === maxSegIndex || segIndex1 === 0 && segIndex0 === maxSegIndex)
+          if (segIndex0 === 0 && segIndex1 === maxSegIndex || segIndex1 === 0 && segIndex0 === maxSegIndex) 
             return true
+          
         }
       }
-
+    
     return false
   }
-
-  getProperIntersectionPoint () {
+  getProperIntersectionPoint() {
     return this._properIntersectionPoint
   }
-
-  hasProperInteriorIntersection () {
+  hasProperInteriorIntersection() {
     return this._hasProperInterior
   }
-
-  getLineIntersector () {
+  getLineIntersector() {
     return this._li
   }
-
-  hasProperIntersection () {
+  hasProperIntersection() {
     return this._hasProper
   }
-
-  processIntersections (e0, segIndex0, e1, segIndex1) {
+  processIntersections(e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     this.numTests++
     const p00 = e0.getCoordinates()[segIndex0]
@@ -80,20 +73,16 @@ export default class IntersectionAdder {
       }
     }
   }
-
-  hasIntersection () {
+  hasIntersection() {
     return this._hasIntersection
   }
-
-  isDone () {
+  isDone() {
     return false
   }
-
-  hasInteriorIntersection () {
+  hasInteriorIntersection() {
     return this._hasInterior
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [SegmentIntersector]
   }
 }

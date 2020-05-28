@@ -1,32 +1,28 @@
 export default class SweepLineInterval {
-  constructor () {
+  constructor() {
     SweepLineInterval.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._min = null
     this._max = null
     this._item = null
     if (arguments.length === 2) {
-      const min = arguments[0]; const max = arguments[1]
+      const min = arguments[0], max = arguments[1]
       SweepLineInterval.constructor_.call(this, min, max, null)
     } else if (arguments.length === 3) {
-      const min = arguments[0]; const max = arguments[1]; const item = arguments[2]
+      const min = arguments[0], max = arguments[1], item = arguments[2]
       this._min = min < max ? min : max
       this._max = max > min ? max : min
       this._item = item
     }
   }
-
-  getMin () {
+  getMin() {
     return this._min
   }
-
-  getItem () {
+  getItem() {
     return this._item
   }
-
-  getMax () {
+  getMax() {
     return this._max
   }
 }

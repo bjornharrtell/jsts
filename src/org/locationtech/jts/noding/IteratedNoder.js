@@ -4,11 +4,10 @@ import TopologyException from '../geom/TopologyException'
 import RobustLineIntersector from '../algorithm/RobustLineIntersector'
 import IntersectionAdder from './IntersectionAdder'
 export default class IteratedNoder {
-  constructor () {
+  constructor() {
     IteratedNoder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._pm = null
     this._li = null
     this._nodedSegStrings = null
@@ -18,12 +17,10 @@ export default class IteratedNoder {
     this._pm = pm
     this._li.setPrecisionModel(pm)
   }
-
-  setMaximumIterations (maxIter) {
+  setMaximumIterations(maxIter) {
     this._maxIter = maxIter
   }
-
-  node (segStrings, numInteriorIntersections) {
+  node(segStrings, numInteriorIntersections) {
     const si = new IntersectionAdder(this._li)
     const noder = new MCIndexNoder()
     noder.setSegmentIntersector(si)
@@ -31,8 +28,7 @@ export default class IteratedNoder {
     this._nodedSegStrings = noder.getNodedSubstrings()
     numInteriorIntersections[0] = si.numInteriorIntersections
   }
-
-  computeNodes (segStrings) {
+  computeNodes(segStrings) {
     const numInteriorIntersections = new Array(1).fill(null)
     this._nodedSegStrings = segStrings
     let nodingIterationCount = 0
@@ -41,18 +37,16 @@ export default class IteratedNoder {
       this.node(this._nodedSegStrings, numInteriorIntersections)
       nodingIterationCount++
       const nodesCreated = numInteriorIntersections[0]
-      if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this._maxIter)
+      if (lastNodesCreated > 0 && nodesCreated >= lastNodesCreated && nodingIterationCount > this._maxIter) 
         throw new TopologyException('Iterated noding failed to converge after ' + nodingIterationCount + ' iterations')
-
+      
       lastNodesCreated = nodesCreated
     } while (lastNodesCreated > 0)
   }
-
-  getNodedSubstrings () {
+  getNodedSubstrings() {
     return this._nodedSegStrings
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Noder]
   }
 }

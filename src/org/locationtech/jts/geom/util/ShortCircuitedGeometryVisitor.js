@@ -1,14 +1,12 @@
 import GeometryCollection from '../GeometryCollection'
 export default class ShortCircuitedGeometryVisitor {
-  constructor () {
+  constructor() {
     ShortCircuitedGeometryVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._isDone = false
   }
-
-  applyTo (geom) {
+  applyTo(geom) {
     for (let i = 0; i < geom.getNumGeometries() && !this._isDone; i++) {
       const element = geom.getGeometryN(i)
       if (!(element instanceof GeometryCollection)) {

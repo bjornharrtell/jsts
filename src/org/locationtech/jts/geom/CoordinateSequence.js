@@ -1,7 +1,7 @@
 import Double from '../../../../java/lang/Double'
 import Cloneable from '../../../../java/lang/Cloneable'
 export default class CoordinateSequence {
-  getM (index) {
+  getM(index) {
     if (this.hasM()) {
       const mIndex = this.getDimension() - this.getMeasures()
       return this.getOrdinate(index, mIndex)
@@ -9,46 +9,41 @@ export default class CoordinateSequence {
       return Double.NaN
     }
   }
-
-  setOrdinate (index, ordinateIndex, value) {}
-  getZ (index) {
-    if (this.hasZ())
+  setOrdinate(index, ordinateIndex, value) {}
+  getZ(index) {
+    if (this.hasZ()) 
       return this.getOrdinate(index, 2)
-    else
+    else 
       return Double.NaN
+    
   }
-
-  size () {}
-  getOrdinate (index, ordinateIndex) {}
-  getCoordinate () {
+  size() {}
+  getOrdinate(index, ordinateIndex) {}
+  getCoordinate() {
     if (arguments.length === 1) {
       const i = arguments[0]
     } else if (arguments.length === 2) {
-      const index = arguments[0]; const coord = arguments[1]
+      const index = arguments[0], coord = arguments[1]
     }
   }
-
-  getCoordinateCopy (i) {}
-  createCoordinate () {}
-  getDimension () {}
-  hasM () {
+  getCoordinateCopy(i) {}
+  createCoordinate() {}
+  getDimension() {}
+  hasM() {
     return this.getMeasures() > 0
   }
-
-  getX (index) {}
-  hasZ () {
+  getX(index) {}
+  hasZ() {
     return this.getDimension() - this.getMeasures() > 2
   }
-
-  getMeasures () {
+  getMeasures() {
     return 0
   }
-
-  expandEnvelope (env) {}
-  copy () {}
-  getY (index) {}
-  toCoordinateArray () {}
-  get interfaces_ () {
+  expandEnvelope(env) {}
+  copy() {}
+  getY(index) {}
+  toCoordinateArray() {}
+  get interfaces_() {
     return [Cloneable]
   }
 }

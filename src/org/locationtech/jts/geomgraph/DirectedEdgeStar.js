@@ -8,19 +8,17 @@ import ArrayList from '../../../../java/util/ArrayList'
 import Quadrant from './Quadrant'
 import Assert from '../util/Assert'
 export default class DirectedEdgeStar extends EdgeEndStar {
-  constructor () {
+  constructor() {
     super()
     DirectedEdgeStar.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._resultAreaEdgeList = null
     this._label = null
     this._SCANNING_FOR_INCOMING = 1
     this._LINKING_TO_OUTGOING = 2
   }
-
-  linkResultDirectedEdges () {
+  linkResultDirectedEdges() {
     this.getResultAreaEdges()
     let firstOut = null
     let incoming = null
@@ -49,13 +47,11 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       incoming.setNext(firstOut)
     }
   }
-
-  insert (ee) {
+  insert(ee) {
     const de = ee
     this.insertEdgeEnd(de, de)
   }
-
-  getRightmostEdge () {
+  getRightmostEdge() {
     const edges = this.getEdges()
     const size = edges.size()
     if (size < 1) return null
@@ -75,10 +71,9 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     Assert.shouldNeverReachHere('found two horizontal edges incident on node')
     return null
   }
-
-  print (out) {
+  print(out) {
     System.out.println('DirectedEdgeStar: ' + this.getCoordinate())
-    for (let it = this.iterator(); it.hasNext();) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const de = it.next()
       out.print('out ')
       de.print(out)
@@ -88,27 +83,24 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       out.println()
     }
   }
-
-  getResultAreaEdges () {
+  getResultAreaEdges() {
     if (this._resultAreaEdgeList !== null) return this._resultAreaEdgeList
     this._resultAreaEdgeList = new ArrayList()
-    for (let it = this.iterator(); it.hasNext();) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const de = it.next()
       if (de.isInResult() || de.getSym().isInResult()) this._resultAreaEdgeList.add(de)
     }
     return this._resultAreaEdgeList
   }
-
-  updateLabelling (nodeLabel) {
-    for (let it = this.iterator(); it.hasNext();) {
+  updateLabelling(nodeLabel) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const de = it.next()
       const label = de.getLabel()
       label.setAllLocationsIfNull(0, nodeLabel.getLocation(0))
       label.setAllLocationsIfNull(1, nodeLabel.getLocation(1))
     }
   }
-
-  linkAllDirectedEdges () {
+  linkAllDirectedEdges() {
     this.getEdges()
     let prevOut = null
     let firstIn = null
@@ -121,8 +113,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     }
     firstIn.setNext(prevOut)
   }
-
-  computeDepths () {
+  computeDepths() {
     if (arguments.length === 1) {
       const de = arguments[0]
       const edgeIndex = this.findIndex(de)
@@ -132,7 +123,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       const lastDepth = this.computeDepths(0, edgeIndex, nextDepth)
       if (lastDepth !== targetLastDepth) throw new TopologyException('depth mismatch at ' + de.getCoordinate())
     } else if (arguments.length === 3) {
-      const startIndex = arguments[0]; const endIndex = arguments[1]; const startDepth = arguments[2]
+      const startIndex = arguments[0], endIndex = arguments[1], startDepth = arguments[2]
       let currDepth = startDepth
       for (let i = startIndex; i < endIndex; i++) {
         const nextDe = this._edgeList.get(i)
@@ -142,16 +133,14 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       return currDepth
     }
   }
-
-  mergeSymLabels () {
-    for (let it = this.iterator(); it.hasNext();) {
+  mergeSymLabels() {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const de = it.next()
       const label = de.getLabel()
       label.merge(de.getSym().getLabel())
     }
   }
-
-  linkMinimalDirectedEdges (er) {
+  linkMinimalDirectedEdges(er) {
     let firstOut = null
     let incoming = null
     let state = this._SCANNING_FOR_INCOMING
@@ -178,11 +167,10 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       incoming.setNextMin(firstOut)
     }
   }
-
-  getOutgoingDegree () {
+  getOutgoingDegree() {
     if (arguments.length === 0) {
       let degree = 0
-      for (let it = this.iterator(); it.hasNext();) {
+      for (let it = this.iterator(); it.hasNext(); ) {
         const de = it.next()
         if (de.isInResult()) degree++
       }
@@ -190,21 +178,19 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     } else if (arguments.length === 1) {
       const er = arguments[0]
       let degree = 0
-      for (let it = this.iterator(); it.hasNext();) {
+      for (let it = this.iterator(); it.hasNext(); ) {
         const de = it.next()
         if (de.getEdgeRing() === er) degree++
       }
       return degree
     }
   }
-
-  getLabel () {
+  getLabel() {
     return this._label
   }
-
-  findCoveredLineEdges () {
+  findCoveredLineEdges() {
     let startLoc = Location.NONE
-    for (let it = this.iterator(); it.hasNext();) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const nextOut = it.next()
       const nextIn = nextOut.getSym()
       if (!nextOut.isLineEdge()) {
@@ -220,7 +206,7 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     }
     if (startLoc === Location.NONE) return null
     let currLoc = startLoc
-    for (let it = this.iterator(); it.hasNext();) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const nextOut = it.next()
       const nextIn = nextOut.getSym()
       if (nextOut.isLineEdge()) {
@@ -231,11 +217,10 @@ export default class DirectedEdgeStar extends EdgeEndStar {
       }
     }
   }
-
-  computeLabelling (geom) {
+  computeLabelling(geom) {
     super.computeLabelling.call(this, geom)
     this._label = new Label(Location.NONE)
-    for (let it = this.iterator(); it.hasNext();) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const ee = it.next()
       const e = ee.getEdge()
       const eLabel = e.getLabel()

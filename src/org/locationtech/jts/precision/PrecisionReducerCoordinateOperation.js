@@ -5,22 +5,20 @@ import Coordinate from '../geom/Coordinate'
 import GeometryEditor from '../geom/util/GeometryEditor'
 import LinearRing from '../geom/LinearRing'
 export default class PrecisionReducerCoordinateOperation extends GeometryEditor.CoordinateOperation {
-  constructor () {
+  constructor() {
     super()
     PrecisionReducerCoordinateOperation.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._targetPM = null
     this._removeCollapsed = true
-    const targetPM = arguments[0]; const removeCollapsed = arguments[1]
+    const targetPM = arguments[0], removeCollapsed = arguments[1]
     this._targetPM = targetPM
     this._removeCollapsed = removeCollapsed
   }
-
-  edit () {
+  edit() {
     if (arguments.length === 2 && (arguments[1] instanceof Geometry && arguments[0] instanceof Array)) {
-      const coordinates = arguments[0]; const geom = arguments[1]
+      const coordinates = arguments[0], geom = arguments[1]
       if (coordinates.length === 0) return null
       const reducedCoords = new Array(coordinates.length).fill(null)
       for (let i = 0; i < coordinates.length; i++) {
@@ -35,9 +33,9 @@ export default class PrecisionReducerCoordinateOperation extends GeometryEditor.
       if (geom instanceof LinearRing) minLength = 4
       let collapsedCoords = reducedCoords
       if (this._removeCollapsed) collapsedCoords = null
-      if (noRepeatedCoords.length < minLength)
+      if (noRepeatedCoords.length < minLength) 
         return collapsedCoords
-
+      
       return noRepeatedCoords
     } else {
       return super.edit.apply(this, arguments)

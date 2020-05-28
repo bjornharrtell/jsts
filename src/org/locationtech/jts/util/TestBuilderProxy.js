@@ -1,7 +1,7 @@
 import Geometry from '../geom/Geometry'
 import Exception from '../../../../java/lang/Exception'
 export default class TestBuilderProxy {
-  static showIndicator (geom) {
+  static showIndicator(geom) {
     TestBuilderProxy.init()
     if (TestBuilderProxy.methodShowIndicator === null) return null
     try {
@@ -12,8 +12,7 @@ export default class TestBuilderProxy {
       }
     } finally {}
   }
-
-  static init () {
+  static init() {
     if (TestBuilderProxy.tbClass !== null) return null
     try {
       TestBuilderProxy.tbClass = TestBuilderProxy.getClassLoader().loadClass(TestBuilderProxy.CLASS_FUNCTIONS_UTIL)
@@ -24,8 +23,7 @@ export default class TestBuilderProxy {
       }
     } finally {}
   }
-
-  static isActive () {
+  static isActive() {
     TestBuilderProxy.init()
     return TestBuilderProxy.tbClass !== null
   }

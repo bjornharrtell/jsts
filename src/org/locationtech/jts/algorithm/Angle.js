@@ -1,28 +1,25 @@
 import Orientation from './Orientation'
 export default class Angle {
-  static toDegrees (radians) {
+  static toDegrees(radians) {
     return radians * 180 / Math.PI
   }
-
-  static normalize (angle) {
+  static normalize(angle) {
     while (angle > Math.PI) angle -= Angle.PI_TIMES_2
     while (angle <= -Math.PI) angle += Angle.PI_TIMES_2
     return angle
   }
-
-  static angle () {
+  static angle() {
     if (arguments.length === 1) {
       const p = arguments[0]
       return Math.atan2(p.y, p.x)
     } else if (arguments.length === 2) {
-      const p0 = arguments[0]; const p1 = arguments[1]
+      const p0 = arguments[0], p1 = arguments[1]
       const dx = p1.x - p0.x
       const dy = p1.y - p0.y
       return Math.atan2(dy, dx)
     }
   }
-
-  static isAcute (p0, p1, p2) {
+  static isAcute(p0, p1, p2) {
     const dx0 = p0.x - p1.x
     const dy0 = p0.y - p1.y
     const dx1 = p2.x - p1.x
@@ -30,8 +27,7 @@ export default class Angle {
     const dotprod = dx0 * dx1 + dy0 * dy1
     return dotprod > 0
   }
-
-  static isObtuse (p0, p1, p2) {
+  static isObtuse(p0, p1, p2) {
     const dx0 = p0.x - p1.x
     const dy0 = p0.y - p1.y
     const dx1 = p2.x - p1.x
@@ -39,14 +35,12 @@ export default class Angle {
     const dotprod = dx0 * dx1 + dy0 * dy1
     return dotprod < 0
   }
-
-  static interiorAngle (p0, p1, p2) {
+  static interiorAngle(p0, p1, p2) {
     const anglePrev = Angle.angle(p1, p0)
     const angleNext = Angle.angle(p1, p2)
     return Math.abs(angleNext - anglePrev)
   }
-
-  static normalizePositive (angle) {
+  static normalizePositive(angle) {
     if (angle < 0.0) {
       while (angle < 0.0) angle += Angle.PI_TIMES_2
       if (angle >= Angle.PI_TIMES_2) angle = 0.0
@@ -56,42 +50,37 @@ export default class Angle {
     }
     return angle
   }
-
-  static angleBetween (tip1, tail, tip2) {
+  static angleBetween(tip1, tail, tip2) {
     const a1 = Angle.angle(tail, tip1)
     const a2 = Angle.angle(tail, tip2)
     return Angle.diff(a1, a2)
   }
-
-  static diff (ang1, ang2) {
+  static diff(ang1, ang2) {
     let delAngle = null
-    if (ang1 < ang2)
+    if (ang1 < ang2) 
       delAngle = ang2 - ang1
-    else
+    else 
       delAngle = ang1 - ang2
-
-    if (delAngle > Math.PI)
+    
+    if (delAngle > Math.PI) 
       delAngle = 2 * Math.PI - delAngle
-
+    
     return delAngle
   }
-
-  static toRadians (angleDegrees) {
+  static toRadians(angleDegrees) {
     return angleDegrees * Math.PI / 180.0
   }
-
-  static getTurn (ang1, ang2) {
+  static getTurn(ang1, ang2) {
     const crossproduct = Math.sin(ang2 - ang1)
-    if (crossproduct > 0)
+    if (crossproduct > 0) 
       return Angle.COUNTERCLOCKWISE
-
-    if (crossproduct < 0)
+    
+    if (crossproduct < 0) 
       return Angle.CLOCKWISE
-
+    
     return Angle.NONE
   }
-
-  static angleBetweenOriented (tip1, tail, tip2) {
+  static angleBetweenOriented(tip1, tail, tip2) {
     const a1 = Angle.angle(tail, tip1)
     const a2 = Angle.angle(tail, tip2)
     const angDel = a2 - a1

@@ -11,40 +11,37 @@ import Polygonal from './Polygonal'
 import GeometryFilter from './GeometryFilter'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter'
 export default class Polygon extends Geometry {
-  constructor () {
+  constructor() {
     super()
     Polygon.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._shell = null
     this._holes = null
-    let shell = arguments[0]; let holes = arguments[1]; const factory = arguments[2]
+    let shell = arguments[0], holes = arguments[1], factory = arguments[2]
     Geometry.constructor_.call(this, factory)
-    if (shell === null)
+    if (shell === null) 
       shell = this.getFactory().createLinearRing()
-
-    if (holes === null)
+    
+    if (holes === null) 
       holes = []
-
-    if (Geometry.hasNullElements(holes))
+    
+    if (Geometry.hasNullElements(holes)) 
       throw new IllegalArgumentException('holes must not contain null elements')
-
-    if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes))
+    
+    if (shell.isEmpty() && Geometry.hasNonEmptyElements(holes)) 
       throw new IllegalArgumentException('shell is empty but holes are not')
-
+    
     this._shell = shell
     this._holes = holes
   }
-
-  computeEnvelopeInternal () {
+  computeEnvelopeInternal() {
     return this._shell.getEnvelopeInternal()
   }
-
-  getCoordinates () {
-    if (this.isEmpty())
+  getCoordinates() {
+    if (this.isEmpty()) 
       return []
-
+    
     const coordinates = new Array(this.getNumPoints()).fill(null)
     let k = -1
     const shellCoordinates = this._shell.getCoordinates()
@@ -61,26 +58,23 @@ export default class Polygon extends Geometry {
     }
     return coordinates
   }
-
-  getArea () {
+  getArea() {
     let area = 0.0
     area += Area.ofRing(this._shell.getCoordinateSequence())
-    for (let i = 0; i < this._holes.length; i++)
+    for (let i = 0; i < this._holes.length; i++) 
       area -= Area.ofRing(this._holes[i].getCoordinateSequence())
-
+    
     return area
   }
-
-  copyInternal () {
+  copyInternal() {
     const shellCopy = this._shell.copy()
     const holeCopies = new Array(this._holes.length).fill(null)
-    for (let i = 0; i < this._holes.length; i++)
+    for (let i = 0; i < this._holes.length; i++) 
       holeCopies[i] = this._holes[i].copy()
-
+    
     return new Polygon(shellCopy, holeCopies, this._factory)
   }
-
-  isRectangle () {
+  isRectangle() {
     if (this.getNumInteriorRing() !== 0) return false
     if (this._shell === null) return false
     if (this._shell.getNumPoints() !== 5) return false
@@ -105,115 +99,103 @@ export default class Polygon extends Geometry {
     }
     return true
   }
-
-  equalsExact () {
+  equalsExact() {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other))
+      const other = arguments[0], tolerance = arguments[1]
+      if (!this.isEquivalentClass(other)) 
         return false
-
+      
       const otherPolygon = other
       const thisShell = this._shell
       const otherPolygonShell = otherPolygon._shell
-      if (!thisShell.equalsExact(otherPolygonShell, tolerance))
+      if (!thisShell.equalsExact(otherPolygonShell, tolerance)) 
         return false
-
-      if (this._holes.length !== otherPolygon._holes.length)
+      
+      if (this._holes.length !== otherPolygon._holes.length) 
         return false
-
-      for (let i = 0; i < this._holes.length; i++)
-        if (!this._holes[i].equalsExact(otherPolygon._holes[i], tolerance))
+      
+      for (let i = 0; i < this._holes.length; i++) 
+        if (!this._holes[i].equalsExact(otherPolygon._holes[i], tolerance)) 
           return false
-
+        
+      
       return true
     } else {
       return super.equalsExact.apply(this, arguments)
     }
   }
-
-  normalize () {
+  normalize() {
     if (arguments.length === 0) {
       this._shell = this.normalized(this._shell, true)
-      for (let i = 0; i < this._holes.length; i++)
+      for (let i = 0; i < this._holes.length; i++) 
         this._holes[i] = this.normalized(this._holes[i], false)
-
+      
       Arrays.sort(this._holes)
     } else if (arguments.length === 2) {
-      const ring = arguments[0]; const clockwise = arguments[1]
-      if (ring.isEmpty())
+      const ring = arguments[0], clockwise = arguments[1]
+      if (ring.isEmpty()) 
         return null
-
+      
       const seq = ring.getCoordinateSequence()
       const minCoordinateIndex = CoordinateSequences.minCoordinateIndex(seq, 0, seq.size() - 2)
       CoordinateSequences.scroll(seq, minCoordinateIndex, true)
       if (Orientation.isCCW(seq) === clockwise) CoordinateSequences.reverse(seq)
     }
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._shell.getCoordinate()
   }
-
-  getNumInteriorRing () {
+  getNumInteriorRing() {
     return this._holes.length
   }
-
-  getBoundaryDimension () {
+  getBoundaryDimension() {
     return 1
   }
-
-  reverseInternal () {
+  reverseInternal() {
     const shell = this.getExteriorRing().reverse()
     const holes = new Array(this.getNumInteriorRing()).fill(null)
-    for (let i = 0; i < holes.length; i++)
+    for (let i = 0; i < holes.length; i++) 
       holes[i] = this.getInteriorRingN(i).reverse()
-
+    
     return this.getFactory().createPolygon(shell, holes)
   }
-
-  getTypeCode () {
+  getTypeCode() {
     return Geometry.TYPECODE_POLYGON
   }
-
-  getDimension () {
+  getDimension() {
     return 2
   }
-
-  getLength () {
+  getLength() {
     let len = 0.0
     len += this._shell.getLength()
-    for (let i = 0; i < this._holes.length; i++)
+    for (let i = 0; i < this._holes.length; i++) 
       len += this._holes[i].getLength()
-
+    
     return len
   }
-
-  getNumPoints () {
+  getNumPoints() {
     let numPoints = this._shell.getNumPoints()
-    for (let i = 0; i < this._holes.length; i++)
+    for (let i = 0; i < this._holes.length; i++) 
       numPoints += this._holes[i].getNumPoints()
-
+    
     return numPoints
   }
-
-  convexHull () {
+  convexHull() {
     return this.getExteriorRing().convexHull()
   }
-
-  normalized (ring, clockwise) {
+  normalized(ring, clockwise) {
     const res = ring.copy()
     this.normalize(res, clockwise)
     return res
   }
-
-  compareToSameClass () {
+  compareToSameClass() {
     if (arguments.length === 1) {
       const o = arguments[0]
       const thisShell = this._shell
       const otherShell = o._shell
       return thisShell.compareToSameClass(otherShell)
     } else if (arguments.length === 2) {
-      const o = arguments[0]; const comp = arguments[1]
+      const o = arguments[0], comp = arguments[1]
       const poly = o
       const thisShell = this._shell
       const otherShell = poly._shell
@@ -234,22 +216,22 @@ export default class Polygon extends Geometry {
       return 0
     }
   }
-
-  apply () {
+  apply() {
     if (hasInterface(arguments[0], CoordinateFilter)) {
       const filter = arguments[0]
       this._shell.apply(filter)
-      for (let i = 0; i < this._holes.length; i++)
+      for (let i = 0; i < this._holes.length; i++) 
         this._holes[i].apply(filter)
+      
     } else if (hasInterface(arguments[0], CoordinateSequenceFilter)) {
       const filter = arguments[0]
       this._shell.apply(filter)
-      if (!filter.isDone())
+      if (!filter.isDone()) 
         for (let i = 0; i < this._holes.length; i++) {
           this._holes[i].apply(filter)
           if (filter.isDone()) break
         }
-
+      
       if (filter.isGeometryChanged()) this.geometryChanged()
     } else if (hasInterface(arguments[0], GeometryFilter)) {
       const filter = arguments[0]
@@ -258,41 +240,36 @@ export default class Polygon extends Geometry {
       const filter = arguments[0]
       filter.filter(this)
       this._shell.apply(filter)
-      for (let i = 0; i < this._holes.length; i++)
+      for (let i = 0; i < this._holes.length; i++) 
         this._holes[i].apply(filter)
+      
     }
   }
-
-  getBoundary () {
-    if (this.isEmpty())
+  getBoundary() {
+    if (this.isEmpty()) 
       return this.getFactory().createMultiLineString()
-
+    
     const rings = new Array(this._holes.length + 1).fill(null)
     rings[0] = this._shell
-    for (let i = 0; i < this._holes.length; i++)
+    for (let i = 0; i < this._holes.length; i++) 
       rings[i + 1] = this._holes[i]
-
+    
     if (rings.length <= 1) return this.getFactory().createLinearRing(rings[0].getCoordinateSequence())
     return this.getFactory().createMultiLineString(rings)
   }
-
-  getGeometryType () {
+  getGeometryType() {
     return Geometry.TYPENAME_POLYGON
   }
-
-  getExteriorRing () {
+  getExteriorRing() {
     return this._shell
   }
-
-  isEmpty () {
+  isEmpty() {
     return this._shell.isEmpty()
   }
-
-  getInteriorRingN (n) {
+  getInteriorRingN(n) {
     return this._holes[n]
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Polygonal]
   }
 }

@@ -1,23 +1,19 @@
 import ItemVisitor from './ItemVisitor'
 import ArrayList from '../../../../java/util/ArrayList'
 export default class ArrayListVisitor {
-  constructor () {
+  constructor() {
     ArrayListVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._items = new ArrayList()
   }
-
-  visitItem (item) {
+  visitItem(item) {
     this._items.add(item)
   }
-
-  getItems () {
+  getItems() {
     return this._items
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [ItemVisitor]
   }
 }

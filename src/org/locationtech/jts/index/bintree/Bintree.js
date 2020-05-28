@@ -2,17 +2,15 @@ import Root from './Root'
 import Interval from './Interval'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class Bintree {
-  constructor () {
+  constructor() {
     Bintree.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._root = null
     this._minExtent = 1.0
     this._root = new Root()
   }
-
-  static ensureExtent (itemInterval, minExtent) {
+  static ensureExtent(itemInterval, minExtent) {
     let min = itemInterval.getMin()
     let max = itemInterval.getMax()
     if (min !== max) return itemInterval
@@ -22,19 +20,16 @@ export default class Bintree {
     }
     return new Interval(min, max)
   }
-
-  size () {
+  size() {
     if (this._root !== null) return this._root.size()
     return 0
   }
-
-  insert (itemInterval, item) {
+  insert(itemInterval, item) {
     this.collectStats(itemInterval)
     const insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent)
     this._root.insert(insertInterval, item)
   }
-
-  query () {
+  query() {
     if (arguments.length === 1) {
       if (typeof arguments[0] === 'number') {
         const x = arguments[0]
@@ -46,33 +41,28 @@ export default class Bintree {
         return foundItems
       }
     } else if (arguments.length === 2) {
-      const interval = arguments[0]; const foundItems = arguments[1]
+      const interval = arguments[0], foundItems = arguments[1]
       this._root.addAllItemsFromOverlapping(interval, foundItems)
     }
   }
-
-  iterator () {
+  iterator() {
     const foundItems = new ArrayList()
     this._root.addAllItems(foundItems)
     return foundItems.iterator()
   }
-
-  remove (itemInterval, item) {
+  remove(itemInterval, item) {
     const insertInterval = Bintree.ensureExtent(itemInterval, this._minExtent)
     return this._root.remove(insertInterval, item)
   }
-
-  collectStats (interval) {
+  collectStats(interval) {
     const del = interval.getWidth()
     if (del < this._minExtent && del > 0.0) this._minExtent = del
   }
-
-  depth () {
+  depth() {
     if (this._root !== null) return this._root.depth()
     return 0
   }
-
-  nodeSize () {
+  nodeSize() {
     if (this._root !== null) return this._root.nodeSize()
     return 0
   }

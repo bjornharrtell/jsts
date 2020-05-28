@@ -9,19 +9,17 @@ import CoordinateArrays from '../geom/CoordinateArrays'
 import ArrayList from '../../../../java/util/ArrayList'
 import OverlayOp from '../operation/overlay/OverlayOp'
 export default class VoronoiDiagramBuilder {
-  constructor () {
+  constructor() {
     VoronoiDiagramBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._siteCoords = null
     this._tolerance = 0.0
     this._subdiv = null
     this._clipEnv = null
     this._diagramEnv = null
   }
-
-  static clipGeometryCollection (geom, clipEnv) {
+  static clipGeometryCollection(geom, clipEnv) {
     const clipPoly = geom.getFactory().toGeometry(clipEnv)
     const clipped = new ArrayList()
     for (let i = 0; i < geom.getNumGeometries(); i++) {
@@ -33,13 +31,13 @@ export default class VoronoiDiagramBuilder {
         result = OverlayOp.intersection(clipPoly, g)
         result.setUserData(g.getUserData())
       }
-      if (result !== null && !result.isEmpty())
+      if (result !== null && !result.isEmpty()) 
         clipped.add(result)
+      
     }
     return geom.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(clipped))
   }
-
-  create () {
+  create() {
     if (this._subdiv !== null) return null
     const siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
     this._diagramEnv = this._clipEnv
@@ -53,18 +51,15 @@ export default class VoronoiDiagramBuilder {
     const triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
-
-  getDiagram (geomFact) {
+  getDiagram(geomFact) {
     this.create()
     const polys = this._subdiv.getVoronoiDiagram(geomFact)
     return VoronoiDiagramBuilder.clipGeometryCollection(polys, this._diagramEnv)
   }
-
-  setTolerance (tolerance) {
+  setTolerance(tolerance) {
     this._tolerance = tolerance
   }
-
-  setSites () {
+  setSites() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
       this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom)
@@ -73,12 +68,10 @@ export default class VoronoiDiagramBuilder {
       this._siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords))
     }
   }
-
-  setClipEnvelope (clipEnv) {
+  setClipEnvelope(clipEnv) {
     this._clipEnv = clipEnv
   }
-
-  getSubdivision () {
+  getSubdivision() {
     this.create()
     return this._subdiv
   }

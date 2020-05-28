@@ -2,11 +2,10 @@ import StringBuffer from '../../../../java/lang/StringBuffer'
 import Location from '../geom/Location'
 import Position from './Position'
 export default class TopologyLocation {
-  constructor () {
+  constructor() {
     TopologyLocation.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.location = null
     if (arguments.length === 1) {
       if (arguments[0] instanceof Array) {
@@ -19,41 +18,40 @@ export default class TopologyLocation {
       } else if (arguments[0] instanceof TopologyLocation) {
         const gl = arguments[0]
         this.init(gl.location.length)
-        if (gl !== null)
-          for (let i = 0; i < this.location.length; i++)
+        if (gl !== null) 
+          for (let i = 0; i < this.location.length; i++) 
             this.location[i] = gl.location[i]
+          
+        
       }
     } else if (arguments.length === 3) {
-      const on = arguments[0]; const left = arguments[1]; const right = arguments[2]
+      const on = arguments[0], left = arguments[1], right = arguments[2]
       this.init(3)
       this.location[Position.ON] = on
       this.location[Position.LEFT] = left
       this.location[Position.RIGHT] = right
     }
   }
-
-  setAllLocations (locValue) {
-    for (let i = 0; i < this.location.length; i++)
+  setAllLocations(locValue) {
+    for (let i = 0; i < this.location.length; i++) 
       this.location[i] = locValue
+    
   }
-
-  isNull () {
-    for (let i = 0; i < this.location.length; i++)
+  isNull() {
+    for (let i = 0; i < this.location.length; i++) 
       if (this.location[i] !== Location.NONE) return false
-
+    
     return true
   }
-
-  setAllLocationsIfNull (locValue) {
-    for (let i = 0; i < this.location.length; i++)
+  setAllLocationsIfNull(locValue) {
+    for (let i = 0; i < this.location.length; i++) 
       if (this.location[i] === Location.NONE) this.location[i] = locValue
+    
   }
-
-  isLine () {
+  isLine() {
     return this.location.length === 1
   }
-
-  merge (gl) {
+  merge(gl) {
     if (gl.location.length > this.location.length) {
       const newLoc = new Array(3).fill(null)
       newLoc[Position.ON] = this.location[Position.ON]
@@ -61,74 +59,64 @@ export default class TopologyLocation {
       newLoc[Position.RIGHT] = Location.NONE
       this.location = newLoc
     }
-    for (let i = 0; i < this.location.length; i++)
+    for (let i = 0; i < this.location.length; i++) 
       if (this.location[i] === Location.NONE && i < gl.location.length) this.location[i] = gl.location[i]
+    
   }
-
-  getLocations () {
+  getLocations() {
     return this.location
   }
-
-  flip () {
+  flip() {
     if (this.location.length <= 1) return null
     const temp = this.location[Position.LEFT]
     this.location[Position.LEFT] = this.location[Position.RIGHT]
     this.location[Position.RIGHT] = temp
   }
-
-  toString () {
+  toString() {
     const buf = new StringBuffer()
     if (this.location.length > 1) buf.append(Location.toLocationSymbol(this.location[Position.LEFT]))
     buf.append(Location.toLocationSymbol(this.location[Position.ON]))
     if (this.location.length > 1) buf.append(Location.toLocationSymbol(this.location[Position.RIGHT]))
     return buf.toString()
   }
-
-  setLocations (on, left, right) {
+  setLocations(on, left, right) {
     this.location[Position.ON] = on
     this.location[Position.LEFT] = left
     this.location[Position.RIGHT] = right
   }
-
-  get (posIndex) {
+  get(posIndex) {
     if (posIndex < this.location.length) return this.location[posIndex]
     return Location.NONE
   }
-
-  isArea () {
+  isArea() {
     return this.location.length > 1
   }
-
-  isAnyNull () {
-    for (let i = 0; i < this.location.length; i++)
+  isAnyNull() {
+    for (let i = 0; i < this.location.length; i++) 
       if (this.location[i] === Location.NONE) return true
-
+    
     return false
   }
-
-  setLocation () {
+  setLocation() {
     if (arguments.length === 1) {
       const locValue = arguments[0]
       this.setLocation(Position.ON, locValue)
     } else if (arguments.length === 2) {
-      const locIndex = arguments[0]; const locValue = arguments[1]
+      const locIndex = arguments[0], locValue = arguments[1]
       this.location[locIndex] = locValue
     }
   }
-
-  init (size) {
+  init(size) {
     this.location = new Array(size).fill(null)
     this.setAllLocations(Location.NONE)
   }
-
-  isEqualOnSide (le, locIndex) {
+  isEqualOnSide(le, locIndex) {
     return this.location[locIndex] === le.location[locIndex]
   }
-
-  allPositionsEqual (loc) {
-    for (let i = 0; i < this.location.length; i++)
+  allPositionsEqual(loc) {
+    for (let i = 0; i < this.location.length; i++) 
       if (this.location[i] !== loc) return false
-
+    
     return true
   }
 }

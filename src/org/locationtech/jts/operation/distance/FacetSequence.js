@@ -6,35 +6,33 @@ import LineSegment from '../../geom/LineSegment'
 import Envelope from '../../geom/Envelope'
 import Distance from '../../algorithm/Distance'
 export default class FacetSequence {
-  constructor () {
+  constructor() {
     FacetSequence.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._geom = null
     this._pts = null
     this._start = null
     this._end = null
     if (arguments.length === 2) {
-      const pts = arguments[0]; const start = arguments[1]
+      const pts = arguments[0], start = arguments[1]
       this._pts = pts
       this._start = start
       this._end = start + 1
     } else if (arguments.length === 3) {
-      const pts = arguments[0]; const start = arguments[1]; const end = arguments[2]
+      const pts = arguments[0], start = arguments[1], end = arguments[2]
       this._pts = pts
       this._start = start
       this._end = end
     } else if (arguments.length === 4) {
-      const geom = arguments[0]; const pts = arguments[1]; const start = arguments[2]; const end = arguments[3]
+      const geom = arguments[0], pts = arguments[1], start = arguments[2], end = arguments[3]
       this._geom = geom
       this._pts = pts
       this._start = start
       this._end = end
     }
   }
-
-  computeDistanceLineLine (facetSeq, locs) {
+  computeDistanceLineLine(facetSeq, locs) {
     let minDistance = Double.MAX_VALUE
     for (let i = this._start; i < this._end - 1; i++) {
       const p0 = this._pts.getCoordinate(i)
@@ -52,23 +50,19 @@ export default class FacetSequence {
     }
     return minDistance
   }
-
-  updateNearestLocationsPointLine (pt, facetSeq, i, q0, q1, locs) {
+  updateNearestLocationsPointLine(pt, facetSeq, i, q0, q1, locs) {
     locs[0] = new GeometryLocation(this._geom, this._start, new Coordinate(pt))
     const seg = new LineSegment(q0, q1)
     const segClosestPoint = seg.closestPoint(pt)
     locs[1] = new GeometryLocation(facetSeq._geom, i, new Coordinate(segClosestPoint))
   }
-
-  size () {
+  size() {
     return this._end - this._start
   }
-
-  getCoordinate (index) {
+  getCoordinate(index) {
     return this._pts.getCoordinate(this._start + index)
   }
-
-  nearestLocations (facetSeq) {
+  nearestLocations(facetSeq) {
     const isPoint = this.isPoint()
     const isPointOther = facetSeq.isPoint()
     const locs = new Array(2).fill(null)
@@ -91,24 +85,21 @@ export default class FacetSequence {
     }
     return locs
   }
-
-  getEnvelope () {
+  getEnvelope() {
     const env = new Envelope()
-    for (let i = this._start; i < this._end; i++)
+    for (let i = this._start; i < this._end; i++) 
       env.expandToInclude(this._pts.getX(i), this._pts.getY(i))
-
+    
     return env
   }
-
-  updateNearestLocationsLineLine (i, p0, p1, facetSeq, j, q0, q1, locs) {
+  updateNearestLocationsLineLine(i, p0, p1, facetSeq, j, q0, q1, locs) {
     const seg0 = new LineSegment(p0, p1)
     const seg1 = new LineSegment(q0, q1)
     const closestPt = seg0.closestPoints(seg1)
     locs[0] = new GeometryLocation(this._geom, i, new Coordinate(closestPt[0]))
     locs[1] = new GeometryLocation(facetSeq._geom, j, new Coordinate(closestPt[1]))
   }
-
-  toString () {
+  toString() {
     const buf = new StringBuffer()
     buf.append('LINESTRING ( ')
     const p = new Coordinate()
@@ -120,8 +111,7 @@ export default class FacetSequence {
     buf.append(' )')
     return buf.toString()
   }
-
-  computeDistancePointLine (pt, facetSeq, locs) {
+  computeDistancePointLine(pt, facetSeq, locs) {
     let minDistance = Double.MAX_VALUE
     for (let i = facetSeq._start; i < facetSeq._end - 1; i++) {
       const q0 = facetSeq._pts.getCoordinate(i)
@@ -135,12 +125,10 @@ export default class FacetSequence {
     }
     return minDistance
   }
-
-  isPoint () {
+  isPoint() {
     return this._end - this._start === 1
   }
-
-  distance (facetSeq) {
+  distance(facetSeq) {
     const isPoint = this.isPoint()
     const isPointOther = facetSeq.isPoint()
     let distance = null

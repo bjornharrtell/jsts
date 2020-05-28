@@ -1,7 +1,7 @@
 import Coordinate from '../../geom/Coordinate'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
 export default class HilbertCode {
-  static deinterleave (x) {
+  static deinterleave(x) {
     x = x & 0x55555555
     x = (x | x >> 1) & 0x33333333
     x = (x | x >> 2) & 0x0F0F0F0F
@@ -9,8 +9,7 @@ export default class HilbertCode {
     x = (x | x >> 8) & 0x0000FFFF
     return x
   }
-
-  static encode (level, x, y) {
+  static encode(level, x, y) {
     const lvl = HilbertCode.levelClamp(level)
     x = x << 16 - lvl
     y = y << 16 - lvl
@@ -59,31 +58,27 @@ export default class HilbertCode {
     const index = (i1 << 1 | i0) >> 32 - 2 * lvl
     return Math.trunc(index)
   }
-
-  static checkLevel (level) {
-    if (level > HilbertCode.MAX_LEVEL)
+  static checkLevel(level) {
+    if (level > HilbertCode.MAX_LEVEL) 
       throw new IllegalArgumentException('Level must be in range 0 to ' + HilbertCode.MAX_LEVEL)
+    
   }
-
-  static size (level) {
+  static size(level) {
     HilbertCode.checkLevel(level)
     return Math.trunc(Math.pow(2, 2 * level))
   }
-
-  static maxOrdinate (level) {
+  static maxOrdinate(level) {
     HilbertCode.checkLevel(level)
     return Math.trunc(Math.pow(2, level)) - 1
   }
-
-  static prefixScan (x) {
+  static prefixScan(x) {
     x = x >> 8 ^ x
     x = x >> 4 ^ x
     x = x >> 2 ^ x
     x = x >> 1 ^ x
     return x
   }
-
-  static decode (level, index) {
+  static decode(level, index) {
     HilbertCode.checkLevel(level)
     const lvl = HilbertCode.levelClamp(level)
     index = index << 32 - 2 * lvl
@@ -98,14 +93,12 @@ export default class HilbertCode {
     const y = (a ^ i0 ^ i1) >> 16 - lvl
     return new Coordinate(x, y)
   }
-
-  static levelClamp (level) {
+  static levelClamp(level) {
     let lvl = level < 1 ? 1 : level
     lvl = lvl > HilbertCode.MAX_LEVEL ? HilbertCode.MAX_LEVEL : lvl
     return lvl
   }
-
-  static level (numPoints) {
+  static level(numPoints) {
     const pow2 = Math.trunc(Math.log(numPoints) / Math.log(2))
     let level = Math.trunc(pow2 / 2)
     const size = HilbertCode.size(level)

@@ -1,11 +1,10 @@
 import SegmentIntersector from './SegmentIntersector'
 import ArrayList from '../../../../java/util/ArrayList'
 export default class NodingIntersectionFinder {
-  constructor () {
+  constructor() {
     NodingIntersectionFinder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._findAllIntersections = false
     this._isCheckEndSegmentsOnly = false
     this._keepIntersections = true
@@ -19,23 +18,21 @@ export default class NodingIntersectionFinder {
     this._li = li
     this._interiorIntersection = null
   }
-
-  static createAllIntersectionsFinder (li) {
+  static createAllIntersectionsFinder(li) {
     const finder = new NodingIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     return finder
   }
-
-  static isInteriorVertexIntersection () {
+  static isInteriorVertexIntersection() {
     if (arguments.length === 4) {
-      const p0 = arguments[0]; const p1 = arguments[1]; const isEnd0 = arguments[2]; const isEnd1 = arguments[3]
+      const p0 = arguments[0], p1 = arguments[1], isEnd0 = arguments[2], isEnd1 = arguments[3]
       if (isEnd0 && isEnd1) return false
-      if (p0.equals2D(p1))
+      if (p0.equals2D(p1)) 
         return true
-
+      
       return false
     } else if (arguments.length === 8) {
-      const p00 = arguments[0]; const p01 = arguments[1]; const p10 = arguments[2]; const p11 = arguments[3]; const isEnd00 = arguments[4]; const isEnd01 = arguments[5]; const isEnd10 = arguments[6]; const isEnd11 = arguments[7]
+      const p00 = arguments[0], p01 = arguments[1], p10 = arguments[2], p11 = arguments[3], isEnd00 = arguments[4], isEnd01 = arguments[5], isEnd10 = arguments[6], isEnd11 = arguments[7]
       if (NodingIntersectionFinder.isInteriorVertexIntersection(p00, p10, isEnd00, isEnd10)) return true
       if (NodingIntersectionFinder.isInteriorVertexIntersection(p00, p11, isEnd00, isEnd11)) return true
       if (NodingIntersectionFinder.isInteriorVertexIntersection(p01, p10, isEnd01, isEnd10)) return true
@@ -43,68 +40,55 @@ export default class NodingIntersectionFinder {
       return false
     }
   }
-
-  static createInteriorIntersectionCounter (li) {
+  static createInteriorIntersectionCounter(li) {
     const finder = new NodingIntersectionFinder(li)
     finder.setInteriorIntersectionsOnly(true)
     finder.setFindAllIntersections(true)
     finder.setKeepIntersections(false)
     return finder
   }
-
-  static createIntersectionCounter (li) {
+  static createIntersectionCounter(li) {
     const finder = new NodingIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     finder.setKeepIntersections(false)
     return finder
   }
-
-  static isEndSegment (segStr, index) {
+  static isEndSegment(segStr, index) {
     if (index === 0) return true
     if (index >= segStr.size() - 2) return true
     return false
   }
-
-  static createAnyIntersectionFinder (li) {
+  static createAnyIntersectionFinder(li) {
     return new NodingIntersectionFinder(li)
   }
-
-  static createInteriorIntersectionsFinder (li) {
+  static createInteriorIntersectionsFinder(li) {
     const finder = new NodingIntersectionFinder(li)
     finder.setFindAllIntersections(true)
     finder.setInteriorIntersectionsOnly(true)
     return finder
   }
-
-  setCheckEndSegmentsOnly (isCheckEndSegmentsOnly) {
+  setCheckEndSegmentsOnly(isCheckEndSegmentsOnly) {
     this._isCheckEndSegmentsOnly = isCheckEndSegmentsOnly
   }
-
-  getIntersectionSegments () {
+  getIntersectionSegments() {
     return this._intSegments
   }
-
-  count () {
+  count() {
     return this._intersectionCount
   }
-
-  getIntersections () {
+  getIntersections() {
     return this._intersections
   }
-
-  setFindAllIntersections (findAllIntersections) {
+  setFindAllIntersections(findAllIntersections) {
     this._findAllIntersections = findAllIntersections
   }
-
-  setKeepIntersections (keepIntersections) {
+  setKeepIntersections(keepIntersections) {
     this._keepIntersections = keepIntersections
   }
-
-  getIntersection () {
+  getIntersection() {
     return this._interiorIntersection
   }
-
-  processIntersections (e0, segIndex0, e1, segIndex1) {
+  processIntersections(e0, segIndex0, e1, segIndex1) {
     if (!this._findAllIntersections && this.hasIntersection()) return null
     const isSameSegString = e0 === e1
     const isSameSegment = isSameSegString && segIndex0 === segIndex1
@@ -139,21 +123,17 @@ export default class NodingIntersectionFinder {
       this._intersectionCount++
     }
   }
-
-  hasIntersection () {
+  hasIntersection() {
     return this._interiorIntersection !== null
   }
-
-  isDone () {
+  isDone() {
     if (this._findAllIntersections) return false
     return this._interiorIntersection !== null
   }
-
-  setInteriorIntersectionsOnly (isInteriorIntersectionsOnly) {
+  setInteriorIntersectionsOnly(isInteriorIntersectionsOnly) {
     this._isInteriorIntersectionsOnly = isInteriorIntersectionsOnly
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [SegmentIntersector]
   }
 }

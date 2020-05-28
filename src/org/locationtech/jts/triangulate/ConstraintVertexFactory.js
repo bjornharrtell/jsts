@@ -1,3 +1,3 @@
 export default class ConstraintVertexFactory {
-  createVertex (p, constraintSeg) {}
+  createVertex(p, constraintSeg) {}
 }

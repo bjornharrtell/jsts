@@ -1,27 +1,23 @@
 import Boundable from './Boundable'
 import Serializable from '../../../../../java/io/Serializable'
 export default class ItemBoundable {
-  constructor () {
+  constructor() {
     ItemBoundable.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._bounds = null
     this._item = null
-    const bounds = arguments[0]; const item = arguments[1]
+    const bounds = arguments[0], item = arguments[1]
     this._bounds = bounds
     this._item = item
   }
-
-  getItem () {
+  getItem() {
     return this._item
   }
-
-  getBounds () {
+  getBounds() {
     return this._bounds
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Boundable, Serializable]
   }
 }

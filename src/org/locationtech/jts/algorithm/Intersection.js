@@ -1,7 +1,7 @@
 import Coordinate from '../geom/Coordinate'
 import Double from '../../../../java/lang/Double'
 export default class Intersection {
-  static intersection (p1, p2, q1, q2) {
+  static intersection(p1, p2, q1, q2) {
     const minX0 = p1.x < p2.x ? p1.x : p2.x
     const minY0 = p1.y < p2.y ? p1.y : p2.y
     const maxX0 = p1.x > p2.x ? p1.x : p2.x
@@ -35,9 +35,9 @@ export default class Intersection {
     const w = px * qy - qx * py
     const xInt = x / w
     const yInt = y / w
-    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt))
+    if (Double.isNaN(xInt) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || Double.isInfinite(yInt)) 
       return null
-
+    
     return new Coordinate(xInt + midx, yInt + midy)
   }
 }

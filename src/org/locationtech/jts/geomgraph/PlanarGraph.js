@@ -9,11 +9,10 @@ import ArrayList from '../../../../java/util/ArrayList'
 import Quadrant from './Quadrant'
 import NodeFactory from './NodeFactory'
 export default class PlanarGraph {
-  constructor () {
+  constructor() {
     PlanarGraph.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._edges = new ArrayList()
     this._nodes = null
     this._edgeEndList = new ArrayList()
@@ -24,15 +23,13 @@ export default class PlanarGraph {
       this._nodes = new NodeMap(nodeFact)
     }
   }
-
-  static linkResultDirectedEdges (nodes) {
-    for (let nodeit = nodes.iterator(); nodeit.hasNext();) {
+  static linkResultDirectedEdges(nodes) {
+    for (let nodeit = nodes.iterator(); nodeit.hasNext(); ) {
       const node = nodeit.next()
       node.getEdges().linkResultDirectedEdges()
     }
   }
-
-  printEdges (out) {
+  printEdges(out) {
     out.println('Edges:')
     for (let i = 0; i < this._edges.size(); i++) {
       out.println('edge ' + i + ':')
@@ -41,12 +38,10 @@ export default class PlanarGraph {
       e.eiList.print(out)
     }
   }
-
-  find (coord) {
+  find(coord) {
     return this._nodes.find(coord)
   }
-
-  addNode () {
+  addNode() {
     if (arguments[0] instanceof Node) {
       const node = arguments[0]
       return this._nodes.addNode(node)
@@ -55,56 +50,46 @@ export default class PlanarGraph {
       return this._nodes.addNode(coord)
     }
   }
-
-  getNodeIterator () {
+  getNodeIterator() {
     return this._nodes.iterator()
   }
-
-  linkResultDirectedEdges () {
-    for (let nodeit = this._nodes.iterator(); nodeit.hasNext();) {
+  linkResultDirectedEdges() {
+    for (let nodeit = this._nodes.iterator(); nodeit.hasNext(); ) {
       const node = nodeit.next()
       node.getEdges().linkResultDirectedEdges()
     }
   }
-
-  debugPrintln (o) {
+  debugPrintln(o) {
     System.out.println(o)
   }
-
-  isBoundaryNode (geomIndex, coord) {
+  isBoundaryNode(geomIndex, coord) {
     const node = this._nodes.find(coord)
     if (node === null) return false
     const label = node.getLabel()
     if (label !== null && label.getLocation(geomIndex) === Location.BOUNDARY) return true
     return false
   }
-
-  linkAllDirectedEdges () {
-    for (let nodeit = this._nodes.iterator(); nodeit.hasNext();) {
+  linkAllDirectedEdges() {
+    for (let nodeit = this._nodes.iterator(); nodeit.hasNext(); ) {
       const node = nodeit.next()
       node.getEdges().linkAllDirectedEdges()
     }
   }
-
-  matchInSameDirection (p0, p1, ep0, ep1) {
+  matchInSameDirection(p0, p1, ep0, ep1) {
     if (!p0.equals(ep0)) return false
     if (Orientation.index(p0, p1, ep1) === Orientation.COLLINEAR && Quadrant.quadrant(p0, p1) === Quadrant.quadrant(ep0, ep1)) return true
     return false
   }
-
-  getEdgeEnds () {
+  getEdgeEnds() {
     return this._edgeEndList
   }
-
-  debugPrint (o) {
+  debugPrint(o) {
     System.out.print(o)
   }
-
-  getEdgeIterator () {
+  getEdgeIterator() {
     return this._edges.iterator()
   }
-
-  findEdgeInSameDirection (p0, p1) {
+  findEdgeInSameDirection(p0, p1) {
     for (let i = 0; i < this._edges.size(); i++) {
       const e = this._edges.get(i)
       const eCoord = e.getCoordinates()
@@ -113,21 +98,18 @@ export default class PlanarGraph {
     }
     return null
   }
-
-  insertEdge (e) {
+  insertEdge(e) {
     this._edges.add(e)
   }
-
-  findEdgeEnd (e) {
-    for (let i = this.getEdgeEnds().iterator(); i.hasNext();) {
+  findEdgeEnd(e) {
+    for (let i = this.getEdgeEnds().iterator(); i.hasNext(); ) {
       const ee = i.next()
       if (ee.getEdge() === e) return ee
     }
     return null
   }
-
-  addEdges (edgesToAdd) {
-    for (let it = edgesToAdd.iterator(); it.hasNext();) {
+  addEdges(edgesToAdd) {
+    for (let it = edgesToAdd.iterator(); it.hasNext(); ) {
       const e = it.next()
       this._edges.add(e)
       const de1 = new DirectedEdge(e, true)
@@ -138,17 +120,14 @@ export default class PlanarGraph {
       this.add(de2)
     }
   }
-
-  add (e) {
+  add(e) {
     this._nodes.add(e)
     this._edgeEndList.add(e)
   }
-
-  getNodes () {
+  getNodes() {
     return this._nodes.values()
   }
-
-  findEdge (p0, p1) {
+  findEdge(p0, p1) {
     for (let i = 0; i < this._edges.size(); i++) {
       const e = this._edges.get(i)
       const eCoord = e.getCoordinates()

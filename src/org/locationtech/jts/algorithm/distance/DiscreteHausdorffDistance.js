@@ -5,53 +5,46 @@ import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentEx
 import PointPairDistance from './PointPairDistance'
 import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter'
 export default class DiscreteHausdorffDistance {
-  constructor () {
+  constructor() {
     DiscreteHausdorffDistance.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._g0 = null
     this._g1 = null
     this._ptDist = new PointPairDistance()
     this._densifyFrac = 0.0
-    const g0 = arguments[0]; const g1 = arguments[1]
+    const g0 = arguments[0], g1 = arguments[1]
     this._g0 = g0
     this._g1 = g1
   }
-
-  static distance () {
+  static distance() {
     if (arguments.length === 2) {
-      const g0 = arguments[0]; const g1 = arguments[1]
+      const g0 = arguments[0], g1 = arguments[1]
       const dist = new DiscreteHausdorffDistance(g0, g1)
       return dist.distance()
     } else if (arguments.length === 3) {
-      const g0 = arguments[0]; const g1 = arguments[1]; const densifyFrac = arguments[2]
+      const g0 = arguments[0], g1 = arguments[1], densifyFrac = arguments[2]
       const dist = new DiscreteHausdorffDistance(g0, g1)
       dist.setDensifyFraction(densifyFrac)
       return dist.distance()
     }
   }
-
-  getCoordinates () {
+  getCoordinates() {
     return this._ptDist.getCoordinates()
   }
-
-  setDensifyFraction (densifyFrac) {
+  setDensifyFraction(densifyFrac) {
     if (densifyFrac > 1.0 || densifyFrac <= 0.0) throw new IllegalArgumentException('Fraction is not in range (0.0 - 1.0]')
     this._densifyFrac = densifyFrac
   }
-
-  compute (g0, g1) {
+  compute(g0, g1) {
     this.computeOrientedDistance(g0, g1, this._ptDist)
     this.computeOrientedDistance(g1, g0, this._ptDist)
   }
-
-  distance () {
+  distance() {
     this.compute(this._g0, this._g1)
     return this._ptDist.getDistance()
   }
-
-  computeOrientedDistance (discreteGeom, geom, ptDist) {
+  computeOrientedDistance(discreteGeom, geom, ptDist) {
     const distFilter = new MaxPointDistanceFilter(geom)
     discreteGeom.apply(distFilter)
     ptDist.setMaximum(distFilter.getMaxPointDistance())
@@ -61,18 +54,16 @@ export default class DiscreteHausdorffDistance {
       ptDist.setMaximum(fracFilter.getMaxPointDistance())
     }
   }
-
-  orientedDistance () {
+  orientedDistance() {
     this.computeOrientedDistance(this._g0, this._g1, this._ptDist)
     return this._ptDist.getDistance()
   }
 }
 class MaxPointDistanceFilter {
-  constructor () {
+  constructor() {
     MaxPointDistanceFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._maxPtDist = new PointPairDistance()
     this._minPtDist = new PointPairDistance()
     this._euclideanDist = new DistanceToPoint()
@@ -80,37 +71,32 @@ class MaxPointDistanceFilter {
     const geom = arguments[0]
     this._geom = geom
   }
-
-  filter (pt) {
+  filter(pt) {
     this._minPtDist.initialize()
     DistanceToPoint.computeDistance(this._geom, pt, this._minPtDist)
     this._maxPtDist.setMaximum(this._minPtDist)
   }
-
-  getMaxPointDistance () {
+  getMaxPointDistance() {
     return this._maxPtDist
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateFilter]
   }
 }
 class MaxDensifiedByFractionDistanceFilter {
-  constructor () {
+  constructor() {
     MaxDensifiedByFractionDistanceFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._maxPtDist = new PointPairDistance()
     this._minPtDist = new PointPairDistance()
     this._geom = null
     this._numSubSegs = 0
-    const geom = arguments[0]; const fraction = arguments[1]
+    const geom = arguments[0], fraction = arguments[1]
     this._geom = geom
     this._numSubSegs = Math.trunc(Math.round(1.0 / fraction))
   }
-
-  filter (seq, index) {
+  filter(seq, index) {
     if (index === 0) return null
     const p0 = seq.getCoordinate(index - 1)
     const p1 = seq.getCoordinate(index)
@@ -125,20 +111,16 @@ class MaxDensifiedByFractionDistanceFilter {
       this._maxPtDist.setMaximum(this._minPtDist)
     }
   }
-
-  isDone () {
+  isDone() {
     return false
   }
-
-  isGeometryChanged () {
+  isGeometryChanged() {
     return false
   }
-
-  getMaxPointDistance () {
+  getMaxPointDistance() {
     return this._maxPtDist
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateSequenceFilter]
   }
 }

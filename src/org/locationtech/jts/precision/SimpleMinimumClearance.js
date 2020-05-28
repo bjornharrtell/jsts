@@ -5,43 +5,38 @@ import LineSegment from '../geom/LineSegment'
 import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter'
 import Distance from '../algorithm/Distance'
 export default class SimpleMinimumClearance {
-  constructor () {
+  constructor() {
     SimpleMinimumClearance.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._inputGeom = null
     this._minClearance = null
     this._minClearancePts = null
     const geom = arguments[0]
     this._inputGeom = geom
   }
-
-  static getLine (g) {
+  static getLine(g) {
     const rp = new SimpleMinimumClearance(g)
     return rp.getLine()
   }
-
-  static getDistance (g) {
+  static getDistance(g) {
     const rp = new SimpleMinimumClearance(g)
     return rp.getDistance()
   }
-
-  getLine () {
+  getLine() {
     this.compute()
     return this._inputGeom.getFactory().createLineString(this._minClearancePts)
   }
-
-  updateClearance () {
+  updateClearance() {
     if (arguments.length === 3) {
-      const candidateValue = arguments[0]; const p0 = arguments[1]; const p1 = arguments[2]
+      const candidateValue = arguments[0], p0 = arguments[1], p1 = arguments[2]
       if (candidateValue < this._minClearance) {
         this._minClearance = candidateValue
         this._minClearancePts[0] = new Coordinate(p0)
         this._minClearancePts[1] = new Coordinate(p1)
       }
     } else if (arguments.length === 4) {
-      const candidateValue = arguments[0]; const p = arguments[1]; const seg0 = arguments[2]; const seg1 = arguments[3]
+      const candidateValue = arguments[0], p = arguments[1], seg0 = arguments[2], seg1 = arguments[3]
       if (candidateValue < this._minClearance) {
         this._minClearance = candidateValue
         this._minClearancePts[0] = new Coordinate(p)
@@ -50,78 +45,68 @@ export default class SimpleMinimumClearance {
       }
     }
   }
-
-  compute () {
+  compute() {
     if (this._minClearancePts !== null) return null
     this._minClearancePts = new Array(2).fill(null)
     this._minClearance = Double.MAX_VALUE
     this._inputGeom.apply(new VertexCoordinateFilter(this))
   }
-
-  getDistance () {
+  getDistance() {
     this.compute()
     return this._minClearance
   }
 }
 class VertexCoordinateFilter {
-  constructor () {
+  constructor() {
     VertexCoordinateFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.smc = null
     const smc = arguments[0]
     this.smc = smc
   }
-
-  filter (coord) {
+  filter(coord) {
     this.smc._inputGeom.apply(new ComputeMCCoordinateSequenceFilter(this.smc, coord))
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateFilter]
   }
 }
 class ComputeMCCoordinateSequenceFilter {
-  constructor () {
+  constructor() {
     ComputeMCCoordinateSequenceFilter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.smc = null
     this._queryPt = null
-    const smc = arguments[0]; const queryPt = arguments[1]
+    const smc = arguments[0], queryPt = arguments[1]
     this.smc = smc
     this._queryPt = queryPt
   }
-
-  isGeometryChanged () {
+  isGeometryChanged() {
     return false
   }
-
-  checkVertexDistance (vertex) {
+  checkVertexDistance(vertex) {
     const vertexDist = vertex.distance(this._queryPt)
-    if (vertexDist > 0)
+    if (vertexDist > 0) 
       this.smc.updateClearance(vertexDist, this._queryPt, vertex)
+    
   }
-
-  filter (seq, i) {
+  filter(seq, i) {
     this.checkVertexDistance(seq.getCoordinate(i))
-    if (i > 0)
+    if (i > 0) 
       this.checkSegmentDistance(seq.getCoordinate(i - 1), seq.getCoordinate(i))
+    
   }
-
-  checkSegmentDistance (seg0, seg1) {
+  checkSegmentDistance(seg0, seg1) {
     if (this._queryPt.equals2D(seg0) || this._queryPt.equals2D(seg1)) return null
     const segDist = Distance.pointToSegment(this._queryPt, seg1, seg0)
     if (segDist > 0) this.smc.updateClearance(segDist, this._queryPt, seg1, seg0)
   }
-
-  isDone () {
+  isDone() {
     return false
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [CoordinateSequenceFilter]
   }
 }

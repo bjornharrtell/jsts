@@ -1,3 +1,3 @@
 export default class TraversalVisitor {
-  visit (currTri, edgeIndex, neighbTri) {}
+  visit(currTri, edgeIndex, neighbTri) {}
 }

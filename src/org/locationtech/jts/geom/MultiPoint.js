@@ -3,41 +3,36 @@ import GeometryCollection from './GeometryCollection'
 import Dimension from './Dimension'
 import Puntal from './Puntal'
 export default class MultiPoint extends GeometryCollection {
-  constructor () {
+  constructor() {
     super()
     MultiPoint.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
-    const points = arguments[0]; const factory = arguments[1]
+  static constructor_() {
+    const points = arguments[0], factory = arguments[1]
     GeometryCollection.constructor_.call(this, points, factory)
   }
-
-  copyInternal () {
+  copyInternal() {
     const points = new Array(this._geometries.length).fill(null)
-    for (let i = 0; i < points.length; i++)
+    for (let i = 0; i < points.length; i++) 
       points[i] = this._geometries[i].copy()
-
+    
     return new MultiPoint(points, this._factory)
   }
-
-  isValid () {
+  isValid() {
     return true
   }
-
-  equalsExact () {
+  equalsExact() {
     if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      const other = arguments[0]; const tolerance = arguments[1]
-      if (!this.isEquivalentClass(other))
+      const other = arguments[0], tolerance = arguments[1]
+      if (!this.isEquivalentClass(other)) 
         return false
-
+      
       return super.equalsExact.call(this, other, tolerance)
     } else {
       return super.equalsExact.apply(this, arguments)
     }
   }
-
-  getCoordinate () {
+  getCoordinate() {
     if (arguments.length === 1 && Number.isInteger(arguments[0])) {
       const n = arguments[0]
       return this._geometries[n].getCoordinate()
@@ -45,28 +40,22 @@ export default class MultiPoint extends GeometryCollection {
       return super.getCoordinate.apply(this, arguments)
     }
   }
-
-  getBoundaryDimension () {
+  getBoundaryDimension() {
     return Dimension.FALSE
   }
-
-  getTypeCode () {
+  getTypeCode() {
     return Geometry.TYPECODE_MULTIPOINT
   }
-
-  getDimension () {
+  getDimension() {
     return 0
   }
-
-  getBoundary () {
+  getBoundary() {
     return this.getFactory().createGeometryCollection()
   }
-
-  getGeometryType () {
+  getGeometryType() {
     return Geometry.TYPENAME_MULTIPOINT
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Puntal]
   }
 }

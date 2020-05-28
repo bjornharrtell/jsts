@@ -14,12 +14,11 @@ import Assert from '../../util/Assert'
 import AbstractSTRtree from './AbstractSTRtree'
 import ItemDistance from './ItemDistance'
 export default class STRtree extends AbstractSTRtree {
-  constructor () {
+  constructor() {
     super()
     STRtree.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     if (arguments.length === 0) {
       STRtree.constructor_.call(this, STRtree.DEFAULT_NODE_CAPACITY)
     } else if (arguments.length === 1) {
@@ -27,16 +26,13 @@ export default class STRtree extends AbstractSTRtree {
       AbstractSTRtree.constructor_.call(this, nodeCapacity)
     }
   }
-
-  static centreX (e) {
+  static centreX(e) {
     return STRtree.avg(e.getMinX(), e.getMaxX())
   }
-
-  static avg (a, b) {
+  static avg(a, b) {
     return (a + b) / 2
   }
-
-  static getItems (kNearestNeighbors) {
+  static getItems(kNearestNeighbors) {
     const items = new Array(kNearestNeighbors.size()).fill(null)
     let count = 0
     while (!kNearestNeighbors.isEmpty()) {
@@ -46,26 +42,23 @@ export default class STRtree extends AbstractSTRtree {
     }
     return items
   }
-
-  static centreY (e) {
+  static centreY(e) {
     return STRtree.avg(e.getMinY(), e.getMaxY())
   }
-
-  createParentBoundablesFromVerticalSlices (verticalSlices, newLevel) {
+  createParentBoundablesFromVerticalSlices(verticalSlices, newLevel) {
     Assert.isTrue(verticalSlices.length > 0)
     const parentBoundables = new ArrayList()
-    for (let i = 0; i < verticalSlices.length; i++)
+    for (let i = 0; i < verticalSlices.length; i++) 
       parentBoundables.addAll(this.createParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel))
-
+    
     return parentBoundables
   }
-
-  nearestNeighbourK () {
+  nearestNeighbourK() {
     if (arguments.length === 2) {
-      const initBndPair = arguments[0]; const k = arguments[1]
+      const initBndPair = arguments[0], k = arguments[1]
       return this.nearestNeighbourK(initBndPair, Double.POSITIVE_INFINITY, k)
     } else if (arguments.length === 3) {
-      const initBndPair = arguments[0]; const maxDistance = arguments[1]; const k = arguments[2]
+      const initBndPair = arguments[0], maxDistance = arguments[1], k = arguments[2]
       let distanceLowerBound = maxDistance
       const priQ = new PriorityQueue()
       priQ.add(initBndPair)
@@ -73,10 +66,10 @@ export default class STRtree extends AbstractSTRtree {
       while (!priQ.isEmpty() && distanceLowerBound >= 0.0) {
         const bndPair = priQ.poll()
         const pairDistance = bndPair.getDistance()
-        if (pairDistance >= distanceLowerBound)
+        if (pairDistance >= distanceLowerBound) 
           break
-
-        if (bndPair.isLeaves())
+        
+        if (bndPair.isLeaves()) 
           if (kNearestNeighbors.size() < k) {
             kNearestNeighbors.add(bndPair)
           } else {
@@ -88,40 +81,36 @@ export default class STRtree extends AbstractSTRtree {
             const bp2 = kNearestNeighbors.peek()
             distanceLowerBound = bp2.getDistance()
           }
-        else
+        else 
           bndPair.expandToQueue(priQ, distanceLowerBound)
+        
       }
       return STRtree.getItems(kNearestNeighbors)
     }
   }
-
-  createNode (level) {
+  createNode(level) {
     return new STRtreeNode(level)
   }
-
-  size () {
-    if (arguments.length === 0)
+  size() {
+    if (arguments.length === 0) 
       return super.size.call(this)
     else return super.size.apply(this, arguments)
   }
-
-  insert () {
+  insert() {
     if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
-      const itemEnv = arguments[0]; const item = arguments[1]
-      if (itemEnv.isNull())
+      const itemEnv = arguments[0], item = arguments[1]
+      if (itemEnv.isNull()) 
         return null
-
+      
       super.insert.call(this, itemEnv, item)
     } else {
       return super.insert.apply(this, arguments)
     }
   }
-
-  getIntersectsOp () {
+  getIntersectsOp() {
     return STRtree.intersectsOp
   }
-
-  verticalSlices (childBoundables, sliceCount) {
+  verticalSlices(childBoundables, sliceCount) {
     const sliceCapacity = Math.trunc(Math.ceil(childBoundables.size() / sliceCount))
     const slices = new Array(sliceCount).fill(null)
     const i = childBoundables.iterator()
@@ -136,41 +125,35 @@ export default class STRtree extends AbstractSTRtree {
     }
     return slices
   }
-
-  query () {
+  query() {
     if (arguments.length === 1) {
       const searchEnv = arguments[0]
       return super.query.call(this, searchEnv)
     } else if (arguments.length === 2) {
-      const searchEnv = arguments[0]; const visitor = arguments[1]
+      const searchEnv = arguments[0], visitor = arguments[1]
       super.query.call(this, searchEnv, visitor)
     }
   }
-
-  getComparator () {
+  getComparator() {
     return STRtree.yComparator
   }
-
-  createParentBoundablesFromVerticalSlice (childBoundables, newLevel) {
+  createParentBoundablesFromVerticalSlice(childBoundables, newLevel) {
     return super.createParentBoundables.call(this, childBoundables, newLevel)
   }
-
-  remove () {
+  remove() {
     if (arguments.length === 2 && (arguments[1] instanceof Object && arguments[0] instanceof Envelope)) {
-      const itemEnv = arguments[0]; const item = arguments[1]
+      const itemEnv = arguments[0], item = arguments[1]
       return super.remove.call(this, itemEnv, item)
     } else {
       return super.remove.apply(this, arguments)
     }
   }
-
-  depth () {
-    if (arguments.length === 0)
+  depth() {
+    if (arguments.length === 0) 
       return super.depth.call(this)
     else return super.depth.apply(this, arguments)
   }
-
-  createParentBoundables (childBoundables, newLevel) {
+  createParentBoundables(childBoundables, newLevel) {
     Assert.isTrue(!childBoundables.isEmpty())
     const minLeafCount = Math.trunc(Math.ceil(childBoundables.size() / this.getNodeCapacity()))
     const sortedChildBoundables = new ArrayList(childBoundables)
@@ -178,8 +161,7 @@ export default class STRtree extends AbstractSTRtree {
     const verticalSlices = this.verticalSlices(sortedChildBoundables, Math.trunc(Math.ceil(Math.sqrt(minLeafCount))))
     return this.createParentBoundablesFromVerticalSlices(verticalSlices, newLevel)
   }
-
-  nearestNeighbour () {
+  nearestNeighbour() {
     if (arguments.length === 1) {
       if (hasInterface(arguments[0], ItemDistance)) {
         const itemDist = arguments[0]
@@ -207,26 +189,25 @@ export default class STRtree extends AbstractSTRtree {
         return [minPair.getBoundable(0).getItem(), minPair.getBoundable(1).getItem()]
       }
     } else if (arguments.length === 2) {
-      const tree = arguments[0]; const itemDist = arguments[1]
+      const tree = arguments[0], itemDist = arguments[1]
       if (this.isEmpty() || tree.isEmpty()) return null
       const bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
       return this.nearestNeighbour(bp)
     } else if (arguments.length === 3) {
-      const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]
+      const env = arguments[0], item = arguments[1], itemDist = arguments[2]
       const bnd = new ItemBoundable(env, item)
       const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
       return this.nearestNeighbour(bp)[0]
     } else if (arguments.length === 4) {
-      const env = arguments[0]; const item = arguments[1]; const itemDist = arguments[2]; const k = arguments[3]
+      const env = arguments[0], item = arguments[1], itemDist = arguments[2], k = arguments[3]
       const bnd = new ItemBoundable(env, item)
       const bp = new BoundablePair(this.getRoot(), bnd, itemDist)
       return this.nearestNeighbourK(bp, k)
     }
   }
-
-  isWithinDistance () {
+  isWithinDistance() {
     if (arguments.length === 2) {
-      const initBndPair = arguments[0]; const maxDistance = arguments[1]
+      const initBndPair = arguments[0], maxDistance = arguments[1]
       let distanceUpperBound = Double.POSITIVE_INFINITY
       const priQ = new PriorityQueue()
       priQ.add(initBndPair)
@@ -244,64 +225,59 @@ export default class STRtree extends AbstractSTRtree {
       }
       return false
     } else if (arguments.length === 3) {
-      const tree = arguments[0]; const itemDist = arguments[1]; const maxDistance = arguments[2]
+      const tree = arguments[0], itemDist = arguments[1], maxDistance = arguments[2]
       const bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist)
       return this.isWithinDistance(bp, maxDistance)
     }
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [SpatialIndex, Serializable]
   }
 }
 class STRtreeNode extends AbstractNode {
-  constructor () {
+  constructor() {
     super()
     STRtreeNode.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     const level = arguments[0]
     AbstractNode.constructor_.call(this, level)
   }
-
-  computeBounds () {
+  computeBounds() {
     let bounds = null
-    for (let i = this.getChildBoundables().iterator(); i.hasNext();) {
+    for (let i = this.getChildBoundables().iterator(); i.hasNext(); ) {
       const childBoundable = i.next()
-      if (bounds === null)
+      if (bounds === null) 
         bounds = new Envelope(childBoundable.getBounds())
-      else
+      else 
         bounds.expandToInclude(childBoundable.getBounds())
+      
     }
     return bounds
   }
 }
 STRtree.STRtreeNode = STRtreeNode
 STRtree.xComparator = new (class {
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparator]
   }
-
-  compare (o1, o2) {
+  compare(o1, o2) {
     return AbstractSTRtree.compareDoubles(STRtree.centreX(o1.getBounds()), STRtree.centreX(o2.getBounds()))
   }
 })()
 STRtree.yComparator = new (class {
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparator]
   }
-
-  compare (o1, o2) {
+  compare(o1, o2) {
     return AbstractSTRtree.compareDoubles(STRtree.centreY(o1.getBounds()), STRtree.centreY(o2.getBounds()))
   }
 })()
 STRtree.intersectsOp = new (class {
-  get interfaces_ () {
+  get interfaces_() {
     return [IntersectsOp]
   }
-
-  intersects (aBounds, bBounds) {
+  intersects(aBounds, bBounds) {
     return aBounds.intersects(bBounds)
   }
 })()

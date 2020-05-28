@@ -1,11 +1,10 @@
 import RelateNodeGraph from '../relate/RelateNodeGraph'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
 export default class ConsistentAreaTester {
-  constructor () {
+  constructor() {
     ConsistentAreaTester.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._li = new RobustLineIntersector()
     this._geomGraph = null
     this._nodeGraph = new RelateNodeGraph()
@@ -13,9 +12,8 @@ export default class ConsistentAreaTester {
     const geomGraph = arguments[0]
     this._geomGraph = geomGraph
   }
-
-  isNodeEdgeAreaLabelsConsistent () {
-    for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
+  isNodeEdgeAreaLabelsConsistent() {
+    for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
       const node = nodeIt.next()
       if (!node.getEdges().isAreaLabelsConsistent(this._geomGraph)) {
         this._invalidPoint = node.getCoordinate().copy()
@@ -24,15 +22,13 @@ export default class ConsistentAreaTester {
     }
     return true
   }
-
-  getInvalidPoint () {
+  getInvalidPoint() {
     return this._invalidPoint
   }
-
-  hasDuplicateRings () {
-    for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext();) {
+  hasDuplicateRings() {
+    for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
       const node = nodeIt.next()
-      for (let i = node.getEdges().iterator(); i.hasNext();) {
+      for (let i = node.getEdges().iterator(); i.hasNext(); ) {
         const eeb = i.next()
         if (eeb.getEdgeEnds().size() > 1) {
           this._invalidPoint = eeb.getEdge().getCoordinate(0)
@@ -42,8 +38,7 @@ export default class ConsistentAreaTester {
     }
     return false
   }
-
-  isNodeConsistentArea () {
+  isNodeConsistentArea() {
     const intersector = this._geomGraph.computeSelfNodes(this._li, true, true)
     if (intersector.hasProperIntersection()) {
       this._invalidPoint = intersector.getProperIntersectionPoint()

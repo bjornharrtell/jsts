@@ -1,24 +1,23 @@
 import Coordinate from '../../geom/Coordinate'
 export default class KdNode {
-  constructor () {
+  constructor() {
     KdNode.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._p = null
     this._data = null
     this._left = null
     this._right = null
     this._count = null
     if (arguments.length === 2) {
-      const p = arguments[0]; const data = arguments[1]
+      const p = arguments[0], data = arguments[1]
       this._p = new Coordinate(p)
       this._left = null
       this._right = null
       this._count = 1
       this._data = data
     } else if (arguments.length === 3) {
-      const _x = arguments[0]; const _y = arguments[1]; const data = arguments[2]
+      const _x = arguments[0], _y = arguments[1], data = arguments[2]
       this._p = new Coordinate(_x, _y)
       this._left = null
       this._right = null
@@ -26,48 +25,37 @@ export default class KdNode {
       this._data = data
     }
   }
-
-  isRepeated () {
+  isRepeated() {
     return this._count > 1
   }
-
-  getRight () {
+  getRight() {
     return this._right
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._p
   }
-
-  setLeft (_left) {
+  setLeft(_left) {
     this._left = _left
   }
-
-  getX () {
+  getX() {
     return this._p.x
   }
-
-  getData () {
+  getData() {
     return this._data
   }
-
-  getCount () {
+  getCount() {
     return this._count
   }
-
-  getLeft () {
+  getLeft() {
     return this._left
   }
-
-  getY () {
+  getY() {
     return this._p.y
   }
-
-  increment () {
+  increment() {
     this._count = this._count + 1
   }
-
-  setRight (_right) {
+  setRight(_right) {
     this._right = _right
   }
 }

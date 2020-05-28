@@ -6,17 +6,15 @@ import LineStringSnapper from './LineStringSnapper'
 import PrecisionModel from '../../../geom/PrecisionModel'
 import Polygonal from '../../../geom/Polygonal'
 export default class GeometrySnapper {
-  constructor () {
+  constructor() {
     GeometrySnapper.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._srcGeom = null
     const srcGeom = arguments[0]
     this._srcGeom = srcGeom
   }
-
-  static snap (g0, g1, snapTolerance) {
+  static snap(g0, g1, snapTolerance) {
     const snapGeom = new Array(2).fill(null)
     const snapper0 = new GeometrySnapper(g0)
     snapGeom[0] = snapper0.snapTo(g1, snapTolerance)
@@ -24,8 +22,7 @@ export default class GeometrySnapper {
     snapGeom[1] = snapper1.snapTo(snapGeom[0], snapTolerance)
     return snapGeom
   }
-
-  static computeOverlaySnapTolerance () {
+  static computeOverlaySnapTolerance() {
     if (arguments.length === 1) {
       const g = arguments[0]
       let snapTolerance = GeometrySnapper.computeSizeBasedSnapTolerance(g)
@@ -36,56 +33,49 @@ export default class GeometrySnapper {
       }
       return snapTolerance
     } else if (arguments.length === 2) {
-      const g0 = arguments[0]; const g1 = arguments[1]
+      const g0 = arguments[0], g1 = arguments[1]
       return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1))
     }
   }
-
-  static computeSizeBasedSnapTolerance (g) {
+  static computeSizeBasedSnapTolerance(g) {
     const env = g.getEnvelopeInternal()
     const minDimension = Math.min(env.getHeight(), env.getWidth())
     const snapTol = minDimension * GeometrySnapper.SNAP_PRECISION_FACTOR
     return snapTol
   }
-
-  static snapToSelf (geom, snapTolerance, cleanResult) {
+  static snapToSelf(geom, snapTolerance, cleanResult) {
     const snapper0 = new GeometrySnapper(geom)
     return snapper0.snapToSelf(snapTolerance, cleanResult)
   }
-
-  snapTo (snapGeom, snapTolerance) {
+  snapTo(snapGeom, snapTolerance) {
     const snapPts = this.extractTargetCoordinates(snapGeom)
     const snapTrans = new SnapTransformer(snapTolerance, snapPts)
     return snapTrans.transform(this._srcGeom)
   }
-
-  snapToSelf (snapTolerance, cleanResult) {
+  snapToSelf(snapTolerance, cleanResult) {
     const snapPts = this.extractTargetCoordinates(this._srcGeom)
     const snapTrans = new SnapTransformer(snapTolerance, snapPts, true)
     const snappedGeom = snapTrans.transform(this._srcGeom)
     let result = snappedGeom
-    if (cleanResult && hasInterface(result, Polygonal))
+    if (cleanResult && hasInterface(result, Polygonal)) 
       result = snappedGeom.buffer(0)
-
+    
     return result
   }
-
-  computeSnapTolerance (ringPts) {
+  computeSnapTolerance(ringPts) {
     const minSegLen = this.computeMinimumSegmentLength(ringPts)
     const snapTol = minSegLen / 10
     return snapTol
   }
-
-  extractTargetCoordinates (g) {
+  extractTargetCoordinates(g) {
     const ptSet = new TreeSet()
     const pts = g.getCoordinates()
-    for (let i = 0; i < pts.length; i++)
+    for (let i = 0; i < pts.length; i++) 
       ptSet.add(pts[i])
-
+    
     return ptSet.toArray(new Array(0).fill(null))
   }
-
-  computeMinimumSegmentLength (pts) {
+  computeMinimumSegmentLength(pts) {
     let minSegLen = Double.MAX_VALUE
     for (let i = 0; i < pts.length - 1; i++) {
       const segLen = pts[i].distance(pts[i + 1])
@@ -96,34 +86,31 @@ export default class GeometrySnapper {
 }
 GeometrySnapper.SNAP_PRECISION_FACTOR = 1e-9
 class SnapTransformer extends GeometryTransformer {
-  constructor () {
+  constructor() {
     super()
     SnapTransformer.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._snapTolerance = null
     this._snapPts = null
     this._isSelfSnap = false
     if (arguments.length === 2) {
-      const snapTolerance = arguments[0]; const snapPts = arguments[1]
+      const snapTolerance = arguments[0], snapPts = arguments[1]
       this._snapTolerance = snapTolerance
       this._snapPts = snapPts
     } else if (arguments.length === 3) {
-      const snapTolerance = arguments[0]; const snapPts = arguments[1]; const isSelfSnap = arguments[2]
+      const snapTolerance = arguments[0], snapPts = arguments[1], isSelfSnap = arguments[2]
       this._snapTolerance = snapTolerance
       this._snapPts = snapPts
       this._isSelfSnap = isSelfSnap
     }
   }
-
-  snapLine (srcPts, snapPts) {
+  snapLine(srcPts, snapPts) {
     const snapper = new LineStringSnapper(srcPts, this._snapTolerance)
     snapper.setAllowSnappingToSourceVertices(this._isSelfSnap)
     return snapper.snapTo(snapPts)
   }
-
-  transformCoordinates (coords, parent) {
+  transformCoordinates(coords, parent) {
     const srcPts = coords.toCoordinateArray()
     const newPts = this.snapLine(srcPts, this._snapPts)
     return this._factory.getCoordinateSequenceFactory().create(newPts)

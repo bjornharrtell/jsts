@@ -6,7 +6,7 @@
  */
 export default function IndexOutOfBoundsException (message) {
   this.message = message || ''
-};
+}
 IndexOutOfBoundsException.prototype = new Error()
 
 /**

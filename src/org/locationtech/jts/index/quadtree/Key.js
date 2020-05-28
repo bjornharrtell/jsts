@@ -2,31 +2,27 @@ import Coordinate from '../../geom/Coordinate'
 import DoubleBits from './DoubleBits'
 import Envelope from '../../geom/Envelope'
 export default class Key {
-  constructor () {
+  constructor() {
     Key.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._pt = new Coordinate()
     this._level = 0
     this._env = null
     const itemEnv = arguments[0]
     this.computeKey(itemEnv)
   }
-
-  static computeQuadLevel (env) {
+  static computeQuadLevel(env) {
     const dx = env.getWidth()
     const dy = env.getHeight()
     const dMax = dx > dy ? dx : dy
     const level = DoubleBits.exponent(dMax) + 1
     return level
   }
-
-  getLevel () {
+  getLevel() {
     return this._level
   }
-
-  computeKey () {
+  computeKey() {
     if (arguments.length === 1) {
       const itemEnv = arguments[0]
       this._level = Key.computeQuadLevel(itemEnv)
@@ -37,23 +33,20 @@ export default class Key {
         this.computeKey(this._level, itemEnv)
       }
     } else if (arguments.length === 2) {
-      const level = arguments[0]; const itemEnv = arguments[1]
+      const level = arguments[0], itemEnv = arguments[1]
       const quadSize = DoubleBits.powerOf2(level)
       this._pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize
       this._pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize
       this._env.init(this._pt.x, this._pt.x + quadSize, this._pt.y, this._pt.y + quadSize)
     }
   }
-
-  getEnvelope () {
+  getEnvelope() {
     return this._env
   }
-
-  getCentre () {
+  getCentre() {
     return new Coordinate((this._env.getMinX() + this._env.getMaxX()) / 2, (this._env.getMinY() + this._env.getMaxY()) / 2)
   }
-
-  getPoint () {
+  getPoint() {
     return this._pt
   }
 }

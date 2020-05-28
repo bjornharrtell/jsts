@@ -4,11 +4,10 @@ import PointLocation from '../../algorithm/PointLocation'
 import ArrayList from '../../../../../java/util/ArrayList'
 import Envelope from '../../geom/Envelope'
 export default class IndexedNestedRingTester {
-  constructor () {
+  constructor() {
     IndexedNestedRingTester.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._graph = null
     this._rings = new ArrayList()
     this._totalEnv = new Envelope()
@@ -17,8 +16,7 @@ export default class IndexedNestedRingTester {
     const graph = arguments[0]
     this._graph = graph
   }
-
-  buildIndex () {
+  buildIndex() {
     this._index = new STRtree()
     for (let i = 0; i < this._rings.size(); i++) {
       const ring = this._rings.get(i)
@@ -26,12 +24,10 @@ export default class IndexedNestedRingTester {
       this._index.insert(env, ring)
     }
   }
-
-  getNestedPoint () {
+  getNestedPoint() {
     return this._nestedPt
   }
-
-  isNonNested () {
+  isNonNested() {
     this.buildIndex()
     for (let i = 0; i < this._rings.size(); i++) {
       const innerRing = this._rings.get(i)
@@ -53,8 +49,7 @@ export default class IndexedNestedRingTester {
     }
     return true
   }
-
-  add (ring) {
+  add(ring) {
     this._rings.add(ring)
     this._totalEnv.expandToInclude(ring.getEnvelopeInternal())
   }

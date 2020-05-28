@@ -1,6 +1,6 @@
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class Location {
-  static toLocationSymbol (locationValue) {
+  static toLocationSymbol(locationValue) {
     switch (locationValue) {
     case Location.EXTERIOR:
       return 'e'

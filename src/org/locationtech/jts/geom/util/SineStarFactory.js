@@ -1,12 +1,11 @@
 import Coordinate from '../Coordinate'
 import GeometricShapeFactory from '../../util/GeometricShapeFactory'
 export default class SineStarFactory extends GeometricShapeFactory {
-  constructor () {
+  constructor() {
     super()
     SineStarFactory.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._numArms = 8
     this._armLengthRatio = 0.5
     if (arguments.length === 0) {
@@ -16,8 +15,7 @@ export default class SineStarFactory extends GeometricShapeFactory {
       GeometricShapeFactory.constructor_.call(this, geomFact)
     }
   }
-
-  static create (origin, size, nPts, nArms, armLengthRatio) {
+  static create(origin, size, nPts, nArms, armLengthRatio) {
     const gsf = new SineStarFactory()
     gsf.setCentre(origin)
     gsf.setSize(size)
@@ -27,16 +25,13 @@ export default class SineStarFactory extends GeometricShapeFactory {
     const poly = gsf.createSineStar()
     return poly
   }
-
-  setNumArms (numArms) {
+  setNumArms(numArms) {
     this._numArms = numArms
   }
-
-  setArmLengthRatio (armLengthRatio) {
+  setArmLengthRatio(armLengthRatio) {
     this._armLengthRatio = armLengthRatio
   }
-
-  createSineStar () {
+  createSineStar() {
     const env = this._dim.getEnvelope()
     const radius = env.getWidth() / 2.0
     let armRatio = this._armLengthRatio

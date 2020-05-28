@@ -1,12 +1,11 @@
 import Coordinate from './Coordinate'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class CoordinateXY extends Coordinate {
-  constructor () {
+  constructor() {
     super()
     CoordinateXY.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     if (arguments.length === 0) {
       Coordinate.constructor_.call(this)
     } else if (arguments.length === 1) {
@@ -18,12 +17,11 @@ export default class CoordinateXY extends Coordinate {
         Coordinate.constructor_.call(this, coord.x, coord.y)
       }
     } else if (arguments.length === 2) {
-      const x = arguments[0]; const y = arguments[1]
+      const x = arguments[0], y = arguments[1]
       Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
     }
   }
-
-  setOrdinate (ordinateIndex, value) {
+  setOrdinate(ordinateIndex, value) {
     switch (ordinateIndex) {
     case CoordinateXY.X:
       this.x = value
@@ -35,12 +33,10 @@ export default class CoordinateXY extends Coordinate {
       throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
-
-  getZ () {
+  getZ() {
     return Coordinate.NULL_ORDINATE
   }
-
-  getOrdinate (ordinateIndex) {
+  getOrdinate(ordinateIndex) {
     switch (ordinateIndex) {
     case CoordinateXY.X:
       return this.x
@@ -49,20 +45,16 @@ export default class CoordinateXY extends Coordinate {
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
-
-  setZ (z) {
+  setZ(z) {
     throw new IllegalArgumentException('CoordinateXY dimension 2 does not support z-ordinate')
   }
-
-  copy () {
+  copy() {
     return new CoordinateXY(this)
   }
-
-  toString () {
+  toString() {
     return '(' + this.x + ', ' + this.y + ')'
   }
-
-  setCoordinate (other) {
+  setCoordinate(other) {
     this.x = other.x
     this.y = other.y
     this.z = other.getZ()

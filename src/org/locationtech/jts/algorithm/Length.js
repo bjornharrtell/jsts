@@ -1,6 +1,6 @@
 import Coordinate from '../geom/Coordinate'
 export default class Length {
-  static ofLine (pts) {
+  static ofLine(pts) {
     const n = pts.size()
     if (n <= 1) return 0.0
     let len = 0.0

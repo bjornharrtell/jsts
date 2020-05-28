@@ -1,34 +1,30 @@
 import LinearIterator from './LinearIterator'
 import LinearLocation from './LinearLocation'
 export default class LengthLocationMap {
-  constructor () {
+  constructor() {
     LengthLocationMap.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._linearGeom = null
     const linearGeom = arguments[0]
     this._linearGeom = linearGeom
   }
-
-  static getLength (linearGeom, loc) {
+  static getLength(linearGeom, loc) {
     const locater = new LengthLocationMap(linearGeom)
     return locater.getLength(loc)
   }
-
-  static getLocation () {
+  static getLocation() {
     if (arguments.length === 2) {
-      const linearGeom = arguments[0]; const length = arguments[1]
+      const linearGeom = arguments[0], length = arguments[1]
       const locater = new LengthLocationMap(linearGeom)
       return locater.getLocation(length)
     } else if (arguments.length === 3) {
-      const linearGeom = arguments[0]; const length = arguments[1]; const resolveLower = arguments[2]
+      const linearGeom = arguments[0], length = arguments[1], resolveLower = arguments[2]
       const locater = new LengthLocationMap(linearGeom)
       return locater.getLocation(length, resolveLower)
     }
   }
-
-  getLength (loc) {
+  getLength(loc) {
     let totalLength = 0.0
     const it = new LinearIterator(this._linearGeom)
     while (it.hasNext()) {
@@ -36,46 +32,43 @@ export default class LengthLocationMap {
         const p0 = it.getSegmentStart()
         const p1 = it.getSegmentEnd()
         const segLen = p1.distance(p0)
-        if (loc.getComponentIndex() === it.getComponentIndex() && loc.getSegmentIndex() === it.getVertexIndex())
+        if (loc.getComponentIndex() === it.getComponentIndex() && loc.getSegmentIndex() === it.getVertexIndex()) 
           return totalLength + segLen * loc.getSegmentFraction()
-
+        
         totalLength += segLen
       }
       it.next()
     }
     return totalLength
   }
-
-  resolveHigher (loc) {
+  resolveHigher(loc) {
     if (!loc.isEndpoint(this._linearGeom)) return loc
     let compIndex = loc.getComponentIndex()
     if (compIndex >= this._linearGeom.getNumGeometries() - 1) return loc
-    do
+    do 
       compIndex++
     while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0)
     return new LinearLocation(compIndex, 0, 0.0)
   }
-
-  getLocation () {
+  getLocation() {
     if (arguments.length === 1) {
       const length = arguments[0]
       return this.getLocation(length, true)
     } else if (arguments.length === 2) {
-      const length = arguments[0]; const resolveLower = arguments[1]
+      const length = arguments[0], resolveLower = arguments[1]
       let forwardLength = length
       if (length < 0.0) {
         const lineLen = this._linearGeom.getLength()
         forwardLength = lineLen + length
       }
       const loc = this.getLocationForward(forwardLength)
-      if (resolveLower)
+      if (resolveLower) 
         return loc
-
+      
       return this.resolveHigher(loc)
     }
   }
-
-  getLocationForward (length) {
+  getLocationForward(length) {
     if (length <= 0.0) return new LinearLocation()
     let totalLength = 0.0
     const it = new LinearIterator(this._linearGeom)

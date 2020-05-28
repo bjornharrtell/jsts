@@ -4,22 +4,19 @@ import Node from './Node'
 import ArrayList from '../../../../java/util/ArrayList'
 import TreeMap from '../../../../java/util/TreeMap'
 export default class NodeMap {
-  constructor () {
+  constructor() {
     NodeMap.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.nodeMap = new TreeMap()
     this.nodeFact = null
     const nodeFact = arguments[0]
     this.nodeFact = nodeFact
   }
-
-  find (coord) {
+  find(coord) {
     return this.nodeMap.get(coord)
   }
-
-  addNode () {
+  addNode() {
     if (arguments[0] instanceof Coordinate) {
       const coord = arguments[0]
       let node = this.nodeMap.get(coord)
@@ -39,32 +36,27 @@ export default class NodeMap {
       return node
     }
   }
-
-  print (out) {
-    for (let it = this.iterator(); it.hasNext();) {
+  print(out) {
+    for (let it = this.iterator(); it.hasNext(); ) {
       const n = it.next()
       n.print(out)
     }
   }
-
-  iterator () {
+  iterator() {
     return this.nodeMap.values().iterator()
   }
-
-  values () {
+  values() {
     return this.nodeMap.values()
   }
-
-  getBoundaryNodes (geomIndex) {
+  getBoundaryNodes(geomIndex) {
     const bdyNodes = new ArrayList()
-    for (let i = this.iterator(); i.hasNext();) {
+    for (let i = this.iterator(); i.hasNext(); ) {
       const node = i.next()
       if (node.getLabel().getLocation(geomIndex) === Location.BOUNDARY) bdyNodes.add(node)
     }
     return bdyNodes
   }
-
-  add (e) {
+  add(e) {
     const p = e.getCoordinate()
     const n = this.addNode(p)
     n.add(e)

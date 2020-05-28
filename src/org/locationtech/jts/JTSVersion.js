@@ -1,22 +1,18 @@
 import System from '../../../java/lang/System'
 export default class JTSVersion {
-  static main (args) {
+  static main(args) {
     System.out.println(JTSVersion.CURRENT_VERSION)
   }
-
-  getMajor () {
+  getMajor() {
     return JTSVersion.MAJOR
   }
-
-  getPatch () {
+  getPatch() {
     return JTSVersion.PATCH
   }
-
-  getMinor () {
+  getMinor() {
     return JTSVersion.MINOR
   }
-
-  toString () {
+  toString() {
     const ver = JTSVersion.MAJOR + '.' + JTSVersion.MINOR + '.' + JTSVersion.PATCH
     if (JTSVersion.RELEASE_INFO !== null && JTSVersion.RELEASE_INFO.length > 0) return ver + ' ' + JTSVersion.RELEASE_INFO
     return ver

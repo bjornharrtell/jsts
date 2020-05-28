@@ -1,17 +1,15 @@
 import Edge from '../../planargraph/Edge'
 export default class LineMergeEdge extends Edge {
-  constructor () {
+  constructor() {
     super()
     LineMergeEdge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._line = null
     const line = arguments[0]
     this._line = line
   }
-
-  getLine () {
+  getLine() {
     return this._line
   }
 }

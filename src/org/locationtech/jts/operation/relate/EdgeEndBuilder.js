@@ -2,7 +2,7 @@ import EdgeEnd from '../../geomgraph/EdgeEnd'
 import Label from '../../geomgraph/Label'
 import ArrayList from '../../../../../java/util/ArrayList'
 export default class EdgeEndBuilder {
-  createEdgeEndForNext (edge, l, eiCurr, eiNext) {
+  createEdgeEndForNext(edge, l, eiCurr, eiNext) {
     const iNext = eiCurr.segmentIndex + 1
     if (iNext >= edge.getNumPoints() && eiNext === null) return null
     let pNext = edge.getCoordinate(iNext)
@@ -10,8 +10,7 @@ export default class EdgeEndBuilder {
     const e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()))
     l.add(e)
   }
-
-  createEdgeEndForPrev (edge, l, eiCurr, eiPrev) {
+  createEdgeEndForPrev(edge, l, eiCurr, eiPrev) {
     let iPrev = eiCurr.segmentIndex
     if (eiCurr.dist === 0.0) {
       if (iPrev === 0) return null
@@ -24,18 +23,17 @@ export default class EdgeEndBuilder {
     const e = new EdgeEnd(edge, eiCurr.coord, pPrev, label)
     l.add(e)
   }
-
-  computeEdgeEnds () {
+  computeEdgeEnds() {
     if (arguments.length === 1) {
       const edges = arguments[0]
       const l = new ArrayList()
-      for (let i = edges; i.hasNext();) {
+      for (let i = edges; i.hasNext(); ) {
         const e = i.next()
         this.computeEdgeEnds(e, l)
       }
       return l
     } else if (arguments.length === 2) {
-      const edge = arguments[0]; const l = arguments[1]
+      const edge = arguments[0], l = arguments[1]
       const eiList = edge.getEdgeIntersectionList()
       eiList.addEndpoints()
       const it = eiList.iterator()

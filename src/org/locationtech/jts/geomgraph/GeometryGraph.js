@@ -26,12 +26,11 @@ import Edge from './Edge'
 import MultiLineString from '../geom/MultiLineString'
 import PlanarGraph from './PlanarGraph'
 export default class GeometryGraph extends PlanarGraph {
-  constructor () {
+  constructor() {
     super()
     GeometryGraph.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._parentGeom = null
     this._lineEdgeMap = new HashMap()
     this._boundaryNodeRule = null
@@ -43,23 +42,22 @@ export default class GeometryGraph extends PlanarGraph {
     this._areaPtLocator = null
     this._ptLocator = new PointLocator()
     if (arguments.length === 2) {
-      const argIndex = arguments[0]; const parentGeom = arguments[1]
+      const argIndex = arguments[0], parentGeom = arguments[1]
       GeometryGraph.constructor_.call(this, argIndex, parentGeom, BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE)
     } else if (arguments.length === 3) {
-      const argIndex = arguments[0]; const parentGeom = arguments[1]; const boundaryNodeRule = arguments[2]
+      const argIndex = arguments[0], parentGeom = arguments[1], boundaryNodeRule = arguments[2]
       this._argIndex = argIndex
       this._parentGeom = parentGeom
       this._boundaryNodeRule = boundaryNodeRule
-      if (parentGeom !== null)
+      if (parentGeom !== null) 
         this.add(parentGeom)
+      
     }
   }
-
-  static determineBoundary (boundaryNodeRule, boundaryCount) {
+  static determineBoundary(boundaryNodeRule, boundaryCount) {
     return boundaryNodeRule.isInBoundary(boundaryCount) ? Location.BOUNDARY : Location.INTERIOR
   }
-
-  insertBoundaryPoint (argIndex, coord) {
+  insertBoundaryPoint(argIndex, coord) {
     const n = this._nodes.addNode(coord)
     const lbl = n.getLabel()
     let boundaryCount = 1
@@ -69,13 +67,12 @@ export default class GeometryGraph extends PlanarGraph {
     const newLoc = GeometryGraph.determineBoundary(this._boundaryNodeRule, boundaryCount)
     lbl.setLocation(argIndex, newLoc)
   }
-
-  computeSelfNodes () {
+  computeSelfNodes() {
     if (arguments.length === 2) {
-      const li = arguments[0]; const computeRingSelfNodes = arguments[1]
+      const li = arguments[0], computeRingSelfNodes = arguments[1]
       return this.computeSelfNodes(li, computeRingSelfNodes, false)
     } else if (arguments.length === 3) {
-      const li = arguments[0]; const computeRingSelfNodes = arguments[1]; const isDoneIfProperInt = arguments[2]
+      const li = arguments[0], computeRingSelfNodes = arguments[1], isDoneIfProperInt = arguments[2]
       const si = new SegmentIntersector(li, true, false)
       si.setIsDoneIfProperInt(isDoneIfProperInt)
       const esi = this.createEdgeSetIntersector()
@@ -86,35 +83,29 @@ export default class GeometryGraph extends PlanarGraph {
       return si
     }
   }
-
-  computeSplitEdges (edgelist) {
-    for (let i = this._edges.iterator(); i.hasNext();) {
+  computeSplitEdges(edgelist) {
+    for (let i = this._edges.iterator(); i.hasNext(); ) {
       const e = i.next()
       e.eiList.addSplitEdges(edgelist)
     }
   }
-
-  computeEdgeIntersections (g, li, includeProper) {
+  computeEdgeIntersections(g, li, includeProper) {
     const si = new SegmentIntersector(li, includeProper, true)
     si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes())
     const esi = this.createEdgeSetIntersector()
     esi.computeIntersections(this._edges, g._edges, si)
     return si
   }
-
-  getGeometry () {
+  getGeometry() {
     return this._parentGeom
   }
-
-  getBoundaryNodeRule () {
+  getBoundaryNodeRule() {
     return this._boundaryNodeRule
   }
-
-  hasTooFewPoints () {
+  hasTooFewPoints() {
     return this._hasTooFewPoints
   }
-
-  addPoint () {
+  addPoint() {
     if (arguments[0] instanceof Point) {
       const p = arguments[0]
       const coord = p.getCoordinate()
@@ -124,23 +115,20 @@ export default class GeometryGraph extends PlanarGraph {
       this.insertPoint(this._argIndex, pt, Location.INTERIOR)
     }
   }
-
-  addPolygon (p) {
+  addPolygon(p) {
     this.addPolygonRing(p.getExteriorRing(), Location.EXTERIOR, Location.INTERIOR)
     for (let i = 0; i < p.getNumInteriorRing(); i++) {
       const hole = p.getInteriorRingN(i)
       this.addPolygonRing(hole, Location.INTERIOR, Location.EXTERIOR)
     }
   }
-
-  addEdge (e) {
+  addEdge(e) {
     this.insertEdge(e)
     const coord = e.getCoordinates()
     this.insertPoint(this._argIndex, coord[0], Location.BOUNDARY)
     this.insertPoint(this._argIndex, coord[coord.length - 1], Location.BOUNDARY)
   }
-
-  addLineString (line) {
+  addLineString(line) {
     const coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates())
     if (coord.length < 2) {
       this._hasTooFewPoints = true
@@ -154,33 +142,28 @@ export default class GeometryGraph extends PlanarGraph {
     this.insertBoundaryPoint(this._argIndex, coord[0])
     this.insertBoundaryPoint(this._argIndex, coord[coord.length - 1])
   }
-
-  getInvalidPoint () {
+  getInvalidPoint() {
     return this._invalidPoint
   }
-
-  getBoundaryPoints () {
+  getBoundaryPoints() {
     const coll = this.getBoundaryNodes()
     const pts = new Array(coll.size()).fill(null)
     let i = 0
-    for (let it = coll.iterator(); it.hasNext();) {
+    for (let it = coll.iterator(); it.hasNext(); ) {
       const node = it.next()
       pts[i++] = node.getCoordinate().copy()
     }
     return pts
   }
-
-  getBoundaryNodes () {
+  getBoundaryNodes() {
     if (this._boundaryNodes === null) this._boundaryNodes = this._nodes.getBoundaryNodes(this._argIndex)
     return this._boundaryNodes
   }
-
-  addSelfIntersectionNode (argIndex, coord, loc) {
+  addSelfIntersectionNode(argIndex, coord, loc) {
     if (this.isBoundaryNode(argIndex, coord)) return null
     if (loc === Location.BOUNDARY && this._useBoundaryDeterminationRule) this.insertBoundaryPoint(argIndex, coord); else this.insertPoint(argIndex, coord, loc)
   }
-
-  addPolygonRing (lr, cwLeft, cwRight) {
+  addPolygonRing(lr, cwLeft, cwRight) {
     if (lr.isEmpty()) return null
     const coord = CoordinateArrays.removeRepeatedPoints(lr.getCoordinates())
     if (coord.length < 4) {
@@ -199,31 +182,27 @@ export default class GeometryGraph extends PlanarGraph {
     this.insertEdge(e)
     this.insertPoint(this._argIndex, coord[0], Location.BOUNDARY)
   }
-
-  insertPoint (argIndex, coord, onLocation) {
+  insertPoint(argIndex, coord, onLocation) {
     const n = this._nodes.addNode(coord)
     const lbl = n.getLabel()
-    if (lbl === null)
+    if (lbl === null) 
       n._label = new Label(argIndex, onLocation)
     else lbl.setLocation(argIndex, onLocation)
   }
-
-  createEdgeSetIntersector () {
+  createEdgeSetIntersector() {
     return new SimpleMCSweepLineIntersector()
   }
-
-  addSelfIntersectionNodes (argIndex) {
-    for (let i = this._edges.iterator(); i.hasNext();) {
+  addSelfIntersectionNodes(argIndex) {
+    for (let i = this._edges.iterator(); i.hasNext(); ) {
       const e = i.next()
       const eLoc = e.getLabel().getLocation(argIndex)
-      for (let eiIt = e.eiList.iterator(); eiIt.hasNext();) {
+      for (let eiIt = e.eiList.iterator(); eiIt.hasNext(); ) {
         const ei = eiIt.next()
         this.addSelfIntersectionNode(argIndex, ei.coord, eLoc)
       }
     }
   }
-
-  add () {
+  add() {
     if (arguments.length === 1 && arguments[0] instanceof Geometry) {
       const g = arguments[0]
       if (g.isEmpty()) return null
@@ -233,25 +212,22 @@ export default class GeometryGraph extends PlanarGraph {
       return super.add.apply(this, arguments)
     }
   }
-
-  addCollection (gc) {
+  addCollection(gc) {
     for (let i = 0; i < gc.getNumGeometries(); i++) {
       const g = gc.getGeometryN(i)
       this.add(g)
     }
   }
-
-  locate (pt) {
+  locate(pt) {
     if (hasInterface(this._parentGeom, Polygonal) && this._parentGeom.getNumGeometries() > 50) {
-      if (this._areaPtLocator === null)
+      if (this._areaPtLocator === null) 
         this._areaPtLocator = new IndexedPointInAreaLocator(this._parentGeom)
-
+      
       return this._areaPtLocator.locate(pt)
     }
     return this._ptLocator.locate(pt, this._parentGeom)
   }
-
-  findEdge () {
+  findEdge() {
     if (arguments.length === 1 && arguments[0] instanceof LineString) {
       const line = arguments[0]
       return this._lineEdgeMap.get(line)

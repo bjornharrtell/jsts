@@ -8,12 +8,11 @@ import Polygonal from '../../geom/Polygonal'
 import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator'
 import GeometricShapeBuilder from '../GeometricShapeBuilder'
 export default class RandomPointsBuilder extends GeometricShapeBuilder {
-  constructor () {
+  constructor() {
     super()
     RandomPointsBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._maskPoly = null
     this._extentLocator = null
     if (arguments.length === 0) {
@@ -23,8 +22,7 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
       GeometricShapeBuilder.constructor_.call(this, geomFact)
     }
   }
-
-  getGeometry () {
+  getGeometry() {
     const pts = new Array(this._numPts).fill(null)
     let i = 0
     while (i < this._numPts) {
@@ -34,19 +32,16 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
     }
     return this._geomFactory.createMultiPointFromCoords(pts)
   }
-
-  createRandomCoord (env) {
+  createRandomCoord(env) {
     const x = env.getMinX() + env.getWidth() * Math.random()
     const y = env.getMinY() + env.getHeight() * Math.random()
     return this.createCoord(x, y)
   }
-
-  isInExtent (p) {
+  isInExtent(p) {
     if (this._extentLocator !== null) return this._extentLocator.locate(p) !== Location.EXTERIOR
     return this.getExtent().contains(p)
   }
-
-  setExtent () {
+  setExtent() {
     if (arguments.length === 1 && arguments[0] instanceof Geometry) {
       const mask = arguments[0]
       if (!hasInterface(mask, Polygonal)) throw new IllegalArgumentException('Only polygonal extents are supported')
@@ -57,8 +52,7 @@ export default class RandomPointsBuilder extends GeometricShapeBuilder {
       return super.setExtent.apply(this, arguments)
     }
   }
-
-  createCoord (x, y) {
+  createCoord(x, y) {
     const pt = new Coordinate(x, y)
     this._geomFactory.getPrecisionModel().makePrecise(pt)
     return pt

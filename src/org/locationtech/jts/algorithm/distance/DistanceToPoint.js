@@ -6,9 +6,9 @@ import LineSegment from '../../geom/LineSegment'
 import PointPairDistance from './PointPairDistance'
 import GeometryCollection from '../../geom/GeometryCollection'
 export default class DistanceToPoint {
-  static computeDistance () {
+  static computeDistance() {
     if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof LineString && arguments[1] instanceof Coordinate)) {
-      const line = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
+      const line = arguments[0], pt = arguments[1], ptDist = arguments[2]
       const tempSegment = new LineSegment()
       const coords = line.getCoordinates()
       for (let i = 0; i < coords.length - 1; i++) {
@@ -17,12 +17,13 @@ export default class DistanceToPoint {
         ptDist.setMinimum(closestPt, pt)
       }
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof Polygon && arguments[1] instanceof Coordinate)) {
-      const poly = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
+      const poly = arguments[0], pt = arguments[1], ptDist = arguments[2]
       DistanceToPoint.computeDistance(poly.getExteriorRing(), pt, ptDist)
-      for (let i = 0; i < poly.getNumInteriorRing(); i++)
+      for (let i = 0; i < poly.getNumInteriorRing(); i++) 
         DistanceToPoint.computeDistance(poly.getInteriorRingN(i), pt, ptDist)
+      
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof Geometry && arguments[1] instanceof Coordinate)) {
-      const geom = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
+      const geom = arguments[0], pt = arguments[1], ptDist = arguments[2]
       if (geom instanceof LineString) {
         DistanceToPoint.computeDistance(geom, pt, ptDist)
       } else if (geom instanceof Polygon) {
@@ -37,7 +38,7 @@ export default class DistanceToPoint {
         ptDist.setMinimum(geom.getCoordinate(), pt)
       }
     } else if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof LineSegment && arguments[1] instanceof Coordinate)) {
-      const segment = arguments[0]; const pt = arguments[1]; const ptDist = arguments[2]
+      const segment = arguments[0], pt = arguments[1], ptDist = arguments[2]
       const closestPt = segment.closestPoint(pt)
       ptDist.setMinimum(closestPt, pt)
     }

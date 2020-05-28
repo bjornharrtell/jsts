@@ -3,22 +3,19 @@ import SegmentStringUtil from '../../noding/SegmentStringUtil'
 import Polygonal from '../Polygonal'
 import PreparedPolygonPredicate from './PreparedPolygonPredicate'
 export default class PreparedPolygonContainsProperly extends PreparedPolygonPredicate {
-  constructor () {
+  constructor() {
     super()
     PreparedPolygonContainsProperly.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     const prepPoly = arguments[0]
     PreparedPolygonPredicate.constructor_.call(this, prepPoly)
   }
-
-  static containsProperly (prep, geom) {
+  static containsProperly(prep, geom) {
     const polyInt = new PreparedPolygonContainsProperly(prep)
     return polyInt.containsProperly(geom)
   }
-
-  containsProperly (geom) {
+  containsProperly(geom) {
     const isAllInPrepGeomAreaInterior = this.isAllTestComponentsInTargetInterior(geom)
     if (!isAllInPrepGeomAreaInterior) return false
     const lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)

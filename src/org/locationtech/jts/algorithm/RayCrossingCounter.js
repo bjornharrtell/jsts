@@ -4,21 +4,19 @@ import Coordinate from '../geom/Coordinate'
 import Orientation from './Orientation'
 import CoordinateSequence from '../geom/CoordinateSequence'
 export default class RayCrossingCounter {
-  constructor () {
+  constructor() {
     RayCrossingCounter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._p = null
     this._crossingCount = 0
     this._isPointOnSegment = false
     const p = arguments[0]
     this._p = p
   }
-
-  static locatePointInRing () {
+  static locatePointInRing() {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {
-      const p = arguments[0]; const ring = arguments[1]
+      const p = arguments[0], ring = arguments[1]
       const counter = new RayCrossingCounter(p)
       const p1 = new Coordinate()
       const p2 = new Coordinate()
@@ -30,7 +28,7 @@ export default class RayCrossingCounter {
       }
       return counter.getLocation()
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Array) {
-      const p = arguments[0]; const ring = arguments[1]
+      const p = arguments[0], ring = arguments[1]
       const counter = new RayCrossingCounter(p)
       for (let i = 1; i < ring.length; i++) {
         const p1 = ring[i]
@@ -41,8 +39,7 @@ export default class RayCrossingCounter {
       return counter.getLocation()
     }
   }
-
-  countSegment (p1, p2) {
+  countSegment(p1, p2) {
     if (p1.x < this._p.x && p2.x < this._p.x) return null
     if (this._p.x === p2.x && this._p.y === p2.y) {
       this._isPointOnSegment = true
@@ -55,9 +52,9 @@ export default class RayCrossingCounter {
         minx = p2.x
         maxx = p1.x
       }
-      if (this._p.x >= minx && this._p.x <= maxx)
+      if (this._p.x >= minx && this._p.x <= maxx) 
         this._isPointOnSegment = true
-
+      
       return null
     }
     if (p1.y > this._p.y && p2.y <= this._p.y || p2.y > this._p.y && p1.y <= this._p.y) {
@@ -66,27 +63,25 @@ export default class RayCrossingCounter {
         this._isPointOnSegment = true
         return null
       }
-      if (p2.y < p1.y)
+      if (p2.y < p1.y) 
         orient = -orient
-
-      if (orient === Orientation.LEFT)
+      
+      if (orient === Orientation.LEFT) 
         this._crossingCount++
+      
     }
   }
-
-  isPointInPolygon () {
+  isPointInPolygon() {
     return this.getLocation() !== Location.EXTERIOR
   }
-
-  getLocation () {
+  getLocation() {
     if (this._isPointOnSegment) return Location.BOUNDARY
-    if (this._crossingCount % 2 === 1)
+    if (this._crossingCount % 2 === 1) 
       return Location.INTERIOR
-
+    
     return Location.EXTERIOR
   }
-
-  isOnSegment () {
+  isOnSegment() {
     return this._isPointOnSegment
   }
 }

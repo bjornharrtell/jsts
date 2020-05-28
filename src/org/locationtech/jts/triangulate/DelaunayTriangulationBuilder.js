@@ -10,48 +10,42 @@ import CoordinateArrays from '../geom/CoordinateArrays'
 import ArrayList from '../../../../java/util/ArrayList'
 import Envelope from '../geom/Envelope'
 export default class DelaunayTriangulationBuilder {
-  constructor () {
+  constructor() {
     DelaunayTriangulationBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._siteCoords = null
     this._tolerance = 0.0
     this._subdiv = null
   }
-
-  static extractUniqueCoordinates (geom) {
+  static extractUniqueCoordinates(geom) {
     if (geom === null) return new CoordinateList()
     const coords = geom.getCoordinates()
     return DelaunayTriangulationBuilder.unique(coords)
   }
-
-  static envelope (coords) {
+  static envelope(coords) {
     const env = new Envelope()
-    for (let i = coords.iterator(); i.hasNext();) {
+    for (let i = coords.iterator(); i.hasNext(); ) {
       const coord = i.next()
       env.expandToInclude(coord)
     }
     return env
   }
-
-  static unique (coords) {
+  static unique(coords) {
     const coordsCopy = CoordinateArrays.copyDeep(coords)
     Arrays.sort(coordsCopy)
     const coordList = new CoordinateList(coordsCopy, false)
     return coordList
   }
-
-  static toVertices (coords) {
+  static toVertices(coords) {
     const verts = new ArrayList()
-    for (let i = coords.iterator(); i.hasNext();) {
+    for (let i = coords.iterator(); i.hasNext(); ) {
       const coord = i.next()
       verts.add(new Vertex(coord))
     }
     return verts
   }
-
-  create () {
+  create() {
     if (this._subdiv !== null) return null
     const siteEnv = DelaunayTriangulationBuilder.envelope(this._siteCoords)
     const vertices = DelaunayTriangulationBuilder.toVertices(this._siteCoords)
@@ -59,12 +53,10 @@ export default class DelaunayTriangulationBuilder {
     const triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
-
-  setTolerance (tolerance) {
+  setTolerance(tolerance) {
     this._tolerance = tolerance
   }
-
-  setSites () {
+  setSites() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
       this._siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom)
@@ -73,18 +65,15 @@ export default class DelaunayTriangulationBuilder {
       this._siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords))
     }
   }
-
-  getEdges (geomFact) {
+  getEdges(geomFact) {
     this.create()
     return this._subdiv.getEdges(geomFact)
   }
-
-  getSubdivision () {
+  getSubdivision() {
     this.create()
     return this._subdiv
   }
-
-  getTriangles (geomFact) {
+  getTriangles(geomFact) {
     this.create()
     return this._subdiv.getTriangles(geomFact)
   }

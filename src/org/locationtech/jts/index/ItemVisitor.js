@@ -1,3 +1,3 @@
 export default class ItemVisitor {
-  visitItem (item) {}
+  visitItem(item) {}
 }

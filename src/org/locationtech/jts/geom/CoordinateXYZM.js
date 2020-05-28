@@ -1,12 +1,11 @@
 import Coordinate from './Coordinate'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class CoordinateXYZM extends Coordinate {
-  constructor () {
+  constructor() {
     super()
     CoordinateXYZM.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._m = null
     if (arguments.length === 0) {
       Coordinate.constructor_.call(this)
@@ -22,17 +21,15 @@ export default class CoordinateXYZM extends Coordinate {
         this._m = this.getM()
       }
     } else if (arguments.length === 4) {
-      const x = arguments[0]; const y = arguments[1]; const z = arguments[2]; const m = arguments[3]
+      const x = arguments[0], y = arguments[1], z = arguments[2], m = arguments[3]
       Coordinate.constructor_.call(this, x, y, z)
       this._m = m
     }
   }
-
-  getM () {
+  getM() {
     return this._m
   }
-
-  setOrdinate (ordinateIndex, value) {
+  setOrdinate(ordinateIndex, value) {
     switch (ordinateIndex) {
     case Coordinate.X:
       this.x = value
@@ -50,12 +47,10 @@ export default class CoordinateXYZM extends Coordinate {
       throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
-
-  setM (m) {
+  setM(m) {
     this._m = m
   }
-
-  getOrdinate (ordinateIndex) {
+  getOrdinate(ordinateIndex) {
     switch (ordinateIndex) {
     case Coordinate.X:
       return this.x
@@ -68,16 +63,13 @@ export default class CoordinateXYZM extends Coordinate {
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
-
-  copy () {
+  copy() {
     return new CoordinateXYZM(this)
   }
-
-  toString () {
+  toString() {
     return '(' + this.x + ', ' + this.y + ', ' + this.getZ() + ' m=' + this.getM() + ')'
   }
-
-  setCoordinate (other) {
+  setCoordinate(other) {
     this.x = other.x
     this.y = other.y
     this.z = other.getZ()

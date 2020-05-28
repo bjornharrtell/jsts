@@ -5,24 +5,21 @@ import ShortCircuitedGeometryVisitor from '../../geom/util/ShortCircuitedGeometr
 import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator'
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter'
 export default class RectangleIntersects {
-  constructor () {
+  constructor() {
     RectangleIntersects.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._rectangle = null
     this._rectEnv = null
     const rectangle = arguments[0]
     this._rectangle = rectangle
     this._rectEnv = rectangle.getEnvelopeInternal()
   }
-
-  static intersects (rectangle, b) {
+  static intersects(rectangle, b) {
     const rp = new RectangleIntersects(rectangle)
     return rp.intersects(b)
   }
-
-  intersects (geom) {
+  intersects(geom) {
     if (!this._rectEnv.intersects(geom.getEnvelopeInternal())) return false
     const visitor = new EnvelopeIntersectsVisitor(this._rectEnv)
     visitor.applyTo(geom)
@@ -37,27 +34,24 @@ export default class RectangleIntersects {
   }
 }
 class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
-  constructor () {
+  constructor() {
     super()
     EnvelopeIntersectsVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._rectEnv = null
     this._intersects = false
     const rectEnv = arguments[0]
     this._rectEnv = rectEnv
   }
-
-  isDone () {
+  isDone() {
     return this._intersects === true
   }
-
-  visit (element) {
+  visit(element) {
     const elementEnv = element.getEnvelopeInternal()
-    if (!this._rectEnv.intersects(elementEnv))
+    if (!this._rectEnv.intersects(elementEnv)) 
       return null
-
+    
     if (this._rectEnv.contains(elementEnv)) {
       this._intersects = true
       return null
@@ -71,18 +65,16 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
       return null
     }
   }
-
-  intersects () {
+  intersects() {
     return this._intersects
   }
 }
 class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
-  constructor () {
+  constructor() {
     super()
     GeometryContainsPointVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._rectSeq = null
     this._rectEnv = null
     this._containsPoint = false
@@ -90,12 +82,10 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
     this._rectSeq = rectangle.getExteriorRing().getCoordinateSequence()
     this._rectEnv = rectangle.getEnvelopeInternal()
   }
-
-  isDone () {
+  isDone() {
     return this._containsPoint === true
   }
-
-  visit (geom) {
+  visit(geom) {
     if (!(geom instanceof Polygon)) return null
     const elementEnv = geom.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) return null
@@ -109,18 +99,16 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
       }
     }
   }
-
-  containsPoint () {
+  containsPoint() {
     return this._containsPoint
   }
 }
 class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
-  constructor () {
+  constructor() {
     super()
     RectangleIntersectsSegmentVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._rectEnv = null
     this._rectIntersector = null
     this._hasIntersection = false
@@ -130,31 +118,26 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
     this._rectEnv = rectangle.getEnvelopeInternal()
     this._rectIntersector = new RectangleLineIntersector(this._rectEnv)
   }
-
-  intersects () {
+  intersects() {
     return this._hasIntersection
   }
-
-  isDone () {
+  isDone() {
     return this._hasIntersection === true
   }
-
-  visit (geom) {
+  visit(geom) {
     const elementEnv = geom.getEnvelopeInternal()
     if (!this._rectEnv.intersects(elementEnv)) return null
     const lines = LinearComponentExtracter.getLines(geom)
     this.checkIntersectionWithLineStrings(lines)
   }
-
-  checkIntersectionWithLineStrings (lines) {
-    for (let i = lines.iterator(); i.hasNext();) {
+  checkIntersectionWithLineStrings(lines) {
+    for (let i = lines.iterator(); i.hasNext(); ) {
       const testLine = i.next()
       this.checkIntersectionWithSegments(testLine)
       if (this._hasIntersection) return null
     }
   }
-
-  checkIntersectionWithSegments (testLine) {
+  checkIntersectionWithSegments(testLine) {
     const seq1 = testLine.getCoordinateSequence()
     for (let j = 1; j < seq1.size(); j++) {
       seq1.getCoordinate(j - 1, this._p0)

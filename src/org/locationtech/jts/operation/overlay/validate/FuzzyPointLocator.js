@@ -6,23 +6,21 @@ import LineSegment from '../../../geom/LineSegment'
 import ArrayList from '../../../../../../java/util/ArrayList'
 import GeometryFilter from '../../../geom/GeometryFilter'
 export default class FuzzyPointLocator {
-  constructor () {
+  constructor() {
     FuzzyPointLocator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._g = null
     this._boundaryDistanceTolerance = null
     this._linework = null
     this._ptLocator = new PointLocator()
     this._seg = new LineSegment()
-    const g = arguments[0]; const boundaryDistanceTolerance = arguments[1]
+    const g = arguments[0], boundaryDistanceTolerance = arguments[1]
     this._g = g
     this._boundaryDistanceTolerance = boundaryDistanceTolerance
     this._linework = this.extractLinework(g)
   }
-
-  isWithinToleranceOfBoundary (pt) {
+  isWithinToleranceOfBoundary(pt) {
     for (let i = 0; i < this._linework.getNumGeometries(); i++) {
       const line = this._linework.getGeometryN(i)
       const seq = line.getCoordinateSequence()
@@ -35,13 +33,11 @@ export default class FuzzyPointLocator {
     }
     return false
   }
-
-  getLocation (pt) {
+  getLocation(pt) {
     if (this.isWithinToleranceOfBoundary(pt)) return Location.BOUNDARY
     return this._ptLocator.locate(pt, this._g)
   }
-
-  extractLinework (g) {
+  extractLinework(g) {
     const extracter = new PolygonalLineworkExtracter()
     g.apply(extracter)
     const linework = extracter.getLinework()
@@ -50,29 +46,26 @@ export default class FuzzyPointLocator {
   }
 }
 class PolygonalLineworkExtracter {
-  constructor () {
+  constructor() {
     PolygonalLineworkExtracter.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._linework = null
     this._linework = new ArrayList()
   }
-
-  getLinework () {
+  getLinework() {
     return this._linework
   }
-
-  filter (g) {
+  filter(g) {
     if (g instanceof Polygon) {
       const poly = g
       this._linework.add(poly.getExteriorRing())
-      for (let i = 0; i < poly.getNumInteriorRing(); i++)
+      for (let i = 0; i < poly.getNumInteriorRing(); i++) 
         this._linework.add(poly.getInteriorRingN(i))
+      
     }
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [GeometryFilter]
   }
 }

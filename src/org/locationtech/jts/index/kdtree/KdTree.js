@@ -6,11 +6,10 @@ import Envelope from '../../geom/Envelope'
 import List from '../../../../../java/util/List'
 import KdNode from './KdNode'
 export default class KdTree {
-  constructor () {
+  constructor() {
     KdTree.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._root = null
     this._numberOfNodes = null
     this._tolerance = null
@@ -21,30 +20,29 @@ export default class KdTree {
       this._tolerance = tolerance
     }
   }
-
-  static toCoordinates () {
+  static toCoordinates() {
     if (arguments.length === 1) {
       const kdnodes = arguments[0]
       return KdTree.toCoordinates(kdnodes, false)
     } else if (arguments.length === 2) {
-      const kdnodes = arguments[0]; const includeRepeated = arguments[1]
+      const kdnodes = arguments[0], includeRepeated = arguments[1]
       const coord = new CoordinateList()
-      for (let it = kdnodes.iterator(); it.hasNext();) {
+      for (let it = kdnodes.iterator(); it.hasNext(); ) {
         const node = it.next()
         const count = includeRepeated ? node.getCount() : 1
-        for (let i = 0; i < count; i++)
+        for (let i = 0; i < count; i++) 
           coord.add(node.getCoordinate(), true)
+        
       }
       return coord.toCoordinateArray()
     }
   }
-
-  insert () {
+  insert() {
     if (arguments.length === 1) {
       const p = arguments[0]
       return this.insert(p, null)
     } else if (arguments.length === 2) {
-      const p = arguments[0]; const data = arguments[1]
+      const p = arguments[0], data = arguments[1]
       if (this._root === null) {
         this._root = new KdNode(p, data)
         return this._root
@@ -59,8 +57,7 @@ export default class KdTree {
       return this.insertExact(p, data)
     }
   }
-
-  query () {
+  query() {
     if (arguments.length === 1) {
       const queryEnv = arguments[0]
       const result = new ArrayList()
@@ -68,24 +65,22 @@ export default class KdTree {
       return result
     } else if (arguments.length === 2) {
       if (arguments[0] instanceof Envelope && hasInterface(arguments[1], List)) {
-        const queryEnv = arguments[0]; const result = arguments[1]
+        const queryEnv = arguments[0], result = arguments[1]
         this.queryNode(this._root, queryEnv, true, new (class {
-          get interfaces_ () {
+          get interfaces_() {
             return [KdNodeVisitor]
           }
-
-          visit (node) {
+          visit(node) {
             result.add(node)
           }
         })())
       } else if (arguments[0] instanceof Envelope && hasInterface(arguments[1], KdNodeVisitor)) {
-        const queryEnv = arguments[0]; const visitor = arguments[1]
+        const queryEnv = arguments[0], visitor = arguments[1]
         this.queryNode(this._root, queryEnv, true, visitor)
       }
     }
   }
-
-  queryNode (currentNode, queryEnv, odd, visitor) {
+  queryNode(currentNode, queryEnv, odd, visitor) {
     if (currentNode === null) return null
     let min = null
     let max = null
@@ -101,28 +96,26 @@ export default class KdTree {
     }
     const searchLeft = min < discriminant
     const searchRight = discriminant <= max
-    if (searchLeft)
+    if (searchLeft) 
       this.queryNode(currentNode.getLeft(), queryEnv, !odd, visitor)
-
-    if (queryEnv.contains(currentNode.getCoordinate()))
+    
+    if (queryEnv.contains(currentNode.getCoordinate())) 
       visitor.visit(currentNode)
-
-    if (searchRight)
+    
+    if (searchRight) 
       this.queryNode(currentNode.getRight(), queryEnv, !odd, visitor)
+    
   }
-
-  findBestMatchNode (p) {
+  findBestMatchNode(p) {
     const visitor = new BestMatchVisitor(p, this._tolerance)
     this.query(visitor.queryEnvelope(), visitor)
     return visitor.getNode()
   }
-
-  isEmpty () {
+  isEmpty() {
     if (this._root === null) return true
     return false
   }
-
-  insertExact (p, data) {
+  insertExact(p, data) {
     let currentNode = this._root
     let leafNode = this._root
     let isOddLevel = true
@@ -135,45 +128,43 @@ export default class KdTree {
           return currentNode
         }
       }
-      if (isOddLevel)
+      if (isOddLevel) 
         isLessThan = p.x < currentNode.getX()
-      else
+      else 
         isLessThan = p.y < currentNode.getY()
-
+      
       leafNode = currentNode
-      if (isLessThan)
+      if (isLessThan) 
         currentNode = currentNode.getLeft()
-      else
+      else 
         currentNode = currentNode.getRight()
-
+      
       isOddLevel = !isOddLevel
     }
     this._numberOfNodes = this._numberOfNodes + 1
     const node = new KdNode(p, data)
-    if (isLessThan)
+    if (isLessThan) 
       leafNode.setLeft(node)
-    else
+    else 
       leafNode.setRight(node)
-
+    
     return node
   }
 }
 class BestMatchVisitor {
-  constructor () {
+  constructor() {
     BestMatchVisitor.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._tolerance = null
     this._matchNode = null
     this._matchDist = 0.0
     this._p = null
-    const p = arguments[0]; const tolerance = arguments[1]
+    const p = arguments[0], tolerance = arguments[1]
     this._p = p
     this._tolerance = tolerance
   }
-
-  visit (node) {
+  visit(node) {
     const dist = this._p.distance(node.getCoordinate())
     const isInTolerance = dist <= this._tolerance
     if (!isInTolerance) return null
@@ -184,18 +175,15 @@ class BestMatchVisitor {
       this._matchDist = dist
     }
   }
-
-  queryEnvelope () {
+  queryEnvelope() {
     const queryEnv = new Envelope(this._p)
     queryEnv.expandBy(this._tolerance)
     return queryEnv
   }
-
-  getNode () {
+  getNode() {
     return this._matchNode
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [KdNodeVisitor]
   }
 }

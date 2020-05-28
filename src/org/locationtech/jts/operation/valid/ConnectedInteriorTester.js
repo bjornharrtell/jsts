@@ -9,26 +9,23 @@ import ArrayList from '../../../../../java/util/ArrayList'
 import Assert from '../../util/Assert'
 import PlanarGraph from '../../geomgraph/PlanarGraph'
 export default class ConnectedInteriorTester {
-  constructor () {
+  constructor() {
     ConnectedInteriorTester.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._geometryFactory = new GeometryFactory()
     this._geomGraph = null
     this._disconnectedRingcoord = null
     const geomGraph = arguments[0]
     this._geomGraph = geomGraph
   }
-
-  static findDifferentPoint (coord, pt) {
-    for (let i = 0; i < coord.length; i++)
+  static findDifferentPoint(coord, pt) {
+    for (let i = 0; i < coord.length; i++) 
       if (!coord[i].equals(pt)) return coord[i]
-
+    
     return null
   }
-
-  visitInteriorRing (ring, graph) {
+  visitInteriorRing(ring, graph) {
     if (ring.isEmpty()) return null
     const pts = ring.getCoordinates()
     const pt0 = pts[0]
@@ -36,16 +33,15 @@ export default class ConnectedInteriorTester {
     const e = graph.findEdgeInSameDirection(pt0, pt1)
     const de = graph.findEdgeEnd(e)
     let intDe = null
-    if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR)
+    if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) 
       intDe = de
-    else if (de.getSym().getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR)
+    else if (de.getSym().getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) 
       intDe = de.getSym()
-
+    
     Assert.isTrue(intDe !== null, 'unable to find dirEdge with Interior on RHS')
     this.visitLinkedDirectedEdges(intDe)
   }
-
-  visitShellInteriors (g, graph) {
+  visitShellInteriors(g, graph) {
     if (g instanceof Polygon) {
       const p = g
       this.visitInteriorRing(p.getExteriorRing(), graph)
@@ -58,20 +54,18 @@ export default class ConnectedInteriorTester {
       }
     }
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._disconnectedRingcoord
   }
-
-  setInteriorEdgesInResult (graph) {
-    for (let it = graph.getEdgeEnds().iterator(); it.hasNext();) {
+  setInteriorEdgesInResult(graph) {
+    for (let it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
       const de = it.next()
-      if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR)
+      if (de.getLabel().getLocation(0, Position.RIGHT) === Location.INTERIOR) 
         de.setInResult(true)
+      
     }
   }
-
-  visitLinkedDirectedEdges (start) {
+  visitLinkedDirectedEdges(start) {
     const startDe = start
     let de = start
     do {
@@ -80,10 +74,9 @@ export default class ConnectedInteriorTester {
       de = de.getNext()
     } while (de !== startDe)
   }
-
-  buildEdgeRings (dirEdges) {
+  buildEdgeRings(dirEdges) {
     const edgeRings = new ArrayList()
-    for (let it = dirEdges.iterator(); it.hasNext();) {
+    for (let it = dirEdges.iterator(); it.hasNext(); ) {
       const de = it.next()
       if (de.isInResult() && de.getEdgeRing() === null) {
         const er = new MaximalEdgeRing(de, this._geometryFactory)
@@ -94,8 +87,7 @@ export default class ConnectedInteriorTester {
     }
     return edgeRings
   }
-
-  hasUnvisitedShellEdge (edgeRings) {
+  hasUnvisitedShellEdge(edgeRings) {
     for (let i = 0; i < edgeRings.size(); i++) {
       const er = edgeRings.get(i)
       if (er.isHole()) continue
@@ -112,8 +104,7 @@ export default class ConnectedInteriorTester {
     }
     return false
   }
-
-  isInteriorsConnected () {
+  isInteriorsConnected() {
     const splitEdges = new ArrayList()
     this._geomGraph.computeSplitEdges(splitEdges)
     const graph = new PlanarGraph(new OverlayNodeFactory())

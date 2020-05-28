@@ -3,11 +3,10 @@ import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentEx
 import Envelope from '../../geom/Envelope'
 import Assert from '../../util/Assert'
 export default class HotPixel {
-  constructor () {
+  constructor() {
     HotPixel.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._li = null
     this._pt = null
     this._originalPt = null
@@ -21,7 +20,7 @@ export default class HotPixel {
     this._maxy = null
     this._corner = new Array(4).fill(null)
     this._safeEnv = null
-    const pt = arguments[0]; const scaleFactor = arguments[1]; const li = arguments[2]
+    const pt = arguments[0], scaleFactor = arguments[1], li = arguments[2]
     this._originalPt = pt
     this._pt = pt
     this._scaleFactor = scaleFactor
@@ -34,8 +33,7 @@ export default class HotPixel {
     }
     this.initCorners(this._pt)
   }
-
-  intersectsScaled (p0, p1) {
+  intersectsScaled(p0, p1) {
     const segMinx = Math.min(p0.x, p1.x)
     const segMaxx = Math.max(p0.x, p1.x)
     const segMiny = Math.min(p0.y, p1.y)
@@ -46,8 +44,7 @@ export default class HotPixel {
     Assert.isTrue(!(isOutsidePixelEnv && intersects), 'Found bad envelope test')
     return intersects
   }
-
-  initCorners (pt) {
+  initCorners(pt) {
     const tolerance = 0.5
     this._minx = pt.x - tolerance
     this._maxx = pt.x + tolerance
@@ -58,36 +55,30 @@ export default class HotPixel {
     this._corner[2] = new Coordinate(this._minx, this._miny)
     this._corner[3] = new Coordinate(this._maxx, this._miny)
   }
-
-  intersects (p0, p1) {
+  intersects(p0, p1) {
     if (this._scaleFactor === 1.0) return this.intersectsScaled(p0, p1)
     this.copyScaled(p0, this._p0Scaled)
     this.copyScaled(p1, this._p1Scaled)
     return this.intersectsScaled(this._p0Scaled, this._p1Scaled)
   }
-
-  scale (val) {
+  scale(val) {
     return Math.round(val * this._scaleFactor)
   }
-
-  getCoordinate () {
+  getCoordinate() {
     return this._originalPt
   }
-
-  copyScaled (p, pScaled) {
+  copyScaled(p, pScaled) {
     pScaled.x = this.scale(p.x)
     pScaled.y = this.scale(p.y)
   }
-
-  getSafeEnvelope () {
+  getSafeEnvelope() {
     if (this._safeEnv === null) {
       const safeTolerance = HotPixel.SAFE_ENV_EXPANSION_FACTOR / this._scaleFactor
       this._safeEnv = new Envelope(this._originalPt.x - safeTolerance, this._originalPt.x + safeTolerance, this._originalPt.y - safeTolerance, this._originalPt.y + safeTolerance)
     }
     return this._safeEnv
   }
-
-  intersectsPixelClosure (p0, p1) {
+  intersectsPixelClosure(p0, p1) {
     this._li.computeIntersection(p0, p1, this._corner[0], this._corner[1])
     if (this._li.hasIntersection()) return true
     this._li.computeIntersection(p0, p1, this._corner[1], this._corner[2])
@@ -98,8 +89,7 @@ export default class HotPixel {
     if (this._li.hasIntersection()) return true
     return false
   }
-
-  intersectsToleranceSquare (p0, p1) {
+  intersectsToleranceSquare(p0, p1) {
     let intersectsLeft = false
     let intersectsBottom = false
     this._li.computeIntersection(p0, p1, this._corner[0], this._corner[1])
@@ -117,8 +107,7 @@ export default class HotPixel {
     if (p1.equals(this._pt)) return true
     return false
   }
-
-  addSnappedNode (segStr, segIndex) {
+  addSnappedNode(segStr, segIndex) {
     const p0 = segStr.getCoordinate(segIndex)
     const p1 = segStr.getCoordinate(segIndex + 1)
     if (this.intersects(p0, p1)) {

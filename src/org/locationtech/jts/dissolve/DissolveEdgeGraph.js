@@ -1,11 +1,10 @@
 import EdgeGraph from '../edgegraph/EdgeGraph'
 import DissolveHalfEdge from './DissolveHalfEdge'
 export default class DissolveEdgeGraph extends EdgeGraph {
-  constructor () {
+  constructor() {
     super()
   }
-
-  createEdge (p0) {
+  createEdge(p0) {
     return new DissolveHalfEdge(p0)
   }
 }

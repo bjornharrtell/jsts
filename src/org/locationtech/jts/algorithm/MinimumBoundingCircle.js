@@ -5,11 +5,10 @@ import Angle from './Angle'
 import Assert from '../util/Assert'
 import Triangle from '../geom/Triangle'
 export default class MinimumBoundingCircle {
-  constructor () {
+  constructor() {
     MinimumBoundingCircle.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._input = null
     this._extremalPts = null
     this._centre = null
@@ -17,21 +16,19 @@ export default class MinimumBoundingCircle {
     const geom = arguments[0]
     this._input = geom
   }
-
-  static farthestPoints (pts) {
+  static farthestPoints(pts) {
     const dist01 = pts[0].distance(pts[1])
     const dist12 = pts[1].distance(pts[2])
     const dist20 = pts[2].distance(pts[0])
-    if (dist01 >= dist12 && dist01 >= dist20)
+    if (dist01 >= dist12 && dist01 >= dist20) 
       return [pts[0], pts[1]]
-
-    if (dist12 >= dist01 && dist12 >= dist20)
+    
+    if (dist12 >= dist01 && dist12 >= dist20) 
       return [pts[1], pts[2]]
-
+    
     return [pts[2], pts[0]]
   }
-
-  static pointWitMinAngleWithX (pts, P) {
+  static pointWitMinAngleWithX(pts, P) {
     let minSin = Double.MAX_VALUE
     let minAngPt = null
     for (let i = 0; i < pts.length; i++) {
@@ -49,16 +46,14 @@ export default class MinimumBoundingCircle {
     }
     return minAngPt
   }
-
-  static lowestPoint (pts) {
+  static lowestPoint(pts) {
     let min = pts[0]
-    for (let i = 1; i < pts.length; i++)
+    for (let i = 1; i < pts.length; i++) 
       if (pts[i].y < min.y) min = pts[i]
-
+    
     return min
   }
-
-  static pointWithMinAngleWithSegment (pts, P, Q) {
+  static pointWithMinAngleWithSegment(pts, P, Q) {
     let minAng = Double.MAX_VALUE
     let minAngPt = null
     for (let i = 0; i < pts.length; i++) {
@@ -73,13 +68,11 @@ export default class MinimumBoundingCircle {
     }
     return minAngPt
   }
-
-  getRadius () {
+  getRadius() {
     this.compute()
     return this._radius
   }
-
-  getDiameter () {
+  getDiameter() {
     this.compute()
     switch (this._extremalPts.length) {
     case 0:
@@ -91,13 +84,11 @@ export default class MinimumBoundingCircle {
     const p1 = this._extremalPts[1]
     return this._input.getFactory().createLineString([p0, p1])
   }
-
-  getExtremalPoints () {
+  getExtremalPoints() {
     this.compute()
     return this._extremalPts
   }
-
-  computeCirclePoints () {
+  computeCirclePoints() {
     if (this._input.isEmpty()) {
       this._extremalPts = new Array(0).fill(null)
       return null
@@ -139,28 +130,24 @@ export default class MinimumBoundingCircle {
     }
     Assert.shouldNeverReachHere('Logic failure in Minimum Bounding Circle algorithm!')
   }
-
-  compute () {
+  compute() {
     if (this._extremalPts !== null) return null
     this.computeCirclePoints()
     this.computeCentre()
     if (this._centre !== null) this._radius = this._centre.distance(this._extremalPts[0])
   }
-
-  getCircle () {
+  getCircle() {
     this.compute()
     if (this._centre === null) return this._input.getFactory().createPolygon()
     const centrePoint = this._input.getFactory().createPoint(this._centre)
     if (this._radius === 0.0) return centrePoint
     return centrePoint.buffer(this._radius)
   }
-
-  getCentre () {
+  getCentre() {
     this.compute()
     return this._centre
   }
-
-  getMaximumDiameter () {
+  getMaximumDiameter() {
     this.compute()
     switch (this._extremalPts.length) {
     case 0:
@@ -174,8 +161,7 @@ export default class MinimumBoundingCircle {
       return this._input.getFactory().createLineString(maxDiameter)
     }
   }
-
-  computeCentre () {
+  computeCentre() {
     switch (this._extremalPts.length) {
     case 0:
       this._centre = null

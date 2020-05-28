@@ -17,11 +17,10 @@ import Serializable from '../../../../java/io/Serializable'
 import Assert from '../util/Assert'
 import MultiLineString from './MultiLineString'
 export default class GeometryFactory {
-  constructor () {
+  constructor() {
     GeometryFactory.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._precisionModel = null
     this._coordinateSequenceFactory = null
     this._SRID = null
@@ -36,67 +35,56 @@ export default class GeometryFactory {
         GeometryFactory.constructor_.call(this, precisionModel, 0, GeometryFactory.getDefaultCoordinateSequenceFactory())
       }
     } else if (arguments.length === 2) {
-      const precisionModel = arguments[0]; const SRID = arguments[1]
+      const precisionModel = arguments[0], SRID = arguments[1]
       GeometryFactory.constructor_.call(this, precisionModel, SRID, GeometryFactory.getDefaultCoordinateSequenceFactory())
     } else if (arguments.length === 3) {
-      const precisionModel = arguments[0]; const SRID = arguments[1]; const coordinateSequenceFactory = arguments[2]
+      const precisionModel = arguments[0], SRID = arguments[1], coordinateSequenceFactory = arguments[2]
       this._precisionModel = precisionModel
       this._coordinateSequenceFactory = coordinateSequenceFactory
       this._SRID = SRID
     }
   }
-
-  static toMultiPolygonArray (multiPolygons) {
+  static toMultiPolygonArray(multiPolygons) {
     const multiPolygonArray = new Array(multiPolygons.size()).fill(null)
     return multiPolygons.toArray(multiPolygonArray)
   }
-
-  static toGeometryArray (geometries) {
+  static toGeometryArray(geometries) {
     if (geometries === null) return null
     const geometryArray = new Array(geometries.size()).fill(null)
     return geometries.toArray(geometryArray)
   }
-
-  static getDefaultCoordinateSequenceFactory () {
+  static getDefaultCoordinateSequenceFactory() {
     return CoordinateArraySequenceFactory.instance()
   }
-
-  static toMultiLineStringArray (multiLineStrings) {
+  static toMultiLineStringArray(multiLineStrings) {
     const multiLineStringArray = new Array(multiLineStrings.size()).fill(null)
     return multiLineStrings.toArray(multiLineStringArray)
   }
-
-  static toLineStringArray (lineStrings) {
+  static toLineStringArray(lineStrings) {
     const lineStringArray = new Array(lineStrings.size()).fill(null)
     return lineStrings.toArray(lineStringArray)
   }
-
-  static toMultiPointArray (multiPoints) {
+  static toMultiPointArray(multiPoints) {
     const multiPointArray = new Array(multiPoints.size()).fill(null)
     return multiPoints.toArray(multiPointArray)
   }
-
-  static toLinearRingArray (linearRings) {
+  static toLinearRingArray(linearRings) {
     const linearRingArray = new Array(linearRings.size()).fill(null)
     return linearRings.toArray(linearRingArray)
   }
-
-  static toPointArray (points) {
+  static toPointArray(points) {
     const pointArray = new Array(points.size()).fill(null)
     return points.toArray(pointArray)
   }
-
-  static toPolygonArray (polygons) {
+  static toPolygonArray(polygons) {
     const polygonArray = new Array(polygons.size()).fill(null)
     return polygons.toArray(polygonArray)
   }
-
-  static createPointFromInternalCoord (coord, exemplar) {
+  static createPointFromInternalCoord(coord, exemplar) {
     exemplar.getPrecisionModel().makePrecise(coord)
     return exemplar.getFactory().createPoint(coord)
   }
-
-  createEmpty (dimension) {
+  createEmpty(dimension) {
     switch (dimension) {
     case -1:
       return this.createGeometryCollection()
@@ -110,24 +98,22 @@ export default class GeometryFactory {
       throw new IllegalArgumentException('Invalid dimension: ' + dimension)
     }
   }
-
-  toGeometry (envelope) {
-    if (envelope.isNull())
+  toGeometry(envelope) {
+    if (envelope.isNull()) 
       return this.createPoint()
-
-    if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY())
+    
+    if (envelope.getMinX() === envelope.getMaxX() && envelope.getMinY() === envelope.getMaxY()) 
       return this.createPoint(new Coordinate(envelope.getMinX(), envelope.getMinY()))
-
-    if (envelope.getMinX() === envelope.getMaxX() || envelope.getMinY() === envelope.getMaxY())
+    
+    if (envelope.getMinX() === envelope.getMaxX() || envelope.getMinY() === envelope.getMaxY()) 
       return this.createLineString([new Coordinate(envelope.getMinX(), envelope.getMinY()), new Coordinate(envelope.getMaxX(), envelope.getMaxY())])
-
+    
     return this.createPolygon(this.createLinearRing([new Coordinate(envelope.getMinX(), envelope.getMinY()), new Coordinate(envelope.getMinX(), envelope.getMaxY()), new Coordinate(envelope.getMaxX(), envelope.getMaxY()), new Coordinate(envelope.getMaxX(), envelope.getMinY()), new Coordinate(envelope.getMinX(), envelope.getMinY())]), null)
   }
-
-  createLineString () {
-    if (arguments.length === 0)
+  createLineString() {
+    if (arguments.length === 0) 
       return this.createLineString(this.getCoordinateSequenceFactory().create([]))
-    else if (arguments.length === 1)
+    else if (arguments.length === 1) 
       if (arguments[0] instanceof Array) {
         const coordinates = arguments[0]
         return this.createLineString(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
@@ -135,9 +121,9 @@ export default class GeometryFactory {
         const coordinates = arguments[0]
         return new LineString(coordinates, this)
       }
+    
   }
-
-  createMultiLineString () {
+  createMultiLineString() {
     if (arguments.length === 0) {
       return new MultiLineString(null, this)
     } else if (arguments.length === 1) {
@@ -145,51 +131,48 @@ export default class GeometryFactory {
       return new MultiLineString(lineStrings, this)
     }
   }
-
-  buildGeometry (geomList) {
+  buildGeometry(geomList) {
     let geomType = null
     let isHeterogeneous = false
     let hasGeometryCollection = false
-    for (let i = geomList.iterator(); i.hasNext();) {
+    for (let i = geomList.iterator(); i.hasNext(); ) {
       const geom = i.next()
       const partType = geom.getTypeCode()
-      if (geomType === null)
+      if (geomType === null) 
         geomType = partType
-
-      if (partType !== geomType)
+      
+      if (partType !== geomType) 
         isHeterogeneous = true
-
+      
       if (geom instanceof GeometryCollection) hasGeometryCollection = true
     }
-    if (geomType === null)
+    if (geomType === null) 
       return this.createGeometryCollection()
-
-    if (isHeterogeneous || hasGeometryCollection)
+    
+    if (isHeterogeneous || hasGeometryCollection) 
       return this.createGeometryCollection(GeometryFactory.toGeometryArray(geomList))
-
+    
     const geom0 = geomList.iterator().next()
     const isCollection = geomList.size() > 1
     if (isCollection) {
-      if (geom0 instanceof Polygon)
+      if (geom0 instanceof Polygon) 
         return this.createMultiPolygon(GeometryFactory.toPolygonArray(geomList))
-      else if (geom0 instanceof LineString)
+      else if (geom0 instanceof LineString) 
         return this.createMultiLineString(GeometryFactory.toLineStringArray(geomList))
-      else if (geom0 instanceof Point)
+      else if (geom0 instanceof Point) 
         return this.createMultiPoint(GeometryFactory.toPointArray(geomList))
-
+      
       Assert.shouldNeverReachHere('Unhandled geometry type: ' + geom0.getGeometryType())
     }
     return geom0
   }
-
-  createMultiPointFromCoords (coordinates) {
+  createMultiPointFromCoords(coordinates) {
     return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
   }
-
-  createPoint () {
-    if (arguments.length === 0)
+  createPoint() {
+    if (arguments.length === 0) 
       return this.createPoint(this.getCoordinateSequenceFactory().create([]))
-    else if (arguments.length === 1)
+    else if (arguments.length === 1) 
       if (arguments[0] instanceof Coordinate) {
         const coordinate = arguments[0]
         return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null)
@@ -197,13 +180,12 @@ export default class GeometryFactory {
         const coordinates = arguments[0]
         return new Point(coordinates, this)
       }
+    
   }
-
-  getCoordinateSequenceFactory () {
+  getCoordinateSequenceFactory() {
     return this._coordinateSequenceFactory
   }
-
-  createPolygon () {
+  createPolygon() {
     if (arguments.length === 0) {
       return this.createPolygon(null, null)
     } else if (arguments.length === 1) {
@@ -218,16 +200,14 @@ export default class GeometryFactory {
         return this.createPolygon(shell, null)
       }
     } else if (arguments.length === 2) {
-      const shell = arguments[0]; const holes = arguments[1]
+      const shell = arguments[0], holes = arguments[1]
       return new Polygon(shell, holes, this)
     }
   }
-
-  getSRID () {
+  getSRID() {
     return this._SRID
   }
-
-  createGeometryCollection () {
+  createGeometryCollection() {
     if (arguments.length === 0) {
       return new GeometryCollection(null, this)
     } else if (arguments.length === 1) {
@@ -235,15 +215,13 @@ export default class GeometryFactory {
       return new GeometryCollection(geometries, this)
     }
   }
-
-  getPrecisionModel () {
+  getPrecisionModel() {
     return this._precisionModel
   }
-
-  createLinearRing () {
-    if (arguments.length === 0)
+  createLinearRing() {
+    if (arguments.length === 0) 
       return this.createLinearRing(this.getCoordinateSequenceFactory().create([]))
-    else if (arguments.length === 1)
+    else if (arguments.length === 1) 
       if (arguments[0] instanceof Array) {
         const coordinates = arguments[0]
         return this.createLinearRing(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
@@ -251,9 +229,9 @@ export default class GeometryFactory {
         const coordinates = arguments[0]
         return new LinearRing(coordinates, this)
       }
+    
   }
-
-  createMultiPolygon () {
+  createMultiPolygon() {
     if (arguments.length === 0) {
       return new MultiPolygon(null, this)
     } else if (arguments.length === 1) {
@@ -261,19 +239,18 @@ export default class GeometryFactory {
       return new MultiPolygon(polygons, this)
     }
   }
-
-  createMultiPoint () {
-    if (arguments.length === 0)
+  createMultiPoint() {
+    if (arguments.length === 0) 
       return new MultiPoint(null, this)
-    else if (arguments.length === 1)
+    else if (arguments.length === 1) 
       if (arguments[0] instanceof Array) {
         const point = arguments[0]
         return new MultiPoint(point, this)
       } else if (hasInterface(arguments[0], CoordinateSequence)) {
         const coordinates = arguments[0]
-        if (coordinates === null)
+        if (coordinates === null) 
           return this.createMultiPoint(new Array(0).fill(null))
-
+        
         const points = new Array(coordinates.size()).fill(null)
         for (let i = 0; i < coordinates.size(); i++) {
           const ptSeq = this.getCoordinateSequenceFactory().create(1, coordinates.getDimension(), coordinates.getMeasures())
@@ -282,9 +259,9 @@ export default class GeometryFactory {
         }
         return this.createMultiPoint(points)
       }
+    
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Serializable]
   }
 }

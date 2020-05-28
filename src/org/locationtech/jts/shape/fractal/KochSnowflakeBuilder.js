@@ -3,28 +3,25 @@ import Coordinate from '../../geom/Coordinate'
 import Vector2D from '../../math/Vector2D'
 import GeometricShapeBuilder from '../GeometricShapeBuilder'
 export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
-  constructor () {
+  constructor() {
     super()
     KochSnowflakeBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._coordList = new CoordinateList()
     const geomFactory = arguments[0]
     GeometricShapeBuilder.constructor_.call(this, geomFactory)
   }
-
-  static recursionLevelForSize (numPts) {
+  static recursionLevelForSize(numPts) {
     const pow4 = Math.trunc(numPts / 3)
     const exp = Math.log(pow4) / Math.log(4)
     return Math.trunc(exp)
   }
-
-  getBoundary (level, origin, width) {
+  getBoundary(level, origin, width) {
     let y = origin.y
-    if (level > 0)
+    if (level > 0) 
       y += KochSnowflakeBuilder.THIRD_HEIGHT * width
-
+    
     const p0 = new Coordinate(origin.x, y)
     const p1 = new Coordinate(origin.x + width / 2, y + width * KochSnowflakeBuilder.HEIGHT_FACTOR)
     const p2 = new Coordinate(origin.x + width, y)
@@ -34,19 +31,16 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
     this._coordList.closeRing()
     return this._coordList.toCoordinateArray()
   }
-
-  getGeometry () {
+  getGeometry() {
     const level = KochSnowflakeBuilder.recursionLevelForSize(this._numPts)
     const baseLine = this.getSquareBaseLine()
     const pts = this.getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength())
     return this._geomFactory.createPolygon(this._geomFactory.createLinearRing(pts), null)
   }
-
-  addSegment (p0, p1) {
+  addSegment(p0, p1) {
     this._coordList.add(p1)
   }
-
-  addSide (level, p0, p1) {
+  addSide(level, p0, p1) {
     if (level === 0) {
       this.addSegment(p0, p1)
     } else {

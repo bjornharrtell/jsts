@@ -1,12 +1,11 @@
 import Coordinate from './Coordinate'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
 export default class CoordinateXYM extends Coordinate {
-  constructor () {
+  constructor() {
     super()
     CoordinateXYM.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._m = null
     if (arguments.length === 0) {
       Coordinate.constructor_.call(this)
@@ -22,17 +21,15 @@ export default class CoordinateXYM extends Coordinate {
         this._m = this.getM()
       }
     } else if (arguments.length === 3) {
-      const x = arguments[0]; const y = arguments[1]; const m = arguments[2]
+      const x = arguments[0], y = arguments[1], m = arguments[2]
       Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
       this._m = m
     }
   }
-
-  getM () {
+  getM() {
     return this._m
   }
-
-  setOrdinate (ordinateIndex, value) {
+  setOrdinate(ordinateIndex, value) {
     switch (ordinateIndex) {
     case CoordinateXYM.X:
       this.x = value
@@ -47,16 +44,13 @@ export default class CoordinateXYM extends Coordinate {
       throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
-
-  setM (m) {
+  setM(m) {
     this._m = m
   }
-
-  getZ () {
+  getZ() {
     return Coordinate.NULL_ORDINATE
   }
-
-  getOrdinate (ordinateIndex) {
+  getOrdinate(ordinateIndex) {
     switch (ordinateIndex) {
     case CoordinateXYM.X:
       return this.x
@@ -67,20 +61,16 @@ export default class CoordinateXYM extends Coordinate {
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
-
-  setZ (z) {
+  setZ(z) {
     throw new IllegalArgumentException('CoordinateXY dimension 2 does not support z-ordinate')
   }
-
-  copy () {
+  copy() {
     return new CoordinateXYM(this)
   }
-
-  toString () {
+  toString() {
     return '(' + this.x + ', ' + this.y + ' m=' + this.getM() + ')'
   }
-
-  setCoordinate (other) {
+  setCoordinate(other) {
     this.x = other.x
     this.y = other.y
     this.z = other.getZ()

@@ -1,3 +1,3 @@
 export default class PointOnGeometryLocator {
-  locate (p) {}
+  locate(p) {}
 }

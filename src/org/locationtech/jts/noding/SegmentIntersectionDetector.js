@@ -1,11 +1,10 @@
 import SegmentIntersector from './SegmentIntersector'
 import RobustLineIntersector from '../algorithm/RobustLineIntersector'
 export default class SegmentIntersectionDetector {
-  constructor () {
+  constructor() {
     SegmentIntersectionDetector.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._li = null
     this._findProper = false
     this._findAllTypes = false
@@ -21,24 +20,19 @@ export default class SegmentIntersectionDetector {
       this._li = li
     }
   }
-
-  getIntersectionSegments () {
+  getIntersectionSegments() {
     return this._intSegments
   }
-
-  setFindAllIntersectionTypes (findAllTypes) {
+  setFindAllIntersectionTypes(findAllTypes) {
     this._findAllTypes = findAllTypes
   }
-
-  hasProperIntersection () {
+  hasProperIntersection() {
     return this._hasProperIntersection
   }
-
-  getIntersection () {
+  getIntersection() {
     return this._intPt
   }
-
-  processIntersections (e0, segIndex0, e1, segIndex1) {
+  processIntersections(e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     const p00 = e0.getCoordinates()[segIndex0]
     const p01 = e0.getCoordinates()[segIndex0 + 1]
@@ -62,30 +56,25 @@ export default class SegmentIntersectionDetector {
       }
     }
   }
-
-  hasIntersection () {
+  hasIntersection() {
     return this._hasIntersection
   }
-
-  isDone () {
-    if (this._findAllTypes)
+  isDone() {
+    if (this._findAllTypes) 
       return this._hasProperIntersection && this._hasNonProperIntersection
-
-    if (this._findProper)
+    
+    if (this._findProper) 
       return this._hasProperIntersection
-
+    
     return this._hasIntersection
   }
-
-  hasNonProperIntersection () {
+  hasNonProperIntersection() {
     return this._hasNonProperIntersection
   }
-
-  setFindProper (findProper) {
+  setFindProper(findProper) {
     this._findProper = findProper
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [SegmentIntersector]
   }
 }

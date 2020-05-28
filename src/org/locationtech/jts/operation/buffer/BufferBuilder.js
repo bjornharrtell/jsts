@@ -17,11 +17,10 @@ import IntersectionAdder from '../../noding/IntersectionAdder'
 import Edge from '../../geomgraph/Edge'
 import PlanarGraph from '../../geomgraph/PlanarGraph'
 export default class BufferBuilder {
-  constructor () {
+  constructor() {
     BufferBuilder.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._bufParams = null
     this._workingPrecisionModel = null
     this._workingNoder = null
@@ -31,15 +30,13 @@ export default class BufferBuilder {
     const bufParams = arguments[0]
     this._bufParams = bufParams
   }
-
-  static depthDelta (label) {
+  static depthDelta(label) {
     const lLoc = label.getLocation(0, Position.LEFT)
     const rLoc = label.getLocation(0, Position.RIGHT)
     if (lLoc === Location.INTERIOR && rLoc === Location.EXTERIOR) return 1; else if (lLoc === Location.EXTERIOR && rLoc === Location.INTERIOR) return -1
     return 0
   }
-
-  static convertSegStrings (it) {
+  static convertSegStrings(it) {
     const fact = new GeometryFactory()
     const lines = new ArrayList()
     while (it.hasNext()) {
@@ -49,12 +46,10 @@ export default class BufferBuilder {
     }
     return fact.buildGeometry(lines)
   }
-
-  setWorkingPrecisionModel (pm) {
+  setWorkingPrecisionModel(pm) {
     this._workingPrecisionModel = pm
   }
-
-  insertUniqueEdge (e) {
+  insertUniqueEdge(e) {
     const existingEdge = this._edgeList.findEqualEdge(e)
     if (existingEdge !== null) {
       const existingLabel = existingEdge.getLabel()
@@ -73,10 +68,9 @@ export default class BufferBuilder {
       e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()))
     }
   }
-
-  buildSubgraphs (subgraphList, polyBuilder) {
+  buildSubgraphs(subgraphList, polyBuilder) {
     const processedGraphs = new ArrayList()
-    for (let i = subgraphList.iterator(); i.hasNext();) {
+    for (let i = subgraphList.iterator(); i.hasNext(); ) {
       const subgraph = i.next()
       const p = subgraph.getRightmostCoordinate()
       const locater = new SubgraphDepthLocater(processedGraphs)
@@ -87,10 +81,9 @@ export default class BufferBuilder {
       polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes())
     }
   }
-
-  createSubgraphs (graph) {
+  createSubgraphs(graph) {
     const subgraphList = new ArrayList()
-    for (let i = graph.getNodes().iterator(); i.hasNext();) {
+    for (let i = graph.getNodes().iterator(); i.hasNext(); ) {
       const node = i.next()
       if (!node.isVisited()) {
         const subgraph = new BufferSubgraph()
@@ -101,13 +94,11 @@ export default class BufferBuilder {
     Collections.sort(subgraphList, Collections.reverseOrder())
     return subgraphList
   }
-
-  createEmptyResultGeometry () {
+  createEmptyResultGeometry() {
     const emptyGeom = this._geomFact.createPolygon()
     return emptyGeom
   }
-
-  getNoder (precisionModel) {
+  getNoder(precisionModel) {
     if (this._workingNoder !== null) return this._workingNoder
     const noder = new MCIndexNoder()
     const li = new RobustLineIntersector()
@@ -115,17 +106,16 @@ export default class BufferBuilder {
     noder.setSegmentIntersector(new IntersectionAdder(li))
     return noder
   }
-
-  buffer (g, distance) {
+  buffer(g, distance) {
     let precisionModel = this._workingPrecisionModel
     if (precisionModel === null) precisionModel = g.getPrecisionModel()
     this._geomFact = g.getFactory()
     const curveBuilder = new OffsetCurveBuilder(precisionModel, this._bufParams)
     const curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder)
     const bufferSegStrList = curveSetBuilder.getCurves()
-    if (bufferSegStrList.size() <= 0)
+    if (bufferSegStrList.size() <= 0) 
       return this.createEmptyResultGeometry()
-
+    
     this.computeNodedEdges(bufferSegStrList, precisionModel)
     this._graph = new PlanarGraph(new OverlayNodeFactory())
     this._graph.addEdges(this._edgeList.getEdges())
@@ -133,18 +123,17 @@ export default class BufferBuilder {
     const polyBuilder = new PolygonBuilder(this._geomFact)
     this.buildSubgraphs(subgraphList, polyBuilder)
     const resultPolyList = polyBuilder.getPolygons()
-    if (resultPolyList.size() <= 0)
+    if (resultPolyList.size() <= 0) 
       return this.createEmptyResultGeometry()
-
+    
     const resultGeom = this._geomFact.buildGeometry(resultPolyList)
     return resultGeom
   }
-
-  computeNodedEdges (bufferSegStrList, precisionModel) {
+  computeNodedEdges(bufferSegStrList, precisionModel) {
     const noder = this.getNoder(precisionModel)
     noder.computeNodes(bufferSegStrList)
     const nodedSegStrings = noder.getNodedSubstrings()
-    for (let i = nodedSegStrings.iterator(); i.hasNext();) {
+    for (let i = nodedSegStrings.iterator(); i.hasNext(); ) {
       const segStr = i.next()
       const pts = segStr.getCoordinates()
       if (pts.length === 2 && pts[0].equals2D(pts[1])) continue
@@ -153,8 +142,7 @@ export default class BufferBuilder {
       this.insertUniqueEdge(edge)
     }
   }
-
-  setNoder (noder) {
+  setNoder(noder) {
     this._workingNoder = noder
   }
 }

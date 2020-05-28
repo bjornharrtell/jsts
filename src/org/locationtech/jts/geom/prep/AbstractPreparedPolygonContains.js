@@ -4,12 +4,11 @@ import SegmentStringUtil from '../../noding/SegmentStringUtil'
 import Polygonal from '../Polygonal'
 import PreparedPolygonPredicate from './PreparedPolygonPredicate'
 export default class AbstractPreparedPolygonContains extends PreparedPolygonPredicate {
-  constructor () {
+  constructor() {
     super()
     AbstractPreparedPolygonContains.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._requireSomePointInInterior = true
     this._hasSegmentIntersection = false
     this._hasProperIntersection = false
@@ -17,8 +16,7 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     const prepPoly = arguments[0]
     PreparedPolygonPredicate.constructor_.call(this, prepPoly)
   }
-
-  eval (geom) {
+  eval(geom) {
     const isAllInTargetArea = this.isAllTestComponentsInTarget(geom)
     if (!isAllInTargetArea) return false
     if (this._requireSomePointInInterior && geom.getDimension() === 0) {
@@ -29,17 +27,16 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     this.findAndClassifyIntersections(geom)
     if (properIntersectionImpliesNotContained && this._hasProperIntersection) return false
     if (this._hasSegmentIntersection && !this._hasNonProperIntersection) return false
-    if (this._hasSegmentIntersection)
+    if (this._hasSegmentIntersection) 
       return this.fullTopologicalPredicate(geom)
-
+    
     if (hasInterface(geom, Polygonal)) {
       const isTargetInTestArea = this.isAnyTargetComponentInAreaTest(geom, this._prepPoly.getRepresentativePoints())
       if (isTargetInTestArea) return false
     }
     return true
   }
-
-  findAndClassifyIntersections (geom) {
+  findAndClassifyIntersections(geom) {
     const lineSegStr = SegmentStringUtil.extractSegmentStrings(geom)
     const intDetector = new SegmentIntersectionDetector()
     intDetector.setFindAllIntersectionTypes(true)
@@ -48,14 +45,12 @@ export default class AbstractPreparedPolygonContains extends PreparedPolygonPred
     this._hasProperIntersection = intDetector.hasProperIntersection()
     this._hasNonProperIntersection = intDetector.hasNonProperIntersection()
   }
-
-  isProperIntersectionImpliesNotContainedSituation (testGeom) {
+  isProperIntersectionImpliesNotContainedSituation(testGeom) {
     if (hasInterface(testGeom, Polygonal)) return true
     if (this.isSingleShell(this._prepPoly.getGeometry())) return true
     return false
   }
-
-  isSingleShell (geom) {
+  isSingleShell(geom) {
     if (geom.getNumGeometries() !== 1) return false
     const poly = geom.getGeometryN(0)
     const numHoles = poly.getNumInteriorRing()

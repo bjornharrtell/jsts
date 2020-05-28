@@ -3,11 +3,10 @@ import NoSuchElementException from '../../../../java/util/NoSuchElementException
 import GeometryCollection from './GeometryCollection'
 import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException'
 export default class GeometryCollectionIterator {
-  constructor () {
+  constructor() {
     GeometryCollectionIterator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._parent = null
     this._atStart = null
     this._max = null
@@ -19,27 +18,25 @@ export default class GeometryCollectionIterator {
     this._index = 0
     this._max = parent.getNumGeometries()
   }
-
-  static isAtomic (geom) {
+  static isAtomic(geom) {
     return !(geom instanceof GeometryCollection)
   }
-
-  next () {
+  next() {
     if (this._atStart) {
       this._atStart = false
       if (GeometryCollectionIterator.isAtomic(this._parent)) this._index++
       return this._parent
     }
-    if (this._subcollectionIterator !== null)
+    if (this._subcollectionIterator !== null) 
       if (this._subcollectionIterator.hasNext()) {
         return this._subcollectionIterator.next()
       } else {
         this._subcollectionIterator = null
       }
-
-    if (this._index >= this._max)
+    
+    if (this._index >= this._max) 
       throw new NoSuchElementException()
-
+    
     const obj = this._parent.getGeometryN(this._index++)
     if (obj instanceof GeometryCollection) {
       this._subcollectionIterator = new GeometryCollectionIterator(obj)
@@ -47,28 +44,25 @@ export default class GeometryCollectionIterator {
     }
     return obj
   }
-
-  remove () {
+  remove() {
     throw new UnsupportedOperationException(this.getClass().getName())
   }
-
-  hasNext () {
-    if (this._atStart)
+  hasNext() {
+    if (this._atStart) 
       return true
-
+    
     if (this._subcollectionIterator !== null) {
-      if (this._subcollectionIterator.hasNext())
+      if (this._subcollectionIterator.hasNext()) 
         return true
-
+      
       this._subcollectionIterator = null
     }
-    if (this._index >= this._max)
+    if (this._index >= this._max) 
       return false
-
+    
     return true
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Iterator]
   }
 }

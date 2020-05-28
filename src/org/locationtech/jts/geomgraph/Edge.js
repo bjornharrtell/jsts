@@ -9,12 +9,11 @@ import StringBuilder from '../../../../java/lang/StringBuilder'
 import Depth from './Depth'
 import GraphComponent from './GraphComponent'
 export default class Edge extends GraphComponent {
-  constructor () {
+  constructor() {
     super()
     Edge.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this.pts = null
     this._env = null
     this.eiList = new EdgeIntersectionList(this)
@@ -27,15 +26,14 @@ export default class Edge extends GraphComponent {
       const pts = arguments[0]
       Edge.constructor_.call(this, pts, null)
     } else if (arguments.length === 2) {
-      const pts = arguments[0]; const label = arguments[1]
+      const pts = arguments[0], label = arguments[1]
       this.pts = pts
       this._label = label
     }
   }
-
-  static updateIM () {
+  static updateIM() {
     if (arguments.length === 2 && (arguments[1] instanceof IntersectionMatrix && arguments[0] instanceof Label)) {
-      const label = arguments[0]; const im = arguments[1]
+      const label = arguments[0], im = arguments[1]
       im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1)
       if (label.isArea()) {
         im.setAtLeastIfValid(label.getLocation(0, Position.LEFT), label.getLocation(1, Position.LEFT), 2)
@@ -45,36 +43,29 @@ export default class Edge extends GraphComponent {
       return super.updateIM.apply(this, arguments)
     }
   }
-
-  getDepth () {
+  getDepth() {
     return this._depth
   }
-
-  getCollapsedEdge () {
+  getCollapsedEdge() {
     const newPts = new Array(2).fill(null)
     newPts[0] = this.pts[0]
     newPts[1] = this.pts[1]
     const newe = new Edge(newPts, Label.toLineLabel(this._label))
     return newe
   }
-
-  isIsolated () {
+  isIsolated() {
     return this._isIsolated
   }
-
-  getCoordinates () {
+  getCoordinates() {
     return this.pts
   }
-
-  setIsolated (isIsolated) {
+  setIsolated(isIsolated) {
     this._isIsolated = isIsolated
   }
-
-  setName (name) {
+  setName(name) {
     this._name = name
   }
-
-  equals (o) {
+  equals(o) {
     if (!(o instanceof Edge)) return false
     const e = o
     if (this.pts.length !== e.pts.length) return false
@@ -82,18 +73,17 @@ export default class Edge extends GraphComponent {
     let isEqualReverse = true
     let iRev = this.pts.length
     for (let i = 0; i < this.pts.length; i++) {
-      if (!this.pts[i].equals2D(e.pts[i]))
+      if (!this.pts[i].equals2D(e.pts[i])) 
         isEqualForward = false
-
-      if (!this.pts[i].equals2D(e.pts[--iRev]))
+      
+      if (!this.pts[i].equals2D(e.pts[-- iRev])) 
         isEqualReverse = false
-
+      
       if (!isEqualForward && !isEqualReverse) return false
     }
     return true
   }
-
-  getCoordinate () {
+  getCoordinate() {
     if (arguments.length === 0) {
       if (this.pts.length > 0) return this.pts[0]
       return null
@@ -102,8 +92,7 @@ export default class Edge extends GraphComponent {
       return this.pts[i]
     }
   }
-
-  print (out) {
+  print(out) {
     out.print('edge ' + this._name + ': ')
     out.print('LINESTRING (')
     for (let i = 0; i < this.pts.length; i++) {
@@ -112,57 +101,48 @@ export default class Edge extends GraphComponent {
     }
     out.print(')  ' + this._label + ' ' + this._depthDelta)
   }
-
-  computeIM (im) {
+  computeIM(im) {
     Edge.updateIM(this._label, im)
   }
-
-  isCollapsed () {
+  isCollapsed() {
     if (!this._label.isArea()) return false
     if (this.pts.length !== 3) return false
     if (this.pts[0].equals(this.pts[2])) return true
     return false
   }
-
-  isClosed () {
+  isClosed() {
     return this.pts[0].equals(this.pts[this.pts.length - 1])
   }
-
-  getMaximumSegmentIndex () {
+  getMaximumSegmentIndex() {
     return this.pts.length - 1
   }
-
-  getDepthDelta () {
+  getDepthDelta() {
     return this._depthDelta
   }
-
-  getNumPoints () {
+  getNumPoints() {
     return this.pts.length
   }
-
-  printReverse (out) {
+  printReverse(out) {
     out.print('edge ' + this._name + ': ')
-    for (let i = this.pts.length - 1; i >= 0; i--)
+    for (let i = this.pts.length - 1; i >= 0; i--) 
       out.print(this.pts[i] + ' ')
-
+    
     out.println('')
   }
-
-  getMonotoneChainEdge () {
+  getMonotoneChainEdge() {
     if (this._mce === null) this._mce = new MonotoneChainEdge(this)
     return this._mce
   }
-
-  getEnvelope () {
+  getEnvelope() {
     if (this._env === null) {
       this._env = new Envelope()
-      for (let i = 0; i < this.pts.length; i++)
+      for (let i = 0; i < this.pts.length; i++) 
         this._env.expandToInclude(this.pts[i])
+      
     }
     return this._env
   }
-
-  addIntersection (li, segmentIndex, geomIndex, intIndex) {
+  addIntersection(li, segmentIndex, geomIndex, intIndex) {
     const intPt = new Coordinate(li.getIntersection(intIndex))
     let normalizedSegmentIndex = segmentIndex
     let dist = li.getEdgeDistance(geomIndex, intIndex)
@@ -176,8 +156,7 @@ export default class Edge extends GraphComponent {
     }
     const ei = this.eiList.add(intPt, normalizedSegmentIndex, dist)
   }
-
-  toString () {
+  toString() {
     const builder = new StringBuilder()
     builder.append('edge ' + this._name + ': ')
     builder.append('LINESTRING (')
@@ -188,26 +167,24 @@ export default class Edge extends GraphComponent {
     builder.append(')  ' + this._label + ' ' + this._depthDelta)
     return builder.toString()
   }
-
-  isPointwiseEqual (e) {
+  isPointwiseEqual(e) {
     if (this.pts.length !== e.pts.length) return false
-    for (let i = 0; i < this.pts.length; i++)
-      if (!this.pts[i].equals2D(e.pts[i]))
+    for (let i = 0; i < this.pts.length; i++) 
+      if (!this.pts[i].equals2D(e.pts[i])) 
         return false
-
+      
+    
     return true
   }
-
-  setDepthDelta (depthDelta) {
+  setDepthDelta(depthDelta) {
     this._depthDelta = depthDelta
   }
-
-  getEdgeIntersectionList () {
+  getEdgeIntersectionList() {
     return this.eiList
   }
-
-  addIntersections (li, segmentIndex, geomIndex) {
-    for (let i = 0; i < li.getIntersectionNum(); i++)
+  addIntersections(li, segmentIndex, geomIndex) {
+    for (let i = 0; i < li.getIntersectionNum(); i++) 
       this.addIntersection(li, segmentIndex, geomIndex, i)
+    
   }
 }

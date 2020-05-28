@@ -3,54 +3,45 @@ import DirectedEdge from './DirectedEdge'
 import ArrayList from '../../../../java/util/ArrayList'
 import Edge from './Edge'
 export default class DirectedEdgeStar {
-  constructor () {
+  constructor() {
     DirectedEdgeStar.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._outEdges = new ArrayList()
     this._sorted = false
   }
-
-  getNextEdge (dirEdge) {
+  getNextEdge(dirEdge) {
     const i = this.getIndex(dirEdge)
     return this._outEdges.get(this.getIndex(i + 1))
   }
-
-  getCoordinate () {
+  getCoordinate() {
     const it = this.iterator()
     if (!it.hasNext()) return null
     const e = it.next()
     return e.getCoordinate()
   }
-
-  iterator () {
+  iterator() {
     this.sortEdges()
     return this._outEdges.iterator()
   }
-
-  sortEdges () {
+  sortEdges() {
     if (!this._sorted) {
       Collections.sort(this._outEdges)
       this._sorted = true
     }
   }
-
-  remove (de) {
+  remove(de) {
     this._outEdges.remove(de)
   }
-
-  getEdges () {
+  getEdges() {
     this.sortEdges()
     return this._outEdges
   }
-
-  getNextCWEdge (dirEdge) {
+  getNextCWEdge(dirEdge) {
     const i = this.getIndex(dirEdge)
     return this._outEdges.get(this.getIndex(i - 1))
   }
-
-  getIndex () {
+  getIndex() {
     if (arguments[0] instanceof Edge) {
       const edge = arguments[0]
       this.sortEdges()
@@ -74,13 +65,11 @@ export default class DirectedEdgeStar {
       return modi
     }
   }
-
-  add (de) {
+  add(de) {
     this._outEdges.add(de)
     this._sorted = false
   }
-
-  getDegree () {
+  getDegree() {
     return this._outEdges.size()
   }
 }

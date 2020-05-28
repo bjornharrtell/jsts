@@ -2,11 +2,10 @@ import Double from '../../../../java/lang/Double'
 import Integer from '../../../../java/lang/Integer'
 import Comparator from '../../../../java/util/Comparator'
 export default class CoordinateSequenceComparator {
-  constructor () {
+  constructor() {
     CoordinateSequenceComparator.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._dimensionLimit = null
     if (arguments.length === 0) {
       this._dimensionLimit = Integer.MAX_VALUE
@@ -15,8 +14,7 @@ export default class CoordinateSequenceComparator {
       this._dimensionLimit = dimensionLimit
     }
   }
-
-  static compare (a, b) {
+  static compare(a, b) {
     if (a < b) return -1
     if (a > b) return 1
     if (Double.isNaN(a)) {
@@ -26,8 +24,7 @@ export default class CoordinateSequenceComparator {
     if (Double.isNaN(b)) return 1
     return 0
   }
-
-  compare (o1, o2) {
+  compare(o1, o2) {
     const s1 = o1
     const s2 = o2
     const size1 = s1.size()
@@ -55,8 +52,7 @@ export default class CoordinateSequenceComparator {
     if (i < size2) return -1
     return 0
   }
-
-  compareCoordinate (s1, s2, i, dimension) {
+  compareCoordinate(s1, s2, i, dimension) {
     for (let d = 0; d < dimension; d++) {
       const ord1 = s1.getOrdinate(i, d)
       const ord2 = s2.getOrdinate(i, d)
@@ -65,8 +61,7 @@ export default class CoordinateSequenceComparator {
     }
     return 0
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [Comparator]
   }
 }

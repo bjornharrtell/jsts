@@ -7,65 +7,57 @@ import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBui
 import Distance from '../algorithm/Distance'
 import ItemDistance from '../index/strtree/ItemDistance'
 export default class MinimumClearance {
-  constructor () {
+  constructor() {
     MinimumClearance.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._inputGeom = null
     this._minClearance = null
     this._minClearancePts = null
     const geom = arguments[0]
     this._inputGeom = geom
   }
-
-  static getLine (g) {
+  static getLine(g) {
     const rp = new MinimumClearance(g)
     return rp.getLine()
   }
-
-  static getDistance (g) {
+  static getDistance(g) {
     const rp = new MinimumClearance(g)
     return rp.getDistance()
   }
-
-  getLine () {
+  getLine() {
     this.compute()
     if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString()
     return this._inputGeom.getFactory().createLineString(this._minClearancePts)
   }
-
-  compute () {
+  compute() {
     if (this._minClearancePts !== null) return null
     this._minClearancePts = new Array(2).fill(null)
     this._minClearance = Double.MAX_VALUE
-    if (this._inputGeom.isEmpty())
+    if (this._inputGeom.isEmpty()) 
       return null
-
+    
     const geomTree = FacetSequenceTreeBuilder.build(this._inputGeom)
     const nearest = geomTree.nearestNeighbour(new MinClearanceDistance())
     const mcd = new MinClearanceDistance()
     this._minClearance = mcd.distance(nearest[0], nearest[1])
     this._minClearancePts = mcd.getCoordinates()
   }
-
-  getDistance () {
+  getDistance() {
     this.compute()
     return this._minClearance
   }
 }
 class MinClearanceDistance {
-  constructor () {
+  constructor() {
     MinClearanceDistance.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._minDist = Double.MAX_VALUE
     this._minPts = new Array(2).fill(null)
   }
-
-  vertexDistance (fs1, fs2) {
-    for (let i1 = 0; i1 < fs1.size(); i1++)
+  vertexDistance(fs1, fs2) {
+    for (let i1 = 0; i1 < fs1.size(); i1++) 
       for (let i2 = 0; i2 < fs2.size(); i2++) {
         const p1 = fs1.getCoordinate(i1)
         const p2 = fs2.getCoordinate(i2)
@@ -79,16 +71,14 @@ class MinClearanceDistance {
           }
         }
       }
-
+    
     return this._minDist
   }
-
-  getCoordinates () {
+  getCoordinates() {
     return this._minPts
   }
-
-  segmentDistance (fs1, fs2) {
-    for (let i1 = 0; i1 < fs1.size(); i1++)
+  segmentDistance(fs1, fs2) {
+    for (let i1 = 0; i1 < fs1.size(); i1++) 
       for (let i2 = 1; i2 < fs2.size(); i2++) {
         const p = fs1.getCoordinate(i1)
         const seg0 = fs2.getCoordinate(i2 - 1)
@@ -102,19 +92,18 @@ class MinClearanceDistance {
           }
         }
       }
-
+    
     return this._minDist
   }
-
-  distance () {
+  distance() {
     if (arguments[0] instanceof ItemBoundable && arguments[1] instanceof ItemBoundable) {
-      const b1 = arguments[0]; const b2 = arguments[1]
+      const b1 = arguments[0], b2 = arguments[1]
       const fs1 = b1.getItem()
       const fs2 = b2.getItem()
       this._minDist = Double.MAX_VALUE
       return this.distance(fs1, fs2)
     } else if (arguments[0] instanceof FacetSequence && arguments[1] instanceof FacetSequence) {
-      const fs1 = arguments[0]; const fs2 = arguments[1]
+      const fs1 = arguments[0], fs2 = arguments[1]
       this.vertexDistance(fs1, fs2)
       if (fs1.size() === 1 && fs2.size() === 1) return this._minDist
       if (this._minDist <= 0.0) return this._minDist
@@ -124,14 +113,12 @@ class MinClearanceDistance {
       return this._minDist
     }
   }
-
-  updatePts (p, seg0, seg1) {
+  updatePts(p, seg0, seg1) {
     this._minPts[0] = p
     const seg = new LineSegment(seg0, seg1)
     this._minPts[1] = new Coordinate(seg.closestPoint(p))
   }
-
-  get interfaces_ () {
+  get interfaces_() {
     return [ItemDistance]
   }
 }

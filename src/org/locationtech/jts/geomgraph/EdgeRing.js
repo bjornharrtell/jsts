@@ -7,11 +7,10 @@ import Label from './Label'
 import ArrayList from '../../../../java/util/ArrayList'
 import Assert from '../util/Assert'
 export default class EdgeRing {
-  constructor () {
+  constructor() {
     EdgeRing.constructor_.apply(this, arguments)
   }
-
-  static constructor_ () {
+  static constructor_() {
     this._startDe = null
     this._maxNodeDegree = -1
     this._edges = new ArrayList()
@@ -23,28 +22,25 @@ export default class EdgeRing {
     this._holes = new ArrayList()
     this._geometryFactory = null
     if (arguments.length === 0) {} else if (arguments.length === 2) {
-      const start = arguments[0]; const geometryFactory = arguments[1]
+      const start = arguments[0], geometryFactory = arguments[1]
       this._geometryFactory = geometryFactory
       this.computePoints(start)
       this.computeRing()
     }
   }
-
-  computeRing () {
+  computeRing() {
     if (this._ring !== null) return null
     const coord = new Array(this._pts.size()).fill(null)
-    for (let i = 0; i < this._pts.size(); i++)
+    for (let i = 0; i < this._pts.size(); i++) 
       coord[i] = this._pts.get(i)
-
+    
     this._ring = this._geometryFactory.createLinearRing(coord)
     this._isHole = Orientation.isCCW(this._ring.getCoordinates())
   }
-
-  isIsolated () {
+  isIsolated() {
     return this._label.getGeometryCount() === 1
   }
-
-  computePoints (start) {
+  computePoints(start) {
     this._startDe = start
     let de = start
     let isFirstEdge = true
@@ -61,16 +57,13 @@ export default class EdgeRing {
       de = this.getNext(de)
     } while (de !== this._startDe)
   }
-
-  getLinearRing () {
+  getLinearRing() {
     return this._ring
   }
-
-  getCoordinate (i) {
+  getCoordinate(i) {
     return this._pts.get(i)
   }
-
-  computeMaxNodeDegree () {
+  computeMaxNodeDegree() {
     this._maxNodeDegree = 0
     let de = this._startDe
     do {
@@ -81,78 +74,69 @@ export default class EdgeRing {
     } while (de !== this._startDe)
     this._maxNodeDegree *= 2
   }
-
-  addPoints (edge, isForward, isFirstEdge) {
+  addPoints(edge, isForward, isFirstEdge) {
     const edgePts = edge.getCoordinates()
     if (isForward) {
       let startIndex = 1
       if (isFirstEdge) startIndex = 0
-      for (let i = startIndex; i < edgePts.length; i++)
+      for (let i = startIndex; i < edgePts.length; i++) 
         this._pts.add(edgePts[i])
+      
     } else {
       let startIndex = edgePts.length - 2
       if (isFirstEdge) startIndex = edgePts.length - 1
-      for (let i = startIndex; i >= 0; i--)
+      for (let i = startIndex; i >= 0; i--) 
         this._pts.add(edgePts[i])
+      
     }
   }
-
-  isHole () {
+  isHole() {
     return this._isHole
   }
-
-  setInResult () {
+  setInResult() {
     let de = this._startDe
     do {
       de.getEdge().setInResult(true)
       de = de.getNext()
     } while (de !== this._startDe)
   }
-
-  containsPoint (p) {
+  containsPoint(p) {
     const shell = this.getLinearRing()
     const env = shell.getEnvelopeInternal()
     if (!env.contains(p)) return false
     if (!PointLocation.isInRing(p, shell.getCoordinates())) return false
-    for (let i = this._holes.iterator(); i.hasNext();) {
+    for (let i = this._holes.iterator(); i.hasNext(); ) {
       const hole = i.next()
       if (hole.containsPoint(p)) return false
     }
     return true
   }
-
-  addHole (ring) {
+  addHole(ring) {
     this._holes.add(ring)
   }
-
-  isShell () {
+  isShell() {
     return this._shell === null
   }
-
-  getLabel () {
+  getLabel() {
     return this._label
   }
-
-  getEdges () {
+  getEdges() {
     return this._edges
   }
-
-  getMaxNodeDegree () {
+  getMaxNodeDegree() {
     if (this._maxNodeDegree < 0) this.computeMaxNodeDegree()
     return this._maxNodeDegree
   }
-
-  getShell () {
+  getShell() {
     return this._shell
   }
-
-  mergeLabel () {
+  mergeLabel() {
     if (arguments.length === 1) {
       const deLabel = arguments[0]
       this.mergeLabel(deLabel, 0)
       this.mergeLabel(deLabel, 1)
     } else if (arguments.length === 2) {
-      const deLabel = arguments[0]; const geomIndex = arguments[1]
+      const deLabel = arguments[0], geomIndex = arguments[1]
       const loc = deLabel.getLocation(geomIndex, Position.RIGHT)
       if (loc === Location.NONE) return null
       if (this._label.getLocation(geomIndex) === Location.NONE) {
@@ -161,17 +145,15 @@ export default class EdgeRing {
       }
     }
   }
-
-  setShell (shell) {
+  setShell(shell) {
     this._shell = shell
     if (shell !== null) shell.addHole(this)
   }
-
-  toPolygon (geometryFactory) {
+  toPolygon(geometryFactory) {
     const holeLR = new Array(this._holes.size()).fill(null)
-    for (let i = 0; i < this._holes.size(); i++)
+    for (let i = 0; i < this._holes.size(); i++) 
       holeLR[i] = this._holes.get(i).getLinearRing()
-
+    
     const poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
     return poly
   }
