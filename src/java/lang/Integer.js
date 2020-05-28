@@ -1,30 +1,30 @@
 export default class Integer {
   #value
-  constructor (value) {
+  constructor(value) {
     this.#value = value
   }
 
-  intValue () {
+  intValue() {
     return this.#value
   }
 
-  compareTo (o) {
+  compareTo(o) {
     if (this.#value < o) return -1
     if (this.#value > o) return 1
     return 0
   }
 
-  static compare (x, y) {
+  static compare(x, y) {
     if (x < y) return -1
     if (x > y) return 1
     return 0
   }
 
-  static isNan (n) {
+  static isNan(n) {
     return Number.isNaN(n)
   }
 
-  static valueOf (value) {
+  static valueOf(value) {
     return new Integer(value)
   }
 }

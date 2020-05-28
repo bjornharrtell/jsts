@@ -8,16 +8,16 @@ import HashSet from './HashSet'
 export default class HashMap extends MapInterface {
   #map = new Map()
 
-  get (key) {
+  get(key) {
     return this.#map.get(key) || null
   }
 
-  put (key, value) {
+  put(key, value) {
     this.#map.set(key, value)
     return value
   }
 
-  values () {
+  values() {
     const arrayList = new ArrayList()
     const it = this.#map.values()
     let o = it.next()
@@ -28,13 +28,13 @@ export default class HashMap extends MapInterface {
     return arrayList
   }
 
-  entrySet () {
+  entrySet() {
     const hashSet = new HashSet()
     this.#map.entries().forEach(entry => hashSet.add(entry))
     return hashSet
   }
 
-  size () {
+  size() {
     return this.#map.size()
   }
 }

@@ -4,7 +4,7 @@
  * @constructor
  * @private
  */
-export default function IndexOutOfBoundsException (message) {
+export default function IndexOutOfBoundsException(message) {
   this.message = message || ''
 }
 IndexOutOfBoundsException.prototype = new Error()

@@ -23,7 +23,7 @@ export default class WKTParser {
    * @return An instance of WKTParser.
    * @private
    */
-  constructor (geometryFactory) {
+  constructor(geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
     this.precisionModel = this.geometryFactory.getPrecisionModel()
   }
@@ -37,7 +37,7 @@ export default class WKTParser {
    * @return {Geometry} A geometry instance.
    * @private
    */
-  read (wkt) {
+  read(wkt) {
     let geometry, type, str
     wkt = wkt.replace(/[\n\r]/g, ' ')
     let matches = regExes.typeStr.exec(wkt)
@@ -63,7 +63,7 @@ export default class WKTParser {
    * @return {String} The WKT string representation of the input geometries.
    * @private
    */
-  write (geometry) {
+  write(geometry) {
     return this.extractGeometry(geometry)
   }
 
@@ -74,7 +74,7 @@ export default class WKTParser {
    * @return {String} A WKT string of representing the geometry.
    * @private
    */
-  extractGeometry (geometry) {
+  extractGeometry(geometry) {
     const type = geometry.getGeometryType().toLowerCase()
     if (!extract[type]) return null
 
@@ -94,7 +94,7 @@ export default class WKTParser {
  * @private
  */
 const extract = {
-  coordinate (coordinate) {
+  coordinate(coordinate) {
     this.precisionModel.makePrecise(coordinate)
     return coordinate.x + ' ' + coordinate.y
   },
@@ -106,7 +106,7 @@ const extract = {
    *          point
    * @return {String} A string of coordinates representing the point.
    */
-  point (point) {
+  point(point) {
     return extract.coordinate.call(this, point._coordinates._coordinates[0])
   },
 
@@ -118,7 +118,7 @@ const extract = {
    * @return {String} A string of point coordinate strings representing the
    *         multipoint.
    */
-  multipoint (multipoint) {
+  multipoint(multipoint) {
     const array = []
     for (let i = 0, len = multipoint._geometries.length; i < len; ++i) array.push('(' + extract.point.call(this, multipoint._geometries[i]) + ')')
 
@@ -131,14 +131,14 @@ const extract = {
    * @param {LineString} linestring
    * @return {String} A string of point coordinate strings representing the linestring.
    */
-  linestring (linestring) {
+  linestring(linestring) {
     const array = []
     for (let i = 0, len = linestring._points._coordinates.length; i < len; ++i) array.push(extract.coordinate.call(this, linestring._points._coordinates[i]))
 
     return array.join(',')
   },
 
-  linearring (linearring) {
+  linearring(linearring) {
     const array = []
     for (let i = 0, len = linearring._points._coordinates.length; i < len; ++i) array.push(extract.coordinate.call(this, linearring._points._coordinates[i]))
 
@@ -152,7 +152,7 @@ const extract = {
    * @param {MultiLineString} multilinestring
    * @return {String} A string of of linestring strings representing the multilinestring.
    */
-  multilinestring (multilinestring) {
+  multilinestring(multilinestring) {
     const array = []
     for (let i = 0, len = multilinestring._geometries.length; i < len; ++i)
       array.push('(' +
@@ -168,7 +168,7 @@ const extract = {
    * @param {Polygon} polygon
    * @return {String} An array of linear ring arrays representing the polygon.
    */
-  polygon (polygon) {
+  polygon(polygon) {
     const array = []
     array.push('(' + extract.linestring.call(this, polygon._shell) + ')')
     for (let i = 0, len = polygon._holes.length; i < len; ++i) array.push('(' + extract.linestring.call(this, polygon._holes[i]) + ')')
@@ -182,7 +182,7 @@ const extract = {
    * @param {MultiPolygon} multipolygon
    * @return {String} An array of polygon arrays representing the multipolygon.
    */
-  multipolygon (multipolygon) {
+  multipolygon(multipolygon) {
     const array = []
     for (let i = 0, len = multipolygon._geometries.length; i < len; ++i) array.push('(' + extract.polygon.call(this, multipolygon._geometries[i]) + ')')
 
@@ -196,7 +196,7 @@ const extract = {
    * @param {GeometryCollection} collection
    * @return {String} internal WKT representation of the collection.
    */
-  geometrycollection (collection) {
+  geometrycollection(collection) {
     const array = []
     for (let i = 0, len = collection._geometries.length; i < len; ++i) array.push(this.extractGeometry(collection._geometries[i]))
 
@@ -211,7 +211,7 @@ const extract = {
  */
 const parse = {
 
-  coord (str) {
+  coord(str) {
     const coords = str.trim().split(regExes.spaces)
     const coord = new Coordinate(Number.parseFloat(coords[0]), Number.parseFloat(coords[1]))
     this.precisionModel.makePrecise(coord)
@@ -225,7 +225,7 @@ const parse = {
    * @return {Point} A point geometry.
    * @private
    */
-  point (str) {
+  point(str) {
     if (str === undefined) return this.geometryFactory.createPoint()
     return this.geometryFactory.createPoint(parse.coord.call(this, str))
   },
@@ -237,7 +237,7 @@ const parse = {
    * @return {Point} A multipoint feature.
    * @private
    */
-  multipoint (str) {
+  multipoint(str) {
     if (str === undefined) return this.geometryFactory.createMultiPoint()
     let point
     const points = str.trim().split(',')
@@ -256,7 +256,7 @@ const parse = {
    * @return {LineString} A linestring geometry.
    * @private
    */
-  linestring (str) {
+  linestring(str) {
     if (str === undefined) return this.geometryFactory.createLineString()
 
     const points = str.trim().split(',')
@@ -274,7 +274,7 @@ const parse = {
    * @return {LinearRing} A linearring geometry.
    * @private
    */
-  linearring (str) {
+  linearring(str) {
     if (str === undefined) return this.geometryFactory.createLinearRing()
 
     const points = str.trim().split(',')
@@ -292,7 +292,7 @@ const parse = {
    * @return {MultiLineString} A multilinestring geometry.
    * @private
    */
-  multilinestring (str) {
+  multilinestring(str) {
     if (str === undefined) return this.geometryFactory.createMultiLineString()
 
     let line
@@ -312,7 +312,7 @@ const parse = {
    * @return {Polygon} A polygon geometry.
    * @private
    */
-  polygon (str) {
+  polygon(str) {
     if (str === undefined) return this.geometryFactory.createPolygon()
 
     let ring, linestring, linearring
@@ -337,7 +337,7 @@ const parse = {
    * @return {MultiPolygon} A multipolygon geometry.
    * @private
    */
-  multipolygon (str) {
+  multipolygon(str) {
     if (str === undefined) return this.geometryFactory.createMultiPolygon()
 
     let polygon
@@ -357,7 +357,7 @@ const parse = {
    * @return {GeometryCollection}
    * @private
    */
-  geometrycollection (str) {
+  geometrycollection(str) {
     if (str === undefined) return this.geometryFactory.createGeometryCollection()
 
     // separate components of the collection with |

@@ -1,7 +1,7 @@
 import Coordinate from './Coordinate'
 import RuntimeException from '../../../../java/lang/RuntimeException'
 export default class TopologyException extends RuntimeException {
-  constructor () {
+  constructor() {
     if (arguments.length === 1) {
       const msg = arguments[0]
       super(msg)
@@ -16,19 +16,19 @@ export default class TopologyException extends RuntimeException {
     }
   }
 
-  getCoordinate () {
+  getCoordinate() {
     return this.pt
   }
 
-  get interfaces_ () {
+  get interfaces_() {
     return []
   }
 
-  getClass () {
+  getClass() {
     return TopologyException
   }
 
-  static msgWithCoord (msg, pt) {
+  static msgWithCoord(msg, pt) {
     if (pt !== null) return msg + ' [ ' + pt + ' ]'
     return msg
   }

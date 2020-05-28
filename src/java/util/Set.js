@@ -15,5 +15,5 @@ export default class Set extends Collection {
      * @param {Object} e
      * @return {boolean}
      */
-  contains () { }
+  contains() { }
 }

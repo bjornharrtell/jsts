@@ -8,7 +8,7 @@ export default class Map {
      * @param {Object} key
      * @return {Object}
      */
-  get () { }
+  get() { }
 
   /**
      * Associates the specified value with the specified key in this map (optional
@@ -17,19 +17,19 @@ export default class Map {
      * @param {Object} value
      * @return {Object}
      */
-  put () { }
+  put() { }
 
   /**
      * Returns the number of key-value mappings in this map.
      * @return {number}
      */
-  size () { }
+  size() { }
 
   /**
      * Returns a Collection view of the values contained in this map.
      * @return {javascript.util.Collection}
      */
-  values () { }
+  values() { }
 
   /**
      * Returns a {@link Set} view of the mappings contained in this map.
@@ -47,5 +47,5 @@ export default class Map {
      *
      * @return {Set} a set view of the mappings contained in this map
      */
-  entrySet () { }
+  entrySet() { }
 }

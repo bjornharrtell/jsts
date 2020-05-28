@@ -1,1 +1,1 @@
-export default function ByteArrayOutputStream () {}
+export default function ByteArrayOutputStream() {}

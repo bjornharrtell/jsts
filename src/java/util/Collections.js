@@ -2,18 +2,18 @@ import Arrays from './Arrays'
 import ArrayList from './ArrayList'
 
 const Collections = {
-  reverseOrder: function () {
+  reverseOrder: function() {
     return {
-      compare (a, b) {
+      compare(a, b) {
         return b.compareTo(a)
       }
     }
   },
-  min: function (l) {
+  min: function(l) {
     Collections.sort(l)
     return l.get(0)
   },
-  sort: function (l, c) {
+  sort: function(l, c) {
     const a = l.toArray()
     if (c)
       Arrays.sort(a, c)
@@ -25,7 +25,7 @@ const Collections = {
       i.set(a[pos])
     }
   },
-  singletonList: function (o) {
+  singletonList: function(o) {
     const arrayList = new ArrayList()
     arrayList.add(o)
     return arrayList

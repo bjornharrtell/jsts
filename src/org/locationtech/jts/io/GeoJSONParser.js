@@ -17,7 +17,7 @@ const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', '
  * @private
  */
 export default class GeoJSONParser {
-  constructor (geometryFactory) {
+  constructor(geometryFactory) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
   }
 
@@ -29,7 +29,7 @@ export default class GeoJSONParser {
    * @return {} A Geometry instance or object representing a Feature(Collection) with Geometry instances.
    * @private
    */
-  read (json) {
+  read(json) {
     let obj
     if (typeof json === 'string')
       obj = JSON.parse(json)
@@ -55,7 +55,7 @@ export default class GeoJSONParser {
    * @return {Object} A GeoJSON object represting the input Geometry/Geometries.
    * @private
    */
-  write (geometry) {
+  write(geometry) {
     const type = geometry.getGeometryType()
 
     if (!extract[type]) throw new Error('Geometry is not supported')
@@ -73,7 +73,7 @@ const parse = {
    *
    * @return {Object} Feature with geometry/bbox converted to JSTS Geometries.
    */
-  Feature: function (obj) {
+  Feature: function(obj) {
     const feature = {}
 
     for (const key in obj) feature[key] = obj[key]
@@ -97,7 +97,7 @@ const parse = {
    *
    * @return {Object} FeatureCollection with geometry/bbox converted to JSTS Geometries.
    */
-  FeatureCollection: function (obj) {
+  FeatureCollection: function(obj) {
     const featureCollection = {}
 
     if (obj.features) {
@@ -119,7 +119,7 @@ const parse = {
    *
    * @return {Array} Array with Coordinates.
    */
-  coordinates: function (array) {
+  coordinates: function(array) {
     const coordinates = []
     for (let i = 0; i < array.length; ++i) {
       const sub = array[i]
@@ -136,7 +136,7 @@ const parse = {
    *
    * @return {Array} Array with Coordinates.
    */
-  bbox: function (array) {
+  bbox: function(array) {
     return this.geometryFactory.createLinearRing([
       new Coordinate(array[0], array[1]),
       new Coordinate(array[2], array[1]),
@@ -154,7 +154,7 @@ const parse = {
    *
    * @return {Point} Point.
    */
-  Point: function (array) {
+  Point: function(array) {
     const coordinate = new Coordinate(array[0], array[1])
     return this.geometryFactory.createPoint(coordinate)
   },
@@ -167,7 +167,7 @@ const parse = {
    *
    * @return {MultiPoint} MultiPoint.
    */
-  MultiPoint: function (array) {
+  MultiPoint: function(array) {
     const points = []
     for (let i = 0; i < array.length; ++i) points.push(parse.Point.call(this, array[i]))
     return this.geometryFactory.createMultiPoint(points)
@@ -181,7 +181,7 @@ const parse = {
    *
    * @return {LineString} LineString.
    */
-  LineString: function (array) {
+  LineString: function(array) {
     const coordinates = parse.coordinates.call(this, array)
     return this.geometryFactory.createLineString(coordinates)
   },
@@ -194,7 +194,7 @@ const parse = {
    *
    * @return {MultiLineString} MultiLineString.
    */
-  MultiLineString: function (array) {
+  MultiLineString: function(array) {
     const lineStrings = []
     for (let i = 0; i < array.length; ++i) lineStrings.push(parse.LineString.call(this, array[i]))
     return this.geometryFactory.createMultiLineString(lineStrings)
@@ -208,7 +208,7 @@ const parse = {
    *
    * @return {Polygon} Polygon.
    */
-  Polygon: function (array) {
+  Polygon: function(array) {
     const shellCoordinates = parse.coordinates.call(this, array[0])
     const shell = this.geometryFactory.createLinearRing(shellCoordinates)
     const holes = []
@@ -229,7 +229,7 @@ const parse = {
    *
    * @return {MultiPolygon} MultiPolygon.
    */
-  MultiPolygon: function (array) {
+  MultiPolygon: function(array) {
     const polygons = []
     for (let i = 0; i < array.length; ++i) {
       const polygon = array[i]
@@ -246,7 +246,7 @@ const parse = {
    *
    * @return {GeometryCollection} GeometryCollection.
    */
-  GeometryCollection: function (array) {
+  GeometryCollection: function(array) {
     const geometries = []
     for (let i = 0; i < array.length; ++i) {
       const geometry = array[i]
@@ -265,7 +265,7 @@ const extract = {
    *
    * @return {Array} Array of ordinates.
    */
-  coordinate: function (coordinate) {
+  coordinate: function(coordinate) {
     return [coordinate.x, coordinate.y]
   },
 
@@ -277,7 +277,7 @@ const extract = {
    *
    * @return {Array} Array of 2 ordinates (paired to a coordinate).
    */
-  Point: function (point) {
+  Point: function(point) {
     const array = extract.coordinate.call(this, point.getCoordinate())
     return {
       type: 'Point',
@@ -293,7 +293,7 @@ const extract = {
    *
    * @return {Array} Array of coordinates.
    */
-  MultiPoint: function (multipoint) {
+  MultiPoint: function(multipoint) {
     const array = []
     for (let i = 0; i < multipoint._geometries.length; ++i) {
       const point = multipoint._geometries[i]
@@ -314,7 +314,7 @@ const extract = {
    *
    * @return {Array} Array of coordinates.
    */
-  LineString: function (linestring) {
+  LineString: function(linestring) {
     const array = []
     const coordinates = linestring.getCoordinates()
     for (let i = 0; i < coordinates.length; ++i) {
@@ -335,7 +335,7 @@ const extract = {
    *
    * @return {Array} Array of Array of coordinates.
    */
-  MultiLineString: function (multilinestring) {
+  MultiLineString: function(multilinestring) {
     const array = []
     for (let i = 0; i < multilinestring._geometries.length; ++i) {
       const linestring = multilinestring._geometries[i]
@@ -356,7 +356,7 @@ const extract = {
    *
    * @return {Array} Array with shell, holes.
    */
-  Polygon: function (polygon) {
+  Polygon: function(polygon) {
     const array = []
     const shellGeoJson = extract.LineString.call(this, polygon._shell)
     array.push(shellGeoJson.coordinates)
@@ -379,7 +379,7 @@ const extract = {
    *
    * @return {Array} Array of polygons.
    */
-  MultiPolygon: function (multipolygon) {
+  MultiPolygon: function(multipolygon) {
     const array = []
     for (let i = 0; i < multipolygon._geometries.length; ++i) {
       const polygon = multipolygon._geometries[i]
@@ -400,7 +400,7 @@ const extract = {
    *
    * @return {Array} Array of geometries.
    */
-  GeometryCollection: function (collection) {
+  GeometryCollection: function(collection) {
     const array = []
     for (let i = 0; i < collection._geometries.length; ++i) {
       const geometry = collection._geometries[i]

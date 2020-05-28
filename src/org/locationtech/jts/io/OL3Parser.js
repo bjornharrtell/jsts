@@ -7,7 +7,7 @@
 import Coordinate from '../geom/Coordinate'
 import GeometryFactory from '../geom/GeometryFactory'
 
-function p2c (p) {
+function p2c(p) {
   return [p.x, p.y]
 }
 
@@ -17,7 +17,7 @@ export default class OL3Parser {
    * @param {GeometryFactory} geometryFactory
    * @param {ol} olReference
    */
-  constructor (geometryFactory, olReference) {
+  constructor(geometryFactory, olReference) {
     this.geometryFactory = geometryFactory || new GeometryFactory()
     this.ol = olReference || (typeof ol !== 'undefined' && ol)
   }
@@ -25,7 +25,7 @@ export default class OL3Parser {
   /**
    * Inject OpenLayers geom classes
    */
-  inject (Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection) {
+  inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection) {
     this.ol = {
       geom: {
         Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
@@ -38,7 +38,7 @@ export default class OL3Parser {
    * @return {Geometry}
    * @memberof module:org/locationtech/jts/io/OL3Parser#
    */
-  read (geometry) {
+  read(geometry) {
     const ol = this.ol
     if (geometry instanceof ol.geom.Point)
       return this.convertFromPoint(geometry)
@@ -57,24 +57,24 @@ export default class OL3Parser {
     else if (geometry instanceof ol.geom.GeometryCollection) return this.convertFromCollection(geometry)
   }
 
-  convertFromPoint (point) {
+  convertFromPoint(point) {
     const coordinates = point.getCoordinates()
     return this.geometryFactory.createPoint(new Coordinate(coordinates[0], coordinates[1]))
   }
 
-  convertFromLineString (lineString) {
-    return this.geometryFactory.createLineString(lineString.getCoordinates().map(function (coordinates) {
+  convertFromLineString(lineString) {
+    return this.geometryFactory.createLineString(lineString.getCoordinates().map(function(coordinates) {
       return new Coordinate(coordinates[0], coordinates[1])
     }))
   }
 
-  convertFromLinearRing (linearRing) {
-    return this.geometryFactory.createLinearRing(linearRing.getCoordinates().map(function (coordinates) {
+  convertFromLinearRing(linearRing) {
+    return this.geometryFactory.createLinearRing(linearRing.getCoordinates().map(function(coordinates) {
       return new Coordinate(coordinates[0], coordinates[1])
     }))
   }
 
-  convertFromPolygon (polygon) {
+  convertFromPolygon(polygon) {
     const linearRings = polygon.getLinearRings()
     let shell = null
     const holes = []
@@ -87,29 +87,29 @@ export default class OL3Parser {
     return this.geometryFactory.createPolygon(shell, holes)
   }
 
-  convertFromMultiPoint (multiPoint) {
-    const points = multiPoint.getPoints().map(function (point) {
+  convertFromMultiPoint(multiPoint) {
+    const points = multiPoint.getPoints().map(function(point) {
       return this.convertFromPoint(point)
     }, this)
     return this.geometryFactory.createMultiPoint(points)
   }
 
-  convertFromMultiLineString (multiLineString) {
-    const lineStrings = multiLineString.getLineStrings().map(function (lineString) {
+  convertFromMultiLineString(multiLineString) {
+    const lineStrings = multiLineString.getLineStrings().map(function(lineString) {
       return this.convertFromLineString(lineString)
     }, this)
     return this.geometryFactory.createMultiLineString(lineStrings)
   }
 
-  convertFromMultiPolygon (multiPolygon) {
-    const polygons = multiPolygon.getPolygons().map(function (polygon) {
+  convertFromMultiPolygon(multiPolygon) {
+    const polygons = multiPolygon.getPolygons().map(function(polygon) {
       return this.convertFromPolygon(polygon)
     }, this)
     return this.geometryFactory.createMultiPolygon(polygons)
   }
 
-  convertFromCollection (collection) {
-    const geometries = collection.getGeometries().map(function (geometry) {
+  convertFromCollection(collection) {
+    const geometries = collection.getGeometries().map(function(geometry) {
       return this.read(geometry)
     }, this)
     return this.geometryFactory.createGeometryCollection(geometries)
@@ -121,7 +121,7 @@ export default class OL3Parser {
    * @return {ol.geom.Geometry}
    * @memberof module:org/locationtech/jts/io/OL3Parser#
    */
-  write (geometry) {
+  write(geometry) {
     if (geometry.getGeometryType() === 'Point')
       return this.convertToPoint(geometry.getCoordinate())
     else if (geometry.getGeometryType() === 'LineString')
@@ -139,46 +139,46 @@ export default class OL3Parser {
     else if (geometry.getGeometryType() === 'GeometryCollection') return this.convertToCollection(geometry)
   }
 
-  convertToPoint (coordinate) {
+  convertToPoint(coordinate) {
     return new this.ol.geom.Point([coordinate.x, coordinate.y])
   }
 
-  convertToLineString (lineString) {
+  convertToLineString(lineString) {
     const points = lineString._points._coordinates.map(p2c)
     return new this.ol.geom.LineString(points)
   }
 
-  convertToLinearRing (linearRing) {
+  convertToLinearRing(linearRing) {
     const points = linearRing._points._coordinates.map(p2c)
     return new this.ol.geom.LinearRing(points)
   }
 
-  convertToPolygon (polygon) {
+  convertToPolygon(polygon) {
     const rings = [polygon._shell._points._coordinates.map(p2c)]
     for (let i = 0; i < polygon._holes.length; i++) rings.push(polygon._holes[i]._points._coordinates.map(p2c))
 
     return new this.ol.geom.Polygon(rings)
   }
 
-  convertToMultiPoint (multiPoint) {
+  convertToMultiPoint(multiPoint) {
     return new this.ol.geom.MultiPoint(multiPoint.getCoordinates().map(p2c))
   }
 
-  convertToMultiLineString (multiLineString) {
+  convertToMultiLineString(multiLineString) {
     const lineStrings = []
     for (let i = 0; i < multiLineString._geometries.length; i++) lineStrings.push(this.convertToLineString(multiLineString._geometries[i]).getCoordinates())
 
     return new this.ol.geom.MultiLineString(lineStrings)
   }
 
-  convertToMultiPolygon (multiPolygon) {
+  convertToMultiPolygon(multiPolygon) {
     const polygons = []
     for (let i = 0; i < multiPolygon._geometries.length; i++) polygons.push(this.convertToPolygon(multiPolygon._geometries[i]).getCoordinates())
 
     return new this.ol.geom.MultiPolygon(polygons)
   }
 
-  convertToCollection (geometryCollection) {
+  convertToCollection(geometryCollection) {
     const geometries = []
     for (let i = 0; i < geometryCollection._geometries.length; i++) {
       const geometry = geometryCollection._geometries[i]

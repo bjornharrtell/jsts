@@ -4,19 +4,19 @@ import HashSet from './HashSet'
 
 const BLACK = 0
 const RED = 1
-function colorOf (p) {
+function colorOf(p) {
   return (p == null ? BLACK : p.color)
 }
-function parentOf (p) {
+function parentOf(p) {
   return (p == null ? null : p.parent)
 }
-function setColor (p, c) {
+function setColor(p, c) {
   if (p !== null) p.color = c
 }
-function leftOf (p) {
+function leftOf(p) {
   return (p == null ? null : p.left)
 }
-function rightOf (p) {
+function rightOf(p) {
   return (p == null ? null : p.right)
 }
 
@@ -27,7 +27,7 @@ export default class TreeMap extends SortedMap {
   #root = null
   #size = 0
 
-  get (key) {
+  get(key) {
     let p = this.#root
     while (p !== null) {
       const cmp = key.compareTo(p.key)
@@ -40,7 +40,7 @@ export default class TreeMap extends SortedMap {
     return null
   }
 
-  put (key, value) {
+  put(key, value) {
     if (this.#root === null) {
       this.#root = {
         key: key,
@@ -49,10 +49,10 @@ export default class TreeMap extends SortedMap {
         right: null,
         parent: null,
         color: BLACK,
-        getValue () {
+        getValue() {
           return this.value
         },
-        getKey () {
+        getKey() {
           return this.key
         }
       }
@@ -80,10 +80,10 @@ export default class TreeMap extends SortedMap {
       value: value,
       parent: parent,
       color: BLACK,
-      getValue () {
+      getValue() {
         return this.value
       },
-      getKey () {
+      getKey() {
         return this.key
       }
     }
@@ -99,7 +99,7 @@ export default class TreeMap extends SortedMap {
   /**
    * @param {Object} x
    */
-  fixAfterInsertion (x) {
+  fixAfterInsertion(x) {
     let y
     x.color = RED
     while (x != null && x !== this.#root && x.parent.color === RED)
@@ -140,7 +140,7 @@ export default class TreeMap extends SortedMap {
     this.#root.color = BLACK
   }
 
-  values () {
+  values() {
     const arrayList = new ArrayList()
     let p = this.getFirstEntry()
     if (p !== null) {
@@ -150,7 +150,7 @@ export default class TreeMap extends SortedMap {
     return arrayList
   }
 
-  entrySet () {
+  entrySet() {
     const hashSet = new HashSet()
     let p = this.getFirstEntry()
     if (p !== null) {
@@ -163,7 +163,7 @@ export default class TreeMap extends SortedMap {
   /**
    * @param {Object} p
    */
-  rotateLeft (p) {
+  rotateLeft(p) {
     if (p != null) {
       const r = p.right
       p.right = r.left
@@ -182,7 +182,7 @@ export default class TreeMap extends SortedMap {
   /**
    * @param {Object} p
    */
-  rotateRight (p) {
+  rotateRight(p) {
     if (p != null) {
       const l = p.left
       p.left = l.right
@@ -201,7 +201,7 @@ export default class TreeMap extends SortedMap {
   /**
    * @return {Object}
    */
-  getFirstEntry () {
+  getFirstEntry() {
     let p = this.#root
     if (p != null)
       while (p.left != null) p = p.left
@@ -214,7 +214,7 @@ export default class TreeMap extends SortedMap {
    * @return {Object}
    * @private
    */
-  static successor (t) {
+  static successor(t) {
     let p
     if (t === null) {
       return null
@@ -234,11 +234,11 @@ export default class TreeMap extends SortedMap {
     }
   }
 
-  size () {
+  size() {
     return this.#size
   }
 
-  containsKey (key) {
+  containsKey(key) {
     let p = this.#root
     while (p !== null) {
       const cmp = key.compareTo(p.key)

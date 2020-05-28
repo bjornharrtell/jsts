@@ -1,1 +1,1 @@
-export default function StringWriter () {}
+export default function StringWriter() {}

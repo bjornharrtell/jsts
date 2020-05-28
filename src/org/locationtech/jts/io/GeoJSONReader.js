@@ -17,7 +17,7 @@ export default class GeoJSONReader {
    *
    * @param {GeometryFactory} geometryFactory
    */
-  constructor (geometryFactory) {
+  constructor(geometryFactory) {
     this.parser = new GeoJSONParser(geometryFactory || new GeometryFactory())
   }
 
@@ -30,7 +30,7 @@ export default class GeoJSONReader {
    * @return {Geometry|Object} a <code>Geometry or Feature/FeatureCollection representation.</code>
    * @memberof module:org/locationtech/jts/io/GeoJSONReader#
    */
-  read (geoJson) {
+  read(geoJson) {
     const geometry = this.parser.read(geoJson)
     return geometry
   }

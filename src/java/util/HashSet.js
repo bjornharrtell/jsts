@@ -8,51 +8,51 @@ import Set from './Set'
  */
 export default class HashSet extends Set {
   #map = new Map()
-  constructor (o) {
+  constructor(o) {
     super()
     if (o instanceof Collection) this.addAll(o)
   }
 
-  contains (o) {
+  contains(o) {
     const hashCode = o.hashCode ? o.hashCode() : o
     if (this.#map.has(hashCode))
       return true
     return false
   }
 
-  add (o) {
+  add(o) {
     const hashCode = o.hashCode ? o.hashCode() : o
     if (this.#map.has(hashCode))
       return false
     return !!this.#map.set(hashCode, o)
   }
 
-  addAll (c) {
+  addAll(c) {
     for (let i = c.iterator(); i.hasNext();) this.add(i.next())
     return true
   }
 
-  remove () {
+  remove() {
     throw new UnsupportedOperationException()
   }
 
-  size () {
+  size() {
     return this.#map.size
   }
 
-  isEmpty () {
+  isEmpty() {
     return this.#map.size === 0
   }
 
-  toArray () {
+  toArray() {
     return Array.from(this.#map.values())
   }
 
-  iterator () {
+  iterator() {
     return new Iterator(this.#map)
   }
 
-  [Symbol.iterator] () {
+  [Symbol.iterator]() {
     return this.#map
   }
 }
@@ -62,14 +62,14 @@ class Iterator {
   #done
   #value
 
-  constructor (map) {
+  constructor(map) {
     this.#iterator = map.values()
     const { done, value } = this.#iterator.next()
     this.#done = done
     this.#value = value
   }
 
-  next () {
+  next() {
     if (this.#done)
       throw new NoSuchElementException()
     const current = this.#value
@@ -79,11 +79,11 @@ class Iterator {
     return current
   }
 
-  hasNext () {
+  hasNext() {
     return !this.#done
   }
 
-  remove () {
+  remove() {
     throw new UnsupportedOperationException()
   }
 }

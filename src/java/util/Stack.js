@@ -8,12 +8,12 @@ import List from './List'
 export default class Stack extends List {
   #array = []
 
-  add (e) {
+  add(e) {
     this.#array.push(e)
     return true
   }
 
-  get (index) {
+  get(index) {
     if (index < 0 || index >= this.size()) throw new IndexOutOfBoundsException()
     return this.#array[index]
   }
@@ -23,17 +23,16 @@ export default class Stack extends List {
    * @param {Object} e
    * @return {Object}
    */
-  push (e) {
+  push(e) {
     this.#array.push(e)
     return e
   }
 
   /**
-   * Pushes an item onto the top of this stack.
-   * @param {Object} e
+   * Removes the object at the top of this stack and returns that object as the value of this function.
    * @return {Object}
    */
-  pop (e) {
+  pop() {
     if (this.#array.length === 0) throw new EmptyStackException()
     return this.#array.pop()
   }
@@ -43,7 +42,7 @@ export default class Stack extends List {
    * stack.
    * @return {Object}
    */
-  peek () {
+  peek() {
     if (this.#array.length === 0) throw new EmptyStackException()
     return this.#array[this.#array.length - 1]
   }
@@ -53,14 +52,14 @@ export default class Stack extends List {
    * @return {boolean} true if and only if this stack contains no items; false
    *         otherwise.
    */
-  empty () {
+  empty() {
     return this.#array.length === 0
   }
 
   /**
    * @return {boolean}
    */
-  isEmpty () {
+  isEmpty() {
     return this.empty()
   }
 
@@ -78,21 +77,21 @@ export default class Stack extends List {
    *         object is located; the return value -1 indicates that the object is
    *         not on the stack.
    */
-  search (o) {
+  search(o) {
     return this.#array.indexOf(o)
   }
 
   /**
    * @return {number}
    */
-  size () {
+  size() {
     return this.#array.length
   }
 
   /**
    * @return {Array}
    */
-  toArray () {
+  toArray() {
     return this.#array.slice()
   }
 }

@@ -9,7 +9,7 @@ export default class List extends Collection {
      * @param {number} index
      * @return {Object}
      */
-  get () { }
+  get() { }
   /**
      * Replaces the element at the specified position in this list with the
      * specified element (optional operation).
@@ -17,10 +17,10 @@ export default class List extends Collection {
      * @param {Object} e
      * @return {Object}
      */
-  set () { }
+  set() { }
   /**
      * Returns true if this collection contains no elements.
      * @return {boolean}
      */
-  isEmpty () { }
+  isEmpty() { }
 }

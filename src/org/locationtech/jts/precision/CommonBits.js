@@ -1,18 +1,18 @@
 import Double from '../../../../java/lang/Double'
 import Long from '../../../../java/lang/Long'
 export default class CommonBits {
-  constructor () {
+  constructor() {
     this._isFirst = true
     this._commonMantissaBitsCount = 53
     this._commonBits = new Long()
     this._commonSignExp = null
   }
 
-  getCommon () {
+  getCommon() {
     return Double.longBitsToDouble(this._commonBits)
   }
 
-  add (num) {
+  add(num) {
     const numBits = Double.doubleToLongBits(num)
     if (this._isFirst) {
       this._commonBits = numBits
@@ -30,7 +30,7 @@ export default class CommonBits {
     this._commonBits = CommonBits.zeroLowerBits(this._commonBits, 64 - (12 + this._commonMantissaBitsCount))
   }
 
-  toString () {
+  toString() {
     if (arguments.length === 1) {
       const bits = arguments[0]
       const x = Double.longBitsToDouble(bits)
@@ -42,26 +42,26 @@ export default class CommonBits {
     }
   }
 
-  getClass () {
+  getClass() {
     return CommonBits
   }
 
-  get interfaces_ () {
+  get interfaces_() {
     return []
   }
 
-  static getBit (bits, i) {
+  static getBit(bits, i) {
     const mask = (1 << (i % 32))
     if (i < 32) return (bits.low & mask) !== 0 ? 1 : 0
 
     return (bits.high & mask) !== 0 ? 1 : 0
   }
 
-  static signExpBits (num) {
+  static signExpBits(num) {
     return num.high >>> 20
   }
 
-  static zeroLowerBits (bits, nBits) {
+  static zeroLowerBits(bits, nBits) {
     let prop = 'low'
     if (nBits > 32) {
       bits.low = 0 | 0
@@ -75,7 +75,7 @@ export default class CommonBits {
     return bits
   }
 
-  static numCommonMostSigMantissaBits (num1, num2) {
+  static numCommonMostSigMantissaBits(num1, num2) {
     let count = 0
     for (let i = 52; i >= 0; i--) {
       if (CommonBits.getBit(num1, i) !== CommonBits.getBit(num2, i)) return count

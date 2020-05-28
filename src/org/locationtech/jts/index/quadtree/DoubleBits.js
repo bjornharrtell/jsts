@@ -1,8 +1,8 @@
-export default function DoubleBits () { }
-DoubleBits.exponent = function (d) {
+export default function DoubleBits() { }
+DoubleBits.exponent = function(d) {
   return CVTFWD(64, d) - 1023
 }
-DoubleBits.powerOf2 = function (exp) {
+DoubleBits.powerOf2 = function(exp) {
   return Math.pow(2, exp)
 }
 
@@ -17,7 +17,7 @@ DoubleBits.powerOf2 = function (exp) {
  * @return {Number} The integer value of the exponent.
  * @private
  */
-function CVTFWD (NumW, Qty) {
+function CVTFWD(NumW, Qty) {
   let Sign
   let Expo
   let Mant

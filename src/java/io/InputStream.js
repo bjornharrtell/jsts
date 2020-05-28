@@ -1,1 +1,1 @@
-export default function InputStream () {}
+export default function InputStream() {}

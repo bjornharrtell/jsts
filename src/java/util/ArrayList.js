@@ -10,63 +10,63 @@ export default class ArrayList extends List {
   interfaces_ = [List, Collection]
   #array = []
 
-  constructor (o) {
+  constructor(o) {
     super()
     if (o instanceof Collection) this.addAll(o)
   }
 
-  ensureCapacity () { }
+  ensureCapacity() { }
 
-  add (e) {
+  add(e) {
     if (arguments.length === 1)
       this.#array.push(e)
     else this.#array.splice(arguments[0], 0, arguments[1])
     return true
   }
 
-  clear () {
+  clear() {
     this.#array = []
   }
 
-  addAll (c) {
+  addAll(c) {
     for (let i = c.iterator(); i.hasNext();) this.add(i.next())
     return true
   }
 
-  set (index, element) {
+  set(index, element) {
     const oldElement = this.#array[index]
     this.#array[index] = element
     return oldElement
   }
 
-  iterator () {
+  iterator() {
     return new Iterator(this)
   }
 
-  get (index) {
+  get(index) {
     if (index < 0 || index >= this.size()) throw new IndexOutOfBoundsException()
     return this.#array[index]
   }
 
-  isEmpty () {
+  isEmpty() {
     return this.#array.length === 0
   }
 
-  sort (comparator) {
+  sort(comparator) {
     if (comparator)
       this.#array.sort((a, b) => comparator.compare(a, b))
     else this.#array.sort()
   }
 
-  size () {
+  size() {
     return this.#array.length
   }
 
-  toArray () {
+  toArray() {
     return this.#array.slice()
   }
 
-  remove (o) {
+  remove(o) {
     let found = false
 
     for (let i = 0, len = this.#array.length; i < len; i++)
@@ -79,12 +79,12 @@ export default class ArrayList extends List {
     return found
   }
 
-  removeAll (c) {
+  removeAll(c) {
     for (let i = c.iterator(); i.hasNext();) this.remove(i.next())
     return true
   }
 
-  [Symbol.iterator] () {
+  [Symbol.iterator]() {
     return this.#array.values()
   }
 }
@@ -93,25 +93,25 @@ class Iterator {
   #arrayList
   #position = 0
 
-  constructor (arrayList) {
+  constructor(arrayList) {
     this.#arrayList = arrayList
   }
 
-  next () {
+  next() {
     if (this.#position === this.#arrayList.size()) throw new NoSuchElementException()
     return this.#arrayList.get(this.#position++)
   }
 
-  hasNext () {
+  hasNext() {
     return this.#position < this.#arrayList.size()
   }
 
   // TODO: should be in ListIterator
-  set (element) {
+  set(element) {
     return this.#arrayList.set(this.#position - 1, element)
   }
 
-  remove () {
+  remove() {
     this.#arrayList.remove(this.#arrayList.get(this.#position))
   }
 }

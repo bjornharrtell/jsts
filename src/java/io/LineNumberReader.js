@@ -1,1 +1,1 @@
-export default function LineNumberReader () {}
+export default function LineNumberReader() {}

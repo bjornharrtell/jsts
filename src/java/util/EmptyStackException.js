@@ -4,7 +4,7 @@
  * @constructor
  * @private
  */
-export default function EmptyStackException (message) {
+export default function EmptyStackException(message) {
   this.message = message || ''
 }
 EmptyStackException.prototype = new Error()

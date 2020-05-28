@@ -22,7 +22,7 @@ export default class WKTReader {
    * the <code>PrecisionModel</code> and <code>SRID</code> that is used.
    * @param {GeometryFactory} geometryFactory
    */
-  constructor (geometryFactory) {
+  constructor(geometryFactory) {
     this.parser = new WKTParser(geometryFactory || new GeometryFactory())
   }
 
@@ -36,7 +36,7 @@ export default class WKTReader {
    *         <code>string.</code>
    * @memberof module:org/locationtech/jts/io/WKTReader#
    */
-  read (wkt) {
+  read(wkt) {
     return this.parser.read(wkt)
   }
 }

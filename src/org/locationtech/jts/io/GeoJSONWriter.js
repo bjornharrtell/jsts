@@ -18,7 +18,7 @@ export default class GeoJSONWriter {
    * @param {GeometryFactory} geometryFactory
    * @constructor
    */
-  constructor () {
+  constructor() {
     this.parser = new GeoJSONParser(this.geometryFactory)
   }
 
@@ -30,7 +30,7 @@ export default class GeoJSONWriter {
    * @return {Object} The GeoJSON representation of the Geometry.
    * @memberof module:org/locationtech/jts/io/GeoJSONWriter#
    */
-  write (geometry) {
+  write(geometry) {
     return this.parser.write(geometry)
   }
 }

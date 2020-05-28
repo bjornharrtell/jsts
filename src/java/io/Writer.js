@@ -1,1 +1,1 @@
-export default function Writer () {}
+export default function Writer() {}

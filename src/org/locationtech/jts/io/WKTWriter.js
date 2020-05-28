@@ -21,7 +21,7 @@ export default class WKTWriter {
   /**
    * @param {GeometryFactory} geometryFactory
    */
-  constructor (geometryFactory) {
+  constructor(geometryFactory) {
     this.parser = new WKTParser(geometryFactory)
   }
 
@@ -33,7 +33,7 @@ export default class WKTWriter {
    *         Features Specification).
    * @memberof module:org/locationtech/jts/io/WKTWriter#
    */
-  write (geometry) {
+  write(geometry) {
     return this.parser.write(geometry)
   }
 
@@ -47,7 +47,7 @@ export default class WKTWriter {
    * @return the WKT.
    * @private
    */
-  static toLineString (p0, p1) {
+  static toLineString(p0, p1) {
     if (arguments.length !== 2) throw new Error('Not implemented')
 
     return 'LINESTRING ( ' + p0.x + ' ' + p0.y + ', ' + p1.x + ' ' + p1.y + ' )'

@@ -8,7 +8,7 @@ export default class Collection {
      * @param {Object} e
      * @return {boolean}
      */
-  add () { }
+  add() { }
   /**
      * Appends all of the elements in the specified collection to the end of this
      * list, in the order that they are returned by the specified collection's
@@ -16,32 +16,32 @@ export default class Collection {
      * @param {javascript.util.Collection} c
      * @return {boolean}
      */
-  addAll () { }
+  addAll() { }
   /**
      * Returns true if this collection contains no elements.
      * @return {boolean}
      */
-  isEmpty () { }
+  isEmpty() { }
   /**
      * Returns an iterator over the elements in this collection.
      * @return {javascript.util.Iterator}
      */
-  iterator () { }
+  iterator() { }
   /**
      * Returns an iterator over the elements in this collection.
      * @return {number}
      */
-  size () { }
+  size() { }
   /**
      * Returns an array containing all of the elements in this collection.
      * @return {Array}
      */
-  toArray () { }
+  toArray() { }
   /**
      * Removes a single instance of the specified element from this collection if it
      * is present. (optional)
      * @param {Object} e
      * @return {boolean}
      */
-  remove () { }
+  remove() { }
 }

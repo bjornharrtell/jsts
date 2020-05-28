@@ -1,1 +1,1 @@
-export default function DecimalFormat () {}
+export default function DecimalFormat() {}

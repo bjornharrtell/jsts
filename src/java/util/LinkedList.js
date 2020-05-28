@@ -1,14 +1,14 @@
 export default class LinkedList {
   #array = []
-  addLast (e) {
+  addLast(e) {
     this.#array.push(e)
   }
 
-  removeFirst () {
+  removeFirst() {
     return this.#array.shift()
   }
 
-  isEmpty () {
+  isEmpty() {
     return this.#array.length === 0
   }
 }

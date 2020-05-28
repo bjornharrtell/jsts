@@ -1,4 +1,4 @@
-export default function RuntimeException (message) {
+export default function RuntimeException(message) {
   this.name = 'RuntimeException'
   this.message = message
   this.stack = (new Error()).stack

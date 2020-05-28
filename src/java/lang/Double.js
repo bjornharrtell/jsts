@@ -1,6 +1,6 @@
 import Long from './Long'
 
-export default function Double () { }
+export default function Double() { }
 
 Double.isNaN = n => Number.isNaN(n)
 Double.isInfinite = n => !Number.isFinite(n)
@@ -11,12 +11,12 @@ if (typeof Float64Array === 'function' &&
 // Simple and fast conversion between double and long bits
 // using TypedArrays and ArrayViewBuffers.
 
-  (function () {
+  (function() {
     const EXP_BIT_MASK = 0x7ff00000
     const SIGNIF_BIT_MASK = 0xFFFFF
     const f64buf = new Float64Array(1)
     const i32buf = new Int32Array(f64buf.buffer)
-    Double.doubleToLongBits = function (value) {
+    Double.doubleToLongBits = function(value) {
       f64buf[0] = value
       let low = i32buf[0] | 0
       let high = i32buf[1] | 0
@@ -30,7 +30,7 @@ if (typeof Float64Array === 'function' &&
       }
       return new Long(high, low)
     }
-    Double.longBitsToDouble = function (bits) {
+    Double.longBitsToDouble = function(bits) {
       i32buf[0] = bits.low
       i32buf[1] = bits.high
       return f64buf[0]
@@ -40,19 +40,19 @@ else
 // More complex and slower fallback implementation using
 // math and the divide-by-two and multiply-by-two algorithms.
 
-  (function () {
+  (function() {
     const BIAS = 1023
     const log2 = Math.log2
     const floor = Math.floor
     const pow = Math.pow
-    const MAX_REL_BITS_INTEGER = (function () {
+    const MAX_REL_BITS_INTEGER = (function() {
       for (let i = 53; i > 0; i--) {
         const bits = pow(2, i) - 1
         if (floor(log2(bits)) + 1 === i) return bits
       }
       return 0
     })()
-    Double.doubleToLongBits = function (value) {
+    Double.doubleToLongBits = function(value) {
       let x, y, f, bits, skip
       let sign, exp, high, low
 
@@ -139,7 +139,7 @@ else
           // Preserve x for later user, so work with f.
           f = x
           low = 0 | 0
-          while (true) {
+          for (;;) {
             y = f / 2
             f = floor(y)
             if (f === 0)
@@ -179,7 +179,7 @@ else
         // shifted from right to left.
         f = 0
 
-        while (true) {
+        for (;;) {
           y = x * 2
           if (y >= 1) {
             // This is a new 1-bit. Add and count this bit, if not
@@ -245,7 +245,7 @@ else
 
       return new Long(high, low)
     }
-    Double.longBitsToDouble = function (bits) {
+    Double.longBitsToDouble = function(bits) {
       let i
       let x, exp, fract
       const high = bits.high
