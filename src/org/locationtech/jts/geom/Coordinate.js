@@ -6,6 +6,11 @@ import Cloneable from '../../../../java/lang/Cloneable'
 import Comparator from '../../../../java/util/Comparator'
 import Serializable from '../../../../java/io/Serializable'
 import Assert from '../util/Assert'
+
+const kBuf = new ArrayBuffer(8)
+const kBufAsF64 = new Float64Array(kBuf)
+const kBufAsI32 = new Int32Array(kBuf)
+
 export default class Coordinate {
   constructor() {
     Coordinate.constructor_.apply(this, arguments)
@@ -29,12 +34,9 @@ export default class Coordinate {
       this.z = z
     }
   }
-  static hashCode() {
-    if (arguments.length === 1 && typeof arguments[0] === 'number') {
-      const x = arguments[0]
-      const f = Double.doubleToLongBits(x)
-      return Math.trunc(f ^ f >>> 32)
-    }
+  static hashCode(n) {
+    kBufAsF64[0] = n
+    return kBufAsI32[0] ^ kBufAsI32[1]
   }
   getM() {
     return Double.NaN

@@ -7,23 +7,24 @@ import Set from './Set'
  * @see http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html
  */
 export default class HashSet extends Set {
-  #array = []
-
+  #map = new Map()
   constructor (o) {
     super()
     if (o instanceof Collection) this.addAll(o)
   }
 
   contains (o) {
-    if (o.compareTo)
-      return this.#array.some(v => v.compareTo(o) === 0)
-    else return this.#array.includes(o)
+    const hashCode = o.hashCode ? o.hashCode() : o
+    if (this.#map.has(hashCode))
+      return true
+    return false
   }
 
   add (o) {
-    if (this.contains(o)) return false
-    this.#array.push(o)
-    return true
+    const hashCode = o.hashCode ? o.hashCode() : o
+    if (this.#map.has(hashCode))
+      return false
+    return !!this.#map.set(hashCode, o)
   }
 
   addAll (c) {
@@ -31,44 +32,55 @@ export default class HashSet extends Set {
     return true
   }
 
-  remove (o) {
+  remove () {
     throw new UnsupportedOperationException()
   }
 
   size () {
-    return this.#array.length
+    return this.#map.size
   }
 
   isEmpty () {
-    return this.#array.length === 0
+    return this.#map.size === 0
   }
 
   toArray () {
-    return this.#array.slice()
+    return Array.from(this.#map.values())
   }
 
   iterator () {
-    return new Iterator(this.#array)
+    return new Iterator(this.#map)
+  }
+
+  [Symbol.iterator] () {
+    return this.#map
   }
 }
 
 class Iterator {
-  #array
-  #position = 0
+  #iterator
+  #done
+  #value
 
-  constructor (array) {
-    this.#array = array
+  constructor (map) {
+    this.#iterator = map.values()
+    const { done, value } = this.#iterator.next()
+    this.#done = done
+    this.#value = value
   }
 
   next () {
-    if (this.#position === this.#array.length) throw new NoSuchElementException()
-    return this.#array[this.#position++]
+    if (this.#done)
+      throw new NoSuchElementException()
+    const current = this.#value
+    const { done, value } = this.#iterator.next()
+    this.#done = done
+    this.#value = value
+    return current
   }
 
   hasNext () {
-    if (this.#position < this.#array.length)
-      return true
-    else return false
+    return !this.#done
   }
 
   remove () {
