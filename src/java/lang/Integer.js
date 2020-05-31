@@ -9,14 +9,18 @@ export default class Integer {
   }
 
   compareTo(o) {
-    if (this.#value < o) return -1
-    if (this.#value > o) return 1
+    if (this.#value < o)
+      return -1
+    if (this.#value > o)
+      return 1
     return 0
   }
 
   static compare(x, y) {
-    if (x < y) return -1
-    if (x > y) return 1
+    if (x < y)
+      return -1
+    if (x > y)
+      return 1
     return 0
   }
 

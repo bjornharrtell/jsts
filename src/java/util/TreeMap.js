@@ -4,6 +4,7 @@ import HashSet from './HashSet'
 
 const BLACK = 0
 const RED = 1
+
 function colorOf(p) {
   return (p == null ? BLACK : p.color)
 }
@@ -145,7 +146,8 @@ export default class TreeMap extends SortedMap {
     let p = this.getFirstEntry()
     if (p !== null) {
       arrayList.add(p.value)
-      while ((p = TreeMap.successor(p)) !== null) arrayList.add(p.value)
+      while ((p = TreeMap.successor(p)) !== null)
+        arrayList.add(p.value)
     }
     return arrayList
   }
@@ -155,7 +157,8 @@ export default class TreeMap extends SortedMap {
     let p = this.getFirstEntry()
     if (p !== null) {
       hashSet.add(p)
-      while ((p = TreeMap.successor(p)) !== null) hashSet.add(p)
+      while ((p = TreeMap.successor(p)) !== null)
+        hashSet.add(p)
     }
     return hashSet
   }
@@ -167,13 +170,15 @@ export default class TreeMap extends SortedMap {
     if (p != null) {
       const r = p.right
       p.right = r.left
-      if (r.left != null) r.left.parent = p
+      if (r.left != null)
+        r.left.parent = p
       r.parent = p.parent
       if (p.parent == null)
         this.#root = r
       else if (p.parent.left === p)
         p.parent.left = r
-      else p.parent.right = r
+      else
+        p.parent.right = r
       r.left = p
       p.parent = r
     }
@@ -186,13 +191,15 @@ export default class TreeMap extends SortedMap {
     if (p != null) {
       const l = p.left
       p.left = l.right
-      if (l.right != null) l.right.parent = p
+      if (l.right != null)
+        l.right.parent = p
       l.parent = p.parent
       if (p.parent == null)
         this.#root = l
       else if (p.parent.right === p)
         p.parent.right = l
-      else p.parent.left = l
+      else
+        p.parent.left = l
       l.right = p
       p.parent = l
     }
@@ -205,7 +212,6 @@ export default class TreeMap extends SortedMap {
     let p = this.#root
     if (p != null)
       while (p.left != null) p = p.left
-
     return p
   }
 
@@ -220,8 +226,8 @@ export default class TreeMap extends SortedMap {
       return null
     } else if (t.right !== null) {
       p = t.right
-      while (p.left !== null) p = p.left
-
+      while (p.left !== null)
+        p = p.left
       return p
     } else {
       p = t.parent

@@ -16,27 +16,21 @@ export default class TreeSet extends SortedSet {
   }
 
   contains(o) {
-    for (let i = 0, len = this.#array.length; i < len; i++) {
-      const e = this.#array[i]
+    for (const e of this.#array)
       if (e.compareTo(o) === 0)
         return true
-    }
     return false
   }
 
   add(o) {
-    if (this.contains(o)) return false
-
+    if (this.contains(o))
+      return false
     for (let i = 0, len = this.#array.length; i < len; i++) {
       const e = this.#array[i]
-      if (e.compareTo(o) === 1) {
-        this.#array.splice(i, 0, o)
-        return true
-      }
+      if (e.compareTo(o) === 1)
+        return !!this.#array.splice(i, 0, o)
     }
-
     this.#array.push(o)
-
     return true
   }
 
