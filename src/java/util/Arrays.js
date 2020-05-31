@@ -5,34 +5,25 @@ import ArrayList from './ArrayList'
  */
 export default class Arrays {
   static sort() {
-    const a = arguments[0]; let i; let t; let comparator; let compare
+    const a = arguments[0]
     if (arguments.length === 1) {
-      compare = function(a, b) {
-        return a.compareTo(b)
-      }
-      a.sort(compare)
+      a.sort((a, b) => a.compareTo(b))
     } else if (arguments.length === 2) {
-      comparator = arguments[1]
-      compare = function(a, b) {
-        return comparator.compare(a, b)
-      }
-      a.sort(compare)
+      a.sort((a, b) => arguments[1].compare(a, b))
     } else if (arguments.length === 3) {
-      t = a.slice(arguments[1], arguments[2])
+      const t = a.slice(arguments[1], arguments[2])
       t.sort()
       const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
       a.splice(0, a.length)
-      for (i = 0; i < r.length; i++) a.push(r[i])
+      for (const e of r)
+        a.push(e)
     } else if (arguments.length === 4) {
-      t = a.slice(arguments[1], arguments[2])
-      comparator = arguments[3]
-      compare = function(a, b) {
-        return comparator.compare(a, b)
-      }
-      t.sort(compare)
+      const t = a.slice(arguments[1], arguments[2])
+      t.sort((a, b) => arguments[3].compare(a, b))
       const r = a.slice(0, arguments[1]).concat(t, a.slice(arguments[2], a.length))
       a.splice(0, a.length)
-      for (i = 0; i < r.length; i++) a.push(r[i])
+      for (const e of r)
+        a.push(e)
     }
   }
 
@@ -42,8 +33,8 @@ export default class Arrays {
    */
   static asList(array) {
     const arrayList = new ArrayList()
-    for (let i = 0, len = array.length; i < len; i++) arrayList.add(array[i])
-
+    for (const e of array)
+      arrayList.add(e)
     return arrayList
   }
 

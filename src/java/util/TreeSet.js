@@ -11,13 +11,15 @@ export default class TreeSet extends SortedSet {
 
   constructor(o) {
     super()
-    if (o instanceof Collection) this.addAll(o)
+    if (o instanceof Collection)
+      this.addAll(o)
   }
 
   contains(o) {
     for (let i = 0, len = this.#array.length; i < len; i++) {
       const e = this.#array[i]
-      if (e.compareTo(o) === 0) return true
+      if (e.compareTo(o) === 0)
+        return true
     }
     return false
   }
@@ -39,8 +41,8 @@ export default class TreeSet extends SortedSet {
   }
 
   addAll(c) {
-    for (let i = c.iterator(); i.hasNext();) this.add(i.next())
-
+    for (const e of c)
+      this.add(e)
     return true
   }
 
@@ -74,7 +76,8 @@ class Iterator {
   }
 
   next() {
-    if (this.#position === this.#array.length) throw new NoSuchElementException()
+    if (this.#position === this.#array.length)
+      throw new NoSuchElementException()
     return this.#array[this.#position++]
   }
 

@@ -14,7 +14,8 @@ export default class Stack extends List {
   }
 
   get(index) {
-    if (index < 0 || index >= this.size()) throw new IndexOutOfBoundsException()
+    if (index < 0 || index >= this.size())
+      throw new IndexOutOfBoundsException()
     return this.#array[index]
   }
 
@@ -33,7 +34,8 @@ export default class Stack extends List {
    * @return {Object}
    */
   pop() {
-    if (this.#array.length === 0) throw new EmptyStackException()
+    if (this.#array.length === 0)
+      throw new EmptyStackException()
     return this.#array.pop()
   }
 
@@ -43,7 +45,8 @@ export default class Stack extends List {
    * @return {Object}
    */
   peek() {
-    if (this.#array.length === 0) throw new EmptyStackException()
+    if (this.#array.length === 0)
+      throw new EmptyStackException()
     return this.#array[this.#array.length - 1]
   }
 

@@ -10,7 +10,8 @@ export default class HashSet extends Set {
   #map = new Map()
   constructor(o) {
     super()
-    if (o instanceof Collection) this.addAll(o)
+    if (o instanceof Collection)
+      this.addAll(o)
   }
 
   contains(o) {
@@ -28,7 +29,8 @@ export default class HashSet extends Set {
   }
 
   addAll(c) {
-    for (let i = c.iterator(); i.hasNext();) this.add(i.next())
+    for (const e of c)
+      this.add(e)
     return true
   }
 
