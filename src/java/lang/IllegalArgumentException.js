@@ -1,3 +1,3 @@
-export default function IllegalArgumentException(message) {
-  this.message = message
-}
+import Exception from './Exception'
+
+export default class IllegalArgumentException extends Exception { }

@@ -20,6 +20,8 @@ describe('GeometryComponentFilter is not defined on polygon intersection (#258)'
     const polygon1 = factory.createPolygon(factory.createLinearRing(coordinates))
     const polygon2 = factory.createPolygon(factory.createLinearRing(coordinates))
 
-    expect(() => OverlayOp.intersection(polygon1, polygon2)).to.throwError(e => expect(e).to.be.a(TopologyException))
+    expect(() => OverlayOp.intersection(polygon1, polygon2)).to.throwError(e => 
+      expect(e).to.be.a(TopologyException)
+    )
   })
 })

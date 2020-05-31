@@ -1,15 +1,3 @@
-/**
- * @param {string=} message Optional message
- * @extends {Error}
- * @constructor
- * @private
- */
-export default function NoSuchElementException(message) {
-  this.message = message || ''
-}
-NoSuchElementException.prototype = new Error()
+import Exception from '../lang/Exception'
 
-/**
- * @type {string}
- */
-NoSuchElementException.prototype.name = 'NoSuchElementException'
+export default class NoSuchElementException extends Exception { }

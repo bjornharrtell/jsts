@@ -1,15 +1,3 @@
-/**
- * @param {string=} message Optional message
- * @extends {Error}
- * @constructor
- * @private
- */
-export default function IndexOutOfBoundsException(message) {
-  this.message = message || ''
-}
-IndexOutOfBoundsException.prototype = new Error()
+import Exception from './Exception'
 
-/**
- * @type {string}
- */
-IndexOutOfBoundsException.prototype.name = 'IndexOutOfBoundsException'
+export default class IndexOutOfBoundsException extends Exception { }

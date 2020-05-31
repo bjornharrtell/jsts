@@ -1,15 +1,3 @@
-/**
- * @param {string=} message Optional message
- * @extends {Error}
- * @constructor
- * @private
- */
-export default function UnsupportedOperationException(message) {
-  this.message = message || ''
-}
-UnsupportedOperationException.prototype = new Error()
+import Exception from './Exception'
 
-/**
- * @type {string}
- */
-UnsupportedOperationException.prototype.name = 'OperationNotSupported'
+export default class UnsupportedOperationException extends Exception { }
