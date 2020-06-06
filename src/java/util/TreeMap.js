@@ -25,11 +25,14 @@ function rightOf(p) {
  * @see http://download.oracle.com/javase/6/docs/api/java/util/TreeMap.html
  */
 export default class TreeMap extends SortedMap {
-  #root = null
-  #size = 0
+  constructor() {
+    super()
+    this.root_ = null
+    this.size_ = 0
+  }
 
   get(key) {
-    let p = this.#root
+    let p = this.root_
     while (p !== null) {
       const cmp = key.compareTo(p.key)
       if (cmp < 0)
@@ -42,8 +45,8 @@ export default class TreeMap extends SortedMap {
   }
 
   put(key, value) {
-    if (this.#root === null) {
-      this.#root = {
+    if (this.root_ === null) {
+      this.root_ = {
         key: key,
         value: value,
         left: null,
@@ -57,10 +60,10 @@ export default class TreeMap extends SortedMap {
           return this.key
         }
       }
-      this.#size = 1
+      this.size_ = 1
       return null
     }
-    let t = this.#root; let parent; let cmp
+    let t = this.root_; let parent; let cmp
     do {
       parent = t
       cmp = key.compareTo(t.key)
@@ -93,7 +96,7 @@ export default class TreeMap extends SortedMap {
     else parent.right = e
 
     this.fixAfterInsertion(e)
-    this.#size++
+    this.size_++
     return null
   }
 
@@ -103,7 +106,7 @@ export default class TreeMap extends SortedMap {
   fixAfterInsertion(x) {
     let y
     x.color = RED
-    while (x != null && x !== this.#root && x.parent.color === RED)
+    while (x != null && x !== this.root_ && x.parent.color === RED)
       if (parentOf(x) === leftOf(parentOf(parentOf(x)))) {
         y = rightOf(parentOf(parentOf(x)))
         if (colorOf(y) === RED) {
@@ -138,7 +141,7 @@ export default class TreeMap extends SortedMap {
         }
       }
 
-    this.#root.color = BLACK
+    this.root_.color = BLACK
   }
 
   values() {
@@ -174,7 +177,7 @@ export default class TreeMap extends SortedMap {
         r.left.parent = p
       r.parent = p.parent
       if (p.parent == null)
-        this.#root = r
+        this.root_ = r
       else if (p.parent.left === p)
         p.parent.left = r
       else
@@ -195,7 +198,7 @@ export default class TreeMap extends SortedMap {
         l.right.parent = p
       l.parent = p.parent
       if (p.parent == null)
-        this.#root = l
+        this.root_ = l
       else if (p.parent.right === p)
         p.parent.right = l
       else
@@ -209,7 +212,7 @@ export default class TreeMap extends SortedMap {
    * @return {Object}
    */
   getFirstEntry() {
-    let p = this.#root
+    let p = this.root_
     if (p != null)
       while (p.left != null) p = p.left
     return p
@@ -241,11 +244,11 @@ export default class TreeMap extends SortedMap {
   }
 
   size() {
-    return this.#size
+    return this.size_
   }
 
   containsKey(key) {
-    let p = this.#root
+    let p = this.root_
     while (p !== null) {
       const cmp = key.compareTo(p.key)
       if (cmp < 0)

@@ -1,9 +1,7 @@
 export default class Long {
-  high = 0
-  low = 0
   constructor(high, low) {
-    this.low = low
-    this.high = high
+    this.low = low || 0
+    this.high = high || 0
   }
 
   static toBinaryString(i) {

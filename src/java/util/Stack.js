@@ -6,17 +6,20 @@ import List from './List'
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Stack.html
  */
 export default class Stack extends List {
-  #array = []
+  constructor() {
+    super()
+    this.array = []
+  }
 
   add(e) {
-    this.#array.push(e)
+    this.array.push(e)
     return true
   }
 
   get(index) {
     if (index < 0 || index >= this.size())
       throw new IndexOutOfBoundsException()
-    return this.#array[index]
+    return this.array[index]
   }
 
   /**
@@ -25,7 +28,7 @@ export default class Stack extends List {
    * @return {Object}
    */
   push(e) {
-    this.#array.push(e)
+    this.array.push(e)
     return e
   }
 
@@ -34,9 +37,9 @@ export default class Stack extends List {
    * @return {Object}
    */
   pop() {
-    if (this.#array.length === 0)
+    if (this.array.length === 0)
       throw new EmptyStackException()
-    return this.#array.pop()
+    return this.array.pop()
   }
 
   /**
@@ -45,9 +48,9 @@ export default class Stack extends List {
    * @return {Object}
    */
   peek() {
-    if (this.#array.length === 0)
+    if (this.array.length === 0)
       throw new EmptyStackException()
-    return this.#array[this.#array.length - 1]
+    return this.array[this.array.length - 1]
   }
 
   /**
@@ -56,7 +59,7 @@ export default class Stack extends List {
    *         otherwise.
    */
   empty() {
-    return this.#array.length === 0
+    return this.array.length === 0
   }
 
   /**
@@ -81,20 +84,20 @@ export default class Stack extends List {
    *         not on the stack.
    */
   search(o) {
-    return this.#array.indexOf(o)
+    return this.array.indexOf(o)
   }
 
   /**
    * @return {number}
    */
   size() {
-    return this.#array.length
+    return this.array.length
   }
 
   /**
    * @return {Array}
    */
   toArray() {
-    return this.#array.slice()
+    return this.array.slice()
   }
 }

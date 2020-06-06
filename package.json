@@ -14,7 +14,6 @@
   "license": "(EDL-1.0 OR EPL-1.0)",
   "devDependencies": {
     "@babel/core": "7.10.2",
-    "@babel/plugin-proposal-class-properties": "7.10.1",
     "@babel/preset-env": "7.10.2",
     "babel-eslint": "10.1.0",
     "chai": "4.2.0",
