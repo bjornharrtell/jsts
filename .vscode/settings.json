@@ -1,0 +1,8 @@
+{
+    "mochaExplorer.debuggerConfig": "",
+    "mochaExplorer.files": ["test/manual/**/*.js", "test/auto/node/**/*.js"],
+    "mochaExplorer.require": ["@babel/register", "esm"],
+    "mochaExplorer.env": {
+        "NODE_PATH": "src"
+    }
+}
