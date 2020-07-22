@@ -8,11 +8,11 @@ export default class Octant {
       const adx = Math.abs(dx)
       const ady = Math.abs(dy)
       if (dx >= 0) 
-        if (dy >= 0) {
+        if (dy >= 0) 
           if (adx >= ady) return 0; else return 1
-        } else {
-          if (adx >= ady) return 7; else return 6
-        }
+        else 
+        if (adx >= ady) return 7; else return 6
+        
       else 
       if (dy >= 0) 
         if (adx >= ady) return 3; else return 2

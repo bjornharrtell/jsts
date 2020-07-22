@@ -71,9 +71,9 @@ export default class PointLocator {
     if (!l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     const seq = l.getCoordinateSequence()
     if (!l.isClosed()) 
-      if (p.equals(seq.getCoordinate(0)) || p.equals(seq.getCoordinate(seq.size() - 1))) {
+      if (p.equals(seq.getCoordinate(0)) || p.equals(seq.getCoordinate(seq.size() - 1))) 
         return Location.BOUNDARY
-      }
+      
     
     if (PointLocation.isOnLine(p, seq)) 
       return Location.INTERIOR

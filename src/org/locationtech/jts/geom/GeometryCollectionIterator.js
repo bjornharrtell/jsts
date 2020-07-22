@@ -28,11 +28,11 @@ export default class GeometryCollectionIterator {
       return this._parent
     }
     if (this._subcollectionIterator !== null) 
-      if (this._subcollectionIterator.hasNext()) {
+      if (this._subcollectionIterator.hasNext()) 
         return this._subcollectionIterator.next()
-      } else {
+      else 
         this._subcollectionIterator = null
-      }
+      
     
     if (this._index >= this._max) 
       throw new NoSuchElementException()

@@ -218,9 +218,9 @@ export default class AbstractSTRtree {
         }
       }
       if (childToPrune !== null) 
-        if (childToPrune.getChildBoundables().isEmpty()) {
+        if (childToPrune.getChildBoundables().isEmpty()) 
           node.getChildBoundables().remove(childToPrune)
-        }
+        
       
       return found
     }

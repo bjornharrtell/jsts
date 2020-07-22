@@ -13,36 +13,36 @@ export default class RobustDeterminant {
     let count = 0
     sign = 1
     if (x1 === 0.0 || y2 === 0.0) 
-      if (y1 === 0.0 || x2 === 0.0) {
+      if (y1 === 0.0 || x2 === 0.0) 
         return 0
-      } else if (y1 > 0) {
+      else if (y1 > 0) 
         if (x2 > 0) 
           return -sign
         else 
           return sign
         
-      } else {
-        if (x2 > 0) 
-          return sign
-        else 
-          return -sign
+      else 
+      if (x2 > 0) 
+        return sign
+      else 
+        return -sign
         
-      }
+      
     
     if (y1 === 0.0 || x2 === 0.0) 
-      if (y2 > 0) {
+      if (y2 > 0) 
         if (x1 > 0) 
           return sign
         else 
           return -sign
         
-      } else {
-        if (x1 > 0) 
-          return -sign
-        else 
-          return sign
+      else 
+      if (x1 > 0) 
+        return -sign
+      else 
+        return sign
         
-      }
+      
     
     if (0.0 < y1) {
       if (0.0 < y2) {
@@ -150,11 +150,11 @@ export default class RobustDeterminant {
         }
       }
       if (y2 === 0.0) 
-        if (x2 === 0.0) {
+        if (x2 === 0.0) 
           return 0
-        } else {
+        else 
           return -sign
-        }
+        
       
       if (x2 === 0.0) 
         return sign
@@ -182,11 +182,11 @@ export default class RobustDeterminant {
         }
       }
       if (y1 === 0.0) 
-        if (x1 === 0.0) {
+        if (x1 === 0.0) 
           return 0
-        } else {
+        else 
           return sign
-        }
+        
       
       if (x1 === 0.0) 
         return -sign

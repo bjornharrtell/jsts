@@ -57,9 +57,9 @@ export default class NodingValidator {
       const p11 = e1.getCoordinates()[segIndex1 + 1]
       this._li.computeIntersection(p00, p01, p10, p11)
       if (this._li.hasIntersection()) 
-        if (this._li.isProper() || this.hasInteriorIntersection(this._li, p00, p01) || this.hasInteriorIntersection(this._li, p10, p11)) {
+        if (this._li.isProper() || this.hasInteriorIntersection(this._li, p00, p01) || this.hasInteriorIntersection(this._li, p10, p11)) 
           throw new RuntimeException('found non-noded intersection at ' + p00 + '-' + p01 + ' and ' + p10 + '-' + p11)
-        }
+        
       
     }
   }

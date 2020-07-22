@@ -70,9 +70,9 @@ export default class Depth {
         for (let j = 1; j < 3; j++) {
           const loc = lbl.getLocation(i, j)
           if (loc === Location.EXTERIOR || loc === Location.INTERIOR) 
-            if (this.isNull(i, j)) {
+            if (this.isNull(i, j)) 
               this._depth[i][j] = Depth.depthAtLocation(loc)
-            } else this._depth[i][j] += Depth.depthAtLocation(loc)
+            else this._depth[i][j] += Depth.depthAtLocation(loc)
           
         }
       

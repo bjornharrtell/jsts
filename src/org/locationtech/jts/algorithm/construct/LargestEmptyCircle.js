@@ -2,6 +2,7 @@ import Location from '../../geom/Location'
 import PriorityQueue from '../../../../../java/util/PriorityQueue'
 import Coordinate from '../../geom/Coordinate'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
+import Centroid from '../Centroid'
 import Comparable from '../../../../../java/lang/Comparable'
 import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance'
 import IndexedPointInAreaLocator from '../locate/IndexedPointInAreaLocator'
@@ -84,7 +85,7 @@ export default class LargestEmptyCircle {
     return this._radiusPoint
   }
   createCentroidCell(geom) {
-    const p = geom.getCentroid()
+    const p = this._factory.createPoint(Centroid.getCentroid(geom))
     return new Cell(p.getX(), p.getY(), 0, this.distanceToConstraints(p))
   }
   getCenter() {

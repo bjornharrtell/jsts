@@ -49,17 +49,17 @@ export default class CGAlgorithmsDD {
     const detright = (pa.y - pc.y) * (pb.x - pc.x)
     const det = detleft - detright
     if (detleft > 0.0) 
-      if (detright <= 0.0) {
+      if (detright <= 0.0) 
         return CGAlgorithmsDD.signum(det)
-      } else {
+      else 
         detsum = detleft + detright
-      }
+      
     else if (detleft < 0.0) 
-      if (detright >= 0.0) {
+      if (detright >= 0.0) 
         return CGAlgorithmsDD.signum(det)
-      } else {
+      else 
         detsum = -detleft - detright
-      }
+      
     else 
       return CGAlgorithmsDD.signum(det)
     

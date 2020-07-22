@@ -15,11 +15,11 @@ export default class Assert {
     } else if (arguments.length === 2) {
       const assertion = arguments[0], message = arguments[1]
       if (!assertion) 
-        if (message === null) {
+        if (message === null) 
           throw new AssertionFailedException()
-        } else {
+        else 
           throw new AssertionFailedException(message)
-        }
+        
       
     }
   }

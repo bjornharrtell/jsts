@@ -4,6 +4,7 @@ import Coordinate from '../../geom/Coordinate'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
 import Polygon from '../../geom/Polygon'
 import MultiPolygon from '../../geom/MultiPolygon'
+import Centroid from '../Centroid'
 import Comparable from '../../../../../java/lang/Comparable'
 import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance'
 import Envelope from '../../geom/Envelope'
@@ -94,7 +95,7 @@ export default class MaximumInscribedCircle {
     return this._radiusPoint
   }
   createCentroidCell(geom) {
-    const p = geom.getCentroid()
+    const p = this._factory.createPoint(Centroid.getCentroid(geom))
     return new Cell(p.getX(), p.getY(), 0, this.distanceToBoundary(p))
   }
   getCenter() {
