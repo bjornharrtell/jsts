@@ -6,6 +6,7 @@ import { expect } from 'chai'
 import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
+import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
 import 'org/locationtech/jts/monkey'
 
 import BufferResultMatcher from '../BufferResultMatcher'
@@ -13,7 +14,7 @@ import BufferResultMatcher from '../BufferResultMatcher'
 /**
  * @return GeometryFactory with PrecisionModel from test XML (undefined if no such info in XML)
  */
-function createGeometryFactory (precisionModelInfo) {
+function createGeometryFactory(precisionModelInfo) {
   if (precisionModelInfo.length === 1) {
     const type = precisionModelInfo.attr('type')
     if (type !== 'FLOATING') {
@@ -27,29 +28,35 @@ function createGeometryFactory (precisionModelInfo) {
   }
 }
 
-function fail (r, e, i) {
-  throw new Error(`\nResult: ${r}\nExpected: ${e}\nInput: ${i}`)
-}
+
 
 /**
  * Translate JTS XML testcase document to Mocha suites
  */
-export default function (doc, title) {
+export default function(doc, title) {
   const cases = $('case', doc)
   const geometryFactory = createGeometryFactory($('precisionModel', doc))
   const reader = new WKTReader(geometryFactory)
+  const writer = new WKTWriter(geometryFactory)
+
+  function fail(r, e, i) {
+    const rt = r ? writer.write(r) : 'undefined'
+    throw new Error(`\nResult: ${rt}\nExpected: ${e}\nInput: ${i}`)
+  }
 
   /**
    * Translate JTS XML "test" to a Jasmine test spec
    */
-  const generateSpec = function (a, b, opname, arg2, arg3, expected) {
+  const generateSpec = function(a, b, opname, arg2, arg3, expected) {
     // fix opnames to real methods where needed
     if (opname === 'convexhull') opname = 'convexHull'
     else if (opname === 'getboundary') opname = 'getBoundary'
     else if (opname === 'symdifference') opname = 'symDifference'
 
-    it('Executing ' + opname + ' on test geometry', function () {
-      const inputs = ' Input geometry A: ' + a + (b ? ' B: ' + b : '')
+    it('Executing ' + opname + ' on test geometry', function() {
+      const at = writer.write(a)
+      const bt = b ? writer.write(b) : 'undefined'
+      const inputs = ' Input geometry A: ' + at + ' B: ' + bt
 
       var result
 
@@ -99,7 +106,7 @@ export default function (doc, title) {
         result.normalize()
         expectedGeometry.normalize()
         if (!result.equalsExact(expectedGeometry)) {
-          fail(result, expected, inputs)
+          fail(result, writer.write(expectedGeometry), inputs)
         } else {
           expect(true).to.be.true
         }

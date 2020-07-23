@@ -4,8 +4,6 @@ import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import DelaunayTriangulationBuilder from 'org/locationtech/jts/triangulate/DelaunayTriangulationBuilder'
 import WKTReader from 'org/locationtech/jts/io/WKTReader'
 
-
-
 describe('DelauneyTriangulationBuilder', function () {
   var geomFact = new GeometryFactory()
   var reader = new WKTReader()
@@ -16,26 +14,25 @@ describe('DelauneyTriangulationBuilder', function () {
     builder.setSites(sites)
 
     var result = null
-    if (computeTriangles) {
+    if (computeTriangles)
       result = builder.getTriangles(geomFact)
-    } else {
+    else
       result = builder.getEdges(geomFact)
-    }
 
     return result
   }
 
-  var runDelaunayEdges = function (sitesWKT) {
+  var runDelaunayEdges = function(sitesWKT) {
     return runDelaunay(sitesWKT, false)
   }
 
-  it('can be constructed', function () {
+  it('can be constructed', function() {
     var builder = new DelaunayTriangulationBuilder()
     expect(builder).to.be.an(DelaunayTriangulationBuilder)
   })
 
-  it('can build from multipoints', function () {
-    var wkt = 'MULTIPOINT ((10 10 1), (10 20 2), (20 20 3))'
+  it('can build from multipoints', function() {
+    var wkt = 'MULTIPOINT Z ((10 10 1), (10 20 2), (20 20 3))'
     var expected = reader.read('MULTILINESTRING ((10 20, 20 20), (10 10, 10 20), (10 10, 20 20))')
     var result = runDelaunayEdges(wkt)
     expect(result.equalsExact(expected)).to.be.ok()
