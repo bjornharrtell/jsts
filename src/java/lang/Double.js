@@ -2,6 +2,7 @@ import Long from './Long'
 
 export default function Double() { }
 
+Double.NaN = NaN
 Double.isNaN = n => Number.isNaN(n)
 Double.isInfinite = n => !Number.isFinite(n)
 Double.MAX_VALUE = Number.MAX_VALUE
