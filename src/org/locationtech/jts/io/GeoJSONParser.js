@@ -155,7 +155,7 @@ const parse = {
    * @return {Point} Point.
    */
   Point: function(array) {
-    const coordinate = new Coordinate(array[0], array[1])
+    const coordinate = new Coordinate(...array)
     return this.geometryFactory.createPoint(coordinate)
   },
 
@@ -266,7 +266,12 @@ const extract = {
    * @return {Array} Array of ordinates.
    */
   coordinate: function(coordinate) {
-    return [coordinate.x, coordinate.y]
+    const a = [coordinate.x, coordinate.y]
+    if (coordinate.z)
+      a.push(coordinate.z)
+    if (coordinate.m)
+      a.push(coordinate.m)
+    return a
   },
 
   /**

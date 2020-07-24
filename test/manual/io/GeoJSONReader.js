@@ -2,12 +2,12 @@ import GeoJSONReader from 'org/locationtech/jts/io/GeoJSONReader'
 
 const reader = new GeoJSONReader()
 
-describe('GeoJSONReader', function () {
-  it('should be able to read a Point geometry', function () {
+describe('GeoJSONReader', function() {
+  it('should be able to read a Point geometry', function() {
     reader.read({ type: 'Point', coordinates: [ 1.01, 1.02 ] })
   })
 
-  it('should be able to read a Feature', function () {
+  it('should be able to read a Feature', function() {
     const feature = {
       'type': 'Feature',
       'geometry': {
@@ -20,8 +20,8 @@ describe('GeoJSONReader', function () {
     }
     reader.read(feature)
   })
-
-  it('should be able to read a LineString', function () {
+  
+  it('should be able to read a LineString', function() {
     const lineString = {
       'type': 'LineString',
       'coordinates': [
@@ -31,7 +31,7 @@ describe('GeoJSONReader', function () {
     reader.read(lineString)
   })
 
-  it('should be able to read a Polygon', function () {
+  it('should be able to read a Polygon', function() {
     const polygon = {
       'type': 'Polygon',
       'coordinates': [
@@ -40,5 +40,14 @@ describe('GeoJSONReader', function () {
       ]
     }
     reader.read(polygon)
+  })
+
+  it('should be able to read a 3D Point', function() {
+    const point = {
+      'type': 'Point',
+      'coordinates': [1, 1, 1]
+    }
+    const g = reader.read(point)
+    console.log(g)
   })
 })
