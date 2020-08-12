@@ -2,6 +2,7 @@ import expect from 'expect.js'
 
 import Coordinate from 'org/locationtech/jts/geom/Coordinate'
 import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
+import RuntimeException from 'java/lang/RuntimeException'
 import TopologyException from 'org/locationtech/jts/geom/TopologyException'
 import OverlayOp from 'org/locationtech/jts/operation/overlay/OverlayOp'
 
@@ -20,8 +21,10 @@ describe('GeometryComponentFilter is not defined on polygon intersection (#258)'
     const polygon1 = factory.createPolygon(factory.createLinearRing(coordinates))
     const polygon2 = factory.createPolygon(factory.createLinearRing(coordinates))
 
-    expect(() => OverlayOp.intersection(polygon1, polygon2)).to.throwError(e => 
+    expect(() => OverlayOp.intersection(polygon1, polygon2)).to.throwError(e => {
       expect(e).to.be.a(TopologyException)
-    )
+      expect(e).to.be.a(RuntimeException)
+      expect(e).to.be.a(Error)
+    })
   })
 })
