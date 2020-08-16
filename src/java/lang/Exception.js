@@ -1,6 +1,7 @@
-export default class Exception {
+export default class Exception extends Error {
   constructor(message) {
-    this.message = message
+    super(message)
+    this.name = Object.keys({ Exception })[0]
   }
   toString() {
     return this.message

@@ -5,10 +5,10 @@ import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import TopologyException from 'org/locationtech/jts/geom/TopologyException'
 import OverlayOp from 'org/locationtech/jts/operation/overlay/OverlayOp'
 
-describe('GeometryComponentFilter is not defined on polygon intersection (#258)', function () {
+describe('GeometryComponentFilter is not defined on polygon intersection (#258)', function() {
   const factory = new GeometryFactory()
 
-  it('Intersection small invalid Polygons should cause a TopologyException', function () {
+  it('Intersection small invalid Polygons should cause a TopologyException', function() {
     const coordinates = [
       new Coordinate(50.3282361844247, 43.051352042895246),
       new Coordinate(50.3286311088063, 43.05588339079827),
@@ -20,8 +20,9 @@ describe('GeometryComponentFilter is not defined on polygon intersection (#258)'
     const polygon1 = factory.createPolygon(factory.createLinearRing(coordinates))
     const polygon2 = factory.createPolygon(factory.createLinearRing(coordinates))
 
-    expect(() => OverlayOp.intersection(polygon1, polygon2)).to.throwError(e => 
+    expect(() => OverlayOp.intersection(polygon1, polygon2)).to.throwError(e => {
       expect(e).to.be.a(TopologyException)
-    )
+      expect(e.stack).to.be.ok()
+    })
   })
 })
