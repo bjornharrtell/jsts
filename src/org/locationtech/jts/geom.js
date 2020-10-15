@@ -1,4 +1,7 @@
 import Coordinate from './geom/Coordinate'
+import CoordinateXY from './geom/CoordinateXY'
+import CoordinateXYM from './geom/CoordinateXYM'
+import CoordinateXYZM from './geom/CoordinateXYZM'
 import CoordinateList from './geom/CoordinateList'
 import CoordinateSequenceFilter from './geom/CoordinateSequenceFilter'
 import Envelope from './geom/Envelope'
@@ -22,6 +25,9 @@ import * as util from './geom/util'
 
 export {
   Coordinate,
+  CoordinateXY,
+  CoordinateXYM,
+  CoordinateXYZM,
   CoordinateList,
   CoordinateSequenceFilter,
   Envelope,
