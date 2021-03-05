@@ -1,6 +1,6 @@
 import fs from 'fs'
 import git from 'git-rev-sync'
-import replace from 'rollup-plugin-replace'
+import replace from '@rollup/plugin-replace'
 import babel from '@rollup/plugin-babel'
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
