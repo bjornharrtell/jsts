@@ -36,9 +36,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ github.event.release.tag_name }}
+          key: ${{ runner.os }}-node-${{ github.event.release.tag_name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-node-${{ github.event.release.tag_name }}-
       - name: Install Dependencies
         run: npm ci
 
