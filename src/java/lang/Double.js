@@ -6,6 +6,8 @@ Double.NaN = NaN
 Double.isNaN = n => Number.isNaN(n)
 Double.isInfinite = n => !Number.isFinite(n)
 Double.MAX_VALUE = Number.MAX_VALUE
+Double.POSITIVE_INFINITY = Number.POSITIVE_INFINITY
+Double.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY
 
 if (typeof Float64Array === 'function' &&
   typeof Int32Array === 'function')
