@@ -4,6 +4,7 @@ import CommonBitsRemover from './precision/CommonBitsRemover'
 import EnhancedPrecisionOp from './precision/EnhancedPrecisionOp'
 import GeometryPrecisionReducer from './precision/GeometryPrecisionReducer'
 import MinimumClearance from './precision/MinimumClearance'
+import SimpleMinimumClearance from './precision/SimpleMinimumClearance'
 
 export {
   CommonBits,
@@ -11,5 +12,6 @@ export {
   CommonBitsRemover,
   EnhancedPrecisionOp,
   GeometryPrecisionReducer,
-  MinimumClearance
+  MinimumClearance,
+  SimpleMinimumClearance
 }
