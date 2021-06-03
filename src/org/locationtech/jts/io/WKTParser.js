@@ -87,7 +87,7 @@ const TokenType = {
  * @type {Object<string, string>}
  */
 const WKTGeometryType = {}
-for (const type in GeometryType) 
+for (const type in GeometryType)
   WKTGeometryType[type] = GeometryType[type].toUpperCase()
 
 
@@ -193,11 +193,10 @@ class Lexer {
     let decimal = false
     let scientificNotation = false
     do {
-      if (c == '.') 
+      if (c == '.')
         decimal = true
-      else if (c == 'e' || c == 'E') 
+      else if (c == 'e' || c == 'E')
         scientificNotation = true
-      
       c = this.nextChar_()
     } while (
       this.isNumeric_(c, decimal) ||
@@ -218,7 +217,7 @@ class Lexer {
   readText_() {
     let c
     const index = this.index_
-    do 
+    do
       c = this.nextChar_()
     while (this.isAlpha_(c))
     return this.wkt.substring(index, this.index_--).toUpperCase()
@@ -281,7 +280,6 @@ class Parser {
     const isMatch = this.isTokenType(type)
     if (isMatch) 
       this.consume_()
-    
     return isMatch
   }
 
@@ -305,16 +303,14 @@ class Parser {
     const dimToken = this.token_
     if (this.isTokenType(TokenType.TEXT)) {
       const dimInfo = dimToken.value
-      if (dimInfo === Z) 
+      if (dimInfo === Z)
         layout = GeometryLayout.XYZ
-      else if (dimInfo === M) 
+      else if (dimInfo === M)
         layout = GeometryLayout.XYM
-      else if (dimInfo === ZM) 
+      else if (dimInfo === ZM)
         layout = GeometryLayout.XYZM
-      
-      if (layout !== GeometryLayout.XY) 
+      if (layout !== GeometryLayout.XY)
         this.consume_()
-      
     }
     return layout
   }
@@ -326,12 +322,11 @@ class Parser {
   parseGeometryCollectionText_() {
     if (this.match(TokenType.LEFT_PAREN)) {
       const geometries = []
-      do 
+      do
         geometries.push(this.parseGeometry_())
       while (this.match(TokenType.COMMA))
       if (this.match(TokenType.RIGHT_PAREN)) 
         return geometries
-      
     } else if (this.isEmptyGeometry_()) {
       return []
     }
@@ -347,7 +342,6 @@ class Parser {
       const coordinates = this.parsePoint_()
       if (this.match(TokenType.RIGHT_PAREN)) 
         return coordinates
-      
     } else if (this.isEmptyGeometry_()) {
       return null
     }
@@ -363,7 +357,6 @@ class Parser {
       const coordinates = this.parsePointList_()
       if (this.match(TokenType.RIGHT_PAREN)) 
         return coordinates
-      
     } else if (this.isEmptyGeometry_()) {
       return []
     }
@@ -379,7 +372,6 @@ class Parser {
       const coordinates = this.parseLineStringTextList_()
       if (this.match(TokenType.RIGHT_PAREN)) 
         return coordinates
-      
     } else if (this.isEmptyGeometry_()) {
       return []
     }
@@ -395,12 +387,10 @@ class Parser {
       let coordinates
       if (this.token_.type == TokenType.LEFT_PAREN) 
         coordinates = this.parsePointTextList_()
-      else 
+      else
         coordinates = this.parsePointList_()
-      
       if (this.match(TokenType.RIGHT_PAREN)) 
         return coordinates
-      
     } else if (this.isEmptyGeometry_()) {
       return []
     }
@@ -417,7 +407,6 @@ class Parser {
       const coordinates = this.parseLineStringTextList_()
       if (this.match(TokenType.RIGHT_PAREN)) 
         return coordinates
-      
     } else if (this.isEmptyGeometry_()) {
       return []
     }
@@ -433,7 +422,6 @@ class Parser {
       const coordinates = this.parsePolygonTextList_()
       if (this.match(TokenType.RIGHT_PAREN)) 
         return coordinates
-      
     } else if (this.isEmptyGeometry_()) {
       return []
     }
@@ -451,13 +439,11 @@ class Parser {
       const token = this.token_
       if (this.match(TokenType.NUMBER)) 
         coordinates.push(/** @type {number} */(token.value))
-      else 
+      else
         break
-      
     }
     if (coordinates.length == dimensions) 
       return coordinates
-    
     throw new Error(this.formatErrorMessage_())
   }
 
@@ -467,9 +453,8 @@ class Parser {
    */
   parsePointList_() {
     const coordinates = [this.parsePoint_()]
-    while (this.match(TokenType.COMMA)) 
+    while (this.match(TokenType.COMMA))
       coordinates.push(this.parsePoint_())
-    
     return coordinates
   }
 
@@ -479,9 +464,8 @@ class Parser {
    */
   parsePointTextList_() {
     const coordinates = [this.parsePointText_()]
-    while (this.match(TokenType.COMMA)) 
+    while (this.match(TokenType.COMMA))
       coordinates.push(this.parsePointText_())
-    
     return coordinates
   }
 
@@ -491,9 +475,8 @@ class Parser {
    */
   parseLineStringTextList_() {
     const coordinates = [this.parseLineStringText_()]
-    while (this.match(TokenType.COMMA)) 
+    while (this.match(TokenType.COMMA))
       coordinates.push(this.parseLineStringText_())
-    
     return coordinates
   }
 
@@ -503,9 +486,8 @@ class Parser {
    */
   parsePolygonTextList_() {
     const coordinates = [this.parsePolygonText_()]
-    while (this.match(TokenType.COMMA)) 
+    while (this.match(TokenType.COMMA))
       coordinates.push(this.parsePolygonText_())
-    
     return coordinates
   }
 
@@ -516,9 +498,8 @@ class Parser {
   isEmptyGeometry_() {
     const isEmpty =
       this.isTokenType(TokenType.TEXT) && this.token_.value == EMPTY
-    if (isEmpty) 
+    if (isEmpty)
       this.consume_()
-    
     return isEmpty
   }
 
@@ -620,15 +601,15 @@ class Parser {
  * @return {string} Coordinates part of Point as WKT.
  */
 function encodePointGeometry(geom) {
-  if (geom.isEmpty()) 
+  if (geom.isEmpty())
     return ''
-  const coordinate = geom.getCoordinate()
-  const coordinates = [coordinate.x, coordinate.y]
-  if (coordinate.z)
-    coordinates.push(coordinate.z)
-  if (coordinate.m)
-    coordinates.push(coordinate.m)
-  return coordinates.join(' ')
+  const c = geom.getCoordinate()
+  const cs = [c.x, c.y]
+  if (c.z !== undefined && !Number.isNaN(c.z))
+    cs.push(c.z)
+  if (c.m !== undefined && !Number.isNaN(c.m))
+    cs.push(c.m)
+  return cs.join(' ')
 }
 
 /**
@@ -639,7 +620,6 @@ function encodeMultiPointGeometry(geom) {
   const array = []
   for (let i = 0, ii = geom.getNumGeometries(); i < ii; ++i) 
     array.push('(' + encodePointGeometry(geom.getGeometryN(i)) + ')')
-  
   return array.join(', ')
 }
 
@@ -651,7 +631,6 @@ function encodeGeometryCollectionGeometry(geom) {
   const array = []
   for (let i = 0, ii = geom.getNumGeometries(); i < ii; ++i) 
     array.push(encode(geom.getGeometryN(i)))
-  
   return array.join(', ')
 }
 
@@ -661,11 +640,17 @@ function encodeGeometryCollectionGeometry(geom) {
  */
 function encodeLineStringGeometry(geom) {
   const coordinates = geom.getCoordinates()
-    .map(c => [c.x, c.y])
+    .map(c => {
+      const a = [c.x, c.y]
+      if (c.z !== undefined && !Number.isNaN(c.z))
+        a.push(c.z)
+      if (c.m !== undefined && !Number.isNaN(c.m))
+        a.push(c.m)
+      return a
+    })
   const array = []
   for (let i = 0, ii = coordinates.length; i < ii; ++i) 
     array.push(coordinates[i].join(' '))
-  
   return array.join(', ')
 }
 
@@ -677,7 +662,6 @@ function encodeMultiLineStringGeometry(geom) {
   const array = []
   for (let i = 0, ii = geom.getNumGeometries(); i < ii; ++i) 
     array.push('(' + encodeLineStringGeometry(geom.getGeometryN(i)) + ')')
-  
   return array.join(', ')
 }
 
@@ -701,7 +685,6 @@ function encodeMultiPolygonGeometry(geom) {
   const array = []
   for (let i = 0, ii = geom.getNumGeometries(); i < ii; ++i) 
     array.push('(' + encodePolygonGeometry(geom.getGeometryN(i)) + ')')
-  
   return array.join(', ')
 }
 
@@ -714,9 +697,9 @@ function encodeGeometryLayout(geom) {
   if (geom.isEmpty())
     return dimInfo
   const c = geom.getCoordinate()
-  if (c.z)
+  if (c.z !== undefined && !Number.isNaN(c.z))
     dimInfo += Z
-  if (c.m)
+  if (c.m !== undefined && !Number.isNaN(c.m))
     dimInfo += M
   return dimInfo
 }

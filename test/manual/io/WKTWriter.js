@@ -1,5 +1,7 @@
 import expect from 'expect.js'
 
+import Coordinate from 'org/locationtech/jts/geom/Coordinate'
+import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
 import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
 
 describe('WKTWriter', function() {
@@ -13,5 +15,41 @@ describe('WKTWriter', function() {
 
     lineString = WKTWriter.toLineString(p2, p3)
     expect(lineString).to.eql('LINESTRING ( 10.123 20.234, 30.524 40.944 )')
+  })
+
+  it('should be able to create a LINESTRING from two points with Z', function() {
+    const factory = new GeometryFactory()
+    const cs = [
+      new Coordinate(1, 2, 3),
+      new Coordinate(2, 3, 4)
+    ]
+    const ls = factory.createLineString(cs)
+    const wkt = new WKTWriter().write(ls)
+    expect(wkt).to.eql('LINESTRING Z (1 2 3, 2 3 4)')
+  })
+
+  it('should be able to create a LINESTRING from two points with zero Z', function() {
+    const factory = new GeometryFactory()
+    const cs = [
+      new Coordinate(1, 2, 0),
+      new Coordinate(2, 3, 0)
+    ]
+    const ls = factory.createLineString(cs)
+    const wkt = new WKTWriter().write(ls)
+    expect(wkt).to.eql('LINESTRING Z (1 2 0, 2 3 0)')
+  })
+
+  it('should be able to create a POINT with Z', function() {
+    const factory = new GeometryFactory()
+    const p = factory.createPoint(new Coordinate(1, 1, 1))
+    const wkt = new WKTWriter().write(p)
+    expect(wkt).to.eql('POINT Z (1 1 1)')
+  })
+
+  it('should be able to create a POINT with zero Z', function() {
+    const factory = new GeometryFactory()
+    const p = factory.createPoint(new Coordinate(1, 1, 0))
+    const wkt = new WKTWriter().write(p)
+    expect(wkt).to.eql('POINT Z (1 1 0)')
   })
 })

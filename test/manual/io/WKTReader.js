@@ -17,6 +17,14 @@ describe('WKTReader', function() {
     expect(c.z).to.equal(1)
   })
 
+  it('should be able to read a 3D Point with zeroes', function() {
+    const p = reader.read('POINT Z (0 0 0)')
+    const c = p.getCoordinate()
+    expect(c.x).to.equal(0)
+    expect(c.y).to.equal(0)
+    expect(c.z).to.equal(0)
+  })
+
   it('should be able to read a MultiPolygon', function() {
     reader.read('MULTIPOLYGON (((20 0, 20 80, 100 80, 200 80, 200 0, 20 0)), ((100 80, 80 120, 120 120, 100 80)))')
   })
