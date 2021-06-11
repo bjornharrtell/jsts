@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import EnhancedPrecisionOp from 'org/locationtech/jts/precision/EnhancedPrecisionOp'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import EnhancedPrecisionOp from 'jsts/org/locationtech/jts/precision/EnhancedPrecisionOp'
 
 describe('EnhancedPrecisionOp', function() {
     var reader = new WKTReader();

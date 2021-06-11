@@ -1,8 +1,8 @@
 /* eslint no-unused-expressions: "off" */
 
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import PrecisionModel from 'jsts/org/locationtech/jts/geom/PrecisionModel'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
 import BufferResultMatcher from '../BufferResultMatcher'
 
 import 'org/locationtech/jts/monkey'

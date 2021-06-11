@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import RelateOp from 'jsts/org/locationtech/jts/operation/relate/RelateOp'
 
 describe('Test (#295)', function () {
   const reader = new WKTReader()

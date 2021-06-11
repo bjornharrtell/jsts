@@ -1,10 +1,10 @@
 
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import SimpleMinimumClearance from 'org/locationtech/jts/precision/SimpleMinimumClearance'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import PrecisionModel from 'jsts/org/locationtech/jts/geom/PrecisionModel'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import SimpleMinimumClearance from 'jsts/org/locationtech/jts/precision/SimpleMinimumClearance'
 
 describe('SimpleMinimumClearance', function() {
     var pmFloat = new PrecisionModel();

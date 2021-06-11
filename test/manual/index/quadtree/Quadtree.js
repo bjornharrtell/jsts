@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import Quadtree from 'org/locationtech/jts/index/quadtree/Quadtree'
+import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import Quadtree from 'jsts/org/locationtech/jts/index/quadtree/Quadtree'
 
 describe('Quadtree', function () {
   it('should be able to handle a simple insert/query/delete/query test', function () {

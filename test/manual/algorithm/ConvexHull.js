@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import ConvexHull from 'org/locationtech/jts/algorithm/ConvexHull'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import ConvexHull from 'jsts/org/locationtech/jts/algorithm/ConvexHull'
 
 describe('ConvexHull', function () {
   var reader = new WKTReader()

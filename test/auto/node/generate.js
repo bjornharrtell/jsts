@@ -3,11 +3,11 @@
 import $ from 'cheerio'
 import { expect } from 'chai'
 
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
-import 'org/locationtech/jts/monkey'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import PrecisionModel from 'jsts/org/locationtech/jts/geom/PrecisionModel'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import WKTWriter from 'jsts/org/locationtech/jts/io/WKTWriter'
+import 'jsts/org/locationtech/jts/monkey'
 
 import BufferResultMatcher from '../BufferResultMatcher'
 

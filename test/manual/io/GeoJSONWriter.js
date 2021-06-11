@@ -1,9 +1,9 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import GeoJSONWriter from 'org/locationtech/jts/io/GeoJSONWriter'
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import GeoJSONWriter from 'jsts/org/locationtech/jts/io/GeoJSONWriter'
+import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
 
 describe('GeoJSONWriter', function() {
   it('should be able to convert a Point geometry', function() {

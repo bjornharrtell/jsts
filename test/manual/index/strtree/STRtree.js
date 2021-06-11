@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import Envelope from 'org/locationtech/jts/geom/Envelope'
-import STRtree from 'org/locationtech/jts/index/strtree/STRtree'
+import Envelope from 'jsts/org/locationtech/jts/geom/Envelope'
+import STRtree from 'jsts/org/locationtech/jts/index/strtree/STRtree'
 
 describe('STRtree', function () {
   it('should be able to contain a single envelope and find it with a valid query', function () {

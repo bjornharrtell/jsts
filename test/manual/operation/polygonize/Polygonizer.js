@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import Polygonizer from 'org/locationtech/jts/operation/polygonize/Polygonizer'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import Polygonizer from 'jsts/org/locationtech/jts/operation/polygonize/Polygonizer'
 
 describe('Polygonizer', function () {
   it('Basic Polygonizer test', function () {

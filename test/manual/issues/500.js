@@ -3,8 +3,8 @@
 
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import IsValidOp from 'org/locationtech/jts/operation/valid/IsValidOp'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import IsValidOp from 'jsts/org/locationtech/jts/operation/valid/IsValidOp'
 
 describe('Test (#500)', function() {
   it('should identify bow-tie as invalid', function() {

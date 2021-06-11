@@ -1,4 +1,4 @@
-import DiscreteHausdorffDistance from 'org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance'
+import DiscreteHausdorffDistance from 'jsts/org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance'
 
 /**
  * A {@link ResultMatcher} which compares the results of buffer operations for

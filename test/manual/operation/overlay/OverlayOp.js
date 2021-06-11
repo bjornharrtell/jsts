@@ -1,12 +1,12 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import OverlayOp from 'org/locationtech/jts/operation/overlay/OverlayOp'
-import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
+import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import OverlayOp from 'jsts/org/locationtech/jts/operation/overlay/OverlayOp'
+import RelateOp from 'jsts/org/locationtech/jts/operation/relate/RelateOp'
+import PrecisionModel from 'jsts/org/locationtech/jts/geom/PrecisionModel'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import WKTWriter from 'jsts/org/locationtech/jts/io/WKTWriter'
 
 describe('OverlayOp', function () {
   it('intersection between GCs', function () {

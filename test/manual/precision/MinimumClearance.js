@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import MinimumClearance from 'org/locationtech/jts/precision/MinimumClearance'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import MinimumClearance from 'jsts/org/locationtech/jts/precision/MinimumClearance'
 
 describe('MinimumClearance', function() {
     var reader = new WKTReader();

@@ -1,6 +1,6 @@
 import expect from 'expect.js'
 
-import WKTParser from 'org/locationtech/jts/io/WKTParser'
+import WKTParser from 'jsts/org/locationtech/jts/io/WKTParser'
 
 const parser = new WKTParser()
 

@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import DelaunayTriangulationBuilder from 'org/locationtech/jts/triangulate/DelaunayTriangulationBuilder'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import DelaunayTriangulationBuilder from 'jsts/org/locationtech/jts/triangulate/DelaunayTriangulationBuilder'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
 
 describe('DelauneyTriangulationBuilder', function () {
   var geomFact = new GeometryFactory()

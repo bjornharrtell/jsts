@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import DistanceOp from 'org/locationtech/jts/operation/distance/DistanceOp'
+import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import DistanceOp from 'jsts/org/locationtech/jts/operation/distance/DistanceOp'
 
 describe('DistanceOp', function () {
   it('should be able calculate the distance between two points', function () {

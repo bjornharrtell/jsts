@@ -14,16 +14,15 @@
   "license": "(EDL-1.0 OR EPL-1.0)",
   "devDependencies": {
     "@babel/core": "7.14.3",
+    "@babel/eslint-parser": "7.14.4",
     "@babel/preset-env": "7.14.4",
     "@babel/register": "7.13.16",
-    "@babel/eslint-parser": "7.14.4",
-    "@rollup/plugin-replace": "2.4.2",
     "@rollup/plugin-babel": "5.3.0",
+    "@rollup/plugin-replace": "2.4.2",
     "chai": "4.3.4",
     "cheerio": "0.22.0",
     "codecov": "3.8.2",
     "eslint": "7.27.0",
-    "esm": "3.2.25",
     "expect.js": "0.3.1",
     "git-rev-sync": "3.0.1",
     "jsdoc": "3.6.7",
@@ -34,8 +33,10 @@
     "terser": "5.7.0"
   },
   "main": "dist/jsts.min.js",
+  "module": "dist/jsts.es6.min.js",
+  "type": "module",
   "engines": {
-    "node": ">= 12"
+    "node": ">= 14"
   },
   "repository": {
     "type": "git",
@@ -51,9 +52,9 @@
   },
   "scripts": {
     "lint": "eslint src",
-    "test-manual": "NODE_PATH=src mocha --timeout 10s -r esm --recursive test/manual",
-    "test": "NODE_PATH=src nyc mocha --timeout 10s -r esm --recursive test/auto/node test/manual",
-    "test-perf": "NODE_PATH=src 0x -- node -r esm $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
+    "test-manual": "ln -f -s ../src/ ./node_modules/jsts && mocha --experimental-specifier-resolution=node --timeout 10s --recursive test/manual",
+    "test": "ln -f -s ../src/ ./node_modules/jsts && nyc mocha --experimental-specifier-resolution=node --timeout 10s --recursive test/auto/node test/manual",
+    "test-perf": "ln -f -s ../src/ ./node_modules/jsts && 0x -- node ./node_modules/mocha/bin/mocha --experimental-specifier-resolution=node --timeout 10s --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js",

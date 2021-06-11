@@ -1,5 +1,5 @@
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import UnaryUnionOp from 'org/locationtech/jts/operation/union/UnaryUnionOp'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import UnaryUnionOp from 'jsts/org/locationtech/jts/operation/union/UnaryUnionOp'
 
 
 

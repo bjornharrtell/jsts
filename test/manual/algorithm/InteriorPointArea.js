@@ -1,7 +1,7 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import InteriorPointArea from 'org/locationtech/jts/algorithm/InteriorPointArea'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import InteriorPointArea from 'jsts/org/locationtech/jts/algorithm/InteriorPointArea'
 
 describe('InteriorPointArea', function () {
   var reader = new WKTReader()

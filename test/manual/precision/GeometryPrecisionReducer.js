@@ -1,10 +1,10 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import GeometryPrecisionReducer from 'org/locationtech/jts/precision/GeometryPrecisionReducer'
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader'
+import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate'
+import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory'
+import PrecisionModel from 'jsts/org/locationtech/jts/geom/PrecisionModel'
+import GeometryPrecisionReducer from 'jsts/org/locationtech/jts/precision/GeometryPrecisionReducer'
 
 
 describe('GeometryPrecisionReducer', function () {
