@@ -123,7 +123,7 @@ const parse = {
     const coordinates = []
     for (let i = 0; i < array.length; ++i) {
       const sub = array[i]
-      coordinates.push(new Coordinate(...array))
+      coordinates.push(new Coordinate(...sub))
     }
     return coordinates
   },
