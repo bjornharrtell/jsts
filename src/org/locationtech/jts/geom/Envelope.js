@@ -1,6 +1,6 @@
-import Coordinate from './Coordinate'
-import Comparable from '../../../../java/lang/Comparable'
-import Serializable from '../../../../java/io/Serializable'
+import Coordinate from './Coordinate.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import Serializable from '../../../../java/io/Serializable.js'
 export default class Envelope {
   constructor() {
     Envelope.constructor_.apply(this, arguments)

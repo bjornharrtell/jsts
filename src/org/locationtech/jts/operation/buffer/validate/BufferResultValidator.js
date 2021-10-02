@@ -1,8 +1,8 @@
-import BufferDistanceValidator from './BufferDistanceValidator'
-import Polygon from '../../../geom/Polygon'
-import MultiPolygon from '../../../geom/MultiPolygon'
-import System from '../../../../../../java/lang/System'
-import Envelope from '../../../geom/Envelope'
+import BufferDistanceValidator from './BufferDistanceValidator.js'
+import Polygon from '../../../geom/Polygon.js'
+import MultiPolygon from '../../../geom/MultiPolygon.js'
+import System from '../../../../../../java/lang/System.js'
+import Envelope from '../../../geom/Envelope.js'
 export default class BufferResultValidator {
   constructor() {
     BufferResultValidator.constructor_.apply(this, arguments)

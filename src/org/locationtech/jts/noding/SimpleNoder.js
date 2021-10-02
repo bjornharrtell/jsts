@@ -1,5 +1,5 @@
-import NodedSegmentString from './NodedSegmentString'
-import SinglePassNoder from './SinglePassNoder'
+import NodedSegmentString from './NodedSegmentString.js'
+import SinglePassNoder from './SinglePassNoder.js'
 export default class SimpleNoder extends SinglePassNoder {
   constructor() {
     super()

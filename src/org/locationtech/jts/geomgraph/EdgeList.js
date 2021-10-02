@@ -1,6 +1,6 @@
-import OrientedCoordinateArray from '../noding/OrientedCoordinateArray'
-import ArrayList from '../../../../java/util/ArrayList'
-import TreeMap from '../../../../java/util/TreeMap'
+import OrientedCoordinateArray from '../noding/OrientedCoordinateArray.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class EdgeList {
   constructor() {
     EdgeList.constructor_.apply(this, arguments)

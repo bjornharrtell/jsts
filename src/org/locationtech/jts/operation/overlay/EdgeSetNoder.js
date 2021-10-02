@@ -1,6 +1,6 @@
-import SimpleMCSweepLineIntersector from '../../geomgraph/index/SimpleMCSweepLineIntersector'
-import SegmentIntersector from '../../geomgraph/index/SegmentIntersector'
-import ArrayList from '../../../../../java/util/ArrayList'
+import SimpleMCSweepLineIntersector from '../../geomgraph/index/SimpleMCSweepLineIntersector.js'
+import SegmentIntersector from '../../geomgraph/index/SegmentIntersector.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class EdgeSetNoder {
   constructor() {
     EdgeSetNoder.constructor_.apply(this, arguments)

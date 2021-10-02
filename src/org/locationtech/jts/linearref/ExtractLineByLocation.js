@@ -1,9 +1,9 @@
-import CoordinateList from '../geom/CoordinateList'
-import hasInterface from '../../../../hasInterface'
-import LinearIterator from './LinearIterator'
-import Lineal from '../geom/Lineal'
-import Assert from '../util/Assert'
-import LinearGeometryBuilder from './LinearGeometryBuilder'
+import CoordinateList from '../geom/CoordinateList.js'
+import hasInterface from '../../../../hasInterface.js'
+import LinearIterator from './LinearIterator.js'
+import Lineal from '../geom/Lineal.js'
+import Assert from '../util/Assert.js'
+import LinearGeometryBuilder from './LinearGeometryBuilder.js'
 export default class ExtractLineByLocation {
   constructor() {
     ExtractLineByLocation.constructor_.apply(this, arguments)

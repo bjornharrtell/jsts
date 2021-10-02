@@ -1,8 +1,8 @@
-import STRtree from '../../index/strtree/STRtree'
-import IsValidOp from './IsValidOp'
-import PointLocation from '../../algorithm/PointLocation'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Envelope from '../../geom/Envelope'
+import STRtree from '../../index/strtree/STRtree.js'
+import IsValidOp from './IsValidOp.js'
+import PointLocation from '../../algorithm/PointLocation.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Envelope from '../../geom/Envelope.js'
 export default class IndexedNestedRingTester {
   constructor() {
     IndexedNestedRingTester.constructor_.apply(this, arguments)

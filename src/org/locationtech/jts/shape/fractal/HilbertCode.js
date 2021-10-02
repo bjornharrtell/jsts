@@ -1,5 +1,5 @@
-import Coordinate from '../../geom/Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 export default class HilbertCode {
   static deinterleave(x) {
     x = x & 0x55555555

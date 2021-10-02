@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
+import Coordinate from '../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class Octant {
   static octant() {
     if (typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {

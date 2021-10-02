@@ -2,7 +2,7 @@
  * @module org/locationtech/jts/io/GeoJSONWriter
  */
 
-import GeoJSONParser from './GeoJSONParser'
+import GeoJSONParser from './GeoJSONParser.js'
 
 /**
  * Writes the GeoJSON representation of a {@link Geometry}. The

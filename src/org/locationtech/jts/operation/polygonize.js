@@ -1,4 +1,4 @@
-import Polygonizer from './polygonize/Polygonizer'
+import Polygonizer from './polygonize/Polygonizer.js'
 
 export {
   Polygonizer

@@ -1,9 +1,9 @@
-import Location from '../geom/Location'
-import hasInterface from '../../../../hasInterface'
-import Coordinate from '../geom/Coordinate'
-import CoordinateSequence from '../geom/CoordinateSequence'
-import RobustLineIntersector from './RobustLineIntersector'
-import RayCrossingCounter from './RayCrossingCounter'
+import Location from '../geom/Location.js'
+import hasInterface from '../../../../hasInterface.js'
+import Coordinate from '../geom/Coordinate.js'
+import CoordinateSequence from '../geom/CoordinateSequence.js'
+import RobustLineIntersector from './RobustLineIntersector.js'
+import RayCrossingCounter from './RayCrossingCounter.js'
 export default class PointLocation {
   static isOnLine() {
     if (arguments[0] instanceof Coordinate && hasInterface(arguments[1], CoordinateSequence)) {

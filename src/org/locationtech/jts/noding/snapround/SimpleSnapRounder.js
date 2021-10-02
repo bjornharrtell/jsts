@@ -1,13 +1,13 @@
-import NodingValidator from '../NodingValidator'
-import hasInterface from '../../../../../hasInterface'
-import Collection from '../../../../../java/util/Collection'
-import Noder from '../Noder'
-import MCIndexNoder from '../MCIndexNoder'
-import NodedSegmentString from '../NodedSegmentString'
-import HotPixel from './HotPixel'
-import Exception from '../../../../../java/lang/Exception'
-import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
-import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder'
+import NodingValidator from '../NodingValidator.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Collection from '../../../../../java/util/Collection.js'
+import Noder from '../Noder.js'
+import MCIndexNoder from '../MCIndexNoder.js'
+import NodedSegmentString from '../NodedSegmentString.js'
+import HotPixel from './HotPixel.js'
+import Exception from '../../../../../java/lang/Exception.js'
+import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
+import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder.js'
 export default class SimpleSnapRounder {
   constructor() {
     SimpleSnapRounder.constructor_.apply(this, arguments)

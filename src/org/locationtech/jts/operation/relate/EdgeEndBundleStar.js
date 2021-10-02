@@ -1,5 +1,5 @@
-import EdgeEndStar from '../../geomgraph/EdgeEndStar'
-import EdgeEndBundle from './EdgeEndBundle'
+import EdgeEndStar from '../../geomgraph/EdgeEndStar.js'
+import EdgeEndBundle from './EdgeEndBundle.js'
 export default class EdgeEndBundleStar extends EdgeEndStar {
   constructor() {
     super()

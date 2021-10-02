@@ -1,8 +1,8 @@
-import NodingValidator from '../NodingValidator'
-import NodedSegmentString from '../NodedSegmentString'
-import ArrayList from '../../../../../java/util/ArrayList'
-import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter'
-import MCIndexSnapRounder from './MCIndexSnapRounder'
+import NodingValidator from '../NodingValidator.js'
+import NodedSegmentString from '../NodedSegmentString.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter.js'
+import MCIndexSnapRounder from './MCIndexSnapRounder.js'
 export default class GeometryNoder {
   constructor() {
     GeometryNoder.constructor_.apply(this, arguments)

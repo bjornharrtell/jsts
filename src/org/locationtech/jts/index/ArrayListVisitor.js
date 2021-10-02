@@ -1,5 +1,5 @@
-import ItemVisitor from './ItemVisitor'
-import ArrayList from '../../../../java/util/ArrayList'
+import ItemVisitor from './ItemVisitor.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class ArrayListVisitor {
   constructor() {
     ArrayListVisitor.constructor_.apply(this, arguments)

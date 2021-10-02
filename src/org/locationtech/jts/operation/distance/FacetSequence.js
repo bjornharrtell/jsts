@@ -1,10 +1,10 @@
-import StringBuffer from '../../../../../java/lang/StringBuffer'
-import Coordinate from '../../geom/Coordinate'
-import GeometryLocation from './GeometryLocation'
-import Double from '../../../../../java/lang/Double'
-import LineSegment from '../../geom/LineSegment'
-import Envelope from '../../geom/Envelope'
-import Distance from '../../algorithm/Distance'
+import StringBuffer from '../../../../../java/lang/StringBuffer.js'
+import Coordinate from '../../geom/Coordinate.js'
+import GeometryLocation from './GeometryLocation.js'
+import Double from '../../../../../java/lang/Double.js'
+import LineSegment from '../../geom/LineSegment.js'
+import Envelope from '../../geom/Envelope.js'
+import Distance from '../../algorithm/Distance.js'
 export default class FacetSequence {
   constructor() {
     FacetSequence.constructor_.apply(this, arguments)

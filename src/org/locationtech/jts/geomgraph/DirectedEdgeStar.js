@@ -1,12 +1,12 @@
-import Location from '../geom/Location'
-import Position from './Position'
-import TopologyException from '../geom/TopologyException'
-import EdgeEndStar from './EdgeEndStar'
-import System from '../../../../java/lang/System'
-import Label from './Label'
-import ArrayList from '../../../../java/util/ArrayList'
-import Quadrant from './Quadrant'
-import Assert from '../util/Assert'
+import Location from '../geom/Location.js'
+import Position from './Position.js'
+import TopologyException from '../geom/TopologyException.js'
+import EdgeEndStar from './EdgeEndStar.js'
+import System from '../../../../java/lang/System.js'
+import Label from './Label.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Quadrant from './Quadrant.js'
+import Assert from '../util/Assert.js'
 export default class DirectedEdgeStar extends EdgeEndStar {
   constructor() {
     super()

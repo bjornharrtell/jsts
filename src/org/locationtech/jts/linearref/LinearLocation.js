@@ -1,6 +1,6 @@
-import Coordinate from '../geom/Coordinate'
-import LineSegment from '../geom/LineSegment'
-import Comparable from '../../../../java/lang/Comparable'
+import Coordinate from '../geom/Coordinate.js'
+import LineSegment from '../geom/LineSegment.js'
+import Comparable from '../../../../java/lang/Comparable.js'
 export default class LinearLocation {
   constructor() {
     LinearLocation.constructor_.apply(this, arguments)

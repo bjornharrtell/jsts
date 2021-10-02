@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
 export default class Intersection {
   static intersection(p1, p2, q1, q2) {
     const minX0 = p1.x < p2.x ? p1.x : p2.x

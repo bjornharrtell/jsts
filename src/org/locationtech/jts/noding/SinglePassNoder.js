@@ -1,4 +1,4 @@
-import Noder from './Noder'
+import Noder from './Noder.js'
 export default class SinglePassNoder {
   constructor() {
     SinglePassNoder.constructor_.apply(this, arguments)

@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import Envelope from 'org/locationtech/jts/geom/Envelope'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
+import Envelope from '../../../src/org/locationtech/jts/geom/Envelope.js'
+import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
+import RelateOp from '../../../src/org/locationtech/jts/operation/relate/RelateOp.js'
 
 
 

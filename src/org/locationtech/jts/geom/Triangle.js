@@ -1,8 +1,8 @@
-import Coordinate from './Coordinate'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import DD from '../math/DD'
-import Angle from '../algorithm/Angle'
-import HCoordinate from '../algorithm/HCoordinate'
+import Coordinate from './Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import DD from '../math/DD.js'
+import Angle from '../algorithm/Angle.js'
+import HCoordinate from '../algorithm/HCoordinate.js'
 export default class Triangle {
   constructor() {
     Triangle.constructor_.apply(this, arguments)

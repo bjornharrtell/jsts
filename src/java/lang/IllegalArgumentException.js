@@ -1,4 +1,4 @@
-import Exception from './Exception'
+import Exception from './Exception.js'
 
 export default class IllegalArgumentException extends Exception {
   constructor(message) {

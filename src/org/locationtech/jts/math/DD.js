@@ -1,10 +1,10 @@
-import StringBuffer from '../../../../java/lang/StringBuffer'
-import Double from '../../../../java/lang/Double'
-import Integer from '../../../../java/lang/Integer'
-import Character from '../../../../java/lang/Character'
-import Comparable from '../../../../java/lang/Comparable'
-import Cloneable from '../../../../java/lang/Cloneable'
-import Serializable from '../../../../java/io/Serializable'
+import StringBuffer from '../../../../java/lang/StringBuffer.js'
+import Double from '../../../../java/lang/Double.js'
+import Integer from '../../../../java/lang/Integer.js'
+import Character from '../../../../java/lang/Character.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import Cloneable from '../../../../java/lang/Cloneable.js'
+import Serializable from '../../../../java/io/Serializable.js'
 export default class DD {
   constructor() {
     DD.constructor_.apply(this, arguments)

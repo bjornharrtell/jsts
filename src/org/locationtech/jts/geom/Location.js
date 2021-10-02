@@ -1,4 +1,4 @@
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class Location {
   static toLocationSymbol(locationValue) {
     switch (locationValue) {

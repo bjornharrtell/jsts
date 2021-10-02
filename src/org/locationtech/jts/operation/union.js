@@ -1,4 +1,4 @@
-import UnaryUnionOp from './union/UnaryUnionOp'
+import UnaryUnionOp from './union/UnaryUnionOp.js'
 
 export {
   UnaryUnionOp

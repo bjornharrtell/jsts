@@ -1,5 +1,5 @@
-import TaggedLineSegment from './TaggedLineSegment'
-import ArrayList from '../../../../java/util/ArrayList'
+import TaggedLineSegment from './TaggedLineSegment.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class TaggedLineString {
   constructor() {
     TaggedLineString.constructor_.apply(this, arguments)

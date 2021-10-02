@@ -1,6 +1,6 @@
-import InteriorPointArea from './InteriorPointArea'
-import InteriorPointLine from './InteriorPointLine'
-import InteriorPointPoint from './InteriorPointPoint'
+import InteriorPointArea from './InteriorPointArea.js'
+import InteriorPointLine from './InteriorPointLine.js'
+import InteriorPointPoint from './InteriorPointPoint.js'
 export default class InteriorPoint {
   static getInteriorPoint(geom) {
     if (geom.isEmpty()) return null

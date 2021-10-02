@@ -1,6 +1,6 @@
-import DouglasPeuckerSimplifier from './simplify/DouglasPeuckerSimplifier'
-import TopologyPreservingSimplifier from './simplify/TopologyPreservingSimplifier'
-import VWSimplifier from './simplify/VWSimplifier'
+import DouglasPeuckerSimplifier from './simplify/DouglasPeuckerSimplifier.js'
+import TopologyPreservingSimplifier from './simplify/TopologyPreservingSimplifier.js'
+import VWSimplifier from './simplify/VWSimplifier.js'
 
 export {
   DouglasPeuckerSimplifier,

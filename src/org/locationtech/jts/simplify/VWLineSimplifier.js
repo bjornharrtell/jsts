@@ -1,7 +1,7 @@
-import CoordinateList from '../geom/CoordinateList'
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
-import Triangle from '../geom/Triangle'
+import CoordinateList from '../geom/CoordinateList.js'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import Triangle from '../geom/Triangle.js'
 export default class VWLineSimplifier {
   constructor() {
     VWLineSimplifier.constructor_.apply(this, arguments)

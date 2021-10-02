@@ -1,4 +1,4 @@
-import Comparable from '../../../../../java/lang/Comparable'
+import Comparable from '../../../../../java/lang/Comparable.js'
 export default class SweepLineEvent {
   constructor() {
     SweepLineEvent.constructor_.apply(this, arguments)

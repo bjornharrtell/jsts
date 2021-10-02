@@ -1,7 +1,7 @@
-import DirectedEdgeStar from './DirectedEdgeStar'
-import HashSet from '../../../../java/util/HashSet'
-import DirectedEdge from './DirectedEdge'
-import GraphComponent from './GraphComponent'
+import DirectedEdgeStar from './DirectedEdgeStar.js'
+import HashSet from '../../../../java/util/HashSet.js'
+import DirectedEdge from './DirectedEdge.js'
+import GraphComponent from './GraphComponent.js'
 export default class Node extends GraphComponent {
   constructor() {
     super()

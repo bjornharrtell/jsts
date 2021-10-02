@@ -1,13 +1,13 @@
-import BoundaryOp from './operation/BoundaryOp'
-import IsSimpleOp from './operation/IsSimpleOp'
-import * as buffer from './operation/buffer'
-import * as distance from './operation/distance'
-import * as linemerge from './operation/linemerge'
-import * as overlay from './operation/overlay'
-import * as polygonize from './operation/polygonize'
-import * as relate from './operation/relate'
-import * as union from './operation/union'
-import * as valid from './operation/valid'
+import BoundaryOp from './operation/BoundaryOp.js'
+import IsSimpleOp from './operation/IsSimpleOp.js'
+import * as buffer from './operation/buffer.js'
+import * as distance from './operation/distance.js'
+import * as linemerge from './operation/linemerge.js'
+import * as overlay from './operation/overlay.js'
+import * as polygonize from './operation/polygonize.js'
+import * as relate from './operation/relate.js'
+import * as union from './operation/union.js'
+import * as valid from './operation/valid.js'
 
 export {
   BoundaryOp,

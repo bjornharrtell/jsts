@@ -1,6 +1,6 @@
-import ArrayList from './ArrayList'
-import MapInterface from './Map'
-import HashSet from './HashSet'
+import ArrayList from './ArrayList.js'
+import MapInterface from './Map.js'
+import HashSet from './HashSet.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/HashMap.html

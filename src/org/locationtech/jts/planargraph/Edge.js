@@ -1,5 +1,5 @@
-import Node from './Node'
-import GraphComponent from './GraphComponent'
+import Node from './Node.js'
+import GraphComponent from './GraphComponent.js'
 export default class Edge extends GraphComponent {
   constructor() {
     super()

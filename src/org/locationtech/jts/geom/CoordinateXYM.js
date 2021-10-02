@@ -1,5 +1,5 @@
-import Coordinate from './Coordinate'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
+import Coordinate from './Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class CoordinateXYM extends Coordinate {
   constructor() {
     super()

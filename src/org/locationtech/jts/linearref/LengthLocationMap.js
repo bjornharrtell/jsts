@@ -1,5 +1,5 @@
-import LinearIterator from './LinearIterator'
-import LinearLocation from './LinearLocation'
+import LinearIterator from './LinearIterator.js'
+import LinearLocation from './LinearLocation.js'
 export default class LengthLocationMap {
   constructor() {
     LengthLocationMap.constructor_.apply(this, arguments)

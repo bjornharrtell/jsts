@@ -1,5 +1,5 @@
-import ArrayList from '../../../../../java/util/ArrayList'
-import Serializable from '../../../../../java/io/Serializable'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Serializable from '../../../../../java/io/Serializable.js'
 export default class NodeBase {
   constructor() {
     NodeBase.constructor_.apply(this, arguments)

@@ -1,4 +1,4 @@
-import Long from './Long'
+import Long from './Long.js'
 
 export default function Double() { }
 

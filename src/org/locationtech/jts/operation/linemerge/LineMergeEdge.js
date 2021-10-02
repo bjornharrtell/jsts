@@ -1,4 +1,4 @@
-import Edge from '../../planargraph/Edge'
+import Edge from '../../planargraph/Edge.js'
 export default class LineMergeEdge extends Edge {
   constructor() {
     super()

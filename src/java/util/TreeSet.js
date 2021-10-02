@@ -1,7 +1,7 @@
-import Collection from './Collection'
-import NoSuchElementException from './NoSuchElementException'
-import UnsupportedOperationException from '../lang/UnsupportedOperationException'
-import SortedSet from './SortedSet'
+import Collection from './Collection.js'
+import NoSuchElementException from './NoSuchElementException.js'
+import UnsupportedOperationException from '../lang/UnsupportedOperationException.js'
+import SortedSet from './SortedSet.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/TreeSet.html

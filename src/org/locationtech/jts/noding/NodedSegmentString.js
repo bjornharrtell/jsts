@@ -1,10 +1,10 @@
-import SegmentNodeList from './SegmentNodeList'
-import WKTWriter from '../io/WKTWriter'
-import CoordinateArraySequence from '../geom/impl/CoordinateArraySequence'
-import Coordinate from '../geom/Coordinate'
-import Octant from './Octant'
-import ArrayList from '../../../../java/util/ArrayList'
-import NodableSegmentString from './NodableSegmentString'
+import SegmentNodeList from './SegmentNodeList.js'
+import WKTWriter from '../io/WKTWriter.js'
+import CoordinateArraySequence from '../geom/impl/CoordinateArraySequence.js'
+import Coordinate from '../geom/Coordinate.js'
+import Octant from './Octant.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import NodableSegmentString from './NodableSegmentString.js'
 export default class NodedSegmentString {
   constructor() {
     NodedSegmentString.constructor_.apply(this, arguments)

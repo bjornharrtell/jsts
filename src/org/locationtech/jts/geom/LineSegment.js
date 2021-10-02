@@ -1,11 +1,11 @@
-import Coordinate from './Coordinate'
-import Double from '../../../../java/lang/Double'
-import Orientation from '../algorithm/Orientation'
-import Intersection from '../algorithm/Intersection'
-import Comparable from '../../../../java/lang/Comparable'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
-import Serializable from '../../../../java/io/Serializable'
-import Distance from '../algorithm/Distance'
+import Coordinate from './Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import Orientation from '../algorithm/Orientation.js'
+import Intersection from '../algorithm/Intersection.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
+import Serializable from '../../../../java/io/Serializable.js'
+import Distance from '../algorithm/Distance.js'
 export default class LineSegment {
   constructor() {
     LineSegment.constructor_.apply(this, arguments)

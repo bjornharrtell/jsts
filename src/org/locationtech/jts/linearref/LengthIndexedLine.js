@@ -1,7 +1,7 @@
-import LengthIndexOfPoint from './LengthIndexOfPoint'
-import LocationIndexOfLine from './LocationIndexOfLine'
-import LengthLocationMap from './LengthLocationMap'
-import ExtractLineByLocation from './ExtractLineByLocation'
+import LengthIndexOfPoint from './LengthIndexOfPoint.js'
+import LocationIndexOfLine from './LocationIndexOfLine.js'
+import LengthLocationMap from './LengthLocationMap.js'
+import ExtractLineByLocation from './ExtractLineByLocation.js'
 export default class LengthIndexedLine {
   constructor() {
     LengthIndexedLine.constructor_.apply(this, arguments)

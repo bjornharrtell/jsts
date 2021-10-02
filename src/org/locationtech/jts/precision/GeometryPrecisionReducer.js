@@ -1,10 +1,10 @@
-import hasInterface from '../../../../hasInterface'
-import GeometryFactory from '../geom/GeometryFactory'
-import IsValidOp from '../operation/valid/IsValidOp'
-import GeometryEditor from '../geom/util/GeometryEditor'
-import BufferOp from '../operation/buffer/BufferOp'
-import Polygonal from '../geom/Polygonal'
-import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation'
+import hasInterface from '../../../../hasInterface.js'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import IsValidOp from '../operation/valid/IsValidOp.js'
+import GeometryEditor from '../geom/util/GeometryEditor.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
+import Polygonal from '../geom/Polygonal.js'
+import PrecisionReducerCoordinateOperation from './PrecisionReducerCoordinateOperation.js'
 export default class GeometryPrecisionReducer {
   constructor() {
     GeometryPrecisionReducer.constructor_.apply(this, arguments)

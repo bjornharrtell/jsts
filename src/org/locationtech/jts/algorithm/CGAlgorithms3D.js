@@ -1,7 +1,7 @@
-import Coordinate from '../geom/Coordinate'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Double from '../../../../java/lang/Double'
-import Vector3D from '../math/Vector3D'
+import Coordinate from '../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Double from '../../../../java/lang/Double.js'
+import Vector3D from '../math/Vector3D.js'
 export default class CGAlgorithms3D {
   static distanceSegmentSegment(A, B, C, D) {
     if (A.equals3D(B)) return CGAlgorithms3D.distancePointSegment(A, C, D)

@@ -1,7 +1,7 @@
-import GeometryFactory from '../geom/GeometryFactory'
-import Coordinate from '../geom/Coordinate'
-import AffineTransformation from '../geom/util/AffineTransformation'
-import Envelope from '../geom/Envelope'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import Coordinate from '../geom/Coordinate.js'
+import AffineTransformation from '../geom/util/AffineTransformation.js'
+import Envelope from '../geom/Envelope.js'
 export default class GeometricShapeFactory {
   constructor() {
     GeometricShapeFactory.constructor_.apply(this, arguments)

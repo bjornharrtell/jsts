@@ -1,6 +1,6 @@
-import PointLocator from '../../algorithm/PointLocator'
-import SegmentStringUtil from '../../noding/SegmentStringUtil'
-import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter'
+import PointLocator from '../../algorithm/PointLocator.js'
+import SegmentStringUtil from '../../noding/SegmentStringUtil.js'
+import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter.js'
 export default class PreparedLineStringIntersects {
   constructor() {
     PreparedLineStringIntersects.constructor_.apply(this, arguments)

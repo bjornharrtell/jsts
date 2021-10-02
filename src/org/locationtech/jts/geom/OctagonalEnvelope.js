@@ -1,13 +1,13 @@
-import LineString from './LineString'
-import CoordinateList from './CoordinateList'
-import Geometry from './Geometry'
-import hasInterface from '../../../../hasInterface'
-import Coordinate from './Coordinate'
-import Point from './Point'
-import Double from '../../../../java/lang/Double'
-import GeometryComponentFilter from './GeometryComponentFilter'
-import CoordinateSequence from './CoordinateSequence'
-import Envelope from './Envelope'
+import LineString from './LineString.js'
+import CoordinateList from './CoordinateList.js'
+import Geometry from './Geometry.js'
+import hasInterface from '../../../../hasInterface.js'
+import Coordinate from './Coordinate.js'
+import Point from './Point.js'
+import Double from '../../../../java/lang/Double.js'
+import GeometryComponentFilter from './GeometryComponentFilter.js'
+import CoordinateSequence from './CoordinateSequence.js'
+import Envelope from './Envelope.js'
 export default class OctagonalEnvelope {
   constructor() {
     OctagonalEnvelope.constructor_.apply(this, arguments)

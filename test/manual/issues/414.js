@@ -1,10 +1,10 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
-import BufferOp from 'org/locationtech/jts/operation/buffer/BufferOp'
+import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
+import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
+import BufferOp from '../../../src/org/locationtech/jts/operation/buffer/BufferOp.js'
 
-import 'org/locationtech/jts/monkey'
+import '../../../src/org/locationtech/jts/monkey.js'
 
 describe('Test (#414)', function() {
   const reader = new WKTReader()

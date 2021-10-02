@@ -1,5 +1,5 @@
-import Comparator from '../../../../../java/util/Comparator'
-import Serializable from '../../../../../java/io/Serializable'
+import Comparator from '../../../../../java/util/Comparator.js'
+import Serializable from '../../../../../java/io/Serializable.js'
 export default class BoundablePairDistanceComparator {
   constructor() {
     BoundablePairDistanceComparator.constructor_.apply(this, arguments)

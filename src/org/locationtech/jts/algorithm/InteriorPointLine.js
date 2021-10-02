@@ -1,9 +1,9 @@
-import LineString from '../geom/LineString'
-import Geometry from '../geom/Geometry'
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
-import Centroid from './Centroid'
-import GeometryCollection from '../geom/GeometryCollection'
+import LineString from '../geom/LineString.js'
+import Geometry from '../geom/Geometry.js'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import Centroid from './Centroid.js'
+import GeometryCollection from '../geom/GeometryCollection.js'
 export default class InteriorPointLine {
   constructor() {
     InteriorPointLine.constructor_.apply(this, arguments)

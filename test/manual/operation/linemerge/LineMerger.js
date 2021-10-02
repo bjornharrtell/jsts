@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
-import LineMerger from 'org/locationtech/jts/operation/linemerge/LineMerger'
+import WKTReader from '../../../../src/org/locationtech/jts/io/WKTReader.js'
+import WKTWriter from '../../../../src/org/locationtech/jts/io/WKTWriter.js'
+import LineMerger from '../../../../src/org/locationtech/jts/operation/linemerge/LineMerger.js'
 
 describe('LineMerger', function() {
   it('#373', function() {

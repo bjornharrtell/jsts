@@ -1,5 +1,5 @@
-import TaggedLineStringSimplifier from './TaggedLineStringSimplifier'
-import LineSegmentIndex from './LineSegmentIndex'
+import TaggedLineStringSimplifier from './TaggedLineStringSimplifier.js'
+import LineSegmentIndex from './LineSegmentIndex.js'
 export default class TaggedLinesSimplifier {
   constructor() {
     TaggedLinesSimplifier.constructor_.apply(this, arguments)

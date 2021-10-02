@@ -1,6 +1,6 @@
-import Interval from './Interval'
-import Comparator from '../../../../../java/util/Comparator'
-import AbstractSTRtree from './AbstractSTRtree'
+import Interval from './Interval.js'
+import Comparator from '../../../../../java/util/Comparator.js'
+import AbstractSTRtree from './AbstractSTRtree.js'
 export default class SIRtree extends AbstractSTRtree {
   constructor() {
     super()

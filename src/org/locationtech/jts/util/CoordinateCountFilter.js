@@ -1,4 +1,4 @@
-import CoordinateFilter from '../geom/CoordinateFilter'
+import CoordinateFilter from '../geom/CoordinateFilter.js'
 export default class CoordinateCountFilter {
   constructor() {
     CoordinateCountFilter.constructor_.apply(this, arguments)

@@ -1,7 +1,7 @@
-import hasInterface from '../../../../../hasInterface'
-import EdgeSetIntersector from './EdgeSetIntersector'
-import SegmentIntersector from './SegmentIntersector'
-import List from '../../../../../java/util/List'
+import hasInterface from '../../../../../hasInterface.js'
+import EdgeSetIntersector from './EdgeSetIntersector.js'
+import SegmentIntersector from './SegmentIntersector.js'
+import List from '../../../../../java/util/List.js'
 export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
   constructor() {
     super()

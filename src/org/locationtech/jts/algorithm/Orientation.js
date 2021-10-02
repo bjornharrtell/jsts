@@ -1,7 +1,7 @@
-import hasInterface from '../../../../hasInterface'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import CGAlgorithmsDD from './CGAlgorithmsDD'
-import CoordinateSequence from '../geom/CoordinateSequence'
+import hasInterface from '../../../../hasInterface.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import CGAlgorithmsDD from './CGAlgorithmsDD.js'
+import CoordinateSequence from '../geom/CoordinateSequence.js'
 export default class Orientation {
   static index(p1, p2, q) {
     return CGAlgorithmsDD.orientationIndex(p1, p2, q)

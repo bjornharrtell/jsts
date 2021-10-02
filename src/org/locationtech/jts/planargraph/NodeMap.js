@@ -1,4 +1,4 @@
-import TreeMap from '../../../../java/util/TreeMap'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class NodeMap {
   constructor() {
     NodeMap.constructor_.apply(this, arguments)

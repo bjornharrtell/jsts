@@ -1,9 +1,9 @@
-import STRtree from '../index/strtree/STRtree'
-import NodedSegmentString from './NodedSegmentString'
-import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction'
-import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder'
-import ArrayList from '../../../../java/util/ArrayList'
-import SinglePassNoder from './SinglePassNoder'
+import STRtree from '../index/strtree/STRtree.js'
+import NodedSegmentString from './NodedSegmentString.js'
+import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction.js'
+import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import SinglePassNoder from './SinglePassNoder.js'
 export default class MCIndexNoder extends SinglePassNoder {
   constructor() {
     super()

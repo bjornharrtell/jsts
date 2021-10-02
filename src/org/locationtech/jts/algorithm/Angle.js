@@ -1,4 +1,4 @@
-import Orientation from './Orientation'
+import Orientation from './Orientation.js'
 export default class Angle {
   static toDegrees(radians) {
     return radians * 180 / Math.PI

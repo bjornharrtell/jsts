@@ -1,8 +1,8 @@
-import SegmentSetMutualIntersector from './SegmentSetMutualIntersector'
-import STRtree from '../index/strtree/STRtree'
-import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction'
-import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder'
-import ArrayList from '../../../../java/util/ArrayList'
+import SegmentSetMutualIntersector from './SegmentSetMutualIntersector.js'
+import STRtree from '../index/strtree/STRtree.js'
+import MonotoneChainOverlapAction from '../index/chain/MonotoneChainOverlapAction.js'
+import MonotoneChainBuilder from '../index/chain/MonotoneChainBuilder.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class MCIndexSegmentSetMutualIntersector {
   constructor() {
     MCIndexSegmentSetMutualIntersector.constructor_.apply(this, arguments)

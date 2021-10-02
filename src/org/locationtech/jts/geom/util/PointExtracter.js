@@ -1,8 +1,8 @@
-import Point from '../Point'
-import Collections from '../../../../../java/util/Collections'
-import GeometryCollection from '../GeometryCollection'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometryFilter from '../GeometryFilter'
+import Point from '../Point.js'
+import Collections from '../../../../../java/util/Collections.js'
+import GeometryCollection from '../GeometryCollection.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GeometryFilter from '../GeometryFilter.js'
 export default class PointExtracter {
   constructor() {
     PointExtracter.constructor_.apply(this, arguments)

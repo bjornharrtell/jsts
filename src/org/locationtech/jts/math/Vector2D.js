@@ -1,7 +1,7 @@
-import Coordinate from '../geom/Coordinate'
-import CGAlgorithmsDD from '../algorithm/CGAlgorithmsDD'
-import Angle from '../algorithm/Angle'
-import Assert from '../util/Assert'
+import Coordinate from '../geom/Coordinate.js'
+import CGAlgorithmsDD from '../algorithm/CGAlgorithmsDD.js'
+import Angle from '../algorithm/Angle.js'
+import Assert from '../util/Assert.js'
 export default class Vector2D {
   constructor() {
     Vector2D.constructor_.apply(this, arguments)

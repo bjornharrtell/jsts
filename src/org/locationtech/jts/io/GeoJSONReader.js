@@ -2,8 +2,8 @@
  * @module org/locationtech/jts/io/GeoJSONReader
  */
 
-import GeometryFactory from '../geom/GeometryFactory'
-import GeoJSONParser from './GeoJSONParser'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import GeoJSONParser from './GeoJSONParser.js'
 
 /**
  * Converts a geometry in GeoJSON to a {@link Geometry}.

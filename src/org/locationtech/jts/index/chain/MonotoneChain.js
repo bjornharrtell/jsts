@@ -1,4 +1,4 @@
-import Envelope from '../../geom/Envelope'
+import Envelope from '../../geom/Envelope.js'
 export default class MonotoneChain {
   constructor() {
     MonotoneChain.constructor_.apply(this, arguments)

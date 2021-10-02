@@ -1,9 +1,9 @@
-import Location from '../../geom/Location'
-import Polygon from '../../geom/Polygon'
-import PointLocation from '../PointLocation'
-import PointOnGeometryLocator from './PointOnGeometryLocator'
-import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator'
-import GeometryCollection from '../../geom/GeometryCollection'
+import Location from '../../geom/Location.js'
+import Polygon from '../../geom/Polygon.js'
+import PointLocation from '../PointLocation.js'
+import PointOnGeometryLocator from './PointOnGeometryLocator.js'
+import GeometryCollectionIterator from '../../geom/GeometryCollectionIterator.js'
+import GeometryCollection from '../../geom/GeometryCollection.js'
 export default class SimplePointInAreaLocator {
   constructor() {
     SimplePointInAreaLocator.constructor_.apply(this, arguments)

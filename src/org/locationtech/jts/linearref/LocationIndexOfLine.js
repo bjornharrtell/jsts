@@ -1,4 +1,4 @@
-import LocationIndexOfPoint from './LocationIndexOfPoint'
+import LocationIndexOfPoint from './LocationIndexOfPoint.js'
 export default class LocationIndexOfLine {
   constructor() {
     LocationIndexOfLine.constructor_.apply(this, arguments)

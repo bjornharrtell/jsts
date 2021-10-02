@@ -1,13 +1,13 @@
-import Location from '../geom/Location'
-import Coordinate from '../geom/Coordinate'
-import Node from './Node'
-import NodeMap from './NodeMap'
-import Orientation from '../algorithm/Orientation'
-import DirectedEdge from './DirectedEdge'
-import System from '../../../../java/lang/System'
-import ArrayList from '../../../../java/util/ArrayList'
-import Quadrant from './Quadrant'
-import NodeFactory from './NodeFactory'
+import Location from '../geom/Location.js'
+import Coordinate from '../geom/Coordinate.js'
+import Node from './Node.js'
+import NodeMap from './NodeMap.js'
+import Orientation from '../algorithm/Orientation.js'
+import DirectedEdge from './DirectedEdge.js'
+import System from '../../../../java/lang/System.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Quadrant from './Quadrant.js'
+import NodeFactory from './NodeFactory.js'
 export default class PlanarGraph {
   constructor() {
     PlanarGraph.constructor_.apply(this, arguments)

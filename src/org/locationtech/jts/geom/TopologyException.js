@@ -1,5 +1,5 @@
-import Coordinate from './Coordinate'
-import RuntimeException from '../../../../java/lang/RuntimeException'
+import Coordinate from './Coordinate.js'
+import RuntimeException from '../../../../java/lang/RuntimeException.js'
 
 export default class TopologyException extends RuntimeException {
   constructor(msg, pt) {

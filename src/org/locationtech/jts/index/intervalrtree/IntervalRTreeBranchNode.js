@@ -1,4 +1,4 @@
-import IntervalRTreeNode from './IntervalRTreeNode'
+import IntervalRTreeNode from './IntervalRTreeNode.js'
 export default class IntervalRTreeBranchNode extends IntervalRTreeNode {
   constructor() {
     super()

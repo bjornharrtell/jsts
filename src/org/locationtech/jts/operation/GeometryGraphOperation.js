@@ -1,6 +1,6 @@
-import BoundaryNodeRule from '../algorithm/BoundaryNodeRule'
-import GeometryGraph from '../geomgraph/GeometryGraph'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
+import BoundaryNodeRule from '../algorithm/BoundaryNodeRule.js'
+import GeometryGraph from '../geomgraph/GeometryGraph.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
 export default class GeometryGraphOperation {
   constructor() {
     GeometryGraphOperation.constructor_.apply(this, arguments)

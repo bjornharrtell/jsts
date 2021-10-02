@@ -1,8 +1,8 @@
-import LineString from '../../../geom/LineString'
-import CoordinateList from '../../../geom/CoordinateList'
-import Coordinate from '../../../geom/Coordinate'
-import Double from '../../../../../../java/lang/Double'
-import LineSegment from '../../../geom/LineSegment'
+import LineString from '../../../geom/LineString.js'
+import CoordinateList from '../../../geom/CoordinateList.js'
+import Coordinate from '../../../geom/Coordinate.js'
+import Double from '../../../../../../java/lang/Double.js'
+import LineSegment from '../../../geom/LineSegment.js'
 export default class LineStringSnapper {
   constructor() {
     LineStringSnapper.constructor_.apply(this, arguments)

@@ -1,12 +1,12 @@
-import LineString from '../../geom/LineString'
-import Geometry from '../../geom/Geometry'
-import hasInterface from '../../../../../hasInterface'
-import Collection from '../../../../../java/util/Collection'
-import EdgeString from './EdgeString'
-import LineMergeGraph from './LineMergeGraph'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Assert from '../../util/Assert'
-import GraphComponent from '../../planargraph/GraphComponent'
+import LineString from '../../geom/LineString.js'
+import Geometry from '../../geom/Geometry.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Collection from '../../../../../java/util/Collection.js'
+import EdgeString from './EdgeString.js'
+import LineMergeGraph from './LineMergeGraph.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Assert from '../../util/Assert.js'
+import GraphComponent from '../../planargraph/GraphComponent.js'
 export default class LineMerger {
   constructor() {
     LineMerger.constructor_.apply(this, arguments)

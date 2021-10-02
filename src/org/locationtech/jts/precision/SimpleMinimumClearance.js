@@ -1,9 +1,9 @@
-import CoordinateFilter from '../geom/CoordinateFilter'
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
-import LineSegment from '../geom/LineSegment'
-import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter'
-import Distance from '../algorithm/Distance'
+import CoordinateFilter from '../geom/CoordinateFilter.js'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import LineSegment from '../geom/LineSegment.js'
+import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter.js'
+import Distance from '../algorithm/Distance.js'
 export default class SimpleMinimumClearance {
   constructor() {
     SimpleMinimumClearance.constructor_.apply(this, arguments)

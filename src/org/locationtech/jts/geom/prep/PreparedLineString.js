@@ -1,7 +1,7 @@
-import FastSegmentSetIntersectionFinder from '../../noding/FastSegmentSetIntersectionFinder'
-import SegmentStringUtil from '../../noding/SegmentStringUtil'
-import PreparedLineStringIntersects from './PreparedLineStringIntersects'
-import BasicPreparedGeometry from './BasicPreparedGeometry'
+import FastSegmentSetIntersectionFinder from '../../noding/FastSegmentSetIntersectionFinder.js'
+import SegmentStringUtil from '../../noding/SegmentStringUtil.js'
+import PreparedLineStringIntersects from './PreparedLineStringIntersects.js'
+import BasicPreparedGeometry from './BasicPreparedGeometry.js'
 export default class PreparedLineString extends BasicPreparedGeometry {
   constructor() {
     super()

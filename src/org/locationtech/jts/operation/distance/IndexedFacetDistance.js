@@ -1,5 +1,5 @@
-import FacetSequenceTreeBuilder from './FacetSequenceTreeBuilder'
-import ItemDistance from '../../index/strtree/ItemDistance'
+import FacetSequenceTreeBuilder from './FacetSequenceTreeBuilder.js'
+import ItemDistance from '../../index/strtree/ItemDistance.js'
 export default class IndexedFacetDistance {
   constructor() {
     IndexedFacetDistance.constructor_.apply(this, arguments)

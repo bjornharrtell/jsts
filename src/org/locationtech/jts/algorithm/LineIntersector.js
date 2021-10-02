@@ -1,7 +1,7 @@
-import WKTWriter from '../io/WKTWriter'
-import Coordinate from '../geom/Coordinate'
-import Assert from '../util/Assert'
-import StringBuilder from '../../../../java/lang/StringBuilder'
+import WKTWriter from '../io/WKTWriter.js'
+import Coordinate from '../geom/Coordinate.js'
+import Assert from '../util/Assert.js'
+import StringBuilder from '../../../../java/lang/StringBuilder.js'
 export default class LineIntersector {
   constructor() {
     LineIntersector.constructor_.apply(this, arguments)

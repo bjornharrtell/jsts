@@ -1,8 +1,8 @@
-import Noder from './Noder'
-import MCIndexNoder from './MCIndexNoder'
-import TopologyException from '../geom/TopologyException'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
-import IntersectionAdder from './IntersectionAdder'
+import Noder from './Noder.js'
+import MCIndexNoder from './MCIndexNoder.js'
+import TopologyException from '../geom/TopologyException.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
+import IntersectionAdder from './IntersectionAdder.js'
 export default class IteratedNoder {
   constructor() {
     IteratedNoder.constructor_.apply(this, arguments)

@@ -1,13 +1,13 @@
-import Location from '../../geom/Location'
-import GeometryFactory from '../../geom/GeometryFactory'
-import Position from '../../geomgraph/Position'
-import Polygon from '../../geom/Polygon'
-import MultiPolygon from '../../geom/MultiPolygon'
-import MaximalEdgeRing from '../overlay/MaximalEdgeRing'
-import OverlayNodeFactory from '../overlay/OverlayNodeFactory'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Assert from '../../util/Assert'
-import PlanarGraph from '../../geomgraph/PlanarGraph'
+import Location from '../../geom/Location.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Position from '../../geomgraph/Position.js'
+import Polygon from '../../geom/Polygon.js'
+import MultiPolygon from '../../geom/MultiPolygon.js'
+import MaximalEdgeRing from '../overlay/MaximalEdgeRing.js'
+import OverlayNodeFactory from '../overlay/OverlayNodeFactory.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Assert from '../../util/Assert.js'
+import PlanarGraph from '../../geomgraph/PlanarGraph.js'
 export default class ConnectedInteriorTester {
   constructor() {
     ConnectedInteriorTester.constructor_.apply(this, arguments)

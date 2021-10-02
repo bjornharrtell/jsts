@@ -1,7 +1,7 @@
-import Coordinate from '../../geom/Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import Envelope from '../../geom/Envelope'
-import Assert from '../../util/Assert'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import Envelope from '../../geom/Envelope.js'
+import Assert from '../../util/Assert.js'
 export default class HotPixel {
   constructor() {
     HotPixel.constructor_.apply(this, arguments)

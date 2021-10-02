@@ -1,7 +1,7 @@
-import Geometry from '../Geometry'
-import hasInterface from '../../../../../hasInterface'
-import Collection from '../../../../../java/util/Collection'
-import ArrayList from '../../../../../java/util/ArrayList'
+import Geometry from '../Geometry.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Collection from '../../../../../java/util/Collection.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class GeometryMapper {
   static map() {
     if (arguments[0] instanceof Geometry && hasInterface(arguments[1], MapOp)) {

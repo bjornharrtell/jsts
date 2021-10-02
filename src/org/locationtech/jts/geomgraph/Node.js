@@ -1,6 +1,6 @@
-import Location from '../geom/Location'
-import Label from './Label'
-import GraphComponent from './GraphComponent'
+import Location from '../geom/Location.js'
+import Label from './Label.js'
+import GraphComponent from './GraphComponent.js'
 export default class Node extends GraphComponent {
   constructor() {
     super()

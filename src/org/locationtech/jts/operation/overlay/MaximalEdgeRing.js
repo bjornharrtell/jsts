@@ -1,6 +1,6 @@
-import MinimalEdgeRing from './MinimalEdgeRing'
-import EdgeRing from '../../geomgraph/EdgeRing'
-import ArrayList from '../../../../../java/util/ArrayList'
+import MinimalEdgeRing from './MinimalEdgeRing.js'
+import EdgeRing from '../../geomgraph/EdgeRing.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class MaximalEdgeRing extends EdgeRing {
   constructor() {
     super()

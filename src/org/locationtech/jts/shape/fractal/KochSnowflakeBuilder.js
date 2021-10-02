@@ -1,7 +1,7 @@
-import CoordinateList from '../../geom/CoordinateList'
-import Coordinate from '../../geom/Coordinate'
-import Vector2D from '../../math/Vector2D'
-import GeometricShapeBuilder from '../GeometricShapeBuilder'
+import CoordinateList from '../../geom/CoordinateList.js'
+import Coordinate from '../../geom/Coordinate.js'
+import Vector2D from '../../math/Vector2D.js'
+import GeometricShapeBuilder from '../GeometricShapeBuilder.js'
 export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
   constructor() {
     super()

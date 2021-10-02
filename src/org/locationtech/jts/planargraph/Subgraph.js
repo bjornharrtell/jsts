@@ -1,6 +1,6 @@
-import HashSet from '../../../../java/util/HashSet'
-import NodeMap from './NodeMap'
-import ArrayList from '../../../../java/util/ArrayList'
+import HashSet from '../../../../java/util/HashSet.js'
+import NodeMap from './NodeMap.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class Subgraph {
   constructor() {
     Subgraph.constructor_.apply(this, arguments)

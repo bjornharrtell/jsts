@@ -1,7 +1,7 @@
-import LinearIterator from './LinearIterator'
-import Double from '../../../../java/lang/Double'
-import LineSegment from '../geom/LineSegment'
-import Assert from '../util/Assert'
+import LinearIterator from './LinearIterator.js'
+import Double from '../../../../java/lang/Double.js'
+import LineSegment from '../geom/LineSegment.js'
+import Assert from '../util/Assert.js'
 export default class LengthIndexOfPoint {
   constructor() {
     LengthIndexOfPoint.constructor_.apply(this, arguments)

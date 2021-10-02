@@ -1,11 +1,11 @@
-import ItemBoundable from '../index/strtree/ItemBoundable'
-import FacetSequence from '../operation/distance/FacetSequence'
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
-import LineSegment from '../geom/LineSegment'
-import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBuilder'
-import Distance from '../algorithm/Distance'
-import ItemDistance from '../index/strtree/ItemDistance'
+import ItemBoundable from '../index/strtree/ItemBoundable.js'
+import FacetSequence from '../operation/distance/FacetSequence.js'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import LineSegment from '../geom/LineSegment.js'
+import FacetSequenceTreeBuilder from '../operation/distance/FacetSequenceTreeBuilder.js'
+import Distance from '../algorithm/Distance.js'
+import ItemDistance from '../index/strtree/ItemDistance.js'
 export default class MinimumClearance {
   constructor() {
     MinimumClearance.constructor_.apply(this, arguments)

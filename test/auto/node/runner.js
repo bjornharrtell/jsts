@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import generate from './generate'
+import generate from './generate.js'
 
 const suites = [
   'TestBoundary',

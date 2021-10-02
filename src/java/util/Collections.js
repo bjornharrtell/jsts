@@ -1,5 +1,5 @@
-import Arrays from './Arrays'
-import ArrayList from './ArrayList'
+import Arrays from './Arrays.js'
+import ArrayList from './ArrayList.js'
 
 const Collections = {
   reverseOrder: function() {

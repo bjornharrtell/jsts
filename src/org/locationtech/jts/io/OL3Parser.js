@@ -4,8 +4,8 @@
  * @module org/locationtech/jts/io/OL3Parser
  */
 
-import Coordinate from '../geom/Coordinate'
-import GeometryFactory from '../geom/GeometryFactory'
+import Coordinate from '../geom/Coordinate.js'
+import GeometryFactory from '../geom/GeometryFactory.js'
 
 function p2c(p) {
   return [p.x, p.y]

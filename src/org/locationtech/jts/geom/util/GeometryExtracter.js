@@ -1,7 +1,7 @@
-import Geometry from '../Geometry'
-import GeometryCollection from '../GeometryCollection'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometryFilter from '../GeometryFilter'
+import Geometry from '../Geometry.js'
+import GeometryCollection from '../GeometryCollection.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GeometryFilter from '../GeometryFilter.js'
 export default class GeometryExtracter {
   constructor() {
     GeometryExtracter.constructor_.apply(this, arguments)

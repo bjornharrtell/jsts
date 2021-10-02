@@ -1,13 +1,13 @@
-import Geometry from '../geom/Geometry'
-import hasInterface from '../../../../hasInterface'
-import GeometryFactory from '../geom/GeometryFactory'
-import Collection from '../../../../java/util/Collection'
-import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator'
-import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision'
-import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder'
-import CoordinateArrays from '../geom/CoordinateArrays'
-import ArrayList from '../../../../java/util/ArrayList'
-import OverlayOp from '../operation/overlay/OverlayOp'
+import Geometry from '../geom/Geometry.js'
+import hasInterface from '../../../../hasInterface.js'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import Collection from '../../../../java/util/Collection.js'
+import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
+import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
+import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder.js'
+import CoordinateArrays from '../geom/CoordinateArrays.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import OverlayOp from '../operation/overlay/OverlayOp.js'
 export default class VoronoiDiagramBuilder {
   constructor() {
     VoronoiDiagramBuilder.constructor_.apply(this, arguments)

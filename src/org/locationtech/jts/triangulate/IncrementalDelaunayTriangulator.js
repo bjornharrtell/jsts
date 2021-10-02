@@ -1,4 +1,4 @@
-import QuadEdge from './quadedge/QuadEdge'
+import QuadEdge from './quadedge/QuadEdge.js'
 export default class IncrementalDelaunayTriangulator {
   constructor() {
     IncrementalDelaunayTriangulator.constructor_.apply(this, arguments)

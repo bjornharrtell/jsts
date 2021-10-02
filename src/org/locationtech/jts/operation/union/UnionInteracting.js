@@ -1,6 +1,6 @@
-import GeometryCombiner from '../../geom/util/GeometryCombiner'
-import System from '../../../../../java/lang/System'
-import ArrayList from '../../../../../java/util/ArrayList'
+import GeometryCombiner from '../../geom/util/GeometryCombiner.js'
+import System from '../../../../../java/lang/System.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class UnionInteracting {
   constructor() {
     UnionInteracting.constructor_.apply(this, arguments)

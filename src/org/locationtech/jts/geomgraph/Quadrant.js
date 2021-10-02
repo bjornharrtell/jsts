@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
+import Coordinate from '../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class Quadrant {
   static isNorthern(quad) {
     return quad === Quadrant.NE || quad === Quadrant.NW

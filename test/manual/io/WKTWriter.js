@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
+import Coordinate from '../../../src/org/locationtech/jts/geom/Coordinate.js'
+import GeometryFactory from '../../../src/org/locationtech/jts/geom/GeometryFactory.js'
+import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
 
 describe('WKTWriter', function() {
   it('should be able to create a LINESTRING from two points', function() {

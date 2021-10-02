@@ -1,8 +1,8 @@
-import CoordinateSequenceFactory from '../CoordinateSequenceFactory'
-import hasInterface from '../../../../../hasInterface'
-import CoordinateArraySequence from './CoordinateArraySequence'
-import CoordinateSequence from '../CoordinateSequence'
-import Serializable from '../../../../../java/io/Serializable'
+import CoordinateSequenceFactory from '../CoordinateSequenceFactory.js'
+import hasInterface from '../../../../../hasInterface.js'
+import CoordinateArraySequence from './CoordinateArraySequence.js'
+import CoordinateSequence from '../CoordinateSequence.js'
+import Serializable from '../../../../../java/io/Serializable.js'
 export default class CoordinateArraySequenceFactory {
   static instance() {
     return CoordinateArraySequenceFactory.instanceObject

@@ -1,12 +1,12 @@
-import BufferParameters from './BufferParameters'
-import Geometry from '../../geom/Geometry'
-import BufferBuilder from './BufferBuilder'
-import ScaledNoder from '../../noding/ScaledNoder'
-import TopologyException from '../../geom/TopologyException'
-import MathUtil from '../../math/MathUtil'
-import PrecisionModel from '../../geom/PrecisionModel'
-import RuntimeException from '../../../../../java/lang/RuntimeException'
-import MCIndexSnapRounder from '../../noding/snapround/MCIndexSnapRounder'
+import BufferParameters from './BufferParameters.js'
+import Geometry from '../../geom/Geometry.js'
+import BufferBuilder from './BufferBuilder.js'
+import ScaledNoder from '../../noding/ScaledNoder.js'
+import TopologyException from '../../geom/TopologyException.js'
+import MathUtil from '../../math/MathUtil.js'
+import PrecisionModel from '../../geom/PrecisionModel.js'
+import RuntimeException from '../../../../../java/lang/RuntimeException.js'
+import MCIndexSnapRounder from '../../noding/snapround/MCIndexSnapRounder.js'
 export default class BufferOp {
   constructor() {
     BufferOp.constructor_.apply(this, arguments)

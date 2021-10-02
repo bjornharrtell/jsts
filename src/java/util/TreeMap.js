@@ -1,6 +1,6 @@
-import ArrayList from './ArrayList'
-import SortedMap from './SortedMap'
-import HashSet from './HashSet'
+import ArrayList from './ArrayList.js'
+import SortedMap from './SortedMap.js'
+import HashSet from './HashSet.js'
 
 const BLACK = 0
 const RED = 1

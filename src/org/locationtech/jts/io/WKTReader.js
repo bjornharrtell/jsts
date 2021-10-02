@@ -2,8 +2,8 @@
  * @module org/locationtech/jts/io/WKTReader
  */
 
-import GeometryFactory from '../geom/GeometryFactory'
-import WKTParser from './WKTParser'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import WKTParser from './WKTParser.js'
 
 /**
  * Converts a geometry in Well-Known Text format to a {@link Geometry}.

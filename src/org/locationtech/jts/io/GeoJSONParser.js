@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import GeometryFactory from '../geom/GeometryFactory'
+import Coordinate from '../geom/Coordinate.js'
+import GeometryFactory from '../geom/GeometryFactory.js'
 
 const geometryTypes = ['Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
 

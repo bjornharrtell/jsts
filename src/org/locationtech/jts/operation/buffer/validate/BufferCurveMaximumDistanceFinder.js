@@ -1,8 +1,8 @@
-import DistanceToPointFinder from './DistanceToPointFinder'
-import CoordinateFilter from '../../../geom/CoordinateFilter'
-import Coordinate from '../../../geom/Coordinate'
-import PointPairDistance from './PointPairDistance'
-import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter'
+import DistanceToPointFinder from './DistanceToPointFinder.js'
+import CoordinateFilter from '../../../geom/CoordinateFilter.js'
+import Coordinate from '../../../geom/Coordinate.js'
+import PointPairDistance from './PointPairDistance.js'
+import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter.js'
 export default class BufferCurveMaximumDistanceFinder {
   constructor() {
     BufferCurveMaximumDistanceFinder.constructor_.apply(this, arguments)

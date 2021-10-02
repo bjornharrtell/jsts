@@ -1,4 +1,4 @@
-import Assert from '../util/Assert'
+import Assert from '../util/Assert.js'
 export default class GraphComponent {
   constructor() {
     GraphComponent.constructor_.apply(this, arguments)

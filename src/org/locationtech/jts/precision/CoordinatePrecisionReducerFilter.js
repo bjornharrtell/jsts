@@ -1,4 +1,4 @@
-import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter'
+import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter.js'
 export default class CoordinatePrecisionReducerFilter {
   constructor() {
     CoordinatePrecisionReducerFilter.constructor_.apply(this, arguments)

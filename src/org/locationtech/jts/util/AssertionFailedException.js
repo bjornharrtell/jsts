@@ -1,4 +1,4 @@
-import RuntimeException from '../../../../java/lang/RuntimeException'
+import RuntimeException from '../../../../java/lang/RuntimeException.js'
 export default class AssertionFailedException extends RuntimeException {
   constructor() {
     super()

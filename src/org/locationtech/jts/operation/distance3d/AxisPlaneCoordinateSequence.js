@@ -1,7 +1,7 @@
-import Coordinate from '../../geom/Coordinate'
-import Coordinates from '../../geom/Coordinates'
-import CoordinateSequence from '../../geom/CoordinateSequence'
-import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException'
+import Coordinate from '../../geom/Coordinate.js'
+import Coordinates from '../../geom/Coordinates.js'
+import CoordinateSequence from '../../geom/CoordinateSequence.js'
+import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException.js'
 export default class AxisPlaneCoordinateSequence {
   constructor() {
     AxisPlaneCoordinateSequence.constructor_.apply(this, arguments)

@@ -1,4 +1,4 @@
-import WKTWriter from '../../io/WKTWriter'
+import WKTWriter from '../../io/WKTWriter.js'
 export default class GeometryLocation {
   constructor() {
     GeometryLocation.constructor_.apply(this, arguments)

@@ -1,6 +1,6 @@
-import LineSegment from '../geom/LineSegment'
-import LineSegmentIndex from './LineSegmentIndex'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
+import LineSegment from '../geom/LineSegment.js'
+import LineSegmentIndex from './LineSegmentIndex.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
 export default class TaggedLineStringSimplifier {
   constructor() {
     TaggedLineStringSimplifier.constructor_.apply(this, arguments)

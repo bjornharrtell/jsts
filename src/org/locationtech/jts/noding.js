@@ -1,6 +1,6 @@
-import MCIndexNoder from './noding/MCIndexNoder'
-import ScaledNoder from './noding/ScaledNoder'
-import SegmentString from './noding/SegmentString'
+import MCIndexNoder from './noding/MCIndexNoder.js'
+import ScaledNoder from './noding/ScaledNoder.js'
+import SegmentString from './noding/SegmentString.js'
 
 export {
   MCIndexNoder,

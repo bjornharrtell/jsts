@@ -1,7 +1,7 @@
-import Polygon from '../Polygon'
-import GeometryCollection from '../GeometryCollection'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometryFilter from '../GeometryFilter'
+import Polygon from '../Polygon.js'
+import GeometryCollection from '../GeometryCollection.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GeometryFilter from '../GeometryFilter.js'
 export default class PolygonExtracter {
   constructor() {
     PolygonExtracter.constructor_.apply(this, arguments)

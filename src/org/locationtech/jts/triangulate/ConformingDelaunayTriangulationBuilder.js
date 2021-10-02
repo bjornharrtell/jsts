@@ -1,10 +1,10 @@
-import ConformingDelaunayTriangulator from './ConformingDelaunayTriangulator'
-import ConstraintVertex from './ConstraintVertex'
-import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder'
-import Segment from './Segment'
-import ArrayList from '../../../../java/util/ArrayList'
-import LinearComponentExtracter from '../geom/util/LinearComponentExtracter'
-import TreeMap from '../../../../java/util/TreeMap'
+import ConformingDelaunayTriangulator from './ConformingDelaunayTriangulator.js'
+import ConstraintVertex from './ConstraintVertex.js'
+import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder.js'
+import Segment from './Segment.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import LinearComponentExtracter from '../geom/util/LinearComponentExtracter.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class ConformingDelaunayTriangulationBuilder {
   constructor() {
     ConformingDelaunayTriangulationBuilder.constructor_.apply(this, arguments)

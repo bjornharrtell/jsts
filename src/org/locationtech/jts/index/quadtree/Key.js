@@ -1,6 +1,6 @@
-import Coordinate from '../../geom/Coordinate'
-import DoubleBits from './DoubleBits'
-import Envelope from '../../geom/Envelope'
+import Coordinate from '../../geom/Coordinate.js'
+import DoubleBits from './DoubleBits.js'
+import Envelope from '../../geom/Envelope.js'
 export default class Key {
   constructor() {
     Key.constructor_.apply(this, arguments)

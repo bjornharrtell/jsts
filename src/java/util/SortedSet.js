@@ -1,4 +1,4 @@
-import Set from './Set'
+import Set from './Set.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/SortedSet.html

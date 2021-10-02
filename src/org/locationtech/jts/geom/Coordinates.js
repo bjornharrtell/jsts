@@ -1,7 +1,7 @@
-import CoordinateXY from './CoordinateXY'
-import Coordinate from './Coordinate'
-import CoordinateXYM from './CoordinateXYM'
-import CoordinateXYZM from './CoordinateXYZM'
+import CoordinateXY from './CoordinateXY.js'
+import Coordinate from './Coordinate.js'
+import CoordinateXYM from './CoordinateXYM.js'
+import CoordinateXYZM from './CoordinateXYZM.js'
 export default class Coordinates {
   static measures(coordinate) {
     if (coordinate instanceof CoordinateXY) 

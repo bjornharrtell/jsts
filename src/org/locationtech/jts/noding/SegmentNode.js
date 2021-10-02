@@ -1,6 +1,6 @@
-import Coordinate from '../geom/Coordinate'
-import SegmentPointComparator from './SegmentPointComparator'
-import Comparable from '../../../../java/lang/Comparable'
+import Coordinate from '../geom/Coordinate.js'
+import SegmentPointComparator from './SegmentPointComparator.js'
+import Comparable from '../../../../java/lang/Comparable.js'
 export default class SegmentNode {
   constructor() {
     SegmentNode.constructor_.apply(this, arguments)

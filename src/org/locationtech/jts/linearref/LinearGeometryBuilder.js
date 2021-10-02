@@ -1,6 +1,6 @@
-import CoordinateList from '../geom/CoordinateList'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import ArrayList from '../../../../java/util/ArrayList'
+import CoordinateList from '../geom/CoordinateList.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class LinearGeometryBuilder {
   constructor() {
     LinearGeometryBuilder.constructor_.apply(this, arguments)

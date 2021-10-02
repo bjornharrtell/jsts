@@ -1,6 +1,6 @@
-import Double from '../../../../java/lang/Double'
-import Integer from '../../../../java/lang/Integer'
-import Comparator from '../../../../java/util/Comparator'
+import Double from '../../../../java/lang/Double.js'
+import Integer from '../../../../java/lang/Integer.js'
+import Comparator from '../../../../java/util/Comparator.js'
 export default class CoordinateSequenceComparator {
   constructor() {
     CoordinateSequenceComparator.constructor_.apply(this, arguments)

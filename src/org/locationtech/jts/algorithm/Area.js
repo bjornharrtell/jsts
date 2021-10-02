@@ -1,6 +1,6 @@
-import hasInterface from '../../../../hasInterface'
-import Coordinate from '../geom/Coordinate'
-import CoordinateSequence from '../geom/CoordinateSequence'
+import hasInterface from '../../../../hasInterface.js'
+import Coordinate from '../geom/Coordinate.js'
+import CoordinateSequence from '../geom/CoordinateSequence.js'
 export default class Area {
   static ofRing() {
     if (arguments[0] instanceof Array) {

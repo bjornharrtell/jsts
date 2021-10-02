@@ -1,9 +1,9 @@
-import BufferParameters from './BufferParameters'
-import Position from '../../geomgraph/Position'
-import Coordinate from '../../geom/Coordinate'
-import BufferInputLineSimplifier from './BufferInputLineSimplifier'
-import CoordinateArrays from '../../geom/CoordinateArrays'
-import OffsetSegmentGenerator from './OffsetSegmentGenerator'
+import BufferParameters from './BufferParameters.js'
+import Position from '../../geomgraph/Position.js'
+import Coordinate from '../../geom/Coordinate.js'
+import BufferInputLineSimplifier from './BufferInputLineSimplifier.js'
+import CoordinateArrays from '../../geom/CoordinateArrays.js'
+import OffsetSegmentGenerator from './OffsetSegmentGenerator.js'
 export default class OffsetCurveBuilder {
   constructor() {
     OffsetCurveBuilder.constructor_.apply(this, arguments)

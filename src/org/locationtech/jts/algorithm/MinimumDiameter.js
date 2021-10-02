@@ -1,8 +1,8 @@
-import Coordinate from '../geom/Coordinate'
-import Polygon from '../geom/Polygon'
-import Double from '../../../../java/lang/Double'
-import LineSegment from '../geom/LineSegment'
-import ConvexHull from './ConvexHull'
+import Coordinate from '../geom/Coordinate.js'
+import Polygon from '../geom/Polygon.js'
+import Double from '../../../../java/lang/Double.js'
+import LineSegment from '../geom/LineSegment.js'
+import ConvexHull from './ConvexHull.js'
 export default class MinimumDiameter {
   constructor() {
     MinimumDiameter.constructor_.apply(this, arguments)

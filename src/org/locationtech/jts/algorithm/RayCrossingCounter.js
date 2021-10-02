@@ -1,8 +1,8 @@
-import Location from '../geom/Location'
-import hasInterface from '../../../../hasInterface'
-import Coordinate from '../geom/Coordinate'
-import Orientation from './Orientation'
-import CoordinateSequence from '../geom/CoordinateSequence'
+import Location from '../geom/Location.js'
+import hasInterface from '../../../../hasInterface.js'
+import Coordinate from '../geom/Coordinate.js'
+import Orientation from './Orientation.js'
+import CoordinateSequence from '../geom/CoordinateSequence.js'
 export default class RayCrossingCounter {
   constructor() {
     RayCrossingCounter.constructor_.apply(this, arguments)

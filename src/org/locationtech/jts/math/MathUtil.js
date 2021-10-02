@@ -1,4 +1,4 @@
-import Double from '../../../../java/lang/Double'
+import Double from '../../../../java/lang/Double.js'
 export default class MathUtil {
   static log10(x) {
     const ln = Math.log(x)

@@ -1,12 +1,12 @@
-import CollectionUtil from './util/CollectionUtil'
-import CoordinateArrayFilter from './util/CoordinateArrayFilter'
-import CoordinateCountFilter from './util/CoordinateCountFilter'
-import GeometricShapeFactory from './util/GeometricShapeFactory'
-import NumberUtil from './util/NumberUtil'
-import ObjectCounter from './util/ObjectCounter'
-import PriorityQueue from './util/PriorityQueue'
-import StringUtil from './util/StringUtil'
-import UniqueCoordinateArrayFilter from './util/UniqueCoordinateArrayFilter'
+import CollectionUtil from './util/CollectionUtil.js'
+import CoordinateArrayFilter from './util/CoordinateArrayFilter.js'
+import CoordinateCountFilter from './util/CoordinateCountFilter.js'
+import GeometricShapeFactory from './util/GeometricShapeFactory.js'
+import NumberUtil from './util/NumberUtil.js'
+import ObjectCounter from './util/ObjectCounter.js'
+import PriorityQueue from './util/PriorityQueue.js'
+import StringUtil from './util/StringUtil.js'
+import UniqueCoordinateArrayFilter from './util/UniqueCoordinateArrayFilter.js'
 
 export {
   CollectionUtil,

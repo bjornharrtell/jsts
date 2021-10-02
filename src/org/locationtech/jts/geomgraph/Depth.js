@@ -1,5 +1,5 @@
-import Location from '../geom/Location'
-import Position from './Position'
+import Location from '../geom/Location.js'
+import Position from './Position.js'
 export default class Depth {
   constructor() {
     Depth.constructor_.apply(this, arguments)

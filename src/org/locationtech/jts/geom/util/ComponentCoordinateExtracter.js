@@ -1,7 +1,7 @@
-import LineString from '../LineString'
-import Point from '../Point'
-import GeometryComponentFilter from '../GeometryComponentFilter'
-import ArrayList from '../../../../../java/util/ArrayList'
+import LineString from '../LineString.js'
+import Point from '../Point.js'
+import GeometryComponentFilter from '../GeometryComponentFilter.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class ComponentCoordinateExtracter {
   constructor() {
     ComponentCoordinateExtracter.constructor_.apply(this, arguments)

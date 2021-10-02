@@ -1,5 +1,5 @@
-import Double from '../../../../../java/lang/Double'
-import ItemDistance from './ItemDistance'
+import Double from '../../../../../java/lang/Double.js'
+import ItemDistance from './ItemDistance.js'
 export default class GeometryItemDistance {
   distance(item1, item2) {
     if (item1 === item2) return Double.MAX_VALUE

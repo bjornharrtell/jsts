@@ -1,5 +1,5 @@
-import SegmentIntersector from './SegmentIntersector'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
+import SegmentIntersector from './SegmentIntersector.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
 export default class SegmentIntersectionDetector {
   constructor() {
     SegmentIntersectionDetector.constructor_.apply(this, arguments)

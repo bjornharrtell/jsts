@@ -1,8 +1,8 @@
-import Coordinate from '../../geom/Coordinate'
-import NodeBase from './NodeBase'
-import Node from './Node'
-import IntervalSize from './IntervalSize'
-import Assert from '../../util/Assert'
+import Coordinate from '../../geom/Coordinate.js'
+import NodeBase from './NodeBase.js'
+import Node from './Node.js'
+import IntervalSize from './IntervalSize.js'
+import Assert from '../../util/Assert.js'
 export default class Root extends NodeBase {
   constructor() {
     super()

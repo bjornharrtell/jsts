@@ -1,4 +1,4 @@
-import Quadtree from './quadtree/Quadtree'
+import Quadtree from './quadtree/Quadtree.js'
 
 export {
   Quadtree

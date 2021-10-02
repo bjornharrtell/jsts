@@ -1,6 +1,6 @@
-import CoordinateList from '../../geom/CoordinateList'
-import Orientation from '../../algorithm/Orientation'
-import Distance from '../../algorithm/Distance'
+import CoordinateList from '../../geom/CoordinateList.js'
+import Orientation from '../../algorithm/Orientation.js'
+import Distance from '../../algorithm/Distance.js'
 export default class BufferInputLineSimplifier {
   constructor() {
     BufferInputLineSimplifier.constructor_.apply(this, arguments)

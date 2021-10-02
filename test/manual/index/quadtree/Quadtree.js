@@ -1,11 +1,11 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import Quadtree from 'org/locationtech/jts/index/quadtree/Quadtree'
+import Coordinate from '../../../../src/org/locationtech/jts/geom/Coordinate.js'
+import GeometryFactory from '../../../../src/org/locationtech/jts/geom/GeometryFactory.js'
+import Quadtree from '../../../../src/org/locationtech/jts/index/quadtree/Quadtree.js'
 
-describe('Quadtree', function () {
-  it('should be able to handle a simple insert/query/delete/query test', function () {
+describe('Quadtree', function() {
+  it('should be able to handle a simple insert/query/delete/query test', function() {
     const tree = new Quadtree()
     const factory = new GeometryFactory()
     const p1 = factory.createPoint(new Coordinate(1, 1))

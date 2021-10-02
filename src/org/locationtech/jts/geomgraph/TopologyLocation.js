@@ -1,6 +1,6 @@
-import StringBuffer from '../../../../java/lang/StringBuffer'
-import Location from '../geom/Location'
-import Position from './Position'
+import StringBuffer from '../../../../java/lang/StringBuffer.js'
+import Location from '../geom/Location.js'
+import Position from './Position.js'
 export default class TopologyLocation {
   constructor() {
     TopologyLocation.constructor_.apply(this, arguments)

@@ -1,7 +1,7 @@
-import CommonBits from './CommonBits'
-import CoordinateFilter from '../geom/CoordinateFilter'
-import Coordinate from '../geom/Coordinate'
-import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter'
+import CommonBits from './CommonBits.js'
+import CoordinateFilter from '../geom/CoordinateFilter.js'
+import Coordinate from '../geom/Coordinate.js'
+import CoordinateSequenceFilter from '../geom/CoordinateSequenceFilter.js'
 export default class CommonBitsRemover {
   constructor() {
     CommonBitsRemover.constructor_.apply(this, arguments)

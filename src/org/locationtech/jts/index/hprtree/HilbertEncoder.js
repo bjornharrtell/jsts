@@ -1,4 +1,4 @@
-import HilbertCode from '../../shape/fractal/HilbertCode'
+import HilbertCode from '../../shape/fractal/HilbertCode.js'
 export default class HilbertEncoder {
   constructor() {
     HilbertEncoder.constructor_.apply(this, arguments)

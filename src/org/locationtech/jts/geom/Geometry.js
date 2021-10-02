@@ -1,9 +1,9 @@
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import GeometryComponentFilter from './GeometryComponentFilter'
-import Comparable from '../../../../java/lang/Comparable'
-import Cloneable from '../../../../java/lang/Cloneable'
-import Serializable from '../../../../java/io/Serializable'
-import Envelope from './Envelope'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import GeometryComponentFilter from './GeometryComponentFilter.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import Cloneable from '../../../../java/lang/Cloneable.js'
+import Serializable from '../../../../java/io/Serializable.js'
+import Envelope from './Envelope.js'
 export default class Geometry {
   constructor() {
     Geometry.constructor_.apply(this, arguments)

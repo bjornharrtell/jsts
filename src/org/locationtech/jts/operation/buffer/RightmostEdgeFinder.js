@@ -1,6 +1,6 @@
-import Position from '../../geomgraph/Position'
-import Orientation from '../../algorithm/Orientation'
-import Assert from '../../util/Assert'
+import Position from '../../geomgraph/Position.js'
+import Orientation from '../../algorithm/Orientation.js'
+import Assert from '../../util/Assert.js'
 export default class RightmostEdgeFinder {
   constructor() {
     RightmostEdgeFinder.constructor_.apply(this, arguments)

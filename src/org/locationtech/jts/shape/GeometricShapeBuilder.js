@@ -1,6 +1,6 @@
-import Coordinate from '../geom/Coordinate'
-import LineSegment from '../geom/LineSegment'
-import Envelope from '../geom/Envelope'
+import Coordinate from '../geom/Coordinate.js'
+import LineSegment from '../geom/LineSegment.js'
+import Envelope from '../geom/Envelope.js'
 export default class GeometricShapeBuilder {
   constructor() {
     GeometricShapeBuilder.constructor_.apply(this, arguments)

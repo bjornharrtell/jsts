@@ -1,9 +1,9 @@
-import CoordinateSequenceFactory from '../CoordinateSequenceFactory'
-import hasInterface from '../../../../../hasInterface'
-import PackedCoordinateSequence from './PackedCoordinateSequence'
-import Coordinates from '../Coordinates'
-import CoordinateSequence from '../CoordinateSequence'
-import Serializable from '../../../../../java/io/Serializable'
+import CoordinateSequenceFactory from '../CoordinateSequenceFactory.js'
+import hasInterface from '../../../../../hasInterface.js'
+import PackedCoordinateSequence from './PackedCoordinateSequence.js'
+import Coordinates from '../Coordinates.js'
+import CoordinateSequence from '../CoordinateSequence.js'
+import Serializable from '../../../../../java/io/Serializable.js'
 export default class PackedCoordinateSequenceFactory {
   constructor() {
     PackedCoordinateSequenceFactory.constructor_.apply(this, arguments)

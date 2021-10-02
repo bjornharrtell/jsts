@@ -1,8 +1,8 @@
-import Location from './Location'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Dimension from './Dimension'
-import Cloneable from '../../../../java/lang/Cloneable'
-import StringBuilder from '../../../../java/lang/StringBuilder'
+import Location from './Location.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Dimension from './Dimension.js'
+import Cloneable from '../../../../java/lang/Cloneable.js'
+import StringBuilder from '../../../../java/lang/StringBuilder.js'
 export default class IntersectionMatrix {
   constructor() {
     IntersectionMatrix.constructor_.apply(this, arguments)

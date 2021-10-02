@@ -1,7 +1,7 @@
-import Collection from './Collection'
-import IndexOutOfBoundsException from '../lang/IndexOutOfBoundsException'
-import List from './List'
-import NoSuchElementException from './NoSuchElementException'
+import Collection from './Collection.js'
+import IndexOutOfBoundsException from '../lang/IndexOutOfBoundsException.js'
+import List from './List.js'
+import NoSuchElementException from './NoSuchElementException.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/ArrayList.html

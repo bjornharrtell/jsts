@@ -1,11 +1,11 @@
-import QuadEdge from './QuadEdge'
-import Arrays from '../../../../../java/util/Arrays'
-import GeometryFactory from '../../geom/GeometryFactory'
-import Coordinate from '../../geom/Coordinate'
-import PointLocation from '../../algorithm/PointLocation'
-import Vertex from './Vertex'
-import ArrayList from '../../../../../java/util/ArrayList'
-import TriangleVisitor from './TriangleVisitor'
+import QuadEdge from './QuadEdge.js'
+import Arrays from '../../../../../java/util/Arrays.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Coordinate from '../../geom/Coordinate.js'
+import PointLocation from '../../algorithm/PointLocation.js'
+import Vertex from './Vertex.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import TriangleVisitor from './TriangleVisitor.js'
 export default class QuadEdgeTriangle {
   constructor() {
     QuadEdgeTriangle.constructor_.apply(this, arguments)

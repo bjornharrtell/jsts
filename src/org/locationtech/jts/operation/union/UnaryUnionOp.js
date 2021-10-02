@@ -1,11 +1,11 @@
-import Geometry from '../../geom/Geometry'
-import PointGeometryUnion from './PointGeometryUnion'
-import hasInterface from '../../../../../hasInterface'
-import Collection from '../../../../../java/util/Collection'
-import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp'
-import InputExtracter from './InputExtracter'
-import OverlayOp from '../overlay/OverlayOp'
-import CascadedPolygonUnion from './CascadedPolygonUnion'
+import Geometry from '../../geom/Geometry.js'
+import PointGeometryUnion from './PointGeometryUnion.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Collection from '../../../../../java/util/Collection.js'
+import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp.js'
+import InputExtracter from './InputExtracter.js'
+import OverlayOp from '../overlay/OverlayOp.js'
+import CascadedPolygonUnion from './CascadedPolygonUnion.js'
 export default class UnaryUnionOp {
   constructor() {
     UnaryUnionOp.constructor_.apply(this, arguments)

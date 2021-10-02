@@ -1,5 +1,5 @@
-import Double from '../../../../java/lang/Double'
-import Cloneable from '../../../../java/lang/Cloneable'
+import Double from '../../../../java/lang/Double.js'
+import Cloneable from '../../../../java/lang/Cloneable.js'
 export default class CoordinateSequence {
   getM(index) {
     if (this.hasM()) {

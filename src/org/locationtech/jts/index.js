@@ -1,5 +1,5 @@
-import * as kdtree from './index/kdtree'
-import * as quadtree from './index/quadtree'
-import * as strtree from './index/strtree'
+import * as kdtree from './index/kdtree.js'
+import * as quadtree from './index/quadtree.js'
+import * as strtree from './index/strtree.js'
 
 export { kdtree, quadtree, strtree }

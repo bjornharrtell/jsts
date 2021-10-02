@@ -1,13 +1,13 @@
-import LineString from '../geom/LineString'
-import CoordinateList from '../geom/CoordinateList'
-import Geometry from '../geom/Geometry'
-import hasInterface from '../../../../hasInterface'
-import Collection from '../../../../java/util/Collection'
-import Stack from '../../../../java/util/Stack'
-import MarkHalfEdge from '../edgegraph/MarkHalfEdge'
-import DissolveEdgeGraph from './DissolveEdgeGraph'
-import GeometryComponentFilter from '../geom/GeometryComponentFilter'
-import ArrayList from '../../../../java/util/ArrayList'
+import LineString from '../geom/LineString.js'
+import CoordinateList from '../geom/CoordinateList.js'
+import Geometry from '../geom/Geometry.js'
+import hasInterface from '../../../../hasInterface.js'
+import Collection from '../../../../java/util/Collection.js'
+import Stack from '../../../../java/util/Stack.js'
+import MarkHalfEdge from '../edgegraph/MarkHalfEdge.js'
+import DissolveEdgeGraph from './DissolveEdgeGraph.js'
+import GeometryComponentFilter from '../geom/GeometryComponentFilter.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class LineDissolver {
   constructor() {
     LineDissolver.constructor_.apply(this, arguments)

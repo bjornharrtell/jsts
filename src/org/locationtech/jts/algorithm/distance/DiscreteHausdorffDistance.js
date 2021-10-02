@@ -1,9 +1,9 @@
-import DistanceToPoint from './DistanceToPoint'
-import CoordinateFilter from '../../geom/CoordinateFilter'
-import Coordinate from '../../geom/Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import PointPairDistance from './PointPairDistance'
-import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter'
+import DistanceToPoint from './DistanceToPoint.js'
+import CoordinateFilter from '../../geom/CoordinateFilter.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import PointPairDistance from './PointPairDistance.js'
+import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter.js'
 export default class DiscreteHausdorffDistance {
   constructor() {
     DiscreteHausdorffDistance.constructor_.apply(this, arguments)

@@ -1,4 +1,4 @@
-import Assert from '../../util/Assert'
+import Assert from '../../util/Assert.js'
 export default class Interval {
   constructor() {
     Interval.constructor_.apply(this, arguments)

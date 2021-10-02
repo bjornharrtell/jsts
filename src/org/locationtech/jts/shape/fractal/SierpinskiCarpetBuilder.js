@@ -1,8 +1,8 @@
-import CoordinateList from '../../geom/CoordinateList'
-import GeometryFactory from '../../geom/GeometryFactory'
-import Coordinate from '../../geom/Coordinate'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometricShapeBuilder from '../GeometricShapeBuilder'
+import CoordinateList from '../../geom/CoordinateList.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Coordinate from '../../geom/Coordinate.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GeometricShapeBuilder from '../GeometricShapeBuilder.js'
 export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
   constructor() {
     super()

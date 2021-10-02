@@ -1,12 +1,12 @@
-import HashSet from '../../../../../java/util/HashSet'
-import Position from '../../geomgraph/Position'
-import Stack from '../../../../../java/util/Stack'
-import RightmostEdgeFinder from './RightmostEdgeFinder'
-import TopologyException from '../../geom/TopologyException'
-import LinkedList from '../../../../../java/util/LinkedList'
-import Comparable from '../../../../../java/lang/Comparable'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Envelope from '../../geom/Envelope'
+import HashSet from '../../../../../java/util/HashSet.js'
+import Position from '../../geomgraph/Position.js'
+import Stack from '../../../../../java/util/Stack.js'
+import RightmostEdgeFinder from './RightmostEdgeFinder.js'
+import TopologyException from '../../geom/TopologyException.js'
+import LinkedList from '../../../../../java/util/LinkedList.js'
+import Comparable from '../../../../../java/lang/Comparable.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Envelope from '../../geom/Envelope.js'
 export default class BufferSubgraph {
   constructor() {
     BufferSubgraph.constructor_.apply(this, arguments)

@@ -1,4 +1,4 @@
-import GeoJSONReader from 'org/locationtech/jts/io/GeoJSONReader'
+import GeoJSONReader from '../../../src/org/locationtech/jts/io/GeoJSONReader.js'
 
 const reader = new GeoJSONReader()
 

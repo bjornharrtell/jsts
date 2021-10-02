@@ -1,4 +1,4 @@
-import Coordinate from '../geom/Coordinate'
+import Coordinate from '../geom/Coordinate.js'
 export default class Vector3D {
   constructor() {
     Vector3D.constructor_.apply(this, arguments)

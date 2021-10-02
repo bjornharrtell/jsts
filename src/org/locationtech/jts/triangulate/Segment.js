@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import LineSegment from '../geom/LineSegment'
+import Coordinate from '../geom/Coordinate.js'
+import LineSegment from '../geom/LineSegment.js'
 export default class Segment {
   constructor() {
     Segment.constructor_.apply(this, arguments)

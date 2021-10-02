@@ -1,10 +1,10 @@
-import TreeSet from '../../../../../../java/util/TreeSet'
-import GeometryTransformer from '../../../geom/util/GeometryTransformer'
-import hasInterface from '../../../../../../hasInterface'
-import Double from '../../../../../../java/lang/Double'
-import LineStringSnapper from './LineStringSnapper'
-import PrecisionModel from '../../../geom/PrecisionModel'
-import Polygonal from '../../../geom/Polygonal'
+import TreeSet from '../../../../../../java/util/TreeSet.js'
+import GeometryTransformer from '../../../geom/util/GeometryTransformer.js'
+import hasInterface from '../../../../../../hasInterface.js'
+import Double from '../../../../../../java/lang/Double.js'
+import LineStringSnapper from './LineStringSnapper.js'
+import PrecisionModel from '../../../geom/PrecisionModel.js'
+import Polygonal from '../../../geom/Polygonal.js'
 export default class GeometrySnapper {
   constructor() {
     GeometrySnapper.constructor_.apply(this, arguments)

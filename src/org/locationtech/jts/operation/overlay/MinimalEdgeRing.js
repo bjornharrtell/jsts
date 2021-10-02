@@ -1,4 +1,4 @@
-import EdgeRing from '../../geomgraph/EdgeRing'
+import EdgeRing from '../../geomgraph/EdgeRing.js'
 export default class MinimalEdgeRing extends EdgeRing {
   constructor() {
     super()

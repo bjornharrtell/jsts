@@ -1,12 +1,12 @@
-import BufferParameters from './BufferParameters'
-import Position from '../../geomgraph/Position'
-import Coordinate from '../../geom/Coordinate'
-import Orientation from '../../algorithm/Orientation'
-import Intersection from '../../algorithm/Intersection'
-import OffsetSegmentString from './OffsetSegmentString'
-import LineSegment from '../../geom/LineSegment'
-import Angle from '../../algorithm/Angle'
-import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
+import BufferParameters from './BufferParameters.js'
+import Position from '../../geomgraph/Position.js'
+import Coordinate from '../../geom/Coordinate.js'
+import Orientation from '../../algorithm/Orientation.js'
+import Intersection from '../../algorithm/Intersection.js'
+import OffsetSegmentString from './OffsetSegmentString.js'
+import LineSegment from '../../geom/LineSegment.js'
+import Angle from '../../algorithm/Angle.js'
+import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
 export default class OffsetSegmentGenerator {
   constructor() {
     OffsetSegmentGenerator.constructor_.apply(this, arguments)

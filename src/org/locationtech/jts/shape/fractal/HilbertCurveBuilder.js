@@ -1,6 +1,6 @@
-import Coordinate from '../../geom/Coordinate'
-import HilbertCode from './HilbertCode'
-import GeometricShapeBuilder from '../GeometricShapeBuilder'
+import Coordinate from '../../geom/Coordinate.js'
+import HilbertCode from './HilbertCode.js'
+import GeometricShapeBuilder from '../GeometricShapeBuilder.js'
 export default class HilbertCurveBuilder extends GeometricShapeBuilder {
   constructor() {
     super()

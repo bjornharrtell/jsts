@@ -1,13 +1,13 @@
-import PolygonizeDirectedEdge from './PolygonizeDirectedEdge'
-import HashSet from '../../../../../java/util/HashSet'
-import Stack from '../../../../../java/util/Stack'
-import Node from '../../planargraph/Node'
-import PolygonizeEdge from './PolygonizeEdge'
-import EdgeRing from './EdgeRing'
-import CoordinateArrays from '../../geom/CoordinateArrays'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Assert from '../../util/Assert'
-import PlanarGraph from '../../planargraph/PlanarGraph'
+import PolygonizeDirectedEdge from './PolygonizeDirectedEdge.js'
+import HashSet from '../../../../../java/util/HashSet.js'
+import Stack from '../../../../../java/util/Stack.js'
+import Node from '../../planargraph/Node.js'
+import PolygonizeEdge from './PolygonizeEdge.js'
+import EdgeRing from './EdgeRing.js'
+import CoordinateArrays from '../../geom/CoordinateArrays.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Assert from '../../util/Assert.js'
+import PlanarGraph from '../../planargraph/PlanarGraph.js'
 export default class PolygonizeGraph extends PlanarGraph {
   constructor() {
     super()

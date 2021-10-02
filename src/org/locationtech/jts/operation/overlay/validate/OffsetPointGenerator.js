@@ -1,6 +1,6 @@
-import Coordinate from '../../../geom/Coordinate'
-import ArrayList from '../../../../../../java/util/ArrayList'
-import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter'
+import Coordinate from '../../../geom/Coordinate.js'
+import ArrayList from '../../../../../../java/util/ArrayList.js'
+import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter.js'
 export default class OffsetPointGenerator {
   constructor() {
     OffsetPointGenerator.constructor_.apply(this, arguments)

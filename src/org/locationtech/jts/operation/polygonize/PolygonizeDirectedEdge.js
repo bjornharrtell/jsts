@@ -1,4 +1,4 @@
-import DirectedEdge from '../../planargraph/DirectedEdge'
+import DirectedEdge from '../../planargraph/DirectedEdge.js'
 export default class PolygonizeDirectedEdge extends DirectedEdge {
   constructor() {
     super()

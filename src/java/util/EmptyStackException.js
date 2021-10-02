@@ -1,4 +1,4 @@
-import Exception from '../lang/Exception'
+import Exception from '../lang/Exception.js'
 
 export default class EmptyStackException extends Exception {
   constructor(message) {

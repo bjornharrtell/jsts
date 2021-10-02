@@ -3,13 +3,13 @@
 import $ from 'cheerio'
 import { expect } from 'chai'
 
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
-import 'org/locationtech/jts/monkey'
+import GeometryFactory from '../../../src/org/locationtech/jts/geom/GeometryFactory.js'
+import PrecisionModel from '../../../src/org/locationtech/jts/geom/PrecisionModel.js'
+import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
+import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
+import '../../../src/org/locationtech/jts/monkey.js'
 
-import BufferResultMatcher from '../BufferResultMatcher'
+import BufferResultMatcher from '../BufferResultMatcher.js'
 
 /**
  * @return GeometryFactory with PrecisionModel from test XML (undefined if no such info in XML)
@@ -61,17 +61,17 @@ export default function(doc, title) {
       var result
 
       // switch execution logic depending on opname
-      if (opname === 'buffer') {
+      if (opname === 'buffer') 
         result = a[opname](parseFloat(arg2))
-      } else if (opname === 'getCentroid') {
+      else if (opname === 'getCentroid') 
         result = a[opname]()
-      } else {
-        if (arg3) {
-          result = a[opname](b, arg3)
-        } else {
-          result = a[opname](b)
-        }
-      }
+      else 
+      if (arg3) 
+        result = a[opname](b, arg3)
+      else 
+        result = a[opname](b)
+        
+      
 
       // switch comparison logic depending on opname
       // TODO: should be a cleaner approach...
@@ -79,37 +79,37 @@ export default function(doc, title) {
         opname === 'intersects' || opname === 'equalsExact' ||
         opname === 'equalsNorm' || opname === 'isSimple' || opname === 'isValid') {
         var expectedBool = expected === 'true'
-        if (expectedBool !== result) {
+        if (expectedBool !== result) 
           fail(result, expectedBool, inputs)
-        } else {
+        else 
           expect(true).to.be.true
-        }
+        
       } else if (opname === 'distance') {
         const expectedDistance = parseFloat(expected)
-        if (result !== expectedDistance) {
+        if (result !== expectedDistance) 
           fail(result, parseFloat(expectedDistance), inputs)
-        } else {
+        else 
           expect(true).to.be.true
-        }
+        
       } else if (opname === 'buffer') {
         const expectedGeometry = reader.read(expected)
         result.normalize()
         expectedGeometry.normalize()
         var matcher = new BufferResultMatcher()
-        if (!matcher.isBufferResultMatch(result, expectedGeometry, parseFloat(arg2))) {
+        if (!matcher.isBufferResultMatch(result, expectedGeometry, parseFloat(arg2))) 
           fail(result, expected, inputs)
-        } else {
+        else 
           expect(true).to.be.true
-        }
+        
       } else {
         const expectedGeometry = reader.read(expected)
         result.normalize()
         expectedGeometry.normalize()
-        if (!result.equalsExact(expectedGeometry)) {
+        if (!result.equalsExact(expectedGeometry)) 
           fail(result, writer.write(expectedGeometry), inputs)
-        } else {
+        else 
           expect(true).to.be.true
-        }
+        
       }
     })
   }
@@ -117,7 +117,7 @@ export default function(doc, title) {
   for (var i = 0; i < cases.length; i++) {
     var testcase = cases[i]
     var desc = $('desc', testcase).text().trim()
-    describe(title + ' - ' + desc, function () {
+    describe(title + ' - ' + desc, function() {
       var awkt = $('a', testcase).text().trim().replace(/\n/g, '')
       var bwkt = $('b', testcase).text().trim().replace(/\n/g, '')
       var tests = $('test', testcase)
@@ -131,7 +131,9 @@ export default function(doc, title) {
           var a = reader.read(awkt)
           var b = bwkt.length > 0 ? reader.read(bwkt) : undefined
           generateSpec(a, b, opname, arg2, arg3, expected)
-        } catch (e) {}
+        } catch (e) {
+          // generate all cases regardless of failure
+        }
       }
     })
   }

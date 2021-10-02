@@ -1,13 +1,13 @@
-import hasInterface from '../../../../../hasInterface'
-import Position from '../../geomgraph/Position'
-import Coordinate from '../../geom/Coordinate'
-import Orientation from '../../algorithm/Orientation'
-import Collections from '../../../../../java/util/Collections'
-import DirectedEdge from '../../geomgraph/DirectedEdge'
-import LineSegment from '../../geom/LineSegment'
-import Comparable from '../../../../../java/lang/Comparable'
-import ArrayList from '../../../../../java/util/ArrayList'
-import List from '../../../../../java/util/List'
+import hasInterface from '../../../../../hasInterface.js'
+import Position from '../../geomgraph/Position.js'
+import Coordinate from '../../geom/Coordinate.js'
+import Orientation from '../../algorithm/Orientation.js'
+import Collections from '../../../../../java/util/Collections.js'
+import DirectedEdge from '../../geomgraph/DirectedEdge.js'
+import LineSegment from '../../geom/LineSegment.js'
+import Comparable from '../../../../../java/lang/Comparable.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import List from '../../../../../java/util/List.js'
 export default class SubgraphDepthLocater {
   constructor() {
     SubgraphDepthLocater.constructor_.apply(this, arguments)

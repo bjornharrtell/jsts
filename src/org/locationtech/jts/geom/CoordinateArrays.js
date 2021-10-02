@@ -1,9 +1,9 @@
-import CoordinateList from './CoordinateList'
-import Coordinates from './Coordinates'
-import MathUtil from '../math/MathUtil'
-import System from '../../../../java/lang/System'
-import Comparator from '../../../../java/util/Comparator'
-import Envelope from './Envelope'
+import CoordinateList from './CoordinateList.js'
+import Coordinates from './Coordinates.js'
+import MathUtil from '../math/MathUtil.js'
+import System from '../../../../java/lang/System.js'
+import Comparator from '../../../../java/util/Comparator.js'
+import Envelope from './Envelope.js'
 export default class CoordinateArrays {
   static isRing(pts) {
     if (pts.length < 4) return false

@@ -1,4 +1,4 @@
-import Exception from '../../../../java/lang/Exception'
+import Exception from '../../../../java/lang/Exception.js'
 export default class NotRepresentableException extends Exception {
   constructor() {
     super()

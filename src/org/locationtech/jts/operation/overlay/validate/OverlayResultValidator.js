@@ -1,10 +1,10 @@
-import GeometrySnapper from '../snap/GeometrySnapper'
-import Location from '../../../geom/Location'
-import FuzzyPointLocator from './FuzzyPointLocator'
-import OffsetPointGenerator from './OffsetPointGenerator'
-import System from '../../../../../../java/lang/System'
-import ArrayList from '../../../../../../java/util/ArrayList'
-import OverlayOp from '../OverlayOp'
+import GeometrySnapper from '../snap/GeometrySnapper.js'
+import Location from '../../../geom/Location.js'
+import FuzzyPointLocator from './FuzzyPointLocator.js'
+import OffsetPointGenerator from './OffsetPointGenerator.js'
+import System from '../../../../../../java/lang/System.js'
+import ArrayList from '../../../../../../java/util/ArrayList.js'
+import OverlayOp from '../OverlayOp.js'
 export default class OverlayResultValidator {
   constructor() {
     OverlayResultValidator.constructor_.apply(this, arguments)

@@ -1,5 +1,5 @@
-import GeometryFactory from '../GeometryFactory'
-import ArrayList from '../../../../../java/util/ArrayList'
+import GeometryFactory from '../GeometryFactory.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class GeometryCollectionMapper {
   constructor() {
     GeometryCollectionMapper.constructor_.apply(this, arguments)

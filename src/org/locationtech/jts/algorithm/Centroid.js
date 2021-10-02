@@ -1,10 +1,10 @@
-import LineString from '../geom/LineString'
-import Geometry from '../geom/Geometry'
-import Coordinate from '../geom/Coordinate'
-import Point from '../geom/Point'
-import Polygon from '../geom/Polygon'
-import Orientation from './Orientation'
-import GeometryCollection from '../geom/GeometryCollection'
+import LineString from '../geom/LineString.js'
+import Geometry from '../geom/Geometry.js'
+import Coordinate from '../geom/Coordinate.js'
+import Point from '../geom/Point.js'
+import Polygon from '../geom/Polygon.js'
+import Orientation from './Orientation.js'
+import GeometryCollection from '../geom/GeometryCollection.js'
 export default class Centroid {
   constructor() {
     Centroid.constructor_.apply(this, arguments)

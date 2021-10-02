@@ -2,7 +2,7 @@
  * @module org/locationtech/jts/io/WKTWriter
  */
 
-import WKTParser from './WKTParser'
+import WKTParser from './WKTParser.js'
 
 /**
  * Writes the Well-Known Text representation of a {@link Geometry}. The

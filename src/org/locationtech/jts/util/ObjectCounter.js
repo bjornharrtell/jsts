@@ -1,4 +1,4 @@
-import HashMap from '../../../../java/util/HashMap'
+import HashMap from '../../../../java/util/HashMap.js'
 export default class ObjectCounter {
   constructor() {
     ObjectCounter.constructor_.apply(this, arguments)

@@ -1,9 +1,9 @@
-import StringBuffer from '../../../../java/lang/StringBuffer'
-import hasInterface from '../../../../hasInterface'
-import NodedSegmentString from './NodedSegmentString'
-import ArrayList from '../../../../java/util/ArrayList'
-import LinearComponentExtracter from '../geom/util/LinearComponentExtracter'
-import List from '../../../../java/util/List'
+import StringBuffer from '../../../../java/lang/StringBuffer.js'
+import hasInterface from '../../../../hasInterface.js'
+import NodedSegmentString from './NodedSegmentString.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import LinearComponentExtracter from '../geom/util/LinearComponentExtracter.js'
+import List from '../../../../java/util/List.js'
 export default class SegmentStringUtil {
   static toGeometry(segStrings, geomFact) {
     const lines = new Array(segStrings.size()).fill(null)

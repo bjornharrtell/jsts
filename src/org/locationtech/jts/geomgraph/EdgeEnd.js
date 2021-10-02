@@ -1,7 +1,7 @@
-import Orientation from '../algorithm/Orientation'
-import Comparable from '../../../../java/lang/Comparable'
-import Quadrant from './Quadrant'
-import Assert from '../util/Assert'
+import Orientation from '../algorithm/Orientation.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import Quadrant from './Quadrant.js'
+import Assert from '../util/Assert.js'
 export default class EdgeEnd {
   constructor() {
     EdgeEnd.constructor_.apply(this, arguments)

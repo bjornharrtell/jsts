@@ -1,10 +1,10 @@
-import LineString from '../LineString'
-import Geometry from '../Geometry'
-import hasInterface from '../../../../../hasInterface'
-import Collection from '../../../../../java/util/Collection'
-import LinearRing from '../LinearRing'
-import GeometryComponentFilter from '../GeometryComponentFilter'
-import ArrayList from '../../../../../java/util/ArrayList'
+import LineString from '../LineString.js'
+import Geometry from '../Geometry.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Collection from '../../../../../java/util/Collection.js'
+import LinearRing from '../LinearRing.js'
+import GeometryComponentFilter from '../GeometryComponentFilter.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class LinearComponentExtracter {
   constructor() {
     LinearComponentExtracter.constructor_.apply(this, arguments)

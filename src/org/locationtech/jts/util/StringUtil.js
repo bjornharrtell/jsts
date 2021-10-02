@@ -1,11 +1,11 @@
-import PrintStream from '../../../../java/io/PrintStream'
-import StringReader from '../../../../java/io/StringReader'
-import System from '../../../../java/lang/System'
-import ArrayList from '../../../../java/util/ArrayList'
-import ByteArrayOutputStream from '../../../../java/io/ByteArrayOutputStream'
-import Assert from './Assert'
-import IOException from '../../../../java/io/IOException'
-import LineNumberReader from '../../../../java/io/LineNumberReader'
+import PrintStream from '../../../../java/io/PrintStream.js'
+import StringReader from '../../../../java/io/StringReader.js'
+import System from '../../../../java/lang/System.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import ByteArrayOutputStream from '../../../../java/io/ByteArrayOutputStream.js'
+import Assert from './Assert.js'
+import IOException from '../../../../java/io/IOException.js'
+import LineNumberReader from '../../../../java/io/LineNumberReader.js'
 export default class StringUtil {
   static chars(c, n) {
     const ch = new Array(n).fill(null)

@@ -1,4 +1,4 @@
-import LineSegment from '../../geom/LineSegment'
+import LineSegment from '../../geom/LineSegment.js'
 export default class MonotoneChainOverlapAction {
   constructor() {
     MonotoneChainOverlapAction.constructor_.apply(this, arguments)

@@ -1,6 +1,6 @@
-import SimilarityMeasure from './SimilarityMeasure'
-import Envelope from '../../geom/Envelope'
-import DiscreteHausdorffDistance from '../distance/DiscreteHausdorffDistance'
+import SimilarityMeasure from './SimilarityMeasure.js'
+import Envelope from '../../geom/Envelope.js'
+import DiscreteHausdorffDistance from '../distance/DiscreteHausdorffDistance.js'
 export default class HausdorffSimilarityMeasure {
   static diagonalSize(env) {
     if (env.isNull()) return 0.0

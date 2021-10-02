@@ -1,5 +1,5 @@
-import SegmentIntersectionDetector from './SegmentIntersectionDetector'
-import MCIndexSegmentSetMutualIntersector from './MCIndexSegmentSetMutualIntersector'
+import SegmentIntersectionDetector from './SegmentIntersectionDetector.js'
+import MCIndexSegmentSetMutualIntersector from './MCIndexSegmentSetMutualIntersector.js'
 export default class FastSegmentSetIntersectionFinder {
   constructor() {
     FastSegmentSetIntersectionFinder.constructor_.apply(this, arguments)

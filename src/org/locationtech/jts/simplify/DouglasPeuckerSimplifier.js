@@ -1,9 +1,9 @@
-import DouglasPeuckerLineSimplifier from './DouglasPeuckerLineSimplifier'
-import GeometryTransformer from '../geom/util/GeometryTransformer'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Polygon from '../geom/Polygon'
-import LinearRing from '../geom/LinearRing'
-import MultiPolygon from '../geom/MultiPolygon'
+import DouglasPeuckerLineSimplifier from './DouglasPeuckerLineSimplifier.js'
+import GeometryTransformer from '../geom/util/GeometryTransformer.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Polygon from '../geom/Polygon.js'
+import LinearRing from '../geom/LinearRing.js'
+import MultiPolygon from '../geom/MultiPolygon.js'
 export default class DouglasPeuckerSimplifier {
   constructor() {
     DouglasPeuckerSimplifier.constructor_.apply(this, arguments)

@@ -1,7 +1,7 @@
-import Stack from '../../../../../java/util/Stack'
-import Subgraph from '../Subgraph'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GraphComponent from '../GraphComponent'
+import Stack from '../../../../../java/util/Stack.js'
+import Subgraph from '../Subgraph.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GraphComponent from '../GraphComponent.js'
 export default class ConnectedSubgraphFinder {
   constructor() {
     ConnectedSubgraphFinder.constructor_.apply(this, arguments)

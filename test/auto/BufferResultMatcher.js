@@ -1,4 +1,4 @@
-import DiscreteHausdorffDistance from 'org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance'
+import DiscreteHausdorffDistance from '../../src/org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance.js'
 
 /**
  * A {@link ResultMatcher} which compares the results of buffer operations for
@@ -6,13 +6,19 @@ import DiscreteHausdorffDistance from 'org/locationtech/jts/algorithm/distance/D
  * the standard {@link EqualityResultMatcher} algorithm.
  */
 export default class BufferResultMatcher {
-  static get MAX_RELATIVE_AREA_DIFFERENCE () { return 1.0E-3 }
-  static get MAX_HAUSDORFF_DISTANCE_FACTOR () { return 100 }
+  static get MAX_RELATIVE_AREA_DIFFERENCE() {
+    return 1.0E-3 
+  }
+  static get MAX_HAUSDORFF_DISTANCE_FACTOR() {
+    return 100 
+  }
   /**
    * The minimum distance tolerance which will be used. This is required because
    * densified vertices do no lie precisely on their parent segment.
    */
-  static get MIN_DISTANCE_TOLERANCE () { return 1.0e-8 }
+  static get MIN_DISTANCE_TOLERANCE() {
+    return 1.0e-8 
+  }
 
   /**
    * Tests whether the two results are equal within the given tolerance. The input
@@ -20,14 +26,13 @@ export default class BufferResultMatcher {
    *
    * @return true if the actual and expected results are considered equal
    */
-  isMatch (geom, distance, actualResult,
-    expectedResult, tolerance) {
+  isMatch(geom, distance, actualResult, expectedResult) {
     return this.isBufferResultMatch(actualResult, expectedResult, distance)
   }
 
-  isBufferResultMatch (actualBuffer,
+  isBufferResultMatch(actualBuffer,
     expectedBuffer, distance) {
-    if (actualBuffer.isEmpty() && expectedBuffer.isEmpty()) { return true }
+    if (actualBuffer.isEmpty() && expectedBuffer.isEmpty())  return true 
 
     /**
      * MD - need some more checks here - symDiffArea won't catch very small holes
@@ -36,42 +41,42 @@ export default class BufferResultMatcher {
      * point of the actual buffer is at least a certain distance away from the
      * geometry boundary.
      */
-    if (!this.isSymDiffAreaInTolerance(actualBuffer, expectedBuffer)) { return false }
+    if (!this.isSymDiffAreaInTolerance(actualBuffer, expectedBuffer))  return false 
 
     if (!this.isBoundaryHausdorffDistanceInTolerance(actualBuffer,
-      expectedBuffer, distance)) { return false }
+      expectedBuffer, distance))  return false 
 
     return true
   }
 
-  isSymDiffAreaInTolerance (actualBuffer,
+  isSymDiffAreaInTolerance(actualBuffer,
     expectedBuffer) {
-    let area = expectedBuffer.getArea()
-    let diff = actualBuffer.symDifference(expectedBuffer)
-    let areaDiff = diff.getArea()
+    const area = expectedBuffer.getArea()
+    const diff = actualBuffer.symDifference(expectedBuffer)
+    const areaDiff = diff.getArea()
 
     // can't get closer than difference area = 0 ! This also handles case when
     // symDiff is empty
-    if (areaDiff <= 0.0) { return true }
+    if (areaDiff <= 0.0)  return true 
 
     let frac = Number.POSITIVE_INFINITY
-    if (area > 0.0) { frac = areaDiff / area }
+    if (area > 0.0)  frac = areaDiff / area 
 
     return frac < BufferResultMatcher.MAX_RELATIVE_AREA_DIFFERENCE
   }
 
-  isBoundaryHausdorffDistanceInTolerance (
+  isBoundaryHausdorffDistanceInTolerance(
     actualBuffer, expectedBuffer, distance) {
-    let actualBdy = actualBuffer.getBoundary()
-    let expectedBdy = expectedBuffer.getBoundary()
+    const actualBdy = actualBuffer.getBoundary()
+    const expectedBdy = expectedBuffer.getBoundary()
 
-    let haus = new DiscreteHausdorffDistance(actualBdy, expectedBdy)
+    const haus = new DiscreteHausdorffDistance(actualBdy, expectedBdy)
     haus.setDensifyFraction(0.25)
-    let maxDistanceFound = haus.orientedDistance()
+    const maxDistanceFound = haus.orientedDistance()
     let expectedDistanceTol = Math.abs(distance) /
         BufferResultMatcher.MAX_HAUSDORFF_DISTANCE_FACTOR
-    if (expectedDistanceTol < BufferResultMatcher.MIN_DISTANCE_TOLERANCE) { expectedDistanceTol = BufferResultMatcher.MIN_DISTANCE_TOLERANCE }
-    if (maxDistanceFound > expectedDistanceTol) { return false }
+    if (expectedDistanceTol < BufferResultMatcher.MIN_DISTANCE_TOLERANCE)  expectedDistanceTol = BufferResultMatcher.MIN_DISTANCE_TOLERANCE 
+    if (maxDistanceFound > expectedDistanceTol)  return false 
     return true
   }
 }

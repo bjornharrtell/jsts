@@ -1,5 +1,5 @@
-import hasInterface from '../../../../hasInterface'
-import CoordinateSequence from './CoordinateSequence'
+import hasInterface from '../../../../hasInterface.js'
+import CoordinateSequence from './CoordinateSequence.js'
 export default class CoordinateSequenceFactory {
   create() {
     if (arguments.length === 1) {

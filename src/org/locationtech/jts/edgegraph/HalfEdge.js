@@ -1,9 +1,9 @@
-import WKTWriter from '../io/WKTWriter'
-import Coordinate from '../geom/Coordinate'
-import Orientation from '../algorithm/Orientation'
-import Quadrant from '../geomgraph/Quadrant'
-import Assert from '../util/Assert'
-import StringBuilder from '../../../../java/lang/StringBuilder'
+import WKTWriter from '../io/WKTWriter.js'
+import Coordinate from '../geom/Coordinate.js'
+import Orientation from '../algorithm/Orientation.js'
+import Quadrant from '../geomgraph/Quadrant.js'
+import Assert from '../util/Assert.js'
+import StringBuilder from '../../../../java/lang/StringBuilder.js'
 export default class HalfEdge {
   constructor() {
     HalfEdge.constructor_.apply(this, arguments)

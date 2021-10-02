@@ -1,9 +1,9 @@
-import LineString from '../geom/LineString'
-import Geometry from '../geom/Geometry'
-import hasInterface from '../../../../hasInterface'
-import Collection from '../../../../java/util/Collection'
-import EdgeGraph from './EdgeGraph'
-import GeometryComponentFilter from '../geom/GeometryComponentFilter'
+import LineString from '../geom/LineString.js'
+import Geometry from '../geom/Geometry.js'
+import hasInterface from '../../../../hasInterface.js'
+import Collection from '../../../../java/util/Collection.js'
+import EdgeGraph from './EdgeGraph.js'
+import GeometryComponentFilter from '../geom/GeometryComponentFilter.js'
 export default class EdgeGraphBuilder {
   constructor() {
     EdgeGraphBuilder.constructor_.apply(this, arguments)

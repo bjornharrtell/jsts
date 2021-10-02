@@ -1,6 +1,6 @@
-import CoordinateList from '../geom/CoordinateList'
-import Coordinate from '../geom/Coordinate'
-import LineSegment from '../geom/LineSegment'
+import CoordinateList from '../geom/CoordinateList.js'
+import Coordinate from '../geom/Coordinate.js'
+import LineSegment from '../geom/LineSegment.js'
 export default class DouglasPeuckerLineSimplifier {
   constructor() {
     DouglasPeuckerLineSimplifier.constructor_.apply(this, arguments)

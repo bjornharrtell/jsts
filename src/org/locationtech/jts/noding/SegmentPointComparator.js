@@ -1,4 +1,4 @@
-import Assert from '../util/Assert'
+import Assert from '../util/Assert.js'
 export default class SegmentPointComparator {
   static relativeSign(x0, x1) {
     if (x0 < x1) return -1

@@ -1,4 +1,4 @@
-import BasicPreparedGeometry from './BasicPreparedGeometry'
+import BasicPreparedGeometry from './BasicPreparedGeometry.js'
 export default class PreparedPoint extends BasicPreparedGeometry {
   constructor() {
     super()

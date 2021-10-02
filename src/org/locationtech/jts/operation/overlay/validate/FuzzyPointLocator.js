@@ -1,10 +1,10 @@
-import PointLocator from '../../../algorithm/PointLocator'
-import Location from '../../../geom/Location'
-import GeometryFactory from '../../../geom/GeometryFactory'
-import Polygon from '../../../geom/Polygon'
-import LineSegment from '../../../geom/LineSegment'
-import ArrayList from '../../../../../../java/util/ArrayList'
-import GeometryFilter from '../../../geom/GeometryFilter'
+import PointLocator from '../../../algorithm/PointLocator.js'
+import Location from '../../../geom/Location.js'
+import GeometryFactory from '../../../geom/GeometryFactory.js'
+import Polygon from '../../../geom/Polygon.js'
+import LineSegment from '../../../geom/LineSegment.js'
+import ArrayList from '../../../../../../java/util/ArrayList.js'
+import GeometryFilter from '../../../geom/GeometryFilter.js'
 export default class FuzzyPointLocator {
   constructor() {
     FuzzyPointLocator.constructor_.apply(this, arguments)

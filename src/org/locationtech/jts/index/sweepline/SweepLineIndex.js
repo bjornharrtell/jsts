@@ -1,6 +1,6 @@
-import SweepLineEvent from './SweepLineEvent'
-import Collections from '../../../../../java/util/Collections'
-import ArrayList from '../../../../../java/util/ArrayList'
+import SweepLineEvent from './SweepLineEvent.js'
+import Collections from '../../../../../java/util/Collections.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class SweepLineIndex {
   constructor() {
     SweepLineIndex.constructor_.apply(this, arguments)

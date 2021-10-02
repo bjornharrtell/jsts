@@ -1,5 +1,5 @@
-import IsValidOp from './valid/IsValidOp'
-import ConsistentAreaTester from './valid/ConsistentAreaTester'
+import IsValidOp from './valid/IsValidOp.js'
+import ConsistentAreaTester from './valid/ConsistentAreaTester.js'
 
 export {
   IsValidOp,

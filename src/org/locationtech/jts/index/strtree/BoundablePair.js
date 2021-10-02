@@ -1,7 +1,7 @@
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import AbstractNode from './AbstractNode'
-import EnvelopeDistance from './EnvelopeDistance'
-import Comparable from '../../../../../java/lang/Comparable'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import AbstractNode from './AbstractNode.js'
+import EnvelopeDistance from './EnvelopeDistance.js'
+import Comparable from '../../../../../java/lang/Comparable.js'
 export default class BoundablePair {
   constructor() {
     BoundablePair.constructor_.apply(this, arguments)

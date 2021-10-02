@@ -1,6 +1,6 @@
-import SnapOverlayOp from './SnapOverlayOp'
-import RuntimeException from '../../../../../../java/lang/RuntimeException'
-import OverlayOp from '../OverlayOp'
+import SnapOverlayOp from './SnapOverlayOp.js'
+import RuntimeException from '../../../../../../java/lang/RuntimeException.js'
+import OverlayOp from '../OverlayOp.js'
 export default class SnapIfNeededOverlayOp {
   constructor() {
     SnapIfNeededOverlayOp.constructor_.apply(this, arguments)

@@ -1,10 +1,10 @@
-import LineString from '../geom/LineString'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import LinearLocation from './LinearLocation'
-import LocationIndexOfPoint from './LocationIndexOfPoint'
-import LocationIndexOfLine from './LocationIndexOfLine'
-import ExtractLineByLocation from './ExtractLineByLocation'
-import MultiLineString from '../geom/MultiLineString'
+import LineString from '../geom/LineString.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import LinearLocation from './LinearLocation.js'
+import LocationIndexOfPoint from './LocationIndexOfPoint.js'
+import LocationIndexOfLine from './LocationIndexOfLine.js'
+import ExtractLineByLocation from './ExtractLineByLocation.js'
+import MultiLineString from '../geom/MultiLineString.js'
 export default class LocationIndexedLine {
   constructor() {
     LocationIndexedLine.constructor_.apply(this, arguments)

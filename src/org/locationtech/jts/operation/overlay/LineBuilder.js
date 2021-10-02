@@ -1,6 +1,6 @@
-import ArrayList from '../../../../../java/util/ArrayList'
-import Assert from '../../util/Assert'
-import OverlayOp from './OverlayOp'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Assert from '../../util/Assert.js'
+import OverlayOp from './OverlayOp.js'
 export default class LineBuilder {
   constructor() {
     LineBuilder.constructor_.apply(this, arguments)

@@ -1,5 +1,5 @@
-import RelateNodeGraph from '../relate/RelateNodeGraph'
-import RobustLineIntersector from '../../algorithm/RobustLineIntersector'
+import RelateNodeGraph from '../relate/RelateNodeGraph.js'
+import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
 export default class ConsistentAreaTester {
   constructor() {
     ConsistentAreaTester.constructor_.apply(this, arguments)

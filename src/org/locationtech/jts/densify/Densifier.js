@@ -1,9 +1,9 @@
-import LineString from '../geom/LineString'
-import CoordinateList from '../geom/CoordinateList'
-import GeometryTransformer from '../geom/util/GeometryTransformer'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import MultiPolygon from '../geom/MultiPolygon'
-import LineSegment from '../geom/LineSegment'
+import LineString from '../geom/LineString.js'
+import CoordinateList from '../geom/CoordinateList.js'
+import GeometryTransformer from '../geom/util/GeometryTransformer.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import MultiPolygon from '../geom/MultiPolygon.js'
+import LineSegment from '../geom/LineSegment.js'
 export default class Densifier {
   constructor() {
     Densifier.constructor_.apply(this, arguments)

@@ -1,11 +1,11 @@
-import Location from '../../geom/Location'
-import hasInterface from '../../../../../hasInterface'
-import Coordinate from '../../geom/Coordinate'
-import AxisPlaneCoordinateSequence from './AxisPlaneCoordinateSequence'
-import Vector3D from '../../math/Vector3D'
-import CoordinateSequence from '../../geom/CoordinateSequence'
-import Plane3D from '../../math/Plane3D'
-import RayCrossingCounter from '../../algorithm/RayCrossingCounter'
+import Location from '../../geom/Location.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Coordinate from '../../geom/Coordinate.js'
+import AxisPlaneCoordinateSequence from './AxisPlaneCoordinateSequence.js'
+import Vector3D from '../../math/Vector3D.js'
+import CoordinateSequence from '../../geom/CoordinateSequence.js'
+import Plane3D from '../../math/Plane3D.js'
+import RayCrossingCounter from '../../algorithm/RayCrossingCounter.js'
 export default class PlanarPolygon3D {
   constructor() {
     PlanarPolygon3D.constructor_.apply(this, arguments)

@@ -1,5 +1,5 @@
-import Coordinate from '../Coordinate'
-import GeometricShapeFactory from '../../util/GeometricShapeFactory'
+import Coordinate from '../Coordinate.js'
+import GeometricShapeFactory from '../../util/GeometricShapeFactory.js'
 export default class SineStarFactory extends GeometricShapeFactory {
   constructor() {
     super()

@@ -1,6 +1,6 @@
-import CoordinateList from '../../geom/CoordinateList'
-import CoordinateArrays from '../../geom/CoordinateArrays'
-import ArrayList from '../../../../../java/util/ArrayList'
+import CoordinateList from '../../geom/CoordinateList.js'
+import CoordinateArrays from '../../geom/CoordinateArrays.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class EdgeString {
   constructor() {
     EdgeString.constructor_.apply(this, arguments)

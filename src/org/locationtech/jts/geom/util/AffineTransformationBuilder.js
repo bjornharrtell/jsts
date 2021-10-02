@@ -1,5 +1,5 @@
-import AffineTransformation from './AffineTransformation'
-import Matrix from '../../math/Matrix'
+import AffineTransformation from './AffineTransformation.js'
+import Matrix from '../../math/Matrix.js'
 export default class AffineTransformationBuilder {
   constructor() {
     AffineTransformationBuilder.constructor_.apply(this, arguments)

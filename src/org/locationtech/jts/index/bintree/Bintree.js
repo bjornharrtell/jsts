@@ -1,6 +1,6 @@
-import Root from './Root'
-import Interval from './Interval'
-import ArrayList from '../../../../../java/util/ArrayList'
+import Root from './Root.js'
+import Interval from './Interval.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class Bintree {
   constructor() {
     Bintree.constructor_.apply(this, arguments)

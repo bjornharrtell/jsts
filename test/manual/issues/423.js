@@ -1,8 +1,8 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import DistanceOp from 'org/locationtech/jts/operation/distance/DistanceOp'
+import Coordinate from '../../../src/org/locationtech/jts/geom/Coordinate.js'
+import GeometryFactory from '../../../src/org/locationtech/jts/geom/GeometryFactory.js'
+import DistanceOp from '../../../src/org/locationtech/jts/operation/distance/DistanceOp.js'
 
 describe('Test (#423)', function() {
   it('verify that nearestPoints works', function() {

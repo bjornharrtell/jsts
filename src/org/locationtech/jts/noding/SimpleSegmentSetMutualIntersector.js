@@ -1,4 +1,4 @@
-import SegmentSetMutualIntersector from './SegmentSetMutualIntersector'
+import SegmentSetMutualIntersector from './SegmentSetMutualIntersector.js'
 export default class SimpleSegmentSetMutualIntersector {
   constructor() {
     SimpleSegmentSetMutualIntersector.constructor_.apply(this, arguments)

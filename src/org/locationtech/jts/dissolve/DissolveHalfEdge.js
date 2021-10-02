@@ -1,4 +1,4 @@
-import MarkHalfEdge from '../edgegraph/MarkHalfEdge'
+import MarkHalfEdge from '../edgegraph/MarkHalfEdge.js'
 export default class DissolveHalfEdge extends MarkHalfEdge {
   constructor() {
     super()

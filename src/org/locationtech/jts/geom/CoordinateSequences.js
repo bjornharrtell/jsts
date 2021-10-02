@@ -1,7 +1,7 @@
-import hasInterface from '../../../../hasInterface'
-import Coordinate from './Coordinate'
-import Double from '../../../../java/lang/Double'
-import CoordinateSequence from './CoordinateSequence'
+import hasInterface from '../../../../hasInterface.js'
+import Coordinate from './Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import CoordinateSequence from './CoordinateSequence.js'
 export default class CoordinateSequences {
   static copyCoord(src, srcPos, dest, destPos) {
     const minDim = Math.min(src.getDimension(), dest.getDimension())

@@ -1,7 +1,7 @@
-import Location from '../../geom/Location'
-import EdgeEndBuilder from './EdgeEndBuilder'
-import NodeMap from '../../geomgraph/NodeMap'
-import RelateNodeFactory from './RelateNodeFactory'
+import Location from '../../geom/Location.js'
+import EdgeEndBuilder from './EdgeEndBuilder.js'
+import NodeMap from '../../geomgraph/NodeMap.js'
+import RelateNodeFactory from './RelateNodeFactory.js'
 export default class RelateNodeGraph {
   constructor() {
     RelateNodeGraph.constructor_.apply(this, arguments)

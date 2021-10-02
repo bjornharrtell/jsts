@@ -1,4 +1,4 @@
-import GeometryGraph from './geomgraph/GeometryGraph'
+import GeometryGraph from './geomgraph/GeometryGraph.js'
 
 export {
   GeometryGraph

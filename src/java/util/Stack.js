@@ -1,6 +1,6 @@
-import EmptyStackException from './EmptyStackException'
-import IndexOutOfBoundsException from '../lang/IndexOutOfBoundsException'
-import List from './List'
+import EmptyStackException from './EmptyStackException.js'
+import IndexOutOfBoundsException from '../lang/IndexOutOfBoundsException.js'
+import List from './List.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Stack.html

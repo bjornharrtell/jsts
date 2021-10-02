@@ -1,12 +1,12 @@
-import hasInterface from '../../../../../hasInterface'
-import SweepLineSegment from './SweepLineSegment'
-import SweepLineEvent from './SweepLineEvent'
-import EdgeSetIntersector from './EdgeSetIntersector'
-import Collections from '../../../../../java/util/Collections'
-import SegmentIntersector from './SegmentIntersector'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Edge from '../Edge'
-import List from '../../../../../java/util/List'
+import hasInterface from '../../../../../hasInterface.js'
+import SweepLineSegment from './SweepLineSegment.js'
+import SweepLineEvent from './SweepLineEvent.js'
+import EdgeSetIntersector from './EdgeSetIntersector.js'
+import Collections from '../../../../../java/util/Collections.js'
+import SegmentIntersector from './SegmentIntersector.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Edge from '../Edge.js'
+import List from '../../../../../java/util/List.js'
 export default class SimpleSweepLineIntersector extends EdgeSetIntersector {
   constructor() {
     super()

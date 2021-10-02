@@ -1,6 +1,6 @@
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
-import DD from '../math/DD'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import DD from '../math/DD.js'
 export default class CGAlgorithmsDD {
   static orientationIndex(p1, p2, q) {
     const index = CGAlgorithmsDD.orientationIndexFilter(p1, p2, q)

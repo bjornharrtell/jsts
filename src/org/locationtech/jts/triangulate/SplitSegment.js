@@ -1,4 +1,4 @@
-import Coordinate from '../geom/Coordinate'
+import Coordinate from '../geom/Coordinate.js'
 export default class SplitSegment {
   constructor() {
     SplitSegment.constructor_.apply(this, arguments)

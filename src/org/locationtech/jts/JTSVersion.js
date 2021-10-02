@@ -1,4 +1,4 @@
-import System from '../../../java/lang/System'
+import System from '../../../java/lang/System.js'
 export default class JTSVersion {
   static main(args) {
     System.out.println(JTSVersion.CURRENT_VERSION)

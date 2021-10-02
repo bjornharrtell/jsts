@@ -1,10 +1,10 @@
-import Coordinate from '../geom/Coordinate'
-import Polygon from '../geom/Polygon'
-import Double from '../../../../java/lang/Double'
-import GeometryCollection from '../geom/GeometryCollection'
-import ArrayList from '../../../../java/util/ArrayList'
-import Comparator from '../../../../java/util/Comparator'
-import Assert from '../util/Assert'
+import Coordinate from '../geom/Coordinate.js'
+import Polygon from '../geom/Polygon.js'
+import Double from '../../../../java/lang/Double.js'
+import GeometryCollection from '../geom/GeometryCollection.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Comparator from '../../../../java/util/Comparator.js'
+import Assert from '../util/Assert.js'
 export default class InteriorPointArea {
   constructor() {
     InteriorPointArea.constructor_.apply(this, arguments)

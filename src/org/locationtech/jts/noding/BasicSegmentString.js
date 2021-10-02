@@ -1,7 +1,7 @@
-import WKTWriter from '../io/WKTWriter'
-import CoordinateArraySequence from '../geom/impl/CoordinateArraySequence'
-import Octant from './Octant'
-import SegmentString from './SegmentString'
+import WKTWriter from '../io/WKTWriter.js'
+import CoordinateArraySequence from '../geom/impl/CoordinateArraySequence.js'
+import Octant from './Octant.js'
+import SegmentString from './SegmentString.js'
 export default class BasicSegmentString {
   constructor() {
     BasicSegmentString.constructor_.apply(this, arguments)

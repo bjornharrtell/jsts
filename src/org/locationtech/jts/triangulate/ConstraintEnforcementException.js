@@ -1,6 +1,6 @@
-import WKTWriter from '../io/WKTWriter'
-import Coordinate from '../geom/Coordinate'
-import RuntimeException from '../../../../java/lang/RuntimeException'
+import WKTWriter from '../io/WKTWriter.js'
+import Coordinate from '../geom/Coordinate.js'
+import RuntimeException from '../../../../java/lang/RuntimeException.js'
 export default class ConstraintEnforcementException extends RuntimeException {
   constructor() {
     super()

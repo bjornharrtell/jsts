@@ -1,9 +1,9 @@
-import GeometryTransformer from '../geom/util/GeometryTransformer'
-import VWLineSimplifier from './VWLineSimplifier'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Polygon from '../geom/Polygon'
-import LinearRing from '../geom/LinearRing'
-import MultiPolygon from '../geom/MultiPolygon'
+import GeometryTransformer from '../geom/util/GeometryTransformer.js'
+import VWLineSimplifier from './VWLineSimplifier.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Polygon from '../geom/Polygon.js'
+import LinearRing from '../geom/LinearRing.js'
+import MultiPolygon from '../geom/MultiPolygon.js'
 export default class VWSimplifier {
   constructor() {
     VWSimplifier.constructor_.apply(this, arguments)

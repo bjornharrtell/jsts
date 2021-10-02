@@ -1,4 +1,4 @@
-import AssertionFailedException from './AssertionFailedException'
+import AssertionFailedException from './AssertionFailedException.js'
 export default class Assert {
   static shouldNeverReachHere() {
     if (arguments.length === 0) {

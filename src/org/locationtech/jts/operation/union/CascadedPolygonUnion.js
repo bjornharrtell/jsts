@@ -1,12 +1,12 @@
-import PolygonExtracter from '../../geom/util/PolygonExtracter'
-import OverlapUnion from './OverlapUnion'
-import STRtree from '../../index/strtree/STRtree'
-import Geometry from '../../geom/Geometry'
-import hasInterface from '../../../../../hasInterface'
-import GeometryFactory from '../../geom/GeometryFactory'
-import Polygonal from '../../geom/Polygonal'
-import ArrayList from '../../../../../java/util/ArrayList'
-import List from '../../../../../java/util/List'
+import PolygonExtracter from '../../geom/util/PolygonExtracter.js'
+import OverlapUnion from './OverlapUnion.js'
+import STRtree from '../../index/strtree/STRtree.js'
+import Geometry from '../../geom/Geometry.js'
+import hasInterface from '../../../../../hasInterface.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Polygonal from '../../geom/Polygonal.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import List from '../../../../../java/util/List.js'
 export default class CascadedPolygonUnion {
   constructor() {
     CascadedPolygonUnion.constructor_.apply(this, arguments)

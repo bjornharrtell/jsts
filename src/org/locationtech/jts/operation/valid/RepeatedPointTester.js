@@ -1,10 +1,10 @@
-import LineString from '../../geom/LineString'
-import Geometry from '../../geom/Geometry'
-import Point from '../../geom/Point'
-import Polygon from '../../geom/Polygon'
-import MultiPoint from '../../geom/MultiPoint'
-import GeometryCollection from '../../geom/GeometryCollection'
-import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException'
+import LineString from '../../geom/LineString.js'
+import Geometry from '../../geom/Geometry.js'
+import Point from '../../geom/Point.js'
+import Polygon from '../../geom/Polygon.js'
+import MultiPoint from '../../geom/MultiPoint.js'
+import GeometryCollection from '../../geom/GeometryCollection.js'
+import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException.js'
 export default class RepeatedPointTester {
   constructor() {
     RepeatedPointTester.constructor_.apply(this, arguments)

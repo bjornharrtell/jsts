@@ -1,7 +1,7 @@
-import Position from '../../geomgraph/Position'
-import TopologyException from '../../geom/TopologyException'
-import ArrayList from '../../../../../java/util/ArrayList'
-import OverlayOp from './OverlayOp'
+import Position from '../../geomgraph/Position.js'
+import TopologyException from '../../geom/TopologyException.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import OverlayOp from './OverlayOp.js'
 export default class ConsistentPolygonRingChecker {
   constructor() {
     ConsistentPolygonRingChecker.constructor_.apply(this, arguments)

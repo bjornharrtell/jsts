@@ -1,4 +1,4 @@
-import Collection from './Collection'
+import Collection from './Collection.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Set.html

@@ -1,6 +1,6 @@
-import EdgeEnd from '../../geomgraph/EdgeEnd'
-import Label from '../../geomgraph/Label'
-import ArrayList from '../../../../../java/util/ArrayList'
+import EdgeEnd from '../../geomgraph/EdgeEnd.js'
+import Label from '../../geomgraph/Label.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class EdgeEndBuilder {
   createEdgeEndForNext(edge, l, eiCurr, eiNext) {
     const iNext = eiCurr.segmentIndex + 1

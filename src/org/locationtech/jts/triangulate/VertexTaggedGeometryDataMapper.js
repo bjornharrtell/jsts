@@ -1,8 +1,8 @@
-import Geometry from '../geom/Geometry'
-import hasInterface from '../../../../hasInterface'
-import Collection from '../../../../java/util/Collection'
-import ArrayList from '../../../../java/util/ArrayList'
-import TreeMap from '../../../../java/util/TreeMap'
+import Geometry from '../geom/Geometry.js'
+import hasInterface from '../../../../hasInterface.js'
+import Collection from '../../../../java/util/Collection.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class VertexTaggedGeometryDataMapper {
   constructor() {
     VertexTaggedGeometryDataMapper.constructor_.apply(this, arguments)

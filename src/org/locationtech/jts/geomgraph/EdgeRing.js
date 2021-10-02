@@ -1,11 +1,11 @@
-import Location from '../geom/Location'
-import Position from './Position'
-import PointLocation from '../algorithm/PointLocation'
-import TopologyException from '../geom/TopologyException'
-import Orientation from '../algorithm/Orientation'
-import Label from './Label'
-import ArrayList from '../../../../java/util/ArrayList'
-import Assert from '../util/Assert'
+import Location from '../geom/Location.js'
+import Position from './Position.js'
+import PointLocation from '../algorithm/PointLocation.js'
+import TopologyException from '../geom/TopologyException.js'
+import Orientation from '../algorithm/Orientation.js'
+import Label from './Label.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Assert from '../util/Assert.js'
 export default class EdgeRing {
   constructor() {
     EdgeRing.constructor_.apply(this, arguments)

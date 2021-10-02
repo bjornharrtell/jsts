@@ -1,5 +1,5 @@
-import Geometry from '../geom/Geometry'
-import Exception from '../../../../java/lang/Exception'
+import Geometry from '../geom/Geometry.js'
+import Exception from '../../../../java/lang/Exception.js'
 export default class TestBuilderProxy {
   static showIndicator(geom) {
     TestBuilderProxy.init()

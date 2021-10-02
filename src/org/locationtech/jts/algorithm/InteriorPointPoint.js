@@ -1,9 +1,9 @@
-import Geometry from '../geom/Geometry'
-import Coordinate from '../geom/Coordinate'
-import Point from '../geom/Point'
-import Double from '../../../../java/lang/Double'
-import Centroid from './Centroid'
-import GeometryCollection from '../geom/GeometryCollection'
+import Geometry from '../geom/Geometry.js'
+import Coordinate from '../geom/Coordinate.js'
+import Point from '../geom/Point.js'
+import Double from '../../../../java/lang/Double.js'
+import Centroid from './Centroid.js'
+import GeometryCollection from '../geom/GeometryCollection.js'
 export default class InteriorPointPoint {
   constructor() {
     InteriorPointPoint.constructor_.apply(this, arguments)

@@ -1,8 +1,8 @@
-import LineString from './LineString'
-import Geometry from './Geometry'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import CoordinateSequences from './CoordinateSequences'
-import Dimension from './Dimension'
+import LineString from './LineString.js'
+import Geometry from './Geometry.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import CoordinateSequences from './CoordinateSequences.js'
+import Dimension from './Dimension.js'
 export default class LinearRing extends LineString {
   constructor() {
     super()

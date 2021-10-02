@@ -1,8 +1,8 @@
-import Location from '../geom/Location'
-import Coordinate from '../geom/Coordinate'
-import Node from './Node'
-import ArrayList from '../../../../java/util/ArrayList'
-import TreeMap from '../../../../java/util/TreeMap'
+import Location from '../geom/Location.js'
+import Coordinate from '../geom/Coordinate.js'
+import Node from './Node.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class NodeMap {
   constructor() {
     NodeMap.constructor_.apply(this, arguments)

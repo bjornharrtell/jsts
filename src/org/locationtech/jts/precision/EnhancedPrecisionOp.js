@@ -1,5 +1,5 @@
-import CommonBitsOp from './CommonBitsOp'
-import RuntimeException from '../../../../java/lang/RuntimeException'
+import CommonBitsOp from './CommonBitsOp.js'
+import RuntimeException from '../../../../java/lang/RuntimeException.js'
 export default class EnhancedPrecisionOp {
   static union(geom0, geom1) {
     let originalEx = null

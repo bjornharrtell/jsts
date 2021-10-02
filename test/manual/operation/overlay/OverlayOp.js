@@ -1,15 +1,15 @@
 import expect from 'expect.js'
 
-import Coordinate from 'org/locationtech/jts/geom/Coordinate'
-import GeometryFactory from 'org/locationtech/jts/geom/GeometryFactory'
-import OverlayOp from 'org/locationtech/jts/operation/overlay/OverlayOp'
-import RelateOp from 'org/locationtech/jts/operation/relate/RelateOp'
-import PrecisionModel from 'org/locationtech/jts/geom/PrecisionModel'
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
-import WKTWriter from 'org/locationtech/jts/io/WKTWriter'
+import Coordinate from '../../../../src/org/locationtech/jts/geom/Coordinate.js'
+import GeometryFactory from '../../../../src/org/locationtech/jts/geom/GeometryFactory.js'
+import OverlayOp from '../../../../src/org/locationtech/jts/operation/overlay/OverlayOp.js'
+import RelateOp from '../../../../src/org/locationtech/jts/operation/relate/RelateOp.js'
+import PrecisionModel from '../../../../src/org/locationtech/jts/geom/PrecisionModel.js'
+import WKTReader from '../../../../src/org/locationtech/jts/io/WKTReader.js'
+import WKTWriter from '../../../../src/org/locationtech/jts/io/WKTWriter.js'
 
-describe('OverlayOp', function () {
-  it('intersection between GCs', function () {
+describe('OverlayOp', function() {
+  it('intersection between GCs', function() {
     const factory = new GeometryFactory()
     const p1 = factory.createPoint(new Coordinate(1, 1))
     const gc1 = factory.createGeometryCollection([p1])

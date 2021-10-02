@@ -1,4 +1,4 @@
-import LineSegment from '../geom/LineSegment'
+import LineSegment from '../geom/LineSegment.js'
 export default class TaggedLineSegment extends LineSegment {
   constructor() {
     super()

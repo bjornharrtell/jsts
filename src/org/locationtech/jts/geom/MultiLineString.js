@@ -1,8 +1,8 @@
-import Geometry from './Geometry'
-import Lineal from './Lineal'
-import GeometryCollection from './GeometryCollection'
-import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException'
-import Dimension from './Dimension'
+import Geometry from './Geometry.js'
+import Lineal from './Lineal.js'
+import GeometryCollection from './GeometryCollection.js'
+import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException.js'
+import Dimension from './Dimension.js'
 export default class MultiLineString extends GeometryCollection {
   constructor() {
     super()

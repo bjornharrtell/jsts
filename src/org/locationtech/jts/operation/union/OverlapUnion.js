@@ -1,9 +1,9 @@
-import HashSet from '../../../../../java/util/HashSet'
-import TopologyException from '../../geom/TopologyException'
-import GeometryCombiner from '../../geom/util/GeometryCombiner'
-import LineSegment from '../../geom/LineSegment'
-import ArrayList from '../../../../../java/util/ArrayList'
-import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter'
+import HashSet from '../../../../../java/util/HashSet.js'
+import TopologyException from '../../geom/TopologyException.js'
+import GeometryCombiner from '../../geom/util/GeometryCombiner.js'
+import LineSegment from '../../geom/LineSegment.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter.js'
 export default class OverlapUnion {
   constructor() {
     OverlapUnion.constructor_.apply(this, arguments)

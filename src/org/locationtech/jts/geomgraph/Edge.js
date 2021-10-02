@@ -1,13 +1,13 @@
-import EdgeIntersectionList from './EdgeIntersectionList'
-import IntersectionMatrix from '../geom/IntersectionMatrix'
-import MonotoneChainEdge from './index/MonotoneChainEdge'
-import Position from './Position'
-import Coordinate from '../geom/Coordinate'
-import Label from './Label'
-import Envelope from '../geom/Envelope'
-import StringBuilder from '../../../../java/lang/StringBuilder'
-import Depth from './Depth'
-import GraphComponent from './GraphComponent'
+import EdgeIntersectionList from './EdgeIntersectionList.js'
+import IntersectionMatrix from '../geom/IntersectionMatrix.js'
+import MonotoneChainEdge from './index/MonotoneChainEdge.js'
+import Position from './Position.js'
+import Coordinate from '../geom/Coordinate.js'
+import Label from './Label.js'
+import Envelope from '../geom/Envelope.js'
+import StringBuilder from '../../../../java/lang/StringBuilder.js'
+import Depth from './Depth.js'
+import GraphComponent from './GraphComponent.js'
 export default class Edge extends GraphComponent {
   constructor() {
     super()

@@ -1,4 +1,4 @@
-import CommonBitsRemover from './CommonBitsRemover'
+import CommonBitsRemover from './CommonBitsRemover.js'
 export default class CommonBitsOp {
   constructor() {
     CommonBitsOp.constructor_.apply(this, arguments)

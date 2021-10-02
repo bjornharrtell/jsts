@@ -1,11 +1,11 @@
-import WKTWriter from '../../io/WKTWriter'
-import Coordinate from '../../geom/Coordinate'
-import IntervalRTreeLeafNode from './IntervalRTreeLeafNode'
-import IntervalRTreeNode from './IntervalRTreeNode'
-import Collections from '../../../../../java/util/Collections'
-import System from '../../../../../java/lang/System'
-import ArrayList from '../../../../../java/util/ArrayList'
-import IntervalRTreeBranchNode from './IntervalRTreeBranchNode'
+import WKTWriter from '../../io/WKTWriter.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IntervalRTreeLeafNode from './IntervalRTreeLeafNode.js'
+import IntervalRTreeNode from './IntervalRTreeNode.js'
+import Collections from '../../../../../java/util/Collections.js'
+import System from '../../../../../java/lang/System.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import IntervalRTreeBranchNode from './IntervalRTreeBranchNode.js'
 export default class SortedPackedIntervalRTree {
   constructor() {
     SortedPackedIntervalRTree.constructor_.apply(this, arguments)

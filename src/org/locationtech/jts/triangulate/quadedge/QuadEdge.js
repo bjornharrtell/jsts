@@ -1,5 +1,5 @@
-import WKTWriter from '../../io/WKTWriter'
-import LineSegment from '../../geom/LineSegment'
+import WKTWriter from '../../io/WKTWriter.js'
+import LineSegment from '../../geom/LineSegment.js'
 export default class QuadEdge {
   constructor() {
     QuadEdge.constructor_.apply(this, arguments)

@@ -1,6 +1,6 @@
-import MonotoneChainSelectAction from '../../index/chain/MonotoneChainSelectAction'
-import MonotoneChain from '../../index/chain/MonotoneChain'
-import ItemVisitor from '../../index/ItemVisitor'
+import MonotoneChainSelectAction from '../../index/chain/MonotoneChainSelectAction.js'
+import MonotoneChain from '../../index/chain/MonotoneChain.js'
+import ItemVisitor from '../../index/ItemVisitor.js'
 export default class MCIndexPointSnapper {
   constructor() {
     MCIndexPointSnapper.constructor_.apply(this, arguments)

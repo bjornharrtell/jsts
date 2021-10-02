@@ -1,9 +1,9 @@
-import Coordinate from '../../geom/Coordinate'
-import Polygon from '../../geom/Polygon'
-import RectangleLineIntersector from '../../algorithm/RectangleLineIntersector'
-import ShortCircuitedGeometryVisitor from '../../geom/util/ShortCircuitedGeometryVisitor'
-import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator'
-import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter'
+import Coordinate from '../../geom/Coordinate.js'
+import Polygon from '../../geom/Polygon.js'
+import RectangleLineIntersector from '../../algorithm/RectangleLineIntersector.js'
+import ShortCircuitedGeometryVisitor from '../../geom/util/ShortCircuitedGeometryVisitor.js'
+import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator.js'
+import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter.js'
 export default class RectangleIntersects {
   constructor() {
     RectangleIntersects.constructor_.apply(this, arguments)

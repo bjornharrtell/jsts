@@ -1,11 +1,11 @@
-import Location from '../../geom/Location'
-import PriorityQueue from '../../../../../java/util/PriorityQueue'
-import Coordinate from '../../geom/Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import Centroid from '../Centroid'
-import Comparable from '../../../../../java/lang/Comparable'
-import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance'
-import IndexedPointInAreaLocator from '../locate/IndexedPointInAreaLocator'
+import Location from '../../geom/Location.js'
+import PriorityQueue from '../../../../../java/util/PriorityQueue.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import Centroid from '../Centroid.js'
+import Comparable from '../../../../../java/lang/Comparable.js'
+import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance.js'
+import IndexedPointInAreaLocator from '../locate/IndexedPointInAreaLocator.js'
 export default class LargestEmptyCircle {
   constructor() {
     LargestEmptyCircle.constructor_.apply(this, arguments)

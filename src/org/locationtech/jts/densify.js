@@ -1,4 +1,4 @@
-import Densifier from './densify/Densifier'
+import Densifier from './densify/Densifier.js'
 
 export {
   Densifier

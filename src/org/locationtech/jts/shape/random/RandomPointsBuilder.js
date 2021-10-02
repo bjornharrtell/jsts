@@ -1,12 +1,12 @@
-import Location from '../../geom/Location'
-import Geometry from '../../geom/Geometry'
-import hasInterface from '../../../../../hasInterface'
-import GeometryFactory from '../../geom/GeometryFactory'
-import Coordinate from '../../geom/Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import Polygonal from '../../geom/Polygonal'
-import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator'
-import GeometricShapeBuilder from '../GeometricShapeBuilder'
+import Location from '../../geom/Location.js'
+import Geometry from '../../geom/Geometry.js'
+import hasInterface from '../../../../../hasInterface.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import Polygonal from '../../geom/Polygonal.js'
+import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator.js'
+import GeometricShapeBuilder from '../GeometricShapeBuilder.js'
 export default class RandomPointsBuilder extends GeometricShapeBuilder {
   constructor() {
     super()

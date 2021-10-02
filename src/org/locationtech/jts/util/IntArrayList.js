@@ -1,5 +1,5 @@
-import Arrays from '../../../../java/util/Arrays'
-import System from '../../../../java/lang/System'
+import Arrays from '../../../../java/util/Arrays.js'
+import System from '../../../../java/lang/System.js'
 export default class IntArrayList {
   constructor() {
     IntArrayList.constructor_.apply(this, arguments)

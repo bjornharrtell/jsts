@@ -1,4 +1,4 @@
-import GeometryCollection from '../GeometryCollection'
+import GeometryCollection from '../GeometryCollection.js'
 export default class ShortCircuitedGeometryVisitor {
   constructor() {
     ShortCircuitedGeometryVisitor.constructor_.apply(this, arguments)

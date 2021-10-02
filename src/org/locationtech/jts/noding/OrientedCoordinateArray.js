@@ -1,5 +1,5 @@
-import Comparable from '../../../../java/lang/Comparable'
-import CoordinateArrays from '../geom/CoordinateArrays'
+import Comparable from '../../../../java/lang/Comparable.js'
+import CoordinateArrays from '../geom/CoordinateArrays.js'
 export default class OrientedCoordinateArray {
   constructor() {
     OrientedCoordinateArray.constructor_.apply(this, arguments)

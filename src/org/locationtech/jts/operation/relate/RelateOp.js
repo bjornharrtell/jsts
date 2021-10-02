@@ -1,7 +1,7 @@
-import RelateComputer from './RelateComputer'
-import GeometryGraphOperation from '../GeometryGraphOperation'
-import RectangleContains from '../predicate/RectangleContains'
-import RectangleIntersects from '../predicate/RectangleIntersects'
+import RelateComputer from './RelateComputer.js'
+import GeometryGraphOperation from '../GeometryGraphOperation.js'
+import RectangleContains from '../predicate/RectangleContains.js'
+import RectangleIntersects from '../predicate/RectangleIntersects.js'
 export default class RelateOp extends GeometryGraphOperation {
   constructor() {
     super()

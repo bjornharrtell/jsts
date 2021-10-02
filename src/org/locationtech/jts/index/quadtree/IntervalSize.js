@@ -1,4 +1,4 @@
-import DoubleBits from './DoubleBits'
+import DoubleBits from './DoubleBits.js'
 export default class IntervalSize {
   static isZeroWidth(min, max) {
     const width = max - min

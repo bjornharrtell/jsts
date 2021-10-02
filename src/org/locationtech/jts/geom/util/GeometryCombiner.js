@@ -1,4 +1,4 @@
-import ArrayList from '../../../../../java/util/ArrayList'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class GeometryCombiner {
   constructor() {
     GeometryCombiner.constructor_.apply(this, arguments)

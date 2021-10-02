@@ -1,9 +1,9 @@
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
-import CoordinateArrays from '../geom/CoordinateArrays'
-import Angle from './Angle'
-import Assert from '../util/Assert'
-import Triangle from '../geom/Triangle'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import CoordinateArrays from '../geom/CoordinateArrays.js'
+import Angle from './Angle.js'
+import Assert from '../util/Assert.js'
+import Triangle from '../geom/Triangle.js'
 export default class MinimumBoundingCircle {
   constructor() {
     MinimumBoundingCircle.constructor_.apply(this, arguments)

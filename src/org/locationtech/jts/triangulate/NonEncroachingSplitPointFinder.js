@@ -1,5 +1,5 @@
-import SplitSegment from './SplitSegment'
-import ConstraintSplitPointFinder from './ConstraintSplitPointFinder'
+import SplitSegment from './SplitSegment.js'
+import ConstraintSplitPointFinder from './ConstraintSplitPointFinder.js'
 export default class NonEncroachingSplitPointFinder {
   static projectedSplitPoint(seg, encroachPt) {
     const lineSeg = seg.getLineSegment()

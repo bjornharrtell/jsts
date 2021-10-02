@@ -1,6 +1,6 @@
-import Location from '../Location'
-import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter'
-import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator'
+import Location from '../Location.js'
+import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter.js'
+import SimplePointInAreaLocator from '../../algorithm/locate/SimplePointInAreaLocator.js'
 export default class PreparedPolygonPredicate {
   constructor() {
     PreparedPolygonPredicate.constructor_.apply(this, arguments)

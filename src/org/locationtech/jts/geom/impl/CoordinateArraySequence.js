@@ -1,11 +1,11 @@
-import hasInterface from '../../../../../hasInterface'
-import Coordinate from '../Coordinate'
-import Double from '../../../../../java/lang/Double'
-import Coordinates from '../Coordinates'
-import CoordinateSequence from '../CoordinateSequence'
-import CoordinateArrays from '../CoordinateArrays'
-import Serializable from '../../../../../java/io/Serializable'
-import StringBuilder from '../../../../../java/lang/StringBuilder'
+import hasInterface from '../../../../../hasInterface.js'
+import Coordinate from '../Coordinate.js'
+import Double from '../../../../../java/lang/Double.js'
+import Coordinates from '../Coordinates.js'
+import CoordinateSequence from '../CoordinateSequence.js'
+import CoordinateArrays from '../CoordinateArrays.js'
+import Serializable from '../../../../../java/io/Serializable.js'
+import StringBuilder from '../../../../../java/lang/StringBuilder.js'
 export default class CoordinateArraySequence {
   constructor() {
     CoordinateArraySequence.constructor_.apply(this, arguments)

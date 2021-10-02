@@ -1,8 +1,8 @@
-import Coordinate from '../Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import AffineTransformation from './AffineTransformation'
-import AffineTransformationBuilder from './AffineTransformationBuilder'
-import Angle from '../../algorithm/Angle'
+import Coordinate from '../Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import AffineTransformation from './AffineTransformation.js'
+import AffineTransformationBuilder from './AffineTransformationBuilder.js'
+import Angle from '../../algorithm/Angle.js'
 export default class AffineTransformationFactory {
   static createFromBaseLines(src0, src1, dest0, dest1) {
     const rotPt = new Coordinate(src0.x + dest1.x - dest0.x, src0.y + dest1.y - dest0.y)

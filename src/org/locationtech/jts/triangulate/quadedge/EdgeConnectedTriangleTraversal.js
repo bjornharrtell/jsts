@@ -1,7 +1,7 @@
-import hasInterface from '../../../../../hasInterface'
-import Collection from '../../../../../java/util/Collection'
-import QuadEdgeTriangle from './QuadEdgeTriangle'
-import LinkedList from '../../../../../java/util/LinkedList'
+import hasInterface from '../../../../../hasInterface.js'
+import Collection from '../../../../../java/util/Collection.js'
+import QuadEdgeTriangle from './QuadEdgeTriangle.js'
+import LinkedList from '../../../../../java/util/LinkedList.js'
 export default class EdgeConnectedTriangleTraversal {
   constructor() {
     EdgeConnectedTriangleTraversal.constructor_.apply(this, arguments)

@@ -1,10 +1,10 @@
-import LineString from '../geom/LineString'
-import HashMap from '../../../../java/util/HashMap'
-import GeometryTransformer from '../geom/util/GeometryTransformer'
-import TaggedLinesSimplifier from './TaggedLinesSimplifier'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import GeometryComponentFilter from '../geom/GeometryComponentFilter'
-import TaggedLineString from './TaggedLineString'
+import LineString from '../geom/LineString.js'
+import HashMap from '../../../../java/util/HashMap.js'
+import GeometryTransformer from '../geom/util/GeometryTransformer.js'
+import TaggedLinesSimplifier from './TaggedLinesSimplifier.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import GeometryComponentFilter from '../geom/GeometryComponentFilter.js'
+import TaggedLineString from './TaggedLineString.js'
 export default class TopologyPreservingSimplifier {
   constructor() {
     TopologyPreservingSimplifier.constructor_.apply(this, arguments)

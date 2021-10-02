@@ -1,5 +1,5 @@
-import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp'
-import OverlayOp from '../overlay/OverlayOp'
+import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp.js'
+import OverlayOp from '../overlay/OverlayOp.js'
 export default class UnionOp {
   get interfaces_() {
     return []

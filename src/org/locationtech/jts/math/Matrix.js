@@ -1,4 +1,4 @@
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class Matrix {
   static solve(a, b) {
     const n = b.length

@@ -1,10 +1,10 @@
-import LineString from '../../../geom/LineString'
-import Geometry from '../../../geom/Geometry'
-import Coordinate from '../../../geom/Coordinate'
-import Polygon from '../../../geom/Polygon'
-import LineSegment from '../../../geom/LineSegment'
-import PointPairDistance from './PointPairDistance'
-import GeometryCollection from '../../../geom/GeometryCollection'
+import LineString from '../../../geom/LineString.js'
+import Geometry from '../../../geom/Geometry.js'
+import Coordinate from '../../../geom/Coordinate.js'
+import Polygon from '../../../geom/Polygon.js'
+import LineSegment from '../../../geom/LineSegment.js'
+import PointPairDistance from './PointPairDistance.js'
+import GeometryCollection from '../../../geom/GeometryCollection.js'
 export default class DistanceToPointFinder {
   static computeDistance() {
     if (arguments[2] instanceof PointPairDistance && (arguments[0] instanceof LineString && arguments[1] instanceof Coordinate)) {

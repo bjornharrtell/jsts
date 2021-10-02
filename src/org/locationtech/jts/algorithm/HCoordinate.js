@@ -1,6 +1,6 @@
-import NotRepresentableException from './NotRepresentableException'
-import Coordinate from '../geom/Coordinate'
-import Double from '../../../../java/lang/Double'
+import NotRepresentableException from './NotRepresentableException.js'
+import Coordinate from '../geom/Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
 export default class HCoordinate {
   constructor() {
     HCoordinate.constructor_.apply(this, arguments)

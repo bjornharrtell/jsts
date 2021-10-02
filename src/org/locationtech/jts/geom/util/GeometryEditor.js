@@ -1,11 +1,11 @@
-import LineString from '../LineString'
-import Geometry from '../Geometry'
-import Point from '../Point'
-import Polygon from '../Polygon'
-import LinearRing from '../LinearRing'
-import GeometryCollection from '../GeometryCollection'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Assert from '../../util/Assert'
+import LineString from '../LineString.js'
+import Geometry from '../Geometry.js'
+import Point from '../Point.js'
+import Polygon from '../Polygon.js'
+import LinearRing from '../LinearRing.js'
+import GeometryCollection from '../GeometryCollection.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Assert from '../../util/Assert.js'
 export default class GeometryEditor {
   constructor() {
     GeometryEditor.constructor_.apply(this, arguments)

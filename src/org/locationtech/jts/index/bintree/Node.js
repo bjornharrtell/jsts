@@ -1,7 +1,7 @@
-import NodeBase from './NodeBase'
-import Interval from './Interval'
-import Assert from '../../util/Assert'
-import Key from './Key'
+import NodeBase from './NodeBase.js'
+import Interval from './Interval.js'
+import Assert from '../../util/Assert.js'
+import Key from './Key.js'
 export default class Node extends NodeBase {
   constructor() {
     super()

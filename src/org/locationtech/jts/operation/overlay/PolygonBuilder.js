@@ -1,10 +1,10 @@
-import PointLocation from '../../algorithm/PointLocation'
-import TopologyException from '../../geom/TopologyException'
-import MaximalEdgeRing from './MaximalEdgeRing'
-import CoordinateArrays from '../../geom/CoordinateArrays'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Assert from '../../util/Assert'
-import PlanarGraph from '../../geomgraph/PlanarGraph'
+import PointLocation from '../../algorithm/PointLocation.js'
+import TopologyException from '../../geom/TopologyException.js'
+import MaximalEdgeRing from './MaximalEdgeRing.js'
+import CoordinateArrays from '../../geom/CoordinateArrays.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Assert from '../../util/Assert.js'
+import PlanarGraph from '../../geomgraph/PlanarGraph.js'
 export default class PolygonBuilder {
   constructor() {
     PolygonBuilder.constructor_.apply(this, arguments)

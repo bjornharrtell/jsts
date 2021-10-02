@@ -1,7 +1,7 @@
-import GeometryFactory from '../../geom/GeometryFactory'
-import Coordinate from '../../geom/Coordinate'
-import MathUtil from '../../math/MathUtil'
-import GeometricShapeBuilder from '../GeometricShapeBuilder'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Coordinate from '../../geom/Coordinate.js'
+import MathUtil from '../../math/MathUtil.js'
+import GeometricShapeBuilder from '../GeometricShapeBuilder.js'
 export default class RandomPointsInGridBuilder extends GeometricShapeBuilder {
   constructor() {
     super()

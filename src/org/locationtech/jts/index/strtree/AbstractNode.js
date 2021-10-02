@@ -1,7 +1,7 @@
-import Boundable from './Boundable'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Serializable from '../../../../../java/io/Serializable'
-import Assert from '../../util/Assert'
+import Boundable from './Boundable.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Serializable from '../../../../../java/io/Serializable.js'
+import Assert from '../../util/Assert.js'
 export default class AbstractNode {
   constructor() {
     AbstractNode.constructor_.apply(this, arguments)

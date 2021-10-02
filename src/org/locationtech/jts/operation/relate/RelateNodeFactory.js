@@ -1,6 +1,6 @@
-import EdgeEndBundleStar from './EdgeEndBundleStar'
-import RelateNode from './RelateNode'
-import NodeFactory from '../../geomgraph/NodeFactory'
+import EdgeEndBundleStar from './EdgeEndBundleStar.js'
+import RelateNode from './RelateNode.js'
+import NodeFactory from '../../geomgraph/NodeFactory.js'
 export default class RelateNodeFactory extends NodeFactory {
   constructor() {
     super()

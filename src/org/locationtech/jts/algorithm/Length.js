@@ -1,4 +1,4 @@
-import Coordinate from '../geom/Coordinate'
+import Coordinate from '../geom/Coordinate.js'
 export default class Length {
   static ofLine(pts) {
     const n = pts.size()

@@ -1,10 +1,10 @@
-import Location from '../../geom/Location'
-import EdgeEnd from '../../geomgraph/EdgeEnd'
-import Position from '../../geomgraph/Position'
-import GeometryGraph from '../../geomgraph/GeometryGraph'
-import Label from '../../geomgraph/Label'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Edge from '../../geomgraph/Edge'
+import Location from '../../geom/Location.js'
+import EdgeEnd from '../../geomgraph/EdgeEnd.js'
+import Position from '../../geomgraph/Position.js'
+import GeometryGraph from '../../geomgraph/GeometryGraph.js'
+import Label from '../../geomgraph/Label.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Edge from '../../geomgraph/Edge.js'
 export default class EdgeEndBundle extends EdgeEnd {
   constructor() {
     super()

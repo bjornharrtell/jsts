@@ -1,8 +1,8 @@
-import EdgeIntersection from './EdgeIntersection'
-import Coordinate from '../geom/Coordinate'
-import Label from './Label'
-import Edge from './Edge'
-import TreeMap from '../../../../java/util/TreeMap'
+import EdgeIntersection from './EdgeIntersection.js'
+import Coordinate from '../geom/Coordinate.js'
+import Label from './Label.js'
+import Edge from './Edge.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class EdgeIntersectionList {
   constructor() {
     EdgeIntersectionList.constructor_.apply(this, arguments)

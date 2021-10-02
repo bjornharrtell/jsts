@@ -1,11 +1,11 @@
-import NumberUtil from '../util/NumberUtil'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Double from '../../../../java/lang/Double'
-import Comparable from '../../../../java/lang/Comparable'
-import Cloneable from '../../../../java/lang/Cloneable'
-import Comparator from '../../../../java/util/Comparator'
-import Serializable from '../../../../java/io/Serializable'
-import Assert from '../util/Assert'
+import NumberUtil from '../util/NumberUtil.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Double from '../../../../java/lang/Double.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import Cloneable from '../../../../java/lang/Cloneable.js'
+import Comparator from '../../../../java/util/Comparator.js'
+import Serializable from '../../../../java/io/Serializable.js'
+import Assert from '../util/Assert.js'
 
 const kBuf = new ArrayBuffer(8)
 const kBufAsF64 = new Float64Array(kBuf)

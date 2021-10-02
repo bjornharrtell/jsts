@@ -1,8 +1,8 @@
-import LinearIterator from './LinearIterator'
-import LinearLocation from './LinearLocation'
-import Double from '../../../../java/lang/Double'
-import LineSegment from '../geom/LineSegment'
-import Assert from '../util/Assert'
+import LinearIterator from './LinearIterator.js'
+import LinearLocation from './LinearLocation.js'
+import Double from '../../../../java/lang/Double.js'
+import LineSegment from '../geom/LineSegment.js'
+import Assert from '../util/Assert.js'
 export default class LocationIndexOfPoint {
   constructor() {
     LocationIndexOfPoint.constructor_.apply(this, arguments)

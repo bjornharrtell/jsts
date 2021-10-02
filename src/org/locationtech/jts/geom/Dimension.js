@@ -1,5 +1,5 @@
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Character from '../../../../java/lang/Character'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Character from '../../../../java/lang/Character.js'
 export default class Dimension {
   static toDimensionSymbol(dimensionValue) {
     switch (dimensionValue) {

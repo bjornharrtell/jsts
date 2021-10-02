@@ -1,8 +1,8 @@
-import LineString from '../../geom/LineString'
-import Point from '../../geom/Point'
-import Polygon from '../../geom/Polygon'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometryFilter from '../../geom/GeometryFilter'
+import LineString from '../../geom/LineString.js'
+import Point from '../../geom/Point.js'
+import Polygon from '../../geom/Polygon.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GeometryFilter from '../../geom/GeometryFilter.js'
 export default class ConnectedElementPointFilter {
   constructor() {
     ConnectedElementPointFilter.constructor_.apply(this, arguments)

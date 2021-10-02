@@ -1,13 +1,13 @@
-import PolygonExtracter from '../../../geom/util/PolygonExtracter'
-import WKTWriter from '../../../io/WKTWriter'
-import Polygon from '../../../geom/Polygon'
-import MultiPolygon from '../../../geom/MultiPolygon'
-import System from '../../../../../../java/lang/System'
-import GeometryCollection from '../../../geom/GeometryCollection'
-import ArrayList from '../../../../../../java/util/ArrayList'
-import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter'
-import DistanceOp from '../../distance/DistanceOp'
-import DiscreteHausdorffDistance from '../../../algorithm/distance/DiscreteHausdorffDistance'
+import PolygonExtracter from '../../../geom/util/PolygonExtracter.js'
+import WKTWriter from '../../../io/WKTWriter.js'
+import Polygon from '../../../geom/Polygon.js'
+import MultiPolygon from '../../../geom/MultiPolygon.js'
+import System from '../../../../../../java/lang/System.js'
+import GeometryCollection from '../../../geom/GeometryCollection.js'
+import ArrayList from '../../../../../../java/util/ArrayList.js'
+import LinearComponentExtracter from '../../../geom/util/LinearComponentExtracter.js'
+import DistanceOp from '../../distance/DistanceOp.js'
+import DiscreteHausdorffDistance from '../../../algorithm/distance/DiscreteHausdorffDistance.js'
 export default class BufferDistanceValidator {
   constructor() {
     BufferDistanceValidator.constructor_.apply(this, arguments)

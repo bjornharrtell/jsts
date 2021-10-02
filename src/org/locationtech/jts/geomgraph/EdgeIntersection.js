@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import Comparable from '../../../../java/lang/Comparable'
+import Coordinate from '../geom/Coordinate.js'
+import Comparable from '../../../../java/lang/Comparable.js'
 export default class EdgeIntersection {
   constructor() {
     EdgeIntersection.constructor_.apply(this, arguments)

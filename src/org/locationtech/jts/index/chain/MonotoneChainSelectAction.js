@@ -1,4 +1,4 @@
-import LineSegment from '../../geom/LineSegment'
+import LineSegment from '../../geom/LineSegment.js'
 export default class MonotoneChainSelectAction {
   constructor() {
     MonotoneChainSelectAction.constructor_.apply(this, arguments)

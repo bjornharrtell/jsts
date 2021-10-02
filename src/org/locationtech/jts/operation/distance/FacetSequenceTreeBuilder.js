@@ -1,9 +1,9 @@
-import LineString from '../../geom/LineString'
-import FacetSequence from './FacetSequence'
-import STRtree from '../../index/strtree/STRtree'
-import Point from '../../geom/Point'
-import GeometryComponentFilter from '../../geom/GeometryComponentFilter'
-import ArrayList from '../../../../../java/util/ArrayList'
+import LineString from '../../geom/LineString.js'
+import FacetSequence from './FacetSequence.js'
+import STRtree from '../../index/strtree/STRtree.js'
+import Point from '../../geom/Point.js'
+import GeometryComponentFilter from '../../geom/GeometryComponentFilter.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class FacetSequenceTreeBuilder {
   static addFacetSequences(geom, pts, sections) {
     let i = 0

@@ -1,7 +1,7 @@
-import Collection from './Collection'
-import NoSuchElementException from './NoSuchElementException'
-import UnsupportedOperationException from '../lang/UnsupportedOperationException'
-import Set from './Set'
+import Collection from './Collection.js'
+import NoSuchElementException from './NoSuchElementException.js'
+import UnsupportedOperationException from '../lang/UnsupportedOperationException.js'
+import Set from './Set.js'
 
 /**
  * @see http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html

@@ -1,8 +1,8 @@
-import WKTWriter from '../../io/WKTWriter'
-import CoordinateArraySequence from '../../geom/impl/CoordinateArraySequence'
-import DD from '../../math/DD'
-import System from '../../../../../java/lang/System'
-import Triangle from '../../geom/Triangle'
+import WKTWriter from '../../io/WKTWriter.js'
+import CoordinateArraySequence from '../../geom/impl/CoordinateArraySequence.js'
+import DD from '../../math/DD.js'
+import System from '../../../../../java/lang/System.js'
+import Triangle from '../../geom/Triangle.js'
 export default class TrianglePredicate {
   static triArea(a, b, c) {
     return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)

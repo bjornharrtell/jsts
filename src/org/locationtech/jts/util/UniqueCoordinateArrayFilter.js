@@ -1,6 +1,6 @@
-import HashSet from '../../../../java/util/HashSet'
-import CoordinateFilter from '../geom/CoordinateFilter'
-import ArrayList from '../../../../java/util/ArrayList'
+import HashSet from '../../../../java/util/HashSet.js'
+import CoordinateFilter from '../geom/CoordinateFilter.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class UniqueCoordinateArrayFilter {
   constructor() {
     UniqueCoordinateArrayFilter.constructor_.apply(this, arguments)

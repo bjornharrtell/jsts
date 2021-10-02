@@ -1,8 +1,8 @@
-import WKTWriter from '../io/WKTWriter'
-import MCIndexNoder from './MCIndexNoder'
-import TopologyException from '../geom/TopologyException'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
-import NodingIntersectionFinder from './NodingIntersectionFinder'
+import WKTWriter from '../io/WKTWriter.js'
+import MCIndexNoder from './MCIndexNoder.js'
+import TopologyException from '../geom/TopologyException.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
+import NodingIntersectionFinder from './NodingIntersectionFinder.js'
 export default class FastNodingValidator {
   constructor() {
     FastNodingValidator.constructor_.apply(this, arguments)

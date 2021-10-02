@@ -1,4 +1,4 @@
-import ArrayList from './ArrayList'
+import ArrayList from './ArrayList.js'
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Arrays.html

@@ -1,7 +1,7 @@
-import LineString from '../LineString'
-import GeometryCollection from '../GeometryCollection'
-import ArrayList from '../../../../../java/util/ArrayList'
-import GeometryFilter from '../GeometryFilter'
+import LineString from '../LineString.js'
+import GeometryCollection from '../GeometryCollection.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import GeometryFilter from '../GeometryFilter.js'
 export default class LineStringExtracter {
   constructor() {
     LineStringExtracter.constructor_.apply(this, arguments)

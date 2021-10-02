@@ -1,9 +1,9 @@
-import Quadtree from '../index/quadtree/Quadtree'
-import ItemVisitor from '../index/ItemVisitor'
-import LineSegment from '../geom/LineSegment'
-import ArrayList from '../../../../java/util/ArrayList'
-import Envelope from '../geom/Envelope'
-import TaggedLineString from './TaggedLineString'
+import Quadtree from '../index/quadtree/Quadtree.js'
+import ItemVisitor from '../index/ItemVisitor.js'
+import LineSegment from '../geom/LineSegment.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Envelope from '../geom/Envelope.js'
+import TaggedLineString from './TaggedLineString.js'
 export default class LineSegmentIndex {
   constructor() {
     LineSegmentIndex.constructor_.apply(this, arguments)

@@ -1,5 +1,5 @@
-import SegmentIntersector from './SegmentIntersector'
-import ArrayList from '../../../../java/util/ArrayList'
+import SegmentIntersector from './SegmentIntersector.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class InteriorIntersectionFinderAdder {
   constructor() {
     InteriorIntersectionFinderAdder.constructor_.apply(this, arguments)

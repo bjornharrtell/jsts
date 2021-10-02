@@ -1,6 +1,6 @@
-import hasInterface from '../../../../hasInterface'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Lineal from '../geom/Lineal'
+import hasInterface from '../../../../hasInterface.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Lineal from '../geom/Lineal.js'
 export default class LinearIterator {
   constructor() {
     LinearIterator.constructor_.apply(this, arguments)

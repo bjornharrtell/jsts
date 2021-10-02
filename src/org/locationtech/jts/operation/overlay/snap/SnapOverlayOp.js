@@ -1,7 +1,7 @@
-import GeometrySnapper from './GeometrySnapper'
-import System from '../../../../../../java/lang/System'
-import CommonBitsRemover from '../../../precision/CommonBitsRemover'
-import OverlayOp from '../OverlayOp'
+import GeometrySnapper from './GeometrySnapper.js'
+import System from '../../../../../../java/lang/System.js'
+import CommonBitsRemover from '../../../precision/CommonBitsRemover.js'
+import OverlayOp from '../OverlayOp.js'
 export default class SnapOverlayOp {
   constructor() {
     SnapOverlayOp.constructor_.apply(this, arguments)

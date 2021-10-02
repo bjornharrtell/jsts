@@ -1,6 +1,6 @@
-import BasicSegmentString from '../noding/BasicSegmentString'
-import FastNodingValidator from '../noding/FastNodingValidator'
-import ArrayList from '../../../../java/util/ArrayList'
+import BasicSegmentString from '../noding/BasicSegmentString.js'
+import FastNodingValidator from '../noding/FastNodingValidator.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class EdgeNodingValidator {
   constructor() {
     EdgeNodingValidator.constructor_.apply(this, arguments)

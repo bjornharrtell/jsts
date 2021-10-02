@@ -1,9 +1,9 @@
-import LineString from '../geom/LineString'
-import BoundaryNodeRule from '../algorithm/BoundaryNodeRule'
-import CoordinateArrays from '../geom/CoordinateArrays'
-import ArrayList from '../../../../java/util/ArrayList'
-import TreeMap from '../../../../java/util/TreeMap'
-import MultiLineString from '../geom/MultiLineString'
+import LineString from '../geom/LineString.js'
+import BoundaryNodeRule from '../algorithm/BoundaryNodeRule.js'
+import CoordinateArrays from '../geom/CoordinateArrays.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
+import MultiLineString from '../geom/MultiLineString.js'
 export default class BoundaryOp {
   constructor() {
     BoundaryOp.constructor_.apply(this, arguments)

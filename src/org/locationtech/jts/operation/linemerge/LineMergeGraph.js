@@ -1,8 +1,8 @@
-import LineMergeDirectedEdge from './LineMergeDirectedEdge'
-import Node from '../../planargraph/Node'
-import CoordinateArrays from '../../geom/CoordinateArrays'
-import LineMergeEdge from './LineMergeEdge'
-import PlanarGraph from '../../planargraph/PlanarGraph'
+import LineMergeDirectedEdge from './LineMergeDirectedEdge.js'
+import Node from '../../planargraph/Node.js'
+import CoordinateArrays from '../../geom/CoordinateArrays.js'
+import LineMergeEdge from './LineMergeEdge.js'
+import PlanarGraph from '../../planargraph/PlanarGraph.js'
 export default class LineMergeGraph extends PlanarGraph {
   constructor() {
     super()

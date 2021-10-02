@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import ConstraintSplitPointFinder from './ConstraintSplitPointFinder'
+import Coordinate from '../geom/Coordinate.js'
+import ConstraintSplitPointFinder from './ConstraintSplitPointFinder.js'
 export default class MidpointSplitPointFinder {
   findSplitPoint(seg, encroachPt) {
     const p0 = seg.getStart()

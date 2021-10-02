@@ -1,5 +1,5 @@
-import DirectedEdge from '../../planargraph/DirectedEdge'
-import Assert from '../../util/Assert'
+import DirectedEdge from '../../planargraph/DirectedEdge.js'
+import Assert from '../../util/Assert.js'
 export default class LineMergeDirectedEdge extends DirectedEdge {
   constructor() {
     super()

@@ -1,4 +1,4 @@
-import AbstractPreparedPolygonContains from './AbstractPreparedPolygonContains'
+import AbstractPreparedPolygonContains from './AbstractPreparedPolygonContains.js'
 export default class PreparedPolygonCovers extends AbstractPreparedPolygonContains {
   constructor() {
     super()

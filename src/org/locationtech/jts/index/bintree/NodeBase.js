@@ -1,4 +1,4 @@
-import ArrayList from '../../../../../java/util/ArrayList'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class NodeBase {
   constructor() {
     NodeBase.constructor_.apply(this, arguments)

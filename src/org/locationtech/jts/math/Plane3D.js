@@ -1,6 +1,6 @@
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import Double from '../../../../java/lang/Double'
-import Vector3D from './Vector3D'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Double from '../../../../java/lang/Double.js'
+import Vector3D from './Vector3D.js'
 export default class Plane3D {
   constructor() {
     Plane3D.constructor_.apply(this, arguments)

@@ -1,8 +1,8 @@
-import Orientation from '../algorithm/Orientation'
-import Comparable from '../../../../java/lang/Comparable'
-import ArrayList from '../../../../java/util/ArrayList'
-import Quadrant from '../geomgraph/Quadrant'
-import GraphComponent from './GraphComponent'
+import Orientation from '../algorithm/Orientation.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Quadrant from '../geomgraph/Quadrant.js'
+import GraphComponent from './GraphComponent.js'
 export default class DirectedEdge extends GraphComponent {
   constructor() {
     super()

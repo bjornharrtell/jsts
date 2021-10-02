@@ -1,5 +1,5 @@
-import MonotoneChainIndexer from './MonotoneChainIndexer'
-import Envelope from '../../geom/Envelope'
+import MonotoneChainIndexer from './MonotoneChainIndexer.js'
+import Envelope from '../../geom/Envelope.js'
 export default class MonotoneChainEdge {
   constructor() {
     MonotoneChainEdge.constructor_.apply(this, arguments)

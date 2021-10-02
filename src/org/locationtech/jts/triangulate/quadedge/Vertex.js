@@ -1,8 +1,8 @@
-import NotRepresentableException from '../../algorithm/NotRepresentableException'
-import Coordinate from '../../geom/Coordinate'
-import TrianglePredicate from './TrianglePredicate'
-import System from '../../../../../java/lang/System'
-import HCoordinate from '../../algorithm/HCoordinate'
+import NotRepresentableException from '../../algorithm/NotRepresentableException.js'
+import Coordinate from '../../geom/Coordinate.js'
+import TrianglePredicate from './TrianglePredicate.js'
+import System from '../../../../../java/lang/System.js'
+import HCoordinate from '../../algorithm/HCoordinate.js'
 export default class Vertex {
   constructor() {
     Vertex.constructor_.apply(this, arguments)

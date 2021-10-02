@@ -1,6 +1,6 @@
-import Coordinate from '../../geom/Coordinate'
-import MortonCode from './MortonCode'
-import GeometricShapeBuilder from '../GeometricShapeBuilder'
+import Coordinate from '../../geom/Coordinate.js'
+import MortonCode from './MortonCode.js'
+import GeometricShapeBuilder from '../GeometricShapeBuilder.js'
 export default class MortonCurveBuilder extends GeometricShapeBuilder {
   constructor() {
     super()

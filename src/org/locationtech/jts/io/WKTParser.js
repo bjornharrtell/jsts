@@ -1,5 +1,5 @@
-import Coordinate from '../geom/Coordinate'
-import GeometryFactory from '../geom/GeometryFactory'
+import Coordinate from '../geom/Coordinate.js'
+import GeometryFactory from '../geom/GeometryFactory.js'
 
 /**
  * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')

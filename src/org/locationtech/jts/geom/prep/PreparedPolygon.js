@@ -1,13 +1,13 @@
-import PreparedPolygonIntersects from './PreparedPolygonIntersects'
-import FastSegmentSetIntersectionFinder from '../../noding/FastSegmentSetIntersectionFinder'
-import SegmentStringUtil from '../../noding/SegmentStringUtil'
-import PreparedPolygonContainsProperly from './PreparedPolygonContainsProperly'
-import PreparedPolygonContains from './PreparedPolygonContains'
-import PreparedPolygonCovers from './PreparedPolygonCovers'
-import BasicPreparedGeometry from './BasicPreparedGeometry'
-import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator'
-import RectangleContains from '../../operation/predicate/RectangleContains'
-import RectangleIntersects from '../../operation/predicate/RectangleIntersects'
+import PreparedPolygonIntersects from './PreparedPolygonIntersects.js'
+import FastSegmentSetIntersectionFinder from '../../noding/FastSegmentSetIntersectionFinder.js'
+import SegmentStringUtil from '../../noding/SegmentStringUtil.js'
+import PreparedPolygonContainsProperly from './PreparedPolygonContainsProperly.js'
+import PreparedPolygonContains from './PreparedPolygonContains.js'
+import PreparedPolygonCovers from './PreparedPolygonCovers.js'
+import BasicPreparedGeometry from './BasicPreparedGeometry.js'
+import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator.js'
+import RectangleContains from '../../operation/predicate/RectangleContains.js'
+import RectangleIntersects from '../../operation/predicate/RectangleIntersects.js'
 export default class PreparedPolygon extends BasicPreparedGeometry {
   constructor() {
     super()

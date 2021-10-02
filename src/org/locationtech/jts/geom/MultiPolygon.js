@@ -1,7 +1,7 @@
-import Geometry from './Geometry'
-import GeometryCollection from './GeometryCollection'
-import Polygonal from './Polygonal'
-import ArrayList from '../../../../java/util/ArrayList'
+import Geometry from './Geometry.js'
+import GeometryCollection from './GeometryCollection.js'
+import Polygonal from './Polygonal.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class MultiPolygon extends GeometryCollection {
   constructor() {
     super()

@@ -1,6 +1,6 @@
-import PointLocator from '../../algorithm/PointLocator'
-import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter'
-import PreparedGeometry from './PreparedGeometry'
+import PointLocator from '../../algorithm/PointLocator.js'
+import ComponentCoordinateExtracter from '../util/ComponentCoordinateExtracter.js'
+import PreparedGeometry from './PreparedGeometry.js'
 export default class BasicPreparedGeometry {
   constructor() {
     BasicPreparedGeometry.constructor_.apply(this, arguments)

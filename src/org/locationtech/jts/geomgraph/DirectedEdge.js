@@ -1,8 +1,8 @@
-import Location from '../geom/Location'
-import EdgeEnd from './EdgeEnd'
-import Position from './Position'
-import TopologyException from '../geom/TopologyException'
-import Label from './Label'
+import Location from '../geom/Location.js'
+import EdgeEnd from './EdgeEnd.js'
+import Position from './Position.js'
+import TopologyException from '../geom/TopologyException.js'
+import Label from './Label.js'
 export default class DirectedEdge extends EdgeEnd {
   constructor() {
     super()

@@ -1,12 +1,12 @@
-import StringBuffer from '../../../../java/lang/StringBuffer'
-import Location from '../geom/Location'
-import Position from './Position'
-import TopologyException from '../geom/TopologyException'
-import System from '../../../../java/lang/System'
-import SimplePointInAreaLocator from '../algorithm/locate/SimplePointInAreaLocator'
-import ArrayList from '../../../../java/util/ArrayList'
-import Assert from '../util/Assert'
-import TreeMap from '../../../../java/util/TreeMap'
+import StringBuffer from '../../../../java/lang/StringBuffer.js'
+import Location from '../geom/Location.js'
+import Position from './Position.js'
+import TopologyException from '../geom/TopologyException.js'
+import System from '../../../../java/lang/System.js'
+import SimplePointInAreaLocator from '../algorithm/locate/SimplePointInAreaLocator.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Assert from '../util/Assert.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class EdgeEndStar {
   constructor() {
     EdgeEndStar.constructor_.apply(this, arguments)

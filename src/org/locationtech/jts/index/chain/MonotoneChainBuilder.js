@@ -1,6 +1,6 @@
-import MonotoneChain from './MonotoneChain'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Quadrant from '../../geomgraph/Quadrant'
+import MonotoneChain from './MonotoneChain.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Quadrant from '../../geomgraph/Quadrant.js'
 export default class MonotoneChainBuilder {
   static findChainEnd(pts, start) {
     let safeStart = start

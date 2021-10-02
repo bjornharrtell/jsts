@@ -1,9 +1,9 @@
-import LineString from '../geom/LineString'
-import CoordinateList from '../geom/CoordinateList'
-import Geometry from '../geom/Geometry'
-import Coordinate from '../geom/Coordinate'
-import GeometryEditor from '../geom/util/GeometryEditor'
-import LinearRing from '../geom/LinearRing'
+import LineString from '../geom/LineString.js'
+import CoordinateList from '../geom/CoordinateList.js'
+import Geometry from '../geom/Geometry.js'
+import Coordinate from '../geom/Coordinate.js'
+import GeometryEditor from '../geom/util/GeometryEditor.js'
+import LinearRing from '../geom/LinearRing.js'
 export default class PrecisionReducerCoordinateOperation extends GeometryEditor.CoordinateOperation {
   constructor() {
     super()

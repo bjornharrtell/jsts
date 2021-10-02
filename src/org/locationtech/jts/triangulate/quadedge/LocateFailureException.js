@@ -1,5 +1,5 @@
-import LineSegment from '../../geom/LineSegment'
-import RuntimeException from '../../../../../java/lang/RuntimeException'
+import LineSegment from '../../geom/LineSegment.js'
+import RuntimeException from '../../../../../java/lang/RuntimeException.js'
 export default class LocateFailureException extends RuntimeException {
   constructor() {
     super()

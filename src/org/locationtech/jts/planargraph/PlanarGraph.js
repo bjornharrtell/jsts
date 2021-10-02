@@ -1,9 +1,9 @@
-import HashSet from '../../../../java/util/HashSet'
-import Node from './Node'
-import NodeMap from './NodeMap'
-import DirectedEdge from './DirectedEdge'
-import ArrayList from '../../../../java/util/ArrayList'
-import Edge from './Edge'
+import HashSet from '../../../../java/util/HashSet.js'
+import Node from './Node.js'
+import NodeMap from './NodeMap.js'
+import DirectedEdge from './DirectedEdge.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
+import Edge from './Edge.js'
 export default class PlanarGraph {
   constructor() {
     PlanarGraph.constructor_.apply(this, arguments)

@@ -1,4 +1,4 @@
-import HalfEdge from './HalfEdge'
+import HalfEdge from './HalfEdge.js'
 export default class MarkHalfEdge extends HalfEdge {
   constructor() {
     super()

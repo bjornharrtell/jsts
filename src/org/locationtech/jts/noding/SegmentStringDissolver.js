@@ -1,9 +1,9 @@
-import hasInterface from '../../../../hasInterface'
-import Collection from '../../../../java/util/Collection'
-import OrientedCoordinateArray from './OrientedCoordinateArray'
-import SegmentString from './SegmentString'
-import CoordinateArrays from '../geom/CoordinateArrays'
-import TreeMap from '../../../../java/util/TreeMap'
+import hasInterface from '../../../../hasInterface.js'
+import Collection from '../../../../java/util/Collection.js'
+import OrientedCoordinateArray from './OrientedCoordinateArray.js'
+import SegmentString from './SegmentString.js'
+import CoordinateArrays from '../geom/CoordinateArrays.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 export default class SegmentStringDissolver {
   constructor() {
     SegmentStringDissolver.constructor_.apply(this, arguments)

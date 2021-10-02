@@ -1,4 +1,4 @@
-import QuadEdgeLocator from './QuadEdgeLocator'
+import QuadEdgeLocator from './QuadEdgeLocator.js'
 export default class LastFoundQuadEdgeLocator {
   constructor() {
     LastFoundQuadEdgeLocator.constructor_.apply(this, arguments)

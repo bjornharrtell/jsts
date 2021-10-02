@@ -1,5 +1,5 @@
-import Double from '../../../../java/lang/Double'
-import Long from '../../../../java/lang/Long'
+import Double from '../../../../java/lang/Double.js'
+import Long from '../../../../java/lang/Long.js'
 export default class CommonBits {
   constructor() {
     this._isFirst = true

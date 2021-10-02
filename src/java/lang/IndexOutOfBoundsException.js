@@ -1,4 +1,4 @@
-import Exception from './Exception'
+import Exception from './Exception.js'
 
 export default class IndexOutOfBoundsException extends Exception {
   constructor(message) {

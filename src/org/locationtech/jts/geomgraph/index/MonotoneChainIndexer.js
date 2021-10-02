@@ -1,6 +1,6 @@
-import IntArrayList from '../../util/IntArrayList'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Quadrant from '../Quadrant'
+import IntArrayList from '../../util/IntArrayList.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Quadrant from '../Quadrant.js'
 export default class MonotoneChainIndexer {
   static toIntArray(list) {
     const array = new Array(list.size()).fill(null)

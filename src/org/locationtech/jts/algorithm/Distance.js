@@ -1,6 +1,6 @@
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException'
-import MathUtil from '../math/MathUtil'
-import Envelope from '../geom/Envelope'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import MathUtil from '../math/MathUtil.js'
+import Envelope from '../geom/Envelope.js'
 export default class Distance {
   static segmentToSegment(A, B, C, D) {
     if (A.equals(B)) return Distance.pointToSegment(A, C, D)

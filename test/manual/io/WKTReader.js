@@ -1,6 +1,6 @@
 import expect from 'expect.js'
 
-import WKTReader from 'org/locationtech/jts/io/WKTReader'
+import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
 
 const reader = new WKTReader()
 

@@ -1,12 +1,12 @@
-import ItemBoundable from './ItemBoundable'
-import hasInterface from '../../../../../hasInterface'
-import ItemVisitor from '../ItemVisitor'
-import AbstractNode from './AbstractNode'
-import Collections from '../../../../../java/util/Collections'
-import ArrayList from '../../../../../java/util/ArrayList'
-import Serializable from '../../../../../java/io/Serializable'
-import Assert from '../../util/Assert'
-import List from '../../../../../java/util/List'
+import ItemBoundable from './ItemBoundable.js'
+import hasInterface from '../../../../../hasInterface.js'
+import ItemVisitor from '../ItemVisitor.js'
+import AbstractNode from './AbstractNode.js'
+import Collections from '../../../../../java/util/Collections.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Serializable from '../../../../../java/io/Serializable.js'
+import Assert from '../../util/Assert.js'
+import List from '../../../../../java/util/List.js'
 export default class AbstractSTRtree {
   constructor() {
     AbstractSTRtree.constructor_.apply(this, arguments)

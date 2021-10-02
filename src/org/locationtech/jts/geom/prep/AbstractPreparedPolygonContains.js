@@ -1,8 +1,8 @@
-import hasInterface from '../../../../../hasInterface'
-import SegmentIntersectionDetector from '../../noding/SegmentIntersectionDetector'
-import SegmentStringUtil from '../../noding/SegmentStringUtil'
-import Polygonal from '../Polygonal'
-import PreparedPolygonPredicate from './PreparedPolygonPredicate'
+import hasInterface from '../../../../../hasInterface.js'
+import SegmentIntersectionDetector from '../../noding/SegmentIntersectionDetector.js'
+import SegmentStringUtil from '../../noding/SegmentStringUtil.js'
+import Polygonal from '../Polygonal.js'
+import PreparedPolygonPredicate from './PreparedPolygonPredicate.js'
 export default class AbstractPreparedPolygonContains extends PreparedPolygonPredicate {
   constructor() {
     super()

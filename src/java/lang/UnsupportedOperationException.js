@@ -1,4 +1,4 @@
-import Exception from './Exception'
+import Exception from './Exception.js'
 
 export default class UnsupportedOperationException extends Exception {
   constructor(message) {

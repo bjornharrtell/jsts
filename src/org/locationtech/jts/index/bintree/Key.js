@@ -1,5 +1,5 @@
-import Interval from './Interval'
-import DoubleBits from '../quadtree/DoubleBits'
+import Interval from './Interval.js'
+import DoubleBits from '../quadtree/DoubleBits.js'
 export default class Key {
   constructor() {
     Key.constructor_.apply(this, arguments)

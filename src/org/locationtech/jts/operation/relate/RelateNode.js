@@ -1,4 +1,4 @@
-import Node from '../../geomgraph/Node'
+import Node from '../../geomgraph/Node.js'
 export default class RelateNode extends Node {
   constructor() {
     super()

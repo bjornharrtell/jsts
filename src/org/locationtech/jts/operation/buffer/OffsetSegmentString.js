@@ -1,6 +1,6 @@
-import GeometryFactory from '../../geom/GeometryFactory'
-import Coordinate from '../../geom/Coordinate'
-import ArrayList from '../../../../../java/util/ArrayList'
+import GeometryFactory from '../../geom/GeometryFactory.js'
+import Coordinate from '../../geom/Coordinate.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class OffsetSegmentString {
   constructor() {
     OffsetSegmentString.constructor_.apply(this, arguments)

@@ -1,3 +1,3 @@
-import Exception from '../lang/Exception'
+import Exception from '../lang/Exception.js'
 
 export default class IOException extends Exception { }

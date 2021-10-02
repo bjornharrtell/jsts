@@ -1,7 +1,7 @@
-import StringBuffer from '../../../../java/lang/StringBuffer'
-import Location from '../geom/Location'
-import Position from './Position'
-import TopologyLocation from './TopologyLocation'
+import StringBuffer from '../../../../java/lang/StringBuffer.js'
+import Location from '../geom/Location.js'
+import Position from './Position.js'
+import TopologyLocation from './TopologyLocation.js'
 export default class Label {
   constructor() {
     Label.constructor_.apply(this, arguments)

@@ -1,6 +1,6 @@
-import GeometryFactory from '../geom/GeometryFactory'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector'
-import RuntimeException from '../../../../java/lang/RuntimeException'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
+import RuntimeException from '../../../../java/lang/RuntimeException.js'
 export default class NodingValidator {
   constructor() {
     NodingValidator.constructor_.apply(this, arguments)

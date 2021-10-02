@@ -1,7 +1,7 @@
-import Geometry from './Geometry'
-import GeometryCollection from './GeometryCollection'
-import Dimension from './Dimension'
-import Puntal from './Puntal'
+import Geometry from './Geometry.js'
+import GeometryCollection from './GeometryCollection.js'
+import Dimension from './Dimension.js'
+import Puntal from './Puntal.js'
 export default class MultiPoint extends GeometryCollection {
   constructor() {
     super()

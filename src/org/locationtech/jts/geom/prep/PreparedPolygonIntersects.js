@@ -1,5 +1,5 @@
-import SegmentStringUtil from '../../noding/SegmentStringUtil'
-import PreparedPolygonPredicate from './PreparedPolygonPredicate'
+import SegmentStringUtil from '../../noding/SegmentStringUtil.js'
+import PreparedPolygonPredicate from './PreparedPolygonPredicate.js'
 export default class PreparedPolygonIntersects extends PreparedPolygonPredicate {
   constructor() {
     super()

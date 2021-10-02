@@ -1,7 +1,7 @@
-import hasInterface from '../../../../hasInterface'
-import Collection from '../../../../java/util/Collection'
-import Coordinate from './Coordinate'
-import ArrayList from '../../../../java/util/ArrayList'
+import hasInterface from '../../../../hasInterface.js'
+import Collection from '../../../../java/util/Collection.js'
+import Coordinate from './Coordinate.js'
+import ArrayList from '../../../../java/util/ArrayList.js'
 export default class CoordinateList extends ArrayList {
   constructor() {
     super()

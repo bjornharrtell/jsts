@@ -1,5 +1,5 @@
-import Coordinate from '../../../geom/Coordinate'
-import Double from '../../../../../../java/lang/Double'
+import Coordinate from '../../../geom/Coordinate.js'
+import Double from '../../../../../../java/lang/Double.js'
 export default class PointPairDistance {
   constructor() {
     PointPairDistance.constructor_.apply(this, arguments)

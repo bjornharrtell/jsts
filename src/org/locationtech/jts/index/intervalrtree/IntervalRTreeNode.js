@@ -1,7 +1,7 @@
-import WKTWriter from '../../io/WKTWriter'
-import Coordinate from '../../geom/Coordinate'
-import Double from '../../../../../java/lang/Double'
-import Comparator from '../../../../../java/util/Comparator'
+import WKTWriter from '../../io/WKTWriter.js'
+import Coordinate from '../../geom/Coordinate.js'
+import Double from '../../../../../java/lang/Double.js'
+import Comparator from '../../../../../java/util/Comparator.js'
 export default class IntervalRTreeNode {
   constructor() {
     IntervalRTreeNode.constructor_.apply(this, arguments)

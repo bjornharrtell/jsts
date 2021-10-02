@@ -1,9 +1,9 @@
-import HashMap from '../../../../java/util/HashMap'
-import Coordinate from './Coordinate'
-import Double from '../../../../java/lang/Double'
-import Integer from '../../../../java/lang/Integer'
-import Comparable from '../../../../java/lang/Comparable'
-import Serializable from '../../../../java/io/Serializable'
+import HashMap from '../../../../java/util/HashMap.js'
+import Coordinate from './Coordinate.js'
+import Double from '../../../../java/lang/Double.js'
+import Integer from '../../../../java/lang/Integer.js'
+import Comparable from '../../../../java/lang/Comparable.js'
+import Serializable from '../../../../java/io/Serializable.js'
 export default class PrecisionModel {
   constructor() {
     PrecisionModel.constructor_.apply(this, arguments)

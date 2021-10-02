@@ -1,5 +1,5 @@
-import Boundable from './Boundable'
-import Serializable from '../../../../../java/io/Serializable'
+import Boundable from './Boundable.js'
+import Serializable from '../../../../../java/io/Serializable.js'
 export default class ItemBoundable {
   constructor() {
     ItemBoundable.constructor_.apply(this, arguments)

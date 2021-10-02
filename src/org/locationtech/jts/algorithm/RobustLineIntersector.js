@@ -1,11 +1,11 @@
-import Coordinate from '../geom/Coordinate'
-import Orientation from './Orientation'
-import Intersection from './Intersection'
-import CGAlgorithmsDD from './CGAlgorithmsDD'
-import System from '../../../../java/lang/System'
-import Envelope from '../geom/Envelope'
-import Distance from './Distance'
-import LineIntersector from './LineIntersector'
+import Coordinate from '../geom/Coordinate.js'
+import Orientation from './Orientation.js'
+import Intersection from './Intersection.js'
+import CGAlgorithmsDD from './CGAlgorithmsDD.js'
+import System from '../../../../java/lang/System.js'
+import Envelope from '../geom/Envelope.js'
+import Distance from './Distance.js'
+import LineIntersector from './LineIntersector.js'
 export default class RobustLineIntersector extends LineIntersector {
   constructor() {
     super()

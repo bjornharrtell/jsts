@@ -1,10 +1,10 @@
-import CoordinateList from '../../geom/CoordinateList'
-import hasInterface from '../../../../../hasInterface'
-import ArrayList from '../../../../../java/util/ArrayList'
-import KdNodeVisitor from './KdNodeVisitor'
-import Envelope from '../../geom/Envelope'
-import List from '../../../../../java/util/List'
-import KdNode from './KdNode'
+import CoordinateList from '../../geom/CoordinateList.js'
+import hasInterface from '../../../../../hasInterface.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import KdNodeVisitor from './KdNodeVisitor.js'
+import Envelope from '../../geom/Envelope.js'
+import List from '../../../../../java/util/List.js'
+import KdNode from './KdNode.js'
 export default class KdTree {
   constructor() {
     KdTree.constructor_.apply(this, arguments)

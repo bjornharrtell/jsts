@@ -1,5 +1,5 @@
-import STRtree from '../../index/strtree/STRtree'
-import EdgeRing from './EdgeRing'
+import STRtree from '../../index/strtree/STRtree.js'
+import EdgeRing from './EdgeRing.js'
 export default class HoleAssigner {
   constructor() {
     HoleAssigner.constructor_.apply(this, arguments)

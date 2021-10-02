@@ -1,6 +1,6 @@
-import Coordinate from '../geom/Coordinate'
-import RobustLineIntersector from './RobustLineIntersector'
-import Envelope from '../geom/Envelope'
+import Coordinate from '../geom/Coordinate.js'
+import RobustLineIntersector from './RobustLineIntersector.js'
+import Envelope from '../geom/Envelope.js'
 export default class RectangleLineIntersector {
   constructor() {
     RectangleLineIntersector.constructor_.apply(this, arguments)

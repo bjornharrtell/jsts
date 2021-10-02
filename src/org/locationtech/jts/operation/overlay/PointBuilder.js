@@ -1,5 +1,5 @@
-import ArrayList from '../../../../../java/util/ArrayList'
-import OverlayOp from './OverlayOp'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import OverlayOp from './OverlayOp.js'
 export default class PointBuilder {
   constructor() {
     PointBuilder.constructor_.apply(this, arguments)

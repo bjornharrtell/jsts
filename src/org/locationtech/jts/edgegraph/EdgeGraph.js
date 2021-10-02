@@ -1,5 +1,5 @@
-import HashMap from '../../../../java/util/HashMap'
-import HalfEdge from './HalfEdge'
+import HashMap from '../../../../java/util/HashMap.js'
+import HalfEdge from './HalfEdge.js'
 export default class EdgeGraph {
   constructor() {
     EdgeGraph.constructor_.apply(this, arguments)

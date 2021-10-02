@@ -1,4 +1,4 @@
-import SegmentIntersector from './SegmentIntersector'
+import SegmentIntersector from './SegmentIntersector.js'
 export default class IntersectionAdder {
   constructor() {
     IntersectionAdder.constructor_.apply(this, arguments)

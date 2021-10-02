@@ -1,12 +1,12 @@
-import NoninvertibleTransformationException from './NoninvertibleTransformationException'
-import hasInterface from '../../../../../hasInterface'
-import Coordinate from '../Coordinate'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException'
-import Exception from '../../../../../java/lang/Exception'
-import CoordinateSequence from '../CoordinateSequence'
-import Cloneable from '../../../../../java/lang/Cloneable'
-import CoordinateSequenceFilter from '../CoordinateSequenceFilter'
-import Assert from '../../util/Assert'
+import NoninvertibleTransformationException from './NoninvertibleTransformationException.js'
+import hasInterface from '../../../../../hasInterface.js'
+import Coordinate from '../Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import Exception from '../../../../../java/lang/Exception.js'
+import CoordinateSequence from '../CoordinateSequence.js'
+import Cloneable from '../../../../../java/lang/Cloneable.js'
+import CoordinateSequenceFilter from '../CoordinateSequenceFilter.js'
+import Assert from '../../util/Assert.js'
 export default class AffineTransformation {
   constructor() {
     AffineTransformation.constructor_.apply(this, arguments)

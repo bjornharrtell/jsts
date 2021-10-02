@@ -1,4 +1,4 @@
-import Coordinate from '../../geom/Coordinate'
+import Coordinate from '../../geom/Coordinate.js'
 export default class KdNode {
   constructor() {
     KdNode.constructor_.apply(this, arguments)

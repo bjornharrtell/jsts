@@ -1,4 +1,4 @@
-import SimilarityMeasure from './SimilarityMeasure'
+import SimilarityMeasure from './SimilarityMeasure.js'
 export default class AreaSimilarityMeasure {
   measure(g1, g2) {
     const areaInt = g1.intersection(g2).getArea()

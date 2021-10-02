@@ -1,13 +1,13 @@
-import Geometry from './Geometry'
-import CoordinateFilter from './CoordinateFilter'
-import hasInterface from '../../../../hasInterface'
-import GeometryComponentFilter from './GeometryComponentFilter'
-import Dimension from './Dimension'
-import GeometryFilter from './GeometryFilter'
-import CoordinateSequenceFilter from './CoordinateSequenceFilter'
-import Puntal from './Puntal'
-import Envelope from './Envelope'
-import Assert from '../util/Assert'
+import Geometry from './Geometry.js'
+import CoordinateFilter from './CoordinateFilter.js'
+import hasInterface from '../../../../hasInterface.js'
+import GeometryComponentFilter from './GeometryComponentFilter.js'
+import Dimension from './Dimension.js'
+import GeometryFilter from './GeometryFilter.js'
+import CoordinateSequenceFilter from './CoordinateSequenceFilter.js'
+import Puntal from './Puntal.js'
+import Envelope from './Envelope.js'
+import Assert from '../util/Assert.js'
 export default class Point extends Geometry {
   constructor() {
     super()
