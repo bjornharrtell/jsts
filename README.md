@@ -1,6 +1,6 @@
 # JSTS
 
-[![Build Status](https://travis-ci.org/bjornharrtell/jsts.svg)](https://travis-ci.org/bjornharrtell/jsts)
+[![Build status](https://github.com/bjornharrtell/jsts/actions/workflows/node.js.yml/badge.svg)](https://github.com/bjornharrtell/jsts/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/bjornharrtell/jsts/branch/master/graph/badge.svg)](https://codecov.io/gh/bjornharrtell/jsts)
 ![npm](https://img.shields.io/npm/v/jsts.svg)
 
