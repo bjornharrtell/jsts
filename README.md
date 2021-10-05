@@ -24,7 +24,7 @@ An ES6+ compatible build for browsers is available [here](https://unpkg.com/jsts
 
 Including the above build as a script will import a global object `jsts` exposing similar public API as `org.locationtech.jts` in the [JTS API](http://locationtech.github.io/jts/javadoc/).
 
-For Node.js 14+, install using `npm install jsts` after which you can import individual modules with fx. `import GeoJSONReader from 'jsts/org/locationtech/jts/io/GeoJSONReader'`.
+For Node.js 14+, install using `npm install jsts` after which you can import individual modules with fx. `import GeoJSONReader from 'jsts/org/locationtech/jts/io/GeoJSONReader.js'`.
 
 I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3+ geometries exist. See the [API documentation](http://bjornharrtell.github.io/jsts/1.6.1/doc/) for these specific classes.
 
