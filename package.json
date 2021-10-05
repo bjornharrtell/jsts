@@ -31,7 +31,6 @@
     "rollup": "2.58.0",
     "terser": "5.9.0"
   },
-  "main": "dist/jsts.min.js",
   "type": "module",
   "engines": {
     "node": ">= 14"
