@@ -57,13 +57,11 @@ export default function(doc, title, suite) {
         result = a[opname](parseFloat(arg2))
       else if (opname === 'getCentroid') 
         result = a[opname]()
-      else 
-      if (arg3) 
+      else
+      if (arg3)
         result = a[opname](b, arg3)
-      else 
+      else
         result = a[opname](b)
-        
-      
 
       // switch comparison logic depending on opname
       // TODO: should be a cleaner approach...
@@ -73,16 +71,14 @@ export default function(doc, title, suite) {
         var expectedBool = expected === 'true'
         if (expectedBool !== result) 
           fail(result, expectedBool, inputs)
-        else 
+        else
           expect(true).to.be.true
-        
       } else if (opname === 'distance') {
         const expectedDistance = parseFloat(expected)
         if (result !== expectedDistance) 
           fail(result, parseFloat(expectedDistance), inputs)
-        else 
+        else
           expect(true).to.be.true
-        
       } else if (opname === 'buffer') {
         const expectedGeometry = reader.read(expected)
         result.normalize()
@@ -90,18 +86,16 @@ export default function(doc, title, suite) {
         var matcher = new BufferResultMatcher()
         if (!matcher.isBufferResultMatch(result, expectedGeometry, parseFloat(arg2))) 
           fail(result, expected, inputs)
-        else 
+        else
           expect(true).to.be.true
-        
       } else {
         const expectedGeometry = reader.read(expected)
         result.normalize()
         expectedGeometry.normalize()
         if (!result.equalsExact(expectedGeometry)) 
           fail(result, expected, inputs)
-        else 
+        else
           expect(true).to.be.true
-        
       }
     }))
   }
