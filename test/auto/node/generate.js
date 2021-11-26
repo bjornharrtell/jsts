@@ -1,6 +1,6 @@
 /* eslint no-unused-expressions: "off" */
-
-import $ from 'cheerio'
+import { JSDOM } from 'jsdom'
+import jquery from 'jquery'
 import { expect } from 'chai'
 
 import GeometryFactory from '../../../src/org/locationtech/jts/geom/GeometryFactory.js'
@@ -10,6 +10,10 @@ import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
 import '../../../src/org/locationtech/jts/monkey.js'
 
 import BufferResultMatcher from '../BufferResultMatcher.js'
+
+
+const dom = new JSDOM('')
+const $ = jquery(dom.window)
 
 /**
  * @return GeometryFactory with PrecisionModel from test XML (undefined if no such info in XML)
