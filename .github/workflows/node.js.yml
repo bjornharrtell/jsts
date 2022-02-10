@@ -24,3 +24,4 @@ jobs:
         cache: 'yarn'
     - run: yarn install --immutable --immutable-cache --check-cache
     - run: yarn test
+    - run: yarn coverage
