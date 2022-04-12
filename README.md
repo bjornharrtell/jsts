@@ -12,7 +12,7 @@ JSTS was made using automatic translation of the original JTS Java source via AS
 
 A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
 
-A [port](http://bjornharrtell.github.com/jsts/1.6.1/validationsuite/index.html) of [JTS Validation Suite](http://www.vividsolutions.com/jts/tests/index.html) provides additional tests.
+A [port](http://bjornharrtell.github.io/jsts/1.6.1/validationsuite/index.html) of JTS Validation Suite provides additional tests.
 
 Basic functionality together with OpenLayers is demonstrated [here](http://bjornharrtell.github.io/jsts).
 
