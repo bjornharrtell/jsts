@@ -1,4 +1,4 @@
-import Vertex from './quadedge/Vertex'
+import Vertex from './quadedge/Vertex.js'
 
 export {
   Vertex
