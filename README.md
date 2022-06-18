@@ -18,9 +18,69 @@ Basic functionality together with OpenLayers is demonstrated [here](http://bjorn
 
 ## Browser or Node.js use
 
-An ES5 (the most common JavaScript variant) compatible build for browsers is available [here](https://unpkg.com/jsts@1.6.1/dist/jsts.min.js).
 
-An ES6+ compatible build for browsers is available [here](https://unpkg.com/jsts/dist/jsts.min.js).
+- By CDN
+
+```html
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name=renderer content=webkit>
+
+    <title>title</title>
+    <script type="text/javascript" src="https://unpkg.com/jsts/dist/jsts.min.js"></script>script>
+</head>
+
+
+<body>
+    <script>
+        const geoJSONRender = new jsts.io.GeoJSONReader();
+        geoJSONRender.read(geojson);
+     
+    </script>
+
+</body>
+
+
+</html>
+
+```
+- By NPM
+```sh
+
+npm i jsts
+#or
+
+yarn add jsts
+
+```
+
+ WebPack/Rollup/.......
+
+```js
+  import * as jsts from 'jsts/dist/jsts.es6.js';
+  const geoJSONRender = new jsts.io.GeoJSONReader();
+  geoJSONRender.read(geojson);
+
+```
+
+Node
+```js
+
+const jsts =require('jsts/dist/jsts.js');
+const geoJSONRender = new jsts.io.GeoJSONReader();
+geoJSONRender.read(geojson);
+```
+
+if you want import individual modules,you need import monkey.js
+
+```js
+import { GeoJSONReader, GeoJSONWriter } from 'jsts/org/locationtech/jts/io';
+// Very important, otherwise the function will be lost
+import 'jsts/org/locationtech/jts/monkey';
+```
+
 
 Including the above build as a script will import a global object `jsts` exposing similar public API as `org.locationtech.jts` in the [JTS API](http://locationtech.github.io/jts/javadoc/).
 
