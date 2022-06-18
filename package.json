@@ -57,7 +57,8 @@
     "test-perf": "0x -- node $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
-    "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
+    "build": "npm run build-umd && npm run build-es6",
+    "build-umd": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
     "build-es6": "rollup -c rollup.config.es6.js -o dist/jsts.es6.js && terser dist/jsts.es6.js --module --source-map content=dist/jsts.es6.js.map,filename=dist/jsts.es6.min.js.map,url=jsts.es6.min.js.map --comments -c -m -o dist/jsts.es6.min.js"
   }
 }
