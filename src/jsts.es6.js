@@ -12,6 +12,7 @@ import * as simplify from './org/locationtech/jts/simplify.js'
 import * as triangulate from './org/locationtech/jts/triangulate.js'
 import * as linearref from './org/locationtech/jts/linearref.js'
 import * as util from './org/locationtech/jts/util.js'
+import './org/locationtech/jts/monkey.js'
 
 const version = 'npm_package_version (git_hash)'
 export {
