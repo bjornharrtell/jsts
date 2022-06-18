@@ -20,7 +20,7 @@
     "@rollup/plugin-replace": "4.0.0",
     "chai": "4.3.6",
     "codecov": "3.8.3",
-    "eslint": "8.17.0",
+    "eslint": "8.18.0",
     "expect.js": "0.3.1",
     "git-rev-sync": "3.0.2",
     "jquery": "3.6.0",
@@ -34,7 +34,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">= 12"
+    "node": ">= 16"
   },
   "repository": {
     "type": "git",
@@ -57,7 +57,6 @@
     "test-perf": "0x -- node $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
-    "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js",
-    "build-es6": "rollup -c rollup.config.es6.js -o dist/jsts.es6.js && terser dist/jsts.es6.js --module --source-map content=dist/jsts.es6.js.map,filename=dist/jsts.es6.min.js.map,url=jsts.es6.min.js.map --comments -c -m -o dist/jsts.es6.min.js"
+    "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js"
   }
 }
