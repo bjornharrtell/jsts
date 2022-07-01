@@ -30,7 +30,8 @@
     "mocha-lcov-reporter": "1.3.0",
     "nyc": "15.1.0",
     "rollup": "2.75.6",
-    "terser": "5.14.1"
+    "terser": "5.14.1",
+    "typescript": "^4.7.4"
   },
   "type": "module",
   "engines": {
@@ -55,6 +56,7 @@
     "test-manual": "mocha --timeout 10s --recursive test/manual",
     "test": "nyc mocha --timeout 10s --recursive test/auto/node test/manual",
     "test-perf": "0x -- node $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
+    "ts-declarations": "tsc --project ./tsconfig.json --outFile dist/index.d.ts",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js"

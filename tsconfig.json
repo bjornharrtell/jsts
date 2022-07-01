@@ -1,0 +1,12 @@
+{
+  "include": [
+    "src/java/**/*",
+    "src/org/locationtech/**/*"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": true
+  }
+}
