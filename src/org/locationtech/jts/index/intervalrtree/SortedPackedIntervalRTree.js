@@ -5,6 +5,7 @@ import IntervalRTreeNode from './IntervalRTreeNode.js'
 import Collections from '../../../../../java/util/Collections.js'
 import System from '../../../../../java/lang/System.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
+import IllegalStateException from '../../../../../java/lang/IllegalStateException.js'
 import IntervalRTreeBranchNode from './IntervalRTreeBranchNode.js'
 export default class SortedPackedIntervalRTree {
   constructor() {

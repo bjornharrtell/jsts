@@ -5,6 +5,7 @@ import Character from '../../../../java/lang/Character.js'
 import Comparable from '../../../../java/lang/Comparable.js'
 import Cloneable from '../../../../java/lang/Cloneable.js'
 import Serializable from '../../../../java/io/Serializable.js'
+import IllegalStateException from '../../../../java/lang/IllegalStateException.js'
 export default class DD {
   constructor() {
     DD.constructor_.apply(this, arguments)

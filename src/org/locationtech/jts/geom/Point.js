@@ -8,6 +8,7 @@ import CoordinateSequenceFilter from './CoordinateSequenceFilter.js'
 import Puntal from './Puntal.js'
 import Envelope from './Envelope.js'
 import Assert from '../util/Assert.js'
+import IllegalStateException from '../../../../java/lang/IllegalStateException.js'
 export default class Point extends Geometry {
   constructor() {
     super()

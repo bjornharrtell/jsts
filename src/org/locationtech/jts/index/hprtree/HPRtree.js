@@ -10,6 +10,7 @@ import Comparator from '../../../../../java/util/Comparator.js'
 import Item from './Item.js'
 import ArrayListVisitor from '../ArrayListVisitor.js'
 import Envelope from '../../geom/Envelope.js'
+import IllegalStateException from '../../../../../java/lang/IllegalStateException.js'
 export default class HPRtree {
   constructor() {
     HPRtree.constructor_.apply(this, arguments)

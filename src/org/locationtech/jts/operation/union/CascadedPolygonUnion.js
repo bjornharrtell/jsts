@@ -7,6 +7,7 @@ import GeometryFactory from '../../geom/GeometryFactory.js'
 import Polygonal from '../../geom/Polygonal.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import List from '../../../../../java/util/List.js'
+import IllegalStateException from '../../../../../java/lang/IllegalStateException.js'
 export default class CascadedPolygonUnion {
   constructor() {
     CascadedPolygonUnion.constructor_.apply(this, arguments)

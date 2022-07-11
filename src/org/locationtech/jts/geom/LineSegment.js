@@ -5,6 +5,7 @@ import Intersection from '../algorithm/Intersection.js'
 import Comparable from '../../../../java/lang/Comparable.js'
 import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
 import Serializable from '../../../../java/io/Serializable.js'
+import IllegalStateException from '../../../../java/lang/IllegalStateException.js'
 import Distance from '../algorithm/Distance.js'
 export default class LineSegment {
   constructor() {
