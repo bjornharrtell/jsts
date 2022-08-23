@@ -95,7 +95,7 @@ export default class Geometry {
     return this.getFactory().toGeometry(this.getEnvelopeInternal())
   }
 
-  checkNotGeometryCollection(g) {
+  static checkNotGeometryCollection(g) {
     if (g.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION) throw new IllegalArgumentException('This method does not support GeometryCollection arguments')
   }
 

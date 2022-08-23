@@ -1,4 +1,5 @@
 import HashSet from '../../../../../java/util/HashSet.js'
+import UnionOp from './UnionOp.js'
 import TopologyException from '../../geom/TopologyException.js'
 import GeometryCombiner from '../../geom/util/GeometryCombiner.js'
 import LineSegment from '../../geom/LineSegment.js'
@@ -127,7 +128,7 @@ export default class OverlapUnion {
   }
   unionFull(geom0, geom1) {
     try {
-      return geom0.union(geom1)
+      return UnionOp.union(geom0, geom1)
     } catch (ex) {
       if (ex instanceof TopologyException) 
         return OverlapUnion.unionBuffer(geom0, geom1)
