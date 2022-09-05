@@ -52,7 +52,7 @@ export default class UnaryUnionOp {
     if (g0 === null && g1 === null) return null
     if (g1 === null) return g0
     if (g0 === null) return g1
-    return g0.union(g1)
+    return OverlayOp.union(g0,g1)
   }
   extract() {
     if (hasInterface(arguments[0], Collection)) {
