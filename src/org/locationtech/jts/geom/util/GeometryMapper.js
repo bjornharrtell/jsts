@@ -73,7 +73,7 @@ export default class GeometryMapper {
         }
       }
     } else {
-      throw 'GeometryMapper flatmap argument type unknow'
+      throw 'GeometryMapper flatmap argument type unknown'
     }
      
    }
