@@ -26,6 +26,8 @@ export default class Coordinate {
       Coordinate.constructor_.call(this, c.x, c.y, c.getZ())
     } else if (arguments.length === 2) {
       const x = arguments[0], y = arguments[1]
+      this.x = x
+      this.y = y
       Coordinate.constructor_.call(this, x, y, Coordinate.NULL_ORDINATE)
     } else if (arguments.length === 3) {
       const x = arguments[0], y = arguments[1], z = arguments[2]

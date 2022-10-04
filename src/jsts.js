@@ -12,6 +12,7 @@ import * as simplify from './org/locationtech/jts/simplify.js'
 import * as triangulate from './org/locationtech/jts/triangulate.js'
 import * as linearref from './org/locationtech/jts/linearref.js'
 import * as util from './org/locationtech/jts/util.js'
+import * as shape from './org/locationtech/jts/shape.js'
 
 import './org/locationtech/jts/monkey.js'
 
@@ -31,5 +32,6 @@ export {
   simplify,
   triangulate,
   linearref,
-  util
+  util,
+  shape
 }
