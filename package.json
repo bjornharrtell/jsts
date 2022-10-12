@@ -1,5 +1,5 @@
 {
-  "name": "jsts",
+  "name": "@volterainc/jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
   "version": "2.9.4",
   "author": "Björn Harrtell <bjorn@wololo.org>",
