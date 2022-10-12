@@ -1,5 +1,5 @@
 {
-  "name": "@volterainc/jsts",
+  "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
   "version": "2.9.4",
   "author": "Björn Harrtell <bjorn@wololo.org>",
@@ -32,12 +32,13 @@
     "rollup": "2.79.0",
     "terser": "5.15.0"
   },
+  "type": "module",
   "engines": {
     "node": ">= 16"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VolteraInc/jsts.git"
+    "url": "git://github.com/bjornharrtell/jsts.git"
   },
   "standard": {
     "globals": [
@@ -59,6 +60,5 @@
     "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js && cp -R types dist/ && sh ./npm_dist.sh"
   },
   "types": "./types/index.d.ts",
-  "main": "dist/jsts.min.js",
-  "type": "module"
+  "main": "dist/jsts.min.js"
 }
