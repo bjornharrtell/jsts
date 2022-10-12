@@ -60,7 +60,5 @@
   },
   "types": "./types/index.d.ts",
   "main": "dist/jsts.min.js",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/VolteraInc"
-  }
+  "type": "module"
 }
