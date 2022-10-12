@@ -1,7 +1,7 @@
 {
   "name": "@volterainc/jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "0.0.1",
+  "version": "2.9.4",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -60,8 +60,5 @@
   },
   "types": "./types/index.d.ts",
   "main": "dist/jsts.min.js",
-  "type": "module",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  }
+  "type": "module"
 }
