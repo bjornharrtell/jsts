@@ -60,5 +60,8 @@
   },
   "types": "./types/index.d.ts",
   "main": "dist/jsts.min.js",
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }
