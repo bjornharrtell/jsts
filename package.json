@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/bjornharrtell/jsts.git"
+    "url": "git+https://github.com/VolteraInc/jsts.git"
   },
   "standard": {
     "globals": [
@@ -58,5 +58,6 @@
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js && cp -R types dist/ && sh ./npm_dist.sh"
   },
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "main": "dist/jsts.min.js"
 }
