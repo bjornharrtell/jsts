@@ -3833,6 +3833,6 @@ declare namespace jsts {
   }
 }
 
-declare module "jsts" {
+declare module "@volterainc/jsts-test" {
   export = jsts;
 }
