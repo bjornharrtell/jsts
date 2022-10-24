@@ -60,5 +60,8 @@
     "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js && cp -R types dist/ && sh ./npm_dist.sh"
   },
   "types": "./types/index.d.ts",
-  "main": "dist/jsts.min.js"
+  "main": "dist/jsts.min.js",
+  "dependencies": {
+    "@types/openlayers": "^4.6.18"
+  }
 }
