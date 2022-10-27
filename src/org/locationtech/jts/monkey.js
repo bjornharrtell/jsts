@@ -124,7 +124,7 @@ Geometry.prototype.toText = function() {
   return writer.write(this)
 }
 Geometry.prototype.toString = function() {
-  this.toText()
+  return this.toText()
 }
 Geometry.prototype.contains = function(g) {
   return RelateOp.contains(this, g)
