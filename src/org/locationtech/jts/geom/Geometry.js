@@ -166,13 +166,7 @@ export default class Geometry {
   }
 
   isEquivalentClass(other) {
-    return this.getClass() === other.getClass()
-  }
-
-  isGeometryCollectionOrDerived() {
-    if (this.getTypeCode() === Geometry.TYPECODE_GEOMETRYCOLLECTION || this.getTypeCode() === Geometry.TYPECODE_MULTIPOINT || this.getTypeCode() === Geometry.TYPECODE_MULTILINESTRING || this.getTypeCode() === Geometry.TYPECODE_MULTIPOLYGON) return true
-
-    return false
+    return this.getTypeCode() == other.getTypeCode()
   }
 
   get interfaces_() {
