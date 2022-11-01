@@ -1,7 +1,7 @@
 import fs from 'fs'
-import git from 'git-rev-sync'
 import replace from '@rollup/plugin-replace'
 import babel from '@rollup/plugin-babel'
+import terser from '@rollup/plugin-terser'
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 const license = fs.readFileSync('./license.txt', { encoding: 'utf8' })
@@ -17,17 +17,17 @@ export default {
   },
   plugins: [
     replace({
-      npm_package_version: packageJson.version,
-      git_hash: git.short()
+      npm_package_version: packageJson.version
     }),
     babel({
       exclude: 'node_modules/**',
       presets: [['@babel/env', {
         targets: {
-          browsers: ['>1%', 'not dead', 'not ie 11']
+          browsers: ['>2%', 'not dead']
         }
       }]],
       babelrc: false
-    })
+    }),
+    terser()
   ]
 }
