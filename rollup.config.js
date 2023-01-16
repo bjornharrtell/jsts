@@ -17,7 +17,8 @@ export default {
   },
   plugins: [
     replace({
-      npm_package_version: packageJson.version
+      npm_package_version: packageJson.version,
+      preventAssignment: true
     }),
     babel({
       exclude: 'node_modules/**',
@@ -26,7 +27,8 @@ export default {
           browsers: ['>2%', 'not dead']
         }
       }]],
-      babelrc: false
+      babelrc: false,
+      babelHelpers: 'bundled'
     }),
     terser()
   ]
