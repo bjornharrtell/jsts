@@ -16,7 +16,7 @@ import * as shape from './org/locationtech/jts/shape.js'
 
 import './org/locationtech/jts/monkey.js'
 
-const version = 'npm_package_version (git_hash)'
+const version = 'npm_package_version'
 export {
   version,
   algorithm,
