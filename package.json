@@ -1,7 +1,7 @@
 {
   "name": "jsts",
   "description": "A JavaScript library of spatial predicates and functions for processing geometry",
-  "version": "2.9.4",
+  "version": "2.9.3",
   "author": "Björn Harrtell <bjorn@wololo.org>",
   "keywords": [
     "JSTS",
@@ -13,24 +13,23 @@
   ],
   "license": "(EDL-1.0 OR EPL-1.0)",
   "devDependencies": {
-    "@babel/core": "7.19.0",
-    "@babel/eslint-parser": "7.18.9",
-    "@babel/preset-env": "7.19.0",
-    "@rollup/plugin-babel": "5.3.1",
-    "@rollup/plugin-replace": "4.0.0",
-    "chai": "4.3.6",
+    "@babel/core": "7.20.12",
+    "@babel/eslint-parser": "7.19.1",
+    "@babel/preset-env": "7.20.2",
+    "@rollup/plugin-babel": "6.0.3",
+    "@rollup/plugin-replace": "5.0.2",
+    "@rollup/plugin-terser": "^0.3.0",
+    "chai": "4.3.7",
     "codecov": "3.8.3",
-    "eslint": "8.23.1",
+    "eslint": "8.32.0",
     "expect.js": "0.3.1",
-    "git-rev-sync": "3.0.2",
-    "jquery": "3.6.1",
-    "jsdoc": "3.6.11",
-    "jsdom": "20.0.0",
-    "mocha": "10.0.0",
+    "jquery": "3.6.3",
+    "jsdoc": "4.0.0",
+    "jsdom": "21.0.0",
+    "mocha": "10.2.0",
     "mocha-lcov-reporter": "1.3.0",
     "nyc": "15.1.0",
-    "rollup": "2.79.0",
-    "terser": "5.15.0"
+    "rollup": "3.10.0"
   },
   "type": "module",
   "engines": {
@@ -57,7 +56,7 @@
     "test-perf": "0x -- node $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
-    "build": "rollup -c rollup.config.js -o dist/jsts.js && terser dist/jsts.js --source-map content=dist/jsts.js.map,filename=dist/jsts.min.js.map,url=jsts.min.js.map --comments -c -m -o dist/jsts.min.js && cp -R types dist/ && sh ./npm_dist.sh"
+    "build": "rollup -c rollup.config.js -o dist/jsts.min.js"
   },
   "types": "./types/index.d.ts",
   "main": "dist/jsts.min.js",
