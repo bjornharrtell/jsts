@@ -97,6 +97,13 @@ export default class CubicBezierCurve {
       this.inputGeom = geom;
       this.geomFactory = geom.getFactory();
       this.controlPointsG = controlPoints;
+    } else if (typeof(arguments[0]) == 'object' && typeof(arguments[1]) == 'object') {
+      // TODO: when we compile ES, we can remove this check. for cjs the instance could be not geometry.
+      const geom = arguments[0]
+      const controlPoints = arguments[1]
+      this.inputGeom = geom;
+      this.geomFactory = geom.getFactory();
+      this.controlPointsG = controlPoints;
     } else {
       throw "Bezier Curve Class init with unknown arguments"
     }
